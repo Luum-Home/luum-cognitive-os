@@ -24,7 +24,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/test-runner-ergonomics-proposal.md:L116",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "file_exists",
@@ -41,7 +41,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/agent-escalation-capabilities.md:L391",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -57,7 +57,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/agent-escalation-capabilities.md:L393",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -73,7 +73,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/agent-escalation-capabilities.md:L395",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -89,7 +89,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/agent-escalation-capabilities.md:L397",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -105,7 +105,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/agent-escalation-capabilities.md:L398",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "file_exists",
@@ -122,7 +122,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/agent-escalation-capabilities.md:L402",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -138,7 +138,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/agent-escalation-capabilities.md:L404",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -154,7 +154,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/agent-escalation-capabilities.md:L405",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -170,7 +170,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/agent-escalation-capabilities.md:L406",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -186,7 +186,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/agent-escalation-capabilities.md:L410",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -202,7 +202,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/agent-escalation-capabilities.md:L411",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -218,7 +218,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/agent-escalation-capabilities.md:L412",
       "status": "verified-done",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "file_exists",
@@ -235,7 +235,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/agent-escalation-capabilities.md:L432",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -251,7 +251,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/agent-escalation-capabilities.md:L434",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -267,7 +267,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/agent-escalation-capabilities.md:L435",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -283,7 +283,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/agent-escalation-capabilities.md:L436",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -299,7 +299,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/agent-escalation-capabilities.md:L437",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -315,7 +315,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/agent-escalation-capabilities.md:L438",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -331,7 +331,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/agent-escalation-capabilities.md:L439",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -347,7 +347,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/agent-escalation-capabilities.md:L440",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -363,7 +363,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/agent-escalation-capabilities.md:L441",
       "status": "verified-done",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "file_exists",
@@ -380,7 +380,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/agent-escalation-capabilities.md:L442",
       "status": "verified-done",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "file_exists",
@@ -397,7 +397,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/agent-escalation-capabilities.md:L443",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "file_exists",
@@ -414,7 +414,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/agent-escalation-capabilities.md:L445",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -430,7 +430,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L44",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -446,7 +446,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L45",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "file_exists",
@@ -463,7 +463,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L50",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -479,7 +479,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L51",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -495,7 +495,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L55",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -511,7 +511,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L56",
       "status": "obsolete",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "marker_scan",
@@ -527,7 +527,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L57",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -543,7 +543,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L58",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -559,7 +559,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L78",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -575,7 +575,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L79",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -591,7 +591,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L80",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -607,7 +607,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L84",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -623,7 +623,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L85",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -639,7 +639,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L112",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -655,7 +655,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L113",
       "status": "obsolete",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "marker_scan",
@@ -671,7 +671,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L114",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -687,7 +687,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L118",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -703,7 +703,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L119",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -719,7 +719,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L123",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -735,7 +735,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L124",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -751,7 +751,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L125",
       "status": "verified-done",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "file_exists",
@@ -768,7 +768,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L129",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -784,7 +784,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L134",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -800,7 +800,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L138",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -816,7 +816,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L139",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -832,7 +832,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L140",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "file_exists",
@@ -849,7 +849,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L141",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -865,7 +865,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L145",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -881,7 +881,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L146",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "file_exists",
@@ -898,7 +898,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L147",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -914,7 +914,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L148",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -930,7 +930,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L149",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -946,7 +946,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/hook-architecture-v2.md:L495",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -962,7 +962,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/hook-architecture-v2.md:L496",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -978,7 +978,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/hook-architecture-v2.md:L500",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -994,7 +994,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/hook-architecture-v2.md:L501",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1010,7 +1010,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/hook-architecture-v2.md:L507",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1026,7 +1026,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/hook-architecture-v2.md:L508",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1042,7 +1042,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/hook-architecture-v2.md:L661",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "file_exists",
@@ -1059,7 +1059,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/hook-architecture-v2.md:L662",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1075,7 +1075,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/hook-architecture-v2.md:L663",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1091,7 +1091,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/hook-architecture-v2.md:L664",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1107,7 +1107,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/hook-architecture-v2.md:L665",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1123,7 +1123,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/hook-architecture-v2.md:L666",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1139,7 +1139,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/hook-architecture-v2.md:L667",
       "status": "verified-done",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "file_exists",
@@ -1156,7 +1156,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/hook-architecture-v2.md:L668",
       "status": "verified-done",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "file_exists",
@@ -1173,7 +1173,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L535",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "file_exists",
@@ -1195,7 +1195,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L536",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1211,7 +1211,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L537",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1227,7 +1227,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L538",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "file_exists",
@@ -1244,7 +1244,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L539",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1260,7 +1260,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L540",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1276,7 +1276,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L541",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "file_exists",
@@ -1293,7 +1293,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L545",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1309,7 +1309,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L546",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1325,7 +1325,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L547",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1341,7 +1341,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L548",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1357,7 +1357,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L549",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1373,7 +1373,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L550",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1389,7 +1389,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L551",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1405,7 +1405,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L555",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1421,7 +1421,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L556",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1437,7 +1437,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L557",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1453,7 +1453,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L558",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1469,7 +1469,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L559",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1485,7 +1485,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L560",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1501,7 +1501,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L561",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1517,7 +1517,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/subagent-capability-contract-and-launch-preflight.md:L29",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1533,7 +1533,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/subagent-capability-contract-and-launch-preflight.md:L30",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1549,7 +1549,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/subagent-capability-contract-and-launch-preflight.md:L31",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1565,7 +1565,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/external-review-readiness-plan.md:L137",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1581,7 +1581,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/external-review-readiness-plan.md:L138",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1597,7 +1597,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/external-review-readiness-plan.md:L139",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1613,7 +1613,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/external-review-readiness-plan.md:L158",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1629,7 +1629,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/external-review-readiness-plan.md:L159",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1645,7 +1645,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/external-review-readiness-plan.md:L176",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1661,7 +1661,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/external-review-readiness-plan.md:L177",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1677,7 +1677,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/external-review-readiness-plan.md:L178",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1693,7 +1693,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/headless-clustered-runtime-plan.md:L203",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1709,7 +1709,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/headless-clustered-runtime-plan.md:L204",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1725,7 +1725,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/headless-clustered-runtime-plan.md:L205",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1741,7 +1741,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/headless-clustered-runtime-plan.md:L206",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1757,7 +1757,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/headless-clustered-runtime-plan.md:L208",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1773,7 +1773,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/headless-clustered-runtime-plan.md:L209",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1789,7 +1789,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/headless-clustered-runtime-plan.md:L210",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1805,7 +1805,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/headless-clustered-runtime-plan.md:L211",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1821,7 +1821,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/headless-clustered-runtime-plan.md:L212",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1837,7 +1837,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/headless-clustered-runtime-plan.md:L213",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1853,7 +1853,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/dx-tax-reduction-plan.md:L72",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1869,7 +1869,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/dx-tax-reduction-plan.md:L73",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1885,7 +1885,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/dx-tax-reduction-plan.md:L74",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1901,7 +1901,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/dx-tax-reduction-plan.md:L75",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1917,7 +1917,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/dx-tax-reduction-plan.md:L93",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1933,7 +1933,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/dx-tax-reduction-plan.md:L95",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1949,7 +1949,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/dx-tax-reduction-plan.md:L96",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1965,7 +1965,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/dx-tax-reduction-plan.md:L97",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1981,7 +1981,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/dx-tax-reduction-plan.md:L115",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -1997,7 +1997,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/dx-tax-reduction-plan.md:L116",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2013,7 +2013,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/dx-tax-reduction-plan.md:L117",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2029,7 +2029,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/dx-tax-reduction-plan.md:L118",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2045,7 +2045,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/dx-tax-reduction-plan.md:L136",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2061,7 +2061,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/dx-tax-reduction-plan.md:L137",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2077,7 +2077,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/dx-tax-reduction-plan.md:L138",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2093,7 +2093,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/dx-tax-reduction-plan.md:L156",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2109,7 +2109,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/dx-tax-reduction-plan.md:L157",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2125,7 +2125,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/dx-tax-reduction-plan.md:L158",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2141,7 +2141,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/dx-tax-reduction-plan.md:L177",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2157,7 +2157,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/dx-tax-reduction-plan.md:L178",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2173,7 +2173,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/dx-tax-reduction-plan.md:L199",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2189,7 +2189,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/dx-tax-reduction-plan.md:L200",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2205,7 +2205,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/foundation-hardening-program.md:L83",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2221,7 +2221,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/foundation-hardening-program.md:L84",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2237,7 +2237,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/foundation-hardening-program.md:L85",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2253,7 +2253,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/foundation-hardening-program.md:L113",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2269,7 +2269,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/foundation-hardening-program.md:L114",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2285,7 +2285,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/foundation-hardening-program.md:L115",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2301,7 +2301,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/foundation-hardening-program.md:L135",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2317,7 +2317,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/foundation-hardening-program.md:L136",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2333,7 +2333,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/foundation-hardening-program.md:L156",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2349,7 +2349,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/foundation-hardening-program.md:L158",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2365,7 +2365,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/foundation-hardening-program.md:L179",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2381,7 +2381,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/foundation-hardening-program.md:L181",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2397,7 +2397,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/multi-session-coordination-primitives-plan.md:L42",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2413,7 +2413,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/multi-session-coordination-primitives-plan.md:L47",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2429,7 +2429,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/multi-session-coordination-primitives-plan.md:L52",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2445,7 +2445,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/multi-session-coordination-primitives-plan.md:L59",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2461,7 +2461,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/multi-session-coordination-primitives-plan.md:L64",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2477,7 +2477,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/multi-session-coordination-primitives-plan.md:L71",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2493,7 +2493,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/multi-session-coordination-primitives-plan.md:L76",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2509,7 +2509,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/multi-session-coordination-primitives-plan.md:L81",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2525,7 +2525,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/multi-session-coordination-primitives-plan.md:L88",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2541,7 +2541,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/multi-session-coordination-primitives-plan.md:L92",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2557,7 +2557,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/multi-session-coordination-primitives-plan.md:L96",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2573,7 +2573,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/multi-session-coordination-primitives-plan.md:L100",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2589,7 +2589,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/multi-session-coordination-primitives-plan.md:L110",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2605,7 +2605,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/multi-session-coordination-primitives-plan.md:L114",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2621,7 +2621,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/multi-session-coordination-primitives-plan.md:L118",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2637,7 +2637,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/multi-session-coordination-primitives-plan.md:L122",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2653,7 +2653,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/multi-session-coordination-primitives-plan.md:L128",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2669,7 +2669,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/multi-session-coordination-primitives-plan.md:L132",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2685,7 +2685,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md:L168",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2701,7 +2701,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md:L169",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2717,7 +2717,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md:L170",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2733,7 +2733,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md:L171",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2749,7 +2749,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md:L172",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2765,7 +2765,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md:L176",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2781,7 +2781,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md:L177",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2797,7 +2797,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md:L178",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2813,7 +2813,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md:L179",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2829,7 +2829,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md:L183",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2845,7 +2845,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md:L184",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2861,7 +2861,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md:L185",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2877,7 +2877,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md:L189",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2893,7 +2893,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md:L190",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2909,7 +2909,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md:L191",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2925,7 +2925,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md:L195",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2941,7 +2941,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md:L196",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2957,7 +2957,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md:L197",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2973,7 +2973,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md:L198",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -2989,7 +2989,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L74",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3005,7 +3005,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L75",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3021,7 +3021,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L76",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3037,7 +3037,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L93",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3053,7 +3053,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L94",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3069,7 +3069,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L95",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3085,7 +3085,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L108",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3101,7 +3101,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L109",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3117,7 +3117,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L110",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3133,7 +3133,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L126",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3149,7 +3149,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L127",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3165,7 +3165,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L128",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3181,7 +3181,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L142",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3197,7 +3197,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L143",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3213,7 +3213,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L144",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3229,7 +3229,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L156",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3245,7 +3245,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L157",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3261,7 +3261,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L158",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3277,7 +3277,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L182",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3293,7 +3293,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L216",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3309,7 +3309,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L218",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3325,7 +3325,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L219",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3341,7 +3341,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L220",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3357,7 +3357,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L225",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3373,7 +3373,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L227",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3389,7 +3389,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L228",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3405,7 +3405,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L229",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3421,7 +3421,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L230",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3437,7 +3437,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L231",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3453,7 +3453,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L232",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3469,7 +3469,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/governance-tools-consolidation.md:L233",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3485,7 +3485,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/operational-stability-friction-reduction.md:L78",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3501,7 +3501,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/operational-stability-friction-reduction.md:L79",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3517,7 +3517,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/operational-stability-friction-reduction.md:L80",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3533,7 +3533,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/operational-stability-friction-reduction.md:L110",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3549,7 +3549,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/operational-stability-friction-reduction.md:L111",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3565,7 +3565,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/operational-stability-friction-reduction.md:L112",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3581,7 +3581,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/operational-stability-friction-reduction.md:L146",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3597,7 +3597,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/operational-stability-friction-reduction.md:L147",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3613,7 +3613,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/operational-stability-friction-reduction.md:L148",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3629,7 +3629,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/operational-stability-friction-reduction.md:L180",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3645,7 +3645,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/operational-stability-friction-reduction.md:L181",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3661,7 +3661,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/operational-stability-friction-reduction.md:L182",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3677,7 +3677,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/operational-stability-friction-reduction.md:L223",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3693,7 +3693,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/operational-stability-friction-reduction.md:L224",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3709,7 +3709,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/operational-stability-friction-reduction.md:L225",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3725,7 +3725,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/operational-stability-friction-reduction.md:L257",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3741,7 +3741,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/operational-stability-friction-reduction.md:L258",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3757,7 +3757,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/operational-stability-friction-reduction.md:L259",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3773,7 +3773,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/operational-stability-friction-reduction.md:L291",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3789,7 +3789,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/operational-stability-friction-reduction.md:L292",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3805,7 +3805,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/operational-stability-friction-reduction.md:L293",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3821,7 +3821,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/operational-stability-friction-reduction.md:L294",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3837,7 +3837,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/operational-stability-friction-reduction.md:L311",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3853,7 +3853,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/operational-stability-friction-reduction.md:L312",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3869,7 +3869,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/operational-stability-friction-reduction.md:L313",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3885,7 +3885,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/operational-stability-friction-reduction.md:L314",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3901,7 +3901,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/operational-stability-friction-reduction.md:L315",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3917,7 +3917,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/operational-stability-friction-reduction.md:L316",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3933,7 +3933,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/adr-200-plus-closure-plan.md:L79",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3949,7 +3949,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/adr-200-plus-closure-plan.md:L80",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3965,7 +3965,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/adr-200-plus-closure-plan.md:L81",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3981,7 +3981,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/adr-200-plus-closure-plan.md:L87",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -3997,7 +3997,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/adr-200-plus-closure-plan.md:L88",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -4013,7 +4013,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/adr-200-plus-closure-plan.md:L93",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -4029,7 +4029,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/adr-200-plus-closure-plan.md:L94",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -4045,7 +4045,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/maintainer-agent-telemetry-promotion-loop.md:L17",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -4061,7 +4061,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/maintainer-agent-telemetry-promotion-loop.md:L30",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -4077,7 +4077,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/maintainer-agent-telemetry-promotion-loop.md:L32",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -4093,7 +4093,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/maintainer-agent-telemetry-promotion-loop.md:L34",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -4109,7 +4109,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/maintainer-agent-telemetry-promotion-loop.md:L36",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -4125,7 +4125,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/maintainer-agent-telemetry-promotion-loop.md:L37",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -4141,7 +4141,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/maintainer-agent-telemetry-promotion-loop.md:L49",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -4157,7 +4157,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/maintainer-agent-telemetry-promotion-loop.md:L50",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -4173,7 +4173,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/maintainer-agent-telemetry-promotion-loop.md:L51",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -4189,7 +4189,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/maintainer-agent-telemetry-promotion-loop.md:L70",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -4205,7 +4205,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/maintainer-agent-telemetry-promotion-loop.md:L71",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -4221,7 +4221,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/maintainer-agent-telemetry-promotion-loop.md:L76",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -4237,7 +4237,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/maintainer-agent-telemetry-promotion-loop.md:L81",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -4253,7 +4253,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/maintainer-agent-telemetry-promotion-loop.md:L82",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -4269,7 +4269,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/maintainer-agent-telemetry-promotion-loop.md:L83",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -4285,7 +4285,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/maintainer-agent-telemetry-promotion-loop.md:L84",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -4301,7 +4301,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/maintainer-agent-telemetry-promotion-loop.md:L85",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -4317,7 +4317,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/headless-self-improvement-proposer-plan.md:L63",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -4333,7 +4333,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/headless-self-improvement-proposer-plan.md:L64",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -4349,7 +4349,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/headless-self-improvement-proposer-plan.md:L65",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -4365,7 +4365,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/architecture/headless-self-improvement-proposer-plan.md:L66",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -4381,7 +4381,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-266-protected-config-write-guard-bash-coverage.md",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -4398,7 +4398,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-174c-validator-blocking-promotion.md",
       "status": "verified-done",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -4415,7 +4415,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-126-agentic-primitive-lifecycle-governor.md",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -4432,7 +4432,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-069-research-first-protocol.md",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -4449,7 +4449,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-002-docker-pip-localhost-envs-targetedtestresolver-redis-dep.md",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -4466,7 +4466,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-117-stash-mutation-reversibility.md",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -4483,7 +4483,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-271-clean-room-detection-tier-2-ast-similarity.md",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -4500,7 +4500,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-265-mandatory-minimum-inspection-caps.md",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -4517,7 +4517,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-070-convention-enforcement-mechanism.md",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -4534,7 +4534,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-047-session-lifecycle-management.md",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -4551,7 +4551,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-059-so-existential-validation.md",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -4568,7 +4568,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-124-cos-distribution-boundaries.md",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -4585,7 +4585,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-067-frontmatter-defense-in-depth.md",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -4602,7 +4602,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-001-abc-parallel-dedup-fix-broken-infra-add-global-verify.md",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -4619,7 +4619,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-038-preamble-v2-industry-aligned.md",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -4636,7 +4636,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-128-data-layer-integrity-fixes.md",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -4653,7 +4653,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-065-radar-update-curation-pipeline.md",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -4670,7 +4670,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-066-polyglot-language-boundaries.md",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -4687,7 +4687,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-062-multi-provider-agent-loop.md",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -4704,7 +4704,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-039-reinvention-phase-b-beta.md",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -4721,7 +4721,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-125-governance-tools-value-boundary.md",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -4738,7 +4738,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-034-harness-agnostic-live-streaming.md",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -4755,7 +4755,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-036-sprint-orchestration-primitives.md",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -4772,7 +4772,7 @@
       "type": "follow-up",
       "source": "docs/06-Daily/reports/radar-2026-05-08-implementation-tracker.md",
       "status": "ambiguous",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "changelog_match",
@@ -4788,7 +4788,7 @@
       "type": "follow-up",
       "source": "docs/06-Daily/reports/radar-2026-05-08-implementation-tracker.md",
       "status": "ambiguous",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "changelog_match",
@@ -4804,7 +4804,7 @@
       "type": "follow-up",
       "source": "docs/06-Daily/reports/radar-2026-05-08-implementation-tracker.md",
       "status": "ambiguous",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "changelog_match",
@@ -4820,14 +4820,14 @@
       "type": "user-request",
       "source": ".cognitive-os/sessions/1776802521-37253-1dab3d36/user-requests.jsonl:L3",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "keywords",
           "result": [
             "fragilidad",
             "thresholds",
-            "snapshots"
+            "hardcoded"
           ]
         }
       ],
@@ -4840,7 +4840,7 @@
       "type": "audit-finding",
       "source": ".cognitive-os/tasks/active-tasks.json",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "task_status",
@@ -4856,7 +4856,7 @@
       "type": "audit-finding",
       "source": ".cognitive-os/tasks/active-tasks.json",
       "status": "verified-pending",
-      "last_verified": "2026-05-12T17:07:03Z",
+      "last_verified": "2026-05-20T15:46:05Z",
       "evidence": [
         {
           "kind": "task_status",
@@ -4869,13 +4869,13 @@
     }
   ],
   "verifier": {
-    "ran_at": "2026-05-12T17:07:03Z",
+    "ran_at": "2026-05-20T15:46:05Z",
     "transitions": {
-      "unverified->verified-pending": 288,
-      "unverified->verified-done": 7,
-      "unverified->obsolete": 2,
-      "unverified->ambiguous": 3
+      "verified-pending->verified-pending": 288,
+      "verified-done->verified-done": 7,
+      "obsolete->obsolete": 2,
+      "ambiguous->ambiguous": 3
     },
-    "drift_count": 300
+    "drift_count": 0
   }
 }
