@@ -223,7 +223,7 @@ For every `no`, include:
 
 - [x] Agents can use one command before launch and before landing. (verified: ls scripts/cos-status.sh)
 - [x] Output has stable JSON for hooks and human text for operators. (verified: bash scripts/cos-status.sh --json)
-- [ ] Status distinguishes hygiene warnings from blockers.
+- [x] Status distinguishes hygiene warnings from blockers. (verified: lib/operational_status.py risk_summary/blockers/hygiene_warnings; tests/unit/test_cos_operational_status.py)
 
 ### Validation
 

@@ -71,3 +71,30 @@ def test_operational_status_json_cli(tmp_path: Path) -> None:
     payload = json.loads(result.stdout)
     assert payload["schema_version"] == "operational-status.v1"
     assert decision(payload, "safe_to_work")["severity"] == "ok"
+
+
+def test_hygiene_artifacts_are_not_push_blockers(tmp_path: Path) -> None:
+    project = make_repo(tmp_path)
+    cache = project / "__pycache__"
+    cache.mkdir()
+    (cache / "artifact.pyc").write_bytes(b"cache")
+
+    payload = build_status(project)
+
+    assert payload["risk_summary"]["hygiene_warnings"] == 1
+    assert payload["risk_summary"]["blockers"] == 0
+    assert decision(payload, "safe_to_launch_agent")["safe"] is True
+    assert decision(payload, "safe_to_push")["safe"] is True
+
+
+def test_non_hygiene_untracked_file_is_a_wip_blocker(tmp_path: Path) -> None:
+    project = make_repo(tmp_path)
+    (project / "notes.md").write_text("operator notes\n", encoding="utf-8")
+
+    payload = build_status(project)
+
+    assert payload["risk_summary"]["blockers"] == 1
+    assert payload["risk_summary"]["hygiene_warnings"] == 0
+    assert decision(payload, "safe_to_launch_agent")["safe"] is False
+    assert decision(payload, "safe_to_push")["safe"] is False
+    assert payload["blockers"][0]["risk_class"] == "wip-loss"
