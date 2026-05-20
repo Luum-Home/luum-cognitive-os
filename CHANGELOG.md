@@ -5,6 +5,24 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.29.1] - 2026-05-20 — "Laptop Lane Stability, Runtime Closure, and Package Patch Release"
+
+### Fixed
+- Stabilized `make test-laptop` after full-lane failures by repairing provenance idempotence, MCP unit semantic-routing timeouts, install-skill fixture isolation, primitive readiness artifacts, Wave 5 residual audits, secret hook contracts, and governance-policy portability proof.
+- Hardened aspirational audit contracts against xdist/live-worktree contamination by running the contract on an isolated `git archive HEAD` snapshot and extending the contract timeout.
+- Fixed runtime dependency closure false positives by treating shell assignment path mentions as non-executable references.
+- Repaired package/runtime audit classification for direct embedded Python imports in shell scripts.
+
+### Changed
+- Refreshed primitive readiness ledgers and primitive harness coverage artifacts after the latest primitive governance changes.
+- Promoted `hooks/_lib/governance-policy.sh` to shared `SCOPE: both` with explicit portability proof.
+
+### Packages
+- Released 31 package patch tags for changed extension packages, including `@luum/agent-lifecycle@1.2.1`, `@luum/quality-gates@1.2.1`, `@luum/scope-governance@1.2.1`, `@luum/skill-governance@1.2.1`, and `@luum/verification-audit@1.2.1`.
+
+### Validation
+- `scripts/cos-test-repair-loop --full-command "make test-laptop" --timeout-seconds 2400 --require-clean-start` passed on 2026-05-20 with `TEST_REPAIR_LOOP_PASS`.
+
 ## [0.29.0] - 2026-05-18 — "Primitive Scope Discipline, Deterministic Quality Gates, and Wave 3 Runtime"
 
 ### Fixed
