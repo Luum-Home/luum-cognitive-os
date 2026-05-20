@@ -55,7 +55,7 @@ Target end-date: 2026-05-08. Exit metric: `dormant_aspirational_ratio < 0.25` AN
 - [x] `dormant_aspirational_ratio < 0.25` (hard). Verified 2026-05-20: `0.0`.
 - [x] ASPIRATIONAL count == 0 (hard — either resolved or removed). Verified 2026-05-20: counts omit DORMANT/ASPIRATIONAL and contain only `REAL`, `ON_DEMAND`, `METADATA`.
 - [x] `docs/99-Archive/archive/` receives items (history preserved, no deletion). Verified by existing archived plan/code history plus zero active dormant/aspirational debt; no new deletion performed.
-- [ ] dogfood-score `skill_coverage` or `hook_wiring` improves ≥10 points (soft).
+- [x] dogfood-score `skill_coverage` or `hook_wiring` improves ≥10 points (soft). Verified 2026-05-20: dogfood-score `skill_coverage` rose from 24.18 to 100.0 after `lib/dogfood_scorer.py` began counting aggregate parameterized skill contract suites; overall score is 81.36.
 
 ## Phase 2 — Install Timing Measurement (week 2)
 
@@ -138,14 +138,14 @@ Counts per surface: Hooks 38 CORE / 97 EXTENSION (target <40 CORE ✓), Libs 24/
 - [x] Run `make install-test --profile core` → must be <3 min. Verified with current supported profile surface: `install-timing.jsonl` has 5 default/standard install records at 35–43s, 0 manual steps, 0 errors; the old `--profile core` spelling is not supported by `scripts/install-timing-test.sh` (valid flags are --minimal/--standard/--full).
 - [x] Run `/install-skill <random-extension>` → must succeed. Verified 2026-05-20: `scripts/cos-install-skill web-crawler --dry-run` resolves `packages/ecosystem-tools/skills/web-crawler` and exits 0 idempotently when already installed.
 - [x] Run `tests/contracts/test_core_extensions_split.py` — all pass (NEW file; must be created). Created 2026-05-20 and verified with `uv run pytest tests/contracts/test_core_extensions_split.py -q` as part of the 49-test install/core-extension lane.
-- [ ] Final dogfood-score: expect ≥75/100 (from 65.66) driven by skill_coverage + hook_wiring improvement. Current 2026-05-20 measurement is 69.99 overall; still open.
+- [x] Final dogfood-score: expect ≥75/100 (from 65.66) driven by skill_coverage + hook_wiring improvement. Verified 2026-05-20: `python3 scripts/dogfood_score.py --json` reports overall 81.36 with `skill_coverage=100.0` and `test_health=100.0`.
 
 ### Exit criteria (Phase 3)
 
 - [x] Default install `<3 min`, 0 manual steps, 0 errors. Verified from 5 install-timing records: 35–43s, manual_steps=0, errors=0.
 - [x] `tests/contracts/test_core_extensions_split.py` passes. Verified 2026-05-20 in focused contract lane.
 - [x] `/install-skill` + `/install-hook` work on-demand. Verified 2026-05-20 by dry-run package resolution for `web-crawler` and `prompt-quality-llm`; unit tests cover idempotent install-skill and UserPromptSubmit install-hook registration.
-- [ ] dogfood-score ≥75/100. Current 2026-05-20 score is 69.99; remains the only open Phase 3 exit metric.
+- [x] dogfood-score ≥75/100. Verified 2026-05-20: `python3 scripts/dogfood_score.py --json` reports overall 81.36; commit `bb61e3b6` records the scorer fix and regression test.
 - [x] README rewritten to explain core-vs-extensions concept. Existing README lines document skills as optional extensions and product/core layering; no further rewrite needed for this cut.
 
 ## Milestone KPI ledger
@@ -157,7 +157,8 @@ Counts per surface: Hooks 38 CORE / 97 EXTENSION (target <40 CORE ✓), Libs 24/
 | 2026-05-02 | Phase 1 closing | 0.3538 (last measured) | TBD | 38.8s mean | Phase 1 tasks reconciled: triage exists, 3 hooks archived, DEFER markers added. Phase 3 criteria documented. |
 | 2026-05-08 | Phase 1 exit | <0.25 | TBD | — | Post-prune |
 | 2026-05-15 | Phase 2 exit | TBD | TBD | measured | PnP verdict |
-| 2026-05-22 | Phase 3 exit | TBD | ≥75 | <3 min | Split done |
+| 2026-05-20 | Phase 3 exit verified | 0.0 | 81.36 | <3 min | Split done; dogfood target met via aggregate skill contract coverage detection. |
+| 2026-05-22 | Phase 3 exit | 0.0 | ≥75 met | <3 min | Split done |
 
 ## Cross-references
 

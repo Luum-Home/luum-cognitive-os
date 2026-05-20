@@ -33,8 +33,9 @@ SESSION_PRECEDENCE = (
     "CLAUDE_SESSION_ID",
 )
 PENDING_STATUSES = {"in_progress", "pending", "failed", "queued", "blocked"}
-COMPLETED_STATUSES = {"completed", "done"}
-STALE_STATUSES = {"cancelled", "cancelled-stale", "stale"}
+COMPLETED_STATUSES = {"completed", "done", "completed-by-watermark"}
+STALE_STATUSES = {"cancelled", "cancelled-stale", "cancelled-dequeued", "stale"}
+TERMINAL_TASK_STATUSES = COMPLETED_STATUSES | STALE_STATUSES
 MAX_TABLE_ITEMS = 20
 
 
@@ -159,7 +160,7 @@ def collect_active_tasks(project_dir: Path, warnings: list[str]) -> list[Backlog
         if not isinstance(task, dict):
             continue
         status = str(task.get("status", "pending"))
-        if status in COMPLETED_STATUSES:
+        if status in TERMINAL_TASK_STATUSES:
             continue
         description = str(task.get("description") or task.get("id") or "Unnamed task")
         context = f"status={status}"

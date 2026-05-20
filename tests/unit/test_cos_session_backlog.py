@@ -134,6 +134,33 @@ def test_reconciler_writes_backlog_and_metric_from_core_sources(tmp_path: Path) 
     assert "adr-ledger" in metric["sources"]
 
 
+
+
+def test_reconciler_skips_terminal_active_task_noise(tmp_path: Path) -> None:
+    """Terminal active-task records are archival noise, not live Priority 4 backlog."""
+    project = tmp_path / "project"
+    tasks_dir = project / ".cognitive-os" / "tasks"
+    tasks_dir.mkdir(parents=True)
+    (tasks_dir / "active-tasks.json").write_text(
+        json.dumps(
+            {
+                "tasks": [
+                    {"id": "active", "description": "Still running", "status": "in_progress"},
+                    {"id": "stale", "description": "Old stale task", "status": "cancelled-stale"},
+                    {"id": "watermark", "description": "Closed by commit", "status": "completed-by-watermark"},
+                    {"id": "dequeued", "description": "Removed from queue", "status": "cancelled-dequeued"},
+                ]
+            }
+        )
+    )
+
+    result = cos_session_backlog.reconcile(project, "session-1", include_engram=False)
+
+    active_tasks = [item for item in result.items if item.source == "active-tasks"]
+    assert [item.task for item in active_tasks] == ["Still running"]
+    assert active_tasks[0].priority == 1
+
+
 def test_reconciler_skips_reconciled_complete_and_tombstone_plan_tasks(tmp_path: Path) -> None:
     """Unchecked boxes in reconciled COMPLETE/TOMBSTONE plans are historical, not live backlog."""
     project = tmp_path / "project"
