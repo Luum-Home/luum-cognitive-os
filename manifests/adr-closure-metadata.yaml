@@ -250,3 +250,171 @@ adrs:
   closure_class: evidence-only
   reason: Hook-enforced rule projection contract, skill-router bash gate, projection tests, settings-driver checks, and manual
     test documentation exist; close by evidence/status reconciliation.
+- adr_id: ADR-003-tombstone
+  closure_class: evidence-only
+  reason: Tombstone frontmatter marks implementation_status not-applicable; reserved slot is historical numbering hygiene, not runtime work.
+- adr_id: ADR-004-tombstone
+  closure_class: evidence-only
+  reason: Tombstone frontmatter marks implementation_status not-applicable; license decision is represented by current LICENSE/package metadata, not this reserved slot.
+- adr_id: ADR-005-tombstone
+  closure_class: evidence-only
+  reason: Neutral tombstone for a never-filled reserved slot; no implementable runtime scope remains.
+- adr_id: ADR-043-tombstone
+  closure_class: superseded
+  reason: Explicitly superseded by ADR-171 Paperclip rejection; removed local-daemon integration must not be revived.
+- adr_id: ADR-046-tombstone
+  closure_class: evidence-only
+  reason: Neutral tombstone for a never-filled reserved slot; no implementable runtime scope remains.
+- adr_id: ADR-085-tombstone
+  closure_class: evidence-only
+  reason: Abandoned numbering reservation documented by ADR-086; no implementable runtime scope remains.
+- adr_id: ADR-173-surface-5-research-gate
+  closure_class: absorbed
+  reason: Surface 5 research gate was a pre-adoption guard; later ADR-187/192/195/197 carry the actual adoption and implementation path.
+- adr_id: ADR-176-skillstore-and-analysis-trigger
+  closure_class: evidence-only
+  reason: SkillStore, post-execution analysis hook, proposal-only flow, and tests exist; closure is ledger evidence reconciliation.
+- adr_id: ADR-177-activate-skill-lifecycle-promotion-ladder
+  closure_class: evidence-only
+  reason: Skill lifecycle promotion evaluator exists and remains propose-only as required by the ADR.
+- adr_id: ADR-185-cross-agent-audit-findings
+  closure_class: evidence-only
+  reason: Directed message bus, inbox/context hooks, CLI, settings registration, and tests implement the v1 scope.
+- adr_id: ADR-186-context-budget-enforcement
+  closure_class: evidence-only
+  reason: Context budget library, meter hook, registration, and tests implement the accepted budget-enforcement scope.
+- adr_id: ADR-188-mandatory-skill-invocation-at-high-confidence
+  closure_class: evidence-only
+  reason: Skill router last_suggestion, invocation gate hook, mandatory rule, registrations, and tests implement the ADR scope.
+- adr_id: ADR-189-harness-implementation-coverage
+  closure_class: evidence-only
+  reason: Primitive harness coverage generator, reports, CLI surface contract, and tests implement the coverage surface despite empty implementation_files.
+- adr_id: ADR-191-cos-binary-release-pipeline
+  closure_class: evidence-only
+  reason: In-repo GoReleaser workflow, Homebrew formula, installer check, and snapshot smoke cover the release pipeline; external tap operations are handoff scope.
+- adr_id: ADR-194-cosd-secure-remote-api
+  closure_class: evidence-only
+  reason: cosd remote policy, auth, audit, API flags, and integration tests implement the guardrails; internal TLS is explicitly a non-goal.
+- adr_id: ADR-195-surface-5-operable-tui-contract
+  closure_class: evidence-only
+  reason: Read-only Bubble Tea MVP is implemented; mutating actions moved to ADR-197 rather than remaining ADR-195 work.
+- adr_id: ADR-196-cosd-task-api-and-provider-boundary
+  closure_class: evidence-only
+  reason: cosd task endpoints, provider dry-run rejection, provider call refusal, audit, and integration tests implement the boundary.
+- adr_id: ADR-197-surface-5-operable-actions
+  closure_class: evidence-only
+  reason: TUI allowlisted actions, confirmation gate, receipts, CLI flags, and tests implement operable actions.
+- adr_id: ADR-206-aspirational-claim-decommission-gate
+  closure_class: evidence-only
+  reason: Public claim evidence manifest, cos-public-claim-gate, and tests enforce the decommission gate.
+- adr_id: ADR-207-skill-ecosystem-performance-and-lifecycle-closure
+  closure_class: evidence-only
+  reason: Skill performance ledger plus lifecycle promotion behavior tests cover identity quarantine and proposal flow; remaining checklist wording is stale.
+- adr_id: ADR-208-imported-pattern-closure-contract
+  closure_class: evidence-only
+  reason: Imported-pattern closure manifest, audit CLI, dependency adoption gate, and tests implement forward closure enforcement.
+- adr_id: ADR-214-tombstone
+  closure_class: evidence-only
+  reason: Tombstone documents parallel-session ADR number collision and sibling decisions ADR-215/216; no runtime work remains.
+- adr_id: ADR-215-cross-stack-secret-audit-toolchain
+  closure_class: evidence-only
+  reason: Cross-stack secret audit substrate, scanner wrappers, install checker, pre-commit wrapper, and tests provide the ADR-215 operator path.
+- adr_id: ADR-217-cross-stack-adoption-truth-audit
+  closure_class: evidence-only
+  reason: Cross-stack adoption truth manifest, library, CLI, and behavior tests implement the audit; downstream consumption is separate policy scope.
+- adr_id: ADR-218-history-sanitization-toolchain
+  closure_class: evidence-only
+  reason: History sanitization manifest, execute path, filter-repo wrappers, behavior tests, and runbook implement the operator workflow.
+- adr_id: ADR-219-work-ownership-liveness-preflight
+  closure_class: evidence-only
+  reason: cos_work_inventory ownership paths and cos work ownership routing with tests implement the liveness preflight.
+- adr_id: ADR-220-worktree-divergence-audit
+  closure_class: deferred
+  reason: Embedded worktree audit exists; standalone manifest is intentionally deferred until a second consumer exists.
+- adr_id: ADR-221-stash-ref-by-sha-not-by-position
+  closure_class: evidence-only
+  reason: SHA-first stash helpers, snapshot/restore hooks, integration tests, and named audit tests cover durable stash identity.
+- adr_id: ADR-222-pre-agent-stash-defer-until-launch-confirmed
+  closure_class: evidence-only
+  reason: Two-phase pre-agent snapshot hooks, launch confirmation, restore/reapply hooks, manifest, and tests implement current tactical scope; ADR-223 tracks longer-term migration.
+- adr_id: ADR-226-event-sourced-session-bus
+  closure_class: evidence-only
+  reason: Session bus, event wrapper, migration script, projections, manifest, and unit/behavior/audit/benchmark tests implement slices A-E.
+- adr_id: ADR-227-shadow-git-checkpoint-substrate
+  closure_class: evidence-only
+  reason: Shadow-git library, rollback CLI, combined restore modes, retention/runbook, and tests implement the substrate.
+- adr_id: ADR-228-retry-contract-and-cost-budget
+  closure_class: evidence-only
+  reason: Retry classifier, session budget, dispatch gate, manifests, rules, perf/chaos tests, and runbook implement the operator contract.
+- adr_id: ADR-229-tombstone
+  closure_class: absorbed
+  reason: Standalone cost gate proposal was consolidated into ADR-228; future work extends ADR-228, not ADR-229.
+- adr_id: ADR-230-handoff-envelope-and-cycle-deduplication
+  closure_class: evidence-only
+  reason: Handoff envelope/dispatcher libraries, manifest, receiver tests, cycle detection, chaos coverage, and runbook implement the handoff protocol.
+- adr_id: ADR-254-external-tool-intelligence-plane-and-project-overlays
+  closure_class: evidence-only
+  reason: External tool manifests, overlay template, inventory/audit/radar/research CLIs, reports, and tests implement the shipped slice.
+- adr_id: ADR-262-evolve-loop-spike
+  closure_class: deferred
+  reason: Exploratory spike and unit coverage exist; final adoption remains gated on spike exit criteria and operator decision.
+- adr_id: ADR-266-protected-config-write-guard-bash-coverage
+  closure_class: evidence-only
+  reason: Protected config guard now handles Bash write vectors with redirect/Python write_text tests while preserving read-only access.
+- adr_id: ADR-272-structural-rule-backend-boundary
+  closure_class: evidence-only
+  reason: Policy-only backend boundary is validated by structural rule boundary contract tests; no runtime primitive is claimed.
+- adr_id: ADR-273-pending-truth-ledger-and-bilateral-verification
+  closure_class: evidence-only
+  reason: Pending-truth drift/staleness/weekly hooks and settings/dispatcher wiring provide the formerly staged Slice C.
+- adr_id: ADR-274-operational-guide-required-for-capability-adrs
+  closure_class: deferred
+  reason: Slice A operational guide audit and validator are shipped; later plan/manifest/rendering phases remain future scope.
+- adr_id: ADR-275-closure-and-projection-primitives
+  closure_class: evidence-only
+  reason: Session-start projector hook and Claude/Codex wiring are deployed; later projection-ranking phases are separate backlog.
+- adr_id: ADR-281-adr-implementation-reality-audit
+  closure_class: evidence-only
+  reason: ADR implementation disk-reality gate reports zero missing files/overclaims; future lifecycle-state expansion is separate scope.
+- adr_id: ADR-300-semantic-routing-model-selection
+  closure_class: evidence-only
+  reason: Semantic routing model selection, env override, fallback adapter tests, and ADR-301 follow-up completion satisfy current scope.
+- adr_id: ADR-301-onnx-direct-routing-adapter
+  closure_class: evidence-only
+  reason: ONNX adapter and graceful-degradation tests exist; heavyweight live model smoke is environmental and not required for closure.
+- adr_id: ADR-309-current-window-subagent-spawn-slos
+  closure_class: evidence-only
+  reason: Current-window SLO manifests, telemetry aggregation, and tests implement the SLO surface; dashboard follow-ups are optional.
+- adr_id: ADR-311-primitive-closure-ratchets-and-subagent-budget-enforcement
+  closure_class: evidence-only
+  reason: Closure ratchet command, subagent budget hook, manifests, and contract tests implement first slices; later expansion is separate.
+- adr_id: ADR-318-copy-only-checkpoints-and-stash-quarantine
+  closure_class: evidence-only
+  reason: Copy-only checkpoint default, stash opt-in/quarantine audit, and regression tests implement the ADR scope.
+- adr_id: ADR-174c-validator-blocking-promotion
+  closure_class: deferred
+  reason: Proposed validator-blocking promotion is intentionally deferred until soak data and explicit operator approval; contract tests cover the trigger shape but runtime blocking is not current work.
+- adr_id: ADR-265-mandatory-minimum-inspection-caps
+  closure_class: deferred
+  reason: Proposed mandatory inspection caps are explicitly deferred pending calibration/sign-off; dogfood and KPI evidence surfaces exist but cap adoption is not current implementation work.
+- adr_id: ADR-278-subprocess-run-timeout-discipline
+  closure_class: deferred
+  reason: Phase 1 audit/allowlist/test safety net shipped; broad per-call timeout backfill remains a scheduled hardening wave rather than current session backlog.
+- adr_id: ADR-319-detractor-review-modes
+  closure_class: evidence-only
+  reason: Detractor review rules, EAS doctrine/template/validator, and SDD skill integration exist; remaining partial wording is evidence reconciliation.
+- adr_id: ADR-321-primitive-scope-plane-balance-and-proof-ratchets
+  closure_class: evidence-only
+  reason: Primitive scope manifests, health/proof audit scripts, CI wiring, and unit tests implement the proof ratchet.
+- adr_id: ADR-323-primitive-behavior-depth-ratchet
+  closure_class: evidence-only
+  reason: Primitive behavior evidence manifest, behavior-depth audit scripts, portability tests, and CI wiring implement the depth ratchet.
+- adr_id: ADR-324-executable-acceptance-specification-eas
+  closure_class: evidence-only
+  reason: EAS methodology doc, template, evidence rule, validator, and SDD skill surfaces implement the optional EAS artifact.
+- adr_id: ADR-325-ai-resource-economy-and-degradation
+  closure_class: deferred
+  reason: AI resource economy manifest/audit/preflight/taximeter/hooks/tests implement initial phases; provider actual-cost ingestion and local fallback routing remain future phases.
+- adr_id: ADR-328-governance-roi-friction-vs-catch
+  closure_class: deferred
+  reason: Governance ROI dashboard, status surface, catch logging, phase-policy adapter, and initial hook adoption exist; full per-guard rollout remains incremental future scope.

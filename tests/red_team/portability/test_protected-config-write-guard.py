@@ -78,3 +78,27 @@ def test_protected_config_write_guard_does_not_claim_env_file_policy(tmp_path: P
     result = _run_guard(tmp_path, payload)
 
     assert result.returncode == 0, result.stderr
+
+
+def test_protected_config_write_guard_blocks_bash_redirect_to_control_plane(tmp_path: Path) -> None:
+    payload = {"tool_name": "Bash", "tool_input": {"command": "printf bad > .claude/settings.json"}}
+    result = _run_guard(tmp_path, payload)
+
+    assert result.returncode == 2
+    assert ".claude/settings.json" in result.stderr
+
+
+def test_protected_config_write_guard_blocks_bash_python_write_text(tmp_path: Path) -> None:
+    command = "python3 - <<'PY'\nfrom pathlib import Path\nPath('hooks/new.sh').write_text('x')\nPY"
+    payload = {"tool_name": "Bash", "tool_input": {"command": command}}
+    result = _run_guard(tmp_path, payload)
+
+    assert result.returncode == 2
+    assert "hooks/new.sh" in result.stderr
+
+
+def test_protected_config_write_guard_allows_bash_read_only_control_plane(tmp_path: Path) -> None:
+    payload = {"tool_name": "Bash", "tool_input": {"command": "cat .claude/settings.json || true"}}
+    result = _run_guard(tmp_path, payload)
+
+    assert result.returncode == 0, result.stderr

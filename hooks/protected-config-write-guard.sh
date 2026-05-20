@@ -18,7 +18,7 @@ command -v jq >/dev/null 2>&1 || exit 0
 
 TOOL_NAME="$(printf '%s' "$INPUT" | jq -r '.tool_name // empty' 2>/dev/null || true)"
 case "$TOOL_NAME" in
-  Edit|Write|MultiEdit) ;;
+  Edit|Write|MultiEdit|Bash) ;;
   *) exit 0 ;;
 esac
 
@@ -27,7 +27,7 @@ if [ "${COS_ALLOW_PROTECTED_CONFIG_WRITE:-0}" = "1" ]; then
 fi
 
 RESULT="$({ PAYLOAD_JSON="$INPUT" PROJECT_DIR="$PROJECT_DIR" POLICY="$POLICY" python3 - <<'PY'
-import fnmatch, json, os, sys
+import fnmatch, json, os, re, sys
 from pathlib import Path
 try:
     import yaml
@@ -47,6 +47,25 @@ else:
     policy=default_policy()
 paths=[]
 ti=payload.get('tool_input') or {}
+def bash_write_targets(command):
+    if not isinstance(command, str) or not command.strip():
+        return []
+    targets = []
+    write_markers = [r">>?"]
+    for marker in write_markers:
+        for match in re.finditer(marker + r"\s*(['\"]?)([^\s'\";&|]+)\1", command):
+            targets.append(match.group(2))
+    for pattern in (
+        r"\btee\s+(?:-[a-zA-Z]+\s+)*(['\"]?)([^\s'\";&|]+)\1",
+        r"\bsed\s+(?:-[a-zA-Z]+\s+)*-i(?:\s+['\"][^'\"]*['\"])?\s+(['\"]?)([^\s'\";&|]+)\1",
+        r"\bPath\(\s*['\"]([^'\"]+)['\"]\s*\)\.write_text\(",
+        r"\.write_text\([^\n)]*?['\"]([^'\"]+)['\"]",
+        r"\bopen\(\s*['\"]([^'\"]+)['\"]\s*,\s*['\"][wa+]",
+    ):
+        for match in re.finditer(pattern, command):
+            targets.append(match.group(match.lastindex or 1))
+    return targets
+
 if isinstance(ti, dict):
     for key in ('file_path','path','filePath'):
         if ti.get(key): paths.append(str(ti[key]))
@@ -54,6 +73,8 @@ if isinstance(ti, dict):
         for e in ti['edits']:
             if isinstance(e, dict) and e.get('file_path'):
                 paths.append(str(e['file_path']))
+    if payload.get('tool_name') == 'Bash':
+        paths.extend(bash_write_targets(ti.get('command')))
 blocked=[]
 try:
     from lib.policy_eval import evaluate_action
