@@ -26,6 +26,15 @@ partial_remaining_basis: specific classification_basis
 
 Accepted — 2026-05-02
 
+## Wave 5 closure gate
+
+ADR-121 is **not closed** while Phase 6 remains unproven. The closed Wave 5
+slices are Phase 1/2/4/5 acceptance evidence plus the first executable Phase 3
+ownership registry/domain coverage in `scripts/cos_work_inventory.py`. Formal
+closure requires ADR-118 swarm scenarios covering same-task, same-file,
+same-domain, projection, stash, validation-capsule, and merge-queue races, with
+audit tests proving those scenarios remain wired into the maintained lanes.
+
 ## Context
 
 Cognitive OS is now large enough that reliability failures are no longer caused

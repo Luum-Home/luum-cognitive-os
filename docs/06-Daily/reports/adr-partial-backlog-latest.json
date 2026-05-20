@@ -2057,7 +2057,7 @@
     },
     {
       "adr": "ADR-291",
-      "classification_basis": "phase-2-in-progress: 11 functional operations are live (health/version/agent options plus 8 file-backed JSON session lifecycle/event endpoints); remaining scope is 12 typed JSON 501 stubs, 3 SSE stub operations, sync agent queries, models/runtime settings, CSRF, rate limiting, workspace/search, sharing, abort, and JSON-to-SQLite migration.",
+      "classification_basis": "phase-2-in-progress: 13 functional operations are live (health/version/agent options, 8 file-backed JSON session lifecycle/event endpoints, and 2 local sync query endpoints); remaining scope is 10 typed JSON 501 stubs, 3 SSE stub operations, full in-process agent-runner execution, models/runtime settings, CSRF, rate limiting, workspace/search, sharing, abort, and JSON-to-SQLite migration.",
       "date": "2026-05-13",
       "decision_status": "accepted",
       "follow_up_adr": "",
@@ -2075,10 +2075,10 @@
       "implementation_status": "partial",
       "number": "291",
       "owner": "",
-      "partial_remaining": "phase-2-in-progress: 11 functional operations are live (health/version/agent options plus 8 file-backed JSON session lifecycle/event endpoints); remaining scope is 12 typed JSON 501 stubs, 3 SSE stub operations, sync agent queries, models/runtime settings, CSRF, rate limiting, workspace/search, sharing, abort, and JSON-to-SQLite migration.",
+      "partial_remaining": "phase-2-in-progress: 13 functional operations are live (health/version/agent options, 8 file-backed JSON session lifecycle/event endpoints, and 2 local sync query endpoints); remaining scope is 10 typed JSON 501 stubs, 3 SSE stub operations, full in-process agent-runner execution, models/runtime settings, CSRF, rate limiting, workspace/search, sharing, abort, and JSON-to-SQLite migration.",
       "partial_remaining_basis": "manual Wave 5 slice reconciliation",
       "path": "docs/02-Decisions/adrs/ADR-291-agent-runtime-web-service.md",
-      "remaining": "phase-2-in-progress: 11 functional operations are live (health/version/agent options plus 8 file-backed JSON session lifecycle/event endpoints); remaining scope is 12 typed JSON 501 stubs, 3 SSE stub operations, sync agent queries, models/runtime settings, CSRF, rate limiting, workspace/search, sharing, abort, and JSON-to-SQLite migration.",
+      "remaining": "phase-2-in-progress: 13 functional operations are live (health/version/agent options, 8 file-backed JSON session lifecycle/event endpoints, and 2 local sync query endpoints); remaining scope is 10 typed JSON 501 stubs, 3 SSE stub operations, full in-process agent-runner execution, models/runtime settings, CSRF, rate limiting, workspace/search, sharing, abort, and JSON-to-SQLite migration.",
       "remaining_in_scope": null,
       "title": "Agent Runtime Web Service: HTTP + SSE Surface for Harness-Independent Clients"
     },
@@ -2135,7 +2135,7 @@
     },
     {
       "adr": "ADR-325",
-      "classification_basis": "partial ADR-325 implementation: manifest/audit/preflight/language-token rule and Phase 2 taximeter exist; Phase 3 has initial context-budget resource-ledger emission and token-budget ledger reads. Remaining scope is subagent-budget ledger integration, provider actual-cost ingestion, ledger normalization/deduplication, preflight threshold enforcement, local fallback routing, and CI ratchets.",
+      "classification_basis": "partial ADR-325 implementation: manifest/audit/preflight/language-token rule and Phase 2 taximeter exist; Phase 3 has context-budget and subagent-budget resource-ledger emission plus token-budget ledger reads. Remaining scope is provider actual-cost ingestion, ledger normalization/deduplication, preflight threshold enforcement, local fallback routing, and CI ratchets.",
       "date": "2026-05-15",
       "decision_status": "accepted",
       "follow_up_adr": "",
@@ -2156,10 +2156,10 @@
       "implementation_status": "partial",
       "number": "325",
       "owner": "",
-      "partial_remaining": "partial ADR-325 implementation: manifest/audit/preflight/language-token rule and Phase 2 taximeter exist; Phase 3 has initial context-budget resource-ledger emission and token-budget ledger reads. Remaining scope is subagent-budget ledger integration, provider actual-cost ingestion, ledger normalization/deduplication, preflight threshold enforcement, local fallback routing, and CI ratchets.",
+      "partial_remaining": "partial ADR-325 implementation: manifest/audit/preflight/language-token rule and Phase 2 taximeter exist; Phase 3 has context-budget and subagent-budget resource-ledger emission plus token-budget ledger reads. Remaining scope is provider actual-cost ingestion, ledger normalization/deduplication, preflight threshold enforcement, local fallback routing, and CI ratchets.",
       "partial_remaining_basis": "manual Wave 5 slice reconciliation",
       "path": "docs/02-Decisions/adrs/ADR-325-ai-resource-economy-and-degradation.md",
-      "remaining": "partial ADR-325 implementation: manifest/audit/preflight/language-token rule and Phase 2 taximeter exist; Phase 3 has initial context-budget resource-ledger emission and token-budget ledger reads. Remaining scope is subagent-budget ledger integration, provider actual-cost ingestion, ledger normalization/deduplication, preflight threshold enforcement, local fallback routing, and CI ratchets.",
+      "remaining": "partial ADR-325 implementation: manifest/audit/preflight/language-token rule and Phase 2 taximeter exist; Phase 3 has context-budget and subagent-budget resource-ledger emission plus token-budget ledger reads. Remaining scope is provider actual-cost ingestion, ledger normalization/deduplication, preflight threshold enforcement, local fallback routing, and CI ratchets.",
       "remaining_in_scope": null,
       "title": "AI Resource Economy, Budget Preflight, and Graceful Degradation"
     }

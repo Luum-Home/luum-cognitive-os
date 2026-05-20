@@ -60,6 +60,17 @@ Accepted
 
 ---
 
+## Wave 5 closure gate
+
+ADR-291 is **not closed** while the service still exposes typed stubs and lacks
+production runtime controls. The closed Wave 5 slices are the file-backed JSON
+session lifecycle/event backend and the local synchronous `sessions/query` plus
+`oneshot/query` adapter. Formal closure requires replacing the remaining 10 JSON
+501 operations and 3 SSE stubs with real behavior, wiring full in-process
+agent-runner execution, model/runtime settings, CSRF, rate limiting,
+workspace/search, sharing, abort semantics, and the JSON-to-SQLite migration,
+with contract tests for each surface.
+
 ## Context
 
 The Luum Cognitive OS agent runtime currently runs exclusively inside IDE harnesses

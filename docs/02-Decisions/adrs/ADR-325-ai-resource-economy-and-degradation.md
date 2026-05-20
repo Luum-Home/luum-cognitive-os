@@ -47,6 +47,15 @@ tags:
 
 Accepted. Partial implementation starts with a manifest, audit, preflight CLI, and language-token-economy rule. Phase 3 now has an initial bounded hook path: `context-budget-meter` and `subagent-budget-enforcer` emit ADR-325 resource ledger rows, and `token-budget-monitor` consults that ledger for hourly token enforcement. Provider-specific actual-cost ingestion and threshold/preflight coupling remain follow-up phases.
 
+## Wave 5 closure gate
+
+ADR-325 is **not closed** while resource accounting remains advisory and partly
+estimated. The closed Wave 5 slices are context-budget and subagent-budget
+resource-ledger emission plus token-budget ledger reads. Formal closure requires
+provider actual-cost ingestion, normalized ledger de-duplication, preflight
+threshold enforcement, local fallback routing, and CI ratchets that prove budget
+regressions are caught before merge.
+
 ## Context
 
 Agentic AI work consumes scarce model capacity. Long sessions, repeated full-suite validation, unnecessary frontier-model calls, and multilingual duplication can turn normal maintenance into expensive or rate-limited work. The risk is not only monetary: when providers ration capacity, agents may degrade quality, stop mid-task, or loop across retries without noticing the economic failure mode.
