@@ -41,6 +41,7 @@ external-pattern-cleanroom-gate.sh | GIT_HOOK: pre-commit clean-room gate; invok
 legal-review-required-on-runtime-import.sh | GIT_HOOK: pre-commit legal-review gate for attributed runtime imports; invoked by git/security profile paths, not a default Claude lifecycle matcher
 research-to-runtime-firewall.sh | GIT_HOOK: pre-commit research-to-runtime firewall; invoked by git/security profile paths, not a default Claude lifecycle matcher
 spdx-header-required.sh | GIT_HOOK: pre-commit SPDX header gate; invoked by git/security profile paths, not a default Claude lifecycle matcher
+secret-audit-pre-commit.sh | GIT_HOOK: pre-commit release-scope secret audit wrapper; invoked by git/security profile paths, not a default Claude lifecycle matcher
 
 # ── Manual-trigger / admin scripts (MANUAL_TRIGGER / ADMIN) ─────────────────
 cosd-intent-submit.sh | MANUAL_TRIGGER: ADR-184 workflow command for submitting explicit cosd intents; no lifecycle event payload can supply its required intent arguments yet
