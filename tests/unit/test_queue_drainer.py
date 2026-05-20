@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import time
 
 import pytest
 
@@ -147,7 +148,7 @@ class TestDequeuePriority:
             "priority": 5,
             "enqueued_at": "2026-05-20T00:00:00Z",
             "status": "queued",
-            "_enqueued_epoch": 1,
+            "_enqueued_epoch": time.time(),
             "_fingerprint": "e3b0c44298fc1c14",
         }
         with open(drainer.queue_path, "w") as fh:

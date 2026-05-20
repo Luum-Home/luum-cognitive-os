@@ -78,6 +78,13 @@ try:
 except Exception as e:
     result["error"] += f"config:{e};"
 
+try:
+    env_max_agents = os.environ.get("COGNITIVE_OS_MAX_PARALLEL_AGENTS")
+    if env_max_agents is not None and env_max_agents.strip() != "":
+        result["max_agents"] = int(env_max_agents)
+except Exception as e:
+    result["error"] += f"config_env:{e};"
+
 # ---------------------------------------------------------------------------
 # 2. Count active tasks (active-tasks.json)
 # ---------------------------------------------------------------------------

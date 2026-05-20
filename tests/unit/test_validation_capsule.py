@@ -126,6 +126,7 @@ def test_dispatch_gate_blocks_agent_launch_during_validation_capsule(tmp_path: P
     assert queue.exists(), "validation-blocked launches must be queued, not dropped"
     queued = json.loads(queue.read_text(encoding="utf-8"))
     assert queued and queued[0]["status"] == "queued"
+    assert queued[0]["prompt"] == "change files"
 
 
 def test_pre_agent_snapshot_suppression_does_not_stash_dirty_work(tmp_path: Path) -> None:

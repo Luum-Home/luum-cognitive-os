@@ -23,12 +23,18 @@ check_disabled_env "dispatch-gate"
 
 read_stdin_json
 
+_dispatch_stdin_json="${_STDIN_JSON:-}"
+[ -z "$_dispatch_stdin_json" ] && _dispatch_stdin_json="{}"
+
 
 _enqueue_blocked_agent() {
     local block_reason="$1"
     local detail_line="$2"
+    local stdin_json="${3:-}"
+    [ -z "$stdin_json" ] && stdin_json="${COS_DISPATCH_STDIN:-}"
+    [ -z "$stdin_json" ] && stdin_json="{}"
     local queue_result
-    queue_result=$(PYTHONPATH="$_PROJECT_DIR${PYTHONPATH:+:$PYTHONPATH}" COGNITIVE_OS_PROJECT_DIR="$_PROJECT_DIR" COS_DISPATCH_STDIN="${COS_DISPATCH_STDIN:-{}}" python3 - <<'PYQUEUE' 2>/dev/null
+    queue_result=$(PYTHONPATH="$_PROJECT_DIR${PYTHONPATH:+:$PYTHONPATH}" COGNITIVE_OS_PROJECT_DIR="$_PROJECT_DIR" COS_DISPATCH_STDIN="$stdin_json" python3 - <<'PYQUEUE' 2>/dev/null
 import json, os, re
 try:
     from lib.queue_drainer import QueueDrainer
@@ -90,7 +96,7 @@ if [ -f "$VALIDATION_LOCK_LIB" ]; then
     source "$VALIDATION_LOCK_LIB"
     if cos_validation_lock_active "$_PROJECT_DIR"; then
         _msg=$(cos_validation_lock_message "$_PROJECT_DIR" 2>/dev/null || echo "validation capsule active")
-        COS_DISPATCH_STDIN="${_STDIN_JSON:-{}}" _enqueue_blocked_agent "validation capsule active" "${_msg}"
+        _enqueue_blocked_agent "validation capsule active" "${_msg}" "$_dispatch_stdin_json"
         exit 2
     fi
 fi
@@ -98,7 +104,7 @@ fi
 # ─── Single Python pass: config + active tasks + skill + CE + CB + routing ───
 # Replaces 7 sequential python3 cold starts with one.
 
-GATE_JSON=$(echo "${_STDIN_JSON:-{}}" | python3 "$(dirname "$0")/_lib/dispatch_gate_check.py" 2>/dev/null \
+GATE_JSON=$(echo "$_dispatch_stdin_json" | python3 "$(dirname "$0")/_lib/dispatch_gate_check.py" 2>/dev/null \
     || echo '{"max_agents":5,"active":0,"skill_name":"","disabled":false,"model_override":"","cb_blocked":false,"cb_task_type":"","model_directive":"MODEL_ADVICE: sonnet","model_advice":"Model: sonnet (default)","log_desc":"","error":"python-failed"}')
 
 MAX_AGENTS=$(echo "$GATE_JSON" | jq -r '.max_agents // 5')
@@ -155,7 +161,7 @@ fi
 if [ "$ACTIVE" -ge "$MAX_AGENTS" ] 2>/dev/null; then
     _log_event "block"
 
-    COS_DISPATCH_STDIN="${_STDIN_JSON:-{}}" _enqueue_blocked_agent "${ACTIVE}/${MAX_AGENTS} slots in use" "Capacity gate is full."
+    _enqueue_blocked_agent "${ACTIVE}/${MAX_AGENTS} slots in use" "Capacity gate is full." "$_dispatch_stdin_json"
     exit 2
 fi
 

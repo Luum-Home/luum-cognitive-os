@@ -132,6 +132,9 @@ class TestBlocking:
             f"Expected block (exit 2) at {max_agents}/{max_agents} agents; "
             f"got {result.returncode}; stderr={result.stderr[:300]}"
         )
+        queue = project_dir / ".cognitive-os" / "tasks" / "dispatch-queue.json"
+        queued = json.loads(queue.read_text(encoding="utf-8"))
+        assert queued[0]["prompt"] == "do some work"
 
     def test_blocks_without_queueing_when_agent_payload_missing(self, tmp_path):
         """A blocked Agent launch with unavailable stdin must not persist empty prompt."""

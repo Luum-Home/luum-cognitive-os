@@ -40,6 +40,11 @@ The root cause was missing structural invariants at state boundaries.
 
 `hooks/dispatch-gate.sh` extracted the Agent prompt from `tool_input.prompt`, `tool_input.description`, or `tool_input.task`. When stdin or tool payload was unavailable, this resolved to an empty string. The hook still called `QueueDrainer.enqueue()` and printed success.
 
+The audit also found a concrete Bash expansion bug: `${_STDIN_JSON:-{}}` appended
+an extra `}` when `_STDIN_JSON` was non-empty, corrupting the JSON handed to the
+Python enqueue helper. That made a real Agent payload parse as invalid and fall
+back to empty prompt behavior.
+
 ### Boundary 3 — queue persistence state
 
 `QueueDrainer.enqueue()` accepted any string, including `""`, and computed the duplicate-detection fingerprint from that string. `QueueDrainer.get_ready_agents()` returned queued items without validating the prompt, making corrupt rows launchable.
@@ -51,6 +56,9 @@ Prior fixes optimized for individual failure modes rather than end-to-end intent
 - ADR-113 hardened liveness around TTL, PID, heartbeat, and activity, but did not state that user-facing “running” output must be derived from the same validated active decision.
 - Queue-drain documentation promised that the queue stores “the full agent prompt,” but did not make non-empty prompt a schema invariant.
 - Dispatch-gate tests checked that blocked launches were enqueued, but not that they were enqueued with non-empty, relaunchable payloads.
+- The Bash helper used a brace-heavy default expansion in a JSON context, but no
+  regression test checked that the exact stdin JSON survived into the enqueue
+  subprocess.
 - Recovery UX treated “wrote a queue row” as success instead of requiring “wrote a valid queue row that can relaunch the user’s intent.”
 
 The systemic miss was accepting observability claims without executable contracts: active lock, queued agent, and ready work were status labels, not proven states.
