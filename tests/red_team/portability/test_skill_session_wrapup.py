@@ -18,3 +18,14 @@ def test_skill_session_wrapup_skill_loads_from_arbitrary_project_root(tmp_path: 
     text = copied.read_text(encoding="utf-8")
     assert "name:" in text
     assert str(REPO_ROOT) not in text
+
+
+def test_skill_session_wrapup_declares_codex_and_generic_platforms() -> None:
+    """The shared session-close skill must advertise all supported harnesses."""
+    text = ARTIFACT.read_text(encoding="utf-8")
+
+    assert "audience: both" in text
+    assert "platforms:" in text
+    assert "- claude-code" in text
+    assert "- codex" in text
+    assert "- generic-cli" in text
