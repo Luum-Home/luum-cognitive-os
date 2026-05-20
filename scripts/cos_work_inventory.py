@@ -11,6 +11,7 @@ Extended dimensions (P3.3):
   --worktrees   Read .git/worktrees/ directly (no destructive git worktree cmd)
   --stashes     Git stash list with auto-pre-agent provenance
   --claims      Active task claims from .cognitive-os/tasks/active-claims.json
+  --leases      Active resource/domain leases from .cognitive-os/runtime/resource-leases/
   --race-risks  Heuristic multi-session/worktree/stash race-condition detection
   --all         Enable all dimensions above
 """
@@ -939,6 +940,51 @@ def collect_claims(project: Path) -> list[dict[str, Any]]:
     return []
 
 
+def collect_resource_leases(project: Path) -> list[dict[str, Any]]:
+    """Read ADR-121 resource/domain leases from runtime state."""
+    leases_dir = project / ".cognitive-os" / "runtime" / "resource-leases"
+    rows: list[dict[str, Any]] = []
+    now = time.time()
+    if not leases_dir.exists():
+        return rows
+    for path in sorted(leases_dir.glob("*.json")):
+        try:
+            lease = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            rows.append({"path": str(path.relative_to(project)), "status": "corrupt", "action": "Inspect or remove corrupt lease after confirming no live owner."})
+            continue
+        if not isinstance(lease, dict):
+            continue
+        expires_at = lease.get("expires_at")
+        expired = not isinstance(expires_at, (int, float)) or now >= float(expires_at)
+        lease["expired"] = expired
+        lease["status"] = "expired" if expired else "active"
+        lease["action"] = (
+            "Coordinate with the owning session/agent before editing this domain."
+            if not expired
+            else "Lease is expired; re-check liveness before cleanup or takeover."
+        )
+        rows.append(lease)
+    return rows
+
+
+def domains_for_path(rel_path: str) -> list[str]:
+    """Return ownership domains covered by a path for ADR-121 inventory."""
+    domains = {category_for(rel_path)}
+    if rel_path.startswith(("manifests/", ".cognitive-os/", ".claude/", ".codex/")):
+        domains.add("registry")
+    if rel_path.startswith(("templates/", "docs/00-MOCs/", "docs/02-Decisions/adrs/")):
+        domains.add("projection")
+    if rel_path.startswith("docs/02-Decisions/adrs/"):
+        domains.add("adrs")
+    return sorted(domains)
+
+
+def _lease_matches_domain(lease: dict[str, Any], domains: list[str]) -> bool:
+    resource = str(lease.get("resource") or lease.get("safe_resource") or "")
+    return resource in domains
+
+
 def _normalize_requested_path(project: Path, raw: str) -> str:
     candidate = Path(raw).expanduser()
     if candidate.is_absolute():
@@ -989,6 +1035,7 @@ def collect_path_ownership(project: Path, paths: list[str], payload: dict[str, A
             combined_worktrees.append(worktree)
 
     claims = payload.get("claims") or collect_claims(project)
+    resource_leases = payload.get("resource_leases") or collect_resource_leases(project)
     stashes = payload.get("stashes_extended") or collect_stashes_extended(
         project,
         DEFAULT_STASH_WARN_TTL,
@@ -1015,6 +1062,11 @@ def collect_path_ownership(project: Path, paths: list[str], payload: dict[str, A
             )
 
         matching_claims = [claim for claim in claims if _claim_mentions_path(claim, rel_path)]
+        ownership_domains = domains_for_path(rel_path)
+        matching_leases = [
+            lease for lease in resource_leases
+            if not lease.get("expired") and _lease_matches_domain(lease, ownership_domains)
+        ]
         matching_stashes = [stash for stash in stashes if _stash_mentions_path(stash, rel_path)]
         for stash in matching_stashes:
             agent_id = _agent_id_from_stash(stash)
@@ -1030,11 +1082,12 @@ def collect_path_ownership(project: Path, paths: list[str], payload: dict[str, A
         has_noncurrent_dirty = any(not item.get("is_current_project") for item in dirty_worktrees)
         has_live_process = any((item.get("process_activity") or {}).get("count", 0) for item in dirty_worktrees)
         has_active_claim = any(str(claim.get("status", "active")) == "active" for claim in matching_claims)
+        has_active_domain_lease = bool(matching_leases)
         has_held_lock = edit_lock.get("state") in {"held", "own"}
         has_stash = bool(matching_stashes)
         has_preserve_copy = bool(preserve_branches)
 
-        if has_noncurrent_dirty or has_live_process or has_active_claim or has_held_lock:
+        if has_noncurrent_dirty or has_live_process or has_active_claim or has_active_domain_lease or has_held_lock:
             status = "active_or_unknown"
             action = "Do not clean/drop/merge automatically; coordinate with the owning worktree/session or archive explicitly after liveness review."
         elif current_dirty:
@@ -1058,6 +1111,8 @@ def collect_path_ownership(project: Path, paths: list[str], payload: dict[str, A
                 "dirty_worktrees": dirty_worktrees,
                 "edit_lock": edit_lock,
                 "claims": matching_claims,
+                "ownership_domains": ownership_domains,
+                "domain_leases": matching_leases,
                 "stashes": matching_stashes,
                 "preserve_branches": preserve_branches,
                 "operator_review_required": status != "clear",
@@ -1450,6 +1505,7 @@ def collect_inventory(args: argparse.Namespace) -> dict[str, Any]:
     want_worktrees_direct = getattr(args, "worktrees_direct", False) or getattr(args, "all", False)
     want_stashes_extended = getattr(args, "stashes_extended", False) or getattr(args, "all", False)
     want_claims = getattr(args, "claims", False) or getattr(args, "all", False)
+    want_leases = getattr(args, "leases", False) or getattr(args, "all", False)
     want_race_risks = getattr(args, "race_risks", False) or getattr(args, "all", False)
 
     if want_sessions:
@@ -1481,6 +1537,11 @@ def collect_inventory(args: argparse.Namespace) -> dict[str, Any]:
         payload["claims"] = collect_claims(project)
     else:
         payload["claims"] = []
+
+    if want_leases:
+        payload["resource_leases"] = collect_resource_leases(project)
+    else:
+        payload["resource_leases"] = []
 
     if getattr(args, "paths", None):
         if not payload.get("worktrees_direct"):
@@ -1528,6 +1589,7 @@ def collect_inventory(args: argparse.Namespace) -> dict[str, Any]:
         "session_fs_artifact_count": payload["session_fs_stats"].get("total_artifact_count", 0),
         "orphan_count": len(payload["orphans"]),
         "claim_count": len(payload["claims"]),
+        "resource_lease_count": len(payload["resource_leases"]),
         "race_risk_count": len(payload["race_risks"]),
         "path_ownership_count": len(payload["path_ownership"]),
     }
@@ -1659,6 +1721,8 @@ def print_text(payload: dict[str, Any]) -> None:
                 )
             if item.get("claims"):
                 print(f"    matching_claims={[c.get('task_id') or c.get('id') for c in item['claims']]}")
+            if item.get("domain_leases"):
+                print(f"    domain_leases={[l.get('resource') for l in item['domain_leases']]}")
             print(f"    action: {item['action']}")
 
     if payload["findings"]:
@@ -1718,6 +1782,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--worktrees", dest="worktrees_direct", action="store_true", help="Read .git/worktrees/ directly (no git worktree command).")
     parser.add_argument("--stashes", dest="stashes_extended", action="store_true", help="Include extended stash provenance.")
     parser.add_argument("--claims", action="store_true", help="Include active task claims.")
+    parser.add_argument("--leases", action="store_true", help="Include active resource/domain leases.")
     parser.add_argument("--race-risks", dest="race_risks", action="store_true", help="Run race-condition heuristics.")
     parser.add_argument(
         "--paths",
