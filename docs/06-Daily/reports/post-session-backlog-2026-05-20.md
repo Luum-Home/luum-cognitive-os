@@ -68,11 +68,11 @@ its own gaps. Postmortem at
 
 | # | Item | Effort | Why it matters | Source |
 |---|---|---|---|---|
-| 1 | DX Tax remaining unchecked items | 2-4h each | Lean-profile and hygiene-vs-blocker semantics are closed. Remaining real implementation is merge-queue lane recording, default-core install boundary, and merge-queue default path. | `.cognitive-os/plans/architecture/operational-stability-friction-reduction.md` |
+| 1 | DX Tax remaining unchecked items | DONE in continuation | Lean-profile, hygiene-vs-blocker semantics, merge-queue default path, merge-to-main lane recording, and default-core install boundary are now closed with tests. | `.cognitive-os/plans/architecture/operational-stability-friction-reduction.md` |
 | 2 | Governance phase-policy enforcement adoption | multi-slice | Initial high-friction guards now consult the policy adapter. Remaining work is wiring additional hard-blocking guards as they are touched. | `docs/02-Decisions/adrs/ADR-328-governance-roi-friction-vs-catch.md` |
 | 3 | Op Stability Phase 3 — adaptive profiles resolver | multi-sesión | `lean|standard|strict` profile picker per phase + per surface. | op-stability plan §Phase 3 |
-| 4 | Op Stability Phase 7 — distribution boundary metadata | multi-sesión | Every projected primitive has distribution metadata; maintainer/lab off default runtime path. | op-stability plan §Phase 7 |
-| 5 | Op Stability Phase 8 — productization threshold | multi-sesión | 6 exit-criteria checkboxes (status accuracy, false-positive trend, merge-queue default, chaos N=10/20/50, etc.). Mostly verified this session — outstanding: merge-queue default path and adjacent distribution/default-core checks. | op-stability plan §Phase 8 |
+| 4 | Op Stability Phase 7 — distribution boundary metadata | multi-sesión | Default-core install boundary is verified; remaining Phase 7 work is full distribution metadata coverage and status reporting. | op-stability plan §Phase 7 |
+| 5 | Op Stability Phase 8 — productization threshold | DONE in continuation | Productization exit criteria are checked: status accuracy, false-positive trend, idempotent repairs, guard maturity, merge-queue default path, and chaos N=10/20/50 coverage. | op-stability plan §Phase 8 |
 | 6 | Wave 5 backlog: ADR-121 Phase 3 ownership coverage + Phase 6 swarm scenarios, ADR-291 remaining Phase 2/3 service endpoints, ADR-325 Phase 3+ resource-economy adoption | multi-sesión by design | Structural backlog. Closed this cut: ADR-121 state truth narrowed, ADR-291 file-backed session lifecycle/events, ADR-325 context-budget ledger emission + token-budget ledger reads. Remaining work is broader adoption/runtime wiring, not blank-slate substrate. | ADR-121/291/325 docs |
 
 ## Items intentionally NOT prioritized
@@ -113,8 +113,9 @@ the closest existing decisions but none commit to a canonical
 
 ## Next-session proposal
 
-1. **DX Tax follow-on**: merge-queue lane/default-path work, then default-core install boundary.
-2. **Governance policy adoption**: continue wiring additional hard-blocking guards to `cos governance policy` when they are touched.
-3. **Telemetry adoption**: keep recording real maintainer choices with `scripts/cos-maintainer-impact` so Phase 5 trends beyond the first three dogfood rows.
+1. **Op Stability Phase 3**: adaptive profile resolver remains the largest unclosed op-stability slice.
+2. **Op Stability Phase 7 remainder**: complete distribution metadata coverage and `cos status` active distribution/profile reporting.
+3. **Governance policy adoption**: continue wiring additional hard-blocking guards to `cos governance policy` when they are touched.
+4. **Telemetry adoption**: keep recording real maintainer choices with `scripts/cos-maintainer-impact` so Phase 5 trends beyond the first three dogfood rows.
 
 ADR-038 Wave 4, lean-profile semantics, hygiene-vs-blocker status semantics, Maintainer Telemetry Phase 5 instrumentation/adoption, ADR-328 catch-ledger substrate, and the first high-friction governance policy guard adoption are now closed in continuation slices. Remaining work is broader adoption/wiring, not the core substrate.
