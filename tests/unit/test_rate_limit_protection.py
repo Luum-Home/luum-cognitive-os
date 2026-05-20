@@ -348,6 +348,43 @@ class TestTokenCountingHook:
         result = _run_hook(str(tmp_path), extra_env={"RATE_LIMIT_OVERRIDE": "false"})
         assert result.returncode == 0, f"Should not be blocked; stderr={result.stderr}"
 
+    def test_token_counting_consults_adr_325_resource_ledger(self, tmp_path: Path) -> None:
+        """ADR-325 resource ledger rows contribute to hourly token enforcement."""
+        from datetime import datetime, timezone
+
+        metrics_dir = tmp_path / ".cognitive-os" / "metrics"
+        metrics_dir.mkdir(parents=True, exist_ok=True)
+        with open(metrics_dir / "ai-resource-ledger.jsonl", "w", encoding="utf-8") as f:
+            f.write(json.dumps({
+                "schema_version": 1,
+                "ts": datetime.now(timezone.utc).isoformat(),
+                "session_id": "s1",
+                "agent_id": "",
+                "task_id": "",
+                "provider": "hook",
+                "model": "context-budget-meter",
+                "tokens_in": 96,
+                "tokens_out": 0,
+                "estimated_cost_usd": 0.0,
+                "actual_cost_usd": 0.0,
+                "retry_count": 0,
+                "tool_calls": 0,
+                "reasoning_effort": "none",
+                "kind": "context_budget",
+                "source": "context-budget-meter",
+            }) + "\n")
+
+        result = _run_hook(
+            str(tmp_path),
+            extra_env={
+                "RATE_LIMIT_OVERRIDE": "false",
+                "RATE_LIMIT_HOURLY_TOKENS": "100",
+            },
+        )
+
+        assert result.returncode == 2
+        assert "RATE LIMIT REACHED (96%)" in result.stderr
+
 
 class TestHourlyCutoffHook:
     """Hourly cutoff tests for the token-budget-monitor.sh hook."""

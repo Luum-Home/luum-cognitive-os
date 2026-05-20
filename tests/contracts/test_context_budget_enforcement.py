@@ -28,6 +28,17 @@ def test_user_prompt_meter_always_writes_metric(tmp_path: Path) -> None:
     assert rows[-1]["source"] == "context-budget-meter"
     assert rows[-1]["verdict"] == "PASS"
 
+    resource_log = tmp_path / ".cognitive-os" / "metrics" / "ai-resource-ledger.jsonl"
+    resource_rows = [json.loads(line) for line in resource_log.read_text().splitlines()]
+    assert resource_rows[-1]["schema_version"] == 1
+    assert resource_rows[-1]["source"] == "context-budget-meter"
+    assert resource_rows[-1]["kind"] == "context_budget"
+    assert resource_rows[-1]["session_id"] == "s1"
+    assert resource_rows[-1]["tokens_in"] == rows[-1]["tokens_estimate"]
+    assert resource_rows[-1]["tokens_out"] == 0
+    assert resource_rows[-1]["actual_cost_usd"] == 0.0
+    assert resource_rows[-1]["tool_calls"] == 0
+
 
 def test_meter_blocks_large_user_context_without_override(tmp_path: Path) -> None:
     (tmp_path / "cognitive-os.yaml").write_text("context_budget:\n  user_max_tokens: 1\n", encoding="utf-8")

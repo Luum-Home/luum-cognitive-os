@@ -296,7 +296,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [291](ADR-291-agent-runtime-web-service.md) | Agent Runtime Web Service: HTTP + SSE Surface for Harness-Independent Clients | accepted | partial | 2026-05-13 | **Date:** 2026-05-13 |
 | [319](ADR-319-detractor-review-modes.md) | Detractor Review Modes for Planning and Verification | accepted | partial | 2026-05-15 | Accepted. |
 | [324](ADR-324-executable-acceptance-specification-eas.md) | Executable Acceptance Specification (EAS) Evidence Artifact | accepted | partial | 2026-05-15 | Accepted. |
-| [325](ADR-325-ai-resource-economy-and-degradation.md) | AI Resource Economy, Budget Preflight, and Graceful Degradation | accepted | partial | 2026-05-15 | Accepted. Partial implementation starts with a manifest, audit, preflight CLI, and language-token-economy rule. Runtime hook enforcement and provider-specific a |
+| [325](ADR-325-ai-resource-economy-and-degradation.md) | AI Resource Economy, Budget Preflight, and Graceful Degradation | accepted | partial | 2026-05-15 | Accepted. Partial implementation includes manifest, audit, preflight CLI, language-token-economy rule, initial hook ledger emission, and token-budget ledger reads; provider actual-cost ingestion remains follow-up. |
 | [328](ADR-328-governance-roi-friction-vs-catch.md) | Governance ROI Friction-vs-Catch Ratios | accepted | partial | 2026-05-20 | Accepted. Adds reviewed governance catch ledger, optional blocked-hook prompts, weighted friction-vs-catch bands, phase-policy adapter, and cos status exposure. |
 
 ### Active / Partial / Blocked (1)

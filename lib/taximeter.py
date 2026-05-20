@@ -1,5 +1,5 @@
 # SCOPE: os-only
-"""Taximeter — ADR-325 Phase 2 cost-accounting ledger.
+"""Taximeter — ADR-325 cost-accounting and resource ledgers.
 
 Append-only JSONL ledger at .cognitive-os/metrics/taximeter.jsonl.
 Each tick records one AI-consuming work unit.
@@ -14,6 +14,12 @@ Schema (all fields required unless noted):
   cost_usd       float  (computed or provided)
   latency_ms     int | None  (optional)
   kind           str  (e.g. "dispatch", "tool", "preflight")
+
+ADR-325 resource ledger:
+  .cognitive-os/metrics/ai-resource-ledger.jsonl stores the broader resource
+  economy event shape used by hooks that do not know provider price data yet.
+  Those rows use tokens_in/tokens_out, estimated/actual cost, retry_count,
+  tool_calls, reasoning_effort, agent_id, and task_id.
 
 Query API:
   total_cost(window)             -> float
@@ -31,6 +37,7 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 DEFAULT_LEDGER = ".cognitive-os/metrics/taximeter.jsonl"
+DEFAULT_RESOURCE_LEDGER = ".cognitive-os/metrics/ai-resource-ledger.jsonl"
 
 
 # ---------------------------------------------------------------------------
@@ -158,6 +165,80 @@ def tick(
             fh.write(json.dumps(record) + "\n")
     except OSError:
         pass  # Graceful degradation — do not crash callers on write failure
+
+    return record
+
+
+def resource_tick(
+    session_id: str,
+    agent_id: str = "",
+    task_id: str = "",
+    model: str = "unknown",
+    tokens_in: int = 0,
+    tokens_out: int = 0,
+    estimated_cost_usd: float = 0.0,
+    actual_cost_usd: float = 0.0,
+    retry_count: int = 0,
+    tool_calls: int = 0,
+    reasoning_effort: str = "unknown",
+    kind: str = "resource",
+    source: str = "unknown",
+    provider: str = "unknown",
+    ledger_path: str = DEFAULT_RESOURCE_LEDGER,
+) -> dict:
+    """Append one ADR-325 resource economy event to the resource ledger.
+
+    This is the hook-friendly ledger shape from ADR-325. Hooks often know
+    estimated tokens or tool calls before provider billing exists, so this row
+    is intentionally usable with zero costs while preserving the fields needed
+    for later provider ingestion and ratchets.
+
+    Args:
+        session_id: Session identifier.
+        agent_id: Agent/subagent identifier, if known.
+        task_id: Task identifier, if known.
+        model: Model name or "unknown" for hook-only estimates.
+        tokens_in: Input/context token estimate or provider-reported value.
+        tokens_out: Output/completion token estimate or provider-reported value.
+        estimated_cost_usd: Estimated USD cost.
+        actual_cost_usd: Provider-reported USD cost when available.
+        retry_count: Retry count associated with this work unit.
+        tool_calls: Tool calls represented by this event.
+        reasoning_effort: Low/medium/high/none/unknown effort label.
+        kind: Event kind tag.
+        source: Hook/script/library emitting the event.
+        provider: Provider name, if known.
+        ledger_path: Path to the JSONL resource ledger.
+
+    Returns:
+        The recorded resource event dict.
+    """
+    record: dict = {
+        "schema_version": 1,
+        "ts": _now_utc().isoformat(),
+        "session_id": str(session_id or "unknown"),
+        "agent_id": str(agent_id or ""),
+        "task_id": str(task_id or ""),
+        "provider": str(provider or "unknown"),
+        "model": str(model or "unknown"),
+        "tokens_in": max(0, int(tokens_in)),
+        "tokens_out": max(0, int(tokens_out)),
+        "estimated_cost_usd": round(float(estimated_cost_usd), 6),
+        "actual_cost_usd": round(float(actual_cost_usd), 6),
+        "retry_count": max(0, int(retry_count)),
+        "tool_calls": max(0, int(tool_calls)),
+        "reasoning_effort": str(reasoning_effort or "unknown"),
+        "kind": str(kind or "resource"),
+        "source": str(source or "unknown"),
+    }
+
+    path = Path(ledger_path)
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with open(path, "a", encoding="utf-8") as fh:
+            fh.write(json.dumps(record, sort_keys=True) + "\n")
+    except OSError:
+        pass
 
     return record
 

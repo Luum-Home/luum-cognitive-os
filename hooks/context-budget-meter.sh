@@ -28,6 +28,7 @@ session_id = sys.argv[3]
 raw = sys.argv[4] if len(sys.argv) > 4 else ""
 sys.path.insert(0, str(cos_root))
 from lib.context_budget import append_metric, count_tokens, evaluate, read_budget
+from lib.taximeter import resource_tick
 
 try:
     data = json.loads(raw) if raw.strip() else {}
@@ -61,6 +62,23 @@ row = {
     "latency_ms": round(latency_ms, 3),
 }
 append_metric(project, row)
+resource_tick(
+    session_id=session_id,
+    agent_id=str(data.get("agent_id") or data.get("subagent_id") or "") if isinstance(data, dict) else "",
+    task_id=str(data.get("task_id") or data.get("tool_use_id") or "") if isinstance(data, dict) else "",
+    provider="hook",
+    model="context-budget-meter",
+    tokens_in=used,
+    tokens_out=0,
+    estimated_cost_usd=0.0,
+    actual_cost_usd=0.0,
+    retry_count=0,
+    tool_calls=0,
+    reasoning_effort="none",
+    kind="context_budget",
+    source="context-budget-meter",
+    ledger_path=str(project / ".cognitive-os" / "metrics" / "ai-resource-ledger.jsonl"),
+)
 if verdict.verdict == "WARN":
     print(f"context-budget-meter: WARN user context {used}/{verdict.budget_token_max} tokens", file=sys.stderr)
 elif verdict.verdict == "BLOCK" and not verdict.allowed:

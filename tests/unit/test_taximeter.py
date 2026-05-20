@@ -10,6 +10,7 @@ import pytest
 from lib.taximeter import (
     cost_by_provider,
     cost_by_session,
+    resource_tick,
     tick,
     total_cost,
 )
@@ -97,6 +98,53 @@ class TestTick:
         )
         # Should still return the record dict
         assert record["session_id"] == "s1"
+
+
+# ---------------------------------------------------------------------------
+# resource_tick() — ADR-325 resource ledger schema
+# ---------------------------------------------------------------------------
+
+class TestResourceTick:
+    def test_resource_tick_writes_adr_325_event_shape(self, tmp_path: Path) -> None:
+        ledger = tmp_path / "ai-resource-ledger.jsonl"
+
+        record = resource_tick(
+            session_id="s1",
+            agent_id="agent-a",
+            task_id="task-7",
+            provider="hook",
+            model="context-budget-meter",
+            tokens_in=123,
+            tokens_out=4,
+            estimated_cost_usd=0.0012345,
+            actual_cost_usd=0.00001,
+            retry_count=2,
+            tool_calls=3,
+            reasoning_effort="none",
+            kind="context_budget",
+            source="context-budget-meter",
+            ledger_path=str(ledger),
+        )
+
+        assert record["schema_version"] == 1
+        assert record["session_id"] == "s1"
+        assert record["agent_id"] == "agent-a"
+        assert record["task_id"] == "task-7"
+        assert record["provider"] == "hook"
+        assert record["model"] == "context-budget-meter"
+        assert record["tokens_in"] == 123
+        assert record["tokens_out"] == 4
+        assert record["estimated_cost_usd"] == pytest.approx(0.001234, rel=1e-5)
+        assert record["actual_cost_usd"] == pytest.approx(0.00001, rel=1e-5)
+        assert record["retry_count"] == 2
+        assert record["tool_calls"] == 3
+        assert record["reasoning_effort"] == "none"
+        assert record["kind"] == "context_budget"
+        assert record["source"] == "context-budget-meter"
+        assert "ts" in record
+
+        rows = [json.loads(line) for line in ledger.read_text().splitlines()]
+        assert rows == [record]
 
 
 # ---------------------------------------------------------------------------

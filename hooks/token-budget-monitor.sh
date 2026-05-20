@@ -25,11 +25,12 @@ fi
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-.}"
 METRICS_DIR="${PROJECT_DIR}/.cognitive-os/metrics"
 COST_EVENTS="${METRICS_DIR}/cost-events.jsonl"
+RESOURCE_LEDGER="${METRICS_DIR}/ai-resource-ledger.jsonl"
 RATE_LIMIT_LOG="${METRICS_DIR}/rate-limit-checks.jsonl"
 
 mkdir -p "$METRICS_DIR"
 
-# Count tokens used in the last hour from cost-events.jsonl
+# Count tokens used in the last hour from legacy cost-events and ADR-325 ledger.
 HOURLY_LIMIT="${RATE_LIMIT_HOURLY_TOKENS:-5000000}"
 AGENTS_LIMIT="${RATE_LIMIT_MAX_AGENTS:-30}"
 
@@ -37,41 +38,61 @@ TOKENS_USED=0
 AGENTS_USED=0
 CUTOFF_EPOCH=$(python3 -c "import time; print(int(time.time()) - 3600)")
 
-if [[ -f "$COST_EVENTS" ]]; then
-    read -r TOKENS_USED AGENTS_USED < <(python3 - "$COST_EVENTS" "$CUTOFF_EPOCH" <<'PYEOF'
+if [[ -f "$COST_EVENTS" || -f "$RESOURCE_LEDGER" ]]; then
+    read -r TOKENS_USED AGENTS_USED < <(python3 - "$COST_EVENTS" "$RESOURCE_LEDGER" "$CUTOFF_EPOCH" <<'PYEOF'
 import sys
 from datetime import datetime, timezone
 
-filepath, cutoff_str = sys.argv[1], sys.argv[2]
+cost_events_path, resource_ledger_path, cutoff_str = sys.argv[1], sys.argv[2], sys.argv[3]
 cutoff = int(cutoff_str)
 tokens_used = 0
 agents_used = 0
 
-try:
-    import json
-    with open(filepath) as f:
-        for line in f:
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                e = json.loads(line)
-            except Exception:
-                continue
-            try:
-                t = datetime.fromisoformat(e.get('timestamp', ''))
-                if t.tzinfo is None:
-                    t = t.replace(tzinfo=timezone.utc)
-                ts = int(t.timestamp())
-            except Exception:
-                ts = 0
-            if ts >= cutoff:
-                tok = e.get('total_tokens', 0) or (e.get('input_tokens', 0) + e.get('output_tokens', 0))
-                tokens_used += tok or 0
-                if e.get('action') == 'agent_launch':
-                    agents_used += 1
-except Exception:
-    pass
+import json
+
+def parse_epoch(value):
+    if isinstance(value, (int, float)):
+        return int(value)
+    if not value:
+        return 0
+    try:
+        text = str(value).replace("Z", "+00:00")
+        t = datetime.fromisoformat(text)
+        if t.tzinfo is None:
+            t = t.replace(tzinfo=timezone.utc)
+        return int(t.timestamp())
+    except Exception:
+        return 0
+
+def read_jsonl(path):
+    try:
+        with open(path, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    yield json.loads(line)
+                except Exception:
+                    continue
+    except Exception:
+        return
+
+for e in read_jsonl(cost_events_path):
+    ts = parse_epoch(e.get("timestamp") or e.get("ts") or e.get("timestamp_epoch"))
+    if ts >= cutoff:
+        tok = e.get("total_tokens", 0) or (e.get("input_tokens", 0) + e.get("output_tokens", 0))
+        tokens_used += int(tok or 0)
+        if e.get("action") == "agent_launch":
+            agents_used += 1
+
+for e in read_jsonl(resource_ledger_path):
+    ts = parse_epoch(e.get("ts") or e.get("timestamp") or e.get("timestamp_epoch"))
+    if ts >= cutoff:
+        tok = e.get("total_tokens", 0) or (e.get("tokens_in", 0) + e.get("tokens_out", 0))
+        tokens_used += int(tok or 0)
+        if e.get("kind") == "agent_launch":
+            agents_used += 1
 
 print(tokens_used, agents_used)
 PYEOF
