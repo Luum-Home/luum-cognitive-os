@@ -1,0 +1,72 @@
+#!/usr/bin/env python3
+# SCOPE: os-only
+"""Report or record ADR-201 Phase 5 maintainer telemetry impact."""
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.maintainer_impact import (  # noqa: E402
+    append_decision_event,
+    build_decision_event,
+    default_ledger_path,
+    impact_report,
+)
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--project-dir", type=Path, default=ROOT)
+    parser.add_argument("--ledger-path", type=Path)
+    parser.add_argument("--record", action="store_true", help="Append one decision-impact row before reporting")
+    parser.add_argument("--decision", help="Decision label, e.g. accepted, rejected, demoted, no_action")
+    parser.add_argument("--surface", default="maintainer-telemetry")
+    parser.add_argument("--source-rollup-run-id")
+    parser.add_argument("--source-rollup-ref")
+    parser.add_argument("--proposal-id")
+    parser.add_argument("--reason")
+    parser.add_argument("--operator")
+    parser.add_argument("--json", action="store_true")
+    return parser
+
+
+def main() -> int:
+    args = build_parser().parse_args()
+    project = args.project_dir.resolve()
+    ledger = args.ledger_path or default_ledger_path(project)
+    if args.record:
+        if not args.decision:
+            print("--record requires --decision", file=sys.stderr)
+            return 2
+        event = build_decision_event(
+            decision=args.decision,
+            surface=args.surface,
+            source_rollup_run_id=args.source_rollup_run_id,
+            source_rollup_ref=args.source_rollup_ref,
+            proposal_id=args.proposal_id,
+            reason=args.reason,
+            operator=args.operator,
+        )
+        append_decision_event(ledger, event)
+    payload = impact_report(project, ledger_path=ledger)
+    if args.json:
+        print(json.dumps(payload, indent=2, sort_keys=True))
+    else:
+        print(
+            "maintainer impact: "
+            f"status={payload['status']} "
+            f"changed={payload['changed_decisions']} "
+            f"influenced={payload['rollup_influenced_decisions']}/{payload['total_decisions']} "
+            f"ledger={payload['ledger_path']}"
+        )
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
