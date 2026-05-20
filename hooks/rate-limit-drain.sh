@@ -257,5 +257,62 @@ export _DRAIN_HOOK_ROOT="$COGNITIVE_OS_HOOK_ROOT"
 
 python3 "$_DRAIN_SCRIPT" || true
 
+# Dispatch queue tick: after any Bash command completes, a validation capsule
+# or long-running command may have freed Agent slots. Native hooks cannot launch
+# the Agent tool themselves, but this non-blocking tick calls QueueDrainer so
+# ready queued Agent intents are surfaced immediately instead of waiting for a
+# manual `/queue-drain` check or a future Agent PreToolUse event.
+if [ "${COGNITIVE_OS_DISABLE_DISPATCH_QUEUE_TICK:-}" != "1" ]; then
+  VALIDATION_LOCK_LIB="$(dirname "$0")/_lib/validation-lock.sh"
+  if [ -f "$VALIDATION_LOCK_LIB" ]; then
+    # shellcheck source=/dev/null
+    source "$VALIDATION_LOCK_LIB"
+    if cos_validation_lock_active "$_PROJECT_DIR"; then
+      exit 0
+    fi
+  fi
+
+  PYTHONPATH="$COGNITIVE_OS_HOOK_ROOT${PYTHONPATH:+:$PYTHONPATH}" \
+  COGNITIVE_OS_PROJECT_DIR="$_PROJECT_DIR" \
+  CLAUDE_PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$_PROJECT_DIR}" \
+  python3 - <<'PYDISPATCHTICK' || true
+import os
+import sys
+from pathlib import Path
+
+project_dir = Path(os.environ.get("COGNITIVE_OS_PROJECT_DIR") or os.getcwd())
+try:
+    from lib.queue_drainer import QueueDrainer
+
+    drainer = QueueDrainer(
+        queue_path=str(project_dir / ".cognitive-os" / "tasks" / "dispatch-queue.json"),
+        tasks_path=str(project_dir / ".cognitive-os" / "tasks" / "active-tasks.json"),
+    )
+    ready = drainer.get_ready_agents(max_count=5, use_advisor=False)
+    if not ready:
+        raise SystemExit(0)
+
+    queued_total = drainer.queue_length(status="queued")
+    sys.stderr.write("\n")
+    sys.stderr.write(
+        f"DISPATCH_QUEUE_READY: {len(ready)} queued Agent intent(s) ready to launch "
+        f"({queued_total} queued total).\n"
+    )
+    for item in ready:
+        desc = str(item.get("description") or item.get("prompt") or "")[:100]
+        sys.stderr.write(
+            f"  - queue_id={item.get('id')} model={item.get('model', 'sonnet')} "
+            f"priority={item.get('priority', 5)}: {desc}\n"
+        )
+    sys.stderr.write(
+        "  Orchestrator: launch these Agent prompts, then call "
+        "QueueDrainer.mark_dispatched()/remove_completed().\n\n"
+    )
+except Exception:
+    # PostToolUse drain ticks are advisory and must never block the original Bash.
+    raise SystemExit(0)
+PYDISPATCHTICK
+fi
+
 # Always succeed — never block the original Bash completion path.
 exit 0
