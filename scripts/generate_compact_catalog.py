@@ -155,8 +155,9 @@ def render_compact(skills: list[dict]) -> str:
     lines.append("# Cognitive OS Skills — Compact Catalog")
     lines.append("")
     lines.append(
-        "> Level-1 catalog: loaded at session start. Each row is `name | audience | "
-        "1-line description`. Full SKILL.md is loaded on demand via the skill-loader. "
+        "> Level-1 catalog: loaded at session start. Each row is `name | scope | audience | "
+        "1-line description`. `scope` is `[core]` for top-level skills and `[ext:pack]` "
+        "for packaged extension skills. Full SKILL.md is loaded on demand via the skill-loader. "
         "See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog."
     )
     lines.append("")
@@ -167,12 +168,13 @@ def render_compact(skills: list[dict]) -> str:
         items = sorted(groups[aud], key=lambda x: x["name"])
         lines.append(f"## {aud} ({len(items)})")
         lines.append("")
-        lines.append("| Skill | Description |")
-        lines.append("|-------|-------------|")
+        lines.append("| Skill | Scope | Description |")
+        lines.append("|-------|-------|-------------|")
         for s in items:
             # Escape any pipes in description
             desc = s["description"].replace("|", "\\|")
-            lines.append(f"| {s['name']} | {desc} |")
+            scope = "[core]" if not s["package"] else f"[ext:{s['package']}]"
+            lines.append(f"| {s['name']} | {scope} | {desc} |")
         lines.append("")
 
     return "\n".join(lines) + "\n"

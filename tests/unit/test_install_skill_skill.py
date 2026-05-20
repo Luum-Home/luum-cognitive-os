@@ -160,6 +160,7 @@ class TestInstallSkillBackingScript:
     def test_cos_install_hook_event_flag(self):
         content = (PROJECT_ROOT / "scripts" / "cos-install-hook").read_text()
         assert "--event" in content
+        assert "UserPromptSubmit" in content
 
     def test_cos_install_hook_dry_run_flag(self):
         content = (PROJECT_ROOT / "scripts" / "cos-install-hook").read_text()
@@ -208,6 +209,39 @@ class TestInstallSkillBackingScript:
                 "cos-install-hook --dry-run must not chmod source hooks"
             )
 
+    def test_cos_install_hook_accepts_user_prompt_submit_event(self):
+        script = PROJECT_ROOT / "scripts" / "cos-install-hook"
+        with tempfile.TemporaryDirectory(prefix=".cos-install-hook-event-", dir=PROJECT_ROOT) as tmp:
+            hook_path = pathlib.Path(tmp) / "prompt-sample.sh"
+            hook_path.write_text(
+                "#!/usr/bin/env bash\n"
+                "# SCOPE: both\n"
+                "# EVENT: UserPromptSubmit\n"
+                "set -euo pipefail\n"
+                "exit 0\n",
+                encoding="utf-8",
+            )
+            hook_path.chmod(0o755)
+
+            result = subprocess.run(
+                [
+                    str(script),
+                    "prompt-sample",
+                    "--source",
+                    str(hook_path),
+                    "--event",
+                    "UserPromptSubmit",
+                    "--dry-run",
+                ],
+                capture_output=True,
+                text=True,
+                cwd=str(PROJECT_ROOT),
+                timeout=30,
+            )
+
+            assert result.returncode == 0, result.stderr
+            assert "harness.hooks.UserPromptSubmit" in result.stdout
+
     def test_cos_install_hook_rollback_uses_backup_not_git_checkout(self):
         content = (PROJECT_ROOT / "scripts" / "cos-install-hook").read_text()
         assert "COSYAML_BACKUP" in content
@@ -216,6 +250,19 @@ class TestInstallSkillBackingScript:
     def test_cos_install_skill_creates_driver_directory(self):
         content = (PROJECT_ROOT / "scripts" / "cos-install-skill").read_text()
         assert 'mkdir -p "$(dirname "$SYMLINK_TARGET")"' in content
+
+    def test_cos_install_skill_already_installed_same_target_is_idempotent(self):
+        script = PROJECT_ROOT / "scripts" / "cos-install-skill"
+        result = subprocess.run(
+            [str(script), "web-crawler", "--dry-run"],
+            capture_output=True,
+            text=True,
+            cwd=str(PROJECT_ROOT),
+            timeout=30,
+        )
+
+        assert result.returncode == 0, result.stderr
+        assert "idempotent success" in result.stdout
 
 
 class TestInstallSkillDryRun:
