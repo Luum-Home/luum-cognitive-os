@@ -16,6 +16,12 @@ platforms:
 - claude-code
 - codex
 - generic-cli
+platform_support:
+  generic-cli:
+    support_level: documented-only
+    evidence:
+    - skills/os-session-wrapup/SKILL.md
+    - tests/hooks/test_os_session_wrapup_addendum_trigger.py
 prerequisites: []
 routing_patterns:
 - pattern: \bos[- ]?session[- ]?wrapup\b

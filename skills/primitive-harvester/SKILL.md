@@ -20,6 +20,12 @@ platforms:
 - codex
 - claude-code
 - generic-cli
+platform_support:
+  generic-cli:
+    support_level: executable
+    evidence:
+    - skills/primitive-harvester/SKILL.md
+    - scripts/cos_primitive_harvester.py
 prerequisites:
 - python3
 routing_patterns:

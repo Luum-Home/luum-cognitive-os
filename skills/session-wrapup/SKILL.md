@@ -28,6 +28,12 @@ platforms:
 - claude-code
 - codex
 - generic-cli
+platform_support:
+  generic-cli:
+    support_level: documented-only
+    evidence:
+    - skills/session-wrapup/SKILL.md
+    - tests/red_team/portability/test_skill_session_wrapup.py
 prerequisites: []
 routing_patterns:
 - pattern: \bsession[- ]?wrapup\b
