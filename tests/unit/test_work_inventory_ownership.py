@@ -154,3 +154,55 @@ def test_path_ownership_includes_stash_agent_heartbeat(tmp_path: Path) -> None:
     assert stash["agent_id"] == "toolu_01ABC"
     assert stash["agent_heartbeat"]["seen"] is True
     assert stash["agent_heartbeat"]["alive"] is False
+
+
+def test_work_inventory_reports_domain_lease_for_hook_path(tmp_path: Path) -> None:
+    project = make_repo(tmp_path)
+    leases = project / ".cognitive-os" / "runtime" / "resource-leases"
+    leases.mkdir(parents=True)
+    (leases / "hooks.json").write_text(
+        json.dumps(
+            {
+                "resource": "hooks",
+                "agent_id": "agent-a",
+                "session_id": "session-a",
+                "reason": "hook edit",
+                "expires_at": 4102444800,
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    payload = run_inventory(project, "--paths", "hooks/example.sh")
+
+    ownership = payload["path_ownership"][0]
+    assert "hooks" in ownership["ownership_domains"]
+    assert ownership["domain_leases"][0]["session_id"] == "session-a"
+    assert ownership["status"] == "active_or_unknown"
+    assert payload["summary"]["resource_lease_count"] == 1
+
+
+def test_work_inventory_maps_manifests_to_registry_domain(tmp_path: Path) -> None:
+    project = make_repo(tmp_path)
+    leases = project / ".cognitive-os" / "runtime" / "resource-leases"
+    leases.mkdir(parents=True)
+    (leases / "registry.json").write_text(
+        json.dumps(
+            {
+                "resource": "registry",
+                "agent_id": "agent-r",
+                "session_id": "session-r",
+                "reason": "registry projection",
+                "expires_at": 4102444800,
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    payload = run_inventory(project, "--paths", "manifests/primitive-lifecycle.yaml")
+
+    ownership = payload["path_ownership"][0]
+    assert "registry" in ownership["ownership_domains"]
+    assert ownership["domain_leases"][0]["resource"] == "registry"

@@ -4,7 +4,7 @@ adr: 121
 title: Foundation Hardening Program
 status: accepted
 implementation_status: partial
-classification_basis: 'program ADR is partial: Phase 1/2/4/5 acceptance is closed; residuals are Phase 3 ownership coverage and Phase 6 ADR-118 swarm scenarios'
+classification_basis: 'program ADR is partial: Phase 1/2/4/5 acceptance is closed; residuals are Phase 6 ADR-118 swarm scenarios; Phase 3 domain/registry ownership inventory has an initial executable slice'
 date: 2026-05-02
 supersedes: []
 superseded_by: null
@@ -16,7 +16,7 @@ implementation_files:
   - lib/validation_lanes.py
 tier: strict
 tags: [hardening, foundation, validation, invariants]
-partial_remaining: 'program ADR is partial: Phase 1/2/4/5 acceptance is closed; residuals are Phase 3 ownership coverage and Phase 6 ADR-118 swarm scenarios'
+partial_remaining: 'program ADR is partial: Phase 1/2/4/5 acceptance is closed; residuals are Phase 6 ADR-118 swarm scenarios; Phase 3 domain/registry ownership inventory has an initial executable slice'
 partial_remaining_basis: specific classification_basis
 ---
 

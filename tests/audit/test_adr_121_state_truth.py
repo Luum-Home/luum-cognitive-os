@@ -18,7 +18,8 @@ PARTIAL_BACKLOG_JSON = REPO / "docs" / "06-Daily" / "reports" / "adr-partial-bac
 
 EXPECTED_RESIDUAL = (
     "program ADR is partial: Phase 1/2/4/5 acceptance is closed; "
-    "residuals are Phase 3 ownership coverage and Phase 6 ADR-118 swarm scenarios"
+    "residuals are Phase 6 ADR-118 swarm scenarios; Phase 3 domain/registry "
+    "ownership inventory has an initial executable slice"
 )
 STALE_SUMMARIES = (
     "ADR-121 phases 3-6",
