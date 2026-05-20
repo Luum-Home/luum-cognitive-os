@@ -254,6 +254,10 @@ def format_json(
                 "subject": c.subject,
                 "author": c.author,
                 "author_date": c.author_date,
+                "recovery_commands": [
+                    f"git cherry-pick {c.short_sha}",
+                    f"git branch recovered-work {c.short_sha}",
+                ],
             }
             for c in orphans
         ],

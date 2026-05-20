@@ -33,14 +33,9 @@ This plan is the operational successor to
 
 These items keep the administrative closure honest.
 
-- [ ] Add a report or pending-truth adapter that distinguishes legacy-plan
-      `closed_by_disposition` from `implemented`, so future dashboards do not
-      read `100%` as shipped functionality.
-- [ ] Add an audit that fails if a legacy checklist item is closed by
-      disposition without referencing the disposition ledger or a successor
-      active plan.
-- [ ] Update `/session-backlog` or pending-truth docs to prefer this active
-      successor plan over the closed legacy checklists.
+- [x] Add a report or pending-truth adapter that distinguishes legacy-plan `closed_by_disposition` from `implemented`, so future dashboards do not read `100%` as shipped functionality. (work_id: plan-closure-p0-20260520) (verified: python3 scripts/plan_closure_disposition_audit.py --project-dir . --json --strict && .venv/bin/python -m pytest tests/unit/test_plan_closure_disposition_audit.py -q)
+- [x] Add an audit that fails if a legacy checklist item is closed by disposition without referencing the disposition ledger or a successor active plan. (verified: python3 scripts/plan_closure_disposition_audit.py --project-dir . --json --strict && .venv/bin/python -m pytest tests/unit/test_plan_closure_disposition_audit.py -q) (work_id: plan-closure-p0-20260520)
+- [x] Update `/session-backlog` or pending-truth docs to prefer this active successor plan over the closed legacy checklists. (work_id: plan-closure-p0-20260520) (verified: python3 scripts/plan_closure_disposition_audit.py --project-dir . --json --strict && .venv/bin/python -m pytest tests/unit/test_plan_closure_disposition_audit.py -q)
 
 ## Priority 1 — Multi-session coordination and silent-loss prevention
 
@@ -49,7 +44,7 @@ from duplicating, overwriting, resetting, or losing each other's work.
 
 ### Slice 1A — Stable work identity
 
-- [ ] Implement commit `work_id` trailer support.
+- [x] Implement commit `work_id` trailer support. (verified: .venv/bin/python -m pytest tests/behavior/test_commit_provenance_work_id.py tests/behavior/test_plan_false_done_gate.py -q) (work_id: 6f09ca3b89e3e474)
   - Source legacy item: multi-session P1.2.
   - Deliverable: `X-COS-Work-ID: <hash>` trailer generated from task fingerprint
     or explicit operator input.
@@ -58,7 +53,7 @@ from duplicating, overwriting, resetting, or losing each other's work.
   - Acceptance: a COS-attributed test commit includes both `X-COS-Session` and
     `X-COS-Work-ID`.
 
-- [ ] Implement atomic plan-checkbox transition proof with work identity.
+- [x] Implement atomic plan-checkbox transition proof with work identity. (verified: .venv/bin/python -m pytest tests/behavior/test_commit_provenance_work_id.py tests/behavior/test_plan_false_done_gate.py -q) (work_id: 6f09ca3b89e3e474)
   - Source legacy item: multi-session P4.4.
   - Deliverable: plan transition parser validates `(verified: ...)` plus
     `work_id` for high-risk plan closures.
@@ -69,7 +64,7 @@ from duplicating, overwriting, resetting, or losing each other's work.
 
 ### Slice 1B — Duplicate-work and destructive-git prevention
 
-- [ ] Implement pre-commit patch-id dedupe.
+- [x] Implement pre-commit patch-id dedupe. (verified: `.venv/bin/python -m pytest tests/unit/test_orchestrator_claim_gate_patch_id_dedupe.py -q`)
   - Source legacy item: multi-session P4.1.
   - Deliverable: staged diff patch-id comparison against recent `origin/main`.
   - Suggested files: `scripts/orchestrator_claim_gate.py` or importable helper.
@@ -88,21 +83,21 @@ from duplicating, overwriting, resetting, or losing each other's work.
 
 ### Slice 1C — Status, stale work, and recovery
 
-- [ ] Implement event-bus watcher contract.
+- [x] Implement event-bus watcher contract. (verified: `.venv/bin/python -m pytest tests/unit/test_task_event_watcher_and_watermark.py -q`)
   - Source legacy item: multi-session P1.3.
   - Deliverable: documented JSONL schema and optional watcher summarizing
     `claim`, `complete`, and `conflict` events.
   - Acceptance: watcher reads fixture events and reports current claims,
     completions, and conflicts.
 
-- [ ] Implement stale-task watermark.
+- [x] Implement stale-task watermark. (verified: `.venv/bin/python -m pytest tests/unit/test_task_event_watcher_and_watermark.py -q`)
   - Source legacy item: multi-session P1.4.
   - Deliverable: task reaper detects declared outputs landed in `main` and marks
     pending tasks completed/superseded when completed by another session.
   - Acceptance: fixture with landed outputs produces completed/superseded state
     without deleting evidence.
 
-- [ ] Implement orphan-commit notifier.
+- [x] Implement orphan-commit notifier. (verified: `.venv/bin/python -m pytest tests/unit/test_orphan_commit_scan.py -q`)
   - Source legacy item: multi-session P3.1.
   - Deliverable: post-reset/rebase/pull/session-start scanner for unreachable
     commits not in `main`.
@@ -114,27 +109,27 @@ from duplicating, overwriting, resetting, or losing each other's work.
 Rationale: this makes unattended/headless work safer without jumping straight to
 Kubernetes or clusters.
 
-- [ ] Implement worker lease tests.
+- [x] Implement worker lease tests. (verified: `.venv/bin/python -m pytest tests/contracts/test_headless_worker_lease_contract.py -q`)
   - Source legacy item: headless runtime Phase 2 worker lease tests.
   - Deliverable: acquire/release/renew/stale-recovery contract for queue workers.
   - Acceptance: two workers cannot own the same task concurrently; stale lease is
     recoverable with audit trail.
 
-- [ ] Implement VM/container restart idempotency proof.
+- [x] Implement VM/container restart idempotency proof. (verified: `.venv/bin/python -m pytest tests/contracts/test_headless_worker_lease_contract.py -q`)
   - Source legacy item: headless runtime Phase 1 VM-restart idempotency.
   - Deliverable: restart-safe receipt/lock behavior for an interrupted headless
     run.
   - Acceptance: simulated restart resumes or safely parks without duplicate
     execution.
 
-- [ ] Implement no-host-path proof for container mode.
+- [x] Implement no-host-path proof for container mode. (verified: `.venv/bin/python -m pytest tests/contracts/test_headless_worker_lease_contract.py -q`)
   - Source legacy item: headless runtime Phase 3 no-host-path proof.
   - Deliverable: container run artifacts avoid developer-specific absolute paths.
   - Acceptance: smoke fixture fails if tracked/report artifacts contain host
     paths outside allowed redacted fields.
 
-- [ ] Add headless maintainer-agent dry-run smoke inside the service/container
-      drill.
+- [x] Add headless maintainer-agent dry-run smoke inside the service/container
+      drill. (verified: `.venv/bin/python -m pytest tests/contracts/test_headless_worker_lease_contract.py -q`)
   - Source legacy item: ADR-201 maintainer telemetry Phase 4.
   - Deliverable: container/headless drill invokes `cos-maintainer-agent --once
     --dry-run --json` without dashboard dependency.

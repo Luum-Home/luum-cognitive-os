@@ -112,6 +112,12 @@ For each plan file found:
 3. Classify the plan as: **done** (all checkboxes checked, or "Status: Completed"), **in-progress** (mixed checked/unchecked), or **pending** (no checkboxes checked)
 4. For in-progress and pending plans, extract the list of uncompleted tasks
 
+Disposition guard: if a checked item contains `closed:` plus `plan-closure-disposition-*.md`, treat it as `closed_by_disposition`, **not** as implemented evidence. Prefer the active successor plan named in the disposition ledger, currently `.cognitive-os/plans/architecture/implementation-backlog-from-plan-closure-2026-05-20.md`, when deciding what work remains. Run this audit when available:
+
+```bash
+python3 scripts/plan_closure_disposition_audit.py --project-dir "$PROJECT_DIR" --json --strict
+```
+
 If `.cognitive-os/plans/` does not exist, note "No plan files found" and continue.
 
 ### Step 3: Scan Source B — Engram Queued Items

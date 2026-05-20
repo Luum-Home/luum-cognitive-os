@@ -19,12 +19,16 @@ See ADR-088 for the full rationale and known limitations.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
+import re
 import subprocess
 from pathlib import Path
 
-TRAILER_KEYS = ("X-COS-Origin", "X-COS-Session", "X-COS-Harness")
+TRAILER_KEYS = ("X-COS-Origin", "X-COS-Session", "X-COS-Harness", "X-COS-Work-ID")
+WORK_ID_KEY = "X-COS-Work-ID"
+WORK_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:-]{7,127}$")
 MAX_PARENT_DEPTH = 10
 
 
@@ -204,6 +208,19 @@ def _env_kind() -> str:
 # ─── Public API (kept for external callers; delegate to find_owning_context) ──
 
 
+def _hash_work_fingerprint(value: str) -> str:
+    """Return the stable COS work-id digest for an arbitrary fingerprint."""
+    return hashlib.sha256(value.encode("utf-8", errors="surrogatepass")).hexdigest()[:16]
+
+
+def _normalize_work_id(value: str) -> str:
+    """Use an explicit work id when valid; otherwise hash the operator input."""
+    cleaned = value.strip()
+    if WORK_ID_RE.fullmatch(cleaned):
+        return cleaned
+    return _hash_work_fingerprint(cleaned)
+
+
 def _run_git(args: list[str], cwd: Path | None = None) -> str:
     try:
         return subprocess.check_output(
@@ -252,25 +269,89 @@ def infer_harness(repo: Path | None = None) -> str:
     return _env_harness()
 
 
+def _message_trailer_keys(message: str) -> set[str]:
+    keys: set[str] = set()
+    for line in message.splitlines():
+        key, sep, _value = line.partition(":")
+        if sep and key in TRAILER_KEYS:
+            keys.add(key)
+    return keys
+
+
 def has_provenance(message: str) -> bool:
-    return any(
-        line.startswith(f"{key}:")
-        for key in TRAILER_KEYS
-        for line in message.splitlines()
+    return bool(_message_trailer_keys(message))
+
+
+def resolve_work_id(
+    repo: Path,
+    *,
+    message: str,
+    session: str,
+    kind: str,
+    harness: str,
+) -> str:
+    """Resolve a stable work identity for the commit.
+
+    Explicit operator input wins. Otherwise a deterministic task fingerprint is
+    built from the COS attribution fields, branch, staged path list, and commit
+    subject, then shortened to a sha256 digest suitable for commit trailers and
+    plan checkbox proofs.
+    """
+    explicit = (
+        os.environ.get("COS_COMMIT_WORK_ID")
+        or os.environ.get("COS_WORK_ID")
+        or os.environ.get("COGNITIVE_OS_WORK_ID")
     )
+    if explicit:
+        return _normalize_work_id(explicit)
+
+    fingerprint = (
+        os.environ.get("COS_TASK_FINGERPRINT")
+        or os.environ.get("COGNITIVE_OS_TASK_FINGERPRINT")
+        or os.environ.get("CODEX_TASK_FINGERPRINT")
+        or os.environ.get("CLAUDE_TASK_FINGERPRINT")
+    )
+    if fingerprint:
+        return _hash_work_fingerprint(fingerprint.strip())
+
+    staged_paths = _run_git(["diff", "--cached", "--name-only"], cwd=repo)
+    branch = _run_git(["rev-parse", "--abbrev-ref", "HEAD"], cwd=repo)
+    subject = next((line.strip() for line in message.splitlines() if line.strip()), "")
+    material = "\n".join(
+        [
+            f"session={session}",
+            f"kind={kind}",
+            f"harness={harness}",
+            f"branch={branch}",
+            f"paths={staged_paths}",
+            f"subject={subject}",
+        ]
+    )
+    return _hash_work_fingerprint(material)
 
 
-def append_provenance(message: str, *, session: str, kind: str, harness: str) -> str:
-    if has_provenance(message):
+def append_provenance(
+    message: str,
+    *,
+    session: str,
+    kind: str,
+    harness: str,
+    work_id: str,
+) -> str:
+    present = _message_trailer_keys(message)
+    origin = f"kind={kind} session={session} harness={harness} work_id={work_id}"
+    desired = {
+        "X-COS-Origin": origin,
+        "X-COS-Session": session,
+        "X-COS-Harness": harness,
+        "X-COS-Work-ID": work_id,
+    }
+    missing = [f"{key}: {desired[key]}" for key in TRAILER_KEYS if key not in present]
+    if not missing:
         return message
     cleaned = message.rstrip()
-    origin = f"kind={kind} session={session} harness={harness}"
-    trailers = [
-        f"X-COS-Origin: {origin}",
-        f"X-COS-Session: {session}",
-        f"X-COS-Harness: {harness}",
-    ]
-    return cleaned + "\n\n" + "\n".join(trailers) + "\n"
+    separator = "\n" if present else "\n\n"
+    return cleaned + separator + "\n".join(missing) + "\n"
 
 
 def apply_to_file(message_file: Path, *, repo: Path | None = None) -> None:
@@ -295,7 +376,10 @@ def apply_to_file(message_file: Path, *, repo: Path | None = None) -> None:
         harness = _env_harness()
 
     message = message_file.read_text(encoding="utf-8", errors="ignore")
-    updated = append_provenance(message, session=session, kind=kind, harness=harness)
+    work_id = resolve_work_id(repo, message=message, session=session, kind=kind, harness=harness)
+    updated = append_provenance(
+        message, session=session, kind=kind, harness=harness, work_id=work_id
+    )
     if updated != message:
         message_file.write_text(updated, encoding="utf-8")
 

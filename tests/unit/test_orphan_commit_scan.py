@@ -174,8 +174,12 @@ def test_format_json_structure() -> None:
     assert payload["trigger"] == "post-pull-rebase"
     assert len(payload["orphans"]) == 1
     first = payload["orphans"][0]
-    for k in ("sha", "short_sha", "subject", "author", "author_date"):
+    for k in ("sha", "short_sha", "subject", "author", "author_date", "recovery_commands"):
         assert k in first, f"Missing key '{k}' in orphan entry"
+    assert first["recovery_commands"] == [
+        "git cherry-pick def5678",
+        "git branch recovered-work def5678",
+    ]
 
 
 def test_format_json_empty_orphans() -> None:
