@@ -33,6 +33,14 @@ _lib/tuning.sh | LIBRARY: performance-tuning helpers sourced by other hooks
 
 # ── Git hooks (GIT_HOOK) ─────────────────────────────────────────────────────
 pre-commit-gate.sh | GIT_HOOK: symlinked to .git/hooks/pre-commit; not a Claude hook (per rules/ROADMAP.md Section 1.8)
+adoption-freeze-gate.sh | GIT_HOOK: pre-commit/external-adoption freeze gate; invoked by git/security profile paths, not a default Claude lifecycle matcher
+attribution-completeness-validator.sh | GIT_HOOK: pre-commit attribution gate for research annexes; invoked by git/security profile paths, not a default Claude lifecycle matcher
+dependency-license-classifier.sh | GIT_HOOK: pre-commit dependency license classifier; invoked by git/security profile paths, not a default Claude lifecycle matcher
+external-cache-content-leak.sh | GIT_HOOK: pre-commit external-cache leak detector; invoked by git/security profile paths, not a default Claude lifecycle matcher
+external-pattern-cleanroom-gate.sh | GIT_HOOK: pre-commit clean-room gate; invoked by git/security profile paths, not a default Claude lifecycle matcher
+legal-review-required-on-runtime-import.sh | GIT_HOOK: pre-commit legal-review gate for attributed runtime imports; invoked by git/security profile paths, not a default Claude lifecycle matcher
+research-to-runtime-firewall.sh | GIT_HOOK: pre-commit research-to-runtime firewall; invoked by git/security profile paths, not a default Claude lifecycle matcher
+spdx-header-required.sh | GIT_HOOK: pre-commit SPDX header gate; invoked by git/security profile paths, not a default Claude lifecycle matcher
 
 # ── Manual-trigger / admin scripts (MANUAL_TRIGGER / ADMIN) ─────────────────
 cosd-intent-submit.sh | MANUAL_TRIGGER: ADR-184 workflow command for submitting explicit cosd intents; no lifecycle event payload can supply its required intent arguments yet

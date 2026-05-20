@@ -1,0 +1,49 @@
+schema_version: policy-eval/v1
+id: destructive-git
+status: active
+owner: platform-safety
+trigger: PreToolUse:Bash
+rules:
+  - id: block-reset
+    decision: block
+    tools: [Bash]
+    match:
+      command:
+        - "git reset*"
+        - "*; git reset*"
+        - "*&& git reset*"
+    reason: Git reset mutates HEAD/index/worktree state and can erase in-flight work.
+  - id: block-stash-replay
+    decision: block
+    tools: [Bash]
+    match:
+      command:
+        - "git stash pop*"
+        - "git stash apply*"
+        - "git stash drop*"
+        - "*; git stash pop*"
+        - "*; git stash apply*"
+        - "*; git stash drop*"
+    reason: Git stash replay/drop can apply or discard stale work from another session.
+  - id: block-force-push
+    decision: block
+    tools: [Bash]
+    match:
+      command:
+        - "git push --force"
+        - "git push --force *"
+        - "git push * --force"
+        - "git push * --force *"
+        - "git push -f"
+        - "git push -f *"
+        - "git push * -f"
+        - "git push * -f *"
+        - "*; git push --force"
+        - "*; git push --force *"
+        - "*; git push -f"
+        - "*; git push -f *"
+        - "*&& git push --force"
+        - "*&& git push --force *"
+        - "*&& git push -f"
+        - "*&& git push -f *"
+    reason: Force-push rewrites remote history; use --force-with-lease with explicit review.

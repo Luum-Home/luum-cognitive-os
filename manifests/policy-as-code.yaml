@@ -11,8 +11,14 @@ external_engines:
   casbin: deferred
 
 migrated_hooks:
+  - hooks/destructive-git-blocker.sh
   - hooks/destructive-rm-blocker.sh
   - hooks/protected-config-write-guard.sh
+
+active_policies:
+  - policies/destructive-bash.yaml
+  - policies/destructive-git.yaml
+  - policies/protected-config-write.yaml
 settings_projection:
   command: scripts/cos-policy-settings-projection
   mode: plan-only

@@ -17,7 +17,7 @@ def test_policy_settings_projection_lists_real_policy_hooks(project_root) -> Non
     assert proc.returncode == 0, proc.stderr
     payload = json.loads(proc.stdout)
     ids = {entry["policy_id"] for entry in payload["entries"]}
-    assert {"destructive-bash", "protected-config-write"} <= ids
+    assert {"destructive-bash", "destructive-git", "protected-config-write"} <= ids
     for entry in payload["entries"]:
         assert entry["event"] == "PreToolUse"
         assert "cos-policy-eval" in entry["command"]

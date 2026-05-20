@@ -6,7 +6,7 @@ rollups change an operator or maintainer decision?
 from __future__ import annotations
 
 import json
-from collections import Counter
+from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
@@ -53,6 +53,58 @@ def read_jsonl(path: Path) -> Iterable[dict[str, Any]]:
 
 def normalize_decision(value: Any) -> str:
     return str(value or "unknown").strip().lower().replace(" ", "_").replace("-", "_")
+
+
+def day_bucket(value: Any) -> str:
+    """Return YYYY-MM-DD for an impact row timestamp, or unknown."""
+    raw = str(value or "").strip()
+    if not raw:
+        return "unknown"
+    try:
+        normalized = raw[:-1] + "+00:00" if raw.endswith("Z") else raw
+        return datetime.fromisoformat(normalized).date().isoformat()
+    except ValueError:
+        return "unknown"
+
+
+def build_daily_trend(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Aggregate impact rows by UTC day for adoption trend checks."""
+    by_day: dict[str, dict[str, Any]] = defaultdict(
+        lambda: {
+            "total_decisions": 0,
+            "rollup_influenced_decisions": 0,
+            "changed_decisions": 0,
+            "surfaces": Counter(),
+        }
+    )
+    for row in rows:
+        bucket = by_day[day_bucket(row.get("timestamp"))]
+        bucket["total_decisions"] += 1
+        surface = str(row.get("surface") or "unknown")
+        bucket["surfaces"][surface] += 1
+        if is_rollup_influenced(row):
+            bucket["rollup_influenced_decisions"] += 1
+            if normalize_decision(row.get("decision")) in DECISIONS_THAT_COUNT_AS_CHANGE:
+                bucket["changed_decisions"] += 1
+
+    trend = []
+    for day in sorted(by_day):
+        item = by_day[day]
+        total = int(item["total_decisions"])
+        changed = int(item["changed_decisions"])
+        influenced = int(item["rollup_influenced_decisions"])
+        trend.append(
+            {
+                "day": day,
+                "total_decisions": total,
+                "rollup_influenced_decisions": influenced,
+                "changed_decisions": changed,
+                "influence_rate": round(influenced / total, 6) if total else 0.0,
+                "changed_rate": round(changed / total, 6) if total else 0.0,
+                "surfaces": dict(sorted(item["surfaces"].items())),
+            }
+        )
+    return trend
 
 
 def is_rollup_influenced(row: dict[str, Any]) -> bool:
@@ -133,6 +185,8 @@ def impact_report(project_dir: Path, *, ledger_path: Path | None = None) -> dict
     else:
         status = "rollups_seen_no_change"
 
+    daily_trend = build_daily_trend(rows)
+
     return {
         "schema_version": SCHEMA_VERSION,
         "project_dir": str(project_dir),
@@ -146,4 +200,6 @@ def impact_report(project_dir: Path, *, ledger_path: Path | None = None) -> dict
         "decisions_by_type": dict(sorted(decisions.items())),
         "source_rollup_run_ids": rollup_ids,
         "proposal_ids": proposal_ids,
+        "daily_trend": daily_trend,
+        "latest_trend_day": daily_trend[-1] if daily_trend else None,
     }

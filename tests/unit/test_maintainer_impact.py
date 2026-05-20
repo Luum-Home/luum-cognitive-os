@@ -40,6 +40,42 @@ def test_impact_report_counts_rollup_changed_decisions(tmp_path: Path) -> None:
     assert payload["proposal_ids"] == ["proposal-1"]
 
 
+def test_impact_report_exposes_daily_trend(tmp_path: Path) -> None:
+    ledger = tmp_path / ".cognitive-os" / "metrics" / "maintainer-decision-impact.jsonl"
+    ledger.parent.mkdir(parents=True)
+    rows = [
+        build_decision_event(
+            decision="accepted",
+            surface="governance",
+            source_rollup_ref="report#governance",
+            proposal_id="policy-adoption",
+            timestamp="2026-05-19T10:00:00Z",
+        ),
+        build_decision_event(
+            decision="no_action",
+            surface="telemetry",
+            timestamp="2026-05-20T10:00:00Z",
+        ),
+        build_decision_event(
+            decision="guard_tuned",
+            surface="governance",
+            source_rollup_ref="report#governance",
+            proposal_id="policy-adoption-2",
+            timestamp="2026-05-20T11:00:00Z",
+        ),
+    ]
+    ledger.write_text("".join(json.dumps(row) + "\n" for row in rows), encoding="utf-8")
+
+    payload = impact_report(tmp_path)
+
+    assert [row["day"] for row in payload["daily_trend"]] == ["2026-05-19", "2026-05-20"]
+    assert payload["daily_trend"][0]["changed_decisions"] == 1
+    assert payload["daily_trend"][1]["total_decisions"] == 2
+    assert payload["daily_trend"][1]["changed_decisions"] == 1
+    assert payload["latest_trend_day"]["day"] == "2026-05-20"
+    assert payload["latest_trend_day"]["surfaces"] == {"governance": 1, "telemetry": 1}
+
+
 def test_maintainer_impact_cli_records_and_reports(tmp_path: Path) -> None:
     result = subprocess.run(
         [

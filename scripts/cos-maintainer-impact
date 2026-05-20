@@ -58,11 +58,19 @@ def main() -> int:
     if args.json:
         print(json.dumps(payload, indent=2, sort_keys=True))
     else:
+        latest = payload.get("latest_trend_day") or {}
+        latest_part = ""
+        if latest:
+            latest_part = (
+                f" latest_day={latest.get('day')}"
+                f" latest_changed={latest.get('changed_decisions')}/{latest.get('total_decisions')}"
+            )
         print(
             "maintainer impact: "
             f"status={payload['status']} "
             f"changed={payload['changed_decisions']} "
-            f"influenced={payload['rollup_influenced_decisions']}/{payload['total_decisions']} "
+            f"influenced={payload['rollup_influenced_decisions']}/{payload['total_decisions']}"
+            f"{latest_part} "
             f"ledger={payload['ledger_path']}"
         )
     return 0
