@@ -152,7 +152,7 @@
       "path": "docs/02-Decisions/adrs/ADR-023-updated-input-pattern.md",
       "remaining": "updatedInput behavior exists in secret-detector, but related advisory/profile surfaces named by the ADR are not fully present",
       "remaining_in_scope": null,
-      "title": "Mutate, Don't Block \u2014 `updatedInput` for PreToolUse Hooks"
+      "title": "Mutate, Don't Block — `updatedInput` for PreToolUse Hooks"
     },
     {
       "adr": "ADR-024",
@@ -169,7 +169,7 @@
       "path": "docs/02-Decisions/adrs/ADR-024-task-panel-bridge.md",
       "remaining": "Deferred**: valuable but orthogonal; doesn't solve in-session visibility",
       "remaining_in_scope": true,
-      "title": "Task Panel Bridge \u2014 Correlate COS Tasks with Claude Code tool_use_id"
+      "title": "Task Panel Bridge — Correlate COS Tasks with Claude Code tool_use_id"
     },
     {
       "adr": "ADR-025",
@@ -186,7 +186,7 @@
       "path": "docs/02-Decisions/adrs/ADR-025-install-update-loop.md",
       "remaining": "Three coordinated decisions made on 2026-04-17 across v0.10.0 and follow-up",
       "remaining_in_scope": true,
-      "title": "Install/Update Loop \u2014 Closing the Advisory-Only Gap"
+      "title": "Install/Update Loop — Closing the Advisory-Only Gap"
     },
     {
       "adr": "ADR-026",
@@ -203,7 +203,7 @@
       "path": "docs/02-Decisions/adrs/ADR-026-r2-r3-design-review.md",
       "remaining": "Each refactor was **deliberately deferred**: the PR author added characterization tests that lock in current behavior (including the divergences) and explicitly left reconciliation to a human decision.",
       "remaining_in_scope": true,
-      "title": "R2 and R3 Consolidation \u2014 Design Review"
+      "title": "R2 and R3 Consolidation — Design Review"
     },
     {
       "adr": "ADR-026a",
@@ -220,7 +220,7 @@
       "path": "docs/02-Decisions/adrs/ADR-026a-decisions.md",
       "remaining": "Follow-up R2b (scope-limited deferred from D2.3): absorb 6+ adjacent parsers once characterization tests exist.",
       "remaining_in_scope": true,
-      "title": "R2 and R3 Design Review \u2014 Proposed Decisions (Addendum)"
+      "title": "R2 and R3 Design Review — Proposed Decisions (Addendum)"
     },
     {
       "adr": "ADR-028c",
@@ -368,10 +368,10 @@
       "implementation_status": "partial",
       "number": "035",
       "owner": "",
-      "partial_remaining": "Status**: Not yet implemented \u2014 planned as a follow-up task",
+      "partial_remaining": "Status**: Not yet implemented — planned as a follow-up task",
       "partial_remaining_basis": "explicit body remaining signal",
       "path": "docs/02-Decisions/adrs/ADR-035-worktree-cwd-enforcement.md",
-      "remaining": "Status**: Not yet implemented \u2014 planned as a follow-up task",
+      "remaining": "Status**: Not yet implemented — planned as a follow-up task",
       "remaining_in_scope": true,
       "title": "Worktree CWD Enforcement: 3-Layer Defense"
     },
@@ -407,7 +407,7 @@
       "path": "docs/02-Decisions/adrs/ADR-042-valkey-local-daemon.md",
       "remaining": "remains accessible via `--profile legacy` for CI environments without a",
       "remaining_in_scope": true,
-      "title": "Valkey Local Daemon \u2014 Extract from Docker (D34 Partial)"
+      "title": "Valkey Local Daemon — Extract from Docker (D34 Partial)"
     },
     {
       "adr": "ADR-044",
@@ -427,7 +427,7 @@
       "path": "docs/02-Decisions/adrs/ADR-044-context-payload-slimming.md",
       "remaining": "Deferred tools list (tool names only, schemas loaded via ToolSearch) 6.",
       "remaining_in_scope": true,
-      "title": "Context Payload Slimming \u2014 Non-Rule Startup Payloads"
+      "title": "Context Payload Slimming — Non-Rule Startup Payloads"
     },
     {
       "adr": "ADR-045",
@@ -444,7 +444,7 @@
       "path": "docs/02-Decisions/adrs/ADR-045-postgres-local-daemon.md",
       "remaining": "It remains accessible for CI environments without a local binary.",
       "remaining_in_scope": true,
-      "title": "PostgreSQL Local Daemon \u2014 Extract from Docker (D34)"
+      "title": "PostgreSQL Local Daemon — Extract from Docker (D34)"
     },
     {
       "adr": "ADR-048",
@@ -456,10 +456,10 @@
       "implementation_status": "partial",
       "number": "048",
       "owner": "",
-      "partial_remaining": "It governs the freshness and recreation contract for any Docker containers that remain as optional, fallback, CI, or reference surfaces after ADR-018 and the local-daemon decisions in ADR-042, ADR-043 (deprecated 2026-05-05 \u2014 see ADR-171), and ADR-045.",
+      "partial_remaining": "It governs the freshness and recreation contract for any Docker containers that remain as optional, fallback, CI, or reference surfaces after ADR-018 and the local-daemon decisions in ADR-042, ADR-043 (deprecated 2026-05-05 — see ADR-171), and ADR-045.",
       "partial_remaining_basis": "explicit body remaining signal",
       "path": "docs/02-Decisions/adrs/ADR-048-docker-container-image-freshness.md",
-      "remaining": "It governs the freshness and recreation contract for any Docker containers that remain as optional, fallback, CI, or reference surfaces after ADR-018 and the local-daemon decisions in ADR-042, ADR-043 (deprecated 2026-05-05 \u2014 see ADR-171), and ADR-045.",
+      "remaining": "It governs the freshness and recreation contract for any Docker containers that remain as optional, fallback, CI, or reference surfaces after ADR-018 and the local-daemon decisions in ADR-042, ADR-043 (deprecated 2026-05-05 — see ADR-171), and ADR-045.",
       "remaining_in_scope": true,
       "title": "Docker Container Image Freshness"
     },
@@ -490,10 +490,10 @@
       "implementation_status": "partial",
       "number": "054",
       "owner": "",
-      "partial_remaining": "\u2014 Deferred; convention over enforcement for v1.",
+      "partial_remaining": "— Deferred; convention over enforcement for v1.",
       "partial_remaining_basis": "explicit body remaining signal",
       "path": "docs/02-Decisions/adrs/ADR-054-project-docs-convention.md",
-      "remaining": "\u2014 Deferred; convention over enforcement for v1.",
+      "remaining": "— Deferred; convention over enforcement for v1.",
       "remaining_in_scope": true,
       "title": "Project Documentation Convention (10 Categories)"
     },
@@ -546,7 +546,7 @@
       "path": "docs/02-Decisions/adrs/ADR-056-adaptive-agent-dispatch.md",
       "remaining": "Deferred. Design only.**",
       "remaining_in_scope": true,
-      "title": "Adaptive Agent() dispatch: 3-tier auto-switch Claude \u2192 Qwen"
+      "title": "Adaptive Agent() dispatch: 3-tier auto-switch Claude → Qwen"
     },
     {
       "adr": "ADR-057",
@@ -580,7 +580,7 @@
       "path": "docs/02-Decisions/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md",
       "remaining": "Rollback remains cheap.",
       "remaining_in_scope": true,
-      "title": "Observability Migration: Langfuse \u2192 Arize Phoenix"
+      "title": "Observability Migration: Langfuse → Arize Phoenix"
     },
     {
       "adr": "ADR-060",
@@ -677,10 +677,10 @@
       "implementation_status": "partial",
       "number": "071",
       "owner": "",
-      "partial_remaining": "Phases 2\u20134 are scoped and planned but not implemented until Phase 1 is verified.",
+      "partial_remaining": "Phases 2–4 are scoped and planned but not implemented until Phase 1 is verified.",
       "partial_remaining_basis": "explicit body remaining signal",
       "path": "docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md",
-      "remaining": "Phases 2\u20134 are scoped and planned but not implemented until Phase 1 is verified.",
+      "remaining": "Phases 2–4 are scoped and planned but not implemented until Phase 1 is verified.",
       "remaining_in_scope": true,
       "title": "Engram Lifecycle Evolution via Wrapper Layer"
     },
@@ -750,7 +750,7 @@
       "path": "docs/02-Decisions/adrs/ADR-075-stage2-selective-expansion.md",
       "remaining": "Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal.",
       "remaining_in_scope": null,
-      "title": "Stage 2 Selective Expansion \u2014 Tier-Based Ref-Key Filtering"
+      "title": "Stage 2 Selective Expansion — Tier-Based Ref-Key Filtering"
     },
     {
       "adr": "ADR-076",
@@ -881,10 +881,10 @@
       "implementation_status": "partial",
       "number": "086",
       "owner": "",
-      "partial_remaining": "The user's global settings.json already uses `claude-hud` for the statusline; composing the hook status into claude-hud would require modifying the plugin \u2014 this is deferred.",
+      "partial_remaining": "The user's global settings.json already uses `claude-hud` for the statusline; composing the hook status into claude-hud would require modifying the plugin — this is deferred.",
       "partial_remaining_basis": "explicit body remaining signal",
       "path": "docs/02-Decisions/adrs/ADR-086-hook-execution-observability.md",
-      "remaining": "The user's global settings.json already uses `claude-hud` for the statusline; composing the hook status into claude-hud would require modifying the plugin \u2014 this is deferred.",
+      "remaining": "The user's global settings.json already uses `claude-hud` for the statusline; composing the hook status into claude-hud would require modifying the plugin — this is deferred.",
       "remaining_in_scope": true,
       "title": "Hook Execution Observability"
     },
@@ -971,7 +971,7 @@
       "path": "docs/02-Decisions/adrs/ADR-093-simplify-profiles.md",
       "remaining": "any follow-up install step.",
       "remaining_in_scope": true,
-      "title": "Simplify Install Profiles \u2014 Collapse 3-Tier System to `default` + `--full`"
+      "title": "Simplify Install Profiles — Collapse 3-Tier System to `default` + `--full`"
     },
     {
       "adr": "ADR-094",
@@ -988,7 +988,7 @@
       "path": "docs/02-Decisions/adrs/ADR-094-agent-git-safety.md",
       "remaining": "perspective, because the tool was not blocked and produced no alert.",
       "remaining_in_scope": true,
-      "title": "Agent Git Operations Safety \u2014 Layered Prevention of Destructive Git Ops"
+      "title": "Agent Git Operations Safety — Layered Prevention of Destructive Git Ops"
     },
     {
       "adr": "ADR-095",
@@ -1090,7 +1090,7 @@
       "path": "docs/02-Decisions/adrs/ADR-102-task-tracker-lifecycle.md",
       "remaining": "Queue draining unblocked:** stale records no longer cause permanent saturation.",
       "remaining_in_scope": true,
-      "title": "Task tracker lifecycle: pending \u2192 in_progress \u2192 terminal, with PID capture and zombie reaper"
+      "title": "Task tracker lifecycle: pending → in_progress → terminal, with PID capture and zombie reaper"
     },
     {
       "adr": "ADR-105",
@@ -1229,7 +1229,7 @@
     },
     {
       "adr": "ADR-121",
-      "classification_basis": "program ADR tracks phased hardening invariants; S1/S4 evidence exists while remaining phases stay open",
+      "classification_basis": "program ADR is partial: Phase 1/2/4/5 acceptance is closed; residuals are Phase 3 ownership coverage and Phase 6 ADR-118 swarm scenarios",
       "date": "2026-05-02",
       "decision_status": "accepted",
       "follow_up_adr": "",
@@ -1243,10 +1243,10 @@
       "implementation_status": "partial",
       "number": "121",
       "owner": "",
-      "partial_remaining": "program ADR tracks phased hardening invariants; S1/S4 evidence exists while remaining phases stay open",
+      "partial_remaining": "program ADR is partial: Phase 1/2/4/5 acceptance is closed; residuals are Phase 3 ownership coverage and Phase 6 ADR-118 swarm scenarios",
       "partial_remaining_basis": "specific classification_basis",
       "path": "docs/02-Decisions/adrs/ADR-121-foundation-hardening-program.md",
-      "remaining": "program ADR tracks phased hardening invariants; S1/S4 evidence exists while remaining phases stay open",
+      "remaining": "program ADR is partial: Phase 1/2/4/5 acceptance is closed; residuals are Phase 3 ownership coverage and Phase 6 ADR-118 swarm scenarios",
       "remaining_in_scope": null,
       "title": "Foundation Hardening Program"
     },
@@ -1405,7 +1405,7 @@
       "path": "docs/02-Decisions/adrs/ADR-173-surface-5-research-gate.md",
       "remaining": "follow-up ADR exists.",
       "remaining_in_scope": true,
-      "title": "Surface 5 Research Gate \u2014 No Custom TUI/UI Adoption Without Source-Level Proof"
+      "title": "Surface 5 Research Gate — No Custom TUI/UI Adoption Without Source-Level Proof"
     },
     {
       "adr": "ADR-178",
@@ -2057,7 +2057,7 @@
     },
     {
       "adr": "ADR-291",
-      "classification_basis": "phase-1 contract skeleton with 26 operations (25 distinct path strings), 3 functional (health/version/agent options), 23 returning 501 with typed schemas, full contract test suite. The /csrf-token endpoint was removed in the security pass \u2014 it was token-shaped string theater without server-side store; real CSRF defense ships with Phase 2.",
+      "classification_basis": "phase-2-in-progress: 11 functional operations are live (health/version/agent options plus 8 file-backed JSON session lifecycle/event endpoints); remaining scope is 12 typed JSON 501 stubs, 3 SSE stub operations, sync agent queries, models/runtime settings, CSRF, rate limiting, workspace/search, sharing, abort, and JSON-to-SQLite migration.",
       "date": "2026-05-13",
       "decision_status": "accepted",
       "follow_up_adr": "",
@@ -2075,10 +2075,10 @@
       "implementation_status": "partial",
       "number": "291",
       "owner": "",
-      "partial_remaining": "",
-      "partial_remaining_basis": "",
+      "partial_remaining": "phase-2-in-progress: 11 functional operations are live (health/version/agent options plus 8 file-backed JSON session lifecycle/event endpoints); remaining scope is 12 typed JSON 501 stubs, 3 SSE stub operations, sync agent queries, models/runtime settings, CSRF, rate limiting, workspace/search, sharing, abort, and JSON-to-SQLite migration.",
+      "partial_remaining_basis": "manual Wave 5 slice reconciliation",
       "path": "docs/02-Decisions/adrs/ADR-291-agent-runtime-web-service.md",
-      "remaining": "phase-1 contract skeleton with 26 operations (25 distinct path strings), 3 functional (health/version/agent options), 23 returning 501 with typed schemas, full contract test suite. The /csrf-token endpoint was removed in the security pass \u2014 it was token-shaped string theater without server-side store; real CSRF defense ships with Phase 2.",
+      "remaining": "phase-2-in-progress: 11 functional operations are live (health/version/agent options plus 8 file-backed JSON session lifecycle/event endpoints); remaining scope is 12 typed JSON 501 stubs, 3 SSE stub operations, sync agent queries, models/runtime settings, CSRF, rate limiting, workspace/search, sharing, abort, and JSON-to-SQLite migration.",
       "remaining_in_scope": null,
       "title": "Agent Runtime Web Service: HTTP + SSE Surface for Harness-Independent Clients"
     },
@@ -2135,7 +2135,7 @@
     },
     {
       "adr": "ADR-325",
-      "classification_basis": "resource scarcity, model rate limits, language token overhead, public history hygiene, and repeated validation loops require explicit budget ledgers, preflight estimates, local fallback, and degradation rules instead of relying on agent discipline.",
+      "classification_basis": "partial ADR-325 implementation: manifest/audit/preflight/language-token rule and Phase 2 taximeter exist; Phase 3 has initial context-budget resource-ledger emission and token-budget ledger reads. Remaining scope is subagent-budget ledger integration, provider actual-cost ingestion, ledger normalization/deduplication, preflight threshold enforcement, local fallback routing, and CI ratchets.",
       "date": "2026-05-15",
       "decision_status": "accepted",
       "follow_up_adr": "",
@@ -2156,10 +2156,10 @@
       "implementation_status": "partial",
       "number": "325",
       "owner": "",
-      "partial_remaining": "",
-      "partial_remaining_basis": "",
+      "partial_remaining": "partial ADR-325 implementation: manifest/audit/preflight/language-token rule and Phase 2 taximeter exist; Phase 3 has initial context-budget resource-ledger emission and token-budget ledger reads. Remaining scope is subagent-budget ledger integration, provider actual-cost ingestion, ledger normalization/deduplication, preflight threshold enforcement, local fallback routing, and CI ratchets.",
+      "partial_remaining_basis": "manual Wave 5 slice reconciliation",
       "path": "docs/02-Decisions/adrs/ADR-325-ai-resource-economy-and-degradation.md",
-      "remaining": "resource scarcity, model rate limits, language token overhead, public history hygiene, and repeated validation loops require explicit budget ledgers, preflight estimates, local fallback, and degradation rules instead of relying on agent discipline.",
+      "remaining": "partial ADR-325 implementation: manifest/audit/preflight/language-token rule and Phase 2 taximeter exist; Phase 3 has initial context-budget resource-ledger emission and token-budget ledger reads. Remaining scope is subagent-budget ledger integration, provider actual-cost ingestion, ledger normalization/deduplication, preflight threshold enforcement, local fallback routing, and CI ratchets.",
       "remaining_in_scope": null,
       "title": "AI Resource Economy, Budget Preflight, and Graceful Degradation"
     }

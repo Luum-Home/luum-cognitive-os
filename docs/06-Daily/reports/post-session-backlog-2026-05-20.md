@@ -73,7 +73,7 @@ its own gaps. Postmortem at
 | 3 | Op Stability Phase 3 — adaptive profiles resolver | multi-sesión | `lean|standard|strict` profile picker per phase + per surface. | op-stability plan §Phase 3 |
 | 4 | Op Stability Phase 7 — distribution boundary metadata | multi-sesión | Every projected primitive has distribution metadata; maintainer/lab off default runtime path. | op-stability plan §Phase 7 |
 | 5 | Op Stability Phase 8 — productization threshold | multi-sesión | 6 exit-criteria checkboxes (status accuracy, false-positive trend, merge-queue default, chaos N=10/20/50, etc.). Mostly verified this session — outstanding: merge-queue default path and adjacent distribution/default-core checks. | op-stability plan §Phase 8 |
-| 6 | Wave 5 backlog: ADR-121 phases 3-6, ADR-291 23 endpoints, ADR-325 phases 3-5 | multi-sesión by design | Structural backlog. Each is its own arc. | post-audit-cleanup-roadmap.md |
+| 6 | Wave 5 backlog: ADR-121 Phase 3 ownership coverage + Phase 6 swarm scenarios, ADR-291 remaining Phase 2/3 service endpoints, ADR-325 Phase 3+ resource-economy adoption | multi-sesión by design | Structural backlog. Closed this cut: ADR-121 state truth narrowed, ADR-291 file-backed session lifecycle/events, ADR-325 context-budget ledger emission + token-budget ledger reads. Remaining work is broader adoption/runtime wiring, not blank-slate substrate. | ADR-121/291/325 docs |
 
 ## Items intentionally NOT prioritized
 
