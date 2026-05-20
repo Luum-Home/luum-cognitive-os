@@ -109,13 +109,13 @@ Counts per surface: Hooks 38 CORE / 97 EXTENSION (target <40 CORE ✓), Libs 24/
 
 ### Day 15 — Reclassification
 
-- [ ] Verify current counts against audit (re-run aspirational_audit to confirm items haven't shifted classification since 2026-04-20 audit)
-- [ ] Output: `.cognitive-os/reports/core-extension-split-2026-05-XX.md` — delta from 2026-04-20 audit (new items, reclassified items, removed items)
-- [ ] Sub-task: confirm 15 extension packs from audit still map correctly to `packages/cos-{name}/` targets
+- [x] Verify current counts against audit (re-run aspirational_audit to confirm items haven't shifted classification since 2026-04-20 audit). Verified 2026-05-20: `scripts/aspirational_audit.py --json` total=1215, counts `REAL=330`, `ON_DEMAND=798`, `METADATA=87`, ratio=0.0; surface expanded from the 2026-04-20 581-primitive audit.
+- [x] Output: `.cognitive-os/reports/core-extension-split-2026-05-XX.md` — delta from 2026-04-20 audit (new items, reclassified items, removed items). Written 2026-05-20: `.cognitive-os/reports/core-extension-split-2026-05-20.md`.
+- [x] Sub-task: confirm 15 extension packs from audit still map correctly to `packages/cos-{name}/` targets. Verified 2026-05-20: 32 package manifests exist; report maps original pack names to current split/renamed packages and flags folded/missing exact names.
 
 ### Days 16-18 — File migration (wave approach per migration plan)
 
-- [ ] Wave 0 (prerequisite): verify `packages/cos-{name}/cos-package.yaml` schema supports `hook_registrations:` key
+- [x] Wave 0 (prerequisite): verify `packages/cos-{name}/cos-package.yaml` schema supports `hook_registrations:` key. Verified 2026-05-20: `packages/cos-advisory-llm/cos-package.yaml` contains `hook_registrations:` entries for UserPromptSubmit/PreToolUse/PostToolUse.
 - [ ] Wave 1 (highest blast-radius items): migrate `cos-advisory-llm` pack (`*-llm.sh` hooks + advisor_*.py libs)
   - [ ] `git mv hooks/*-llm.sh packages/cos-advisory-llm/hooks/`
   - [ ] Leave backward-compat symlink at old path for one release cycle
