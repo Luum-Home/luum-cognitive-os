@@ -237,7 +237,7 @@ def _line_reference_required(line: str) -> bool:
         return False
     if "additionalContext" in stripped or "hookSpecificOutput" in stripped:
         return False
-    if re.match(r"^[A-Z0-9_]+\s*=", stripped):
+    if re.match(r"^[A-Za-z_][A-Za-z0-9_]*\s*=", stripped):
         return False
     if "[ -x" in stripped or "[ -f" in stripped or "test -x" in stripped or "test -f" in stripped:
         return False
