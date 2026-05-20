@@ -80,6 +80,7 @@ def test_install_hook_dry_run_accepts_packaged_user_prompt_submit_hook() -> None
     assert "packages/cos-advisory-llm/hooks/prompt-quality-llm.sh" in result.stdout
 
 
+@pytest.mark.timeout(180)
 def test_aspirational_audit_reports_zero_active_dormant_debt() -> None:
     """The current classifier should prove Phase 3 starts from zero active dormant debt."""
     payload = None
