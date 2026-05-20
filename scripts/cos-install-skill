@@ -133,6 +133,13 @@ validate_skill "$RESOLVED_SOURCE"
 # Check for collision
 if [[ -L "$SYMLINK_TARGET" ]]; then
   existing="$(readlink -f "$SYMLINK_TARGET" 2>/dev/null || true)"
+  resolved_existing="$(cd "$(dirname "$RESOLVED_SOURCE")" && pwd)/$(basename "$RESOLVED_SOURCE")"
+  if [[ "$existing" == "$resolved_existing" ]]; then
+    echo "install-skill: ${SKILL_NAME} is already installed at .claude/skills/${SKILL_NAME}"
+    echo "  Current target: ${existing}"
+    echo "install-skill: idempotent success — no files changed"
+    exit 0
+  fi
   echo "ERROR: Skill '${SKILL_NAME}' is already installed at .claude/skills/${SKILL_NAME}" >&2
   echo "  Current target: ${existing}" >&2
   echo "  Use '/add-skill' to author a replacement, or remove the existing symlink first." >&2

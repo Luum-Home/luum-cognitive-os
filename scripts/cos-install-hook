@@ -140,16 +140,18 @@ validate_hook "$RESOLVED_SOURCE"
 if [[ -z "$EVENT_TYPE" ]]; then
   EVENT_TYPE="$(extract_header "$RESOLVED_SOURCE" "EVENT")"
 fi
+VALID_EVENTS="PreToolUse|PostToolUse|SessionStart|Stop|UserPromptSubmit|SubagentStart|PreCompact|TeammateIdle|TaskCreated|TaskCompleted"
+
 if [[ -z "$EVENT_TYPE" ]]; then
-  echo "ERROR: Cannot determine event type. Pass --event <PreToolUse|PostToolUse|SessionStart|Stop>" >&2
+  echo "ERROR: Cannot determine event type. Pass --event <${VALID_EVENTS}>" >&2
   exit 1
 fi
 
 # Validate event type
 case "$EVENT_TYPE" in
-  PreToolUse|PostToolUse|SessionStart|Stop) ;;
+  PreToolUse|PostToolUse|SessionStart|Stop|UserPromptSubmit|SubagentStart|PreCompact|TeammateIdle|TaskCreated|TaskCompleted) ;;
   *)
-    echo "ERROR: Invalid event type '${EVENT_TYPE}'. Must be one of: PreToolUse, PostToolUse, SessionStart, Stop" >&2
+    echo "ERROR: Invalid event type '${EVENT_TYPE}'. Must be one of: ${VALID_EVENTS}" >&2
     exit 1
     ;;
 esac
