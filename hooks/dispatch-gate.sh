@@ -38,7 +38,12 @@ try:
     except Exception:
         d = {}
     tool_input = d.get("tool_input", {}) if isinstance(d, dict) else {}
+    if not isinstance(tool_input, dict):
+        tool_input = {}
     prompt = tool_input.get("prompt", "") or tool_input.get("description", "") or tool_input.get("task", "")
+    prompt = str(prompt).strip()
+    if not prompt:
+        raise ValueError("missing Agent prompt/description/task; refusing to enqueue unrelaunchable Agent launch")
     description = (prompt[:100]) if prompt else "agent task"
     model_match = re.search(r"model[\":\s]+([a-z]+)", prompt[:200].lower())
     model = model_match.group(1) if model_match else "sonnet"

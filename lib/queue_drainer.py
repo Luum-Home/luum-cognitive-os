@@ -50,6 +50,7 @@ _DEFAULT_CONFIG_PATH = "cognitive-os.yaml"
 _DEFAULT_MAX_PARALLEL = 5
 _MAX_QUEUE_SIZE = 100
 _MAX_AGE_SECONDS = 4 * 3600  # auto-prune items older than 4 hours
+_CORRUPT_STATUS = "corrupt"
 
 
 # ---------------------------------------------------------------------------
@@ -102,6 +103,11 @@ def _count_active_tasks(tasks_path: Optional[str] = None) -> int:
 def _prompt_fingerprint(prompt: str) -> str:
     """Return a short hash to detect duplicate prompts."""
     return hashlib.sha256(prompt.encode()).hexdigest()[:16]
+
+
+def _valid_prompt(prompt: Any) -> bool:
+    """Return True when a queue item has relaunchable Agent intent."""
+    return isinstance(prompt, str) and bool(prompt.strip())
 
 
 # ---------------------------------------------------------------------------
@@ -195,6 +201,20 @@ class QueueDrainer:
             fresh = fresh[-_MAX_QUEUE_SIZE:]
         return fresh
 
+    def _quarantine_corrupt(self, items: List[Dict[str, Any]]) -> bool:
+        """Mark invalid queued rows corrupt so they are never relaunched."""
+        changed = False
+        for item in items:
+            if item.get("status") != "queued":
+                continue
+            if _valid_prompt(item.get("prompt", "")):
+                continue
+            item["status"] = _CORRUPT_STATUS
+            item["corruption_reason"] = "empty Agent prompt"
+            item["corrupted_at"] = _now_iso()
+            changed = True
+        return changed
+
     def _available_slots(self) -> int:
         """How many slots are currently free."""
         max_parallel = self._max_parallel
@@ -228,11 +248,16 @@ class QueueDrainer:
         Returns:
             The item id (UUID). If deduplicated, returns the existing id.
         """
+        if not _valid_prompt(prompt):
+            raise ValueError("dispatch queue prompt is empty; refusing to enqueue corrupt Agent launch")
+
+        prompt = prompt.strip()
         priority = max(1, min(10, priority))
         fingerprint = _prompt_fingerprint(prompt)
 
         items = self._load_locked()
         items = self._prune_old(items)
+        quarantined = self._quarantine_corrupt(items)
 
         # Idempotency check
         for item in items:
@@ -240,6 +265,8 @@ class QueueDrainer:
                 item.get("_fingerprint") == fingerprint
                 and item.get("status") == "queued"
             ):
+                if quarantined:
+                    self._save_queue(items)
                 return item["id"]
 
         item_id = str(uuid.uuid4())
@@ -292,8 +319,13 @@ class QueueDrainer:
 
         items = self._load_locked()
         items = self._prune_old(items)
+        if self._quarantine_corrupt(items):
+            self._save_queue(items)
 
-        queued = [i for i in items if i.get("status") == "queued"]
+        queued = [
+            i for i in items
+            if i.get("status") == "queued" and _valid_prompt(i.get("prompt", ""))
+        ]
         queued.sort(key=lambda x: (x.get("priority", 5), x.get("_enqueued_epoch", 0)))
 
         # Build the canonical return structure first (all candidates)
