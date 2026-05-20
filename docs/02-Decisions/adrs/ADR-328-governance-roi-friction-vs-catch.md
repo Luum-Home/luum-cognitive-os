@@ -11,6 +11,10 @@ implementation_files:
 - scripts/cos-status.sh
 - scripts/cos
 - scripts/hook-timing-wrapper.sh
+- hooks/_lib/governance-policy.sh
+- hooks/destructive-git-blocker.sh
+- hooks/destructive-rm-blocker.sh
+- hooks/direct-main-guard.sh
 - tests/unit/test_cos_governance_roi.py
 - tests/behavior/test_cos_status.py
 - tests/contracts/test_hook_timing_wrapper.py
@@ -28,7 +32,7 @@ tags:
 
 ## Status
 
-Accepted. Read-side dashboard, write-side catch logging, optional blocked-hook prompts, weighted severity normalization, and the executable phase-policy adapter are implemented. Full per-guard phase-policy enforcement remains incremental: each hard-blocking hook must call the policy adapter before returning a block.
+Accepted. Read-side dashboard, write-side catch logging, optional blocked-hook prompts, weighted severity normalization, and the executable phase-policy adapter are implemented. Initial hard-blocking hooks (`destructive-git-blocker`, `destructive-rm-blocker`, `direct-main-guard`) call the adapter. Full per-guard phase-policy enforcement remains incremental: each additional hard-blocking hook must call the policy adapter before returning a block.
 
 ## Context
 
@@ -134,10 +138,10 @@ Blocking posture is shaped by `cognitive-os.yaml → project.phase`:
 
 | Phase | Policy |
 |---|---|
-| `reconstruction` | Minimal blocking: destructive git, secrets, credential leaks, and work-loss risks block; style/process friction should be advisory. |
-| `stabilization` | Contract-focused blocking: tests, primitive drift, runtime-state loss, and contract failures can block. |
-| `production` | Strict release blocking: release, security, migration, public claims, and protected config changes block. |
-| `maintenance` | Regression-focused blocking: regressions, security issues, unsafe changes, and data loss block. |
+| `reconstruction` | Minimal blocking: destructive git, destructive file erasure, protected-branch writes, secrets, credential leaks, and work-loss risks block; style/process friction should be advisory. |
+| `stabilization` | Contract-focused blocking: tests, primitive drift, runtime-state loss, destructive operations, protected-branch writes, and contract failures can block. |
+| `production` | Strict release blocking: release, security, migration, public claims, protected config changes, destructive operations, and protected-branch writes block. |
+| `maintenance` | Regression-focused blocking: regressions, security issues, unsafe changes, destructive operations, protected-branch writes, and data loss block. |
 
 Hooks must not treat this table as decorative config. The canonical executable adapter is:
 
