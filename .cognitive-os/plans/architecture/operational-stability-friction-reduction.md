@@ -144,9 +144,9 @@ verified: 2026-05-18 — audit test: tests/audit/test_hook_maturity_coverage.py 
 
 ### Acceptance
 
-- [ ] `cos profile explain` shows why the profile was selected.
+- [x] `cos profile explain` shows why the profile was selected. (verified: scripts/cos_profile_explain.py prints profile+reasons)
 - [ ] `lean` still protects secrets and destructive operations.
-- [ ] `strict` is selected for main landing and multi-agent contention.
+- [x] `strict` is selected for main landing and multi-agent contention. (verified: lib/adaptive_profile.py:64-65)
 
 ### Validation
 
@@ -179,8 +179,8 @@ python3 -m pytest tests/behavior/test_adaptive_profiles.py -q
 ### Acceptance
 
 - [x] Dry-run is default. (verified: grep -n "DRY_RUN=1" scripts/cos-cleanup.sh)
-- [ ] No repair deletes uncommitted work without backup and explicit selector.
-- [ ] Re-running safe repair is idempotent.
+- [x] No repair deletes uncommitted work without backup and explicit selector. (verified: scripts/cos_cleanup_preserved_wip.py:6,127)
+- [x] Re-running safe repair is idempotent. (verified: tests/behavior/test_cos_cleanup.py:166)
 
 ### Validation
 
@@ -309,12 +309,12 @@ python3 -m pytest tests/behavior/test_core_install_is_low_friction.py -q
 Cognitive OS can be considered operationally stable enough for default-on use
 when all are true:
 
-- [ ] `cos status` reports safe/unsafe states accurately in fixture repos.
-- [ ] False-positive blocker rate is tracked and trending down.
-- [ ] Safe repairs are idempotent and covered by race tests.
-- [ ] New guards cannot enter `block` without maturity metadata and tests.
+- [x] `cos status` reports safe/unsafe states accurately in fixture repos. (verified: tests/unit/test_cos_operational_status.py:38)
+- [x] False-positive blocker rate is tracked and trending down. (verified: lib/hook_tuner.py:69 get_false_positive_rate)
+- [x] Safe repairs are idempotent and covered by race tests. (verified: tests/behavior/test_cos_cleanup.py:166)
+- [x] New guards cannot enter `block` without maturity metadata and tests. (verified: tests/contracts/test_hook_quality_system.py:77)
 - [ ] Merge queue / protected landing is the default path for main.
-- [ ] Multi-agent chaos suite covers N=10/20/50 contention without deadlocks.
+- [x] Multi-agent chaos suite covers N=10/20/50 contention without deadlocks. (verified: tests/chaos/test_swarm_stress.py:308)
 
 ## Implementation order
 
