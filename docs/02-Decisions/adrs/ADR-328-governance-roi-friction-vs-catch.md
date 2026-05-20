@@ -2,15 +2,18 @@
 adr: 328
 title: Governance ROI Friction-vs-Catch Ratios
 status: accepted
-implementation_status: implemented
+implementation_status: partial
 date: '2026-05-20'
 supersedes: []
 superseded_by: null
 implementation_files:
 - scripts/cos_governance_roi.py
 - scripts/cos-status.sh
+- scripts/cos
+- scripts/hook-timing-wrapper.sh
 - tests/unit/test_cos_governance_roi.py
 - tests/behavior/test_cos_status.py
+- tests/contracts/test_hook_timing_wrapper.py
 tier: maintainer
 classification_basis: Cognitive OS governance only pays when guard friction prevents real work loss, security risk, high-blast-radius mistakes, or multi-agent coordination failure; the system needs explicit reviewed catch evidence and phase-aware blocking thresholds.
 tags:
@@ -25,7 +28,7 @@ tags:
 
 ## Status
 
-Accepted. Implemented as an extension of `scripts/cos_governance_roi.py` and surfaced in `scripts/cos-status.sh`.
+Accepted. Read-side dashboard, write-side catch logging, optional blocked-hook prompts, weighted severity normalization, and the executable phase-policy adapter are implemented. Full per-guard phase-policy enforcement remains incremental: each hard-blocking hook must call the policy adapter before returning a block.
 
 ## Context
 
@@ -40,7 +43,11 @@ A raw count of guard blocks is therefore insufficient. The OS must distinguish *
 
 ## Decision
 
-Add a first-class **friction-vs-catch ratio** to the governance ROI dashboard and expose it in `cos status`.
+Add a first-class **friction-vs-catch ratio** to the governance ROI dashboard and expose it in `cos status`. This ADR has three executable surfaces:
+
+1. **Read-side** — `cos governance roi` and `cos status` expose ROI, ratio, catch ledger counts, and phase policy.
+2. **Write-side** — blocked hooks emit optional catch-review prompts, and operators can record reviewed outcomes with `cos governance catch log`.
+3. **Enforcement adapter** — hooks can ask `cos governance policy --category <category>` whether a category is allowed to hard-block in the current phase.
 
 ### Catch ledger
 
@@ -65,15 +72,53 @@ Supported verdict families:
 
 `silent_loss_prevented` and `high_blast_radius_catch` count as confirmed useful catches.
 
+### Catch logging write-side
+
+The hook timing wrapper records an optional prompt whenever a wrapped hook exits with code `2`:
+
+```text
+.cognitive-os/metrics/governance-catch-prompts.jsonl
+```
+
+The prompt defaults to `skip`; it never blocks and never forces an operator answer. It only prints a short command suggestion:
+
+```bash
+scripts/cos governance catch log \
+  --hook dispatch-gate \
+  --event PreToolUse \
+  --verdict confirmed-valid-block \
+  --reason "blocked empty Agent prompt"
+```
+
+Operators can also classify false friction:
+
+```bash
+scripts/cos governance catch log \
+  --hook edit-lock \
+  --verdict false-positive-override \
+  --reason "blocked a safe unrelated edit"
+```
+
 ### Ratio
 
 The ratio is:
 
 ```text
-total blocking guard events / confirmed useful catches
+weighted blocking guard events / weighted confirmed useful catches
 ```
 
 If no reviewed catches exist, status is `unknown`; the dashboard must ask for ledger entries instead of pretending that all blocks were correct.
+
+Severity weights normalize block value:
+
+| Severity | Weight |
+|---|---:|
+| `low` | `0.5` |
+| `medium` | `1.0` |
+| `high` | `2.0` |
+| `critical` | `3.0` |
+
+Hooks can provide explicit severity in catch rows. Otherwise the dashboard infers severity from hook names: destructive/secret/credential/protected-config/lethal are critical, dispatch/validation/stash/private/clean-room are high, edit-lock/budget are medium, and clarification/router/suggest are low.
 
 Bands:
 
@@ -93,6 +138,14 @@ Blocking posture is shaped by `cognitive-os.yaml → project.phase`:
 | `stabilization` | Contract-focused blocking: tests, primitive drift, runtime-state loss, and contract failures can block. |
 | `production` | Strict release blocking: release, security, migration, public claims, and protected config changes block. |
 | `maintenance` | Regression-focused blocking: regressions, security issues, unsafe changes, and data loss block. |
+
+Hooks must not treat this table as decorative config. The canonical executable adapter is:
+
+```bash
+scripts/cos governance policy --category destructive-git --json
+```
+
+Unknown phases or unknown categories default to advisory, not blocking. This prevents new low-signal guards from becoming always-on friction accidentally.
 
 ### Status surface
 
@@ -116,12 +169,15 @@ Governance ROI: net=-10.27m ratio=unknown unknown catches=0 false+=0 phase=recon
 - The ratio depends on operator-reviewed ledger rows; without review, the status is intentionally `unknown`.
 - The initial benefit model remains heuristic and should not be treated as financial accounting.
 - Phase policy is coarse; individual guards still need local judgment and tests.
+- Full per-guard adoption requires touching each hard-blocking hook. Until then, `cos governance policy` is the contract new/changed blocking hooks must use.
 
 ## Verification
 
 ```bash
 python3 -m py_compile scripts/cos_governance_roi.py
-python3 -m pytest tests/unit/test_cos_governance_roi.py tests/behavior/test_cos_status.py -q
+python3 -m pytest tests/unit/test_cos_governance_roi.py tests/behavior/test_cos_status.py tests/contracts/test_hook_timing_wrapper.py -q
 scripts/cos governance roi --json
+scripts/cos governance catch pending --json
+scripts/cos governance policy --category destructive-git --json
 scripts/cos status --json
 ```

@@ -32,6 +32,7 @@ MINUTES_PER_WIP_RESTORE = 30.0
 MINUTES_PER_FALSE_POSITIVE_CANDIDATE = 5.0
 
 GOVERNANCE_CATCH_LEDGER = Path(".cognitive-os") / "metrics" / "governance-catches.jsonl"
+GOVERNANCE_CATCH_PROMPTS = Path(".cognitive-os") / "metrics" / "governance-catch-prompts.jsonl"
 
 CONFIRMED_VALID_BLOCK_VALUES = {
     "confirmed-valid-block",
@@ -60,6 +61,31 @@ HIGH_BLAST_RADIUS_VALUES = {
     "high-risk-catch",
     "high_risk_catch",
 }
+
+SEVERITY_WEIGHTS: dict[str, float] = {
+    "low": 0.5,
+    "medium": 1.0,
+    "high": 2.0,
+    "critical": 3.0,
+}
+
+HOOK_SEVERITY_HINTS: tuple[tuple[str, str], ...] = (
+    ("lethal", "critical"),
+    ("secret", "critical"),
+    ("credential", "critical"),
+    ("destructive", "critical"),
+    ("protected-config", "critical"),
+    ("private-mode", "high"),
+    ("clean-room", "high"),
+    ("dispatch", "high"),
+    ("validation", "high"),
+    ("stash", "high"),
+    ("edit-lock", "medium"),
+    ("budget", "medium"),
+    ("clarification", "low"),
+    ("router", "low"),
+    ("suggest", "low"),
+)
 
 PHASE_POLICIES: dict[str, dict[str, Any]] = {
     "reconstruction": {
@@ -140,7 +166,12 @@ def collect_hook_metrics(root: Path, since_epoch: float | None) -> dict[str, Any
     killed = [r for r in rows if str(r.get("signal") or "")]
     body_ms = [float(r.get("body_duration_ms") or r.get("duration_ms") or 0) for r in rows]
 
-    top_blocking = Counter(str(r.get("hook") or "unknown") for r in blocks).most_common(10)
+    weighted_blocks = round(sum(severity_weight_for_row(r) for r in blocks), 2)
+    top_blocking_counter: Counter[str] = Counter(str(r.get("hook") or "unknown") for r in blocks)
+    top_blocking_weight: Counter[str] = Counter()
+    for row in blocks:
+        top_blocking_weight[str(row.get("hook") or "unknown")] += severity_weight_for_row(row)
+    top_blocking = top_blocking_counter.most_common(10)
     top_latency = []
     for hook, hook_rows in by_hook.items():
         vals = [float(r.get("body_duration_ms") or r.get("duration_ms") or 0) for r in hook_rows]
@@ -150,11 +181,15 @@ def collect_hook_metrics(root: Path, since_epoch: float | None) -> dict[str, Any
     return {
         "invocations": len(rows),
         "blocking_events": len(blocks),
+        "weighted_block_events": weighted_blocks,
         "error_events": len(errors),
         "safe_mode_events": len(safe_mode),
         "killed_events": len(killed),
         "body_time_minutes": round(sum(body_ms) / 60000.0, 2),
-        "top_blocking_hooks": [{"hook": h, "count": c} for h, c in top_blocking],
+        "top_blocking_hooks": [
+            {"hook": h, "count": c, "weighted_count": round(top_blocking_weight[h], 2)}
+            for h, c in top_blocking
+        ],
         "top_latency_hooks": top_latency[:10],
     }
 
@@ -171,6 +206,50 @@ def _normal_value(row: dict[str, Any]) -> str:
         or ""
     )
     return str(raw).strip().lower().replace(" ", "_")
+
+
+def normalize_verdict(raw: str) -> str:
+    value = str(raw or "").strip().lower().replace(" ", "_").replace("-", "_")
+    aliases = {
+        "confirmed_valid_block": "confirmed_valid_block",
+        "valid_block": "confirmed_valid_block",
+        "true_positive": "confirmed_valid_block",
+        "correct_block": "confirmed_valid_block",
+        "false_positive": "false_positive_override",
+        "false_positive_override": "false_positive_override",
+        "override_false_positive": "false_positive_override",
+        "silent_loss_prevented": "silent_loss_prevented",
+        "work_loss_prevented": "silent_loss_prevented",
+        "high_blast_radius_catch": "high_blast_radius_catch",
+        "high_risk_catch": "high_blast_radius_catch",
+        "skip": "skip",
+        "skipped": "skip",
+    }
+    if value not in aliases:
+        raise ValueError(
+            "verdict must be one of: confirmed_valid_block, false_positive_override, "
+            "silent_loss_prevented, high_blast_radius_catch, skip"
+        )
+    return aliases[value]
+
+
+def severity_for_hook(hook: str) -> str:
+    normalized = str(hook or "").lower()
+    for needle, severity in HOOK_SEVERITY_HINTS:
+        if needle in normalized:
+            return severity
+    return "medium"
+
+
+def severity_weight(severity: str) -> float:
+    return SEVERITY_WEIGHTS.get(str(severity or "").strip().lower(), SEVERITY_WEIGHTS["medium"])
+
+
+def severity_weight_for_row(row: dict[str, Any]) -> float:
+    severity = str(row.get("severity") or row.get("risk") or "").strip().lower()
+    if not severity:
+        severity = severity_for_hook(str(row.get("hook") or row.get("guard") or row.get("primitive") or ""))
+    return severity_weight(severity)
 
 
 def collect_catch_ledger(root: Path, since_epoch: float | None) -> dict[str, Any]:
@@ -193,6 +272,8 @@ def collect_catch_ledger(root: Path, since_epoch: float | None) -> dict[str, Any
     false_positive_overrides = 0
     silent_loss_prevented = 0
     high_blast_radius_catches = 0
+    confirmed_weight = 0.0
+    false_positive_weight = 0.0
     by_hook: Counter[str] = Counter()
 
     for row in rows:
@@ -212,9 +293,11 @@ def collect_catch_ledger(root: Path, since_epoch: float | None) -> dict[str, Any
 
         if is_confirmed:
             confirmed_valid_blocks += 1
+            confirmed_weight += severity_weight_for_row(row)
             by_hook[hook] += 1
         if is_false_positive:
             false_positive_overrides += 1
+            false_positive_weight += severity_weight_for_row(row)
         if is_silent_loss:
             silent_loss_prevented += 1
         if is_high_blast:
@@ -224,14 +307,16 @@ def collect_catch_ledger(root: Path, since_epoch: float | None) -> dict[str, Any
         "ledger_path": str(GOVERNANCE_CATCH_LEDGER),
         "reviewed_events": len(rows),
         "confirmed_valid_blocks": confirmed_valid_blocks,
+        "confirmed_weight": round(confirmed_weight, 2),
         "false_positive_overrides": false_positive_overrides,
+        "false_positive_weight": round(false_positive_weight, 2),
         "silent_loss_prevented": silent_loss_prevented,
         "high_blast_radius_catches": high_blast_radius_catches,
         "top_confirmed_hooks": [{"hook": h, "count": c} for h, c in by_hook.most_common(10)],
     }
 
 
-def friction_ratio_status(total_blocks: int, confirmed_valid_blocks: int) -> dict[str, Any]:
+def friction_ratio_status(total_blocks: float, confirmed_valid_blocks: float) -> dict[str, Any]:
     """Return explicit friction-vs-catch ratio and recommendation band.
 
     Ratio definition:
@@ -303,6 +388,84 @@ def phase_policy_for(phase: str) -> dict[str, Any]:
     }
 
 
+def phase_allows_block(phase: str, category: str) -> dict[str, Any]:
+    """Return whether a guard category is allowed to block in this phase.
+
+    This is the executable adapter hooks should call before returning a hard
+    block. Unknown phases/categories default to advisory to avoid accidental
+    always-on friction.
+    """
+    policy = phase_policy_for(phase)
+    normalized = str(category or "").strip().lower()
+    block = set(policy["block"])
+    advisory = set(policy["advisory"])
+    if normalized in block:
+        return {
+            "phase": phase,
+            "category": normalized,
+            "decision": "block",
+            "allowed_to_block": True,
+            "reason": "category listed in phase block policy",
+        }
+    if normalized in advisory:
+        return {
+            "phase": phase,
+            "category": normalized,
+            "decision": "advisory",
+            "allowed_to_block": False,
+            "reason": "category listed in phase advisory policy",
+        }
+    return {
+        "phase": phase,
+        "category": normalized,
+        "decision": "advisory",
+        "allowed_to_block": False,
+        "reason": "category not explicitly allowed to block for this phase",
+    }
+
+
+def append_jsonl(path: Path, row: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps(row, sort_keys=True, separators=(",", ":")) + "\n")
+
+
+def log_catch(
+    root: Path,
+    *,
+    hook: str,
+    verdict: str,
+    reason: str = "",
+    event: str = "",
+    severity: str = "",
+    session_id: str = "",
+    source: str = "operator",
+) -> dict[str, Any]:
+    normalized_verdict = normalize_verdict(verdict)
+    normalized_severity = (severity or severity_for_hook(hook)).strip().lower()
+    if normalized_severity not in SEVERITY_WEIGHTS:
+        raise ValueError(f"severity must be one of: {', '.join(SEVERITY_WEIGHTS)}")
+    row = {
+        "timestamp": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
+        "hook": hook,
+        "event": event,
+        "verdict": normalized_verdict,
+        "severity": normalized_severity,
+        "severity_weight": severity_weight(normalized_severity),
+        "reason": reason,
+        "session_id": session_id,
+        "source": source,
+    }
+    append_jsonl(root / GOVERNANCE_CATCH_LEDGER, row)
+    return row
+
+
+def collect_pending_prompts(root: Path, limit: int) -> list[dict[str, Any]]:
+    rows = list(iter_jsonl(root / GOVERNANCE_CATCH_PROMPTS) or [])
+    pending = [r for r in rows if str(r.get("default") or "skip") == "skip"]
+    return pending[-limit:]
+
+
 def collect_snapshot_benefits(root: Path, since_epoch: float | None) -> dict[str, Any]:
     rows = list(iter_jsonl(root / ".cognitive-os" / "metrics" / "agent-snapshots.jsonl", since_epoch=since_epoch) or [])
     restored = [r for r in rows if r.get("event") == "agent_snapshot_restore" and r.get("action") == "restored"]
@@ -362,8 +525,8 @@ def build_report(root: Path, window_hours: int) -> dict[str, Any]:
     discovery = collect_discovery(root)
     catches = collect_catch_ledger(root, since)
     friction_vs_catch = friction_ratio_status(
-        hooks["blocking_events"],
-        catches["confirmed_valid_blocks"],
+        hooks["weighted_block_events"],
+        catches["confirmed_weight"],
     )
     phase_policy = phase_policy_for(read_project_phase(root))
 
@@ -422,11 +585,12 @@ def print_pretty(report: dict[str, Any]) -> None:
     print(f"net_roi: {roi['net_minutes_estimate']} min ({roi['status']}, heuristic)")
     friction = report["friction"]
     print(f"hooks: invocations={friction['invocations']} blocks={friction['blocking_events']} body_time={friction['body_time_minutes']}m")
+    print(f"weighted_blocks: {friction['weighted_block_events']}")
     fvc = report["friction_vs_catch"]
     ratio = f"{fvc['ratio']}x" if fvc["ratio"] is not None else "unknown"
     print(f"friction_vs_catch: ratio={ratio} status={fvc['status']}")
     catches = report["catch_ledger"]
-    print(f"catch ledger: confirmed={catches['confirmed_valid_blocks']} false_positive_overrides={catches['false_positive_overrides']} silent_loss_prevented={catches['silent_loss_prevented']}")
+    print(f"catch ledger: confirmed={catches['confirmed_valid_blocks']} confirmed_weight={catches['confirmed_weight']} false_positive_overrides={catches['false_positive_overrides']} silent_loss_prevented={catches['silent_loss_prevented']}")
     phase = report["phase_policy"]
     print(f"phase policy: phase={phase['phase']} strictness={phase['strictness']}")
     benefits = report["benefits"]
@@ -441,11 +605,79 @@ def print_pretty(report: dict[str, Any]) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
+    subparsers = parser.add_subparsers(dest="command")
+
+    roi_parser = subparsers.add_parser("roi", help="Report governance ROI")
+    roi_parser.add_argument("--project-dir", default=None)
+    roi_parser.add_argument("--window-hours", type=int, default=DEFAULT_WINDOW_HOURS)
+    roi_parser.add_argument("--json", action="store_true")
+
+    log_parser = subparsers.add_parser("catch-log", help="Append a reviewed governance catch verdict")
+    log_parser.add_argument("--project-dir", default=None)
+    log_parser.add_argument("--hook", required=True)
+    log_parser.add_argument("--verdict", required=True)
+    log_parser.add_argument("--reason", default="")
+    log_parser.add_argument("--event", default="")
+    log_parser.add_argument("--severity", default="")
+    log_parser.add_argument("--session-id", default=os.environ.get("COGNITIVE_OS_SESSION_ID", ""))
+    log_parser.add_argument("--source", default="operator")
+    log_parser.add_argument("--json", action="store_true")
+
+    pending_parser = subparsers.add_parser("catch-pending", help="Show pending optional catch-review prompts")
+    pending_parser.add_argument("--project-dir", default=None)
+    pending_parser.add_argument("--limit", type=int, default=20)
+    pending_parser.add_argument("--json", action="store_true")
+
+    policy_parser = subparsers.add_parser("policy", help="Evaluate phase-aware blocking policy for a guard category")
+    policy_parser.add_argument("--project-dir", default=None)
+    policy_parser.add_argument("--phase", default="")
+    policy_parser.add_argument("--category", required=True)
+    policy_parser.add_argument("--json", action="store_true")
+
+    # Backward-compatible default: no explicit subcommand means "roi".
     parser.add_argument("--project-dir", default=None)
     parser.add_argument("--window-hours", type=int, default=DEFAULT_WINDOW_HOURS)
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args()
-    report = build_report(project_dir(args.project_dir), args.window_hours)
+
+    command = args.command or "roi"
+    root = project_dir(getattr(args, "project_dir", None))
+    if command == "catch-log":
+        row = log_catch(
+            root,
+            hook=args.hook,
+            verdict=args.verdict,
+            reason=args.reason,
+            event=args.event,
+            severity=args.severity,
+            session_id=args.session_id,
+            source=args.source,
+        )
+        if args.json:
+            print(json.dumps(row, indent=2, sort_keys=True))
+        else:
+            print(f"logged governance catch: hook={row['hook']} verdict={row['verdict']} severity={row['severity']}")
+        return 0
+    if command == "catch-pending":
+        rows = collect_pending_prompts(root, args.limit)
+        if args.json:
+            print(json.dumps({"pending": rows, "count": len(rows)}, indent=2, sort_keys=True))
+        else:
+            if not rows:
+                print("No pending governance catch prompts.")
+            for row in rows:
+                print(f"{row.get('timestamp')} {row.get('hook')} {row.get('event')} default=skip")
+        return 0
+    if command == "policy":
+        phase = args.phase or read_project_phase(root)
+        result = phase_allows_block(phase, args.category)
+        if args.json:
+            print(json.dumps(result, indent=2, sort_keys=True))
+        else:
+            print(f"{result['decision']}: phase={result['phase']} category={result['category']} reason={result['reason']}")
+        return 0
+
+    report = build_report(root, args.window_hours)
     if args.json:
         print(json.dumps(report, indent=2, sort_keys=True))
     else:

@@ -84,3 +84,32 @@ def test_wrapper_does_not_create_fifo_by_default(tmp_path: Path) -> None:
 
     assert result.returncode == 0
     assert not (tmp_path / ".cognitive-os/runtime/hook-stream.fifo").exists()
+
+
+def test_blocked_hook_creates_optional_governance_catch_prompt(tmp_path: Path) -> None:
+    hook = tmp_path / "destructive-git-blocker.sh"
+    _write_hook(hook, "echo blocked >&2\nexit 2\n")
+    env = os.environ.copy()
+    env["COGNITIVE_OS_PROJECT_DIR"] = str(tmp_path)
+    env["COGNITIVE_OS_SESSION_ID"] = "session-blocked"
+
+    result = subprocess.run(
+        ["bash", str(WRAPPER), "PreToolUse", str(hook)],
+        cwd=tmp_path,
+        env=env,
+        text=True,
+        capture_output=True,
+        timeout=5,
+        check=False,
+    )
+
+    assert result.returncode == 2
+    assert "COS governance feedback optional (default skip)" in result.stderr
+    prompt_log = tmp_path / ".cognitive-os/metrics/governance-catch-prompts.jsonl"
+    rows = [json.loads(line) for line in prompt_log.read_text(encoding="utf-8").splitlines()]
+    assert len(rows) == 1
+    assert rows[0]["hook"] == "destructive-git-blocker"
+    assert rows[0]["event"] == "PreToolUse"
+    assert rows[0]["session_id"] == "session-blocked"
+    assert rows[0]["severity"] == "critical"
+    assert rows[0]["default"] == "skip"

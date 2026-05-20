@@ -358,6 +358,62 @@ JSON_LINE="{\"timestamp\":\"$START_TS\",\"event\":\"$SAFE_EVENT\",\"hook\":\"$SA
 # read-only filesystem never breaks the hook chain.
 echo "$JSON_LINE" >> "$TIMING_LOG" 2>/dev/null || true
 
+# ── Governance catch prompt (best-effort, default skip) ─────────────────────
+# ADR-328 write-side: a blocked hook creates an optional review prompt so the
+# friction-vs-catch ledger can be filled without relying on operators to
+# remember the hook name later. This is intentionally non-interactive: the
+# default is skip, and the wrapper only prints a one-line command suggestion.
+if [ "$HOOK_EXIT" -eq 2 ] && [ "${COS_GOVERNANCE_CATCH_PROMPT_DISABLE:-0}" != "1" ]; then
+  CATCH_PROMPTS_LOG="$METRICS_DIR/governance-catch-prompts.jsonl"
+  GOVERNANCE_PROJECT_DIR="$PROJECT_DIR" \
+  GOVERNANCE_CATCH_PROMPTS_LOG="$CATCH_PROMPTS_LOG" \
+  GOVERNANCE_CATCH_TIMESTAMP="$START_TS" \
+  GOVERNANCE_CATCH_EVENT="$SAFE_EVENT" \
+  GOVERNANCE_CATCH_HOOK="$SAFE_HOOK" \
+  GOVERNANCE_CATCH_SESSION_ID="$SAFE_SESSION" \
+  python3 - <<'PYCATCHPROMPT' 2>/dev/null || true
+import json
+import os
+from pathlib import Path
+
+hook = os.environ.get("GOVERNANCE_CATCH_HOOK", "unknown")
+severity = "medium"
+for needle, value in (
+    ("lethal", "critical"),
+    ("secret", "critical"),
+    ("credential", "critical"),
+    ("destructive", "critical"),
+    ("protected-config", "critical"),
+    ("private-mode", "high"),
+    ("clean-room", "high"),
+    ("dispatch", "high"),
+    ("validation", "high"),
+    ("stash", "high"),
+    ("clarification", "low"),
+    ("router", "low"),
+    ("suggest", "low"),
+):
+    if needle in hook.lower():
+        severity = value
+        break
+
+row = {
+    "timestamp": os.environ.get("GOVERNANCE_CATCH_TIMESTAMP", ""),
+    "event": os.environ.get("GOVERNANCE_CATCH_EVENT", ""),
+    "hook": hook,
+    "session_id": os.environ.get("GOVERNANCE_CATCH_SESSION_ID", ""),
+    "severity": severity,
+    "default": "skip",
+    "prompt": "Optional: did this block save work or create friction?",
+}
+path = Path(os.environ["GOVERNANCE_CATCH_PROMPTS_LOG"])
+path.parent.mkdir(parents=True, exist_ok=True)
+with path.open("a", encoding="utf-8") as fh:
+    fh.write(json.dumps(row, sort_keys=True, separators=(",", ":")) + "\n")
+PYCATCHPROMPT
+  printf 'COS governance feedback optional (default skip): scripts/cos governance catch log --hook %s --event %s --verdict confirmed-valid-block|false-positive-override --reason "..."%s\n' "$SAFE_HOOK" "$SAFE_EVENT" "" >&2
+fi
+
 # ── Human-readable stderr summary ───────────────────────────────────────────
 # Format: [hook] <basename> <event> <duration_ms>ms <status> [⚠ if slow]
 # Disabled by default: async/orphaned hooks can block forever on inherited

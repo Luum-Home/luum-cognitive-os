@@ -100,11 +100,31 @@ case "$SUBCMD" in
       shift 2
       exec bash "$SCRIPT_DIR/cos-governance-roi" "$@"
     fi
+    if [ "${2:-}" = "catch" ]; then
+      case "${3:-}" in
+        log)
+          shift 3
+          exec bash "$SCRIPT_DIR/cos-governance-roi" catch-log "$@"
+          ;;
+        pending)
+          shift 3
+          exec bash "$SCRIPT_DIR/cos-governance-roi" catch-pending "$@"
+          ;;
+        *)
+          echo "cos: unknown governance catch subcommand '${3:-}'. Try: cos governance catch {log|pending}" >&2
+          exit 1
+          ;;
+      esac
+    fi
+    if [ "${2:-}" = "policy" ]; then
+      shift 2
+      exec bash "$SCRIPT_DIR/cos-governance-roi" policy "$@"
+    fi
     if [ "${2:-}" = "readiness" ]; then
       shift 2
       exec bash "$SCRIPT_DIR/cos-architecture-readiness" "$@"
     fi
-    echo "cos: unknown governance subcommand '${2:-}'. Try: cos governance {roi|readiness}" >&2
+    echo "cos: unknown governance subcommand '${2:-}'. Try: cos governance {roi|catch|policy|readiness}" >&2
     exit 1
     ;;
   validation)
