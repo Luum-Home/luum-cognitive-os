@@ -224,3 +224,20 @@ def test_agent_commit_block_message_lists_both_bypass_vars(tmp_path: Path) -> No
     assert proc.returncode == 2
     assert "COS_ALLOW_DIRECT_MAIN=1" in proc.stderr
     assert "COS_DIRECT_MAIN_BYPASS_REASON" in proc.stderr
+
+
+def test_governance_policy_can_demote_direct_main_to_advisory(tmp_path: Path) -> None:
+    init_repo(tmp_path, "main")
+    script = tmp_path / "scripts" / "cos"
+    script.parent.mkdir()
+    script.write_text(
+        "#!/usr/bin/env bash\n"
+        "printf '{\"phase\":\"reconstruction\",\"category\":\"protected-branch\",\"decision\":\"advisory\",\"allowed_to_block\":false}'\n",
+        encoding="utf-8",
+    )
+    script.chmod(0o755)
+
+    proc = run_hook(tmp_path, env={"COS_ACTOR": "agent"})
+
+    assert proc.returncode == 0
+    assert "ADVISORY" in proc.stderr

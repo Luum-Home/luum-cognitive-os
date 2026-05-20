@@ -40,6 +40,7 @@ _HOOK_NAME="destructive-rm-blocker"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
 source "$(dirname "$0")/_lib/primitive-intervention.sh"
 source "$(dirname "$0")/_lib/agent-context.sh"
+[ -f "$(dirname "$0")/_lib/governance-policy.sh" ] && source "$(dirname "$0")/_lib/governance-policy.sh"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-${COGNITIVE_OS_PROJECT_DIR:-$(pwd)}}"
 BLOCKS_LOG="$PROJECT_DIR/.cognitive-os/metrics/rm-op-blocks.jsonl"
@@ -292,6 +293,11 @@ _rm_emit_intervention() {
 }
 
 if _is_agent_context; then
+  if type cos_governance_policy_allows_block >/dev/null 2>&1 && ! cos_governance_policy_allows_block destructive-file; then
+    cos_governance_policy_advisory_message "destructive-rm-blocker" "destructive-file"
+    _rm_emit_intervention "warn"
+    exit 0
+  fi
   # Agent context → BLOCK
   echo "" >&2
   echo "=== DESTRUCTIVE-RM-BLOCKER: BLOCKED ===" >&2

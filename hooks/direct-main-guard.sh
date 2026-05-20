@@ -8,6 +8,7 @@ set -uo pipefail
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
 [ -f "$(dirname "$0")/_lib/primitive-intervention.sh" ] && source "$(dirname "$0")/_lib/primitive-intervention.sh"
+[ -f "$(dirname "$0")/_lib/governance-policy.sh" ] && source "$(dirname "$0")/_lib/governance-policy.sh"
 INPUT=""
 if [ ! -t 0 ]; then INPUT=$(cat 2>/dev/null || true); fi
 TOOL_NAME=""; COMMAND=""
@@ -230,6 +231,11 @@ fi
 case "$BRANCH" in main|master) ;; *) exit 0 ;; esac
 actor="$(_actor)"
 if [ "$ACTION" = "push" ]; then
+  if type cos_governance_policy_allows_block >/dev/null 2>&1 && ! cos_governance_policy_allows_block protected-branch; then
+    cos_governance_policy_advisory_message "direct-main-guard" "protected-branch"
+    _emit_direct_main_intervention "warn" "direct_main_push_policy_advisory" "${BRANCH:-main}"
+    exit 0
+  fi
   if type cos_bypass_allows >/dev/null 2>&1 && cos_bypass_allows direct_push; then
     if ! reason="$(_require_bypass_reason direct-push)"; then exit 2; fi
     _audit_direct_main_bypass "push" "$BRANCH" "$reason" "$actor"
@@ -251,6 +257,11 @@ if type cos_bypass_allows >/dev/null 2>&1 && cos_bypass_allows direct_main; then
   if ! reason="$(_require_bypass_reason direct-commit)"; then exit 2; fi
   _audit_direct_main_bypass "commit" "$BRANCH" "$reason" "$actor"
   _emit_vcs_receipt "vcs.bypass" "verified" "direct-main-guard" "direct-commit-bypass"
+  exit 0
+fi
+if type cos_governance_policy_allows_block >/dev/null 2>&1 && ! cos_governance_policy_allows_block protected-branch; then
+  cos_governance_policy_advisory_message "direct-main-guard" "protected-branch"
+  _emit_direct_main_intervention "warn" "direct_main_commit_policy_advisory" "${BRANCH:-main}"
   exit 0
 fi
 case "$actor" in

@@ -660,3 +660,19 @@ def test_wip_guard_block_is_logged_to_blocks_jsonl(tmp_path: Path) -> None:
     entry = json.loads(lines[-1])
     assert entry["event"] == "blocked"
     assert entry.get("reason") == "wip_guard"
+
+
+def test_governance_policy_can_demote_destructive_git_to_advisory(tmp_path: Path):
+    script = tmp_path / "scripts" / "cos"
+    script.parent.mkdir()
+    script.write_text(
+        "#!/usr/bin/env bash\n"
+        "printf '{\"phase\":\"reconstruction\",\"category\":\"destructive-git\",\"decision\":\"advisory\",\"allowed_to_block\":false}'\n",
+        encoding="utf-8",
+    )
+    script.chmod(0o755)
+
+    result = _run("git reset --hard HEAD", tmp_path)
+
+    assert result.returncode == 0
+    assert "ADVISORY" in result.stderr

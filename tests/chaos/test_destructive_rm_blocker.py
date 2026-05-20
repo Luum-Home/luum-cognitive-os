@@ -219,3 +219,19 @@ def test_A4_rm_rf_tmpdir_safe_zone_is_allowed(tmp_path):
         f"rm -rf under TMPDIR must be allowed (safe zone); got {result.returncode}\n"
         f"stderr: {result.stderr}"
     )
+
+
+def test_governance_policy_can_demote_destructive_file_to_advisory(tmp_path: Path):
+    script = tmp_path / "scripts" / "cos"
+    script.parent.mkdir()
+    script.write_text(
+        "#!/usr/bin/env bash\n"
+        "printf '{\"phase\":\"reconstruction\",\"category\":\"destructive-file\",\"decision\":\"advisory\",\"allowed_to_block\":false}'\n",
+        encoding="utf-8",
+    )
+    script.chmod(0o755)
+
+    result = _run("rm -rf important", env_extra=_agent_env(), tmp_path=tmp_path)
+
+    assert result.returncode == 0
+    assert "ADVISORY" in result.stderr

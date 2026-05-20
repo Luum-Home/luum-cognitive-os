@@ -90,23 +90,23 @@ HOOK_SEVERITY_HINTS: tuple[tuple[str, str], ...] = (
 PHASE_POLICIES: dict[str, dict[str, Any]] = {
     "reconstruction": {
         "strictness": "minimal-blocking",
-        "block": ["destructive-git", "secret-write", "credential-leak", "work-loss"],
+        "block": ["destructive-git", "destructive-file", "secret-write", "credential-leak", "work-loss", "protected-branch"],
         "advisory": ["style", "process", "low-risk-structure"],
     },
     "stabilization": {
         "strictness": "contract-focused",
-        "block": ["contracts", "tests", "primitive-drift", "runtime-state-loss"],
+        "block": ["contracts", "tests", "primitive-drift", "runtime-state-loss", "destructive-git", "destructive-file", "work-loss", "protected-branch"],
         "advisory": ["style", "low-signal-process"],
     },
     "production": {
         "strictness": "strict-release",
-        "block": ["release", "security", "migration", "public-claim", "config-protection"],
+        "block": ["release", "security", "migration", "public-claim", "config-protection", "destructive-git", "destructive-file", "work-loss", "protected-branch"],
         "advisory": ["low-risk-exploration"],
     },
     "maintenance": {
         "strictness": "regression-focused",
-        "block": ["regressions", "security", "unsafe-change", "data-loss"],
-        "advisory": ["new-surface-expansion"],
+        "block": ["regressions", "security", "unsafe-change", "data-loss", "destructive-git", "destructive-file", "work-loss", "protected-branch"],
+        "advisory": ["new-surface-expansion", "style"],
     },
 }
 

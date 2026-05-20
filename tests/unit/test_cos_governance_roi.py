@@ -240,3 +240,19 @@ def test_cos_dispatches_governance_policy(tmp_path: Path) -> None:
     payload = json.loads(result.stdout)
     assert payload["decision"] == "advisory"
     assert payload["allowed_to_block"] is False
+
+
+def test_phase_policy_keeps_baseline_destructive_and_protected_branch_blocks() -> None:
+    from scripts.cos_governance_roi import phase_allows_block
+
+    for category in ("destructive-git", "destructive-file", "work-loss", "protected-branch"):
+        assert phase_allows_block("reconstruction", category)["allowed_to_block"] is True
+        assert phase_allows_block("production", category)["allowed_to_block"] is True
+
+
+def test_phase_policy_demotes_low_risk_process_in_reconstruction() -> None:
+    from scripts.cos_governance_roi import phase_allows_block
+
+    decision = phase_allows_block("reconstruction", "process")
+    assert decision["decision"] == "advisory"
+    assert decision["allowed_to_block"] is False

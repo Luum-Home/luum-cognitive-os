@@ -63,6 +63,7 @@ source "$(dirname "$0")/_lib/safe-jsonl.sh"
 source "$(dirname "$0")/_lib/primitive-intervention.sh"
 source "$(dirname "$0")/_lib/bypass-resolver.sh"
 source "$(dirname "$0")/_lib/agent-context.sh"
+[ -f "$(dirname "$0")/_lib/governance-policy.sh" ] && source "$(dirname "$0")/_lib/governance-policy.sh"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-${COGNITIVE_OS_PROJECT_DIR:-$(pwd)}}"
 BLOCKS_LOG="$PROJECT_DIR/.cognitive-os/metrics/git-op-blocks.jsonl"
@@ -423,6 +424,14 @@ esc_cmd=${COMMAND//\\/\\\\}
 esc_cmd=${esc_cmd//\"/\\\"}
 esc_cmd=$(echo "$esc_cmd" | head -c 500 | tr '\n\r' '  ')
 esc_op=${OP_NAME//\"/\\\"}
+
+# Phase-aware governance policy can demote known low-friction categories, but
+# destructive-git remains a baseline blocker in all shipped phase policies.
+if type cos_governance_policy_allows_block >/dev/null 2>&1 && ! cos_governance_policy_allows_block destructive-git; then
+  cos_governance_policy_advisory_message "destructive-git-blocker" "destructive-git"
+  _git_emit_intervention "warn" "destructive_git_policy_advisory" ".cognitive-os/metrics/git-op-blocks.jsonl"
+  exit 0
+fi
 
 # ── Override / bypass detection (ADR-055b) ───────────────────────────────────
 # Per-command override: `--allow-destructive` token anywhere in the command
