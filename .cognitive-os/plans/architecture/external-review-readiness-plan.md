@@ -135,7 +135,7 @@ warns/fails when lifecycle metadata undercounts projected hooks.
 ### Acceptance
 
 - [ ] Lean/core active surface is small enough for first-run docs.
-- [ ] Maintainer/lab remains available but opt-in.
+- [x] Maintainer/lab remains available but opt-in. (verified: active primitive index separates core/default from maintainer/lab; .venv/bin/python -m pytest tests/behavior/test_external_review_readiness_items.py tests/contracts/test_release_external_readiness.py -q)
 - [ ] Discovery overload warning disappears for Lean/Standard reports.
 
 ## Phase 4 — Production border-case suite

@@ -111,7 +111,7 @@ directly to `main`.
 ### Acceptance
 
 - [x] File/domain claim ledger covers registry, projections, ADRs, hooks, tests. (verified: scripts/cos_work_inventory.py maps selected paths to ownership_domains and active resource/domain leases; tests/unit/test_work_inventory_ownership.py)
-- [ ] Stash provenance blocks ambiguous reapply/cleanup.
+- [x] Stash provenance blocks ambiguous reapply/cleanup. (verified: .venv/bin/python -m pytest tests/integration/test_stash_reapply.py tests/behavior/test_agent_blocked_preflight_no_stash.py tests/audit/test_no_bare_git_stash.py -q)
 - [x] Work inventory reports owners and conflict actions. (verified: task claims, dirty worktrees, stashes, edit locks, and domain leases all surface operator actions in tests/unit/test_work_inventory_ownership.py)
 
 ## Phase 4 — Guard maturity levels

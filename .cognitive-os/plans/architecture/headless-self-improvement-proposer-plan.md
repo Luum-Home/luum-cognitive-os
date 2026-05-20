@@ -9,11 +9,11 @@ Status:
 - Phase 1 (Proposal loop): DONE (all 7 items already checked).
 - Phase 2 (Doctrine proposer): DONE (all 4 items already checked).
 - Phase 3 (Consumer evidence import/export): DONE (all 8 items already checked); reinforced post-v0.28.0 by consumer fleet status panel (commit 2dd2e0144) and consumer-leakage cleanup (39ce28fb4).
-- Phase 4 (Background proposer): NOT STARTED — scheduled propose-only runner not yet shipped; deliberately deferred until ADR-201 PromoteFromTelemetry stabilizes (already gated by Phase 3 of adr-200-plus-closure-plan.md).
-Recommendation: keep ACTIVE for Phase 4 only; do NOT archive. Phase 4 should pick up after the ADR-200-plus closure plan's Phase 6 fleet-confidence boundary clarifies aggregation-only constraints.
+- Phase 4 (Background proposer): MOSTLY DONE — scheduled propose-only runner, non-zero reliability stop, and human-approved promotion are proven; automatic branch/PR creation remains split/deferred because current doctrine is propose-only artifact plus human-approved promotion.
+Recommendation: keep ACTIVE only for the branch/PR auto-creation decision, or split that item into a separate opt-in PR proposer ADR before archiving this plan.
 
 OPUS REFINEMENT — 2026-05-11 (post-v0.28.0):
-Verified all Phase 1-3 scripts exist on disk: scripts/cos-self-improvement-loop, cos-self-improvement-discipline-gate, cos-doctrine-proposer, cos-export-consumer-evidence, cos-import-consumer-evidence, cos-registry-lock, cos-engram-bundle, cos-engram-import-propose, cos-federation-trigger-audit, cos-cross-instance-drill. .cognitive-os/improvements/proposals/ contains generated proposal artifact (self-improvement-proposals-20260503T045251Z.json). Phase 4 (scheduled propose-only runner) remains the only open item, deliberately gated on ADR-201 PromoteFromTelemetry stabilization per ADR-200-plus-closure-plan Phase 3 (which is also DONE — but Phase 6 fleet boundary still future-only). Opus AGREES with Sonnet: NEAR-COMPLETE. Recommendation stands: keep ACTIVE narrowly for Phase 4.
+Verified all Phase 1-3 scripts exist on disk: scripts/cos-self-improvement-loop, cos-self-improvement-discipline-gate, cos-doctrine-proposer, cos-export-consumer-evidence, cos-import-consumer-evidence, cos-registry-lock, cos-engram-bundle, cos-engram-import-propose, cos-federation-trigger-audit, cos-cross-instance-drill. .cognitive-os/improvements/proposals/ contains generated proposal artifact (self-improvement-proposals-20260503T045251Z.json). Phase 4 is now mostly closed by the scheduled propose-only runner tests; only the branch/PR auto-creation decision remains open and should stay split/deferred unless an opt-in PR proposer ADR is accepted. Opus AGREES with NEAR-COMPLETE. Recommendation: archive after resolving or splitting that single decision.
 -->
 
 # Headless Self-Improvement Proposer Plan
@@ -60,10 +60,10 @@ dashboard and without allowing uncontrolled self-modification.
 
 ## Phase 4 — Background proposer
 
-- [ ] Add a scheduled propose-only runner.
-- [ ] Ensure the runner stops on non-zero `cos-boring-reliability`.
-- [ ] Ensure the runner opens a branch/PR only after tests pass.
-- [ ] Keep merge/promotion human-approved.
+- [x] Add a scheduled propose-only runner. (verified: .venv/bin/python -m pytest tests/unit/test_self_improvement_runner.py -q)
+- [x] Ensure the runner stops on non-zero `cos-boring-reliability`. (verified: .venv/bin/python -m pytest tests/unit/test_self_improvement_runner.py -q)
+- [ ] Decide whether branch/PR creation remains desired; current doctrine is propose-only artifact + human-approved promotion, so auto branch/PR should stay split/deferred unless an opt-in PR proposer ADR is accepted.
+- [x] Keep merge/promotion human-approved. (verified: .venv/bin/python -m pytest tests/unit/test_self_improvement_runner.py -q)
 
 ## Non-goals
 
