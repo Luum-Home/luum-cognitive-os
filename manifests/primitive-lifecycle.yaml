@@ -21159,6 +21159,30 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: skill-procedure
   metrics_file: none
+- id: skills/os-session-wrapup/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/os-session-wrapup/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'OS maintainer session close addendum: keeps /session-wrapup portable and runs aspirational_audit only for COS primitive-surface/reality-check work.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/os-session-wrapup/SKILL.md
+  - python3 -m pytest tests/hooks/test_os_session_wrapup_addendum_trigger.py
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+  consumer_access_next_action: Keep out of consumer-project projection; use /session-wrapup for portable close.
 - id: skills/session-wrapup/SKILL.md
   kind: skill
   owner_adr: ADR-314
