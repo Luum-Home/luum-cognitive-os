@@ -502,3 +502,7 @@ entries:
   status: active
   rationale: "ADR-319/324 — Stop hook registered in settings and gated by COS_REVIEW_SURFACE or COS_EAS_PATH. It skips silently when no EAS-bound review surface is active, so the classification must reflect active registration rather than conditional absence. SCOPE: os-only."
   next_action: Keep active with environment gating and review metric/false-positive baseline before increasing enforcement.
+- path: hooks/secret-audit-pre-commit.sh
+  status: conditional_opt_in
+  rationale: ADR-215 release-scope secret audit wrapper; intended for explicit security/pre-commit profiles because it may require optional scanner binaries and strict release policy.
+  next_action: Wire in a security profile after scanner availability and allowlist baselines are operator-approved.
