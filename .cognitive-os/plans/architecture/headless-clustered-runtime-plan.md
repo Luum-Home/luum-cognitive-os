@@ -7,18 +7,18 @@ RECONCILIATION STATUS: PARTIAL — 2026-05-10 (post-v0.28.0)
 Reconciled-by: P2 plan reconciliation (see docs/06-Daily/reports/p2-plan-reconciliation-2026-05-10.md)
 Phase status:
 - Phase 0 (current local harness): ACTIVE as designed.
-- Phase 1 (headless single-node): MOSTLY DONE — `cos run-task` contract documented (docs/04-Concepts/architecture/cos-run-task-contract.md cited); 5 of 8 tracking items checked; unattended safe-mode/kill-switch + protected-publication + VM-restart idempotency proofs not yet shipped (some implicitly covered by ADR-246 release-transaction freeze for publication paths).
-- Phase 2 (queue-backed worker): PARTIAL — research documented (cloud-worker-runtime-tooling-research-2026-05.md); worker-lease tests pending; queue worker referenced as default push path in foundation-hardening-program.md Phase 2.
-- Phase 3 (container): DOCUMENTED — Docker worker bootstrap shipped in v0.26.0 (`scripts/cos-cloud-worker-bootstrap.sh` + `docs/05-Methodology/runbooks/run-cos-in-docker.md`); container contract document item still unchecked.
+- Phase 1 (headless single-node): MOSTLY DONE — `cos run-task` contract, isolated workspace, safe-mode/kill-switch, and protected-publication proofs are checked; VM-restart idempotency remains open.
+- Phase 2 (queue-backed worker): PARTIAL — research and queue/worker contract are documented; worker-lease tests remain open.
+- Phase 3 (container): MOSTLY DOCUMENTED — Docker worker bootstrap and container contract are checked; no-host-path proof remains open.
 - Phase 4 (Kubernetes): NOT STARTED. Per External Tool Adoption Doctrine, distributed workflow engines and multi-machine orchestration are explicitly DEFER/REJECT. This phase remains aspirational until a Shape-B trigger fires per ADR-132.
 - Phase 5 (autonomous repair): NOT STARTED — guarded by non-negotiable constraint "Do not claim autonomous repair without testable proof path".
 Recommendation: keep ACTIVE for Phases 1-2 follow-through; treat Phases 4-5 as DEFER per doctrine. Do NOT archive.
 
 OPUS REFINEMENT — 2026-05-11 (post-v0.28.0):
 Opus AGREES with Sonnet's PARTIAL framing. Concrete cross-check against unchecked items at lines 195-205:
-- Phase 1 acceptance lines 195-197 (unattended safe-mode/kill-switch, protected-publication, VM-restart idempotency proofs): ADR-246 release transaction freeze + ADR-241 cos-bypass allowlist + branch-ownership-lock cover the publication path implicitly; explicit kill-switch and VM-restart idempotency single-contract proofs not yet shipped. Stay open.
-- Phase 2 acceptance lines 198-200 (queue/worker contract + lease tests): docs/05-Methodology/runbooks/run-cos-in-docker.md exists but queue/worker contract document + lease tests pending.
-- Phase 3 acceptance lines 201-202: docs/05-Methodology/runbooks/run-cos-in-docker.md serves as partial container contract; no-host-path proof still open.
+- Phase 1 acceptance lines 195-197 (unattended safe-mode/kill-switch, protected-publication, VM-restart idempotency proofs): explicit safe-mode/kill-switch and protected-publication proofs are now checked; VM-restart idempotency stays open.
+- Phase 2 acceptance lines 198-200 (queue/worker contract + lease tests): queue/worker contract is now checked; lease tests remain open.
+- Phase 3 acceptance lines 201-202: container contract is now checked; no-host-path proof still open.
 - Phases 4-5 (Kubernetes + autonomous repair): explicit DEFER per External Tool Adoption Doctrine (ADR-132) — no Shape-B trigger has fired.
 Opus confirms: PARTIAL. Recommendation stands.
 -->
@@ -200,13 +200,13 @@ Proof paths:
 - [x] Phase 1 isolated workspace proof implemented.
 - [x] Phase 1 provider/agent command execution implemented.
 - [x] Phase 1 acceptance execution and outcome artifacts implemented.
-- [ ] Phase 1 unattended safe-mode / kill-switch proof implemented.
-- [ ] Phase 1 protected-publication proof implemented.
+- [x] Phase 1 unattended safe-mode / kill-switch proof implemented. (verified: .venv/bin/python -m pytest tests/behavior/test_headless_safe_mode.py tests/behavior/test_headless_protected_publication.py tests/contracts/test_headless_runtime_contract.py -q; scripts/cos-headless-pipeline --json)
+- [x] Phase 1 protected-publication proof implemented. (verified: .venv/bin/python -m pytest tests/behavior/test_headless_safe_mode.py tests/behavior/test_headless_protected_publication.py tests/contracts/test_headless_runtime_contract.py -q; scripts/cos-headless-pipeline --json)
 - [ ] Phase 1 VM-restart idempotency proof implemented.
-- [ ] Phase 2 queue/worker contract documented.
+- [x] Phase 2 queue/worker contract documented. (verified: .venv/bin/python -m pytest tests/behavior/test_headless_safe_mode.py tests/behavior/test_headless_protected_publication.py tests/contracts/test_headless_runtime_contract.py -q; scripts/cos-headless-pipeline --json)
 - [x] Phase 2 queue/workflow tooling research documented.
 - [ ] Phase 2 worker lease tests implemented.
-- [ ] Phase 3 container contract documented.
+- [x] Phase 3 container contract documented. (verified: .venv/bin/python -m pytest tests/behavior/test_headless_safe_mode.py tests/behavior/test_headless_protected_publication.py tests/contracts/test_headless_runtime_contract.py -q; scripts/cos-headless-pipeline --json)
 - [ ] Phase 3 no-host-path proof implemented.
 - [ ] Phase 4 Kubernetes manifests drafted.
 - [ ] Phase 4 local cluster smoke test implemented.

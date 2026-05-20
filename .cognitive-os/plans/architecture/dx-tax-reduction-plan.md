@@ -69,8 +69,8 @@ and contextual procedures before they can predict behavior.
 
 ### Acceptance
 
-- [ ] Lean/Core active primitive count is reported.
-- [ ] Strict/Maintainer active primitive count is reported separately.
+- [x] Lean/Core active primitive count is reported. (verified: .venv/bin/python -m pytest tests/unit/test_active_primitive_index.py tests/audit/test_hook_latency_budget.py -q)
+- [x] Strict/Maintainer active primitive count is reported separately. (verified: .venv/bin/python -m pytest tests/unit/test_active_primitive_index.py tests/audit/test_hook_latency_budget.py -q)
 - [ ] `cos governance readiness` warns when discovery overload exists.
 - [ ] A new operator can identify the active safety layer without reading ADRs.
 

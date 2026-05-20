@@ -125,7 +125,7 @@ This plan implements ADR-125 and feeds ADR-123/ADR-124.
 
 - [ ] No stash/marker residue after read-only or clean sub-agent launches.
 - [ ] Dirty WIP is recoverable after crash.
-- [ ] Blocked launches cannot create orphaned stashes.
+- [x] Blocked launches cannot create orphaned stashes. (verified: .venv/bin/python -m pytest tests/behavior/test_agent_blocked_preflight_no_stash.py -q)
 
 ## Phase 5 — Active primitive discovery
 
@@ -179,7 +179,7 @@ This plan implements ADR-125 and feeds ADR-123/ADR-124.
 
 - [x] A session can report governance overhead. (`cos governance roi`)
 - [x] A session can report at least one benefit category or explicitly say none.
-- [ ] Top friction causes feed ADR-123 telemetry.
+- [x] Top friction causes feed ADR-123 telemetry. (verified: .venv/bin/python -m pytest tests/unit/test_cos_governance_roi.py tests/contracts/test_primitive_lifecycle_manifest.py -q; lifecycle recommendations consume ROI/catch evidence)
 - [x] Guards with high false-positive rate produce lifecycle demotion/review recommendations.
 - [x] Dogfood/self-use metrics are not accepted as productivity ROI by
       themselves.

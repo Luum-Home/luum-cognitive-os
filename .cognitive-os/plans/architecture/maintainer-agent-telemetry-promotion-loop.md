@@ -27,14 +27,14 @@ compiles a validated ledger from fixture and live telemetry.
 - [x] Add signal-quality validation before rollups: valid/suspect/corrupt rows,
       malformed JSON, unsourced trust-score defaults, impossible values, and
       identity corruption such as `skill: matias`.
-- [ ] Roll up skill metrics: invocations, success/failure, override rate,
-      trust-report pass rate, verification pass rate, time-to-complete.
-- [ ] Roll up provider/router metrics: chosen provider, fallback rate, error
-      class, latency, cost, retry count.
-- [ ] Roll up primitive metrics for selected high-value primitives first:
-      dispatch, skill routing, state retention, repair, validation.
-- [ ] Preserve source metric references for auditability.
-- [ ] Emit harness metadata while keeping output rows/proposals harness-agnostic.
+- [x] Roll up skill metrics: invocations, success/failure, override rate,
+      trust-report pass rate, verification pass rate, time-to-complete. (verified: .venv/bin/python -m pytest tests/unit/test_performance_ledger_rollups.py tests/unit/test_promote_from_telemetry_phase2.py tests/unit/test_maintainer_impact.py -q)
+- [x] Roll up provider/router metrics: chosen provider, fallback rate, error
+      class, latency, cost, retry count. (verified: .venv/bin/python -m pytest tests/unit/test_performance_ledger_rollups.py tests/unit/test_promote_from_telemetry_phase2.py tests/unit/test_maintainer_impact.py -q)
+- [x] Roll up primitive metrics for selected high-value primitives first:
+      dispatch, skill routing, state retention, repair, validation. (verified: .venv/bin/python -m pytest tests/unit/test_performance_ledger_rollups.py tests/unit/test_promote_from_telemetry_phase2.py tests/unit/test_maintainer_impact.py -q)
+- [x] Preserve source metric references for auditability. (verified: .venv/bin/python -m pytest tests/unit/test_performance_ledger_rollups.py tests/unit/test_promote_from_telemetry_phase2.py tests/unit/test_maintainer_impact.py -q)
+- [x] Emit harness metadata while keeping output rows/proposals harness-agnostic. (verified: .venv/bin/python -m pytest tests/unit/test_performance_ledger_rollups.py tests/unit/test_promote_from_telemetry_phase2.py tests/unit/test_maintainer_impact.py -q)
 - [x] Store primary ledger in `.cognitive-os/ledgers/performance-ledger.sqlite`,
       export audit rows to `.cognitive-os/metrics/performance-ledger.jsonl`, and
       generate `.cognitive-os/reports/performance-ledger-latest.json`.
@@ -46,9 +46,9 @@ compiles a validated ledger from fixture and live telemetry.
 
 - [x] Add `lib/promote_from_telemetry.py`.
 - [x] Add `scripts/cos-promote-from-telemetry`.
-- [ ] Detect repeated skill override/degradation patterns.
-- [ ] Detect provider fallback or compatibility drift.
-- [ ] Detect dormant/aspirational primitives with no recent evidence.
+- [x] Detect repeated skill override/degradation patterns. (verified: .venv/bin/python -m pytest tests/unit/test_promote_from_telemetry_phase2.py -q)
+- [x] Detect provider fallback or compatibility drift. (verified: .venv/bin/python -m pytest tests/unit/test_promote_from_telemetry_phase2.py -q)
+- [x] Detect dormant/aspirational primitives with no recent evidence. (verified: .venv/bin/python -m pytest tests/unit/test_promote_from_telemetry_phase2.py -q)
 - [x] Emit proposal JSON with source evidence, candidate action, severity, self-confidence, allowed write
       paths, required tests, rollback, experiment design, cooldown, and human approval requirement.
 - [x] Suppress duplicate proposals through stable finding ids based on surface + degradation pattern + day window; proposal cooldown is part of the schema.
