@@ -270,6 +270,24 @@ class TestSkillClassification:
         assert comps["skills/rare-skill/SKILL.md"]["classification"] == "ON_DEMAND"
         assert comps["skills/rare-skill/SKILL.md"]["signals"]["has_test"] is True
 
+    def test_skill_with_invocation_contract_is_on_demand(self, tmp_path):
+        """A user-invocable skill with trigger metadata is on-demand."""
+        project = make_project(tmp_path)
+        skill_dir = project / "skills" / "manual-skill"
+        skill_dir.mkdir(parents=True)
+        (skill_dir / "SKILL.md").write_text(
+            "---\nname: manual-skill\nuser-invocable: true\ntrigger: manual skill\n---\n# Manual Skill\n",
+            encoding="utf-8",
+        )
+
+        auditor = aa.Auditor(project)
+        events = auditor.run()
+        comps = {e["payload"]["component"]: e["payload"] for e in events}
+
+        assert comps["skills/manual-skill/SKILL.md"]["classification"] == "ON_DEMAND"
+        assert comps["skills/manual-skill/SKILL.md"]["signals"]["invocation_contract"] is True
+
+
     def test_skill_without_invocation_or_evidence_is_aspirational(self, tmp_path):
         """An unreferenced, untested skill remains aspirational."""
         project = make_project(tmp_path)

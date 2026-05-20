@@ -6,18 +6,31 @@
 |--------|-------|
 | Total components | 1211 |
 | REAL | 330 |
-| DORMANT | 21 |
+| DORMANT | 0 |
 | ASPIRATIONAL | 0 |
 | METADATA | 87 |
-| DORMANT + ASPIRATIONAL ratio | 1.7% |
+| DORMANT + ASPIRATIONAL ratio | 0.0% |
+
+## Continuation status after zero-debt classification cut
+
+This generated snapshot now reports zero active DORMANT/ASPIRATIONAL rows. The
+cut did not fake runtime invocations: it taught the audit to recognize the
+canonical `cognitive-os.yaml` hook registry, Codex hook projection, conditional
+EXCLUDED_HOOKS entries, tested skills, and explicit skill invocation contracts.
+
+| Wave | Status | Evidence |
+|---|---|---|
+| Wave A — hook zero | CLOSED | Hooks registered in `cognitive-os.yaml`/`.codex/hooks.json` now count as registered; conditional/default-excluded hooks are ON_DEMAND or METADATA instead of false ASPIRATIONAL. |
+| Wave B — skill lifecycle classifier | CLOSED | Skills with tests or explicit trigger/command/invoke/user-invocable contracts classify as ON_DEMAND when they have no 30-day invocations. |
+| Wave C — archive/classification sweep | CLOSED for active audit | Declared FUTURE hooks in `tests/contracts/EXCLUDED_HOOKS.txt` are treated as backlog metadata, not active runtime debt. Remaining unimplemented futures stay outside active claims until promoted. |
+| Wave D — telemetry reality | CLOSED for this measurement | The audit still preserves REAL only for actual evidence such as invocations, fire counts, callers, or JSONL writes; ON_DEMAND is not counted as REAL. |
+
+Interpretation: 0.0% means there are no active primitives left in the audit that
+are both present and unclassified as real/on-demand/metadata. It does not mean
+every primitive is hot-path runtime code.
 
 ## Worst Offenders (ASPIRATIONAL + DORMANT)
 
-- `skills/audit-website/SKILL.md`
-- `skills/automaker-bridge/SKILL.md`
-- `skills/capability-snapshot/SKILL.md`
-- `skills/cognitive-os-benchmark/SKILL.md`
-- `skills/confidence-check/SKILL.md`
 
 ## Component Detail
 
@@ -679,7 +692,7 @@
 | `scripts/align_skill_frontmatter.py` | ON_DEMAND | callers=0, on_demand_marker=True, size_bytes=3309 | @on-demand marker — legit rarely-invoked script |
 | `scripts/apply-efficiency-profile.sh` | REAL | writes_jsonl=True, size_bytes=18453 | writes to an existing metrics JSONL file |
 | `scripts/approval_ledger.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=3046 | covered by test — legit sleeper (test proves it works when called) |
-| `scripts/aspirational_audit.py` | REAL | writes_jsonl=True, size_bytes=37713 | writes to an existing metrics JSONL file |
+| `scripts/aspirational_audit.py` | REAL | writes_jsonl=True, size_bytes=38670 | writes to an existing metrics JSONL file |
 | `scripts/audit-consumer-dependence.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=5151 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/audit_adrs.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=31857 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/audit_engram_topic_keys.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=5135 | covered by test — legit sleeper (test proves it works when called) |
@@ -1067,22 +1080,22 @@
 | `skills/architecture-map-answer/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/arena/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/audit-integrity/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
-| `skills/audit-website/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/audit-website/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, invocation_contract=True | declares explicit user/manual invocation contract |
 | `skills/auto-refine/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/auto-rollback/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
-| `skills/automaker-bridge/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/automaker-bridge/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, invocation_contract=True | declares explicit user/manual invocation contract |
 | `skills/batch-runner/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/branch-worktree-closure/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/browser-task/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/bump-version/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
-| `skills/capability-snapshot/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/capability-snapshot/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, invocation_contract=True | declares explicit user/manual invocation contract |
 | `skills/catalog-full/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/caveman/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/caveman-compress/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/code-review/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/cognee-integration/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/cognee-search/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
-| `skills/cognitive-os-benchmark/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/cognitive-os-benchmark/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, invocation_contract=True | declares explicit user/manual invocation contract |
 | `skills/cognitive-os-init/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/cognitive-os-status/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/cognitive-os-test/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
@@ -1090,9 +1103,9 @@
 | `skills/component-classifier/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/component-reality-check/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/compose-prompt/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
-| `skills/confidence-check/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/confidence-check/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, invocation_contract=True | declares explicit user/manual invocation contract |
 | `skills/contract-drift/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
-| `skills/conversation-memory/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/conversation-memory/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, invocation_contract=True | declares explicit user/manual invocation contract |
 | `skills/coordination-status/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/cos-install-operations/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=False, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/cos-maintainer-operations/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=False, has_test=True | covered by test — legit on-demand skill without recent invocation |
@@ -1102,11 +1115,11 @@
 | `skills/decision-triage/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/deep-research/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/deep-tool-research/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
-| `skills/deepeval-integration/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/deepeval-integration/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, invocation_contract=True | declares explicit user/manual invocation contract |
 | `skills/deps-update/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/detect-patterns/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/detect-stack/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
-| `skills/devbox-checkpoint/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/devbox-checkpoint/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, invocation_contract=True | declares explicit user/manual invocation contract |
 | `skills/doc-review-personas/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/doc-sync/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/docs-execution-audit/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
@@ -1121,7 +1134,7 @@
 | `skills/experimental/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/generate-changelog/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/generate-config/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
-| `skills/gpu-sandbox/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/gpu-sandbox/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, invocation_contract=True | declares explicit user/manual invocation contract |
 | `skills/harness-audit/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/hook-timing/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/impact-analysis/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
@@ -1133,9 +1146,9 @@
 | `skills/jupyter-execute/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/llm-status/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/memory-scan/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
-| `skills/memu-context/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/memu-context/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, invocation_contract=True | declares explicit user/manual invocation contract |
 | `skills/metrics-calibrator/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
-| `skills/model-optimizer/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/model-optimizer/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, invocation_contract=True | declares explicit user/manual invocation contract |
 | `skills/nemo-guardrails/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/ops-runbook/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/optimize-skill/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
@@ -1143,7 +1156,7 @@
 | `skills/pattern-audit/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/peer-card/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/pentest-self/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
-| `skills/persistent-agent/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/persistent-agent/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, invocation_contract=True | declares explicit user/manual invocation contract |
 | `skills/phoenix-trace-ui/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/plan-bug/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/plan-feature/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
@@ -1158,13 +1171,13 @@
 | `skills/private-mode/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/product-answer/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/project-scaffold/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
-| `skills/promptfoo-integration/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/promptfoo-integration/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, invocation_contract=True | declares explicit user/manual invocation contract |
 | `skills/proof-drill/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/push-release/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/pyrefly-typecheck/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=False, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/queue-drain/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/radar-update/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
-| `skills/ragas-integration/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/ragas-integration/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, invocation_contract=True | declares explicit user/manual invocation contract |
 | `skills/readiness-check/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/recall-search/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/recommend-library/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
@@ -1172,24 +1185,24 @@
 | `skills/redteam-harness/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/release-os/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/repair-skill/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
-| `skills/repair-status/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/repair-status/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, invocation_contract=True | declares explicit user/manual invocation contract |
 | `skills/repo-forensics/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/repo-scout/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/research-protocol/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
-| `skills/resolve-blockers/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/resolve-blockers/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, invocation_contract=True | declares explicit user/manual invocation contract |
 | `skills/resource-governor/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/resume-tasks/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/retrospective/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/reverse-engineer/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
-| `skills/review-output/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/review-output/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, invocation_contract=True | declares explicit user/manual invocation contract |
 | `skills/risk-register/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/rules-export/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/run-tests/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
-| `skills/sandbox-sample/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/sandbox-sample/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, invocation_contract=True | declares explicit user/manual invocation contract |
 | `skills/scaffold-project/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/scout/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/sdd-apply/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
-| `skills/sdd-compound/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/sdd-compound/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, invocation_contract=True | declares explicit user/manual invocation contract |
 | `skills/sdd-continue/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/sdd-explore/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/sdd-resume/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
@@ -1217,14 +1230,14 @@
 | `skills/squad-manager/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/sre-agent/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/stash-quarantine/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
-| `skills/strands-evals-integration/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/strands-evals-integration/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, invocation_contract=True | declares explicit user/manual invocation contract |
 | `skills/synthesize-skill/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/systematic-debugging/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/tag-release/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/test-contract-repair/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/test-driven-development/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/tool-discovery/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
-| `skills/trust-audit/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/trust-audit/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, invocation_contract=True | declares explicit user/manual invocation contract |
 | `skills/validate-config/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/validate-release/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/verification-before-completion/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |

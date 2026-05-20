@@ -76,6 +76,28 @@ def has_on_demand_marker(path: Path) -> bool:
     return ON_DEMAND_MARKERS.search(content) is not None
 
 
+def skill_has_invocation_contract(skill_md: Path) -> bool:
+    """Return true when SKILL.md declares a user/manual invocation surface."""
+    try:
+        content = skill_md.read_text(errors="replace")
+    except OSError:
+        return False
+    # Prefer frontmatter, but tolerate legacy skill files with trigger blocks.
+    head = "\n".join(content.splitlines()[:80]).lower()
+    return any(
+        marker in head
+        for marker in (
+            "user-invocable: true",
+            "triggers:",
+            "trigger:",
+            "command:",
+            "invoke:",
+            "routing_patterns:",
+            "routing_intents:",
+        )
+    )
+
+
 def has_covering_test(path: Path, project_root: Path) -> bool:
     """True if a test file exists that looks like it covers this component.
 
@@ -674,6 +696,12 @@ class Auditor:
                 "ON_DEMAND",
                 {"invocations_30d": 0, "referenced_in_docs": referenced, "has_test": True},
                 "covered by test — legit on-demand skill without recent invocation"
+            )
+        if skill_has_invocation_contract(skill_md):
+            return Classification(
+                "ON_DEMAND",
+                {"invocations_30d": 0, "referenced_in_docs": referenced, "invocation_contract": True},
+                "declares explicit user/manual invocation contract"
             )
         if referenced:
             return Classification(
