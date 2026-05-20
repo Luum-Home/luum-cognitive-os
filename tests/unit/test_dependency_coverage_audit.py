@@ -136,6 +136,17 @@ VALUE = "subprocess.run(['also-not-code'])"
     assert "also-not-code" not in {row.name for row in rows}
 
 
+def test_collect_command_probes_suppresses_invalid_escape_fixture_warnings(tmp_path: Path) -> None:
+    write(
+        tmp_path / "scripts" / "regex_fixture.py",
+        'PATTERN = "\\\\."\n',
+    )
+
+    rows = collect_command_probes(tmp_path)
+
+    assert rows == []
+
+
 def test_collect_command_probes_classifies_local_script_subprocess_as_internal(tmp_path: Path) -> None:
     write(
         tmp_path / "scripts" / "driver.py",

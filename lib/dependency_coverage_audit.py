@@ -13,6 +13,7 @@ import json
 import re
 import subprocess
 import sys
+import warnings
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable
@@ -418,7 +419,12 @@ def _python_command_candidates(path: Path, rel: str) -> list[Candidate]:
     `subprocess.run([...])` probes.
     """
     try:
-        tree = ast.parse(path.read_text(encoding="utf-8", errors="replace"))
+        # Some scanned files intentionally contain regex/string fixtures with
+        # invalid escapes. Dependency coverage is read-only and should not leak
+        # SyntaxWarning noise into pre-push output while parsing unrelated code.
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", SyntaxWarning)
+            tree = ast.parse(path.read_text(encoding="utf-8", errors="replace"), filename=str(path))
     except SyntaxError:
         return []
 
