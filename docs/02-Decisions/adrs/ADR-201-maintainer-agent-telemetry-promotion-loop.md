@@ -359,7 +359,7 @@ allowed write paths, tests, rollback plan, and outcome-failure protocol.
 
 ## Status
 
-Accepted — implemented through Phase 5 impact measurement and first dogfood adoption entries. The SQLite performance ledger, signal-quality quarantine, `PromoteFromTelemetry`, `cos-promote-from-telemetry`, and `cos-maintainer-agent --once --dry-run` are present and tested. `cos-maintainer-impact` measures whether ledger rollups/proposals changed operator decisions. The first local adoption rows record DX Tax, governance policy, and telemetry-adoption decisions; scheduled automation and mutation remain future/opt-in.
+Accepted — implemented through Phase 5 impact measurement and first dogfood adoption entries. The SQLite performance ledger, signal-quality quarantine, `PromoteFromTelemetry`, `cos-promote-from-telemetry`, and `cos-maintainer-agent --once --dry-run` are present and tested. `cos-maintainer-impact` measures whether ledger rollups/proposals changed operator decisions. Local adoption rows now record two DX Tax decisions, two governance policy decisions, and two telemetry-adoption decisions; scheduled automation and mutation remain future/opt-in.
 
 ## Verification
 ```bash
@@ -399,6 +399,15 @@ This continuation slice recorded three real maintainer decisions with
   to `cos governance policy`.
 - `telemetry-adoption-real-decisions` — used the Phase 5 CLI itself to record
   the decisions above.
+
+A second dogfood batch in the next cut added three more trend rows:
+
+- `dx-tax-merge-queue-default-path` — implemented merge-queue lane evidence,
+  `cos land`, and the `core` install-profile alias boundary.
+- `governance-policy-adoption-expanded` — expanded policy adapter adoption to
+  `protected-config-write-guard`, `network-egress-guard`, and `release-guard`.
+- `telemetry-adoption-trend-rows` — recorded the second batch itself so Phase 5
+  starts measuring trend, not only first evidence.
 
 Because `.cognitive-os/metrics/*.jsonl` is intentionally ignored runtime
 telemetry, the durable contract is the CLI + schema; the local ledger is
