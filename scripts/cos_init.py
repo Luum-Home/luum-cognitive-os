@@ -37,6 +37,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Callable
 
+import yaml
+
 # ── Repository root (cos source directory) ───────────────────────────
 COS_SOURCE_DIR = Path(__file__).parent.parent.resolve()
 if str(COS_SOURCE_DIR) not in sys.path:
@@ -118,6 +120,63 @@ COS_INIT_CORE_RULES = [
     "content-policy.md",
     "error-learning.md",
 ]
+
+INSTALL_BOUNDARY_MANIFEST = COS_SOURCE_DIR / "manifests" / "primitive-install-boundary.yaml"
+
+
+def _load_install_boundary(mode: str) -> dict[str, object]:
+    """Load the profile distribution boundary used by consumer installs.
+
+    ADR-093 keeps `core` as an alias for the default profile. The lifecycle
+    manifest tracks broad primitive state, while this boundary is the runtime
+    install contract: default/core may project only entries explicitly listed
+    with the `core` distribution.
+    """
+    profile = "full" if mode == "--full" else "default"
+    try:
+        manifest = yaml.safe_load(INSTALL_BOUNDARY_MANIFEST.read_text(encoding="utf-8")) or {}
+    except (OSError, yaml.YAMLError):
+        return {
+            "profile": profile,
+            "active_distribution": "full" if profile == "full" else "core",
+            "primitives": {},
+        }
+    profiles = manifest.get("profiles") if isinstance(manifest, dict) else None
+    row = profiles.get(profile, {}) if isinstance(profiles, dict) else {}
+    if not isinstance(row, dict):
+        row = {}
+    return {
+        "profile": profile,
+        "active_distribution": str(row.get("active_distribution") or ("full" if profile == "full" else "core")),
+        "primitive_distribution": str(row.get("primitive_distribution") or ("explicit" if profile == "full" else "core")),
+        "primitives": row.get("primitives") if isinstance(row.get("primitives"), dict) else {},
+    }
+
+
+def _boundary_names(boundary: dict[str, object], kind: str, fallback: tuple[str, ...] | list[str]) -> list[str]:
+    primitives = boundary.get("primitives")
+    if not isinstance(primitives, dict):
+        return list(fallback)
+    raw_items = primitives.get(kind)
+    if not isinstance(raw_items, list):
+        return list(fallback)
+
+    names: list[str] = []
+    for item in raw_items:
+        if not isinstance(item, str):
+            continue
+        path = Path(item)
+        if kind == "hooks" and path.suffix == ".sh":
+            names.append(path.stem)
+        elif kind == "rules" and path.suffix == ".md":
+            names.append(path.stem)
+        elif kind == "skills":
+            # skills/name/SKILL.md → name
+            if path.name == "SKILL.md" and path.parent.name:
+                names.append(path.parent.name)
+            else:
+                names.append(path.name)
+    return names or list(fallback)
 
 
 # ── Migrated functions ───────────────────────────────────────────────
@@ -1513,6 +1572,11 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
 
     # ── 2. Define mode components ─────────────────────────────────────
     # (constants defined at module level: DEFAULT_RULES, DEFAULT_HOOKS, DEFAULT_SKILLS)
+    install_boundary = _load_install_boundary(mode)
+    active_distribution = str(install_boundary.get("active_distribution") or ("full" if mode == "--full" else "core"))
+    default_rules = _boundary_names(install_boundary, "rules", DEFAULT_RULES)
+    default_hooks = _boundary_names(install_boundary, "hooks", DEFAULT_HOOKS)
+    default_skills = _boundary_names(install_boundary, "skills", DEFAULT_SKILLS)
 
     # ── 3. Create directory structure ────────────────────────────────
     # SAFETY: replace symlinks with real directories
@@ -1597,8 +1661,9 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
                 shutil.copy2(str(rule_path), str(Path(dest_dir) / rule_path.name))
             rules_installed += 1
     else:
-        # Default mode: install the 14 core rules
-        for name in DEFAULT_RULES:
+        # Default mode: install only the core rules declared by the install
+        # boundary manifest.
+        for name in default_rules:
             status = install_rule(name, rules_source, rule_dests)
             if status == "installed":
                 rules_installed += 1
@@ -1638,8 +1703,9 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
             shutil.copy2(str(wrapper_src), str(wrapper_dest))
             wrapper_dest.chmod(wrapper_dest.stat().st_mode | 0o111)
     else:
-        # Default mode: the standard hook set
-        for name in DEFAULT_HOOKS:
+        # Default mode: install only the core hooks declared by the install
+        # boundary manifest.
+        for name in default_hooks:
             status = install_hook(name, hooks_source, hooks_dest)
             if status == "installed":
                 hooks_installed += 1
@@ -1683,8 +1749,9 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
                 if status == "installed":
                     skills_installed += 1
         else:
-            # Default: install the curated core skills
-            for name in DEFAULT_SKILLS:
+            # Default: install the curated core skills declared by the install
+            # boundary manifest.
+            for name in default_skills:
                 skill_dir = skills_source / name
                 if not skill_dir.is_dir():
                     continue
@@ -1735,6 +1802,8 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
         "version": cos_version,
         "source": registry_source,
         "harness": harness,
+        "active_distribution": active_distribution,
+        "install_boundary_manifest": str(INSTALL_BOUNDARY_MANIFEST.relative_to(COS_SOURCE_DIR)),
         "settings_driver": settings_label,
         "installed_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "project_name": project_name,

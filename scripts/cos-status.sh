@@ -375,6 +375,25 @@ get_profile() {
   ' "$yaml" | head -1
 }
 
+get_install_meta_field() {
+  local field="$1"
+  local meta="$PROJECT_ROOT/.cognitive-os/install-meta.json"
+  [ -f "$meta" ] || return
+  command -v python3 >/dev/null 2>&1 || return
+  python3 - "$meta" "$field" <<'PYEOF' 2>/dev/null
+import json
+import sys
+
+try:
+    data = json.load(open(sys.argv[1], encoding="utf-8"))
+except Exception:
+    sys.exit(0)
+value = data.get(sys.argv[2], "")
+if value is not None:
+    print(value)
+PYEOF
+}
+
 # Count skills in a directory. A skill is a subdirectory containing SKILL.md,
 # or a loose subdirectory (legacy installs). We count subdirectories under the dir.
 count_skills() {
@@ -643,6 +662,20 @@ get_install_source() {
 
 PROFILE="$(get_profile)"
 [ -z "$PROFILE" ] && PROFILE="unknown"
+if [ "$PROFILE" = "unknown" ]; then
+  META_MODE="$(get_install_meta_field mode)"
+  [ -n "$META_MODE" ] && PROFILE="$META_MODE"
+fi
+ACTIVE_DISTRIBUTION="$(get_install_meta_field active_distribution)"
+[ -z "$ACTIVE_DISTRIBUTION" ] && {
+  if [ "$PROFILE" = "full" ]; then
+    ACTIVE_DISTRIBUTION="full"
+  elif [ "$PROFILE" = "default" ]; then
+    ACTIVE_DISTRIBUTION="core"
+  else
+    ACTIVE_DISTRIBUTION="unknown"
+  fi
+}
 
 DAEMONS_TSV="$(get_daemons)"
 SKILLS_DRIVER_PATH="$(driver_skills_dir)"
@@ -748,6 +781,7 @@ emit_json() {
 import json, sys, os
 
 profile = "$PROFILE"
+active_distribution = "$ACTIVE_DISTRIBUTION"
 skills_driver = int("$SKILLS_DRIVER")
 skills_driver_path = "$SKILLS_DRIVER_PATH"
 skills_kernel = int("$SKILLS_KERNEL")
@@ -802,6 +836,7 @@ for line in health_tsv.splitlines():
 
 out = {
     "profile": profile,
+    "active_distribution": active_distribution,
     "skills": {
         "driver_exposed": skills_driver,
         "driver_path": skills_driver_path,
@@ -841,6 +876,7 @@ pretty_print() {
   printf '%s══════════%s\n\n' "${C_DIM}" "${C_RESET}"
 
   printf '%-16s %s %s(cognitive-os.yaml)%s\n' "Profile:" "${C_BOLD}${PROFILE}${C_RESET}" "${C_DIM}" "${C_RESET}"
+  printf '%-16s %s %s(install boundary)%s\n' "Distribution:" "${C_BOLD}${ACTIVE_DISTRIBUTION}${C_RESET}" "${C_DIM}" "${C_RESET}"
 
   # Skills section
   local skills_line
