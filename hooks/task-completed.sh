@@ -63,15 +63,34 @@ fi
 phase=$(get_phase "reconstruction")
 
 if [ "$phase" = "production" ] || [ "$phase" = "maintenance" ]; then
-  has_trust_report=false
-  if echo "$task_output" | grep -qE '(TRUST_REPORT:|Trust Report|Score: [0-9]+/100)' 2>/dev/null; then
-    has_trust_report=true
-  fi
+  trust_parse_state=$(TASK_OUTPUT="$task_output" PYTHONPATH="$_PROJECT_DIR:${PYTHONPATH:-}" python3 - <<'PY'
+import os
+import sys
 
-  if [ "$has_trust_report" = "false" ]; then
+from lib.trust_report_parser import TrustReportParseError, TrustReportParser
+
+try:
+    report = TrustReportParser().extract_from_output(os.environ.get("TASK_OUTPUT", ""))
+    if report is None and "SCORE:" in os.environ.get("TASK_OUTPUT", "").upper():
+        report = TrustReportParser().parse(os.environ.get("TASK_OUTPUT", ""))
+except TrustReportParseError:
+    print("malformed")
+    sys.exit(0)
+print("ok" if report is not None else "missing")
+PY
+)
+
+  if [ "$trust_parse_state" = "missing" ]; then
     log_completion_event "reject" "missing_trust_report_in_$phase"
     echo "TASK_COMPLETED: REJECTED — Missing Trust Report in $phase phase."
     echo "All task completions must include a Trust Report with score."
+    exit 2
+  fi
+
+  if [ "$trust_parse_state" = "malformed" ]; then
+    log_completion_event "reject" "malformed_trust_report_in_$phase"
+    echo "TASK_COMPLETED: REJECTED — Malformed Trust Report in $phase phase."
+    echo "Use the ADR-038 header: TRUST_REPORT: SCORE=<0-100> STATUS=<HIGH|MEDIUM|LOW|CRITICAL> EVIDENCE=<N> UNCERTAINTIES=<N>."
     exit 2
   fi
 fi

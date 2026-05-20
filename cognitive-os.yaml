@@ -1626,6 +1626,12 @@ harness:
       event: PostToolUse
       matcher: Agent
       scope: os-only
+      codex_projection: gap
+      codex_gap_reason: >
+        Codex v0.126.0-alpha.8 fires PostToolUse only for Bash.
+        PostToolUse[Agent] is not emitted, so ADR-038 TrustReport validation
+        runs natively in Claude Code and in shell tests but cannot observe
+        Codex Agent completions until upstream hook coverage expands.
 
     adversarial-review-gate:
       script: hooks/adversarial-review-gate.sh

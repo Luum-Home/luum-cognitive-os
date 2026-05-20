@@ -73,6 +73,29 @@ def _load_preamble(project_dir: str, phase: str = "reconstruction") -> str:
     return text.replace("{{phase}}", phase)
 
 
+def _load_planning_template(project_dir: str) -> str:
+    """Load the ADR-038 Wave 4 planning template when present."""
+    planning_path = Path(project_dir) / "templates" / "agent-planning.md"
+    if not planning_path.exists():
+        return ""
+    return planning_path.read_text(encoding="utf-8")
+
+
+def _should_include_planning_template(task_type: str, task_description: str = "") -> bool:
+    """Return true when the task should receive the separate planning template."""
+    haystack = f"{task_type} {task_description}".lower()
+    planning_tokens = (
+        "plan",
+        "planning",
+        "design",
+        "architecture",
+        "research-first",
+        "spike",
+        "roadmap",
+    )
+    return any(token in haystack for token in planning_tokens)
+
+
 # ---------------------------------------------------------------------------
 # PromptBuilder class
 # ---------------------------------------------------------------------------
@@ -185,10 +208,17 @@ class PromptBuilder:
 
         # Select only the rules relevant to this task type
         rules_content = self._diet.get_lean_context(task_type, task_description)
+        planning_template = (
+            _load_planning_template(self._project_dir)
+            if _should_include_planning_template(task_type, task_description)
+            else ""
+        )
 
         # Assemble stable system prompt content
         system_text = "\n\n".join(
-            part for part in [preamble, _RULES_SECTION_HEADER + rules_content] if part
+            part
+            for part in [preamble, planning_template, _RULES_SECTION_HEADER + rules_content]
+            if part
         )
 
         if self._enable_cache:
@@ -227,8 +257,15 @@ class PromptBuilder:
             preamble = _load_preamble(self._project_dir, self._diet.phase)
 
         rules_content = self._diet.get_lean_context(task_type, task_description)
+        planning_template = (
+            _load_planning_template(self._project_dir)
+            if _should_include_planning_template(task_type, task_description)
+            else ""
+        )
         system_text = "\n\n".join(
-            part for part in [preamble, _RULES_SECTION_HEADER + rules_content] if part
+            part
+            for part in [preamble, planning_template, _RULES_SECTION_HEADER + rules_content]
+            if part
         )
 
         system_msg: Dict[str, Any] = {"role": "system", "content": system_text}
