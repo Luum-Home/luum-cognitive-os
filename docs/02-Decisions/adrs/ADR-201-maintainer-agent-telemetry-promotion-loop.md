@@ -6,7 +6,14 @@ implementation_status: implemented
 date: '2026-05-06'
 supersedes: []
 superseded_by: null
-implementation_files: []
+implementation_files:
+- lib/performance_ledger.py
+- lib/promote_from_telemetry.py
+- lib/maintainer_impact.py
+- scripts/cos-performance-ledger
+- scripts/cos-promote-from-telemetry
+- scripts/cos-maintainer-agent
+- scripts/cos-maintainer-impact
 tier: maintainer
 tags: []
 classification_basis: explicit accepted/implemented status
@@ -352,9 +359,49 @@ allowed write paths, tests, rollback plan, and outcome-failure protocol.
 
 ## Status
 
-Accepted — Slice A implemented. The SQLite performance ledger, signal-quality quarantine, `PromoteFromTelemetry`, `cos-promote-from-telemetry`, and `cos-maintainer-agent --once --dry-run` are present and tested. Scheduled automation and mutation remain future/opt-in.
+Accepted — implemented through Phase 5 impact measurement. The SQLite performance ledger, signal-quality quarantine, `PromoteFromTelemetry`, `cos-promote-from-telemetry`, and `cos-maintainer-agent --once --dry-run` are present and tested. `cos-maintainer-impact` measures whether ledger rollups/proposals changed operator decisions. Scheduled automation and mutation remain future/opt-in.
 
 ## Verification
 ```bash
 python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
+
+## Phase 5 — Impact measurement implemented (2026-05-20)
+
+Phase 2 established that skill/provider/primitive rollups can be emitted. Phase
+5 adds the missing decision-impact measurement: did those rollups change an
+operator or maintainer decision?
+
+### Decision-impact ledger
+
+Rows are appended to:
+
+```text
+.cognitive-os/metrics/maintainer-decision-impact.jsonl
+```
+
+Each row records a decision (`accepted`, `rejected`, `deferred`, `demoted`,
+`promoted`, `rerouted`, `no_action`, etc.) plus optional `source_rollup_run_id`,
+`source_rollup_ref`, and `proposal_id`. A decision counts as rollup-influenced
+only when it cites ledger/proposal evidence. `no_action` rows are preserved but
+do not count as changed decisions.
+
+### CLI
+
+```bash
+scripts/cos-maintainer-impact --json
+scripts/cos-maintainer-impact --record --decision demoted \
+  --surface skill-router \
+  --source-rollup-run-id performance-ledger-2026-05-20 \
+  --proposal-id perf-ledger-example --json
+```
+
+The report exposes `total_decisions`, `rollup_influenced_decisions`,
+`changed_decisions`, `influence_rate`, `changed_rate`, decision counts, and the
+source rollup/proposal ids.
+
+### Verification
+
+```bash
+python3 -m pytest tests/unit/test_maintainer_impact.py -q
 ```
