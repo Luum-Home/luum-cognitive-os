@@ -17,6 +17,18 @@ from lib.operational_status import build_status  # noqa: E402
 
 def render_text(payload: dict) -> str:
     lines = ["COS Operational Status", "======================", f"project: {payload['project']}", ""]
+    summary = payload.get("risk_summary") or {}
+    lines.append(f"BLOCKERS: {summary.get('blockers', 0)}")
+    for item in payload.get("blockers", []):
+        paths = ", ".join(item.get("paths") or [])
+        suffix = f" paths={paths}" if paths else ""
+        lines.append(f"  - {item['code']}: {item['message']} [{item['risk_class']}]{suffix}")
+    lines.append(f"HYGIENE WARNINGS: {summary.get('hygiene_warnings', 0)}")
+    for item in payload.get("hygiene_warnings", []):
+        paths = ", ".join(item.get("paths") or [])
+        suffix = f" paths={paths}" if paths else ""
+        lines.append(f"  - {item['code']}: {item['message']} [{item['risk_class']}]{suffix}")
+    lines.append("")
     labels = {
         "safe_to_work": "SAFE TO WORK",
         "safe_to_launch_agent": "SAFE TO LAUNCH AGENT",
