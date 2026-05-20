@@ -6,6 +6,7 @@ import importlib.util
 import json
 import subprocess
 import sys
+import tarfile
 import time
 from pathlib import Path
 
@@ -80,15 +81,39 @@ def test_install_hook_dry_run_accepts_packaged_user_prompt_submit_hook() -> None
     assert "packages/cos-advisory-llm/hooks/prompt-quality-llm.sh" in result.stdout
 
 
+def _extract_tracked_snapshot(tmp_path: Path) -> Path:
+    """Extract HEAD tracked files into an isolated audit snapshot.
+
+    The contract lane runs with xdist. Other tests can temporarily edit tracked
+    files or create scratch primitives, so this test must validate HEAD source
+    rather than the shared live worktree.
+    """
+    archive_path = tmp_path / "source.tar"
+    snapshot = tmp_path / "snapshot"
+    snapshot.mkdir()
+    result = subprocess.run(
+        ["git", "-C", str(PROJECT_ROOT), "archive", "--format=tar", "--output", str(archive_path), "HEAD"],
+        capture_output=True,
+        text=True,
+        timeout=60,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    with tarfile.open(archive_path) as archive:
+        archive.extractall(snapshot, filter="data")
+    return snapshot
+
+
 @pytest.mark.timeout(180)
-def test_aspirational_audit_reports_zero_active_dormant_debt() -> None:
+def test_aspirational_audit_reports_zero_active_dormant_debt(tmp_path: Path) -> None:
     """The current classifier should prove Phase 3 starts from zero active dormant debt."""
+    snapshot = _extract_tracked_snapshot(tmp_path)
     payload = None
     result = None
     for attempt in range(3):
         result = subprocess.run(
-            [sys.executable, "scripts/aspirational_audit.py", "--json", "--tracked-only"],
-            cwd=PROJECT_ROOT,
+            [sys.executable, "scripts/aspirational_audit.py", "--json", "--project-root", str(snapshot)],
+            cwd=snapshot,
             capture_output=True,
             text=True,
             timeout=60,
