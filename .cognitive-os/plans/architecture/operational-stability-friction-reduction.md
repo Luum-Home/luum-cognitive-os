@@ -256,7 +256,7 @@ python3 -m pytest tests/behavior/test_cos_status_operator_messages.py -q
 ### Acceptance
 
 - [x] `cos validate --recommend` prints lane + commands. (verified: ls scripts/cos_validate.py)
-- [x] Merge queue records recommended lane and executed lane. (verified: lib/merge_queue.py enqueue lane evidence, scripts/cos-merge-queue-worker.sh executed lane record, tests/unit/test_merge_queue.py, tests/behavior/test_merge_queue_validation_lane.py)
+- [x] Merge queue records recommended lane and executed lane. (verified: lib/merge_queue.py enqueue lane evidence, scripts/cos-merge-queue-worker.sh executed lane record, scripts/merge-to-main.sh queue rows, tests/unit/test_merge_queue.py, tests/behavior/test_merge_queue_validation_lane.py, tests/behavior/test_merge_to_main_lane_recording.py)
 - [x] `make test-laptop` remains available but is no longer the only trusted (verified: grep "^test-laptop:" Makefile)
       confidence story.
 
@@ -264,7 +264,7 @@ python3 -m pytest tests/behavior/test_cos_status_operator_messages.py -q
 
 ```bash
 python3 -m pytest tests/unit/test_validation_lane_recommender.py -q
-python3 -m pytest tests/behavior/test_merge_queue_validation_lane.py -q
+python3 -m pytest tests/behavior/test_merge_queue_validation_lane.py tests/behavior/test_merge_to_main_lane_recording.py -q
 ```
 
 ## Phase 7 — Distribution boundary implementation
@@ -289,10 +289,10 @@ python3 -m pytest tests/behavior/test_merge_queue_validation_lane.py -q
 
 ### Acceptance
 
-- [ ] Default install path includes only `core` unless explicitly configured.
+- [x] Default install path includes only `core` unless explicitly configured. (verified: install.sh --profile=core maps to ADR-093 default, tests/behavior/test_install_core_boundary.py)
 - [ ] Every projected primitive has distribution metadata.
 - [ ] `cos status` reports active distribution and profile.
-- [ ] Maintainer/lab tooling is available but not in the default runtime path.
+- [x] Maintainer/lab tooling is available but not in the default runtime path. (verified: repository maintainer/lab skills remain available in source, tests/behavior/test_install_core_boundary.py asserts they are absent from default/core install projection)
 
 ### Validation
 
@@ -300,6 +300,7 @@ python3 -m pytest tests/behavior/test_merge_queue_validation_lane.py -q
 python3 -m pytest tests/audit/test_distribution_metadata.py -q
 python3 -m pytest tests/contracts/test_core_distribution_projection.py -q
 python3 -m pytest tests/behavior/test_core_install_is_low_friction.py -q
+python3 -m pytest tests/behavior/test_install_core_boundary.py -q
 ```
 
 ## Phase 8 — Productization threshold
