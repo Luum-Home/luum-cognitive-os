@@ -50,6 +50,9 @@ Continuation after this backlog snapshot:
 |---|---|---|
 | ADR-038 Wave 4 hook wiring + grading policy | DONE in local continuation slice | `templates/agent-planning.md`, `lib/prompt_builder.py`, `hooks/trust-score-validator.sh`, `hooks/task-completed.sh`, `cognitive-os.yaml`, `tests/hooks/test_trust_score_validator.py`, `tests/unit/test_prompt_integration.py` |
 | Governance ROI friction-vs-catch surface | DONE in local continuation slice | `docs/02-Decisions/adrs/ADR-328-governance-roi-friction-vs-catch.md`, `scripts/cos_governance_roi.py`, `scripts/cos-status.sh`, `tests/unit/test_cos_governance_roi.py`, `tests/behavior/test_cos_status.py` |
+| Governance catch-ledger population workflow | DONE in local continuation slice | `scripts/cos_governance_roi.py`, `scripts/cos`, `scripts/hook-timing-wrapper.sh`, `tests/unit/test_cos_governance_roi.py`, `tests/contracts/test_hook_timing_wrapper.py` |
+| DX Tax lean-profile semantics | DONE in local continuation slice | `lib/adaptive_profile.py`, `scripts/cos_profile_explain.py`, `tests/unit/test_profile_resolver.py`, `.cognitive-os/plans/architecture/operational-stability-friction-reduction.md` |
+| Maintainer Telemetry Phase 5 impact measurement | DONE in local continuation slice | `lib/maintainer_impact.py`, `scripts/cos-maintainer-impact`, `tests/unit/test_maintainer_impact.py`, `docs/02-Decisions/adrs/ADR-201-maintainer-agent-telemetry-promotion-loop.md` |
 
 
 **Dogfooding wins:** four of the ten commits above
@@ -62,13 +65,12 @@ its own gaps. Postmortem at
 
 | # | Item | Effort | Why it matters | Source |
 |---|---|---|---|---|
-| 1 | DX Tax 5 items left unchecked in op-stability plan | 2-4h each (=10-20h) | Real implementation: lean-profile semantics, hygiene-vs-blocker, merge-queue lane recording, default-core install boundary, merge-queue default path. Closes Phase 6/7 of `operational-stability-friction-reduction.md`. | `.cognitive-os/plans/architecture/operational-stability-friction-reduction.md` |
-| 2 | Maintainer Telemetry Phase 5 — impact measurement | 1 slice | Phase 2 emits skill/provider/primitive rollups. Phase 5 measures whether rollups change operator decisions. | engram topic `maintainer-telemetry-phases` |
-| 3 | Governance catch-ledger population policy | 1 slice | ADR-328 adds `.cognitive-os/metrics/governance-catches.jsonl` and `cos status` exposure. Next ROI work is deciding when/how operator-reviewed catch verdicts are recorded so the ratio stops reporting `unknown`. | `docs/02-Decisions/adrs/ADR-328-governance-roi-friction-vs-catch.md` |
-| 4 | Op Stability Phase 3 — adaptive profiles resolver | multi-sesión | `lean|standard|strict` profile picker per phase + per surface. | op-stability plan §Phase 3 |
-| 5 | Op Stability Phase 7 — distribution boundary metadata | multi-sesión | Every projected primitive has distribution metadata; maintainer/lab off default runtime path. | op-stability plan §Phase 7 |
-| 6 | Op Stability Phase 8 — productization threshold | multi-sesión | 6 exit-criteria checkboxes (status accuracy, false-positive trend, merge-queue default, chaos N=10/20/50, etc.). Mostly verified this session — outstanding: hygiene-vs-blocker, merge-queue default path. | op-stability plan §Phase 8 |
-| 7 | Wave 5 backlog: ADR-121 phases 3-6, ADR-291 23 endpoints, ADR-325 phases 3-5 | multi-sesión by design | Structural backlog. Each is its own arc. | post-audit-cleanup-roadmap.md |
+| 1 | DX Tax remaining unchecked items | 2-4h each | Lean-profile semantics is closed. Remaining real implementation is hygiene-vs-blocker, merge-queue lane recording, default-core install boundary, and merge-queue default path. | `.cognitive-os/plans/architecture/operational-stability-friction-reduction.md` |
+| 2 | Governance phase-policy enforcement adoption | multi-slice | ADR-328 now has the catch ledger, operator prompt workflow, weighted ratio, and `cos governance policy`; next work is wiring individual guards to consult the policy adapter consistently. | `docs/02-Decisions/adrs/ADR-328-governance-roi-friction-vs-catch.md` |
+| 3 | Op Stability Phase 3 — adaptive profiles resolver | multi-sesión | `lean|standard|strict` profile picker per phase + per surface. | op-stability plan §Phase 3 |
+| 4 | Op Stability Phase 7 — distribution boundary metadata | multi-sesión | Every projected primitive has distribution metadata; maintainer/lab off default runtime path. | op-stability plan §Phase 7 |
+| 5 | Op Stability Phase 8 — productization threshold | multi-sesión | 6 exit-criteria checkboxes (status accuracy, false-positive trend, merge-queue default, chaos N=10/20/50, etc.). Mostly verified this session — outstanding: hygiene-vs-blocker, merge-queue default path. | op-stability plan §Phase 8 |
+| 6 | Wave 5 backlog: ADR-121 phases 3-6, ADR-291 23 endpoints, ADR-325 phases 3-5 | multi-sesión by design | Structural backlog. Each is its own arc. | post-audit-cleanup-roadmap.md |
 
 ## Items intentionally NOT prioritized
 
@@ -79,7 +81,8 @@ its own gaps. Postmortem at
 
 | Risk | Trigger | Mitigation |
 |---|---|---|
-| Governance catch ledger under-populated | ADR-328 now exposes friction-vs-catch in `cos status`, but the ratio is intentionally `unknown` until reviewed catch rows exist. Without a capture policy, the dashboard can still drift into "metric exists, evidence missing". | Define when operators or hooks append `confirmed_valid_block`, `false_positive_override`, `silent_loss_prevented`, and `high_blast_radius_catch` rows to `.cognitive-os/metrics/governance-catches.jsonl`. |
+| Governance catch ledger evidence still sparse | ADR-328 now has `cos governance catch log`, `cos governance catch pending`, and blocked-hook prompts, but historical rows remain sparse until operators classify real events. | Use the new pending prompt workflow during dogfooding; treat missing evidence as adoption debt, not missing substrate. |
+| Per-guard policy adoption incomplete | `cos governance policy` can answer phase-aware block/advisory decisions, but individual guards still need incremental wiring where they currently hard-code posture. | Adopt the policy adapter guard-by-guard, starting with high-friction blocker paths. |
 | Backlog state regeneration manual | This doc is a manual snapshot. Within 1-2 sessions it will drift. | See open architectural question below. |
 | Trust-report legacy migration debt | Wave 4 resolved the ambiguity: structured malformed reports block, missing reports remain advisory outside production/maintenance, and legacy `TRUST REPORT:` blocks are accepted with a warning plus `format=legacy` metrics. | Track legacy count in `.cognitive-os/metrics/trust-scores.jsonl`; remove fallback only after legacy usage approaches zero. |
 
@@ -107,14 +110,8 @@ the closest existing decisions but none commit to a canonical
 
 ## Next-session proposal
 
-1. **Slice X**: DX Tax item #1 cheapest first — lean-profile semantics
-   (self-contained, ~3h, closes a Phase 6 checkbox).
-2. **Slice Z**: Maintainer Telemetry Phase 5 — decide whether rollups changed
-   operator choices, not just whether rollups exist.
-3. **Slice W**: Governance catch-ledger population policy — make ADR-328's
-   friction-vs-catch ratio actionable by recording reviewed verdicts.
+1. **DX Tax follow-on**: hygiene-vs-blocker semantics, then merge-queue lane/default-path work.
+2. **Governance policy adoption**: wire high-friction guards to `cos governance policy` so reconstruction/production posture is enforced consistently.
+3. **Telemetry adoption**: use `scripts/cos-maintainer-impact` for real maintainer choices so Phase 5 has evidence, not only instrumentation.
 
-ADR-038 Wave 4 was the originally proposed Slice Y and is now closed in the
-continuation slice. Governance ROI measurement also moved from open risk to
-implemented substrate; what remains is evidence population, not the status
-surface itself.
+ADR-038 Wave 4, lean-profile semantics, Maintainer Telemetry Phase 5 instrumentation, and ADR-328 catch-ledger population substrate are now closed in continuation slices. Remaining work is adoption/wiring, not the core substrate.
