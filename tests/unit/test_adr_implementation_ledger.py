@@ -264,6 +264,50 @@ adrs:
         adr_implementation_ledger.load_closure_metadata(project)
 
 
+
+
+def test_scan_adrs_batches_git_evidence_lookup(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    project = tmp_path / "project"
+    adrs = project / "docs" / "02-Decisions" / "adrs"
+    adrs.mkdir(parents=True)
+    for idx in range(1, 4):
+        (adrs / f"ADR-{idx:03d}-batched.md").write_text(
+            f"# ADR-{idx:03d} Batched\n\n## Status\nAccepted.\n",
+            encoding="utf-8",
+        )
+
+    calls: list[list[str]] = []
+
+    def fake_run(
+        args: list[str],
+        capture_output: bool,
+        text: bool,
+        timeout: int,
+        check: bool,
+    ):
+        calls.append(args)
+
+        class Result:
+            returncode = 0
+            stdout = (
+                "\x1eabc123\x1fImplement ADR-001-batched\x1f"
+                "body\n\x1edef456\x1fImplement ADR-003-batched\x1fbody"
+            )
+
+        return Result()
+
+    monkeypatch.setattr(adr_implementation_ledger.subprocess, "run", fake_run)
+
+    records = adr_implementation_ledger.scan_adrs(project)
+
+    assert len(calls) == 1
+    assert "--grep" not in calls[0]
+    evidence = {record.adr_id: record.evidence for record in records}
+    assert evidence["ADR-001-batched"] == ["commit: abc123 Implement ADR-001-batched"]
+    assert evidence["ADR-002-batched"] == []
+    assert evidence["ADR-003-batched"] == ["commit: def456 Implement ADR-003-batched"]
+
+
 def test_write_outputs_creates_latest_json_jsonl_and_session_markdown(tmp_path: Path) -> None:
     project = tmp_path / "project"
     adrs = project / "docs" / "02-Decisions" / "adrs"

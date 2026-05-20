@@ -251,8 +251,62 @@ def extract_explicit_evidence(text: str, project_dir: Path) -> list[str]:
     return list(dict.fromkeys(evidence))[:12]
 
 
+def build_git_evidence_index(project_dir: Path, adr_ids: list[str]) -> dict[str, list[str]]:
+    """Return commit evidence for ADR ids using one git-log pass.
+
+    The previous implementation invoked `git log --grep <adr>` once per ADR,
+    which made callers such as `/session-backlog` exceed their 20s budget on
+    repositories with hundreds of ADRs. A single formatted log preserves the
+    same evidence shape while making runtime proportional to one history scan.
+    """
+    if not adr_ids:
+        return {}
+    try:
+        proc = subprocess.run(
+            [
+                "git",
+                "-C",
+                str(project_dir),
+                "log",
+                "--all",
+                "--format=%x1e%h%x1f%s%x1f%b",
+                "--",
+                ".",
+            ],
+            capture_output=True,
+            text=True,
+            timeout=8,
+            check=False,
+        )
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        return {adr_id: [] for adr_id in adr_ids}
+    if proc.returncode != 0:
+        return {adr_id: [] for adr_id in adr_ids}
+
+    evidence_by_adr = {adr_id: [] for adr_id in adr_ids}
+    remaining = set(adr_ids)
+    for raw_entry in proc.stdout.split("\x1e"):
+        entry = raw_entry.strip()
+        if not entry or not remaining:
+            continue
+        parts = entry.split("\x1f", 2)
+        if len(parts) != 3:
+            continue
+        short_sha, subject, body = parts
+        haystack = f"{subject}\n{body}".lower()
+        line = f"commit: {short_sha} {subject}".strip()
+        for adr_id in tuple(remaining):
+            if adr_id.lower() in haystack:
+                rows = evidence_by_adr[adr_id]
+                if line not in rows:
+                    rows.append(line)
+                if len(rows) >= 5:
+                    remaining.discard(adr_id)
+    return evidence_by_adr
+
+
 def git_evidence_for_adr(project_dir: Path, adr_id: str) -> list[str]:
-    return [f"commit: {line}" for line in run_git(project_dir, ["log", "--all", "--grep", adr_id, "--oneline", "--", "."])[:5]]
+    return build_git_evidence_index(project_dir, [adr_id]).get(adr_id, [])
 
 
 def implementation_state(
@@ -333,8 +387,10 @@ def scan_adrs(project_dir: Path) -> list[AdrRecord]:
     if not adrs_dir.exists():
         return []
     closure_metadata = load_closure_metadata(project_dir)
+    adr_paths = sorted(adrs_dir.glob("ADR-*.md"))
+    git_evidence = build_git_evidence_index(project_dir, [path.stem for path in adr_paths])
     records: list[AdrRecord] = []
-    for path in sorted(adrs_dir.glob("ADR-*.md")):
+    for path in adr_paths:
         text = path.read_text(encoding="utf-8", errors="replace")
         adr_id = path.stem
         status = extract_status(text)
@@ -342,7 +398,7 @@ def scan_adrs(project_dir: Path) -> list[AdrRecord]:
         open_questions = extract_open_questions(text)
         missing_required_paths = missing_required_paths_for_adr(text, project_dir)
         evidence = extract_explicit_evidence(text, project_dir)
-        evidence.extend(git_evidence_for_adr(project_dir, adr_id))
+        evidence.extend(git_evidence.get(adr_id, []))
         evidence = list(dict.fromkeys(evidence))[:15]
         impl_state, reason = implementation_state(decision_state, status, text, evidence, open_questions, missing_required_paths)
         record = AdrRecord(
