@@ -192,6 +192,7 @@ def test_no_plan_files_outside_canonical_root() -> None:
         if rel_parts[:2] == (".claude", "worktrees"):
             continue
         if rel_parts[:2] in {
+            (".cognitive-os", "checkpoints"),
             (".cognitive-os", "sessions"),
             (".cognitive-os", "generated"),
             (".cognitive-os", "runtime"),

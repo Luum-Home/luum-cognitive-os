@@ -55,6 +55,9 @@ _STUB_MARKER = "# Moved"
 #   .cognitive-os/snapshots/       — pre-agent preservation copies. These may
 #                                    contain historical docs/02-Decisions/adrs files verbatim
 #                                    and are not canonical ADR locations.
+#   .cognitive-os/checkpoints/     — validation/session recovery checkpoints.
+#                                    They can contain repository snapshots with
+#                                    canonical ADR paths from earlier states.
 #   docs/06-Daily/reports/         — audit/report artifacts that reference ADRs by number.
 #   docs/04-Concepts/architecture/harness-adoption-gap/adr-003-hook-registration-pending.md
 #                                  — a pending-work note file, not the ADR itself (the
@@ -63,6 +66,7 @@ ALLOWLIST_RELATIVE: list[str] = [
     ".cognitive-os/pending-tasks/",
     ".cognitive-os/plans/",
     ".cognitive-os/snapshots/",
+    ".cognitive-os/checkpoints/",
     "docs/06-Daily/reports/",
     "docs/06-Daily/reports/",
     "docs/04-Concepts/architecture/harness-adoption-gap/adr-003-hook-registration-pending.md",

@@ -35,7 +35,7 @@ System design, patterns, and structural references. Read this when you're design
 
 ## Symlink trap
 
-Many `hooks/*.sh` and `lib/*.py` files are symlinks into `packages/*/`. Before classifying any file as missing or duplicated, run `ls -la <path>` or `readlink -f <path>`. Three confirmed silent drifts as of 2026-05-11 — see ADR-267 and `scripts/cos-lib-symlink-invariant-audit.py`.
+Many `hooks/*.sh` and `lib/*.py` files are symlinks into `packages/*/`. Before classifying any file as missing or duplicated, run `ls -la <path>` or `readlink -f <path>`. The current guard is `scripts/cos_lib_symlink_invariant_audit.py`; it distinguishes real symlink drift from intentionally distinct same-basename package modules.
 
 ## Cross-tool / portability
 

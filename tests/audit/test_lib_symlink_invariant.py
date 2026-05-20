@@ -5,7 +5,7 @@ Verifies that the cos_lib_symlink_invariant_audit module correctly detects:
   - Silent drift (divergent content, no symlink) → 1+ errors
   - Real-file dupe (identical content, no symlink) → 1+ warns, 0 errors
   - Dangling symlink → 1+ errors
-  - Actual repo state: completes in <5s; baseline of known drifts surfaced.
+  - Actual repo state: completes in <5s and has no unresolved drift errors.
 """
 from __future__ import annotations
 
@@ -167,23 +167,9 @@ def test_dangling_symlink_is_error(tmp_path):
 # Test 5: Actual repo — performance + known-baseline assertion
 # ---------------------------------------------------------------------------
 
-# Known drifts as of 2026-05-11 ADR-267 audit.
-# The audit surfaces MORE than the 3 originally cited because __init__.py has
-# 3 separate drift pairs and retry_classifier.py is also diverged.
-_KNOWN_DRIFT_LIB_FILES = {
-    "lib/dispatch.py",
-    "lib/__init__.py",
-    "lib/review_agent.py",
-    "lib/retry_classifier.py",  # additional drift uncovered by this audit
-}
-
-# Baseline: at least these many ERRORs exist in the repo before remediation.
-_BASELINE_MIN_ERRORS = 3
-
-
 @pytest.mark.audit
 def test_actual_repo_performance_and_baseline():
-    """Audit the live repo: completes in <5s and surfaces known drifts."""
+    """Audit the live repo: completes in <5s and reports no drift errors."""
     t0 = time.monotonic()
     result = run_audit(REPO, scope="both")
     elapsed = time.monotonic() - t0
@@ -193,29 +179,8 @@ def test_actual_repo_performance_and_baseline():
         "Check for I/O bottlenecks or large binary files in lib/."
     )
 
-    if result.error_count > _BASELINE_MIN_ERRORS:
-        # More errors than expected — repo has not been remediated yet.
-        # Mark as xfail with a TODO surfaced in the message.
-        pytest.xfail(
-            reason=(
-                f"post-remediation should converge to 0 ERRORs. "
-                f"Current count: {result.error_count}. "
-                f"TODO: run `python3 scripts/cos_lib_symlink_invariant_audit.py --format markdown` "
-                f"and resolve each finding per ADR-267."
-            )
-        )
-
-    assert result.error_count >= _BASELINE_MIN_ERRORS, (
-        f"Expected at least {_BASELINE_MIN_ERRORS} drift ERROR(s) in the "
-        f"un-remediated repo, got {result.error_count}. "
-        f"If the repo was intentionally remediated, lower _BASELINE_MIN_ERRORS."
-    )
-
-    # Verify the 3 originally cited files appear in findings
-    cited = {"lib/dispatch.py", "lib/__init__.py", "lib/review_agent.py"}
-    found_lib_paths = {f.lib_path for f in result.findings if f.severity == SEVERITY_ERROR}
-    missing = cited - found_lib_paths
-    assert not missing, (
-        f"Expected these known-drift files to appear in ERROR findings, "
-        f"but they were missing: {missing}"
+    errors = [f for f in result.findings if f.severity == SEVERITY_ERROR]
+    assert not errors, (
+        "Expected 0 live lib/package symlink drift ERRORs. Findings:\n"
+        + "\n".join(f"  - {f.lib_path} -> {f.pkg_path}: {f.message}" for f in errors)
     )

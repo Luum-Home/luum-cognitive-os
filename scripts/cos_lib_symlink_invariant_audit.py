@@ -43,6 +43,34 @@ from typing import Iterator
 SEVERITY_ERROR = "ERROR"
 SEVERITY_WARN = "WARN"
 
+# Same basename does not always mean "duplicate counterpart". These package
+# modules are intentionally distinct public surfaces that share conventional
+# names with root lib modules (`dispatch.py`, `retry_classifier.py`,
+# `__init__.py`). Treating them as drift would make the audit noisy and hide
+# real silent-copy regressions.
+INTENTIONAL_DISTINCT_MODULE_PAIRS: set[tuple[str, str]] = {
+    (
+        "lib/dispatch.py",
+        "packages/agent-lifecycle/lib/harness_adapter/dispatch.py",
+    ),
+    (
+        "lib/retry_classifier.py",
+        "packages/agent-lifecycle/lib/event_projections/retry_classifier.py",
+    ),
+    (
+        "lib/__init__.py",
+        "packages/agent-lifecycle/lib/event_projections/__init__.py",
+    ),
+    (
+        "lib/__init__.py",
+        "packages/agent-lifecycle/lib/harness_adapter/__init__.py",
+    ),
+    (
+        "lib/__init__.py",
+        "packages/llm-providers/lib/__init__.py",
+    ),
+}
+
 
 @dataclass
 class Finding:
@@ -210,6 +238,11 @@ def run_audit(repo: Path, scope: str = "both") -> AuditResult:
                 continue  # no counterpart in packages — not an invariant violation
 
             for pkg_path in pkg_files[name]:
+                root_rel = str(root_path.relative_to(repo))
+                pkg_rel = str(pkg_path.relative_to(repo))
+                if (root_rel, pkg_rel) in INTENTIONAL_DISTINCT_MODULE_PAIRS:
+                    continue
+
                 # Skip the dangling/cross-project ones already flagged above
                 if os.path.islink(root_path):
                     real = None

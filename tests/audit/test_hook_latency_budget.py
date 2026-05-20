@@ -199,7 +199,7 @@ def test_p95_within_budget_for_event(event, budget_ms, timing_pairs):
         )
 
     if violators and os.environ.get(ENFORCE_ENV) != "1":
-        pytest.xfail(
+        pytest.skip(
             f"Operational hook latency budget exceeded for '{event}' but "
             f"{ENFORCE_ENV}=1 is not set: " + "; ".join(violators)
         )
@@ -235,7 +235,7 @@ def test_no_hooks_exceed_default_budget(timing_pairs):
             )
 
     if violators and os.environ.get(ENFORCE_ENV) != "1":
-        pytest.xfail(
+        pytest.skip(
             f"Operational default hook latency budget exceeded but "
             f"{ENFORCE_ENV}=1 is not set: " + "; ".join(violators)
         )
