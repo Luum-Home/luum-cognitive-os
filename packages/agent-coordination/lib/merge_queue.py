@@ -62,6 +62,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, List, Optional
 
+from lib.validation_lanes import recommend_lane
+
 logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
@@ -151,6 +153,9 @@ def enqueue(
     session_id: str,
     expected_files: Optional[List[str]] = None,
     *,
+    recommended_lane: str | None = None,
+    executed_lane: str | None = None,
+    validation_rationale: list[str] | None = None,
     queue_path: Optional[str | Path] = None,
 ) -> str:
     """Append a new entry to the merge queue.
@@ -174,13 +179,18 @@ def enqueue(
     """
     path = _resolve_queue_path(queue_path)
     path.parent.mkdir(parents=True, exist_ok=True)
+    expected_files = expected_files or []
+    if recommended_lane is None or validation_rationale is None:
+        recommendation = recommend_lane(expected_files)
+        recommended_lane = recommended_lane or recommendation.recommended_lane
+        validation_rationale = validation_rationale if validation_rationale is not None else recommendation.rationale
 
     entry_id = str(uuid.uuid4())
     entry: dict = {
         "id": entry_id,
         "session_branch": session_branch,
         "session_id": session_id,
-        "expected_files": expected_files or [],
+        "expected_files": expected_files,
         "enqueued_at": _now_iso(),
         "status": "queued",
         "completed_at": None,
@@ -188,9 +198,9 @@ def enqueue(
         # P2.2 extensions (optional, populated by gate_runner / merge_rollback)
         "gate_evidence": None,
         "revert_sha": None,
-        "recommended_lane": None,
-        "executed_lane": None,
-        "validation_rationale": [],
+        "recommended_lane": recommended_lane,
+        "executed_lane": executed_lane,
+        "validation_rationale": validation_rationale or [],
         "base_head": None,
     }
 

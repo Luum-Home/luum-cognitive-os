@@ -256,7 +256,7 @@ python3 -m pytest tests/behavior/test_cos_status_operator_messages.py -q
 ### Acceptance
 
 - [x] `cos validate --recommend` prints lane + commands. (verified: ls scripts/cos_validate.py)
-- [ ] Merge queue records recommended lane and executed lane.
+- [x] Merge queue records recommended lane and executed lane. (verified: lib/merge_queue.py enqueue lane evidence, scripts/cos-merge-queue-worker.sh executed lane record, tests/unit/test_merge_queue.py, tests/behavior/test_merge_queue_validation_lane.py)
 - [x] `make test-laptop` remains available but is no longer the only trusted (verified: grep "^test-laptop:" Makefile)
       confidence story.
 
@@ -313,7 +313,7 @@ when all are true:
 - [x] False-positive blocker rate is tracked and trending down. (verified: lib/hook_tuner.py:69 get_false_positive_rate)
 - [x] Safe repairs are idempotent and covered by race tests. (verified: tests/behavior/test_cos_cleanup.py:166)
 - [x] New guards cannot enter `block` without maturity metadata and tests. (verified: tests/contracts/test_hook_quality_system.py:77)
-- [ ] Merge queue / protected landing is the default path for main.
+- [x] Merge queue / protected landing is the default path for main. (verified: scripts/cos land wrapper to merge-to-main.sh, direct-main-guard blocks main pushes/agent commits unless merge queue worker/bypass, tests/unit/test_direct_main_guard.py)
 - [x] Multi-agent chaos suite covers N=10/20/50 contention without deadlocks. (verified: tests/chaos/test_swarm_stress.py:308)
 
 ## Implementation order

@@ -2,8 +2,8 @@
 # install.sh — Install Cognitive OS into the current project
 #
 # UX1 + UX8 — ADR-093 collapsed the 3-tier profile system to 2 tiers:
-#   default  — 10 curated core skills, ~29 standard hooks, 14 core rules (~8000 tokens/session)
-#   --full   — every skill, hook, and rule (~142000 tokens/session)
+#   default/core — consumer-safe core install boundary (~8000 tokens/session)
+#   --full       — every skill, hook, and rule (~142000 tokens/session)
 #
 # Legacy flags (--lean, --standard) are silently remapped to `default` with a
 # stderr migration notice. See docs/02-Decisions/adrs/ADR-093-simplify-profiles.md.
@@ -64,8 +64,8 @@ IMPORTANT: Run this command FROM your project directory, not from the
 Cognitive OS repo. The installer creates .cognitive-os/ and writes the
 selected harness driver settings in the current working directory.
 
-Profiles (ADR-093):
-  (default)      10 curated core skills, ~29 standard hooks, 14 core rules
+Profiles (ADR-093 + DX Tax boundary):
+  (default/core) 10 curated core skills, ~29 standard hooks, 14 core rules
                    (~8000 tokens/session overhead). Works out of the box.
   --full         Every skill, hook, and rule available
                    (~142000 tokens/session). For mature projects and COS
@@ -78,7 +78,7 @@ Legacy flags:
 
 Options:
   --full                 Install everything (see above).
-  --profile=NAME         Explicit profile: 'default' or 'full'. Legacy values
+  --profile=NAME         Explicit profile: 'core', 'default', or 'full'. Legacy values
                          ('lean', 'standard') are accepted and remapped.
   --harness=NAME         Settings/instruction projection target
                          (default: claude). Supported:
@@ -110,7 +110,7 @@ Environment variables:
   COGNITIVE_OS_SKIP_MANIFEST_CHECK  Set to "true" to skip the dependency report
   COGNITIVE_OS_HARNESS              Settings/instruction projection target.
                                     See --harness for supported values.
-  COS_PROFILE                       Override profile: 'default' or 'full'.
+  COS_PROFILE                       Override profile: 'core', 'default', or 'full'.
                                     Legacy values ('lean', 'standard') remapped.
   COS_INSTALL_SCOPE                 Override scope filter: project|both|all.
 
@@ -146,7 +146,10 @@ normalize_profile() {
   local raw="$1"
   local context="$2"   # "flag" | "env"
   case "$raw" in
-    default|full)
+    core|default)
+      PROFILE="default"
+      ;;
+    full)
       PROFILE="$raw"
       ;;
     lean|standard|minimal)
@@ -156,7 +159,7 @@ normalize_profile() {
       ;;
     *)
       echo "Error: unknown profile '$raw' (from $context)." >&2
-      echo "       Valid profiles (ADR-093): default, full." >&2
+      echo "       Valid profiles (ADR-093): core, default, full." >&2
       echo "       Legacy (remapped to default): lean, standard." >&2
       exit 1
       ;;
@@ -285,7 +288,8 @@ if [ -z "$PROFILE" ] && [ -n "${COS_PROFILE:-}" ]; then
   PROFILE_SOURCE="env"
 fi
 
-# Auto default: ADR-093 removed auto-detection. Default is always `default`.
+# Auto default: consumer-safe core boundary. `core` is accepted as an alias,
+# while the canonical cos-init profile remains `default` for compatibility.
 if [ -z "$PROFILE" ]; then
   PROFILE="default"
   PROFILE_SOURCE="auto"

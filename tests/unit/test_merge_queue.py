@@ -269,3 +269,13 @@ def test_merge_queue_records_validation_lane_fields(queue_file):
     assert entry["recommended_lane"] == "landing"
     assert entry["executed_lane"] == "fast"
     assert entry["validation_rationale"] == ["runtime script changed"]
+
+
+def test_enqueue_records_recommended_lane_from_expected_files(queue_file):
+    entry_id = enqueue("session/hook", "s-hook", expected_files=["hooks/direct-main-guard.sh"], queue_path=queue_file)
+
+    entry = status(entry_id, queue_path=queue_file)
+
+    assert entry["recommended_lane"] == "laptop"
+    assert entry["executed_lane"] is None
+    assert entry["validation_rationale"] == ["hook changes require laptop lane"]
