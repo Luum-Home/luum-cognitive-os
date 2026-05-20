@@ -5245,12 +5245,12 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 85,
-        "doc": 744,
-        "hook": 117,
+        "doc": 746,
+        "hook": 118,
         "rule": 49,
         "script": 352,
         "skill": 80,
-        "test": 675,
+        "test": 676,
         "workflow": 2
       },
       "consumers": [
@@ -8044,6 +8044,14 @@
         },
         {
           "family": "doc",
+          "path": "docs/05-Methodology/runbooks/cost-budget-and-retry.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/runbooks/history-sanitization.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/05-Methodology/runbooks/legal-review-workflow.md"
         },
         {
@@ -8897,6 +8905,10 @@
         {
           "family": "hook",
           "path": "hooks/resource-check.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/secret-audit-pre-commit.sh"
         },
         {
           "family": "hook",
@@ -12652,6 +12664,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_governance-policy.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_low_confidence_scope_batch.py"
         },
         {
@@ -13676,10 +13692,10 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:80",
-        "test_consumers:675",
-        "hook_consumers:117",
+        "test_consumers:676",
+        "hook_consumers:118",
         "workflow_consumers:2",
-        "doc_consumers:744",
+        "doc_consumers:746",
         "rule_consumers:49",
         "config_consumers:85",
         "script_consumers:352"
@@ -13698,7 +13714,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 2104,
+      "total_consumers": 2108,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -17693,6 +17709,7 @@
       "consumer_families": {
         "config": 3,
         "doc": 1,
+        "hook": 1,
         "script": 1,
         "test": 2
       },
@@ -17714,6 +17731,10 @@
           "path": "docs/02-Decisions/adrs/ADR-215-cross-stack-secret-audit-toolchain.md"
         },
         {
+          "family": "hook",
+          "path": "hooks/secret-audit-pre-commit.sh"
+        },
+        {
           "family": "script",
           "path": "scripts/cos"
         },
@@ -17729,6 +17750,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:2",
+        "hook_consumers:1",
         "doc_consumers:1",
         "config_consumers:3",
         "script_consumers:1"
@@ -17745,7 +17767,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -20785,7 +20807,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 5,
-        "doc": 5,
+        "doc": 6,
         "test": 3
       },
       "consumers": [
@@ -20830,6 +20852,10 @@
           "path": "docs/02-Decisions/adrs/INDEX.md"
         },
         {
+          "family": "doc",
+          "path": "docs/05-Methodology/runbooks/history-sanitization.md"
+        },
+        {
           "family": "test",
           "path": "tests/behavior/test_filter_repo_wrap.py"
         },
@@ -20845,7 +20871,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:3",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "config_consumers:5"
       ],
       "install_surface": null,
@@ -20860,7 +20886,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 13,
+      "total_consumers": 14,
       "wrapper_for": null
     },
     {
@@ -22157,7 +22183,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 7,
-        "doc": 9,
+        "doc": 10,
         "hook": 1,
         "script": 2,
         "test": 3
@@ -22225,6 +22251,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/05-Methodology/runbooks/history-sanitization.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/09-Quality/legal/pre-public-readiness-checklist.md"
         },
         {
@@ -22256,7 +22286,7 @@
       "evidence": [
         "test_consumers:3",
         "hook_consumers:1",
-        "doc_consumers:9",
+        "doc_consumers:10",
         "config_consumers:7",
         "script_consumers:2"
       ],
@@ -22272,7 +22302,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 22,
+      "total_consumers": 23,
       "wrapper_for": null
     },
     {
@@ -27078,13 +27108,17 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 4,
+        "config": 5,
         "doc": 5,
         "script": 3,
         "skill": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/adr-closure-metadata.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
@@ -27148,7 +27182,7 @@
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:5",
-        "config_consumers:4",
+        "config_consumers:5",
         "script_consumers:3"
       ],
       "install_surface": null,
@@ -27165,7 +27199,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 14,
+      "total_consumers": 15,
       "wrapper_for": null
     },
     {
@@ -39849,7 +39883,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 18,
+        "config": 19,
         "doc": 40,
         "hook": 2,
         "rule": 3,
@@ -39865,6 +39899,10 @@
         {
           "family": "config",
           "path": "cognitive-os.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/adr-closure-metadata.yaml"
         },
         {
           "family": "config",
@@ -40231,7 +40269,7 @@
         "hook_consumers:2",
         "doc_consumers:40",
         "rule_consumers:3",
-        "config_consumers:18",
+        "config_consumers:19",
         "script_consumers:9"
       ],
       "install_surface": null,
@@ -40248,7 +40286,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 91,
+      "total_consumers": 92,
       "wrapper_for": null
     },
     {
@@ -44330,7 +44368,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 5,
-        "doc": 3,
+        "doc": 4,
         "test": 2
       },
       "consumers": [
@@ -44364,6 +44402,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/05-Methodology/runbooks/history-sanitization.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/09-Quality/security/supply-chain.md"
         },
         {
@@ -44378,7 +44420,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:2",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:5"
       ],
       "install_surface": null,
@@ -44393,7 +44435,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 10,
+      "total_consumers": 11,
       "wrapper_for": null
     },
     {
@@ -44451,6 +44493,50 @@
       "skill_consumers": 0,
       "supported_harnesses": [],
       "total_consumers": 6,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 1,
+        "doc": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/dependencies.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-215-cross-stack-secret-audit-toolchain.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_install-gitleaks-trufflehog.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/install-gitleaks-trufflehog.sh",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "usage:repo",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 3,
       "wrapper_for": null
     },
     {
@@ -53437,6 +53523,94 @@
       "wrapper_for": null
     },
     {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 1,
+        "doc": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/dependencies.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-215-cross-stack-secret-audit-toolchain.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_secret-audit-gitleaks.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/secret-audit-gitleaks.sh",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "usage:repo",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 3,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 1,
+        "doc": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/dependencies.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-215-cross-stack-secret-audit-toolchain.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_secret-audit-trufflehog.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/secret-audit-trufflehog.sh",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "usage:repo",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 3,
+      "wrapper_for": null
+    },
+    {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
@@ -57899,14 +58073,14 @@
     "confidence": {
       "high": 336,
       "low": 5,
-      "medium": 284
+      "medium": 287
     },
     "consumer_accessibility": {
       "install-profile-managed": 19,
       "lifecycle-declared-consumer-candidate": 149,
       "lifecycle-declared-maintainer": 142,
       "skill-referenced-not-projectable": 3,
-      "so-local-only": 312
+      "so-local-only": 315
     },
     "low_confidence_rows": 5,
     "roles": {
@@ -57914,10 +58088,10 @@
       "archive": 12,
       "driver-specific": 12,
       "lab": 97,
-      "maintainer-tool": 291,
+      "maintainer-tool": 294,
       "migration-only": 15
     },
-    "total_scripts": 625,
+    "total_scripts": 628,
     "without_consumers": 0
   },
   "target_family": "scripts"

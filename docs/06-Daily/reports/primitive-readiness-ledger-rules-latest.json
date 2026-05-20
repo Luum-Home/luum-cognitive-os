@@ -165,13 +165,13 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 9,
+        "config": 10,
         "doc": 101,
         "hook": 5,
-        "rule": 4,
-        "script": 14,
+        "rule": 6,
+        "script": 15,
         "skill": 5,
-        "test": 33
+        "test": 34
       },
       "consumers": [
         {
@@ -197,6 +197,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-install-boundary.yaml"
         },
         {
           "family": "config",
@@ -644,11 +648,19 @@
         },
         {
           "family": "rule",
+          "path": "rules/goal-loop.md"
+        },
+        {
+          "family": "rule",
           "path": "rules/memory-governance.md"
         },
         {
           "family": "rule",
           "path": "rules/recommendation-grounding.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/routing-pattern-authoring.md"
         },
         {
           "family": "script",
@@ -669,6 +681,10 @@
         {
           "family": "script",
           "path": "scripts/cos-status.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_architecture_readiness.py"
         },
         {
           "family": "script",
@@ -812,6 +828,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_cos_architecture_readiness.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_efficiency_optimization.py"
         },
         {
@@ -864,11 +884,11 @@
         "lifecycle",
         "skill_consumers:5",
         "hook_consumers:5",
-        "rule_consumers:4",
-        "script_consumers:14",
-        "test_consumers:33",
+        "rule_consumers:6",
+        "script_consumers:15",
+        "test_consumers:34",
         "doc_consumers:101",
-        "config_consumers:9"
+        "config_consumers:10"
       ],
       "family": "rules",
       "lifecycle_id": "rules/RULES-COMPACT.md",
@@ -882,14 +902,14 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 171
+      "total_consumers": 176
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 5,
+        "config": 6,
         "doc": 30,
         "hook": 2,
         "rule": 13,
@@ -909,6 +929,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-install-boundary.yaml"
         },
         {
           "family": "config",
@@ -1196,7 +1220,7 @@
         "script_consumers:4",
         "test_consumers:15",
         "doc_consumers:30",
-        "config_consumers:5"
+        "config_consumers:6"
       ],
       "family": "rules",
       "lifecycle_id": "rules/acceptance-criteria.md",
@@ -1210,14 +1234,14 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 72
+      "total_consumers": 73
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 11,
+        "config": 12,
         "doc": 24,
         "hook": 1,
         "rule": 4,
@@ -1260,6 +1284,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-install-boundary.yaml"
         },
         {
           "family": "config",
@@ -1494,7 +1522,7 @@
         "script_consumers:6",
         "test_consumers:19",
         "doc_consumers:24",
-        "config_consumers:11"
+        "config_consumers:12"
       ],
       "family": "rules",
       "lifecycle_id": "rules/adaptive-bypass.md",
@@ -1508,7 +1536,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 65
+      "total_consumers": 66
     },
     {
       "confidence": "high",
@@ -2068,7 +2096,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 3,
-        "doc": 14,
+        "doc": 17,
         "hook": 1,
         "rule": 1,
         "script": 1,
@@ -2102,6 +2130,18 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-228-retry-contract-and-cost-budget.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-326-tombstone-agent-escalation-capabilities.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-330-typed-capability-ceiling-signals.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/INDEX.md"
         },
         {
           "family": "doc",
@@ -2171,7 +2211,7 @@
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:2",
-        "doc_consumers:14",
+        "doc_consumers:17",
         "config_consumers:3"
       ],
       "family": "rules",
@@ -2186,7 +2226,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 22
+      "total_consumers": 25
     },
     {
       "confidence": "high",
@@ -2657,7 +2697,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 5,
+        "config": 6,
         "doc": 33,
         "hook": 3,
         "rule": 10,
@@ -2676,6 +2716,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-install-boundary.yaml"
         },
         {
           "family": "config",
@@ -2930,7 +2974,7 @@
         "script_consumers:4",
         "test_consumers:9",
         "doc_consumers:33",
-        "config_consumers:5"
+        "config_consumers:6"
       ],
       "family": "rules",
       "lifecycle_id": "rules/agent-quality.md",
@@ -2944,7 +2988,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 64
+      "total_consumers": 65
     },
     {
       "confidence": "high",
@@ -4977,13 +5021,13 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 15,
-        "doc": 66,
+        "config": 16,
+        "doc": 67,
         "hook": 5,
         "rule": 9,
-        "script": 10,
+        "script": 11,
         "skill": 1,
-        "test": 25
+        "test": 27
       },
       "consumers": [
         {
@@ -5029,6 +5073,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-install-boundary.yaml"
         },
         {
           "family": "config",
@@ -5125,6 +5173,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-287-engram-v3-evidence-grounded-claims-and-portable-bundles.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-328-governance-roi-friction-vs-catch.md"
         },
         {
           "family": "doc",
@@ -5384,6 +5436,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_governance_roi.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_init.py"
         },
         {
@@ -5500,7 +5556,15 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_performance_ledger_rollups.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_performance_monitor.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_promote_from_telemetry_phase2.py"
         },
         {
           "family": "test",
@@ -5517,10 +5581,10 @@
         "skill_consumers:1",
         "hook_consumers:5",
         "rule_consumers:9",
-        "script_consumers:10",
-        "test_consumers:25",
-        "doc_consumers:66",
-        "config_consumers:15"
+        "script_consumers:11",
+        "test_consumers:27",
+        "doc_consumers:67",
+        "config_consumers:16"
       ],
       "family": "rules",
       "lifecycle_id": "rules/blast-radius.md",
@@ -5534,7 +5598,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 131
+      "total_consumers": 136
     },
     {
       "confidence": "high",
@@ -5813,7 +5877,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 13,
+        "config": 14,
         "doc": 38,
         "hook": 5,
         "rule": 9,
@@ -5860,6 +5924,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-install-boundary.yaml"
         },
         {
           "family": "config",
@@ -6222,7 +6290,7 @@
         "script_consumers:8",
         "test_consumers:25",
         "doc_consumers:38",
-        "config_consumers:13"
+        "config_consumers:14"
       ],
       "family": "rules",
       "lifecycle_id": "rules/clarification-gate.md",
@@ -6236,7 +6304,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 98
+      "total_consumers": 99
     },
     {
       "confidence": "medium",
@@ -6321,7 +6389,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 4,
+        "config": 5,
         "doc": 33,
         "hook": 1,
         "rule": 9,
@@ -6340,6 +6408,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-install-boundary.yaml"
         },
         {
           "family": "config",
@@ -6570,7 +6642,7 @@
         "script_consumers:3",
         "test_consumers:8",
         "doc_consumers:33",
-        "config_consumers:4"
+        "config_consumers:5"
       ],
       "family": "rules",
       "lifecycle_id": "rules/closed-loop-prompts.md",
@@ -6584,7 +6656,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 58
+      "total_consumers": 59
     },
     {
       "confidence": "high",
@@ -6689,7 +6761,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 12,
+        "config": 13,
         "doc": 29,
         "hook": 4,
         "rule": 6,
@@ -6716,6 +6788,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/exercised-coverage-baseline.yaml"
         },
         {
           "family": "config",
@@ -7006,7 +7082,7 @@
         "script_consumers:9",
         "test_consumers:15",
         "doc_consumers:29",
-        "config_consumers:12"
+        "config_consumers:13"
       ],
       "family": "rules",
       "lifecycle_id": "rules/confidence-gate.md",
@@ -7020,7 +7096,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 75
+      "total_consumers": 76
     },
     {
       "confidence": "high",
@@ -7229,7 +7305,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 14,
+        "config": 15,
         "doc": 43,
         "hook": 3,
         "rule": 8,
@@ -7281,6 +7357,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-install-boundary.yaml"
         },
         {
           "family": "config",
@@ -7676,7 +7756,7 @@
         "script_consumers:12",
         "test_consumers:24",
         "doc_consumers:43",
-        "config_consumers:14"
+        "config_consumers:15"
       ],
       "family": "rules",
       "lifecycle_id": "rules/content-policy.md",
@@ -7690,7 +7770,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 107
+      "total_consumers": 108
     },
     {
       "confidence": "high",
@@ -8311,7 +8391,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 14,
+        "config": 15,
         "doc": 33,
         "hook": 3,
         "rule": 2,
@@ -8363,6 +8443,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-contracts.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-install-boundary.yaml"
         },
         {
           "family": "config",
@@ -8602,7 +8686,7 @@
         "script_consumers:8",
         "test_consumers:7",
         "doc_consumers:33",
-        "config_consumers:14"
+        "config_consumers:15"
       ],
       "family": "rules",
       "lifecycle_id": "rules/crash-recovery.md",
@@ -8616,14 +8700,14 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 68
+      "total_consumers": 69
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 5,
+        "config": 6,
         "doc": 21,
         "rule": 4,
         "script": 4,
@@ -8642,6 +8726,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-install-boundary.yaml"
         },
         {
           "family": "config",
@@ -8828,7 +8916,7 @@
         "script_consumers:4",
         "test_consumers:10",
         "doc_consumers:21",
-        "config_consumers:5"
+        "config_consumers:6"
       ],
       "family": "rules",
       "lifecycle_id": "rules/credential-management.md",
@@ -8842,7 +8930,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 47
+      "total_consumers": 48
     },
     {
       "confidence": "medium",
@@ -9291,7 +9379,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 5,
+        "config": 6,
         "doc": 24,
         "hook": 1,
         "rule": 5,
@@ -9311,6 +9399,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-install-boundary.yaml"
         },
         {
           "family": "config",
@@ -9514,7 +9606,7 @@
         "script_consumers:4",
         "test_consumers:11",
         "doc_consumers:24",
-        "config_consumers:5"
+        "config_consumers:6"
       ],
       "family": "rules",
       "lifecycle_id": "rules/definition-of-done.md",
@@ -9528,14 +9620,14 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 51
+      "total_consumers": 52
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 12,
+        "config": 13,
         "doc": 22,
         "hook": 2,
         "rule": 4,
@@ -9578,6 +9670,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-contracts.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-install-boundary.yaml"
         },
         {
           "family": "config",
@@ -9808,7 +9904,7 @@
         "script_consumers:9",
         "test_consumers:15",
         "doc_consumers:22",
-        "config_consumers:12"
+        "config_consumers:13"
       ],
       "family": "rules",
       "lifecycle_id": "rules/doc-sync.md",
@@ -9822,25 +9918,29 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 64
+      "total_consumers": 65
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 14,
+        "config": 15,
         "doc": 98,
-        "hook": 7,
+        "hook": 8,
         "rule": 2,
-        "script": 64,
-        "skill": 13,
-        "test": 56
+        "script": 73,
+        "skill": 16,
+        "test": 64
       },
       "consumers": [
         {
           "family": "config",
           "path": ".claude/settings.local.json"
+        },
+        {
+          "family": "config",
+          "path": "manifests/adr-closure-metadata.yaml"
         },
         {
           "family": "config",
@@ -10312,6 +10412,10 @@
         },
         {
           "family": "hook",
+          "path": "hooks/session-wrapup-trigger.sh"
+        },
+        {
+          "family": "hook",
           "path": "hooks/untracked-work-preservation-guard.sh"
         },
         {
@@ -10392,6 +10496,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-headless-service-drill"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-history-sanitization"
         },
         {
@@ -10400,7 +10508,19 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-install-hook"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-install-skill"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-instance-init"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-lean-core-5min-proof"
         },
         {
           "family": "script",
@@ -10452,11 +10572,23 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-self-improvement-runner"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-session-start-projector"
         },
         {
           "family": "script",
           "path": "scripts/cos-skill-description-enrich"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-strict-maintainer-concurrency-proof"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-subprocess-timeout-backfill"
         },
         {
           "family": "script",
@@ -10481,6 +10613,10 @@
         {
           "family": "script",
           "path": "scripts/cos_deps_install.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_goal.py"
         },
         {
           "family": "script",
@@ -10525,6 +10661,10 @@
         {
           "family": "script",
           "path": "scripts/install-git-filter-repo.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/install-gitleaks-trufflehog.sh"
         },
         {
           "family": "script",
@@ -10608,6 +10748,18 @@
         },
         {
           "family": "skill",
+          "path": "skills/install-hook/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/install-skill/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/os-session-wrapup/SKILL.md"
+        },
+        {
+          "family": "skill",
           "path": "skills/primitive-authoring/SKILL.md"
         },
         {
@@ -10680,6 +10832,10 @@
         },
         {
           "family": "test",
+          "path": "tests/behavior/test_external_review_readiness_items.py"
+        },
+        {
+          "family": "test",
           "path": "tests/behavior/test_filter_repo_wrap.py"
         },
         {
@@ -10689,6 +10845,10 @@
         {
           "family": "test",
           "path": "tests/behavior/test_maintainer_agent_loop.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_merge_to_main_lane_recording.py"
         },
         {
           "family": "test",
@@ -10720,6 +10880,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_core_extensions_split.py"
+        },
+        {
+          "family": "test",
           "path": "tests/contracts/test_cos_instance_profiles.py"
         },
         {
@@ -10729,6 +10893,14 @@
         {
           "family": "test",
           "path": "tests/contracts/test_cross_device_dependencies.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_headless_worker_lease_contract.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/hooks/test_os_session_wrapup_addendum_trigger.py"
         },
         {
           "family": "test",
@@ -10769,6 +10941,10 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_dry-run.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_install-gitleaks-trufflehog.py"
         },
         {
           "family": "test",
@@ -10816,6 +10992,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_install_skill_skill.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_merge_rollback.py"
         },
         {
@@ -10840,6 +11020,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_self_improvement_runner.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_singularity_suggestion.py"
         },
         {
@@ -10858,13 +11042,13 @@
       "distribution": "lab",
       "evidence": [
         "lifecycle",
-        "skill_consumers:13",
-        "hook_consumers:7",
+        "skill_consumers:16",
+        "hook_consumers:8",
         "rule_consumers:2",
-        "script_consumers:64",
-        "test_consumers:56",
+        "script_consumers:73",
+        "test_consumers:64",
         "doc_consumers:98",
-        "config_consumers:14"
+        "config_consumers:15"
       ],
       "family": "rules",
       "lifecycle_id": "rules/dry-run.md",
@@ -10878,7 +11062,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 254
+      "total_consumers": 276
     },
     {
       "confidence": "high",
@@ -11373,7 +11557,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 14,
+        "config": 15,
         "doc": 68,
         "hook": 12,
         "rule": 10,
@@ -11425,6 +11609,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-contracts.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-install-boundary.yaml"
         },
         {
           "family": "config",
@@ -12020,7 +12208,7 @@
         "script_consumers:7",
         "test_consumers:43",
         "doc_consumers:68",
-        "config_consumers:14"
+        "config_consumers:15"
       ],
       "family": "rules",
       "lifecycle_id": "rules/error-learning.md",
@@ -12034,7 +12222,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 157
+      "total_consumers": 158
     },
     {
       "confidence": "high",
@@ -12309,6 +12497,79 @@
       "total_consumers": 34
     },
     {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 2,
+        "doc": 2,
+        "hook": 1,
+        "rule": 1,
+        "script": 2,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agent-orchestration-adapters.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/00-MOCs/entrypoints/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/goal-loop.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/goal-stop-gate.sh"
+        },
+        {
+          "family": "rule",
+          "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/_lib/settings-driver-claude-code.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_goal.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_goal_rule_structure.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_goal_stop_hook.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "hook_consumers:1",
+        "rule_consumers:1",
+        "script_consumers:2",
+        "test_consumers:2",
+        "doc_consumers:2",
+        "config_consumers:2"
+      ],
+      "family": "rules",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "rules/goal-loop.md",
+      "role": "driver-specific",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 10
+    },
+    {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
@@ -12403,6 +12664,39 @@
         "shell"
       ],
       "total_consumers": 15
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "hook": 1,
+        "rule": 1
+      },
+      "consumers": [
+        {
+          "family": "hook",
+          "path": "hooks/self-install.sh"
+        },
+        {
+          "family": "rule",
+          "path": "rules/RULES-COMPACT.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "hook_consumers:1",
+        "rule_consumers:1"
+      ],
+      "family": "rules",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "rules/hook-maturity.md",
+      "role": "driver-specific",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 2
     },
     {
       "confidence": "high",
@@ -13485,12 +13779,12 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 9,
-        "doc": 29,
+        "doc": 30,
         "hook": 3,
-        "rule": 1,
+        "rule": 2,
         "script": 8,
         "skill": 1,
-        "test": 12
+        "test": 13
       },
       "consumers": [
         {
@@ -13619,6 +13913,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/goal-loop.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/primitive-fitness-evaluation-contract.md"
         },
         {
@@ -13660,6 +13958,10 @@
         {
           "family": "rule",
           "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/goal-loop.md"
         },
         {
           "family": "script",
@@ -13727,6 +14029,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_goal_budget.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_llm_status.py"
         },
         {
@@ -13751,10 +14057,10 @@
         "lifecycle",
         "skill_consumers:1",
         "hook_consumers:3",
-        "rule_consumers:1",
+        "rule_consumers:2",
         "script_consumers:8",
-        "test_consumers:12",
-        "doc_consumers:29",
+        "test_consumers:13",
+        "doc_consumers:30",
         "config_consumers:9"
       ],
       "family": "rules",
@@ -13769,7 +14075,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 63
+      "total_consumers": 66
     },
     {
       "confidence": "high",
@@ -14020,8 +14326,8 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 5,
-        "doc": 34,
+        "config": 6,
+        "doc": 35,
         "hook": 2,
         "rule": 12,
         "script": 2,
@@ -14044,6 +14350,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-install-boundary.yaml"
         },
         {
           "family": "config",
@@ -14080,6 +14390,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-079-corerules-applies-to-self-hosting.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-326-tombstone-agent-escalation-capabilities.md"
         },
         {
           "family": "doc",
@@ -14298,8 +14612,8 @@
         "rule_consumers:12",
         "script_consumers:2",
         "test_consumers:8",
-        "doc_consumers:34",
-        "config_consumers:5"
+        "doc_consumers:35",
+        "config_consumers:6"
       ],
       "family": "rules",
       "lifecycle_id": "rules/model-routing.md",
@@ -14313,7 +14627,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 65
+      "total_consumers": 67
     },
     {
       "confidence": "high",
@@ -15218,7 +15532,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 6,
+        "config": 7,
         "doc": 13,
         "hook": 4,
         "rule": 1,
@@ -15233,6 +15547,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/exercised-coverage-baseline.yaml"
         },
         {
           "family": "config",
@@ -15359,7 +15677,7 @@
         "script_consumers:2",
         "test_consumers:5",
         "doc_consumers:13",
-        "config_consumers:6"
+        "config_consumers:7"
       ],
       "family": "rules",
       "lifecycle_id": "rules/orchestrator-mode.md",
@@ -15373,7 +15691,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 31
+      "total_consumers": 32
     },
     {
       "confidence": "medium",
@@ -15760,7 +16078,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 4,
+        "config": 5,
         "doc": 23,
         "hook": 1,
         "rule": 4,
@@ -15775,6 +16093,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-install-boundary.yaml"
         },
         {
           "family": "config",
@@ -15945,7 +16267,7 @@
         "script_consumers:2",
         "test_consumers:8",
         "doc_consumers:23",
-        "config_consumers:4"
+        "config_consumers:5"
       ],
       "family": "rules",
       "lifecycle_id": "rules/phase-aware-agents.md",
@@ -15959,7 +16281,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 42
+      "total_consumers": 43
     },
     {
       "confidence": "high",
@@ -16306,7 +16628,7 @@
         "doc": 14,
         "hook": 16,
         "rule": 1,
-        "script": 6,
+        "script": 8,
         "test": 16
       },
       "consumers": [
@@ -16480,6 +16802,14 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_governance_roi.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/hook-timing-wrapper.sh"
+        },
+        {
+          "family": "script",
           "path": "scripts/hook_quality_audit.py"
         },
         {
@@ -16560,7 +16890,7 @@
         "lifecycle",
         "hook_consumers:16",
         "rule_consumers:1",
-        "script_consumers:6",
+        "script_consumers:8",
         "test_consumers:16",
         "doc_consumers:14",
         "config_consumers:8"
@@ -16577,7 +16907,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 61
+      "total_consumers": 63
     },
     {
       "confidence": "high",
@@ -16703,7 +17033,7 @@
         "hook": 2,
         "rule": 1,
         "script": 7,
-        "test": 6
+        "test": 7
       },
       "consumers": [
         {
@@ -16888,6 +17218,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_core_extensions_split.py"
+        },
+        {
+          "family": "test",
           "path": "tests/contracts/test_opencode_native_adapter_design.py"
         },
         {
@@ -16917,7 +17251,7 @@
         "hook_consumers:2",
         "rule_consumers:1",
         "script_consumers:7",
-        "test_consumers:6",
+        "test_consumers:7",
         "doc_consumers:24",
         "config_consumers:11"
       ],
@@ -16933,7 +17267,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 51
+      "total_consumers": 52
     },
     {
       "confidence": "high",
@@ -17128,7 +17462,7 @@
         "rule": 2,
         "script": 3,
         "skill": 1,
-        "test": 7
+        "test": 10
       },
       "consumers": [
         {
@@ -17253,7 +17587,19 @@
         },
         {
           "family": "test",
+          "path": "tests/behavior/test_install_core_boundary.py"
+        },
+        {
+          "family": "test",
           "path": "tests/contracts/test_control_plane_primitives.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_headless_worker_lease_contract.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/hooks/test_dispatch_queue_drain_tick.py"
         },
         {
           "family": "test",
@@ -17279,7 +17625,7 @@
         "hook_consumers:3",
         "rule_consumers:2",
         "script_consumers:3",
-        "test_consumers:7",
+        "test_consumers:10",
         "doc_consumers:12",
         "config_consumers:7"
       ],
@@ -17295,7 +17641,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 35
+      "total_consumers": 38
     },
     {
       "confidence": "high",
@@ -18307,7 +18653,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 4,
+        "config": 5,
         "doc": 13,
         "hook": 2,
         "rule": 3,
@@ -18323,6 +18669,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-install-boundary.yaml"
         },
         {
           "family": "config",
@@ -18454,7 +18804,7 @@
         "script_consumers:3",
         "test_consumers:6",
         "doc_consumers:13",
-        "config_consumers:4"
+        "config_consumers:5"
       ],
       "family": "rules",
       "lifecycle_id": "rules/responsiveness.md",
@@ -18468,14 +18818,14 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 32
+      "total_consumers": 33
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 4,
+        "config": 5,
         "doc": 15,
         "rule": 1,
         "script": 2,
@@ -18489,6 +18839,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-install-boundary.yaml"
         },
         {
           "family": "config",
@@ -18590,7 +18944,7 @@
         "script_consumers:2",
         "test_consumers:3",
         "doc_consumers:15",
-        "config_consumers:4"
+        "config_consumers:5"
       ],
       "family": "rules",
       "lifecycle_id": "rules/result-management.md",
@@ -18604,19 +18958,23 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 25
+      "total_consumers": 26
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 5,
-        "doc": 10,
+        "config": 6,
+        "doc": 11,
         "rule": 1,
         "test": 2
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/adr-closure-metadata.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
@@ -18663,6 +19021,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/05-Methodology/runbooks/cost-budget-and-retry.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/08-References/business/features.md"
         },
         {
@@ -18695,8 +19057,8 @@
         "lifecycle",
         "rule_consumers:1",
         "test_consumers:2",
-        "doc_consumers:10",
-        "config_consumers:5"
+        "doc_consumers:11",
+        "config_consumers:6"
       ],
       "family": "rules",
       "lifecycle_id": "rules/retry-contract.md",
@@ -18710,7 +19072,77 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 18
+      "total_consumers": 20
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "rule": 1
+      },
+      "consumers": [
+        {
+          "family": "rule",
+          "path": "rules/RULES-COMPACT.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "rule_consumers:1"
+      ],
+      "family": "rules",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "rules/routing-pattern-authoring.md",
+      "role": "driver-specific",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 1
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 1,
+        "rule": 1,
+        "script": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/exercised-coverage-baseline.yaml"
+        },
+        {
+          "family": "rule",
+          "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-routing-max-gate"
+        },
+        {
+          "family": "script",
+          "path": "scripts/routing_quality_gate.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "rule_consumers:1",
+        "script_consumers:2",
+        "config_consumers:1"
+      ],
+      "family": "rules",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "rules/routing-quality-gate.md",
+      "role": "driver-specific",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 4
     },
     {
       "confidence": "high",
@@ -18951,7 +19383,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 12,
+        "config": 13,
         "doc": 23,
         "hook": 3,
         "rule": 3,
@@ -18995,6 +19427,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-contracts.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-install-boundary.yaml"
         },
         {
           "family": "config",
@@ -19194,7 +19630,7 @@
         "script_consumers:6",
         "test_consumers:8",
         "doc_consumers:23",
-        "config_consumers:12"
+        "config_consumers:13"
       ],
       "family": "rules",
       "lifecycle_id": "rules/scope-proportionality.md",
@@ -19208,7 +19644,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 56
+      "total_consumers": 57
     },
     {
       "confidence": "high",
@@ -20821,7 +21257,7 @@
       "consumer_access_next_action": "keep install/profile/harness proof current",
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
-        "config": 3,
+        "config": 5,
         "doc": 3,
         "rule": 1,
         "script": 1,
@@ -20831,7 +21267,15 @@
       "consumers": [
         {
           "family": "config",
+          "path": "manifests/adr-closure-metadata.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/external-review-scenarios.yaml"
         },
         {
           "family": "config",
@@ -20882,7 +21326,7 @@
         "script_consumers:1",
         "test_consumers:2",
         "doc_consumers:3",
-        "config_consumers:3"
+        "config_consumers:5"
       ],
       "family": "rules",
       "lifecycle_id": "rules/stash-quarantine.md",
@@ -20896,7 +21340,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 11
+      "total_consumers": 13
     },
     {
       "confidence": "high",
@@ -21285,7 +21729,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 5,
+        "config": 6,
         "doc": 23,
         "hook": 1,
         "rule": 2,
@@ -21308,6 +21752,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-install-boundary.yaml"
         },
         {
           "family": "config",
@@ -21482,7 +21930,7 @@
         "script_consumers:4",
         "test_consumers:10",
         "doc_consumers:23",
-        "config_consumers:5"
+        "config_consumers:6"
       ],
       "family": "rules",
       "lifecycle_id": "rules/token-economy.md",
@@ -21496,7 +21944,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 45
+      "total_consumers": 46
     },
     {
       "confidence": "high",
@@ -21617,13 +22065,13 @@
       "consumer_access_next_action": "keep install/profile/harness proof current",
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
-        "config": 14,
-        "doc": 73,
+        "config": 15,
+        "doc": 74,
         "hook": 3,
         "rule": 15,
         "script": 16,
         "skill": 6,
-        "test": 31
+        "test": 32
       },
       "consumers": [
         {
@@ -21672,6 +22120,10 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-install-boundary.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
@@ -21709,6 +22161,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-028a.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-038-preamble-v2-industry-aligned.md"
         },
         {
           "family": "doc",
@@ -22188,6 +22644,10 @@
         },
         {
           "family": "test",
+          "path": "tests/hooks/test_trust_score_validator.py"
+        },
+        {
+          "family": "test",
           "path": "tests/integration/test_auto_update_flow.py"
         },
         {
@@ -22266,9 +22726,9 @@
         "hook_consumers:3",
         "rule_consumers:15",
         "script_consumers:16",
-        "test_consumers:31",
-        "doc_consumers:73",
-        "config_consumers:14"
+        "test_consumers:32",
+        "doc_consumers:74",
+        "config_consumers:15"
       ],
       "family": "rules",
       "lifecycle_id": "rules/trust-score.md",
@@ -22283,14 +22743,14 @@
         "shell",
         "generic-doc"
       ],
-      "total_consumers": 158
+      "total_consumers": 161
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 12,
+        "config": 13,
         "doc": 21,
         "hook": 2,
         "rule": 1,
@@ -22334,6 +22794,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-contracts.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-install-boundary.yaml"
         },
         {
           "family": "config",
@@ -22521,7 +22985,7 @@
         "script_consumers:8",
         "test_consumers:8",
         "doc_consumers:21",
-        "config_consumers:12"
+        "config_consumers:13"
       ],
       "family": "rules",
       "lifecycle_id": "rules/user-prompt-capture.md",
@@ -22535,7 +22999,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 53
+      "total_consumers": 54
     },
     {
       "confidence": "high",
@@ -22638,22 +23102,22 @@
   "summary": {
     "confidence": {
       "high": 104,
-      "medium": 19
+      "medium": 23
     },
     "consumer_accessibility": {
       "lifecycle-declared-maintainer": 117,
       "projected-consumer-surface": 5,
-      "so-local-only": 1
+      "so-local-only": 5
     },
     "roles": {
       "context-only": 1,
-      "driver-specific": 11,
+      "driver-specific": 15,
       "hook-enforced": 7,
       "lab": 104
     },
-    "total": 123,
+    "total": 127,
     "without_consumers": 0,
-    "without_lifecycle": 1
+    "without_lifecycle": 5
   },
   "target_family": "rules"
 }
