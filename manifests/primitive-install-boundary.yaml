@@ -1,0 +1,79 @@
+schema_version: primitive-install-boundary.v1
+purpose: Canonical profile-to-distribution boundary for consumer installs. Default/core may project only primitives listed here with distribution core; maintainer/lab remains opt-in via full or explicit scope.
+profiles:
+  default:
+    aliases: [core]
+    active_distribution: core
+    primitive_distribution: core
+    primitives:
+      hooks:
+        - hooks/error-learning.sh
+        - hooks/error-pipeline.sh
+        - hooks/result-truncator.sh
+        - hooks/session-init.sh
+        - hooks/host-tool-doctor.sh
+        - hooks/session-cleanup.sh
+        - hooks/user-prompt-capture.sh
+        - hooks/session-wrapup-trigger.sh
+        - hooks/session-heartbeat.sh
+        - hooks/memory-prefetch.sh
+        - hooks/clarification-gate.sh
+        - hooks/blast-radius.sh
+        - hooks/scope-proportionality.sh
+        - hooks/bash-hot-path-dispatcher.sh
+        - hooks/orchestrator-claim-gate.sh
+        - hooks/error-pattern-detector.sh
+        - hooks/auto-refine.sh
+        - hooks/auto-verify.sh
+        - hooks/dod-gate.sh
+        - hooks/trust-score-validator.sh
+        - hooks/skill-metrics-tracker.sh
+        - hooks/inject-phase-context.sh
+        - hooks/stack-detector.sh
+        - hooks/pre-compaction-flush.sh
+        - hooks/rate-limiter.sh
+        - hooks/large-file-advisor.sh
+        - hooks/secret-detector.sh
+        - hooks/content-policy.sh
+        - hooks/doc-sync-detector.sh
+        - hooks/auto-checkpoint.sh
+        - hooks/claim-validator.sh
+        - hooks/completion-gate.sh
+        - hooks/clarification-interceptor.sh
+        - hooks/agent-checkpoint.sh
+        - hooks/session-sanity.sh
+        - hooks/confidentiality-enforcer.sh
+        - hooks/session-learning.sh
+        - hooks/crash-recovery.sh
+        - hooks/teammate-idle.sh
+        - hooks/task-created.sh
+        - hooks/task-completed.sh
+      rules:
+        - rules/trust-score.md
+        - rules/acceptance-criteria.md
+        - rules/closed-loop-prompts.md
+        - rules/definition-of-done.md
+        - rules/agent-quality.md
+        - rules/adaptive-bypass.md
+        - rules/phase-aware-agents.md
+        - rules/token-economy.md
+        - rules/responsiveness.md
+        - rules/credential-management.md
+        - rules/content-policy.md
+        - rules/error-learning.md
+        - rules/model-routing.md
+        - rules/result-management.md
+        - rules/RULES-COMPACT.md
+      skills:
+        - skills/compose-prompt/SKILL.md
+        - skills/exhaustive-prompt/SKILL.md
+        - skills/cos-status/SKILL.md
+        - skills/auto-refine/SKILL.md
+        - skills/verification-before-completion/SKILL.md
+        - skills/plan-feature/SKILL.md
+        - skills/session-backlog/SKILL.md
+        - skills/resource-governor/SKILL.md
+  full:
+    active_distribution: full
+    primitive_distribution: explicit
+    primitives: all

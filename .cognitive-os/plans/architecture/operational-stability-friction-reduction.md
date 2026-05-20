@@ -289,18 +289,17 @@ python3 -m pytest tests/behavior/test_merge_queue_validation_lane.py tests/behav
 
 ### Acceptance
 
-- [x] Default install path includes only `core` unless explicitly configured. (verified: install.sh --profile=core maps to ADR-093 default, tests/behavior/test_install_core_boundary.py)
-- [ ] Every projected primitive has distribution metadata.
-- [ ] `cos status` reports active distribution and profile.
-- [x] Maintainer/lab tooling is available but not in the default runtime path. (verified: repository maintainer/lab skills remain available in source, tests/behavior/test_install_core_boundary.py asserts they are absent from default/core install projection)
+- [x] Default install path includes only `core` unless explicitly configured. (verified: `manifests/primitive-install-boundary.yaml` drives `scripts/cos_init.py` default projection; `tests/behavior/test_install_core_boundary.py`)
+- [x] Every projected primitive has distribution metadata. (verified: `tests/behavior/test_install_core_boundary.py` asserts every default-installed hook/rule/skill is declared in the core install boundary manifest)
+- [x] `cos status` reports active distribution and profile. (verified: `scripts/cos-status.sh --json` exposes `profile` and `active_distribution`; `tests/behavior/test_install_core_boundary.py`)
+- [x] Maintainer/lab tooling is available but not in the default runtime path. (verified: default/core projection is bounded by `manifests/primitive-install-boundary.yaml`; maintainer/lab skills remain in source and are absent from default install projection)
 
 ### Validation
 
 ```bash
-python3 -m pytest tests/audit/test_distribution_metadata.py -q
-python3 -m pytest tests/contracts/test_core_distribution_projection.py -q
-python3 -m pytest tests/behavior/test_core_install_is_low_friction.py -q
 python3 -m pytest tests/behavior/test_install_core_boundary.py -q
+python3 -m pytest tests/behavior/test_consumer_project_projection.py::test_default_install_projects_core_primitives_into_consumer_project -q
+python3 -m pytest tests/contracts/test_primitive_lifecycle_manifest.py tests/contracts/test_standalone_distribution_contract.py tests/contracts/test_canonical_projection_behavior.py tests/contracts/test_primitive_projection_fidelity.py tests/audit/test_manifest_tier_claim_audit.py -q
 ```
 
 ## Phase 8 — Productization threshold
