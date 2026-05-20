@@ -8,6 +8,10 @@ When dispatch-gate.sh blocks an agent launch (all slots full), the agent prompt
 is automatically enqueued in `.cognitive-os/tasks/dispatch-queue.json`.
 On each task completion, the orchestrator MUST drain the queue.
 
+Queue integrity invariant: a queued Agent item is valid only when `prompt` is a
+non-empty string. A missing or whitespace-only prompt is not a recoverable queued
+launch; it is corrupt state and MUST NOT be dispatched.
+
 ## When to Drain
 
 **Trigger**: Every time a sub-agent or task completes (task-notification arrives).
@@ -53,9 +57,14 @@ Schema per item:
   "model": "sonnet",
   "priority": 5,
   "enqueued_at": "ISO-8601",
-  "status": "queued | dispatching"
+  "status": "queued | dispatching | corrupt"
 }
 ```
+
+`status: corrupt` is reserved for rows that cannot safely relaunch user intent,
+including empty Agent prompts. Drainers must skip corrupt rows. Operators should
+inspect the original session transcript and relaunch manually if the lost prompt
+is recoverable.
 
 ## Priority Rules
 
@@ -67,6 +76,10 @@ Schema per item:
 
 The same prompt is never enqueued twice. Re-submitting an identical prompt
 returns the existing queue item ID without adding a duplicate.
+
+Empty prompts are rejected before fingerprinting. This prevents the SHA-256
+empty-string fingerprint (`e3b0c44298fc1c14`) from collapsing unrelated blocked
+launches into one queue row.
 
 ## CronCreate Scheduling (Periodic Fallback)
 

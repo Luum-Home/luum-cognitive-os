@@ -230,10 +230,60 @@ def test_heartbeat_staleness_removes_lock_and_returns_stale(tmp_path: Path) -> N
     assert not lock_path.exists(), "Stale lock must be removed by cos_validation_lock_active"
 
 
+def test_validation_lock_with_missing_owner_pid_is_stale_after_race_window(tmp_path: Path) -> None:
+    """A validation lock cannot stay active indefinitely without an owner PID."""
+    runtime = tmp_path / ".cognitive-os" / "runtime"
+    runtime.mkdir(parents=True)
+    capsule = tmp_path / "capsule"
+    capsule.mkdir()
+
+    _write_lock(
+        runtime,
+        {
+            "run_id": "unit-missing-owner",
+            "pid": 0,
+            "expires_at_epoch": int(time.time()) + 600,
+            "started_at_epoch": int(time.time()) - 120,
+            "capsule_dir": str(capsule),
+            "message": "missing owner pid",
+        },
+    )
+
+    result = _call_lock_active(tmp_path)
+
+    assert result.returncode == 1
+    assert not (runtime / "validation-capsule.lock").exists()
+
+
+def test_validation_lock_with_missing_capsule_dir_is_stale_after_race_window(tmp_path: Path) -> None:
+    """A lock pointing at a removed capsule worktree is a ghost, not active."""
+    runtime = tmp_path / ".cognitive-os" / "runtime"
+    runtime.mkdir(parents=True)
+
+    _write_lock(
+        runtime,
+        {
+            "run_id": "unit-ghost-capsule",
+            "pid": os.getpid(),
+            "expires_at_epoch": int(time.time()) + 600,
+            "started_at_epoch": int(time.time()) - 120,
+            "capsule_dir": str(tmp_path / "missing-capsule"),
+            "message": "ghost capsule path",
+        },
+    )
+
+    result = _call_lock_active(tmp_path)
+
+    assert result.returncode == 1
+    assert not (runtime / "validation-capsule.lock").exists()
+
+
 def test_heartbeat_fresh_within_threshold_is_not_stale(tmp_path: Path) -> None:
     """P1 negative: fresh heartbeat (<3× interval old) must not be classified stale."""
     runtime = tmp_path / ".cognitive-os" / "runtime"
     runtime.mkdir(parents=True)
+    capsule = tmp_path / "capsule"
+    capsule.mkdir()
 
     interval = 30
     recent_heartbeat = int(time.time()) - (2 * interval)  # 2× — still within 3×
@@ -247,7 +297,7 @@ def test_heartbeat_fresh_within_threshold_is_not_stale(tmp_path: Path) -> None:
             "started_at_epoch": int(time.time()) - 60,
             "last_heartbeat_epoch": recent_heartbeat,
             "heartbeat_interval_seconds": interval,
-            "capsule_dir": str(tmp_path / "capsule"),
+            "capsule_dir": str(capsule),
             "message": "fresh heartbeat test",
         },
     )
@@ -320,6 +370,8 @@ def test_activity_staleness_does_not_remove_live_fresh_heartbeat_lock(tmp_path: 
     """P2 regression: quiet but live validation must not be reaped mid-run."""
     runtime = tmp_path / ".cognitive-os" / "runtime"
     runtime.mkdir(parents=True)
+    capsule = tmp_path / "capsule"
+    capsule.mkdir()
 
     interval = 30
     _write_lock(
@@ -331,7 +383,7 @@ def test_activity_staleness_does_not_remove_live_fresh_heartbeat_lock(tmp_path: 
             "started_at_epoch": int(time.time()) - 600,
             "last_heartbeat_epoch": int(time.time()) - 5,
             "heartbeat_interval_seconds": interval,
-            "capsule_dir": str(tmp_path / "capsule"),
+            "capsule_dir": str(capsule),
             "message": "quiet live validation",
         },
     )
@@ -356,6 +408,8 @@ def test_activity_log_within_threshold_is_not_stale(tmp_path: Path) -> None:
     """P2 negative: fresh activity log entry must not trigger stale detection."""
     runtime = tmp_path / ".cognitive-os" / "runtime"
     runtime.mkdir(parents=True)
+    capsule = tmp_path / "capsule"
+    capsule.mkdir()
 
     interval = 30
     _write_lock(
@@ -367,7 +421,7 @@ def test_activity_log_within_threshold_is_not_stale(tmp_path: Path) -> None:
             "started_at_epoch": int(time.time()) - 120,
             "last_heartbeat_epoch": int(time.time()) - 5,
             "heartbeat_interval_seconds": interval,
-            "capsule_dir": str(tmp_path / "capsule"),
+            "capsule_dir": str(capsule),
             "message": "activity fresh test",
         },
     )

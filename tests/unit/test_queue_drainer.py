@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 
+import pytest
 
 from lib.queue_drainer import QueueDrainer
 
@@ -86,6 +87,14 @@ class TestEnqueue:
 
         assert drainer.queue_length(status="queued") == 2
 
+    def test_empty_prompt_is_rejected(self, tmp_path):
+        drainer = make_drainer(tmp_path)
+
+        with pytest.raises(ValueError, match="prompt is empty"):
+            drainer.enqueue(prompt="   ", description="lost payload")
+
+        assert drainer.queue_length() == 0
+
 
 class TestDequeuePriority:
     def test_dequeue_respects_priority(self, tmp_path):
@@ -127,6 +136,30 @@ class TestDequeuePriority:
         drainer = make_drainer(tmp_path, active_tasks=0, max_parallel=5)
         ready = drainer.get_ready_agents()
         assert ready == []
+
+    def test_corrupt_empty_prompt_item_is_quarantined_not_ready(self, tmp_path):
+        drainer = make_drainer(tmp_path, active_tasks=0, max_parallel=5)
+        corrupt = {
+            "id": "empty-prompt",
+            "prompt": "",
+            "description": "agent task",
+            "model": "sonnet",
+            "priority": 5,
+            "enqueued_at": "2026-05-20T00:00:00Z",
+            "status": "queued",
+            "_enqueued_epoch": 1,
+            "_fingerprint": "e3b0c44298fc1c14",
+        }
+        with open(drainer.queue_path, "w") as fh:
+            json.dump([corrupt], fh)
+
+        ready = drainer.get_ready_agents(use_advisor=False)
+
+        assert ready == []
+        with open(drainer.queue_path) as fh:
+            saved = json.load(fh)
+        assert saved[0]["status"] == "corrupt"
+        assert saved[0]["corruption_reason"] == "empty Agent prompt"
 
 
 class TestMarkDispatched:

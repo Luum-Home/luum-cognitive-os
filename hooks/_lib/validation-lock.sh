@@ -28,15 +28,22 @@ except Exception:
     sys.exit(0)
 
 now = int(time.time())
+started = int(data.get("started_at_epoch") or 0)
 expires_at = int(data.get("expires_at_epoch") or 0)
 pid = int(data.get("pid") or 0)
 heartbeat = int(data.get("last_heartbeat_epoch") or 0)
 hb_interval = int(data.get("heartbeat_interval_seconds") or 0)
+capsule_dir = str(data.get("capsule_dir") or "")
+age = now - started if started else 999999
 
 stale = False
 pid_is_alive = False
 # ADR-113 layer 1: TTL fail-safe
 if expires_at and expires_at < now:
+    stale = True
+# ADR-113 hard invariant: a validation lock cannot be reported as active
+# indefinitely without an owner PID. Keep the <60s startup race window fail-closed.
+elif pid <= 0 and age >= 60:
     stale = True
 # ADR-113 layer 2: PID liveness
 elif pid > 0:
@@ -48,6 +55,13 @@ elif pid > 0:
     except PermissionError:
         pid_is_alive = True
         stale = False
+
+# A lock that points at a removed capsule worktree is not a running capsule.
+# Keep the <60s startup race window fail-closed while the launcher may still be
+# creating paths.
+if not stale and capsule_dir and age >= 60:
+    if not Path(capsule_dir).exists():
+        stale = True
 
 # ADR-113 layer 3: heartbeat staleness (3 missed beats == dead)
 if not stale and heartbeat > 0 and hb_interval > 0:
@@ -194,6 +208,10 @@ PY
 cos_validation_lock_message() {
   local project_dir="${1:-${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}}"
   local lock_file="$project_dir/.cognitive-os/runtime/validation-capsule.lock"
+  if ! cos_validation_lock_active "$project_dir"; then
+    echo "validation capsule stale or cleared"
+    return 0
+  fi
   if [ -f "$lock_file" ] && command -v python3 >/dev/null 2>&1; then
     python3 - "$lock_file" <<'PY'
 import json, sys

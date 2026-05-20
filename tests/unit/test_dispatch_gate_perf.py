@@ -133,6 +133,23 @@ class TestBlocking:
             f"got {result.returncode}; stderr={result.stderr[:300]}"
         )
 
+    def test_blocks_without_queueing_when_agent_payload_missing(self, tmp_path):
+        """A blocked Agent launch with unavailable stdin must not persist empty prompt."""
+        project_dir = tmp_path / "project"
+        project_dir.mkdir()
+        _write_yaml_config(project_dir, max_parallel=1)
+        tasks_dir = project_dir / ".cognitive-os" / "tasks"
+        _write_active_tasks(tasks_dir, in_progress=1)
+
+        result = _run_hook(project_dir, stdin="")
+
+        assert result.returncode == 2
+        assert "Could not enqueue" in result.stderr
+        assert "missing Agent prompt" in result.stderr
+        assert "Agent enqueued" not in result.stderr
+        queue = project_dir / ".cognitive-os" / "tasks" / "dispatch-queue.json"
+        assert not queue.exists()
+
     def test_allows_when_below_max(self, tmp_path):
         """When active tasks < max_parallel_agents, hook must allow (exit 0)."""
         project_dir = tmp_path / "project"

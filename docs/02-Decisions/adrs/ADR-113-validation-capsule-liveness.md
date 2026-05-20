@@ -65,6 +65,11 @@ Capsule launcher spawns a background heartbeat writer that updates `last_heartbe
 
 Catches: deadlocks, busy loops, sleeping forever, OOM-killed-but-PID-reused.
 
+**Owner/path invariant**: after the 60 s startup race window, a validation lock
+cannot be reported as active unless it has a positive live owner PID. When
+`capsule_dir` is present, that path must still exist. A future TTL alone is not
+proof of liveness; it is only a fail-safe upper bound.
+
 ### P2 — Activity log (semantic liveness)
 
 Capsule subprocess appends to `.cognitive-os/runtime/validation-activity.jsonl` every time a meaningful event occurs (test invocation, file write inside the capsule). One JSON line per event:
@@ -159,6 +164,7 @@ Idempotent. Never blocks session start. Logs but does not warn unless ≥1 lock 
 - **Self-healing**: P5 cleans up after closed terminals automatically; the operator never sees stale locks from sessions they don't remember
 - **Ergonomic recovery**: P4 replaces global bypass with targeted, audited operation; operator confidence increases
 - **Diagnostic transparency**: P3 turns "WHY am I blocked?" from grep + jq archaeology into one command
+- **Truthful blocking messages**: user-facing lock messages are derived from the validated active decision; stale metadata is not allowed to masquerade as a running capsule
 - **No protocol break**: existing TTL+PID logic preserved; new fields are additive
 
 ### Negative / Cost
@@ -203,6 +209,8 @@ Idempotent. Never blocks session start. Logs but does not warn unless ≥1 lock 
 - [ ] Lock file written by `cos-validation-capsule.sh` includes `last_heartbeat_epoch` and `heartbeat_interval_seconds`
 - [ ] `cos_validation_lock_active()` returns 1 (stale) when heartbeat > 3× interval old
 - [ ] `cos_validation_lock_active()` returns 1 (stale) when activity > 5 min stale (semantic check)
+- [ ] `cos_validation_lock_active()` returns 1 (stale) after the startup race window when `pid <= 0` or when `capsule_dir` points at a missing path
+- [ ] `cos_validation_lock_message()` does not print stale lock metadata after the active decision clears the lock
 - [ ] `bin/cos validation status` produces structured report distinguishing HEALTHY / STALE for each signal
 - [ ] `bin/cos validation break --capsule X --reason TEXT` removes lock + kills PID + writes audit; refuses without `--reason`
 - [ ] `hooks/validation-lock-cleanup.sh` runs at SessionStart; cleans only locks ≥60s old; logs to JSONL

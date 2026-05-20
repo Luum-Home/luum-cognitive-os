@@ -89,6 +89,11 @@ if pid > 0:
         stale_signals.append("pid")
     except PermissionError:
         pid_is_alive = True
+elif age >= 60:
+    stale_signals.append("pid")
+
+if capsule_dir and age >= 60 and not Path(capsule_dir).exists():
+    stale_signals.append("capsule_dir")
 if heartbeat > 0 and hb_interval > 0:
     if (now - heartbeat) > (3 * hb_interval):
         stale_signals.append("heartbeat")

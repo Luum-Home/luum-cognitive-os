@@ -39,6 +39,10 @@ be quiet for several minutes; lack of semantic activity alone is not enough to
 reap the lock or delete the worktree. Cleanup tooling must fail closed and keep
 the capsule when liveness cannot be determined.
 
+The inverse is also required: after the startup race window, a lock with no live
+owner PID or with a `capsule_dir` that no longer exists is not an active
+validation capsule. Dispatch gates must not report such metadata as “running.”
+
 ## Artifacts
 
 Each run writes to `.cognitive-os/reports/validation-capsules/<timestamp>-<name>/`:
