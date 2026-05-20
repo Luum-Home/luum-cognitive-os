@@ -1,37 +1,35 @@
 name: "@luum/task-management"
-version: "1.2.0"
+version: "1.2.1"
 description: "Task lifecycle hooks — recording, loop detection, scope creep, epic tasks, and blast radius"
 authors: ["Cognitive OS Team"]
 license: "Apache-2.0"
 keywords: ["task", "management", "scope", "blast-radius", "epic", "loop-detection"]
 cos_version: ">=0.1.0"
-
 provides:
-  - hook
-
+    - hook
 exports:
-  - source: "hooks/task-recorder.sh"
-    type: hook
-    description: "Record completed task costs and metadata"
-    hook_event: PostToolUse
-    hook_matcher: "Agent"
-  - source: "hooks/tool-loop-detector.sh"
-    type: hook
-    description: "Detect repetitive tool call loops"
-    hook_event: PostToolUse
-    hook_matcher: "Bash|Agent"
-  - source: "hooks/scope-creep-detector.sh"
-    type: hook
-    description: "Detect scope creep in agent outputs"
-    hook_event: PostToolUse
-    hook_matcher: "Agent"
-  - source: "hooks/epic-task-detector.sh"
-    type: hook
-    description: "Detect large-scope tasks that need sampling"
-    hook_event: PreToolUse
-    hook_matcher: "Agent"
-  - source: "hooks/blast-radius.sh"
-    type: hook
-    description: "Estimate task impact scope before execution"
-    hook_event: PreToolUse
-    hook_matcher: "Agent"
+    - source: "hooks/task-recorder.sh"
+      type: hook
+      description: "Record completed task costs and metadata"
+      hook_event: PostToolUse
+      hook_matcher: "Agent"
+    - source: "hooks/tool-loop-detector.sh"
+      type: hook
+      description: "Detect repetitive tool call loops"
+      hook_event: PostToolUse
+      hook_matcher: "Bash|Agent"
+    - source: "hooks/scope-creep-detector.sh"
+      type: hook
+      description: "Detect scope creep in agent outputs"
+      hook_event: PostToolUse
+      hook_matcher: "Agent"
+    - source: "hooks/epic-task-detector.sh"
+      type: hook
+      description: "Detect large-scope tasks that need sampling"
+      hook_event: PreToolUse
+      hook_matcher: "Agent"
+    - source: "hooks/blast-radius.sh"
+      type: hook
+      description: "Estimate task impact scope before execution"
+      hook_event: PreToolUse
+      hook_matcher: "Agent"

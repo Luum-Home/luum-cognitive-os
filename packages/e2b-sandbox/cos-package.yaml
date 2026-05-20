@@ -1,20 +1,17 @@
 name: "@luum/e2b-sandbox"
-version: "1.0.0"
+version: "1.0.1"
 description: "E2B Firecracker microVM sandbox integration -- secure code execution for AI agents via MCP server"
 authors: ["Cognitive OS Team"]
 license: "Apache-2.0"
 keywords: ["sandbox", "e2b", "code-execution", "microvm", "firecracker", "mcp", "security"]
 cos_version: ">=0.2.0"
-
 provides:
-  - rule
-
+    - rule
 exports:
-  - source: "rules/e2b-integration.md"
-    type: rule
-    description: "E2B sandbox integration rules -- when and how to use sandboxed execution"
-    always_active: false
-
+    - source: "rules/e2b-integration.md"
+      type: rule
+      description: "E2B sandbox integration rules -- when and how to use sandboxed execution"
+      always_active: false
 dependencies:
-  "@luum/ecosystem-tools":
-    version: ">=1.0.0"
+    "@luum/ecosystem-tools":
+        version: ">=1.0.0"

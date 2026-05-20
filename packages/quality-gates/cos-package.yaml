@@ -1,37 +1,35 @@
 name: "@luum/quality-gates"
-version: "1.2.0"
+version: "1.2.1"
 description: "Pre- and post-tool quality gates — clarification, confidence, completion, and claim validation"
 authors: ["Cognitive OS Team"]
 license: "Apache-2.0"
 keywords: ["quality", "gates", "clarification", "confidence", "completion", "validation"]
 cos_version: ">=0.1.0"
-
 provides:
-  - hook
-
+    - hook
 exports:
-  - source: "hooks/clarification-interceptor.sh"
-    type: hook
-    description: "Intercept NEEDS_CLARIFICATION markers from sub-agents"
-    hook_event: PostToolUse
-    hook_matcher: "Agent"
-  - source: "hooks/clarification-gate.sh"
-    type: hook
-    description: "Block agent launch on vague/ambiguous prompts"
-    hook_event: PreToolUse
-    hook_matcher: "Agent"
-  - source: "hooks/confidence-gate.sh"
-    type: hook
-    description: "Enforce minimum trust score thresholds"
-    hook_event: PostToolUse
-    hook_matcher: "Agent"
-  - source: "hooks/completion-gate.sh"
-    type: hook
-    description: "Verify acceptance criteria on agent completion"
-    hook_event: PostToolUse
-    hook_matcher: "Agent"
-  - source: "hooks/claim-validator.sh"
-    type: hook
-    description: "Validate file creation/modification claims against filesystem"
-    hook_event: PostToolUse
-    hook_matcher: "Agent"
+    - source: "hooks/clarification-interceptor.sh"
+      type: hook
+      description: "Intercept NEEDS_CLARIFICATION markers from sub-agents"
+      hook_event: PostToolUse
+      hook_matcher: "Agent"
+    - source: "hooks/clarification-gate.sh"
+      type: hook
+      description: "Block agent launch on vague/ambiguous prompts"
+      hook_event: PreToolUse
+      hook_matcher: "Agent"
+    - source: "hooks/confidence-gate.sh"
+      type: hook
+      description: "Enforce minimum trust score thresholds"
+      hook_event: PostToolUse
+      hook_matcher: "Agent"
+    - source: "hooks/completion-gate.sh"
+      type: hook
+      description: "Verify acceptance criteria on agent completion"
+      hook_event: PostToolUse
+      hook_matcher: "Agent"
+    - source: "hooks/claim-validator.sh"
+      type: hook
+      description: "Validate file creation/modification claims against filesystem"
+      hook_event: PostToolUse
+      hook_matcher: "Agent"

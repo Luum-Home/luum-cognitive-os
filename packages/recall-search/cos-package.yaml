@@ -1,16 +1,14 @@
 name: "@luum/recall-search"
-version: "1.1.0"
+version: "1.1.1"
 description: "Full-text search of Claude Code conversations — fills Engram gap for raw conversation history"
 authors: ["Cognitive OS Team"]
 license: "MIT"
 keywords: ["recall", "search", "memory", "conversations"]
 cos_version: ">=0.1.0"
-
 provides:
-  - skill
-
+    - skill
 exports:
-  - source: "skills/recall-search/SKILL.md"
-    type: skill
-    description: "Search past Claude Code conversations using full-text search"
-    triggers: ["recall", "find conversation", "search sessions"]
+    - source: "skills/recall-search/SKILL.md"
+      type: skill
+      description: "Search past Claude Code conversations using full-text search"
+      triggers: ["recall", "find conversation", "search sessions"]

@@ -1,5 +1,5 @@
 name: "@cos/advisory-llm"
-version: "1.0.0"
+version: "1.0.1"
 cos_version: ">=0.14.0"
 description: "Harness-native LLM advisory gates (prompt quality, completeness, confidence). Opt-in via full efficiency profile; no direct provider API key required."
 authors: ["luum"]
@@ -7,56 +7,50 @@ license: "Apache-2.0"
 keywords: ["advisory", "llm", "haiku", "quality-gate", "prompt-quality"]
 type: extension
 category: quality-gates
-
 provides:
-  - prompt-quality-llm
-  - completeness-check-llm
-  - confidence-gate-llm
-
+    - prompt-quality-llm
+    - completeness-check-llm
+    - confidence-gate-llm
 exports:
-  - source: "hooks/prompt-quality-llm.sh"
-    type: hook
-    description: "UserPromptSubmit gate — Haiku scores prompt quality"
-  - source: "hooks/completeness-check-llm.sh"
-    type: hook
-    description: "PreToolUse Agent — Haiku scores task completeness"
-  - source: "hooks/confidence-gate-llm.sh"
-    type: hook
-    description: "PostToolUse Agent — Haiku verifies Trust Report claims"
-
+    - source: "hooks/prompt-quality-llm.sh"
+      type: hook
+      description: "UserPromptSubmit gate — Haiku scores prompt quality"
+    - source: "hooks/completeness-check-llm.sh"
+      type: hook
+      description: "PreToolUse Agent — Haiku scores task completeness"
+    - source: "hooks/confidence-gate-llm.sh"
+      type: hook
+      description: "PostToolUse Agent — Haiku verifies Trust Report claims"
 dependencies: {}
-
 # Dispatcher registrations — consumed by scripts/apply-efficiency-profile.sh
 # when the dynamic-dispatch refactor lands in Wave 2 (v0.14.1). Today the
 # profile script still references `hooks/*.sh` paths which resolve via
 # backwards-compat symlinks — so enabling this pack requires no script edit.
 hook_registrations:
-  - event: UserPromptSubmit
-    matcher: "*"
-    script: "hooks/prompt-quality-llm.sh"
-    profile: [full]
-    skip_if_missing: false
-  - event: PreToolUse
-    matcher: "Agent"
-    script: "hooks/completeness-check-llm.sh"
-    profile: [full]
-    skip_if_missing: false
-  - event: PostToolUse
-    matcher: "Agent"
-    script: "hooks/confidence-gate-llm.sh"
-    profile: [full]
-    skip_if_missing: false
-
+    - event: UserPromptSubmit
+      matcher: "*"
+      script: "hooks/prompt-quality-llm.sh"
+      profile: [full]
+      skip_if_missing: false
+    - event: PreToolUse
+      matcher: "Agent"
+      script: "hooks/completeness-check-llm.sh"
+      profile: [full]
+      skip_if_missing: false
+    - event: PostToolUse
+      matcher: "Agent"
+      script: "hooks/confidence-gate-llm.sh"
+      profile: [full]
+      skip_if_missing: false
 # Backwards-compat shim notice — delete after v0.15.2
 backwards_compat:
-  symlinks:
-    - from: "hooks/prompt-quality-llm.sh"
-      to: "packages/cos-advisory-llm/hooks/prompt-quality-llm.sh"
-    - from: "hooks/completeness-check-llm.sh"
-      to: "packages/cos-advisory-llm/hooks/completeness-check-llm.sh"
-    - from: "hooks/confidence-gate-llm.sh"
-      to: "packages/cos-advisory-llm/hooks/confidence-gate-llm.sh"
-  removal_target: "v0.15.2"
-
+    symlinks:
+        - from: "hooks/prompt-quality-llm.sh"
+          to: "packages/cos-advisory-llm/hooks/prompt-quality-llm.sh"
+        - from: "hooks/completeness-check-llm.sh"
+          to: "packages/cos-advisory-llm/hooks/completeness-check-llm.sh"
+        - from: "hooks/confidence-gate-llm.sh"
+          to: "packages/cos-advisory-llm/hooks/confidence-gate-llm.sh"
+    removal_target: "v0.15.2"
 metrics:
-  log_file: ".cognitive-os/metrics/advisory-llm.jsonl"
+    log_file: ".cognitive-os/metrics/advisory-llm.jsonl"

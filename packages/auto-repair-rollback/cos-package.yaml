@@ -1,16 +1,14 @@
 name: "@luum/auto-repair-rollback"
-version: "2.0.0"
+version: "2.0.1"
 description: "Rollback planning trigger — detects verify-apply loop exhaustion and requires human approval before destructive git"
 authors: ["Cognitive OS Team"]
 license: "Apache-2.0"
 keywords: ["auto-rollback", "repair", "verify", "revert", "safety"]
 cos_version: ">=0.1.0"
-
 provides:
-  - hook
-
+    - hook
 exports:
-  - source: "hooks/auto-rollback-trigger.sh"
-    type: hook
-    description: "Requests a human-approved rollback plan when SDD verify-apply retries are exhausted"
-    hook_event: PostToolUse
+    - source: "hooks/auto-rollback-trigger.sh"
+      type: hook
+      description: "Requests a human-approved rollback plan when SDD verify-apply retries are exhausted"
+      hook_event: PostToolUse

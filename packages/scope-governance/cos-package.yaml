@@ -1,22 +1,20 @@
 name: "@luum/scope-governance"
-version: "1.2.0"
+version: "1.2.1"
 description: "Scope governance — proportionality checks and scope creep detection for agent tasks"
 authors: ["Cognitive OS Team"]
 license: "Apache-2.0"
 keywords: ["scope", "governance", "proportionality", "creep", "detection"]
 cos_version: ">=0.1.0"
-
 provides:
-  - rule
-  - hook
-
+    - rule
+    - hook
 exports:
-  - source: "rules/scope-creep-detection.md"
-    type: rule
-    description: "Scope creep detection patterns and prevention"
-    always_active: false
-  - source: "hooks/scope-proportionality.sh"
-    type: hook
-    description: "Validates change scope is proportional to task type"
-    hook_event: PreToolUse
-    hook_matcher: "Agent"
+    - source: "rules/scope-creep-detection.md"
+      type: rule
+      description: "Scope creep detection patterns and prevention"
+      always_active: false
+    - source: "hooks/scope-proportionality.sh"
+      type: hook
+      description: "Validates change scope is proportional to task type"
+      hook_event: PreToolUse
+      hook_matcher: "Agent"

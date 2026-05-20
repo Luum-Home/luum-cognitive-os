@@ -1,98 +1,87 @@
 name: "@luum/project-discovery"
-version: "1.1.0"
+version: "1.1.1"
 description: "Pre-development planning pipeline — context analysis, threat modeling, competitive research, budget estimation, execution planning, and audience-targeted summaries with built-in IP protection"
 authors: ["Cognitive OS Team"]
 license: "Apache-2.0"
 keywords:
-  - planning
-  - pre-dev
-  - discovery
-  - threat-model
-  - budget
-  - research
-  - confidentiality
-  - ip-protection
+    - planning
+    - pre-dev
+    - discovery
+    - threat-model
+    - budget
+    - research
+    - confidentiality
+    - ip-protection
 cos_version: ">=0.1.0"
-
 provides:
-  - skill
-  - rule
-  - hook
-
+    - skill
+    - rule
+    - hook
 exports:
-  # Skills
-  - source: "../../.cognitive-os/skills/context-analysis/SKILL.md"
-    type: skill
-    description: "Analyze business context, stakeholders, and constraints before any technical work"
-    triggers:
-      - context analysis
-      - new project
-      - project brief
-      - stakeholders
-      - business context
-
-  - source: "../../.cognitive-os/skills/threat-model/SKILL.md"
-    type: skill
-    description: "Systematic threat identification with STRIDE classification and severity scoring"
-    triggers:
-      - threat model
-      - security assessment
-      - risk analysis
-      - STRIDE
-      - attack surface
-
-  - source: "../../.cognitive-os/skills/competitive-research/SKILL.md"
-    type: skill
-    description: "Benchmarking, library evaluation, and technology assessment with license checking"
-    triggers:
-      - competitive research
-      - benchmarking
-      - library evaluation
-      - alternatives
-      - technology assessment
-
-  - source: "../../.cognitive-os/skills/execution-plan/SKILL.md"
-    type: skill
-    description: "Phased execution plan with budget estimation, client blockers, and DoR/DoD per phase"
-    triggers:
-      - execution plan
-      - budget estimation
-      - phases
-      - milestones
-      - timeline
-      - project plan
-
-  - source: "../../.cognitive-os/skills/audience-summaries/SKILL.md"
-    type: skill
-    description: "Generate audience-targeted summaries for executives, security teams, devs, and more"
-    triggers:
-      - audience summaries
-      - executive summary
-      - stakeholder report
-      - client presentation
-
-  # Rules
-  - source: "rules/confidentiality-protection.md"
-    type: rule
-    description: "IP protection — prevents internal project references from leaking into generated output"
-    always_active: true
-
-  - source: "rules/pre-dev-readiness-gate.md"
-    type: rule
-    description: "Gate that ensures minimum pre-dev artifacts exist before implementation begins"
-    always_active: false
-
-  # Hooks
-  - source: "hooks/confidentiality-enforcer.sh"
-    type: hook
-    description: "PostToolUse hook that scans Edit/Write operations for confidentiality violations"
-    hook_event: PostToolUse
-    hook_matcher: "Edit|Write"
-
-  - source: "hooks/predev-completeness-check.sh"
-    type: hook
-    description: "PreToolUse hook that checks pre-dev artifact completeness before implementation agents launch"
-    hook_event: PreToolUse
-    hook_matcher: Agent
-
+    # Skills
+    - source: "../../.cognitive-os/skills/context-analysis/SKILL.md"
+      type: skill
+      description: "Analyze business context, stakeholders, and constraints before any technical work"
+      triggers:
+        - context analysis
+        - new project
+        - project brief
+        - stakeholders
+        - business context
+    - source: "../../.cognitive-os/skills/threat-model/SKILL.md"
+      type: skill
+      description: "Systematic threat identification with STRIDE classification and severity scoring"
+      triggers:
+        - threat model
+        - security assessment
+        - risk analysis
+        - STRIDE
+        - attack surface
+    - source: "../../.cognitive-os/skills/competitive-research/SKILL.md"
+      type: skill
+      description: "Benchmarking, library evaluation, and technology assessment with license checking"
+      triggers:
+        - competitive research
+        - benchmarking
+        - library evaluation
+        - alternatives
+        - technology assessment
+    - source: "../../.cognitive-os/skills/execution-plan/SKILL.md"
+      type: skill
+      description: "Phased execution plan with budget estimation, client blockers, and DoR/DoD per phase"
+      triggers:
+        - execution plan
+        - budget estimation
+        - phases
+        - milestones
+        - timeline
+        - project plan
+    - source: "../../.cognitive-os/skills/audience-summaries/SKILL.md"
+      type: skill
+      description: "Generate audience-targeted summaries for executives, security teams, devs, and more"
+      triggers:
+        - audience summaries
+        - executive summary
+        - stakeholder report
+        - client presentation
+    # Rules
+    - source: "rules/confidentiality-protection.md"
+      type: rule
+      description: "IP protection — prevents internal project references from leaking into generated output"
+      always_active: true
+    - source: "rules/pre-dev-readiness-gate.md"
+      type: rule
+      description: "Gate that ensures minimum pre-dev artifacts exist before implementation begins"
+      always_active: false
+    # Hooks
+    - source: "hooks/confidentiality-enforcer.sh"
+      type: hook
+      description: "PostToolUse hook that scans Edit/Write operations for confidentiality violations"
+      hook_event: PostToolUse
+      hook_matcher: "Edit|Write"
+    - source: "hooks/predev-completeness-check.sh"
+      type: hook
+      description: "PreToolUse hook that checks pre-dev artifact completeness before implementation agents launch"
+      hook_event: PreToolUse
+      hook_matcher: Agent
 dependencies: {}

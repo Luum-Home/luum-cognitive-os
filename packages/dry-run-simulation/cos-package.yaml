@@ -1,17 +1,15 @@
 name: "@luum/dry-run-simulation"
-version: "1.2.0"
+version: "1.2.1"
 description: "Dry-run preview mode — intercepts agent launches when DRY_RUN=true for pipeline simulation"
 authors: ["Cognitive OS Team"]
 license: "Apache-2.0"
 keywords: ["dry-run", "simulation", "preview", "pipeline"]
 cos_version: ">=0.1.0"
-
 provides:
-  - hook
-
+    - hook
 exports:
-  - source: "hooks/dry-run-preview.sh"
-    type: hook
-    description: "Intercepts agent launches in dry-run mode for preview"
-    hook_event: PreToolUse
-    hook_matcher: "Agent"
+    - source: "hooks/dry-run-preview.sh"
+      type: hook
+      description: "Intercepts agent launches in dry-run mode for preview"
+      hook_event: PreToolUse
+      hook_matcher: "Agent"

@@ -1,15 +1,13 @@
 name: "@luum/session-parser"
-version: "1.1.0"
+version: "1.1.1"
 description: "Parse Claude Code JSONL session files for real metrics — tokens, tool usage, subagents"
 authors: ["Cognitive OS Team"]
 license: "MIT"
 keywords: ["session", "parser", "metrics", "tokens"]
 cos_version: ">=0.1.0"
-
 provides:
-  - skill
-
+    - skill
 exports:
-  - source: "lib/session_parser.py"
-    type: skill
-    description: "Parse Claude Code sessions for real metrics"
+    - source: "lib/session_parser.py"
+      type: skill
+      description: "Parse Claude Code sessions for real metrics"

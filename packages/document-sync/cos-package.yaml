@@ -1,26 +1,24 @@
 name: "@luum/document-sync"
-version: "1.2.0"
+version: "1.2.1"
 description: "Documentation synchronization — detects stale docs after code changes and syncs to repo on session stop"
 authors: ["Cognitive OS Team"]
 license: "Apache-2.0"
 keywords: ["documentation", "sync", "stale-docs", "doc-sync"]
 cos_version: ">=0.1.0"
-
 provides:
-  - rule
-  - hook
-
+    - rule
+    - hook
 exports:
-  - source: "rules/doc-sync.md"
-    type: rule
-    description: "Doc sync detection and session-end warning protocol"
-    always_active: false
-  - source: "hooks/doc-sync-detector.sh"
-    type: hook
-    description: "Detects when code changes affect documentation"
-    hook_event: PostToolUse
-    hook_matcher: "Edit|Write"
-  - source: "hooks/sync-to-repo.sh"
-    type: hook
-    description: "Syncs documentation changes to repo on session stop"
-    hook_event: Stop
+    - source: "rules/doc-sync.md"
+      type: rule
+      description: "Doc sync detection and session-end warning protocol"
+      always_active: false
+    - source: "hooks/doc-sync-detector.sh"
+      type: hook
+      description: "Detects when code changes affect documentation"
+      hook_event: PostToolUse
+      hook_matcher: "Edit|Write"
+    - source: "hooks/sync-to-repo.sh"
+      type: hook
+      description: "Syncs documentation changes to repo on session stop"
+      hook_event: Stop
