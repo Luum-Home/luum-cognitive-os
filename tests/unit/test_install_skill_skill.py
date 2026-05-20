@@ -8,6 +8,7 @@ import pytest
 import stat
 import subprocess
 import tempfile
+import os
 
 PROJECT_ROOT = pathlib.Path(__file__).parents[2]
 SKILLS_DIR = PROJECT_ROOT / "skills"
@@ -253,13 +254,24 @@ class TestInstallSkillBackingScript:
 
     def test_cos_install_skill_already_installed_same_target_is_idempotent(self):
         script = PROJECT_ROOT / "scripts" / "cos-install-skill"
-        result = subprocess.run(
-            [str(script), "web-crawler", "--dry-run"],
-            capture_output=True,
-            text=True,
-            cwd=str(PROJECT_ROOT),
-            timeout=30,
-        )
+        source = PROJECT_ROOT / "skills" / "web-crawler"
+        target = PROJECT_ROOT / ".claude" / "skills" / "web-crawler"
+        created_fixture_link = False
+        target.parent.mkdir(parents=True, exist_ok=True)
+        if not os.path.lexists(target):
+            target.symlink_to(source)
+            created_fixture_link = True
+        try:
+            result = subprocess.run(
+                [str(script), "web-crawler", "--dry-run"],
+                capture_output=True,
+                text=True,
+                cwd=str(PROJECT_ROOT),
+                timeout=30,
+            )
+        finally:
+            if created_fixture_link:
+                target.unlink()
 
         assert result.returncode == 0, result.stderr
         assert "idempotent success" in result.stdout
