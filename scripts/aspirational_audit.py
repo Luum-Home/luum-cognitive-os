@@ -98,13 +98,14 @@ def has_covering_test(path: Path, project_root: Path) -> bool:
                 return True
     # Slower path: any test file mentioning the component name literally
     try:
-        for f in tests_dir.rglob("test_*.py"):
-            try:
-                text = f.read_text(errors="replace")
-            except OSError:
-                continue
-            if stem in text or stem_snake in text:
-                return True
+        for pattern in ("test_*.py", "*_test.py"):
+            for f in tests_dir.rglob(pattern):
+                try:
+                    text = f.read_text(errors="replace")
+                except OSError:
+                    continue
+                if stem in text or stem_snake in text:
+                    return True
     except (OSError, RecursionError):
         pass
     return False
@@ -174,26 +175,71 @@ def build_hook_fire_counts(metrics_dir: Path, window_seconds: int = SEVEN_DAYS_S
 
 
 def build_registered_hooks(settings_path: Path) -> set[str]:
+    """Return hook basenames registered in projected or canonical settings.
+
+    The local `.claude/settings.json` is only one projection. Cognitive OS also
+    keeps a canonical `cognitive-os.yaml` hook registry and Codex projection in
+    `.codex/hooks.json`; counting only Claude settings misclassifies real
+    cross-harness/runtime-projected hooks as aspirational.
     """
-    Parse .claude/settings.json and return set of hook basenames (with .sh).
-    """
-    if not settings_path.is_file():
-        return set()
-    try:
-        with settings_path.open() as fh:
-            data = json.load(fh)
-    except (json.JSONDecodeError, OSError):
-        return set()
+    project_root = settings_path.parent.parent
     registered: set[str] = set()
-    hook_section = data.get("hooks", {})
-    for _event, matchers in hook_section.items():
-        for matcher in matchers:
-            for hook in matcher.get("hooks", []):
-                cmd = hook.get("command", "")
-                match = re.search(r"hooks/([^\"'\s]+\.sh)", cmd)
-                if match:
-                    registered.add(match.group(1))
+
+    def add_from_command(command: str) -> None:
+        match = re.search(r"hooks/([^\"'\s]+\.sh)", command)
+        if match:
+            registered.add(match.group(1))
+
+    if settings_path.is_file():
+        try:
+            data = json.loads(settings_path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            data = {}
+        hook_section = data.get("hooks", {}) if isinstance(data, dict) else {}
+        for _event, matchers in hook_section.items():
+            if not isinstance(matchers, list):
+                continue
+            for matcher in matchers:
+                if not isinstance(matcher, dict):
+                    continue
+                for hook in matcher.get("hooks", []) or []:
+                    if isinstance(hook, dict):
+                        add_from_command(str(hook.get("command", "")))
+
+    codex_hooks = project_root / ".codex" / "hooks.json"
+    if codex_hooks.is_file():
+        try:
+            data = json.loads(codex_hooks.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            data = {}
+        for value in _walk_json_values(data):
+            if isinstance(value, str):
+                add_from_command(value)
+
+    cos_config = project_root / "cognitive-os.yaml"
+    if cos_config.is_file():
+        try:
+            import yaml
+
+            data = yaml.safe_load(cos_config.read_text(encoding="utf-8")) or {}
+        except Exception:
+            data = {}
+        for value in _walk_json_values(data):
+            if isinstance(value, str) and value.startswith("hooks/") and value.endswith(".sh"):
+                registered.add(Path(value).name)
+
     return registered
+
+
+def _walk_json_values(value):
+    if isinstance(value, dict):
+        for item in value.values():
+            yield from _walk_json_values(item)
+    elif isinstance(value, list):
+        for item in value:
+            yield from _walk_json_values(item)
+    else:
+        yield value
 
 
 def build_excluded_hooks(excluded_path: Path) -> dict[str, str]:
@@ -466,18 +512,24 @@ class Auditor:
         # Not registered — check excluded list
         if basename in self.excluded_hooks:
             reason_tag = self.excluded_hooks[basename]
-            # Map category to classification
-            if any(cat in reason_tag for cat in ("LIBRARY", "DEPRECATED", "GIT_HOOK", "ADMIN", "INFRA", "MANUAL_TRIGGER")):
+            # Map category to classification. EXCLUDED_HOOKS is an explicit
+            # contract that the hook is not a default lifecycle projection.
+            if any(cat in reason_tag for cat in ("LIBRARY", "DEPRECATED", "GIT_HOOK", "ADMIN", "INFRA", "MANUAL_TRIGGER", "FUTURE")):
                 return Classification(
                     "METADATA",
                     {"registered": False, "excluded": True, "category": reason_tag},
                     f"whitelisted exclusion: {reason_tag}"
                 )
-            # FUTURE / CONDITIONAL → ASPIRATIONAL
+            if "CONDITIONAL" in reason_tag:
+                return Classification(
+                    "ON_DEMAND",
+                    {"registered": False, "excluded": True, "category": reason_tag},
+                    f"conditional integration: {reason_tag}"
+                )
             return Classification(
-                "ASPIRATIONAL",
+                "METADATA",
                 {"registered": False, "excluded": True, "category": reason_tag},
-                f"planned but not wired: {reason_tag}"
+                f"whitelisted exclusion: {reason_tag}"
             )
 
         # Not registered and NOT whitelisted
@@ -616,6 +668,12 @@ class Auditor:
                 "ON_DEMAND",
                 {"invocations_30d": 0, "referenced_in_docs": referenced, "on_demand_marker": True},
                 "@on-demand marker — legit periodic/manual skill"
+            )
+        if has_covering_test(skill_md, self.project_root):
+            return Classification(
+                "ON_DEMAND",
+                {"invocations_30d": 0, "referenced_in_docs": referenced, "has_test": True},
+                "covered by test — legit on-demand skill without recent invocation"
             )
         if referenced:
             return Classification(
