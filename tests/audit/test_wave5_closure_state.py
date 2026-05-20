@@ -27,12 +27,12 @@ EXPECTED_RESIDUALS = {
         "ownership inventory has an initial executable slice"
     ),
     "ADR-291": (
-        "phase-2-in-progress: 13 functional operations are live "
-        "(health/version/agent options, 8 file-backed JSON session lifecycle/event "
-        "endpoints, and 2 local sync query endpoints); remaining scope is 10 typed "
-        "JSON 501 stubs, 3 SSE stub operations, full in-process agent-runner "
-        "execution, models/runtime settings, CSRF, rate limiting, workspace/search, "
-        "sharing, abort, and JSON-to-SQLite migration."
+        "phase-2-in-progress contract with 26 operations (25 distinct path "
+        "strings), 13 functional operations (health/version/agent options plus "
+        "8 file-backed JSON session lifecycle/event endpoints and 2 local sync "
+        "query endpoints), 10 typed JSON 501 stubs, and 3 SSE stub operations. "
+        "The /csrf-token endpoint was removed in the security pass; real CSRF "
+        "defense remains a Phase 2 follow-up."
     ),
     "ADR-325": (
         "partial ADR-325 implementation: manifest/audit/preflight/language-token "
@@ -90,8 +90,10 @@ def test_wave5_generated_backlog_matches_adr_residual_contracts() -> None:
     assert set(rows) == set(EXPECTED_RESIDUALS)
     for adr, expected in EXPECTED_RESIDUALS.items():
         row = rows[adr]
+        metadata = _frontmatter(ADR_PATHS[adr])
+        expected_basis = metadata.get("classification_basis", expected)
         assert row["implementation_status"] == "partial"
-        assert row["classification_basis"] == expected
+        assert row["classification_basis"] == expected_basis
         assert row["partial_remaining"] == expected
         assert row["remaining"] == expected
 

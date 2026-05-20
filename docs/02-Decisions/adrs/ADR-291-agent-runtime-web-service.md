@@ -19,19 +19,22 @@ implementation_files:
 - packages/agent-service/src/agent_service/routers/sessions.py
 - packages/agent-service/src/agent_service/routers/workspace.py
 tier: core
-partial_remaining: 'phase-2-in-progress: 13 functional operations are live (health/version/agent options, 8 file-backed JSON session lifecycle/event endpoints, and 2 local sync query endpoints); remaining scope is 10 typed JSON 501 stubs, 3 SSE stub operations, full in-process agent-runner execution, models/runtime settings, CSRF, rate limiting, workspace/search, sharing, abort, and JSON-to-SQLite migration.'
+partial_remaining: phase-2-in-progress contract with 26 operations (25 distinct path
+  strings), 13 functional operations (health/version/agent options plus 8 file-backed
+  JSON session lifecycle/event endpoints and 2 local sync query endpoints), 10 typed
+  JSON 501 stubs, and 3 SSE stub operations. The /csrf-token endpoint was removed
+  in the security pass; real CSRF defense remains a Phase 2 follow-up.
 partial_remaining_basis: manual Wave 5 slice reconciliation
 tags:
-
 - service
 - http
 - sse
 - runtime
 classification_basis: phase-2-in-progress contract with 26 operations (25 distinct
-  path strings), 13 functional operations (health/version/agent options plus 8
-  file-backed JSON session lifecycle/event endpoints and 2 local sync query endpoints),
-  10 typed JSON 501 stubs, and 3 SSE stub operations. The /csrf-token endpoint was removed in the security
-  pass; real CSRF defense remains a Phase 2 follow-up.
+  path strings), 13 functional operations (health/version/agent options plus 8 file-backed
+  JSON session lifecycle/event endpoints and 2 local sync query endpoints), 10 typed
+  JSON 501 stubs, and 3 SSE stub operations. The /csrf-token endpoint was removed
+  in the security pass; real CSRF defense remains a Phase 2 follow-up.
 verification:
   level: medium
   commands:
