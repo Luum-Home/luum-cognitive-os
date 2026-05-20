@@ -399,6 +399,45 @@ _op_rationale() {
   esac
 }
 
+_op_owning_adr() {
+  case "$1" in
+    "git pull --rebase"|"git rebase")
+      echo "ADR-116 P3.2";;
+    "git push --force")
+      echo "ADR-055b";;
+    *" on main"|*" on master")
+      echo "ADR-003, ADR-055b";;
+    *)
+      echo "ADR-003, ADR-055b";;
+  esac
+}
+
+_op_repair_command() {
+  case "$FIRST_HIT_TYPE" in
+    force_push)
+      echo "git push --force-with-lease";;
+    protected_branch_write)
+      echo "bash scripts/cos-session-branch.sh --slug <task> --switch";;
+    branch_context_change)
+      echo "announce current branch, target branch, reason, and rerun with --allow-branch-switch if approved";;
+    *)
+      echo "git stash push -u -m 'pre-destructive-git-<reason>' && inspect the named stash before any restore";;
+  esac
+}
+
+_print_standard_block_report() {
+  local context="$1"
+  local reason="$2"
+  local owner_adr="$(_op_owning_adr "$OP_NAME")"
+  local repair_command="$(_op_repair_command)"
+  echo "Primitive: destructive-git-blocker" >&2
+  echo "Policy: destructive-git hard-blocking guard" >&2
+  echo "Input: Bash command" >&2
+  echo "Owning ADR: $owner_adr" >&2
+  echo "Evidence: op='$OP_NAME' context='$context' reason='$reason' command='$COMMAND'" >&2
+  echo "Repair command: $repair_command" >&2
+}
+
 _git_primitive_target_ref() {
   case "${FIRST_HIT_TYPE:-}" in
     protected_branch_write) echo "protected-branch-${PROTECTED_BRANCH:-unknown}" ;;
@@ -613,6 +652,11 @@ if [ "$IS_WIP_GUARD_OP" = "1" ] && _has_wip; then
   echo "     (legacy opt-in; inspect the named stash and restore with explicit git stash apply <ref>)" >&2
   echo "" >&2
   echo "Reference: ADR-116 §P3.2, docs/06-Daily/reports/bug2-reset-cascade-forensics-2026-04-20.md" >&2
+  if _git_blocker_is_agent_context; then
+    _print_standard_block_report "agent" "wip_guard"
+  else
+    _print_standard_block_report "user" "wip_guard"
+  fi
   echo "" >&2
 
   if _git_blocker_is_agent_context; then
@@ -645,6 +689,7 @@ if _git_blocker_is_agent_context; then
     echo "BLOCKED: destructive git op '$OP_NAME' requires explicit user approval." >&2
   fi
   echo "Rationale: $RATIONALE" >&2
+  _print_standard_block_report "agent" "destructive_git_op"
   echo "Use Edit tool to revert specific lines manually, or escalate to the user." >&2
   echo "Agent: $AGENT_ID" >&2
   echo "Command: $COMMAND" >&2
@@ -673,6 +718,7 @@ else
   echo "BLOCKED: destructive git op '$OP_NAME' is blocked by default (ADR-055b, r5-stash-residue)." >&2
 fi
 echo "Rationale: $RATIONALE" >&2
+_print_standard_block_report "user" "destructive_git_op"
 echo "Command: $COMMAND" >&2
 echo "" >&2
 echo "To proceed, use ONE of:" >&2

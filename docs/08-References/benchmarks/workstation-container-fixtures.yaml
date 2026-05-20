@@ -1,0 +1,32 @@
+# Workstation/container benchmark fixture workloads.
+# These are repository-owned, MIT-compatible fixtures for deterministic local comparison.
+
+name: workstation-container-fixtures
+version: 1
+work_id: worker-g-p5-p6-20260520
+fixtures:
+  - id: bugfix-python-logic
+    path: tests/fixtures/benchmark_workloads/bugfix-python-logic
+    workload_type: bugfix
+    license: MIT-compatible repository-owned fixture
+    deterministic: true
+    success_command: python -m pytest tests/test_cart.py -q
+    task_prompt: Fix the cart total bug so all tests pass.
+    comparison_dimensions:
+      - completion_success
+      - elapsed_ms
+      - commands_run
+      - trust_report_quality
+
+  - id: refactor-python-multifile
+    path: tests/fixtures/benchmark_workloads/refactor-python-multifile
+    workload_type: multi-file-refactor
+    license: MIT-compatible repository-owned fixture
+    deterministic: true
+    success_command: python -m pytest tests -q
+    task_prompt: Refactor duplicated normalization logic into a shared helper while preserving behavior.
+    comparison_dimensions:
+      - completion_success
+      - elapsed_ms
+      - files_changed
+      - artifact_quality

@@ -265,3 +265,59 @@ def test_core_session_start_budget_check_fails_lab_hooks(tmp_path: Path) -> None
 
     assert check.status == "fail"
     assert check.details["findings"][0]["id"] == "core-session-start-lab-hooks"
+
+
+def test_readiness_json_includes_governance_dx_signals(tmp_path: Path) -> None:
+    active = readiness.Check(
+        "active-primitive-surface",
+        "warn",
+        "near limit",
+        {
+            "default_visible_count": 13,
+            "counts_by_tier": {"core": 8, "team": 5, "maintainer": 2, "lab": 4},
+            "active_counts_by_tier": {"core": 8, "team": 5, "maintainer": 2, "lab": 0},
+            "thresholds": {"default_visible_warn": 12, "default_visible_fail": 25},
+        },
+    )
+    (tmp_path / "cognitive-os.yaml").write_text("project:\n  phase: reconstruction\n", encoding="utf-8")
+    (tmp_path / "rules").mkdir()
+    (tmp_path / "rules" / "RULES-COMPACT.md").write_text("word " * 40, encoding="utf-8")
+    for rels in readiness.REQUIRED_RUNTIME_PRIMITIVES.values():
+        for rel in rels:
+            path = tmp_path / rel
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("x", encoding="utf-8")
+    (tmp_path / ".cognitive-os/runtime").mkdir(parents=True)
+
+    with patch.object(readiness, "run_git_stash_list", return_value=[]), \
+         patch.object(readiness, "check_adoption_tiers", return_value=readiness.Check("adoption", "pass", "ok")), \
+         patch.object(readiness, "check_lifecycle_manifest", return_value=readiness.Check("lifecycle", "pass", "ok")), \
+         patch.object(readiness, "check_active_surface", return_value=active), \
+         patch.object(readiness, "check_core_preamble_budget", return_value=readiness.Check("core-preamble-budget", "pass", "ok")), \
+         patch.object(readiness, "check_runtime_hook_reality", return_value=readiness.Check("runtime-hook-reality", "pass", "ok")), \
+         patch.object(readiness, "check_core_session_start_budget", return_value=readiness.Check("core-session-start-budget", "pass", "ok")), \
+         patch.object(readiness, "check_silent_failure_audit", return_value=readiness.Check("silent", "pass", "ok")), \
+         patch.object(readiness, "check_python_stdin_antipattern_audit", return_value=readiness.Check("stdin", "pass", "ok")), \
+         patch.object(readiness, "check_roi", return_value=readiness.Check("roi", "pass", "ok")), \
+         patch.object(readiness, "check_lifecycle_recommendations", return_value=readiness.Check("demotion", "pass", "ok")), \
+         patch.object(readiness, "check_wiring_gaps", return_value=readiness.Check("wiring", "pass", "ok")), \
+         patch.object(readiness, "check_product_claims", return_value=readiness.Check("product", "pass", "ok")), \
+         patch.object(readiness, "check_governance_maturity_labels", return_value=readiness.Check("maturity", "pass", "ok")), \
+         patch.object(readiness, "check_lab_first_promotion_gate", return_value=readiness.Check("lab-first", "pass", "ok")), \
+         patch.object(readiness, "check_adr_tier_claim_audit", return_value=readiness.Check("adr-tier", "pass", "ok")), \
+         patch.object(readiness, "check_manifest_tier_claim_audit", return_value=readiness.Check("manifest-tier", "pass", "ok")), \
+         patch.object(readiness, "check_demotion_loop_maturity", return_value=readiness.Check("demotion-loop", "pass", "ok")):
+        report = readiness.build_report(tmp_path, 24)
+
+    assert report["discovery_overload"] == {
+        "overloaded": False,
+        "near_limit": True,
+        "current_count": 13,
+        "threshold": 25,
+        "warn_threshold": 12,
+        "recommended_action": "review default-visible primitives before adding more core/team discovery surface",
+    }
+    assert "destructive-git" in report["active_safety_layer"]["hard_blocking_guards"]
+    assert report["active_safety_layer"]["lab_opt_ins"]["recoverable_count"] == 4
+    assert report["token_context_estimate"]["estimate_unavailable"] is False
+    assert report["token_context_estimate"]["estimated_tokens"] > 0

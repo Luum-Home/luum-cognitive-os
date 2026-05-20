@@ -102,3 +102,75 @@ def test_maintainer_impact_cli_records_and_reports(tmp_path: Path) -> None:
     payload = json.loads(result.stdout)
     assert payload["status"] == "rollups_changed_decisions"
     assert payload["changed_decisions"] == 1
+
+
+def test_post_change_impact_record_captures_metrics_work_id_and_failure_protocol(tmp_path: Path) -> None:
+    from lib.maintainer_impact import (
+        append_post_change_impact_event,
+        build_post_change_impact_event,
+        post_change_impact_report,
+    )
+
+    ledger = tmp_path / ".cognitive-os" / "metrics" / "maintainer-post-change-impact.jsonl"
+    event = build_post_change_impact_event(
+        proposal_id="proposal-regression-1",
+        work_id="work-maintainer-loop-20260520",
+        surface="skill-router",
+        degradation_pattern="capability-contract-mismatch:Explore",
+        before_metrics={"mismatch_count": 1, "unsafe_passes": 0},
+        after_metrics={"mismatch_count": 4, "unsafe_passes": 0},
+        source_rollup_run_id="rollup-123",
+        source_rollup_ref="performance-ledger:subagent:Explore",
+        operator_decision="applied",
+        outcome="regressed",
+        operator="maintainer",
+    )
+    append_post_change_impact_event(ledger, event)
+
+    payload = post_change_impact_report(tmp_path, ledger_path=ledger)
+
+    assert event["metric_delta"]["mismatch_count"] == {"before": 1.0, "after": 4.0, "delta": 3.0}
+    assert event["failure_protocol"]["quarantine"]["pattern"] == "capability-contract-mismatch:Explore"
+    assert event["failure_protocol"]["rollback"]["approval_required"] is True
+    assert event["failure_protocol"]["confidence_penalty"]["similar_pattern_penalty"] == 0.20
+    assert payload["status"] == "outcome_failures_pending_investigation"
+    assert payload["work_ids"] == ["work-maintainer-loop-20260520"]
+    assert payload["quarantined_patterns"] == ["capability-contract-mismatch:Explore"]
+
+
+def test_maintainer_impact_cli_records_post_change_outcome(tmp_path: Path) -> None:
+    result = subprocess.run(
+        [
+            str(REPO / "scripts" / "cos-maintainer-impact"),
+            "--project-dir",
+            str(tmp_path),
+            "--record-post-change",
+            "--proposal-id",
+            "proposal-3",
+            "--work-id",
+            "work-maintainer-loop-cli",
+            "--surface",
+            "reward-signal-quality",
+            "--degradation-pattern",
+            "corrupt-reward-signal-rows:skill-feedback:docs-to-artifact",
+            "--outcome",
+            "inconclusive",
+            "--decision",
+            "applied",
+            "--source-rollup-ref",
+            "performance-ledger:skill-feedback:docs-to-artifact",
+            "--before-metric",
+            "corrupt_ratio=0.50",
+            "--after-metric",
+            "corrupt_ratio=0.49",
+            "--json",
+        ],
+        capture_output=True,
+        text=True,
+        timeout=10,
+    )
+
+    assert result.returncode == 0, result.stderr
+    payload = json.loads(result.stdout)
+    assert payload["post_change"]["status"] == "outcome_failures_pending_investigation"
+    assert payload["post_change"]["failure_count"] == 1

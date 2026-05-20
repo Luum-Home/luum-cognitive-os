@@ -181,3 +181,40 @@ def test_candidate_primitive_remains_indexed_but_not_active_or_default_visible(t
     assert summary["counts_by_tier"]["team"] == 2
     assert summary["active_counts_by_tier"]["team"] == 1
     assert summary["default_visible_counts_by_tier"]["team"] == 1
+
+
+def test_default_list_stays_active_bounded_but_explicit_lab_lists_recoverable(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    manifest = write_manifest(
+        tmp_path / "manifests" / "primitive-lifecycle.yaml",
+        [
+            primitive("core/a", "core", "blocking"),
+            primitive("lab/sandbox", "lab", "sandbox"),
+            primitive("lab/archived", "lab", "archived"),
+        ],
+    )
+
+    default_report = active_index.build_index(manifest, project_root=tmp_path)
+    assert active_index.print_list(default_report) is True
+    default_out = capsys.readouterr().out
+    assert "core\tcore/a" in default_out
+    assert "lab/sandbox" not in default_out
+
+    lab_report = active_index.build_index(manifest, tier="lab", project_root=tmp_path)
+    assert active_index.print_list(lab_report, tier="lab") is True
+    lab_out = capsys.readouterr().out
+    assert "lab\tlab/sandbox\tstatus=sandbox\tactive=false" in lab_out
+    assert "lab\tlab/archived\tstatus=archived\tactive=false" in lab_out
+
+
+def test_default_list_caps_large_default_visible_surface(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    manifest = write_manifest(
+        tmp_path / "manifests" / "primitive-lifecycle.yaml",
+        [primitive(f"core/{idx:02d}", "core", "blocking") for idx in range(active_index.VISIBLE_FAIL_THRESHOLD + 5)],
+    )
+
+    report = active_index.build_index(manifest, project_root=tmp_path)
+
+    assert active_index.print_list(report) is True
+    lines = capsys.readouterr().out.splitlines()
+    assert len(lines) == active_index.VISIBLE_FAIL_THRESHOLD
+    assert lines[0] == "core\tcore/00"

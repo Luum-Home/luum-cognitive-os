@@ -329,13 +329,31 @@ def build_index(
 
 
 def print_list(index: dict[str, Any], tier: str | None = None) -> bool:
-    """Emit one line per active primitive: <tier>\t<id>."""
+    """Emit discoverable primitives.
+
+    Default discovery stays small by listing only active primitives. Explicit
+    lab discovery is a recovery path, so it lists lab entries even when they are
+    sandbox/archived/demoted and marks their status.
+    """
     primitives = index.get("primitives", [])
-    active = [p for p in primitives if p.get("active")]
-    if not active:
+    if tier == "lab":
+        recoverable = [p for p in primitives if p.get("tier") == "lab"]
+        if not recoverable:
+            print("(no lab primitives in selection)", file=sys.stderr)
+            return False
+        for p in sorted(recoverable, key=lambda x: (x["tier"], x["id"])):
+            print(f"{p['tier']}\t{p['id']}\tstatus={p['lifecycle_state']}\tactive={str(bool(p.get('active'))).lower()}")
+        return True
+
+    if tier is None:
+        visible = [p for p in primitives if p.get("default_visible")]
+        visible = sorted(visible, key=lambda x: (x["tier"], x["id"]))[:VISIBLE_FAIL_THRESHOLD]
+    else:
+        visible = [p for p in primitives if p.get("active")]
+    if not visible:
         print("(no active primitives in selection)", file=sys.stderr)
         return False
-    for p in sorted(active, key=lambda x: (x["tier"], x["id"])):
+    for p in sorted(visible, key=lambda x: (x["tier"], x["id"])):
         print(f"{p['tier']}\t{p['id']}")
     return True
 

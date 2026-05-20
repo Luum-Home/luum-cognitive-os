@@ -18,11 +18,14 @@ from typing import Any
 
 import yaml
 
+from lib.maintainer_impact import OUTCOMES_REQUIRING_FAILURE_PROTOCOL, default_post_change_ledger_path, normalize_outcome, read_jsonl
 from lib.maintainer_proposals import PROPOSAL_SCHEMA_VERSION, deterministic_proposal_id, validate_proposal_schema
+from lib.outcome_failure_queue import QUEUE_PATH, drain_queue
 from lib.performance_ledger import compile_ledger, repo_root, rollup_skill_metrics, rollup_provider_metrics
 
 
 PROMOTION_SCHEMA_VERSION = "promote-from-telemetry/v1"
+_CAPABILITY_MISMATCH_THRESHOLD = 2    # repeated ADR-203 contract mismatches before proposal
 
 
 def utc_day() -> str:
@@ -140,6 +143,162 @@ def promote_from_ledger_report(ledger_report: dict[str, Any], *, day_window: str
         "reason": "proposals_generated" if proposals else "no_promotable_degradation_detected",
     }
 
+
+
+def _utc_window(window: tuple[datetime, datetime]) -> dict[str, str]:
+    return {
+        "start": window[0].strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "end": window[1].strftime("%Y-%m-%dT%H:%M:%SZ"),
+    }
+
+
+def _iter_metric_rows(project_dir: Path) -> list[dict[str, Any]]:
+    """Read JSON object rows from local metric streams without mutating them."""
+    metrics_dir = project_dir / ".cognitive-os" / "metrics"
+    rows: list[dict[str, Any]] = []
+    if not metrics_dir.exists():
+        return rows
+    for path in sorted(metrics_dir.glob("*.jsonl")):
+        for row in read_jsonl(path) or []:
+            row.setdefault("_metric_stream", path.name)
+            rows.append(row)
+    return rows
+
+
+def _confidence_with_penalty(base: float, penalty: float) -> float:
+    return max(0.0, round(base - penalty, 3))
+
+
+def build_outcome_regression_quarantine(row: dict[str, Any], *, day_window: str, policy: PromotionPolicy) -> dict[str, Any]:
+    """Turn a failed post-change outcome into a deliberate quarantine report."""
+    protocol = row.get("failure_protocol") or {}
+    pattern = str(
+        (protocol.get("quarantine") or {}).get("pattern")
+        or row.get("degradation_pattern")
+        or row.get("experiment_id")
+        or "unknown-pattern"
+    )
+    outcome = normalize_outcome(row.get("outcome"))
+    penalty = float((protocol.get("confidence_penalty") or {}).get("similar_pattern_penalty") or (0.20 if outcome == "regressed" else 0.10))
+    return {
+        "schema_version": "maintainer-outcome-quarantine/v1",
+        "day_window": day_window,
+        "proposal_id": row.get("proposal_id") or row.get("experiment_id"),
+        "work_id": row.get("work_id"),
+        "surface": row.get("surface") or "maintainer-outcome",
+        "degradation_pattern": pattern,
+        "outcome": outcome,
+        "source_rollup_ref": row.get("source_rollup_ref") or row.get("source_rollup_run_id"),
+        "quarantine_state": "quarantined_until_manual_resolution",
+        "manual_investigation_required": True,
+        "rollback_approval_required": True,
+        "future_confidence_floor": _confidence_with_penalty(policy.min_self_confidence, penalty),
+        "reason": "post-change outcome failed or was inconclusive; suppress automatic promotion and require operator review",
+    }
+
+
+def detect_outcome_regressions(rows: list[dict[str, Any]], *, day_window: str, policy: PromotionPolicy | None = None) -> list[dict[str, Any]]:
+    """Promote post-change regressions as first-class quarantine signals."""
+    active_policy = policy or PromotionPolicy()
+    reports: list[dict[str, Any]] = []
+    seen: set[tuple[str, str]] = set()
+    for row in rows:
+        outcome = normalize_outcome(row.get("outcome"))
+        if outcome not in OUTCOMES_REQUIRING_FAILURE_PROTOCOL:
+            continue
+        report = build_outcome_regression_quarantine(row, day_window=day_window, policy=active_policy)
+        key = (str(report.get("proposal_id")), str(report.get("degradation_pattern")))
+        if key in seen:
+            continue
+        seen.add(key)
+        reports.append(report)
+    return reports
+
+
+def _capability_mismatch_subject(row: dict[str, Any]) -> str:
+    return str(row.get("agent_type") or row.get("selected_type") or row.get("canonical_type") or "unknown-subagent")
+
+
+def detect_capability_contract_mismatches(
+    events: list[dict[str, Any]],
+    *,
+    threshold: int = _CAPABILITY_MISMATCH_THRESHOLD,
+) -> list[dict[str, Any]]:
+    """Detect repeated ADR-203 subagent capability contract mismatches.
+
+    Rows qualify when their classification/kind/event equals
+    ``capability_contract_mismatch``. Repeated mismatches produce a finding that
+    can become a maintainer proposal to adjust routing confidence, docs, or the
+    subagent catalog.
+    """
+    groups: dict[str, list[dict[str, Any]]] = {}
+    for event in events:
+        classification = str(event.get("classification") or event.get("kind") or event.get("event") or event.get("event_type") or "")
+        if classification != "capability_contract_mismatch":
+            continue
+        groups.setdefault(_capability_mismatch_subject(event), []).append(event)
+
+    findings: list[dict[str, Any]] = []
+    for subject, rows in sorted(groups.items()):
+        count = len(rows)
+        if count < threshold:
+            continue
+        alternatives = sorted({str(item) for row in rows for item in (row.get("safe_alternatives") or [])})
+        findings.append({
+            "kind": "subagent_capability_contract_mismatch_repeated",
+            "subject_id": subject,
+            "severity": "P2" if count < 5 else "P1",
+            "evidence_window": {"event_count": count},
+            "current_value": count,
+            "baseline_value": threshold,
+            "source_event_refs": [str(row.get("_metric_stream") or row.get("source") or "capability_contract_mismatch") for row in rows[:10]],
+            "suggested_action": (
+                f"Repeated capability_contract_mismatch rows for '{subject}'. Adjust selector confidence, "
+                "launch docs, or manifests/subagent-capabilities.yaml so write-requiring prompts route to writer-capable subagents."
+            ),
+            "safe_alternatives": alternatives,
+        })
+    return findings
+
+
+def build_capability_mismatch_proposal(finding: dict[str, Any], *, day_window: str, policy: PromotionPolicy) -> dict[str, Any]:
+    subject = str(finding.get("subject_id") or "unknown-subagent")
+    pattern = f"capability-contract-mismatch:{subject}"
+    proposal = {
+        "schema_version": PROPOSAL_SCHEMA_VERSION,
+        "proposal_id": deterministic_proposal_id("subagent-capability-contract", pattern, day_window),
+        "severity": finding.get("severity") or "P2",
+        "self_confidence": policy.min_self_confidence,
+        "surface": "subagent-capability-contract",
+        "harness_scope": "harness-agnostic",
+        "source_metric_streams": ["subagent-capability-mismatch"],
+        "source_event_refs": list(finding.get("source_event_refs") or []),
+        "affected_primitive": f"subagent:{subject}",
+        "degradation_pattern": pattern,
+        "candidate_action": finding.get("suggested_action") or "Adjust subagent routing confidence, documentation, or capability catalog.",
+        "allowed_write_paths": [
+            "manifests/subagent-capabilities.yaml",
+            "scripts/subagent_launch_preflight.py",
+            "tests/unit/test_subagent_launch_preflight.py",
+        ],
+        "blocked_write_paths": [".env", "secrets/**", ".git/config"],
+        "tests_required": ["python3 -m pytest tests/unit/test_subagent_launch_preflight.py -q"],
+        "rollback_plan": "Revert the subagent capability catalog/routing change and re-run preflight fixtures.",
+        "cooldown_after_apply": policy.cooldown_after_apply,
+        "related_proposals": [],
+        "experiment_design": {
+            "type": "before_after",
+            "canary_scope": "subagent launch preflight mismatch fixtures",
+            "success_metric": "capability_contract_mismatch count decreases without allowing unsafe write launches",
+            "minimum_observation_window": policy.post_change_measurement_window,
+        },
+        "expected_impact_metric": "lower_capability_contract_mismatch_count",
+        "post_change_measurement_window": policy.post_change_measurement_window,
+        "human_approval_required": True,
+        "outcome_on_regression": "quarantine_pattern_and_open_manual_investigation",
+    }
+    validate_proposal_schema(proposal)
+    return proposal
 
 # ---------------------------------------------------------------------------
 # Phase 2 — pattern detection (skill overrides, provider drift, dormant primitives)
@@ -454,8 +613,13 @@ def promote_from_telemetry(
     run_id: str | None = None,
     day_window: str | None = None,
     write_ledger: bool = True,
+    outcome_queue_path: Path | None = None,
+    post_change_ledger_path: Path | None = None,
+    include_local_metric_signals: bool = True,
 ) -> dict[str, Any]:
     project = (project_dir or repo_root()).resolve()
+    active_policy = PromotionPolicy()
+    window = day_window or utc_day()
     ledger = compile_ledger(
         project,
         contract_path=contract_path,
@@ -464,8 +628,37 @@ def promote_from_telemetry(
         run_id=run_id,
         write=write_ledger,
     )
-    result = promote_from_ledger_report(ledger, day_window=day_window)
+    result = promote_from_ledger_report(ledger, day_window=window, policy=active_policy)
+
+    post_change_path = post_change_ledger_path or default_post_change_ledger_path(project)
+    post_change_rows = list(read_jsonl(post_change_path) or [])
+    queue_path = outcome_queue_path or project / QUEUE_PATH
+    queue_rows = drain_queue(queue_path=queue_path, status_filter="pending")
+    outcome_quarantines = detect_outcome_regressions(post_change_rows + queue_rows, day_window=window, policy=active_policy)
+
+    capability_findings: list[dict[str, Any]] = []
+    capability_proposals: list[dict[str, Any]] = []
+    if include_local_metric_signals:
+        capability_findings = detect_capability_contract_mismatches(_iter_metric_rows(project))
+        existing_ids = {proposal["proposal_id"] for proposal in result.get("proposals", [])}
+        for finding in capability_findings:
+            proposal = build_capability_mismatch_proposal(finding, day_window=window, policy=active_policy)
+            if proposal["proposal_id"] in existing_ids:
+                continue
+            existing_ids.add(proposal["proposal_id"])
+            capability_proposals.append(proposal)
+        result["proposals"].extend(capability_proposals)
+        result["proposal_count"] = len(result["proposals"])
+        if capability_proposals and result.get("reason") == "no_promotable_degradation_detected":
+            result["reason"] = "proposals_generated"
+
     result["project_dir"] = str(project)
     result["ledger_summary"] = ledger.get("summary", {})
     result["consumption_policy"] = ledger.get("consumption_policy", {})
+    result["outcome_quarantine_reports"] = outcome_quarantines
+    result["outcome_quarantine_count"] = len(outcome_quarantines)
+    result["capability_mismatch_findings"] = capability_findings
+    result["capability_mismatch_proposal_count"] = len(capability_proposals)
+    if outcome_quarantines and not result["proposals"]:
+        result["reason"] = "outcome_regressions_quarantined"
     return result

@@ -33,9 +33,9 @@ This plan is the operational successor to
 
 These items keep the administrative closure honest.
 
-- [x] Add a report or pending-truth adapter that distinguishes legacy-plan `closed_by_disposition` from `implemented`, so future dashboards do not read `100%` as shipped functionality. (work_id: plan-closure-p0-20260520) (verified: python3 scripts/plan_closure_disposition_audit.py --project-dir . --json --strict && .venv/bin/python -m pytest tests/unit/test_plan_closure_disposition_audit.py -q)
-- [x] Add an audit that fails if a legacy checklist item is closed by disposition without referencing the disposition ledger or a successor active plan. (verified: python3 scripts/plan_closure_disposition_audit.py --project-dir . --json --strict && .venv/bin/python -m pytest tests/unit/test_plan_closure_disposition_audit.py -q) (work_id: plan-closure-p0-20260520)
-- [x] Update `/session-backlog` or pending-truth docs to prefer this active successor plan over the closed legacy checklists. (work_id: plan-closure-p0-20260520) (verified: python3 scripts/plan_closure_disposition_audit.py --project-dir . --json --strict && .venv/bin/python -m pytest tests/unit/test_plan_closure_disposition_audit.py -q)
+- [x] Add a report or pending-truth adapter that distinguishes legacy-plan `closed_by_disposition` from `implemented`, so future dashboards do not read `100%` as shipped functionality. (work_id: plan_closure_p0_20260520) (verified: python3 scripts/plan_closure_disposition_audit.py --project-dir . --json --strict && .venv/bin/python -m pytest tests/unit/test_plan_closure_disposition_audit.py -q)
+- [x] Add an audit that fails if a legacy checklist item is closed by disposition without referencing the disposition ledger or a successor active plan. (verified: python3 scripts/plan_closure_disposition_audit.py --project-dir . --json --strict && .venv/bin/python -m pytest tests/unit/test_plan_closure_disposition_audit.py -q) (work_id: plan_closure_p0_20260520)
+- [x] Update `/session-backlog` or pending-truth docs to prefer this active successor plan over the closed legacy checklists. (work_id: plan_closure_p0_20260520) (verified: python3 scripts/plan_closure_disposition_audit.py --project-dir . --json --strict && .venv/bin/python -m pytest tests/unit/test_plan_closure_disposition_audit.py -q)
 
 ## Priority 1 — Multi-session coordination and silent-loss prevention
 
@@ -71,8 +71,8 @@ from duplicating, overwriting, resetting, or losing each other's work.
   - Acceptance: duplicate staged diff returns a block/skip finding; unique diff
     passes.
 
-- [ ] Wire destructive-git policy adoption into the active hard-blocking guard
-      path where appropriate.
+- [x] Wire destructive-git policy adoption into the active hard-blocking guard
+      path where appropriate. (verified: `.venv/bin/python -m pytest tests/unit/test_governance_policy_hook_adoption.py tests/unit/test_destructive_git_block.py tests/behavior/test_destructive_git_blocker.py -q`; work_id: worker-e-destructive-git-policy-2026-05-20)
   - Source legacy items: multi-session P3.2 and governance policy adoption.
   - Deliverable: `destructive-git-blocker.sh` either delegates to
     `cos governance policy --category destructive-git` / policy eval or is
@@ -139,28 +139,27 @@ Kubernetes or clusters.
 
 Rationale: this reduces governance friction and makes blocks explainable.
 
-- [ ] Extend `cos governance readiness --json` with discovery-overload signal.
+- [x] Extend `cos governance readiness --json` with discovery-overload signal. (work_id: worker_e_governance_readiness_2026_05_20) (verified: `.venv/bin/python _m pytest tests/unit/test_cos_architecture_readiness.py _q`)
   - Source legacy items: DX Tax Phase 1 and External Review Readiness Phase 3.
   - Acceptance: JSON includes `discovery_overload` with threshold, current count,
     and recommended action.
 
-- [ ] Add active safety layer summary for new operators.
+- [x] Add active safety layer summary for new operators. (work_id: worker_e_active_safety_layer_2026_05_20) (verified: `.venv/bin/python _m pytest tests/unit/test_cos_architecture_readiness.py _q`)
   - Source legacy item: DX Tax Phase 1.
   - Acceptance: one command shows phase, active profile, hard-blocking guards,
     advisory guards, and maintainer/lab opt-ins without requiring ADR reading.
 
-- [ ] Add token/context tax estimate or explicit unavailable signal.
+- [x] Add token/context tax estimate or explicit unavailable signal. (work_id: worker_e_token_context_tax_2026_05_20) (verified: `.venv/bin/python _m pytest tests/unit/test_cos_architecture_readiness.py _q`)
   - Source legacy item: DX Tax Phase 2.
   - Acceptance: `cos governance readiness --json` includes either numeric
     estimate fields or `estimate_unavailable` with reason.
 
-- [ ] Standardize block reports with repair command and owning ADR.
+- [x] Standardize block reports with repair command and owning ADR. (work_id: worker_e_block_report_standard_2026_05_20) (verified: `.venv/bin/python _m pytest tests/unit/test_governance_policy_hook_adoption.py tests/unit/test_destructive_git_block.py tests/behavior/test_destructive_git_blocker.py _q`)
   - Source legacy item: DX Tax Phase 4.
   - Acceptance: representative hard-blocking guards emit primitive/policy/input,
     owning ADR, evidence, and repair command.
 
-- [ ] Ensure archived/lab primitives remain recoverable while default discovery
-      remains small.
+- [x] Ensure archived/lab primitives remain recoverable while default discovery remains small. (work_id: worker_e_active_primitive_recovery_2026_05_20) (verified: `.venv/bin/python _m pytest tests/unit/test_active_primitive_index.py _q`)
   - Source legacy items: Governance Tools Consolidation Phase 8.
   - Acceptance: default discovery returns a bounded active set; explicit lab
     query returns archived/lab primitives with status markings.
@@ -170,23 +169,23 @@ Rationale: this reduces governance friction and makes blocks explainable.
 Rationale: telemetry proposals are useful only if accepted changes later measure
 impact/regression.
 
-- [ ] Add post-change impact records after accepted proposals land.
+- [x] Add post-change impact records after accepted proposals land. (work_id: maintainer_telemetry_outcome_loop_20260520) (verified: .venv/bin/python -m pytest tests/unit/test_promote_from_telemetry.py tests/unit/test_promote_from_telemetry_phase2.py tests/unit/test_maintainer_impact.py tests/unit/test_outcome_failure_queue.py -q)
   - Source legacy item: ADR-201 Phase 5.
   - Acceptance: accepted proposal can record before/after metrics, source
     rollup, and operator decision.
 
-- [ ] Implement outcome-failure protocol.
+- [x] Implement outcome-failure protocol. (work_id: maintainer_telemetry_outcome_loop_20260520) (verified: .venv/bin/python -m pytest tests/unit/test_promote_from_telemetry.py tests/unit/test_promote_from_telemetry_phase2.py tests/unit/test_maintainer_impact.py tests/unit/test_outcome_failure_queue.py -q)
   - Source legacy item: ADR-201 Phase 5.
   - Acceptance: regressed/inconclusive outcome quarantines pattern, opens manual
     investigation, requires approval for rollback, and penalizes future
     maintainer confidence for similar patterns.
 
-- [ ] Feed regressions back into `PromoteFromTelemetry` as first-class signals.
+- [x] Feed regressions back into `PromoteFromTelemetry` as first-class signals. (work_id: maintainer_telemetry_outcome_loop_20260520) (verified: .venv/bin/python -m pytest tests/unit/test_promote_from_telemetry.py tests/unit/test_promote_from_telemetry_phase2.py tests/unit/test_maintainer_impact.py tests/unit/test_outcome_failure_queue.py -q)
   - Source legacy item: ADR-201 Phase 5.
   - Acceptance: regression fixture produces a promotion finding/proposal or a
     deliberate quarantine report.
 
-- [ ] Feed subagent capability mismatches into `PromoteFromTelemetry`.
+- [x] Feed subagent capability mismatches into `PromoteFromTelemetry`. (work_id: maintainer_telemetry_outcome_loop_20260520) (verified: .venv/bin/python -m pytest tests/unit/test_promote_from_telemetry.py tests/unit/test_promote_from_telemetry_phase2.py tests/unit/test_maintainer_impact.py tests/unit/test_outcome_failure_queue.py -q)
   - Source legacy item: ADR-203 follow-up.
   - Acceptance: repeated `capability_contract_mismatch` rows produce a proposal
     to adjust routing confidence, docs, or subagent catalog.
@@ -197,14 +196,14 @@ Rationale: ADR-326 parked Phases 1+2 but explicitly preserved their unique value
 Do not revive budget/retry work. Implement only if recurring capability-ceiling
 incidents or operator priority justify it.
 
-- [ ] Draft a new ADR or ADR amendment for typed capability-ceiling signals only.
+- [x] Draft a new ADR or ADR amendment for typed capability-ceiling signals only. (work_id: worker_g_p5_p6_20260520) (verified: `.venv/bin/python _m pytest tests/audit/test_adr_contracts.py _q _k ADR_330`)
   - Scope: `NEEDS_DEEPER_REASONING`, `NEEDS_TOOL_ACCESS`,
     `NEEDS_MORE_CONTEXT`, `NEEDS_DOMAIN_EXPERT`.
   - Non-scope: retry budgets, escalation cost reporting, generic failure retry
     taxonomy.
   - Acceptance: ADR references ADR-326 and ADR-228 boundaries.
 
-- [ ] Implement read-only signal detection before auto re-dispatch.
+- [x] Implement read-only signal detection before auto re-dispatch. (work_id: worker_g_p5_p6_20260520) (verified: `.venv/bin/python _m pytest tests/unit/test_capability_ceiling.py _q`)
   - Acceptance: detector can classify capability ceiling and produce structured
     handoff; no agent is re-launched automatically in the first slice.
 
@@ -213,11 +212,11 @@ incidents or operator priority justify it.
 Rationale: benchmarking is useful, but Kubernetes/cluster benchmarks are noise
 without a real worker runtime.
 
-- [ ] Define two small benchmark fixture repositories/workloads.
+- [x] Define two small benchmark fixture repositories/workloads. (work_id: worker_g_p5_p6_20260520) (verified: `.venv/bin/python _m pytest tests/unit/test_workstation_container_benchmark_report.py _q`)
   - Acceptance: fixtures are license-safe, deterministic enough to compare, and
     cover at least one bugfix and one multi-file refactor.
 
-- [ ] Run workstation/container comparison only.
+- [x] Run workstation/container comparison only. (work_id: worker_g_p5_p6_20260520) (verified: `.venv/bin/python _m pytest tests/unit/test_workstation_container_benchmark_report.py _q`; report doc/script added for operator_recorded workstation/container rows; no cluster/Kubernetes scope)
   - Acceptance: report compares vanilla Claude/Codex where manually available
     against COS-enabled runs, including overhead, catch value, and artifact
     quality.

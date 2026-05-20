@@ -1,7 +1,8 @@
 """Maintainer telemetry impact measurement for ADR-201 Phase 5.
 
 Phase 2 proved that rollups exist. Phase 5 asks the harder question: did those
-rollups change an operator or maintainer decision?
+rollups change an operator or maintainer decision, and did accepted changes
+improve or regress after landing?
 """
 from __future__ import annotations
 
@@ -12,7 +13,9 @@ from pathlib import Path
 from typing import Any, Iterable
 
 SCHEMA_VERSION = "maintainer-impact/v1"
+POST_CHANGE_SCHEMA_VERSION = "maintainer-post-change-impact/v1"
 DECISION_LEDGER = Path(".cognitive-os") / "metrics" / "maintainer-decision-impact.jsonl"
+POST_CHANGE_LEDGER = Path(".cognitive-os") / "metrics" / "maintainer-post-change-impact.jsonl"
 
 DECISIONS_THAT_COUNT_AS_CHANGE = {
     "accepted",
@@ -26,6 +29,8 @@ DECISIONS_THAT_COUNT_AS_CHANGE = {
     "guard_tuned",
 }
 
+OUTCOMES_REQUIRING_FAILURE_PROTOCOL = {"regressed", "inconclusive"}
+
 
 def utc_now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -33,6 +38,10 @@ def utc_now() -> str:
 
 def default_ledger_path(project_dir: Path) -> Path:
     return project_dir / DECISION_LEDGER
+
+
+def default_post_change_ledger_path(project_dir: Path) -> Path:
+    return project_dir / POST_CHANGE_LEDGER
 
 
 def read_jsonl(path: Path) -> Iterable[dict[str, Any]]:
@@ -146,6 +155,172 @@ def append_decision_event(path: Path, event: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("a", encoding="utf-8") as handle:
         handle.write(json.dumps(event, sort_keys=True) + "\n")
+
+
+def _metric_delta(before_metrics: dict[str, Any], after_metrics: dict[str, Any]) -> dict[str, dict[str, float]]:
+    deltas: dict[str, dict[str, float]] = {}
+    for key in sorted(set(before_metrics) | set(after_metrics)):
+        before = before_metrics.get(key)
+        after = after_metrics.get(key)
+        if not isinstance(before, int | float) or not isinstance(after, int | float):
+            continue
+        deltas[key] = {
+            "before": float(before),
+            "after": float(after),
+            "delta": round(float(after) - float(before), 6),
+        }
+    return deltas
+
+
+def normalize_outcome(value: Any) -> str:
+    normalized = normalize_decision(value)
+    if normalized in {"pass", "passed", "improved", "success"}:
+        return "improved"
+    if normalized in {"fail", "failed", "regression", "regressed"}:
+        return "regressed"
+    if normalized in {"inconclusive", "unknown", "insufficient_data"}:
+        return "inconclusive"
+    return normalized or "unknown"
+
+
+def outcome_failure_protocol(
+    *,
+    proposal_id: str,
+    degradation_pattern: str,
+    outcome: str,
+    work_id: str | None = None,
+    source_rollup_ref: str | None = None,
+) -> dict[str, Any]:
+    """Build the mandatory protocol for regressed or inconclusive outcomes."""
+    normalized = normalize_outcome(outcome)
+    if normalized not in OUTCOMES_REQUIRING_FAILURE_PROTOCOL:
+        return {
+            "required": False,
+            "outcome": normalized,
+            "proposal_id": proposal_id,
+            "degradation_pattern": degradation_pattern,
+        }
+    confidence_penalty = 0.20 if normalized == "regressed" else 0.10
+    return {
+        "required": True,
+        "status": "manual_investigation_open",
+        "outcome": normalized,
+        "proposal_id": proposal_id,
+        "work_id": work_id,
+        "source_rollup_ref": source_rollup_ref,
+        "quarantine": {
+            "pattern": degradation_pattern,
+            "reason": f"post-change outcome {normalized}",
+            "future_promotion_state": "quarantined_until_manual_resolution",
+        },
+        "rollback": {
+            "approval_required": True,
+            "allowed_without_approval": False,
+        },
+        "confidence_penalty": {
+            "similar_pattern_penalty": confidence_penalty,
+            "applies_to": degradation_pattern,
+        },
+        "next_actions": [
+            "open_manual_investigation",
+            "attach_before_after_metrics_and_source_rollup",
+            "require_human_approval_before_rollback",
+            "penalize_future_maintainer_confidence_for_similar_patterns",
+        ],
+    }
+
+
+def build_post_change_impact_event(
+    *,
+    proposal_id: str,
+    work_id: str,
+    surface: str,
+    degradation_pattern: str,
+    before_metrics: dict[str, Any],
+    after_metrics: dict[str, Any],
+    source_rollup_run_id: str | None = None,
+    source_rollup_ref: str | None = None,
+    operator_decision: str,
+    outcome: str,
+    operator: str | None = None,
+    timestamp: str | None = None,
+    notes: str | None = None,
+) -> dict[str, Any]:
+    """Build one post-change impact row for an accepted/applied proposal.
+
+    The row is append-only evidence tying an accepted proposal to before/after
+    metrics, source rollup provenance, the operator decision, and work identity.
+    Regressed or inconclusive rows embed the failure protocol so rollback cannot
+    happen silently.
+    """
+    normalized_outcome = normalize_outcome(outcome)
+    return {
+        "schema_version": POST_CHANGE_SCHEMA_VERSION,
+        "timestamp": timestamp or utc_now(),
+        "proposal_id": proposal_id,
+        "work_id": work_id,
+        "surface": surface,
+        "degradation_pattern": degradation_pattern,
+        "source_rollup_run_id": source_rollup_run_id,
+        "source_rollup_ref": source_rollup_ref,
+        "operator_decision": normalize_decision(operator_decision),
+        "operator": operator,
+        "before_metrics": before_metrics,
+        "after_metrics": after_metrics,
+        "metric_delta": _metric_delta(before_metrics, after_metrics),
+        "outcome": normalized_outcome,
+        "notes": notes,
+        "failure_protocol": outcome_failure_protocol(
+            proposal_id=proposal_id,
+            degradation_pattern=degradation_pattern,
+            outcome=normalized_outcome,
+            work_id=work_id,
+            source_rollup_ref=source_rollup_ref,
+        ),
+    }
+
+
+def append_post_change_impact_event(path: Path, event: dict[str, Any]) -> None:
+    if not event.get("work_id"):
+        raise ValueError("post-change impact event requires work_id")
+    if not event.get("proposal_id"):
+        raise ValueError("post-change impact event requires proposal_id")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(event, sort_keys=True) + "\n")
+
+
+def post_change_impact_report(project_dir: Path, *, ledger_path: Path | None = None) -> dict[str, Any]:
+    path = ledger_path or default_post_change_ledger_path(project_dir)
+    rows = list(read_jsonl(path) or [])
+    outcomes = Counter(normalize_outcome(row.get("outcome")) for row in rows)
+    failure_rows = [row for row in rows if normalize_outcome(row.get("outcome")) in OUTCOMES_REQUIRING_FAILURE_PROTOCOL]
+    quarantined_patterns = sorted(
+        {
+            str((row.get("failure_protocol") or {}).get("quarantine", {}).get("pattern") or row.get("degradation_pattern"))
+            for row in failure_rows
+            if row.get("degradation_pattern") or (row.get("failure_protocol") or {}).get("quarantine")
+        }
+    )
+    if not rows:
+        status = "no_data"
+    elif failure_rows:
+        status = "outcome_failures_pending_investigation"
+    else:
+        status = "post_change_outcomes_recorded"
+    return {
+        "schema_version": POST_CHANGE_SCHEMA_VERSION,
+        "project_dir": str(project_dir),
+        "ledger_path": str(path),
+        "status": status,
+        "total_records": len(rows),
+        "outcomes_by_type": dict(sorted(outcomes.items())),
+        "failure_count": len(failure_rows),
+        "quarantined_patterns": quarantined_patterns,
+        "proposal_ids": sorted({str(row.get("proposal_id")) for row in rows if row.get("proposal_id")}),
+        "work_ids": sorted({str(row.get("work_id")) for row in rows if row.get("work_id")}),
+        "failure_protocols": [row.get("failure_protocol") for row in failure_rows],
+    }
 
 
 def impact_report(project_dir: Path, *, ledger_path: Path | None = None) -> dict[str, Any]:

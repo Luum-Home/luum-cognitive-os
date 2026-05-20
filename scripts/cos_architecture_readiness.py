@@ -92,6 +92,8 @@ REQUIRED_MATURITY_LABELS = {
     "hooks/trust-score-validator.sh",
     "hooks/blast-radius.sh",
 }
+DISCOVERY_VISIBLE_WARN_THRESHOLD = 12
+DISCOVERY_VISIBLE_FAIL_THRESHOLD = 25
 
 
 
@@ -182,6 +184,90 @@ def check_active_surface(root: Path) -> Check:
             "findings": summary["findings"],
         },
     )
+
+
+def discovery_overload_signal(active_surface_check: Check) -> dict[str, Any]:
+    """Return the default-discovery overload signal for readiness JSON."""
+    summary = active_surface_check.details
+    current = int(summary.get("default_visible_count") or 0)
+    thresholds = summary.get("thresholds") if isinstance(summary.get("thresholds"), dict) else {}
+    fail_threshold = int(thresholds.get("default_visible_fail") or DISCOVERY_VISIBLE_FAIL_THRESHOLD)
+    warn_threshold = int(thresholds.get("default_visible_warn") or DISCOVERY_VISIBLE_WARN_THRESHOLD)
+    overloaded = current > fail_threshold
+    near_limit = current > warn_threshold
+    return {
+        "overloaded": overloaded,
+        "near_limit": near_limit,
+        "current_count": current,
+        "threshold": fail_threshold,
+        "warn_threshold": warn_threshold,
+        "recommended_action": (
+            "demote/archive low-value default-visible primitives or move them behind maintainer/lab opt-in"
+            if overloaded
+            else (
+                "review default-visible primitives before adding more core/team discovery surface"
+                if near_limit
+                else "no action required"
+            )
+        ),
+    }
+
+
+def token_context_estimate(root: Path) -> dict[str, Any]:
+    """Estimate governance context tax from default-loaded rule/docs files.
+
+    This is intentionally explicit when approximate: agents need to know whether
+    the number is measured, heuristic, or unavailable instead of treating a
+    missing estimate as zero cost.
+    """
+    candidates = [
+        root / "rules" / "RULES-COMPACT.md",
+        root / "AGENTS.md",
+        root / ".claude" / "rules" / "RULES-COMPACT.md",
+    ]
+    files: list[dict[str, Any]] = []
+    total_chars = 0
+    for path in candidates:
+        if not path.exists() or path.is_dir():
+            continue
+        try:
+            text = path.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        rel = str(path.relative_to(root)) if path.is_relative_to(root) else str(path)
+        total_chars += len(text)
+        files.append({"path": rel, "chars": len(text), "estimated_tokens": round(len(text) / 4)})
+    if not files:
+        return {
+            "estimate_unavailable": True,
+            "reason": "no default governance context files found",
+        }
+    return {
+        "estimate_unavailable": False,
+        "method": "heuristic_chars_div_4",
+        "estimated_tokens": round(total_chars / 4),
+        "estimated_chars": total_chars,
+        "files": files,
+    }
+
+
+def active_safety_layer_summary(root: Path, active_surface_check: Check) -> dict[str, Any]:
+    phase_policy = cos_governance_roi.phase_policy_for(cos_governance_roi.read_project_phase(root))
+    details = active_surface_check.details
+    return {
+        "phase": phase_policy["phase"],
+        "active_profile": "core/team default discovery; maintainer and lab are opt-in",
+        "hard_blocking_guards": sorted(phase_policy["block"]),
+        "advisory_guards": sorted(phase_policy["advisory"]),
+        "maintainer_opt_ins": {
+            "active_count": (details.get("active_counts_by_tier") or {}).get("maintainer", 0),
+            "command": "scripts/cos-active-primitive-index --tier maintainer --list",
+        },
+        "lab_opt_ins": {
+            "recoverable_count": (details.get("counts_by_tier") or {}).get("lab", 0),
+            "command": "scripts/cos-active-primitive-index --tier lab --list",
+        },
+    }
 
 
 
@@ -579,11 +665,15 @@ def check_demotion_loop_maturity(root: Path) -> Check:
 
 
 def build_report(root: Path, window_hours: int) -> dict[str, Any]:
+    repo_hygiene = check_repo_hygiene(root)
+    adoption_tiers = check_adoption_tiers(root)
+    lifecycle_manifest = check_lifecycle_manifest(root)
+    active_surface = check_active_surface(root)
     checks = [
-        check_repo_hygiene(root),
-        check_adoption_tiers(root),
-        check_lifecycle_manifest(root),
-        check_active_surface(root),
+        repo_hygiene,
+        adoption_tiers,
+        lifecycle_manifest,
+        active_surface,
         check_core_preamble_budget(root),
         check_runtime_hook_reality(root),
         check_core_session_start_budget(root),
@@ -612,6 +702,9 @@ def build_report(root: Path, window_hours: int) -> dict[str, Any]:
         "pass_count": pass_count,
         "warn_count": warn_count,
         "fail_count": fail_count,
+        "discovery_overload": discovery_overload_signal(active_surface),
+        "active_safety_layer": active_safety_layer_summary(root, active_surface),
+        "token_context_estimate": token_context_estimate(root),
         "checks": [asdict(check) for check in checks],
         "next_phases": [
             "Phase 1: friction budget and demotion gate",
@@ -626,6 +719,24 @@ def build_report(root: Path, window_hours: int) -> dict[str, Any]:
 def print_human(report: dict[str, Any]) -> None:
     print("COS Architecture Readiness")
     print(f"status: {report['status']} score={report['score']} pass={report['pass_count']} warn={report['warn_count']} fail={report['fail_count']}")
+    safety = report["active_safety_layer"]
+    print("active safety layer:")
+    print(f"- phase={safety['phase']} profile={safety['active_profile']}")
+    print(f"- hard-blocking guards: {', '.join(safety['hard_blocking_guards']) or '(none)'}")
+    print(f"- advisory guards: {', '.join(safety['advisory_guards']) or '(none)'}")
+    print(f"- maintainer opt-in: {safety['maintainer_opt_ins']['command']}")
+    print(f"- lab recovery: {safety['lab_opt_ins']['command']}")
+    overload = report["discovery_overload"]
+    print(
+        "discovery overload: "
+        f"current={overload['current_count']} threshold={overload['threshold']} "
+        f"overloaded={overload['overloaded']} action={overload['recommended_action']}"
+    )
+    estimate = report["token_context_estimate"]
+    if estimate.get("estimate_unavailable"):
+        print(f"context tax estimate: unavailable ({estimate['reason']})")
+    else:
+        print(f"context tax estimate: ~{estimate['estimated_tokens']} tokens ({estimate['method']})")
     for check in report["checks"]:
         marker = {"pass": "PASS", "warn": "WARN", "fail": "FAIL"}[check["status"]]
         print(f"- {marker} {check['id']}: {check['message']}")

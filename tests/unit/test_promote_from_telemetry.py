@@ -64,3 +64,65 @@ def test_promote_from_telemetry_generates_deduped_schema_valid_quality_proposal(
     assert proposal["human_approval_required"] is True
     assert proposal["experiment_design"]["type"] == "before_after"
     assert proposal["proposal_id"].startswith("perf-ledger-reward-signal-quality-")
+
+
+def test_promote_from_telemetry_quarantines_regressed_post_change_outcome(tmp_path):
+    from lib.maintainer_impact import append_post_change_impact_event, build_post_change_impact_event, default_post_change_ledger_path
+
+    event = build_post_change_impact_event(
+        proposal_id="proposal-regressed",
+        work_id="work-maintainer-loop-regression",
+        surface="skill-router",
+        degradation_pattern="skill-override-rate-increase:scout",
+        before_metrics={"override_rate": 0.10},
+        after_metrics={"override_rate": 0.30},
+        source_rollup_ref="performance-ledger:skill-feedback:scout",
+        operator_decision="applied",
+        outcome="regressed",
+    )
+    append_post_change_impact_event(default_post_change_ledger_path(tmp_path), event)
+    metrics = tmp_path / ".cognitive-os" / "metrics"
+    metrics.mkdir(parents=True, exist_ok=True)
+    (metrics / "skill-feedback.jsonl").write_text("", encoding="utf-8")
+
+    payload = promote_from_telemetry(
+        tmp_path,
+        contract_path=CONTRACT,
+        streams=["skill-feedback"],
+        run_id="regression-fixture",
+        day_window="2026-05-20",
+        write_ledger=False,
+    )
+
+    assert payload["outcome_quarantine_count"] == 1
+    report = payload["outcome_quarantine_reports"][0]
+    assert report["quarantine_state"] == "quarantined_until_manual_resolution"
+    assert report["manual_investigation_required"] is True
+    assert report["rollback_approval_required"] is True
+    assert report["work_id"] == "work-maintainer-loop-regression"
+
+
+def test_promote_from_telemetry_proposes_for_repeated_capability_mismatches(tmp_path):
+    metrics = tmp_path / ".cognitive-os" / "metrics"
+    metrics.mkdir(parents=True)
+    (metrics / "subagent-preflight.jsonl").write_text(
+        '{"timestamp":"2026-05-20T00:00:00Z","classification":"capability_contract_mismatch","agent_type":"Explore","prompt_requires_write":true,"write_capability":false,"safe_alternatives":["general-purpose"]}\n'
+        '{"timestamp":"2026-05-20T00:01:00Z","classification":"capability_contract_mismatch","agent_type":"Explore","prompt_requires_write":true,"write_capability":false,"safe_alternatives":["general-purpose"]}\n',
+        encoding="utf-8",
+    )
+    (metrics / "skill-feedback.jsonl").write_text("", encoding="utf-8")
+
+    payload = promote_from_telemetry(
+        tmp_path,
+        contract_path=CONTRACT,
+        streams=["skill-feedback"],
+        run_id="capability-mismatch-fixture",
+        day_window="2026-05-20",
+        write_ledger=False,
+    )
+
+    proposals = [p for p in payload["proposals"] if p["surface"] == "subagent-capability-contract"]
+    assert payload["capability_mismatch_proposal_count"] == 1
+    assert proposals
+    assert proposals[0]["affected_primitive"] == "subagent:Explore"
+    assert "manifests/subagent-capabilities.yaml" in proposals[0]["allowed_write_paths"]
