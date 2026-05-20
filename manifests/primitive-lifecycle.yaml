@@ -12326,7 +12326,7 @@ primitives:
 - id: scripts/cos-bootstrap.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: active
   maturity: observe
   distribution: core
   governance_class: delivery-structure
@@ -12730,7 +12730,7 @@ primitives:
 - id: scripts/cos-doctor-harness.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: active
   maturity: observe
   distribution: core
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -13470,7 +13470,7 @@ primitives:
 - id: scripts/cos-init.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: active
   maturity: observe
   distribution: core
   governance_class: delivery-structure
@@ -15715,7 +15715,7 @@ primitives:
 - id: scripts/cos_init.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: active
   maturity: observe
   distribution: core
   governance_class: delivery-structure
@@ -16756,7 +16756,7 @@ primitives:
 - id: scripts/generate-project-settings.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: active
   maturity: observe
   distribution: core
   governance_class: delivery-structure
@@ -18385,7 +18385,7 @@ primitives:
 - id: scripts/setup.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: active
   maturity: observe
   distribution: core
   governance_class: delivery-structure
@@ -19832,7 +19832,7 @@ primitives:
 - id: skills/detect-stack/SKILL.md
   kind: skill
   owner_adr: ADR-314
-  lifecycle_state: candidate
+  lifecycle_state: advisory
   maturity: observe
   distribution: lab
   demotion_evidence:
@@ -20042,7 +20042,7 @@ primitives:
 - id: skills/generate-config/SKILL.md
   kind: skill
   owner_adr: ADR-314
-  lifecycle_state: candidate
+  lifecycle_state: advisory
   maturity: observe
   distribution: lab
   demotion_evidence:
@@ -20826,7 +20826,7 @@ primitives:
 - id: skills/scaffold-project/SKILL.md
   kind: skill
   owner_adr: ADR-314
-  lifecycle_state: candidate
+  lifecycle_state: advisory
   maturity: observe
   distribution: lab
   demotion_evidence:
@@ -21489,7 +21489,7 @@ primitives:
 - id: templates/adoption-tiers.md.j2
   kind: template
   owner_adr: ADR-019
-  lifecycle_state: candidate
+  lifecycle_state: advisory
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-consumer-candidate
