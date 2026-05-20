@@ -16,10 +16,12 @@ implementation_files:
 - lib/taximeter.py
 - hooks/context-budget-meter.sh
 - hooks/token-budget-monitor.sh
+- hooks/subagent-budget-enforcer.sh
 - tests/unit/test_ai_resource_economy.py
 - tests/unit/test_taximeter.py
 - tests/unit/test_rate_limit_protection.py
 - tests/contracts/test_context_budget_enforcement.py
+- tests/contracts/test_subagent_budget_enforcer.py
 - tests/red_team/portability/test_ai_budget_preflight.py
 - tests/red_team/portability/test_ai-budget-preflight.py
 - tests/red_team/portability/test_ai_resource_economy_audit.py
@@ -27,7 +29,7 @@ implementation_files:
 - tests/red_team/portability/test_language-token-economy.py
 tier: project
 classification_basis: resource scarcity, model rate limits, language token overhead, public history hygiene, and repeated validation loops require explicit budget ledgers, preflight estimates, local fallback, and degradation rules instead of relying on agent discipline.
-partial_remaining: 'partial ADR-325 implementation: manifest/audit/preflight/language-token rule and Phase 2 taximeter exist; Phase 3 has initial context-budget resource-ledger emission and token-budget ledger reads. Remaining scope is subagent-budget ledger integration, provider actual-cost ingestion, ledger normalization/deduplication, preflight threshold enforcement, local fallback routing, and CI ratchets.'
+partial_remaining: 'partial ADR-325 implementation: manifest/audit/preflight/language-token rule and Phase 2 taximeter exist; Phase 3 has context-budget and subagent-budget resource-ledger emission plus token-budget ledger reads. Remaining scope is provider actual-cost ingestion, ledger normalization/deduplication, preflight threshold enforcement, local fallback routing, and CI ratchets.'
 partial_remaining_basis: manual Wave 5 slice reconciliation
 tags:
 
@@ -43,7 +45,7 @@ tags:
 
 ## Status
 
-Accepted. Partial implementation starts with a manifest, audit, preflight CLI, and language-token-economy rule. Phase 3 now has an initial bounded hook path: `context-budget-meter` emits ADR-325 resource ledger rows and `token-budget-monitor` consults that ledger for hourly token enforcement. Provider-specific actual-cost ingestion and broader hook coverage remain follow-up phases.
+Accepted. Partial implementation starts with a manifest, audit, preflight CLI, and language-token-economy rule. Phase 3 now has an initial bounded hook path: `context-budget-meter` and `subagent-budget-enforcer` emit ADR-325 resource ledger rows, and `token-budget-monitor` consults that ledger for hourly token enforcement. Provider-specific actual-cost ingestion and threshold/preflight coupling remain follow-up phases.
 
 ## Context
 
@@ -101,6 +103,6 @@ scripts/ai-budget-preflight --task "classify primitive scope debt" --paths manif
 
 1. **Phase 1 — documented control plane**: ADR, manifest, audit, preflight CLI, and language-token-economy rule.
 2. **Phase 2 — ledger unification**: normalize existing cost events into `.cognitive-os/metrics/ai-resource-ledger.jsonl` and backfill session/agent/task identifiers where available.
-3. **Phase 3 — hook enforcement**: connect preflight and ledger thresholds to `token-budget-monitor`, `context-budget-meter`, and `subagent-budget-enforcer`. Initial slice complete: context-budget events now emit resource ledger rows, and token-budget monitoring counts recent resource-ledger tokens alongside legacy cost events.
+3. **Phase 3 — hook enforcement**: connect preflight and ledger thresholds to `token-budget-monitor`, `context-budget-meter`, and `subagent-budget-enforcer`. Initial slices complete: context-budget and subagent-budget events now emit resource ledger rows, and token-budget monitoring counts recent resource-ledger tokens alongside legacy cost events.
 4. **Phase 4 — local fallback routing**: route mechanical audits and summaries to deterministic scripts/local models before frontier models.
 5. **Phase 5 — ratchets**: fail CI on missing ledger fields, repeated unbounded loops, and public-history hygiene violations before public release.

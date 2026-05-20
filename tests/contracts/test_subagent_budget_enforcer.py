@@ -59,6 +59,15 @@ def test_subagent_budget_blocks_after_configured_budget(tmp_path: Path) -> None:
     assert metrics.exists()
     assert '"action": "block"' in metrics.read_text()
 
+    resource_ledger = tmp_path / ".cognitive-os" / "metrics" / "ai-resource-ledger.jsonl"
+    rows = [json.loads(line) for line in resource_ledger.read_text().splitlines()]
+    assert [row["kind"] for row in rows] == [
+        "subagent_budget_warn",
+        "subagent_budget_block",
+    ]
+    assert rows[-1]["source"] == "subagent-budget-enforcer"
+    assert rows[-1]["tool_calls"] == 3
+
 
 def test_subagent_budget_allows_structured_escalation_after_budget(tmp_path: Path) -> None:
     payload = {"tool_name": "Bash", "tool_input": {"command": "echo ok"}}
