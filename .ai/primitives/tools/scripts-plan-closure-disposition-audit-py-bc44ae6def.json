@@ -1,0 +1,102 @@
+{
+  "canonical_source": "scripts/plan_closure_disposition_audit.py",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Audits plan closure disposition reports so session-backlog and plan closure cannot misread disposition-only closure as implemented work.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Audits plan closure disposition reports so session-backlog and plan closure cannot misread disposition-only closure as implemented work.",
+    "evidence_commands": [
+      "python3 -m pytest tests/unit/test_plan_closure_disposition_audit.py -q",
+      "scripts/cos-plan-closure-disposition-audit --project-dir . --json --strict"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "team",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "zero-on-pass",
+    "governance_class": "plan-closure-truth-control",
+    "lifecycle_state": "candidate",
+    "maturity": "advisory",
+    "owner_adr": "ADR-328",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "document",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "Audits plan closure disposition reports so session-backlog and plan closure cannot misread disposition-only closure as implemented work.",
+      "evidence_commands": [
+        "python3 -m pytest tests/unit/test_plan_closure_disposition_audit.py -q",
+        "scripts/cos-plan-closure-disposition-audit --project-dir . --json --strict"
+      ],
+      "metrics": []
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "unsupported"
+    },
+    "intent": "Audits plan closure disposition reports so session-backlog and plan closure cannot misread disposition-only closure as implemented work.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "shell": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "scripts/plan_closure_disposition_audit.py",
+        "scripts/cos-plan-closure-disposition-audit"
+      ],
+      "runtime_projection": false
+    }
+  },
+  "portable_id": "scripts/plan_closure_disposition_audit.py",
+  "projection_targets": [
+    "scripts/plan_closure_disposition_audit.py",
+    "scripts/cos-plan-closure-disposition-audit"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/plan_closure_disposition_audit.py",
+  "supported_harnesses": [
+    "claude",
+    "codex",
+    "shell"
+  ]
+}

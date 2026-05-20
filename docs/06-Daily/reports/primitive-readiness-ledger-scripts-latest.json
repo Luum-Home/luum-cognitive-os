@@ -892,7 +892,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/acc_pipeline.py",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "advisory",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/acc_pipeline.py",
@@ -2886,11 +2886,11 @@
       "consumer_families": {
         "config": 7,
         "doc": 11,
-        "hook": 2,
+        "hook": 4,
         "rule": 2,
         "script": 2,
-        "skill": 1,
-        "test": 2
+        "skill": 2,
+        "test": 3
       },
       "consumers": [
         {
@@ -2971,7 +2971,15 @@
         },
         {
           "family": "hook",
+          "path": "hooks/session-wrapup-trigger.sh"
+        },
+        {
+          "family": "hook",
           "path": "tests/hooks/test_aspirational_audit_weekly.py"
+        },
+        {
+          "family": "hook",
+          "path": "tests/hooks/test_os_session_wrapup_addendum_trigger.py"
         },
         {
           "family": "rule",
@@ -2994,6 +3002,14 @@
           "path": "skills/component-reality-check/SKILL.md"
         },
         {
+          "family": "skill",
+          "path": "skills/os-session-wrapup/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_core_extensions_split.py"
+        },
+        {
           "family": "test",
           "path": "tests/integration/test_aspirational_audit.py"
         },
@@ -3005,9 +3021,9 @@
       "distribution": "team",
       "evidence": [
         "lifecycle",
-        "skill_consumers:1",
-        "test_consumers:2",
-        "hook_consumers:2",
+        "skill_consumers:2",
+        "test_consumers:3",
+        "hook_consumers:4",
         "doc_consumers:11",
         "rule_consumers:2",
         "config_consumers:7",
@@ -3023,11 +3039,11 @@
       "protected_install_surface": false,
       "role": "lab",
       "role_source": "lifecycle",
-      "skill_consumers": 1,
+      "skill_consumers": 2,
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 27,
+      "total_consumers": 31,
       "wrapper_for": null
     },
     {
@@ -5228,13 +5244,13 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 84,
-        "doc": 740,
-        "hook": 111,
+        "config": 85,
+        "doc": 744,
+        "hook": 117,
         "rule": 49,
-        "script": 350,
+        "script": 352,
         "skill": 80,
-        "test": 661,
+        "test": 675,
         "workflow": 2
       },
       "consumers": [
@@ -5445,6 +5461,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-contracts.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-install-boundary.yaml"
         },
         {
           "family": "config",
@@ -6840,6 +6860,18 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-328-governance-roi-friction-vs-catch.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-329-skill-platform-support-levels.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-330-typed-capability-ceiling-signals.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/INDEX.md"
         },
         {
@@ -8128,6 +8160,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/08-References/benchmarks/workstation-container-comparison-report.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/08-References/business/case-study.md"
         },
         {
@@ -8552,6 +8588,10 @@
         },
         {
           "family": "hook",
+          "path": "hooks/_lib/governance-policy.sh"
+        },
+        {
+          "family": "hook",
           "path": "hooks/_lib/push-collision-check.sh"
         },
         {
@@ -8784,6 +8824,10 @@
         },
         {
           "family": "hook",
+          "path": "hooks/network-egress-guard.sh"
+        },
+        {
+          "family": "hook",
           "path": "hooks/orchestrator-claim-gate.sh"
         },
         {
@@ -8824,11 +8868,19 @@
         },
         {
           "family": "hook",
+          "path": "hooks/protected-config-write-guard.sh"
+        },
+        {
+          "family": "hook",
           "path": "hooks/pyrefly-typecheck-advisory.sh"
         },
         {
           "family": "hook",
           "path": "hooks/rate-limit-detector.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/rate-limit-drain.sh"
         },
         {
           "family": "hook",
@@ -8885,6 +8937,10 @@
         {
           "family": "hook",
           "path": "hooks/state-heartbeat.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/subagent-budget-enforcer.sh"
         },
         {
           "family": "hook",
@@ -8977,6 +9033,10 @@
         {
           "family": "hook",
           "path": "tests/hooks/test_subagent_context_injector.py"
+        },
+        {
+          "family": "hook",
+          "path": "tests/hooks/test_trust_score_validator.py"
         },
         {
           "family": "rule",
@@ -10164,6 +10224,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_task_event_watcher.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_test_artifact_status.py"
         },
         {
@@ -10569,6 +10633,10 @@
         {
           "family": "script",
           "path": "scripts/weekly-aspirational-audit.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/workstation_container_benchmark_report.py"
         },
         {
           "family": "script",
@@ -11028,7 +11096,15 @@
         },
         {
           "family": "test",
+          "path": "tests/audit/test_wave5_closure_state.py"
+        },
+        {
+          "family": "test",
           "path": "tests/behavior/conftest.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_adaptive_profiles.py"
         },
         {
           "family": "test",
@@ -11276,6 +11352,10 @@
         },
         {
           "family": "test",
+          "path": "tests/behavior/test_install_core_boundary.py"
+        },
+        {
+          "family": "test",
           "path": "tests/behavior/test_maintainer_agent_loop.py"
         },
         {
@@ -11452,6 +11532,10 @@
         },
         {
           "family": "test",
+          "path": "tests/chaos/test_destructive_rm_blocker.py"
+        },
+        {
+          "family": "test",
           "path": "tests/chaos/test_global_verify_regression_catches.py"
         },
         {
@@ -11504,7 +11588,15 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_context_budget_enforcement.py"
+        },
+        {
+          "family": "test",
           "path": "tests/contracts/test_control_plane_primitives.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_core_extensions_split.py"
         },
         {
           "family": "test",
@@ -11557,6 +11649,10 @@
         {
           "family": "test",
           "path": "tests/contracts/test_headless_runtime_contract.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_headless_worker_lease_contract.py"
         },
         {
           "family": "test",
@@ -11725,6 +11821,10 @@
         {
           "family": "test",
           "path": "tests/integration/test_agent_team_cross_harness_contract.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_aspirational_audit.py"
         },
         {
           "family": "test",
@@ -12488,6 +12588,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cos_task_event_watcher.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_cos_test_quality_audit.py"
         },
         {
@@ -12944,6 +13048,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_direct_main_guard.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_dispatch.py"
         },
         {
@@ -13044,6 +13152,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_governance_policy_hook_adoption.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_governed_self_improvement.py"
         },
         {
@@ -13081,6 +13193,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_llm_status.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_maintainer_impact.py"
         },
         {
           "family": "test",
@@ -13480,6 +13596,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_task_event_watcher_and_watermark.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_task_tracker_lifecycle.py"
         },
         {
@@ -13539,6 +13659,10 @@
           "path": "tests/unit/test_work_queue_sync.py"
         },
         {
+          "family": "test",
+          "path": "tests/unit/test_workstation_container_benchmark_report.py"
+        },
+        {
           "family": "workflow",
           "path": ".github/workflows/cos-binary-release.yml"
         },
@@ -13552,13 +13676,13 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:80",
-        "test_consumers:661",
-        "hook_consumers:111",
+        "test_consumers:675",
+        "hook_consumers:117",
         "workflow_consumers:2",
-        "doc_consumers:740",
+        "doc_consumers:744",
         "rule_consumers:49",
-        "config_consumers:84",
-        "script_consumers:350"
+        "config_consumers:85",
+        "script_consumers:352"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -13574,7 +13698,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 2077,
+      "total_consumers": 2104,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -13679,7 +13803,7 @@
       "consumer_families": {
         "config": 5,
         "doc": 1,
-        "script": 1,
+        "script": 2,
         "skill": 1,
         "test": 2
       },
@@ -13713,6 +13837,10 @@
           "path": "scripts/cos-ci-local.sh"
         },
         {
+          "family": "script",
+          "path": "scripts/cos_architecture_readiness.py"
+        },
+        {
           "family": "skill",
           "path": "skills/cos-maintainer-operations/SKILL.md"
         },
@@ -13732,7 +13860,7 @@
         "test_consumers:2",
         "doc_consumers:1",
         "config_consumers:5",
-        "script_consumers:1"
+        "script_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -13748,7 +13876,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 10,
+      "total_consumers": 11,
       "wrapper_for": null
     },
     {
@@ -13826,7 +13954,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/cos-adapter-compile",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "active",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-adapter-compile",
@@ -13917,7 +14045,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/cos-adapters",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "active",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-adapters",
@@ -14186,7 +14314,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/cos-adr-close",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "advisory",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-adr-close",
@@ -14419,7 +14547,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/cos-adr-partial-ledger",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "advisory",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-adr-partial-ledger",
@@ -15302,7 +15430,7 @@
       "install_surface": "bootstrap",
       "install_surface_rationale": "Bootstrap/update path for installing COS primitive surfaces.",
       "lifecycle_id": "scripts/cos-bootstrap.sh",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "active",
       "next_action": "profile-managed install/projection surface: review generated profiles and harness settings before demotion or archive",
       "override_rationale": null,
       "path": "scripts/cos-bootstrap.sh",
@@ -16294,7 +16422,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/cos-closure-trust-signal.py",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "advisory",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-closure-trust-signal.py",
@@ -17299,7 +17427,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/cos-credential-safe-run",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "active",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-credential-safe-run",
@@ -18635,7 +18763,7 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 8,
-        "doc": 1,
+        "doc": 2,
         "script": 1,
         "test": 3
       },
@@ -18674,6 +18802,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-329-skill-platform-support-levels.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/harness-engineering.md"
         },
         {
@@ -18699,14 +18831,14 @@
         "protected_install_surface:harness-doctor",
         "wrapper_for:scripts/measure_harness_profiles.py",
         "test_consumers:3",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:8",
         "script_consumers:1"
       ],
       "install_surface": "harness-doctor",
       "install_surface_rationale": "Harness doctor for profile/projection support.",
       "lifecycle_id": "scripts/cos-doctor-harness.sh",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "active",
       "next_action": "profile-managed install/projection surface: review generated profiles and harness settings before demotion or archive",
       "override_rationale": null,
       "path": "scripts/cos-doctor-harness.sh",
@@ -18717,7 +18849,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 13,
+      "total_consumers": 14,
       "wrapper_for": "scripts/measure_harness_profiles.py"
     },
     {
@@ -19713,7 +19845,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/cos-engram-cloud-docker-smoke",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "advisory",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-engram-cloud-docker-smoke",
@@ -21819,7 +21951,7 @@
         "doc": 9,
         "script": 2,
         "skill": 1,
-        "test": 4
+        "test": 5
       },
       "consumers": [
         {
@@ -21912,6 +22044,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_headless_worker_lease_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/contracts/test_runtime_env_flags.py"
         },
         {
@@ -21927,7 +22063,7 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
-        "test_consumers:4",
+        "test_consumers:5",
         "doc_consumers:9",
         "config_consumers:9",
         "script_consumers:2"
@@ -21935,7 +22071,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/cos-headless-service-drill",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "advisory",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-headless-service-drill",
@@ -21946,7 +22082,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 25,
+      "total_consumers": 26,
       "wrapper_for": null
     },
     {
@@ -22816,7 +22952,7 @@
       "install_surface": "bootstrap",
       "install_surface_rationale": "Shell bootstrap wrapper for COS initialization and primitive projection.",
       "lifecycle_id": "scripts/cos-init.sh",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "active",
       "next_action": "profile-managed install/projection surface: review generated profiles and harness settings before demotion or archive",
       "override_rationale": null,
       "path": "scripts/cos-init.sh",
@@ -22837,7 +22973,7 @@
       "consumer_families": {
         "config": 2,
         "skill": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -22854,6 +22990,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_core_extensions_split.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_install_skill_skill.py"
         }
       ],
@@ -22862,7 +23002,7 @@
         "lifecycle",
         "wrapper_for:scripts/apply-efficiency-profile.sh",
         "skill_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "config_consumers:2"
       ],
       "install_surface": null,
@@ -22881,7 +23021,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 4,
+      "total_consumers": 5,
       "wrapper_for": "scripts/apply-efficiency-profile.sh"
     },
     {
@@ -22975,7 +23115,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/cos-install-projection-audit",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "active",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-install-projection-audit",
@@ -23333,7 +23473,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/cos-key-learnings-capture",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "advisory",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-key-learnings-capture",
@@ -23496,7 +23636,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/cos-language-dependence-audit",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "advisory",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-language-dependence-audit",
@@ -23664,8 +23804,8 @@
       "consumer_families": {
         "config": 4,
         "doc": 2,
-        "script": 1,
-        "test": 3
+        "script": 2,
+        "test": 4
       },
       "consumers": [
         {
@@ -23697,8 +23837,16 @@
           "path": "scripts/cos"
         },
         {
+          "family": "script",
+          "path": "scripts/cos-headless-service-drill"
+        },
+        {
           "family": "test",
           "path": "tests/behavior/test_maintainer_agent_loop.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_headless_worker_lease_contract.py"
         },
         {
           "family": "test",
@@ -23711,10 +23859,10 @@
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:2",
         "config_consumers:4",
-        "script_consumers:1"
+        "script_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -23728,7 +23876,45 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 10,
+      "total_consumers": 12,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-201-maintainer-agent-telemetry-promotion-loop.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_maintainer_impact.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "doc_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/cos-maintainer-impact",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "heuristic:self-evolution",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 2,
       "wrapper_for": null
     },
     {
@@ -24112,8 +24298,8 @@
         "config": 4,
         "doc": 3,
         "hook": 1,
-        "script": 1,
-        "test": 1
+        "script": 2,
+        "test": 2
       },
       "consumers": [
         {
@@ -24150,7 +24336,15 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-session-start-projector"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_merge_queue_validation_lane.py"
         },
         {
           "family": "test",
@@ -24160,11 +24354,11 @@
       "distribution": "team",
       "evidence": [
         "lifecycle",
-        "test_consumers:1",
+        "test_consumers:2",
         "hook_consumers:1",
         "doc_consumers:3",
         "config_consumers:4",
-        "script_consumers:1"
+        "script_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -24180,7 +24374,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 10,
+      "total_consumers": 12,
       "wrapper_for": null
     },
     {
@@ -24309,7 +24503,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/cos-observe-primitives",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "advisory",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-observe-primitives",
@@ -24690,7 +24884,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/cos-pending-truth-aggregator",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "active",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-pending-truth-aggregator",
@@ -24793,7 +24987,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/cos-pending-truth-close",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "active",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-pending-truth-close",
@@ -24992,6 +25186,38 @@
       "skill_consumers": 0,
       "supported_harnesses": [],
       "total_consumers": 9,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "config_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/cos-plan-closure-disposition-audit",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "heuristic:self-evolution",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 1,
       "wrapper_for": null
     },
     {
@@ -25475,7 +25701,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/cos-portable-ai-overlay",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "active",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-portable-ai-overlay",
@@ -25606,7 +25832,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/cos-postgres-local.sh",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "active",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-postgres-local.sh",
@@ -26557,6 +26783,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 3,
+        "script": 1,
         "test": 2
       },
       "consumers": [
@@ -26573,6 +26800,10 @@
           "path": "manifests/script-exposure-dispositions.yaml"
         },
         {
+          "family": "script",
+          "path": "scripts/cos"
+        },
+        {
           "family": "test",
           "path": "tests/red_team/portability/test_os_only_scope_family.py"
         },
@@ -26584,7 +26815,8 @@
       "distribution": null,
       "evidence": [
         "test_consumers:2",
-        "config_consumers:3"
+        "config_consumers:3",
+        "script_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -26598,7 +26830,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": null
     },
     {
@@ -27009,7 +27241,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/cos-pyrefly-pilot",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "advisory",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-pyrefly-pilot",
@@ -27085,7 +27317,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/cos-pytest-serial-repair",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "advisory",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-pytest-serial-repair",
@@ -27302,7 +27534,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/cos-record-onboarding.sh",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "advisory",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-record-onboarding.sh",
@@ -27867,7 +28099,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/cos-remote-branch-triage",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "advisory",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-remote-branch-triage",
@@ -29295,7 +29527,7 @@
         "config": 6,
         "doc": 7,
         "script": 2,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -29368,6 +29600,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_dependency_coverage_audit.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_self_improvement_loop.py"
         }
       ],
@@ -29375,7 +29611,7 @@
       "evidence": [
         "lifecycle",
         "override_rationale",
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:7",
         "config_consumers:6",
         "script_consumers:2"
@@ -29394,7 +29630,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 18,
+      "total_consumers": 19,
       "wrapper_for": null
     },
     {
@@ -29569,7 +29805,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/cos-service-readiness-gate",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "advisory",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-service-readiness-gate",
@@ -30489,10 +30725,10 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 7,
-        "doc": 20,
+        "doc": 21,
         "script": 10,
         "skill": 1,
-        "test": 10,
+        "test": 11,
         "workflow": 1
       },
       "consumers": [
@@ -30547,6 +30783,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-306-scope-projection-runtime-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-328-governance-roi-friction-vs-catch.md"
         },
         {
           "family": "doc",
@@ -30662,6 +30902,10 @@
         },
         {
           "family": "test",
+          "path": "tests/behavior/test_install_core_boundary.py"
+        },
+        {
+          "family": "test",
           "path": "tests/contracts/test_primitive_harness_coverage_contract.py"
         },
         {
@@ -30698,9 +30942,9 @@
         "lifecycle",
         "wrapper_for:scripts/active_primitive_index.py",
         "skill_consumers:1",
-        "test_consumers:10",
+        "test_consumers:11",
         "workflow_consumers:1",
-        "doc_consumers:20",
+        "doc_consumers:21",
         "config_consumers:7",
         "script_consumers:10"
       ],
@@ -30718,7 +30962,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 49,
+      "total_consumers": 51,
       "wrapper_for": "scripts/active_primitive_index.py"
     },
     {
@@ -32577,7 +32821,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/cos-valkey-local.sh",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "active",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-valkey-local.sh",
@@ -36128,7 +36372,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 4,
-        "doc": 1,
+        "doc": 2,
         "script": 1,
         "test": 1
       },
@@ -36151,6 +36395,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-328-governance-roi-friction-vs-catch.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/08-References/case-studies/external-review-cycle-2026-05-02.md"
         },
         {
@@ -36165,7 +36413,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:4",
         "script_consumers:1"
       ],
@@ -36181,7 +36429,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -36829,7 +37077,7 @@
       "install_surface": "bootstrap",
       "install_surface_rationale": "Python implementation for COS initialization flows.",
       "lifecycle_id": "scripts/cos_init.py",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "active",
       "next_action": "profile-managed install/projection surface: review generated profiles and harness settings before demotion or archive",
       "override_rationale": null,
       "path": "scripts/cos_init.py",
@@ -37016,7 +37264,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/cos_instance_init.py",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "advisory",
       "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
       "override_rationale": "ADR-283 manual review: internal maintainer/backend or evidence helper; not a direct agentic primitive requiring skill exposure.",
       "path": "scripts/cos_instance_init.py",
@@ -37105,7 +37353,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
-        "doc": 1,
+        "doc": 2,
         "hook": 1,
         "test": 2
       },
@@ -37117,6 +37365,10 @@
         {
           "family": "config",
           "path": "manifests/script-exposure-dispositions.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/00-MOCs/architecture.md"
         },
         {
           "family": "doc",
@@ -37139,7 +37391,7 @@
       "evidence": [
         "test_consumers:2",
         "hook_consumers:1",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:2"
       ],
       "install_surface": null,
@@ -37154,7 +37406,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
@@ -38146,7 +38398,7 @@
         "config": 6,
         "doc": 1,
         "script": 4,
-        "test": 4
+        "test": 5
       },
       "consumers": [
         {
@@ -38199,6 +38451,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_headless_worker_lease_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/contracts/test_runtime_env_flags.py"
         },
         {
@@ -38213,7 +38469,7 @@
       "distribution": "maintainer",
       "evidence": [
         "lifecycle",
-        "test_consumers:4",
+        "test_consumers:5",
         "doc_consumers:1",
         "config_consumers:6",
         "script_consumers:4"
@@ -38232,7 +38488,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 15,
+      "total_consumers": 16,
       "wrapper_for": null
     },
     {
@@ -38597,6 +38853,38 @@
         "shell"
       ],
       "total_consumers": 18,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_task_event_watcher.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/cos_task_event_watcher.py",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "heuristic:self-evolution",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 1,
       "wrapper_for": null
     },
     {
@@ -39152,7 +39440,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 6,
-        "doc": 13,
+        "doc": 14,
         "hook": 2,
         "script": 8,
         "skill": 3,
@@ -39190,6 +39478,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-119-session-filesystem-reaper.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-121-foundation-hardening-program.md"
         },
         {
           "family": "doc",
@@ -39319,7 +39611,7 @@
         "skill_consumers:3",
         "test_consumers:6",
         "hook_consumers:2",
-        "doc_consumers:13",
+        "doc_consumers:14",
         "config_consumers:6",
         "script_consumers:8"
       ],
@@ -39337,7 +39629,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 38,
+      "total_consumers": 39,
       "wrapper_for": "scripts/edit-coop.sh"
     },
     {
@@ -40815,7 +41107,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/dependency-lane.sh",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "advisory",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/dependency-lane.sh",
@@ -41384,7 +41676,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 11,
+        "config": 12,
         "doc": 15,
         "script": 3,
         "test": 7
@@ -41421,6 +41713,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-contracts.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-install-boundary.yaml"
         },
         {
           "family": "config",
@@ -41541,7 +41837,7 @@
         "wrapper_for:scripts/setup.sh",
         "test_consumers:7",
         "doc_consumers:15",
-        "config_consumers:11",
+        "config_consumers:12",
         "script_consumers:3"
       ],
       "install_surface": null,
@@ -41558,7 +41854,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 36,
+      "total_consumers": 37,
       "wrapper_for": "scripts/setup.sh"
     },
     {
@@ -41752,7 +42048,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/documentation_truth_audit.py",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "advisory",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/documentation_truth_audit.py",
@@ -42691,7 +42987,7 @@
       "install_surface": "settings-projection",
       "install_surface_rationale": "Generates harness settings that install/project active primitives.",
       "lifecycle_id": "scripts/generate-project-settings.sh",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "active",
       "next_action": "profile-managed install/projection surface: review generated profiles and harness settings before demotion or archive",
       "override_rationale": null,
       "path": "scripts/generate-project-settings.sh",
@@ -42832,7 +43128,7 @@
         "hook": 1,
         "rule": 2,
         "skill": 1,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -42893,6 +43189,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_core_extensions_split.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_generate_compact_catalog.py"
         },
         {
@@ -42908,7 +43208,7 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
-        "test_consumers:3",
+        "test_consumers:4",
         "hook_consumers:1",
         "doc_consumers:5",
         "rule_consumers:2",
@@ -42928,7 +43228,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 17,
+      "total_consumers": 18,
       "wrapper_for": null
     },
     {
@@ -43300,7 +43600,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 5,
-        "doc": 8,
+        "doc": 9,
         "script": 5,
         "skill": 1,
         "test": 7
@@ -43341,6 +43641,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-304-telemetry-aggregator-feedback-loop.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-328-governance-roi-friction-vs-catch.md"
         },
         {
           "family": "doc",
@@ -43416,7 +43720,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:7",
-        "doc_consumers:8",
+        "doc_consumers:9",
         "config_consumers:5",
         "script_consumers:5"
       ],
@@ -43434,7 +43738,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 26,
+      "total_consumers": 27,
       "wrapper_for": null
     },
     {
@@ -43761,7 +44065,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/install-aguara.sh",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "active",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/install-aguara.sh",
@@ -43900,7 +44204,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/install-credibility-tools.sh",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "active",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/install-credibility-tools.sh",
@@ -44367,7 +44671,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/install-mcp-scan.sh",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "active",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/install-mcp-scan.sh",
@@ -44699,7 +45003,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/install-syft-grype.sh",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "active",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/install-syft-grype.sh",
@@ -44847,7 +45151,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/install-tob-skills.sh",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "active",
       "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
       "override_rationale": "External skill installer is optional maintainer tooling pending package boundary.",
       "path": "scripts/install-tob-skills.sh",
@@ -44929,7 +45233,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/install-trivy.sh",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "active",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/install-trivy.sh",
@@ -45777,8 +46081,9 @@
         "config": 4,
         "doc": 7,
         "hook": 1,
+        "script": 1,
         "skill": 1,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -45830,12 +46135,20 @@
           "path": "hooks/direct-main-guard.sh"
         },
         {
+          "family": "script",
+          "path": "scripts/cos"
+        },
+        {
           "family": "skill",
           "path": "skills/branch-worktree-closure/SKILL.md"
         },
         {
           "family": "test",
           "path": "tests/behavior/test_cos_cleanup_preserved_wip.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_merge_to_main_lane_recording.py"
         },
         {
           "family": "test",
@@ -45851,10 +46164,11 @@
         "lifecycle",
         "wrapper_for:scripts/derived_artifact_gate.py",
         "skill_consumers:1",
-        "test_consumers:3",
+        "test_consumers:4",
         "hook_consumers:1",
         "doc_consumers:7",
-        "config_consumers:4"
+        "config_consumers:4",
+        "script_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -45870,7 +46184,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 16,
+      "total_consumers": 18,
       "wrapper_for": "scripts/derived_artifact_gate.py"
     },
     {
@@ -46129,7 +46443,7 @@
         "config": 7,
         "doc": 1,
         "hook": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -46171,11 +46485,15 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_os_only_scope_family.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_governance_policy_hook_adoption.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:1",
+        "test_consumers:2",
         "hook_consumers:1",
         "doc_consumers:1",
         "config_consumers:7"
@@ -46192,7 +46510,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 10,
+      "total_consumers": 11,
       "wrapper_for": null
     },
     {
@@ -46564,7 +46882,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/orchestrator.py",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "advisory",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/orchestrator.py",
@@ -46943,6 +47261,55 @@
     },
     {
       "confidence": "high",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "consumer_families": {
+        "config": 1,
+        "script": 1,
+        "skill": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-plan-closure-disposition-audit"
+        },
+        {
+          "family": "skill",
+          "path": "skills/session-backlog/SKILL.md"
+        }
+      ],
+      "distribution": "team",
+      "evidence": [
+        "lifecycle",
+        "skill_consumers:1",
+        "config_consumers:1",
+        "script_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/plan_closure_disposition_audit.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/plan_closure_disposition_audit.py",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 1,
+      "supported_harnesses": [
+        "claude",
+        "codex",
+        "shell"
+      ],
+      "total_consumers": 3,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
@@ -47200,7 +47567,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/portable_ai_overlay.py",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "advisory",
       "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
       "override_rationale": "ADR-283 manual review: internal maintainer/backend or evidence helper; not a direct agentic primitive requiring skill exposure.",
       "path": "scripts/portable_ai_overlay.py",
@@ -48980,7 +49347,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 6,
-        "doc": 4,
+        "doc": 5,
         "script": 3,
         "skill": 1,
         "test": 6
@@ -49013,6 +49380,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-189-harness-implementation-coverage.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-329-skill-platform-support-levels.md"
         },
         {
           "family": "doc",
@@ -49073,7 +49444,7 @@
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:1",
         "test_consumers:6",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "config_consumers:6",
         "script_consumers:3"
       ],
@@ -49093,7 +49464,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 20,
+      "total_consumers": 21,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -49326,7 +49697,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 7,
-        "doc": 7,
+        "doc": 8,
         "script": 2,
         "test": 2
       },
@@ -49373,6 +49744,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-329-skill-platform-support-levels.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/cos-native-runtime-harness-design.md"
         },
         {
@@ -49408,7 +49783,7 @@
       "evidence": [
         "lifecycle",
         "test_consumers:2",
-        "doc_consumers:7",
+        "doc_consumers:8",
         "config_consumers:7",
         "script_consumers:2"
       ],
@@ -49426,7 +49801,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 18,
+      "total_consumers": 19,
       "wrapper_for": null
     },
     {
@@ -49838,7 +50213,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/primitive_scope_classifier.py",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "advisory",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/primitive_scope_classifier.py",
@@ -50726,7 +51101,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/promote_lifecycle_primitives_to_contracts.py",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "advisory",
       "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
       "override_rationale": "ADR-283 manual review: internal maintainer/backend or evidence helper; not a direct agentic primitive requiring skill exposure.",
       "path": "scripts/promote_lifecycle_primitives_to_contracts.py",
@@ -50890,7 +51265,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/proof-drill-select",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "advisory",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/proof-drill-select",
@@ -54296,7 +54671,7 @@
       "install_surface": "bootstrap",
       "install_surface_rationale": "Profile-aware dependency/setup path.",
       "lifecycle_id": "scripts/setup.sh",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "active",
       "next_action": "profile-managed install/projection surface: review generated profiles and harness settings before demotion or archive",
       "override_rationale": null,
       "path": "scripts/setup.sh",
@@ -54603,6 +54978,44 @@
       "skill_consumers": 0,
       "supported_harnesses": [],
       "total_consumers": 4,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-329-skill-platform-support-levels.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_skill_platform_support_audit.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "doc_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/skill_platform_support_audit.py",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "usage:repo",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 2,
       "wrapper_for": null
     },
     {
@@ -57351,6 +57764,44 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "doc": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/08-References/benchmarks/workstation-container-comparison-report.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_workstation_container_benchmark_report.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "doc_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep non-default until tests and operator value justify promotion",
+      "override_rationale": null,
+      "path": "scripts/workstation_container_benchmark_report.py",
+      "protected_install_surface": false,
+      "role": "lab",
+      "role_source": "heuristic:path",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 2,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
         "config": 2,
         "doc": 4,
         "hook": 3,
@@ -57446,27 +57897,27 @@
   "summary": {
     "agentic_primitives_without_lifecycle": 0,
     "confidence": {
-      "high": 335,
+      "high": 336,
       "low": 5,
-      "medium": 279
+      "medium": 284
     },
     "consumer_accessibility": {
       "install-profile-managed": 19,
-      "lifecycle-declared-consumer-candidate": 148,
+      "lifecycle-declared-consumer-candidate": 149,
       "lifecycle-declared-maintainer": 142,
       "skill-referenced-not-projectable": 3,
-      "so-local-only": 307
+      "so-local-only": 312
     },
     "low_confidence_rows": 5,
     "roles": {
-      "agentic-primitive": 197,
+      "agentic-primitive": 198,
       "archive": 12,
       "driver-specific": 12,
-      "lab": 96,
-      "maintainer-tool": 287,
+      "lab": 97,
+      "maintainer-tool": 291,
       "migration-only": 15
     },
-    "total_scripts": 619,
+    "total_scripts": 625,
     "without_consumers": 0
   },
   "target_family": "scripts"

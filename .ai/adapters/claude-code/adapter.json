@@ -6,7 +6,7 @@
   "harness": "claude",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 760,
+  "projected_primitive_count": 762,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": true,
@@ -3728,6 +3728,13 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": "skills/os-session-wrapup/SKILL.md",
+      "primitive_file": "primitives/skills/skills-os-session-wrapup-skill-md-f02528c2da.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": "skills/pattern-audit/SKILL.md",
       "primitive_file": "primitives/skills/skills-pattern-audit-skill-md-2cb91ef074.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
@@ -5284,6 +5291,13 @@
       "fidelity": "documented-only",
       "portable_id": "scripts/extract-agent-output.sh",
       "primitive_file": "primitives/tools/scripts-extract-agent-output-sh-8be100d7c0.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/plan_closure_disposition_audit.py",
+      "primitive_file": "primitives/tools/scripts-plan-closure-disposition-audit-py-bc44ae6def.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {

@@ -77,7 +77,7 @@
     "docs_claim_level": "observe",
     "exit_behavior": "manual",
     "governance_class": "delivery-structure",
-    "lifecycle_state": "candidate",
+    "lifecycle_state": "active",
     "maturity": "observe",
     "owner_adr": "ADR-146",
     "risk_class": "advisory",

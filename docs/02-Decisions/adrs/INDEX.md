@@ -2,13 +2,13 @@
 
 ## How to Use This Index
 
-This generated table is the status inventory for all 338 Architecture Decision Record files (ADRs).
+This generated table is the status inventory for all 340 Architecture Decision Record files (ADRs).
 Status semantics are defined in [STATUS-TAXONOMY.md](STATUS-TAXONOMY.md): decision status, implementation status, and index bucket are separate fields.
 Rows link to the canonical ADR file and group by index bucket for human and agent navigation.
 
 ## Active
 
-### Active / Implemented (164)
+### Active / Implemented (165)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
@@ -24,6 +24,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [028a](ADR-028a.md) | Addendum: Reconciliation with pre-existing plans | accepted | implemented | 2026-04-18 | **Amends**: ADR-028 D1.A, D1.C, D4 |
 | [028b](ADR-028b.md) | Addendum: D1.C Replanned Around agent_bus | accepted | implemented | 2026-04-20 | **Supersedes**: ADR-028 D1.C (original spec, lines 166–214) |
 | [037](ADR-037-self-knowledge-base.md) | Self-Knowledge Base | accepted | implemented | 2026-04-20 | Sub-agents spend 3-10K tokens per session grepping source files to answer basic questions: |
+| [038](ADR-038-preamble-v2-industry-aligned.md) | Preamble v2: Industry-Aligned Contract | accepted | implemented | 2026-04-20 | > Originally drafted in `.cognitive-os/pending-tasks/adr-038-preamble-v2-industry-aligned.md`; canonical location is `docs/02-Decisions/adrs/`. |
 | [040](ADR-040-query-tailored-context-injection.md) | Query-Tailored Context Injection | accepted | implemented | 2026-04-30 | **Deciders**: Matias Amendola |
 | [049](ADR-049-llm-gateway-selection-and-overflow-providers.md) | LLM Gateway Selection + Overflow Provider Strategy | accepted | implemented | 2026-04-21 | **Accepted** — 2026-04-21. Supersedes implicit adoption of `litellm` (present |
 | [051](ADR-051-qwen-agent-loop.md) | Qwen Agent Loop (Tool-Use Parity with Claude Code Agent) | accepted | implemented | 2026-04-21 | - **Status**: Accepted (2026-04-21) — Phases 1, 2, 3, 4 all DELIVERED this session. Commits: MVP phase 1, 1e6542c (phase 2), 534814e (phase 3), 925dff5 (phase 4 |
@@ -177,7 +178,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [323](ADR-323-primitive-behavior-depth-ratchet.md) | Primitive Behavior Depth Ratchet | accepted | implemented | 2026-05-15 | Accepted. |
 | [329](ADR-329-skill-platform-support-levels.md) | Skill Platform Support Levels | accepted | implemented | 2026-05-20 | Accepted and implemented for the existing `generic-cli` skill surface. |
 
-### Active / Partial (117)
+### Active / Partial (119)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
@@ -297,8 +298,9 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [291](ADR-291-agent-runtime-web-service.md) | Agent Runtime Web Service: HTTP + SSE Surface for Harness-Independent Clients | accepted | partial | 2026-05-13 | **Date:** 2026-05-13 |
 | [319](ADR-319-detractor-review-modes.md) | Detractor Review Modes for Planning and Verification | accepted | partial | 2026-05-15 | Accepted. |
 | [324](ADR-324-executable-acceptance-specification-eas.md) | Executable Acceptance Specification (EAS) Evidence Artifact | accepted | partial | 2026-05-15 | Accepted. |
-| [325](ADR-325-ai-resource-economy-and-degradation.md) | AI Resource Economy, Budget Preflight, and Graceful Degradation | accepted | partial | 2026-05-15 | Accepted. Partial implementation includes manifest, audit, preflight CLI, language-token-economy rule, initial hook ledger emission, and token-budget ledger reads; provider actual-cost ingestion remains follow-up. |
-| [328](ADR-328-governance-roi-friction-vs-catch.md) | Governance ROI Friction-vs-Catch Ratios | accepted | partial | 2026-05-20 | Accepted. Adds reviewed governance catch ledger, optional blocked-hook prompts, weighted friction-vs-catch bands, phase-policy adapter, and cos status exposure. |
+| [325](ADR-325-ai-resource-economy-and-degradation.md) | AI Resource Economy, Budget Preflight, and Graceful Degradation | accepted | partial | 2026-05-15 | Accepted. Partial implementation starts with a manifest, audit, preflight CLI, and language-token-economy rule. Phase 3 now has an initial bounded hook path: `c |
+| [328](ADR-328-governance-roi-friction-vs-catch.md) | Governance ROI Friction-vs-Catch Ratios | accepted | partial | 2026-05-20 | Accepted. Read-side dashboard, write-side catch logging, optional blocked-hook prompts, weighted severity normalization, and the executable phase-policy adapter |
+| [330](ADR-330-typed-capability-ceiling-signals.md) | Typed capability-ceiling signals | accepted | partial | 2026-05-20 | Accepted — first slice implemented as read-only detection. |
 
 ### Active / Partial / Blocked (1)
 
@@ -338,7 +340,6 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [002](ADR-002-docker-pip-localhost-envs-targetedtestresolver-redis-dep.md) | docker-pip localhost envs + targeted_test_resolver + redis dep | proposed | planned | 2026-04-20 | Draft |
 | [034](ADR-034-harness-agnostic-live-streaming.md) | Harness-Agnostic Live Agent Streaming | proposed | planned | 2026-04-20 | - **Status**: Proposed |
 | [036](ADR-036-sprint-orchestration-primitives.md) | Sprint orchestration primitives | proposed | partial | 2026-04-20 | Proposed — MVP implemented 2026-04-20 (CLI skeleton + manifest + canonical events + example spec). Wave 1 test aggregation shipped 2026-04-21. Dispatch wiring v |
-| [038](ADR-038-preamble-v2-industry-aligned.md) | Preamble v2: Industry-Aligned Contract | proposed | planned | 2026-04-20 | > Originally drafted in `.cognitive-os/pending-tasks/adr-038-preamble-v2-industry-aligned.md`; canonical location is `docs/02-Decisions/adrs/`. |
 | [039](ADR-039-reinvention-phase-b-beta.md) | Reinvention Phase B-beta (semantic embeddings) | proposed | planned | 2026-04-20 | > Originally drafted in `.cognitive-os/pending-tasks/adr-039-reinvention-phase-b-beta.md`; canonical location is `docs/02-Decisions/adrs/`. |
 | [047](ADR-047-session-lifecycle-management.md) | Session Lifecycle Management | proposed | planned | 2026-04-20 | Proposed — 2026-04-20. Author: Agent E (software-architect). Coordinates with |
 | [059](ADR-059-so-existential-validation.md) | SO Existential Validation: Prune, Install Timing, Core-vs-Extensions Split | proposed | planned | 2026-04-24 | **Proposed** — 2026-04-24. 3-phase plan with measurable exit criteria, |

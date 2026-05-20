@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # Shared phase-aware governance policy adapter for blocking hooks.
 # Return 0 when the current phase explicitly allows the category to hard-block.
 # Return 1 when a known phase demotes the category to advisory.

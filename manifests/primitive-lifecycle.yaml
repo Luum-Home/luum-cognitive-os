@@ -22301,3 +22301,30 @@ primitives:
   - claude
   - codex
   - shell
+- id: scripts/plan_closure_disposition_audit.py
+  kind: script
+  owner_adr: ADR-328
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: plan-closure-truth-control
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - scripts/plan_closure_disposition_audit.py
+  - scripts/cos-plan-closure-disposition-audit
+  runtime_projection: false
+  behavior_evidence: Audits plan closure disposition reports so session-backlog and plan closure cannot misread disposition-only closure as implemented work.
+  evidence_commands:
+  - python3 -m pytest tests/unit/test_plan_closure_disposition_audit.py -q
+  - scripts/cos-plan-closure-disposition-audit --project-dir . --json --strict
+  repair_message: Run scripts/cos-plan-closure-disposition-audit --project-dir . --json --strict and fix missing disposition evidence before claiming plan closure.
+  rollback_or_repair_command: Run scripts/cos-plan-closure-disposition-audit --project-dir . --json --strict and fix missing disposition evidence before claiming plan closure.
+  sunset_criteria: Archive or demote if session-backlog no longer consumes plan closure disposition reports.
+  docs_claim_level: advisory
+  exit_behavior: zero-on-pass
+  metrics_file: none

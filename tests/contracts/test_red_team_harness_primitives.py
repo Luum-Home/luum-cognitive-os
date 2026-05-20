@@ -107,7 +107,7 @@ def test_plan_claim_validator_allows_verified_done_claim(tmp_path: Path) -> None
     jq_required()
     plan = tmp_path / "plans" / "sprint.md"
     plan.parent.mkdir()
-    content = "- [x] ship the thing (verified: python3 -m pytest tests/contracts/test_red_team_harness_primitives.py -q)\n"
+    content = "- [x] ship the thing (verified: python3 -m pytest tests/contracts/test_red_team_harness_primitives.py -q) (work_id: 0123456789abcdef)\n"
 
     result = run(["bash", str(PLAN_VALIDATOR)], tmp_path, input_text=validator_payload(plan, content), env={"COGNITIVE_OS_PROJECT_DIR": str(tmp_path), "COS_PLAN_VALIDATOR_MODE": "block", "COS_PLAN_GLOB": "plans/**/*.md"})
 
