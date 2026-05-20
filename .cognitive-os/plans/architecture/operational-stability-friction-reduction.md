@@ -1,13 +1,13 @@
 <!--
 RECONCILIATION STATUS: ACTIVATE WITH SCOPE REDUCTION — 2026-05-11 (Opus refinement of 2026-05-10 Sonnet pass)
 Reconciled-by: P3 plan triage Opus re-triage (see docs/06-Daily/reports/p3-plan-triage-2026-05-10.md §Opus refinement)
-Decision: ACTIVATE — but only Phases 2, 3, 7, 8. Phases 1, 4, 5, 6 are MOSTLY-DELIVERED and should be closed out (acceptance items checked off, not re-implemented).
+Decision: ACTIVATE — but only Phases 7 and 8 remain broad open work after the 2026-05-20 Phase 3 closure. Phases 1-6 are delivered or mostly-delivered and should be maintained, not re-implemented.
 Opus rationale (delta from Sonnet full ACTIVATE): Sonnet correctly identified strong overlap with shipped ADRs but recommended full ACTIVATE alongside governance umbrellas. Opus deeper read shows the overlap is large enough that several phases are effectively *done* and should not be re-planned — they should be reconciled via checking off acceptance items:
   • Phase 1 (friction telemetry): DELIVERED. ADR-248 control-plane audit loop ships findings-by-ADR metrics, recurrence count, time-to-remediate, false-positive rate, plus the remediation queue at `.cognitive-os/tasks/control-plane-remediation.jsonl`. ADR-247 manifest-driven postmortem-regression audits give the per-class evidence.
   • Phase 4 (repair CLI / safe reapers): DELIVERED. CHANGELOG [0.28.0] ships `scripts/cos-cleanup.sh` with tiered cleanup + session-end cleanup hook + risk-tier separation. ADR-248 adds `--apply-safe-fixes` with declared `safe_class` whitelist matching this plan's "dry-run default + safe reversible repair only" requirement.
   • Phase 5 (unified cos status): PARTIALLY DELIVERED. `cos status` and `cos governance roi` exist; the 4-question matrix (SAFE TO WORK/LAUNCH/VALIDATE/PUSH) needs only acceptance-item cross-check.
   • Phase 6 (diff-aware lanes): DELIVERED. ADR-072 lane taxonomy + ADR-237 test execution efficiency + `cos-test focused/cluster/broad` + F1 sharded laptop integration (CHANGELOG [Unreleased]) cover lane taxonomy, diff classifier, and recommended-lane reporting.
-  • Phases 2, 3, 7, 8 (guard maturity metadata, adaptive profiles, distribution boundary, productization threshold): NOT YET DELIVERED — these remain the actual active work. ADR-124 distribution tiers is the substrate; the per-hook maturity metadata + profile resolver + distribution metadata + core-install audit is still genuine future work.
+  • Phase 3 adaptive profiles: DELIVERED 2026-05-20 with resource-lease, stash, pre-agent-marker, high-risk-surface, scoped override logging, and `cos profile explain` coverage. Phases 7 and 8 remain exit-criteria/productization work.
 ACTION: Promote to active P2 with explicit scope = Phases 2+3+7+8. In the next reconciliation pass, walk Phase 1/4/5/6 acceptance bullets and check off the items already met (recommendation only here; no checkbox edits in this triage).
 Sonnet 2026-05-10 decision: ACTIVATE (whole plan). Opus disagreement: SCOPE-REDUCE — Phases 1, 4, 6 are delivered; Phase 5 partial; only Phases 2, 3, 7, 8 carry net-new active work.
 -->
@@ -131,8 +131,8 @@ verified: 2026-05-18 — audit test: tests/audit/test_hook_maturity_coverage.py 
   - active task claims/resource leases;
   - stashes/pre-agent markers;
   - landing intent;
-  - files changed.
-- Operator override is logged.
+  - files changed / high-risk surfaces.
+- Operator override is scoped to the project and logged with optional TTL.
 
 ### Border cases
 
@@ -144,15 +144,15 @@ verified: 2026-05-18 — audit test: tests/audit/test_hook_maturity_coverage.py 
 
 ### Acceptance
 
-- [x] `cos profile explain` shows why the profile was selected. (verified: scripts/cos_profile_explain.py prints profile+reasons)
+- [x] `cos profile explain` shows why the profile was selected. (verified: scripts/cos dispatches `profile explain`; scripts/cos_profile_explain.py prints profile+reasons; tests/behavior/test_adaptive_profiles.py)
 - [x] `lean` still protects secrets and destructive operations. (verified: lib/adaptive_profile.py guard_policy baseline protections; tests/unit/test_profile_resolver.py)
-- [x] `strict` is selected for main landing and multi-agent contention. (verified: lib/adaptive_profile.py:64-65)
+- [x] `strict` is selected for main landing and multi-agent contention. (verified: active claims, resource leases, worktrees, validation capsules, pre-agent markers, and high-risk changed surfaces in tests/unit/test_profile_resolver.py)
+- [x] Operator override is logged and scoped. (verified: `.cognitive-os/metrics/adaptive-profile-overrides.jsonl`; tests/unit/test_profile_resolver.py and tests/behavior/test_adaptive_profiles.py)
 
 ### Validation
 
 ```bash
-python3 -m pytest tests/unit/test_profile_resolver.py -q
-python3 -m pytest tests/behavior/test_adaptive_profiles.py -q
+.venv/bin/python -m pytest tests/unit/test_profile_resolver.py tests/behavior/test_adaptive_profiles.py -q
 ```
 
 ## Phase 4 — Repair CLI and safe reapers

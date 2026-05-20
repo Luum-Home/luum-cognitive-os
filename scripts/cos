@@ -34,6 +34,7 @@
 #   cos promote-from-telemetry          -> scripts/cos-promote-from-telemetry
 #   cos maintainer once                 -> scripts/cos-maintainer-agent --once
 #   cos adr resolve N                   -> scripts/cos-adr-resolve
+#   cos profile explain                 -> scripts/cos-profile-explain
 #   cos work ownership                  -> scripts/cos_work_inventory.py --paths
 #   cos worktree audit                   -> scripts/cos-worktree-audit
 #   cos state retention [flags]         -> scripts/state_retention_audit.py
@@ -105,6 +106,14 @@ case "$SUBCMD" in
       exec bash "$SCRIPT_DIR/cos-merge-queue.sh" "$@"
     fi
     echo "cos: unknown merge subcommand '${2:-}'. Try: cos merge queue {enqueue|peek|status|list|dequeue}" >&2
+    exit 1
+    ;;
+  profile)
+    if [ "${2:-}" = "explain" ]; then
+      shift 2
+      exec "$SCRIPT_DIR/cos-profile-explain" --project-dir "$PROJECT_ROOT" "$@"
+    fi
+    echo "cos: unknown profile subcommand '${2:-}'. Try: cos profile explain [--json]" >&2
     exit 1
     ;;
   governance)

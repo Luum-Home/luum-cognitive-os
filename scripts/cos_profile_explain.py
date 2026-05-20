@@ -20,9 +20,15 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--project-dir", default=os.environ.get("COGNITIVE_OS_PROJECT_DIR") or os.getcwd())
     parser.add_argument("--landing-intent", action="store_true")
     parser.add_argument("--override", choices=("lean", "standard", "strict"))
+    parser.add_argument("--override-ttl-seconds", type=int, default=None)
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args(argv)
-    payload = resolve_profile(Path(args.project_dir), landing_intent=args.landing_intent, override=args.override)
+    payload = resolve_profile(
+        Path(args.project_dir),
+        landing_intent=args.landing_intent,
+        override=args.override,
+        override_ttl_seconds=args.override_ttl_seconds,
+    )
     if args.json:
         print(json.dumps(payload, indent=2, sort_keys=True))
     else:
@@ -32,6 +38,10 @@ def main(argv: list[str] | None = None) -> int:
             print(f"  - {reason}")
         guard_policy = payload.get("guard_policy") or {}
         print(f"blocking_posture: {guard_policy.get('blocking_posture', 'unknown')}")
+        if payload.get("override"):
+            print(f"override_scope: {payload.get('override_scope')}")
+            if payload.get("override_expires_at") is not None:
+                print(f"override_expires_at: {payload.get('override_expires_at')}")
         protections = guard_policy.get("minimum_protections") or []
         if protections:
             print("minimum protections:")

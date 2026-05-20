@@ -89,3 +89,74 @@ def test_profile_explain_human_output_lists_minimum_protections(tmp_path: Path) 
     assert "blocking_posture: baseline-safety-only" in result.stdout
     assert "secrets: secret-detector" in result.stdout
     assert "destructive_git: destructive-git-blocker" in result.stdout
+
+
+def test_active_resource_lease_resolves_strict(tmp_path: Path) -> None:
+    project = repo(tmp_path)
+    leases = project / ".cognitive-os" / "runtime" / "resource-leases"
+    leases.mkdir(parents=True)
+    (leases / "hooks.json").write_text(
+        json.dumps({"resource": "hooks", "expires_at": 4102444800}) + "\n",
+        encoding="utf-8",
+    )
+
+    payload = resolve_profile(project)
+
+    assert payload["profile"] == "strict"
+    assert payload["signals"]["active_resource_leases"] == 1
+    assert "active resource leases=1" in payload["reasons"]
+
+
+def test_high_risk_changed_surface_resolves_strict(tmp_path: Path) -> None:
+    project = repo(tmp_path)
+    hooks = project / "hooks"
+    hooks.mkdir()
+    (hooks / "new-hook.sh").write_text("echo hook\n", encoding="utf-8")
+
+    payload = resolve_profile(project)
+
+    assert payload["profile"] == "strict"
+    assert "hooks" in payload["signals"]["high_risk_surfaces"]
+    assert "high-risk changed surfaces=hooks" in payload["reasons"]
+
+
+def test_stash_signal_resolves_standard(tmp_path: Path) -> None:
+    project = repo(tmp_path)
+    (project / "README.md").write_text("stash me\n", encoding="utf-8")
+    git(project, "stash", "push", "-m", "manual stash")
+
+    payload = resolve_profile(project)
+
+    assert payload["profile"] == "standard"
+    assert payload["signals"]["stash_count"] == 1
+    assert "stashes=1" in payload["reasons"]
+
+
+def test_pre_agent_marker_resolves_strict(tmp_path: Path) -> None:
+    project = repo(tmp_path)
+    markers = project / ".cognitive-os" / "pre-agent-markers"
+    markers.mkdir(parents=True)
+    (markers / "agent-a.json").write_text("{}\n", encoding="utf-8")
+
+    payload = resolve_profile(project)
+
+    assert payload["profile"] == "strict"
+    assert payload["signals"]["pre_agent_marker_count"] == 1
+    assert "pre-agent markers=1" in payload["reasons"]
+
+
+def test_operator_override_is_logged_and_scoped(tmp_path: Path) -> None:
+    project = repo(tmp_path)
+
+    payload = resolve_profile(project, override="standard", override_ttl_seconds=60)
+
+    assert payload["profile"] == "standard"
+    assert payload["override"] is True
+    assert payload["override_scope"] == str(project.resolve())
+    assert payload["override_expires_at"] is not None
+    rows = [
+        json.loads(line)
+        for line in (project / ".cognitive-os" / "metrics" / "adaptive-profile-overrides.jsonl").read_text().splitlines()
+    ]
+    assert rows[-1]["profile"] == "standard"
+    assert rows[-1]["project_dir"] == str(project.resolve())
