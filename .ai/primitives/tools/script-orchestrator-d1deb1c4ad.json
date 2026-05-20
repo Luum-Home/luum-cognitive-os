@@ -76,7 +76,7 @@
     "docs_claim_level": "advisory",
     "exit_behavior": "mixed",
     "governance_class": "runtime-safety",
-    "lifecycle_state": "candidate",
+    "lifecycle_state": "advisory",
     "maturity": "advisory",
     "owner_adr": "ADR-042",
     "risk_class": "mutating",

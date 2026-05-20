@@ -75,7 +75,7 @@
     "docs_claim_level": "advisory",
     "exit_behavior": "mixed",
     "governance_class": "meta-governance",
-    "lifecycle_state": "candidate",
+    "lifecycle_state": "advisory",
     "maturity": "advisory",
     "owner_adr": "ADR-145",
     "risk_class": "advisory",
