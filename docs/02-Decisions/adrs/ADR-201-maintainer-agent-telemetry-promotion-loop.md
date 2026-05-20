@@ -359,7 +359,7 @@ allowed write paths, tests, rollback plan, and outcome-failure protocol.
 
 ## Status
 
-Accepted — implemented through Phase 5 impact measurement. The SQLite performance ledger, signal-quality quarantine, `PromoteFromTelemetry`, `cos-promote-from-telemetry`, and `cos-maintainer-agent --once --dry-run` are present and tested. `cos-maintainer-impact` measures whether ledger rollups/proposals changed operator decisions. Scheduled automation and mutation remain future/opt-in.
+Accepted — implemented through Phase 5 impact measurement and first dogfood adoption entries. The SQLite performance ledger, signal-quality quarantine, `PromoteFromTelemetry`, `cos-promote-from-telemetry`, and `cos-maintainer-agent --once --dry-run` are present and tested. `cos-maintainer-impact` measures whether ledger rollups/proposals changed operator decisions. The first local adoption rows record DX Tax, governance policy, and telemetry-adoption decisions; scheduled automation and mutation remain future/opt-in.
 
 ## Verification
 ```bash
@@ -385,6 +385,24 @@ Each row records a decision (`accepted`, `rejected`, `deferred`, `demoted`,
 `source_rollup_ref`, and `proposal_id`. A decision counts as rollup-influenced
 only when it cites ledger/proposal evidence. `no_action` rows are preserved but
 do not count as changed decisions.
+
+
+### First dogfood adoption entries (2026-05-20)
+
+This continuation slice recorded three real maintainer decisions with
+`scripts/cos-maintainer-impact --record`:
+
+- `dx-tax-hygiene-vs-blocker` — accepted the backlog-ranked DX Tax follow-on
+  and implemented hygiene-vs-blocker status semantics.
+- `governance-policy-adoption` — tuned blocking guards by wiring
+  `destructive-git-blocker`, `destructive-rm-blocker`, and `direct-main-guard`
+  to `cos governance policy`.
+- `telemetry-adoption-real-decisions` — used the Phase 5 CLI itself to record
+  the decisions above.
+
+Because `.cognitive-os/metrics/*.jsonl` is intentionally ignored runtime
+telemetry, the durable contract is the CLI + schema; the local ledger is
+operator evidence, not source-controlled product state.
 
 ### CLI
 
