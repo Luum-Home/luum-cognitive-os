@@ -714,10 +714,37 @@ print(json.dumps(out))
 ' 2>/dev/null )
 [ -z "$PRIMITIVES_JSON" ] && PRIMITIVES_JSON='{}'
 
+# ── Governance ROI (friction-vs-catch) ─────────────────────────────────
+# Fail-soft dashboard slice: cos status must remain usable even when metrics,
+# PyYAML, or the ROI module are unavailable in a consumer project.
+GOVERNANCE_ROI_JSON=$(PYTHONPATH="$PROJECT_ROOT${PYTHONPATH:+:$PYTHONPATH}" python3 - "$PROJECT_ROOT" <<'PYEOF_GOV' 2>/dev/null
+import json
+import sys
+from pathlib import Path
+
+try:
+    from scripts.cos_governance_roi import build_report
+
+    report = build_report(Path(sys.argv[1]), 24)
+    out = {
+        "roi": report.get("roi", {}),
+        "friction_vs_catch": report.get("friction_vs_catch", {}),
+        "catch_ledger": report.get("catch_ledger", {}),
+        "phase_policy": report.get("phase_policy", {}),
+        "recommendations": (report.get("recommendations") or [])[:5],
+    }
+except Exception as exc:
+    out = {"error": str(exc)}
+
+print(json.dumps(out))
+PYEOF_GOV
+)
+[ -z "$GOVERNANCE_ROI_JSON" ] && GOVERNANCE_ROI_JSON='{}'
+
 # ── JSON output ────────────────────────────────────────────────────────
 
 emit_json() {
-  PRIMITIVES_JSON="$PRIMITIVES_JSON" python3 - <<PYEOF
+  PRIMITIVES_JSON="$PRIMITIVES_JSON" GOVERNANCE_ROI_JSON="$GOVERNANCE_ROI_JSON" python3 - <<PYEOF
 import json, sys, os
 
 profile = "$PROFILE"
@@ -739,6 +766,12 @@ try:
     primitives = json.loads(primitives_raw) if primitives_raw.strip() else {}
 except json.JSONDecodeError:
     primitives = {}
+
+governance_raw = os.environ.get("GOVERNANCE_ROI_JSON", "{}")
+try:
+    governance_roi = json.loads(governance_raw) if governance_raw.strip() else {}
+except json.JSONDecodeError:
+    governance_roi = {}
 
 # Parse hook tsv
 hook_tsv = """$HOOK_TSV"""
@@ -788,6 +821,7 @@ out = {
     },
     "packages": {"count": packages_count},
     "primitives": primitives,
+    "governance_roi": governance_roi,
     "install": {"source": install_source},
     "session": {"last_end": last_session},
     "health": {
@@ -848,6 +882,48 @@ if active or total:
     if os.environ.get("COS_PRIM_VERBOSE") == "1":
         print(f"                 active_surface={p.get('active_surface_count',0)} default_visible={p.get('default_visible_count',0)}")
 PYEOF_PRIM
+  fi
+
+  # Governance ROI section: exposes whether guard friction is paying for real
+  # confirmed catches, and which phase policy should shape blocking posture.
+  if [ -n "$GOVERNANCE_ROI_JSON" ] && [ "$GOVERNANCE_ROI_JSON" != "{}" ]; then
+    GOVERNANCE_ROI_JSON="$GOVERNANCE_ROI_JSON" \
+    COS_GOV_C_GREEN="$C_GREEN" COS_GOV_C_YELLOW="$C_YELLOW" COS_GOV_C_RED="$C_RED" COS_GOV_C_DIM="$C_DIM" COS_GOV_C_RESET="$C_RESET" \
+    python3 - <<'PYEOF_GOV_STATUS'
+import json
+import os
+
+try:
+    g = json.loads(os.environ.get("GOVERNANCE_ROI_JSON", "{}"))
+except Exception:
+    g = {}
+
+if g and not g.get("error"):
+    roi = g.get("roi") or {}
+    fvc = g.get("friction_vs_catch") or {}
+    catches = g.get("catch_ledger") or {}
+    phase = g.get("phase_policy") or {}
+    ratio = f"{fvc.get('ratio')}x" if fvc.get("ratio") is not None else "unknown"
+    status = str(fvc.get("status") or roi.get("status") or "unknown")
+    color_by_status = {
+        "paying": os.environ.get("COS_GOV_C_GREEN", ""),
+        "watch": os.environ.get("COS_GOV_C_YELLOW", ""),
+        "cut": os.environ.get("COS_GOV_C_RED", ""),
+        "unknown": os.environ.get("COS_GOV_C_DIM", ""),
+    }
+    color = color_by_status.get(status, "")
+    reset = os.environ.get("COS_GOV_C_RESET", "")
+    net = roi.get("net_minutes_estimate", "n/a")
+    phase_label = phase.get("phase", "unknown")
+    strictness = phase.get("strictness", "unknown")
+    confirmed = catches.get("confirmed_valid_blocks", 0)
+    false_pos = catches.get("false_positive_overrides", 0)
+    print(f"Governance ROI: net={net}m ratio={ratio} {color}{status}{reset} catches={confirmed} false+={false_pos} phase={phase_label}/{strictness}")
+elif g.get("error"):
+    dim = os.environ.get("COS_GOV_C_DIM", "")
+    reset = os.environ.get("COS_GOV_C_RESET", "")
+    print(f"Governance ROI: {dim}unavailable ({g.get('error')}){reset}")
+PYEOF_GOV_STATUS
   fi
 
   # Hooks section

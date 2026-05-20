@@ -154,7 +154,7 @@ def test_status_runs_without_error():
     assert result.returncode == 0, f"stderr: {result.stderr}\nstdout: {result.stdout}"
     assert "COS Status" in result.stdout
     # All major sections should be present.
-    for section in ("Profile:", "Skills:", "Hooks:", "Rules:", "Packages:", "Health:"):
+    for section in ("Profile:", "Skills:", "Governance ROI:", "Hooks:", "Rules:", "Packages:", "Health:"):
         assert section in result.stdout, f"missing section {section!r} in output"
 
 
@@ -214,12 +214,16 @@ def test_status_json_output_is_valid_json():
     assert result.returncode == 0
     data = json.loads(result.stdout)  # raises if invalid
 
-    for key in ("profile", "skills", "hooks", "rules", "packages", "install", "health"):
+    for key in ("profile", "skills", "hooks", "rules", "packages", "primitives", "governance_roi", "install", "health"):
         assert key in data, f"top-level key {key!r} missing from JSON output"
     assert "driver_path" in data["skills"]
     assert "driver_path" in data["hooks"]
     assert "driver_path" in data["rules"]
     assert "source_path" in data["rules"]
+    assert "roi" in data["governance_roi"]
+    assert "friction_vs_catch" in data["governance_roi"]
+    assert "catch_ledger" in data["governance_roi"]
+    assert "phase_policy" in data["governance_roi"]
 
     # health.checks must be a list; each check has status/message.
     checks = data["health"]["checks"]

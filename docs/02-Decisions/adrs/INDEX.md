@@ -297,6 +297,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [319](ADR-319-detractor-review-modes.md) | Detractor Review Modes for Planning and Verification | accepted | partial | 2026-05-15 | Accepted. |
 | [324](ADR-324-executable-acceptance-specification-eas.md) | Executable Acceptance Specification (EAS) Evidence Artifact | accepted | partial | 2026-05-15 | Accepted. |
 | [325](ADR-325-ai-resource-economy-and-degradation.md) | AI Resource Economy, Budget Preflight, and Graceful Degradation | accepted | partial | 2026-05-15 | Accepted. Partial implementation starts with a manifest, audit, preflight CLI, and language-token-economy rule. Runtime hook enforcement and provider-specific a |
+| [328](ADR-328-governance-roi-friction-vs-catch.md) | Governance ROI Friction-vs-Catch Ratios | accepted | implemented | 2026-05-20 | Accepted. Adds reviewed governance catch ledger, friction-vs-catch bands, phase-aware policy, and cos status exposure. |
 
 ### Active / Partial / Blocked (1)
 

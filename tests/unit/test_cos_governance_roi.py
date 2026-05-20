@@ -66,3 +66,56 @@ def test_cos_dispatches_governance_roi_json(tmp_path: Path) -> None:
     payload = json.loads(result.stdout)
     assert payload["project"] == str(tmp_path.resolve())
     assert "roi" in payload
+
+
+def test_governance_roi_reads_catch_ledger_and_ratio_policy(tmp_path: Path) -> None:
+    metrics = tmp_path / ".cognitive-os" / "metrics"
+    write_jsonl(
+        metrics / "hook-timing.jsonl",
+        [
+            {"timestamp": "2026-05-02T00:00:00Z", "hook": "guard-a", "exit_code": 2},
+            {"timestamp": "2026-05-02T00:01:00Z", "hook": "guard-a", "exit_code": 2},
+            {"timestamp": "2026-05-02T00:02:00Z", "hook": "guard-b", "exit_code": 2},
+            {"timestamp": "2026-05-02T00:03:00Z", "hook": "guard-b", "exit_code": 2},
+        ],
+    )
+    write_jsonl(
+        metrics / "governance-catches.jsonl",
+        [
+            {"timestamp": "2026-05-02T00:04:00Z", "hook": "guard-a", "verdict": "confirmed_valid_block"},
+            {"timestamp": "2026-05-02T00:05:00Z", "hook": "guard-a", "verdict": "silent_loss_prevented"},
+            {"timestamp": "2026-05-02T00:06:00Z", "hook": "guard-c", "verdict": "false_positive_override"},
+        ],
+    )
+    (tmp_path / "cognitive-os.yaml").write_text("project:\n  phase: reconstruction\n", encoding="utf-8")
+
+    report = build_report(tmp_path, window_hours=0)
+
+    assert report["catch_ledger"]["confirmed_valid_blocks"] == 2
+    assert report["catch_ledger"]["false_positive_overrides"] == 1
+    assert report["catch_ledger"]["silent_loss_prevented"] == 1
+    assert report["friction_vs_catch"]["ratio"] == 2.0
+    assert report["friction_vs_catch"]["status"] == "paying"
+    assert report["phase_policy"]["phase"] == "reconstruction"
+    assert report["phase_policy"]["strictness"] == "minimal-blocking"
+
+
+def test_governance_roi_flags_cut_band_when_blocks_outpace_confirmed_catches(tmp_path: Path) -> None:
+    metrics = tmp_path / ".cognitive-os" / "metrics"
+    write_jsonl(
+        metrics / "hook-timing.jsonl",
+        [{"timestamp": "2026-05-02T00:00:00Z", "hook": "guard-a", "exit_code": 2} for _ in range(12)],
+    )
+    write_jsonl(
+        metrics / "governance-catches.jsonl",
+        [
+            {"timestamp": "2026-05-02T00:01:00Z", "hook": "guard-a", "verdict": "confirmed_valid_block"},
+            {"timestamp": "2026-05-02T00:02:00Z", "hook": "guard-a", "verdict": "confirmed_valid_block"},
+        ],
+    )
+
+    report = build_report(tmp_path, window_hours=0)
+
+    assert report["friction_vs_catch"]["ratio"] == 6.0
+    assert report["friction_vs_catch"]["status"] == "cut"
+    assert any("exceeds 5x" in item for item in report["recommendations"])

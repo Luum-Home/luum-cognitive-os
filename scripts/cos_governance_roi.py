@@ -31,6 +31,59 @@ MINUTES_PER_BLOCKED_INCIDENT = 5.0
 MINUTES_PER_WIP_RESTORE = 30.0
 MINUTES_PER_FALSE_POSITIVE_CANDIDATE = 5.0
 
+GOVERNANCE_CATCH_LEDGER = Path(".cognitive-os") / "metrics" / "governance-catches.jsonl"
+
+CONFIRMED_VALID_BLOCK_VALUES = {
+    "confirmed-valid-block",
+    "confirmed_valid_block",
+    "valid-block",
+    "valid_block",
+    "true_positive",
+    "correct_block",
+}
+FALSE_POSITIVE_VALUES = {
+    "false-positive",
+    "false_positive",
+    "false-positive-override",
+    "false_positive_override",
+    "override_false_positive",
+}
+SILENT_LOSS_VALUES = {
+    "silent-loss-prevented",
+    "silent_loss_prevented",
+    "work-loss-prevented",
+    "work_loss_prevented",
+}
+HIGH_BLAST_RADIUS_VALUES = {
+    "high-blast-radius-catch",
+    "high_blast_radius_catch",
+    "high-risk-catch",
+    "high_risk_catch",
+}
+
+PHASE_POLICIES: dict[str, dict[str, Any]] = {
+    "reconstruction": {
+        "strictness": "minimal-blocking",
+        "block": ["destructive-git", "secret-write", "credential-leak", "work-loss"],
+        "advisory": ["style", "process", "low-risk-structure"],
+    },
+    "stabilization": {
+        "strictness": "contract-focused",
+        "block": ["contracts", "tests", "primitive-drift", "runtime-state-loss"],
+        "advisory": ["style", "low-signal-process"],
+    },
+    "production": {
+        "strictness": "strict-release",
+        "block": ["release", "security", "migration", "public-claim", "config-protection"],
+        "advisory": ["low-risk-exploration"],
+    },
+    "maintenance": {
+        "strictness": "regression-focused",
+        "block": ["regressions", "security", "unsafe-change", "data-loss"],
+        "advisory": ["new-surface-expansion"],
+    },
+}
+
 
 def project_dir(raw: str | None = None) -> Path:
     value = raw or os.environ.get("COGNITIVE_OS_PROJECT_DIR") or os.environ.get("CODEX_PROJECT_DIR") or os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
@@ -106,6 +159,150 @@ def collect_hook_metrics(root: Path, since_epoch: float | None) -> dict[str, Any
     }
 
 
+def _normal_value(row: dict[str, Any]) -> str:
+    """Return a normalized verdict/type/action token for catch-ledger rows."""
+    raw = (
+        row.get("verdict")
+        or row.get("outcome")
+        or row.get("type")
+        or row.get("kind")
+        or row.get("event")
+        or row.get("status")
+        or ""
+    )
+    return str(raw).strip().lower().replace(" ", "_")
+
+
+def collect_catch_ledger(root: Path, since_epoch: float | None) -> dict[str, Any]:
+    """Collect operator-reviewed governance catch outcomes.
+
+    Ledger path:
+        .cognitive-os/metrics/governance-catches.jsonl
+
+    Minimal row examples:
+        {"ts": "...", "hook": "dispatch-gate", "verdict": "confirmed_valid_block"}
+        {"ts": "...", "hook": "edit-lock", "verdict": "false_positive_override"}
+        {"ts": "...", "hook": "stash-safety", "verdict": "silent_loss_prevented"}
+
+    The ledger is intentionally sparse: absence means "not reviewed yet", not
+    "no value". It keeps the ROI dashboard from pretending every block was
+    correct.
+    """
+    rows = list(iter_jsonl(root / GOVERNANCE_CATCH_LEDGER, since_epoch=since_epoch) or [])
+    confirmed_valid_blocks = 0
+    false_positive_overrides = 0
+    silent_loss_prevented = 0
+    high_blast_radius_catches = 0
+    by_hook: Counter[str] = Counter()
+
+    for row in rows:
+        value = _normal_value(row)
+        value_dash = value.replace("_", "-")
+        hook = str(row.get("hook") or row.get("guard") or row.get("primitive") or "unknown")
+
+        is_silent_loss = value in SILENT_LOSS_VALUES or value_dash in SILENT_LOSS_VALUES
+        is_high_blast = value in HIGH_BLAST_RADIUS_VALUES or value_dash in HIGH_BLAST_RADIUS_VALUES
+        is_confirmed = (
+            value in CONFIRMED_VALID_BLOCK_VALUES
+            or value_dash in CONFIRMED_VALID_BLOCK_VALUES
+            or is_silent_loss
+            or is_high_blast
+        )
+        is_false_positive = value in FALSE_POSITIVE_VALUES or value_dash in FALSE_POSITIVE_VALUES
+
+        if is_confirmed:
+            confirmed_valid_blocks += 1
+            by_hook[hook] += 1
+        if is_false_positive:
+            false_positive_overrides += 1
+        if is_silent_loss:
+            silent_loss_prevented += 1
+        if is_high_blast:
+            high_blast_radius_catches += 1
+
+    return {
+        "ledger_path": str(GOVERNANCE_CATCH_LEDGER),
+        "reviewed_events": len(rows),
+        "confirmed_valid_blocks": confirmed_valid_blocks,
+        "false_positive_overrides": false_positive_overrides,
+        "silent_loss_prevented": silent_loss_prevented,
+        "high_blast_radius_catches": high_blast_radius_catches,
+        "top_confirmed_hooks": [{"hook": h, "count": c} for h, c in by_hook.most_common(10)],
+    }
+
+
+def friction_ratio_status(total_blocks: int, confirmed_valid_blocks: int) -> dict[str, Any]:
+    """Return explicit friction-vs-catch ratio and recommendation band.
+
+    Ratio definition:
+        total guard blocks / operator-confirmed valid blocks
+
+    Bands:
+        <= 2x  -> paying
+        <= 5x  -> watch/tune
+        > 5x   -> cut/demote candidates
+    """
+    if confirmed_valid_blocks <= 0:
+        return {
+            "ratio": None,
+            "status": "unknown",
+            "threshold": "needs confirmed catch ledger entries",
+            "recommendation": "record confirmed_valid_block or false_positive_override rows before judging guard ROI",
+        }
+
+    ratio = total_blocks / confirmed_valid_blocks
+    if ratio <= 2.0:
+        status = "paying"
+        recommendation = "keep current blocking posture"
+    elif ratio <= 5.0:
+        status = "watch"
+        recommendation = "review top blocking hooks and tune false positives"
+    else:
+        status = "cut"
+        recommendation = "demote, relax, or make high-friction guards phase-aware"
+    return {
+        "ratio": round(ratio, 2),
+        "status": status,
+        "threshold": "<=2 paying, 2-5 watch, >5 cut",
+        "recommendation": recommendation,
+    }
+
+
+def read_project_phase(root: Path) -> str:
+    """Read project.phase from cognitive-os.yaml, fallback unknown."""
+    config = root / "cognitive-os.yaml"
+    if not config.is_file():
+        return "unknown"
+    try:
+        import yaml
+
+        data = yaml.safe_load(config.read_text(encoding="utf-8")) or {}
+        phase = ((data.get("project") or {}).get("phase") or data.get("phase") or "unknown")
+        return str(phase)
+    except Exception:
+        # Regex fallback keeps the command usable if PyYAML is unavailable.
+        in_project = False
+        for line in config.read_text(encoding="utf-8", errors="replace").splitlines():
+            if line.startswith("project:"):
+                in_project = True
+                continue
+            if in_project and line and not line.startswith((" ", "\t")):
+                in_project = False
+            if in_project and line.strip().startswith("phase:"):
+                return line.split(":", 1)[1].split("#", 1)[0].strip().strip("'\"")
+    return "unknown"
+
+
+def phase_policy_for(phase: str) -> dict[str, Any]:
+    policy = PHASE_POLICIES.get(phase, {})
+    return {
+        "phase": phase,
+        "strictness": policy.get("strictness", "unknown"),
+        "block": policy.get("block", []),
+        "advisory": policy.get("advisory", []),
+    }
+
+
 def collect_snapshot_benefits(root: Path, since_epoch: float | None) -> dict[str, Any]:
     rows = list(iter_jsonl(root / ".cognitive-os" / "metrics" / "agent-snapshots.jsonl", since_epoch=since_epoch) or [])
     restored = [r for r in rows if r.get("event") == "agent_snapshot_restore" and r.get("action") == "restored"]
@@ -163,6 +360,12 @@ def build_report(root: Path, window_hours: int) -> dict[str, Any]:
     hooks = collect_hook_metrics(root, since)
     snapshots = collect_snapshot_benefits(root, since)
     discovery = collect_discovery(root)
+    catches = collect_catch_ledger(root, since)
+    friction_vs_catch = friction_ratio_status(
+        hooks["blocking_events"],
+        catches["confirmed_valid_blocks"],
+    )
+    phase_policy = phase_policy_for(read_project_phase(root))
 
     friction_minutes = hooks["body_time_minutes"] + hooks["blocking_events"] * 2.0
     false_positive_candidates = snapshots["orphan_marker_count"] + snapshots["auto_pre_agent_stash_count"]
@@ -183,6 +386,12 @@ def build_report(root: Path, window_hours: int) -> dict[str, Any]:
         recommendations.append("Apply ADR-124 distribution tiers; active primitive discovery is too broad for default agents.")
     if net < 0:
         recommendations.append("Net governance ROI is negative in this window; demote/archive low-value primitives or switch to a leaner distribution.")
+    if friction_vs_catch["status"] == "unknown" and hooks["blocking_events"]:
+        recommendations.append("Record governance-catches.jsonl verdicts so friction-vs-catch ratio can distinguish correct blocks from false positives.")
+    elif friction_vs_catch["status"] == "cut":
+        recommendations.append("Friction-vs-catch ratio exceeds 5x; recut high-friction guards or make them advisory outside high-risk phases.")
+    if phase_policy["phase"] == "reconstruction" and hooks["blocking_events"]:
+        recommendations.append("Reconstruction phase should block mainly destructive/security/work-loss risks; demote low-risk process guards to advisory.")
 
     return {
         "project": str(root),
@@ -190,6 +399,9 @@ def build_report(root: Path, window_hours: int) -> dict[str, Any]:
         "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
         "friction": hooks,
         "benefits": snapshots,
+        "catch_ledger": catches,
+        "friction_vs_catch": friction_vs_catch,
+        "phase_policy": phase_policy,
         "discovery": discovery,
         "roi": {
             "benefit_minutes_estimate": round(benefit_minutes, 2),
@@ -210,6 +422,13 @@ def print_pretty(report: dict[str, Any]) -> None:
     print(f"net_roi: {roi['net_minutes_estimate']} min ({roi['status']}, heuristic)")
     friction = report["friction"]
     print(f"hooks: invocations={friction['invocations']} blocks={friction['blocking_events']} body_time={friction['body_time_minutes']}m")
+    fvc = report["friction_vs_catch"]
+    ratio = f"{fvc['ratio']}x" if fvc["ratio"] is not None else "unknown"
+    print(f"friction_vs_catch: ratio={ratio} status={fvc['status']}")
+    catches = report["catch_ledger"]
+    print(f"catch ledger: confirmed={catches['confirmed_valid_blocks']} false_positive_overrides={catches['false_positive_overrides']} silent_loss_prevented={catches['silent_loss_prevented']}")
+    phase = report["phase_policy"]
+    print(f"phase policy: phase={phase['phase']} strictness={phase['strictness']}")
     benefits = report["benefits"]
     print(f"wip: restores={benefits['wip_restore_events']} orphan_markers={benefits['orphan_marker_count']} auto_stashes={benefits['auto_pre_agent_stash_count']}")
     discovery = report["discovery"]
