@@ -77,7 +77,7 @@ Total open partial/deferred/blocked ADRs: 119
 | [116](../../02-Decisions/adrs/ADR-116-multi-session-coordination-primitives.md) | partial | Plan-checkbox false-done class becomes commit-blocked (P4.4 + ADR-105 + ADR-106 P2). | true |  |  |
 | [118](../../02-Decisions/adrs/ADR-118-multi-ide-swarm-testbed.md) | partial | Keep these as late contract tests only.** Rejected because registry/projection drift should be blocked before commit, not discovered after a long laptop run. | true |  |  |
 | [120](../../02-Decisions/adrs/ADR-120-conversation-to-primitive-harvester.md) | partial | primitive harvester architecture exists, but this ADR is not evidenced as a fully closed runtime harvester implementation | unknown |  |  |
-| [121](../../02-Decisions/adrs/ADR-121-foundation-hardening-program.md) | partial | program ADR is partial: Phase 1/2/4/5 acceptance is closed; residuals are Phase 3 ownership coverage and Phase 6 ADR-118 swarm scenarios | unknown |  |  |
+| [121](../../02-Decisions/adrs/ADR-121-foundation-hardening-program.md) | partial | program ADR is partial: Phase 1/2/4/5 acceptance is closed; residuals are Phase 6 ADR-118 swarm scenarios; Phase 3 domain/registry ownership inventory has an initial executable slice | unknown |  |  |
 | [127](../../02-Decisions/adrs/ADR-127-active-primitive-index.md) | partial | `lab` primitives remain indexed but do not count as active or default-visible adoption surface. | true |  |  |
 | [135](../../02-Decisions/adrs/ADR-135-self-evolving-doctrine-proposals.md) | partial | Generated doctrine still needs human judgment. | true |  |  |
 | [136](../../02-Decisions/adrs/ADR-136-cross-instance-learning-runway.md) | partial | Reports Shape A `deferred` until Shape-B thresholds fire. | true |  |  |
