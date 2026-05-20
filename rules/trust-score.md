@@ -35,18 +35,13 @@ TRUST_REPORT: SCORE=75 STATUS=MEDIUM EVIDENCE=3 UNCERTAINTIES=2
 ---
 Score: 75/100
 
-EVIDENCE PROVIDED:
-  [check] [what was verified with proof]
-  [warn] [what was partially verified]
-  [fail] [what was NOT verified]
+WHAT I VERIFIED:
+  - [what was verified with proof, preferably command output]
 
-WHAT I'M CONFIDENT ABOUT:
-  - [list with reasoning]
-
-WHAT I'M UNSURE ABOUT:
+UNSURE ABOUT:
   - [honest list of uncertainties]
 
-WHAT THE HUMAN SHOULD VERIFY:
+HUMAN SHOULD CHECK:
   - [specific actions the human should take]
 ```
 
@@ -58,8 +53,8 @@ The first line uses a deterministic key=value format for reliable extraction by 
 |-------|-------------|--------|
 | `SCORE` | Numeric trust score | 0-100 |
 | `STATUS` | Score band label | HIGH (90+), MEDIUM (70-89), LOW (50-69), CRITICAL (<50) |
-| `EVIDENCE` | Count of [check]/[warn]/[fail] markers | integer |
-| `UNCERTAINTIES` | Count of items in "WHAT I'M UNSURE ABOUT" | integer |
+| `EVIDENCE` | Count of items in `WHAT I VERIFIED` | integer |
+| `UNCERTAINTIES` | Count of items in `UNSURE ABOUT` | integer >= 1 |
 
 The `---` separator divides the header from the human-readable body. Parsing library: `lib/trust_report_parser.py`.
 
@@ -84,7 +79,7 @@ verification: manual
 
 ### Legacy Format Support
 
-The parser also accepts the old format without the header line (a `TRUST REPORT:` block with `Score: XX/100`). New agents MUST use the header format. Legacy reports are parsed on a best-effort basis.
+The parser also accepts the old format without the header line (a `TRUST REPORT:` block with `Score: XX/100`). New agents MUST use the header format. Legacy reports are parsed on a best-effort basis, accepted with a warning, and logged as `format=legacy` so migration debt remains visible.
 
 ## Trust Score Calculation
 

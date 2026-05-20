@@ -55,6 +55,9 @@ def preamble_file(tmp_path: Path) -> Path:
     preamble.write_text(
         "# Agent Preamble\nYou are a sub-agent. Phase: {{phase}}\n"
     )
+    (templates / "agent-planning.md").write_text(
+        "# Agent Planning Template (ADR-038 Wave 4)\nPLAN:\n"
+    )
     return preamble
 
 
@@ -376,6 +379,23 @@ class TestPromptBuilderIntegration:
         # {{phase}} should be replaced with actual phase value
         assert "{{phase}}" not in text
         assert "reconstruction" in text
+
+    def test_planning_task_includes_separate_planning_template(self, project_dir: Path) -> None:
+        from lib.prompt_builder import PromptBuilder
+
+        builder = PromptBuilder.from_project(str(project_dir), enable_cache=False)
+        result = builder.build_system_prompt(task_type="planning")
+        text = result[-1]["text"]
+        assert "Agent Planning Template (ADR-038 Wave 4)" in text
+        assert "PLAN:" in text
+
+    def test_implementation_task_omits_planning_template(self, project_dir: Path) -> None:
+        from lib.prompt_builder import PromptBuilder
+
+        builder = PromptBuilder.from_project(str(project_dir), enable_cache=False)
+        result = builder.build_system_prompt(task_type="implement")
+        text = result[-1]["text"]
+        assert "Agent Planning Template (ADR-038 Wave 4)" not in text
 
     def test_build_prompt_for_hook_returns_string(self, project_dir: Path) -> None:
         from lib.prompt_builder import build_prompt_for_hook

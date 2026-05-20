@@ -34,18 +34,55 @@ if [[ -z "$AGENT_OUTPUT" ]]; then
   exit 0
 fi
 
-# Check for Trust Report presence
-HAS_TRUST_REPORT=false
-if echo "$AGENT_OUTPUT" | grep -qiE '(TRUST REPORT:|Trust Report:|trust report:)'; then
-  HAS_TRUST_REPORT=true
-fi
+PARSE_RESULT=$(AGENT_OUTPUT="$AGENT_OUTPUT" PYTHONPATH="$PROJECT_DIR:${PYTHONPATH:-}" python3 - <<'PY'
+import json
+import os
+import sys
 
-# Also check for common abbreviated forms
-if echo "$AGENT_OUTPUT" | grep -qiE '(Trust:\s*[0-9]+|Score:\s*[0-9]+/100)'; then
-  HAS_TRUST_REPORT=true
-fi
+from lib.trust_report_parser import TrustReportParseError, TrustReportParser
 
-if [[ "$HAS_TRUST_REPORT" == "false" ]]; then
+text = os.environ.get("AGENT_OUTPUT", "")
+has_structured_marker = "TRUST_REPORT:" in text.upper()
+has_legacy_marker = "TRUST REPORT:" in text.upper()
+has_score_marker = "SCORE:" in text.upper()
+try:
+    report = TrustReportParser().extract_from_output(text)
+    if report is None and has_score_marker:
+        report = TrustReportParser().parse(text)
+except TrustReportParseError as exc:
+    print(json.dumps({
+        "state": "malformed",
+        "error": str(exc),
+        "hint": exc.hint,
+    }))
+    sys.exit(0)
+
+if report is None:
+    if has_structured_marker or has_legacy_marker:
+        print(json.dumps({
+            "state": "malformed",
+            "error": "Trust report marker found, but no parseable trust score block was present.",
+            "hint": "Use: TRUST_REPORT: SCORE=<0-100> STATUS=<HIGH|MEDIUM|LOW|CRITICAL> EVIDENCE=<N> UNCERTAINTIES=<N>",
+        }))
+    else:
+        print(json.dumps({"state": "missing"}))
+    sys.exit(0)
+
+fmt = "structured" if has_structured_marker else "legacy"
+print(json.dumps({
+    "state": "ok",
+    "format": fmt,
+    "score": report.score,
+    "status": report.status,
+    "evidence_count": report.evidence_count,
+    "uncertainty_count": report.uncertainty_count,
+}))
+PY
+)
+
+PARSE_STATE=$(echo "$PARSE_RESULT" | jq -r '.state // "missing"' 2>/dev/null || echo "missing")
+
+if [[ "$PARSE_STATE" == "missing" ]]; then
   echo ""
   echo "WARNING: Agent did not provide Trust Report. Confidence cannot be assessed."
   echo "Agents MUST include a Trust Report with score, evidence, uncertainties, and human verification steps."
@@ -56,23 +93,27 @@ if [[ "$HAS_TRUST_REPORT" == "false" ]]; then
   exit 0
 fi
 
-# Extract score (look for patterns like "Score: 75/100" or "Trust: 75")
-SCORE=$(echo "$AGENT_OUTPUT" | grep -oiE 'Score:\s*([0-9]+)(/100)?' | head -1 | grep -oE '[0-9]+' | head -1 || echo "")
-
-if [[ -z "$SCORE" ]]; then
-  # Try alternate pattern: "Trust: XX"
-  SCORE=$(echo "$AGENT_OUTPUT" | grep -oiE 'Trust:\s*([0-9]+)' | head -1 | grep -oE '[0-9]+' | head -1 || echo "")
-fi
-
-if [[ -z "$SCORE" ]]; then
+if [[ "$PARSE_STATE" == "malformed" ]]; then
+  PARSE_ERROR=$(echo "$PARSE_RESULT" | jq -r '.error // "malformed trust report"' 2>/dev/null || echo "malformed trust report")
+  PARSE_HINT=$(echo "$PARSE_RESULT" | jq -r '.hint // empty' 2>/dev/null || true)
   echo ""
-  echo "WARNING: Trust Report found but score could not be extracted."
+  echo "TRUST_SCORE_VALIDATOR: BLOCKED — malformed Trust Report."
+  echo "$PARSE_ERROR"
+  if [[ -n "$PARSE_HINT" ]]; then
+    echo "Hint: $PARSE_HINT"
+  fi
   echo ""
   if type primitive_intervention_emit >/dev/null 2>&1; then
-    primitive_intervention_emit "trust-score-validator" "hooks/trust-score-validator.sh" "warn" "trust_score_missing" "agent-output" ".cognitive-os/metrics/trust-scores.jsonl" "Agent" || true
+    primitive_intervention_emit "trust-score-validator" "hooks/trust-score-validator.sh" "block" "trust_report_malformed" "agent-output" ".cognitive-os/metrics/trust-scores.jsonl" "Agent" || true
   fi
-  exit 0
+  exit 2
 fi
+
+SCORE=$(echo "$PARSE_RESULT" | jq -r '.score' 2>/dev/null)
+STATUS=$(echo "$PARSE_RESULT" | jq -r '.status' 2>/dev/null)
+EVIDENCE_COUNT=$(echo "$PARSE_RESULT" | jq -r '.evidence_count' 2>/dev/null)
+UNCERTAINTY_COUNT=$(echo "$PARSE_RESULT" | jq -r '.uncertainty_count' 2>/dev/null)
+REPORT_FORMAT=$(echo "$PARSE_RESULT" | jq -r '.format' 2>/dev/null)
 
 # Ensure metrics directory exists
 mkdir -p "$METRICS_DIR"
@@ -82,8 +123,15 @@ AGENT_NAME=$(echo "$INPUT" | jq -r '.agent_name // .tool_input.prompt // "unknow
 
 # Log to metrics
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-ENTRY="{\"timestamp\":\"$TIMESTAMP\",\"agent\":\"$(echo "$AGENT_NAME" | jq -Rs '.' | tr -d '"' | head -c 100)\",\"score\":$SCORE}"
+AGENT_JSON=$(printf '%s' "$AGENT_NAME" | jq -Rs '.')
+ENTRY="{\"timestamp\":\"$TIMESTAMP\",\"agent\":$AGENT_JSON,\"score\":$SCORE,\"status\":\"$STATUS\",\"format\":\"$REPORT_FORMAT\",\"evidence_count\":$EVIDENCE_COUNT,\"uncertainty_count\":$UNCERTAINTY_COUNT}"
 safe_jsonl_append "$TRUST_LOG" "$ENTRY"
+
+if [[ "$REPORT_FORMAT" == "legacy" ]]; then
+  echo ""
+  echo "WARNING: Legacy Trust Report format accepted for compatibility. New agents MUST emit the ADR-038 TRUST_REPORT header."
+  echo ""
+fi
 
 # Alert on low confidence
 if [[ "$SCORE" -lt 50 ]]; then
