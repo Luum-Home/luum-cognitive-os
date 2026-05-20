@@ -296,7 +296,8 @@ def build_lib_callers(project_root: Path) -> dict[str, int]:
         project_root / "packages",
         project_root / "scripts",
     ]
-    import_pattern = re.compile(r"(?:from\s+lib\.(\w+)|import\s+lib\.(\w+))")
+    lib_modules = {path.stem for path in (project_root / "lib").glob("*.py") if not path.name.startswith("__")}
+    import_pattern = re.compile(r"(?:from\s+(?:lib\.)?(\w+)|import\s+(?:lib\.)?(\w+))")
     caller_counts: dict[str, int] = defaultdict(int)
     for search_dir in search_dirs:
         if not search_dir.is_dir():
@@ -310,10 +311,10 @@ def build_lib_callers(project_root: Path) -> dict[str, int]:
                 continue
             for match in import_pattern.finditer(content):
                 mod = match.group(1) or match.group(2)
-                if mod:
+                if mod and mod in lib_modules:
                     caller_counts[mod] += 1
-    # Also check .sh files for `python3 -c "from lib.xxx"` patterns
-    sh_import_pattern = re.compile(r"from lib\.(\w+)|lib\.(\w+)")
+    # Also check .sh files for embedded Python imports and shell references.
+    sh_import_pattern = re.compile(r"(?:from\s+(?:lib\.)?(\w+)|import\s+(?:lib\.)?(\w+)|lib\.(\w+))")
     for search_dir in search_dirs:
         if not search_dir.is_dir():
             continue
@@ -323,8 +324,8 @@ def build_lib_callers(project_root: Path) -> dict[str, int]:
             except OSError:
                 continue
             for match in sh_import_pattern.finditer(content):
-                mod = match.group(1) or match.group(2)
-                if mod:
+                mod = match.group(1) or match.group(2) or match.group(3)
+                if mod and mod in lib_modules:
                     caller_counts[mod] += 1
     return dict(caller_counts)
 
