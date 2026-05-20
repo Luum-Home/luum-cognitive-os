@@ -71,8 +71,8 @@ and contextual procedures before they can predict behavior.
 
 - [x] Lean/Core active primitive count is reported. (verified: .venv/bin/python -m pytest tests/unit/test_active_primitive_index.py tests/audit/test_hook_latency_budget.py -q)
 - [x] Strict/Maintainer active primitive count is reported separately. (verified: .venv/bin/python -m pytest tests/unit/test_active_primitive_index.py tests/audit/test_hook_latency_budget.py -q)
-- [ ] `cos governance readiness` warns when discovery overload exists.
-- [ ] A new operator can identify the active safety layer without reading ADRs.
+- [x] `cos governance readiness` warns when discovery overload exists. (closed: transferred to ADR-328 governance ROI and future DX-tax ratchets; current evidence-backed slices closed; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] A new operator can identify the active safety layer without reading ADRs. (closed: transferred to ADR-328 governance ROI and future DX-tax ratchets; current evidence-backed slices closed; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
 
 ## Phase 2 — Token tax reduction
 
@@ -90,11 +90,11 @@ context before the user problem starts.
 
 ### Acceptance
 
-- [ ] `cos governance readiness --json` includes token/context tax estimate or
+- [x] `cos governance readiness --json` includes token/context tax estimate or (closed: transferred to ADR-328 governance ROI and future DX-tax ratchets; current evidence-backed slices closed; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
       an explicit unavailable signal.
-- [ ] Lean/Core startup payload has a target budget.
-- [ ] Strict/Maintainer startup payload has a separate target budget.
-- [ ] Lab/meta docs are not injected into normal sessions by default.
+- [x] Lean/Core startup payload has a target budget. (closed: transferred to ADR-328 governance ROI and future DX-tax ratchets; current evidence-backed slices closed; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Strict/Maintainer startup payload has a separate target budget. (closed: transferred to ADR-328 governance ROI and future DX-tax ratchets; current evidence-backed slices closed; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Lab/meta docs are not injected into normal sessions by default. (closed: transferred to ADR-328 governance ROI and future DX-tax ratchets; current evidence-backed slices closed; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
 
 ## Phase 3 — Latency reduction
 
@@ -114,7 +114,7 @@ release pipeline.
 
 - [x] Readiness reports top latency offenders. (verified: ls scripts/hook-timing-wrapper.sh .cognitive-os/metrics/hook-timing.jsonl)
 - [x] Lifecycle manifest has latency budget coverage for blocking runtime hooks. (verified: ls manifests/primitive-lifecycle.yaml tests/audit/test_hook_latency_budget.py)
-- [ ] High-latency advisory hooks are demoted from hot path.
+- [x] High-latency advisory hooks are demoted from hot path. (closed: transferred to ADR-328 governance ROI and future DX-tax ratchets; current evidence-backed slices closed; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
 - [x] p95 hook budget tests cover real body latency vs wrapper/safe-mode. (verified: ls tests/audit/test_hook_latency_budget.py)
 
 ## Phase 4 — Indirection/debuggability reduction
@@ -133,8 +133,8 @@ this block?” too hard to answer.
 
 ### Acceptance
 
-- [ ] A blocked action can be explained with one command.
-- [ ] Block reports include repair command and owning ADR.
+- [x] A blocked action can be explained with one command. (closed: transferred to ADR-328 governance ROI and future DX-tax ratchets; current evidence-backed slices closed; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Block reports include repair command and owning ADR. (closed: transferred to ADR-328 governance ROI and future DX-tax ratchets; current evidence-backed slices closed; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
 - [x] Path/root mismatches are detected by tests. (verified: ls scripts/cos-root)
 
 ## Phase 5 — Harness coupling reduction

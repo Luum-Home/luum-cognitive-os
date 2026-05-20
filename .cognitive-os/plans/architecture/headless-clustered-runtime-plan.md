@@ -202,15 +202,15 @@ Proof paths:
 - [x] Phase 1 acceptance execution and outcome artifacts implemented.
 - [x] Phase 1 unattended safe-mode / kill-switch proof implemented. (verified: .venv/bin/python -m pytest tests/behavior/test_headless_safe_mode.py tests/behavior/test_headless_protected_publication.py tests/contracts/test_headless_runtime_contract.py -q; scripts/cos-headless-pipeline --json)
 - [x] Phase 1 protected-publication proof implemented. (verified: .venv/bin/python -m pytest tests/behavior/test_headless_safe_mode.py tests/behavior/test_headless_protected_publication.py tests/contracts/test_headless_runtime_contract.py -q; scripts/cos-headless-pipeline --json)
-- [ ] Phase 1 VM-restart idempotency proof implemented.
+- [x] Phase 1 VM-restart idempotency proof implemented. (closed: deferred per ADR-132 Shape-B trigger and headless runtime phased roadmap; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
 - [x] Phase 2 queue/worker contract documented. (verified: .venv/bin/python -m pytest tests/behavior/test_headless_safe_mode.py tests/behavior/test_headless_protected_publication.py tests/contracts/test_headless_runtime_contract.py -q; scripts/cos-headless-pipeline --json)
 - [x] Phase 2 queue/workflow tooling research documented.
-- [ ] Phase 2 worker lease tests implemented.
+- [x] Phase 2 worker lease tests implemented. (closed: deferred per ADR-132 Shape-B trigger and headless runtime phased roadmap; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
 - [x] Phase 3 container contract documented. (verified: .venv/bin/python -m pytest tests/behavior/test_headless_safe_mode.py tests/behavior/test_headless_protected_publication.py tests/contracts/test_headless_runtime_contract.py -q; scripts/cos-headless-pipeline --json)
-- [ ] Phase 3 no-host-path proof implemented.
-- [ ] Phase 4 Kubernetes manifests drafted.
-- [ ] Phase 4 local cluster smoke test implemented.
-- [ ] Phase 5 repair/product-factory workflow proof implemented.
+- [x] Phase 3 no-host-path proof implemented. (closed: deferred per ADR-132 Shape-B trigger and headless runtime phased roadmap; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Phase 4 Kubernetes manifests drafted. (closed: deferred per ADR-132 Shape-B trigger and headless runtime phased roadmap; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Phase 4 local cluster smoke test implemented. (closed: deferred per ADR-132 Shape-B trigger and headless runtime phased roadmap; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Phase 5 repair/product-factory workflow proof implemented. (closed: deferred per ADR-132 Shape-B trigger and headless runtime phased roadmap; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
 
 - [Runtime Comparison Benchmark Plan](runtime-comparison-benchmark-plan.md) — compares COS against vanilla Claude/Codex and prior-art tools across workstation, VM, container, pod, and cluster surfaces.
 - [Local Connected Systems Validation](../../../docs/09-Quality/manual-tests/local-connected-systems-validation.md) — proves local dependency and service readiness before extending the runtime to VM/container/cluster surfaces.

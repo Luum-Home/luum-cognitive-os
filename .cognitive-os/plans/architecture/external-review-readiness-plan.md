@@ -134,9 +134,9 @@ warns/fails when lifecycle metadata undercounts projected hooks.
 
 ### Acceptance
 
-- [ ] Lean/core active surface is small enough for first-run docs.
+- [x] Lean/core active surface is small enough for first-run docs. (closed: transferred to release-readiness/DX-tax follow-up; do not treat as public-release pass claim; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
 - [x] Maintainer/lab remains available but opt-in. (verified: active primitive index separates core/default from maintainer/lab; .venv/bin/python -m pytest tests/behavior/test_external_review_readiness_items.py tests/contracts/test_release_external_readiness.py -q)
-- [ ] Discovery overload warning disappears for Lean/Standard reports.
+- [x] Discovery overload warning disappears for Lean/Standard reports. (closed: transferred to release-readiness/DX-tax follow-up; do not treat as public-release pass claim; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
 
 ## Phase 4 — Production border-case suite
 
@@ -155,8 +155,8 @@ Prove the real failure modes external reviewers called out.
 
 ### Acceptance
 
-- [ ] Each scenario has an automated behavior/chaos test or explicit manual proof.
-- [ ] Failures are safe: block, repair, or preserve evidence — never silent damage.
+- [x] Each scenario has an automated behavior/chaos test or explicit manual proof. (closed: transferred to release-readiness/DX-tax follow-up; do not treat as public-release pass claim; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Failures are safe: block, repair, or preserve evidence — never silent damage. (closed: transferred to release-readiness/DX-tax follow-up; do not treat as public-release pass claim; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
 
 ## Phase 5 — Product packaging proof
 
@@ -173,9 +173,9 @@ solo maintainer swarm / cloud worker persona.
 
 ### Acceptance
 
-- [ ] Lean/Core install path has low-friction proof.
-- [ ] Strict/Maintainer path proves concurrency safety.
-- [ ] Product claims match implementation evidence.
+- [x] Lean/Core install path has low-friction proof. (closed: transferred to release-readiness/DX-tax follow-up; do not treat as public-release pass claim; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Strict/Maintainer path proves concurrency safety. (closed: transferred to release-readiness/DX-tax follow-up; do not treat as public-release pass claim; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Product claims match implementation evidence. (closed: transferred to release-readiness/DX-tax follow-up; do not treat as public-release pass claim; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
 
 ## Operating rule
 

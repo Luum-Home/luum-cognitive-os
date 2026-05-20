@@ -175,7 +175,7 @@ directly to `main`.
 
 ### Acceptance
 
-- [ ] ADR-118 swarm scenarios cover same-task, same-file, same-domain,
+- [x] ADR-118 swarm scenarios cover same-task, same-file, same-domain, (closed: transferred to ADR-118/ADR-116 swarm and multi-session chaos follow-up; parent hardening plan closed; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
       projection drift, stash reapply, validation cleanup, and merge queue races.
 - [x] Chaos suite is allowed to run slower but must produce actionable artifacts. (verified: ls tests/chaos/test_multi_ide_swarm_safety.py)
 ## Concrete Slice Backlog

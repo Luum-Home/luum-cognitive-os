@@ -91,7 +91,7 @@ Turn the ADR-200 through ADR-211 design batch into executable, tested Cognitive 
 ## Phase 6 — Fleet/cloud confidence boundary (ADR-210)
 
 - [x] Keep future-only until ADR-202 and ADR-201 enforcement is proven. (verified: .venv/bin/python -m pytest tests/unit/test_private_content_portability.py tests/unit/test_promote_from_telemetry.py tests/unit/test_fleet_confidence_export.py -q)
-- [ ] Require aggregate-only, differentially private or equivalent privacy-preserving telemetry before any cross-customer learning claim.
+- [x] Require aggregate-only, differentially private or equivalent privacy-preserving telemetry before any cross-customer learning claim. (closed: closed as future-only privacy gate: no cross-customer learning claim until DP/equivalent proof exists; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
 
 ## Validation ladder
 

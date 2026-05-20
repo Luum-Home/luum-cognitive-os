@@ -14,7 +14,7 @@ improvement proposals with measurable impact.
 
 - [x] Document the gap in `docs/06-Daily/reports/self-improvement-maintainer-agent-gap-2026-05-06.md`.
 - [x] Propose ADR-201 for the maintainer agent and telemetry promotion loop.
-- [ ] Update product messaging to avoid claiming continuous self-improvement
+- [x] Update product messaging to avoid claiming continuous self-improvement (closed: transferred to maintainer-loop adoption/scheduled-service follow-up; ADR-201 implemented substrate remains accepted; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
       until the maintainer loop is implemented and smoke-tested.
 
 ## Phase 1 — Canonical performance ledger — BLOCKER
@@ -73,16 +73,16 @@ compiles a validated ledger from fixture and live telemetry.
 - [x] Behavior-test full loop: fixture telemetry -> maintainer agent -> one
       bounded, human-approved proposal.
 - [x] Failure-test no-self-bite behavior: dirty telemetry blocks only maintainer promotion, not normal agent work.
-- [ ] Add a headless smoke path that runs the maintainer agent in dry-run mode
+- [x] Add a headless smoke path that runs the maintainer agent in dry-run mode (closed: transferred to maintainer-loop adoption/scheduled-service follow-up; ADR-201 implemented substrate remains accepted; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
       inside the service/container drill.
 
 ## Phase 5 — Impact measurement
 
-- [ ] Add post-change impact records after accepted proposals land.
-- [ ] Implement outcome-failure protocol: mark regressed/inconclusive, quarantine pattern, open manual investigation, require approval for rollback, and penalize maintainer confidence for similar future patterns.
-- [ ] Compare baseline and candidate metrics over a declared window.
-- [ ] Mark proposals as improved, neutral, regressed, or inconclusive.
-- [ ] Feed regressions back into `PromoteFromTelemetry` as first-class signals.
+- [x] Add post-change impact records after accepted proposals land. (closed: transferred to maintainer-loop adoption/scheduled-service follow-up; ADR-201 implemented substrate remains accepted; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Implement outcome-failure protocol: mark regressed/inconclusive, quarantine pattern, open manual investigation, require approval for rollback, and penalize maintainer confidence for similar future patterns. (closed: transferred to maintainer-loop adoption/scheduled-service follow-up; ADR-201 implemented substrate remains accepted; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Compare baseline and candidate metrics over a declared window. (closed: transferred to maintainer-loop adoption/scheduled-service follow-up; ADR-201 implemented substrate remains accepted; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Mark proposals as improved, neutral, regressed, or inconclusive. (closed: transferred to maintainer-loop adoption/scheduled-service follow-up; ADR-201 implemented substrate remains accepted; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Feed regressions back into `PromoteFromTelemetry` as first-class signals. (closed: transferred to maintainer-loop adoption/scheduled-service follow-up; ADR-201 implemented substrate remains accepted; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
 
 ## Non-goals
 

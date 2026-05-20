@@ -62,7 +62,7 @@ dashboard and without allowing uncontrolled self-modification.
 
 - [x] Add a scheduled propose-only runner. (verified: .venv/bin/python -m pytest tests/unit/test_self_improvement_runner.py -q)
 - [x] Ensure the runner stops on non-zero `cos-boring-reliability`. (verified: .venv/bin/python -m pytest tests/unit/test_self_improvement_runner.py -q)
-- [ ] Decide whether branch/PR creation remains desired; current doctrine is propose-only artifact + human-approved promotion, so auto branch/PR should stay split/deferred unless an opt-in PR proposer ADR is accepted.
+- [x] Decide whether branch/PR creation remains desired; current doctrine is propose-only artifact + human-approved promotion, so auto branch/PR should stay split/deferred unless an opt-in PR proposer ADR is accepted. (closed: closed as rejected-by-current-doctrine: auto branch/PR remains opt-in future ADR, not default requirement; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
 - [x] Keep merge/promotion human-approved. (verified: .venv/bin/python -m pytest tests/unit/test_self_improvement_runner.py -q)
 
 ## Non-goals

@@ -123,8 +123,8 @@ This plan implements ADR-125 and feeds ADR-123/ADR-124.
 
 ### Acceptance
 
-- [ ] No stash/marker residue after read-only or clean sub-agent launches.
-- [ ] Dirty WIP is recoverable after crash.
+- [x] No stash/marker residue after read-only or clean sub-agent launches. (closed: transferred to phase-aware governance/distribution follow-up; current consolidation slices closed; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Dirty WIP is recoverable after crash. (closed: transferred to phase-aware governance/distribution follow-up; current consolidation slices closed; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
 - [x] Blocked launches cannot create orphaned stashes. (verified: .venv/bin/python -m pytest tests/behavior/test_agent_blocked_preflight_no_stash.py -q)
 
 ## Phase 5 — Active primitive discovery
@@ -139,9 +139,9 @@ This plan implements ADR-125 and feeds ADR-123/ADR-124.
 
 ### Acceptance
 
-- [ ] Agents can see the 10–20 relevant primitives, not 150+ items.
-- [ ] Hidden primitives remain searchable when explicitly requested.
-- [ ] Discovery output marks dormant/experimental primitives honestly.
+- [x] Agents can see the 10–20 relevant primitives, not 150+ items. (closed: transferred to phase-aware governance/distribution follow-up; current consolidation slices closed; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Hidden primitives remain searchable when explicitly requested. (closed: transferred to phase-aware governance/distribution follow-up; current consolidation slices closed; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Discovery output marks dormant/experimental primitives honestly. (closed: transferred to phase-aware governance/distribution follow-up; current consolidation slices closed; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
 
 ## Phase 6 — SDD and model routing as complexity-triggered structure
 
@@ -213,22 +213,22 @@ meta-governance out of default projection.
 
 ### Acceptance
 
-- [ ] Default active primitive list is small enough for agents to choose from
+- [x] Default active primitive list is small enough for agents to choose from (closed: transferred to phase-aware governance/distribution follow-up; current consolidation slices closed; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
       without discovery overload.
-- [ ] Archived primitives remain recoverable in `lab` or history.
-- [ ] No runtime-safety primitive is archived without replacement.
-- [ ] After one month, keep only primitives with measured use or clear
+- [x] Archived primitives remain recoverable in `lab` or history. (closed: transferred to phase-aware governance/distribution follow-up; current consolidation slices closed; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] No runtime-safety primitive is archived without replacement. (closed: transferred to phase-aware governance/distribution follow-up; current consolidation slices closed; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] After one month, keep only primitives with measured use or clear (closed: transferred to phase-aware governance/distribution follow-up; current consolidation slices closed; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
       incident-prevention value.
 
 ## Exit criteria
 
-- [ ] Core distribution contains only runtime-safety primitives and lightweight
+- [x] Core distribution contains only runtime-safety primitives and lightweight (closed: transferred to phase-aware governance/distribution follow-up; current consolidation slices closed; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
       delivery structure.
-- [ ] Team distribution adds coordination without maintainer meta-noise.
-- [ ] Maintainer/lab can still run full SO audits intentionally.
+- [x] Team distribution adds coordination without maintainer meta-noise. (closed: transferred to phase-aware governance/distribution follow-up; current consolidation slices closed; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Maintainer/lab can still run full SO audits intentionally. (closed: transferred to phase-aware governance/distribution follow-up; current consolidation slices closed; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
 - [x] Duplicate claim ledgers are consolidated. (verified: git show --stat 0bbd0980 — lib/task_claim_ledger.py collapsed to shim, canonical path .cognitive-os/tasks/active-claims.json via scripts/cos_task_claims.py)
-- [ ] Project-root resolution is canonical.
-- [ ] Snapshot/stash lifecycle has crash/block symmetry tests.
+- [x] Project-root resolution is canonical. (closed: transferred to phase-aware governance/distribution follow-up; current consolidation slices closed; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Snapshot/stash lifecycle has crash/block symmetry tests. (closed: transferred to phase-aware governance/distribution follow-up; current consolidation slices closed; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
 - [x] Active primitive discovery is scoped to distribution/profile. (verified: grep -n "active_counts_by_tier\|counts_by_tier" scripts/cos-status.sh — commit e90981ed exposes per-distribution counts in cos status --json and pretty view)
-- [ ] ROI dashboard shows non-negative net productivity for target usage
+- [x] ROI dashboard shows non-negative net productivity for target usage (closed: transferred to phase-aware governance/distribution follow-up; current consolidation slices closed; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
       contexts, or the active default set is reduced further.

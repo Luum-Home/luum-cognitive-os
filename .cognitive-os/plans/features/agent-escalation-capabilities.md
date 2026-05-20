@@ -388,28 +388,28 @@ No new infrastructure required. All phases build on existing components.
 
 ### Functional
 
-- [ ] `EscalationDetector.check_should_escalate()` returns all four new capability signal
+- [x] `EscalationDetector.check_should_escalate()` returns all four new capability signal (closed: archived/tombstoned per ADR-326; Phase 3 superseded by ADR-228, Phases 1+2 parked; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
   types when triggered
-- [ ] `AgentBus.publish_escalation()` publishes to `cos:agent:{id}:escalation` channel
+- [x] `AgentBus.publish_escalation()` publishes to `cos:agent:{id}:escalation` channel (closed: archived/tombstoned per ADR-326; Phase 3 superseded by ADR-228, Phases 1+2 parked; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
   (or file fallback)
-- [ ] `handle_capability_escalation()` produces a valid `AgentLaunchConfig` for each
+- [x] `handle_capability_escalation()` produces a valid `AgentLaunchConfig` for each (closed: archived/tombstoned per ADR-326; Phase 3 superseded by ADR-228, Phases 1+2 parked; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
   signal type
-- [ ] `_upgrade_model("haiku")` returns `"sonnet"`; `_upgrade_model("opus")` returns `None`
-- [ ] All unit tests in `tests/unit/test_capability_escalation.py` pass
+- [x] `_upgrade_model("haiku")` returns `"sonnet"`; `_upgrade_model("opus")` returns `None` (closed: archived/tombstoned per ADR-326; Phase 3 superseded by ADR-228, Phases 1+2 parked; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] All unit tests in `tests/unit/test_capability_escalation.py` pass (closed: archived/tombstoned per ADR-326; Phase 3 superseded by ADR-228, Phases 1+2 parked; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
 
 ### Behavioral
 
-- [ ] A haiku agent that emits `NEEDS_DEEPER_REASONING` is re-dispatched to sonnet with
+- [x] A haiku agent that emits `NEEDS_DEEPER_REASONING` is re-dispatched to sonnet with (closed: archived/tombstoned per ADR-326; Phase 3 superseded by ADR-228, Phases 1+2 parked; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
   context handoff (verifiable in escalation Engram entries)
-- [ ] A sonnet agent escalating twice reaches opus on attempt 3
-- [ ] Escalation over budget ceiling routes to human instead of upgrading
-- [ ] Session summary reports escalation overhead cost separately
+- [x] A sonnet agent escalating twice reaches opus on attempt 3 (closed: archived/tombstoned per ADR-326; Phase 3 superseded by ADR-228, Phases 1+2 parked; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Escalation over budget ceiling routes to human instead of upgrading (closed: archived/tombstoned per ADR-326; Phase 3 superseded by ADR-228, Phases 1+2 parked; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Session summary reports escalation overhead cost separately (closed: archived/tombstoned per ADR-326; Phase 3 superseded by ADR-228, Phases 1+2 parked; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
 
 ### Quality
 
-- [ ] No regressions in existing `EscalationDetector` tests
-- [ ] Existing `ESCALATION:` block format backward-compatible (new fields are optional)
-- [ ] `lib/model_router.py` `UPGRADE_CHAIN` is strict inverse of `DOWNGRADE_CHAIN`
+- [x] No regressions in existing `EscalationDetector` tests (closed: archived/tombstoned per ADR-326; Phase 3 superseded by ADR-228, Phases 1+2 parked; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Existing `ESCALATION:` block format backward-compatible (new fields are optional) (closed: archived/tombstoned per ADR-326; Phase 3 superseded by ADR-228, Phases 1+2 parked; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] `lib/model_router.py` `UPGRADE_CHAIN` is strict inverse of `DOWNGRADE_CHAIN` (closed: archived/tombstoned per ADR-326; Phase 3 superseded by ADR-228, Phases 1+2 parked; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
   (roundtrip: `_upgrade_model(_downgrade_model(m)) == m` for all non-boundary tiers)
 
 ---
@@ -429,17 +429,17 @@ No new infrastructure required. All phases build on existing components.
 
 ## 9. Definition of Done
 
-- [ ] `EscalationSignal` dataclass has `capability_needed`, `context_summary`, `partial_result`,
+- [x] `EscalationSignal` dataclass has `capability_needed`, `context_summary`, `partial_result`, (closed: archived/tombstoned per ADR-326; Phase 3 superseded by ADR-228, Phases 1+2 parked; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
   `recommended_action` fields (all optional, backward-compatible)
-- [ ] Four new signal type constants defined and documented
-- [ ] `_check_capability_ceiling()` implemented and covered by unit tests
-- [ ] `AgentBus` has `publish_escalation()` with Valkey + file fallback
-- [ ] `handle_capability_escalation()` in `dispatch_helper.py` handles all four signal types
-- [ ] `_upgrade_model()` is the strict inverse of `_downgrade_model()` for non-boundary tiers
-- [ ] Progressive chain (haiku → sonnet → opus) terminates after 3 attempts maximum
-- [ ] Budget gate blocks upgrade when `monthly_limit_usd` would be exceeded
-- [ ] `templates/agent-preamble.md` documents all new signal types and the decision tree
-- [ ] `rules/agent-escalation.md` updated with capability signals and re-dispatch policy
-- [ ] `tests/unit/test_capability_escalation.py` covers: signal detection, upgrade chain,
+- [x] Four new signal type constants defined and documented (closed: archived/tombstoned per ADR-326; Phase 3 superseded by ADR-228, Phases 1+2 parked; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] `_check_capability_ceiling()` implemented and covered by unit tests (closed: archived/tombstoned per ADR-326; Phase 3 superseded by ADR-228, Phases 1+2 parked; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] `AgentBus` has `publish_escalation()` with Valkey + file fallback (closed: archived/tombstoned per ADR-326; Phase 3 superseded by ADR-228, Phases 1+2 parked; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] `handle_capability_escalation()` in `dispatch_helper.py` handles all four signal types (closed: archived/tombstoned per ADR-326; Phase 3 superseded by ADR-228, Phases 1+2 parked; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] `_upgrade_model()` is the strict inverse of `_downgrade_model()` for non-boundary tiers (closed: archived/tombstoned per ADR-326; Phase 3 superseded by ADR-228, Phases 1+2 parked; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Progressive chain (haiku → sonnet → opus) terminates after 3 attempts maximum (closed: archived/tombstoned per ADR-326; Phase 3 superseded by ADR-228, Phases 1+2 parked; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Budget gate blocks upgrade when `monthly_limit_usd` would be exceeded (closed: archived/tombstoned per ADR-326; Phase 3 superseded by ADR-228, Phases 1+2 parked; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] `templates/agent-preamble.md` documents all new signal types and the decision tree (closed: archived/tombstoned per ADR-326; Phase 3 superseded by ADR-228, Phases 1+2 parked; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] `rules/agent-escalation.md` updated with capability signals and re-dispatch policy (closed: archived/tombstoned per ADR-326; Phase 3 superseded by ADR-228, Phases 1+2 parked; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] `tests/unit/test_capability_escalation.py` covers: signal detection, upgrade chain, (closed: archived/tombstoned per ADR-326; Phase 3 superseded by ADR-228, Phases 1+2 parked; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
   budget gate, context handoff assembly, human escalation fallback
-- [ ] All existing tests pass (no regressions)
+- [x] All existing tests pass (no regressions) (closed: archived/tombstoned per ADR-326; Phase 3 superseded by ADR-228, Phases 1+2 parked; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)

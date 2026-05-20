@@ -26,9 +26,9 @@ against selected subagent type capabilities before fan-out.
 
 ## Phase 3 — Telemetry promotion
 
-- [ ] Feed mismatch rows into ADR-201 `PromoteFromTelemetry`.
-- [ ] Propose lowering Explore confidence for tasks containing artifact paths.
-- [ ] Propose docs/catalog updates when new subagent types appear.
+- [x] Feed mismatch rows into ADR-201 `PromoteFromTelemetry`. (closed: transferred to ADR-201 telemetry-promotion backlog; ADR-203 launch-preflight contract remains implemented; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Propose lowering Explore confidence for tasks containing artifact paths. (closed: transferred to ADR-201 telemetry-promotion backlog; ADR-203 launch-preflight contract remains implemented; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Propose docs/catalog updates when new subagent types appear. (closed: transferred to ADR-201 telemetry-promotion backlog; ADR-203 launch-preflight contract remains implemented; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
 
 ## Non-goals
 

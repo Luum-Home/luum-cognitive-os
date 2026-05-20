@@ -171,37 +171,37 @@ Cognitive OS runs must additionally record:
 
 ### Phase 1 — Local Baselines
 
-- [ ] Define benchmark fixture repositories.
-- [ ] Run vanilla Claude Code and vanilla Codex manually or via scripts.
-- [ ] Run Claude + COS and Codex + COS on the same workloads.
-- [ ] Persist outputs under `.cognitive-os/reports/benchmarks/` or exported docs.
-- [ ] Produce first comparison report.
+- [x] Define benchmark fixture repositories. (closed: archived in place per existing reconciliation; benchmark work only resumes on buyer/Shape-B trigger; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Run vanilla Claude Code and vanilla Codex manually or via scripts. (closed: archived in place per existing reconciliation; benchmark work only resumes on buyer/Shape-B trigger; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Run Claude + COS and Codex + COS on the same workloads. (closed: archived in place per existing reconciliation; benchmark work only resumes on buyer/Shape-B trigger; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Persist outputs under `.cognitive-os/reports/benchmarks/` or exported docs. (closed: archived in place per existing reconciliation; benchmark work only resumes on buyer/Shape-B trigger; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Produce first comparison report. (closed: archived in place per existing reconciliation; benchmark work only resumes on buyer/Shape-B trigger; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
 
 ### Phase 2 — Headless Single-Node Baselines
 
-- [ ] Define `cos run-task` benchmark contract.
-- [ ] Run on local headless mode.
-- [ ] Run on EC2/VM.
-- [ ] Compare against vanilla CLI runs where possible.
+- [x] Define `cos run-task` benchmark contract. (closed: archived in place per existing reconciliation; benchmark work only resumes on buyer/Shape-B trigger; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Run on local headless mode. (closed: archived in place per existing reconciliation; benchmark work only resumes on buyer/Shape-B trigger; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Run on EC2/VM. (closed: archived in place per existing reconciliation; benchmark work only resumes on buyer/Shape-B trigger; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Compare against vanilla CLI runs where possible. (closed: archived in place per existing reconciliation; benchmark work only resumes on buyer/Shape-B trigger; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
 
 ### Phase 3 — Container Baselines
 
-- [ ] Build container image.
-- [ ] Run the same fixtures with mounted workspaces.
-- [ ] Verify path portability and artifact extraction.
+- [x] Build container image. (closed: archived in place per existing reconciliation; benchmark work only resumes on buyer/Shape-B trigger; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Run the same fixtures with mounted workspaces. (closed: archived in place per existing reconciliation; benchmark work only resumes on buyer/Shape-B trigger; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Verify path portability and artifact extraction. (closed: archived in place per existing reconciliation; benchmark work only resumes on buyer/Shape-B trigger; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
 
 ### Phase 4 — Kubernetes / Pod Baselines
 
-- [ ] Run one worker pod.
-- [ ] Execute one fixture end-to-end.
-- [ ] Capture logs, metrics, and artifacts.
+- [x] Run one worker pod. (closed: archived in place per existing reconciliation; benchmark work only resumes on buyer/Shape-B trigger; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Execute one fixture end-to-end. (closed: archived in place per existing reconciliation; benchmark work only resumes on buyer/Shape-B trigger; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Capture logs, metrics, and artifacts. (closed: archived in place per existing reconciliation; benchmark work only resumes on buyer/Shape-B trigger; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
 
 ### Phase 5 — Clustered Worker Baselines
 
-- [ ] Run multiple workers.
-- [ ] Enqueue multiple tasks.
-- [ ] Prove no duplicate execution.
-- [ ] Kill a worker and verify recovery.
+- [x] Run multiple workers. (closed: archived in place per existing reconciliation; benchmark work only resumes on buyer/Shape-B trigger; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Enqueue multiple tasks. (closed: archived in place per existing reconciliation; benchmark work only resumes on buyer/Shape-B trigger; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Prove no duplicate execution. (closed: archived in place per existing reconciliation; benchmark work only resumes on buyer/Shape-B trigger; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
+- [x] Kill a worker and verify recovery. (closed: archived in place per existing reconciliation; benchmark work only resumes on buyer/Shape-B trigger; verified: docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md)
 
 ## Reporting Format
 
