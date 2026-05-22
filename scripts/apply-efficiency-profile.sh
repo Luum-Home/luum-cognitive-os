@@ -184,7 +184,7 @@ PYASYNC
   # Sanity: confirm representative hooks from the committed baseline are wired.
   for hook in self-install.sh session-init.sh cross-session-event-emit.sh infra-health.sh subagent-context-injector.sh \
     pre-compaction-flush.sh agent-bash-cwd-enforcer.sh rate-limiter.sh control-plane-audit.sh secret-detector.sh \
-    agent-control-inbound-guard.sh cosd-auth-guard.sh lethal-trifecta-gate.sh dispatch-gate.sh subagent-capability-preflight.sh clarification-gate.sh blast-radius.sh query-tailored-context-inject.sh control-plane-audit.sh \
+    agent-control-inbound-guard.sh cosd-auth-guard.sh lethal-trifecta-gate.sh dispatch-gate.sh subagent-capability-preflight.sh clarification-gate.sh blast-radius.sh query-tailored-context-inject.sh context-diet.sh control-plane-audit.sh \
     pre-agent-snapshot.sh agent-launch-confirmed.sh post-agent-snapshot-restore.sh completeness-check.sh reinvention-check.sh error-pipeline.sh result-truncator.sh auto-checkpoint.sh \
     control-plane-audit.sh content-policy.sh ai-provider-identity-guard.sh doc-sync-detector.sh claim-validator.sh post-agent-verify.sh direct-main-guard.sh cross-session-coordination-guard.sh agent-message-inbox-guard.sh orchestrator-claim-gate.sh pre-commit-content-hash-dedupe.sh concurrent-write-guard.sh plan-claim-validator.sh completion-gate.sh \
     aci-observation-capture.sh trust-score-validator.sh auto-repair-dispatcher.sh dequeue-notify.sh state-heartbeat.sh adversarial-review-gate.sh decision-depth-gate.sh \
@@ -264,7 +264,7 @@ echo "  PreToolUse Bash: bash-hot-path-dispatcher.sh (default tiered P0/P1 for C
 echo "  PreToolUse engram write tools: private-mode-gate.sh"
 echo "  PreToolUse Read: document-ingest-guard.sh, large-file-advisor.sh"
 echo "  PreToolUse Bash|Edit|Write: secret-detector.sh (redaction); Edit|Write also runs project-docs-convention.sh, edit-lock-pre-tool.sh, concurrent-write-guard.sh, plan-claim-validator.sh, skill-md-routing-validator.sh"
-echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-working-dir-inject.sh, query-tailored-context-inject.sh, control-plane-audit.sh, agent-prelaunch.sh, error-pattern-detector.sh, prompt-quality-llm.sh, token-budget-monitor.sh, adaptive-bypass.sh, predev-completeness-check.sh, completeness-check.sh, reinvention-check.sh, pre-agent-snapshot.sh, native-agent-heartbeat.sh, agent-launch-confirmed.sh"
+echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-working-dir-inject.sh, query-tailored-context-inject.sh, context-diet.sh, control-plane-audit.sh, agent-prelaunch.sh, error-pattern-detector.sh, prompt-quality-llm.sh, token-budget-monitor.sh, adaptive-bypass.sh, predev-completeness-check.sh, completeness-check.sh, reinvention-check.sh, pre-agent-snapshot.sh, native-agent-heartbeat.sh, agent-launch-confirmed.sh"
 echo "  PostToolUse * (early): private-mode-metrics-gate.sh"
 echo "  PostToolUse *: context-watchdog.sh, subagent-budget-enforcer.sh, rate-limit-detector.sh, tool-sequence-capture.sh, codebase-itinerary-capture.sh, aci-observation-capture.sh"
 echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh, rate-limit-drain.sh, audit-id-enricher.sh, post-git-orphan-notifier.sh"
