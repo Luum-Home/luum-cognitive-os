@@ -16,9 +16,38 @@ if str(PROJECT_ROOT) not in sys.path:
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
-import cos_boring_reliability
 import cos_claim_signature_audit
+import cos_demotion_loop_audit
+import cos_false_positive_ledger
+import cos_manifest_tier_claim_audit
+import silent_failure_audit
 from lib.self_improvement_loop import build_self_improvement_plan, write_plan
+
+
+def build_self_improvement_inputs(project_root: Path) -> dict:
+    """Build only the audit slices consumed by the proposal normalizer.
+
+    `cos_boring_reliability.build_dashboard()` is intentionally broad for a
+    human dashboard. The self-improvement CLI only needs the proposal-producing
+    slices, so keep this hot path small enough for unit and release lanes.
+    """
+
+    return {
+        "demotion_loop": cos_demotion_loop_audit.build_report(
+            project_root / "manifests" / "primitive-lifecycle.yaml"
+        ),
+        "false_positive_ledger": cos_false_positive_ledger.build_report(
+            project_root / ".cognitive-os" / "metrics"
+        ),
+        "manifest_tier_claims": cos_manifest_tier_claim_audit.build_report(
+            project_root / "manifests" / "primitive-lifecycle.yaml"
+        ),
+        "silent_failure_audit": silent_failure_audit.build_report(
+            project_root,
+            project_root / "hooks",
+            project_root / "manifests" / "silent-failure-allowlist.yaml",
+        ),
+    }
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -31,7 +60,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     project_root = Path(args.project_dir).resolve()
-    boring = cos_boring_reliability.build_dashboard(args.profile, project_root)
+    boring = build_self_improvement_inputs(project_root)
     claim_signature = cos_claim_signature_audit.build_report(
         project_root / "manifests" / "primitive-lifecycle.yaml",
         project_root / "manifests" / "external-adoption-evidence.yaml",

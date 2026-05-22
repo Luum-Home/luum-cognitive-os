@@ -19,6 +19,7 @@ except ImportError:
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 CATALOG_MD = PROJECT_ROOT / "skills" / "CATALOG.md"
 CATALOG_COMPACT_MD = PROJECT_ROOT / "skills" / "CATALOG-COMPACT.md"
+CATALOG_MICRO_MD = PROJECT_ROOT / "skills" / "CATALOG-MICRO.md"
 COS_YAML = PROJECT_ROOT / "cognitive-os.yaml"
 
 pytestmark = pytest.mark.unit
@@ -52,20 +53,22 @@ class TestCompatTestSkillExists:
 class TestCompatTestProgressiveLoadingContract:
     @pytest.mark.skipif(not YAML_AVAILABLE, reason="PyYAML not installed")
     def test_catalog_md_token_estimate_within_budget(self):
-        """Test 5 from compat-test: compact catalog fits level1, full catalog fits level2.
+        """Test 5 from compat-test: micro fits level1, compact/full fit upper levels.
 
-        Level 1 loads the progressive `CATALOG-COMPACT.md` index; the full
-        `CATALOG.md` is a level 2 on-demand artifact and may be larger. This
-        test enforces the actual progressive-loading contract instead of
-        warning on a valid full-catalog overflow.
+        Level 1 loads the progressive `CATALOG-MICRO.md` index. The compact
+        `CATALOG-COMPACT.md` is level 1.5 discovery, and full `CATALOG.md` is a
+        level 2 on-demand artifact. This test enforces the current
+        progressive-loading contract instead of warning on a valid level 1.5
+        overflow.
         """
         assert CATALOG_MD.exists(), "CATALOG.md missing"
         assert CATALOG_COMPACT_MD.exists(), "CATALOG-COMPACT.md missing"
-        compact_chars = len(CATALOG_COMPACT_MD.read_text())
-        estimated_tokens = compact_chars / 4  # chars / 4 approximation
+        assert CATALOG_MICRO_MD.exists(), "CATALOG-MICRO.md missing"
+        micro_estimated_tokens = len(CATALOG_MICRO_MD.read_text()) / 4
+        compact_estimated_tokens = len(CATALOG_COMPACT_MD.read_text()) / 4
         full_estimated_tokens = len(CATALOG_MD.read_text()) / 4
 
-        # Read level1_budget from cognitive-os.yaml
+        # Read catalog budgets from cognitive-os.yaml.
         assert COS_YAML.exists(), "cognitive-os.yaml missing"
         config = yaml.safe_load(COS_YAML.read_text())
         budget = (
@@ -73,14 +76,23 @@ class TestCompatTestProgressiveLoadingContract:
             .get("loading", {})
             .get("level1_budget", 5000)
         )
+        level15_budget = (
+            config.get("skills", {})
+            .get("loading", {})
+            .get("level15_budget", 8000)
+        )
         level2_budget = (
             config.get("skills", {})
             .get("loading", {})
             .get("level2_budget", 30000)
         )
-        assert estimated_tokens < budget, (
-            f"CATALOG-COMPACT.md estimated tokens ({estimated_tokens:.0f}) "
+        assert micro_estimated_tokens < budget, (
+            f"CATALOG-MICRO.md estimated tokens ({micro_estimated_tokens:.0f}) "
             f"exceeds level1_budget ({budget}). Run scripts/generate_compact_catalog.py."
+        )
+        assert compact_estimated_tokens < level15_budget, (
+            f"CATALOG-COMPACT.md estimated tokens ({compact_estimated_tokens:.0f}) "
+            f"exceeds level15_budget ({level15_budget}). Run scripts/generate_compact_catalog.py."
         )
         assert full_estimated_tokens < level2_budget, (
             f"CATALOG.md estimated tokens ({full_estimated_tokens:.0f}) "

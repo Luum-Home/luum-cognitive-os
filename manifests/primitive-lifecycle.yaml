@@ -2182,6 +2182,31 @@ primitives:
   docs_claim_level: blocking
   exit_behavior: exit_2
   metrics_file: .cognitive-os/metrics/context-budget.jsonl
+- id: hooks/context-diet.sh
+  kind: hook
+  owner_adr: ADR-016
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: team
+  governance_class: context-loading
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  projection_targets:
+  - .claude/settings.json
+  - hooks/context-diet.sh
+  runtime_projection: true
+  behavior_evidence: task-aware-context-selection-with-safe-noop-for-unsupported-agent-payloads
+  evidence_commands:
+  - bash -n hooks/context-diet.sh
+  - python3 -m pytest tests/unit/test_context_diet.py -q
+  rollback_or_repair_command: Remove hooks/context-diet.sh from PreToolUse projection if lifecycle payload precision or latency regresses.
+  sunset_criteria: Archive when replaced by native harness context-selection primitives with equivalent task-aware rule coverage.
+  latency_budget_ms: 50
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/context-diet.jsonl
 - id: hooks/context-watchdog.sh
   kind: hook
   owner_adr: ADR-186
