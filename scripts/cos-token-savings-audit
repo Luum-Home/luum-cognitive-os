@@ -1,0 +1,246 @@
+#!/usr/bin/env python3
+# SCOPE: both
+"""Anonymized local token-savings audit for SO vs vanilla governance.
+
+Read-only. Reports project IDs only (project-001, project-002, ...), never paths
+or repository names, unless --show-paths is explicitly passed by an operator.
+The audit is structural: it estimates prompt/context footprint and benchmark task
+inputs. Live model quality/cost must be filled by a paired run receipt.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import math
+import os
+from dataclasses import asdict, dataclass
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Iterable
+
+TOKEN_DIVISOR = 4
+DEFAULT_ROOT = Path.home() / "Projects"
+DEFAULT_OUTPUT_DIR = Path(".cognitive-os/reports")
+
+SENSITIVE_DIR_NAMES = {".git", "node_modules", ".venv", "venv", "__pycache__", ".mypy_cache", ".pytest_cache"}
+SO_MARKERS = ("cognitive-os.yaml", ".cognitive-os", "AGENTS.md", ".claude/settings.json")
+
+TASKS = (
+    {
+        "id": "orientation",
+        "description": "Understand repository purpose, entrypoints, and likely validation command.",
+        "vanilla_globs": ("README*", "AGENTS.md", "package.json", "pyproject.toml", "Makefile", "go.mod"),
+        "so_globs": ("AGENTS.md", "cognitive-os.yaml", ".cognitive-os/generated/runtime-config.compact.yaml", "README*"),
+    },
+    {
+        "id": "test-command-discovery",
+        "description": "Find the smallest trustworthy test/check command for a small change.",
+        "vanilla_globs": ("README*", "package.json", "pyproject.toml", "pytest.ini", "Makefile", "go.mod", ".github/workflows/*.yml"),
+        "so_globs": ("AGENTS.md", "cognitive-os.yaml", "rules/RULES-COMPACT.md", "package.json", "pyproject.toml", "pytest.ini", "Makefile", "go.mod"),
+    },
+    {
+        "id": "small-doc-change-plan",
+        "description": "Plan a small documentation change with repository conventions.",
+        "vanilla_globs": ("README*", "docs/**/*.md", "AGENTS.md"),
+        "so_globs": ("AGENTS.md", "cognitive-os.yaml", "rules/RULES-COMPACT.md", "skills/CATALOG-MICRO.md", "docs/**/*.md"),
+        "max_docs": 8,
+        "so_max_docs": 2,
+    },
+)
+
+
+def estimate_tokens(text_or_chars: str | int) -> int:
+    chars = text_or_chars if isinstance(text_or_chars, int) else len(text_or_chars)
+    if chars <= 0:
+        return 0
+    return max(1, math.ceil(chars / TOKEN_DIVISOR))
+
+
+def file_tokens(path: Path) -> int:
+    try:
+        return estimate_tokens(path.read_text(encoding="utf-8", errors="ignore"))
+    except OSError:
+        return 0
+
+
+def safe_glob(root: Path, pattern: str, limit: int | None = None) -> list[Path]:
+    paths: list[Path] = []
+    for path in sorted(root.glob(pattern)):
+        if not path.is_file():
+            continue
+        if any(part in SENSITIVE_DIR_NAMES for part in path.parts):
+            continue
+        paths.append(path)
+        if limit and len(paths) >= limit:
+            break
+    return paths
+
+
+def collect_task_tokens(root: Path, globs: Iterable[str], *, max_docs: int | None = None) -> tuple[int, int]:
+    seen: set[Path] = set()
+    for pattern in globs:
+        limit = max_docs if pattern.startswith("docs/") else None
+        for path in safe_glob(root, pattern, limit=limit):
+            seen.add(path)
+    return sum(file_tokens(path) for path in seen), len(seen)
+
+
+def _marker_score(path: Path) -> int:
+    score = 0
+    if (path / "cognitive-os.yaml").exists():
+        score += 100
+    if (path / ".cognitive-os").exists():
+        score += 40
+    if (path / "AGENTS.md").exists():
+        score += 20
+    if (path / "rules/RULES-COMPACT.md").exists():
+        score += 10
+    if (path / "skills/CATALOG-MICRO.md").exists():
+        score += 10
+    if (path / ".claude/settings.json").exists():
+        score += 5
+    return score
+
+
+def discover_projects(root: Path, limit: int) -> list[Path]:
+    candidates: list[Path] = []
+    for current, dirs, files in os.walk(root):
+        dirs[:] = [d for d in dirs if d not in SENSITIVE_DIR_NAMES]
+        path = Path(current)
+        if any((path / marker).exists() for marker in SO_MARKERS):
+            if path not in candidates:
+                candidates.append(path)
+            dirs[:] = []
+    return sorted(candidates, key=lambda item: (-_marker_score(item), str(item)))[:limit]
+
+
+@dataclass(frozen=True)
+class TaskEstimate:
+    task_id: str
+    description: str
+    vanilla_prompt_tokens: int
+    so_prompt_tokens: int
+    estimated_savings_tokens: int
+    estimated_savings_percent: float
+    vanilla_files_read: int
+    so_files_read: int
+    retries: str = "not_measured_structural_audit"
+    provider_cost_usd: str = "not_measured_structural_audit"
+    quality: str = "requires_paired_live_run"
+
+
+@dataclass(frozen=True)
+class ProjectEstimate:
+    project_id: str
+    project_path: str | None
+    so_installed_markers: list[str]
+    visible_so_tokens: int
+    task_estimates: list[TaskEstimate]
+
+
+def analyze_project(root: Path, project_id: str, show_paths: bool = False) -> ProjectEstimate:
+    markers = [marker for marker in SO_MARKERS if (root / marker).exists()]
+    visible_files = [
+        "AGENTS.md",
+        "cognitive-os.yaml",
+        "rules/RULES-COMPACT.md",
+        "skills/CATALOG-MICRO.md",
+        "skills/CATALOG-COMPACT.md",
+        ".cognitive-os/generated/runtime-config.compact.yaml",
+    ]
+    visible_so_tokens = sum(file_tokens(root / rel) for rel in visible_files if (root / rel).is_file())
+    estimates: list[TaskEstimate] = []
+    for task in TASKS:
+        vanilla_tokens, vanilla_files = collect_task_tokens(root, task["vanilla_globs"], max_docs=task.get("max_docs"))
+        so_tokens, so_files = collect_task_tokens(root, task["so_globs"], max_docs=task.get("so_max_docs", task.get("max_docs")))
+        # If no SO context files exist for a task, charge visible SO markers as the minimal installed context.
+        if so_tokens == 0:
+            so_tokens = visible_so_tokens
+        savings = vanilla_tokens - so_tokens if vanilla_tokens > 0 else 0
+        pct = round((savings / vanilla_tokens) * 100, 1) if vanilla_tokens > 0 else 0.0
+        estimates.append(TaskEstimate(
+            task_id=str(task["id"]),
+            description=str(task["description"]),
+            vanilla_prompt_tokens=vanilla_tokens,
+            so_prompt_tokens=so_tokens,
+            estimated_savings_tokens=savings,
+            estimated_savings_percent=pct,
+            vanilla_files_read=vanilla_files,
+            so_files_read=so_files,
+        ))
+    return ProjectEstimate(
+        project_id=project_id,
+        project_path=str(root) if show_paths else None,
+        so_installed_markers=markers,
+        visible_so_tokens=visible_so_tokens,
+        task_estimates=estimates,
+    )
+
+
+def render_markdown(rows: list[ProjectEstimate]) -> str:
+    lines = [
+        "# Anonymized Token Savings Audit",
+        "",
+        f"Generated: {datetime.now(timezone.utc).isoformat()}",
+        "",
+        "This report is path-redacted by default. Project names and absolute paths are intentionally omitted.",
+        "The measurements are structural estimates, not live paired model runs. Retries, provider cost, and quality require the manual paired-run receipt described in `docs/09-Quality/manual-tests/token-savings-paired-benchmark.md`.",
+        "",
+        "## Project summary",
+        "",
+        "| Project | SO markers | Visible SO tokens |",
+        "|---|---|---:|",
+    ]
+    for row in rows:
+        markers = ", ".join(row.so_installed_markers) or "none"
+        lines.append(f"| {row.project_id} | {markers} | {row.visible_so_tokens} |")
+    lines += ["", "## Task estimates", ""]
+    for row in rows:
+        lines += [f"### {row.project_id}", "", "| Task | Vanilla tokens | SO tokens | Savings | Files vanilla/SO | Notes |", "|---|---:|---:|---:|---:|---|"]
+        for task in row.task_estimates:
+            lines.append(
+                f"| {task.task_id} | {task.vanilla_prompt_tokens} | {task.so_prompt_tokens} | "
+                f"{task.estimated_savings_tokens} ({task.estimated_savings_percent}%) | "
+                f"{task.vanilla_files_read}/{task.so_files_read} | structural estimate |"
+            )
+        lines.append("")
+    return "\n".join(lines) + "\n"
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--root", type=Path, default=DEFAULT_ROOT, help="Root folder to scan for local projects")
+    parser.add_argument("--project", type=Path, action="append", default=[], help="Explicit project path; can be repeated")
+    parser.add_argument("--limit", type=int, default=3, help="Maximum projects when scanning --root")
+    parser.add_argument("--json", action="store_true", help="Print JSON to stdout")
+    parser.add_argument("--write", action="store_true", help="Write anonymized JSON and Markdown reports")
+    parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
+    parser.add_argument("--show-paths", action="store_true", help="Opt-in: include absolute paths in JSON output")
+    args = parser.parse_args(argv)
+
+    projects = args.project or discover_projects(args.root, args.limit)
+    rows = [analyze_project(path.resolve(), f"project-{idx:03d}", show_paths=args.show_paths) for idx, path in enumerate(projects, start=1)]
+    payload: dict[str, Any] = {
+        "schema_version": 1,
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "path_redacted": not args.show_paths,
+        "project_count": len(rows),
+        "projects": [asdict(row) for row in rows],
+    }
+    if args.write:
+        args.output_dir.mkdir(parents=True, exist_ok=True)
+        json_path = args.output_dir / "token-savings-audit-anonymized.json"
+        md_path = args.output_dir / "token-savings-audit-anonymized.md"
+        json_path.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
+        md_path.write_text(render_markdown(rows), encoding="utf-8")
+        print(f"Wrote {json_path}")
+        print(f"Wrote {md_path}")
+    elif args.json:
+        print(json.dumps(payload, indent=2, sort_keys=True))
+    else:
+        print(render_markdown(rows), end="")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
