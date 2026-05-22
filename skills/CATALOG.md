@@ -91,6 +91,7 @@
 | devbox-checkpoint | Save/restore environment state snapshots | `/checkpoint` | project |
 | repair-status | Report auto-repair system health, circuit breaker states, registry stats | `/repair-status` | project |
 | conversation-memory | Search past sessions, surface patterns, self-referential learning | `/conversation-memory` | project |
+| graphify-query | Query/build Graphify repository knowledge graphs for maintainer context selection without installing hooks or persistent IDE instructions | `/graphify-query` | os-dev |
 | repo-scout | Scout external git repos for tech radar classification (bulk mode, markdown artifacts, adoption signals) | `/repo-scout` | both |
 | radar-update | Merge /repo-scout evaluations into ecosystem-tools.md and blocked-tools.md, preserving human-authored prose. Dry-run by default, --apply writes | `/radar-update` | os-dev |
 | eval-repo | [DEPRECATED] Renamed to /repo-scout (2026-04-24) | `/eval-repo` | both |

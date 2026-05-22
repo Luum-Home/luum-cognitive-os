@@ -140,3 +140,4 @@ cos_mutation.sqlite
 
 # Rust build output
 target/
+graphify-out/

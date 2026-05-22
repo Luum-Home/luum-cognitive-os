@@ -8,7 +8,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 
 ## Active
 
-### Active / Implemented (165)
+### Active / Implemented (166)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
@@ -93,6 +93,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [186](ADR-186-context-budget-enforcement.md) | Context Budget Enforcement — Activate the ADR-038 Wave 3 Limits | accepted | implemented | 2026-05-05 | **Accepted.** Implemented as `lib/context_budget.py`, a shared hook accountant, a UserPromptSubmit meter, and hook-level budget checks. Filed in response to tod |
 | [188](ADR-188-mandatory-skill-invocation-at-high-confidence.md) | Mandatory Skill Invocation at High Router Confidence | accepted | implemented | 2026-05-06 | **Accepted (2026-05-06).** Implementation landed on session branch |
 | [189](ADR-189-harness-implementation-coverage.md) | Surface Implementation Coverage for Agentic Primitives | accepted | implemented | 2026-05-06 | Accepted — 2026-05-06 |
+| [191](ADR-191-cos-binary-release-pipeline.md) | COS Binary Release Pipeline | accepted | implemented | 2026-05-06 | Accepted — 2026-05-06 |
 | [192](ADR-192-surface-5-adopt-bubbletea.md) | Surface 5 Bubble Tea Adoption | accepted | implemented | 2026-05-06 | Accepted — 2026-05-06 |
 | [198](ADR-198-release-external-readiness-gate.md) | Release External Readiness Gate | accepted | implemented | 2026-05-06 | Accepted — 2026-05-06 |
 | [199](ADR-199-state-retention-policy-and-reaper-protocol.md) | State Retention Policy and Reaper Protocol | accepted | implemented | 2026-05-06 | Accepted — 2026-05-06 |
@@ -178,7 +179,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [323](ADR-323-primitive-behavior-depth-ratchet.md) | Primitive Behavior Depth Ratchet | accepted | implemented | 2026-05-15 | Accepted. |
 | [329](ADR-329-skill-platform-support-levels.md) | Skill Platform Support Levels | accepted | implemented | 2026-05-20 | Accepted and implemented for the existing `generic-cli` skill surface. |
 
-### Active / Partial (119)
+### Active / Partial (118)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
@@ -262,7 +263,6 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [168](ADR-168-cross-device-dependency-installation.md) | Cross-Device Dependency Installation Contract | implemented | partial | 2026-05-05 | **Implemented for the manifest-driven dry-run installer and credential-safe |
 | [178](ADR-178-openharness-primitive-adoption.md) | OpenHarness Primitive Adoption (HttpHookDefinition, PromptHookDefinition, ProviderProfile) | accepted | partial | 2026-05-05 | **Deciders**: Maintainer |
 | [190](ADR-190-harness-action-receipts.md) | Harness Action Receipts and VCS Event Telemetry | accepted | partial | 2026-05-06 | Accepted — 2026-05-06 |
-| [191](ADR-191-cos-binary-release-pipeline.md) | COS Binary Release Pipeline | accepted | partial | 2026-05-06 | Accepted — 2026-05-06 |
 | [193](ADR-193-cosd-local-network-api.md) | cosd Local Network API | accepted | partial | 2026-05-06 | Accepted — 2026-05-06 |
 | [194](ADR-194-cosd-secure-remote-api.md) | cosd Secure Remote API Guardrails | accepted | partial | 2026-05-06 | Accepted — 2026-05-06 |
 | [195](ADR-195-surface-5-operable-tui-contract.md) | Surface 5 Operable TUI Contract | accepted | partial | 2026-05-06 | Accepted — 2026-05-06 |

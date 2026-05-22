@@ -59,13 +59,15 @@ help:
 
 test-agentic-mastery:
 	@echo "[test-agentic-mastery] Validating agentic mastery MVP slices." >&2
-	@python3 -m pytest tests/unit/test_lethal_trifecta.py tests/contracts/test_lethal_trifecta_gate.py tests/unit/test_aci_observation.py tests/contracts/test_aci_observation_capture_hook.py tests/unit/test_skill_efficacy.py tests/unit/test_run_skill_efficacy_smoke.py tests/contracts/test_runtime_benchmark_schema.py tests/behavior/test_adversarial_generalization_manifest.py -q
+	@python3 -m pytest tests/unit/test_lethal_trifecta.py tests/contracts/test_lethal_trifecta_gate.py tests/unit/test_aci_observation.py tests/contracts/test_aci_observation_capture_hook.py tests/unit/test_skill_efficacy.py tests/unit/test_run_skill_efficacy_smoke.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/contracts/test_runtime_benchmark_schema.py tests/behavior/test_adversarial_generalization_manifest.py -q
 	@python3 scripts/skill_efficacy_report.py >/dev/null
 	@python3 scripts/run_skill_efficacy_smoke.py --reset >/dev/null
+	@python3 scripts/cos-graphify-token-reduction-smoke --reset >/dev/null
+	@python3 scripts/cos-graphify-context-replay-benchmark lib/harness_adapter/base.py >/dev/null
 	@bash scripts/run-runtime-benchmark.sh --execute >/dev/null
 	@bash scripts/run-adversarial-generalization.sh >/dev/null
 	@python3 scripts/agentic_mastery_summary.py >/dev/null
-	@echo "[test-agentic-mastery] Reports: .cognitive-os/reports/skill-efficacy-report.md, skill-efficacy-smoke-report.md, runtime-benchmark-leaderboard.md, adversarial-generalization-report.md, agentic-mastery-summary.md" >&2
+	@echo "[test-agentic-mastery] Reports: .cognitive-os/reports/skill-efficacy-report.md, skill-efficacy-smoke-report.md, graphify-token-reduction-smoke-report.md, graphify-context-replay-benchmark.md, runtime-benchmark-leaderboard.md, adversarial-generalization-report.md, agentic-mastery-summary.md" >&2
 
 test: test-fast
 

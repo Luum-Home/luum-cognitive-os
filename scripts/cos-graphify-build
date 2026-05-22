@@ -1,0 +1,307 @@
+#!/usr/bin/env python3
+# SCOPE: os-only
+"""Build curated Graphify knowledge graphs for Cognitive OS maintainer workflows."""
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import shlex
+import shutil
+import subprocess
+import sys
+import time
+from pathlib import Path
+from typing import Iterable, Sequence
+
+ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_CODE_ONLY_EXCLUDES = (
+    "*.md",
+    "*.mdx",
+    "*.qmd",
+    "*.txt",
+    "*.rst",
+    "*.html",
+    "*.yaml",
+    "*.yml",
+    "*.pdf",
+    "*.png",
+    "*.jpg",
+    "*.jpeg",
+    "*.gif",
+    "*.webp",
+    "*.svg",
+    "*.docx",
+    "*.xlsx",
+    "*.mp4",
+    "*.mov",
+    "*.webm",
+    "*.mkv",
+    "*.avi",
+    "*.m4v",
+    "*.mp3",
+    "*.wav",
+    "*.m4a",
+    "*.ogg",
+)
+PHASE_B_SLICES = (
+    "lib",
+    "hooks",
+    "scripts",
+    "skills",
+    "rules",
+    "packages/agent-service",
+)
+
+
+def _read_ignore_patterns(path: Path) -> list[str]:
+    patterns: list[str] = []
+    for raw in path.read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            continue
+        patterns.append(line)
+    return patterns
+
+
+def _graphify_invocation(explicit_bin: str | None) -> list[str]:
+    if explicit_bin:
+        return [explicit_bin]
+    graphify = shutil.which("graphify")
+    if graphify:
+        return [graphify]
+    uvx = shutil.which("uvx")
+    if uvx:
+        return [uvx, "--from", "graphifyy", "graphify"]
+    raise SystemExit("error: graphify is not on PATH and uvx is unavailable; install uv or graphifyy first")
+
+
+def _append_excludes(command: list[str], patterns: Iterable[str]) -> None:
+    for pattern in patterns:
+        command.extend(["--exclude", pattern])
+
+
+def _quote(command: Sequence[str]) -> str:
+    return " ".join(shlex.quote(part) for part in command)
+
+
+def _safe_slice_name(path_text: str) -> str:
+    cleaned = path_text.strip().strip("/") or "repo-root"
+    return cleaned.replace("/", "__").replace(".", "repo-root")
+
+
+def _run(command: Sequence[str], *, env: dict[str, str], timeout_seconds: int, progress_seconds: int) -> tuple[int, float, bool]:
+    print(_quote(command), flush=True)
+    start = time.monotonic()
+    process = subprocess.Popen(command, cwd=ROOT, env=env)
+    timed_out = False
+    next_progress = start + progress_seconds
+    while True:
+        rc = process.poll()
+        now = time.monotonic()
+        elapsed = now - start
+        if rc is not None:
+            return rc, elapsed, timed_out
+        if timeout_seconds > 0 and elapsed >= timeout_seconds:
+            timed_out = True
+            process.terminate()
+            try:
+                process.wait(timeout=10)
+            except subprocess.TimeoutExpired:
+                process.kill()
+                process.wait()
+            print(f"COS_GRAPHIFY_TIMEOUT elapsed_seconds={elapsed:.1f} timeout_seconds={timeout_seconds}", file=sys.stderr)
+            return 124, elapsed, timed_out
+        if progress_seconds > 0 and now >= next_progress:
+            print(f"COS_GRAPHIFY_PROGRESS elapsed_seconds={elapsed:.1f} pid={process.pid}", flush=True)
+            next_progress = now + progress_seconds
+        time.sleep(0.25)
+
+
+def _build_command(
+    *,
+    graphify: Sequence[str],
+    target: Path,
+    out_root: Path,
+    backend: str,
+    model: str | None,
+    max_workers: int,
+    no_cluster: bool,
+    include_docs: bool,
+    ignore_patterns: Sequence[str],
+) -> list[str]:
+    command = [
+        *graphify,
+        "extract",
+        str(target),
+        "--backend",
+        backend,
+        "--out",
+        str(out_root),
+        "--max-workers",
+        str(max_workers),
+    ]
+    if model:
+        command.extend(["--model", model])
+    if no_cluster:
+        command.append("--no-cluster")
+    _append_excludes(command, ignore_patterns)
+    if not include_docs:
+        _append_excludes(command, DEFAULT_CODE_ONLY_EXCLUDES)
+    return command
+
+
+def _write_receipt(out_root: Path, receipt: dict[str, object]) -> None:
+    receipt_path = out_root / "graphify-out" / "cos-build-receipt.json"
+    receipt_path.parent.mkdir(parents=True, exist_ok=True)
+    receipt_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    print(f"COS_GRAPHIFY_RECEIPT={receipt_path}")
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("path", nargs="?", default=".", help="Repository path or subdirectory to graph; default: current repo")
+    parser.add_argument("--slice", action="append", default=[], help="Additional repository subdirectory slice to build; repeatable")
+    parser.add_argument("--phase-b", action="store_true", help="Build Phase B slices: lib, hooks, scripts, skills, rules, packages/agent-service")
+    parser.add_argument("--out", default=".", help="Output root; single builds write <out>/graphify-out/, sliced builds write <out>/<slice>/graphify-out/")
+    parser.add_argument("--ignore-file", default=".graphifyignore", help="Required Graphify ignore file")
+    parser.add_argument("--allow-missing-ignore", action="store_true", help="Allow running without .graphifyignore")
+    parser.add_argument("--graphify-bin", help="Explicit graphify executable path")
+    parser.add_argument("--backend", default="ollama", help="LLM backend to pass to graphify; default keeps code-only runs keyless")
+    parser.add_argument("--model", help="Optional model override for semantic extraction")
+    parser.add_argument("--max-workers", type=int, default=8, help="AST extraction worker count")
+    parser.add_argument("--include-docs", action="store_true", help="Allow docs/media semantic extraction; default is code-only")
+    parser.add_argument("--no-cluster", action="store_true", help="Write raw extraction JSON instead of clustered node-link graph")
+    parser.add_argument("--skip-benchmark", action="store_true", help="Skip graphify benchmark after clustered builds")
+    parser.add_argument("--timeout-seconds", type=int, default=300, help="Per-slice timeout; 0 disables timeout")
+    parser.add_argument("--progress-seconds", type=int, default=15, help="Progress heartbeat interval; 0 disables heartbeat")
+    parser.add_argument("--fail-empty", action="store_true", help="Treat Graphify empty-corpus exits as failures instead of skipped receipts")
+    parser.add_argument("--dry-run", action="store_true", help="Print commands without executing")
+    args = parser.parse_args()
+
+    requested_paths = [args.path]
+    requested_paths.extend(args.slice)
+    if args.phase_b:
+        requested_paths = list(PHASE_B_SLICES)
+
+    out_root_base = (ROOT / args.out).resolve()
+    ignore_file = (ROOT / args.ignore_file).resolve()
+    if not ignore_file.exists() and not args.allow_missing_ignore:
+        raise SystemExit(f"error: missing required ignore file: {ignore_file}")
+
+    ignore_patterns = _read_ignore_patterns(ignore_file) if ignore_file.exists() else []
+    graphify = _graphify_invocation(args.graphify_bin)
+    env = os.environ.copy()
+    if args.backend == "ollama" and "OLLAMA_BASE_URL" not in env:
+        env["OLLAMA_BASE_URL"] = "http://127.0.0.1:11434"
+
+    multi_slice = len(requested_paths) > 1 or args.phase_b or bool(args.slice)
+    receipts: list[dict[str, object]] = []
+    final_rc = 0
+
+    print("COS_GRAPHIFY_BUILD_MODE=" + ("semantic-docs" if args.include_docs else "code-only"))
+    print(f"COS_GRAPHIFY_IGNORE_PATTERNS={len(ignore_patterns)}")
+    print(f"COS_GRAPHIFY_TIMEOUT_SECONDS={args.timeout_seconds}")
+    print(f"COS_GRAPHIFY_PROGRESS_SECONDS={args.progress_seconds}")
+
+    for requested_path in requested_paths:
+        target = (ROOT / requested_path).resolve()
+        if not target.exists():
+            print(f"error: path not found: {target}", file=sys.stderr)
+            final_rc = 1
+            continue
+
+        slice_name = _safe_slice_name(requested_path)
+        out_root = out_root_base / slice_name if multi_slice else out_root_base
+        command = _build_command(
+            graphify=graphify,
+            target=target,
+            out_root=out_root,
+            backend=args.backend,
+            model=args.model,
+            max_workers=args.max_workers,
+            no_cluster=args.no_cluster,
+            include_docs=args.include_docs,
+            ignore_patterns=ignore_patterns,
+        )
+        graph_path = out_root / "graphify-out" / "graph.json"
+        receipt: dict[str, object] = {
+            "slice": requested_path,
+            "target": str(target),
+            "out_root": str(out_root),
+            "graph_path": str(graph_path),
+            "mode": "semantic-docs" if args.include_docs else "code-only",
+            "timeout_seconds": args.timeout_seconds,
+            "progress_seconds": args.progress_seconds,
+            "command": command,
+        }
+
+        print(f"COS_GRAPHIFY_SLICE={requested_path}")
+        print(f"COS_GRAPHIFY_TARGET={target}")
+        print(f"COS_GRAPHIFY_OUT={out_root / 'graphify-out'}")
+
+        if args.dry_run:
+            print(_quote(command))
+            if not args.skip_benchmark and not args.no_cluster:
+                benchmark = [*graphify, "benchmark", str(graph_path)]
+                print(_quote(benchmark))
+            receipt.update({"returncode": 0, "dry_run": True, "graph_exists": False, "timed_out": False, "duration_seconds": 0.0})
+            receipts.append(receipt)
+            continue
+
+        rc, duration, timed_out = _run(command, env=env, timeout_seconds=args.timeout_seconds, progress_seconds=args.progress_seconds)
+        receipt.update({"returncode": rc, "timed_out": timed_out, "duration_seconds": round(duration, 3), "graph_exists": graph_path.exists()})
+        if rc != 0:
+            empty_graph = not graph_path.exists()
+            if empty_graph and not args.fail_empty:
+                receipt.update({"skipped_empty": True, "returncode": rc})
+                print(f"COS_GRAPHIFY_SKIPPED_EMPTY={requested_path}")
+                _write_receipt(out_root, receipt)
+                receipts.append(receipt)
+                continue
+            final_rc = rc if final_rc == 0 else final_rc
+            _write_receipt(out_root, receipt)
+            receipts.append(receipt)
+            continue
+
+        if not graph_path.exists():
+            print(f"error: expected graph output missing: {graph_path}", file=sys.stderr)
+            receipt.update({"returncode": 1, "graph_exists": False})
+            final_rc = 1 if final_rc == 0 else final_rc
+            _write_receipt(out_root, receipt)
+            receipts.append(receipt)
+            continue
+
+        if not args.skip_benchmark and not args.no_cluster:
+            benchmark = [*graphify, "benchmark", str(graph_path)]
+            bench_rc, bench_duration, bench_timed_out = _run(
+                benchmark,
+                env=env,
+                timeout_seconds=args.timeout_seconds,
+                progress_seconds=args.progress_seconds,
+            )
+            receipt.update(
+                {
+                    "benchmark_returncode": bench_rc,
+                    "benchmark_duration_seconds": round(bench_duration, 3),
+                    "benchmark_timed_out": bench_timed_out,
+                }
+            )
+            if bench_rc != 0:
+                print("warning: graphify benchmark failed; graph build still completed", file=sys.stderr)
+
+        _write_receipt(out_root, receipt)
+        receipts.append(receipt)
+        print(f"COS_GRAPHIFY_GRAPH={graph_path}")
+
+    if multi_slice:
+        summary_path = out_root_base / "cos-graphify-slices-summary.json"
+        summary_path.parent.mkdir(parents=True, exist_ok=True)
+        summary_path.write_text(json.dumps({"receipts": receipts}, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        print(f"COS_GRAPHIFY_SUMMARY={summary_path}")
+
+    return final_rc
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

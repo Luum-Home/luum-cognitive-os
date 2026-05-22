@@ -7,6 +7,8 @@ phase: 2
 
 # Monitor Follow-up: safishamsi/graphify
 
+> Superseded note (2026-05-22): This monitor-followup verdict was based on limited signal-integrity evidence. A later local clone/test/probe reassessment moved Graphify to `TRIAL-CONTROLLED` for optional maintainer use only. See [Graphify Integration Assessment — 2026-05-22](../../../../04-Concepts/architecture/graphify-integration-assessment-2026-05-22.md).
+
 ## Phase 1 (Shallow) Verdict
 - **Verdict:** monitor
 - **Rationale:** MIT but star-anomaly (43k stars, low signal description). Verify before deeper.

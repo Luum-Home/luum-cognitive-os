@@ -1204,6 +1204,7 @@ hooks:
     - tests/contracts/test_primitive_projection_fidelity.py
     - tests/unit/test_bash_hot_path_dispatcher_projection.py
     - tests/unit/test_cos_governance_roi.py
+    - tests/unit/test_cos_graphify_preload_matrix.py
     - tests/unit/test_destructive_git_block.py
     - tests/unit/test_dogfood_scorer.py
     - tests/unit/test_governance_policy_hook_adoption.py

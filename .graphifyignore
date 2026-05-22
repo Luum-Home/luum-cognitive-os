@@ -1,0 +1,42 @@
+# Cognitive OS Graphify scope guard.
+# Keep graph builds focused on source, agentic primitives, and architecture docs.
+
+# VCS and generated graph outputs
+.git/
+graphify-out/
+
+# Local environments and caches
+.venv/
+.ruff_cache/
+.pytest_cache/
+.mypy_cache/
+.nox/
+.tox/
+node_modules/
+
+# Build artifacts
+dist/
+build/
+target/
+coverage/
+htmlcov/
+
+# Large/local-only research and UI artifact trees
+reference/
+dashboard/
+
+# Runtime state and append-only local telemetry
+.cognitive-os/metrics/
+.cognitive-os/cache/
+.cognitive-os/runtime/
+.cognitive-os/sessions/
+.cognitive-os/coordination/
+.cognitive-os/external-source-cache/
+
+# Secret-bearing or private operator areas remain out of graph builds
+.private/
+secrets/
+*.pem
+*.key
+.env
+.env.*

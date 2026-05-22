@@ -1,0 +1,357 @@
+#!/usr/bin/env python3
+# SCOPE: os-only
+"""Join Graphify preload choices with real session token telemetry."""
+from __future__ import annotations
+
+import argparse
+import json
+import math
+import sys
+import time
+from pathlib import Path
+from typing import Any, Iterable
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.session_parser import get_session_metrics  # noqa: E402
+
+
+def _read_json(path: Path) -> dict[str, Any]:
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except FileNotFoundError as exc:
+        raise SystemExit(f"error: JSON file not found: {path}") from exc
+    except json.JSONDecodeError as exc:
+        raise SystemExit(f"error: invalid JSON in {path}: {exc}") from exc
+    if not isinstance(data, dict):
+        raise SystemExit(f"error: expected JSON object in {path}")
+    return data
+
+
+def _as_path(path_text: str) -> Path:
+    path = Path(path_text)
+    return path if path.is_absolute() else ROOT / path
+
+
+def _unique(items: Iterable[str]) -> list[str]:
+    seen: set[str] = set()
+    out: list[str] = []
+    for item in items:
+        if item not in seen:
+            seen.add(item)
+            out.append(item)
+    return out
+
+
+def _estimate_tokens(path_text: str) -> int:
+    path = _as_path(path_text)
+    if not path.is_file():
+        return 0
+    text = path.read_text(encoding="utf-8", errors="replace")
+    return max(1, math.ceil(len(text) / 4))
+
+
+def _preload_estimate(preload_files: list[str]) -> dict[str, Any]:
+    token_by_file = {path: _estimate_tokens(path) for path in preload_files}
+    missing_files = [path for path, tokens in token_by_file.items() if tokens == 0]
+    existing_token_by_file = {path: tokens for path, tokens in token_by_file.items() if tokens > 0}
+    return {
+        "files": len(preload_files),
+        "existing_files": len(existing_token_by_file),
+        "estimated_tokens": sum(existing_token_by_file.values()),
+        "token_by_file": existing_token_by_file,
+        "missing_files": missing_files,
+        "estimator": "ceil(characters/4)",
+    }
+
+
+def _real_token_total(metrics: dict[str, Any]) -> int:
+    return int(metrics.get("total_input_tokens", 0)) + int(metrics.get("total_output_tokens", 0))
+
+
+def _session_has_actual_usage(metrics: dict[str, Any]) -> bool:
+    return any(
+        int(metrics.get(key, 0)) > 0
+        for key in (
+            "total_input_tokens",
+            "total_output_tokens",
+            "cache_creation_tokens",
+            "cache_read_tokens",
+        )
+    )
+
+
+def _metric_label(primary_metrics: dict[str, Any], preload: dict[str, Any]) -> str:
+    has_actual = _session_has_actual_usage(primary_metrics)
+    has_estimate = int(preload.get("estimated_tokens", 0)) > 0 or int(preload.get("files", 0)) > 0
+    if has_actual and has_estimate:
+        return "mixed"
+    if has_actual:
+        return "actual"
+    return "estimated"
+
+
+def _comparison(primary: dict[str, Any], baseline: dict[str, Any] | None) -> dict[str, Any]:
+    if baseline is None:
+        return {
+            "mode": "single-run",
+            "interpretation": "Single run only. This reports actual usage and preload context size but does not establish before/after token reduction.",
+        }
+    primary_total = _real_token_total(primary)
+    baseline_total = _real_token_total(baseline)
+    delta = primary_total - baseline_total
+    ratio = round(baseline_total / primary_total, 4) if primary_total else 0.0
+    return {
+        "mode": "paired-run",
+        "baseline_session_id": baseline.get("session_id", ""),
+        "baseline_total_tokens": baseline_total,
+        "current_total_tokens": primary_total,
+        "delta_tokens": delta,
+        "baseline_to_current_ratio": ratio,
+        "interpretation": "Paired comparison only. Treat this as directional evidence unless task, model, prompt, tool policy, and cache state were controlled.",
+    }
+
+
+def _normalize_metrics(metrics: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "session_id": metrics.get("session_id", ""),
+        "total_input_tokens": int(metrics.get("total_input_tokens", 0)),
+        "total_output_tokens": int(metrics.get("total_output_tokens", 0)),
+        "total_tokens": _real_token_total(metrics),
+        "cache_creation_tokens": int(metrics.get("cache_creation_tokens", 0)),
+        "cache_read_tokens": int(metrics.get("cache_read_tokens", 0)),
+        "tool_use_count": int(metrics.get("tool_use_count", 0)),
+        "tool_uses": metrics.get("tool_uses", []),
+        "models_used": metrics.get("models_used", []),
+        "subagent_count": int(metrics.get("subagent_count", 0)),
+        "duration_minutes": metrics.get("duration_minutes", 0.0),
+        "message_count": int(metrics.get("message_count", 0)),
+        "thinking_count": int(metrics.get("thinking_count", 0)),
+        "source": "lib.session_parser.get_session_metrics",
+    }
+
+
+def _bundle_keys(matrix: dict[str, Any]) -> list[str]:
+    bundles = matrix.get("bundles", [])
+    if not isinstance(bundles, list):
+        return []
+    keys: list[str] = []
+    for bundle in bundles:
+        if isinstance(bundle, dict) and isinstance(bundle.get("key"), str):
+            keys.append(bundle["key"])
+    return keys
+
+
+
+def _scan_latest_claude_session(
+    *,
+    sessions_dir: Path | None,
+    project_filter: str | None,
+    since_hours: float | None,
+) -> Path:
+    root = sessions_dir or (Path.home() / ".claude" / "projects")
+    if not root.is_dir():
+        raise SystemExit(f"error: Claude sessions dir not found: {root}")
+    cutoff = time.time() - (since_hours * 3600) if since_hours is not None else None
+    candidates: list[tuple[float, Path]] = []
+    for path in root.rglob("*.jsonl"):
+        if path.name.startswith("agent-") or "subagents" in path.parts:
+            continue
+        if project_filter and project_filter not in str(path):
+            continue
+        try:
+            mtime = path.stat().st_mtime
+        except OSError:
+            continue
+        if cutoff is not None and mtime < cutoff:
+            continue
+        candidates.append((mtime, path))
+    if not candidates:
+        filters = []
+        if project_filter:
+            filters.append(f"project_filter={project_filter!r}")
+        if since_hours is not None:
+            filters.append(f"since_hours={since_hours}")
+        suffix = f" with {', '.join(filters)}" if filters else ""
+        raise SystemExit(f"error: no Claude session JSONL files found under {root}{suffix}")
+    candidates.sort(key=lambda item: item[0], reverse=True)
+    return candidates[0][1]
+
+
+def _resolve_primary_session(args: argparse.Namespace) -> str:
+    if args.session and args.latest_claude_session:
+        raise SystemExit("error: choose either --session or --latest-claude-session, not both")
+    if args.session:
+        return args.session
+    if args.latest_claude_session:
+        return str(
+            _scan_latest_claude_session(
+                sessions_dir=Path(args.sessions_dir) if args.sessions_dir else None,
+                project_filter=args.project_filter,
+                since_hours=args.since_hours,
+            )
+        )
+    raise SystemExit("error: one of --session or --latest-claude-session is required")
+
+
+def _payload(args: argparse.Namespace) -> dict[str, Any]:
+    session = _resolve_primary_session(args)
+    matrix_path = Path(args.matrix_json)
+    matrix = _read_json(matrix_path)
+    preload_files = _unique(path for path in matrix.get("preload_files", []) if isinstance(path, str))
+    preload = _preload_estimate(preload_files)
+    session_metrics = _normalize_metrics(get_session_metrics(session))
+    baseline_metrics = _normalize_metrics(get_session_metrics(args.baseline_session)) if args.baseline_session else None
+    metric_label = _metric_label(session_metrics, preload)
+    return {
+        "schema_version": 1,
+        "metric_label": metric_label,
+        "session_path": str(Path(session)),
+        "baseline_session_path": str(Path(args.baseline_session)) if args.baseline_session else None,
+        "matrix_json": str(matrix_path),
+        "bundle_keys": _bundle_keys(matrix),
+        "bundles": matrix.get("bundles", []),
+        "preload_files": preload_files,
+        "inspect_paths": matrix.get("inspect_paths", []),
+        "tests": matrix.get("tests", []),
+        "preload_estimate": preload,
+        "session_metrics": session_metrics,
+        "baseline_session_metrics": baseline_metrics,
+        "comparison": _comparison(session_metrics, baseline_metrics),
+        "claims_boundary": {
+            "evidence": "Graphify selected preload bundles and session_parser extracted real token usage from the provided session JSONL.",
+            "inference": "Any token-reduction claim requires comparable before/after runs; one run only shows observed usage plus estimated preload context size.",
+        },
+    }
+
+
+def _render_markdown(payload: dict[str, Any]) -> str:
+    metrics = payload["session_metrics"]
+    preload = payload["preload_estimate"]
+    comparison = payload["comparison"]
+    lines = [
+        "# Graphify Run Telemetry Report",
+        "",
+        "This report joins Graphify preload selection with real session telemetry. Preload token counts are deterministic local estimates; session token counts come from Claude Code JSONL usage parsed by `lib.session_parser.py`.",
+        "",
+        "## Summary",
+        "",
+        f"Metric label: `{payload['metric_label']}`",
+        f"Session: `{metrics['session_id'] or payload['session_path']}`",
+        f"Bundles: {', '.join(payload['bundle_keys']) or 'none'}",
+        f"Preload estimated tokens: {preload['estimated_tokens']}",
+        f"Actual input tokens: {metrics['total_input_tokens']}",
+        f"Actual output tokens: {metrics['total_output_tokens']}",
+        f"Actual total input+output tokens: {metrics['total_tokens']}",
+        f"Cache creation tokens: {metrics['cache_creation_tokens']}",
+        f"Cache read tokens: {metrics['cache_read_tokens']}",
+        f"Duration minutes: {metrics['duration_minutes']}",
+        f"Tool uses: {metrics['tool_use_count']}",
+        f"Subagents: {metrics['subagent_count']}",
+        f"Models: {', '.join(metrics['models_used']) or 'none detected'}",
+        "",
+        "## Graphify Preload Bundles",
+        "",
+    ]
+    if payload["bundles"]:
+        for bundle in payload["bundles"]:
+            if isinstance(bundle, dict):
+                label = bundle.get("label", bundle.get("key", "unknown"))
+                key = bundle.get("key", "unknown")
+                rationale = bundle.get("rationale", "")
+                lines.extend([f"### {label}", "", f"Key: `{key}`", ""])
+                if rationale:
+                    lines.extend([str(rationale), ""])
+    else:
+        lines.extend(["No Graphify preload bundle was selected.", ""])
+
+    lines.extend(["## Preload Files", ""])
+    if preload["token_by_file"]:
+        for path, tokens in sorted(preload["token_by_file"].items(), key=lambda item: item[1], reverse=True):
+            lines.append(f"- `{path}` — {tokens} estimated tokens")
+    else:
+        lines.append("No existing preload file was available for token estimation.")
+    if preload["missing_files"]:
+        lines.extend(["", "Missing preload files:", ""])
+        lines.extend(f"- `{path}`" for path in preload["missing_files"])
+
+    lines.extend(["", "## Relevant Dependencies and Inspection Paths", ""])
+    inspect_paths = payload.get("inspect_paths") or []
+    if inspect_paths:
+        lines.extend(f"- `{path}`" for path in inspect_paths)
+    else:
+        lines.append("No inspection paths were selected by the matrix.")
+
+    lines.extend(["", "## Recommended Confirmation Tests", ""])
+    tests = payload.get("tests") or []
+    if tests:
+        for command in tests:
+            lines.extend(["```bash", str(command), "```"])
+    else:
+        lines.append("No matrix tests were selected.")
+
+    lines.extend(["", "## Session Tools", ""])
+    tool_uses = metrics.get("tool_uses") or []
+    if tool_uses:
+        for tool in tool_uses:
+            lines.append(f"- `{tool.get('tool', 'unknown')}` — {tool.get('count', 0)}")
+    else:
+        lines.append("No tool uses detected in the parsed session.")
+
+    lines.extend(["", "## Before/After Comparison", ""])
+    lines.append(f"Mode: `{comparison['mode']}`")
+    if comparison["mode"] == "paired-run":
+        lines.extend([
+            f"Baseline session: `{comparison['baseline_session_id']}`",
+            f"Baseline total tokens: {comparison['baseline_total_tokens']}",
+            f"Current total tokens: {comparison['current_total_tokens']}",
+            f"Delta tokens: {comparison['delta_tokens']}",
+            f"Baseline/current ratio: {comparison['baseline_to_current_ratio']}",
+        ])
+    lines.extend(["", comparison["interpretation"], ""])
+
+    boundary = payload["claims_boundary"]
+    lines.extend([
+        "## Evidence vs Inference",
+        "",
+        "Evidence:",
+        "",
+        f"- {boundary['evidence']}",
+        "",
+        "Inference boundary:",
+        "",
+        f"- {boundary['inference']}",
+        "",
+    ])
+    return "\n".join(lines)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--session", help="Claude Code session JSONL path or session id")
+    parser.add_argument("--latest-claude-session", action="store_true", help="Explicitly scan Claude Code sessions and use the most recently modified JSONL")
+    parser.add_argument("--sessions-dir", help="Claude sessions directory for --latest-claude-session; defaults to ~/.claude/projects")
+    parser.add_argument("--project-filter", help="Optional substring filter for --latest-claude-session paths")
+    parser.add_argument("--since-hours", type=float, help="Optional modified-time window for --latest-claude-session")
+    parser.add_argument("--matrix-json", required=True, help="JSON output from scripts/cos-graphify-preload-matrix --json")
+    parser.add_argument("--baseline-session", help="Optional previous/comparable Claude Code session JSONL path or session id")
+    parser.add_argument("--json", action="store_true", help="Emit JSON instead of Markdown")
+    parser.add_argument("--out", help="Optional output file")
+    args = parser.parse_args()
+
+    payload = _payload(args)
+    output = json.dumps(payload, indent=2, sort_keys=True) + "\n" if args.json else _render_markdown(payload)
+    if args.out:
+        out = Path(args.out)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(output, encoding="utf-8")
+        print(f"COS_GRAPHIFY_RUN_TELEMETRY={out}")
+    else:
+        print(output, end="")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

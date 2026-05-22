@@ -1,0 +1,371 @@
+#!/usr/bin/env python3
+# SCOPE: os-only
+"""Generate a Phase C hotspot report from Graphify slice graphs."""
+from __future__ import annotations
+
+import argparse
+import json
+from collections import Counter, defaultdict
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any, Iterable
+
+
+@dataclass(frozen=True)
+class NodeScore:
+    node_id: str
+    label: str
+    source_file: str
+    location: str
+    community: str
+    in_degree: int
+    out_degree: int
+    total_degree: int
+
+
+@dataclass(frozen=True)
+class FileScore:
+    source_file: str
+    nodes: int
+    internal_edges: int
+    outgoing_cross_file_edges: int
+    incoming_cross_file_edges: int
+    total_cross_file_edges: int
+
+
+def _load_json(path: Path) -> dict[str, Any]:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _links(graph: dict[str, Any]) -> list[dict[str, Any]]:
+    links = graph.get("links") or graph.get("edges") or []
+    return [link for link in links if isinstance(link, dict)]
+
+
+def _nodes(graph: dict[str, Any]) -> list[dict[str, Any]]:
+    nodes = graph.get("nodes") or []
+    return [node for node in nodes if isinstance(node, dict)]
+
+
+def _node_label(node: dict[str, Any]) -> str:
+    return str(node.get("label") or node.get("id") or "<unknown>")
+
+
+def _node_file(node: dict[str, Any]) -> str:
+    return str(node.get("source_file") or "<unknown>")
+
+
+def _node_location(node: dict[str, Any]) -> str:
+    return str(node.get("source_location") or "")
+
+
+def _node_community(node: dict[str, Any]) -> str:
+    value = node.get("community")
+    return "" if value is None else str(value)
+
+
+def _score_nodes(graph: dict[str, Any]) -> list[NodeScore]:
+    nodes = _nodes(graph)
+    links = _links(graph)
+    by_id = {str(node.get("id")): node for node in nodes if node.get("id") is not None}
+    in_degree: Counter[str] = Counter()
+    out_degree: Counter[str] = Counter()
+    for link in links:
+        source = str(link.get("source"))
+        target = str(link.get("target"))
+        if source in by_id:
+            out_degree[source] += 1
+        if target in by_id:
+            in_degree[target] += 1
+    scores: list[NodeScore] = []
+    for node_id, node in by_id.items():
+        incoming = in_degree[node_id]
+        outgoing = out_degree[node_id]
+        scores.append(
+            NodeScore(
+                node_id=node_id,
+                label=_node_label(node),
+                source_file=_node_file(node),
+                location=_node_location(node),
+                community=_node_community(node),
+                in_degree=incoming,
+                out_degree=outgoing,
+                total_degree=incoming + outgoing,
+            )
+        )
+    return sorted(scores, key=lambda item: (item.total_degree, item.in_degree, item.out_degree, item.label), reverse=True)
+
+
+def _score_files(graph: dict[str, Any]) -> list[FileScore]:
+    nodes = _nodes(graph)
+    links = _links(graph)
+    by_id = {str(node.get("id")): node for node in nodes if node.get("id") is not None}
+    node_counts: Counter[str] = Counter(_node_file(node) for node in nodes)
+    internal_edges: Counter[str] = Counter()
+    outgoing_cross: Counter[str] = Counter()
+    incoming_cross: Counter[str] = Counter()
+    for link in links:
+        source_node = by_id.get(str(link.get("source")))
+        target_node = by_id.get(str(link.get("target")))
+        if not source_node or not target_node:
+            continue
+        source_file = _node_file(source_node)
+        target_file = _node_file(target_node)
+        if source_file == target_file:
+            internal_edges[source_file] += 1
+        else:
+            outgoing_cross[source_file] += 1
+            incoming_cross[target_file] += 1
+    files = set(node_counts) | set(internal_edges) | set(outgoing_cross) | set(incoming_cross)
+    scores = [
+        FileScore(
+            source_file=file_name,
+            nodes=node_counts[file_name],
+            internal_edges=internal_edges[file_name],
+            outgoing_cross_file_edges=outgoing_cross[file_name],
+            incoming_cross_file_edges=incoming_cross[file_name],
+            total_cross_file_edges=outgoing_cross[file_name] + incoming_cross[file_name],
+        )
+        for file_name in files
+    ]
+    return sorted(scores, key=lambda item: (item.total_cross_file_edges, item.nodes, item.internal_edges, item.source_file), reverse=True)
+
+
+def _relation_counts(graph: dict[str, Any]) -> Counter[str]:
+    counts: Counter[str] = Counter()
+    for link in _links(graph):
+        counts[str(link.get("relation") or "<unknown>")] += 1
+    return counts
+
+
+def _confidence_counts(graph: dict[str, Any]) -> Counter[str]:
+    counts: Counter[str] = Counter()
+    for link in _links(graph):
+        counts[str(link.get("confidence") or "<unknown>")] += 1
+    return counts
+
+
+def _read_summary(path: Path) -> list[dict[str, Any]]:
+    data = _load_json(path)
+    receipts = data.get("receipts")
+    if not isinstance(receipts, list):
+        raise SystemExit(f"error: summary missing receipts list: {path}")
+    return [receipt for receipt in receipts if isinstance(receipt, dict)]
+
+
+def _escape_cell(value: object) -> str:
+    text = str(value)
+    return text.replace("|", "\\|").replace("\n", " ")
+
+
+def _table(headers: Iterable[str], rows: Iterable[Iterable[object]]) -> list[str]:
+    header_list = list(headers)
+    lines = ["| " + " | ".join(header_list) + " |", "|" + "|".join("---" for _ in header_list) + "|"]
+    for row in rows:
+        lines.append("| " + " | ".join(_escape_cell(value) for value in row) + " |")
+    return lines
+
+
+def _graphify_command(command: str, graph_path: str, label: str, other: str | None = None) -> str:
+    quoted_graph = _shell_quote(graph_path)
+    if command == "path" and other:
+        return f"graphify path {_shell_quote(label)} {_shell_quote(other)} --graph {quoted_graph}"
+    if command == "affected":
+        return f"graphify affected {_shell_quote(label)} --depth 2 --graph {quoted_graph}"
+    return f"graphify explain {_shell_quote(label)} --graph {quoted_graph}"
+
+
+def _shell_quote(value: str) -> str:
+    return "'" + value.replace("'", "'\\''") + "'"
+
+
+def _slice_section(receipt: dict[str, Any], *, top: int) -> list[str]:
+    slice_name = str(receipt.get("slice") or "<unknown>")
+    graph_path = Path(str(receipt.get("graph_path") or ""))
+    lines = [f"## Slice `{slice_name}`", ""]
+    if receipt.get("skipped_empty"):
+        lines.extend(
+            [
+                "### Extracted Evidence",
+                "",
+                "This slice produced no code graph in code-only mode and was recorded as `skipped-empty`.",
+                "",
+                "### Inference",
+                "",
+                "This is expected for Markdown-heavy governance/procedure surfaces. Evaluate this slice in Phase D only after semantic extraction budget approval.",
+                "",
+            ]
+        )
+        return lines
+    if not graph_path.exists():
+        lines.extend(["Graph file missing; no analysis generated.", ""])
+        return lines
+
+    graph = _load_json(graph_path)
+    nodes = _nodes(graph)
+    links = _links(graph)
+    node_scores = _score_nodes(graph)
+    file_scores = _score_files(graph)
+    relations = _relation_counts(graph)
+    confidences = _confidence_counts(graph)
+    top_nodes = node_scores[:top]
+    top_files = file_scores[:top]
+
+    lines.extend(
+        [
+            "### Extracted Evidence",
+            "",
+            f"Graph: `{graph_path}`",
+            f"Built-at commit: `{graph.get('built_at_commit', '<missing>')}`",
+            f"Nodes: {len(nodes)}",
+            f"Edges: {len(links)}",
+            "",
+            "Top relation counts:",
+            "",
+        ]
+    )
+    lines.extend(_table(["Relation", "Edges"], relations.most_common(8)))
+    lines.extend(["", "Confidence counts:", ""])
+    lines.extend(_table(["Confidence", "Edges"], confidences.most_common(8)))
+    lines.extend(["", "### Hotspots by Degree", ""])
+    lines.extend(
+        _table(
+            ["Node", "File", "Location", "In", "Out", "Total", "Community"],
+            ((n.label, n.source_file, n.location, n.in_degree, n.out_degree, n.total_degree, n.community) for n in top_nodes),
+        )
+    )
+    lines.extend(["", "### Cross-File Dependency Surfaces", ""])
+    lines.extend(
+        _table(
+            ["File", "Nodes", "Internal edges", "Incoming cross-file", "Outgoing cross-file", "Total cross-file"],
+            (
+                (
+                    f.source_file,
+                    f.nodes,
+                    f.internal_edges,
+                    f.incoming_cross_file_edges,
+                    f.outgoing_cross_file_edges,
+                    f.total_cross_file_edges,
+                )
+                for f in top_files
+            ),
+        )
+    )
+
+    lines.extend(["", "### Recommended Graphify Commands", ""])
+    command_rows: list[tuple[str, str, str]] = []
+    command_nodes = [node for node in top_nodes if node.source_file != "<unknown>"][:3]
+    for node in command_nodes:
+        command_rows.append(("explain", node.label, _graphify_command("explain", str(graph_path), node.label)))
+        command_rows.append(("affected", node.label, _graphify_command("affected", str(graph_path), node.label)))
+    if len(command_nodes) >= 2:
+        command_rows.append(("path", f"{command_nodes[0].label} → {command_nodes[1].label}", _graphify_command("path", str(graph_path), command_nodes[0].label, command_nodes[1].label)))
+    lines.extend(_table(["Use", "Target", "Command"], command_rows))
+
+    lines.extend(["", "### Inference", ""])
+    if top_files:
+        leader = top_files[0]
+        lines.append(
+            f"`{leader.source_file}` is the first context-optimization candidate for this slice because it has the highest observed cross-file edge count ({leader.total_cross_file_edges})."
+        )
+    if top_nodes:
+        leader = top_nodes[0]
+        lines.append(
+            f"`{leader.label}` is the first symbol-centered inspection candidate because it has the highest observed total degree ({leader.total_degree})."
+        )
+    lines.extend(
+        [
+            "These are navigation candidates only. Confirm any optimization with source inspection and tests before changing behavior.",
+            "",
+        ]
+    )
+    return lines
+
+
+def build_report(summary: Path, *, top: int) -> str:
+    receipts = _read_summary(summary)
+    lines = [
+        "# Graphify Phase C Hotspot and Impact Report",
+        "",
+        "## Scope",
+        "",
+        f"Source summary: `{summary}`",
+        "",
+        "This report reads Graphify slice graphs from Phase B and separates extracted graph evidence from maintainer inference. It is a context-selection report, not a correctness proof.",
+        "",
+        "## Slice Overview",
+        "",
+    ]
+    overview_rows = []
+    for receipt in receipts:
+        graph_path = Path(str(receipt.get("graph_path") or ""))
+        nodes = edges = "n/a"
+        if graph_path.exists():
+            graph = _load_json(graph_path)
+            nodes = len(_nodes(graph))
+            edges = len(_links(graph))
+        overview_rows.append(
+            (
+                receipt.get("slice", "<unknown>"),
+                "skipped-empty" if receipt.get("skipped_empty") else receipt.get("returncode", "<unknown>"),
+                receipt.get("duration_seconds", "<unknown>"),
+                nodes,
+                edges,
+                graph_path,
+            )
+        )
+    lines.extend(_table(["Slice", "Status", "Duration seconds", "Nodes", "Edges", "Graph"], overview_rows))
+    lines.extend(["", "## Context Optimization Candidates", ""])
+    candidate_rows = []
+    for receipt in receipts:
+        if receipt.get("skipped_empty"):
+            candidate_rows.append((receipt.get("slice"), "semantic Phase D", "No code graph in code-only mode; needs explicit semantic budget approval."))
+            continue
+        graph_path = Path(str(receipt.get("graph_path") or ""))
+        if not graph_path.exists():
+            candidate_rows.append((receipt.get("slice"), "missing graph", "No graph file found."))
+            continue
+        graph = _load_json(graph_path)
+        files = _score_files(graph)
+        nodes = _score_nodes(graph)
+        file_text = files[0].source_file if files else "<none>"
+        node_text = nodes[0].label if nodes else "<none>"
+        candidate_rows.append((receipt.get("slice"), file_text, f"Start with `{node_text}` and confirm with source/tests."))
+    lines.extend(_table(["Slice", "First candidate", "Inference"], candidate_rows))
+    lines.extend([""])
+    for receipt in receipts:
+        lines.extend(_slice_section(receipt, top=top))
+    lines.extend(
+        [
+            "## Acceptance Criteria",
+            "",
+            "1. Hotspots are computed from graph node degree and listed per slice.",
+            "2. Incoming/outgoing cross-file dependency surfaces are listed per slice.",
+            "3. Context optimization candidates are labeled as inference, not proof.",
+            "4. Recommended `graphify explain`, `graphify affected`, and `graphify path` commands are emitted for built slices.",
+            "5. Skipped governance/procedure slices are routed to Phase D semantic extraction instead of treated as Phase B failures.",
+            "",
+        ]
+    )
+    return "\n".join(lines)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("summary", help="Path to cos-graphify-slices-summary.json")
+    parser.add_argument("--out", required=True, help="Markdown report output path")
+    parser.add_argument("--top", type=int, default=10, help="Top nodes/files per slice")
+    args = parser.parse_args()
+
+    summary = Path(args.summary).resolve()
+    if not summary.exists():
+        raise SystemExit(f"error: summary not found: {summary}")
+    out = Path(args.out).resolve()
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(build_report(summary, top=args.top), encoding="utf-8")
+    print(f"COS_GRAPHIFY_HOTSPOT_REPORT={out}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

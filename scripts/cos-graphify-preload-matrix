@@ -1,0 +1,266 @@
+#!/usr/bin/env python3
+# SCOPE: os-only
+"""Select Graphify-derived preload bundles for Cognitive OS work paths."""
+from __future__ import annotations
+
+import argparse
+import json
+import subprocess
+from dataclasses import dataclass, asdict
+from pathlib import Path
+from typing import Iterable
+
+
+@dataclass(frozen=True)
+class PreloadBundle:
+    key: str
+    label: str
+    triggers: tuple[str, ...]
+    preload_files: tuple[str, ...]
+    inspect_paths: tuple[str, ...]
+    tests: tuple[str, ...]
+    rationale: str
+
+
+BUNDLES: tuple[PreloadBundle, ...] = (
+    PreloadBundle(
+        key="harness-events",
+        label="Harness event contract",
+        triggers=(
+            "lib/harness_adapter/",
+            "lib/sprint_orchestrator.py",
+            "packages/agent-lifecycle/lib/harness_adapter/",
+            "packages/agent-lifecycle/lib/sprint_orchestrator.py",
+            "CanonicalEvent",
+        ),
+        preload_files=(
+            "lib/harness_adapter/base.py",
+            "lib/harness_adapter/codex.py",
+            "lib/harness_adapter/aider.py",
+            "lib/harness_adapter/aider_streaming.py",
+            "lib/harness_adapter/bare_cli.py",
+            "lib/harness_adapter/dispatch.py",
+            "lib/sprint_orchestrator.py",
+        ),
+        inspect_paths=(
+            "lib/harness_adapter/base.py",
+            "lib/harness_adapter/",
+            "lib/sprint_orchestrator.py",
+        ),
+        tests=(
+            ".venv/bin/python -m pytest tests/unit/test_harness_adapter_base.py tests/unit/test_sprint_orchestrator.py tests/integration/test_preamble_v2_wave1.py -q",
+        ),
+        rationale="Graphify Phase C.1 identified CanonicalEvent as the strongest cross-adapter hotspot.",
+    ),
+    PreloadBundle(
+        key="history-rewrite",
+        label="History rewrite and sanitization",
+        triggers=(
+            "lib/history_sanitization.py",
+            "lib/history_rewrite_ledger.py",
+            "scripts/cos-history-sanitization",
+            "scripts/cos-filter-repo-wrap.sh",
+            "history_sanitization",
+        ),
+        preload_files=(
+            "lib/history_sanitization.py",
+            "lib/history_rewrite_ledger.py",
+            "scripts/cos-history-sanitization",
+            "scripts/cos-filter-repo-wrap.sh",
+        ),
+        inspect_paths=(
+            "lib/history_sanitization.py",
+            "lib/history_rewrite_ledger.py",
+            "scripts/cos-filter-repo-wrap.sh",
+        ),
+        tests=(
+            ".venv/bin/python -m pytest tests/unit/test_history_sanitization.py tests/behavior/test_history_sanitization_cli.py tests/behavior/test_history_sanitization_execute.py tests/contracts/test_history_rewrite_ledger_append_only.py -q",
+        ),
+        rationale="Graphify showed high internal fan-out but weak reverse coupling; preload the local rewrite toolchain.",
+    ),
+    PreloadBundle(
+        key="destructive-git",
+        label="Destructive Git blocker",
+        triggers=(
+            "hooks/destructive-git-blocker.sh",
+            "hooks/_lib/",
+            "destructive-git-blocker",
+        ),
+        preload_files=(
+            "hooks/destructive-git-blocker.sh",
+            "hooks/_lib/common.sh",
+            "hooks/_lib/killswitch_check.sh",
+            "hooks/_lib/bypass-resolver.sh",
+            "hooks/_lib/governance_phase_policy.sh",
+            "hooks/_lib/registration-allowlist.txt",
+        ),
+        inspect_paths=(
+            "hooks/destructive-git-blocker.sh",
+            "hooks/_lib/",
+        ),
+        tests=(
+            ".venv/bin/python -m pytest tests/chaos/test_reset_cascade_detector.py tests/chaos/test_safety_drill.py tests/chaos/test_multi_ide_swarm_safety.py -q",
+            "bash -n hooks/destructive-git-blocker.sh hooks/_lib/common.sh hooks/_lib/killswitch_check.sh hooks/_lib/bypass-resolver.sh hooks/_lib/governance_phase_policy.sh",
+        ),
+        rationale="Graphify showed safety-hook fan-out; shell syntax plus chaos tests are the confirmation surface.",
+    ),
+    PreloadBundle(
+        key="work-inventory",
+        label="Work inventory and prelaunch",
+        triggers=(
+            "scripts/cos_work_inventory.py",
+            "scripts/cos-doctor-work-inventory.sh",
+            "scripts/cos-doctor-concurrency.sh",
+            "hooks/agent-prelaunch.sh",
+            "cos_work_inventory",
+        ),
+        preload_files=(
+            "scripts/cos_work_inventory.py",
+            "scripts/cos-doctor-work-inventory.sh",
+            "scripts/cos-doctor-concurrency.sh",
+            "hooks/agent-prelaunch.sh",
+        ),
+        inspect_paths=(
+            "scripts/cos_work_inventory.py",
+            "hooks/agent-prelaunch.sh",
+        ),
+        tests=(
+            ".venv/bin/python -m pytest tests/unit/test_cos_work_inventory.py tests/audit/test_cos_work_inventory_refinements.py tests/behavior/test_agent_prelaunch_read_only.py tests/red_team/portability/test_cos_work_inventory.py -q",
+        ),
+        rationale="Graphify showed high local fan-out for preflight inventory and coordination state collection.",
+    ),
+    PreloadBundle(
+        key="agent-service-session",
+        label="Agent service session schema/store",
+        triggers=(
+            "packages/agent-service/src/agent_service/models/session.py",
+            "packages/agent-service/src/agent_service/store.py",
+            "packages/agent-service/src/agent_service/routers/sessions.py",
+            "packages/agent-service/",
+            "StoredSession",
+            "SessionDetails",
+            "SessionEvent",
+        ),
+        preload_files=(
+            "packages/agent-service/src/agent_service/models/session.py",
+            "packages/agent-service/src/agent_service/store.py",
+            "packages/agent-service/src/agent_service/models/__init__.py",
+            "packages/agent-service/src/agent_service/routers/sessions.py",
+        ),
+        inspect_paths=(
+            "packages/agent-service/src/agent_service/models/session.py",
+            "packages/agent-service/src/agent_service/store.py",
+            "packages/agent-service/src/agent_service/routers/sessions.py",
+        ),
+        tests=(
+            "cd packages/agent-service && ../../.venv/bin/python -m pytest tests/test_contract.py tests/test_sessions.py tests/test_health.py -q",
+        ),
+        rationale="Graphify identified BaseModel as broad, with StoredSession as the actionable affected session-store node.",
+    ),
+)
+
+
+
+def _git_paths(*, base: str | None, include_untracked: bool) -> list[str]:
+    diff_args = ["git", "diff", "--name-only"]
+    if base:
+        diff_args.append(base)
+    result = subprocess.run(diff_args, check=False, capture_output=True, text=True)
+    if result.returncode != 0:
+        raise SystemExit(result.stderr.strip() or "error: git diff failed")
+    paths = [line.strip() for line in result.stdout.splitlines() if line.strip()]
+    cached = subprocess.run(["git", "diff", "--cached", "--name-only"], check=False, capture_output=True, text=True)
+    if cached.returncode != 0:
+        raise SystemExit(cached.stderr.strip() or "error: git diff --cached failed")
+    paths.extend(line.strip() for line in cached.stdout.splitlines() if line.strip())
+    if include_untracked:
+        untracked = subprocess.run(
+            ["git", "ls-files", "--others", "--exclude-standard"],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        if untracked.returncode != 0:
+            raise SystemExit(untracked.stderr.strip() or "error: git ls-files failed")
+        paths.extend(line.strip() for line in untracked.stdout.splitlines() if line.strip())
+    return _unique(paths)
+
+
+def _matches(bundle: PreloadBundle, values: Iterable[str]) -> bool:
+    normalized = [value.strip() for value in values if value.strip()]
+    for value in normalized:
+        for trigger in bundle.triggers:
+            if value == trigger or value.startswith(trigger) or trigger in value:
+                return True
+    return False
+
+
+def _unique(items: Iterable[str]) -> list[str]:
+    seen: set[str] = set()
+    out: list[str] = []
+    for item in items:
+        if item not in seen:
+            seen.add(item)
+            out.append(item)
+    return out
+
+
+def _render_markdown(bundles: list[PreloadBundle]) -> str:
+    lines = ["# Graphify Preload Matrix Selection", ""]
+    if not bundles:
+        lines.extend(
+            [
+                "No Graphify-derived preload bundle matched the provided paths or symbols.",
+                "Use ordinary source inspection or run `scripts/cos-graphify-hotspot-report` when graph context is needed.",
+                "",
+            ]
+        )
+        return "\n".join(lines)
+    for bundle in bundles:
+        lines.extend([f"## {bundle.label}", "", f"Key: `{bundle.key}`", "", bundle.rationale, "", "Preload files:", ""])
+        lines.extend(f"- `{path}`" for path in bundle.preload_files)
+        lines.extend(["", "Inspect paths:", ""])
+        lines.extend(f"- `{path}`" for path in bundle.inspect_paths)
+        lines.extend(["", "Confirmation tests:", ""])
+        lines.extend(f"```bash\n{cmd}\n```" for cmd in bundle.tests)
+        lines.append("")
+    return "\n".join(lines)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("items", nargs="*", help="Changed paths, symbols, or topic hints")
+    parser.add_argument("--changed", action="store_true", help="Add changed Git paths from working tree and index")
+    parser.add_argument("--base", help="Optional base revision for --changed, passed to git diff --name-only")
+    parser.add_argument("--include-untracked", action="store_true", help="Include untracked Git paths when --changed is set")
+    parser.add_argument("--all", action="store_true", help="Print every known bundle")
+    parser.add_argument("--json", action="store_true", help="Emit JSON instead of Markdown")
+    parser.add_argument("--out", help="Optional output file")
+    args = parser.parse_args()
+
+    items = list(args.items)
+    if args.changed:
+        items.extend(_git_paths(base=args.base, include_untracked=args.include_untracked))
+    selected = list(BUNDLES) if args.all else [bundle for bundle in BUNDLES if _matches(bundle, items)]
+    if args.json:
+        payload = {
+            "bundles": [asdict(bundle) for bundle in selected],
+            "preload_files": _unique(path for bundle in selected for path in bundle.preload_files),
+            "inspect_paths": _unique(path for bundle in selected for path in bundle.inspect_paths),
+            "tests": _unique(command for bundle in selected for command in bundle.tests),
+        }
+        output = json.dumps(payload, indent=2, sort_keys=True) + "\n"
+    else:
+        output = _render_markdown(selected)
+    if args.out:
+        out = Path(args.out)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(output, encoding="utf-8")
+        print(f"COS_GRAPHIFY_PRELOAD_MATRIX={out}")
+    else:
+        print(output, end="")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
