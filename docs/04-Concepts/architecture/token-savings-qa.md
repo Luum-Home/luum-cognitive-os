@@ -216,6 +216,17 @@ Avoid claiming:
 
 Until then, current numbers are **evidence-backed estimates**, not universal benchmark results.
 
+## Local anonymized paired-run evidence — 2026-05-22
+
+A local read-only paired run across three anonymized projects produced nine task pairs. Because no provider API was called, token and cost fields are estimates/proxies, not provider telemetry. The key result is narrower than the broad planning claim:
+
+- Context-bearing task pairs (vanilla tool output >=1K estimated tokens): 4 pairs.
+- Estimated token savings on those context-bearing pairs: 46.0% to 97.5%, average 71.6%.
+- Low-context pairs (<1K vanilla tool-output tokens): SO can add small absolute overhead because it still loads marker context when vanilla finds little or nothing.
+- Checklist quality was same-or-better in 9/9 anonymized pairs.
+
+Receipt: `docs/06-Daily/reports/token-savings-paired-live-anonymized-2026-05-22.md`.
+
 ## Operator answer card
 
 Use this short answer when asked live:
