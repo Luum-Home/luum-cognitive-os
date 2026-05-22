@@ -14,6 +14,18 @@ COS_ROOT="$(cd "$HOOK_DIR/.." && pwd)"
 SESSION_ID="${COGNITIVE_OS_SESSION_ID:-${CODEX_SESSION_ID:-${CLAUDE_SESSION_ID:-unknown}}}"
 INPUT="$(cat 2>/dev/null || true)"
 
+# Fast path: one stdlib-only Python process, no project imports. This preserves
+# the blocking verdict and both ledgers while avoiding the previous lib/taximeter
+# import chain on every UserPromptSubmit.
+if command -v python3 >/dev/null 2>&1 && [ -f "$COS_ROOT/scripts/context_budget_meter_fast.py" ]; then
+  printf '%s' "$INPUT" | python3 "$COS_ROOT/scripts/context_budget_meter_fast.py" "$PROJECT_DIR" "$SESSION_ID"
+  rc=$?
+  if [[ "$rc" -eq 2 ]]; then
+    exit 2
+  fi
+  exit "$rc"
+fi
+
 python3 - "$PROJECT_DIR" "$COS_ROOT" "$SESSION_ID" "$INPUT" <<'PY'
 from __future__ import annotations
 import json

@@ -23,7 +23,9 @@ HOOK_RE = re.compile(r"hooks/[A-Za-z0-9_.-]+\.sh")
 PROFILE_BUDGETS = {
     "current": {"max_session_start_hooks": 20, "allow_lab": True},
     "core": {"max_session_start_hooks": 5, "allow_lab": False},
+    "team": {"max_session_start_hooks": 8, "allow_lab": False},
     "maintainer": {"max_session_start_hooks": 20, "allow_lab": True},
+    "lab": {"max_session_start_hooks": 30, "allow_lab": True},
 }
 
 
@@ -131,7 +133,7 @@ def candidate_reason(primitive: dict[str, Any], profile: str) -> str | None:
     state = primitive.get("lifecycle_state", "unknown")
     if profile == "core" and dist == "lab":
         return "lab primitive must not be in core SessionStart"
-    if profile in {"core", "maintainer"} and maturity == "observe":
+    if profile in {"core", "team", "maintainer"} and maturity == "observe":
         return "observe-only startup hook should be lazy, scheduled, or maintainer-only unless boot-critical"
     if state == "sandbox":
         return "sandbox startup hook should not be in a consumer boot path"

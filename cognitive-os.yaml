@@ -241,10 +241,11 @@ skills:
   adaptation: true                 # Track feedback and adapt
   loading:
     strategy: progressive          # progressive | full
-    level1_budget: 5000            # tokens for catalog (always loaded)
+    level1_budget: 4000            # tokens for micro catalog (always loaded)
     level2_budget: 30000           # tokens for active skills (on demand)
     max_active: 5                  # max simultaneous loaded skills
-    catalog: CATALOG.md            # compact skill index
+    catalog: CATALOG-MICRO.md      # Level-1 micro skill index
+    compact_catalog: CATALOG-COMPACT.md # Level-1.5 discovery index
 
 rules:
   loading:
@@ -1305,6 +1306,17 @@ harness:
       event: PreToolUse
       matcher: Agent
       scope: os-only
+
+    context-diet:
+      script: hooks/context-diet.sh
+      event: PreToolUse
+      matcher: Agent
+      scope: both
+      codex_projection: partial
+      codex_gap_reason: >
+        Codex does not expose first-class Agent tool invocations in all modes.
+        When an Agent-like PreToolUse payload is available, the hook emits the
+        same minimal-rule advisory used by Claude Code; otherwise it exits 0.
 
     control-plane-audit-agent:
       script: hooks/control-plane-audit.sh

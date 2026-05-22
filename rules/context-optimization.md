@@ -10,15 +10,17 @@ Reduce baseline token overhead from ~17,500 tokens to ~3,500 tokens per session 
 
 | Level | What | When | Budget |
 |-------|------|------|--------|
-| Level 1 | CATALOG-COMPACT.md (name + 1-line per skill) | Always loaded at session start | ~1.5-2K tokens |
+| Level 1 | CATALOG-MICRO.md (name + tiny routing hint) | Always loaded at session start | ~3.5K tokens |
+| Level 1.5 | CATALOG-COMPACT.md (name + 1-line per skill) | Broader skill discovery on demand | ~4.8K tokens |
 | Level 2 | Full SKILL.md | When skill is invoked or trigger matches | ~1-3K per skill |
 | Level 3 | references/ files | When detailed examples needed | ~2-5K per skill |
 
 ### Loading Rules
 
-- ONLY `skills/CATALOG-COMPACT.md` is loaded at session start (Level 1). Regenerate it
+- ONLY `skills/CATALOG-MICRO.md` is loaded at session start (Level 1). Regenerate it
   with `python3 scripts/generate_compact_catalog.py` whenever a skill is added, renamed,
   or retired.
+- `skills/CATALOG-COMPACT.md` is Level 1.5 and loads only when broader skill discovery is needed.
 - `skills/CATALOG.md` (the full catalog with invocations, audience columns, and section
   notes) is NOT loaded at session start. Invoke `/catalog-full` on demand to load it.
 - When a skill is needed (user invokes or contextual trigger), load the full SKILL.md (Level 2)
@@ -70,7 +72,7 @@ Full rules are loaded on top of RULES-COMPACT.md when triggers match:
 Context usage can be logged to `.cognitive-os/metrics/context-usage.jsonl`. Logging is agent-instruction-only — no automatic hook fires for context monitoring. Agents MUST self-monitor context thresholds per `rules/context-management.md` (50% / 70% / 85%).
 
 Fields tracked:
-- `catalog_tokens`: tokens used by CATALOG-COMPACT.md (Level 1)
+- `catalog_tokens`: tokens used by CATALOG-MICRO.md (Level 1)
 - `rules_tokens`: tokens used by RULES-COMPACT.md
 - `total_overhead`: sum of catalog + rules at session start
 - `full_load_tokens`: what full loading would cost

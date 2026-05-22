@@ -43,7 +43,7 @@ rot or token waste:
 |---|---|---|---|
 | Silent token growth per prompt | Runtime budget accounting | `lib/context_budget.py`, `hooks/context-budget-meter.sh`, `hooks/_lib/context_budget_lib.sh`, `docs/02-Decisions/adrs/ADR-186-context-budget-enforcement.md` | Implemented and registered for Claude settings; metrics available in `.cognitive-os/metrics/context-budget.jsonl`. |
 | Large static startup preamble | Runtime diet and preamble accounting | `scripts/cos-session-start-budget`, `scripts/session_start_budget.py`, `docs/04-Concepts/architecture/session-start-runtime-diet.md`, `scripts/cos_preamble_budget.py` | Implemented; core profile is small, maintainer/current profile may remain heavier for self-hosting. |
-| Loading every rule/skill by default | Progressive context loading | `rules/context-optimization.md`, `skills/CATALOG-COMPACT.md`, `rules/RULES-COMPACT.md`, `lib/context_diet.py`, `hooks/context-diet.sh` | Partially active; compact catalogs exist, context-diet code exists, but hook activation must be verified per harness/profile. |
+| Loading every rule/skill by default | Progressive context loading | `rules/context-optimization.md`, `skills/CATALOG-MICRO.md`, `skills/CATALOG-COMPACT.md`, `rules/RULES-COMPACT.md`, `lib/context_diet.py`, `hooks/context-diet.sh` | Active in Claude Code Agent launches; micro catalog is Level-1, compact catalog is Level-1.5, and Codex degrades safely when Agent payloads are unavailable. |
 | Irrelevant ADR/rule/context injection | Query-tailored context | `hooks/query-tailored-context-inject.sh`, `lib/context_injector.py`, `docs/02-Decisions/adrs/ADR-040-query-tailored-context-injection.md` | Implemented and registered for Agent-like launches in Claude settings. |
 | Forgetting decisions before compaction | Pre-compaction flush and durable summaries | `hooks/pre-compaction-flush.sh`, `lib/anchored_summarizer.py`, `hooks/session-summary-reminder.sh`, `docs/04-Concepts/architecture/memory-lifecycle.md` | Implemented; backed by behavior, contract, and integration tests. |
 | Re-discovering known facts | Memory-first retrieval | `hooks/memory-prefetch.sh`, `lib/memory_manager.py`, Engram MCP tools, `rules/token-economy.md` | Implemented as best-effort memory prefetch and required agent behavior. |
@@ -78,17 +78,21 @@ scripts/cos-session-start-budget --profile core --json
 scripts/cos-context-budget-report --json
 ```
 
-Observed state:
+Observed state after the 2026-05-22 token-tax hardening pass:
 
 | Measurement | Result | Interpretation |
 |---|---:|---|
 | `AGENTS.md` length | 199 lines after hardening | Under the external 200-line heuristic while still preserving the mandatory instruction content. |
-| Current/maintainer SessionStart hooks | 23 SessionStart hooks | Heavy but expected for self-hosting; active maintainer projection can exceed consumer-core diet. |
+| Current/maintainer SessionStart hooks | 20 SessionStart hooks | Meets the maintainer budget while preserving runtime safety barriers; non-critical startup probes were kept lazy/opt-in. |
 | Core SessionStart hooks | 4 hooks | Passes the core budget of 5 hooks. |
-| Context budget entries | 605 entries | Enough recent local data for a first budget-health view. |
-| Budget pass rate | 99.5% PASS | User/context payloads are generally within configured budget. |
-| Budget warnings | 3 WARN, 0 BLOCK | No recent hard overrun, but warnings exist. |
-| `context-budget-meter` p99 | 1419.6 ms | Above the target of 30 ms; the meter is protective but too slow in the measured window. |
+| Team SessionStart hooks | 6 hooks | Passes the team budget of 8 hooks. |
+| Preamble budget | core/team/maintainer/lab PASS | `cos-preamble-budget` now charges actual projected startup primitives and the compact runtime config projection, not the full lifecycle inventory. |
+| Runtime config context | ~2.2K tokens | `.cognitive-os/generated/runtime-config.compact.yaml` replaces full `cognitive-os.yaml` (~18K token estimate) for preamble budgeting. |
+| Skill Level-1 catalog | ~3.6K tokens | `skills/CATALOG-MICRO.md` is the always-load index; `CATALOG-COMPACT.md` moved to Level 1.5. |
+| Context budget entries | 385 entries in latest 30d report | Enough recent local data for a first budget-health view. |
+| Budget pass rate | 100% PASS | User/context payloads are within configured budget. |
+| Budget warnings | 0 WARN, 0 BLOCK | No recent hard overrun. |
+| `context-budget-meter` p99 | Historical report showed 140.6 ms before stdlib fast-path | The hook now avoids project imports on the normal path; keep measuring until old samples age out. |
 | `subagent-context-injector` average ratio | 0.5982 | Sub-agent static context fits the configured budget but consumes a meaningful share. |
 
 The key distinction: **consumer core is small; maintainer self-hosting is heavier
@@ -143,11 +147,11 @@ PDF-to-Markdown is now covered by `scripts/cos-document-ingest` and `lib/documen
 
 | Gap | Why it matters | Candidate fix |
 |---|---|---|
-| `context-budget-meter` p99 is high | A protective hook can become its own latency tax. | Add caching, reduce Python startup cost, or move heavy reporting out of the synchronous hook path. |
+| `context-budget-meter` p99 needs post-change calibration | Old metrics include project-import samples and can overstate current hook cost. | Keep the stdlib-only fast path, let old samples age out, and re-run `scripts/cos-context-budget-report --json`. |
 | Early checkpoint needs ongoing calibration | COS now emits a 15% lightweight checkpoint, but model/context-size differences may require tuning. | Keep `CONTEXT_WATCHDOG_THRESHOLD_*` overrides and monitor `context-watchdog.jsonl`. |
 | PDF ingestion coverage is first-pass | The primitive handles text PDFs and optional local extractors; scanned/OCR-only PDFs still need an OCR extension. | Add OCR only behind an explicit dependency/license review. |
 | No literal `/rewind` equivalent | Failed turns remain in chat context unless the harness supports rewind. | Add a portable “attempt reset” workflow: checkpoint, summarize failure, open fresh subtask/session, and quarantine failed-output context. |
-| `context-diet.sh` status varies by harness/profile | Existing code does not prove active coverage everywhere. | Add a profile audit line showing whether context diet is registered for current, core, and maintainer profiles. |
+| Codex Agent lifecycle remains partial | Codex may not expose the same Agent/SubagentStart payloads as Claude Code. | Keep `context-diet.sh` and subagent budgeting as safe no-op/partial projections in Codex, and prefer prompt-time/task-level adapters when Codex emits richer events. |
 
 ## Verification commands
 
@@ -162,6 +166,11 @@ python3 -m pytest tests/behavior/test_compaction_protection.py -q
 python3 -m pytest tests/contracts/test_memory_lifecycle_docs.py -q
 scripts/cos-context-budget-report --json
 scripts/cos-session-start-budget --profile core --json
+scripts/cos-session-start-budget --profile team --json
+scripts/cos-session-start-budget --profile maintainer --json
+scripts/cos-preamble-budget --profile core
+scripts/cos-preamble-budget --profile team
+scripts/cos-preamble-budget --profile maintainer
 ```
 
 For cross-harness memory proof, use:

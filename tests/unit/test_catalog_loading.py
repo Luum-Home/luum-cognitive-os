@@ -16,6 +16,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 GENERATOR = PROJECT_ROOT / "scripts" / "generate_compact_catalog.py"
 COMPACT_CATALOG = PROJECT_ROOT / "skills" / "CATALOG-COMPACT.md"
+MICRO_CATALOG = PROJECT_ROOT / "skills" / "CATALOG-MICRO.md"
 FULL_CATALOG = PROJECT_ROOT / "skills" / "CATALOG.md"
 
 
@@ -99,6 +100,13 @@ class TestGenerator:
             f"compact ({compact_size}) must be smaller than full ({full_size})"
         )
 
+    def test_micro_smaller_than_compact_and_within_level1_budget(self):
+        """Micro catalog is the always-load Level-1 catalog."""
+        micro_size = len(MICRO_CATALOG.read_text())
+        compact_size = len(COMPACT_CATALOG.read_text())
+        assert micro_size < compact_size
+        assert micro_size // 4 <= 4000
+
 
 # ---------------------------------------------------------------------------
 # Consistency: every entry in COMPACT has a real SKILL.md
@@ -174,6 +182,7 @@ class TestConsistency:
             "CATALOG-COMPACT.md is stale — regenerate:\n"
             "  python3 scripts/generate_compact_catalog.py"
         )
+        assert MICRO_CATALOG.exists(), "CATALOG-MICRO.md is missing — regenerate catalog"
 
 
 # ---------------------------------------------------------------------------
@@ -183,16 +192,17 @@ class TestConsistency:
 
 class TestLoaderWiring:
 
-    def test_session_init_points_to_compact(self):
-        """session-init.sh references CATALOG-COMPACT.md, not only CATALOG.md."""
+    def test_session_init_points_to_micro(self):
+        """session-init.sh references CATALOG-MICRO.md for Level-1 startup."""
         content = (PROJECT_ROOT / "hooks" / "session-init.sh").read_text()
-        assert "CATALOG-COMPACT.md" in content, (
-            "hooks/session-init.sh must reference CATALOG-COMPACT.md"
+        assert "CATALOG-MICRO.md" in content, (
+            "hooks/session-init.sh must reference CATALOG-MICRO.md"
         )
 
     def test_context_optimization_references_compact(self):
         """rules/context-optimization.md mentions CATALOG-COMPACT.md."""
         content = (PROJECT_ROOT / "rules" / "context-optimization.md").read_text()
+        assert "CATALOG-MICRO.md" in content
         assert "CATALOG-COMPACT.md" in content
 
     def test_catalog_full_skill_exists(self):

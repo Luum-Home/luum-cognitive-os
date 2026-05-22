@@ -17,7 +17,7 @@
 #
 # Environment:
 #   PROJECT_DIR   — project root (default: cwd if cognitive-os.yaml or .claude/ present)
-#   PROFILE       — efficiency/adoption profile: core, maintainer/default, full
+#   PROFILE       — efficiency/adoption profile: core, team, maintainer/default, lab, full
 #
 # Output: writes .claude/settings.json (atomic via tmp file).
 # Idempotent — safe to run multiple times.
@@ -45,7 +45,7 @@ EMIT_MODE=false
 PROFILE="${PROFILE:-default}"
 case "$PROFILE" in
   default) PROFILE="maintainer" ;;
-  core|maintainer|full) ;;
+  core|team|maintainer|lab|full) ;;
   *) PROFILE="maintainer" ;;
 esac
 for arg in "$@"; do
@@ -125,6 +125,15 @@ cc_driver_emit() {
       "hooks/cross-session-event-emit.sh"       "true"  \
       "hooks/validation-lock-cleanup.sh"      "false" \
       "hooks/session-start-stash-reapply.sh"  "false" \
+    )
+  elif [ "$PROFILE" = "team" ]; then
+    session_start=$(_cc_hook_group "SessionStart" "" \
+      "hooks/session-init.sh"                  "false" \
+      "hooks/engram-daemon-launcher.sh"        "true"  \
+      "hooks/session-resume.sh"               "false" \
+      "hooks/validation-lock-cleanup.sh"      "false" \
+      "hooks/session-start-stash-reapply.sh"  "false" \
+      "hooks/mcp-scan.sh"                     "true"  \
     )
   else
     session_start=$(_cc_hook_group "SessionStart" "" \
@@ -278,6 +287,7 @@ cc_driver_emit() {
     "hooks/inject-phase-context.sh"         "false" \
     "hooks/agent-working-dir-inject.sh"     "false" \
     "hooks/query-tailored-context-inject.sh" "false" \
+    "hooks/context-diet.sh"                 "false" \
     "hooks/control-plane-audit.sh"           "false" \
     "hooks/agent-prelaunch.sh"              "false" \
     "hooks/pre-agent-snapshot.sh"           "false" \

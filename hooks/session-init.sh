@@ -205,16 +205,17 @@ if [ -x "$(dirname "$0")/crash-recovery.sh" ]; then
 fi
 
 # ─── Level-1 skills catalog pointer ──────────────────────────────────────────
-# The compact catalog (CATALOG-COMPACT.md) is the Level-1 index loaded at
-# session start. Full SKILL.md files load on demand. The full catalog with
-# invocations and sections is available via /catalog-full.
+# The micro catalog (CATALOG-MICRO.md) is the Level-1 index loaded at session
+# start. CATALOG-COMPACT.md is Level-1.5 discovery; full SKILL.md files load on
+# demand. The full catalog with invocations and sections is available via
+# /catalog-full.
 # COS_LAZY_CATALOG controls the lazy-catalog branch: default/on keeps startup to
 # this pointer; COS_LAZY_CATALOG=0 allows eager catalog injection for debugging.
-CATALOG_COMPACT="$PROJECT_DIR/skills/CATALOG-COMPACT.md"
-if [ -f "$CATALOG_COMPACT" ]; then
-  echo "Skills catalog: skills/CATALOG-COMPACT.md (run /catalog-full for details)"
+CATALOG_MICRO="$PROJECT_DIR/skills/CATALOG-MICRO.md"
+if [ -f "$CATALOG_MICRO" ]; then
+  echo "Skills catalog: skills/CATALOG-MICRO.md (run /catalog-full for details)"
 else
-  echo "WARN: skills/CATALOG-COMPACT.md missing — run: python3 scripts/generate_compact_catalog.py" >&2
+  echo "WARN: skills/CATALOG-MICRO.md missing — run: python3 scripts/generate_compact_catalog.py" >&2
 fi
 echo ""
 

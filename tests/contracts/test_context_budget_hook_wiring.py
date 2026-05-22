@@ -59,3 +59,14 @@ def test_document_ingest_guard_registered_before_large_file_advisor() -> None:
     assert "document-ingest-guard.sh" in joined
     assert "large-file-advisor.sh" in joined
     assert joined.index("document-ingest-guard.sh") < joined.index("large-file-advisor.sh")
+
+
+def test_context_diet_registered_for_agent_pretooluse() -> None:
+    settings = json.loads((REPO / ".claude" / "settings.json").read_text(encoding="utf-8"))
+    agent_groups = [group for group in settings["hooks"]["PreToolUse"] if group.get("matcher") == "Agent"]
+    assert agent_groups, "Agent PreToolUse group missing"
+    commands = [hook["command"] for hook in agent_groups[0].get("hooks", [])]
+    joined = "\n".join(commands)
+    assert "query-tailored-context-inject.sh" in joined
+    assert "context-diet.sh" in joined
+    assert joined.index("query-tailored-context-inject.sh") < joined.index("context-diet.sh")
