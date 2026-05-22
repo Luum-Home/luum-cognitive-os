@@ -18,6 +18,8 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Goal Features Internals — 2026-05-16](../../06-Daily/reports/goal-features-internals-2026-05-16.md) — comparison of Codex and Claude Code goal mechanics feeding the COS-native `/goal` SDD under `.cognitive-os/sdd/changes/cos-native-goal-loop/`.
 
 ## Recent tech-radar governance additions
+- [Token Savings Q&A — Cognitive OS vs Legacy Agent Governance](../../04-Concepts/architecture/token-savings-qa.md) — evidence-backed answer card and assumptions for token savings versus vanilla/legacy agent governance.
+- [Token Savings Paired Benchmark Manual Test](../../09-Quality/manual-tests/token-savings-paired-benchmark.md) — privacy-preserving protocol for measuring vanilla vs SO token use, retries, cost, and quality on anonymized local projects.
 - [ADR-331 — Graphify Portable Context Optimization Primitive](../../02-Decisions/adrs/ADR-331-graphify-portable-context-optimization-primitive.md) — durable decision to adopt Graphify as an OS-owned context optimization primitive projected across IDE and CLI surfaces.
 - [Graphify Portable Optimization Plan — 2026-05-22](../../04-Concepts/architecture/graphify-portable-optimization-plan-2026-05-22.md) — phased implementation plan for Graphify primitive shell, curated graph baseline, hotspot audit, semantic-doc gating, and IDE/CLI projection.
 - [Graphify Integration Assessment — 2026-05-22](../../04-Concepts/architecture/graphify-integration-assessment-2026-05-22.md) — controlled-trial verdict for using Graphify as an optional repository graph/query optimization layer, with local clone/test/probe evidence and scoping requirements.
