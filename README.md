@@ -66,6 +66,17 @@ the full walkthrough.
 
 ## Quick Start
 
+### Install the `cos` CLI
+
+```bash
+brew install --cask Luum-Home/homebrew-tap/cognitive-os
+cos --version
+```
+
+You can also download platform archives from the latest GitHub Release.
+
+### Install Cognitive OS into a project
+
 ```bash
 # Install into your project (run from YOUR project directory, not this repo)
 cd /path/to/your/project

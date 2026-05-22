@@ -17,7 +17,7 @@ canonical decisions are:
 
 | Gap | Status | What exists now | Remaining work for absolute green |
 |---|---:|---|---|
-| Release pipeline binario real | 🟢/🟡 | `.goreleaser.yaml`, GitHub Actions workflow, checksums, GoReleaser install script, snapshot smoke, non-placeholder in-repo HEAD Homebrew formula, and an opt-in local Homebrew install canary. GoReleaser now generates a Homebrew cask for the external tap. | Create the real `luum-home/homebrew-tap` repository, add `HOMEBREW_TAP_GITHUB_TOKEN`, tag `v0.1.0`, run a real GitHub release, and verify `brew install luum-home/tap/cognitive-os` from that external tap. |
+| Release pipeline binario real | 🟢 | `.goreleaser.yaml`, GitHub Actions workflow, checksums, GoReleaser install script, snapshot smoke, non-placeholder in-repo HEAD Homebrew formula, opt-in local Homebrew install canary, real external tap `Luum-Home/homebrew-tap`, and v0.29.1 cask proof. | Keep the tap token secret valid and verify external cask install after each release. |
 | TUI adoption ADR + Bubble Tea real | 🟢 | `ADR-192-surface-5-adopt-bubbletea.md`, ADR-187 proof pack, direct Bubble Tea dependency, and compile-tested package at `cmd/cos/internal/tui`. | Expand the proof model into a full operator TUI if/when richer UX is required. |
 | API local/remota para `cosd` | 🟢 | `scripts/cosd serve` exposes HTTP TCP. `scripts/cosd serve-unix` exposes HTTP over a Unix domain socket. Both transports support `/healthz`, `/status`, `/submit-intent`, and `/process-once`; tests cover both. | For truly remote operation, add authentication, TLS/reverse-proxy guidance, or another secure transport. Current scope is local-first. |
 | Abstraer repo root / install root | 🟢 | `scripts/cos-root` resolves project/install roots without requiring Git. Product-facing scripts no longer call `git rev-parse --show-toplevel` directly. `tests/contracts/test_script_root_portability.py` prevents regression. | Keep new scripts on `scripts/cos-root` and add explicit exceptions only for Git-specific internals if a future need appears. |
@@ -67,9 +67,11 @@ the temporary formula copy to that local source, runs
 `brew install --build-from-source <temporary-local-tap>/cognitive-os`, verifies
 the installed `cos version`, runs `brew test cognitive-os`, and uninstalls
 `cognitive-os` afterward unless `--keep-installed` is provided. This proves the
-local formula semantics without mutating the canonical formula. It does not
-prove the external tap distribution. The external tap remains unproven until
-`luum-home/homebrew-tap` exists and a release has published into it.
+local formula semantics without mutating the canonical formula. It is still useful
+as a host-level canary before tagging. Separately, the external tap is proven as
+of v0.29.1: `Luum-Home/homebrew-tap` exists, `Casks/cognitive-os.rb` is
+published, and `brew info --cask Luum-Home/homebrew-tap/cognitive-os` resolves
+version `0.29.1`.
 
 ### Surface 5 / Bubble Tea
 
@@ -154,13 +156,13 @@ homebrew local canary preflight OK
 
 ## Next Actions
 
-1. Create and wire the external Homebrew tap repository.
-2. Add `HOMEBREW_TAP_GITHUB_TOKEN` to release secrets.
+1. Keep the external Homebrew tap repository (`Luum-Home/homebrew-tap`) reachable.
+2. Keep `HOMEBREW_TAP_GITHUB_TOKEN` populated in release secrets.
 3. Cut a real release tag and verify the GitHub Release artifacts.
 4. Run the opt-in local Homebrew canary before tagging:
    `COS_RUN_HOMEBREW_CANARY=1 scripts/cos-homebrew-local-canary --apply`.
 5. After external tap publication, verify the true external install path:
-   `brew install luum-home/tap/cognitive-os`.
+   `brew install --cask Luum-Home/homebrew-tap/cognitive-os`.
 6. Decide whether Surface 5 needs a full-screen operator TUI now or whether the
    proof model is enough for the current product phase.
 7. Add auth/secure-transport design before exposing `cosd` beyond localhost or a

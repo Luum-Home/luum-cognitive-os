@@ -44,14 +44,16 @@ cognitive-os-installed-exit=1
 ```
 
 Important boundary: this proves the local formula semantics through a real
-Homebrew install. It still does not prove the future external tap command:
+Homebrew install. At the time of this report it did not prove the external tap
+command. As of v0.29.1, the external tap path is:
 
 ```bash
-brew install luum-home/tap/cognitive-os
+brew install --cask Luum-Home/homebrew-tap/cognitive-os
 ```
 
-That command remains blocked until the real external tap exists and a release is
-published into it.
+That command is now unblocked: `Luum-Home/homebrew-tap` exists and contains
+the v0.29.1 cask. Local canary remains valuable as a preflight because it
+catches host-level Homebrew breakage before a tag is cut.
 
 ## ADR warning decision
 
@@ -93,8 +95,8 @@ Observed result:
 
 ## Remaining work
 
-1. Create/publish the real external Homebrew tap and run
-   `brew install luum-home/tap/cognitive-os` against it.
+1. Keep the real external Homebrew tap reachable and run
+   `brew install --cask Luum-Home/homebrew-tap/cognitive-os` after releases.
 2. Resolve the ADR-187 relationship chain before release, or capture an explicit
    release waiver.
 3. Keep the Homebrew local canary opt-in; do not add it to default CI because it

@@ -57,6 +57,20 @@ lane. The GitHub release workflow also runs `make test-laptop` before GoReleaser
 - Release publication remains a deliberate operator action after the gate is
   green.
 
+## 2026-05-22 operational state
+
+For releases after v0.29.1, the gate should find the Homebrew tap reachable:
+
+- `Luum-Home/homebrew-tap` exists.
+- `.github/workflows/cos-binary-release.yml` passes `HOMEBREW_TAP_GITHUB_TOKEN`
+  into GoReleaser.
+- Operators must keep that secret populated with a token that can push to the
+  tap repository. The token value must never be printed in logs.
+
+A release is not externally ready if the tap exists but the secret is absent,
+because GoReleaser can still publish the GitHub Release while failing the cask
+publication step.
+
 ## Acceptance Criteria
 
 ```text

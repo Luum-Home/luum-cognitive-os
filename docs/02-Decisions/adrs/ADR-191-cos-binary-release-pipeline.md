@@ -2,7 +2,7 @@
 adr: 191
 title: COS Binary Release Pipeline
 status: accepted
-implementation_status: partial
+implementation_status: implemented
 date: '2026-05-06'
 supersedes: []
 superseded_by: null
@@ -10,9 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: accepted record with explicit partial/phase scope
-partial_remaining: The in-repo `Formula/cognitive-os.rb` remains a `--HEAD` developer formula so
-remaining_in_scope: true
-partial_remaining_basis: explicit body remaining signal
+partial_remaining: null
+remaining_in_scope: false
+partial_remaining_basis: external tap was created and verified for v0.29.1
 ---
 
 # ADR-191: COS Binary Release Pipeline
@@ -41,15 +41,16 @@ The release contract is:
 - Release archives include the `cos` binary plus the portable OS assets needed by
   installers and headless workers.
 - Checksums are emitted as `checksums.txt`.
-- Homebrew tap publication is delegated to `luum-home/homebrew-tap` as a GoReleaser cask, matching current GoReleaser packaging guidance.
+- Homebrew tap publication is delegated to `Luum-Home/homebrew-tap` as a GoReleaser cask, matching current GoReleaser packaging guidance.
 - The in-repo `Formula/cognitive-os.rb` remains a `--HEAD` developer formula so
   it has no fake checksum.
 
 ## Consequences
 
 - The repository now has real release plumbing instead of a SHA placeholder.
-- Stable Homebrew tap installation depends on creating the external tap repository
-  and setting `HOMEBREW_TAP_GITHUB_TOKEN` in release secrets.
+- Stable Homebrew tap installation depends on the external tap repository and
+  `HOMEBREW_TAP_GITHUB_TOKEN` release secret. As of v0.29.1,
+  `Luum-Home/homebrew-tap` exists and contains `Casks/cognitive-os.rb`.
 - Local smoke tests install GoReleaser only through `scripts/install-goreleaser.sh`,
   which uses Homebrew on macOS and `go install github.com/goreleaser/goreleaser/v2@latest` as fallback.
 - The existing `scripts/create-release.sh` is retained as a release-notes helper,
@@ -66,6 +67,23 @@ ACCEPTANCE CRITERIA:
 5. `scripts/install-goreleaser.sh --check --snapshot-smoke` runs a no-publish snapshot release smoke.
 6. `cd cmd/cos && go test ./...` passes.
 ```
+
+## 2026-05-22 update — v0.29.1 external tap proof
+
+The external tap handoff is no longer theoretical:
+
+- Tap repository: `https://github.com/Luum-Home/homebrew-tap`
+- Published cask: `Casks/cognitive-os.rb`
+- Verified command: `brew info --cask Luum-Home/homebrew-tap/cognitive-os`
+- Observed version: `0.29.1`
+- Install command:
+
+```bash
+brew install --cask Luum-Home/homebrew-tap/cognitive-os
+```
+
+The in-repo `Formula/cognitive-os.rb` remains a developer `HEAD` formula by
+design; the stable user-facing binary path is the external cask tap.
 
 ## Alternatives rejected
 
