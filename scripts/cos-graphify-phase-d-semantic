@@ -1,0 +1,216 @@
+#!/usr/bin/env python3
+# SCOPE: os-only
+"""Run or preflight Graphify Phase D semantic slices with explicit backend gates."""
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import shutil
+import subprocess
+import sys
+import urllib.request
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+
+ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_SLICES = (
+    "skills",
+    "rules",
+    "docs/04-Concepts/architecture",
+    "docs/02-Decisions/adrs",
+)
+BACKEND_ENV_KEYS = {
+    "openai": ("OPENAI_API_KEY",),
+    "claude": ("ANTHROPIC_API_KEY",),
+    "gemini": ("GEMINI_API_KEY", "GOOGLE_API_KEY"),
+    "deepseek": ("DEEPSEEK_API_KEY",),
+    "kimi": ("MOONSHOT_API_KEY", "KIMI_API_KEY"),
+}
+
+
+def _ollama_available() -> bool:
+    try:
+        with urllib.request.urlopen("http://127.0.0.1:11434/api/tags", timeout=2):
+            return True
+    except Exception:
+        return False
+
+
+def _backend_ready(backend: str) -> tuple[bool, str]:
+    if backend == "ollama":
+        if _ollama_available():
+            return True, "ollama API reachable at http://127.0.0.1:11434"
+        return False, "ollama API is not reachable at http://127.0.0.1:11434"
+    keys = BACKEND_ENV_KEYS.get(backend, ())
+    if keys and any(os.environ.get(key) for key in keys):
+        return True, f"required environment is present for backend {backend}"
+    if keys:
+        return False, f"missing one of required environment variables: {', '.join(keys)}"
+    return True, f"no local preflight rule for backend {backend}"
+
+
+def _graphify_command(args: argparse.Namespace, slice_path: str, out_root: Path) -> list[str]:
+    command = [
+        str(ROOT / "scripts" / "cos-graphify-build"),
+        slice_path,
+        "--include-docs",
+        "--out",
+        str(out_root),
+        "--backend",
+        args.backend,
+        "--skip-benchmark",
+        "--timeout-seconds",
+        str(args.timeout_seconds),
+        "--progress-seconds",
+        str(args.progress_seconds),
+    ]
+    if args.model:
+        command.extend(["--model", args.model])
+    if args.no_cluster:
+        command.append("--no-cluster")
+    if args.dry_run:
+        command.append("--dry-run")
+    return command
+
+
+def _run(command: list[str]) -> tuple[int, str, str]:
+    completed = subprocess.run(command, cwd=ROOT, check=False, capture_output=True, text=True)
+    return completed.returncode, completed.stdout, completed.stderr
+
+
+def _render_markdown(payload: dict[str, Any]) -> str:
+    lines = [
+        "# Graphify Phase D Semantic Execution Receipt",
+        "",
+        "Phase D covers Markdown/YAML-heavy slices. This receipt records backend readiness, explicit execution mode, per-slice commands, and outcomes without treating Graphify output as verification evidence.",
+        "",
+        "## Summary",
+        "",
+        f"Timestamp: `{payload['timestamp']}`",
+        f"Backend: `{payload['backend']}`",
+        f"Mode: `{payload['mode']}`",
+        f"Backend ready: `{payload['backend_ready']}`",
+        f"Backend reason: {payload['backend_reason']}",
+        "",
+        "## Slice Results",
+        "",
+    ]
+    for item in payload["slices"]:
+        lines.extend([
+            f"### `{item['slice']}`",
+            "",
+            f"Output root: `{item['out_root']}`",
+            f"Return code: `{item['returncode']}`",
+            f"Status: `{item['status']}`",
+            "",
+            "Command:",
+            "",
+            "```bash",
+            " ".join(item["command"]),
+            "```",
+            "",
+        ])
+        if item.get("receipt"):
+            lines.extend([f"Receipt: `{item['receipt']}`", ""])
+        if item.get("stderr_tail"):
+            lines.extend(["stderr tail:", "", "```text", item["stderr_tail"], "```", ""])
+    lines.extend([
+        "## Evidence vs Inference",
+        "",
+        "Evidence:",
+        "",
+        "- This receipt records commands and process outcomes for Phase D slices.",
+        "",
+        "Inference boundary:",
+        "",
+        "- Semantic graph output is retrieval support only; source review, tests, ADRs, and rules remain verification evidence.",
+        "",
+    ])
+    return "\n".join(lines)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--slice", action="append", default=[], help="Slice to run; repeatable. Defaults to Phase D slices")
+    parser.add_argument("--backend", default="ollama", help="Graphify semantic backend")
+    parser.add_argument("--model", help="Optional backend model")
+    parser.add_argument("--out-root", default="/tmp/cos-graphify-phase-d", help="Base output root for per-slice Graphify outputs")
+    parser.add_argument("--timeout-seconds", type=int, default=600, help="Per-slice timeout")
+    parser.add_argument("--progress-seconds", type=int, default=30, help="Per-slice progress heartbeat")
+    parser.add_argument("--no-cluster", action="store_true", help="Skip clustering")
+    parser.add_argument("--dry-run", action="store_true", help="Print/build receipts without executing Graphify extraction")
+    parser.add_argument("--execute", action="store_true", help="Actually run semantic extraction; requires backend preflight success")
+    parser.add_argument("--json", action="store_true", help="Emit JSON instead of Markdown")
+    parser.add_argument("--out", help="Optional receipt output path")
+    args = parser.parse_args()
+
+    if args.dry_run and args.execute:
+        raise SystemExit("error: choose either --dry-run or --execute, not both")
+
+    backend_ready, backend_reason = _backend_ready(args.backend)
+    slices = args.slice or list(DEFAULT_SLICES)
+    mode = "execute" if args.execute else "dry-run" if args.dry_run else "preflight"
+    if args.execute and not backend_ready:
+        mode = "blocked"
+
+    out_base = Path(args.out_root)
+    payload: dict[str, Any] = {
+        "schema_version": 1,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "backend": args.backend,
+        "backend_ready": backend_ready,
+        "backend_reason": backend_reason,
+        "mode": mode,
+        "slices": [],
+    }
+
+    final_rc = 0
+    for slice_path in slices:
+        safe = slice_path.strip("/").replace("/", "__") or "repo-root"
+        out_root = out_base / safe
+        command = _graphify_command(args, slice_path, out_root)
+        item: dict[str, Any] = {
+            "slice": slice_path,
+            "out_root": str(out_root),
+            "command": command,
+            "returncode": 0,
+            "status": "planned",
+        }
+        if args.execute and backend_ready:
+            rc, stdout, stderr = _run(command)
+            item["returncode"] = rc
+            item["status"] = "completed" if rc == 0 else "failed"
+            item["stdout_tail"] = stdout[-2000:]
+            item["stderr_tail"] = stderr[-2000:]
+            receipt = out_root / "graphify-out" / "cos-build-receipt.json"
+            if receipt.exists():
+                item["receipt"] = str(receipt)
+            if rc != 0 and final_rc == 0:
+                final_rc = rc
+        elif args.execute and not backend_ready:
+            item["returncode"] = 2
+            item["status"] = "blocked-backend-unavailable"
+            final_rc = 2 if final_rc == 0 else final_rc
+        elif args.dry_run:
+            dry_command = [*command, "--dry-run"] if "--dry-run" not in command else command
+            item["command"] = dry_command
+            item["status"] = "dry-run"
+        else:
+            item["status"] = "preflight-only"
+        payload["slices"].append(item)
+
+    output = json.dumps(payload, indent=2, sort_keys=True) + "\n" if args.json else _render_markdown(payload)
+    if args.out:
+        out = Path(args.out)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(output, encoding="utf-8")
+        print(f"COS_GRAPHIFY_PHASE_D_RECEIPT={out}")
+    else:
+        print(output, end="")
+    return final_rc
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

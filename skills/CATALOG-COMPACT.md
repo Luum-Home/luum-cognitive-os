@@ -3,7 +3,7 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | scope | audience | 1-line description`. `scope` is `[core]` for top-level skills and `[ext:pack]` for packaged extension skills. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 180
+Total skills: 181
 
 ## os (23)
 
@@ -33,7 +33,7 @@ Total skills: 180
 | validate-release | [core] | Pre-release readiness check — validates working tree, branch, changelog, |
 | vuln-remediation-flow | [core] | 'Use when you need this Cognitive OS skill: Lab-stage propose-only cloud |
 
-## os-dev (42)
+## os-dev (43)
 
 | Skill | Scope | Description |
 |-------|-------|-------------|
@@ -56,6 +56,7 @@ Total skills: 180
 | detect-patterns | [core] | 'Detect systemic problems in the Cognitive OS codebase: dead metadata, |
 | docs-execution-audit | [core] | Audit what the docs say is done vs what repo evidence proves. |
 | dogfood-score | [core] | Composite 0-100 score measuring SO self-build maturity (tests, skills, |
+| graphify-query | [core] | Maintainer workflow for Graphify-backed repository graph builds and context-selection queries. |
 | harness-audit | [core] | Evaluate harness agentic primitives (hooks, rules, skills) for continued |
 | metrics-calibrator | [core] | Analyze KPI history and auto-calibrate thresholds for meaningful alerting. |
 | nemo-guardrails | [core] | Generate and configure NeMo Guardrails Colang 2.0 rules from Cognitive |

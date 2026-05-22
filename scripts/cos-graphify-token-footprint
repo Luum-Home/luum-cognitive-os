@@ -1,0 +1,172 @@
+#!/usr/bin/env python3
+# SCOPE: os-only
+"""Estimate Graphify preload token-footprint reduction from changed paths or hints."""
+from __future__ import annotations
+
+import argparse
+import json
+import math
+import subprocess
+import sys
+from pathlib import Path
+from typing import Any, Iterable
+
+ROOT = Path(__file__).resolve().parents[1]
+PRELOAD_MATRIX = ROOT / "scripts" / "cos-graphify-preload-matrix"
+TEXT_SUFFIXES = {
+    ".py",
+    ".sh",
+    ".bash",
+    ".zsh",
+    ".js",
+    ".ts",
+    ".tsx",
+    ".jsx",
+    ".go",
+    ".rs",
+    ".java",
+    ".kt",
+    ".rb",
+    ".php",
+    ".toml",
+    ".json",
+}
+BASELINE_ROOTS_BY_BUNDLE = {
+    "harness-events": ("lib",),
+    "history-rewrite": ("lib", "scripts"),
+    "destructive-git": ("hooks",),
+    "work-inventory": ("scripts", "hooks"),
+    "agent-service-session": ("packages/agent-service",),
+}
+
+
+def _run_preload_matrix(args: argparse.Namespace) -> dict[str, Any]:
+    command = [str(PRELOAD_MATRIX), *args.items, "--json"]
+    if args.changed:
+        command.append("--changed")
+    if args.base:
+        command.extend(["--base", args.base])
+    if args.include_untracked:
+        command.append("--include-untracked")
+    completed = subprocess.run(command, cwd=ROOT, check=False, capture_output=True, text=True)
+    if completed.returncode != 0:
+        raise SystemExit(completed.stderr.strip() or "error: preload matrix failed")
+    return json.loads(completed.stdout)
+
+
+def _is_text_candidate(path: Path) -> bool:
+    if not path.is_file():
+        return False
+    if any(part.startswith(".") and part not in {".ai"} for part in path.relative_to(ROOT).parts):
+        return False
+    return path.suffix in TEXT_SUFFIXES or path.name in {"Dockerfile", "Makefile"}
+
+
+def _expand_files(paths: Iterable[str]) -> list[Path]:
+    files: list[Path] = []
+    seen: set[Path] = set()
+    for raw in paths:
+        path = ROOT / raw
+        if not path.exists():
+            continue
+        candidates = [path] if path.is_file() else [candidate for candidate in path.rglob("*") if _is_text_candidate(candidate)]
+        for candidate in candidates:
+            if candidate.is_file() and candidate not in seen and _is_text_candidate(candidate):
+                seen.add(candidate)
+                files.append(candidate)
+    return sorted(files)
+
+
+def _estimate_tokens(path: Path) -> int:
+    text = path.read_text(encoding="utf-8", errors="replace")
+    return max(1, math.ceil(len(text) / 4))
+
+
+def _totals(files: list[Path]) -> dict[str, Any]:
+    token_by_file = {str(path.relative_to(ROOT)): _estimate_tokens(path) for path in files}
+    return {
+        "files": len(files),
+        "estimated_tokens": sum(token_by_file.values()),
+        "token_by_file": token_by_file,
+    }
+
+
+def _baseline_roots(bundle_keys: Iterable[str]) -> list[str]:
+    roots: list[str] = []
+    seen: set[str] = set()
+    for key in bundle_keys:
+        for root in BASELINE_ROOTS_BY_BUNDLE.get(key, ()):
+            if root not in seen:
+                seen.add(root)
+                roots.append(root)
+    return roots
+
+
+def _render_markdown(payload: dict[str, Any]) -> str:
+    lines = [
+        "# Graphify Token Footprint Estimate",
+        "",
+        "This is a deterministic context-footprint proxy. It estimates tokens from local file text with `ceil(characters / 4)` and does not claim actual model billing tokens.",
+        "",
+        "## Summary",
+        "",
+        f"Matched bundles: {', '.join(payload['bundle_keys']) or 'none'}",
+        f"Baseline roots: {', '.join(payload['baseline_roots']) or 'none'}",
+        f"Baseline files: {payload['baseline']['files']}",
+        f"Baseline estimated tokens: {payload['baseline']['estimated_tokens']}",
+        f"Preload files: {payload['preload']['files']}",
+        f"Preload estimated tokens: {payload['preload']['estimated_tokens']}",
+        f"Estimated reduction ratio: {payload['estimated_reduction_ratio']:.2f}x",
+        f"Estimated token savings: {payload['estimated_token_savings']}",
+        "",
+        "## Preload Files",
+        "",
+    ]
+    for path, tokens in sorted(payload["preload"]["token_by_file"].items(), key=lambda item: item[1], reverse=True):
+        lines.append(f"- `{path}` — {tokens} estimated tokens")
+    lines.extend(["", "## Interpretation", ""])
+    lines.append("Use this estimate to decide what to preload before planning. Confirm any behavior claim with source inspection and tests from the preload matrix.")
+    return "\n".join(lines) + "\n"
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("items", nargs="*", help="Changed paths, symbols, or topic hints")
+    parser.add_argument("--changed", action="store_true", help="Use Git changed paths through cos-graphify-preload-matrix")
+    parser.add_argument("--base", help="Optional base revision for --changed")
+    parser.add_argument("--include-untracked", action="store_true", help="Include untracked files when --changed is set")
+    parser.add_argument("--json", action="store_true", help="Emit JSON instead of Markdown")
+    parser.add_argument("--out", help="Optional output file")
+    args = parser.parse_args()
+
+    matrix = _run_preload_matrix(args)
+    bundle_keys = [bundle["key"] for bundle in matrix.get("bundles", [])]
+    baseline_roots = _baseline_roots(bundle_keys)
+    baseline = _totals(_expand_files(baseline_roots))
+    preload = _totals(_expand_files(matrix.get("preload_files", [])))
+    baseline_tokens = baseline["estimated_tokens"]
+    preload_tokens = preload["estimated_tokens"]
+    ratio = (baseline_tokens / preload_tokens) if preload_tokens else 0.0
+    payload = {
+        "bundle_keys": bundle_keys,
+        "baseline_roots": baseline_roots,
+        "baseline": baseline,
+        "preload": preload,
+        "estimated_reduction_ratio": round(ratio, 4),
+        "estimated_token_savings": max(0, baseline_tokens - preload_tokens),
+        "estimator": "ceil(characters/4)",
+        "matrix": matrix,
+    }
+    output = json.dumps(payload, indent=2, sort_keys=True) + "\n" if args.json else _render_markdown(payload)
+    if args.out:
+        out = Path(args.out)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(output, encoding="utf-8")
+        print(f"COS_GRAPHIFY_TOKEN_FOOTPRINT={out}")
+    else:
+        print(output, end="")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
