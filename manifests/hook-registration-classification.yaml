@@ -96,10 +96,12 @@ entries:
   rationale: LLM variant superseded by registered rule-based confidence gate.
   next_action: Archive after ADR-022 migration cleanup.
 - path: hooks/context-diet.sh
-  status: future
-  rationale: Task-aware context selection advisory overlaps compact rules/stage-2
-    expansion.
-  next_action: Promote only after measurable token savings and precision proof.
+  status: active
+  rationale: Task-aware context selection now has measured token-savings evidence,
+    safe no-op behavior when unsupported lifecycle payloads are absent, and an
+    active Claude projection for Agent launches.
+  next_action: Keep projected as advisory context selection and continue tracking
+    Codex lifecycle gaps separately.
 - path: hooks/contextual-rule-loader.sh
   status: future
   rationale: Dynamic full-rule injection needs prompt/event support and bounded context

@@ -5,6 +5,21 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.29.2] - 2026-05-22 — "Token Budget Fast Path and Evidence-Grounded Context Savings"
+
+### Added
+- Added a micro skill catalog and runtime compact config generation path so session start and prompt preambles can load smaller context surfaces.
+- Added an anonymized token-savings Q&A, paired benchmark protocol, and live anonymized paired-run receipt for evidence-grounded operator claims.
+- Added a read-only anonymized token-savings audit script with unit and red-team coverage.
+
+### Changed
+- Switched the context-budget meter hook to a stdlib fast path that preserves budget enforcement while reducing hot-path Python/YAML overhead.
+- Tuned session-start and preamble budget reporting around the micro catalog and runtime compact config projections.
+
+### Validation
+- `python3 -m pytest tests/unit/test_catalog_loading.py tests/unit/test_runtime_compact_config.py tests/unit/test_token_savings_audit.py tests/contracts/test_context_budget_hook_wiring.py tests/red_team/portability/test_context_budget_meter_fast.py tests/red_team/portability/test_cos-token-savings-audit.py tests/red_team/portability/test_generate_runtime_compact_config.py -q` passed before release prep.
+- `python3 scripts/derived_artifact_gate.py` passed before merging the token-savings evidence to `main`.
+
 ## [0.29.1] - 2026-05-20 — "Laptop Lane Stability, Runtime Closure, and Package Patch Release"
 
 ### Fixed

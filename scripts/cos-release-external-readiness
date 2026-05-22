@@ -54,7 +54,12 @@ goreleaser_ok=1; command -v goreleaser >/dev/null 2>&1 || goreleaser_ok=0
 gh_ok=1; command -v gh >/dev/null 2>&1 && gh auth status >/dev/null 2>&1 || gh_ok=0
 main_repo_ok=0; [[ "$gh_ok" == 1 ]] && gh repo view "$MAIN_REPO" >/dev/null 2>&1 && main_repo_ok=1 || true
 tap_repo_ok=0; [[ "$gh_ok" == 1 ]] && gh repo view "$TAP_REPO" >/dev/null 2>&1 && tap_repo_ok=1 || true
-secret_ok=0; [[ -n "${HOMEBREW_TAP_GITHUB_TOKEN:-}" ]] && secret_ok=1
+secret_ok=0
+if [[ -n "${HOMEBREW_TAP_GITHUB_TOKEN:-}" ]]; then
+  secret_ok=1
+elif [[ "$gh_ok" == 1 ]] && gh secret list --repo "$MAIN_REPO" 2>/dev/null | awk '{print $1}' | grep -Fxq "HOMEBREW_TAP_GITHUB_TOKEN"; then
+  secret_ok=1
+fi
 for pair in "goreleaser:$goreleaser_ok" "gh_auth:$gh_ok" "main_repo:$main_repo_ok" "tap_repo:$tap_repo_ok" "homebrew_token:$secret_ok"; do
   name="${pair%%:*}"; value="${pair##*:}"
   if [[ "$value" != 1 ]]; then status="blocked"; reasons+=("$name is not ready"); fi
