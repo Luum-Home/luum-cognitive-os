@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -17,7 +18,7 @@ from lib.integration_shard_plan import plan_shards
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Plan/run shardable laptop integration validation.")
-    parser.add_argument("--shards", type=int, default=int(__import__("os").environ.get("COS_INTEGRATION_SHARDS", "4")))
+    parser.add_argument("--shards", type=int, default=int(os.environ.get("COS_INTEGRATION_SHARDS", "4")))
     parser.add_argument("--shard-index", type=int)
     parser.add_argument("--json", action="store_true")
     parser.add_argument("--run", action="store_true", help="Run pytest for the selected shard")
@@ -38,10 +39,12 @@ def main() -> int:
     if not files:
         print("integration shard is empty", file=sys.stderr)
         return 0
-    python_exe = __import__("os").environ.get("COS_TEST_PYTHON") or sys.executable
+    python_exe = os.environ.get("COS_TEST_PYTHON") or sys.executable
     cmd = [python_exe, "-m", "pytest", *files, "-m", "not docker", "--timeout=90", "--tb=short", "-q", *args.pytest_arg]
     print(json.dumps({"schema_version": "integration-shard-run/v1", "shard": args.shard_index, "command": cmd, "file_count": len(files)}, sort_keys=True), file=sys.stderr)
-    return subprocess.call(cmd, cwd=ROOT)
+    env = os.environ.copy()
+    env.setdefault("COS_TEST_SUBPROCESS_DEFAULT_TIMEOUT", "0")
+    return subprocess.call(cmd, cwd=ROOT, env=env)
 
 
 if __name__ == "__main__":

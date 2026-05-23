@@ -160,6 +160,14 @@ def create_fake_cos_source(
     settings_driver = SCRIPTS_DIR / "_lib" / "settings-driver.sh"
     if settings_driver.exists():
         shutil.copy2(settings_driver, scripts_lib_dst / "settings-driver.sh")
+    for driver_name in [
+        "settings-driver-bare.sh",
+        "settings-driver-claude-code.sh",
+        "settings-driver-codex.sh",
+    ]:
+        driver = SCRIPTS_DIR / "_lib" / driver_name
+        if driver.exists():
+            shutil.copy2(driver, scripts_lib_dst / driver_name)
     for script_name in [
         "cos-init.sh", "cos_init.py", "cos-registry.sh", "auto-update-projects.sh",
         "cos-init-global.sh", "setup-git-hooks.sh",
@@ -185,6 +193,12 @@ def create_fake_cos_source(
     (claude_dir / "settings.json").write_text(json.dumps({
         "hooks": {"PreToolUse": [], "PostToolUse": []}
     }, indent=2))
+
+    manifests_dst = cos_src / "manifests"
+    manifests_dst.mkdir(exist_ok=True)
+    harness_registry = PROJECT_ROOT / "manifests" / "harness-projection-registry.json"
+    if harness_registry.exists():
+        shutil.copy2(harness_registry, manifests_dst / "harness-projection-registry.json")
 
     return cos_src
 

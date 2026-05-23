@@ -38,6 +38,7 @@ SELF_INSTALL = PROJECT_ROOT / "hooks" / "self-install.sh"
 # Must match the CORE_RULES array in hooks/self-install.sh exactly.
 CORE_RULES = {
     "RULES-COMPACT.md",
+    "rate-limiting.md",
 }
 
 # All rule .md files in the source rules/ directory (dynamic count)
@@ -194,7 +195,7 @@ class TestProfileFilterLogic:
 
     def test_core_rules_count_matches_current_contract(self):
         """The CORE_RULES constant tracks the current self-install contract."""
-        assert len(CORE_RULES) == 1
+        assert len(CORE_RULES) == 2
 
 
 class TestProfileFilterShellScript:
@@ -292,9 +293,9 @@ class TestExternalProjectSimulation:
 
         remaining = {f.name for f in cos_rules_dir.glob("*.md")}
 
-        # Stage 1 must install the compact index. Referenced rules are loaded
-        # through Stage 2 [ref-key] expansion, not duplicated as symlinks.
-        assert remaining == {"RULES-COMPACT.md"}
+        # Stage 1 installs the compact index plus default always-on core rules
+        # declared by hooks/self-install.sh.
+        assert remaining == CORE_RULES
 
     def test_lean_profile_installs_only_compact(self, tmp_path):
         """Lean profile should only have RULES-COMPACT.md."""

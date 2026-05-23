@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import json
 import subprocess
 import time
 from pathlib import Path
@@ -107,6 +108,7 @@ def test_auto_checkpoint_respects_held_stash_lock(tmp_path: Path) -> None:
                 "CLAUDE_PROJECT_DIR": str(project),
                 "COGNITIVE_OS_PROJECT_DIR": str(project),
                 "COS_ALLOW_DESTRUCTIVE_GIT": "1",
+                "COS_AUTO_CHECKPOINT_USE_STASH": "1",
                 "COS_STASH_LOCK_TIMEOUT": "1",
                 "COGNITIVE_OS_HOOK_HEARTBEAT": "false",
             }
@@ -129,5 +131,9 @@ def test_auto_checkpoint_respects_held_stash_lock(tmp_path: Path) -> None:
 
     assert result.returncode == 0, result.stderr
     assert "could not acquire stash lock" in result.stderr
-    assert not list(checkpoint_dir.glob("cos-*.json"))
+    checkpoints = list(checkpoint_dir.glob("cos-*.json"))
+    assert len(checkpoints) == 1
+    metadata = json.loads(checkpoints[0].read_text(encoding="utf-8"))
+    assert metadata["stash_name"] == "copy-only-lock-failed"
+    assert metadata["copied_files"] == ["tracked.txt"]
     assert (project / "tracked.txt").read_text(encoding="utf-8") == "dirty change\n"
