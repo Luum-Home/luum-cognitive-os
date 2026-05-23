@@ -2057,7 +2057,7 @@
     },
     {
       "adr": "ADR-291",
-      "classification_basis": "phase-2-in-progress contract with 26 operations (25 distinct path strings), 13 functional operations (health/version/agent options plus 8 file-backed JSON session lifecycle/event endpoints and 2 local sync query endpoints), 10 typed JSON 501 stubs, and 3 SSE stub operations. The /csrf-token endpoint was removed in the security pass; real CSRF defense remains a Phase 2 follow-up.",
+      "classification_basis": "phase-2-in-progress contract with 26 operations (25 distinct path strings), 15 functional operations (health/version/agent options plus 8 file-backed JSON session lifecycle/event endpoints, 2 local sync query endpoints, and 2 runtime-lab query SSE endpoints), 10 typed JSON 501 stubs, and 1 SSE stub operation. The /csrf-token endpoint was removed in the security pass; real CSRF defense remains a Phase 2 follow-up.",
       "date": "2026-05-13",
       "decision_status": "accepted",
       "follow_up_adr": "",
@@ -2077,10 +2077,10 @@
       "implementation_status": "partial",
       "number": "291",
       "owner": "",
-      "partial_remaining": "phase-2-in-progress contract with 26 operations (25 distinct path strings), 13 functional operations (health/version/agent options plus 8 file-backed JSON session lifecycle/event endpoints and 2 local sync query endpoints), 10 typed JSON 501 stubs, and 3 SSE stub operations. The /csrf-token endpoint was removed in the security pass; real CSRF defense remains a Phase 2 follow-up.",
+      "partial_remaining": "phase-2-in-progress contract with 26 operations (25 distinct path strings), 15 functional operations (health/version/agent options plus 8 file-backed JSON session lifecycle/event endpoints, 2 local sync query endpoints, and 2 runtime-lab query SSE endpoints), 10 typed JSON 501 stubs, and 1 SSE stub operation. The /csrf-token endpoint was removed in the security pass; real CSRF defense remains a Phase 2 follow-up.",
       "partial_remaining_basis": "manual Wave 5 slice reconciliation",
       "path": "docs/02-Decisions/adrs/ADR-291-agent-runtime-web-service.md",
-      "remaining": "phase-2-in-progress contract with 26 operations (25 distinct path strings), 13 functional operations (health/version/agent options plus 8 file-backed JSON session lifecycle/event endpoints and 2 local sync query endpoints), 10 typed JSON 501 stubs, and 3 SSE stub operations. The /csrf-token endpoint was removed in the security pass; real CSRF defense remains a Phase 2 follow-up.",
+      "remaining": "phase-2-in-progress contract with 26 operations (25 distinct path strings), 15 functional operations (health/version/agent options plus 8 file-backed JSON session lifecycle/event endpoints, 2 local sync query endpoints, and 2 runtime-lab query SSE endpoints), 10 typed JSON 501 stubs, and 1 SSE stub operation. The /csrf-token endpoint was removed in the security pass; real CSRF defense remains a Phase 2 follow-up.",
       "remaining_in_scope": null,
       "title": "Agent Runtime Web Service: HTTP + SSE Surface for Harness-Independent Clients"
     },
