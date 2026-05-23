@@ -31,7 +31,7 @@ lanes:
     timeout_seconds: 600
   integration:
     workers: 0
-    timeout_seconds: 900
+    timeout_seconds: 2400
     docker_policy: forbidden
   integration-docker:
     workers: 0

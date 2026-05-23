@@ -69,6 +69,6 @@ def test_resource_policy_summary_is_machine_derivable() -> None:
     summary = _policy_summary(policy, "integration")
 
     assert re.fullmatch(
-        r"workers=0 timeout=900s docker=forbidden cost=free_only artifacts=keep_summary",
+        r"workers=0 timeout=2400s docker=forbidden cost=free_only artifacts=keep_summary",
         summary,
     )
