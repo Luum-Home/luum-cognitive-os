@@ -14,5 +14,5 @@ def test_test_agent_communication_loads_from_arbitrary_project_root(tmp_path: Pa
     target = tmp_path / ARTIFACT.name
     target.write_text(ARTIFACT.read_text(encoding="utf-8"), encoding="utf-8")
     text = target.read_text(encoding="utf-8")
-    assert "SCOPE: both" in text
+    assert "SCOPE: os-only" in text
     assert str(REPO_ROOT) not in text

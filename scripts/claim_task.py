@@ -67,7 +67,10 @@ def acquire(args: argparse.Namespace) -> int:
         envelope = {
             "status": "blocked",
             "task_id": result.get("task_id", args.task_id),
-            "held_by": {"session_id": result.get("held_by")},
+            "held_by": {
+                "session_id": result.get("held_by"),
+                "task_id": result.get("held_by_task_id") or result.get("task_id", args.task_id),
+            },
         }
         emit(envelope)
         return 2

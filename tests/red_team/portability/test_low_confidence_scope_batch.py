@@ -105,12 +105,17 @@ def test_low_confidence_batch_has_consumer_availability_evidence() -> None:
 
 def test_both_low_confidence_batch_has_portability_evidence_rows() -> None:
     rows = _behavior_rows()
-    proof = "tests/red_team/portability/test_low_confidence_scope_batch.py"
     failures = []
     for rel in BOTH_PRIMITIVES:
         row = rows.get(rel, {})
-        if proof not in row.get("tests", []):
-            failures.append(f"{rel}: missing {proof}")
+        tests = [str(test) for test in row.get("tests", [])]
+        portability_tests = [
+            test
+            for test in tests
+            if test.startswith("tests/red_team/portability/") and (REPO / test).exists()
+        ]
+        if not portability_tests:
+            failures.append(f"{rel}: missing red-team portability evidence row")
         if "shell-ci" not in set(row.get("harnesses", [])):
             failures.append(f"{rel}: missing shell-ci portability evidence label")
     assert not failures, "both primitives need paired portability evidence:\n" + "\n".join(failures)

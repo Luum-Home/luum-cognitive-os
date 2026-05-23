@@ -3953,6 +3953,170 @@ evidence:
   tests:
   - tests/red_team/portability/test_primitive_behavior_depth_audit.py
   rationale: Primitive behavior-depth audit proof verifies depth classification, strict repository execution, and wrapper dispatch.
+- primitive: hooks/goal-stop-gate.sh
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: hooks/subagent-input-schema-validator.sh
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: rules/goal-loop.md
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: rules/hook-maturity.md
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: rules/routing-pattern-authoring.md
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: rules/routing-quality-gate.md
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/audit-routing-intents
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/cos-english-only-content-audit
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/cos-exercised-coverage
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/cos-goal
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/cos-graphify-build
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/cos-graphify-context-replay-benchmark
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/cos-graphify-hotspot-report
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/cos-graphify-phase-d-semantic
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/cos-graphify-preload-matrix
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/cos-graphify-run-telemetry
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/cos-graphify-token-footprint
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/cos-graphify-token-reduction-smoke
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/cos-install-hook
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/cos-install-skill
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/cos-lean-core-5min-proof
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/cos-maintainer-impact
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/cos-plan-closure-disposition-audit
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/cos-routing-corpus-audit
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/cos-routing-max-gate
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/cos-routing-quality-gate
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/cos-self-improvement-runner
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/cos-strict-maintainer-concurrency-proof
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/cos-subprocess-timeout-backfill
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/cos_goal.py
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/english_only_content_audit.py
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/plan_closure_disposition_audit.py
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/routing_corpus_audit.py
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/routing_intent_audit.py
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/routing_quality_gate.py
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/skill_platform_support_audit.py
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: scripts/workstation_container_benchmark_report.py
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: skills/graphify-query/SKILL.md
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: skills/install-hook/SKILL.md
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: skills/install-skill/SKILL.md
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: templates/agent-planning.md
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
+  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
 patterns:
 - pattern: tests/**
   behavior_proven: true

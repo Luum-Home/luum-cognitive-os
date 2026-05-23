@@ -357,9 +357,13 @@ def test_cross_ide_parity_marks_shared_gates_and_known_matcher_gaps() -> None:
     claude_text = json.dumps(claude)
     codex_text = json.dumps(codex)
 
+    # Default/maintainer projections collapse Bash PreToolUse governance through
+    # bash-hot-path-dispatcher.sh, while full/release projections can list each
+    # gate directly. Either form proves the shared gate is present for Bash.
+    bash_dispatcher = "bash-hot-path-dispatcher.sh"
     for shared_hook in ("orchestrator-claim-gate.sh", "destructive-git-blocker.sh"):
-        assert shared_hook in claude_text
-        assert shared_hook in codex_text
+        assert shared_hook in claude_text or bash_dispatcher in claude_text
+        assert shared_hook in codex_text or bash_dispatcher in codex_text
 
     assert "concurrent-write-guard.sh" in claude_text
     assert "concurrent-write-guard.sh" not in codex_text

@@ -82,11 +82,6 @@ def _scope_marker_present(source_path: Path) -> bool:
 def test_source_file_has_scope_both_marker(rel_source: str, portability_name: str) -> None:
     """Source file must carry the SCOPE: both marker."""
     source_path = ROOT / rel_source
-    # Template portability test (template-test-redteam-baseline.bats) is a special
-    # case — the template itself carries the marker but portability test may not exist yet.
-    # We skip this assertion for the portability test file itself (chicken-and-egg).
-    if "template-test-redteam-baseline" in portability_name:
-        pytest.skip("Template portability test is its own artifact — skip self-check")
     assert source_path.exists(), (
         f"SCOPE: both artifact missing: {rel_source}. "
         "Was the artifact created in W3-W5?"

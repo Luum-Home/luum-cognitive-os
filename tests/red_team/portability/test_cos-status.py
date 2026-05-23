@@ -52,6 +52,6 @@ def test_portability_json_is_machine_parseable_from_arbitrary_cwd(tmp_path: Path
     )
     assert result.returncode == 0, result.stderr
     payload = json.loads(result.stdout)
-    assert payload["schema_version"] == "scope-both-portability-audit/v1"
+    assert payload["schema_version"] == "cos-portability-status/v1"
     assert "summary" in payload
     assert "hot_path_missing" in payload["summary"]

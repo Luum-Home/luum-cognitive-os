@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # eas-validation-gate.sh — EAS validation gate for review surfaces.
 #
 # Trigger: Stop hook (blocks session stop when active review surface has

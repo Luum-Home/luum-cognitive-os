@@ -235,7 +235,13 @@ def claim_task(
                 continue
             same_work = existing.get("fingerprint") == fingerprint or existing.get("task_id") == task_id
             if same_work and existing.get("session_id") != session:
-                payload = {"task_id": task_id, "fingerprint": fingerprint, "held_by": existing.get("session_id"), "expected_files": expected}
+                payload = {
+                    "task_id": task_id,
+                    "fingerprint": fingerprint,
+                    "held_by": existing.get("session_id"),
+                    "held_by_task_id": existing.get("task_id"),
+                    "expected_files": expected,
+                }
                 append_event(project, "conflict", session, payload)
                 atomic_write_json(path, data)
                 return False, {"status": "conflict", **payload}
