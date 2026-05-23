@@ -83,7 +83,7 @@ HEDGE_BOOST = re.compile(
 RECENT_DAYS = 7    # Files modified within this many days are "recent"
 VERY_RECENT_DAYS = 3  # Files modified within this many days score higher
 OLD_ADR_DAYS = 30  # ADR questions older than this are downgraded toward soft
-ENGRAM_TIMEOUT_SECONDS = float(os.environ.get("COS_DECISION_TRIAGE_ENGRAM_TIMEOUT", "0.5"))
+ENGRAM_TIMEOUT_SECONDS = float(os.environ.get("COS_DECISION_TRIAGE_ENGRAM_TIMEOUT", "5"))
 
 # Score thresholds (>= → tier)
 CRITICAL_SCORE = 3
