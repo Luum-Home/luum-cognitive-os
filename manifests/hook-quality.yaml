@@ -488,6 +488,7 @@ hooks:
     script: hooks/auto-verify.sh
   bash-hot-path-dispatcher:
     behavior_tests:
+    - tests/chaos/test_multi_ide_swarm_safety.py
     - tests/contracts/test_orchestrator_claim_gate.py
     - tests/contracts/test_orphan_hooks.py
     - tests/contracts/test_primitive_closure_ratchet.py
