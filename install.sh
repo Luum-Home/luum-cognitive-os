@@ -13,7 +13,8 @@ REPO_URL="${COGNITIVE_OS_REPO_URL:-https://github.com/luum-home/luum-cognitive-o
 VERSION="${COGNITIVE_OS_VERSION:-main}"
 TARGET_DIR=".cognitive-os"
 FORCE="${COGNITIVE_OS_FORCE:-false}"
-TEMP_DIR=$(mktemp -d)
+TEMP_PARENT=$(mktemp -d)
+TEMP_DIR="$TEMP_PARENT/source"
 SOURCE_DIR=""
 FROM_FLAG=""
 PROFILE=""             # Resolved profile: default | full
@@ -50,7 +51,7 @@ fi
 #         (everything, including SCOPE:os-only — for COS self-hosting).
 INSTALL_SCOPE="${COS_INSTALL_SCOPE:-both}"
 
-cleanup() { rm -rf "$TEMP_DIR"; }
+cleanup() { rm -rf "$TEMP_PARENT"; }
 trap cleanup EXIT
 
 # ── Argument parsing ──────────────────────────────────────────────────
@@ -435,7 +436,6 @@ prepare_source() {
   if [ -n "$SOURCE_DIR" ]; then
     # Local: copy only the directories cos-init.sh needs, skip .venv/reference/node_modules
     echo "Copying from local source..."
-    rm -rf "$TEMP_DIR"
     mkdir -p "$TEMP_DIR"
     # Use rsync if available (excludes broken symlinks in .venv, reference/, etc.)
     if command -v rsync >/dev/null 2>&1; then
@@ -471,8 +471,10 @@ prepare_source() {
   else
     # Remote: git clone
     echo "Downloading Cognitive OS ($VERSION)..."
-    git clone --depth 1 --branch "$VERSION" "$REPO_URL" "$TEMP_DIR" 2>/dev/null || \
+    git clone --depth 1 --branch "$VERSION" "$REPO_URL" "$TEMP_DIR" 2>/dev/null || {
+      rm -rf "$TEMP_DIR"
       git clone --depth 1 "$REPO_URL" "$TEMP_DIR"
+    }
   fi
 }
 
