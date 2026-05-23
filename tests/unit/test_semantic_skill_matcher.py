@@ -109,6 +109,30 @@ def test_loader_accepts_string_form_intents(tmp_path):
     assert "plain string form" in intents
 
 
+def test_fastembed_cache_defaults_outside_project(monkeypatch, tmp_path):
+    """Model cache must not live under .cognitive-os or validation capsules."""
+    project = tmp_path / "project"
+    project.mkdir()
+    xdg = tmp_path / "xdg-cache"
+    monkeypatch.setenv("COGNITIVE_OS_PROJECT_DIR", str(project))
+    monkeypatch.setenv("XDG_CACHE_HOME", str(xdg))
+    monkeypatch.delenv(sm.MODEL_CACHE_ENV, raising=False)
+
+    cache_dir = sm._fastembed_cache_dir()
+
+    assert cache_dir == xdg / "cognitive-os" / "fastembed"
+    assert not cache_dir.is_relative_to(project)
+    assert ".cognitive-os" not in cache_dir.parts
+
+
+def test_fastembed_cache_env_override(monkeypatch, tmp_path):
+    """Operators can pin a prewarmed model cache explicitly."""
+    override = tmp_path / "semantic-models"
+    monkeypatch.setenv(sm.MODEL_CACHE_ENV, str(override))
+
+    assert sm._fastembed_cache_dir() == override
+
+
 # ---------------------------------------------------------------------------
 # Live language-agnostic semantic matching
 # ---------------------------------------------------------------------------

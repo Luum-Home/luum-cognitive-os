@@ -55,9 +55,11 @@ import hashlib
 import json
 import logging
 import os
+import tempfile
+from contextlib import contextmanager
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Iterator, List, Optional
 
 LOGGER = logging.getLogger(__name__)
 
@@ -94,6 +96,7 @@ LOGGER = logging.getLogger(__name__)
 # tests will fail — that's expected; production routing relies on the full
 # ADR-296+297 pipeline, not the matcher in isolation.
 MODEL_OVERRIDE_ENV = "COS_SEMANTIC_ROUTING_MODEL"
+MODEL_CACHE_ENV = "COS_SEMANTIC_ROUTING_MODEL_CACHE_DIR"
 _ADOPTED_DEFAULT_MODEL = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 _BENCHMARK_WINNER_BLOCKED = "intfloat/multilingual-e5-large"  # see ADR-300 §Phase-2-Rejected
 DEFAULT_MODEL_NAME = os.environ.get(MODEL_OVERRIDE_ENV) or _ADOPTED_DEFAULT_MODEL
@@ -133,6 +136,51 @@ _MODEL_TRIED = False
 _MODEL_NAME_LOADED: Optional[str] = None
 
 
+def _fastembed_cache_dir() -> Path:
+    """Return the shared FastEmbed model cache root.
+
+    FastEmbed defaults to ``$TMPDIR/fastembed_cache``. That is fragile for COS
+    validation capsules: each capsule runs in a temporary worktree, and xdist
+    workers can concurrently download/extract the same ONNX model into the same
+    temp cache. The observed failure mode is a partially materialized model
+    where ONNX Runtime reports ``model_optimized.onnx`` missing.
+
+    Keep the heavy model cache outside ``.cognitive-os/`` (so vitals disk-ceiling
+    checks do not count hundreds of MB of model files) but stable across
+    capsules and workers.
+    """
+    override = os.environ.get(MODEL_CACHE_ENV)
+    if override:
+        return Path(override).expanduser()
+    xdg = os.environ.get("XDG_CACHE_HOME")
+    if xdg:
+        return Path(xdg).expanduser() / "cognitive-os" / "fastembed"
+    home = Path.home()
+    if str(home) and str(home) != ".":
+        return home / ".cache" / "cognitive-os" / "fastembed"
+    return Path(tempfile.gettempdir()) / "cognitive-os-fastembed-cache"
+
+
+@contextmanager
+def _model_cache_lock(model_name: str) -> Iterator[None]:
+    """Serialize FastEmbed model materialization across xdist workers."""
+    lock_dir = _fastembed_cache_dir()
+    lock_dir.mkdir(parents=True, exist_ok=True)
+    digest = hashlib.sha256(model_name.encode("utf-8")).hexdigest()[:16]
+    lock_path = lock_dir / f".model-{digest}.lock"
+    with lock_path.open("a+", encoding="utf-8") as fh:
+        try:
+            import fcntl  # type: ignore
+        except Exception:  # pragma: no cover - non-POSIX fallback
+            yield
+            return
+        fcntl.flock(fh.fileno(), fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(fh.fileno(), fcntl.LOCK_UN)
+
+
 def _load_model(model_name: str = DEFAULT_MODEL_NAME):
     """Load FastEmbed model lazily. Returns model or None if unavailable."""
     global _MODEL, _MODEL_TRIED, _MODEL_NAME_LOADED
@@ -151,7 +199,8 @@ def _load_model(model_name: str = DEFAULT_MODEL_NAME):
         _MODEL = None
         return None
     try:
-        _MODEL = TextEmbedding(model_name=model_name)
+        with _model_cache_lock(model_name):
+            _MODEL = TextEmbedding(model_name=model_name, cache_dir=str(_fastembed_cache_dir()))
     except Exception as exc:  # pragma: no cover - download / runtime failure
         LOGGER.warning("semantic-routing disabled: failed to load %s (%s)", model_name, exc)
         _MODEL = None
