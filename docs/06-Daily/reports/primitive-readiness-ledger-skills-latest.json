@@ -83,7 +83,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 5,
-        "doc": 8,
+        "doc": 9,
         "script": 1,
         "test": 4
       },
@@ -130,6 +130,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-next-step-decision-2026-05-22.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/repo-map-context-selector.md"
         },
         {
@@ -165,7 +169,7 @@
       "evidence": [
         "script_consumers:1",
         "test_consumers:4",
-        "doc_consumers:8",
+        "doc_consumers:9",
         "config_consumers:5"
       ],
       "family": "skills",
@@ -176,7 +180,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 18
+      "total_consumers": 19
     },
     {
       "confidence": "high",
@@ -5317,6 +5321,45 @@
     },
     {
       "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 4
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-331-graphify-portable-context-optimization-primitive.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-integration-assessment-2026-05-22.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-next-step-decision-2026-05-22.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-portable-optimization-plan-2026-05-22.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "doc_consumers:4"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/graphify-query/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 4
+    },
+    {
+      "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
@@ -8155,7 +8198,7 @@
         "hook": 1,
         "rule": 3,
         "script": 10,
-        "skill": 6,
+        "skill": 7,
         "test": 10
       },
       "consumers": [
@@ -8409,6 +8452,10 @@
         },
         {
           "family": "skill",
+          "path": "skills/graphify-query/SKILL.md"
+        },
+        {
+          "family": "skill",
           "path": "skills/primitive-authoring/SKILL.md"
         },
         {
@@ -8471,7 +8518,7 @@
       "distribution": "lab",
       "evidence": [
         "lifecycle",
-        "skill_consumers:6",
+        "skill_consumers:7",
         "hook_consumers:1",
         "rule_consumers:3",
         "script_consumers:10",
@@ -8491,7 +8538,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 77
+      "total_consumers": 78
     },
     {
       "confidence": "high",
@@ -9683,7 +9730,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 8,
-        "doc": 103,
+        "doc": 104,
         "hook": 1,
         "rule": 9,
         "script": 2,
@@ -10081,6 +10128,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-integration-assessment-2026-05-22.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/install-harness-ux-gap-2026-05-15.md"
         },
         {
@@ -10284,7 +10335,7 @@
         "rule_consumers:9",
         "script_consumers:2",
         "test_consumers:16",
-        "doc_consumers:103",
+        "doc_consumers:104",
         "config_consumers:8"
       ],
       "family": "skills",
@@ -10299,7 +10350,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 146
+      "total_consumers": 147
     },
     {
       "confidence": "high",
@@ -13803,25 +13854,25 @@
   "schema_version": 1,
   "summary": {
     "confidence": {
-      "high": 103,
+      "high": 104,
       "medium": 12
     },
     "consumer_accessibility": {
       "lifecycle-declared-maintainer": 98,
       "projected-consumer-surface": 7,
-      "repo-skill-not-projectable": 5,
+      "repo-skill-not-projectable": 6,
       "so-local-only": 5
     },
     "roles": {
-      "compatibility-wrapper": 49,
+      "compatibility-wrapper": 50,
       "lab": 52,
       "project-extension": 4,
       "shared-agent-tool": 2,
       "so-maintainer": 8
     },
-    "total": 115,
+    "total": 116,
     "without_consumers": 1,
-    "without_lifecycle": 10
+    "without_lifecycle": 11
   },
   "target_family": "skills"
 }

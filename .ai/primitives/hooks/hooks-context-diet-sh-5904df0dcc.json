@@ -1,0 +1,98 @@
+{
+  "canonical_source": "hooks/context-diet.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "task-aware-context-selection-with-safe-noop-for-unsupported-agent-payloads",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "task-aware-context-selection-with-safe-noop-for-unsupported-agent-payloads",
+    "evidence_commands": [
+      "bash -n hooks/context-diet.sh",
+      "python3 -m pytest tests/unit/test_context_diet.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/context-diet.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "team",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "context-loading",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-016",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "observe",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "task-aware-context-selection-with-safe-noop-for-unsupported-agent-payloads",
+      "evidence_commands": [
+        "bash -n hooks/context-diet.sh",
+        "python3 -m pytest tests/unit/test_context_diet.py -q"
+      ],
+      "metrics": [
+        ".cognitive-os/metrics/context-diet.jsonl"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "task-aware-context-selection-with-safe-noop-for-unsupported-agent-payloads",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "lifecycle_declared",
+      "projection_targets": [
+        ".claude/settings.json",
+        "hooks/context-diet.sh"
+      ],
+      "runtime_projection": true
+    }
+  },
+  "portable_id": "hooks/context-diet.sh",
+  "projection_targets": [
+    ".claude/settings.json",
+    "hooks/context-diet.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/context-diet.sh",
+  "supported_harnesses": [
+    "claude",
+    "codex"
+  ]
+}

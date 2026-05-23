@@ -2,7 +2,7 @@
 
 ## How to Use This Index
 
-This generated table is the status inventory for all 340 Architecture Decision Record files (ADRs).
+This generated table is the status inventory for all 341 Architecture Decision Record files (ADRs).
 Status semantics are defined in [STATUS-TAXONOMY.md](STATUS-TAXONOMY.md): decision status, implementation status, and index bucket are separate fields.
 Rows link to the canonical ADR file and group by index bucket for human and agent navigation.
 
@@ -179,7 +179,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [323](ADR-323-primitive-behavior-depth-ratchet.md) | Primitive Behavior Depth Ratchet | accepted | implemented | 2026-05-15 | Accepted. |
 | [329](ADR-329-skill-platform-support-levels.md) | Skill Platform Support Levels | accepted | implemented | 2026-05-20 | Accepted and implemented for the existing `generic-cli` skill surface. |
 
-### Active / Partial (118)
+### Active / Partial (119)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
@@ -301,6 +301,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [325](ADR-325-ai-resource-economy-and-degradation.md) | AI Resource Economy, Budget Preflight, and Graceful Degradation | accepted | partial | 2026-05-15 | Accepted. Partial implementation starts with a manifest, audit, preflight CLI, and language-token-economy rule. Phase 3 now has an initial bounded hook path: `c |
 | [328](ADR-328-governance-roi-friction-vs-catch.md) | Governance ROI Friction-vs-Catch Ratios | accepted | partial | 2026-05-20 | Accepted. Read-side dashboard, write-side catch logging, optional blocked-hook prompts, weighted severity normalization, and the executable phase-policy adapter |
 | [330](ADR-330-typed-capability-ceiling-signals.md) | Typed capability-ceiling signals | accepted | partial | 2026-05-20 | Accepted — first slice implemented as read-only detection. |
+| [331](ADR-331-graphify-portable-context-optimization-primitive.md) | Graphify Portable Context Optimization Primitive | accepted | partial | 2026-05-22 | Accepted with partial implementation. |
 
 ### Active / Partial / Blocked (1)
 

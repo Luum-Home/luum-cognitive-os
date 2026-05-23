@@ -6,7 +6,7 @@
   "harness": "codex",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 727,
+  "projected_primitive_count": 732,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": false,
@@ -643,6 +643,13 @@
       "fidelity": "documented-only",
       "portable_id": "hooks/concurrent-write-guard-codex-proxy.sh",
       "primitive_file": "primitives/hooks/hooks-concurrent-write-guard-codex-proxy-sh-58c12dea6f.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/context-diet.sh",
+      "primitive_file": "primitives/hooks/hooks-context-diet-sh-5904df0dcc.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
@@ -5018,6 +5025,34 @@
       "fidelity": "documented-only",
       "portable_id": "scripts/cos-governed-edit.sh",
       "primitive_file": "primitives/tools/scripts-cos-governed-edit-sh-948253e6c8.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-graphify-build",
+      "primitive_file": "primitives/tools/scripts-cos-graphify-build-cf69ece77c.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-graphify-hotspot-report",
+      "primitive_file": "primitives/tools/scripts-cos-graphify-hotspot-report-ddaf7ee73d.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-graphify-preload-matrix",
+      "primitive_file": "primitives/tools/scripts-cos-graphify-preload-matrix-5efe492931.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-graphify-token-footprint",
+      "primitive_file": "primitives/tools/scripts-cos-graphify-token-footprint-568b9a5c90.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {

@@ -166,10 +166,10 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 10,
-        "doc": 101,
+        "doc": 102,
         "hook": 5,
         "rule": 6,
-        "script": 15,
+        "script": 16,
         "skill": 5,
         "test": 34
       },
@@ -480,6 +480,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/token-savings-qa.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/why-skills-and-rules-became-claude-centered.md"
         },
         {
@@ -684,6 +688,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-token-savings-audit"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_architecture_readiness.py"
         },
         {
@@ -885,9 +893,9 @@
         "skill_consumers:5",
         "hook_consumers:5",
         "rule_consumers:6",
-        "script_consumers:15",
+        "script_consumers:16",
         "test_consumers:34",
-        "doc_consumers:101",
+        "doc_consumers:102",
         "config_consumers:10"
       ],
       "family": "rules",
@@ -902,7 +910,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 176
+      "total_consumers": 178
     },
     {
       "confidence": "high",
@@ -7982,9 +7990,10 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 5,
-        "doc": 17,
+        "doc": 22,
         "hook": 1,
         "rule": 3,
+        "script": 1,
         "skill": 1,
         "test": 4
       },
@@ -8011,6 +8020,14 @@
         },
         {
           "family": "doc",
+          "path": "docs/00-MOCs/entrypoints/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-331-graphify-portable-context-optimization-primitive.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/context-rot-token-budget-controls.md"
         },
         {
@@ -8028,6 +8045,18 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/functional-audit/sprint-2a-orphan-fate.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-next-step-decision-2026-05-22.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-portable-optimization-plan-2026-05-22.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/token-savings-qa.md"
         },
         {
           "family": "doc",
@@ -8094,6 +8123,10 @@
           "path": "rules/token-economy.md"
         },
         {
+          "family": "script",
+          "path": "scripts/cos-graphify-hotspot-report"
+        },
+        {
           "family": "skill",
           "path": "skills/catalog-full/SKILL.md"
         },
@@ -8120,8 +8153,9 @@
         "skill_consumers:1",
         "hook_consumers:1",
         "rule_consumers:3",
+        "script_consumers:1",
         "test_consumers:4",
-        "doc_consumers:17",
+        "doc_consumers:22",
         "config_consumers:5"
       ],
       "family": "rules",
@@ -8136,7 +8170,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 31
+      "total_consumers": 37
     },
     {
       "confidence": "high",
@@ -9926,12 +9960,12 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 15,
-        "doc": 98,
+        "doc": 101,
         "hook": 8,
         "rule": 2,
-        "script": 73,
+        "script": 75,
         "skill": 16,
-        "test": 64
+        "test": 65
       },
       "consumers": [
         {
@@ -10164,6 +10198,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-331-graphify-portable-context-optimization-primitive.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/INDEX.md"
         },
         {
@@ -10233,6 +10271,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/gdpr-erasure-procedure.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-portable-optimization-plan-2026-05-22.md"
         },
         {
           "family": "doc",
@@ -10368,6 +10410,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/09-Quality/manual-tests/graphify-controlled-trial.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/09-Quality/manual-tests/worktree-sweeper.md"
         },
         {
@@ -10493,6 +10539,14 @@
         {
           "family": "script",
           "path": "scripts/cos-gate-stack.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-graphify-build"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-graphify-phase-d-semantic"
         },
         {
           "family": "script",
@@ -10976,6 +11030,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_cos_graphify_phase_d_semantic.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_cross_verifier.py"
         },
         {
@@ -11045,9 +11103,9 @@
         "skill_consumers:16",
         "hook_consumers:8",
         "rule_consumers:2",
-        "script_consumers:73",
-        "test_consumers:64",
-        "doc_consumers:98",
+        "script_consumers:75",
+        "test_consumers:65",
+        "doc_consumers:101",
         "config_consumers:15"
       ],
       "family": "rules",
@@ -11062,7 +11120,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 276
+      "total_consumers": 282
     },
     {
       "confidence": "high",
@@ -21730,7 +21788,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 6,
-        "doc": 23,
+        "doc": 24,
         "hook": 1,
         "rule": 2,
         "script": 4,
@@ -21808,6 +21866,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/functional-audit/sprint-5-observability.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/token-savings-qa.md"
         },
         {
           "family": "doc",
@@ -21929,7 +21991,7 @@
         "rule_consumers:2",
         "script_consumers:4",
         "test_consumers:10",
-        "doc_consumers:23",
+        "doc_consumers:24",
         "config_consumers:6"
       ],
       "family": "rules",
@@ -21944,7 +22006,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 46
+      "total_consumers": 47
     },
     {
       "confidence": "high",

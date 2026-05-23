@@ -331,6 +331,7 @@
         "config": 6,
         "doc": 3,
         "hook": 5,
+        "script": 1,
         "test": 3
       },
       "consumers": [
@@ -391,6 +392,10 @@
           "path": "hooks/orchestrator-claim-gate.sh"
         },
         {
+          "family": "script",
+          "path": "scripts/cos-graphify-preload-matrix"
+        },
+        {
           "family": "test",
           "path": "tests/behavior/test_bypass_resolver.py"
         },
@@ -407,6 +412,7 @@
       "evidence": [
         "lifecycle",
         "hook_consumers:5",
+        "script_consumers:1",
         "test_consumers:3",
         "doc_consumers:3",
         "config_consumers:6"
@@ -423,7 +429,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 17
+      "total_consumers": 18
     },
     {
       "confidence": "high",
@@ -431,12 +437,12 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 23,
-        "doc": 151,
+        "doc": 155,
         "hook": 40,
         "rule": 6,
-        "script": 56,
+        "script": 61,
         "skill": 11,
-        "test": 84
+        "test": 85
       },
       "consumers": [
         {
@@ -793,6 +799,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-331-graphify-portable-context-optimization-primitive.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/INDEX.md"
         },
         {
@@ -934,6 +944,18 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/functional-audit/startup-baseline-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-integration-assessment-2026-05-22.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-portable-optimization-plan-2026-05-22.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-real-token-telemetry-tooling-audit-2026-05-22.md"
         },
         {
           "family": "doc",
@@ -1369,6 +1391,22 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-graphify-context-replay-benchmark"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-graphify-preload-matrix"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-graphify-run-telemetry"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-graphify-token-reduction-smoke"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-product-answer"
         },
         {
@@ -1398,6 +1436,10 @@
         {
           "family": "script",
           "path": "scripts/cos-subprocess-timeout-audit.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-token-savings-audit"
         },
         {
           "family": "script",
@@ -1797,6 +1839,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_cos_graphify_run_telemetry.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_cos_operational_status.py"
         },
         {
@@ -1930,9 +1976,9 @@
         "skill_consumers:11",
         "hook_consumers:40",
         "rule_consumers:6",
-        "script_consumers:56",
-        "test_consumers:84",
-        "doc_consumers:151",
+        "script_consumers:61",
+        "test_consumers:85",
+        "doc_consumers:155",
         "config_consumers:23"
       ],
       "family": "hooks",
@@ -1947,7 +1993,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 371
+      "total_consumers": 381
     },
     {
       "confidence": "high",
@@ -2129,10 +2175,10 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 7,
-        "doc": 81,
+        "doc": 82,
         "hook": 82,
         "rule": 7,
-        "script": 31,
+        "script": 33,
         "skill": 2,
         "test": 34
       },
@@ -2408,6 +2454,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/skills-rules-portability-gap.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/token-savings-qa.md"
         },
         {
           "family": "doc",
@@ -2859,6 +2909,14 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-graphify-hotspot-report"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-graphify-preload-matrix"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-opencode-primitive-adapter-smoke"
         },
         {
@@ -3120,9 +3178,9 @@
         "skill_consumers:2",
         "hook_consumers:82",
         "rule_consumers:7",
-        "script_consumers:31",
+        "script_consumers:33",
         "test_consumers:34",
-        "doc_consumers:81",
+        "doc_consumers:82",
         "config_consumers:7"
       ],
       "family": "hooks",
@@ -3137,7 +3195,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 244
+      "total_consumers": 247
     },
     {
       "confidence": "high",
@@ -3550,7 +3608,7 @@
         "config": 4,
         "doc": 3,
         "hook": 174,
-        "script": 3,
+        "script": 4,
         "skill": 1,
         "test": 6
       },
@@ -4289,6 +4347,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-graphify-preload-matrix"
+        },
+        {
+          "family": "script",
           "path": "scripts/so-emergency-stop.sh"
         },
         {
@@ -4325,7 +4387,7 @@
         "lifecycle",
         "skill_consumers:1",
         "hook_consumers:174",
-        "script_consumers:3",
+        "script_consumers:4",
         "test_consumers:6",
         "doc_consumers:3",
         "config_consumers:4"
@@ -4342,7 +4404,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 191
+      "total_consumers": 192
     },
     {
       "confidence": "high",
@@ -4400,12 +4462,12 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 18,
-        "doc": 158,
+        "doc": 163,
         "hook": 23,
         "rule": 3,
         "script": 50,
         "skill": 9,
-        "test": 126
+        "test": 128
       },
       "consumers": [
         {
@@ -4730,6 +4792,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-331-graphify-portable-context-optimization-primitive.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/INDEX.md"
         },
         {
@@ -4822,6 +4888,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/byoharness-comparison-2026-05-23.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/claim-verification-matrix.md"
         },
         {
@@ -4875,6 +4945,14 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/functional-audit/sprint-5-observability.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-next-step-decision-2026-05-22.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-portable-optimization-plan-2026-05-22.md"
         },
         {
           "family": "doc",
@@ -4975,6 +5053,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/tac-course-reference.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/token-savings-qa.md"
         },
         {
           "family": "doc",
@@ -5462,6 +5544,10 @@
         },
         {
           "family": "test",
+          "path": "tests/audit/test_plan_locations.py"
+        },
+        {
+          "family": "test",
           "path": "tests/audit/test_skills_contracts.py"
         },
         {
@@ -5643,6 +5729,10 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_context-budget-meter.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_context_budget_meter_fast.py"
         },
         {
           "family": "test",
@@ -5964,8 +6054,8 @@
         "hook_consumers:23",
         "rule_consumers:3",
         "script_consumers:50",
-        "test_consumers:126",
-        "doc_consumers:158",
+        "test_consumers:128",
+        "doc_consumers:163",
         "config_consumers:18"
       ],
       "family": "hooks",
@@ -5980,7 +6070,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 387
+      "total_consumers": 394
     },
     {
       "confidence": "high",
@@ -10786,7 +10876,8 @@
         "doc": 34,
         "hook": 3,
         "rule": 1,
-        "script": 5,
+        "script": 6,
+        "skill": 1,
         "test": 19
       },
       "consumers": [
@@ -11032,6 +11123,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-graphify-preload-matrix"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_default_visible_reducer.py"
         },
         {
@@ -11041,6 +11136,10 @@
         {
           "family": "script",
           "path": "scripts/set-security-profile.sh"
+        },
+        {
+          "family": "skill",
+          "path": "skills/graphify-query/SKILL.md"
         },
         {
           "family": "test",
@@ -11122,9 +11221,10 @@
       "distribution": "maintainer",
       "evidence": [
         "lifecycle",
+        "skill_consumers:1",
         "hook_consumers:3",
         "rule_consumers:1",
-        "script_consumers:5",
+        "script_consumers:6",
         "test_consumers:19",
         "doc_consumers:34",
         "config_consumers:20"
@@ -11139,7 +11239,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 82
+      "total_consumers": 84
     },
     {
       "confidence": "high",
@@ -19173,8 +19273,8 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 10,
-        "doc": 5,
-        "script": 3,
+        "doc": 6,
+        "script": 4,
         "test": 6
       },
       "consumers": [
@@ -19239,6 +19339,10 @@
           "path": "docs/04-Concepts/architecture/context-rot-token-budget-controls.md"
         },
         {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-real-token-telemetry-tooling-audit-2026-05-22.md"
+        },
+        {
           "family": "script",
           "path": "scripts/_lib/settings-driver-claude-code.sh"
         },
@@ -19249,6 +19353,10 @@
         {
           "family": "script",
           "path": "scripts/apply-efficiency-profile.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/context_budget_meter_fast.py"
         },
         {
           "family": "test",
@@ -19278,9 +19386,9 @@
       "distribution": "maintainer",
       "evidence": [
         "lifecycle",
-        "script_consumers:3",
+        "script_consumers:4",
         "test_consumers:6",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "config_consumers:10"
       ],
       "family": "hooks",
@@ -19293,19 +19401,23 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 24
+      "total_consumers": 26
     },
     {
-      "confidence": "medium",
-      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
-      "consumer_accessibility": "so-local-only",
+      "confidence": "high",
+      "consumer_access_next_action": "keep install/profile/harness proof current",
+      "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
-        "config": 7,
+        "config": 11,
         "doc": 10,
-        "script": 1,
-        "test": 4
+        "script": 3,
+        "test": 5
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.json"
+        },
         {
           "family": "config",
           "path": ".cursor/hooks.json"
@@ -19316,7 +19428,15 @@
         },
         {
           "family": "config",
+          "path": "cognitive-os.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/exercised-coverage-baseline.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/hook-quality.yaml"
         },
         {
           "family": "config",
@@ -19329,6 +19449,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
         },
         {
           "family": "config",
@@ -19376,11 +19500,23 @@
         },
         {
           "family": "script",
+          "path": "scripts/_lib/settings-driver-claude-code.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/apply-efficiency-profile.sh"
+        },
+        {
+          "family": "script",
           "path": "scripts/primitive_scope_classifier.py"
         },
         {
           "family": "test",
           "path": "tests/audit/test_hooks_contracts.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_context_budget_hook_wiring.py"
         },
         {
           "family": "test",
@@ -19395,22 +19531,26 @@
           "path": "tests/unit/test_context_diet_native.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
-        "script_consumers:1",
-        "test_consumers:4",
+        "lifecycle",
+        "script_consumers:3",
+        "test_consumers:5",
         "doc_consumers:10",
-        "config_consumers:7"
+        "config_consumers:11"
       ],
       "family": "hooks",
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "lifecycle_id": "hooks/context-diet.sh",
+      "lifecycle_state": "advisory",
+      "next_action": "keep lifecycle, tests, and harness proof current",
       "path": "hooks/context-diet.sh",
       "role": "memory-lifecycle",
-      "role_source": "heuristic:text",
-      "supported_harnesses": [],
-      "total_consumers": 22
+      "role_source": "lifecycle",
+      "supported_harnesses": [
+        "claude",
+        "codex"
+      ],
+      "total_consumers": 29
     },
     {
       "confidence": "high",
@@ -21767,9 +21907,9 @@
         "doc": 34,
         "hook": 3,
         "rule": 1,
-        "script": 15,
-        "skill": 1,
-        "test": 25
+        "script": 16,
+        "skill": 2,
+        "test": 26
       },
       "consumers": [
         {
@@ -21986,6 +22126,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-graphify-preload-matrix"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-lean-core-5min-proof"
         },
         {
@@ -22035,6 +22179,10 @@
         {
           "family": "script",
           "path": "scripts/so-emergency-stop.sh"
+        },
+        {
+          "family": "skill",
+          "path": "skills/graphify-query/SKILL.md"
         },
         {
           "family": "skill",
@@ -22118,6 +22266,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_cos_graphify_preload_matrix.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_destructive_git_block.py"
         },
         {
@@ -22144,11 +22296,11 @@
       "distribution": "core",
       "evidence": [
         "lifecycle",
-        "skill_consumers:1",
+        "skill_consumers:2",
         "hook_consumers:3",
         "rule_consumers:1",
-        "script_consumers:15",
-        "test_consumers:25",
+        "script_consumers:16",
+        "test_consumers:26",
         "doc_consumers:34",
         "config_consumers:13"
       ],
@@ -22162,7 +22314,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 92
+      "total_consumers": 95
     },
     {
       "confidence": "high",
@@ -34402,7 +34554,7 @@
         "config": 8,
         "doc": 4,
         "script": 4,
-        "test": 4
+        "test": 5
       },
       "consumers": [
         {
@@ -34471,6 +34623,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_context_budget_hook_wiring.py"
+        },
+        {
+          "family": "test",
           "path": "tests/integration/test_query_tailored_context.py"
         },
         {
@@ -34490,7 +34646,7 @@
       "evidence": [
         "lifecycle",
         "script_consumers:4",
-        "test_consumers:4",
+        "test_consumers:5",
         "doc_consumers:4",
         "config_consumers:8"
       ],
@@ -34504,7 +34660,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 20
+      "total_consumers": 21
     },
     {
       "confidence": "high",
@@ -45779,7 +45935,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 10,
-        "doc": 7,
+        "doc": 8,
         "hook": 2,
         "rule": 1,
         "script": 7,
@@ -45849,6 +46005,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/core-vs-extensions.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-real-token-telemetry-tooling-audit-2026-05-22.md"
         },
         {
           "family": "doc",
@@ -45934,7 +46094,7 @@
         "rule_consumers:1",
         "script_consumers:7",
         "test_consumers:8",
-        "doc_consumers:7",
+        "doc_consumers:8",
         "config_consumers:10"
       ],
       "family": "hooks",
@@ -45947,7 +46107,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 35
+      "total_consumers": 36
     },
     {
       "confidence": "high",
@@ -47595,14 +47755,14 @@
   "schema_version": 1,
   "summary": {
     "confidence": {
-      "high": 265,
-      "medium": 14
+      "high": 266,
+      "medium": 13
     },
     "consumer_accessibility": {
       "lifecycle-declared-consumer-candidate": 22,
       "lifecycle-declared-maintainer": 174,
-      "projected-consumer-surface": 69,
-      "so-local-only": 14
+      "projected-consumer-surface": 70,
+      "so-local-only": 13
     },
     "roles": {
       "driver-specific": 27,
@@ -47613,7 +47773,7 @@
     },
     "total": 279,
     "without_consumers": 0,
-    "without_lifecycle": 14
+    "without_lifecycle": 13
   },
   "target_family": "hooks"
 }

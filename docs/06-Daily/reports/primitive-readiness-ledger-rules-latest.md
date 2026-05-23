@@ -7,7 +7,7 @@ Consumer accessibility: lifecycle-declared-maintainer:117, projected-consumer-su
 | Path | Role | Source | Confidence | Consumer Access | Lifecycle | Consumers | Next action |
 |---|---|---|---|---|---|---:|---|
 | `rules/ROADMAP.md` | hook-enforced | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 29 | keep maintainer-only or add explicit export path |
-| `rules/RULES-COMPACT.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 176 | keep maintainer-only or add explicit export path |
+| `rules/RULES-COMPACT.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 178 | keep maintainer-only or add explicit export path |
 | `rules/acceptance-criteria.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 73 | keep maintainer-only or add explicit export path |
 | `rules/adaptive-bypass.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 66 | keep maintainer-only or add explicit export path |
 | `rules/adversarial-review.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 55 | keep maintainer-only or add explicit export path |
@@ -43,7 +43,7 @@ Consumer accessibility: lifecycle-declared-maintainer:117, projected-consumer-su
 | `rules/consequence-system.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 18 | keep maintainer-only or add explicit export path |
 | `rules/content-policy.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 108 | keep maintainer-only or add explicit export path |
 | `rules/context-management.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 41 | keep maintainer-only or add explicit export path |
-| `rules/context-optimization.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 31 | keep maintainer-only or add explicit export path |
+| `rules/context-optimization.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 37 | keep maintainer-only or add explicit export path |
 | `rules/context7-auto-trigger.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 13 | keep maintainer-only or add explicit export path |
 | `rules/cosd-secure-api.md` | driver-specific | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 8 | keep maintainer-only or add explicit export path |
 | `rules/cost-prediction.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 14 | keep maintainer-only or add explicit export path |
@@ -54,7 +54,7 @@ Consumer accessibility: lifecycle-declared-maintainer:117, projected-consumer-su
 | `rules/decomposition.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 32 | keep maintainer-only or add explicit export path |
 | `rules/definition-of-done.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 52 | keep maintainer-only or add explicit export path |
 | `rules/doc-sync.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 65 | keep maintainer-only or add explicit export path |
-| `rules/dry-run.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 276 | keep maintainer-only or add explicit export path |
+| `rules/dry-run.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 282 | keep maintainer-only or add explicit export path |
 | `rules/dynamic-tool-creation.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 10 | keep maintainer-only or add explicit export path |
 | `rules/e2b-integration.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 21 | keep maintainer-only or add explicit export path |
 | `rules/eas-evidence-artifact.md` | driver-specific | heuristic:text | medium | projected-consumer-surface | advisory | 11 | keep lifecycle, tests, and harness proof current |
@@ -128,7 +128,7 @@ Consumer accessibility: lifecycle-declared-maintainer:117, projected-consumer-su
 | `rules/supply-chain-defense.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 18 | keep maintainer-only or add explicit export path |
 | `rules/task-dag.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 13 | keep maintainer-only or add explicit export path |
 | `rules/tero-integration.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 13 | keep maintainer-only or add explicit export path |
-| `rules/token-economy.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 46 | keep maintainer-only or add explicit export path |
+| `rules/token-economy.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 47 | keep maintainer-only or add explicit export path |
 | `rules/trailofbits-skills.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 19 | keep maintainer-only or add explicit export path |
 | `rules/trust-score.md` | driver-specific | heuristic:text | medium | projected-consumer-surface | advisory | 161 | keep lifecycle, tests, and harness proof current |
 | `rules/user-prompt-capture.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 54 | keep maintainer-only or add explicit export path |

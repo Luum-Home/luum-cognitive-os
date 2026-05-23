@@ -5240,17 +5240,55 @@
       "wrapper_for": "scripts/apply-efficiency-profile.sh"
     },
     {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "hook": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "hook",
+          "path": "hooks/context-budget-meter.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_context_budget_meter_fast.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "hook_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/context_budget_meter_fast.py",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "usage:repo",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 2,
+      "wrapper_for": null
+    },
+    {
       "confidence": "high",
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 85,
-        "doc": 746,
+        "doc": 756,
         "hook": 118,
         "rule": 49,
-        "script": 352,
-        "skill": 80,
-        "test": 676,
+        "script": 362,
+        "skill": 81,
+        "test": 685,
         "workflow": 2
       },
       "consumers": [
@@ -6872,6 +6910,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-331-graphify-portable-context-optimization-primitive.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/INDEX.md"
         },
         {
@@ -7256,6 +7298,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/byoharness-comparison-2026-05-23.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/capability-centric-runtime-enforcement.md"
         },
         {
@@ -7505,6 +7551,26 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/goal-loop.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-integration-assessment-2026-05-22.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-next-step-decision-2026-05-22.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-phase-d-semantic-plan-2026-05-22.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-portable-optimization-plan-2026-05-22.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-real-token-telemetry-tooling-audit-2026-05-22.md"
         },
         {
           "family": "doc",
@@ -7777,6 +7843,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/surface-5-and-secure-cosd-roadmap.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/token-savings-qa.md"
         },
         {
           "family": "doc",
@@ -8412,6 +8482,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/09-Quality/manual-tests/graphify-controlled-trial.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/09-Quality/manual-tests/headless-docker-service-runtime.md"
         },
         {
@@ -8473,6 +8547,10 @@
         {
           "family": "doc",
           "path": "docs/09-Quality/manual-tests/task-lifecycle-worktree-pr-flow.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/token-savings-paired-benchmark.md"
         },
         {
           "family": "doc",
@@ -9340,6 +9418,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/context_budget_meter_fast.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-adapters"
         },
         {
@@ -9645,6 +9727,38 @@
         {
           "family": "script",
           "path": "scripts/cos-governed-edit.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-graphify-build"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-graphify-context-replay-benchmark"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-graphify-hotspot-report"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-graphify-phase-d-semantic"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-graphify-preload-matrix"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-graphify-run-telemetry"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-graphify-token-footprint"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-graphify-token-reduction-smoke"
         },
         {
           "family": "script",
@@ -9981,6 +10095,10 @@
         {
           "family": "script",
           "path": "scripts/cos-tier-claim-audit"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-token-savings-audit"
         },
         {
           "family": "script",
@@ -10849,6 +10967,10 @@
         {
           "family": "skill",
           "path": "skills/dogfood-score/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/graphify-query/SKILL.md"
         },
         {
           "family": "skill",
@@ -12424,6 +12546,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cos-token-savings-audit.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_cos-tui.py"
         },
         {
@@ -12933,6 +13059,34 @@
         {
           "family": "test",
           "path": "tests/unit/test_cos_governance_roi.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_graphify_build.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_graphify_context_replay_benchmark.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_graphify_phase_d_semantic.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_graphify_preload_matrix.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_graphify_run_telemetry.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_graphify_token_footprint.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_graphify_token_reduction_smoke.py"
         },
         {
           "family": "test",
@@ -13636,6 +13790,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_token_savings_audit.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_tool_adoption_evaluator.py"
         },
         {
@@ -13691,14 +13849,14 @@
       "evidence": [
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
-        "skill_consumers:80",
-        "test_consumers:676",
+        "skill_consumers:81",
+        "test_consumers:685",
         "hook_consumers:118",
         "workflow_consumers:2",
-        "doc_consumers:746",
+        "doc_consumers:756",
         "rule_consumers:49",
         "config_consumers:85",
-        "script_consumers:352"
+        "script_consumers:362"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -13710,11 +13868,11 @@
       "protected_install_surface": false,
       "role": "lab",
       "role_source": "lifecycle",
-      "skill_consumers": 80,
+      "skill_consumers": 81,
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 2108,
+      "total_consumers": 2138,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -16792,7 +16950,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 3,
-        "doc": 2,
+        "doc": 4,
         "test": 1
       },
       "consumers": [
@@ -16817,6 +16975,14 @@
           "path": "docs/04-Concepts/architecture/context-rot-token-budget-controls.md"
         },
         {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/token-savings-qa.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/token-savings-paired-benchmark.md"
+        },
+        {
           "family": "test",
           "path": "tests/red_team/portability/test_os_only_scope_family.py"
         }
@@ -16824,7 +16990,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:2",
+        "doc_consumers:4",
         "config_consumers:3"
       ],
       "install_surface": null,
@@ -16839,7 +17005,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 6,
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -18708,6 +18874,7 @@
       "consumer_families": {
         "config": 4,
         "doc": 5,
+        "script": 1,
         "test": 1
       },
       "consumers": [
@@ -18748,6 +18915,10 @@
           "path": "docs/07-Capabilities/acc/latest.md"
         },
         {
+          "family": "script",
+          "path": "scripts/cos-graphify-preload-matrix"
+        },
+        {
           "family": "test",
           "path": "tests/red_team/portability/test_cos-doctor-concurrency.py"
         }
@@ -18758,7 +18929,8 @@
         "wrapper_for:scripts/edit-coop.sh",
         "test_consumers:1",
         "doc_consumers:5",
-        "config_consumers:4"
+        "config_consumers:4",
+        "script_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -18776,7 +18948,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 10,
+      "total_consumers": 11,
       "wrapper_for": "scripts/edit-coop.sh"
     },
     {
@@ -19266,7 +19438,7 @@
       "consumer_families": {
         "config": 4,
         "doc": 3,
-        "script": 1,
+        "script": 2,
         "test": 2
       },
       "consumers": [
@@ -19303,6 +19475,10 @@
           "path": "scripts/cos-doctor-concurrency.sh"
         },
         {
+          "family": "script",
+          "path": "scripts/cos-graphify-preload-matrix"
+        },
+        {
           "family": "test",
           "path": "tests/behavior/test_cos_work_inventory.py"
         },
@@ -19317,7 +19493,7 @@
         "test_consumers:2",
         "doc_consumers:3",
         "config_consumers:4",
-        "script_consumers:1"
+        "script_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -19335,7 +19511,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 10,
+      "total_consumers": 11,
       "wrapper_for": null
     },
     {
@@ -20808,6 +20984,7 @@
       "consumer_families": {
         "config": 5,
         "doc": 6,
+        "script": 1,
         "test": 3
       },
       "consumers": [
@@ -20856,6 +21033,10 @@
           "path": "docs/05-Methodology/runbooks/history-sanitization.md"
         },
         {
+          "family": "script",
+          "path": "scripts/cos-graphify-preload-matrix"
+        },
+        {
           "family": "test",
           "path": "tests/behavior/test_filter_repo_wrap.py"
         },
@@ -20872,7 +21053,8 @@
       "evidence": [
         "test_consumers:3",
         "doc_consumers:6",
-        "config_consumers:5"
+        "config_consumers:5",
+        "script_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -20886,7 +21068,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 14,
+      "total_consumers": 15,
       "wrapper_for": null
     },
     {
@@ -21691,6 +21873,497 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 2,
+        "doc": 5,
+        "script": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-331-graphify-portable-context-optimization-primitive.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-integration-assessment-2026-05-22.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-next-step-decision-2026-05-22.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-portable-optimization-plan-2026-05-22.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/graphify-controlled-trial.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-graphify-phase-d-semantic"
+        },
+        {
+          "family": "skill",
+          "path": "skills/graphify-query/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_graphify_build.py"
+        }
+      ],
+      "distribution": "team",
+      "evidence": [
+        "lifecycle",
+        "skill_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:5",
+        "config_consumers:2",
+        "script_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-graphify-build",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-graphify-build",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 1,
+      "supported_harnesses": [
+        "claude",
+        "codex",
+        "shell"
+      ],
+      "total_consumers": 10,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 3,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/00-MOCs/entrypoints/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-331-graphify-portable-context-optimization-primitive.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-real-token-telemetry-tooling-audit-2026-05-22.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_graphify_context_replay_benchmark.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "doc_consumers:3"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep non-default until tests and operator value justify promotion",
+      "override_rationale": null,
+      "path": "scripts/cos-graphify-context-replay-benchmark",
+      "protected_install_surface": false,
+      "role": "lab",
+      "role_source": "heuristic:path",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 4,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "consumer_families": {
+        "config": 2,
+        "doc": 2,
+        "script": 1,
+        "skill": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-331-graphify-portable-context-optimization-primitive.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-portable-optimization-plan-2026-05-22.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-graphify-preload-matrix"
+        },
+        {
+          "family": "skill",
+          "path": "skills/graphify-query/SKILL.md"
+        }
+      ],
+      "distribution": "team",
+      "evidence": [
+        "lifecycle",
+        "skill_consumers:1",
+        "doc_consumers:2",
+        "config_consumers:2",
+        "script_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-graphify-hotspot-report",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-graphify-hotspot-report",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 1,
+      "supported_harnesses": [
+        "claude",
+        "codex",
+        "shell"
+      ],
+      "total_consumers": 6,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 2,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-331-graphify-portable-context-optimization-primitive.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-phase-d-semantic-plan-2026-05-22.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_anthropic_api_key_references.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_graphify_phase_d_semantic.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:2",
+        "doc_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/cos-graphify-phase-d-semantic",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "heuristic:self-evolution",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 4,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "consumer_families": {
+        "config": 2,
+        "doc": 4,
+        "script": 3,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-331-graphify-portable-context-optimization-primitive.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-portable-optimization-plan-2026-05-22.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-real-token-telemetry-tooling-audit-2026-05-22.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/graphify-controlled-trial.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-graphify-context-replay-benchmark"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-graphify-run-telemetry"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-graphify-token-footprint"
+        },
+        {
+          "family": "skill",
+          "path": "skills/graphify-query/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_graphify_preload_matrix.py"
+        }
+      ],
+      "distribution": "team",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos-filter-repo-wrap.sh",
+        "skill_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:4",
+        "config_consumers:2",
+        "script_consumers:3"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-graphify-preload-matrix",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-graphify-preload-matrix",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 1,
+      "supported_harnesses": [
+        "claude",
+        "codex",
+        "shell"
+      ],
+      "total_consumers": 11,
+      "wrapper_for": "scripts/cos-filter-repo-wrap.sh"
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 3,
+        "script": 2,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-331-graphify-portable-context-optimization-primitive.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-real-token-telemetry-tooling-audit-2026-05-22.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/graphify-controlled-trial.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-graphify-context-replay-benchmark"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-graphify-token-reduction-smoke"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_graphify_run_telemetry.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "doc_consumers:3",
+        "script_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/cos-graphify-run-telemetry",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "heuristic:self-evolution",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 6,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "consumer_families": {
+        "config": 2,
+        "doc": 3,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-331-graphify-portable-context-optimization-primitive.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-portable-optimization-plan-2026-05-22.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-real-token-telemetry-tooling-audit-2026-05-22.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/graphify-query/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_graphify_token_footprint.py"
+        }
+      ],
+      "distribution": "team",
+      "evidence": [
+        "lifecycle",
+        "skill_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:3",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-graphify-token-footprint",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-graphify-token-footprint",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 1,
+      "supported_harnesses": [
+        "claude",
+        "codex",
+        "shell"
+      ],
+      "total_consumers": 7,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 3,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/00-MOCs/entrypoints/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-331-graphify-portable-context-optimization-primitive.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-real-token-telemetry-tooling-audit-2026-05-22.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_graphify_token_reduction_smoke.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "doc_consumers:3"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/cos-graphify-token-reduction-smoke",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "heuristic:self-evolution",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 4,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "consumer_families": {
         "config": 4,
         "doc": 4,
         "test": 3
@@ -22185,7 +22858,7 @@
         "config": 7,
         "doc": 10,
         "hook": 1,
-        "script": 2,
+        "script": 3,
         "test": 3
       },
       "consumers": [
@@ -22267,6 +22940,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-graphify-preload-matrix"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-history-sanitization-smoke.sh"
         },
         {
@@ -22288,7 +22965,7 @@
         "hook_consumers:1",
         "doc_consumers:10",
         "config_consumers:7",
-        "script_consumers:2"
+        "script_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -22302,7 +22979,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 23,
+      "total_consumers": 24,
       "wrapper_for": null
     },
     {
@@ -26102,7 +26779,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 6,
-        "doc": 2,
+        "doc": 5,
         "script": 1,
         "test": 2
       },
@@ -26137,7 +26814,19 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/context-rot-token-budget-controls.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/token-savings-qa.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/05-Methodology/getting-started/core-30-minute-onboarding.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/token-savings-paired-benchmark.md"
         },
         {
           "family": "script",
@@ -26157,7 +26846,7 @@
         "lifecycle",
         "override_rationale",
         "test_consumers:2",
-        "doc_consumers:2",
+        "doc_consumers:5",
         "config_consumers:6",
         "script_consumers:1"
       ],
@@ -26175,7 +26864,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 11,
+      "total_consumers": 14,
       "wrapper_for": null
     },
     {
@@ -31671,6 +32360,52 @@
         "shell"
       ],
       "total_consumers": 24,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 2,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/token-savings-qa.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/token-savings-paired-benchmark.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos-token-savings-audit.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_token_savings_audit.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:2",
+        "doc_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/cos-token-savings-audit",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "heuristic:self-evolution",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 4,
       "wrapper_for": null
     },
     {
@@ -39476,8 +40211,8 @@
         "config": 6,
         "doc": 14,
         "hook": 2,
-        "script": 8,
-        "skill": 3,
+        "script": 9,
+        "skill": 4,
         "test": 6
       },
       "consumers": [
@@ -39591,6 +40326,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-graphify-preload-matrix"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_cleanup_preserved_wip.py"
         },
         {
@@ -39604,6 +40343,10 @@
         {
           "family": "skill",
           "path": "skills/branch-worktree-closure/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/graphify-query/SKILL.md"
         },
         {
           "family": "skill",
@@ -39642,12 +40385,12 @@
       "evidence": [
         "lifecycle",
         "wrapper_for:scripts/edit-coop.sh",
-        "skill_consumers:3",
+        "skill_consumers:4",
         "test_consumers:6",
         "hook_consumers:2",
         "doc_consumers:14",
         "config_consumers:6",
-        "script_consumers:8"
+        "script_consumers:9"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -39659,11 +40402,11 @@
       "protected_install_surface": false,
       "role": "agentic-primitive",
       "role_source": "lifecycle",
-      "skill_consumers": 3,
+      "skill_consumers": 4,
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 39,
+      "total_consumers": 41,
       "wrapper_for": "scripts/edit-coop.sh"
     },
     {
@@ -39884,7 +40627,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 19,
-        "doc": 40,
+        "doc": 41,
         "hook": 2,
         "rule": 3,
         "script": 9,
@@ -40055,6 +40798,10 @@
         {
           "family": "doc",
           "path": "docs/03-PoCs/research/orchestration-coverage-gap-analysis-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/byoharness-comparison-2026-05-23.md"
         },
         {
           "family": "doc",
@@ -40267,7 +41014,7 @@
         "skill_consumers:2",
         "test_consumers:17",
         "hook_consumers:2",
-        "doc_consumers:40",
+        "doc_consumers:41",
         "rule_consumers:3",
         "config_consumers:19",
         "script_consumers:9"
@@ -40286,7 +41033,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 92,
+      "total_consumers": 93,
       "wrapper_for": null
     },
     {
@@ -41282,7 +42029,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
-        "doc": 6,
+        "doc": 7,
         "hook": 1,
         "script": 1,
         "test": 3
@@ -41318,6 +42065,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-next-step-decision-2026-05-22.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/05-Methodology/runbooks/adr-273-slice-c-staging/README.md"
         },
         {
@@ -41346,7 +42097,7 @@
         "wrapper_for:scripts/_lib/settings-driver-claude-code.sh",
         "test_consumers:3",
         "hook_consumers:1",
-        "doc_consumers:6",
+        "doc_consumers:7",
         "config_consumers:2",
         "script_consumers:1"
       ],
@@ -41362,7 +42113,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 13,
+      "total_consumers": 14,
       "wrapper_for": "scripts/_lib/settings-driver-claude-code.sh"
     },
     {
@@ -41445,7 +42196,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 4,
-        "doc": 2,
+        "doc": 1,
         "rule": 1,
         "script": 1,
         "skill": 1,
@@ -41473,10 +42224,6 @@
           "path": "docs/04-Concepts/architecture/parser-coverage-audit-2026-04-24.md"
         },
         {
-          "family": "doc",
-          "path": "docs/07-Capabilities/acc/latest.md"
-        },
-        {
           "family": "rule",
           "path": "rules/python-naming.md"
         },
@@ -41502,7 +42249,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:2",
-        "doc_consumers:2",
+        "doc_consumers:1",
         "rule_consumers:1",
         "config_consumers:4",
         "script_consumers:1"
@@ -41521,7 +42268,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 11,
+      "total_consumers": 10,
       "wrapper_for": null
     },
     {
@@ -41901,7 +42648,6 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 5,
-        "doc": 1,
         "rule": 1,
         "skill": 1,
         "test": 3
@@ -41926,10 +42672,6 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
-        },
-        {
-          "family": "doc",
-          "path": "docs/07-Capabilities/acc/latest.md"
         },
         {
           "family": "rule",
@@ -41957,7 +42699,6 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:3",
-        "doc_consumers:1",
         "rule_consumers:1",
         "config_consumers:5"
       ],
@@ -41975,7 +42716,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 11,
+      "total_consumers": 10,
       "wrapper_for": null
     },
     {
@@ -42223,7 +42964,6 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 5,
-        "doc": 1,
         "rule": 1,
         "skill": 1,
         "test": 2
@@ -42250,10 +42990,6 @@
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
-          "family": "doc",
-          "path": "docs/07-Capabilities/acc/latest.md"
-        },
-        {
           "family": "rule",
           "path": "rules/python-naming.md"
         },
@@ -42275,7 +43011,6 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:2",
-        "doc_consumers:1",
         "rule_consumers:1",
         "config_consumers:5"
       ],
@@ -42293,7 +43028,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 10,
+      "total_consumers": 9,
       "wrapper_for": null
     },
     {
@@ -43317,6 +44052,38 @@
       "skill_consumers": 0,
       "supported_harnesses": [],
       "total_consumers": 4,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_generate_runtime_compact_config.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/generate_runtime_compact_config.py",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "usage:repo",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 1,
       "wrapper_for": null
     },
     {
@@ -45163,7 +45930,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 4,
-        "doc": 6,
+        "doc": 7,
         "rule": 1,
         "test": 3
       },
@@ -45209,6 +45976,10 @@
           "path": "docs/04-Concepts/root/security-stack.md"
         },
         {
+          "family": "doc",
+          "path": "docs/07-Capabilities/acc/latest.md"
+        },
+        {
           "family": "rule",
           "path": "rules/trailofbits-skills.md"
         },
@@ -45230,7 +46001,7 @@
         "lifecycle",
         "override_rationale",
         "test_consumers:3",
-        "doc_consumers:6",
+        "doc_consumers:7",
         "rule_consumers:1",
         "config_consumers:4"
       ],
@@ -45248,7 +46019,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 14,
+      "total_consumers": 15,
       "wrapper_for": null
     },
     {
@@ -45257,7 +46028,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 5,
-        "doc": 2,
+        "doc": 3,
         "script": 1,
         "test": 3
       },
@@ -45288,6 +46059,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/07-Capabilities/acc/latest.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/09-Quality/manual-tests/cross-stack-license-audit-cli.md"
         },
         {
@@ -45312,7 +46087,7 @@
         "lifecycle",
         "wrapper_for:scripts/license-audit-trivy.sh",
         "test_consumers:3",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:5",
         "script_consumers:1"
       ],
@@ -45330,7 +46105,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 11,
+      "total_consumers": 12,
       "wrapper_for": "scripts/license-audit-trivy.sh"
     },
     {
@@ -45339,6 +46114,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 4,
+        "doc": 1,
         "rule": 1,
         "skill": 1,
         "test": 3
@@ -45359,6 +46135,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/07-Capabilities/acc/latest.md"
         },
         {
           "family": "rule",
@@ -45386,6 +46166,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:3",
+        "doc_consumers:1",
         "rule_consumers:1",
         "config_consumers:4"
       ],
@@ -45403,7 +46184,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 9,
+      "total_consumers": 10,
       "wrapper_for": null
     },
     {
@@ -46796,8 +47577,8 @@
         "doc": 19,
         "hook": 3,
         "rule": 3,
-        "script": 1,
-        "skill": 1,
+        "script": 3,
+        "skill": 2,
         "test": 5
       },
       "consumers": [
@@ -46927,11 +47708,23 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-graphify-preload-matrix"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-graphify-token-reduction-smoke"
+        },
+        {
+          "family": "script",
           "path": "scripts/smoke-qwen-fallback.sh"
         },
         {
           "family": "skill",
           "path": "skills/agent-control/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/graphify-query/SKILL.md"
         },
         {
           "family": "test",
@@ -46957,13 +47750,13 @@
       "distribution": "maintainer",
       "evidence": [
         "lifecycle",
-        "skill_consumers:1",
+        "skill_consumers:2",
         "test_consumers:5",
         "hook_consumers:3",
         "doc_consumers:19",
         "rule_consumers:3",
         "config_consumers:6",
-        "script_consumers:1"
+        "script_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -46975,13 +47768,13 @@
       "protected_install_surface": false,
       "role": "agentic-primitive",
       "role_source": "lifecycle",
-      "skill_consumers": 1,
+      "skill_consumers": 2,
       "supported_harnesses": [
         "claude",
         "codex",
         "shell"
       ],
-      "total_consumers": 38,
+      "total_consumers": 41,
       "wrapper_for": null
     },
     {
@@ -58071,27 +58864,27 @@
   "summary": {
     "agentic_primitives_without_lifecycle": 0,
     "confidence": {
-      "high": 336,
+      "high": 340,
       "low": 5,
-      "medium": 287
+      "medium": 294
     },
     "consumer_accessibility": {
       "install-profile-managed": 19,
-      "lifecycle-declared-consumer-candidate": 149,
+      "lifecycle-declared-consumer-candidate": 153,
       "lifecycle-declared-maintainer": 142,
       "skill-referenced-not-projectable": 3,
-      "so-local-only": 315
+      "so-local-only": 322
     },
     "low_confidence_rows": 5,
     "roles": {
-      "agentic-primitive": 198,
+      "agentic-primitive": 202,
       "archive": 12,
       "driver-specific": 12,
-      "lab": 97,
-      "maintainer-tool": 294,
+      "lab": 98,
+      "maintainer-tool": 300,
       "migration-only": 15
     },
-    "total_scripts": 628,
+    "total_scripts": 639,
     "without_consumers": 0
   },
   "target_family": "scripts"

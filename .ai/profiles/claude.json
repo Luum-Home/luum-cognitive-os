@@ -2047,7 +2047,7 @@
   "display_name": "Claude Code",
   "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
   "harness": "claude",
-  "lifecycle_primitives_supporting_harness": 614,
+  "lifecycle_primitives_supporting_harness": 619,
   "limitations": [
     "Proof currently covers default profile, not full profile."
   ],

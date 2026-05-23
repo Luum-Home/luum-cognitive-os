@@ -2902,6 +2902,35 @@ primitives:
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
+- id: hooks/eas-validation-gate.sh
+  kind: hook
+  owner_adr: ADR-324
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: runtime-safety
+  risk_class: blocking
+  supported_harnesses:
+  - claude
+  - codex
+  projection_targets:
+  - .claude/settings.json
+  - .codex/hooks.json
+  - hooks/eas-validation-gate.sh
+  runtime_projection: true
+  behavior_evidence: Native Stop-hook block gate when an active review surface has malformed or uncovered EAS rows.
+  evidence_commands:
+  - python3 -m pytest tests/hooks/test_eas_validation_gate.py tests/unit/test_bash_hot_path_dispatcher_projection.py -q
+  docs_claim_level: blocking
+  exit_behavior: native-block-json
+  repair_message: Resolve malformed or uncovered EAS rows, or explicitly clear COS_REVIEW_SURFACE for non-review sessions.
+  false_positive_tests:
+  - tests/hooks/test_eas_validation_gate.py
+  latency_budget_ms: 1500
+  rollback_or_repair_command: Fix the EAS markdown or temporarily unset COS_REVIEW_SURFACE; do not bypass without operator approval.
+  sunset_criteria: Remove only if review surfaces stop using EAS files or validation moves into an equivalent pre-archive gate.
+  metrics_file: none
 - id: hooks/ecosystem-check.sh
   kind: hook
   owner_adr: ADR-019
@@ -3389,6 +3418,35 @@ primitives:
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
+- id: hooks/goal-stop-gate.sh
+  kind: hook
+  owner_adr: ADR-064
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: runtime-safety
+  risk_class: blocking
+  supported_harnesses:
+  - claude
+  - codex
+  projection_targets:
+  - .claude/settings.json
+  - .codex/hooks.json
+  - hooks/goal-stop-gate.sh
+  runtime_projection: true
+  behavior_evidence: Native Stop-hook block gate for active COS goals with budget/evaluator hardening regressions.
+  evidence_commands:
+  - python3 -m pytest tests/behavior/test_goal_stop_hook.py tests/unit/test_goal_evaluator.py -q
+  docs_claim_level: blocking
+  exit_behavior: native-block-json
+  repair_message: Re-run scripts/cos-goal status/doctor, attach fresh evidence with scripts/cos-goal evaluate, or archive the goal as budget_limited when budget is exhausted.
+  false_positive_tests:
+  - tests/behavior/test_goal_stop_hook.py
+  latency_budget_ms: 1500
+  rollback_or_repair_command: Disable the active goal or repair hooks/goal-stop-gate.sh and rerun goal-loop focused tests.
+  sunset_criteria: Remove only when goal persistence and Stop continuation are replaced by an equivalent harness-native contract.
+  metrics_file: .cognitive-os/goals/current.json
 - id: hooks/guardrails-validator.sh
   kind: hook
   owner_adr: ADR-019
@@ -8668,7 +8726,7 @@ primitives:
   projection_targets:
   - rules/adaptive-bypass.md
   runtime_projection: false
-  behavior_evidence: 'Manual scope calibration iteration 037: Adaptive Bypass — Smart Orchestration is repository governance guidance usable by COS maintainers and adopter-project agents.'
+  behavior_evidence: "Manual scope calibration iteration 037: Adaptive Bypass \u2014 Smart Orchestration is repository governance guidance usable by COS maintainers and adopter-project agents."
   evidence_commands:
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/adaptive-bypass.md
   docs_claim_level: advisory
@@ -8912,7 +8970,7 @@ primitives:
   projection_targets:
   - rules/agent-security.md
   runtime_projection: false
-  behavior_evidence: 'Manual scope calibration iteration 037: Agent Security — Least Privilege Protocol is repository governance guidance usable by COS maintainers and adopter-project agents.'
+  behavior_evidence: "Manual scope calibration iteration 037: Agent Security \u2014 Least Privilege Protocol is repository governance guidance usable by COS maintainers and adopter-project agents."
   evidence_commands:
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/agent-security.md
   docs_claim_level: advisory
@@ -9062,7 +9120,7 @@ primitives:
   projection_targets:
   - rules/audit-trail.md
   runtime_projection: false
-  behavior_evidence: 'Manual scope calibration iteration 037: Audit Trail — Automated Work Tracking is repository governance guidance usable by COS maintainers and adopter-project agents.'
+  behavior_evidence: "Manual scope calibration iteration 037: Audit Trail \u2014 Automated Work Tracking is repository governance guidance usable by COS maintainers and adopter-project agents."
   evidence_commands:
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/audit-trail.md
   docs_claim_level: advisory
@@ -9162,7 +9220,7 @@ primitives:
   projection_targets:
   - rules/bash-naming.md
   runtime_projection: false
-  behavior_evidence: 'Manual scope calibration iteration 037: Bash Script Naming — Kebab-Case Required is repository governance guidance usable by COS maintainers and adopter-project agents.'
+  behavior_evidence: "Manual scope calibration iteration 037: Bash Script Naming \u2014 Kebab-Case Required is repository governance guidance usable by COS maintainers and adopter-project agents."
   evidence_commands:
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/bash-naming.md
   docs_claim_level: advisory
@@ -9237,7 +9295,7 @@ primitives:
   projection_targets:
   - rules/capability-levels.md
   runtime_projection: false
-  behavior_evidence: 'Manual scope calibration iteration 037: Capability Levels — Auto-Disable Components is repository governance guidance usable by COS maintainers and adopter-project agents.'
+  behavior_evidence: "Manual scope calibration iteration 037: Capability Levels \u2014 Auto-Disable Components is repository governance guidance usable by COS maintainers and adopter-project agents."
   evidence_commands:
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/capability-levels.md
   docs_claim_level: advisory
@@ -9331,7 +9389,7 @@ primitives:
   projection_targets:
   - rules/closed-loop-prompts.md
   runtime_projection: false
-  behavior_evidence: 'Manual scope calibration iteration 037: Closed-Loop Prompts — Self-Correcting Agent Execution is repository governance guidance usable by COS maintainers and adopter-project agents.'
+  behavior_evidence: "Manual scope calibration iteration 037: Closed-Loop Prompts \u2014 Self-Correcting Agent Execution is repository governance guidance usable by COS maintainers and adopter-project agents."
   evidence_commands:
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/closed-loop-prompts.md
   docs_claim_level: advisory
@@ -9406,7 +9464,7 @@ primitives:
   projection_targets:
   - rules/confidentiality-protection.md
   runtime_projection: false
-  behavior_evidence: 'Manual scope calibration iteration 037: Confidentiality Protection — IP Leak Prevention is repository governance guidance usable by COS maintainers and adopter-project agents.'
+  behavior_evidence: "Manual scope calibration iteration 037: Confidentiality Protection \u2014 IP Leak Prevention is repository governance guidance usable by COS maintainers and adopter-project agents."
   evidence_commands:
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/confidentiality-protection.md
   docs_claim_level: advisory
@@ -9431,7 +9489,7 @@ primitives:
   projection_targets:
   - rules/consequence-system.md
   runtime_projection: false
-  behavior_evidence: 'Manual scope calibration iteration 037: Consequence System — OKR-Driven Feedback Loop is repository governance guidance usable by COS maintainers and adopter-project agents.'
+  behavior_evidence: "Manual scope calibration iteration 037: Consequence System \u2014 OKR-Driven Feedback Loop is repository governance guidance usable by COS maintainers and adopter-project agents."
   evidence_commands:
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/consequence-system.md
   docs_claim_level: advisory
@@ -9456,7 +9514,7 @@ primitives:
   projection_targets:
   - rules/content-policy.md
   runtime_projection: false
-  behavior_evidence: 'Manual scope calibration iteration 037: Content Policy — Automated Enforcement is repository governance guidance usable by COS maintainers and adopter-project agents.'
+  behavior_evidence: "Manual scope calibration iteration 037: Content Policy \u2014 Automated Enforcement is repository governance guidance usable by COS maintainers and adopter-project agents."
   evidence_commands:
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/content-policy.md
   docs_claim_level: advisory
@@ -9481,7 +9539,7 @@ primitives:
   projection_targets:
   - rules/context-management.md
   runtime_projection: false
-  behavior_evidence: 'Manual scope calibration iteration 037: Context Window Management — Proactive Summarization Protocol is repository governance guidance usable by COS maintainers and adopter-project agents.'
+  behavior_evidence: "Manual scope calibration iteration 037: Context Window Management \u2014 Proactive Summarization Protocol is repository governance guidance usable by COS maintainers and adopter-project agents."
   evidence_commands:
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/context-management.md
   docs_claim_level: advisory
@@ -9531,7 +9589,7 @@ primitives:
   projection_targets:
   - rules/context7-auto-trigger.md
   runtime_projection: false
-  behavior_evidence: 'Manual scope calibration iteration 037: Context7 Auto-Trigger — Library Documentation Lookup is repository governance guidance usable by COS maintainers and adopter-project agents.'
+  behavior_evidence: "Manual scope calibration iteration 037: Context7 Auto-Trigger \u2014 Library Documentation Lookup is repository governance guidance usable by COS maintainers and adopter-project agents."
   evidence_commands:
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/context7-auto-trigger.md
   docs_claim_level: advisory
@@ -9872,7 +9930,7 @@ primitives:
   projection_targets:
   - rules/engram-api-safety.md
   runtime_projection: false
-  behavior_evidence: 'Manual scope calibration iteration 037: Engram API Safety — Never Mutate Production Daemon for Discovery is repository governance guidance usable by COS maintainers and adopter-project agents.'
+  behavior_evidence: "Manual scope calibration iteration 037: Engram API Safety \u2014 Never Mutate Production Daemon for Discovery is repository governance guidance usable by COS maintainers and adopter-project agents."
   evidence_commands:
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/engram-api-safety.md
   docs_claim_level: advisory
@@ -9897,7 +9955,7 @@ primitives:
   projection_targets:
   - rules/engram-organization.md
   runtime_projection: false
-  behavior_evidence: 'Manual scope calibration iteration 037: Engram Organization — Path Segregation (BMAD v6 Pattern 8) is repository governance guidance usable by COS maintainers and adopter-project agents.'
+  behavior_evidence: "Manual scope calibration iteration 037: Engram Organization \u2014 Path Segregation (BMAD v6 Pattern 8) is repository governance guidance usable by COS maintainers and adopter-project agents."
   evidence_commands:
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/engram-organization.md
   docs_claim_level: advisory
@@ -10188,7 +10246,7 @@ primitives:
   projection_targets:
   - rules/memory-governance.md
   runtime_projection: false
-  behavior_evidence: 'Manual scope calibration iteration 037: Memory Governance v2 — Typed Memory Policies is repository governance guidance usable by COS maintainers and adopter-project agents.'
+  behavior_evidence: "Manual scope calibration iteration 037: Memory Governance v2 \u2014 Typed Memory Policies is repository governance guidance usable by COS maintainers and adopter-project agents."
   evidence_commands:
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/memory-governance.md
   docs_claim_level: advisory
@@ -10213,7 +10271,7 @@ primitives:
   projection_targets:
   - rules/model-compatibility.md
   runtime_projection: false
-  behavior_evidence: 'Manual scope calibration iteration 037: Model Compatibility — Baseline Expectations is repository governance guidance usable by COS maintainers and adopter-project agents.'
+  behavior_evidence: "Manual scope calibration iteration 037: Model Compatibility \u2014 Baseline Expectations is repository governance guidance usable by COS maintainers and adopter-project agents."
   evidence_commands:
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/model-compatibility.md
   docs_claim_level: advisory
@@ -10313,7 +10371,7 @@ primitives:
   projection_targets:
   - rules/observability.md
   runtime_projection: false
-  behavior_evidence: 'Manual scope calibration iteration 037: Observability — MLflow Integration is repository governance guidance usable by COS maintainers and adopter-project agents.'
+  behavior_evidence: "Manual scope calibration iteration 037: Observability \u2014 MLflow Integration is repository governance guidance usable by COS maintainers and adopter-project agents."
   evidence_commands:
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/observability.md
   docs_claim_level: advisory
@@ -10338,7 +10396,7 @@ primitives:
   projection_targets:
   - rules/orchestrator-mode.md
   runtime_projection: false
-  behavior_evidence: 'Manual scope calibration iteration 037: Orchestrator Mode — Subprocess-Based Delegation is repository governance guidance usable by COS maintainers and adopter-project agents.'
+  behavior_evidence: "Manual scope calibration iteration 037: Orchestrator Mode \u2014 Subprocess-Based Delegation is repository governance guidance usable by COS maintainers and adopter-project agents."
   evidence_commands:
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/orchestrator-mode.md
   docs_claim_level: advisory
@@ -10632,7 +10690,7 @@ primitives:
   projection_targets:
   - rules/queue-advisor.md
   runtime_projection: false
-  behavior_evidence: 'Manual scope calibration iteration 037: Queue Advisor — Dynamic Dispatch Prioritization is repository governance guidance usable by COS maintainers and adopter-project agents.'
+  behavior_evidence: "Manual scope calibration iteration 037: Queue Advisor \u2014 Dynamic Dispatch Prioritization is repository governance guidance usable by COS maintainers and adopter-project agents."
   evidence_commands:
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/queue-advisor.md
   docs_claim_level: advisory
@@ -10784,7 +10842,7 @@ primitives:
   projection_targets:
   - rules/repomix-integration.md
   runtime_projection: false
-  behavior_evidence: 'Manual scope calibration iteration 037: Repomix Integration — Repository Context Packing is repository governance guidance usable by COS maintainers and adopter-project agents.'
+  behavior_evidence: "Manual scope calibration iteration 037: Repomix Integration \u2014 Repository Context Packing is repository governance guidance usable by COS maintainers and adopter-project agents."
   evidence_commands:
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/repomix-integration.md
   docs_claim_level: advisory
@@ -10907,7 +10965,7 @@ primitives:
   projection_targets:
   - rules/result-management.md
   runtime_projection: false
-  behavior_evidence: 'Manual scope calibration iteration 037: Result Management — Large Output Prevention is repository governance guidance usable by COS maintainers and adopter-project agents.'
+  behavior_evidence: "Manual scope calibration iteration 037: Result Management \u2014 Large Output Prevention is repository governance guidance usable by COS maintainers and adopter-project agents."
   evidence_commands:
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/result-management.md
   docs_claim_level: advisory
@@ -11057,7 +11115,7 @@ primitives:
   projection_targets:
   - rules/security-scanning.md
   runtime_projection: false
-  behavior_evidence: 'Manual scope calibration iteration 037: Security Scanning — Semgrep SAST Integration is repository governance guidance usable by COS maintainers and adopter-project agents.'
+  behavior_evidence: "Manual scope calibration iteration 037: Security Scanning \u2014 Semgrep SAST Integration is repository governance guidance usable by COS maintainers and adopter-project agents."
   evidence_commands:
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/security-scanning.md
   docs_claim_level: advisory
@@ -11157,7 +11215,7 @@ primitives:
   projection_targets:
   - rules/singularity.md
   runtime_projection: false
-  behavior_evidence: 'Manual scope calibration iteration 037: Singularity Rule — Autonomous MAPE-K Control Loop is repository governance guidance usable by COS maintainers and adopter-project agents.'
+  behavior_evidence: "Manual scope calibration iteration 037: Singularity Rule \u2014 Autonomous MAPE-K Control Loop is repository governance guidance usable by COS maintainers and adopter-project agents."
   evidence_commands:
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/singularity.md
   docs_claim_level: advisory
@@ -11257,7 +11315,7 @@ primitives:
   projection_targets:
   - rules/so-slo.md
   runtime_projection: false
-  behavior_evidence: 'Manual scope calibration iteration 037: SO SLO Catalogue — Source of Truth (ADR-028 D5) is repository governance guidance usable by COS maintainers and adopter-project agents.'
+  behavior_evidence: "Manual scope calibration iteration 037: SO SLO Catalogue \u2014 Source of Truth (ADR-028 D5) is repository governance guidance usable by COS maintainers and adopter-project agents."
   evidence_commands:
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/so-slo.md
   docs_claim_level: advisory
@@ -11430,7 +11488,7 @@ primitives:
   projection_targets:
   - rules/task-dag.md
   runtime_projection: false
-  behavior_evidence: 'Manual scope calibration iteration 037: Task DAG — Dependency-Aware Agent Orchestration is repository governance guidance usable by COS maintainers and adopter-project agents.'
+  behavior_evidence: "Manual scope calibration iteration 037: Task DAG \u2014 Dependency-Aware Agent Orchestration is repository governance guidance usable by COS maintainers and adopter-project agents."
   evidence_commands:
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/task-dag.md
   docs_claim_level: advisory
@@ -11480,7 +11538,7 @@ primitives:
   projection_targets:
   - rules/token-economy.md
   runtime_projection: false
-  behavior_evidence: 'Manual scope calibration iteration 037: Token Economy — Cost Transparency and Waste Prevention is repository governance guidance usable by COS maintainers and adopter-project agents.'
+  behavior_evidence: "Manual scope calibration iteration 037: Token Economy \u2014 Cost Transparency and Waste Prevention is repository governance guidance usable by COS maintainers and adopter-project agents."
   evidence_commands:
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/token-economy.md
   docs_claim_level: advisory
@@ -13225,6 +13283,34 @@ primitives:
   exit_behavior: manual
   metrics_file: none
   consumer_access_next_action: Add stronger paired portability proof if promoted beyond candidate.
+- kind: script
+  owner_adr: ADR-126
+  lifecycle_state: candidate
+  maturity: advisory
+  risk_class: advisory
+  docs_claim_level: advisory
+  exit_behavior: mixed
+  metrics_file: none
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-goal
+  - .cognitive-os/goals/current.json
+  false_positive_tests: &id002 []
+  latency_budget_ms: 2000
+  sunset_criteria: Archive or demote if extension-install/goal CLI workflows are replaced by a stronger typed primitive manager.
+  id: scripts/cos-goal
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  behavior_evidence: Thin executable wrapper for scripts/cos_goal.py goal-loop CLI operations.
+  evidence_commands:
+  - python3 -m pytest tests/behavior/test_goal_cli.py tests/behavior/test_goal_stop_hook.py -q
+  repair_message: Run scripts/cos-goal doctor --json and goal-loop focused tests; repair goal CLI state before retry.
+  rollback_or_repair_command: Run scripts/cos-goal doctor --json and goal-loop focused tests; repair goal CLI state before retry.
+  governance_class: goal-loop-runtime
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
 - id: scripts/cos-governance-roi
   kind: script
   owner_adr: ADR-146
@@ -13300,6 +13386,110 @@ primitives:
   metrics_file: none
   consumer_accessibility: lifecycle-declared-shared-surface
   consumer_access_next_action: Keep paired portability proof current before claiming broad consumer availability.
+- id: scripts/cos-graphify-build
+  kind: script
+  owner_adr: ADR-331
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: context-optimization
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - scripts/cos-graphify-build
+  runtime_projection: false
+  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial and Phase D receipts cover local wrapper behavior without installing upstream IDE surfaces.
+  evidence_commands:
+  - python3 -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py -q
+  - python3 -m pytest tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py -q
+  rollback_or_repair_command: Remove Graphify skill references or downgrade the wrapper role before claiming portable context-optimization support.
+  sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
+  docs_claim_level: advisory
+  exit_behavior: zero/nonzero CLI
+  metrics_file: docs/06-Daily/reports/graphify-*.md
+  consumer_access_next_action: Keep as explicit team/advisory tooling until release packaging decides whether to project Graphify wrappers.
+- id: scripts/cos-graphify-hotspot-report
+  kind: script
+  owner_adr: ADR-331
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: context-optimization
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - scripts/cos-graphify-hotspot-report
+  runtime_projection: false
+  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial and Phase D receipts cover local wrapper behavior without installing upstream IDE surfaces.
+  evidence_commands:
+  - python3 -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py -q
+  - python3 -m pytest tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py -q
+  rollback_or_repair_command: Remove Graphify skill references or downgrade the wrapper role before claiming portable context-optimization support.
+  sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
+  docs_claim_level: advisory
+  exit_behavior: zero/nonzero CLI
+  metrics_file: docs/06-Daily/reports/graphify-*.md
+  consumer_access_next_action: Keep as explicit team/advisory tooling until release packaging decides whether to project Graphify wrappers.
+- id: scripts/cos-graphify-preload-matrix
+  kind: script
+  owner_adr: ADR-331
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: context-optimization
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - scripts/cos-graphify-preload-matrix
+  runtime_projection: false
+  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial and Phase D receipts cover local wrapper behavior without installing upstream IDE surfaces.
+  evidence_commands:
+  - python3 -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py -q
+  - python3 -m pytest tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py -q
+  rollback_or_repair_command: Remove Graphify skill references or downgrade the wrapper role before claiming portable context-optimization support.
+  sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
+  docs_claim_level: advisory
+  exit_behavior: zero/nonzero CLI
+  metrics_file: docs/06-Daily/reports/graphify-*.md
+  consumer_access_next_action: Keep as explicit team/advisory tooling until release packaging decides whether to project Graphify wrappers.
+- id: scripts/cos-graphify-token-footprint
+  kind: script
+  owner_adr: ADR-331
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: context-optimization
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - scripts/cos-graphify-token-footprint
+  runtime_projection: false
+  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial and Phase D receipts cover local wrapper behavior without installing upstream IDE surfaces.
+  evidence_commands:
+  - python3 -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py -q
+  - python3 -m pytest tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py -q
+  rollback_or_repair_command: Remove Graphify skill references or downgrade the wrapper role before claiming portable context-optimization support.
+  sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
+  docs_claim_level: advisory
+  exit_behavior: zero/nonzero CLI
+  metrics_file: docs/06-Daily/reports/graphify-*.md
+  consumer_access_next_action: Keep as explicit team/advisory tooling until release packaging decides whether to project Graphify wrappers.
 - id: scripts/cos-headless-pipeline
   kind: script
   owner_adr: ADR-146
@@ -13518,6 +13708,34 @@ primitives:
   protected_install_surface: true
   install_surface: bootstrap
   install_surface_rationale: Shell bootstrap wrapper for COS initialization and primitive projection.
+- kind: script
+  owner_adr: ADR-126
+  lifecycle_state: candidate
+  maturity: advisory
+  risk_class: advisory
+  docs_claim_level: advisory
+  exit_behavior: mixed
+  metrics_file: none
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-install-hook
+  - cognitive-os.yaml
+  false_positive_tests: *id002
+  latency_budget_ms: 2000
+  sunset_criteria: Archive or demote if extension-install/goal CLI workflows are replaced by a stronger typed primitive manager.
+  id: scripts/cos-install-hook
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  behavior_evidence: Installs existing extension hooks into the active harness registration without authoring new hooks.
+  evidence_commands:
+  - python3 -m pytest tests/behavior/test_install_hook_cli.py tests/unit/test_install_hook_skill.py -q
+  repair_message: Run scripts/cos-install-hook <name> --dry-run, fix missing source/registration issues, then retry.
+  rollback_or_repair_command: Run scripts/cos-install-hook <name> --dry-run, fix missing source/registration issues, then retry.
+  governance_class: extension-installation
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
 - id: scripts/cos-install-projection-audit
   kind: script
   owner_adr: ADR-320
@@ -13542,6 +13760,34 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: none
+- kind: script
+  owner_adr: ADR-126
+  lifecycle_state: candidate
+  maturity: advisory
+  risk_class: advisory
+  docs_claim_level: advisory
+  exit_behavior: mixed
+  metrics_file: none
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-install-skill
+  - cognitive-os.yaml
+  false_positive_tests: *id002
+  latency_budget_ms: 2000
+  sunset_criteria: Archive or demote if extension-install/goal CLI workflows are replaced by a stronger typed primitive manager.
+  id: scripts/cos-install-skill
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  behavior_evidence: Installs existing extension skills into active skill routing without authoring new skills.
+  evidence_commands:
+  - python3 -m pytest tests/behavior/test_install_skill_cli.py tests/unit/test_install_skill_skill.py -q
+  repair_message: Run scripts/cos-install-skill <name> --dry-run, fix missing source/catalog/routing issues, then retry.
+  rollback_or_repair_command: Run scripts/cos-install-skill <name> --dry-run, fix missing source/catalog/routing issues, then retry.
+  governance_class: extension-installation
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
 - id: scripts/cos-integration-shard-plan
   kind: script
   owner_adr: ADR-146
@@ -17452,6 +17698,33 @@ primitives:
   docs_claim_level: observe
   exit_behavior: manual
   metrics_file: none
+- id: scripts/plan_closure_disposition_audit.py
+  kind: script
+  owner_adr: ADR-328
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: plan-closure-truth-control
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - scripts/plan_closure_disposition_audit.py
+  - scripts/cos-plan-closure-disposition-audit
+  runtime_projection: false
+  behavior_evidence: Audits plan closure disposition reports so session-backlog and plan closure cannot misread disposition-only closure as implemented work.
+  evidence_commands:
+  - python3 -m pytest tests/unit/test_plan_closure_disposition_audit.py -q
+  - scripts/cos-plan-closure-disposition-audit --project-dir . --json --strict
+  repair_message: Run scripts/cos-plan-closure-disposition-audit --project-dir . --json --strict and fix missing disposition evidence before claiming plan closure.
+  rollback_or_repair_command: Run scripts/cos-plan-closure-disposition-audit --project-dir . --json --strict and fix missing disposition evidence before claiming plan closure.
+  sunset_criteria: Archive or demote if session-backlog no longer consumes plan closure disposition reports.
+  docs_claim_level: advisory
+  exit_behavior: zero-on-pass
+  metrics_file: none
 - id: scripts/portable_ai_consumer_impact.py
   kind: script
   owner_adr: ADR-314
@@ -20236,6 +20509,30 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: manual
   metrics_file: none
+- id: skills/os-session-wrapup/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/os-session-wrapup/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'OS maintainer session close addendum: keeps /session-wrapup portable and runs aspirational_audit only for COS primitive-surface/reality-check work.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/os-session-wrapup/SKILL.md
+  - python3 -m pytest tests/hooks/test_os_session_wrapup_addendum_trigger.py
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+  consumer_access_next_action: Keep out of consumer-project projection; use /session-wrapup for portable close.
 - id: skills/pattern-audit/SKILL.md
   kind: skill
   owner_adr: ADR-321
@@ -21184,30 +21481,6 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: skill-procedure
   metrics_file: none
-- id: skills/os-session-wrapup/SKILL.md
-  kind: skill
-  owner_adr: ADR-314
-  lifecycle_state: advisory
-  maturity: advisory
-  distribution: maintainer
-  consumer_accessibility: lifecycle-declared-maintainer
-  governance_class: os-skill
-  risk_class: advisory
-  supported_harnesses:
-  - claude
-  - codex
-  - shell
-  projection_targets:
-  - skills/os-session-wrapup/SKILL.md
-  runtime_projection: false
-  behavior_evidence: 'OS maintainer session close addendum: keeps /session-wrapup portable and runs aspirational_audit only for COS primitive-surface/reality-check work.'
-  evidence_commands:
-  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/os-session-wrapup/SKILL.md
-  - python3 -m pytest tests/hooks/test_os_session_wrapup_addendum_trigger.py
-  docs_claim_level: advisory
-  exit_behavior: skill-procedure
-  metrics_file: none
-  consumer_access_next_action: Keep out of consumer-project projection; use /session-wrapup for portable close.
 - id: skills/session-wrapup/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -22183,173 +22456,4 @@ primitives:
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/skill-template.md
   docs_claim_level: advisory
   exit_behavior: template
-  metrics_file: none
-- id: hooks/goal-stop-gate.sh
-  kind: hook
-  owner_adr: ADR-064
-  lifecycle_state: blocking
-  maturity: blocking
-  distribution: maintainer
-  consumer_accessibility: lifecycle-declared-maintainer
-  governance_class: runtime-safety
-  risk_class: blocking
-  supported_harnesses:
-  - claude
-  - codex
-  projection_targets:
-  - .claude/settings.json
-  - .codex/hooks.json
-  - hooks/goal-stop-gate.sh
-  runtime_projection: true
-  behavior_evidence: Native Stop-hook block gate for active COS goals with budget/evaluator hardening regressions.
-  evidence_commands:
-  - python3 -m pytest tests/behavior/test_goal_stop_hook.py tests/unit/test_goal_evaluator.py -q
-  docs_claim_level: blocking
-  exit_behavior: native-block-json
-  repair_message: Re-run scripts/cos-goal status/doctor, attach fresh evidence with scripts/cos-goal evaluate, or archive the goal as budget_limited when budget is exhausted.
-  false_positive_tests:
-  - tests/behavior/test_goal_stop_hook.py
-  latency_budget_ms: 1500
-  rollback_or_repair_command: Disable the active goal or repair hooks/goal-stop-gate.sh and rerun goal-loop focused tests.
-  sunset_criteria: Remove only when goal persistence and Stop continuation are replaced by an equivalent harness-native contract.
-  metrics_file: .cognitive-os/goals/current.json
-- id: hooks/eas-validation-gate.sh
-  kind: hook
-  owner_adr: ADR-324
-  lifecycle_state: blocking
-  maturity: blocking
-  distribution: maintainer
-  consumer_accessibility: lifecycle-declared-shared-surface
-  governance_class: runtime-safety
-  risk_class: blocking
-  supported_harnesses:
-  - claude
-  - codex
-  projection_targets:
-  - .claude/settings.json
-  - .codex/hooks.json
-  - hooks/eas-validation-gate.sh
-  runtime_projection: true
-  behavior_evidence: Native Stop-hook block gate when an active review surface has malformed or uncovered EAS rows.
-  evidence_commands:
-  - python3 -m pytest tests/hooks/test_eas_validation_gate.py tests/unit/test_bash_hot_path_dispatcher_projection.py -q
-  docs_claim_level: blocking
-  exit_behavior: native-block-json
-  repair_message: Resolve malformed or uncovered EAS rows, or explicitly clear COS_REVIEW_SURFACE for non-review sessions.
-  false_positive_tests:
-  - tests/hooks/test_eas_validation_gate.py
-  latency_budget_ms: 1500
-  rollback_or_repair_command: Fix the EAS markdown or temporarily unset COS_REVIEW_SURFACE; do not bypass without operator approval.
-  sunset_criteria: Remove only if review surfaces stop using EAS files or validation moves into an equivalent pre-archive gate.
-  metrics_file: none
-- kind: script
-  owner_adr: ADR-126
-  lifecycle_state: candidate
-  maturity: advisory
-  risk_class: advisory
-  docs_claim_level: advisory
-  exit_behavior: mixed
-  metrics_file: none
-  runtime_projection: false
-  projection_targets:
-  - scripts/cos-install-hook
-  - cognitive-os.yaml
-  false_positive_tests: &id002 []
-  latency_budget_ms: 2000
-  sunset_criteria: Archive or demote if extension-install/goal CLI workflows are replaced by a stronger typed primitive manager.
-  id: scripts/cos-install-hook
-  distribution: team
-  consumer_accessibility: lifecycle-declared-consumer-candidate
-  behavior_evidence: Installs existing extension hooks into the active harness registration without authoring new hooks.
-  evidence_commands:
-  - python3 -m pytest tests/behavior/test_install_hook_cli.py tests/unit/test_install_hook_skill.py -q
-  repair_message: Run scripts/cos-install-hook <name> --dry-run, fix missing source/registration issues, then retry.
-  rollback_or_repair_command: Run scripts/cos-install-hook <name> --dry-run, fix missing source/registration issues, then retry.
-  governance_class: extension-installation
-  supported_harnesses:
-  - claude
-  - codex
-  - shell
-- kind: script
-  owner_adr: ADR-126
-  lifecycle_state: candidate
-  maturity: advisory
-  risk_class: advisory
-  docs_claim_level: advisory
-  exit_behavior: mixed
-  metrics_file: none
-  runtime_projection: false
-  projection_targets:
-  - scripts/cos-install-skill
-  - cognitive-os.yaml
-  false_positive_tests: *id002
-  latency_budget_ms: 2000
-  sunset_criteria: Archive or demote if extension-install/goal CLI workflows are replaced by a stronger typed primitive manager.
-  id: scripts/cos-install-skill
-  distribution: team
-  consumer_accessibility: lifecycle-declared-consumer-candidate
-  behavior_evidence: Installs existing extension skills into active skill routing without authoring new skills.
-  evidence_commands:
-  - python3 -m pytest tests/behavior/test_install_skill_cli.py tests/unit/test_install_skill_skill.py -q
-  repair_message: Run scripts/cos-install-skill <name> --dry-run, fix missing source/catalog/routing issues, then retry.
-  rollback_or_repair_command: Run scripts/cos-install-skill <name> --dry-run, fix missing source/catalog/routing issues, then retry.
-  governance_class: extension-installation
-  supported_harnesses:
-  - claude
-  - codex
-  - shell
-- kind: script
-  owner_adr: ADR-126
-  lifecycle_state: candidate
-  maturity: advisory
-  risk_class: advisory
-  docs_claim_level: advisory
-  exit_behavior: mixed
-  metrics_file: none
-  runtime_projection: false
-  projection_targets:
-  - scripts/cos-goal
-  - .cognitive-os/goals/current.json
-  false_positive_tests: *id002
-  latency_budget_ms: 2000
-  sunset_criteria: Archive or demote if extension-install/goal CLI workflows are replaced by a stronger typed primitive manager.
-  id: scripts/cos-goal
-  distribution: maintainer
-  consumer_accessibility: lifecycle-declared-maintainer
-  behavior_evidence: Thin executable wrapper for scripts/cos_goal.py goal-loop CLI operations.
-  evidence_commands:
-  - python3 -m pytest tests/behavior/test_goal_cli.py tests/behavior/test_goal_stop_hook.py -q
-  repair_message: Run scripts/cos-goal doctor --json and goal-loop focused tests; repair goal CLI state before retry.
-  rollback_or_repair_command: Run scripts/cos-goal doctor --json and goal-loop focused tests; repair goal CLI state before retry.
-  governance_class: goal-loop-runtime
-  supported_harnesses:
-  - claude
-  - codex
-  - shell
-- id: scripts/plan_closure_disposition_audit.py
-  kind: script
-  owner_adr: ADR-328
-  lifecycle_state: candidate
-  maturity: advisory
-  distribution: team
-  consumer_accessibility: lifecycle-declared-consumer-candidate
-  governance_class: plan-closure-truth-control
-  risk_class: advisory
-  supported_harnesses:
-  - claude
-  - codex
-  - shell
-  projection_targets:
-  - scripts/plan_closure_disposition_audit.py
-  - scripts/cos-plan-closure-disposition-audit
-  runtime_projection: false
-  behavior_evidence: Audits plan closure disposition reports so session-backlog and plan closure cannot misread disposition-only closure as implemented work.
-  evidence_commands:
-  - python3 -m pytest tests/unit/test_plan_closure_disposition_audit.py -q
-  - scripts/cos-plan-closure-disposition-audit --project-dir . --json --strict
-  repair_message: Run scripts/cos-plan-closure-disposition-audit --project-dir . --json --strict and fix missing disposition evidence before claiming plan closure.
-  rollback_or_repair_command: Run scripts/cos-plan-closure-disposition-audit --project-dir . --json --strict and fix missing disposition evidence before claiming plan closure.
-  sunset_criteria: Archive or demote if session-backlog no longer consumes plan closure disposition reports.
-  docs_claim_level: advisory
-  exit_behavior: zero-on-pass
   metrics_file: none

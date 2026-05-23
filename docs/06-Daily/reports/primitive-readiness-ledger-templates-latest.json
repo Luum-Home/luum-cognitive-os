@@ -174,6 +174,43 @@
     },
     {
       "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-038-preamble-v2-industry-aligned.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_plan_locations.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_prompt_integration.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:2",
+        "doc_consumers:1"
+      ],
+      "family": "templates",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "templates/agent-planning.md",
+      "role": "agent-preamble",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 3
+    },
+    {
+      "confidence": "medium",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
@@ -183,7 +220,7 @@
         "rule": 5,
         "script": 2,
         "skill": 1,
-        "test": 23
+        "test": 24
       },
       "consumers": [
         {
@@ -400,6 +437,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_agent_input_validator.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_agent_spawn_benchmark.py"
         },
         {
@@ -442,7 +483,7 @@
         "hook_consumers:3",
         "rule_consumers:5",
         "script_consumers:2",
-        "test_consumers:23",
+        "test_consumers:24",
         "doc_consumers:24",
         "config_consumers:4"
       ],
@@ -458,7 +499,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 62
+      "total_consumers": 63
     },
     {
       "confidence": "high",
@@ -907,9 +948,10 @@
       "consumer_families": {
         "config": 3,
         "doc": 6,
+        "hook": 1,
         "rule": 1,
         "skill": 3,
-        "test": 6
+        "test": 7
       },
       "consumers": [
         {
@@ -949,6 +991,10 @@
           "path": "docs/08-References/business/master-plan-checklist.md"
         },
         {
+          "family": "hook",
+          "path": "hooks/eas-validation-gate.sh"
+        },
+        {
           "family": "rule",
           "path": "rules/eas-evidence-artifact.md"
         },
@@ -974,6 +1020,10 @@
         },
         {
           "family": "test",
+          "path": "tests/hooks/test_eas_validation_gate.py"
+        },
+        {
+          "family": "test",
           "path": "tests/integration/test_auto_checkpoint_named_stash.py"
         },
         {
@@ -993,8 +1043,9 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:3",
+        "hook_consumers:1",
         "rule_consumers:1",
-        "test_consumers:6",
+        "test_consumers:7",
         "doc_consumers:6",
         "config_consumers:3"
       ],
@@ -1010,7 +1061,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 19
+      "total_consumers": 21
     },
     {
       "confidence": "medium",
@@ -1154,10 +1205,10 @@
     },
     {
       "confidence": "medium",
-      "consumer_access_next_action": "prove projection into a consumer project before claiming availability",
-      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 3,
+        "config": 2,
         "doc": 2,
         "test": 2
       },
@@ -1169,10 +1220,6 @@
         {
           "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
-        },
-        {
-          "family": "config",
-          "path": "manifests/primitive-lifecycle.yaml"
         },
         {
           "family": "doc",
@@ -1191,24 +1238,21 @@
           "path": "tests/unit/test_cos_init_py.py"
         }
       ],
-      "distribution": "team",
+      "distribution": null,
       "evidence": [
-        "lifecycle",
         "test_consumers:2",
         "doc_consumers:2",
-        "config_consumers:3"
+        "config_consumers:2"
       ],
       "family": "templates",
-      "lifecycle_id": "templates/fintech-gates.md",
-      "lifecycle_state": "candidate",
-      "next_action": "prove consumer project projection per supported harness before promotion",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
       "path": "templates/fintech-gates.md",
       "role": "quality-gate",
       "role_source": "heuristic:text",
-      "supported_harnesses": [
-        "shell"
-      ],
-      "total_consumers": 7
+      "supported_harnesses": [],
+      "total_consumers": 6
     },
     {
       "confidence": "high",
@@ -1264,10 +1308,10 @@
     },
     {
       "confidence": "medium",
-      "consumer_access_next_action": "prove projection into a consumer project before claiming availability",
-      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 3,
+        "config": 2,
         "doc": 2,
         "test": 1
       },
@@ -1279,10 +1323,6 @@
         {
           "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
-        },
-        {
-          "family": "config",
-          "path": "manifests/primitive-lifecycle.yaml"
         },
         {
           "family": "doc",
@@ -1297,24 +1337,21 @@
           "path": "tests/red_team/portability/test_project_scope_family.py"
         }
       ],
-      "distribution": "team",
+      "distribution": null,
       "evidence": [
-        "lifecycle",
         "test_consumers:1",
         "doc_consumers:2",
-        "config_consumers:3"
+        "config_consumers:2"
       ],
       "family": "templates",
-      "lifecycle_id": "templates/go-service-context.md",
-      "lifecycle_state": "candidate",
-      "next_action": "prove consumer project projection per supported harness before promotion",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
       "path": "templates/go-service-context.md",
       "role": "prompt-composition",
       "role_source": "heuristic:text",
-      "supported_harnesses": [
-        "shell"
-      ],
-      "total_consumers": 6
+      "supported_harnesses": [],
+      "total_consumers": 5
     },
     {
       "confidence": "medium",
@@ -1994,24 +2031,23 @@
   "summary": {
     "confidence": {
       "high": 10,
-      "medium": 13
+      "medium": 14
     },
     "consumer_accessibility": {
-      "lifecycle-declared-consumer-candidate": 2,
       "lifecycle-declared-maintainer": 19,
       "projected-consumer-surface": 1,
-      "so-local-only": 1
+      "so-local-only": 4
     },
     "roles": {
-      "agent-preamble": 1,
+      "agent-preamble": 2,
       "lab": 10,
       "prompt-composition": 7,
       "quality-gate": 4,
       "recovery": 1
     },
-    "total": 23,
+    "total": 24,
     "without_consumers": 0,
-    "without_lifecycle": 1
+    "without_lifecycle": 4
   },
   "target_family": "templates"
 }

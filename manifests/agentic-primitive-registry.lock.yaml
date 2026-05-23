@@ -5492,6 +5492,46 @@ primitives:
   projection_targets:
   - scripts/cos-governed-edit.sh
   sha256: 2d7422d55d80f00df5c06235ce8f8cac1205d51462af1bcc18c7b5568b6543d5
+- id: scripts/cos-graphify-build
+  kind: script
+  owner_adr: ADR-331
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-graphify-build
+  sha256: 3cb176188a97c6544a251c0a44b838f9a5c44bd99a067ccdd0a7fe01e3246770
+- id: scripts/cos-graphify-hotspot-report
+  kind: script
+  owner_adr: ADR-331
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-graphify-hotspot-report
+  sha256: d53d671232af2b5a232f73197ec88b41033a009b83f8d1a22cc62285e5900a88
+- id: scripts/cos-graphify-preload-matrix
+  kind: script
+  owner_adr: ADR-331
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-graphify-preload-matrix
+  sha256: 9c3a79cf04fe157b3b5a4bf4a35a223b906263df11581218d358c8b809d44681
+- id: scripts/cos-graphify-token-footprint
+  kind: script
+  owner_adr: ADR-331
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-graphify-token-footprint
+  sha256: a7586bc6a83870c45249349228d882670aac339c66dde75c3daec9cc237aebbd
 - id: scripts/cos-headless-pipeline
   kind: script
   owner_adr: ADR-146

@@ -1,0 +1,102 @@
+{
+  "canonical_source": "scripts/cos-graphify-build",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "ADR-331 Graphify portable context optimization primitive; controlled-trial and Phase D receipts cover local wrapper behavior without installing upstream IDE surfaces.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "ADR-331 Graphify portable context optimization primitive; controlled-trial and Phase D receipts cover local wrapper behavior without installing upstream IDE surfaces.",
+    "evidence_commands": [
+      "python3 -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py -q",
+      "python3 -m pytest tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py -q"
+    ],
+    "metrics_file": "docs/06-Daily/reports/graphify-*.md"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "team",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "zero/nonzero CLI",
+    "governance_class": "context-optimization",
+    "lifecycle_state": "candidate",
+    "maturity": "advisory",
+    "owner_adr": "ADR-331",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "document",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "ADR-331 Graphify portable context optimization primitive; controlled-trial and Phase D receipts cover local wrapper behavior without installing upstream IDE surfaces.",
+      "evidence_commands": [
+        "python3 -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py -q",
+        "python3 -m pytest tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py -q"
+      ],
+      "metrics": [
+        "docs/06-Daily/reports/graphify-*.md"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "unsupported"
+    },
+    "intent": "ADR-331 Graphify portable context optimization primitive; controlled-trial and Phase D receipts cover local wrapper behavior without installing upstream IDE surfaces.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "shell": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "scripts/cos-graphify-build"
+      ],
+      "runtime_projection": false
+    }
+  },
+  "portable_id": "scripts/cos-graphify-build",
+  "projection_targets": [
+    "scripts/cos-graphify-build"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/cos-graphify-build",
+  "supported_harnesses": [
+    "claude",
+    "codex",
+    "shell"
+  ]
+}

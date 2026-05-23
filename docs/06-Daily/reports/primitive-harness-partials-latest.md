@@ -2,10 +2,10 @@
 
 This report lists classified-but-unresolved primitive surface coverage debt. It intentionally excludes aligned gaps.
 
-Partial count: 51
-Total gaps in source report: 349
+Partial count: 52
+Total gaps in source report: 365
 Unclassified gaps: 0
-By policy: {'codex-adapter-needed': 51}
+By policy: {'codex-adapter-needed': 52}
 
 ## Priority order
 
@@ -54,17 +54,18 @@ By policy: {'codex-adapter-needed': 51}
 | 35 | `hooks/resource-check.sh` | hooks | both | codex-adapter-needed | medium | acc-report+dashboard+tui | scope=both but missing projected/wired support for: claude, codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
 | 36 | `hooks/scope-creep-detector.sh` | hooks | both | codex-adapter-needed | medium | acc-report+claude+dashboard+tui | scope=both but missing projected/wired support for: codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
 | 37 | `hooks/scope-proportionality.sh` | hooks | both | codex-adapter-needed | medium | acc-report+claude+dashboard+tui | scope=both but missing projected/wired support for: codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
-| 38 | `hooks/secret-detector.sh` | hooks | both | codex-adapter-needed | medium | acc-report+claude+dashboard+tui | scope=both but missing projected/wired support for: codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
-| 39 | `hooks/semgrep-scan.sh` | hooks | both | codex-adapter-needed | medium | acc-report+dashboard+tui | scope=both but missing projected/wired support for: claude, codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
-| 40 | `hooks/session-end-cleanup.sh` | hooks | both | codex-adapter-needed | medium | acc-report+dashboard+tui | scope=both but missing projected/wired support for: claude, codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
-| 41 | `hooks/skill-frontmatter-validator.sh` | hooks | both | codex-adapter-needed | medium | acc-report+claude+dashboard+tui | scope=both but missing projected/wired support for: codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
-| 42 | `hooks/state-retention-audit.sh` | hooks | both | codex-adapter-needed | medium | acc-report+dashboard+tui | scope=both but missing projected/wired support for: claude, codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
-| 43 | `hooks/subagent-capability-preflight.sh` | hooks | both | codex-adapter-needed | medium | acc-report+dashboard+tui | scope=both but missing projected/wired support for: claude, codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
-| 44 | `hooks/surface-fix-detector.sh` | hooks | both | codex-adapter-needed | medium | acc-report+claude+dashboard+tui | scope=both but missing projected/wired support for: codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
-| 45 | `hooks/task-completed.sh` | hooks | both | codex-adapter-needed | medium | acc-report+dashboard+tui | scope=both but missing projected/wired support for: claude, codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
-| 46 | `hooks/task-recorder.sh` | hooks | both | codex-adapter-needed | medium | acc-report+dashboard+tui | scope=both but missing projected/wired support for: claude, codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
-| 47 | `hooks/token-budget-monitor.sh` | hooks | both | codex-adapter-needed | medium | acc-report+claude+dashboard+tui | scope=both but missing projected/wired support for: codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
-| 48 | `hooks/tool-loop-detector.sh` | hooks | both | codex-adapter-needed | medium | acc-report+dashboard+tui | scope=both but missing projected/wired support for: claude, codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
-| 49 | `hooks/trust-score-validator.sh` | hooks | both | codex-adapter-needed | medium | acc-report+claude+dashboard+tui | scope=both but missing projected/wired support for: codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
-| 50 | `hooks/valkey-ensure.sh` | hooks | both | codex-adapter-needed | medium | acc-report+dashboard+tui | scope=both but missing projected/wired support for: claude, codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
-| 51 | `hooks/worktree-submodule-fix.sh` | hooks | both | codex-adapter-needed | medium | acc-report+dashboard+tui | scope=both but missing projected/wired support for: claude, codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
+| 38 | `hooks/secret-audit-pre-commit.sh` | hooks | both | codex-adapter-needed | medium | acc-report+dashboard+tui | scope=both but missing projected/wired support for: claude, codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
+| 39 | `hooks/secret-detector.sh` | hooks | both | codex-adapter-needed | medium | acc-report+claude+dashboard+tui | scope=both but missing projected/wired support for: codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
+| 40 | `hooks/semgrep-scan.sh` | hooks | both | codex-adapter-needed | medium | acc-report+dashboard+tui | scope=both but missing projected/wired support for: claude, codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
+| 41 | `hooks/session-end-cleanup.sh` | hooks | both | codex-adapter-needed | medium | acc-report+dashboard+tui | scope=both but missing projected/wired support for: claude, codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
+| 42 | `hooks/skill-frontmatter-validator.sh` | hooks | both | codex-adapter-needed | medium | acc-report+claude+dashboard+tui | scope=both but missing projected/wired support for: codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
+| 43 | `hooks/state-retention-audit.sh` | hooks | both | codex-adapter-needed | medium | acc-report+dashboard+tui | scope=both but missing projected/wired support for: claude, codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
+| 44 | `hooks/subagent-capability-preflight.sh` | hooks | both | codex-adapter-needed | medium | acc-report+dashboard+tui | scope=both but missing projected/wired support for: claude, codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
+| 45 | `hooks/surface-fix-detector.sh` | hooks | both | codex-adapter-needed | medium | acc-report+claude+dashboard+tui | scope=both but missing projected/wired support for: codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
+| 46 | `hooks/task-completed.sh` | hooks | both | codex-adapter-needed | medium | acc-report+dashboard+tui | scope=both but missing projected/wired support for: claude, codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
+| 47 | `hooks/task-recorder.sh` | hooks | both | codex-adapter-needed | medium | acc-report+dashboard+tui | scope=both but missing projected/wired support for: claude, codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
+| 48 | `hooks/token-budget-monitor.sh` | hooks | both | codex-adapter-needed | medium | acc-report+claude+dashboard+tui | scope=both but missing projected/wired support for: codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
+| 49 | `hooks/tool-loop-detector.sh` | hooks | both | codex-adapter-needed | medium | acc-report+dashboard+tui | scope=both but missing projected/wired support for: claude, codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
+| 50 | `hooks/trust-score-validator.sh` | hooks | both | codex-adapter-needed | medium | acc-report+claude+dashboard+tui | scope=both but missing projected/wired support for: codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
+| 51 | `hooks/valkey-ensure.sh` | hooks | both | codex-adapter-needed | medium | acc-report+dashboard+tui | scope=both but missing projected/wired support for: claude, codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
+| 52 | `hooks/worktree-submodule-fix.sh` | hooks | both | codex-adapter-needed | medium | acc-report+dashboard+tui | scope=both but missing projected/wired support for: claude, codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
