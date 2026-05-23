@@ -116,7 +116,11 @@ Negative:
 - Real token reduction claims need comparable before/after runs; the telemetry
   joiner labels single-run evidence as non-causal.
 
-## Alternatives Considered
+## Alternatives rejected
+
+- Direct upstream IDE installation was rejected because it mutates one IDE surface outside the OS projection model.
+- No adoption was rejected because the local trial showed enough navigation and context-reduction value for a controlled wrapper.
+- Immediate semantic indexing of all docs, ADRs, rules, and skills was deferred because the token cost belongs behind an explicit budget gate.
 
 ### Direct upstream IDE installation
 
@@ -165,3 +169,26 @@ The phases are defined in
 9. `scripts/cos-graphify-context-replay-benchmark` simulates a controlled run
    with real repository file content and excludes generated caches/artifacts from
    broad baselines.
+
+## Verification
+
+The current partial implementation is verified by targeted unit tests and smoke
+wrappers for the Graphify primitive shell, preload/token tooling, telemetry
+joiner, and Phase D semantic wrapper.
+
+```bash
+python3 -m pytest \
+  tests/unit/test_cos_graphify_build.py \
+  tests/unit/test_cos_graphify_context_replay_benchmark.py \
+  tests/unit/test_cos_graphify_phase_d_semantic.py \
+  tests/unit/test_cos_graphify_preload_matrix.py \
+  tests/unit/test_cos_graphify_token_footprint.py \
+  tests/unit/test_cos_graphify_token_reduction_smoke.py \
+  tests/unit/test_cos_graphify_run_telemetry.py -q
+```
+
+These tests prove wrapper command construction, generated report shape, budget
+gating, telemetry joins, and deterministic replay behavior. They do not prove
+production token savings or always-on IDE projection; those remain in the
+partial implementation scope above.
+

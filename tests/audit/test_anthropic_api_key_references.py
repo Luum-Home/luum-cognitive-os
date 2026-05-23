@@ -76,6 +76,7 @@ ALLOWED_REFERENCES: tuple[AllowedReference, ...] = (
     AllowedReference("docs/02-Decisions/adrs/ADR-139-account-agnostic-multi-provider-runtime.md", "policy_docs", "account-agnostic credential policy names legacy env var as banned/default-unsafe"),
     AllowedReference("docs/09-Quality/manual-tests/service-control-plane-proof-drills.md", "service_control_plane_security_docs", "manual drill verifies credential redaction"),
     AllowedReference("scripts/cos_auth_probe.py", "auth_probe_policy", "provider-specific auth readiness probe checks env presence only"),
+    AllowedReference("scripts/cos-graphify-phase-d-semantic", "graphify_semantic_backend_gate", "Phase D semantic wrapper checks backend env presence only"),
     AllowedReference("tests/audit/test_adr_139_141_142_cloud_surfaces.py", "audit_test", "guards blocked credential defaults"),
     AllowedReference("tests/unit/test_service_control_plane_local_queue.py", "test_fixture", "secret redaction fixture"),
     AllowedReference("manifests/credential-safe-scripts.yaml", "credential_safe_runner_policy", "explicit denylist for credential-safe script runner"),

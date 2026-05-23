@@ -71,10 +71,7 @@ Accepted
 ADR-291 is **not closed** while the service still exposes typed stubs and lacks
 production runtime controls. The closed Wave 5 slices are the file-backed JSON
 session lifecycle/event backend, the local synchronous `sessions/query` plus
-`oneshot/query` adapter, and the runtime-lab query SSE streams. Formal closure
-requires replacing the remaining 10 JSON
-501 operations and the remaining summary SSE stub with real behavior, wiring production
-model/runtime settings, CSRF, rate limiting,
+`oneshot/query` adapter, and the runtime-lab query SSE streams. Formal closure requires replacing the remaining 10 JSON 501 operations and the remaining summary SSE stub with real behavior, wiring production model/runtime settings, CSRF, rate limiting,
 workspace/search, sharing, abort semantics, and the JSON-to-SQLite migration,
 with contract tests for each surface.
 

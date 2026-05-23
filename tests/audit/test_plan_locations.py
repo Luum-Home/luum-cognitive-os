@@ -80,6 +80,8 @@ ALLOWLIST_RELATIVE: list[str] = [
     "docs/04-Concepts/architecture/external-tool-intelligence-plane.md",  # vaulted architecture artifact
     "docs/04-Concepts/architecture/primitive-contract-registry-implementation-plan.md",  # ADR-256 architecture companion
     "docs/04-Concepts/architecture/primitive-contract-registry-implementation-plan.md",  # vaulted architecture artifact
+    "docs/04-Concepts/architecture/graphify-portable-optimization-plan-2026-05-22.md",  # ADR-331 architecture companion, not active plan inventory
+    "docs/04-Concepts/architecture/graphify-phase-d-semantic-plan-2026-05-22.md",  # ADR-331 semantic extraction architecture companion
     "docs/02-Decisions/adrs/ADR-248-control-plane-audit-loop.md",  # ADR title contains control-plane, not active plan inventory
     "docs/02-Decisions/adrs/ADR-248-control-plane-audit-loop.md",  # vaulted ADR artifact
     "docs/02-Decisions/adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md",  # ADR title contains plane, not active plan inventory

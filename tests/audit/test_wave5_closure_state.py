@@ -28,11 +28,12 @@ EXPECTED_RESIDUALS = {
     ),
     "ADR-291": (
         "phase-2-in-progress contract with 26 operations (25 distinct path "
-        "strings), 13 functional operations (health/version/agent options plus "
-        "8 file-backed JSON session lifecycle/event endpoints and 2 local sync "
-        "query endpoints), 10 typed JSON 501 stubs, and 3 SSE stub operations. "
-        "The /csrf-token endpoint was removed in the security pass; real CSRF "
-        "defense remains a Phase 2 follow-up."
+        "strings), 15 functional operations (health/version/agent options plus "
+        "8 file-backed JSON session lifecycle/event endpoints, 2 local sync "
+        "query endpoints, and 2 runtime-lab query SSE endpoints), 10 typed "
+        "JSON 501 stubs, and 1 SSE stub operation. The /csrf-token endpoint "
+        "was removed in the security pass; real CSRF defense remains a Phase 2 "
+        "follow-up."
     ),
     "ADR-325": (
         "partial ADR-325 implementation: manifest/audit/preflight/language-token "
