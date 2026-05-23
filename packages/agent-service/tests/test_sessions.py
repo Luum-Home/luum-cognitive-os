@@ -154,7 +154,7 @@ async def test_sync_query_records_session_events(client, auth_headers):
     assert response.status_code == 200
     body = QueryResponse.model_validate(response.json())
     assert body.session_id == session_id
-    assert body.finish_reason == "local_sync_adapter"
+    assert body.finish_reason == "runtime_lab_mock"
     assert "summarize state" in body.response
 
     events_response = await client.get(
@@ -178,5 +178,5 @@ async def test_oneshot_sync_query_returns_response(client, auth_headers):
     assert response.status_code == 200
     body = QueryResponse.model_validate(response.json())
     assert body.session_id is None
-    assert body.finish_reason == "local_sync_adapter"
-    assert body.usage["llm_calls"] == 0
+    assert body.finish_reason == "runtime_lab_mock"
+    assert body.usage["llm_calls"] == 1

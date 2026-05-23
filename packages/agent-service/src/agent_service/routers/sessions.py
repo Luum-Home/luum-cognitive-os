@@ -24,7 +24,7 @@ from agent_service.models import (
     SessionStatusResponse,
     SessionUpdateRequest,
 )
-from agent_service.runtime import run_session_query
+from agent_service.runtime import run_session_query, stream_session_query
 from agent_service.sse import not_implemented_stream, sse_response
 from agent_service.store import InvalidSessionPatchError, JsonSessionStore, SessionNotFoundError
 
@@ -220,10 +220,8 @@ async def session_query(payload: QueryRequest, request: Request) -> QueryRespons
 
 
 @router.post("/query/stream")
-async def session_query_stream(_payload: QueryRequest):
-    return sse_response(
-        not_implemented_stream("session-bound stream ships in Phase 3")
-    )
+async def session_query_stream(payload: QueryRequest):
+    return sse_response(stream_session_query(payload))
 
 
 @router.post(

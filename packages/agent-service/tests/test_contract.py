@@ -58,9 +58,8 @@ STUB_JSON_ENDPOINTS = [
 ]
 
 
-# SSE stub endpoints — exercised separately in test_sse.py but we record them
-# here for the inventory count.
-SSE_STUB_ENDPOINTS = [
+# SSE endpoints — query streams now emit runtime-lab events; summary remains a stub.
+SSE_ENDPOINTS = [
     ("POST", "/api/v1/oneshot/query/stream", {"query": "hi"}),
     ("POST", "/api/v1/sessions/query/stream", {"session_id": "s", "query": "hi"}),
     ("POST", "/api/v1/sessions/generate-summary", {"session_id": "s"}),
@@ -74,10 +73,10 @@ def test_total_endpoint_inventory():
         + 6
         + 2
         + len(STUB_JSON_ENDPOINTS)
-        + len(SSE_STUB_ENDPOINTS)
+        + len(SSE_ENDPOINTS)
     )
     # 3 Phase-1 functional + 8 session-store operations + 2 sync query ops + 10 JSON stubs
-    # + 3 SSE stubs = 26 endpoints across all routers.
+    # + 3 SSE endpoints = 26 endpoints across all routers.
     # (csrf-token removed in security pass — see routers/health.py docstring.)
     assert total == 26, f"expected 26 endpoints, found {total}"
 
@@ -123,7 +122,7 @@ async def test_all_endpoints_registered(app, client, auth_headers):
             r = await client.post(path, json=body, headers=auth_headers)
         assert r.status_code != 404, f"endpoint missing: {method} {path}"
 
-    for method, path, body in STUB_JSON_ENDPOINTS + SSE_STUB_ENDPOINTS:
+    for method, path, body in STUB_JSON_ENDPOINTS + SSE_ENDPOINTS:
         if method == "GET":
             r = await client.get(path, headers=auth_headers)
         else:
