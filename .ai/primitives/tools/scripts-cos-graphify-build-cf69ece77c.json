@@ -23,7 +23,7 @@
   "lifecycle": {
     "distribution": "team",
     "docs_claim_level": "advisory",
-    "exit_behavior": "zero/nonzero CLI",
+    "exit_behavior": "zero-nonzero-cli",
     "governance_class": "context-optimization",
     "lifecycle_state": "candidate",
     "maturity": "advisory",

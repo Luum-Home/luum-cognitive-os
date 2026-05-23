@@ -13409,7 +13409,7 @@ primitives:
   rollback_or_repair_command: Remove Graphify skill references or downgrade the wrapper role before claiming portable context-optimization support.
   sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
   docs_claim_level: advisory
-  exit_behavior: zero/nonzero CLI
+  exit_behavior: zero-nonzero-cli
   metrics_file: docs/06-Daily/reports/graphify-*.md
   consumer_access_next_action: Keep as explicit team/advisory tooling until release packaging decides whether to project Graphify wrappers.
 - id: scripts/cos-graphify-hotspot-report
@@ -13435,7 +13435,7 @@ primitives:
   rollback_or_repair_command: Remove Graphify skill references or downgrade the wrapper role before claiming portable context-optimization support.
   sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
   docs_claim_level: advisory
-  exit_behavior: zero/nonzero CLI
+  exit_behavior: zero-nonzero-cli
   metrics_file: docs/06-Daily/reports/graphify-*.md
   consumer_access_next_action: Keep as explicit team/advisory tooling until release packaging decides whether to project Graphify wrappers.
 - id: scripts/cos-graphify-preload-matrix
@@ -13461,7 +13461,7 @@ primitives:
   rollback_or_repair_command: Remove Graphify skill references or downgrade the wrapper role before claiming portable context-optimization support.
   sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
   docs_claim_level: advisory
-  exit_behavior: zero/nonzero CLI
+  exit_behavior: zero-nonzero-cli
   metrics_file: docs/06-Daily/reports/graphify-*.md
   consumer_access_next_action: Keep as explicit team/advisory tooling until release packaging decides whether to project Graphify wrappers.
 - id: scripts/cos-graphify-token-footprint
@@ -13487,7 +13487,7 @@ primitives:
   rollback_or_repair_command: Remove Graphify skill references or downgrade the wrapper role before claiming portable context-optimization support.
   sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
   docs_claim_level: advisory
-  exit_behavior: zero/nonzero CLI
+  exit_behavior: zero-nonzero-cli
   metrics_file: docs/06-Daily/reports/graphify-*.md
   consumer_access_next_action: Keep as explicit team/advisory tooling until release packaging decides whether to project Graphify wrappers.
 - id: scripts/cos-headless-pipeline
