@@ -18,6 +18,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Goal Features Internals — 2026-05-16](../../06-Daily/reports/goal-features-internals-2026-05-16.md) — comparison of Codex and Claude Code goal mechanics feeding the COS-native `/goal` SDD under `.cognitive-os/sdd/changes/cos-native-goal-loop/`.
 
 ## Recent tech-radar governance additions
+- [BYO Harness Comparison — 2026-05-23](../../04-Concepts/architecture/byoharness-comparison-2026-05-23.md) — deep comparison of `betta-tech/byo-coding-agent` against Cognitive OS, with reusable runtime-lab, provider, tool, compaction, debug, MCP, memory, and subagent patterns.
 - [Token Savings Q&A — Cognitive OS vs Legacy Agent Governance](../../04-Concepts/architecture/token-savings-qa.md) — evidence-backed answer card and assumptions for token savings versus vanilla/legacy agent governance.
 - [Token Savings Paired Benchmark Manual Test](../../09-Quality/manual-tests/token-savings-paired-benchmark.md) — privacy-preserving protocol for measuring vanilla vs SO token use, retries, cost, and quality on anonymized local projects.
 - [Token Savings Paired Live Benchmark — 2026-05-22](../../06-Daily/reports/token-savings-paired-live-anonymized-2026-05-22.md) — anonymized local read-only paired run across three projects; context-bearing tasks averaged 71.6% estimated token savings with same-or-better checklist quality.

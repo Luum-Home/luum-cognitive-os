@@ -41,16 +41,37 @@ async def test_not_implemented_stream_emits_one_event():
     assert "test reason" in frames[0]
 
 
-SSE_ENDPOINTS = [
+RUNTIME_SSE_ENDPOINTS = [
     ("/api/v1/oneshot/query/stream", {"query": "hi"}),
     ("/api/v1/sessions/query/stream", {"session_id": "s", "query": "hi"}),
+]
+
+STUB_SSE_ENDPOINTS = [
     ("/api/v1/sessions/generate-summary", {"session_id": "s"}),
 ]
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("url,payload", SSE_ENDPOINTS)
-async def test_sse_endpoints_emit_event_stream(client, auth_headers, url, payload):
+@pytest.mark.parametrize("url,payload", RUNTIME_SSE_ENDPOINTS)
+async def test_runtime_sse_endpoints_emit_agent_events(
+    client, auth_headers, url, payload
+):
+    response = await client.post(url, json=payload, headers=auth_headers)
+    assert response.status_code == 200
+    assert response.headers["content-type"].startswith("text/event-stream")
+    text = response.text
+    assert "event: llm.request" in text
+    assert "event: llm.response" in text
+    assert "event: agent.final" in text
+    assert "data: " in text
+    assert text.endswith("\n\n")
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("url,payload", STUB_SSE_ENDPOINTS)
+async def test_stub_sse_endpoints_emit_not_implemented(
+    client, auth_headers, url, payload
+):
     response = await client.post(url, json=payload, headers=auth_headers)
     assert response.status_code == 200
     assert response.headers["content-type"].startswith("text/event-stream")

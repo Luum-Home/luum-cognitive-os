@@ -13,6 +13,7 @@ implementation_files:
 - packages/agent-service/src/agent_service/sse.py
 - packages/agent-service/src/agent_service/store.py
 - packages/agent-service/src/agent_service/runtime.py
+- packages/agent-service/src/agent_service/runtime_lab/
 - packages/agent-service/src/agent_service/routers/health.py
 - packages/agent-service/src/agent_service/routers/agent_config.py
 - packages/agent-service/src/agent_service/routers/oneshot.py
@@ -20,9 +21,10 @@ implementation_files:
 - packages/agent-service/src/agent_service/routers/workspace.py
 tier: core
 partial_remaining: phase-2-in-progress contract with 26 operations (25 distinct path
-  strings), 13 functional operations (health/version/agent options plus 8 file-backed
-  JSON session lifecycle/event endpoints and 2 local sync query endpoints), 10 typed
-  JSON 501 stubs, and 3 SSE stub operations. The /csrf-token endpoint was removed
+  strings), 15 functional operations (health/version/agent options plus 8 file-backed
+  JSON session lifecycle/event endpoints, 2 local sync query endpoints, and 2
+  runtime-lab query SSE endpoints), 10 typed JSON 501 stubs, and 1 SSE stub
+  operation. The /csrf-token endpoint was removed
   in the security pass; real CSRF defense remains a Phase 2 follow-up.
 partial_remaining_basis: manual Wave 5 slice reconciliation
 tags:
@@ -31,9 +33,10 @@ tags:
 - sse
 - runtime
 classification_basis: phase-2-in-progress contract with 26 operations (25 distinct
-  path strings), 13 functional operations (health/version/agent options plus 8 file-backed
-  JSON session lifecycle/event endpoints and 2 local sync query endpoints), 10 typed
-  JSON 501 stubs, and 3 SSE stub operations. The /csrf-token endpoint was removed
+  path strings), 15 functional operations (health/version/agent options plus 8 file-backed
+  JSON session lifecycle/event endpoints, 2 local sync query endpoints, and 2
+  runtime-lab query SSE endpoints), 10 typed JSON 501 stubs, and 1 SSE stub
+  operation. The /csrf-token endpoint was removed
   in the security pass; real CSRF defense remains a Phase 2 follow-up.
 verification:
   level: medium
@@ -67,10 +70,11 @@ Accepted
 
 ADR-291 is **not closed** while the service still exposes typed stubs and lacks
 production runtime controls. The closed Wave 5 slices are the file-backed JSON
-session lifecycle/event backend and the local synchronous `sessions/query` plus
-`oneshot/query` adapter. Formal closure requires replacing the remaining 10 JSON
-501 operations and 3 SSE stubs with real behavior, wiring full in-process
-agent-runner execution, model/runtime settings, CSRF, rate limiting,
+session lifecycle/event backend, the local synchronous `sessions/query` plus
+`oneshot/query` adapter, and the runtime-lab query SSE streams. Formal closure
+requires replacing the remaining 10 JSON
+501 operations and the remaining summary SSE stub with real behavior, wiring production
+model/runtime settings, CSRF, rate limiting,
 workspace/search, sharing, abort semantics, and the JSON-to-SQLite migration,
 with contract tests for each surface.
 
@@ -252,11 +256,12 @@ In Phase 2-in-progress, the 3 original functional endpoints (`/health`,
 `/version`, `/agent/options`) still return real data, and the 8 bounded
 session-store operations (`list`, `create`, `details`, `events`,
 `events/latest`, `status`, `update`, `delete`) are backed by an atomic JSON
-file store. `sessions/query` and `oneshot/query` are functional through a
-deterministic local sync adapter that records session query/response events without
-spending LLM calls. The remaining non-streaming operations return HTTP 501 with a
-Pydantic-validated `NotImplementedResponse`; the 3 streaming operations still
-emit one typed SSE stub frame and close.
+file store. `sessions/query` and `oneshot/query` are functional through a deterministic
+COS runtime-lab mock runner; the matching query SSE endpoints emit runtime-lab
+events such as `llm.request`, `llm.response`, and `agent.final`. The remaining
+non-streaming operations return HTTP 501 with a Pydantic-validated
+`NotImplementedResponse`; `sessions/generate-summary` still emits one typed SSE
+stub frame and closes.
 
 ## Roadmap
 
@@ -265,34 +270,41 @@ emit one typed SSE stub frame and close.
 - Package `packages/agent-service/` with pyproject, src layout, tests.
 - FastAPI app factory, bearer auth, kill switch.
 - All 26 endpoints (25 distinct path strings) registered with typed request/response models.
-- 3 functional endpoints (health, version, agent options).
-- 23 stub endpoints returning 501 with valid schema.
-- SSE helpers and stub SSE generators that emit one `not_implemented` event and close.
+- 3 initial functional endpoints (health, version, agent options).
+- 23 initial stub endpoints returning 501 with valid schema.
+- SSE helpers and an initial stub SSE generator that emits one `not_implemented` event and closes.
 - Contract tests (1 per endpoint), auth tests, SSE format tests, health functional tests.
 - OpenAPI exposed at `/openapi.json`, Swagger UI at `/docs`.
 
-### Phase 2 — Session backend and sync query
+### Phase 2 — Session backend, runtime-lab query, and query streams
 
-Shipped bounded slice:
+Shipped bounded slices:
 
 - File-backed JSON session store at `COS_AGENT_SERVICE_SESSION_STORE`, defaulting
   to `~/.cognitive-os/agent-service/sessions.json`.
 - Implemented `sessions/create`, `details`, `events`, `events/latest`, `status`,
   `update`, `delete`, `list`.
+- Implemented `sessions/query` and `oneshot/query` synchronously through the
+  deterministic COS runtime-lab mock runner.
+- Implemented `sessions/query/stream` and `oneshot/query/stream` as runtime-lab
+  event streams.
+- Added `runtime_lab/` seams for LLM providers, typed tools, diff-first write
+  approval, safe compaction, subagent-as-tool delegation, MCP wrapping, and
+  event recording.
 
 Remaining Phase 2 work:
 
 - Upgrade path from JSON to SQLite.
-- Replace the local sync adapter with full in-process agent-runner execution when rate limiting and CSRF are present.
-- Implemented `sessions/query` and `oneshot/query` synchronously through the local sync adapter; full in-process agent-runner execution remains a follow-up.
+- Replace the deterministic mock runner with production in-process agent-runner
+  execution when rate limiting and CSRF are present.
 - Wire `/api/v1/models` to the existing model dispatch list.
 - CSRF token enforcement on mutating endpoints.
 - Rate limiting middleware.
 
-### Phase 3 — Streaming, workspace, sharing
+### Phase 3 — Production streaming, workspace, sharing
 
-- Real SSE streams from `sessions/query/stream`, `oneshot/query/stream`,
-  `sessions/generate-summary`, wired to agent runner event bus.
+- Production SSE streams from `sessions/query/stream`, `oneshot/query/stream`,
+  and `sessions/generate-summary`, wired to the production agent runner event bus.
 - Workspace file listing, search, validation.
 - Session abort signal propagation.
 - Share URL generation backed by a signed token store.
@@ -322,8 +334,8 @@ Remaining Phase 2 work:
 - **Auth bypass via misconfigured proxy.** Mitigated by requiring bearer auth
   inside the app rather than relying on an upstream gateway.
 - **SSE keep-alive across proxies.** Mitigated in Phase 3 by emitting periodic
-  comment lines on long streams; not needed in Phase 1 since stub streams close
-  immediately.
+  comment lines on long streams; the current query streams are bounded and close
+  after the deterministic runtime-lab turn.
 
 ## Security
 

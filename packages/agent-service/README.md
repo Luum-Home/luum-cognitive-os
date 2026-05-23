@@ -5,11 +5,13 @@ Events surface that exposes the agent runtime as a standalone network service,
 independent of any IDE harness.
 
 This is **Phase 2 in progress**: the Phase 1 contract skeleton remains
-stable at 26 operations across 25 distinct paths. Eleven operations are now
-functional: health, version, agent options, plus the file-backed session
-store endpoints for create/list/details/events/latest/status/update/delete.
-The remaining 15 operations still return typed 501 responses or SSE stub
-frames until later ADR-291 slices wire runtime execution and workspace access.
+stable at 26 operations across 25 distinct paths. Fifteen operations are now
+functional: health, version, agent options, the file-backed session
+store endpoints for create/list/details/events/latest/status/update/delete,
+the sync query endpoints, and the query SSE endpoints backed by the local
+COS runtime-lab mock runner. The remaining 11 operations still return typed
+501 responses or a summary SSE stub until later ADR-291 slices wire production
+runtime controls and workspace access.
 
 The placeholder `/csrf-token` endpoint was removed in the security pass —
 it emitted unverified tokens with no server-side store. Real CSRF defense
@@ -92,8 +94,8 @@ OpenAPI JSON: <http://127.0.0.1:8088/openapi.json>
 
 | Method | Path | Phase 1 |
 |---|---|---|
-| POST | `/api/v1/oneshot/query` | 501 |
-| POST | `/api/v1/oneshot/query/stream` | SSE stub (emits one `not_implemented` event) |
+| POST | `/api/v1/oneshot/query` | functional — local COS runtime-lab mock runner |
+| POST | `/api/v1/oneshot/query/stream` | functional — emits runtime-lab SSE events |
 
 ### Sessions
 
@@ -109,8 +111,8 @@ OpenAPI JSON: <http://127.0.0.1:8088/openapi.json>
 | POST | `/api/v1/sessions/delete` | functional — JSON file-backed |
 | POST | `/api/v1/sessions/generate-summary` | SSE stub |
 | POST | `/api/v1/sessions/share` | 501 |
-| POST | `/api/v1/sessions/query` | 501 |
-| POST | `/api/v1/sessions/query/stream` | SSE stub |
+| POST | `/api/v1/sessions/query` | functional — local COS runtime-lab mock runner |
+| POST | `/api/v1/sessions/query/stream` | functional — emits runtime-lab SSE events |
 | POST | `/api/v1/sessions/abort` | 501 |
 
 ### Workspace
@@ -131,8 +133,10 @@ Total: **26 operations across 25 distinct paths**.
   endpoints, 23 stubs, full test suite.
 - **Phase 2 slice shipped**: file-backed JSON session store for create/list,
   details, events, latest event, status, update, and delete.
-- **Phase 2 remaining**: sync `oneshot/query` and `sessions/query` wired to the
-  in-process agent runner, model dispatch list, real CSRF defense
+- **Phase 2 shipped after BYO Harness comparison**: sync `oneshot/query` and
+  `sessions/query` plus their query SSE streams now run through a deterministic
+  COS runtime-lab mock runner.
+- **Phase 2 remaining**: production model dispatch list, real CSRF defense
   (double-submit, server-side store), and rate limiting.
 - **Phase 3**: real SSE streams from the agent runner event bus. Workspace
   inspection. Session abort. Signed share URLs.
