@@ -35,6 +35,7 @@ profiles:
         - hooks/large-file-advisor.sh
         - hooks/secret-detector.sh
         - hooks/content-policy.sh
+        - hooks/research-compliance-guard.sh
         - hooks/doc-sync-detector.sh
         - hooks/auto-checkpoint.sh
         - hooks/claim-validator.sh
@@ -60,6 +61,8 @@ profiles:
         - rules/responsiveness.md
         - rules/credential-management.md
         - rules/content-policy.md
+        - rules/license-policy.md
+        - rules/research-first-protocol.md
         - rules/error-learning.md
         - rules/model-routing.md
         - rules/result-management.md

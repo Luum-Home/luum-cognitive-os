@@ -82,7 +82,7 @@ HARNESS_SETTINGS = {
 DEFAULT_RULES = (
     "trust-score acceptance-criteria closed-loop-prompts definition-of-done "
     "agent-quality adaptive-bypass phase-aware-agents token-economy "
-    "responsiveness credential-management content-policy error-learning "
+    "responsiveness credential-management content-policy license-policy research-first-protocol error-learning "
     "model-routing result-management"
 ).split()
 
@@ -93,6 +93,7 @@ DEFAULT_HOOKS = (
     "error-pattern-detector auto-refine auto-verify dod-gate "
     "trust-score-validator skill-metrics-tracker inject-phase-context stack-detector "
     "pre-compaction-flush rate-limiter large-file-advisor secret-detector content-policy "
+    "research-compliance-guard "
     "doc-sync-detector auto-checkpoint claim-validator completion-gate "
     "clarification-interceptor agent-checkpoint session-sanity confidentiality-enforcer "
     "session-learning crash-recovery teammate-idle task-created task-completed"
@@ -118,6 +119,8 @@ COS_INIT_CORE_RULES = [
     "agent-security.md",
     "credential-management.md",
     "content-policy.md",
+    "license-policy.md",
+    "research-first-protocol.md",
     "error-learning.md",
 ]
 

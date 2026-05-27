@@ -100,6 +100,9 @@ def test_install_profile_core_keeps_default_consumer_boundary(tmp_path: Path) ->
         if child.is_dir()
     }
     assert installed_skills == CORE_SKILLS
+    assert (tmp_path / ".cognitive-os" / "hooks" / "cos" / "research-compliance-guard.sh").is_file()
+    assert (tmp_path / ".cognitive-os" / "rules" / "cos" / "license-policy.md").is_file()
+    assert (tmp_path / ".cognitive-os" / "rules" / "cos" / "research-first-protocol.md").is_file()
     assert installed_skills.isdisjoint(MAINTAINER_OR_LAB_SKILLS)
     assert (tmp_path / "AGENTS.md").is_file()
 

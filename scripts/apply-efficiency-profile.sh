@@ -198,7 +198,7 @@ PYASYNC
     skill-router-prompt-suggest.sh cross-session-peer-context.sh agent-message-inbox-context.sh rule-router-prompt-suggest.sh adr-relevance-suggest.sh context-budget-meter.sh context-watchdog.sh subagent-budget-enforcer.sh orchestrator-decision-trace.sh skill-md-routing-validator.sh cross-session-event-emit.sh rule-md-routing-validator.sh research-quality-validator.sh skill-post-execution-analysis.sh \
     clean-room-ast-similarity-gate.sh lib-symlink-divergence-detector.sh external-pattern-cleanroom-gate.sh adoption-freeze-gate.sh \
     legal-review-required-on-runtime-import.sh \
-    dependency-license-classifier.sh research-to-runtime-firewall.sh \
+    dependency-license-classifier.sh research-to-runtime-firewall.sh research-compliance-guard.sh \
     spdx-header-required.sh external-cache-content-leak.sh attribution-completeness-validator.sh \
     history-rewrite-documented.sh \
     lib-symlink-divergence-detector.sh \
