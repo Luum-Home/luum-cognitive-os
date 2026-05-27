@@ -25,7 +25,7 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install uv
-          uv sync --extra testing
+          uv sync --extra testing --locked
       - name: Validate release lane
         run: |
           bash -n scripts/check-local-privacy.sh .githooks/pre-commit

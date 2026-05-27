@@ -5,6 +5,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.29.6] - 2026-05-27 — "Locked Release Dependency Sync"
+
+### Fixed
+- Updated `uv.lock` for the release version and changed CI dependency setup to use `uv sync --extra testing --locked`, preventing GoReleaser from seeing a dirty `uv.lock` after validation.
+
+### Validation
+- Release run `v0.29.5` passed validation and failed only because `uv sync` dirtied `uv.lock` before GoReleaser.
+
 ## [0.29.5] - 2026-05-27 — "Patch Release Workflow Stabilization"
 
 ### Fixed
