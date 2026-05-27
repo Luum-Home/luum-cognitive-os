@@ -1,0 +1,17 @@
+# Local privacy patterns — copy to:
+#   .cognitive-os/private/local-privacy-patterns.txt
+#
+# This file is safe to commit because it contains placeholders only.
+# The destination under .cognitive-os/private/ is gitignored.
+#
+# Format:
+#   literal: exact text to block
+#   regex: extended regular expression to block
+#   bare lines are treated as literal strings
+#
+# Examples:
+# literal:<local-username>
+# literal:<private-project-name>
+# literal:<private-github-username>
+# literal:<internal-repo-name>
+# regex:github[.]com/<private-org>/<private-repo>

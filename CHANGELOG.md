@@ -5,6 +5,22 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.29.3] - 2026-05-27 — "Local Privacy Guard Patch"
+
+### Added
+- Added `scripts/check-local-privacy.sh` as a reusable local privacy guard for staged and full-repo scans.
+- Added a gitignored local pattern workflow via `.cognitive-os/private/local-privacy-patterns.txt` and the safe template `templates/local-privacy-patterns.example.txt`.
+- Added `rules/local-privacy-hygiene.md` and unit coverage for staged blocking, private pattern configuration, allow markers, pre-commit wiring, and full-repo scans.
+
+### Fixed
+- Wired `.githooks/pre-commit` to block local privacy leaks before commits, reducing the chance of committing developer home paths or operator-specific project/user identifiers by accident.
+
+### Validation
+- `bash -n scripts/check-local-privacy.sh .githooks/pre-commit` passed.
+- `scripts/check-local-privacy.sh --root . --all` returned `privacy-guard-ok`.
+- `.venv/bin/python -m pytest tests/unit/test_check_absolute_paths.py tests/unit/test_check_local_privacy.py tests/red_team/portability/test_check-local-privacy.py tests/red_team/portability/test_local-privacy-hygiene.py -q` passed.
+- `scripts/cos-scope-both-portability-audit --strict` and `scripts/cos-scope-projection-audit --strict` passed.
+
 ## [0.29.2] - 2026-05-22 — "Token Budget Fast Path and Evidence-Grounded Context Savings"
 
 ### Added
