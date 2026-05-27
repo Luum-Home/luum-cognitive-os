@@ -1,0 +1,365 @@
+#!/usr/bin/env python3
+# SCOPE: both
+"""Patch-release primitive for Cognitive OS.
+
+Subcommands:
+  prepare   bump release metadata, changelog, and uv.lock
+  validate  run the patch-release validation lane that proved v0.29.6
+  publish   branch/commit/merge/tag/watch without direct main push
+  doctor    diagnose release hazards before publishing
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import re
+import shutil
+import subprocess
+import sys
+import time
+from dataclasses import dataclass
+from datetime import date
+from pathlib import Path
+from typing import Sequence
+
+RELEASE_FILES = ["VERSION", "cmd/cos/VERSION", "pyproject.toml", "uv.lock", "CHANGELOG.md"]
+PATCH_VALIDATION_COMMANDS = [
+    ["bash", "-n", "scripts/check-local-privacy.sh", ".githooks/pre-commit"],
+    ["scripts/check-local-privacy.sh", "--root", ".", "--all"],
+    [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "tests/unit/test_check_absolute_paths.py",
+        "tests/unit/test_check_local_privacy.py",
+        "tests/red_team/portability/test_check-local-privacy.py",
+        "tests/red_team/portability/test_local-privacy-hygiene.py",
+        "-q",
+    ],
+    ["go", "test", "./..."],
+]
+SEMVER_RE = re.compile(r"^v?(\d+)\.(\d+)\.(\d+)$")
+PYPROJECT_VERSION_RE = re.compile(r'^version = "[^"]+"$', re.MULTILINE)
+
+
+@dataclass(frozen=True)
+class CommandResult:
+    args: Sequence[str]
+    returncode: int
+    stdout: str = ""
+    stderr: str = ""
+
+
+def run(
+    args: Sequence[str],
+    *,
+    cwd: Path,
+    check: bool = True,
+    capture: bool = False,
+    env: dict[str, str] | None = None,
+) -> CommandResult:
+    proc = subprocess.run(
+        list(args),
+        cwd=str(cwd),
+        text=True,
+        stdout=subprocess.PIPE if capture else None,
+        stderr=subprocess.PIPE if capture else None,
+        check=False,
+        env=env,
+    )
+    result = CommandResult(args=args, returncode=proc.returncode, stdout=proc.stdout or "", stderr=proc.stderr or "")
+    if check and result.returncode != 0:
+        cmd = " ".join(args)
+        if capture:
+            sys.stderr.write(result.stdout)
+            sys.stderr.write(result.stderr)
+        raise SystemExit(f"ERROR: command failed ({result.returncode}): {cmd}")
+    return result
+
+
+def git(root: Path, *args: str, check: bool = True, capture: bool = True) -> CommandResult:
+    return run(["git", *args], cwd=root, check=check, capture=capture)
+
+
+def find_root(raw: str | None) -> Path:
+    if raw:
+        return Path(raw).resolve()
+    proc = subprocess.run(["git", "rev-parse", "--show-toplevel"], text=True, capture_output=True, check=False)
+    if proc.returncode == 0 and proc.stdout.strip():
+        return Path(proc.stdout.strip()).resolve()
+    return Path.cwd().resolve()
+
+
+def normalize_version(version: str) -> tuple[str, str]:
+    match = SEMVER_RE.fullmatch(version.strip())
+    if not match:
+        raise SystemExit(f"ERROR: invalid patch release version: {version!r}")
+    bare = ".".join(match.groups())
+    return bare, f"v{bare}"
+
+
+def current_version(root: Path) -> str:
+    version_file = root / "VERSION"
+    if not version_file.exists():
+        raise SystemExit("ERROR: VERSION file not found")
+    return version_file.read_text(encoding="utf-8").strip()
+
+
+def ensure_patch_increment(root: Path, bare: str) -> None:
+    current = current_version(root)
+    cur = SEMVER_RE.fullmatch(current)
+    nxt = SEMVER_RE.fullmatch(bare)
+    if not cur or not nxt:
+        return
+    cur_tuple = tuple(int(x) for x in cur.groups())
+    nxt_tuple = tuple(int(x) for x in nxt.groups())
+    if nxt_tuple <= cur_tuple:
+        raise SystemExit(f"ERROR: target version {bare} must be greater than current {current}")
+
+
+def tracked_status(root: Path) -> str:
+    return git(root, "status", "--porcelain=v1", "--untracked-files=no").stdout
+
+
+def tag_exists(root: Path, tag: str) -> tuple[bool, bool]:
+    local = git(root, "rev-parse", "-q", "--verify", f"refs/tags/{tag}", check=False).returncode == 0
+    remote = git(root, "ls-remote", "--exit-code", "--tags", "origin", f"refs/tags/{tag}", check=False).returncode == 0
+    return local, remote
+
+
+def replace_pyproject_version(path: Path, bare: str) -> None:
+    text = path.read_text(encoding="utf-8")
+    new_text, count = PYPROJECT_VERSION_RE.subn(f'version = "{bare}"', text, count=1)
+    if count != 1:
+        raise SystemExit("ERROR: pyproject.toml version field not found")
+    path.write_text(new_text, encoding="utf-8")
+
+
+def ensure_changelog_entry(root: Path, bare: str, title: str) -> None:
+    path = root / "CHANGELOG.md"
+    text = path.read_text(encoding="utf-8")
+    marker = "## [Unreleased]\n\n"
+    if f"## [{bare}]" in text:
+        return
+    today = date.today().isoformat()
+    entry = (
+        f"## [Unreleased]\n\n"
+        f"## [{bare}] - {today} — \"{title}\"\n\n"
+        "### Added\n"
+        "- Added the `cos-patch-release` primitive for repeatable patch release preparation, validation, publishing, and diagnostics.\n\n"
+        "### Validation\n"
+        "- `scripts/cos-patch-release validate` is the required patch-release validation lane.\n\n"
+    )
+    if marker not in text:
+        raise SystemExit("ERROR: CHANGELOG.md missing Unreleased marker")
+    path.write_text(text.replace(marker, entry, 1), encoding="utf-8")
+
+
+def prepare(args: argparse.Namespace) -> int:
+    root = find_root(args.project_dir)
+    bare, tag = normalize_version(args.version)
+    ensure_patch_increment(root, bare)
+    local_tag, remote_tag = tag_exists(root, tag)
+    if local_tag or remote_tag:
+        raise SystemExit(f"ERROR: tag {tag} already exists (local={local_tag} remote={remote_tag})")
+
+    title = args.title or "Patch Release Primitive"
+    planned = {
+        "version": bare,
+        "tag": tag,
+        "files": RELEASE_FILES,
+        "commands": ["uv lock", "uv sync --extra testing --locked"],
+    }
+    if args.dry_run:
+        print(json.dumps({"status": "dry-run", "prepare": planned}, indent=2, sort_keys=True))
+        return 0
+
+    (root / "VERSION").write_text(bare + "\n", encoding="utf-8")
+    (root / "cmd/cos/VERSION").write_text(bare + "\n", encoding="utf-8")
+    replace_pyproject_version(root / "pyproject.toml", bare)
+    ensure_changelog_entry(root, bare, title)
+    run(["uv", "lock"], cwd=root)
+    lock_before = (root / "uv.lock").read_bytes()
+    run(["uv", "sync", "--extra", "testing", "--locked"], cwd=root)
+    lock_after = (root / "uv.lock").read_bytes()
+    if lock_before != lock_after:
+        raise SystemExit("ERROR: uv sync --locked changed uv.lock; run uv lock and retry")
+    print(f"patch-release-prepare-ok version={bare} tag={tag}")
+    return 0
+
+
+def validate(args: argparse.Namespace) -> int:
+    root = find_root(args.project_dir)
+    commands = PATCH_VALIDATION_COMMANDS
+    if args.print_commands:
+        for command in commands:
+            display = " ".join(command)
+            if command == ["go", "test", "./..."]:
+                display = "cd cmd/cos && go test ./..."
+            print(display)
+        return 0
+    for command in commands:
+        cwd = root / "cmd/cos" if command == ["go", "test", "./..."] else root
+        run(command, cwd=cwd)
+    print("patch-release-validate-ok")
+    return 0
+
+
+def doctor(args: argparse.Namespace) -> int:
+    root = find_root(args.project_dir)
+    bare, tag = normalize_version(args.version or current_version(root))
+    checks: list[dict[str, object]] = []
+
+    def add(name: str, ok: bool, detail: str, blocking: bool = True) -> None:
+        checks.append({"name": name, "ok": ok, "blocking": blocking, "detail": detail})
+
+    local_tag, remote_tag = tag_exists(root, tag)
+    add("tag_available", not (local_tag or remote_tag), f"{tag} local={local_tag} remote={remote_tag}")
+    add("gh_available", shutil.which("gh") is not None, "gh CLI is required for publish")
+    gh_ok = shutil.which("gh") is not None and run(["gh", "auth", "status"], cwd=root, check=False, capture=True).returncode == 0
+    add("gh_authenticated", gh_ok, "gh auth status must pass")
+    workflow = root / ".github/workflows/cos-binary-release.yml"
+    workflow_text = workflow.read_text(encoding="utf-8") if workflow.exists() else ""
+    add("release_workflow_locked_uv", "uv sync --extra testing --locked" in workflow_text, "cos-binary-release must use locked uv sync")
+    add("release_workflow_patch_lane", "scripts/cos-patch-release validate" in workflow_text or "test_check_local_privacy.py" in workflow_text, "cos-binary-release must use patch-release validation lane")
+    add("direct_main_guard", "COS_MERGE_TO_MAIN" in (root / ".git/hooks/pre-push").read_text(encoding="utf-8", errors="ignore") if (root / ".git/hooks/pre-push").exists() else True, "direct main push should be guarded", blocking=False)
+
+    dirty_before = tracked_status(root)
+    if dirty_before:
+        add("working_tree_clean", False, "tracked working tree has changes")
+    else:
+        lock_before = (root / "uv.lock").read_bytes() if (root / "uv.lock").exists() else b""
+        sync = run(["uv", "sync", "--extra", "testing", "--locked"], cwd=root, check=False, capture=True)
+        lock_after = (root / "uv.lock").read_bytes() if (root / "uv.lock").exists() else b""
+        add("uv_locked_sync_clean", sync.returncode == 0 and lock_before == lock_after, "uv sync --locked must not dirty uv.lock")
+
+    scope_runs = run(["gh", "run", "list", "--repo", args.repo, "--workflow", "scope-portability.yml", "--limit", "1", "--json", "status,conclusion,url"], cwd=root, check=False, capture=True) if shutil.which("gh") else CommandResult([], 1)
+    scope_detail = "scope portability status unavailable"
+    scope_ok = True
+    if scope_runs.returncode == 0 and scope_runs.stdout.strip():
+        try:
+            rows = json.loads(scope_runs.stdout)
+            if rows:
+                scope_detail = json.dumps(rows[0], sort_keys=True)
+                scope_ok = rows[0].get("conclusion") in {"success", None, ""}
+        except json.JSONDecodeError:
+            pass
+    add("scope_portability_latest", scope_ok, scope_detail, blocking=False)
+
+    status = "pass" if all(c["ok"] or not c["blocking"] for c in checks) else "block"
+    payload = {"status": status, "version": bare, "tag": tag, "checks": checks}
+    if args.json:
+        print(json.dumps(payload, indent=2, sort_keys=True))
+    else:
+        print(f"release-doctor: {status} version={bare} tag={tag}")
+        for check in checks:
+            prefix = "OK" if check["ok"] else ("WARN" if not check["blocking"] else "BLOCK")
+            print(f"- {prefix} {check['name']}: {check['detail']}")
+    return 0 if status == "pass" or args.allow_warnings else 1
+
+
+def publish(args: argparse.Namespace) -> int:
+    root = find_root(args.project_dir)
+    bare, tag = normalize_version(args.version)
+    branch = args.branch or f"codex/release-v{bare}"
+    message = args.message or f"release: v{bare}"
+    validate_cmd = "scripts/cos-patch-release validate"
+    plan = {
+        "version": bare,
+        "tag": tag,
+        "branch": branch,
+        "commit": message,
+        "steps": [
+            f"git switch -c {branch} (if on main)",
+            "git add release files and patch-release primitive changes",
+            f"git commit -m {message!r}",
+            f"git push -u origin {branch}",
+            f"scripts/merge-to-main.sh --validate {validate_cmd!r}",
+            f"git tag -a {tag} -m {tag}",
+            f"git push origin {tag}",
+            f"gh run watch <cos-binary-release-run> --repo {args.repo} --exit-status",
+            f"gh release view {tag} --repo {args.repo}",
+        ],
+    }
+    if args.dry_run:
+        print(json.dumps({"status": "dry-run", "publish": plan}, indent=2, sort_keys=True))
+        return 0
+
+    local_tag, remote_tag = tag_exists(root, tag)
+    if local_tag or remote_tag:
+        raise SystemExit(f"ERROR: tag {tag} already exists (local={local_tag} remote={remote_tag})")
+
+    current = git(root, "branch", "--show-current").stdout.strip()
+    if current in {"main", "master"}:
+        git(root, "switch", "-c", branch, capture=False)
+    elif current != branch:
+        print(f"publish: staying on current branch {current}; requested branch is {branch}")
+
+    run(["scripts/cos-patch-release", "validate"], cwd=root)
+    git(root, "add", ".github/workflows/cos-binary-release.yml", ".github/workflows/scope-portability.yml", "CHANGELOG.md", "VERSION", "cmd/cos/VERSION", "pyproject.toml", "uv.lock", "scripts/cos-patch-release", "skills/patch-release/SKILL.md", "rules/release-publishing.md", "tests/unit/test_cos_patch_release.py", "tests/red_team/portability/test_cos-patch-release.py", "tests/red_team/portability/test_skill_patch_release.py", "tests/red_team/portability/test_release-publishing.py", capture=False)
+    if tracked_status(root):
+        git(root, "commit", "-m", message, capture=False)
+    else:
+        print("publish: no tracked changes to commit")
+    branch_now = git(root, "branch", "--show-current").stdout.strip()
+    git(root, "push", "-u", "origin", branch_now, capture=False)
+    run(["scripts/merge-to-main.sh", "--validate", validate_cmd, "--recommended-lane", "landing", "--executed-lane", "landing"], cwd=root)
+    git(root, "tag", "-a", tag, "-m", f"{tag} patch release", capture=False)
+    git(root, "push", "origin", tag, capture=False)
+
+    time.sleep(5)
+    run(["gh", "run", "list", "--repo", args.repo, "--workflow", "cos-binary-release.yml", "--limit", "1"], cwd=root, check=False)
+    latest = run(["gh", "run", "list", "--repo", args.repo, "--workflow", "cos-binary-release.yml", "--limit", "1", "--json", "databaseId"], cwd=root, capture=True, check=False)
+    try:
+        rows = json.loads(latest.stdout)
+        if rows:
+            run(["gh", "run", "watch", str(rows[0]["databaseId"]), "--repo", args.repo, "--interval", "10", "--exit-status"], cwd=root)
+    except Exception:
+        print("publish: unable to auto-watch release run; inspect GitHub Actions manually", file=sys.stderr)
+    run(["gh", "release", "view", tag, "--repo", args.repo], cwd=root)
+    print(f"patch-release-publish-ok version={bare} tag={tag}")
+    return 0
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description="Prepare, validate, publish, and diagnose Cognitive OS patch releases.")
+    parser.add_argument("--project-dir", help="Repository root. Defaults to git root.")
+    sub = parser.add_subparsers(dest="command", required=True)
+
+    p_prepare = sub.add_parser("prepare", help="Bump release files and lock dependencies.")
+    p_prepare.add_argument("--version", required=True)
+    p_prepare.add_argument("--title", default="Patch Release Primitive")
+    p_prepare.add_argument("--dry-run", action="store_true")
+    p_prepare.set_defaults(func=prepare)
+
+    p_validate = sub.add_parser("validate", help="Run patch-release validation lane.")
+    p_validate.add_argument("--print-commands", action="store_true")
+    p_validate.set_defaults(func=validate)
+
+    p_publish = sub.add_parser("publish", help="Commit, land, tag, push, and watch release.")
+    p_publish.add_argument("--version", required=True)
+    p_publish.add_argument("--branch")
+    p_publish.add_argument("--message")
+    p_publish.add_argument("--repo", default="Luum-Home/luum-cognitive-os")
+    p_publish.add_argument("--dry-run", action="store_true")
+    p_publish.set_defaults(func=publish)
+
+    p_doctor = sub.add_parser("doctor", help="Diagnose release hazards.")
+    p_doctor.add_argument("--version")
+    p_doctor.add_argument("--repo", default="Luum-Home/luum-cognitive-os")
+    p_doctor.add_argument("--json", action="store_true")
+    p_doctor.add_argument("--allow-warnings", action="store_true")
+    p_doctor.set_defaults(func=doctor)
+    return parser
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    parser = build_parser()
+    args = parser.parse_args(argv)
+    return int(args.func(args))
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
