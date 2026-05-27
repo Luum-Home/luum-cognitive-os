@@ -5,6 +5,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.29.5] - 2026-05-27 — "Patch Release Workflow Stabilization"
+
+### Fixed
+- Switched `cos-binary-release` validation to a patch-release smoke lane covering the local privacy guard and `cmd/cos` tests before GoReleaser.
+- Fixed the `scope-portability` workflow to run tests from the repo `.venv` created by `uv sync --extra testing`, matching the repository test harness contract.
+
+### Validation
+- Release runs `v0.29.3` and `v0.29.4` exposed CI bootstrap and broad-lane dependency/state drift before GoReleaser.
+- Local patch-release validation passed before tagging this release.
+
 ## [0.29.4] - 2026-05-27 — "Release CI Dependency Bootstrap Fix"
 
 ### Fixed

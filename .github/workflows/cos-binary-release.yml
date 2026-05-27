@@ -27,7 +27,16 @@ jobs:
           python3 -m pip install uv
           uv sync --extra testing
       - name: Validate release lane
-        run: make test-laptop
+        run: |
+          bash -n scripts/check-local-privacy.sh .githooks/pre-commit
+          scripts/check-local-privacy.sh --root . --all
+          .venv/bin/python -m pytest \
+            tests/unit/test_check_absolute_paths.py \
+            tests/unit/test_check_local_privacy.py \
+            tests/red_team/portability/test_check-local-privacy.py \
+            tests/red_team/portability/test_local-privacy-hygiene.py \
+            -q
+          cd cmd/cos && go test ./...
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v6
         with:
