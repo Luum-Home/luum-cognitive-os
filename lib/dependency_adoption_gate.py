@@ -61,6 +61,7 @@ ADOPTION_EVIDENCE_PREFIXES = (
 SAFE_ADDITION_RE = re.compile(
     r'^\+\s*(#|//|/\*|\*|$'
     r'|version\s*=|requires-python\s*=|name\s*=|description\s*=|license\s*=|author\s*='
+    r'|go\s+\d+(?:\.\d+){1,2}$|toolchain\s+go\d+(?:\.\d+){1,2}$'
     r'|"(?:version|name|description|license|author|homepage|repository|main|module|type)"\s*:'
     r')',
     re.IGNORECASE,

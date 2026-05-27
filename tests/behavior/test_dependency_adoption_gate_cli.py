@@ -77,6 +77,34 @@ def test_dependency_adoption_gate_cli_passes_with_evidence(project_root: Path, t
 
 
 @pytest.mark.behavior
+def test_dependency_adoption_gate_cli_allows_go_toolchain_directive(project_root: Path, tmp_path: Path) -> None:
+    repo = _init_repo(tmp_path)
+    (repo / "go.mod").write_text("module demo\n\ngo 1.25.6\n", encoding="utf-8")
+    _git(repo, "add", "go.mod")
+    _git(repo, "commit", "-m", "initial go module")
+    (repo / "go.mod").write_text("module demo\n\ngo 1.26.3\n", encoding="utf-8")
+    _git(repo, "add", "go.mod")
+
+    result = subprocess.run(
+        [
+            str(project_root / "scripts/cos-dependency-adoption-gate"),
+            "--project-dir",
+            str(repo),
+            "--staged",
+            "--json",
+        ],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert result.returncode == 0
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "pass"
+    assert payload["added_dependency_lines"] == []
+
+
+@pytest.mark.behavior
 def test_dependency_adoption_gate_cli_coverage_aware(project_root: Path, tmp_path: Path) -> None:
     (tmp_path / "manifests").mkdir()
     (tmp_path / "manifests/dependencies.yaml").write_text(

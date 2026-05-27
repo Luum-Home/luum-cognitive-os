@@ -1,6 +1,6 @@
 [project]
 name = "luum-cognitive-os"
-version = "0.29.7"
+version = "0.29.8"
 description = "Luum Cognitive OS — agent orchestration, memory, and tooling"
 # Note: FSL-1.1-MIT is source-available, not OSI-approved. Converts to MIT after 2 years.
 license = { text = "FSL-1.1-MIT" }

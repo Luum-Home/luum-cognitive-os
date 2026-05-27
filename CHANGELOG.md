@@ -5,6 +5,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.29.8] - 2026-05-27 — "Go 1.26.3 Toolchain Alignment"
+
+### Added
+- Added the `cos-patch-release` primitive for repeatable patch release preparation, validation, publishing, and diagnostics.
+
+### Validation
+- `scripts/cos-patch-release validate` is the required patch-release validation lane.
+
 ## [0.29.7] - 2026-05-27 — "Patch Release Primitive"
 
 ### Added

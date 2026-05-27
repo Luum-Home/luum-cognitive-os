@@ -298,7 +298,7 @@ def publish(args: argparse.Namespace) -> int:
         print(f"publish: staying on current branch {current}; requested branch is {branch}")
 
     run(["scripts/cos-patch-release", "validate"], cwd=root)
-    git(root, "add", ".github/workflows/cos-binary-release.yml", ".github/workflows/scope-portability.yml", "CHANGELOG.md", "VERSION", "cmd/cos/VERSION", "pyproject.toml", "uv.lock", "scripts/cos-patch-release", "skills/patch-release/SKILL.md", "rules/release-publishing.md", "tests/unit/test_cos_patch_release.py", "tests/red_team/portability/test_cos-patch-release.py", "tests/red_team/portability/test_skill_patch_release.py", "tests/red_team/portability/test_release-publishing.py", capture=False)
+    git(root, "add", ".github/workflows/cos-binary-release.yml", ".github/workflows/scope-portability.yml", ".go-version", "CHANGELOG.md", "VERSION", "cmd/cos/VERSION", "cmd/cos/go.mod", "go.mod", "pyproject.toml", "uv.lock", "lib/dependency_adoption_gate.py", "scripts/cos-patch-release", "skills/patch-release/SKILL.md", "rules/release-publishing.md", "tests/unit/test_cos_patch_release.py", "tests/behavior/test_dependency_adoption_gate_cli.py", "tests/red_team/portability/test_cos-patch-release.py", "tests/red_team/portability/test_skill_patch_release.py", "tests/red_team/portability/test_release-publishing.py", capture=False)
     if tracked_status(root):
         git(root, "commit", "-m", message, capture=False)
     else:
