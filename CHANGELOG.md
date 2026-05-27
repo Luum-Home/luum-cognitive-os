@@ -5,6 +5,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.29.4] - 2026-05-27 — "Release CI Dependency Bootstrap Fix"
+
+### Fixed
+- Fixed the `cos-binary-release` workflow by installing Python test dependencies with `uv sync --extra testing` before running `make test-laptop`.
+
+### Validation
+- Release run `v0.29.3` reached the workflow and failed in `Validate release lane` because `python3 -m pytest` was unavailable on the GitHub runner.
+- Local targeted privacy guard validation remained green before this patch.
+
 ## [0.29.3] - 2026-05-27 — "Local Privacy Guard Patch"
 
 ### Added

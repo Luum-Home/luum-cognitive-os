@@ -21,6 +21,11 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version-file: cmd/cos/go.mod
+      - name: Install Python test dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install uv
+          uv sync --extra testing
       - name: Validate release lane
         run: make test-laptop
       - name: Run GoReleaser
