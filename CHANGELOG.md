@@ -5,6 +5,20 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.29.11] - 2026-05-28 — "Root Test Lane Stabilization"
+
+### Fixed
+- Routed `research-compliance-guard.sh` through the default Bash hot-path dispatcher while keeping it in the full Claude profile mesh, preventing profile/baseline drift and preserving the one-dispatcher default hot path.
+- Hardened `cos-doctor-harness.sh` against poisoned project-root environment variables and made self-host adapter readiness fail when shipped adapters are not `ok`.
+- Restored deterministic integration behavior by preventing `cos_watch` imports from leaking `COGNITIVE_OS_PROJECT_DIR` into later subprocess tests.
+- Aligned live host-pressure integration assertions with the documented `HostMonitor` thresholds.
+- Classified integration skip reasons for optional live services and bootstrap preconditions so broad lanes fail only on unknown skips.
+
+### Validation
+- `./cos-test cluster --lane unit --ci` passed: 11435 passed, 73 skipped, unknown_count=0.
+- `./cos-test cluster --lane integration --ci` passed: 898 passed, 31 skipped, unknown_count=0.
+- Prior broad run passed all other non-resource-blocked lanes; Docker/cost-bearing lanes remained intentionally skipped by resource policy.
+
 ## [0.29.10] - 2026-05-28 — "Consumer governance projection fixes"
 
 ### Added

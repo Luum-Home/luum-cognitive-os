@@ -8,7 +8,7 @@
 # can ship in the default/core install profile.
 #
 # Event: PreToolUse / Matcher: Bash / Trigger: command contains git commit
-# Exit: 0 allow / 1 block
+# Exit: 0 allow / 2 block
 # Bypass: COS_ALLOW_RESEARCH_COMPLIANCE_BYPASS=1
 set -uo pipefail
 
@@ -134,4 +134,4 @@ for item in "${failures[@]}"; do
   echo "  - $item" >&2
 done
 echo "Resolve by keeping research clones ignored, using repo-local paths, and documenting proprietary/unlicensed research as conceptual-only with no code/assets/prompts/schema reuse." >&2
-exit 1
+exit 2

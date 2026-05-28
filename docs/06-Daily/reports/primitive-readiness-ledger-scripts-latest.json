@@ -54698,7 +54698,7 @@
       "consumer_families": {
         "config": 6,
         "doc": 7,
-        "script": 1,
+        "script": 2,
         "test": 3
       },
       "consumers": [
@@ -54756,6 +54756,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-patch-release"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-runtime-hook-reality"
         },
         {
@@ -54778,7 +54782,7 @@
         "test_consumers:3",
         "doc_consumers:7",
         "config_consumers:6",
-        "script_consumers:1"
+        "script_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -54796,7 +54800,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 17,
+      "total_consumers": 18,
       "wrapper_for": null
     },
     {

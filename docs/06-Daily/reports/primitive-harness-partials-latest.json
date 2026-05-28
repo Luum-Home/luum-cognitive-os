@@ -331,16 +331,6 @@
       "scope": "both"
     },
     {
-      "coverage": "acc-report+dashboard+tui",
-      "family": "hooks",
-      "gap": "scope=both but missing projected/wired support for: claude, codex",
-      "gap_policy": "codex-adapter-needed",
-      "gap_severity": "medium",
-      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
-      "primitive": "hooks/research-compliance-guard.sh",
-      "scope": "both"
-    },
-    {
       "coverage": "acc-report+claude+dashboard+tui",
       "family": "hooks",
       "gap": "scope=both but missing projected/wired support for: codex",
@@ -535,13 +525,13 @@
   "source_schema_version": "primitive-harness-coverage.v1",
   "summary": {
     "by_policy": {
-      "codex-adapter-needed": 53
+      "codex-adapter-needed": 52
     },
     "by_severity": {
-      "medium": 53
+      "medium": 52
     },
-    "partial_count": 53,
-    "total_gaps": 333,
+    "partial_count": 52,
+    "total_gaps": 332,
     "unclassified_gaps": 0
   }
 }

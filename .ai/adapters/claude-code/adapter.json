@@ -6,7 +6,7 @@
   "harness": "claude",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 767,
+  "projected_primitive_count": 768,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": true,
@@ -881,6 +881,13 @@
       "fidelity": "documented-only",
       "portable_id": "hooks/registration-check.sh",
       "primitive_file": "primitives/hooks/hooks-registration-check-sh-6869a81385.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/research-compliance-guard.sh",
+      "primitive_file": "primitives/hooks/hooks-research-compliance-guard-sh-bc95bd1afc.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {

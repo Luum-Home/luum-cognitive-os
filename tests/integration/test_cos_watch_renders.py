@@ -16,6 +16,7 @@ def _load_watch(project_dir: Path):
     repo_root = Path(__file__).resolve().parents[2]
     path = repo_root / "scripts" / "cos_watch.py"
     assert path.exists(), f"missing {path}"
+    previous_project_dir = os.environ.get("COGNITIVE_OS_PROJECT_DIR")
     os.environ["COGNITIVE_OS_PROJECT_DIR"] = str(project_dir)
     mod_name = "cos_watch_under_test"
     spec = importlib.util.spec_from_file_location(mod_name, str(path))
@@ -24,7 +25,13 @@ def _load_watch(project_dir: Path):
     # Dataclass resolution with `from __future__ import annotations` needs
     # the module to be registered in sys.modules before exec_module.
     sys.modules[mod_name] = module
-    spec.loader.exec_module(module)
+    try:
+        spec.loader.exec_module(module)
+    finally:
+        if previous_project_dir is None:
+            os.environ.pop("COGNITIVE_OS_PROJECT_DIR", None)
+        else:
+            os.environ["COGNITIVE_OS_PROJECT_DIR"] = previous_project_dir
     return module
 
 

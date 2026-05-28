@@ -150,25 +150,54 @@ def test_bare_driver_excludes_unsupported_events(tmp_path: Path):
 # Test 5: cos-doctor-harness --json lists all three adapters with status.
 # ──────────────────────────────────────────────────────────────────────────────
 def test_doctor_harness_lists_all_adapters():
+    env = {
+        **os.environ,
+        "COGNITIVE_OS_PROJECT_DIR": str(REPO_ROOT),
+        "CODEX_PROJECT_DIR": str(REPO_ROOT),
+        "CLAUDE_PROJECT_DIR": str(REPO_ROOT),
+    }
     result = subprocess.run(
         ["bash", str(DOCTOR), "--json"],
         cwd=REPO_ROOT,
+        env=env,
         capture_output=True,
         text=True,
         check=False,
     )
     payload = json.loads(result.stdout)
-    assert result.returncode in (0, 1) or payload.get("issues") == 0, \
-        f"doctor exited unexpectedly: rc={result.returncode} stderr={result.stderr}"
+    assert result.returncode == 0 and payload.get("issues") == 0, \
+        f"doctor exited unexpectedly: rc={result.returncode} stderr={result.stderr} stdout={result.stdout}"
     assert "adapters" in payload, "JSON output missing 'adapters' key"
     names = {a["adapter"] for a in payload["adapters"]}
     assert names == {"claude-code", "codex", "bare-cli"}, \
         f"adapter coverage incomplete: {names}"
-    # Every adapter must report a known status string.
     for entry in payload["adapters"]:
-        assert entry["status"] in {"ok", "warn", "fail"}, \
-            f"unexpected adapter status: {entry}"
+        assert entry["status"] == "ok", f"self-host adapter must be ready: {entry}"
         assert entry["detail"], "adapter detail must be non-empty"
+
+
+def test_doctor_harness_ignores_poisoned_project_env_when_cwd_is_repo(tmp_path: Path):
+    poisoned = tmp_path / "poisoned"
+    poisoned.mkdir()
+    env = {
+        **os.environ,
+        "COGNITIVE_OS_PROJECT_DIR": str(poisoned),
+        "CODEX_PROJECT_DIR": str(poisoned),
+        "CLAUDE_PROJECT_DIR": str(poisoned),
+    }
+    result = subprocess.run(
+        ["bash", str(DOCTOR), "--json"],
+        cwd=REPO_ROOT,
+        env=env,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    payload = json.loads(result.stdout)
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert payload["project"] == str(REPO_ROOT)
+    assert payload["root_source"] == "pwd-env-override"
+    assert payload["issues"] == 0
 
 
 # ──────────────────────────────────────────────────────────────────────────────

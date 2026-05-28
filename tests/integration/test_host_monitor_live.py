@@ -56,18 +56,22 @@ class TestLivePressure:
         assert pressure in ("low", "moderate", "high", "critical")
 
     def test_live_pressure_consistent_with_memory(self, monitor: HostMonitor):
-        """If RAM > 90%, pressure must be critical."""
+        """Pressure thresholds match HostMonitor: RAM >95 is critical; 85-95 is high."""
         mem = monitor.get_memory()
         pressure = monitor.get_pressure_level()
-        if mem["usage_pct"] > 90:
+        if mem["usage_pct"] > 95:
             assert pressure == "critical"
+        elif mem["usage_pct"] > 85:
+            assert pressure in {"high", "critical"}
 
     def test_live_pressure_consistent_with_cpu(self, monitor: HostMonitor):
-        """If CPU > 90%, pressure must be critical."""
+        """Pressure thresholds match HostMonitor: CPU >95 is critical; 85-95 is high."""
         cpu = monitor.get_cpu()
         pressure = monitor.get_pressure_level()
-        if cpu["usage_pct"] > 90:
+        if cpu["usage_pct"] > 95:
             assert pressure == "critical"
+        elif cpu["usage_pct"] > 85:
+            assert pressure in {"high", "critical"}
 
 
 class TestLiveFormatStatus:

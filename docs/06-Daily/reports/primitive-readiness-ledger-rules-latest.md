@@ -132,6 +132,6 @@ Consumer accessibility: lifecycle-declared-maintainer:117, projected-consumer-su
 | `rules/tero-integration.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 13 | keep maintainer-only or add explicit export path |
 | `rules/token-economy.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 47 | keep maintainer-only or add explicit export path |
 | `rules/trailofbits-skills.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 19 | keep maintainer-only or add explicit export path |
-| `rules/trust-score.md` | driver-specific | heuristic:text | medium | projected-consumer-surface | advisory | 161 | keep lifecycle, tests, and harness proof current |
+| `rules/trust-score.md` | driver-specific | heuristic:text | medium | projected-consumer-surface | advisory | 162 | keep lifecycle, tests, and harness proof current |
 | `rules/user-prompt-capture.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 54 | keep maintainer-only or add explicit export path |
 | `rules/workload-scheduling.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 15 | keep maintainer-only or add explicit export path |

@@ -3,7 +3,26 @@
 # cos-doctor-harness — readiness check for the active Cognitive OS harness.
 set -euo pipefail
 
-ROOT="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$(pwd)}}}"
+ROOT_SOURCE="pwd"
+ROOT="$(pwd)"
+if [ -n "${COGNITIVE_OS_PROJECT_DIR:-}" ]; then
+  ROOT_SOURCE="COGNITIVE_OS_PROJECT_DIR"
+  ROOT="$COGNITIVE_OS_PROJECT_DIR"
+elif [ -n "${CLAUDE_PROJECT_DIR:-}" ]; then
+  ROOT_SOURCE="CLAUDE_PROJECT_DIR"
+  ROOT="$CLAUDE_PROJECT_DIR"
+elif [ -n "${CODEX_PROJECT_DIR:-}" ]; then
+  ROOT_SOURCE="CODEX_PROJECT_DIR"
+  ROOT="$CODEX_PROJECT_DIR"
+fi
+SCRIPT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+if [ ! -f "$ROOT/cognitive-os.yaml" ] && [ -f "$(pwd)/cognitive-os.yaml" ]; then
+  ROOT_SOURCE="pwd-env-override"
+  ROOT="$(pwd)"
+elif [ ! -f "$ROOT/cognitive-os.yaml" ] && [ -f "$SCRIPT_ROOT/cognitive-os.yaml" ]; then
+  ROOT_SOURCE="script-root-env-override"
+  ROOT="$SCRIPT_ROOT"
+fi
 cd "$ROOT"
 
 HARNESS="${COGNITIVE_OS_HARNESS:-auto}"
@@ -43,6 +62,11 @@ emit_adapter() {
     ok|warn|fail) : ;;
     *) status="warn" ;;
   esac
+  case "$status" in
+    warn) warnings=$((warnings + 1)) ;;
+    fail) issues=$((issues + 1)) ;;
+    *) ;;
+  esac
   if [ "$JSON" -eq 0 ]; then
     printf '[ADAPTER:%s] %s — %s\n' "$adapter" "$status" "$detail"
   fi
@@ -76,6 +100,7 @@ emit_check() {
   echo "project: $ROOT"
   echo "harness: $HARNESS"
   echo "mode:    $MODE"
+  echo "root-source: $ROOT_SOURCE"
   echo ""
 }
 
@@ -186,8 +211,8 @@ if [ -d ".cognitive-os" ]; then emit_check ok "local memory root" ".cognitive-os
 if [ "$JSON" -eq 1 ]; then
   joined=$(IFS=,; echo "${checks_json[*]}")
   adapters_joined=$(IFS=,; echo "${adapters_json[*]}")
-  printf '{"project":%s,"harness":%s,"mode":%s,"issues":%d,"warnings":%d,"adapters":[%s],"checks":[%s]}
-'     "$(python3 -c 'import json,sys; print(json.dumps(sys.argv[1]))' "$ROOT")"     "$(python3 -c 'import json,sys; print(json.dumps(sys.argv[1]))' "$HARNESS")"     "$(python3 -c 'import json,sys; print(json.dumps(sys.argv[1]))' "$MODE")"     "$issues" "$warnings" "$adapters_joined" "$joined"
+  printf '{"project":%s,"root_source":%s,"harness":%s,"mode":%s,"issues":%d,"warnings":%d,"adapters":[%s],"checks":[%s]}
+'     "$(python3 -c 'import json,sys; print(json.dumps(sys.argv[1]))' "$ROOT")"     "$(python3 -c 'import json,sys; print(json.dumps(sys.argv[1]))' "$ROOT_SOURCE")"     "$(python3 -c 'import json,sys; print(json.dumps(sys.argv[1]))' "$HARNESS")"     "$(python3 -c 'import json,sys; print(json.dumps(sys.argv[1]))' "$MODE")"     "$issues" "$warnings" "$adapters_joined" "$joined"
 else
   echo ""
   if [ "$issues" -eq 0 ]; then echo "PASS harness doctor completed with $warnings warning(s)."; else echo "FAIL harness doctor found $issues issue(s), $warnings warning(s)."; fi

@@ -44,9 +44,9 @@
         "patterns": 6,
         "statuses": {
           "lifecycle-declared-maintainer": 1,
-          "maintainer-only": 323,
+          "maintainer-only": 322,
           "pattern:so-local-only": 6,
-          "projected-consumer-surface": 51,
+          "projected-consumer-surface": 52,
           "shared-surface": 508,
           "shell-ci-candidate": 15,
           "so-local-only": 8
@@ -60,52 +60,52 @@
       "status": "ok",
       "summary": {
         "by_harness_profile": {
-          "agents-md/default": 77,
-          "agents-md/full": 389,
-          "aider/default": 77,
-          "aider/full": 389,
-          "amp-code/default": 77,
-          "amp-code/full": 389,
-          "augment-code/default": 77,
-          "augment-code/full": 389,
-          "claude/default": 77,
-          "claude/full": 389,
-          "cline/default": 77,
-          "cline/full": 389,
-          "codex/default": 77,
-          "codex/full": 389,
-          "continue-dev/default": 77,
-          "continue-dev/full": 389,
-          "cursor/default": 77,
-          "cursor/full": 389,
-          "factory-droid/default": 77,
-          "factory-droid/full": 389,
-          "gemini-cli/default": 77,
-          "gemini-cli/full": 389,
-          "goose/default": 77,
-          "goose/full": 389,
-          "jetbrains-junie/default": 77,
-          "jetbrains-junie/full": 389,
-          "kilo-code/default": 77,
-          "kilo-code/full": 389,
-          "kimi-code/default": 77,
-          "kimi-code/full": 389,
-          "opencode/default": 77,
-          "opencode/full": 389,
-          "qoder/default": 77,
-          "qoder/full": 389,
-          "qwen-code/default": 77,
-          "qwen-code/full": 389,
-          "shell-ci/default": 77,
-          "shell-ci/full": 389,
-          "vscode-copilot/default": 77,
-          "vscode-copilot/full": 389,
-          "warp/default": 77,
-          "warp/full": 389,
-          "zed-ai/default": 77,
-          "zed-ai/full": 389
+          "agents-md/default": 78,
+          "agents-md/full": 390,
+          "aider/default": 78,
+          "aider/full": 390,
+          "amp-code/default": 78,
+          "amp-code/full": 390,
+          "augment-code/default": 78,
+          "augment-code/full": 390,
+          "claude/default": 78,
+          "claude/full": 390,
+          "cline/default": 78,
+          "cline/full": 390,
+          "codex/default": 78,
+          "codex/full": 390,
+          "continue-dev/default": 78,
+          "continue-dev/full": 390,
+          "cursor/default": 78,
+          "cursor/full": 390,
+          "factory-droid/default": 78,
+          "factory-droid/full": 390,
+          "gemini-cli/default": 78,
+          "gemini-cli/full": 390,
+          "goose/default": 78,
+          "goose/full": 390,
+          "jetbrains-junie/default": 78,
+          "jetbrains-junie/full": 390,
+          "kilo-code/default": 78,
+          "kilo-code/full": 390,
+          "kimi-code/default": 78,
+          "kimi-code/full": 390,
+          "opencode/default": 78,
+          "opencode/full": 390,
+          "qoder/default": 78,
+          "qoder/full": 390,
+          "qwen-code/default": 78,
+          "qwen-code/full": 390,
+          "shell-ci/default": 78,
+          "shell-ci/full": 390,
+          "vscode-copilot/default": 78,
+          "vscode-copilot/full": 390,
+          "warp/default": 78,
+          "warp/full": 390,
+          "zed-ai/default": 78,
+          "zed-ai/full": 390
         },
-        "projected_primitives": 408
+        "projected_primitives": 409
       }
     },
     "docs_execution_report": {
@@ -3157,8 +3157,8 @@
           "templates": 24
         },
         "by_scope": {
-          "both": 483,
-          "os-only": 680,
+          "both": 484,
+          "os-only": 679,
           "project": 28
         },
         "gap_policies": {
@@ -3197,30 +3197,30 @@
         "harness_projected_or_wired": {
           "acc-report": 1191,
           "agents-md": 0,
-          "aider": 186,
-          "amp-code": 186,
-          "augment-code": 186,
-          "claude": 347,
-          "cline": 186,
-          "codex": 265,
-          "continue-dev": 186,
+          "aider": 187,
+          "amp-code": 187,
+          "augment-code": 187,
+          "claude": 349,
+          "cline": 187,
+          "codex": 266,
+          "continue-dev": 187,
           "cos-cli": 5,
-          "cursor": 186,
+          "cursor": 187,
           "dashboard": 1191,
-          "factory-droid": 186,
-          "gemini-cli": 186,
-          "goose": 186,
-          "jetbrains-junie": 186,
-          "kilo-code": 186,
-          "kimi-code": 186,
-          "opencode": 186,
-          "qoder": 186,
-          "qwen-code": 186,
+          "factory-droid": 187,
+          "gemini-cli": 187,
+          "goose": 187,
+          "jetbrains-junie": 187,
+          "kilo-code": 187,
+          "kimi-code": 187,
+          "opencode": 187,
+          "qoder": 187,
+          "qwen-code": 187,
           "shell-ci": 15,
           "tui": 1191,
-          "vscode-copilot": 186,
-          "warp": 186,
-          "zed-ai": 186
+          "vscode-copilot": 187,
+          "warp": 187,
+          "zed-ai": 187
         },
         "harness_wired_hooks": {
           "acc-report": 0,
@@ -3228,7 +3228,7 @@
           "aider": 0,
           "amp-code": 0,
           "augment-code": 0,
-          "claude": 174,
+          "claude": 175,
           "cline": 0,
           "codex": 92,
           "continue-dev": 0,
@@ -3253,30 +3253,30 @@
         "surface_projected_or_wired": {
           "acc-report": 1191,
           "agents-md": 0,
-          "aider": 186,
-          "amp-code": 186,
-          "augment-code": 186,
-          "claude": 347,
-          "cline": 186,
-          "codex": 265,
-          "continue-dev": 186,
+          "aider": 187,
+          "amp-code": 187,
+          "augment-code": 187,
+          "claude": 349,
+          "cline": 187,
+          "codex": 266,
+          "continue-dev": 187,
           "cos-cli": 5,
-          "cursor": 186,
+          "cursor": 187,
           "dashboard": 1191,
-          "factory-droid": 186,
-          "gemini-cli": 186,
-          "goose": 186,
-          "jetbrains-junie": 186,
-          "kilo-code": 186,
-          "kimi-code": 186,
-          "opencode": 186,
-          "qoder": 186,
-          "qwen-code": 186,
+          "factory-droid": 187,
+          "gemini-cli": 187,
+          "goose": 187,
+          "jetbrains-junie": 187,
+          "kilo-code": 187,
+          "kimi-code": 187,
+          "opencode": 187,
+          "qoder": 187,
+          "qwen-code": 187,
           "shell-ci": 15,
           "tui": 1191,
-          "vscode-copilot": 186,
-          "warp": 186,
-          "zed-ai": 186
+          "vscode-copilot": 187,
+          "warp": 187,
+          "zed-ai": 187
         },
         "surfaces_by_kind": {
           "cli": 1,
@@ -3322,8 +3322,8 @@
         "actions": {
           "advise": 3,
           "allow": 19,
-          "block": 89,
-          "warn": 169
+          "block": 91,
+          "warn": 181
         },
         "primitive_count": 8
       }
@@ -3386,14 +3386,14 @@
       "status": "ok",
       "summary": {
         "confidence": {
-          "high": 266,
-          "medium": 14
+          "high": 267,
+          "medium": 13
         },
         "consumer_accessibility": {
           "lifecycle-declared-consumer-candidate": 22,
           "lifecycle-declared-maintainer": 174,
-          "projected-consumer-surface": 70,
-          "so-local-only": 14
+          "projected-consumer-surface": 71,
+          "so-local-only": 13
         },
         "roles": {
           "driver-specific": 28,
@@ -3404,7 +3404,7 @@
         },
         "total": 280,
         "without_consumers": 0,
-        "without_lifecycle": 14
+        "without_lifecycle": 13
       }
     },
     "readiness:rules": {
@@ -27643,7 +27643,7 @@
         "test_consumers:3",
         "doc_consumers:7",
         "config_consumers:6",
-        "script_consumers:1",
+        "script_consumers:2",
         "role_source:override",
         "lifecycle_state:advisory",
         "consumer_accessibility:lifecycle-declared-maintainer",
@@ -38905,22 +38905,22 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
+        "lifecycle",
         "script_consumers:4",
         "test_consumers:3",
-        "config_consumers:2",
-        "role_source:heuristic:text",
-        "consumer_accessibility:so-local-only",
+        "config_consumers:6",
+        "role_source:lifecycle",
+        "lifecycle_state:blocking",
+        "consumer_accessibility:projected-consumer-surface",
         "availability_override:so-local-only",
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:agents-md,aider,amp-code,augment-code,claude,cline,codex,continue-dev,cursor,factory-droid,gemini-cli,goose,jetbrains-junie,kilo-code,kimi-code,opencode,qoder,qwen-code,shell-ci,vscode-copilot,warp,zed-ai",
-        "projected_profiles:default,full",
-        "projection_class:shared"
+        "projected_harnesses:agents-md,aider,amp-code,augment-code,claude,cline,codex,continue-dev,cursor,factory-droid,gemini-cli,goose,jetbrains-junie,kilo-code,kimi-code,opencode,qoder,qwen-code,shell-ci,vscode-copilot,warp,zed-ai"
       ],
       "id": "hook:hooks/research-compliance-guard.sh",
       "kind": "hook",
-      "lifecycle_status": "aspirational",
+      "lifecycle_status": "real",
       "mapping_status": "aligned",
       "represented_by": [
         {
@@ -38931,11 +38931,13 @@
           "source": "hooks/research-compliance-guard.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "high",
       "signature": {
-        "distribution": null,
+        "distribution": "core",
         "role": "driver-specific",
-        "supported_harnesses": []
+        "supported_harnesses": [
+          "claude"
+        ]
       },
       "source": {
         "family": "hooks",
@@ -47685,7 +47687,7 @@
         "lifecycle",
         "skill_consumers:5",
         "hook_consumers:5",
-        "rule_consumers:6",
+        "rule_consumers:7",
         "script_consumers:16",
         "test_consumers:34",
         "doc_consumers:102",
@@ -51981,20 +51983,20 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "maintainer-only",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "hook_consumers:1",
         "rule_consumers:1",
+        "script_consumers:1",
         "test_consumers:3",
         "doc_consumers:7",
-        "config_consumers:5",
+        "config_consumers:6",
         "role_source:heuristic:text",
         "lifecycle_state:advisory",
         "consumer_accessibility:lifecycle-declared-maintainer",
-        "availability_override:maintainer-only",
-        "availability_match:exact",
-        "availability_rationale:Manual scope calibration batch 001 confirmed this primitive is tied to Cognitive OS maintainer/runtime internals and is "
+        "availability_override:projected-consumer-surface",
+        "availability_match:exact"
       ],
       "id": "rule:rules/research-first-protocol.md",
       "kind": "rule",
@@ -52002,7 +52004,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "maintainer-only",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "rules/research-first-protocol.md",
           "kind": "rule",
           "role": "driver-specific",
@@ -53401,7 +53403,7 @@
         "script_consumers:16",
         "test_consumers:32",
         "doc_consumers:74",
-        "config_consumers:15",
+        "config_consumers:16",
         "role_source:heuristic:text",
         "lifecycle_state:advisory",
         "consumer_accessibility:projected-consumer-surface",
@@ -61656,9 +61658,9 @@
       "confidence": 0.7,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
-        "harness_coverage:acc-report+dashboard+tui",
+        "harness_coverage:acc-report+claude+dashboard+tui",
         "scope:both",
-        "gap:scope=both but missing projected/wired support for: claude, codex",
+        "gap:scope=both but missing projected/wired support for: codex",
         "gap_policy:codex-adapter-needed"
       ],
       "id": "harness_coverage:hooks/research-compliance-guard.sh",
@@ -61675,7 +61677,7 @@
       ],
       "risk": "medium",
       "signature": {
-        "coverage": "acc-report+dashboard+tui",
+        "coverage": "acc-report+claude+dashboard+tui",
         "gap_policy": "codex-adapter-needed",
         "scope": "both"
       },
@@ -67304,8 +67306,8 @@
       "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
-        "harness_coverage:acc-report+dashboard+tui",
-        "scope:os-only"
+        "harness_coverage:acc-report+aider+amp-code+augment-code+claude+cline+codex+continue-dev+cursor+dashboard+factory-droid+gemini-cli+goose+jetbrains-junie+kilo-code+kimi-code+opencode+qoder+qwen-code+tui+vscode-copilot+warp+zed-ai",
+        "scope:both"
       ],
       "id": "harness_coverage:rules/research-first-protocol.md",
       "kind": "harness_coverage",
@@ -67321,9 +67323,9 @@
       ],
       "risk": "low",
       "signature": {
-        "coverage": "acc-report+dashboard+tui",
+        "coverage": "acc-report+aider+amp-code+augment-code+claude+cline+codex+continue-dev+cursor+dashboard+factory-droid+gemini-cli+goose+jetbrains-junie+kilo-code+kimi-code+opencode+qoder+qwen-code+tui+vscode-copilot+warp+zed-ai",
         "gap_policy": null,
-        "scope": "os-only"
+        "scope": "both"
       },
       "source": {
         "family": "rules",
@@ -119968,7 +119970,7 @@
       "confidence": 0.82,
       "consumer_accessibility": "runtime-evidence",
       "evidence": [
-        "intervention_rows:111"
+        "intervention_rows:123"
       ],
       "id": "primitive_intervention:reinvention-check",
       "kind": "primitive_intervention",
@@ -119983,7 +119985,7 @@
       ],
       "risk": "medium",
       "signature": {
-        "rows": 111
+        "rows": 123
       },
       "source": {
         "path": ".cognitive-os/metrics/primitive-interventions.jsonl",
@@ -119995,7 +119997,7 @@
       "confidence": 0.82,
       "consumer_accessibility": "runtime-evidence",
       "evidence": [
-        "intervention_rows:18"
+        "intervention_rows:20"
       ],
       "id": "primitive_intervention:skill-router",
       "kind": "primitive_intervention",
@@ -120010,7 +120012,7 @@
       ],
       "risk": "medium",
       "signature": {
-        "rows": 18
+        "rows": 20
       },
       "source": {
         "path": ".cognitive-os/metrics/primitive-interventions.jsonl",
@@ -127624,6 +127626,40 @@
         ".cognitive-os/rules/cos/repomix-integration.md"
       ],
       "profiles": [
+        "full"
+      ],
+      "projection_class": "shared"
+    },
+    "rules/research-first-protocol.md": {
+      "harnesses": [
+        "agents-md",
+        "aider",
+        "amp-code",
+        "augment-code",
+        "claude",
+        "cline",
+        "codex",
+        "continue-dev",
+        "cursor",
+        "factory-droid",
+        "gemini-cli",
+        "goose",
+        "jetbrains-junie",
+        "kilo-code",
+        "kimi-code",
+        "opencode",
+        "qoder",
+        "qwen-code",
+        "shell-ci",
+        "vscode-copilot",
+        "warp",
+        "zed-ai"
+      ],
+      "paths": [
+        ".cognitive-os/rules/cos/research-first-protocol.md"
+      ],
+      "profiles": [
+        "default",
         "full"
       ],
       "projection_class": "shared"
@@ -136543,9 +136579,9 @@
     {
       "capability_id": "harness_coverage:hooks/research-compliance-guard.sh",
       "evidence": [
-        "harness_coverage:acc-report+dashboard+tui",
+        "harness_coverage:acc-report+claude+dashboard+tui",
         "scope:both",
-        "gap:scope=both but missing projected/wired support for: claude, codex",
+        "gap:scope=both but missing projected/wired support for: codex",
         "gap_policy:codex-adapter-needed"
       ],
       "message": "Harness implementation coverage gap",
@@ -136844,7 +136880,7 @@
       "coverage_debt:181"
     ]
   },
-  "generated_at": "2026-05-28T17:09:48Z",
+  "generated_at": "2026-05-28T22:19:30Z",
   "harness_projection": {
     "agents-md": {
       "display_name": "AGENTS.md",

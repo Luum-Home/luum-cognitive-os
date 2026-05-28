@@ -1118,6 +1118,12 @@ harness:
       matcher: Bash
       scope: both
 
+    research-compliance-guard:
+      script: hooks/research-compliance-guard.sh
+      event: PreToolUse
+      matcher: Bash
+      scope: both
+
     network-egress-guard:
       script: hooks/network-egress-guard.sh
       event: PreToolUse

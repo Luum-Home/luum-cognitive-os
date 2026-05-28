@@ -1,8 +1,8 @@
 # Primitive Readiness Ledger — Hooks
 
 Total rows: 280
-Rows without lifecycle metadata: 14
-Consumer accessibility: lifecycle-declared-consumer-candidate:22, lifecycle-declared-maintainer:174, projected-consumer-surface:70, so-local-only:14
+Rows without lifecycle metadata: 13
+Consumer accessibility: lifecycle-declared-consumer-candidate:22, lifecycle-declared-maintainer:174, projected-consumer-surface:71, so-local-only:13
 
 | Path | Role | Source | Confidence | Consumer Access | Lifecycle | Consumers | Next action |
 |---|---|---|---|---|---|---:|---|
@@ -206,7 +206,7 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:22, lifecycle-decl
 | `hooks/registration-check.sh` | driver-specific | lifecycle | high | lifecycle-declared-maintainer | advisory | 17 | keep maintainer-only or add explicit export path |
 | `hooks/reinvention-check.sh` | lab | lifecycle | high | projected-consumer-surface | sandbox | 51 | keep lifecycle, tests, and harness proof current |
 | `hooks/release-guard.sh` | driver-specific | lifecycle | high | projected-consumer-surface | blocking | 30 | keep lifecycle, tests, and harness proof current |
-| `hooks/research-compliance-guard.sh` | driver-specific | heuristic:text | medium | so-local-only |  | 9 | add lifecycle/package/projection metadata or keep SO-local |
+| `hooks/research-compliance-guard.sh` | driver-specific | lifecycle | high | projected-consumer-surface | blocking | 14 | keep lifecycle, tests, and harness proof current |
 | `hooks/research-quality-validator.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 14 | keep maintainer-only or add explicit export path |
 | `hooks/research-to-runtime-firewall.sh` | runtime-safety | lifecycle | high | lifecycle-declared-maintainer | advisory | 15 | keep maintainer-only or add explicit export path |
 | `hooks/resource-check.sh` | observability | lifecycle | high | projected-consumer-surface | advisory | 26 | keep lifecycle, tests, and harness proof current |

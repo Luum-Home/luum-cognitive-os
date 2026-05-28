@@ -138,6 +138,7 @@ if _is_git_commit; then
     "hooks/adoption-freeze-gate.sh" \
     "hooks/dependency-license-classifier.sh" \
     "hooks/research-to-runtime-firewall.sh" \
+    "hooks/research-compliance-guard.sh" \
     "hooks/spdx-header-required.sh" \
     "hooks/external-cache-content-leak.sh" \
     "hooks/attribution-completeness-validator.sh" \

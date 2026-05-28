@@ -36475,15 +36475,27 @@
       "total_consumers": 30
     },
     {
-      "confidence": "medium",
-      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
-      "consumer_accessibility": "so-local-only",
+      "confidence": "high",
+      "consumer_access_next_action": "keep install/profile/harness proof current",
+      "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
-        "config": 2,
-        "script": 4,
+        "config": 6,
+        "script": 5,
         "test": 3
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.json"
+        },
+        {
+          "family": "config",
+          "path": "cognitive-os.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/hook-quality.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/hook-registration-classification.yaml"
@@ -36491,6 +36503,14 @@
         {
           "family": "config",
           "path": "manifests/primitive-install-boundary.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "script",
+          "path": "scripts/_lib/settings-driver-claude-code.sh"
         },
         {
           "family": "script",
@@ -36521,21 +36541,24 @@
           "path": "tests/red_team/portability/test_research-compliance-guard.py"
         }
       ],
-      "distribution": null,
+      "distribution": "core",
       "evidence": [
-        "script_consumers:4",
+        "lifecycle",
+        "script_consumers:5",
         "test_consumers:3",
-        "config_consumers:2"
+        "config_consumers:6"
       ],
       "family": "hooks",
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "lifecycle_id": "hooks/research-compliance-guard.sh",
+      "lifecycle_state": "blocking",
+      "next_action": "keep lifecycle, tests, and harness proof current",
       "path": "hooks/research-compliance-guard.sh",
       "role": "driver-specific",
-      "role_source": "heuristic:text",
-      "supported_harnesses": [],
-      "total_consumers": 9
+      "role_source": "lifecycle",
+      "supported_harnesses": [
+        "claude"
+      ],
+      "total_consumers": 14
     },
     {
       "confidence": "high",
@@ -47882,14 +47905,14 @@
   "schema_version": 1,
   "summary": {
     "confidence": {
-      "high": 266,
-      "medium": 14
+      "high": 267,
+      "medium": 13
     },
     "consumer_accessibility": {
       "lifecycle-declared-consumer-candidate": 22,
       "lifecycle-declared-maintainer": 174,
-      "projected-consumer-surface": 70,
-      "so-local-only": 14
+      "projected-consumer-surface": 71,
+      "so-local-only": 13
     },
     "roles": {
       "driver-specific": 28,
@@ -47900,7 +47923,7 @@
     },
     "total": 280,
     "without_consumers": 0,
-    "without_lifecycle": 14
+    "without_lifecycle": 13
   },
   "target_family": "hooks"
 }

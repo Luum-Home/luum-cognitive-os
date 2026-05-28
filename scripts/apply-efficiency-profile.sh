@@ -260,7 +260,7 @@ echo "  UserPromptSubmit: user-prompt-capture.sh (async), session-wrapup-trigger
 echo "  SubagentStart: subagent-context-injector.sh (async)"
 echo "  PreCompact: pre-compaction-flush.sh"
 echo "  PreToolUse *: protected-config-write-guard.sh, cosd-auth-guard.sh, agent-control-inbound-guard.sh, session-heartbeat.sh, lethal-trifecta-gate.sh"
-echo "  PreToolUse Bash: bash-hot-path-dispatcher.sh (default tiered P0/P1 for Claude+Codex); PROFILE=full projects exhaustive Bash mesh"
+echo "  PreToolUse Bash: bash-hot-path-dispatcher.sh (routes default/core legal research boundary including research-compliance-guard.sh); PROFILE=full projects exhaustive Bash mesh"
 echo "  PreToolUse engram write tools: private-mode-gate.sh"
 echo "  PreToolUse Read: document-ingest-guard.sh, large-file-advisor.sh"
 echo "  PreToolUse Bash|Edit|Write: secret-detector.sh (redaction); Edit|Write also runs project-docs-convention.sh, edit-lock-pre-tool.sh, concurrent-write-guard.sh, plan-claim-validator.sh, skill-md-routing-validator.sh"

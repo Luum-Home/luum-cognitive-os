@@ -2,7 +2,7 @@
 
 > Context diet entrypoint. Read this before opening `docs/07-Capabilities/acc/latest.json`.
 
-Generated: 2026-05-28T17:09:48Z
+Generated: 2026-05-28T22:19:30Z
 Gate: pass (reconstruction)
 ACC: 0.9353
 ACC effective: 0.9674
@@ -29,9 +29,9 @@ Primitive fitness reports: 0
 - install-profile-managed: 19
 - lifecycle-declared-consumer-candidate: 188
 - lifecycle-declared-maintainer: 79
-- maintainer-only: 316
+- maintainer-only: 315
 - profile-driver: 19
-- projected-consumer-surface: 1805
+- projected-consumer-surface: 1806
 - runtime-evidence: 8
 - shell-ci-candidate: 15
 - skill-referenced-not-projectable: 12
