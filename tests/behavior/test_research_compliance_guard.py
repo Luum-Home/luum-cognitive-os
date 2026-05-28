@@ -50,7 +50,7 @@ def test_research_compliance_guard_blocks_unbounded_proprietary_research(tmp_pat
 
     result = _run_hook(repo)
 
-    assert result.returncode == 1
+    assert result.returncode == 2
     assert "conceptual-only/no-reuse/clean-room boundary" in result.stderr
 
 
@@ -81,5 +81,5 @@ def test_research_compliance_guard_blocks_runtime_research_path_reference(tmp_pa
 
     result = _run_hook(repo)
 
-    assert result.returncode == 1
+    assert result.returncode == 2
     assert "runtime code references research-only source/cache paths" in result.stderr

@@ -5258,6 +5258,44 @@ primitives:
   docs_claim_level: advisory
   rollback_or_repair_command: Remove the hook from cognitive-os.yaml harness.hooks and regenerate settings, or restore the excluded rule to startup context.
   sunset_criteria: Archive only if hook-enforced rule exclusion moves into a typed projection compiler with equivalent tests.
+- id: hooks/research-compliance-guard.sh
+  kind: hook
+  owner_adr: ADR-208
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: runtime-safety
+  risk_class: blocking
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/settings.json
+  - hooks/research-compliance-guard.sh
+  - .cognitive-os/hooks/cos/research-compliance-guard.sh
+  runtime_projection: true
+  behavior_evidence: self-host PreToolUse Bash hook and default/core consumer projection guard for research/license clean-room boundaries.
+  evidence_commands:
+  - bash -n hooks/research-compliance-guard.sh
+  - python3 -m pytest tests/behavior/test_research_compliance_guard.py tests/contracts/test_primitive_runtime_reality.py tests/unit/test_cognitive_os_yaml_harness_hooks.py -q
+  promotion_evidence:
+    primary_signal: runtime-safety-exit2
+    from_state: candidate_promote
+    to_state: blocking
+    approved_by: operator
+    promoted_on: '2026-05-28'
+    boring_reliability_command: scripts/cos-boring-reliability --profile core
+    rationale: The hook blocks research/license clean-room boundary violations at commit time for both self-host Cognitive OS development and default/core consumer projection, with behavior tests covering proprietary research wording and runtime research-path references.
+  rollback_or_repair_command: Remove research-compliance-guard from self-host settings and default/core projection only with operator approval, then rerun hook registration and primitive runtime reality tests.
+  sunset_criteria: Archive only after an equivalent research/license clean-room guard replaces both self-host and consumer projection surfaces with tests.
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/logs/research-compliance-guard.jsonl
+  latency_budget_ms: 1000
+  repair_message: research-compliance-guard blocked a commit boundary; keep research clones ignored, use repo-local paths, and document proprietary/unlicensed research as conceptual-only/no-reuse.
+  false_positive_tests:
+  - tests/behavior/test_research_compliance_guard.py
+  consumer_access_next_action: Preserve default/core projection evidence and self-host registration whenever research compliance policy changes.
 - id: hooks/secret-detector.sh
   kind: hook
   owner_adr: ADR-126

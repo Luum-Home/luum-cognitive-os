@@ -100,7 +100,7 @@ adoptions:
 
   - package: lingua-language-detector
     version_constraint: ">=2.0"
-    consumer: pyproject.toml ([audit] extra)
+    consumer: pyproject.toml ([audit] and [testing] extras)
     owner_adr: English-only repository policy
     due_diligence_id: english-only-content-audit-v2
     license: Apache-2.0
@@ -109,7 +109,7 @@ adoptions:
     audit_link: tests/unit/test_english_only_content_audit.py
   - package: tree-sitter
     version_constraint: ">=0.23"
-    consumer: pyproject.toml ([audit] extra)
+    consumer: pyproject.toml ([audit] and [testing] extras)
     owner_adr: English-only repository policy
     due_diligence_id: english-only-content-audit-v2
     license: MIT
@@ -118,7 +118,7 @@ adoptions:
     audit_link: tests/unit/test_english_only_content_audit.py
   - package: tree-sitter-python
     version_constraint: any compatible release
-    consumer: pyproject.toml ([audit] extra)
+    consumer: pyproject.toml ([audit] and [testing] extras)
     owner_adr: English-only repository policy
     due_diligence_id: english-only-content-audit-v2
     license: MIT
@@ -127,7 +127,7 @@ adoptions:
     audit_link: tests/unit/test_english_only_content_audit.py
   - package: tree-sitter-typescript
     version_constraint: any compatible release
-    consumer: pyproject.toml ([audit] extra)
+    consumer: pyproject.toml ([audit] and [testing] extras)
     owner_adr: English-only repository policy
     due_diligence_id: english-only-content-audit-v2
     license: MIT
@@ -136,7 +136,7 @@ adoptions:
     audit_link: tests/unit/test_english_only_content_audit.py
   - package: tree-sitter-javascript
     version_constraint: any compatible release
-    consumer: pyproject.toml ([audit] extra)
+    consumer: pyproject.toml ([audit] and [testing] extras)
     owner_adr: English-only repository policy
     due_diligence_id: english-only-content-audit-v2
     license: MIT
@@ -145,7 +145,7 @@ adoptions:
     audit_link: tests/unit/test_english_only_content_audit.py
   - package: tree-sitter-go
     version_constraint: any compatible release
-    consumer: pyproject.toml ([audit] extra)
+    consumer: pyproject.toml ([audit] and [testing] extras)
     owner_adr: English-only repository policy
     due_diligence_id: english-only-content-audit-v2
     license: MIT
@@ -154,7 +154,7 @@ adoptions:
     audit_link: tests/unit/test_english_only_content_audit.py
   - package: tree-sitter-bash
     version_constraint: any compatible release
-    consumer: pyproject.toml ([audit] extra)
+    consumer: pyproject.toml ([audit] and [testing] extras)
     owner_adr: English-only repository policy
     due_diligence_id: english-only-content-audit-v2
     license: MIT

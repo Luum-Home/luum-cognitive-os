@@ -112,13 +112,16 @@ def test_onnx_adapter_load_failure_does_not_crash_harness(tmp_path, monkeypatch)
         encoding="utf-8",
     )
 
-    # Monkeypatch hf_hub_download to simulate a 404.
-    import huggingface_hub
+    # Monkeypatch optional ONNX dependencies so this unit test can exercise
+    # harness load-failure handling without installing the semantic-routing extra.
+    import types
 
     def _boom(*a, **kw):
         raise RuntimeError("HTTP 404: repo not found")
 
-    monkeypatch.setattr(huggingface_hub, "hf_hub_download", _boom)
+    monkeypatch.setitem(sys.modules, "huggingface_hub", types.SimpleNamespace(hf_hub_download=_boom))
+    monkeypatch.setitem(sys.modules, "onnxruntime", types.SimpleNamespace(InferenceSession=object))
+    monkeypatch.setitem(sys.modules, "tokenizers", types.SimpleNamespace(Tokenizer=object))
 
     harness = BenchmarkHarness(
         models_manifest_path=models_yaml,

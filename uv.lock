@@ -1671,7 +1671,7 @@ wheels = [
 
 [[package]]
 name = "luum-cognitive-os"
-version = "0.29.10"
+version = "0.29.11"
 source = { editable = "." }
 dependencies = [
     { name = "jinja2" },
@@ -1698,6 +1698,8 @@ dev = [
     { name = "diff-cover" },
     { name = "fastapi" },
     { name = "import-linter" },
+    { name = "lingua-language-detector", version = "2.1.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
+    { name = "lingua-language-detector", version = "2.2.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "mutmut" },
     { name = "openai" },
     { name = "pre-commit" },
@@ -1709,6 +1711,12 @@ dev = [
     { name = "pytest-xdist" },
     { name = "ruff" },
     { name = "testcontainers", extra = ["redis"] },
+    { name = "tree-sitter" },
+    { name = "tree-sitter-bash" },
+    { name = "tree-sitter-go" },
+    { name = "tree-sitter-javascript" },
+    { name = "tree-sitter-python" },
+    { name = "tree-sitter-typescript" },
     { name = "uvicorn" },
     { name = "vulture" },
 ]
@@ -1727,6 +1735,8 @@ semantic-routing = [
     { name = "fastembed" },
 ]
 testing = [
+    { name = "lingua-language-detector", version = "2.1.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
+    { name = "lingua-language-detector", version = "2.2.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "mutmut" },
     { name = "pytest" },
     { name = "pytest-asyncio" },
@@ -1734,6 +1744,12 @@ testing = [
     { name = "pytest-timeout" },
     { name = "pytest-xdist" },
     { name = "testcontainers", extra = ["redis"] },
+    { name = "tree-sitter" },
+    { name = "tree-sitter-bash" },
+    { name = "tree-sitter-go" },
+    { name = "tree-sitter-javascript" },
+    { name = "tree-sitter-python" },
+    { name = "tree-sitter-typescript" },
 ]
 typecheck = [
     { name = "pyrefly" },
@@ -1756,6 +1772,7 @@ requires-dist = [
     { name = "import-linter", marker = "extra == 'enforcement'", specifier = ">=2.0" },
     { name = "jinja2", specifier = ">=3.1" },
     { name = "lingua-language-detector", marker = "extra == 'audit'", specifier = ">=2.0" },
+    { name = "lingua-language-detector", marker = "extra == 'testing'", specifier = ">=2.0" },
     { name = "luum-cognitive-os", extras = ["web", "direct-providers", "testing", "enforcement"], marker = "extra == 'dev'" },
     { name = "mutmut", marker = "extra == 'testing'", specifier = ">=3.0" },
     { name = "openai", marker = "extra == 'direct-providers'", specifier = ">=1.50" },
@@ -1773,11 +1790,17 @@ requires-dist = [
     { name = "ruff", marker = "extra == 'enforcement'", specifier = ">=0.9.0" },
     { name = "testcontainers", extras = ["redis"], marker = "extra == 'testing'", specifier = ">=4.0" },
     { name = "tree-sitter", marker = "extra == 'audit'", specifier = ">=0.23" },
+    { name = "tree-sitter", marker = "extra == 'testing'", specifier = ">=0.23" },
     { name = "tree-sitter-bash", marker = "extra == 'audit'" },
+    { name = "tree-sitter-bash", marker = "extra == 'testing'" },
     { name = "tree-sitter-go", marker = "extra == 'audit'" },
+    { name = "tree-sitter-go", marker = "extra == 'testing'" },
     { name = "tree-sitter-javascript", marker = "extra == 'audit'" },
+    { name = "tree-sitter-javascript", marker = "extra == 'testing'" },
     { name = "tree-sitter-python", marker = "extra == 'audit'" },
+    { name = "tree-sitter-python", marker = "extra == 'testing'" },
     { name = "tree-sitter-typescript", marker = "extra == 'audit'" },
+    { name = "tree-sitter-typescript", marker = "extra == 'testing'" },
     { name = "uvicorn", marker = "extra == 'web'", specifier = ">=0.23" },
     { name = "vulture", marker = "extra == 'enforcement'", specifier = ">=2.14" },
 ]

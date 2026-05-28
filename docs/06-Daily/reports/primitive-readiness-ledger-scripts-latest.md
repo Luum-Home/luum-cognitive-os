@@ -590,7 +590,7 @@ Agentic primitives without lifecycle metadata: 0
 | `scripts/run_skill_efficacy_smoke.py` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 5 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/run_skill_lifecycle_promotion_smoke.py` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | candidate | shell | 6 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/runtime_benchmark_report.py` | lab | heuristic:path | medium | so-local-only |  |  | 6 | keep non-default until tests and operator value justify promotion |
-| `scripts/runtime_hook_reality.py` | maintainer-tool | override | high | lifecycle-declared-maintainer | advisory | claude, codex, shell | 17 | keep out of default user surface unless promoted through lifecycle metadata |
+| `scripts/runtime_hook_reality.py` | maintainer-tool | override | high | lifecycle-declared-maintainer | advisory | claude, codex, shell | 18 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/scope_tag_backfill.py` | migration-only | heuristic:path | medium | so-local-only |  |  | 3 | add sunset criteria and archive after retention window |
 | `scripts/secret-audit-gitleaks.sh` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 3 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/secret-audit-trufflehog.sh` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 3 | keep out of default user surface unless promoted through lifecycle metadata |

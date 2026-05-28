@@ -234,6 +234,7 @@ cc_driver_emit() {
       "hooks/adoption-freeze-gate.sh"           "false" \
       "hooks/dependency-license-classifier.sh"   "false" \
       "hooks/research-to-runtime-firewall.sh"    "false" \
+      "hooks/research-compliance-guard.sh"       "false" \
       "hooks/spdx-header-required.sh"            "false" \
       "hooks/external-cache-content-leak.sh"     "false" \
       "hooks/attribution-completeness-validator.sh" "false" \

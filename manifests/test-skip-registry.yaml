@@ -15,25 +15,25 @@ expected_skips:
   - id: external-host-tool-or-library
     lanes: [unit, audit, contract, system, behavior, hooks, integration]
     category: external-dependency
-    reason_pattern: '\b(docker|docker compose|docker-compose|jq|engram|lsof|flock|repomix|npx|node_modules|next|opencode|PyYAML|pyyaml|git not available|curl|network|credential|daemon)\b.*(not available|required|requires|not found|unresponsive|not installed|not running|unavailable|absent|missing|optional)|(not available|required|requires|not found|unresponsive|not installed|not running|unavailable|absent|missing|optional).*\b(docker|docker compose|docker-compose|jq|engram|lsof|flock|repomix|npx|node_modules|next|opencode|PyYAML|pyyaml|git|curl|network|credential|daemon)\b|binary is (not installed|present but not usable)'
+    reason_pattern: '(Neither .* is installed; skipping local daemon tests)|\b(docker|docker compose|docker-compose|jq|engram|lsof|flock|repomix|npx|node_modules|next|opencode|PyYAML|pyyaml|fastembed|valkey|valkey-server|redis|redis-server|pg_ctl|PostgreSQL|arize-phoenix|phoenix|git not available|curl|network|credential|daemon)\b.*(not available|required|requires|not found|unresponsive|not installed|not running|unavailable|absent|missing|optional)|(not available|required|requires|not found|unresponsive|not installed|not running|unavailable|absent|missing|optional).*\b(docker|docker compose|docker-compose|jq|engram|lsof|flock|repomix|npx|node_modules|next|opencode|PyYAML|pyyaml|fastembed|valkey|valkey-server|redis|redis-server|pg_ctl|PostgreSQL|arize-phoenix|phoenix|git|curl|network|credential|daemon)\b|binary is (not installed|present but not usable)|could not import .*fastembed'
     applies_when: Host dependency is absent in laptop-safe validation.
     opt_in_lane: install dependency or run the explicit integration/Docker/provider lane.
   - id: explicit-opt-in-resource-lane
     lanes: [unit, audit, system, behavior, integration, e2e, arena, benchmark]
     category: opt-in-lane
-    reason_pattern: '(requires network access|requires Docker|requires \$HOME mutation|set [A-Z0-9_]+=(true|1) to enable|COS_ALLOW_|COGNITIVE_OS_TEST_DOCKER_UP|COS_STRICT_TELEMETRY_SLO|COS_LLM_ROUTING_LIVE_TEST|cost-bearing|provider smoke|Docker daemon|real Langfuse|testcontainers|Live LLM test gated)'
+    reason_pattern: '(requires network access|requires Docker|requires \$HOME mutation|set [A-Z0-9_]+=(true|1)( to enable| to run)?|COS_ALLOW_|COGNITIVE_OS_TEST_DOCKER_UP|COS_STRICT_TELEMETRY_SLO|COS_LLM_ROUTING_LIVE_TEST|cost-bearing|provider smoke|Docker daemon|real Langfuse|testcontainers|Live LLM test gated)'
     applies_when: The check is intentionally excluded from make test-laptop and default CI.
     opt_in_lane: test-docker, test-optional, test-laptop-integration, or a proof-drill registry entry.
   - id: runtime-sample-window
-    lanes: [unit, audit, contract, behavior, hooks]
+    lanes: [unit, audit, contract, behavior, hooks, integration]
     category: runtime-sample-precondition
-    reason_pattern: '(no hook-health data|no hooks with >=|only \d+ samples|need >=|fewer than \d+ samples|not enough data|no invocations recorded|hook timing has no records|hook timing has no valid records|cannot compute p95|need >=2 review_by dates|Operational hook latency budget exceeded|No hooks recorded for events outside the explicit budget table)'
+    reason_pattern: '(no hook-health data|no hooks with >=|only \d+ samples|need >=|fewer than \d+ samples|not enough data|no invocations recorded|no auto-trigger emissions yet|bootstrapping phase|hook timing has no records|hook timing has no valid records|cannot compute p95|need >=2 review_by dates|Operational hook latency budget exceeded|No hooks recorded for events outside the explicit budget table)'
     applies_when: Runtime/statistical assertions need more local observations before they are meaningful.
     opt_in_lane: run runtime workload long enough to produce samples, then rerun the contract.
   - id: optional-profile-artifact-absent
-    lanes: [unit, audit, contract, system, behavior, hooks]
+    lanes: [unit, audit, contract, system, behavior, hooks, integration]
     category: optional-runtime-state
-    reason_pattern: '(not found|not present|not configured|not cloned|does not exist|missing|not executable|not available|No .*found|No .*directory|No .*registered|No contextual_triggers defined|No global CLAUDE\.md found|empty|No real .*found|No container|no .* containers running|not running|never started|cannot import|settings\.json not present|compose file missing|not in compose file|got empty parameter set|Cannot set directory permissions|Skipped when .* running|Benchmark not yet run|Hook exited early \(capability/killswitch check)'
+    reason_pattern: '(not found|not present|not configured|not cloned|does not exist|missing|not executable|not available|No .*found|No .*directory|No .*registered|No contextual_triggers defined|No global CLAUDE\.md found|empty|No real .*found|No container|no .* containers running|not running|never started|cannot import|settings\.json not present|compose file missing|not in compose file|got empty parameter set|Cannot set directory permissions|Skipped when .* running|Benchmark not yet run|Hook exited early \(capability/killswitch check)|Could not extract .* from .* script'
     applies_when: The test targets an optional profile/artifact not present in this lane.
     opt_in_lane: enable the profile or run the corresponding proof drill.
   - id: documented-policy-exemption

@@ -45,10 +45,10 @@
   ],
   "overlay_schema_version": "portable-ai-overlay.v1",
   "policy": "The `.ai` tree is a generated maintainer overlay until ADR-258 Phase 5 decides otherwise; it is not the editable consumer primitive source.",
-  "primitive_count": 928,
+  "primitive_count": 929,
   "primitive_count_by_family": {
     "doctor": 1,
-    "hook": 247,
+    "hook": 248,
     "library": 3,
     "manifest": 4,
     "rule": 121,

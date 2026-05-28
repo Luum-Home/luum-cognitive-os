@@ -22329,7 +22329,7 @@
       "consumer_access_next_action": "keep install/profile/harness proof current",
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
-        "config": 15,
+        "config": 16,
         "doc": 74,
         "hook": 3,
         "rule": 15,
@@ -22365,6 +22365,10 @@
         {
           "family": "config",
           "path": "manifests/capability-coverage.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/dependency-adoption-evidence.yaml"
         },
         {
           "family": "config",
@@ -22992,7 +22996,7 @@
         "script_consumers:16",
         "test_consumers:32",
         "doc_consumers:74",
-        "config_consumers:15"
+        "config_consumers:16"
       ],
       "family": "rules",
       "lifecycle_id": "rules/trust-score.md",
@@ -23007,7 +23011,7 @@
         "shell",
         "generic-doc"
       ],
-      "total_consumers": 161
+      "total_consumers": 162
     },
     {
       "confidence": "high",
