@@ -111,6 +111,16 @@ class ReleaseAnalyzer:
                 if first_commit else _run(["git", "ls-files"], cwd=self.root)
 
         files = [f.strip() for f in files_out.splitlines() if f.strip()]
+
+        # Include uncommitted/staged worktree changes so release diagnostics remain
+        # useful immediately after a tag or while preparing the next patch.
+        worktree_out = _run(["git", "diff", "--name-only"], cwd=self.root)
+        staged_out = _run(["git", "diff", "--name-only", "--cached"], cwd=self.root)
+        for changed in [*worktree_out.splitlines(), *staged_out.splitlines()]:
+            changed = changed.strip()
+            if changed and changed not in files:
+                files.append(changed)
+
         files_changed = files_changed or len(files)
 
         return {
@@ -391,6 +401,16 @@ class ReleaseAnalyzer:
                 lines.append(f"### {label}")
                 for item in items:
                     lines.append(f"- {item}")
+                lines.append("")
+
+        if all(not items for items in groups.values()):
+            worktree = _run(["git", "diff", "--name-only"], cwd=self.root)
+            staged = _run(["git", "diff", "--name-only", "--cached"], cwd=self.root)
+            changed = sorted({line.strip() for line in [*worktree.splitlines(), *staged.splitlines()] if line.strip()})
+            if changed:
+                lines.append("### Uncommitted Changes")
+                for path in changed[:50]:
+                    lines.append(f"- {path}")
                 lines.append("")
 
         return "\n".join(lines)

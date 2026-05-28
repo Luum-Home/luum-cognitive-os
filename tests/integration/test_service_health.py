@@ -80,10 +80,14 @@ SERVICE_CONTRACTS = (
     {
         "runtime_service": "automaker",
         "expected_mode": "on_demand",
-        "classification": "optional-ui-extension",
-        "compose_services": ("automaker",),
+        "classification": "external/manual optional-ui-extension",
+        # ADR-aligned 2026-05-04 decision: AutoMaker's public GHCR image was
+        # not pullable, so the reference compose stack intentionally no longer
+        # defines an automaker service. Keep runtime mode tracked without
+        # making the ui profile fail on a dead third-party image.
+        "compose_services": (),
         "profiles": ("ui",),
-        "local_health": ("automaker", "http://localhost:4200/health"),
+        "local_health": ("automaker", None),
     },
 )
 

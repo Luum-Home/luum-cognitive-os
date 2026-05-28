@@ -1,3 +1,4 @@
+# SCOPE: os-only
 # Local privacy patterns — copy to:
 #   .cognitive-os/private/local-privacy-patterns.txt
 #

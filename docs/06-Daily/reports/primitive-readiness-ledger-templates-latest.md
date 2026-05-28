@@ -8,7 +8,7 @@ Consumer accessibility: lifecycle-declared-maintainer:19, projected-consumer-sur
 |---|---|---|---|---|---|---:|---|
 | `templates/adr-template.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 5 | keep maintainer-only or add explicit export path |
 | `templates/agent-mandatory-rules.md` | quality-gate | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 19 | keep maintainer-only or add explicit export path |
-| `templates/agent-planning.md` | agent-preamble | heuristic:text | medium | so-local-only |  | 3 | add lifecycle/package/projection metadata or keep SO-local |
+| `templates/agent-planning.md` | agent-preamble | heuristic:text | medium | so-local-only |  | 5 | add lifecycle/package/projection metadata or keep SO-local |
 | `templates/agent-preamble.md` | agent-preamble | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 63 | keep maintainer-only or add explicit export path |
 | `templates/agent-research-only.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 11 | keep maintainer-only or add explicit export path |
 | `templates/counsel-outreach/clean-room-permission.md` | prompt-composition | default | medium | lifecycle-declared-maintainer | advisory | 9 | keep maintainer-only or add explicit export path |

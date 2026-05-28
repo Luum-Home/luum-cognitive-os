@@ -168,7 +168,7 @@
         "config": 10,
         "doc": 102,
         "hook": 5,
-        "rule": 6,
+        "rule": 7,
         "script": 16,
         "skill": 5,
         "test": 34
@@ -664,6 +664,10 @@
         },
         {
           "family": "rule",
+          "path": "rules/research-first-protocol.md"
+        },
+        {
+          "family": "rule",
           "path": "rules/routing-pattern-authoring.md"
         },
         {
@@ -892,7 +896,7 @@
         "lifecycle",
         "skill_consumers:5",
         "hook_consumers:5",
-        "rule_consumers:6",
+        "rule_consumers:7",
         "script_consumers:16",
         "test_consumers:34",
         "doc_consumers:102",
@@ -910,7 +914,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 178
+      "total_consumers": 179
     },
     {
       "confidence": "high",
@@ -7316,7 +7320,7 @@
         "config": 15,
         "doc": 43,
         "hook": 3,
-        "rule": 8,
+        "rule": 9,
         "script": 12,
         "skill": 3,
         "test": 24
@@ -7592,6 +7596,10 @@
         },
         {
           "family": "rule",
+          "path": "rules/local-privacy-hygiene.md"
+        },
+        {
+          "family": "rule",
           "path": "rules/parry-integration.md"
         },
         {
@@ -7760,7 +7768,7 @@
         "lifecycle",
         "skill_consumers:3",
         "hook_consumers:3",
-        "rule_consumers:8",
+        "rule_consumers:9",
         "script_consumers:12",
         "test_consumers:24",
         "doc_consumers:43",
@@ -7778,7 +7786,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 108
+      "total_consumers": 109
     },
     {
       "confidence": "high",
@@ -7990,7 +7998,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 5,
-        "doc": 22,
+        "doc": 23,
         "hook": 1,
         "rule": 3,
         "script": 1,
@@ -8025,6 +8033,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-331-graphify-portable-context-optimization-primitive.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/INDEX.md"
         },
         {
           "family": "doc",
@@ -8155,7 +8167,7 @@
         "rule_consumers:3",
         "script_consumers:1",
         "test_consumers:4",
-        "doc_consumers:22",
+        "doc_consumers:23",
         "config_consumers:5"
       ],
       "family": "rules",
@@ -8170,7 +8182,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 37
+      "total_consumers": 38
     },
     {
       "confidence": "high",
@@ -9962,10 +9974,10 @@
         "config": 15,
         "doc": 101,
         "hook": 8,
-        "rule": 2,
-        "script": 75,
-        "skill": 16,
-        "test": 65
+        "rule": 3,
+        "script": 76,
+        "skill": 17,
+        "test": 68
       },
       "consumers": [
         {
@@ -10473,6 +10485,10 @@
           "path": "rules/agent-security.md"
         },
         {
+          "family": "rule",
+          "path": "rules/release-publishing.md"
+        },
+        {
           "family": "script",
           "path": "scripts/adr_tombstone.py"
         },
@@ -10587,6 +10603,10 @@
         {
           "family": "script",
           "path": "scripts/cos-orphan-process-audit.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-patch-release"
         },
         {
           "family": "script",
@@ -10814,6 +10834,10 @@
         },
         {
           "family": "skill",
+          "path": "skills/patch-release/SKILL.md"
+        },
+        {
+          "family": "skill",
           "path": "skills/primitive-authoring/SKILL.md"
         },
         {
@@ -11014,6 +11038,14 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_release-publishing.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_patch_release.py"
+        },
+        {
+          "family": "test",
           "path": "tests/security/test_adversarial_p1_p2.py"
         },
         {
@@ -11031,6 +11063,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_cos_graphify_phase_d_semantic.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_patch_release.py"
         },
         {
           "family": "test",
@@ -11100,11 +11136,11 @@
       "distribution": "lab",
       "evidence": [
         "lifecycle",
-        "skill_consumers:16",
+        "skill_consumers:17",
         "hook_consumers:8",
-        "rule_consumers:2",
-        "script_consumers:75",
-        "test_consumers:65",
+        "rule_consumers:3",
+        "script_consumers:76",
+        "test_consumers:68",
         "doc_consumers:101",
         "config_consumers:15"
       ],
@@ -11120,7 +11156,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 282
+      "total_consumers": 288
     },
     {
       "confidence": "high",
@@ -12559,17 +12595,21 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 2,
         "hook": 1,
         "rule": 1,
         "script": 2,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/agent-orchestration-adapters.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -12606,6 +12646,10 @@
         {
           "family": "test",
           "path": "tests/behavior/test_goal_stop_hook.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_os_only_missing_proof_smoke.py"
         }
       ],
       "distribution": null,
@@ -12613,9 +12657,9 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "script_consumers:2",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:2",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -12625,7 +12669,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 10
+      "total_consumers": 12
     },
     {
       "confidence": "high",
@@ -12728,10 +12772,16 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "config": 1,
         "hook": 1,
-        "rule": 1
+        "rule": 1,
+        "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
         {
           "family": "hook",
           "path": "hooks/self-install.sh"
@@ -12739,12 +12789,18 @@
         {
           "family": "rule",
           "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_os_only_missing_proof_smoke.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
-        "rule_consumers:1"
+        "rule_consumers:1",
+        "test_consumers:1",
+        "config_consumers:1"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -12754,7 +12810,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 2
+      "total_consumers": 4
     },
     {
       "confidence": "high",
@@ -13540,13 +13596,13 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 6,
+        "config": 7,
         "doc": 48,
         "hook": 2,
         "rule": 2,
-        "script": 1,
+        "script": 2,
         "skill": 2,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -13568,6 +13624,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-contracts.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-install-boundary.yaml"
         },
         {
           "family": "config",
@@ -13786,6 +13846,10 @@
           "path": "scripts/cos-generate-notices.py"
         },
         {
+          "family": "script",
+          "path": "scripts/cos_init.py"
+        },
+        {
           "family": "skill",
           "path": "skills/deep-tool-research/SKILL.md"
         },
@@ -13796,6 +13860,10 @@
         {
           "family": "test",
           "path": "tests/audit/test_rules_enforcement.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_install_core_boundary.py"
         },
         {
           "family": "test",
@@ -13812,10 +13880,10 @@
         "skill_consumers:2",
         "hook_consumers:2",
         "rule_consumers:2",
-        "script_consumers:1",
-        "test_consumers:3",
+        "script_consumers:2",
+        "test_consumers:4",
         "doc_consumers:48",
-        "config_consumers:6"
+        "config_consumers:7"
       ],
       "family": "rules",
       "lifecycle_id": "rules/license-policy.md",
@@ -13829,7 +13897,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 64
+      "total_consumers": 67
     },
     {
       "confidence": "high",
@@ -14134,6 +14202,55 @@
         "shell"
       ],
       "total_consumers": 66
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 1,
+        "rule": 1,
+        "script": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "rule",
+          "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-patch-release"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_local-privacy-hygiene.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_check_local_privacy.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "rule_consumers:1",
+        "script_consumers:1",
+        "test_consumers:2",
+        "config_consumers:1"
+      ],
+      "family": "rules",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "rules/local-privacy-hygiene.md",
+      "role": "driver-specific",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 5
     },
     {
       "confidence": "high",
@@ -16973,7 +17090,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 3,
-        "doc": 11,
+        "doc": 12,
         "hook": 1,
         "rule": 1,
         "script": 1,
@@ -17034,6 +17151,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/07-Capabilities/acc/latest.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/07-Capabilities/root/agent-efficiency-strategy.md"
         },
         {
@@ -17064,7 +17185,7 @@
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:2",
-        "doc_consumers:11",
+        "doc_consumers:12",
         "config_consumers:3"
       ],
       "family": "rules",
@@ -17079,7 +17200,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 19
+      "total_consumers": 20
     },
     {
       "confidence": "high",
@@ -17861,7 +17982,7 @@
         "hook": 4,
         "rule": 2,
         "script": 1,
-        "test": 5
+        "test": 6
       },
       "consumers": [
         {
@@ -17978,6 +18099,10 @@
         },
         {
           "family": "test",
+          "path": "tests/integration/test_consolidation_external.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_rate-limiting.py"
         },
         {
@@ -17995,7 +18120,7 @@
         "hook_consumers:4",
         "rule_consumers:2",
         "script_consumers:1",
-        "test_consumers:5",
+        "test_consumers:6",
         "doc_consumers:14",
         "config_consumers:5"
       ],
@@ -18011,7 +18136,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 31
+      "total_consumers": 32
     },
     {
       "confidence": "medium",
@@ -18187,6 +18312,51 @@
       "total_consumers": 15
     },
     {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 1,
+        "rule": 1,
+        "script": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "rule",
+          "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-patch-release"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_release-publishing.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "rule_consumers:1",
+        "script_consumers:1",
+        "test_consumers:1",
+        "config_consumers:1"
+      ],
+      "family": "rules",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "rules/release-publishing.md",
+      "role": "context-only",
+      "role_source": "default",
+      "supported_harnesses": [],
+      "total_consumers": 4
+    },
+    {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
@@ -18299,10 +18469,11 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 5,
+        "config": 6,
         "doc": 7,
         "hook": 1,
         "rule": 1,
+        "script": 1,
         "test": 3
       },
       "consumers": [
@@ -18321,6 +18492,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-install-boundary.yaml"
         },
         {
           "family": "config",
@@ -18363,12 +18538,16 @@
           "path": "rules/RULES-COMPACT.md"
         },
         {
+          "family": "script",
+          "path": "scripts/cos_init.py"
+        },
+        {
           "family": "test",
           "path": "tests/audit/test_research_reports_format.py"
         },
         {
           "family": "test",
-          "path": "tests/red_team/portability/test_os_only_scope_family.py"
+          "path": "tests/behavior/test_install_core_boundary.py"
         },
         {
           "family": "test",
@@ -18380,9 +18559,10 @@
         "lifecycle",
         "hook_consumers:1",
         "rule_consumers:1",
+        "script_consumers:1",
         "test_consumers:3",
         "doc_consumers:7",
-        "config_consumers:5"
+        "config_consumers:6"
       ],
       "family": "rules",
       "lifecycle_id": "rules/research-first-protocol.md",
@@ -18394,7 +18574,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 17
+      "total_consumers": 19
     },
     {
       "confidence": "high",
@@ -19137,17 +19317,29 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "rule": 1
+        "config": 1,
+        "rule": 1,
+        "test": 1
       },
       "consumers": [
         {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
           "family": "rule",
           "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_os_only_missing_proof_smoke.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "rule_consumers:1"
+        "rule_consumers:1",
+        "test_consumers:1",
+        "config_consumers:1"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -19157,21 +19349,26 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 1
+      "total_consumers": 3
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "rule": 1,
-        "script": 2
+        "script": 2,
+        "test": 1
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/exercised-coverage-baseline.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "rule",
@@ -19184,13 +19381,18 @@
         {
           "family": "script",
           "path": "scripts/routing_quality_gate.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_os_only_missing_proof_smoke.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "rule_consumers:1",
         "script_consumers:2",
-        "config_consumers:1"
+        "test_consumers:1",
+        "config_consumers:2"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -19200,7 +19402,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 4
+      "total_consumers": 6
     },
     {
       "confidence": "high",
@@ -23164,22 +23366,22 @@
   "summary": {
     "confidence": {
       "high": 104,
-      "medium": 23
+      "medium": 25
     },
     "consumer_accessibility": {
       "lifecycle-declared-maintainer": 117,
       "projected-consumer-surface": 5,
-      "so-local-only": 5
+      "so-local-only": 7
     },
     "roles": {
-      "context-only": 1,
-      "driver-specific": 15,
+      "context-only": 2,
+      "driver-specific": 16,
       "hook-enforced": 7,
       "lab": 104
     },
-    "total": 127,
+    "total": 129,
     "without_consumers": 0,
-    "without_lifecycle": 5
+    "without_lifecycle": 7
   },
   "target_family": "rules"
 }

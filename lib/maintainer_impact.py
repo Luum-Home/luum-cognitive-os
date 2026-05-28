@@ -162,7 +162,7 @@ def _metric_delta(before_metrics: dict[str, Any], after_metrics: dict[str, Any])
     for key in sorted(set(before_metrics) | set(after_metrics)):
         before = before_metrics.get(key)
         after = after_metrics.get(key)
-        if not isinstance(before, int | float) or not isinstance(after, int | float):
+        if not isinstance(before, (int, float)) or not isinstance(after, (int, float)):
             continue
         deltas[key] = {
             "before": float(before),

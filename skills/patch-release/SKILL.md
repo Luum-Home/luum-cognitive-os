@@ -6,6 +6,17 @@ version: 1.0.0
 last-updated: 2026-05-27
 audience: os-dev
 tags: [release, patch, goreleaser, validation]
+routing_intents:
+- intent: cognitive_os_patch_release
+  description: User wants to prepare, validate, diagnose, publish, or automate a Cognitive OS patch release.
+  confidence: 0.9
+routing_patterns:
+- pattern: \bpatch[- ]release\b
+  confidence: 0.95
+- pattern: \bcos-patch-release\b
+  confidence: 0.95
+- pattern: \b(release doctor|publish tag|GoReleaser)\b
+  confidence: 0.8
 summary_line: Repeatable patch release prepare/validate/publish/doctor workflow.
 ---
 

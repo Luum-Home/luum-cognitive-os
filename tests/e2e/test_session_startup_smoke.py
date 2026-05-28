@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import json
 import os
+import shlex
 import stat
 import subprocess
 import sys
@@ -62,12 +63,21 @@ def _load_session_start_hooks(repo_root: Path) -> list[str]:
     out: list[str] = []
     for entry in ss[0]["hooks"]:
         cmd = entry.get("command", "")
-        # command looks like: bash "$CLAUDE_PROJECT_DIR/hooks/foo.sh"
-        # Extract the /hooks/foo.sh path via simple parsing.
+        # Commands may invoke hooks directly or through
+        # scripts/hook-timing-wrapper.sh. Parse shell quoting and select the
+        # hook argument, not the wrapper path.
+        try:
+            parts = shlex.split(cmd)
+        except ValueError:
+            parts = cmd.split()
+
+        hook_arg = next(
+            (part for part in reversed(parts) if "$CLAUDE_PROJECT_DIR/hooks/" in part),
+            "",
+        )
         marker = "$CLAUDE_PROJECT_DIR/"
-        if marker in cmd:
-            rel = cmd.split(marker, 1)[1].rstrip('"').strip()
-            out.append(rel)
+        if marker in hook_arg:
+            out.append(hook_arg.split(marker, 1)[1])
     assert out, "No SessionStart hooks parsed from settings.json"
     return out
 

@@ -58,3 +58,34 @@ def test_file_mode_records_completed_chunks_before_failure(tmp_path: Path):
     assert "PYTEST_CHUNK_RC 1 tests/test_b.py" in result.stdout
     state = json.loads(state_file.read_text(encoding="utf-8"))
     assert state["completed"] == ["tests/test_a.py"]
+
+
+
+def test_discovery_skips_benchmark_workload_fixtures(tmp_path: Path):
+    runner = _load_runner()
+    workload_tests = tmp_path / "tests" / "fixtures" / "benchmark_workloads" / "demo" / "tests"
+    workload_tests.mkdir(parents=True)
+    (workload_tests / "test_fixture.py").write_text(
+        "def test_fixture():\n    assert False\n", encoding="utf-8"
+    )
+    real_tests = tmp_path / "tests" / "unit"
+    real_tests.mkdir(parents=True)
+    (real_tests / "test_real.py").write_text(
+        "def test_real():\n    assert True\n", encoding="utf-8"
+    )
+
+    chunks = runner.discover_file_chunks([str(tmp_path / "tests")])
+
+    assert [Path(chunk.id).name for chunk in chunks] == ["test_real.py"]
+
+
+def test_discovery_skips_empty_placeholder_test_files(tmp_path: Path):
+    runner = _load_runner()
+    tests_dir = tmp_path / "tests"
+    tests_dir.mkdir()
+    (tests_dir / "test_empty.py").write_text("", encoding="utf-8")
+    (tests_dir / "test_real.py").write_text("def test_real():\n    assert True\n", encoding="utf-8")
+
+    chunks = runner.discover_file_chunks([str(tests_dir)])
+
+    assert [Path(chunk.id).name for chunk in chunks] == ["test_real.py"]

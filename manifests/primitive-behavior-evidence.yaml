@@ -4117,6 +4117,10 @@ evidence:
   harnesses: [claude, codex, shell-ci]
   tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
   rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+- primitive: templates/local-privacy-patterns.example.txt
+  harnesses: [claude, codex, shell-ci]
+  tests: [tests/red_team/portability/test_local-privacy-hygiene.py]
+  rationale: Local-privacy example template is placeholder-only and is covered by the local privacy hygiene portability red-team proof.
 patterns:
 - pattern: tests/**
   behavior_proven: true

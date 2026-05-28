@@ -19,6 +19,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import subprocess
 import sys
 import time
@@ -27,6 +28,10 @@ from pathlib import Path
 from typing import Any, Iterable
 
 DEFAULT_STATE_FILE = Path(".cognitive-os/runtime/pytest-serial-repair-state.json")
+
+_REPO_PYTHON = Path(__file__).resolve().parents[1] / ".venv" / "bin" / "python"
+if _REPO_PYTHON.exists() and Path(sys.executable).resolve() != _REPO_PYTHON.resolve() and os.environ.get("COS_NO_REEXEC_VENV") != "1":
+    os.execv(str(_REPO_PYTHON), [str(_REPO_PYTHON), str(Path(__file__).resolve()), *sys.argv[1:]])
 
 
 @dataclass(frozen=True)
@@ -43,10 +48,31 @@ def _tail(text: str, chars: int) -> str:
     return text[-chars:]
 
 
+IGNORED_DISCOVERY_PARTS = {"benchmark_workloads"}
+
+
+def _is_ignored_test_path(path: Path) -> bool:
+    """Return true for fixture workloads that are not repository test lanes."""
+    return any(part in IGNORED_DISCOVERY_PARTS for part in path.parts)
+
+
+def _contains_collectable_tests(path: Path) -> bool:
+    """Return true when a candidate file has likely pytest collectables."""
+    try:
+        text = path.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return False
+    return "def test_" in text or "async def test_" in text or "class Test" in text
+
+
 def _is_test_file(path: Path) -> bool:
     name = path.name
-    return path.is_file() and name.endswith(".py") and (
-        name.startswith("test_") or name.endswith("_test.py")
+    return (
+        path.is_file()
+        and not _is_ignored_test_path(path)
+        and name.endswith(".py")
+        and (name.startswith("test_") or name.endswith("_test.py"))
+        and _contains_collectable_tests(path)
     )
 
 

@@ -438,11 +438,11 @@
       "consumer_families": {
         "config": 23,
         "doc": 155,
-        "hook": 40,
+        "hook": 41,
         "rule": 6,
-        "script": 61,
+        "script": 62,
         "skill": 11,
-        "test": 85
+        "test": 86
       },
       "consumers": [
         {
@@ -1275,6 +1275,10 @@
         },
         {
           "family": "hook",
+          "path": "hooks/research-compliance-guard.sh"
+        },
+        {
+          "family": "hook",
           "path": "hooks/research-to-runtime-firewall.sh"
         },
         {
@@ -1356,6 +1360,10 @@
         {
           "family": "script",
           "path": "scripts/aspirational_audit.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/check-local-privacy.sh"
         },
         {
           "family": "script",
@@ -1703,6 +1711,10 @@
         },
         {
           "family": "test",
+          "path": "tests/behavior/test_research_compliance_guard.py"
+        },
+        {
+          "family": "test",
           "path": "tests/behavior/test_safety_mesh.py"
         },
         {
@@ -1974,10 +1986,10 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:11",
-        "hook_consumers:40",
+        "hook_consumers:41",
         "rule_consumers:6",
-        "script_consumers:61",
-        "test_consumers:85",
+        "script_consumers:62",
+        "test_consumers:86",
         "doc_consumers:155",
         "config_consumers:23"
       ],
@@ -1993,7 +2005,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 381
+      "total_consumers": 384
     },
     {
       "confidence": "high",
@@ -2176,10 +2188,10 @@
       "consumer_families": {
         "config": 7,
         "doc": 82,
-        "hook": 82,
+        "hook": 83,
         "rule": 7,
         "script": 33,
-        "skill": 2,
+        "skill": 3,
         "test": 34
       },
       "consumers": [
@@ -2769,6 +2781,10 @@
         },
         {
           "family": "hook",
+          "path": "hooks/research-compliance-guard.sh"
+        },
+        {
+          "family": "hook",
           "path": "hooks/research-quality-validator.sh"
         },
         {
@@ -3033,6 +3049,10 @@
         },
         {
           "family": "skill",
+          "path": "skills/patch-release/SKILL.md"
+        },
+        {
+          "family": "skill",
           "path": "skills/scaffold-project/SKILL.md"
         },
         {
@@ -3175,8 +3195,8 @@
       "distribution": "core",
       "evidence": [
         "lifecycle",
-        "skill_consumers:2",
-        "hook_consumers:82",
+        "skill_consumers:3",
+        "hook_consumers:83",
         "rule_consumers:7",
         "script_consumers:33",
         "test_consumers:34",
@@ -3195,7 +3215,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 247
+      "total_consumers": 249
     },
     {
       "confidence": "high",
@@ -4463,11 +4483,11 @@
       "consumer_families": {
         "config": 18,
         "doc": 163,
-        "hook": 23,
+        "hook": 24,
         "rule": 3,
         "script": 50,
         "skill": 9,
-        "test": 128
+        "test": 129
       },
       "consumers": [
         {
@@ -5260,6 +5280,10 @@
         },
         {
           "family": "hook",
+          "path": "hooks/research-compliance-guard.sh"
+        },
+        {
+          "family": "hook",
           "path": "hooks/session-heartbeat.sh"
         },
         {
@@ -5788,6 +5812,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_os_only_missing_proof_smoke.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_package_skills.py"
         },
         {
@@ -6051,10 +6079,10 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:9",
-        "hook_consumers:23",
+        "hook_consumers:24",
         "rule_consumers:3",
         "script_consumers:50",
-        "test_consumers:128",
+        "test_consumers:129",
         "doc_consumers:163",
         "config_consumers:18"
       ],
@@ -6070,7 +6098,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 394
+      "total_consumers": 396
     },
     {
       "confidence": "high",
@@ -7906,7 +7934,7 @@
         "rule": 1,
         "script": 18,
         "skill": 3,
-        "test": 40
+        "test": 41
       },
       "consumers": [
         {
@@ -8319,6 +8347,10 @@
         },
         {
           "family": "test",
+          "path": "tests/e2e/test_session_startup_smoke.py"
+        },
+        {
+          "family": "test",
           "path": "tests/integration/test_agent_working_dir_inject.py"
         },
         {
@@ -8441,7 +8473,7 @@
         "hook_consumers:2",
         "rule_consumers:1",
         "script_consumers:18",
-        "test_consumers:40",
+        "test_consumers:41",
         "doc_consumers:54",
         "config_consumers:13"
       ],
@@ -8457,7 +8489,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 131
+      "total_consumers": 132
     },
     {
       "confidence": "high",
@@ -14556,7 +14588,7 @@
         "config": 10,
         "doc": 1,
         "script": 11,
-        "test": 10
+        "test": 11
       },
       "consumers": [
         {
@@ -14661,6 +14693,10 @@
         },
         {
           "family": "test",
+          "path": "tests/chaos/test_multi_ide_swarm_safety.py"
+        },
+        {
+          "family": "test",
           "path": "tests/contracts/test_orchestrator_claim_gate.py"
         },
         {
@@ -14692,7 +14728,7 @@
       "evidence": [
         "lifecycle",
         "script_consumers:11",
-        "test_consumers:10",
+        "test_consumers:11",
         "doc_consumers:1",
         "config_consumers:10"
       ],
@@ -14707,7 +14743,7 @@
         "claude",
         "codex"
       ],
-      "total_consumers": 32
+      "total_consumers": 33
     },
     {
       "confidence": "high",
@@ -18405,7 +18441,7 @@
         "config": 11,
         "doc": 13,
         "hook": 1,
-        "rule": 2,
+        "rule": 3,
         "script": 8,
         "test": 7
       },
@@ -18519,6 +18555,10 @@
           "path": "rules/confidentiality-protection.md"
         },
         {
+          "family": "rule",
+          "path": "rules/local-privacy-hygiene.md"
+        },
+        {
           "family": "script",
           "path": "scripts/_lib/settings-driver-claude-code.sh"
         },
@@ -18583,7 +18623,7 @@
       "evidence": [
         "lifecycle",
         "hook_consumers:1",
-        "rule_consumers:2",
+        "rule_consumers:3",
         "script_consumers:8",
         "test_consumers:7",
         "doc_consumers:13",
@@ -18599,7 +18639,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 42
+      "total_consumers": 43
     },
     {
       "confidence": "high",
@@ -18805,7 +18845,7 @@
         "config": 15,
         "doc": 43,
         "hook": 2,
-        "rule": 9,
+        "rule": 10,
         "script": 12,
         "skill": 3,
         "test": 24
@@ -19081,6 +19121,10 @@
         },
         {
           "family": "rule",
+          "path": "rules/local-privacy-hygiene.md"
+        },
+        {
+          "family": "rule",
           "path": "rules/parry-integration.md"
         },
         {
@@ -19249,7 +19293,7 @@
         "lifecycle",
         "skill_consumers:3",
         "hook_consumers:2",
-        "rule_consumers:9",
+        "rule_consumers:10",
         "script_consumers:12",
         "test_consumers:24",
         "doc_consumers:43",
@@ -19265,7 +19309,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 108
+      "total_consumers": 109
     },
     {
       "confidence": "high",
@@ -23877,7 +23921,7 @@
       "consumer_families": {
         "config": 6,
         "script": 2,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -23918,6 +23962,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_eas-validation-gate.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_bash_hot_path_dispatcher_projection.py"
         }
       ],
@@ -23925,7 +23973,7 @@
       "evidence": [
         "lifecycle",
         "script_consumers:2",
-        "test_consumers:2",
+        "test_consumers:3",
         "config_consumers:6"
       ],
       "family": "hooks",
@@ -23939,7 +23987,7 @@
         "claude",
         "codex"
       ],
-      "total_consumers": 10
+      "total_consumers": 11
     },
     {
       "confidence": "high",
@@ -27222,11 +27270,11 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 5,
+        "config": 6,
         "doc": 1,
         "rule": 1,
         "script": 3,
-        "test": 4
+        "test": 5
       },
       "consumers": [
         {
@@ -27244,6 +27292,10 @@
         {
           "family": "config",
           "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -27279,6 +27331,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_os_only_missing_proof_smoke.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_bash_hot_path_dispatcher_projection.py"
         },
         {
@@ -27291,9 +27347,9 @@
         "lifecycle",
         "rule_consumers:1",
         "script_consumers:3",
-        "test_consumers:4",
+        "test_consumers:5",
         "doc_consumers:1",
-        "config_consumers:5"
+        "config_consumers:6"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/goal-stop-gate.sh",
@@ -27306,7 +27362,7 @@
         "claude",
         "codex"
       ],
-      "total_consumers": 14
+      "total_consumers": 16
     },
     {
       "confidence": "high",
@@ -36419,6 +36475,69 @@
       "total_consumers": 30
     },
     {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 2,
+        "script": 4,
+        "test": 3
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/hook-registration-classification.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-install-boundary.yaml"
+        },
+        {
+          "family": "script",
+          "path": "scripts/apply-efficiency-profile.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-patch-release"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_init.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/generate-project-settings.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_install_core_boundary.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_research_compliance_guard.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_research-compliance-guard.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "script_consumers:4",
+        "test_consumers:3",
+        "config_consumers:2"
+      ],
+      "family": "hooks",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "hooks/research-compliance-guard.sh",
+      "role": "driver-specific",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 9
+    },
+    {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
@@ -44787,14 +44906,18 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/hook-registration-classification.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "doc",
@@ -44803,13 +44926,17 @@
         {
           "family": "test",
           "path": "tests/hooks/test_subagent_input_schema_validator.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_os_only_missing_proof_smoke.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:1",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "family": "hooks",
       "lifecycle_id": null,
@@ -44819,7 +44946,7 @@
       "role": "observability",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 3
+      "total_consumers": 5
     },
     {
       "confidence": "high",
@@ -47756,24 +47883,24 @@
   "summary": {
     "confidence": {
       "high": 266,
-      "medium": 13
+      "medium": 14
     },
     "consumer_accessibility": {
       "lifecycle-declared-consumer-candidate": 22,
       "lifecycle-declared-maintainer": 174,
       "projected-consumer-surface": 70,
-      "so-local-only": 13
+      "so-local-only": 14
     },
     "roles": {
-      "driver-specific": 27,
+      "driver-specific": 28,
       "lab": 103,
       "memory-lifecycle": 99,
       "observability": 36,
       "runtime-safety": 14
     },
-    "total": 279,
+    "total": 280,
     "without_consumers": 0,
-    "without_lifecycle": 13
+    "without_lifecycle": 14
   },
   "target_family": "hooks"
 }

@@ -177,10 +177,15 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "config": 1,
         "doc": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-038-preamble-v2-industry-aligned.md"
@@ -191,13 +196,18 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_os_only_missing_proof_smoke.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_prompt_integration.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:2",
-        "doc_consumers:1"
+        "test_consumers:3",
+        "doc_consumers:1",
+        "config_consumers:1"
       ],
       "family": "templates",
       "lifecycle_id": null,
@@ -207,7 +217,7 @@
       "role": "agent-preamble",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 3
+      "total_consumers": 5
     },
     {
       "confidence": "medium",

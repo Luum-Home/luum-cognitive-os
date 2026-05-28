@@ -5324,9 +5324,15 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 4
+        "config": 1,
+        "doc": 4,
+        "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-331-graphify-portable-context-optimization-primitive.md"
@@ -5342,11 +5348,17 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/graphify-portable-optimization-plan-2026-05-22.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_os_only_missing_proof_smoke.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "doc_consumers:4"
+        "test_consumers:1",
+        "doc_consumers:4",
+        "config_consumers:1"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -5356,7 +5368,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 4
+      "total_consumers": 6
     },
     {
       "confidence": "high",
@@ -5366,7 +5378,7 @@
         "config": 8,
         "doc": 17,
         "script": 12,
-        "test": 18
+        "test": 19
       },
       "consumers": [
         {
@@ -5547,6 +5559,10 @@
         },
         {
           "family": "test",
+          "path": "tests/e2e/test_session_startup_smoke.py"
+        },
+        {
+          "family": "test",
           "path": "tests/integration/test_sessionstart_subagent_scope.py"
         },
         {
@@ -5594,7 +5610,7 @@
       "evidence": [
         "lifecycle",
         "script_consumers:12",
-        "test_consumers:18",
+        "test_consumers:19",
         "doc_consumers:17",
         "config_consumers:8"
       ],
@@ -5608,23 +5624,27 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 55
+      "total_consumers": 56
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 1,
         "script": 1,
         "skill": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/exercised-coverage-baseline.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -5648,6 +5668,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_os_only_missing_proof_smoke.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_install_skill_skill.py"
         }
       ],
@@ -5655,9 +5679,9 @@
       "evidence": [
         "skill_consumers:1",
         "script_consumers:1",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:1",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -5667,7 +5691,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 9
     },
     {
       "confidence": "high",
@@ -5740,16 +5764,20 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 2,
         "script": 1,
         "skill": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/exercised-coverage-baseline.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -5773,6 +5801,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_os_only_missing_proof_smoke.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_install_skill_skill.py"
         }
       ],
@@ -5780,9 +5812,9 @@
       "evidence": [
         "skill_consumers:1",
         "script_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:2",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -5792,7 +5824,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 9
     },
     {
       "confidence": "high",
@@ -6186,6 +6218,69 @@
         "shell"
       ],
       "total_consumers": 7
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 1,
+        "rule": 1,
+        "script": 1,
+        "test": 4,
+        "workflow": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "rule",
+          "path": "rules/release-publishing.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-patch-release"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos-patch-release.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_release-publishing.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_patch_release.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_patch_release.py"
+        },
+        {
+          "family": "workflow",
+          "path": ".github/workflows/cos-binary-release.yml"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "rule_consumers:1",
+        "script_consumers:1",
+        "test_consumers:4",
+        "config_consumers:1",
+        "workflow_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/patch-release/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 8
     },
     {
       "confidence": "high",
@@ -8193,13 +8288,13 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 8,
+        "config": 9,
         "doc": 39,
         "hook": 1,
         "rule": 3,
         "script": 10,
         "skill": 7,
-        "test": 10
+        "test": 11
       },
       "consumers": [
         {
@@ -8209,6 +8304,10 @@
         {
           "family": "config",
           "path": "manifests/dependencies.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -8492,6 +8591,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_low_confidence_scope_batch.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_security-red-team.py"
         },
         {
@@ -8522,9 +8625,9 @@
         "hook_consumers:1",
         "rule_consumers:3",
         "script_consumers:10",
-        "test_consumers:10",
+        "test_consumers:11",
         "doc_consumers:39",
-        "config_consumers:8"
+        "config_consumers:9"
       ],
       "family": "skills",
       "lifecycle_id": "skills/red-team/SKILL.md",
@@ -8538,7 +8641,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 78
+      "total_consumers": 80
     },
     {
       "confidence": "high",
@@ -13854,25 +13957,25 @@
   "schema_version": 1,
   "summary": {
     "confidence": {
-      "high": 104,
+      "high": 105,
       "medium": 12
     },
     "consumer_accessibility": {
       "lifecycle-declared-maintainer": 98,
       "projected-consumer-surface": 7,
-      "repo-skill-not-projectable": 6,
+      "repo-skill-not-projectable": 7,
       "so-local-only": 5
     },
     "roles": {
-      "compatibility-wrapper": 50,
+      "compatibility-wrapper": 51,
       "lab": 52,
       "project-extension": 4,
       "shared-agent-tool": 2,
       "so-maintainer": 8
     },
-    "total": 116,
+    "total": 117,
     "without_consumers": 1,
-    "without_lifecycle": 11
+    "without_lifecycle": 12
   },
   "target_family": "skills"
 }

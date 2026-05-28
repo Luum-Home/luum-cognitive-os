@@ -3,7 +3,7 @@
 
 > Level-1 always-load routing hints. Load `skills/CATALOG-COMPACT.md` for broader discovery; load full `SKILL.md` only on invocation.
 
-Total skills: 181
+Total skills: 182
 
 - agent-kpis [b]: Calculate and report Cognit…; k=agent-kpis,calculate
 - analyze-improvements [b]: Analyze KPIs, error pattern…; k=analyze-improvements,analyze
@@ -91,6 +91,7 @@ Total skills: 181
 - metrics-calibrator [d]: Analyze KPI history and aut…; k=metrics-calibrator,analyze
 - nemo-guardrails [d]: Generate and configure NeMo…; k=nemo-guardrails,generate
 - os-session-wrapup [d]: SO-only session close adden…; k=os-session-wrapup,so-only
+- patch-release [d]: Repeatable patch release pr…; k=patch-release,repeatable
 - pentest-self [d]: Self-penetration testing fo…; k=pentest-self,self-penetration
 - primitive-classifier [d]: Classify a new agentic prim…; k=primitive-classifier,classify
 - primitive-surface-reduction [d]: Plan/apply safe reduction o…; k=primitive-surface-reduction,plan

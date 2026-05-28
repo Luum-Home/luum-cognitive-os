@@ -90,13 +90,13 @@ HOOK_SEVERITY_HINTS: tuple[tuple[str, str], ...] = (
 PHASE_POLICIES: dict[str, dict[str, Any]] = {
     "reconstruction": {
         "strictness": "minimal-blocking",
-        "block": ["destructive-git", "destructive-file", "secret-write", "credential-leak", "security", "work-loss", "protected-branch"],
-        "advisory": ["style", "process", "low-risk-structure", "config-protection", "release"],
+        "block": ["destructive-git", "destructive-file", "secret-write", "credential-leak", "security", "work-loss", "protected-branch", "config-protection"],
+        "advisory": ["style", "process", "low-risk-structure", "release"],
     },
     "stabilization": {
         "strictness": "contract-focused",
-        "block": ["contracts", "tests", "primitive-drift", "runtime-state-loss", "destructive-git", "destructive-file", "security", "work-loss", "protected-branch"],
-        "advisory": ["style", "low-signal-process", "config-protection", "release"],
+        "block": ["contracts", "tests", "primitive-drift", "runtime-state-loss", "destructive-git", "destructive-file", "security", "work-loss", "protected-branch", "config-protection"],
+        "advisory": ["style", "low-signal-process", "release"],
     },
     "production": {
         "strictness": "strict-release",

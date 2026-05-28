@@ -35,6 +35,15 @@ adoptions:
     rationale: Reference ASGI server for FastAPI; no realistic alternative for production deployment.
     audit_link: docs/02-Decisions/adrs/ADR-291-agent-runtime-web-service.md
   - package: pydantic
+    version_constraint: ">=2.0"
+    consumer: pyproject.toml (core)
+    owner_adr: trust-report-schema core dependency
+    due_diligence_id: trust-report-parser-core
+    license: MIT
+    integration_pattern: lib/trust_report_parser.py and trust-score validator hooks import Pydantic models from the core runtime environment.
+    rationale: Pydantic is already approved for ADR-291 agent-service schemas; promoting it to the root core dependency keeps self-host hooks and tests deterministic when trust-report parsing runs outside optional package extras.
+    audit_link: tests/unit/test_trust_report_parser.py
+  - package: pydantic
     version_constraint: ">=2.5"
     consumer: packages/agent-service/pyproject.toml
     owner_adr: ADR-291

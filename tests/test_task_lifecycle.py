@@ -1,7 +1,7 @@
 """Behavioral/integration tests for the agent task lifecycle system.
 
 Tests validate that tasks flow correctly through:
-    created -> in_progress -> completed (or failed)
+    created -> pending -> in_progress -> completed (or failed)
 
 Components under test:
   1. hooks/agent-prelaunch.sh    -- PreToolUse hook that creates tasks
@@ -151,12 +151,12 @@ class TestTaskCreation:
         assert isinstance(data["tasks"], list)
         assert len(data["tasks"]) == 1
 
-    def test_task_created_with_in_progress_status(self, tmp_path: Path) -> None:
-        """Task is created with status 'in_progress'."""
+    def test_task_created_with_pending_status(self, tmp_path: Path) -> None:
+        """PreToolUse records a pending task before the agent process starts."""
         _run_prelaunch(tmp_path)
         tasks_file = tmp_path / ".cognitive-os" / "tasks" / "active-tasks.json"
         data = _read_tasks(tasks_file)
-        assert data["tasks"][0]["status"] == "in_progress"
+        assert data["tasks"][0]["status"] == "pending"
 
     def test_task_created_with_null_pid(self, tmp_path: Path) -> None:
         """Task is created with pid=null (NOT a shell PID).
@@ -175,13 +175,13 @@ class TestTaskCreation:
         )
 
     def test_task_id_follows_pattern(self, tmp_path: Path) -> None:
-        """Task ID follows the pattern 'task-TIMESTAMP-RANDOM'."""
+        """Task ID follows the stable descriptor-hash pattern."""
         _run_prelaunch(tmp_path)
         tasks_file = tmp_path / ".cognitive-os" / "tasks" / "active-tasks.json"
         data = _read_tasks(tasks_file)
         task_id = data["tasks"][0]["id"]
-        assert re.match(r"^task-\d+-\d+$", task_id), (
-            f"Task ID '{task_id}' does not match pattern 'task-TIMESTAMP-RANDOM'"
+        assert re.match(r"^task-desc-[0-9a-f]{16}$", task_id), (
+            f"Task ID '{task_id}' does not match pattern 'task-desc-HEX16'"
         )
 
     def test_task_description_captured_from_description_field(self, tmp_path: Path) -> None:
@@ -605,7 +605,7 @@ class TestEndToEndLifecycle:
         data = _read_tasks(tasks_file)
         assert len(data["tasks"]) == 1
         task_id = data["tasks"][0]["id"]
-        assert data["tasks"][0]["status"] == "in_progress"
+        assert data["tasks"][0]["status"] == "pending"
         assert data["tasks"][0]["pid"] is None
 
         monitor = AgentHealthMonitor(tasks_path=str(tasks_file))
@@ -625,11 +625,11 @@ class TestEndToEndLifecycle:
         data = _read_tasks(tasks_file)
         task_id = data["tasks"][0]["id"]
 
-        # Immediately after creation: healthy (young, null PID)
+        # Immediately after creation: pending tasks are not monitored as running.
         monitor = AgentHealthMonitor(tasks_path=str(tasks_file))
         health = monitor.check_health()
-        assert len(health["dead"]) == 0, "Newly created task with null PID must not be dead"
-        assert len(health["healthy"]) == 1
+        assert len(health["dead"]) == 0, "Newly created pending task with null PID must not be dead"
+        assert sum(len(v) for v in health.values()) == 0
 
         monitor._update_task_status(task_id, "completed")
         health_after = monitor.check_health()
@@ -710,16 +710,16 @@ class TestEndToEndLifecycle:
         by_id = {t["id"]: t for t in data["tasks"]}
         assert by_id[ids[0]]["status"] == "completed"
         assert by_id[ids[1]]["status"] == "failed"
-        assert by_id[ids[2]]["status"] == "in_progress"
+        assert by_id[ids[2]]["status"] == "pending"
 
         health = monitor.check_health()
         total = sum(len(v) for v in health.values())
-        assert total == 1, "Only the remaining in_progress task should appear in health"
+        assert total == 0, "Pending tasks are not treated as running by health monitor"
 
-    def test_created_task_immediately_healthy_to_monitor(self, tmp_path: Path) -> None:
-        """A task created by the hook is immediately seen as 'healthy' by the monitor.
+    def test_created_task_immediately_pending_to_monitor(self, tmp_path: Path) -> None:
+        """A task created by the hook is pending until the agent process starts.
 
-        This is the core end-to-end guarantee: create -> immediately healthy, not dead.
+        This is the core end-to-end guarantee: create -> pending, not dead.
         """
         _run_prelaunch(tmp_path, tool_input={"description": "immediate health check"})
         tasks_file = tmp_path / ".cognitive-os" / "tasks" / "active-tasks.json"
@@ -727,9 +727,9 @@ class TestEndToEndLifecycle:
         monitor = AgentHealthMonitor(tasks_path=str(tasks_file))
         health = monitor.check_health()
 
-        assert len(health["dead"]) == 0, "Freshly created task must not be dead"
-        assert len(health["timeout"]) == 0, "Freshly created task must not be timed out"
-        assert len(health["healthy"]) == 1, "Freshly created task must be healthy"
+        assert len(health["dead"]) == 0, "Freshly created pending task must not be dead"
+        assert len(health["timeout"]) == 0, "Freshly created pending task must not be timed out"
+        assert len(health["healthy"]) == 0, "Pending task should not be treated as running"
 
     def test_requeue_timeout_agents_updates_task_file(self, tmp_path: Path) -> None:
         """requeue_timeout_agents() updates the tasks file even if queue enqueue fails."""

@@ -231,6 +231,7 @@ cos_stash_lock_acquire() {
     while true; do
       if _stash_lock_mkdir_try "$lock_dir" "$hook_name"; then
         _STASH_LOCK_DIR="$lock_dir"
+        _stash_lock_write_meta "$lock_file" "$hook_name"
         acquired=1
         break
       fi
@@ -270,7 +271,10 @@ cos_stash_lock_release() {
     _stash_lock_flock_release
   else
     if [ -n "${_STASH_LOCK_DIR:-}" ]; then
+      local lock_file
+      lock_file="$(_stash_lock_file)"
       rm -rf "$_STASH_LOCK_DIR" 2>/dev/null || true
+      rm -f "$lock_file" 2>/dev/null || true
       _STASH_LOCK_DIR=""
     fi
   fi

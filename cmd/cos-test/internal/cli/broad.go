@@ -140,7 +140,7 @@ func runBroad(cfg *config.Config, dryRun, includeOptional, noDocker bool) error 
 				_ = pr.WriteResourceOutcome(invocationOptionsFor(plan, plan.Invokes[0], name), "blocked_policy")
 			}
 			fmt.Fprintf(os.Stderr, "[cos-test broad] lane %s resource policy block: %v\n", name, err)
-			outcomes = append(outcomes, laneOutcome{Lane: name, Failed: true})
+			outcomes = append(outcomes, laneOutcome{Lane: name, Skipped: true, Reason: err.Error()})
 			continue
 		}
 		for _, inv := range plan.Invokes {

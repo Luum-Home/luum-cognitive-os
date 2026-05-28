@@ -546,7 +546,7 @@ def build_report(manifest_path: Path = DEFAULT_MANIFEST) -> dict[str, Any]:
         "primitive_scores": [asdict(score) for score in scores],
         "mitigation_backlog": backlog(findings, scores),
     }
-    report["overall_score"] = {"value": overall_score(findings, scores, manifest)}
+    report["overall_score"] = overall_score(findings, scores, manifest)
     return report
 
 

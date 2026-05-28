@@ -23,6 +23,7 @@ import json
 import os
 import re
 import shutil
+import sqlite3
 import subprocess
 import sys
 from dataclasses import dataclass, asdict
@@ -373,6 +374,49 @@ def _parse_engram_text_for_slugs(text: str) -> dict[str, bool]:
     return answered
 
 
+
+
+def _engram_db_path() -> Path:
+    return Path(os.environ.get("ENGRAM_DB", str(Path.home() / ".engram" / "engram.db"))).expanduser()
+
+
+def _scan_engram_answers_from_db() -> dict[str, bool]:
+    """Read answered decision markers directly from Engram SQLite when present.
+
+    The CLI search path can be slow or blocked by live embedding/search work. The
+    persistence contract for decision answers is local observations with either a
+    decision/* topic_key or a title/content marker containing "Decision answered:".
+    """
+    db_path = _engram_db_path()
+    if not db_path.exists():
+        return {}
+    answered: dict[str, bool] = {}
+    try:
+        conn = sqlite3.connect(str(db_path), timeout=1.0)
+        try:
+            rows = conn.execute(
+                """
+                SELECT title, content, topic_key
+                FROM observations
+                WHERE deleted_at IS NULL
+                  AND (topic_key LIKE 'decision/%'
+                       OR title LIKE '%Decision answered:%'
+                       OR content LIKE '%Decision answered:%')
+                ORDER BY id DESC
+                LIMIT 500
+                """
+            ).fetchall()
+        finally:
+            conn.close()
+    except Exception:
+        return {}
+    for title, content, topic_key in rows:
+        if topic_key and str(topic_key).startswith("decision/"):
+            answered[str(topic_key).removeprefix("decision/")] = True
+        answered.update(_parse_engram_text_for_slugs("\n".join(str(x or "") for x in (title, content, topic_key))))
+    return answered
+
+
 def _engram_search_for_answers(query: str, timeout: float = ENGRAM_TIMEOUT_SECONDS) -> dict[str, bool]:
     """Run one engram search and extract decision slugs from text output."""
     try:
@@ -400,6 +444,8 @@ def _probe_engram_available(timeout: float = ENGRAM_TIMEOUT_SECONDS) -> bool:
     """
     if shutil.which("engram") is None:
         return False
+    if _engram_db_path().exists():
+        return True
     try:
         probe = subprocess.run(
             ["engram", "search", "Decision answered probe"],
@@ -418,11 +464,10 @@ def scan_engram_answers_with_status() -> tuple[dict[str, bool], bool]:
     if not _probe_engram_available():
         return {}, False
 
-    answered: dict[str, bool] = {}
+    answered: dict[str, bool] = _scan_engram_answers_from_db()
 
-    # Multiple queries to cover all decision/* entries (engram limits to 10/query).
-    # NOTE: engram uses semantic/vector search, not keyword prefix search.
-    # Short specific queries return more relevant results than long compound queries.
+    # Multiple queries cover older Engram stores without direct DB access. Keep
+    # this bounded so live CLI/vector search cannot hang the triage command.
     queries = [
         "Decision answered hook validation",
         "Decision answered audit placement",
@@ -436,7 +481,12 @@ def scan_engram_answers_with_status() -> tuple[dict[str, bool], bool]:
         "Decision answered verification contextual trigger",
         "Decision answered settings driver generate project",
     ]
-    for query in queries:
+    limit_raw = os.environ.get("COS_DECISION_TRIAGE_ENGRAM_QUERY_LIMIT", "0")
+    try:
+        limit = max(0, min(len(queries), int(limit_raw)))
+    except ValueError:
+        limit = 2
+    for query in queries[:limit]:
         answered.update(_engram_search_for_answers(query))
 
     return answered, True
@@ -548,13 +598,15 @@ def write_report(decisions: list[Decision], output_path: Path) -> None:
 # ---------------------------------------------------------------------------
 
 def _engram_search(query: str, timeout: float = ENGRAM_TIMEOUT_SECONDS) -> Optional[str]:
-    """Attempt an engram search via the engram CLI. Returns text output or None on failure.
+    """Attempt to find an answered decision marker.
 
-    Uses the engram CLI subprocess (most stable contract — the Python module path
-    has changed historically; the CLI is the stable interface).
-    Bug fix 2026-04-27: replaced broken `from lib.engram import search` (module
-    doesn't exist) with the CLI invocation already used by scan_engram_answers().
+    Prefer the local Engram SQLite store for speed, then fall back to CLI search
+    for stores that are not available as a local DB.
     """
+    db_answers = _scan_engram_answers_from_db()
+    slug = query.removeprefix("decision/")
+    if db_answers.get(slug):
+        return f"Decision answered: {slug}"
     try:
         result = subprocess.run(
             ["engram", "search", query, "--json"],

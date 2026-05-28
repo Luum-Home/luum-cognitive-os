@@ -22457,3 +22457,26 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: template
   metrics_file: none
+- id: scripts/cos-patch-release
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: release-operations
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-patch-release
+  runtime_projection: false
+  behavior_evidence: Patch release primitive used by skills/patch-release/SKILL.md to prepare, validate, diagnose, and publish Cognitive OS patch releases without direct main pushes.
+  evidence_commands:
+  - bash -n scripts/cos-patch-release
+  - python3 -m pytest tests/unit/test_cos_patch_release.py tests/red_team/portability/test_cos-patch-release.py -q
+  rollback_or_repair_command: Fall back to manual patch-release checklist in rules/release-publishing.md and disable the skill route until the script is repaired.
+  sunset_criteria: Promote after repeated green patch releases and CI parity for doctor/validate/publish dry-run flows.
+  docs_claim_level: advisory
+  exit_behavior: exit_nonzero_on_block
+  metrics_file: none

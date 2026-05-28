@@ -101,10 +101,9 @@ PY
 } 2>/dev/null || printf '{"blocked":[]}')"
 BLOCKED="$(printf '%s' "$RESULT" | jq -r '.blocked | join(", ")' 2>/dev/null || true)"
 if [ -n "$BLOCKED" ]; then
-  if type cos_governance_policy_allows_block >/dev/null 2>&1 && ! cos_governance_policy_allows_block config-protection; then
-    cos_governance_policy_advisory_message "protected-config-write-guard" "config-protection"
-    exit 0
-  fi
+  # Protected control-plane writes remain hard blocks in every phase.
+  # Reconstruction can demote low-risk process gates, but not config mutation
+  # that changes agent permissions/hooks/settings.
   echo "=== PROTECTED CONFIG WRITE GUARD: BLOCKED ===" >&2
   echo "Protected control-plane path(s): $BLOCKED" >&2
   echo "Set $APPROVAL_ENV=1 only after explicit human review." >&2

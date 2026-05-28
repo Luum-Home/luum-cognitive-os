@@ -300,8 +300,11 @@ def real_engram():
     ~/.engram/engram.db.  Project-scoping is the only isolation available
     without patching the binary.
     """
-    engram_bin = os.environ.get("ENGRAM_BIN", str(Path.home() / ".local" / "bin" / "engram"))
-    if not Path(engram_bin).exists() and not shutil.which("engram"):
+    engram_bin = os.environ.get("ENGRAM_BIN", "").strip()
+    if not engram_bin:
+        local_bin = Path.home() / ".local" / "bin" / "engram"
+        engram_bin = str(local_bin) if local_bin.exists() else (shutil.which("engram") or "")
+    if not engram_bin or not Path(engram_bin).exists():
         pytest.skip("engram binary not installed")
 
     project = f"cos-test-{uuid.uuid4().hex[:12]}"

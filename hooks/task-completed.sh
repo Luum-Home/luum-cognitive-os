@@ -61,9 +61,18 @@ fi
 # ─── Verify: check for trust report in production phases ────────────────────
 
 phase=$(get_phase "reconstruction")
+os_root="$(cd "$(dirname "$0")/.." && pwd)"
+python_bin="${PYTHON_BIN:-}"
+if [ -z "$python_bin" ] && [ -x "$_PROJECT_DIR/.venv/bin/python" ]; then
+  python_bin="$_PROJECT_DIR/.venv/bin/python"
+fi
+if [ -z "$python_bin" ] && [ -x "$os_root/.venv/bin/python" ]; then
+  python_bin="$os_root/.venv/bin/python"
+fi
+python_bin="${python_bin:-$(command -v python3 2>/dev/null || printf python3)}"
 
 if [ "$phase" = "production" ] || [ "$phase" = "maintenance" ]; then
-  trust_parse_state=$(TASK_OUTPUT="$task_output" PYTHONPATH="$_PROJECT_DIR:${PYTHONPATH:-}" python3 - <<'PY'
+  trust_parse_state=$(TASK_OUTPUT="$task_output" PYTHONPATH="$os_root:$_PROJECT_DIR:${PYTHONPATH:-}" "$python_bin" - <<'PY'
 import os
 import sys
 
@@ -99,7 +108,7 @@ fi
 # ─── ADR-233 file-IPC completion mirror (optional) ─────────────────────────
 
 mirror_agent_team_completion() {
-  local team_name session_id os_root
+  local team_name session_id
   team_name=$(echo "$_STDIN_JSON" | jq -r '.team_name // .team // empty' 2>/dev/null | head -1 || true)
   session_id=$(echo "$_STDIN_JSON" | jq -r '.session_id // .agent_id // .teammate_id // empty' 2>/dev/null | head -1 || true)
 
@@ -109,12 +118,11 @@ mirror_agent_team_completion() {
   if [ -z "$session_id" ]; then
     session_id="${COGNITIVE_OS_SESSION_ID:-${CLAUDE_SESSION_ID:-unknown}}"
   fi
-  if [ -z "$team_name" ] || [ -z "$task_id" ] || ! command -v python3 >/dev/null 2>&1; then
+  if [ -z "$team_name" ] || [ -z "$task_id" ]; then
     return 0
   fi
 
-  os_root="$(cd "$(dirname "$0")/.." && pwd)"
-  PYTHONPATH="$os_root:${PYTHONPATH:-}" python3 - "$os_root" "$_PROJECT_DIR" "$team_name" "$task_id" "$session_id" "$task_output" <<'PYEOF' >/dev/null 2>&1 || true
+  PYTHONPATH="$os_root:${PYTHONPATH:-}" "$python_bin" - "$os_root" "$_PROJECT_DIR" "$team_name" "$task_id" "$session_id" "$task_output" <<'PYEOF' >/dev/null 2>&1 || true
 import sys
 from pathlib import Path
 

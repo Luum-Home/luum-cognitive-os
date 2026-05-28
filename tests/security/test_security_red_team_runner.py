@@ -75,7 +75,7 @@ def test_cli_writes_json_and_markdown(tmp_path: Path) -> None:
 
 def test_skill_and_docs_registered() -> None:
     skill = REPO / "skills" / "security-red-team" / "SKILL.md"
-    docs = REPO / "docs" / "security" / "security-red-team.md"
+    docs = REPO / "docs" / "09-Quality" / "security" / "security-red-team.md"
     manifest = REPO / "manifests" / "security-red-team.yaml"
 
     assert skill.exists()

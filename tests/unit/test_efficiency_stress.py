@@ -174,7 +174,7 @@ class TestTokenBudgets:
         references = extract_rule_references(compact_text)
         existing_stems = {f.stem for f in get_all_rule_files()}
         pattern_stems = {
-            f.stem for f in (PROJECT_ROOT / "docs" / "patterns").glob("*.md")
+            f.stem for f in (PROJECT_ROOT / "docs" / "04-Concepts" / "patterns").glob("*.md")
         }
 
         orphans = [
@@ -676,7 +676,7 @@ class TestCompleteness:
         missing = []
         for rule_name in triggers.keys():
             rule_path = PROJECT_ROOT / "rules" / f"{rule_name}.md"
-            pattern_path = PROJECT_ROOT / "docs" / "patterns" / f"{rule_name}.md"
+            pattern_path = PROJECT_ROOT / "docs" / "04-Concepts" / "patterns" / f"{rule_name}.md"
             if not rule_path.exists() and not pattern_path.exists():
                 missing.append(rule_name)
 

@@ -16,6 +16,8 @@ OpenHarness is a high-quality, actively-maintained Python reimplementation of th
 
 ---
 
+<!-- decision-deferred: OpenHarness adoption was explicitly rejected in the conclusion; remaining open questions are retained as research notes, not pending implementation decisions. -->
+
 ## OpenHarness Architecture (verified from source)
 
 **Entry points**: `oh` / `ohmo` / `openharness` CLIs, all defined in `pyproject.toml` → `openharness.cli:app` / `ohmo.cli:app`.

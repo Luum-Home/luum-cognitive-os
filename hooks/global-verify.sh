@@ -46,13 +46,25 @@ if [ "$MODE" = "auto" ]; then
   if [ -f "$BASELINE_FILE" ]; then MODE=after; else MODE=before; fi
 fi
 
+# Resolve the project Python before checking pytest. macOS app shells and CI
+# capsules may not put the repository venv first on PATH, so plain python3 can
+# falsely report that pytest is unavailable even though .venv is ready.
+PYTHON_BIN="${PYTHON_BIN:-}"
+if [ -z "$PYTHON_BIN" ]; then
+  if [ -x "$PROJECT_DIR/.venv/bin/python" ]; then
+    PYTHON_BIN="$PROJECT_DIR/.venv/bin/python"
+  else
+    PYTHON_BIN="$(command -v python3 2>/dev/null || command -v python 2>/dev/null || printf python3)"
+  fi
+fi
+
 # Check if pytest is available; if not, skip entirely
-if ! python3 -m pytest --version >/dev/null 2>&1; then
+if ! "$PYTHON_BIN" -m pytest --version >/dev/null 2>&1; then
   echo "[global-verify] pytest not available — skipping" >&2
   exit 0
 fi
 
-python3 - "$MODE" "$PROJECT_DIR" "$AGENT_ID" "$BASELINE_FILE" "${VERIFY_RESOLVER_DIR:-}" <<'PYEOF'
+COS_GLOBAL_VERIFY_PYTHON_BIN="$PYTHON_BIN" "$PYTHON_BIN" - "$MODE" "$PROJECT_DIR" "$AGENT_ID" "$BASELINE_FILE" "${VERIFY_RESOLVER_DIR:-}" <<'PYEOF'
 import sys, json, os, subprocess, hashlib, shutil
 from pathlib import Path
 
@@ -143,7 +155,7 @@ def run_targeted_tests(files_changed):
         cmd = ["bash", str(wrapper), "--workers", "0", "--lane", "global-verify", "--", "--tb=no", "-q"] + list(test_ids)
     else:
         # Compatibility fallback for partially installed consumer projects.
-        cmd = ["python3", "-m", "pytest", "--tb=no", "-q"] + list(test_ids)
+        cmd = [os.environ.get("COS_GLOBAL_VERIFY_PYTHON_BIN", sys.executable), "-m", "pytest", "--tb=no", "-q"] + list(test_ids)
     try:
         r = subprocess.run(cmd, capture_output=True, text=True, timeout=120, cwd=str(project_dir), env=env)
         stdout = r.stdout + r.stderr

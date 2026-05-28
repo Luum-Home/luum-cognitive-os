@@ -34,7 +34,16 @@ if [[ -z "$AGENT_OUTPUT" ]]; then
   exit 0
 fi
 
-PARSE_RESULT=$(AGENT_OUTPUT="$AGENT_OUTPUT" PYTHONPATH="$PROJECT_DIR:${PYTHONPATH:-}" python3 - <<'PY'
+PYTHON_BIN="${PYTHON_BIN:-}"
+HOOK_REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+if [ -z "$PYTHON_BIN" ] && [ -x "$PROJECT_DIR/.venv/bin/python" ]; then
+  PYTHON_BIN="$PROJECT_DIR/.venv/bin/python"
+elif [ -z "$PYTHON_BIN" ] && [ -x "$HOOK_REPO_DIR/.venv/bin/python" ]; then
+  PYTHON_BIN="$HOOK_REPO_DIR/.venv/bin/python"
+fi
+PYTHON_BIN="${PYTHON_BIN:-$(command -v python3 2>/dev/null || printf python3)}"
+
+PARSE_RESULT=$(AGENT_OUTPUT="$AGENT_OUTPUT" PYTHONPATH="$PROJECT_DIR:${PYTHONPATH:-}" "$PYTHON_BIN" - <<'PY'
 import json
 import os
 import sys

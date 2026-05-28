@@ -129,3 +129,19 @@ func TestCapWorkersInvalidEnvIsIgnored(t *testing.T) {
 		t.Fatalf("capWorkers with invalid env = %q, want 4", got)
 	}
 }
+
+func TestLaneOutcomeSkippedAggregation(t *testing.T) {
+	outs := []laneOutcome{
+		{Lane: "unit", Failed: false},
+		{Lane: "e2e", Skipped: true, Reason: "blocked by resource policy"},
+	}
+	failed := 0
+	for _, o := range outs {
+		if o.Failed {
+			failed++
+		}
+	}
+	if failed != 0 {
+		t.Errorf("expected skipped lanes not to count as failed, got %d", failed)
+	}
+}

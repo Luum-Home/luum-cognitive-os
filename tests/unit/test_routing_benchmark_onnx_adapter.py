@@ -2,6 +2,7 @@
 """Tests for the ONNX-direct routing adapter (ADR-301)."""
 from __future__ import annotations
 
+import os
 import sys
 from pathlib import Path
 
@@ -134,7 +135,9 @@ def test_onnx_adapter_load_failure_does_not_crash_harness(tmp_path, monkeypatch)
 
 @pytest.mark.benchmark
 def test_bge_m3_runs_quick_mode_smoke():
-    """Real download + tiny corpus. Gated behind -m benchmark."""
+    """Real download + tiny corpus. Explicitly gated to avoid unit-lane network hangs."""
+    if os.environ.get("COS_ALLOW_COST_BEARING_TESTS") != "1":
+        pytest.skip("live Hugging Face benchmark smoke requires COS_ALLOW_COST_BEARING_TESTS=1")
     import yaml
 
     tmp = Path(".cognitive-os/tmp-tests")

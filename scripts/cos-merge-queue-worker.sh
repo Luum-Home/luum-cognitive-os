@@ -357,9 +357,48 @@ main() {
 
     # Acquire the exclusive worker lock (non-blocking: exit 2 if held).
     exec 9>"${WORKER_LOCK}"
-    if ! flock -n 9; then
-        log "Another worker holds the lock — exiting (exit 2)"
-        exit 2
+    if command -v flock >/dev/null 2>&1; then
+        if ! flock -n 9; then
+            log "Another worker holds the lock — exiting (exit 2)"
+            exit 2
+        fi
+    else
+        lock_status="${WORKER_LOCK}.status.$$"
+        rm -f "${lock_status}"
+        python3 - "${WORKER_LOCK}" "${lock_status}" "$$" <<'PYLOCK' &
+import fcntl
+import os
+import sys
+import time
+from pathlib import Path
+
+lock_path, status_path, parent_pid = sys.argv[1], Path(sys.argv[2]), int(sys.argv[3])
+handle = open(lock_path, "a", encoding="utf-8")
+try:
+    fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+except BlockingIOError:
+    status_path.write_text("busy", encoding="utf-8")
+    sys.exit(0)
+status_path.write_text("acquired", encoding="utf-8")
+while True:
+    try:
+        os.kill(parent_pid, 0)
+    except OSError:
+        break
+    time.sleep(0.1)
+PYLOCK
+        lock_pid=$!
+        while [[ ! -f "${lock_status}" ]] && kill -0 "${lock_pid}" 2>/dev/null; do
+            sleep 0.02
+        done
+        lock_result="$(cat "${lock_status}" 2>/dev/null || echo busy)"
+        rm -f "${lock_status}"
+        if [[ "${lock_result}" != "acquired" ]]; then
+            wait "${lock_pid}" 2>/dev/null || true
+            log "Another worker holds the lock — exiting (exit 2)"
+            exit 2
+        fi
+        trap 'kill "${lock_pid}" 2>/dev/null || true; wait "${lock_pid}" 2>/dev/null || true' EXIT
     fi
     log "Acquired worker lock: ${WORKER_LOCK}"
 

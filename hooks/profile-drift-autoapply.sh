@@ -67,21 +67,53 @@ else
     exit 0
 fi
 
-# ── Acquire non-blocking flock; concurrent invocations exit 0 silently ──────
-# flock requires a file descriptor open on the lock file. exec 9>... opens fd 9
-# for writing without truncating existing content (the lock file is opaque).
-# `flock -n 9` returns immediately: 0 if acquired, 1 if another holder exists.
-# When `flock` itself is unavailable, fall through to the direct path; this is
-# the macOS-without-util-linux scenario, accepted because the race window is
-# narrow enough to be a soft hazard rather than a hard incident.
+# ── Acquire non-blocking lock; concurrent invocations exit 0 silently ───────
+# Prefer util-linux flock when present. macOS does not ship flock, so fall back
+# to a Python fcntl lock holder process that keeps the advisory lock until this
+# shell exits.
 exec 9>"$LOCK_FILE"
 if command -v flock &>/dev/null; then
     if ! flock -n 9; then
-        # Another process is already re-applying. No-op.
         exit 0
     fi
+else
+    lock_status="$RUNTIME_DIR/profile-autoapply.lock.status.$$"
+    rm -f "$lock_status"
+    python3 - "$LOCK_FILE" "$lock_status" "$$" <<'PYLOCK' &
+import fcntl
+import os
+import sys
+import time
+from pathlib import Path
+
+lock_path, status_path, parent_pid = sys.argv[1], Path(sys.argv[2]), int(sys.argv[3])
+handle = open(lock_path, "a", encoding="utf-8")
+try:
+    fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+except BlockingIOError:
+    status_path.write_text("busy", encoding="utf-8")
+    sys.exit(0)
+status_path.write_text("acquired", encoding="utf-8")
+while True:
+    try:
+        os.kill(parent_pid, 0)
+    except OSError:
+        break
+    time.sleep(0.1)
+PYLOCK
+    lock_pid=$!
+    while [ ! -f "$lock_status" ] && kill -0 "$lock_pid" 2>/dev/null; do
+        sleep 0.02
+    done
+    lock_result="$(cat "$lock_status" 2>/dev/null || echo busy)"
+    rm -f "$lock_status"
+    if [ "$lock_result" != "acquired" ]; then
+        wait "$lock_pid" 2>/dev/null || true
+        exit 0
+    fi
+    trap 'kill "$lock_pid" 2>/dev/null || true; wait "$lock_pid" 2>/dev/null || true' EXIT
 fi
-# Lock held until process exit (fd 9 closes automatically).
+# Lock held until process exit.
 
 # ── Compare with last applied (re-read UNDER LOCK to avoid TOCTOU) ──────────
 last_hash=""

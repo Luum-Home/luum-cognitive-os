@@ -51,14 +51,14 @@ def _run_hook(hook: str, project: Path, payload: dict) -> subprocess.CompletedPr
     )
 
 
-def test_protected_config_guard_obeys_policy_advisory(tmp_path: Path) -> None:
+def test_protected_config_guard_blocks_even_when_policy_advisory(tmp_path: Path) -> None:
     _fake_cos(tmp_path, category="config-protection", allowed=False)
     payload = {"tool_name": "Write", "tool_input": {"file_path": ".claude/settings.json", "content": "{}"}}
 
     result = _run_hook("protected-config-write-guard.sh", tmp_path, payload)
 
-    assert result.returncode == 0
-    assert "ADVISORY" in result.stderr
+    assert result.returncode == 2
+    assert "PROTECTED CONFIG WRITE GUARD" in result.stderr
 
 
 def test_network_egress_guard_obeys_policy_advisory(tmp_path: Path) -> None:

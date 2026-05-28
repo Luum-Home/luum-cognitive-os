@@ -44,6 +44,7 @@ REVIEW_REQUIRED_CLASSIFICATIONS = {
     "optional-extension",
     "optional-local-backend",
     "optional-ui-extension",
+    "external/manual optional-ui-extension",
     "optional-automation-extension",
 }
 
