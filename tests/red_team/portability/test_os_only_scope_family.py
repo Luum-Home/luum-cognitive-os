@@ -100,7 +100,6 @@ OS_ONLY_PRIMITIVE_PROOF_BASELINE = [
     'rules/lane-taxonomy.md',
     'rules/pre-dev-readiness-gate.md',
     'rules/reinvention-prevention.md',
-    'rules/research-first-protocol.md',
     'scripts/adr100_live_headroom_check.py',
     'scripts/adr_reserve.py',
     'scripts/agent-orchestration-benchmark.py',

@@ -1,8 +1,8 @@
-<!-- SCOPE: os-only -->
+<!-- SCOPE: both -->
 <!-- TIER: 2 -->
 ---
 name: research-first-protocol
-audience: os-dev
+audience: os-dev, consumer-project
 last-updated: 2026-04-24
 ---
 
@@ -16,7 +16,7 @@ research phase before any implementation agent is launched. This prevents
 wasted implementation work, incorrect assumptions being baked into code, and
 irreversible changes made without operator sign-off.
 
-This rule is always active for `os-dev` scope work.
+This rule is always active for `os-dev` scope work and available to consumer projects when `RULES-COMPACT.md` references `research-first-protocol` for high-risk agent work.
 
 ---
 
@@ -50,8 +50,8 @@ hours of implementation work and produce irreversible damage.
 
 ### Phase 0 — Research
 
-Launch a read-only research agent using `templates/agent-research-only.md` as
-the base prompt. The agent:
+Launch a read-only research agent. In the OS repo, use `templates/agent-research-only.md` as
+the base prompt when available; in consumer projects, use the local research-only prompt template if installed, or instruct the agent explicitly to stay read-only. The agent:
 
 1. Explores the codebase and relevant context
 2. Produces a structured report at `docs/06-Daily/reports/<topic>-<YYYY-MM-DD>.md`
@@ -149,7 +149,7 @@ complexity tasks.
 
 ## Templates and References
 
-- Research agent prompt: `templates/agent-research-only.md`
+- Research agent prompt: `templates/agent-research-only.md` when installed, otherwise an explicit read-only agent prompt
 - Closed-loop prompt structure: `rules/closed-loop-prompts.md`
 - Scout skill: `skills/scout/SKILL.md`
 - ADR template: `docs/02-Decisions/adrs/` directory (follow existing ADR file naming convention)

@@ -503,10 +503,8 @@ items:
     Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
     primitive.
 - path: rules/research-first-protocol.md
-  status: maintainer-only
-  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
-    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
-    primitive.
+  status: projected-consumer-surface
+  rationale: RULES-COMPACT.md references research-first-protocol from the default/core consumer rules entrypoint, so the full rule must be projected with default installs to avoid dangling governance links. The rule is portable when scoped to high-risk agent work and still supports OS maintainer workflows.
 - path: rules/ROADMAP.md
   status: maintainer-only
   rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
