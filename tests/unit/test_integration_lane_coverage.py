@@ -3,7 +3,7 @@ import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-SCRIPT = ROOT / "scripts" / "check-integration-lane-coverage.py"
+SCRIPT = ROOT / "scripts" / "check_integration_lane_coverage.py"
 
 
 def test_integration_lane_coverage_contract_passes_for_repo_registry():

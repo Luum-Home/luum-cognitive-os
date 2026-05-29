@@ -243,7 +243,7 @@ def strict_release_contract_checks(root: Path) -> list[dict[str, object]]:
     add("broad_json_dry_run", broad.returncode == 0 and "cos-test-broad-summary/v1" in broad.stdout, "cos-test broad --dry-run --no-docker --json must emit summary")
     add("broad_no_docker_skips_docker", broad.returncode == 0 and ("docker_policy=required" in (broad.stdout + broad.stderr) or "skipping optional" in (broad.stdout + broad.stderr)), "no-docker broad should either skip Docker lanes explicitly or exclude optional Docker lanes", blocking=False)
 
-    integration_coverage = run(["scripts/check-integration-lane-coverage.py", "--strict", "--json"], cwd=root, check=False, capture=True)
+    integration_coverage = run(["scripts/check_integration_lane_coverage.py", "--strict", "--json"], cwd=root, check=False, capture=True)
     add("integration_lane_coverage", integration_coverage.returncode == 0 and "integration-lane-coverage/v1" in integration_coverage.stdout, "every integration test file must be assigned to exactly one non-Docker integration sublane")
 
     quarantine = run(["go", "run", ".", "quarantine", "audit", "--json"], cwd=root / "cmd/cos-test", check=False, capture=True)
