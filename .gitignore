@@ -18,6 +18,7 @@
 !.cognitive-os/skills/_catalog-allowlist.txt
 !.cognitive-os/preserve-manifests/
 !.cognitive-os/preserve-manifests/*.json
+!.cognitive-os/test-quarantine.yaml
 # SDD archive trail is tracked, in-flight changes stay local (override .cognitive-os/* ignore)
 !.cognitive-os/sdd/
 .cognitive-os/sdd/*

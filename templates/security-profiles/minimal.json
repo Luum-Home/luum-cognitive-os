@@ -537,6 +537,10 @@
         "hooks": [
           {
             "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-quality-close-gate.sh\""
+          },
+          {
+            "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-cleanup.sh\""
           },
           {

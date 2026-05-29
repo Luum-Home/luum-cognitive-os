@@ -40,11 +40,22 @@ Examples:
 	RunE: runRelease,
 }
 
+var (
+	releaseDoctorStrict       bool
+	releaseDoctorContractOnly bool
+)
+
 var releaseValidateCmd = &cobra.Command{
 	Use:   "validate",
 	Short: "Run the release-blocking patch validation lane",
 	Long:  "Run scripts/cos-patch-release validate from the repository root. This is the hermetic patch-release gate; broad optional lanes remain drift radar.",
 	RunE:  runReleaseValidate,
+}
+
+var releaseDoctorCmd = &cobra.Command{
+	Use:   "doctor",
+	Short: "Diagnose release hazards and strict release-contract drift",
+	RunE:  runReleaseDoctor,
 }
 
 func init() {
@@ -53,7 +64,10 @@ func init() {
 	releaseCmd.Flags().BoolVar(&releaseMajor, "major", false, "Bump major version")
 	releaseCmd.Flags().BoolVar(&releaseDryRun, "dry-run", false, "Show what would happen without making changes")
 	releaseCmd.Flags().BoolVar(&releaseCheck, "check", false, "Validate release readiness without releasing")
+	releaseDoctorCmd.Flags().BoolVar(&releaseDoctorStrict, "strict", false, "Run strict release-contract diagnostics")
+	releaseDoctorCmd.Flags().BoolVar(&releaseDoctorContractOnly, "contract-only", false, "Skip publish hazards and check only release contracts")
 	releaseCmd.AddCommand(releaseValidateCmd)
+	releaseCmd.AddCommand(releaseDoctorCmd)
 	rootCmd.AddCommand(releaseCmd)
 }
 
@@ -251,6 +265,29 @@ func releaseReadinessCheck(projectRoot, currentVersion string) ([]string, bool) 
 	}
 
 	return checks, allPassed
+}
+
+func runReleaseDoctor(cmd *cobra.Command, args []string) error {
+	projectRoot := project.FindRootOrCwd()
+	doctor := filepath.Join(projectRoot, "scripts", "cos-patch-release")
+	if _, err := os.Stat(doctor); err != nil {
+		return fmt.Errorf("release doctor not found at %s: %w", doctor, err)
+	}
+	argv := []string{"doctor"}
+	if releaseDoctorStrict {
+		argv = append(argv, "--strict")
+	}
+	if releaseDoctorContractOnly {
+		argv = append(argv, "--contract-only")
+	}
+	run := exec.Command(doctor, argv...)
+	run.Dir = projectRoot
+	run.Stdout = os.Stdout
+	run.Stderr = os.Stderr
+	if err := run.Run(); err != nil {
+		return fmt.Errorf("cos release doctor failed: %w", err)
+	}
+	return nil
 }
 
 func runReleaseValidate(cmd *cobra.Command, args []string) error {

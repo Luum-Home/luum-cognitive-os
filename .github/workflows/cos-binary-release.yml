@@ -26,6 +26,12 @@ jobs:
           python3 -m pip install --upgrade pip
           python3 -m pip install uv
           uv sync --extra testing --locked
+      - name: Validate release contracts
+        run: scripts/cos-patch-release doctor --strict --contract-only --json
+      - name: Validate derived artifacts
+        run: cd cmd/cos && go run . derive check
+      - name: Validate test quarantine manifest
+        run: cd cmd/cos-test && go run . quarantine audit
       - name: Validate release lane
         run: scripts/cos-patch-release validate
       - name: Run GoReleaser

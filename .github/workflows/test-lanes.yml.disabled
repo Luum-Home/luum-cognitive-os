@@ -34,6 +34,9 @@ jobs:
       parallel-lanes: ${{ steps.parse.outputs.parallel }}
       serial-lanes:   ${{ steps.parse.outputs.serial }}
       optional-lanes: ${{ steps.parse.outputs.optional }}
+      release-blocking-lanes: ${{ steps.parse.outputs.release_blocking }}
+      environmental-lanes: ${{ steps.parse.outputs.environmental }}
+      cost-bearing-lanes: ${{ steps.parse.outputs.cost_bearing }}
     steps:
       - uses: actions/checkout@v4
       - id: parse
@@ -59,10 +62,25 @@ jobs:
               name for name, cfg in lanes.items()
               if cfg.get('optional')
           ]
+          release_blocking = [
+              name for name, cfg in lanes.items()
+              if cfg.get('gate_class') == 'release_blocking'
+          ]
+          environmental = [
+              name for name, cfg in lanes.items()
+              if cfg.get('gate_class') == 'environmental'
+          ]
+          cost_bearing = [
+              name for name, cfg in lanes.items()
+              if cfg.get('gate_class') == 'cost_bearing'
+          ]
 
           print(f"parallel={json.dumps(parallel)}")
           print(f"serial={json.dumps(serial)}")
           print(f"optional={json.dumps(optional)}")
+          print(f"release_blocking={json.dumps(release_blocking)}")
+          print(f"environmental={json.dumps(environmental)}")
+          print(f"cost_bearing={json.dumps(cost_bearing)}")
           EOF
 
   # ── Parallel-safe lanes ───────────────────────────────────────────────────────
@@ -146,6 +164,67 @@ jobs:
           name: test-run-${{ matrix.lane }}
           path: .cognitive-os/reports/test-runs/latest/
           retention-days: 7
+
+  # ── Release-blocking semantic broad gate ─────────────────────────────────────
+  release-blocking-broad:
+    name: release-blocking broad summary
+    needs: setup
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: cmd/cos-test/go.mod
+          cache: true
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install uv
+          uv pip install --system -e ".[testing]"
+      - name: Run hermetic broad dry-run contract
+        run: |
+          cd cmd/cos-test
+          go run . broad --dry-run --no-docker --json
+
+  # ── Environmental lanes (workflow_dispatch reporting only) ──────────────────
+  environmental-lanes:
+    name: environmental lane (${{ matrix.lane }})
+    needs: setup
+    if: github.event_name == 'workflow_dispatch' && inputs.include-optional == 'true'
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        lane: ${{ fromJson(needs.setup.outputs.environmental-lanes) }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: cmd/cos-test/go.mod
+          cache: true
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install uv
+          uv pip install --system -e ".[testing]"
+      - name: Build cos-test
+        run: |
+          cd cmd/cos-test && go build -o ../../cos-test .
+      - name: Run environmental lane as drift radar
+        env:
+          CI: "true"
+        run: ./cos-test cluster --lane "${{ matrix.lane }}"
 
   # ── Optional lanes (workflow_dispatch only) ───────────────────────────────────
   optional-lanes:

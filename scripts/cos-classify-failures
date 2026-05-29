@@ -1,0 +1,89 @@
+#!/usr/bin/env python3
+# SCOPE: os-only
+"""Classify pytest/JUnit failures from a cos-test run directory."""
+from __future__ import annotations
+
+import argparse
+import json
+import re
+import sys
+import xml.etree.ElementTree as ET
+from pathlib import Path
+from typing import Any
+
+SCHEMA = "cos-test-failure-classification/v1"
+
+
+def classify_text(text: str) -> str:
+    lower = text.lower()
+    if "timeout" in lower or "timed out" in lower:
+        return "timeout"
+    if "modulenotfounderror" in lower or "no module named" in lower or "command not found" in lower:
+        return "missing_dependency"
+    if "docker" in lower and ("not available" in lower or "cannot connect" in lower or "daemon" in lower):
+        return "docker_unavailable"
+    if "connection refused" in lower or "network is unreachable" in lower or "temporary failure" in lower:
+        return "network"
+    if "collection" in lower or "importerror while importing" in lower:
+        return "collection_error"
+    if "memory" in lower and ("killed" in lower or "cannot allocate" in lower):
+        return "resource_exhausted"
+    if "assert" in lower or "assertionerror" in lower:
+        return "assertion"
+    return "unknown"
+
+
+def iter_junit_failures(path: Path) -> list[dict[str, Any]]:
+    if not path.exists():
+        return []
+    root = ET.parse(path).getroot()
+    failures: list[dict[str, Any]] = []
+    for case in root.iter("testcase"):
+        classname = case.attrib.get("classname", "")
+        name = case.attrib.get("name", "")
+        nodeid = f"{classname}::{name}" if classname else name
+        for tag in ("failure", "error"):
+            for elem in case.findall(tag):
+                text = "\n".join(filter(None, [elem.attrib.get("message", ""), elem.text or ""]))
+                failures.append({
+                    "nodeid": nodeid,
+                    "kind": tag,
+                    "class": classify_text(text),
+                    "message": elem.attrib.get("message", "")[:500],
+                })
+    return failures
+
+
+def classify_run(run_dir: Path) -> dict[str, Any]:
+    junit = run_dir / "junit.xml"
+    failures = iter_junit_failures(junit)
+    by_class: dict[str, int] = {}
+    for failure in failures:
+        by_class[failure["class"]] = by_class.get(failure["class"], 0) + 1
+    return {
+        "schema_version": SCHEMA,
+        "run_dir": str(run_dir),
+        "junit": str(junit),
+        "status": "pass" if not failures else "fail",
+        "summary": {"total_failures": len(failures), "by_class": by_class},
+        "failures": failures,
+    }
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--run-dir", required=True)
+    parser.add_argument("--json", action="store_true")
+    args = parser.parse_args()
+    report = classify_run(Path(args.run_dir).resolve())
+    if args.json:
+        print(json.dumps(report, indent=2, sort_keys=True))
+    else:
+        print(f"cos-classify-failures: {report['status']} failures={report['summary']['total_failures']}")
+        for klass, count in sorted(report["summary"]["by_class"].items()):
+            print(f"- {klass}: {count}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

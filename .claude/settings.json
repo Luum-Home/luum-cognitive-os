@@ -721,6 +721,10 @@
           },
           {
             "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" Stop \"$CLAUDE_PROJECT_DIR/hooks/session-quality-close-gate.sh\""
+          },
+          {
+            "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" Stop \"$CLAUDE_PROJECT_DIR/hooks/session-summary-reminder.sh\""
           },
           {
