@@ -36,5 +36,6 @@ def test_cos_patch_release_safe_invocation_from_arbitrary_project_root(tmp_path:
     output = result.stdout + result.stderr
     assert result.returncode == 0, output
     assert "prepare" in output
+    assert "plan" in output
     assert "publish" in output
     assert "Traceback" not in output

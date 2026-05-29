@@ -112,9 +112,47 @@ def test_publish_dry_run_never_pushes_directly_to_main(tmp_path: Path) -> None:
     payload = json.loads(result.stdout)
     steps = "\n".join(payload["publish"]["steps"])
     assert "scripts/merge-to-main.sh" in steps
+    assert "--recommended-lane patch-release --executed-lane patch-release" in steps
     assert "git push origin main" not in steps
     assert payload["publish"]["branch"] == "codex/release-v0.29.7"
     assert payload["publish"]["tag"] == "v0.29.7"
+
+
+def test_plan_dry_run_covers_land_prepare_validate_publish_sequence(tmp_path: Path) -> None:
+    init_repo(tmp_path)
+    seed_release_repo(tmp_path)
+
+    result = run_script(tmp_path, "plan", "--version", "0.29.7", "--title", "Fixture Patch")
+
+    assert result.returncode == 0, result.stderr
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "dry-run"
+    assert payload["version"] == "0.29.7"
+    assert payload["tag"] == "v0.29.7"
+    assert payload["policy"]["direct_main_push"] == "forbidden"
+    names = [step["name"] for step in payload["steps"]]
+    assert names == [
+        "land_current_branch",
+        "prepare_release",
+        "supply_chain_policy",
+        "validate_release",
+        "doctor_release_contract",
+        "create_release_branch",
+        "commit_release_delta",
+        "push_release_branch",
+        "land_release_branch",
+        "tag_release",
+        "watch_release_workflow",
+        "verify_github_release",
+    ]
+    commands = "\n".join(step["command"] for step in payload["steps"])
+    assert "scripts/cos-patch-release prepare --version 0.29.7 --title 'Fixture Patch'" in commands
+    assert "scripts/check-bun-install-policy.py --json" in commands
+    assert "scripts/cos-patch-release validate" in commands
+    assert "scripts/cos-patch-release doctor --version 0.29.7 --strict --contract-only --json" in commands
+    assert commands.count("scripts/merge-to-main.sh") == 2
+    assert "--recommended-lane patch-release --executed-lane patch-release" in commands
+    assert "git push origin main" not in commands
 
 
 def test_doctor_blocks_existing_local_tag(tmp_path: Path) -> None:
@@ -140,5 +178,6 @@ def test_validate_print_commands_matches_patch_lane(tmp_path: Path) -> None:
 
     assert result.returncode == 0, result.stderr
     assert "scripts/check-local-privacy.sh --root . --all" in result.stdout
+    assert "scripts/check-bun-install-policy.py --json" in result.stdout
     assert "tests/unit/test_check_local_privacy.py" in result.stdout
     assert "cd cmd/cos && go test ./..." in result.stdout

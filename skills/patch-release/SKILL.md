@@ -30,6 +30,7 @@ Publish Cognitive OS patch releases through a repeatable primitive instead of ad
 
 ```bash
 scripts/cos-patch-release prepare --version X.Y.Z --title "Short Release Title"
+scripts/cos-patch-release plan --version X.Y.Z --title "Short Release Title"
 scripts/cos-patch-release validate
 scripts/cos-patch-release doctor --version X.Y.Z --allow-warnings
 scripts/cos-patch-release publish --version X.Y.Z --message "release: vX.Y.Z"
@@ -40,14 +41,16 @@ Trigger: release, patch release, GoReleaser, bump version, publish tag, release 
 ## What it does
 
 1. Prepares release metadata by updating `VERSION`, `cmd/cos/VERSION`, `pyproject.toml`, `uv.lock`, and `CHANGELOG.md`.
-2. Validates the patch lane that proved `v0.29.6`: local privacy guard checks, targeted privacy tests, and `cmd/cos` Go tests.
-3. Publishes via a session branch and `scripts/merge-to-main.sh`; it never pushes directly to `main`.
-4. Tags the release and watches the `cos-binary-release` GitHub Actions run.
-5. Diagnoses common release hazards with `scripts/cos-patch-release doctor`.
+2. Validates the patch lane: local privacy guard checks, Bun package-manager policy, targeted privacy tests, hook/research contracts, and `cmd/cos` Go tests.
+3. Plans the full land-current-branch + prepare + validate + release-branch + tag + watch sequence with `scripts/cos-patch-release plan`.
+4. Publishes via a session branch and `scripts/merge-to-main.sh`; it never pushes directly to `main`.
+5. Tags the release and watches the `cos-binary-release` GitHub Actions run.
+6. Diagnoses common release hazards with `scripts/cos-patch-release doctor`.
 
 ## Output
 
 - `patch-release-prepare-ok version=X.Y.Z tag=vX.Y.Z`
+- JSON dry-run plan from `scripts/cos-patch-release plan --version X.Y.Z`
 - `patch-release-validate-ok`
 - `patch-release-publish-ok version=X.Y.Z tag=vX.Y.Z`
 - `release-doctor: pass|block version=X.Y.Z tag=vX.Y.Z`
@@ -58,10 +61,12 @@ Trigger: release, patch release, GoReleaser, bump version, publish tag, release 
 - Dirty `uv.lock` after dependency sync: `prepare` blocks and requires `uv lock` repair.
 - Scope portability red: `doctor` reports it as non-blocking for patch release unless another blocking check fails.
 - Current branch is `main`: `publish` creates `codex/release-vX.Y.Z` before committing.
+- Current branch contains unreleased feature/fix commits: run `scripts/cos-patch-release plan --version X.Y.Z` first. The plan shows the explicit `scripts/merge-to-main.sh --validate 'scripts/cos-patch-release validate' --recommended-lane patch-release --executed-lane patch-release` landing step before `prepare`.
 
 ## Success Criteria
 
 - [ ] `scripts/cos-patch-release prepare --version X.Y.Z --dry-run` prints planned files and commands without writing.
+- [ ] `scripts/cos-patch-release plan --version X.Y.Z` prints the complete land, prepare, validate, doctor, release-branch, tag, watch, and release-view sequence without writing.
 - [ ] `scripts/cos-patch-release validate` passes.
 - [ ] `scripts/cos-patch-release publish --version X.Y.Z --dry-run` prints branch, commit, tag, and watch steps.
 - [ ] `scripts/cos-patch-release doctor --version X.Y.Z` reports release hazards before publishing.
