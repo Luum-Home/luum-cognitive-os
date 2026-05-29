@@ -370,3 +370,18 @@ func TestReleaseReadinessCheck_NoChangelog(t *testing.T) {
 		t.Error("should not pass with missing CHANGELOG")
 	}
 }
+
+func TestReleaseCommandHasValidateSubcommand(t *testing.T) {
+	found := false
+	for _, cmd := range releaseCmd.Commands() {
+		if cmd.Name() == "validate" {
+			found = true
+			if !strings.Contains(cmd.Short, "patch validation") {
+				t.Fatalf("unexpected validate short help: %q", cmd.Short)
+			}
+		}
+	}
+	if !found {
+		t.Fatal("cos release validate subcommand is not registered")
+	}
+}

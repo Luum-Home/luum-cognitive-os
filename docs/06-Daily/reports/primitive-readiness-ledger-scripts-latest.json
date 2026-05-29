@@ -199,7 +199,7 @@
         "hook": 2,
         "script": 7,
         "skill": 1,
-        "test": 15
+        "test": 16
       },
       "consumers": [
         {
@@ -380,6 +380,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_harness_hook_projection_policy.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_research_quality_advisor.py"
         },
         {
@@ -403,7 +407,7 @@
       "evidence": [
         "wrapper_for:scripts/hook-timing-wrapper.sh",
         "skill_consumers:1",
-        "test_consumers:15",
+        "test_consumers:16",
         "hook_consumers:2",
         "doc_consumers:19",
         "config_consumers:5",
@@ -421,7 +425,7 @@
       "role_source": "heuristic:path",
       "skill_consumers": 1,
       "supported_harnesses": [],
-      "total_consumers": 49,
+      "total_consumers": 50,
       "wrapper_for": "scripts/hook-timing-wrapper.sh"
     },
     {
@@ -2252,7 +2256,7 @@
         "doc": 73,
         "hook": 7,
         "rule": 4,
-        "script": 10,
+        "script": 9,
         "skill": 3,
         "test": 25
       },
@@ -2655,10 +2659,6 @@
         },
         {
           "family": "script",
-          "path": "scripts/cos-patch-release"
-        },
-        {
-          "family": "script",
           "path": "scripts/cos-update.sh"
         },
         {
@@ -2793,7 +2793,7 @@
         "doc_consumers:73",
         "rule_consumers:4",
         "config_consumers:9",
-        "script_consumers:10"
+        "script_consumers:9"
       ],
       "install_surface": "profile-application",
       "install_surface_rationale": "Applies efficiency/security profile behavior and influences active hook/primitive projection.",
@@ -2809,7 +2809,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 131,
+      "total_consumers": 130,
       "wrapper_for": "scripts/_lib/settings-driver-claude-code.sh"
     },
     {
@@ -5398,7 +5398,7 @@
         "rule": 51,
         "script": 364,
         "skill": 82,
-        "test": 691,
+        "test": 692,
         "workflow": 2
       },
       "consumers": [
@@ -13492,6 +13492,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_harness_hook_projection_policy.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_homeostasis.py"
         },
         {
@@ -14004,7 +14008,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:82",
-        "test_consumers:691",
+        "test_consumers:692",
         "hook_consumers:118",
         "workflow_consumers:2",
         "doc_consumers:756",
@@ -14026,7 +14030,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 2149,
+      "total_consumers": 2150,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -22613,6 +22617,38 @@
       "skill_consumers": 0,
       "supported_harnesses": [],
       "total_consumers": 6,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "test",
+          "path": "tests/unit/test_harness_hook_projection_policy.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "declare supported harnesses and fallback behavior",
+      "override_rationale": null,
+      "path": "scripts/cos-harness-projection-policy",
+      "protected_install_surface": false,
+      "role": "driver-specific",
+      "role_source": "heuristic:path",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 1,
       "wrapper_for": null
     },
     {
@@ -37936,7 +37972,7 @@
       "consumer_families": {
         "config": 10,
         "doc": 43,
-        "script": 13,
+        "script": 12,
         "skill": 1,
         "test": 15
       },
@@ -38171,10 +38207,6 @@
         },
         {
           "family": "script",
-          "path": "scripts/cos-patch-release"
-        },
-        {
-          "family": "script",
           "path": "scripts/cos_falsification_benchmark.py"
         },
         {
@@ -38279,7 +38311,7 @@
         "test_consumers:15",
         "doc_consumers:43",
         "config_consumers:10",
-        "script_consumers:13"
+        "script_consumers:12"
       ],
       "install_surface": "bootstrap",
       "install_surface_rationale": "Python implementation for COS initialization flows.",
@@ -38295,7 +38327,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 82,
+      "total_consumers": 81,
       "wrapper_for": "scripts/cos-init.sh"
     },
     {
@@ -44072,7 +44104,7 @@
       "consumer_families": {
         "config": 9,
         "doc": 13,
-        "script": 2,
+        "script": 1,
         "skill": 1,
         "test": 5
       },
@@ -44167,10 +44199,6 @@
         },
         {
           "family": "script",
-          "path": "scripts/cos-patch-release"
-        },
-        {
-          "family": "script",
           "path": "scripts/cos_init.py"
         },
         {
@@ -44207,7 +44235,7 @@
         "test_consumers:5",
         "doc_consumers:13",
         "config_consumers:9",
-        "script_consumers:2"
+        "script_consumers:1"
       ],
       "install_surface": "settings-projection",
       "install_surface_rationale": "Generates harness settings that install/project active primitives.",
@@ -44223,7 +44251,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 30,
+      "total_consumers": 29,
       "wrapper_for": "scripts/cos_init.py"
     },
     {
@@ -59417,25 +59445,25 @@
     "agentic_primitives_without_lifecycle": 0,
     "confidence": {
       "high": 341,
-      "medium": 300
+      "medium": 301
     },
     "consumer_accessibility": {
       "install-profile-managed": 19,
       "lifecycle-declared-consumer-candidate": 154,
       "lifecycle-declared-maintainer": 142,
       "skill-referenced-not-projectable": 3,
-      "so-local-only": 323
+      "so-local-only": 324
     },
     "low_confidence_rows": 0,
     "roles": {
       "agentic-primitive": 203,
       "archive": 12,
-      "driver-specific": 12,
+      "driver-specific": 13,
       "lab": 98,
       "maintainer-tool": 301,
       "migration-only": 15
     },
-    "total_scripts": 641,
+    "total_scripts": 642,
     "without_consumers": 0
   },
   "target_family": "scripts"

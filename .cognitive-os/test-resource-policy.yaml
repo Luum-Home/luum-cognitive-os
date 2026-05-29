@@ -1,12 +1,10 @@
 version: 1
-
 defaults:
   workers: 4
   timeout_seconds: 300
   docker_policy: forbidden
   cost_policy: free_only
   artifact_policy: keep_summary
-
 lanes:
   unit:
     workers: auto
@@ -71,3 +69,27 @@ lanes:
     docker_policy: allowed
     cost_policy: cost_bearing
     artifact_policy: keep_full
+  integration-installer:
+    workers: 0
+    timeout_seconds: 1200
+    docker_policy: forbidden
+    cost_policy: free_only
+    artifact_policy: keep_summary
+  integration-memory:
+    workers: 0
+    timeout_seconds: 1200
+    docker_policy: forbidden
+    cost_policy: free_only
+    artifact_policy: keep_summary
+  integration-hooks:
+    workers: 0
+    timeout_seconds: 1200
+    docker_policy: forbidden
+    cost_policy: free_only
+    artifact_policy: keep_summary
+  integration-runtime:
+    workers: 0
+    timeout_seconds: 1200
+    docker_policy: forbidden
+    cost_policy: free_only
+    artifact_policy: keep_summary

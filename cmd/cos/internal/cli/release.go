@@ -35,8 +35,16 @@ Examples:
   cos release --minor        Bump minor version
   cos release --major        Bump major version
   cos release --dry-run      Show what would happen
-  cos release --check        Validate release readiness without releasing`,
+  cos release --check        Validate release readiness without releasing
+  cos release validate       Run the hermetic patch-release validation lane`,
 	RunE: runRelease,
+}
+
+var releaseValidateCmd = &cobra.Command{
+	Use:   "validate",
+	Short: "Run the release-blocking patch validation lane",
+	Long:  "Run scripts/cos-patch-release validate from the repository root. This is the hermetic patch-release gate; broad optional lanes remain drift radar.",
+	RunE:  runReleaseValidate,
 }
 
 func init() {
@@ -45,6 +53,7 @@ func init() {
 	releaseCmd.Flags().BoolVar(&releaseMajor, "major", false, "Bump major version")
 	releaseCmd.Flags().BoolVar(&releaseDryRun, "dry-run", false, "Show what would happen without making changes")
 	releaseCmd.Flags().BoolVar(&releaseCheck, "check", false, "Validate release readiness without releasing")
+	releaseCmd.AddCommand(releaseValidateCmd)
 	rootCmd.AddCommand(releaseCmd)
 }
 
@@ -242,6 +251,23 @@ func releaseReadinessCheck(projectRoot, currentVersion string) ([]string, bool) 
 	}
 
 	return checks, allPassed
+}
+
+func runReleaseValidate(cmd *cobra.Command, args []string) error {
+	projectRoot := project.FindRootOrCwd()
+	validator := filepath.Join(projectRoot, "scripts", "cos-patch-release")
+	if _, err := os.Stat(validator); err != nil {
+		return fmt.Errorf("release validator not found at %s: %w", validator, err)
+	}
+	run := exec.Command(validator, "validate")
+	run.Dir = projectRoot
+	run.Stdout = os.Stdout
+	run.Stderr = os.Stderr
+	if err := run.Run(); err != nil {
+		return fmt.Errorf("cos release validate failed: %w", err)
+	}
+	fmt.Println("cos-release-validate-ok")
+	return nil
 }
 
 func runRelease(cmd *cobra.Command, args []string) error {

@@ -493,6 +493,7 @@ hooks:
     - tests/contracts/test_orphan_hooks.py
     - tests/contracts/test_primitive_closure_ratchet.py
     - tests/unit/test_bash_hot_path_dispatcher_projection.py
+    - tests/unit/test_harness_hook_projection_policy.py
     - tests/unit/test_multi_agent_coordination_primitives.py
     - tests/unit/test_primitive_coherence_audit.py
     bypass_policy: not_required_warning_only

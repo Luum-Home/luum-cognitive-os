@@ -18318,7 +18318,6 @@
       "consumer_families": {
         "config": 1,
         "rule": 1,
-        "script": 1,
         "test": 1
       },
       "consumers": [
@@ -18331,10 +18330,6 @@
           "path": "rules/RULES-COMPACT.md"
         },
         {
-          "family": "script",
-          "path": "scripts/cos-patch-release"
-        },
-        {
           "family": "test",
           "path": "tests/red_team/portability/test_release-publishing.py"
         }
@@ -18342,7 +18337,6 @@
       "distribution": null,
       "evidence": [
         "rule_consumers:1",
-        "script_consumers:1",
         "test_consumers:1",
         "config_consumers:1"
       ],
@@ -18354,7 +18348,7 @@
       "role": "context-only",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 4
+      "total_consumers": 3
     },
     {
       "confidence": "high",

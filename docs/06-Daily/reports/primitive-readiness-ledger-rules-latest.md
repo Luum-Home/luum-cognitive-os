@@ -99,7 +99,7 @@ Consumer accessibility: lifecycle-declared-maintainer:117, projected-consumer-su
 | `rules/rate-limiting.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 32 | keep maintainer-only or add explicit export path |
 | `rules/recommendation-grounding.md` | driver-specific | heuristic:text | medium | projected-consumer-surface | advisory | 10 | keep lifecycle, tests, and harness proof current |
 | `rules/reinvention-prevention.md` | hook-enforced | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 15 | keep maintainer-only or add explicit export path |
-| `rules/release-publishing.md` | context-only | default | medium | so-local-only |  | 4 | add lifecycle/package/projection metadata or keep SO-local |
+| `rules/release-publishing.md` | context-only | default | medium | so-local-only |  | 3 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/repomix-integration.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 18 | keep maintainer-only or add explicit export path |
 | `rules/research-first-protocol.md` | driver-specific | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 19 | keep maintainer-only or add explicit export path |
 | `rules/resource-governance.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 47 | keep maintainer-only or add explicit export path |

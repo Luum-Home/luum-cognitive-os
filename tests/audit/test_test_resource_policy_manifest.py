@@ -72,3 +72,37 @@ def test_resource_policy_summary_is_machine_derivable() -> None:
         r"workers=0 timeout=2400s docker=forbidden cost=free_only artifacts=keep_summary",
         summary,
     )
+
+
+def test_lane_gate_classes_make_broad_semantics_explicit() -> None:
+    lanes = _load_yaml(LANES)["lanes"]
+    allowed_classes = {"release_blocking", "environmental", "cost_bearing", "diagnostic"}
+    allowed_policies = {"block", "warn", "skip_if_unavailable"}
+
+    for lane, spec in lanes.items():
+        assert spec.get("gate_class") in allowed_classes, lane
+        assert spec.get("failure_policy") in allowed_policies, lane
+        if spec["gate_class"] == "release_blocking":
+            assert spec["failure_policy"] == "block", lane
+        if spec["gate_class"] == "cost_bearing":
+            assert spec.get("optional") is True, lane
+            assert spec["failure_policy"] != "block", lane
+
+
+def test_integration_has_explicit_sublanes_for_stateful_surfaces() -> None:
+    lanes = _load_yaml(LANES)["lanes"]
+    expected = {
+        "integration-installer",
+        "integration-memory",
+        "integration-hooks",
+        "integration-runtime",
+    }
+
+    assert expected <= set(lanes)
+    for lane in expected:
+        spec = lanes[lane]
+        assert spec["optional"] is True, lane
+        assert spec["gate_class"] == "environmental", lane
+        assert spec["parallel"] is False, lane
+        assert spec["paths"], lane
+        assert all(str(path).startswith("tests/integration/") for path in spec["paths"]), lane
