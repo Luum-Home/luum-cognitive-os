@@ -5,6 +5,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.29.14] - 2026-05-29 — "Release Gate Audit Fixes"
+
+### Fixed
+- Renamed the integration lane coverage checker to `scripts/check_integration_lane_coverage.py` to satisfy the repository snake_case Python script rule.
+- Updated the hook functional-audit scorecard to account for `session-quality-close-gate.sh`.
+
+### Validation
+- `scripts/cos-test-repair-loop --full-command "make test-laptop" --timeout-seconds 2400 --require-clean-start` exposed the two audit regressions fixed in this release.
+- `tests/audit/test_hooks_contracts.py::test_hook_counts_match_scorecard`, `tests/audit/test_python_naming.py::test_scripts_are_snake_case`, and `tests/unit/test_integration_lane_coverage.py` passed.
+- `scripts/cos-patch-release validate` passed.
+
 ## [0.29.13] - 2026-05-29 — "Root Test Contract Hardening"
 
 ### Added
