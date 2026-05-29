@@ -148,6 +148,16 @@ PACKAGE_MANIFEST_NAMES = {
     "Cargo.toml",
 }
 
+PACKAGE_MANAGER_LOCKFILES = {
+    "package-lock.json": "npm",
+    "npm-shrinkwrap.json": "npm",
+    "pnpm-lock.yaml": "pnpm",
+    "bun.lock": "bun",
+    "bun.lockb": "bun",
+    "yarn.lock": "yarn",
+}
+PACKAGE_MANAGER_NAMES = {"npm", "npx", "pnpm", "bun", "yarn"}
+
 
 @dataclass(frozen=True)
 class SourceRef:
@@ -258,6 +268,63 @@ def _parse_req_name(spec: str) -> str | None:
         return None
     name = normalize_tool_id(match.group(1))
     return name or None
+
+
+def _parse_package_manager_spec(spec: str) -> str | None:
+    spec = spec.strip()
+    if not spec:
+        return None
+    # packageManager values are shaped like "pnpm@10.0.0" or "bun@1.2.0".
+    # Scoped package manager names are not expected here; keep detection tight so
+    # npm package scopes are not mistaken for host package managers.
+    name = normalize_tool_id(spec.split("@", 1)[0])
+    return name if name in PACKAGE_MANAGER_NAMES else None
+
+
+def _package_manager_from_package_json(path: Path) -> str | None:
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+    value = data.get("packageManager")
+    if isinstance(value, str):
+        return _parse_package_manager_spec(value)
+    dev_engines = data.get("devEngines")
+    if isinstance(dev_engines, dict):
+        runtime = dev_engines.get("packageManager")
+        if isinstance(runtime, dict) and isinstance(runtime.get("name"), str):
+            return _parse_package_manager_spec(runtime["name"])
+        if isinstance(runtime, str):
+            return _parse_package_manager_spec(runtime)
+    return None
+
+
+def collect_package_manager_tools(root: Path) -> list[Candidate]:
+    rows: list[Candidate] = []
+    candidates = _tracked_files(root)
+    if candidates is None:
+        candidates = [path for path in root.rglob("*") if path.is_file()]
+    for path in candidates:
+        if not path.is_file() or _is_excluded(root, path):
+            continue
+        rel = _rel(root, path)
+        manager: str | None = None
+        source = "package-manager-lockfile"
+        if path.name == "package.json":
+            manager = _package_manager_from_package_json(path)
+            source = "package-manager-field"
+        elif path.name in PACKAGE_MANAGER_LOCKFILES:
+            manager = PACKAGE_MANAGER_LOCKFILES[path.name]
+        if manager:
+            rows.append(
+                Candidate(
+                    manager,
+                    "host-tool",
+                    (SourceRef(rel, source=source),),
+                    {"reason": "package manager inferred from package manifest"},
+                )
+            )
+    return rows
 
 
 def _manifest_python_names(manifest: Manifest) -> set[str]:
@@ -495,9 +562,10 @@ def build_report(root: Path, *, manifest_path: Path | None = None) -> dict[str, 
     adoption_index = _load_adoption_package_index(root)
 
     package_rows = collect_package_dependencies(root)
+    package_manager_rows = collect_package_manager_tools(root)
     command_rows = collect_command_probes(root)
 
-    declared_host_tool_names = {row.name for row in command_rows if row.kind == "host-tool"}
+    declared_host_tool_names = {row.name for row in [*command_rows, *package_manager_rows] if row.kind == "host-tool"}
 
     missing_from_manifest: list[Candidate] = []
     platform_builtin: list[Candidate] = []
@@ -520,6 +588,11 @@ def build_report(root: Path, *, manifest_path: Path | None = None) -> dict[str, 
             declared_python_dependency.append(row)
             if row.name not in manifest_python:
                 missing_from_manifest.append(Candidate(row.name, "python", row.sources, {"reason": "python package installed by script but not declared in manifests/dependencies.yaml python groups"}))
+
+    for row in package_manager_rows:
+        declared_host_tool.append(row)
+        if row.name not in manifest_tools:
+            missing_from_manifest.append(row)
 
     for row in package_rows:
         if row.kind == "python":

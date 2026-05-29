@@ -45,6 +45,33 @@ def test_pyproject_self_extras_are_not_external_tools(tmp_path: Path) -> None:
     assert "demo-os" not in deps["pyproject.toml"]
     assert deps["pyproject.toml"] == ["pytest", "pyyaml"]
 
+
+
+def test_pyproject_parser_fallback_reads_multiline_arrays(monkeypatch, tmp_path: Path) -> None:
+    import lib.compat_tomllib as compat_tomllib
+
+    monkeypatch.setattr(compat_tomllib, "_tomllib", None)
+    write(
+        tmp_path / "pyproject.toml",
+        """[project]
+name = "demo"
+dependencies = [
+  "pyyaml>=6",
+  # comment inside array
+  "jinja2>=3",
+]
+[project.optional-dependencies]
+testing = [
+  "pytest>=8",
+  "demo[dev]",
+]
+""",
+    )
+
+    deps = direct_dependencies(tmp_path)
+
+    assert deps["pyproject.toml"] == ["jinja2", "pytest", "pyyaml"]
+
 def test_audit_detects_remove_dependency_and_overlay_contradiction(tmp_path: Path) -> None:
     write(tmp_path / "requirements.txt", "litellm>=1\nsemgrep>=1\n")
     manifest = tmp_path / "manifests" / "external-tools-adoption.yaml"

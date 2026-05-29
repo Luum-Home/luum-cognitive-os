@@ -5,6 +5,21 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.29.15] - 2026-05-29 — "Platform Dependency Maintenance Warnings"
+
+### Fixed
+- Eliminated dependency-maintenance drift false positives by making the Python 3.9 TOML fallback parse multiline `pyproject.toml` arrays correctly.
+- Updated GitHub Actions workflows to Node 24-compatible action majors: `actions/checkout@v6`, `actions/setup-go@v6`, `actions/setup-python@v6`, and `goreleaser/goreleaser-action@v7`.
+- Pinned the GoReleaser binary in the release workflow to `v2.16.0` instead of `latest`.
+
+### Added
+- Added dependency coverage detection for package managers inferred from `package.json` `packageManager`, `devEngines.packageManager`, and npm/pnpm/bun/yarn lockfiles.
+- Declared `corepack`, `pnpm`, and `bun` as first-class package-manager tools in `manifests/dependencies.yaml`, with modern minimum versions for Node/npm/pnpm/bun.
+
+### Validation
+- `scripts/cos-deps-maintain --json` reports `status=pass` with `actionable=0`.
+- `scripts/cos-patch-release validate` passed.
+
 ## [0.29.14] - 2026-05-29 — "Release Gate Audit Fixes"
 
 ### Fixed

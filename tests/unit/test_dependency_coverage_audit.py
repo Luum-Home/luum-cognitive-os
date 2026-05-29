@@ -159,6 +159,46 @@ def test_collect_command_probes_classifies_local_script_subprocess_as_internal(t
     assert by_name["cos-self-improvement-loop"] == "internal-helper"
 
 
+
+
+def test_build_report_detects_package_managers_from_manifests_and_lockfiles(tmp_path: Path) -> None:
+    payload = manifest_payload()
+    payload["tools"].extend(
+        [
+            {
+                "name": "pnpm",
+                "criticality": "recommended",
+                "check": "pnpm --version",
+                "install": {"any": "corepack enable && corepack prepare pnpm@latest --activate"},
+            },
+            {
+                "name": "bun",
+                "criticality": "recommended",
+                "check": "bun --version",
+                "install": {"any": "brew install oven-sh/bun/bun"},
+            },
+        ]
+    )
+    manifest = tmp_path / "manifests" / "dependencies.yaml"
+    write(manifest, yaml.safe_dump(payload, sort_keys=False))
+    write(tmp_path / "package.json", '{"packageManager":"pnpm@10.12.0","dependencies":{"vite":"latest"}}')
+    write(tmp_path / "frontend" / "bun.lock", "# bun lockfile\n")
+
+    report = build_report(tmp_path, manifest_path=manifest)
+
+    assert {"pnpm", "bun"}.issubset(names(report["declared_host_tool"]))
+    assert "pnpm" not in names(report["missing_from_manifest"])
+    assert "bun" not in names(report["missing_from_manifest"])
+
+
+def test_build_report_flags_unmanifested_package_manager(tmp_path: Path) -> None:
+    manifest = write_manifest(tmp_path)
+    write(tmp_path / "package.json", '{"packageManager":"pnpm@10.12.0"}')
+
+    report = build_report(tmp_path, manifest_path=manifest)
+
+    assert "pnpm" in names(report["missing_from_manifest"])
+
 def test_cli_emits_json(tmp_path: Path) -> None:
     manifest = write_manifest(tmp_path)
     write(tmp_path / "scripts" / "probe.sh", "command -v shellcheck >/dev/null\n")

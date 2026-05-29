@@ -38,7 +38,7 @@ jobs:
       environmental-lanes: ${{ steps.parse.outputs.environmental }}
       cost-bearing-lanes: ${{ steps.parse.outputs.cost_bearing }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - id: parse
         name: Emit lane groups as JSON
         run: |
@@ -94,12 +94,12 @@ jobs:
         lane: ${{ fromJson(needs.setup.outputs.parallel-lanes) }}
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.14"
           cache: pip
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v6
         with:
           go-version: "1.23"
           cache: true
@@ -135,12 +135,12 @@ jobs:
         lane: ${{ fromJson(needs.setup.outputs.serial-lanes) }}
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.14"
           cache: pip
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v6
         with:
           go-version: "1.23"
           cache: true
@@ -172,12 +172,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.14"
           cache: pip
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v6
         with:
           go-version-file: cmd/cos-test/go.mod
           cache: true
@@ -204,12 +204,12 @@ jobs:
         lane: ${{ fromJson(needs.setup.outputs.environmental-lanes) }}
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.14"
           cache: pip
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v6
         with:
           go-version-file: cmd/cos-test/go.mod
           cache: true
@@ -238,12 +238,12 @@ jobs:
         lane: ${{ fromJson(needs.setup.outputs.optional-lanes) }}
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.14"
           cache: pip
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v6
         with:
           go-version: "1.23"
           cache: true

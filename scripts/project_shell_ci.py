@@ -64,8 +64,8 @@ jobs:
   cognitive-os-shell-ci:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.x'
       - name: Validate projected Cognitive OS shell/CI commands

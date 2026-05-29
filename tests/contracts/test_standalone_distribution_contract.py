@@ -24,12 +24,33 @@ def test_release_pipeline_artifacts_are_declared() -> None:
     assert "scripts/cos-patch-release doctor --strict --contract-only --json" in workflow_text
     assert "go run . derive check" in workflow_text
     assert "go run . quarantine audit" in workflow_text
+    assert "actions/checkout@v6" in workflow_text
+    assert "actions/setup-go@v6" in workflow_text
+    assert "goreleaser/goreleaser-action@v7" in workflow_text
+    assert "version: v2.16.0" in workflow_text
+    assert "version: latest" not in workflow_text
     assert "homebrew_casks" in goreleaser
     assert goreleaser["homebrew_casks"][0]["repository"]["name"] == "homebrew-tap"
     assert goreleaser["homebrew_casks"][0]["binaries"] == ["cos"]
     installer = REPO / "scripts" / "install-goreleaser.sh"
     assert installer.exists()
     assert "goreleaser release --snapshot --clean --skip=publish" in installer.read_text(encoding="utf-8")
+
+
+
+
+def test_github_actions_runtime_pins_avoid_known_node20_deprecations() -> None:
+    workflow_text = "\n".join(
+        path.read_text(encoding="utf-8")
+        for path in (REPO / ".github" / "workflows").glob("*.yml*")
+    )
+
+    assert "actions/checkout@v4" not in workflow_text
+    assert "actions/checkout@v5" not in workflow_text
+    assert "actions/setup-go@v5" not in workflow_text
+    assert "actions/setup-python@v5" not in workflow_text
+    assert "goreleaser/goreleaser-action@v6" not in workflow_text
+    assert "version: latest" not in workflow_text
 
 
 def test_homebrew_formula_has_no_checksum_placeholder() -> None:
