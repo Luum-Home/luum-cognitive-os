@@ -302,6 +302,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [328](ADR-328-governance-roi-friction-vs-catch.md) | Governance ROI Friction-vs-Catch Ratios | accepted | partial | 2026-05-20 | Accepted. Read-side dashboard, write-side catch logging, optional blocked-hook prompts, weighted severity normalization, and the executable phase-policy adapter |
 | [330](ADR-330-typed-capability-ceiling-signals.md) | Typed capability-ceiling signals | accepted | partial | 2026-05-20 | Accepted — first slice implemented as read-only detection. |
 | [331](ADR-331-graphify-portable-context-optimization-primitive.md) | Graphify Portable Context Optimization Primitive | accepted | partial | 2026-05-22 | Accepted with partial implementation. |
+| [332](ADR-332-sia-inspired-self-improvement-benchmark-loop.md) | SIA-inspired self-improvement benchmark loop | accepted | partial | 2026-05-29 | Accepted — benchmark-bound run/feedback/context primitives with gated mutation. |
 
 ### Active / Partial / Blocked (1)
 

@@ -1,0 +1,3 @@
+{"case_id":"redis-missing","message":"SKIP integration: Redis/Valkey service not available on host"}
+{"case_id":"docker-disabled","message":"SKIP integration-docker: Docker daemon unavailable"}
+{"case_id":"unknown-timeout","message":"FAIL e2e: timed out waiting for application"}

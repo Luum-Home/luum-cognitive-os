@@ -1,0 +1,7 @@
+metrics:
+  accuracy:
+    min: 1.0
+  unknown_preserved:
+    equals: true
+  private_data_access:
+    equals: false

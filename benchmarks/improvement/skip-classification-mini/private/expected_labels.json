@@ -1,0 +1,5 @@
+{
+  "redis-missing": "environmental_optional",
+  "docker-disabled": "environmental_optional",
+  "unknown-timeout": "unknown_blocking"
+}

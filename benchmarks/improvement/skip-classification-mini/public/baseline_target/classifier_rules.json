@@ -1,0 +1,9 @@
+{
+  "rules": [
+    {"contains": "Redis", "label": "environmental_optional"},
+    {"contains": "Valkey", "label": "environmental_optional"},
+    {"contains": "Docker daemon unavailable", "label": "environmental_optional"},
+    {"contains": "bootstrap", "label": "bootstrap_precondition"}
+  ],
+  "default_label": "unknown_blocking"
+}

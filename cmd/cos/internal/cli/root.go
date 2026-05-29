@@ -37,6 +37,7 @@ Commands:
   doctor      Run Cognitive OS diagnostics
   project     Apply project-local harness projection
   derive      Check or sync generated Cognitive OS artifacts
+  improve     Run benchmark-bound self-improvement primitives
   remove      Remove an installed package
   list        List installed packages
   info        Show detailed information about a package
