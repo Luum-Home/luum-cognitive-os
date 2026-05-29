@@ -5,6 +5,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Security
+- Added Bun supply-chain hardening with `install.ignoreScripts = true` across tracked JavaScript package roots, plus an audit guard documenting blocked lifecycle scripts (`preinstall`, `install`, `postinstall`, `prepare`) and malware-prevention impact.
+
 ### Fixed
 - Made local test execution laptop-friendly by capping default local pytest workers at 2, reducing high-load runs to 1 worker, forcing low-memory runs serial, and routing `make test-laptop` through a conservative wrapper with max 1 worker, `nice=15`, no Docker, and inter-lane cooldown.
 

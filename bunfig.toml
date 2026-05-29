@@ -1,0 +1,5 @@
+# Cognitive OS supply-chain hardening for Bun.
+# Prevent arbitrary package/workspace lifecycle scripts from running during
+# `bun install` and `bun add` unless an operator deliberately overrides this file.
+[install]
+ignoreScripts = true

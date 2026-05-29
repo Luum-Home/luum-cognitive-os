@@ -328,6 +328,46 @@ The repo-root `package.json` declares no runtime dependencies (it exists only
 to expose the postinstall script and the `cos` bin shim), so there is no
 root-level lockfile by design.
 
+
+#### Bun — lifecycle scripts blocked by policy
+
+When this repository or one of its tracked JavaScript package roots is installed
+with Bun, `bunfig.toml` sets:
+
+```toml
+[install]
+ignoreScripts = true
+```
+
+This is a malware-prevention default. Bun documents this as equivalent to
+`bun install --ignore-scripts`; when enabled, Bun does not run lifecycle scripts
+such as `preinstall`, `install`, `postinstall`, or `prepare` during `bun install`
+or `bun add`. That includes the project/workspace package and packages that
+would otherwise be listed in `trustedDependencies`.
+
+Impact in this repo:
+
+- Root `package.json` has `postinstall: node scripts/postinstall.js`; Bun will
+  not run it automatically. Operators that intentionally need that setup must
+  run `node scripts/postinstall.js` explicitly after reviewing the script.
+- `dashboard/package.json` and `examples/hello-world/package.json` currently
+  have no install lifecycle scripts, so `ignoreScripts=true` is non-breaking
+  there.
+- Dependency packages that rely on native `postinstall` or `prepare` steps may
+  need an explicit, reviewed build step. Do not add `trustedDependencies` as a
+  broad workaround; with this policy, trusted dependency lifecycle scripts remain
+  disabled during Bun installs.
+
+Audit command:
+
+```bash
+scripts/check-bun-install-policy.py --json
+```
+
+The audit fails if any tracked `package.json` root lacks an effective
+`bunfig.toml` with `install.ignoreScripts = true`, and it reports any lifecycle
+scripts that Bun will intentionally skip.
+
 ### 4.2 Aspirational (tracked, not yet enforced)
 
 - **Sigstore / cosign signing of release artifacts** — planned for the first
