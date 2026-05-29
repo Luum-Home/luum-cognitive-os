@@ -151,13 +151,14 @@ def run_live_check(args: argparse.Namespace) -> dict[str, Any]:
         if "Resource governance: nice=" not in wrapper_output and args.no_nice is False:
             raise AssertionError("wrapper did not report nice/resource governance")
 
-        if not ci and rule_fired == "default_headroom":
-            expected = max(2, cores - headroom)
+        if not ci and rule_fired in {"default_headroom", "default_local_cap"}:
+            local_max = max(1, int(env.get("COS_PYTEST_LOCAL_MAX", "2")))
+            expected = max(1, min(local_max, cores - headroom))
             if workers_chosen == "auto":
-                raise AssertionError("local default_headroom must not choose xdist auto")
+                raise AssertionError("local capacity detector must not choose xdist auto")
             if parsed_workers != expected:
                 raise AssertionError(
-                    f"default_headroom chose workers={workers_chosen}, expected cores-headroom={expected}"
+                    f"{rule_fired} chose workers={workers_chosen}, expected local cap={expected}"
                 )
 
         xdist_loadgroup_observed = False

@@ -5,6 +5,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Fixed
+- Made local test execution laptop-friendly by capping default local pytest workers at 2, reducing high-load runs to 1 worker, forcing low-memory runs serial, and routing `make test-laptop` through a conservative wrapper with max 1 worker, `nice=15`, no Docker, and inter-lane cooldown.
+
 ## [0.29.16] - 2026-05-29 — "Benchmark-bound Improve Primitives"
 
 ### Added

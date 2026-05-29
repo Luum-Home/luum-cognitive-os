@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"strings"
 	"testing"
 
 	"luum-agent-os/cmd/cos-test/internal/lanes"
@@ -182,5 +183,21 @@ func TestPrintBroadSummaryWritesToProvidedWriter(t *testing.T) {
 	printBroadSummary(&buf, summary)
 	if !bytes.Contains(buf.Bytes(), []byte("unit")) {
 		t.Fatalf("summary did not write to provided writer: %q", buf.String())
+	}
+}
+
+func TestSleepBetweenBroadLanesInvalidOrUnsetDoesNotPanic(t *testing.T) {
+	t.Setenv("COS_TEST_INTER_LANE_SLEEP_SECONDS", "")
+	sleepBetweenBroadLanes(&bytes.Buffer{})
+	t.Setenv("COS_TEST_INTER_LANE_SLEEP_SECONDS", "not-a-number")
+	sleepBetweenBroadLanes(&bytes.Buffer{})
+}
+
+func TestSleepBetweenBroadLanesEmitsCooldownMessage(t *testing.T) {
+	t.Setenv("COS_TEST_INTER_LANE_SLEEP_SECONDS", "1")
+	var out bytes.Buffer
+	sleepBetweenBroadLanes(&out)
+	if !strings.Contains(out.String(), "cooling down for 1s") {
+		t.Fatalf("expected cooldown message, got %q", out.String())
 	}
 }

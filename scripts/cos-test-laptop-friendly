@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+# SCOPE: os-only
+# Run COS tests without monopolizing an interactive laptop.
+set -euo pipefail
+
+usage() {
+  cat >&2 <<'USAGE'
+Usage: scripts/cos-test-laptop-friendly [--max-workers N] [--no-capsule] [--] [cos-test args...]
+
+Default command: ./cos-test broad --no-docker --ci
+Defaults are intentionally conservative for interactive work:
+  COS_TEST_WORKERS_MAX=1
+  COS_PYTEST_LOCAL_MAX=1
+  COS_PYTEST_NICE_LEVEL=15
+  COS_TEST_INTER_LANE_SLEEP_SECONDS=2
+
+Override with --max-workers N or env vars when the machine is dedicated.
+USAGE
+}
+
+MAX_WORKERS="${COS_TEST_LAPTOP_MAX_WORKERS:-1}"
+USE_CAPSULE=1
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --max-workers)
+      MAX_WORKERS="${2:-}"; shift 2 ;;
+    --max-workers=*)
+      MAX_WORKERS="${1#--max-workers=}"; shift ;;
+    --no-capsule)
+      USE_CAPSULE=0; shift ;;
+    --help|-h)
+      usage; exit 0 ;;
+    --)
+      shift; break ;;
+    *)
+      break ;;
+  esac
+done
+case "$MAX_WORKERS" in
+  ''|*[!0-9]*) echo "cos-test-laptop-friendly: --max-workers must be a positive integer" >&2; exit 2 ;;
+  0) echo "cos-test-laptop-friendly: --max-workers must be >= 1" >&2; exit 2 ;;
+esac
+
+if [ $# -eq 0 ]; then
+  set -- ./cos-test broad --no-docker --ci
+fi
+
+export COS_TEST_WORKERS_MAX="${COS_TEST_WORKERS_MAX:-$MAX_WORKERS}"
+export COS_PYTEST_LOCAL_MAX="${COS_PYTEST_LOCAL_MAX:-$MAX_WORKERS}"
+export COS_PYTEST_HEADROOM="${COS_PYTEST_HEADROOM:-6}"
+export COS_PYTEST_NICE_LEVEL="${COS_PYTEST_NICE_LEVEL:-15}"
+export COS_TEST_INTER_LANE_SLEEP_SECONDS="${COS_TEST_INTER_LANE_SLEEP_SECONDS:-2}"
+export COS_TEST_LAPTOP_FRIENDLY=1
+
+cat >&2 <<EOF
+[cos-test-laptop-friendly] workers_max=$COS_TEST_WORKERS_MAX local_max=$COS_PYTEST_LOCAL_MAX nice=$COS_PYTEST_NICE_LEVEL inter_lane_sleep=${COS_TEST_INTER_LANE_SLEEP_SECONDS}s
+[cos-test-laptop-friendly] command: $*
+EOF
+
+if [ "$USE_CAPSULE" = "1" ] && [ -x scripts/cos-validation-capsule.sh ]; then
+  exec scripts/cos-validation-capsule.sh --name laptop-friendly -- "$@"
+fi
+exec "$@"

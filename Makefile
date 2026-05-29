@@ -24,7 +24,7 @@ help:
 	@echo "Targets:"
 	@echo "  test-agentic-mastery  Agentic mastery MVP: ACI, skill efficacy, runtime benchmark schema, adversarial suite, lethal trifecta."
 	@echo "  test-local-fast   Official local quick lane: cos-test focused."
-	@echo "  test-laptop       Laptop-friendly broad lane: capped workers, no Docker/cost/integration/chaos."
+	@echo "  test-laptop       Laptop-friendly broad lane: max 1 worker by default, nice=15, no Docker/cost."
 	@echo "  test-laptop-integration  Laptop-friendly explicit integration lane: serial + nice, still slow/stateful."
 	@echo "  test-local-wide-no-docker  Official local broad lane without Docker/cost."
 	@echo "  test-ci-default   Official CI/pre-merge default: broad non-Docker gate; do not run constantly on laptops."
@@ -79,14 +79,8 @@ test-laptop: cos-test
 	@scripts/cos-validation-capsule.sh -- $(MAKE) test-laptop-direct
 
 test-laptop-direct: cos-test
-	@echo "[test-laptop-direct] Laptop-friendly broad validation: max 2 workers, no Docker/cost/integration/e2e/chaos." >&2
-	@COS_TEST_WORKERS_MAX=2 ./cos-test cluster --lane unit
-	@COS_TEST_WORKERS_MAX=2 ./cos-test cluster --lane audit
-	@COS_TEST_WORKERS_MAX=2 ./cos-test cluster --lane contract
-	@COS_TEST_WORKERS_MAX=2 ./cos-test cluster --lane architecture
-	@COS_TEST_WORKERS_MAX=2 ./cos-test cluster --lane system
-	@COS_TEST_WORKERS_MAX=2 ./cos-test cluster --lane behavior
-	@COS_TEST_WORKERS_MAX=2 ./cos-test cluster --lane hooks
+	@echo "[test-laptop-direct] Laptop-friendly broad validation: max 1 worker by default, nice=15, no Docker/cost." >&2
+	@scripts/cos-test-laptop-friendly --no-capsule -- ./cos-test broad --no-docker --ci
 
 test-laptop-integration: cos-test
 	@echo "[test-laptop-integration] Explicit SO integration validation via F1 stable shards. Override COS_INTEGRATION_SHARDS=4." >&2

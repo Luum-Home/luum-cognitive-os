@@ -6,7 +6,9 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
+	"time"
 
 	"github.com/spf13/cobra"
 
@@ -187,6 +189,7 @@ func runBroad(cfg *config.Config, dryRun, includeOptional, noDocker, emitJSON, s
 		}
 		baseOutcome.Failed = failed
 		outcomes = append(outcomes, baseOutcome)
+		sleepBetweenBroadLanes(logOut)
 	}
 
 	summary := buildBroadSummary(outcomes, strict)
@@ -207,6 +210,19 @@ func runBroad(cfg *config.Config, dryRun, includeOptional, noDocker, emitJSON, s
 		os.Exit(1)
 	}
 	return nil
+}
+
+func sleepBetweenBroadLanes(out io.Writer) {
+	raw := strings.TrimSpace(os.Getenv("COS_TEST_INTER_LANE_SLEEP_SECONDS"))
+	if raw == "" {
+		return
+	}
+	seconds, err := strconv.Atoi(raw)
+	if err != nil || seconds <= 0 {
+		return
+	}
+	fmt.Fprintf(out, "[cos-test broad] cooling down for %ds (COS_TEST_INTER_LANE_SLEEP_SECONDS)\n", seconds)
+	time.Sleep(time.Duration(seconds) * time.Second)
 }
 
 func shouldSkipForNoDocker(dockerPolicy string, noDocker bool) bool {

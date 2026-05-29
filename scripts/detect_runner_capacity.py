@@ -125,13 +125,16 @@ def _apply_heuristic(metrics: dict) -> tuple[str, str]:
     if cores <= 2:
         return "0", "cores_le_2"
 
-    # Row 2: high load — already saturated, sharply restrict
+    # Row 2: high load — already saturated, keep one worker at most so the
+    # laptop remains usable for the operator.
     if load_pct > 70:
-        return "2", "load_high"
+        return "1", "load_high"
 
-    # Row 3: low memory
+    # Row 3: low memory — prefer serial execution. Returning more workers here
+    # was counterproductive on laptops because xdist processes amplify memory
+    # pressure and trigger swap.
     if mem_gb < 2.0:
-        return "4", "mem_low"
+        return "0", "mem_low"
 
     # Row 4: battery present, low, not plugged in
     if battery_pct is not None and battery_pct < 30 and not on_ac:
@@ -141,11 +144,18 @@ def _apply_heuristic(metrics: dict) -> tuple[str, str]:
     if ci:
         return "auto", "ci_env"
 
-    # Row 6: default — healthy dev machine, but cap to leave headroom for
-    # the host's other workloads (ADR-100). Floor at 2 so we still parallelize.
+    # Row 6: default — healthy dev machine. Keep a hard local cap so broad
+    # validations do not starve IDE/browser/Codex. Override with
+    # COS_PYTEST_LOCAL_MAX=N or COS_PYTEST_WORKERS=N when intentionally using a
+    # dedicated machine.
     headroom = _headroom_cores()
-    safe = max(2, cores - headroom)
-    return str(safe), "default_headroom"
+    local_max_raw = os.environ.get("COS_PYTEST_LOCAL_MAX", "2").strip()
+    try:
+        local_max = max(1, int(local_max_raw))
+    except ValueError:
+        local_max = 2
+    safe = max(1, min(local_max, cores - headroom))
+    return str(safe), "default_local_cap"
 
 
 def detect() -> dict:

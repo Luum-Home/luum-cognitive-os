@@ -75,6 +75,7 @@ def _run_detect(
     power_plugged: bool = True,
     ci: bool = False,
     env_override: str | None = None,
+    local_max: str | None = None,
 ) -> dict:
     """
     Run detect() with fully stubbed system calls.  Returns the diagnostics dict.
@@ -87,12 +88,16 @@ def _run_detect(
 
     env = dict(os.environ)  # copy
     env.pop("COS_PYTEST_WORKERS", None)
+    env.pop("COS_PYTEST_HEADROOM", None)
+    env.pop("COS_PYTEST_LOCAL_MAX", None)
     env.pop("CI", None)
 
     if ci:
         env["CI"] = "true"
     if env_override is not None:
         env["COS_PYTEST_WORKERS"] = env_override
+    if local_max is not None:
+        env["COS_PYTEST_LOCAL_MAX"] = local_max
 
     with (
         patch.dict(sys.modules, {"psutil": psutil_stub}),
@@ -136,7 +141,7 @@ class TestHeuristicTable(unittest.TestCase):
             power_plugged=True,
             ci=False,
         )
-        self.assertEqual(result["workers"], "2")
+        self.assertEqual(result["workers"], "1")
         self.assertEqual(result["rule_fired"], "load_high")
 
     def test_row2_boundary_exactly_70_does_not_fire(self):
@@ -153,14 +158,14 @@ class TestHeuristicTable(unittest.TestCase):
         # Should fall through to Row 6 (default), NOT load_high
         self.assertNotEqual(result["rule_fired"], "load_high")
 
-    def test_row3_low_memory_outputs_4(self):
-        """Row 3: mem_available < 2 GB on an otherwise healthy 8-core box -> workers = '4'."""
+    def test_row3_low_memory_outputs_serial(self):
+        """Row 3: mem_available < 2 GB on an otherwise healthy 8-core box -> serial."""
         result = _run_detect(
             cores=8,
             load_avg=(0.4, 0.4, 0.4),  # ~5% on 8 cores
             mem_available_bytes=int(1.5 * 1024 ** 3),  # 1.5 GB
         )
-        self.assertEqual(result["workers"], "4")
+        self.assertEqual(result["workers"], "0")
         self.assertEqual(result["rule_fired"], "mem_low")
 
     def test_row4_battery_low_not_plugged_in(self):
@@ -187,7 +192,7 @@ class TestHeuristicTable(unittest.TestCase):
         self.assertEqual(result["rule_fired"], "ci_env")
 
     def test_row6_default_healthy_machine(self):
-        """Row 6: healthy 8-core box -> capped workers leave ADR-100 headroom."""
+        """Row 6: healthy 8-core box -> local cap keeps the laptop responsive."""
         result = _run_detect(
             cores=8,
             load_avg=(0.8, 0.8, 0.8),  # 10% on 8 cores
@@ -196,13 +201,20 @@ class TestHeuristicTable(unittest.TestCase):
             power_plugged=True,
             ci=False,
         )
-        self.assertEqual(result["workers"], "6")
-        self.assertEqual(result["rule_fired"], "default_headroom")
+        self.assertEqual(result["workers"], "2")
+        self.assertEqual(result["rule_fired"], "default_local_cap")
 
 
 # ---------------------------------------------------------------------------
 # Override tests
 # ---------------------------------------------------------------------------
+
+    def test_row6_local_max_override(self):
+        """COS_PYTEST_LOCAL_MAX allows deliberate use of a larger local cap."""
+        result = _run_detect(cores=8, load_avg=(0.8, 0.8, 0.8), mem_available_bytes=16 * 1024 ** 3, local_max="3")
+        self.assertEqual(result["workers"], "3")
+        self.assertEqual(result["rule_fired"], "default_local_cap")
+
 
 class TestEnvOverride(unittest.TestCase):
     """COS_PYTEST_WORKERS env var takes precedence over heuristic."""
