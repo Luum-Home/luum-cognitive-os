@@ -5,11 +5,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.29.16] - 2026-05-29 — "Benchmark-bound Improve Primitives"
+
 ### Added
 - Added SIA-inspired, benchmark-bound self-improvement primitives: `cos improve run`, `cos improve feedback`, `cos improve context`, plus script wrappers and a skip-classification mini benchmark fixture.
+- Added `skills/self-improvement-loop/SKILL.md` to guide agents through benchmark-bound run, feedback, and context workflows.
 
 ### Documentation
 - Added ADR-332 documenting the SIA-inspired pattern adoption without vendoring SIA or auto-applying runtime mutations.
+
+### Validation
+- `scripts/cos-patch-release validate` passed before landing and release.
 
 ## [0.29.15] - 2026-05-29 — "Platform Dependency Maintenance Warnings"
 
