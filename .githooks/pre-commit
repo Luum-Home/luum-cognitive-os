@@ -67,6 +67,18 @@ if [ -f "$COS_ROOT/scripts/check_absolute_paths.py" ]; then
   fi
 fi
 
+# --- Gate 1e: Bun is the canonical JavaScript package manager ---
+staged_js_package_policy=$(git diff --cached --name-only --diff-filter=ACMRD -- \
+  'package.json' '*/package.json' 'bun.lock' '*/bun.lock' 'bun.lockb' '*/bun.lockb' \
+  'package-lock.json' '*/package-lock.json' 'pnpm-lock.yaml' '*/pnpm-lock.yaml' \
+  'yarn.lock' '*/yarn.lock' 'bunfig.toml' '*/bunfig.toml' 2>/dev/null || true)
+if [ -n "$staged_js_package_policy" ] && [ -f "$COS_ROOT/scripts/check-bun-install-policy.py" ]; then
+  if ! python3 "$COS_ROOT/scripts/check-bun-install-policy.py" --root "$COS_ROOT"; then
+    echo "BLOCKED: JavaScript package policy failed. Cognitive OS uses Bun, bun.lock, and install.ignoreScripts=true." >&2
+    exit 1
+  fi
+fi
+
 # --- Gate 1d: Block AI-provider-looking invented author/contact identities ---
 if [ -x "$COS_ROOT/scripts/ai-provider-identity-guard" ]; then
   if ! "$COS_ROOT/scripts/ai-provider-identity-guard" --project-dir "$COS_ROOT" --staged; then

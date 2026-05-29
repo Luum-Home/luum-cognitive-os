@@ -24,6 +24,8 @@ DEPENDENCY_MANIFEST_NAMES = {
     "setup.py",
     "setup.cfg",
     "package.json",
+    "bun.lock",
+    "bun.lockb",
     "package-lock.json",
     "pnpm-lock.yaml",
     "yarn.lock",

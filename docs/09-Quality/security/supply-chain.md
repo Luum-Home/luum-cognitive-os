@@ -283,8 +283,9 @@ Counts:
 | Go (root module)     | pinned    | `go.sum` (h1: hashes per module)                 | `go mod verify`                            |
 | Go (`cmd/cos`)       | pinned    | `cmd/cos/go.sum`                                 | `cd cmd/cos && go mod verify`              |
 | Go (`cmd/cos-test`)  | pinned    | `cmd/cos-test/go.sum`                            | `cd cmd/cos-test && go mod verify`         |
-| Node (dashboard)     | pinned    | `dashboard/package-lock.json` (sha512 integrity) | `cd dashboard && npm ci`                   |
-| Node (root)          | n/a       | no runtime deps; postinstall script + bin only   | (no lockfile by design)                    |
+| Bun / JS (dashboard) | pinned    | `dashboard/bun.lock`                              | `cd dashboard && bun install --frozen-lockfile --ignore-scripts` |
+| Bun / JS (example)   | pinned    | `examples/hello-world/bun.lock`                   | `cd examples/hello-world && bun install --frozen-lockfile --ignore-scripts` |
+| Bun / JS (root)      | n/a       | no runtime deps; postinstall script + bin only    | (no lockfile by design)                    |
 | Third-party CLIs     | partial   | `manifests/dependencies.yaml`                    | per-tool `--version` checks; see §4.3      |
 | GitHub Actions       | partial   | `.github/workflows/cos-binary-release.yml`       | manual SHA pinning audit; see §4.4         |
 | Container base images| n/a       | no Dockerfiles in release path                   | (n/a)                                      |
@@ -318,21 +319,29 @@ go mod verify                    # root
 ( cd cmd/cos-test && go mod verify )
 ```
 
-#### Node (dashboard) — pinned
+#### Bun / JavaScript — pinned where dependencies exist
 
-`dashboard/package-lock.json` pins exact versions and `integrity` hashes
-(`sha512-…`) for every `node_modules/` entry. The dashboard CI uses `npm ci`,
-which refuses to install if a tarball disagrees with the lockfile integrity.
+Tracked JavaScript package roots declare `packageManager: bun@...`. Dependency
+roots commit Bun lockfiles:
+
+- `dashboard/bun.lock`
+- `examples/hello-world/bun.lock`
 
 The repo-root `package.json` declares no runtime dependencies (it exists only
 to expose the postinstall script and the `cos` bin shim), so there is no
 root-level lockfile by design.
 
+Do not commit `package-lock.json`, `pnpm-lock.yaml`, or `yarn.lock` in tracked
+COS JavaScript package roots. Those lockfiles indicate npm, pnpm, or Yarn drift;
+the pre-commit policy and `scripts/check-bun-install-policy.py` treat them as
+failures. Historical third-party reference trees under `reference/` and local
+Claude plugins under `.claude/plugins/` are excluded from this COS package-manager
+contract because they are not first-party runtime roots.
 
 #### Bun — lifecycle scripts blocked by policy
 
-When this repository or one of its tracked JavaScript package roots is installed
-with Bun, `bunfig.toml` sets:
+When this repository or one of its tracked JavaScript package roots is installed,
+use Bun. Each tracked root is covered by a `bunfig.toml` setting:
 
 ```toml
 [install]
@@ -364,9 +373,11 @@ Audit command:
 scripts/check-bun-install-policy.py --json
 ```
 
-The audit fails if any tracked `package.json` root lacks an effective
-`bunfig.toml` with `install.ignoreScripts = true`, and it reports any lifecycle
-scripts that Bun will intentionally skip.
+The audit fails if any tracked first-party `package.json` root lacks an
+effective `bunfig.toml` with `install.ignoreScripts = true`, lacks
+`packageManager: bun@...`, needs but lacks `bun.lock`, or commits npm/pnpm/yarn
+lockfiles. It also reports any lifecycle scripts that Bun will intentionally
+skip.
 
 ### 4.2 Aspirational (tracked, not yet enforced)
 

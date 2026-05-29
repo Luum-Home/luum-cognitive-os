@@ -34,7 +34,7 @@ Agents classify tasks at the START of work. If unsure, classify UP (safer).
 
 | Criterion | Description | Verification |
 |-----------|-------------|--------------|
-| `code_compiles` | Code builds without errors | `go build ./...` or `yarn build` exits 0 |
+| `code_compiles` | Code builds without errors | `go build ./...` or `bun run build` exits 0 |
 | `no_lint_errors` | No new lint violations | `golangci-lint run ./...` or `eslint` exits 0 |
 
 ### Small
@@ -44,7 +44,7 @@ Agents classify tasks at the START of work. If unsure, classify UP (safer).
 | Criterion | Description | Verification |
 |-----------|-------------|--------------|
 | `code_compiles` | Code builds without errors | Build command exits 0 |
-| `unit_tests_pass` | Existing tests still pass | `go test ./... -short` or `yarn test` exits 0 |
+| `unit_tests_pass` | Existing tests still pass | `go test ./... -short` or `bun test` / `bun run test` exits 0 |
 | `no_lint_errors` | No new lint violations | Lint command exits 0 |
 
 ### Medium

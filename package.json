@@ -44,6 +44,8 @@
   },
   "homepage": "https://github.com/luum-home/luum-cognitive-os#readme",
   "engines": {
-    "node": ">=18.0.0"
-  }
+    "node": ">=18.0.0",
+    "bun": ">=1.3.14"
+  },
+  "packageManager": "bun@1.3.14"
 }

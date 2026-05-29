@@ -644,7 +644,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
                 (r"\brun[- ]?tests?\b", 0.95),
                 (r"\b(test|tests)\s+(pass|fail|run|suite|result)", 0.80),
                 (r"\bpytest\b", 0.80),
-                (r"\b(go test|yarn test|npm test)\b", 0.85),
+                (r"\b(go test|bun test|bun run test|yarn test|npm test)\b", 0.85),
             ]),
             skill_name="run-tests",
             invoke_command="/run-tests",

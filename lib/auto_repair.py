@@ -21,6 +21,8 @@ Usage:
     if result.success:
         print("Apply this diff:", result.diff)
 """
+from __future__ import annotations
+
 import json
 import os
 import re
@@ -121,8 +123,8 @@ REMEDIATION_REGISTRY: List[Remediation] = [
     ),
     Remediation(
         error_pattern=r"Cannot find module '([^']+)'",
-        fix_command="npm install {module}",
-        description="Install missing npm package",
+        fix_command="bun add {module}",
+        description="Install missing JavaScript package with Bun",
         safe=False,
     ),
     Remediation(

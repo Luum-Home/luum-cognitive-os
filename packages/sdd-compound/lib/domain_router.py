@@ -154,8 +154,8 @@ _DOMAIN_CONFIGS: Dict[str, dict] = {
             },
         },
         "verification_commands": [
-            "go build ./... || yarn build",
-            "go test ./... -race -short || yarn test",
+            "go build ./... || bun run build",
+            "go test ./... -race -short || bun test || bun run test",
             "golangci-lint run ./... || eslint .",
         ],
         "red_flags": [
@@ -201,9 +201,9 @@ _DOMAIN_CONFIGS: Dict[str, dict] = {
             },
         },
         "verification_commands": [
-            "yarn build || npm run build",
-            "yarn test || npm test",
-            "yarn lint || npm run lint",
+            "bun run build",
+            "bun test || bun run test",
+            "bun run lint",
         ],
         "red_flags": [
             "Inline styles for layout (use CSS modules or styled-components)",

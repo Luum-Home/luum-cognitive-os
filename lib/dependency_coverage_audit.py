@@ -135,6 +135,7 @@ BREW_INSTALL_RE = re.compile(r"\bbrew\s+install\s+([A-Za-z0-9_.@/+:-]+)")
 CARGO_INSTALL_RE = re.compile(r"\bcargo\s+install\s+([A-Za-z0-9_.@/+:-]+)")
 GO_INSTALL_RE = re.compile(r"\bgo\s+install\s+([A-Za-z0-9_.@/+:-]+)")
 NPM_INSTALL_GLOBAL_RE = re.compile(r"\bnpm\s+install\s+-g\s+([A-Za-z0-9_.@/+:-]+)")
+BUN_INSTALL_GLOBAL_RE = re.compile(r"\bbun\s+add\s+-g\s+([A-Za-z0-9_.@/+:-]+)")
 PIP_INSTALL_RE = re.compile(r"\b(?:python3?\s+-m\s+)?pip(?:3)?\s+install\s+(?:--user\s+)?([A-Za-z0-9_.@/+:-]+)")
 BASH_FUNCTION_RE = re.compile(r"^\s*([A-Za-z_][A-Za-z0-9_]*)\s*\(\)\s*\{")
 SHELL_FUNCTION_RE = re.compile(r"^\s*function\s+([A-Za-z_][A-Za-z0-9_]*)\b")
@@ -439,11 +440,12 @@ def _command_candidates_from_line(line: str) -> list[tuple[str, str]]:
         (CARGO_INSTALL_RE, "cargo-install"),
         (GO_INSTALL_RE, "go-install"),
         (NPM_INSTALL_GLOBAL_RE, "npm-install-global"),
+        (BUN_INSTALL_GLOBAL_RE, "bun-install-global"),
         (PIP_INSTALL_RE, "pip-install"),
     ):
         for match in regex.finditer(line):
             value = match.group(1).strip()
-            if source in {"brew-install", "cargo-install", "npm-install-global", "pip-install"}:
+            if source in {"brew-install", "cargo-install", "npm-install-global", "bun-install-global", "pip-install"}:
                 operand = _first_install_operand(value)
                 if operand is None:
                     continue

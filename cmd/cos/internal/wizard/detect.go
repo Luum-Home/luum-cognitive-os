@@ -197,6 +197,7 @@ func detectPackageManager(dir, lang string) string {
 		file    string
 		manager string
 	}{
+		{"bun.lock", "bun"},
 		{"bun.lockb", "bun"},
 		{"pnpm-lock.yaml", "pnpm"},
 		{"yarn.lock", "yarn"},

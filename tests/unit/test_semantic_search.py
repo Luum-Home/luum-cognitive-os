@@ -258,7 +258,7 @@ class TestFuzzyOutputFormat:
             "error_pattern": "build failed missing dependency",
             "auto_applicable": True,
             "fix_type": "command",
-            "fix_command": "npm install",
+            "fix_command": "bun add",
             "confidence": 0.95,
             "times_applied": 10,
             "fingerprint": "fp-build",

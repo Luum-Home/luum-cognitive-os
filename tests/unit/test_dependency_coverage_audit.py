@@ -106,7 +106,7 @@ subprocess.run(["git", "status"], check=False)
 brew install vale
 cargo install depyler
 go install github.com/acme/tooler@latest
-npm install -g promptfoo
+bun add -g promptfoo
 python3 -m pip install --user py2many
 """,
     )
@@ -119,7 +119,7 @@ python3 -m pip install --user py2many
     assert ("vale", "brew-install") in found
     assert ("depyler", "cargo-install") in found
     assert ("tooler", "go-install") in found
-    assert ("promptfoo", "npm-install-global") in found
+    assert ("promptfoo", "bun-install-global") in found
     assert ("py2many", "pip-install") in found
 
 

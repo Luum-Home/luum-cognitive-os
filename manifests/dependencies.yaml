@@ -428,14 +428,14 @@ tools:
   check: promptfoo --version
   install:
     macos:
-      manager: npm
-      command: npm install -g promptfoo
+      manager: bun
+      command: bun add -g promptfoo
     linux:
-      manager: npm
-      command: npm install -g promptfoo
+      manager: bun
+      command: bun add -g promptfoo
     windows_wsl:
-      manager: npm
-      command: npm install -g promptfoo
+      manager: bun
+      command: bun add -g promptfoo
   consumed_by:
   - skills/red-team
   category: security
@@ -1866,17 +1866,17 @@ tools:
   check: repomix --version
   install:
     macos:
-      manager: npm
-      command: npm install -g repomix
+      manager: bun
+      command: bun add -g repomix
     linux:
-      manager: npm
-      command: npm install -g repomix
+      manager: bun
+      command: bun add -g repomix
     windows_wsl:
-      manager: npm
-      command: npm install -g repomix
+      manager: bun
+      command: bun add -g repomix
     windows:
-      manager: npm
-      command: npm install -g repomix
+      manager: bun
+      command: bun add -g repomix
   consumed_by:
   - dependency coverage audit
   category: cli

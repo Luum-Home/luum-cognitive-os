@@ -36,9 +36,9 @@ if echo "$COMMAND" | grep -qE '(eslint|golangci-lint|tsc --noEmit|go vet)' || \
   ERROR_TYPE="LINT_ERROR"
 elif echo "$COMBINED" | grep -qiE '(syntax error|unexpected token|cannot find module|undefined:)'; then
   ERROR_TYPE="COMPILATION_ERROR"
-elif echo "$COMMAND" | grep -qE '(go build|gradlew build|yarn build|npm run build|tsc)'; then
+elif echo "$COMMAND" | grep -qE '(go build|gradlew build|bun run build|bun build|yarn build|npm run build|tsc)'; then
   ERROR_TYPE="BUILD_ERROR"
-elif echo "$COMMAND" | grep -qE '(jest|vitest|go test|gradlew test|pytest|yarn test|npm test)' || \
+elif echo "$COMMAND" | grep -qE '(jest|vitest|go test|gradlew test|pytest|bun test|bun run test|yarn test|npm test)' || \
    echo "$COMBINED" | grep -qiE '(assertion error|test.*fail|test suite failed)'; then
   ERROR_TYPE="TEST_FAILURE"
 fi

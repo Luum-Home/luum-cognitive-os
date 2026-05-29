@@ -1,9 +1,9 @@
-FROM node:22-alpine AS builder
+FROM oven/bun:1.3.14-alpine AS builder
 WORKDIR /app
-COPY package*.json ./
-RUN npm ci
+COPY package.json bun.lock bunfig.toml ./
+RUN bun install --frozen-lockfile --ignore-scripts
 COPY . .
-RUN npm run build
+RUN bun run build
 
 FROM node:22-alpine
 WORKDIR /app

@@ -268,10 +268,10 @@ if [ "$PROFILE" = "--full" ]; then
   install_or_skip "mcp-scan" "mcp-scan" "pip install mcp-scan 2>/dev/null || pip3 install mcp-scan 2>/dev/null"
 
   # promptfoo
-  if has_cmd npm; then
-    install_or_skip "promptfoo" "promptfoo" "npm install -g promptfoo 2>/dev/null"
+  if has_cmd bun; then
+    install_or_skip "promptfoo" "promptfoo" "bun add -g promptfoo 2>/dev/null"
   else
-    warn "npm not available, skipping promptfoo install"
+    warn "bun not available, skipping promptfoo install"
   fi
 fi
 

@@ -21,10 +21,10 @@ class TestClassifyError:
         assert r is not None
         assert "pip install" in r.fix_command
 
-    def test_npm_module_error(self):
+    def test_bun_module_error(self):
         r = classify_error("BUILD_ERROR", "Cannot find module 'express'")
         assert r is not None
-        assert "npm install" in r.fix_command
+        assert "bun add" in r.fix_command
 
     def test_go_mod_error(self):
         r = classify_error("BUILD_ERROR", "go: some/module missing go.sum entry")

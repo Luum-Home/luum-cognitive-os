@@ -70,7 +70,7 @@ class TestRemediationRegister:
     def test_register_creates_entry(self, remediation_env):
         r = remediation_env["run"](
             'remediation_register "BUILD" "service-a" "cannot find module foo" '
-            '"missing dependency" "command" "npm install foo"\n'
+            '"missing dependency" "command" "bun add foo"\n'
             'echo "REGISTRY=$(_rem_registry_file)"\n'
             'echo "INDEX=$(_rem_index_file)"'
         )
@@ -90,7 +90,7 @@ class TestRemediationRegister:
             assert len(reg_lines) == 1, "registry should have 1 line"
             data = json.loads(reg_lines[0])
             assert data["error_type"] == "BUILD"
-            assert data["fix_command"] == "npm install foo"
+            assert data["fix_command"] == "bun add foo"
 
         if index and index.exists():
             idx_data = json.loads(index.read_text())
@@ -99,9 +99,9 @@ class TestRemediationRegister:
     def test_register_updates_existing(self, remediation_env):
         r = remediation_env["run"](
             'remediation_register "BUILD" "service-a" "cannot find module foo" '
-            '"missing dependency" "command" "npm install foo"\n'
+            '"missing dependency" "command" "bun add foo"\n'
             'remediation_register "BUILD" "service-a" "cannot find module foo" '
-            '"missing dependency" "command" "npm install foo"\n'
+            '"missing dependency" "command" "bun add foo"\n'
             'echo "REGISTRY=$(_rem_registry_file)"'
         )
         for line in r.stdout.strip().split("\n"):

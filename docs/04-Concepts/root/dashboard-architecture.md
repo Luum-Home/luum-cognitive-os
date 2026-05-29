@@ -275,10 +275,10 @@ cos-dashboard:
 ```dockerfile
 FROM node:22-alpine AS builder
 WORKDIR /app
-COPY package.json pnpm-lock.yaml ./
-RUN corepack enable && pnpm install --frozen-lockfile
+COPY package.json bun.lock bunfig.toml ./
+RUN bun install --frozen-lockfile --ignore-scripts
 COPY . .
-RUN pnpm build
+RUN bun run build
 
 FROM node:22-alpine AS runner
 WORKDIR /app
@@ -445,32 +445,32 @@ Each store follows the pattern from AutoMaker: thin slices with selectors, no gl
 
 ## 9.1 Local Toolchain and Validation
 
-The dashboard lives under `dashboard/` and uses the repository's local Node
-toolchain through `fnm`. Do not assume `node` or `npm` are available in a fresh
-non-interactive shell until `fnm` has initialized the environment.
+The dashboard lives under `dashboard/` and uses Bun as the canonical JavaScript
+package manager. Do not use npm, pnpm, or Yarn for first-party dashboard
+installs. Bun must keep lifecycle scripts disabled with `install.ignoreScripts =
+true`; this prevents install-time malware from running `preinstall`, `install`,
+`postinstall`, or `prepare` hooks without an explicit operator review.
 
 Use this validation sequence from the repository root:
 
 ```bash
-eval "$(fnm env --shell zsh)"
-node --version
-npm --version
+bun --version
 cd dashboard
-npm run build
+bun install --frozen-lockfile --ignore-scripts
+bun run build
 ```
 
 Current known-good local versions observed on 2026-05-06:
 
 ```text
-node v22.14.0
-npm 10.9.2
+bun 1.3.14
 ```
 
-`npm run build` is the current reliable dashboard validation command. It runs
+`bun run build` is the current reliable dashboard validation command. It runs
 Next.js production compilation and type checking and should pass before landing
 dashboard changes.
 
-`npm run lint` currently delegates to deprecated `next lint`. In this repository
+`bun run lint` currently delegates to deprecated `next lint`. In this repository
 it may open an interactive ESLint setup prompt when no ESLint config is present.
 Do not answer that prompt or generate ESLint config as part of an unrelated
 change. Treat dashboard lint as unavailable until the project deliberately
@@ -480,9 +480,10 @@ Acceptance criteria for dashboard-touching changes:
 
 ```text
 ACCEPTANCE CRITERIA:
-1. `eval "$(fnm env --shell zsh)"` exposes node and npm.
-2. `cd dashboard && npm run build` exits 0.
-3. If `npm run lint` prompts for ESLint setup, stop and report that lint is not configured; do not mutate config implicitly.
+1. `bun --version` exits 0.
+2. `cd dashboard && bun install --frozen-lockfile --ignore-scripts` exits 0.
+3. `cd dashboard && bun run build` exits 0.
+4. If `bun run lint` prompts for ESLint setup, stop and report that lint is not configured; do not mutate config implicitly.
 ```
 ---
 

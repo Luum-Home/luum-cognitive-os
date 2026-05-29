@@ -45,7 +45,7 @@ EXIT_CODE=$(echo "$INPUT" | jq -r '.exit_code // "0"' 2>/dev/null)
 ERROR_TYPE=""
 FRAMEWORK=""
 
-if echo "$COMMAND" | grep -qiE '(npx\s+)?jest|vitest|go\s+test|gradlew\s+(test|itest|utest)|pytest|yarn\s+test|npm\s+test'; then
+if echo "$COMMAND" | grep -qiE 'bun\s+(run\s+)?test|(npx\s+)?jest|vitest|go\s+test|gradlew\s+(test|itest|utest)|pytest|yarn\s+test|npm\s+test'; then
   ERROR_TYPE="TEST_FAILURE"
   if echo "$COMMAND" | grep -qi 'vitest'; then FRAMEWORK="vitest"
   elif echo "$COMMAND" | grep -qi 'jest'; then FRAMEWORK="jest"

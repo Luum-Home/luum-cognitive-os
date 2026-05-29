@@ -161,3 +161,23 @@ adoptions:
     integration_pattern: Bash grammar for scripts/english_only_content_audit.py source extraction.
     rationale: Required for shell hook comment/string scanning in the English-only audit.
     audit_link: tests/unit/test_english_only_content_audit.py
+
+  - package: bun
+    version_constraint: ">=1.3.14"
+    consumer: tracked JavaScript package roots (`package.json` packageManager fields and `bun.lock` files)
+    owner_adr: Bun canonical package-manager policy
+    due_diligence_id: bun-canonical-js-package-manager
+    license: MIT
+    integration_pattern: first-party JavaScript package manager for dashboard and examples; enforced by scripts/check-bun-install-policy.py and .githooks/pre-commit
+    rationale: Standardizes installs on one modern package manager, replaces npm lock drift with Bun locks, and keeps lifecycle scripts disabled by default through bunfig.toml `install.ignoreScripts = true`.
+    audit_link: docs/09-Quality/security/supply-chain.md
+
+  - package: next/react/lucide-react/express
+    version_constraint: existing package.json ranges locked by bun.lock
+    consumer: dashboard/package.json and examples/hello-world/package.json
+    owner_adr: Bun canonical package-manager policy
+    due_diligence_id: bun-lock-migration-existing-js-dependencies
+    license: MIT-compatible direct dependency set; transitive review remains covered by existing JS supply-chain audit policy
+    integration_pattern: existing first-party dashboard and hello-world example dependencies migrated from npm lock provenance to Bun lock provenance
+    rationale: This change does not introduce new runtime JavaScript dependency intent; it records the lockfile/package-manager migration evidence required by ADR-208 for dependency-manifest changes.
+    audit_link: docs/09-Quality/security/supply-chain.md

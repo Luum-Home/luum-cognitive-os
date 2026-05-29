@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // SCOPE: os-only
 // semantic-lookup.mjs — Vector similarity search for error patterns
-// Requires: npm install @zvec/zvec (optional, falls back to TF-IDF)
+// Requires: bun add @zvec/zvec after explicit review (optional, falls back to TF-IDF)
 
 import { readFileSync } from 'fs';
 import { argv } from 'process';
