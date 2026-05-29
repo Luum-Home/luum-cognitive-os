@@ -5750,6 +5750,36 @@ primitives:
   metrics_file: none
   consumer_accessibility: maintainer-only
   consumer_access_next_action: Keep out of default consumer-project projection.
+- id: hooks/session-quality-close-gate.sh
+  kind: hook
+  owner_adr: ADR-324
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: runtime-safety
+  risk_class: blocking
+  supported_harnesses:
+  - claude
+  - codex
+  projection_targets:
+  - .claude/settings.json
+  - .codex/hooks.json
+  - hooks/session-quality-close-gate.sh
+  runtime_projection: true
+  behavior_evidence: Stop-hook gate that blocks session close when current project/session metrics contain explicit failed quality or verification evidence.
+  evidence_commands:
+  - bash -n hooks/session-quality-close-gate.sh
+  - python3 -m pytest tests/unit/test_session_quality_close_gate.py -q
+  docs_claim_level: blocking
+  exit_behavior: native-block-json
+  repair_message: Fix the failing quality/verification primitive, rerun validation, or replace stale failing metrics with passing evidence before closing the session.
+  false_positive_tests:
+  - tests/unit/test_session_quality_close_gate.py
+  latency_budget_ms: 1500
+  rollback_or_repair_command: Disable hooks/session-quality-close-gate.sh projection and rerun derived artifact sync if it blocks unexpectedly.
+  sunset_criteria: Remove only when feature-building primitives emit an equivalent harness-native session-close contract.
+  metrics_file: .cognitive-os/metrics/session-quality.jsonl
 - id: hooks/session-summary-reminder.sh
   kind: hook
   owner_adr: ADR-126

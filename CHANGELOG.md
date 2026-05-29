@@ -5,6 +5,24 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.29.13] - 2026-05-29 — "Root Test Contract Hardening"
+
+### Added
+- Added `cos derive check|sync` to centralize generated-artifact verification and projection sync.
+- Added formal `cos-test quarantine audit` with an expiring `.cognitive-os/test-quarantine.yaml` manifest.
+- Added integration lane coverage, failure classification, and reliability ledger primitives for test drift triage.
+- Added `session-quality-close-gate.sh` to block session close when quality/verification metrics contain explicit failing evidence.
+
+### Changed
+- Hardened `cos-test broad --json --strict` with semantic lane classes and machine-readable summaries.
+- Extended release doctor with `--strict --contract-only` so CI can enforce release contracts without non-idempotent publish checks.
+- Split the remaining non-Docker integration surface into an explicit `integration-core` environmental lane.
+
+### Validation
+- `scripts/cos-patch-release doctor --version 0.29.13 --strict --contract-only --json` passed.
+- `scripts/cos-patch-release validate` passed.
+- Targeted Go and Python release/hook/portability tests passed.
+
 ## [0.29.12] - 2026-05-29 — "Release Test Contract"
 
 ### Added

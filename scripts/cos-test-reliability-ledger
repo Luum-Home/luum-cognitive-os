@@ -1,0 +1,61 @@
+#!/usr/bin/env python3
+# SCOPE: os-only
+"""Compile test run reliability from .cognitive-os/reports/test-runs."""
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path
+from typing import Any
+
+SCHEMA = "test-reliability-ledger/v1"
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def _read_json(path: Path) -> dict[str, Any]:
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+
+
+def compile_ledger(root: Path) -> dict[str, Any]:
+    reports = root / ".cognitive-os/reports/test-runs"
+    lanes: dict[str, dict[str, Any]] = {}
+    if reports.exists():
+        for run_dir in sorted([p for p in reports.iterdir() if p.is_dir()]):
+            resource = _read_json(run_dir / "resource-policy.json")
+            lane = str(resource.get("lane") or "unknown")
+            entry = lanes.setdefault(lane, {"runs": 0, "passes": 0, "failures": 0, "blocked_policy": 0})
+            entry["runs"] += 1
+            outcome = str(resource.get("outcome") or "")
+            exit_code = (run_dir / "exit-code.txt").read_text(encoding="utf-8").strip() if (run_dir / "exit-code.txt").exists() else ""
+            if outcome == "blocked_policy":
+                entry["blocked_policy"] += 1
+            elif outcome == "ok" or exit_code == "0":
+                entry["passes"] += 1
+            else:
+                entry["failures"] += 1
+    for entry in lanes.values():
+        runs = max(int(entry["runs"]), 1)
+        entry["pass_rate"] = round(float(entry["passes"]) / runs, 4)
+    return {"schema_version": SCHEMA, "status": "pass", "summary": {"lanes": lanes, "lane_count": len(lanes)}}
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    sub = parser.add_subparsers(dest="command", required=True)
+    p_compile = sub.add_parser("compile")
+    p_compile.add_argument("--project-dir", default=str(ROOT))
+    p_compile.add_argument("--json", action="store_true")
+    args = parser.parse_args()
+    report = compile_ledger(Path(args.project_dir).resolve())
+    if args.json:
+        print(json.dumps(report, indent=2, sort_keys=True))
+    else:
+        print(f"test-reliability-ledger: {report['status']} lanes={report['summary']['lane_count']}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

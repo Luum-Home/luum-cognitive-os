@@ -1864,6 +1864,12 @@ harness:
       scope: both
       profiles: [standard, paranoid]
 
+    session-quality-close-gate:
+      script: hooks/session-quality-close-gate.sh
+      event: Stop
+      scope: both
+      profiles: [core, standard, paranoid]
+
 
     # ── TeammateIdle (COS extension) ──────────────────────────────────────────
     # Codex: cognitive_os_extension — requires cos-runner (not yet implemented)

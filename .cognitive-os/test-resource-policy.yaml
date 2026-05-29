@@ -93,3 +93,9 @@ lanes:
     docker_policy: forbidden
     cost_policy: free_only
     artifact_policy: keep_summary
+  integration-core:
+    workers: 0
+    timeout_seconds: 1200
+    docker_policy: forbidden
+    cost_policy: free_only
+    artifact_policy: keep_summary

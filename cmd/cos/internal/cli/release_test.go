@@ -385,3 +385,23 @@ func TestReleaseCommandHasValidateSubcommand(t *testing.T) {
 		t.Fatal("cos release validate subcommand is not registered")
 	}
 }
+
+func TestReleaseCommandHasDoctorSubcommand(t *testing.T) {
+	found := false
+	for _, cmd := range releaseCmd.Commands() {
+		if cmd.Name() == "doctor" {
+			found = true
+			flag := cmd.Flags().Lookup("strict")
+			if flag == nil {
+				t.Fatal("doctor subcommand must expose --strict")
+			}
+			contractOnly := cmd.Flags().Lookup("contract-only")
+			if contractOnly == nil {
+				t.Fatal("doctor subcommand must expose --contract-only")
+			}
+		}
+	}
+	if !found {
+		t.Fatal("cos release doctor subcommand is not registered")
+	}
+}

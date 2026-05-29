@@ -29,6 +29,7 @@
 # aci-observation-capture.sh  — PostToolUse[*]; appends normalized ACI + trajectory JSONL
 # skill-synthesis-scanner.sh  — Stop; 30-min cooldown synthesis scanner
 # eas-validation-gate.sh  — Stop; blocks session stop when COS_REVIEW_SURFACE set and EAS has uncovered rows (ADR-319 + ADR-324)
+# session-quality-close-gate.sh — Stop; blocks close when explicit failing quality metrics exist
 # ─────────────────────────────────────────────────────────────────────────────
 #
 # ADR-093 collapsed the legacy lean/standard/full system; ADR-124 adds
@@ -204,7 +205,7 @@ PYASYNC
     lib-symlink-divergence-detector.sh \
     skill-drift-detector.sh \
     session-start-stack-recommend.sh \
-    eas-validation-gate.sh \
+    eas-validation-gate.sh session-quality-close-gate.sh \
 ; do
     if ! grep -q "$hook" "$SETTINGS_FILE"; then
       echo "Warning: expected hook '$hook' missing from settings.json after apply." >&2
@@ -274,7 +275,7 @@ echo "  PostToolUse TodoWrite: work-queue-sync.sh"
 echo "  PostToolUse Skill: skill-usage-tracker.sh (async), skill-invocation-logger.sh"
 echo "  PostToolUse mem_search|mem_get_observation: engram-reinforce-on-access.sh (async)"
 echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, post-agent-verify.sh, assumption-tracker.sh, scope-proportionality.sh, trust-score-validator.sh, confidence-gate.sh, audit-id-enricher.sh, auto-rollback-trigger.sh, native-agent-heartbeat.sh, work-queue-sync.sh, skill-feedback-tracker.sh, consequence-evaluator.sh, auto-skill-generator.sh, auto-repair-dispatcher.sh (async), dequeue-notify.sh (async), state-heartbeat.sh (async), review-spawner.sh, skill-tracker.sh, orchestrator-decision-trace.sh (async), skill-post-execution-analysis.sh (async)"
-echo "  Stop: goal-stop-gate.sh (standard/paranoid only; blocks stop if active goal incomplete), eas-validation-gate.sh (standard/paranoid only; blocks stop when COS_REVIEW_SURFACE set and EAS has uncovered rows), session-summary-reminder.sh, session-learning.sh, session-cleanup.sh, edit-lock-session-end.sh, git-context-capture.sh, session-changelog.sh, skill-failure-monitor.sh, session-end-reap.sh, state-retention-audit.sh, kpi-trigger.sh (async), engram-crystallize-on-session-end.sh (async), engram-obsidian-export-on-stop.sh (async opt-in when COS_OBSIDIAN_VAULT is set)"
+echo "  Stop: goal-stop-gate.sh (standard/paranoid only; blocks stop if active goal incomplete), eas-validation-gate.sh (standard/paranoid only; blocks stop when COS_REVIEW_SURFACE set and EAS has uncovered rows), session-quality-close-gate.sh (blocks stop on explicit failing quality metrics), session-summary-reminder.sh, session-learning.sh, session-cleanup.sh, edit-lock-session-end.sh, git-context-capture.sh, session-changelog.sh, skill-failure-monitor.sh, session-end-reap.sh, state-retention-audit.sh, kpi-trigger.sh (async), engram-crystallize-on-session-end.sh (async), engram-obsidian-export-on-stop.sh (async opt-in when COS_OBSIDIAN_VAULT is set)"
 echo "  TeammateIdle: teammate-idle.sh"
 echo "  TaskCreated: task-created.sh"
 echo "  TaskCompleted: (demoted; opt-in only)"

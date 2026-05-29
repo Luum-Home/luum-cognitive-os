@@ -219,6 +219,42 @@ def validate(args: argparse.Namespace) -> int:
     return 0
 
 
+
+def strict_release_contract_checks(root: Path) -> list[dict[str, object]]:
+    checks: list[dict[str, object]] = []
+
+    def add(name: str, ok: bool, detail: str, blocking: bool = True) -> None:
+        checks.append({"name": name, "ok": ok, "blocking": blocking, "detail": detail})
+
+    lane_file = root / ".cognitive-os" / "test-lanes.yaml"
+    lane_text = lane_file.read_text(encoding="utf-8") if lane_file.exists() else ""
+    add("lane_semantics_declared", "gate_class:" in lane_text and "failure_policy:" in lane_text, "every release lane must declare gate_class and failure_policy")
+    add("integration_sublanes_declared", all(name in lane_text for name in ("integration-installer", "integration-memory", "integration-hooks", "integration-runtime")), "integration must be split into installer/memory/hooks/runtime sublanes")
+
+    broad_source = (root / "cmd/cos-test/internal/cli/broad.go").read_text(encoding="utf-8")
+    add("broad_json_strict_supported", "broadJSON" in broad_source and "broadStrict" in broad_source, "cos-test broad must expose --json and --strict")
+    add("release_validate_subcommand", "releaseValidateCmd" in (root / "cmd/cos/internal/cli/release.go").read_text(encoding="utf-8"), "cos release validate must be registered")
+    add("harness_projection_policy", (root / "manifests/harness-hook-projection-policy.yaml").exists(), "harness projection policy manifest must exist")
+
+    derived = run(["python3", "scripts/derived_artifact_gate.py"], cwd=root, check=False, capture=True)
+    add("derived_artifacts_clean", derived.returncode == 0, "derived_artifact_gate.py must pass")
+
+    broad = run(["go", "run", ".", "broad", "--dry-run", "--no-docker", "--json"], cwd=root / "cmd/cos-test", check=False, capture=True)
+    add("broad_json_dry_run", broad.returncode == 0 and "cos-test-broad-summary/v1" in broad.stdout, "cos-test broad --dry-run --no-docker --json must emit summary")
+    add("broad_no_docker_skips_docker", broad.returncode == 0 and ("docker_policy=required" in (broad.stdout + broad.stderr) or "skipping optional" in (broad.stdout + broad.stderr)), "no-docker broad should either skip Docker lanes explicitly or exclude optional Docker lanes", blocking=False)
+
+    integration_coverage = run(["scripts/check-integration-lane-coverage.py", "--strict", "--json"], cwd=root, check=False, capture=True)
+    add("integration_lane_coverage", integration_coverage.returncode == 0 and "integration-lane-coverage/v1" in integration_coverage.stdout, "every integration test file must be assigned to exactly one non-Docker integration sublane")
+
+    quarantine = run(["go", "run", ".", "quarantine", "audit", "--json"], cwd=root / "cmd/cos-test", check=False, capture=True)
+    add("test_quarantine_audit", quarantine.returncode == 0 and "test-quarantine-audit/v1" in quarantine.stdout, "formal test quarantine manifest must be valid and unexpired")
+
+    classifier_exists = (root / "scripts/cos-classify-failures").exists()
+    ledger = run(["scripts/cos-test-reliability-ledger", "compile", "--project-dir", str(root), "--json"], cwd=root, check=False, capture=True)
+    add("failure_classifier_available", classifier_exists, "cos-classify-failures must exist for per-node failure taxonomy")
+    add("reliability_ledger_compiles", ledger.returncode == 0 and "test-reliability-ledger/v1" in ledger.stdout, "test reliability ledger must compile historical lane outcomes")
+    return checks
+
 def doctor(args: argparse.Namespace) -> int:
     root = find_root(args.project_dir)
     bare, tag = normalize_version(args.version or current_version(root))
@@ -227,38 +263,43 @@ def doctor(args: argparse.Namespace) -> int:
     def add(name: str, ok: bool, detail: str, blocking: bool = True) -> None:
         checks.append({"name": name, "ok": ok, "blocking": blocking, "detail": detail})
 
-    local_tag, remote_tag = tag_exists(root, tag)
-    add("tag_available", not (local_tag or remote_tag), f"{tag} local={local_tag} remote={remote_tag}")
-    add("gh_available", shutil.which("gh") is not None, "gh CLI is required for publish")
-    gh_ok = shutil.which("gh") is not None and run(["gh", "auth", "status"], cwd=root, check=False, capture=True).returncode == 0
-    add("gh_authenticated", gh_ok, "gh auth status must pass")
+    if not getattr(args, "contract_only", False):
+        local_tag, remote_tag = tag_exists(root, tag)
+        add("tag_available", not (local_tag or remote_tag), f"{tag} local={local_tag} remote={remote_tag}")
+        add("gh_available", shutil.which("gh") is not None, "gh CLI is required for publish")
+        gh_ok = shutil.which("gh") is not None and run(["gh", "auth", "status"], cwd=root, check=False, capture=True).returncode == 0
+        add("gh_authenticated", gh_ok, "gh auth status must pass")
     workflow = root / ".github/workflows/cos-binary-release.yml"
     workflow_text = workflow.read_text(encoding="utf-8") if workflow.exists() else ""
     add("release_workflow_locked_uv", "uv sync --extra testing --locked" in workflow_text, "cos-binary-release must use locked uv sync")
     add("release_workflow_patch_lane", "scripts/cos-patch-release validate" in workflow_text or "test_check_local_privacy.py" in workflow_text, "cos-binary-release must use patch-release validation lane")
     add("direct_main_guard", "COS_MERGE_TO_MAIN" in (root / ".git/hooks/pre-push").read_text(encoding="utf-8", errors="ignore") if (root / ".git/hooks/pre-push").exists() else True, "direct main push should be guarded", blocking=False)
 
-    dirty_before = tracked_status(root)
-    if dirty_before:
-        add("working_tree_clean", False, "tracked working tree has changes")
-    else:
-        lock_before = (root / "uv.lock").read_bytes() if (root / "uv.lock").exists() else b""
-        sync = run(["uv", "sync", "--extra", "testing", "--locked"], cwd=root, check=False, capture=True)
-        lock_after = (root / "uv.lock").read_bytes() if (root / "uv.lock").exists() else b""
-        add("uv_locked_sync_clean", sync.returncode == 0 and lock_before == lock_after, "uv sync --locked must not dirty uv.lock")
+    if not getattr(args, "contract_only", False):
+        dirty_before = tracked_status(root)
+        if dirty_before:
+            add("working_tree_clean", False, "tracked working tree has changes")
+        else:
+            lock_before = (root / "uv.lock").read_bytes() if (root / "uv.lock").exists() else b""
+            sync = run(["uv", "sync", "--extra", "testing", "--locked"], cwd=root, check=False, capture=True)
+            lock_after = (root / "uv.lock").read_bytes() if (root / "uv.lock").exists() else b""
+            add("uv_locked_sync_clean", sync.returncode == 0 and lock_before == lock_after, "uv sync --locked must not dirty uv.lock")
 
-    scope_runs = run(["gh", "run", "list", "--repo", args.repo, "--workflow", "scope-portability.yml", "--limit", "1", "--json", "status,conclusion,url"], cwd=root, check=False, capture=True) if shutil.which("gh") else CommandResult([], 1)
-    scope_detail = "scope portability status unavailable"
-    scope_ok = True
-    if scope_runs.returncode == 0 and scope_runs.stdout.strip():
-        try:
-            rows = json.loads(scope_runs.stdout)
-            if rows:
-                scope_detail = json.dumps(rows[0], sort_keys=True)
-                scope_ok = rows[0].get("conclusion") in {"success", None, ""}
-        except json.JSONDecodeError:
-            pass
-    add("scope_portability_latest", scope_ok, scope_detail, blocking=False)
+        scope_runs = run(["gh", "run", "list", "--repo", args.repo, "--workflow", "scope-portability.yml", "--limit", "1", "--json", "status,conclusion,url"], cwd=root, check=False, capture=True) if shutil.which("gh") else CommandResult([], 1)
+        scope_detail = "scope portability status unavailable"
+        scope_ok = True
+        if scope_runs.returncode == 0 and scope_runs.stdout.strip():
+            try:
+                rows = json.loads(scope_runs.stdout)
+                if rows:
+                    scope_detail = json.dumps(rows[0], sort_keys=True)
+                    scope_ok = rows[0].get("conclusion") in {"success", None, ""}
+            except json.JSONDecodeError:
+                pass
+        add("scope_portability_latest", scope_ok, scope_detail, blocking=False)
+
+    if getattr(args, "strict", False):
+        checks.extend(strict_release_contract_checks(root))
 
     status = "pass" if all(c["ok"] or not c["blocking"] for c in checks) else "block"
     payload = {"status": status, "version": bare, "tag": tag, "checks": checks}
@@ -362,6 +403,8 @@ def build_parser() -> argparse.ArgumentParser:
     p_doctor.add_argument("--version")
     p_doctor.add_argument("--repo", default="Luum-Home/luum-cognitive-os")
     p_doctor.add_argument("--json", action="store_true")
+    p_doctor.add_argument("--strict", action="store_true", help="Run strict release-contract diagnostics in addition to publish hazards.")
+    p_doctor.add_argument("--contract-only", action="store_true", help="Check release contracts only; skip publish-time hazards such as tag availability, gh auth, and clean worktree.")
     p_doctor.add_argument("--allow-warnings", action="store_true")
     p_doctor.set_defaults(func=doctor)
     return parser

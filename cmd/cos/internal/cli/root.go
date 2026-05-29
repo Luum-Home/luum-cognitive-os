@@ -36,6 +36,7 @@ Commands:
   install     Install a cos package from local path, GitHub, or URL
   doctor      Run Cognitive OS diagnostics
   project     Apply project-local harness projection
+  derive      Check or sync generated Cognitive OS artifacts
   remove      Remove an installed package
   list        List installed packages
   info        Show detailed information about a package

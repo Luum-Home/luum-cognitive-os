@@ -419,6 +419,7 @@ cc_driver_emit() {
       "hooks/skill-failure-monitor.sh"          "false" \
       "hooks/skill-synthesis-scanner.sh"        "false" \
       "hooks/session-end-reap.sh"               "false" \
+      "hooks/session-quality-close-gate.sh"      "false" \
       "hooks/cross-session-event-emit.sh"        "true"  \
       "hooks/branch-ownership-release.sh"        "false" \
       "hooks/kpi-trigger.sh"                    "true"  \
@@ -432,6 +433,7 @@ cc_driver_emit() {
     stop_hooks=$(_cc_hook_group "Stop" "" \
       "hooks/goal-stop-gate.sh"                 "false" \
       "hooks/eas-validation-gate.sh"            "false" \
+      "hooks/session-quality-close-gate.sh"      "false" \
       "hooks/session-summary-reminder.sh"       "false" \
       "hooks/session-learning.sh"               "false" \
       "hooks/session-cleanup.sh"                "false" \

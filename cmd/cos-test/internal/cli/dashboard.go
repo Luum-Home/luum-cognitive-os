@@ -22,7 +22,7 @@ now proxies to "cos-test broad" instead of maintaining a separate executor.`,
 		cfg.CIMode = true
 		cfg.Verbose = verbose
 		fmt.Fprintln(os.Stderr, "[cos-test dashboard] DEPRECATED: use 'cos-test broad' or 'cos-test cluster --lane <name>'; proxying to broad")
-		return runBroad(cfg, false, false, false)
+		return runBroad(cfg, false, false, false, false, false)
 	},
 }
 

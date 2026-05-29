@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"bytes"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -146,13 +147,40 @@ func TestLaneOutcomeSkippedAggregation(t *testing.T) {
 	}
 }
 
-func TestPrintBroadSummaryOnlyBlocksBlockingPolicies(t *testing.T) {
+func TestBuildBroadSummaryOnlyBlocksBlockingPolicies(t *testing.T) {
 	outs := []laneOutcome{
 		{Lane: "unit", Failed: true, GateClass: lanes.GateReleaseBlocking, FailurePolicy: lanes.FailureBlock},
 		{Lane: "integration", Failed: true, GateClass: lanes.GateEnvironmental, FailurePolicy: lanes.FailureWarn},
 		{Lane: "quality", Skipped: true, GateClass: lanes.GateCostBearing, FailurePolicy: lanes.FailureWarn, Reason: "cost_policy=cost_bearing"},
 	}
-	if got := printBroadSummary(outs); got != 1 {
+	if got := buildBroadSummary(outs, false).BlockingFailures; got != 1 {
 		t.Fatalf("blocking failures = %d, want 1", got)
+	}
+}
+
+func TestBuildBroadSummaryStrictCountsWarnFailures(t *testing.T) {
+	outs := []laneOutcome{
+		{Lane: "unit", Failed: false, GateClass: lanes.GateReleaseBlocking, FailurePolicy: lanes.FailureBlock},
+		{Lane: "integration", Failed: true, GateClass: lanes.GateEnvironmental, FailurePolicy: lanes.FailureWarn},
+	}
+	normal := buildBroadSummary(outs, false)
+	if normal.BlockingFailures != 0 {
+		t.Fatalf("normal blocking failures = %d, want 0", normal.BlockingFailures)
+	}
+	strict := buildBroadSummary(outs, true)
+	if strict.BlockingFailures != 1 {
+		t.Fatalf("strict blocking failures = %d, want 1", strict.BlockingFailures)
+	}
+	if strict.Classes[lanes.GateEnvironmental].Failed != 1 {
+		t.Fatalf("environmental failed count = %d, want 1", strict.Classes[lanes.GateEnvironmental].Failed)
+	}
+}
+
+func TestPrintBroadSummaryWritesToProvidedWriter(t *testing.T) {
+	summary := buildBroadSummary([]laneOutcome{{Lane: "unit", GateClass: lanes.GateReleaseBlocking, FailurePolicy: lanes.FailureBlock}}, false)
+	var buf bytes.Buffer
+	printBroadSummary(&buf, summary)
+	if !bytes.Contains(buf.Bytes(), []byte("unit")) {
+		t.Fatalf("summary did not write to provided writer: %q", buf.String())
 	}
 }

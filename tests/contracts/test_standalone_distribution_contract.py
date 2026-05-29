@@ -18,7 +18,12 @@ def test_release_pipeline_artifacts_are_declared() -> None:
     assert goreleaser["builds"][0]["main"] == "."
     assert set(goreleaser["builds"][0]["goos"]) >= {"darwin", "linux"}
     assert set(goreleaser["builds"][0]["goarch"]) >= {"amd64", "arm64"}
-    assert (REPO / ".github" / "workflows" / "cos-binary-release.yml").exists()
+    release_workflow = REPO / ".github" / "workflows" / "cos-binary-release.yml"
+    assert release_workflow.exists()
+    workflow_text = release_workflow.read_text(encoding="utf-8")
+    assert "scripts/cos-patch-release doctor --strict --contract-only --json" in workflow_text
+    assert "go run . derive check" in workflow_text
+    assert "go run . quarantine audit" in workflow_text
     assert "homebrew_casks" in goreleaser
     assert goreleaser["homebrew_casks"][0]["repository"]["name"] == "homebrew-tap"
     assert goreleaser["homebrew_casks"][0]["binaries"] == ["cos"]

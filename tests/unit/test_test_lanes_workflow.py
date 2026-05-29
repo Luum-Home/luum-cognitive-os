@@ -114,15 +114,21 @@ class TestWorkflowStructure:
 
     def test_workflow_has_required_jobs(self, workflow):
         jobs = set(workflow.get("jobs", {}).keys())
-        required = {"setup", "parallel-safe", "serial-stateful", "optional-lanes"}
+        required = {"setup", "parallel-safe", "serial-stateful", "release-blocking-broad", "environmental-lanes", "optional-lanes"}
         missing = required - jobs
         assert not missing, f"Workflow missing jobs: {missing}"
 
-    def test_setup_job_has_3_outputs(self, workflow):
+    def test_setup_job_has_semantic_outputs(self, workflow):
         outputs = workflow["jobs"]["setup"].get("outputs", {})
-        assert set(outputs.keys()) == {"parallel-lanes", "serial-lanes", "optional-lanes"}, (
-            f"setup job outputs mismatch: {set(outputs.keys())}"
-        )
+        expected = {
+            "parallel-lanes",
+            "serial-lanes",
+            "optional-lanes",
+            "release-blocking-lanes",
+            "environmental-lanes",
+            "cost-bearing-lanes",
+        }
+        assert set(outputs.keys()) == expected, f"setup job outputs mismatch: {set(outputs.keys())}"
 
     def test_parallel_safe_uses_fromjson(self, workflow):
         matrix = workflow["jobs"]["parallel-safe"]["strategy"]["matrix"]
@@ -160,7 +166,7 @@ class TestWorkflowStructure:
         assert not old_optional, "Found hardcoded optional lane list [arena, benchmark, …]"
 
     def test_downstream_jobs_need_setup(self, workflow):
-        for job_name in ("parallel-safe", "serial-stateful", "optional-lanes"):
+        for job_name in ("parallel-safe", "serial-stateful", "release-blocking-broad", "environmental-lanes", "optional-lanes"):
             needs = workflow["jobs"][job_name].get("needs", [])
             if isinstance(needs, str):
                 needs = [needs]
@@ -202,3 +208,11 @@ class TestRegistryWorkflowConsistency:
         assert json.dumps(parallel)
         assert json.dumps(serial)
         assert json.dumps(optional)
+
+
+def test_workflow_uses_gate_class_semantics(workflow_text):
+    assert "gate_class" in workflow_text
+    assert "release_blocking" in workflow_text
+    assert "environmental" in workflow_text
+    assert "cost_bearing" in workflow_text
+    assert "continue-on-error: true" in workflow_text
