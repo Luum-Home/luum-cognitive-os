@@ -243,8 +243,8 @@ actually problematic; they were syft metadata-discovery gaps:
   `golang.org/x/*`, `modernc.org/*`). To produce authoritative Go license
   metadata, run `go-licenses report ./...` or `cyclonedx-gomod mod` after
   `go mod download`.
-- **3 GitHub Actions** — `actions/checkout@v4`, `actions/setup-go@v5`,
-  `actions/setup-python@v5` (or similar) — all MIT, license metadata simply
+- **3 GitHub Actions** — `actions/checkout@v6`, `actions/setup-go@v6`,
+  `actions/setup-python@v6` (or similar) — all MIT, license metadata simply
   not embedded in the `pkg:github` PURL.
 - **1 npm** — `cos-dashboard@0.1.0` is the project's own dashboard root
   package; it is not a third-party dependency.
@@ -399,8 +399,8 @@ workflows MUST pin third-party actions by full commit SHA.
 
 **Honest current state:** `.github/workflows/cos-binary-release.yml` (the
 only enabled workflow at the time of writing) pins to floating major tags
-(`actions/checkout@v4`, `actions/setup-go@v5`,
-`goreleaser/goreleaser-action@v6`). This is not full-SHA pinning. It is
+(`actions/checkout@v6`, `actions/setup-go@v6`,
+`goreleaser/goreleaser-action@v7`). This is not full-SHA pinning. It is
 acceptable for a pre-public-release posture because the actions are
 first-party (`actions/*`) or maintainer-trusted (`goreleaser/*`), but it is
 not auditor-grade and is called out as a known gap. Tracked under ADR-238

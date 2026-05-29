@@ -649,6 +649,7 @@ tools:
 - name: node
   criticality: recommended
   check: node --version
+  min_version: '22'
   install:
     macos:
       manager: brew
@@ -676,6 +677,7 @@ tools:
 - name: npm
   criticality: recommended
   check: npm --version
+  min_version: '10'
   install:
     macos:
       manager: brew
@@ -725,6 +727,92 @@ tools:
   - full
   - headless-instance
   scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: corepack
+  criticality: recommended
+  check: corepack --version
+  install:
+    macos:
+      manager: node
+      command: corepack enable
+    linux:
+      manager: node
+      command: corepack enable
+    windows_wsl:
+      manager: node
+      command: corepack enable
+    windows:
+      manager: node
+      command: corepack enable
+  consumed_by:
+  - pnpm package-manager activation
+  - package-manager parity for Node projects
+  category: package-manager
+  profiles:
+  - dev
+  - ci
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: pnpm
+  criticality: recommended
+  check: pnpm --version
+  min_version: '10'
+  install:
+    macos:
+      manager: corepack
+      command: corepack enable && corepack prepare pnpm@latest --activate
+    linux:
+      manager: corepack
+      command: corepack enable && corepack prepare pnpm@latest --activate
+    windows_wsl:
+      manager: corepack
+      command: corepack enable && corepack prepare pnpm@latest --activate
+    windows:
+      manager: corepack
+      command: corepack enable && corepack prepare pnpm@latest --activate
+  consumed_by:
+  - package.json packageManager=pnpm projects
+  - pnpm-lock.yaml projects
+  category: package-manager
+  profiles:
+  - dev
+  - ci
+  - full
+  - headless-instance
+  scope: user
+  syncable: 'no'
+  auth_bound: false
+- name: bun
+  criticality: recommended
+  check: bun --version
+  min_version: '1.2'
+  install:
+    macos:
+      manager: brew
+      command: brew install oven-sh/bun/bun
+    linux:
+      manager: standalone
+      command: curl -fsSL https://bun.sh/install | bash
+    windows_wsl:
+      manager: standalone
+      command: curl -fsSL https://bun.sh/install | bash
+    windows:
+      manager: powershell
+      command: powershell -c "irm bun.sh/install.ps1 | iex"
+  consumed_by:
+  - package.json packageManager=bun projects
+  - bun.lock and bun.lockb projects
+  category: package-manager
+  profiles:
+  - dev
+  - ci
+  - full
+  - headless-instance
+  scope: user
   syncable: 'no'
   auth_bound: false
 - name: pip
