@@ -1,86 +1,203 @@
-# Test lane registry — source of truth for parallelism. ADR-072. Consumers: scripts/pytest-with-summary.sh, cmd/cos-test.
 lanes:
   unit:
-    paths: [tests/unit/]
+    paths:
+    - tests/unit/
     parallel: true
-    stateful_reason: ""
-    # Exclude perf-budget tests (test_completion_gate_perf, test_efficiency_*,
-    # test_rate_limit_protection, test_dispatch_gate_perf) — they measure
-    # latency under tight budgets that flake under -n auto CPU contention.
-    # Run them explicitly via: cos-test cluster --lane unit -m "unit and benchmark"
+    stateful_reason: ''
     marker_exclude: benchmark
+    gate_class: release_blocking
+    failure_policy: block
   audit:
-    paths: [tests/audit/]
+    paths:
+    - tests/audit/
     parallel: true
-    stateful_reason: "ADR-072 Phase 2: deterministic doc-contract debt was repaired and install-touching tests carry xdist_group('self_install'), so the lane is parallel-safe under loadgroup. Use COS_FORCE_SERIAL_LANES=audit for emergency rollback."
+    stateful_reason: 'ADR-072 Phase 2: deterministic doc-contract debt was repaired
+      and install-touching tests carry xdist_group(''self_install''), so the lane
+      is parallel-safe under loadgroup. Use COS_FORCE_SERIAL_LANES=audit for emergency
+      rollback.'
+    gate_class: release_blocking
+    failure_policy: block
   contract:
-    paths: [tests/contracts/]
+    paths:
+    - tests/contracts/
     parallel: true
-    stateful_reason: "ADR-072 Phase 2: deterministic contract debt was repaired and the self-install lock racer carries xdist_group('self_install'), so the lane is parallel-safe under loadgroup. Use COS_FORCE_SERIAL_LANES=contract for emergency rollback."
+    stateful_reason: 'ADR-072 Phase 2: deterministic contract debt was repaired and
+      the self-install lock racer carries xdist_group(''self_install''), so the lane
+      is parallel-safe under loadgroup. Use COS_FORCE_SERIAL_LANES=contract for emergency
+      rollback.'
+    gate_class: release_blocking
+    failure_policy: block
   integration:
-    paths: [tests/integration/]
+    paths:
+    - tests/integration/
     parallel: false
-    stateful_reason: "Heterogeneous lane: live Engram/Phoenix/session workflows, TCP-port waits, installer subprocesses. Explicit non-Docker lane; default broad excludes it to keep CI/local defaults bounded."
+    stateful_reason: 'Heterogeneous lane: live Engram/Phoenix/session workflows, TCP-port
+      waits, installer subprocesses. Explicit non-Docker lane; default broad excludes
+      it to keep CI/local defaults bounded.'
     marker_exclude: docker
     optional: true
+    gate_class: environmental
+    failure_policy: warn
   integration-docker:
-    paths: [tests/integration/]
+    paths:
+    - tests/integration/
     parallel: false
-    stateful_reason: "Docker/testcontainers integration subset. Explicit only; requires COS_ALLOW_DOCKER_TESTS=1."
+    stateful_reason: Docker/testcontainers integration subset. Explicit only; requires
+      COS_ALLOW_DOCKER_TESTS=1.
     marker_include: docker
     optional: true
+    gate_class: environmental
+    failure_policy: skip_if_unavailable
+  integration-installer:
+    paths:
+    - tests/integration/test_installer.py
+    - tests/integration/test_install_scope.py
+    - tests/integration/test_install_projection_audit.py
+    - tests/integration/test_project_settings_generation.py
+    - tests/integration/test_fresh_install_canary.py
+    parallel: false
+    stateful_reason: Installer/projection integration shard; subprocess-heavy and
+      filesystem-stateful. Run explicitly when install/projection changes.
+    marker_exclude: docker
+    optional: true
+    gate_class: environmental
+    failure_policy: warn
+  integration-memory:
+    paths:
+    - tests/integration/test_engram_persistence.py
+    - tests/integration/test_decision_triage_engram_live.py
+    - tests/integration/test_decision_triage_full_cycle.py
+    - tests/integration/test_code_review_engram.py
+    - tests/integration/test_mcp_server_functional.py
+    - tests/integration/test_request_persistence.py
+    parallel: false
+    stateful_reason: Memory/MCP/live-state shard; depends on local Engram/MCP state
+      and skips when services are unavailable.
+    marker_exclude: docker
+    optional: true
+    gate_class: environmental
+    failure_policy: skip_if_unavailable
+  integration-hooks:
+    paths:
+    - tests/integration/test_stash_lock.py
+    - tests/integration/test_stash_lock_hook_wiring.py
+    - tests/integration/test_stash_reapply.py
+    - tests/integration/test_stash_budget_warn.py
+    - tests/integration/test_rate_limit_precheck_lift.py
+    - tests/integration/test_rate_limiter_hook_retry_flow.py
+    - tests/integration/test_post_agent_snapshot_restore.py
+    - tests/integration/test_post_commit_banner.py
+    - tests/integration/test_session_start_worktree_nudge.py
+    parallel: false
+    stateful_reason: Hook/session-state integration shard; mutates temp git repos
+      and hook runtime state.
+    marker_exclude: docker
+    optional: true
+    gate_class: environmental
+    failure_policy: warn
+  integration-runtime:
+    paths:
+    - tests/integration/test_cosd_daemon.py
+    - tests/integration/test_executor_mode_e2e.py
+    - tests/integration/test_dispatch_gate_real_dispatch.py
+    - tests/integration/test_harness_adapter_dispatch.py
+    - tests/integration/test_harness_driver_parity.py
+    - tests/integration/test_agent_team_cross_harness_contract.py
+    - tests/integration/test_cos_test_workers.py
+    parallel: false
+    stateful_reason: Runtime/provider/harness shard; exercises daemons, dispatch,
+      harness adapters, and worker policy.
+    marker_exclude: docker
+    optional: true
+    gate_class: environmental
+    failure_policy: warn
   behavior:
-    paths: [tests/behavior/]
+    paths:
+    - tests/behavior/
     parallel: false
-    stateful_reason: "hook chain state"
+    stateful_reason: hook chain state
+    gate_class: release_blocking
+    failure_policy: block
   hooks:
-    paths: [tests/hooks/]
+    paths:
+    - tests/hooks/
     parallel: false
-    stateful_reason: ".claude/settings.json mutation"
+    stateful_reason: .claude/settings.json mutation
+    gate_class: release_blocking
+    failure_policy: block
   e2e:
-    paths: [tests/e2e/]
+    paths:
+    - tests/e2e/
     parallel: false
-    stateful_reason: "full system"
+    stateful_reason: full system
     optional: true
+    gate_class: environmental
+    failure_policy: skip_if_unavailable
   chaos:
-    paths: [tests/chaos/]
+    paths:
+    - tests/chaos/
     parallel: false
-    stateful_reason: "fault injection"
+    stateful_reason: fault injection
+    gate_class: environmental
+    failure_policy: warn
   architecture:
-    paths: [tests/architecture/]
+    paths:
+    - tests/architecture/
     parallel: true
-    stateful_reason: ""
+    stateful_reason: ''
+    gate_class: release_blocking
+    failure_policy: block
   system:
-    paths: [tests/system/]
+    paths:
+    - tests/system/
     parallel: true
-    stateful_reason: ""
+    stateful_reason: ''
+    gate_class: release_blocking
+    failure_policy: block
   smoke:
-    paths: [tests/smoke/]
+    paths:
+    - tests/smoke/
     parallel: false
-    stateful_reason: "End-to-end smoke validation: full system startup, opt-in only via cos-smoke entry point"
+    stateful_reason: 'End-to-end smoke validation: full system startup, opt-in only
+      via cos-smoke entry point'
     optional: true
-
-  # Opt-in lanes: not run by default, require explicit env flags or invocation.
-  # smoke/arena/benchmark/quality are intentionally excluded from cos-test broad
-  # unless --include-optional is passed. These entries reserve the lane name and
-  # parallelism contract without committing the default broad sweep to full
-  # startup, cost-bearing, or non-deterministic checks on every invocation.
+    gate_class: environmental
+    failure_policy: warn
   arena:
-    paths: [tests/arena/]
+    paths:
+    - tests/arena/
     parallel: false
-    stateful_reason: "Competitive arena benchmarks: opt-in via COS_RUN_ARENA=1, real LLM calls, non-deterministic"
+    stateful_reason: 'Competitive arena benchmarks: opt-in via COS_RUN_ARENA=1, real
+      LLM calls, non-deterministic'
     optional: true
+    gate_class: cost_bearing
+    failure_policy: warn
   benchmark:
-    paths: [tests/benchmark/]
+    paths:
+    - tests/benchmark/
     parallel: false
-    stateful_reason: "Performance benchmarks: opt-in via COS_RUN_BENCHMARK=1, timing-sensitive (cannot share CPU)"
+    stateful_reason: 'Performance benchmarks: opt-in via COS_RUN_BENCHMARK=1, timing-sensitive
+      (cannot share CPU)'
     optional: true
+    gate_class: cost_bearing
+    failure_policy: warn
   quality:
-    paths: [tests/quality/]
+    paths:
+    - tests/quality/
     parallel: false
-    stateful_reason: "LLM-evaluated quality tests: opt-in via COS_RUN_QUALITY=1, real model calls, cost-bounded"
+    stateful_reason: 'LLM-evaluated quality tests: opt-in via COS_RUN_QUALITY=1, real
+      model calls, cost-bounded'
     optional: true
+    gate_class: cost_bearing
+    failure_policy: warn
   red_team:
-    paths: [tests/red_team/, tests/contracts/test_redteam_baseline.py, tests/contracts/test_redteam_portability_coverage.py]
+    paths:
+    - tests/red_team/
+    - tests/contracts/test_redteam_baseline.py
+    - tests/contracts/test_redteam_portability_coverage.py
     parallel: true
-    stateful_reason: "Tempdir-isolated: each scenario seeds its own mktemp dir and never mutates shared state. Portability and contract tests are read-only walks. Safe for -n auto."
+    stateful_reason: 'Tempdir-isolated: each scenario seeds its own mktemp dir and
+      never mutates shared state. Portability and contract tests are read-only walks.
+      Safe for -n auto.'
+    gate_class: release_blocking
+    failure_policy: block

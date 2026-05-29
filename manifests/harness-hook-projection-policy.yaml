@@ -1,0 +1,64 @@
+schema_version: harness-hook-projection-policy/v1
+purpose: >-
+  Declarative anti-drift contract for hook projection surfaces that have caused
+  release regressions. Drivers may still own full JSON rendering, but these
+  entries are the source of truth for hot-path profile membership.
+harnesses:
+  claude-code:
+    profiles:
+      default:
+        hooks:
+          - event: PreToolUse
+            matcher: Bash
+            scripts:
+              - hooks/bash-hot-path-dispatcher.sh
+      maintainer:
+        alias_of: default
+      core:
+        hooks:
+          - event: PreToolUse
+            matcher: Bash
+            scripts:
+              - hooks/bash-hot-path-dispatcher.sh
+      team:
+        hooks:
+          - event: PreToolUse
+            matcher: Bash
+            scripts:
+              - hooks/bash-hot-path-dispatcher.sh
+      full:
+        hooks:
+          - event: PreToolUse
+            matcher: Bash
+            scripts:
+              - hooks/network-egress-guard.sh
+              - hooks/rate-limit-precheck.sh
+              - hooks/agent-bash-cwd-enforcer.sh
+              - hooks/rate-limiter.sh
+              - hooks/destructive-rm-blocker.sh
+              - hooks/destructive-git-blocker.sh
+              - hooks/untracked-work-preservation-guard.sh
+              - hooks/branch-ownership-lock.sh
+              - hooks/symlink-mutation-guard.sh
+              - hooks/git-commit-scope-guard.sh
+              - hooks/direct-main-guard.sh
+              - hooks/cross-session-coordination-guard.sh
+              - hooks/agent-message-inbox-guard.sh
+              - hooks/orchestrator-claim-gate.sh
+              - hooks/pre-commit-content-hash-dedupe.sh
+              - hooks/scope-marker-portability-gate.sh
+              - hooks/skill-router-bash-gate.sh
+              - hooks/orchestrator-skill-invocation-gate.sh
+              - hooks/release-guard.sh
+              - hooks/control-plane-audit.sh
+              - hooks/external-pattern-cleanroom-gate.sh
+              - hooks/adoption-freeze-gate.sh
+              - hooks/dependency-license-classifier.sh
+              - hooks/research-to-runtime-firewall.sh
+              - hooks/research-compliance-guard.sh
+              - hooks/spdx-header-required.sh
+              - hooks/external-cache-content-leak.sh
+              - hooks/attribution-completeness-validator.sh
+              - hooks/lib-symlink-divergence-detector.sh
+              - hooks/legal-review-required-on-runtime-import.sh
+              - hooks/pending-truth-staleness-gate.sh

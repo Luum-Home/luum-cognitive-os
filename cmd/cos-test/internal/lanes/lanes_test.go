@@ -239,3 +239,45 @@ func TestParse_OptionalInvalidValue(t *testing.T) {
 		t.Error("expected error for invalid optional value")
 	}
 }
+
+func TestParse_GateClassFailurePolicyAndBlockListPaths(t *testing.T) {
+	yaml := `lanes:
+  integration-memory:
+    paths:
+    - tests/integration/test_engram_persistence.py
+    - tests/integration/test_decision_triage_engram_live.py
+    parallel: false
+    optional: true
+    gate_class: environmental
+    failure_policy: skip_if_unavailable
+`
+	reg, err := Parse(strings.NewReader(yaml))
+	if err != nil {
+		t.Fatalf("parse: %v", err)
+	}
+	lane, ok := reg.Get("integration-memory")
+	if !ok {
+		t.Fatal("integration-memory missing")
+	}
+	if lane.Class() != GateEnvironmental {
+		t.Fatalf("gate class = %q, want %q", lane.Class(), GateEnvironmental)
+	}
+	if lane.Policy() != FailureSkipIfUnavailable {
+		t.Fatalf("failure policy = %q, want %q", lane.Policy(), FailureSkipIfUnavailable)
+	}
+	if len(lane.Paths) != 2 || lane.Paths[1] != "tests/integration/test_decision_triage_engram_live.py" {
+		t.Fatalf("paths = %#v", lane.Paths)
+	}
+}
+
+func TestParse_InvalidGateClassErrors(t *testing.T) {
+	bad := `lanes:
+  unit:
+    paths: [tests/unit/]
+    parallel: true
+    gate_class: maybe
+`
+	if _, err := Parse(strings.NewReader(bad)); err == nil {
+		t.Fatal("expected invalid gate_class error")
+	}
+}

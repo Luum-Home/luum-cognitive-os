@@ -145,3 +145,14 @@ func TestLaneOutcomeSkippedAggregation(t *testing.T) {
 		t.Errorf("expected skipped lanes not to count as failed, got %d", failed)
 	}
 }
+
+func TestPrintBroadSummaryOnlyBlocksBlockingPolicies(t *testing.T) {
+	outs := []laneOutcome{
+		{Lane: "unit", Failed: true, GateClass: lanes.GateReleaseBlocking, FailurePolicy: lanes.FailureBlock},
+		{Lane: "integration", Failed: true, GateClass: lanes.GateEnvironmental, FailurePolicy: lanes.FailureWarn},
+		{Lane: "quality", Skipped: true, GateClass: lanes.GateCostBearing, FailurePolicy: lanes.FailureWarn, Reason: "cost_policy=cost_bearing"},
+	}
+	if got := printBroadSummary(outs); got != 1 {
+		t.Fatalf("blocking failures = %d, want 1", got)
+	}
+}

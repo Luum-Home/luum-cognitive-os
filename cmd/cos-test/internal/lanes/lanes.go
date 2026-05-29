@@ -1,7 +1,6 @@
 // Package lanes parses the .cognitive-os/test-lanes.yaml registry without an
-// external YAML dependency. The schema is intentionally narrow (paths,
-// parallel, marker_serial, stateful_reason) and the parser fails closed on
-// anything it does not recognize.
+// external YAML dependency. The schema is intentionally narrow and covers the
+// fields cos-test needs to build deterministic release and drift-radar plans.
 package lanes
 
 import (
@@ -20,6 +19,25 @@ const (
 	ParallelTrue   ParallelMode = "true"
 	ParallelFalse  ParallelMode = "false"
 	ParallelMarker ParallelMode = "marker"
+)
+
+// GateClass describes how broad/release validation should interpret a lane.
+type GateClass string
+
+const (
+	GateReleaseBlocking GateClass = "release_blocking"
+	GateEnvironmental   GateClass = "environmental"
+	GateCostBearing     GateClass = "cost_bearing"
+	GateDiagnostic      GateClass = "diagnostic"
+)
+
+// FailurePolicy describes whether a lane failure blocks a release gate.
+type FailurePolicy string
+
+const (
+	FailureBlock             FailurePolicy = "block"
+	FailureWarn              FailurePolicy = "warn"
+	FailureSkipIfUnavailable FailurePolicy = "skip_if_unavailable"
 )
 
 // Lane is one entry in test-lanes.yaml.
@@ -43,6 +61,12 @@ type Lane struct {
 	// It is used for explicit sublanes such as integration-docker where the
 	// same directory is split by marker without making bash own selection.
 	MarkerInclude string
+	// GateClass makes broad output semantically useful: release_blocking lanes
+	// are deterministic gates; environmental/cost_bearing/diagnostic lanes are
+	// drift radars unless promoted by policy.
+	GateClass GateClass
+	// FailurePolicy controls broad exit-code aggregation.
+	FailurePolicy FailurePolicy
 }
 
 // Registry holds the parsed lane registry.
@@ -112,6 +136,22 @@ func (r *Registry) BroadOrderWith(includeOptional bool) []string {
 	return out
 }
 
+// Class returns a lane's declared gate class or the release-blocking default.
+func (l Lane) Class() GateClass {
+	if l.GateClass == "" {
+		return GateReleaseBlocking
+	}
+	return l.GateClass
+}
+
+// Policy returns a lane's declared failure policy or the block default.
+func (l Lane) Policy() FailurePolicy {
+	if l.FailurePolicy == "" {
+		return FailureBlock
+	}
+	return l.FailurePolicy
+}
+
 // OptionalNames returns optional lane names in declaration order. Useful for
 // banner output ("not running: arena, benchmark, quality (optional)").
 func (r *Registry) OptionalNames() []string {
@@ -147,6 +187,8 @@ func Load(path string) (*Registry, error) {
 //	    stateful_reason: "<text>"
 //	    optional: true|false
 //	    marker_include: <pytest marker expression>
+//	    gate_class: release_blocking|environmental|cost_bearing|diagnostic
+//	    failure_policy: block|warn|skip_if_unavailable
 //
 // All other top-level keys are ignored. Indentation is two-space significant.
 // optional: true excludes the lane from BroadOrder() default — it is still
@@ -159,6 +201,7 @@ func Parse(r io.Reader) (*Registry, error) {
 	inLanes := false
 	var current *Lane
 	var currentName string
+	var listKey string
 
 	flush := func() {
 		if current != nil {
@@ -168,6 +211,7 @@ func Parse(r io.Reader) (*Registry, error) {
 		}
 		current = nil
 		currentName = ""
+		listKey = ""
 	}
 
 	for scanner.Scan() {
@@ -195,6 +239,26 @@ func Parse(r io.Reader) (*Registry, error) {
 		indent := countLeadingSpaces(line)
 		body := strings.TrimSpace(line)
 
+		if indent >= 4 && strings.HasPrefix(body, "- ") {
+			if current == nil || listKey == "" {
+				return nil, fmt.Errorf("list item outside supported list: %q", line)
+			}
+			item := strings.Trim(strings.TrimSpace(strings.TrimPrefix(body, "- ")), `"' `)
+			switch listKey {
+			case "paths":
+				if item != "" {
+					current.Paths = append(current.Paths, item)
+				}
+			default:
+				return nil, fmt.Errorf("unsupported list field %q in lane %s", listKey, currentName)
+			}
+			continue
+		}
+
+		if indent <= 4 {
+			listKey = ""
+		}
+
 		switch indent {
 		case 2:
 			// New lane: "<name>:"
@@ -215,6 +279,11 @@ func Parse(r io.Reader) (*Registry, error) {
 			}
 			switch key {
 			case "paths":
+				if strings.TrimSpace(value) == "" {
+					current.Paths = nil
+					listKey = "paths"
+					continue
+				}
 				paths, err := parseInlineList(value)
 				if err != nil {
 					return nil, fmt.Errorf("lane %s paths: %w", currentName, err)
@@ -250,6 +319,26 @@ func Parse(r io.Reader) (*Registry, error) {
 				current.MarkerExclude = strings.Trim(value, `"' `)
 			case "marker_include":
 				current.MarkerInclude = strings.Trim(value, `"' `)
+			case "gate_class":
+				v := GateClass(strings.Trim(value, `"' `))
+				switch v {
+				case GateReleaseBlocking, GateEnvironmental, GateCostBearing, GateDiagnostic:
+					current.GateClass = v
+				case "":
+					current.GateClass = ""
+				default:
+					return nil, fmt.Errorf("lane %s gate_class: unknown value %q", currentName, v)
+				}
+			case "failure_policy":
+				v := FailurePolicy(strings.Trim(value, `"' `))
+				switch v {
+				case FailureBlock, FailureWarn, FailureSkipIfUnavailable:
+					current.FailurePolicy = v
+				case "":
+					current.FailurePolicy = ""
+				default:
+					return nil, fmt.Errorf("lane %s failure_policy: unknown value %q", currentName, v)
+				}
 			default:
 				// Unknown keys are accepted (forward compat) but ignored.
 			}

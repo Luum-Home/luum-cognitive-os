@@ -57,10 +57,12 @@ func init() {
 
 // laneOutcome captures one lane's run result.
 type laneOutcome struct {
-	Lane    string
-	Failed  bool
-	Skipped bool
-	Reason  string
+	Lane          string
+	Failed        bool
+	Skipped       bool
+	Reason        string
+	GateClass     lanes.GateClass
+	FailurePolicy lanes.FailurePolicy
 }
 
 func runBroad(cfg *config.Config, dryRun, includeOptional, noDocker bool) error {
@@ -100,15 +102,21 @@ func runBroad(cfg *config.Config, dryRun, includeOptional, noDocker bool) error 
 	outcomes := make([]laneOutcome, 0, len(order))
 	for _, name := range order {
 		fmt.Printf("\n=== lane: %s ===\n", name)
+		lane, _ := reg.Get(name)
+		baseOutcome := laneOutcome{Lane: name, GateClass: lane.Class(), FailurePolicy: lane.Policy()}
 		plan, err := buildClusterPlan(cfg, name)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "[cos-test broad] lane %s plan error: %v\n", name, err)
-			outcomes = append(outcomes, laneOutcome{Lane: name, Failed: true})
+			baseOutcome.Failed = true
+			baseOutcome.Reason = err.Error()
+			outcomes = append(outcomes, baseOutcome)
 			continue
 		}
 		if shouldSkipForNoDocker(plan.Resources.DockerPolicy, noDocker) {
 			fmt.Printf("[cos-test broad] %s: SKIP docker_policy=%s (--no-docker)\n", name, plan.Resources.DockerPolicy)
-			outcomes = append(outcomes, laneOutcome{Lane: name, Skipped: true, Reason: "docker_policy=" + plan.Resources.DockerPolicy})
+			baseOutcome.Skipped = true
+			baseOutcome.Reason = "docker_policy=" + plan.Resources.DockerPolicy
+			outcomes = append(outcomes, baseOutcome)
 			continue
 		}
 		bi := banner.Info{
@@ -130,7 +138,7 @@ func runBroad(cfg *config.Config, dryRun, includeOptional, noDocker bool) error 
 			fmt.Printf("[cos-test broad] %s/%s: %s\n", name, inv.Label, strings.Join(pr.PytestArgsWithOptions(inv.Args, opts), " "))
 		}
 		if dryRun {
-			outcomes = append(outcomes, laneOutcome{Lane: name, Failed: false})
+			outcomes = append(outcomes, baseOutcome)
 			continue
 		}
 		failed := false
@@ -140,7 +148,9 @@ func runBroad(cfg *config.Config, dryRun, includeOptional, noDocker bool) error 
 				_ = pr.WriteResourceOutcome(invocationOptionsFor(plan, plan.Invokes[0], name), "blocked_policy")
 			}
 			fmt.Fprintf(os.Stderr, "[cos-test broad] lane %s resource policy block: %v\n", name, err)
-			outcomes = append(outcomes, laneOutcome{Lane: name, Skipped: true, Reason: err.Error()})
+			baseOutcome.Skipped = true
+			baseOutcome.Reason = err.Error()
+			outcomes = append(outcomes, baseOutcome)
 			continue
 		}
 		for _, inv := range plan.Invokes {
@@ -148,33 +158,17 @@ func runBroad(cfg *config.Config, dryRun, includeOptional, noDocker bool) error 
 				failed = true
 			}
 		}
-		outcomes = append(outcomes, laneOutcome{Lane: name, Failed: failed})
+		baseOutcome.Failed = failed
+		outcomes = append(outcomes, baseOutcome)
 	}
 
-	fmt.Println()
-	fmt.Println("[cos-test broad] === aggregated summary ===")
-	failedCount := 0
-	for _, o := range outcomes {
-		status := "OK"
-		if o.Skipped {
-			status = "SKIP"
-		} else if o.Failed {
-			status = "FAIL"
-			failedCount++
-		}
-		if o.Reason != "" {
-			fmt.Printf("[cos-test broad]   %-14s %s (%s)\n", o.Lane, status, o.Reason)
-		} else {
-			fmt.Printf("[cos-test broad]   %-14s %s\n", o.Lane, status)
-		}
-	}
-	fmt.Printf("[cos-test broad] %d/%d lanes failed\n", failedCount, len(outcomes))
+	blockingFailures := printBroadSummary(outcomes)
 
 	if dryRun {
 		fmt.Println("[cos-test broad] dry-run: not executing")
 		return nil
 	}
-	if failedCount > 0 {
+	if blockingFailures > 0 {
 		os.Exit(1)
 	}
 	return nil
@@ -192,4 +186,41 @@ func laneAllPaths(reg *lanes.Registry, order []string) []string {
 		}
 	}
 	return out
+}
+
+func printBroadSummary(outcomes []laneOutcome) int {
+	fmt.Println()
+	fmt.Println("[cos-test broad] === aggregated summary ===")
+	blockingFailures := 0
+	classTotals := map[lanes.GateClass]int{}
+	classFailures := map[lanes.GateClass]int{}
+	classSkipped := map[lanes.GateClass]int{}
+	order := []lanes.GateClass{lanes.GateReleaseBlocking, lanes.GateEnvironmental, lanes.GateCostBearing, lanes.GateDiagnostic}
+	for _, o := range outcomes {
+		status := "OK"
+		if o.Skipped {
+			status = "SKIP"
+			classSkipped[o.GateClass]++
+		} else if o.Failed {
+			status = "FAIL"
+			classFailures[o.GateClass]++
+			if o.FailurePolicy == lanes.FailureBlock {
+				blockingFailures++
+			}
+		}
+		classTotals[o.GateClass]++
+		if o.Reason != "" {
+			fmt.Printf("[cos-test broad]   %-24s %-4s class=%s policy=%s (%s)\n", o.Lane, status, o.GateClass, o.FailurePolicy, o.Reason)
+		} else {
+			fmt.Printf("[cos-test broad]   %-24s %-4s class=%s policy=%s\n", o.Lane, status, o.GateClass, o.FailurePolicy)
+		}
+	}
+	for _, class := range order {
+		if classTotals[class] == 0 {
+			continue
+		}
+		fmt.Printf("[cos-test broad] class %-16s total=%d failed=%d skipped=%d\n", class, classTotals[class], classFailures[class], classSkipped[class])
+	}
+	fmt.Printf("[cos-test broad] %d/%d release-blocking lanes failed\n", blockingFailures, len(outcomes))
+	return blockingFailures
 }
