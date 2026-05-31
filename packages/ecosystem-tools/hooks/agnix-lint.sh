@@ -13,6 +13,14 @@ set -uo pipefail
 # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
+# Fast graceful degradation must happen before sourcing the heavier common
+# libraries or running capability-level Python. Some test/minimal PATH
+# environments expose a slow platform python shim but intentionally omit agnix;
+# in that case this hook's contract is to skip immediately.
+if ! command -v agnix >/dev/null 2>&1; then
+  exit 0
+fi
+
 _HOOK_NAME="agnix-lint"
 source "$(dirname "$0")/_lib/common.sh"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
@@ -42,11 +50,6 @@ case "$FILE_PATH" in
     exit 0
     ;;
 esac
-
-# --- Graceful degradation: skip if agnix not installed ---
-if ! command -v agnix &>/dev/null; then
-  exit 0
-fi
 
 # --- Require jq ---
 if ! command -v jq &>/dev/null; then

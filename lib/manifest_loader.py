@@ -12,11 +12,15 @@ get a parsed Manifest or a ManifestError describing exactly what is wrong.
 from __future__ import annotations
 
 import os
+import json
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-import yaml
+try:
+    import yaml  # type: ignore[import]
+except Exception:  # pragma: no cover - stdlib-only consumer doctor fallback
+    yaml = None  # type: ignore[assignment]
 
 SCHEMA_VERSION = 1
 VALID_CRITICALITIES = {"required", "recommended", "optional"}
@@ -153,9 +157,15 @@ def load_manifest(path: Path | str | None = None) -> Manifest:
     p = Path(path) if path else default_manifest_path()
     if not p.exists():
         raise ManifestError(f"Manifest not found: {p}")
+    text = p.read_text()
     try:
-        raw = yaml.safe_load(p.read_text())
-    except yaml.YAMLError as e:
+        if yaml is not None:
+            raw = yaml.safe_load(text)
+        else:
+            raw = json.loads(text)
+    except json.JSONDecodeError as e:
+        raise ManifestError(f"Invalid JSON/YAML in {p} and PyYAML is unavailable: {e}") from e
+    except Exception as e:
         raise ManifestError(f"Invalid YAML in {p}: {e}") from e
     if not isinstance(raw, dict):
         raise ManifestError(f"Manifest must be a mapping, got {type(raw).__name__}")

@@ -8,7 +8,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-import yaml
+try:
+    import yaml
+except ImportError:  # PyYAML is optional for stdlib-only CLI smoke tests.
+    yaml = None  # type: ignore[assignment]
 
 SCHEMA_VERSION = "cross-stack-adoption-truth-report/v1"
 DEFAULT_MANIFEST = Path("manifests/cross-stack-adoption-truth.yaml")
@@ -36,11 +39,51 @@ class DependencyRow:
         }
 
 
+def _load_manifest_fallback(text: str) -> dict[str, Any]:
+    data: dict[str, Any] = {}
+    section: str | None = None
+    key: str | None = None
+    for raw in text.splitlines():
+        if not raw.strip() or raw.lstrip().startswith("#"):
+            continue
+        indent = len(raw) - len(raw.lstrip(" "))
+        stripped = raw.strip()
+        if indent == 0:
+            key = None
+            if stripped.endswith(":"):
+                section = stripped[:-1]
+                data[section] = [] if section == "strict_block_verdicts" else {}
+            elif ":" in stripped:
+                top_key, value = stripped.split(":", 1)
+                data[top_key.strip()] = value.strip().strip("\"'")
+                section = None
+            continue
+        if section is None:
+            continue
+        current = data.setdefault(section, {})
+        if stripped.startswith("- "):
+            value = stripped[2:].strip().strip("\"'")
+            if isinstance(current, list):
+                current.append(value)
+            elif key:
+                current.setdefault(key, []).append(value)
+            continue
+        if ":" in stripped and isinstance(current, dict):
+            item_key, value = stripped.split(":", 1)
+            key = item_key.strip()
+            value = value.strip()
+            current[key] = value.strip("\"'") if value else []
+    return data
+
+
 def load_manifest(project_dir: Path) -> dict[str, Any]:
     path = project_dir / DEFAULT_MANIFEST
     if not path.exists():
         raise FileNotFoundError(f"adoption-truth manifest missing: {path}")
-    return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    text = path.read_text(encoding="utf-8")
+    if yaml is None:
+        return _load_manifest_fallback(text)
+    return yaml.safe_load(text) or {}
 
 
 def normalize_name(name: str) -> str:

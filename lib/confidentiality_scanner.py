@@ -123,14 +123,47 @@ def load_protected_terms(config_path: str = ".cognitive-os/confidentiality.yaml"
     if not path.exists():
         return ProtectedTerms()
 
-    if yaml is None:
-        # PyYAML not available — return empty terms rather than crashing.
-        return ProtectedTerms()
-
     try:
-        raw = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+        text = path.read_text(encoding="utf-8")
     except Exception:  # noqa: BLE001
         return ProtectedTerms()
+
+    if yaml is None:
+        raw: dict[str, list[str]] = {}
+        current_key: str | None = None
+        allowed = {"project_names", "client_names", "repo_urls", "org_names"}
+        for raw_line in text.splitlines():
+            line = raw_line.split("#", 1)[0].rstrip()
+            if not line.strip():
+                continue
+            indent = len(line) - len(line.lstrip(" "))
+            stripped = line.strip()
+            if indent == 0 and stripped.endswith(":"):
+                key = stripped[:-1]
+                current_key = key if key in allowed else None
+                if current_key:
+                    raw[current_key] = []
+                continue
+            if indent == 0 and ":" in stripped:
+                key, value = stripped.split(":", 1)
+                key = key.strip()
+                value = value.strip()
+                if key in allowed:
+                    if value == "[]":
+                        raw[key] = []
+                    elif value:
+                        raw[key] = [value.strip('"').strip("'")]
+                current_key = None
+                continue
+            if current_key and stripped.startswith("-"):
+                value = stripped[1:].strip().strip('"').strip("'")
+                if value:
+                    raw.setdefault(current_key, []).append(value)
+    else:
+        try:
+            raw = yaml.safe_load(text) or {}
+        except Exception:  # noqa: BLE001
+            return ProtectedTerms()
 
     return ProtectedTerms(
         project_names=list(raw.get("project_names", []) or []),

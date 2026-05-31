@@ -10,7 +10,10 @@ from dataclasses import dataclass, asdict
 from pathlib import Path
 from typing import Any
 
-import yaml
+try:
+    import yaml
+except ImportError:  # PyYAML is optional for stdlib-only CLI usage.
+    yaml = None  # type: ignore[assignment]
 
 SCHEMA_VERSION = "test-efficiency-plan/v1"
 DEFAULT_MANIFEST = Path("manifests/test-execution-efficiency.yaml")
@@ -43,9 +46,39 @@ class TestEfficiencyPlan:
         }
 
 
+def _load_policy_fallback(text: str) -> dict[str, Any]:
+    policy: dict[str, Any] = {}
+    in_policy = False
+    for raw in text.splitlines():
+        if not raw.strip() or raw.lstrip().startswith("#"):
+            continue
+        indent = len(raw) - len(raw.lstrip(" "))
+        stripped = raw.strip()
+        if indent == 0:
+            in_policy = stripped == "policy:"
+            continue
+        if not in_policy or indent != 2 or ":" not in stripped:
+            continue
+        key, value = stripped.split(":", 1)
+        value = value.strip()
+        if value.lower() == "false":
+            parsed: Any = False
+        elif value.lower() == "true":
+            parsed = True
+        elif value.isdigit():
+            parsed = int(value)
+        else:
+            parsed = value.strip("\"'")
+        policy[key.strip()] = parsed
+    return {"policy": policy}
+
+
 def load_policy(project_dir: str | Path) -> dict[str, Any]:
     path = Path(project_dir).resolve() / DEFAULT_MANIFEST
-    return yaml.safe_load(path.read_text(encoding="utf-8"))
+    text = path.read_text(encoding="utf-8")
+    if yaml is None:
+        return _load_policy_fallback(text)
+    return yaml.safe_load(text)
 
 
 def changed_files_from_git(project_dir: str | Path, base_ref: str = "origin/main") -> list[str]:

@@ -17,7 +17,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-import yaml
+try:
+    import yaml  # type: ignore[import]
+except Exception:  # pragma: no cover - stdlib-only CLI fallback
+    yaml = None  # type: ignore[assignment]
 
 SCHEMA_VERSION = "cos-improve.v1"
 RUNS_DIR = Path(".cognitive-os") / "improvement-runs"
@@ -55,7 +58,11 @@ def load_task(task_dir: Path) -> BenchmarkTask:
             missing.append(f"{name}/")
     if missing:
         raise ValueError(f"benchmark task contract missing: {', '.join(sorted(missing))}")
-    metrics = yaml.safe_load((task_dir / "expected_metrics.yaml").read_text(encoding="utf-8")) or {}
+    metrics_text = (task_dir / "expected_metrics.yaml").read_text(encoding="utf-8")
+    if yaml is not None:
+        metrics = yaml.safe_load(metrics_text) or {}
+    else:
+        metrics = _parse_expected_metrics_fallback(metrics_text)
     if not isinstance(metrics, dict) or not metrics.get("metrics"):
         raise ValueError("expected_metrics.yaml must define a metrics mapping")
     return BenchmarkTask(
@@ -67,6 +74,48 @@ def load_task(task_dir: Path) -> BenchmarkTask:
         expected_metrics=metrics,
         anti_overfit_md=task_dir / "anti-overfit.md",
     )
+
+
+def _parse_scalar(value: str) -> Any:
+    value = value.strip().strip('"').strip("'")
+    lowered = value.lower()
+    if lowered == "true":
+        return True
+    if lowered == "false":
+        return False
+    try:
+        if "." in value:
+            return float(value)
+        return int(value)
+    except ValueError:
+        return value
+
+
+def _parse_expected_metrics_fallback(text: str) -> dict[str, Any]:
+    """Parse the small expected_metrics.yaml shape without PyYAML."""
+    result: dict[str, Any] = {"metrics": {}}
+    current_metric: str | None = None
+    in_metrics = False
+    for raw in text.splitlines():
+        line = raw.split("#", 1)[0].rstrip()
+        if not line.strip():
+            continue
+        indent = len(line) - len(line.lstrip(" "))
+        stripped = line.strip()
+        if indent == 0:
+            in_metrics = stripped == "metrics:"
+            current_metric = None
+            continue
+        if not in_metrics:
+            continue
+        if indent == 2 and stripped.endswith(":"):
+            current_metric = stripped[:-1]
+            result["metrics"][current_metric] = {}
+            continue
+        if indent >= 4 and current_metric and ":" in stripped:
+            key, value = stripped.split(":", 1)
+            result["metrics"][current_metric][key.strip()] = _parse_scalar(value)
+    return result
 
 
 def default_run_id(task_dir: Path) -> str:

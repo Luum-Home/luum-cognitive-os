@@ -35,19 +35,65 @@ class Finding:
         return payload
 
 
+def _default_policy() -> dict[str, Any]:
+    return {
+        "schema_version": "cross-stack-license-audit/v1",
+        "primary": {"toolchain": "syft-grype", "tools": ["syft", "grype"]},
+        "secondary": {
+            "toolchain": "trivy",
+            "denied_versions": ["0.69.4", "0.69.5", "0.69.6"],
+            "denied_workflow_actions": ["aquasecurity/trivy-action", "aquasecurity/setup-trivy"],
+            "require_immutable_workflow_pin": True,
+        },
+    }
+
+
+def _load_policy_fallback(text: str) -> dict[str, Any]:
+    policy = _default_policy()
+    section: str | None = None
+    key: str | None = None
+    for raw in text.splitlines():
+        if not raw.strip() or raw.lstrip().startswith("#"):
+            continue
+        indent = len(raw) - len(raw.lstrip(" "))
+        stripped = raw.strip()
+        if indent == 0:
+            key = None
+            section = stripped[:-1] if stripped.endswith(":") and stripped[:-1] in {"primary", "secondary"} else None
+            continue
+        if section is None:
+            continue
+        current = policy.setdefault(section, {})
+        if stripped.startswith("- ") and key:
+            current.setdefault(key, []).append(stripped[2:].strip().strip("\"'"))
+            continue
+        if ":" in stripped:
+            item_key, value = stripped.split(":", 1)
+            key = item_key.strip()
+            value = value.strip()
+            if value.lower() == "true":
+                current[key] = True
+                key = None
+            elif value.lower() == "false":
+                current[key] = False
+                key = None
+            elif value:
+                current[key] = value.strip("\"'")
+                key = None
+            else:
+                current[key] = []
+    return policy
+
+
 def load_policy(project_dir: Path) -> dict[str, Any]:
     manifest = project_dir / DEFAULT_MANIFEST
     if not manifest.exists():
-        return {
-            "schema_version": "cross-stack-license-audit/v1",
-            "primary": {"tools": ["syft", "grype"]},
-            "secondary": {
-                "denied_versions": ["0.69.4", "0.69.5", "0.69.6"],
-                "denied_workflow_actions": ["aquasecurity/trivy-action", "aquasecurity/setup-trivy"],
-                "require_immutable_workflow_pin": True,
-            },
-        }
-    return _yaml.get().safe_load(manifest.read_text(encoding="utf-8")) or {}
+        return _default_policy()
+    text = manifest.read_text(encoding="utf-8")
+    try:
+        return _yaml.get().safe_load(text) or {}
+    except ImportError:
+        return _load_policy_fallback(text)
 
 
 def _run(command: list[str]) -> str | None:

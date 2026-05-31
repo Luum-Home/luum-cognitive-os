@@ -10,7 +10,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-import yaml
+try:
+    import yaml
+except ImportError:  # PyYAML is optional for stdlib-only CLI smoke tests.
+    yaml = None  # type: ignore[assignment]
 
 SCHEMA_VERSION = "deferred-tool-loading/v1"
 DEFAULT_MANIFEST = Path("manifests/deferred-tool-loading.yaml")
@@ -49,11 +52,65 @@ class ToolLoadingPlan:
         return payload
 
 
+def _parse_scalar(value: str) -> Any:
+    lowered = value.lower()
+    if lowered == "true":
+        return True
+    if lowered == "false":
+        return False
+    if value.isdigit():
+        return int(value)
+    return value.strip("\"'")
+
+
+def _load_manifest_fallback(text: str) -> dict[str, Any]:
+    manifest: dict[str, Any] = {"schema_version": SCHEMA_VERSION, "tools": [], "policy": {}}
+    section: str | None = None
+    current_tool: dict[str, Any] | None = None
+    for raw in text.splitlines():
+        if not raw.strip() or raw.lstrip().startswith("#"):
+            continue
+        indent = len(raw) - len(raw.lstrip(" "))
+        stripped = raw.strip()
+        if indent == 0:
+            current_tool = None
+            if stripped.endswith(":"):
+                section = stripped[:-1]
+                if section == "tools":
+                    manifest.setdefault("tools", [])
+                elif section == "policy":
+                    manifest.setdefault("policy", {})
+            elif ":" in stripped:
+                key, value = stripped.split(":", 1)
+                manifest[key.strip()] = _parse_scalar(value.strip())
+            continue
+        if section == "policy" and indent == 2 and ":" in stripped:
+            key, value = stripped.split(":", 1)
+            manifest.setdefault("policy", {})[key.strip()] = _parse_scalar(value.strip())
+            continue
+        if section == "tools":
+            if stripped.startswith("- "):
+                current_tool = {}
+                manifest.setdefault("tools", []).append(current_tool)
+                item = stripped[2:]
+                if ":" in item:
+                    key, value = item.split(":", 1)
+                    current_tool[key.strip()] = _parse_scalar(value.strip())
+                continue
+            if current_tool is not None and ":" in stripped:
+                key, value = stripped.split(":", 1)
+                current_tool[key.strip()] = _parse_scalar(value.strip())
+    return manifest
+
+
 def load_manifest(project_dir: str | Path) -> dict[str, Any]:
     path = Path(project_dir).resolve() / DEFAULT_MANIFEST
     if not path.is_file():
         return {"schema_version": SCHEMA_VERSION, "tools": [], "policy": {}}
-    return yaml.safe_load(path.read_text(encoding="utf-8")) or {"tools": [], "policy": {}}
+    text = path.read_text(encoding="utf-8")
+    if yaml is None:
+        return _load_manifest_fallback(text)
+    return yaml.safe_load(text) or {"tools": [], "policy": {}}
 
 
 def descriptors(manifest: dict[str, Any]) -> list[ToolDescriptor]:

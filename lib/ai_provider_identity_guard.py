@@ -15,7 +15,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable
 
-import yaml
+try:
+    import yaml  # type: ignore[import]
+except Exception:  # pragma: no cover - stdlib-only hook/fixture fallback
+    yaml = None  # type: ignore[assignment]
 
 DEFAULT_POLICY = Path("manifests/ai-provider-identity-policy.yaml")
 SCHEMA_VERSION = "ai-provider-identity-guard-report/v1"
@@ -38,7 +41,32 @@ def load_policy(project_dir: Path, policy_path: Path | None = None) -> dict[str,
     path = policy_path or project_dir / DEFAULT_POLICY
     if not path.exists():
         return {}
-    return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    text = path.read_text(encoding="utf-8")
+    if yaml is not None:
+        return yaml.safe_load(text) or {}
+
+    policy: dict[str, Any] = {}
+    current_key: str | None = None
+    for raw in text.splitlines():
+        line = raw.split("#", 1)[0].rstrip()
+        if not line.strip():
+            continue
+        indent = len(line) - len(line.lstrip(" "))
+        stripped = line.strip()
+        if indent == 0 and stripped.endswith(":"):
+            current_key = stripped[:-1]
+            policy[current_key] = []
+            continue
+        if indent == 0 and ":" in stripped:
+            key, value = stripped.split(":", 1)
+            policy[key.strip()] = value.strip().strip('"').strip("'")
+            current_key = None
+            continue
+        if current_key and stripped.startswith("-"):
+            value = stripped[1:].strip().strip('"').strip("'")
+            if value:
+                policy.setdefault(current_key, []).append(value)
+    return policy
 
 
 def _norm_list(policy: dict[str, Any], key: str) -> list[str]:

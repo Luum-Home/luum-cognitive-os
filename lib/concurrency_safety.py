@@ -81,9 +81,72 @@ def _as_str_tuple(value: Any, default: tuple[str, ...]) -> tuple[str, ...]:
 def _mapping(value: Any) -> Mapping[str, Any]:
     return value if isinstance(value, Mapping) else {}
 
+def _load_structured_stdlib_fallback(config_path: Optional[str]) -> dict[str, Any]:
+    """Parse the small concurrency_safety subset without PyYAML.
+
+    Agent hooks call resource leases through `/usr/bin/env python3` in consumer
+    projects, where PyYAML may be absent. For concurrency safety we only need
+    booleans, positive integers, and a list of critical domains; falling back
+    here keeps hooks non-blocking while preserving full PyYAML parsing when
+    available.
+    """
+    if not config_path:
+        return {}
+    path = Path(config_path)
+    try:
+        lines = path.read_text(encoding="utf-8").splitlines()
+    except OSError:
+        return {}
+
+    data: dict[str, Any] = {"concurrency_safety": {"resource_leases": {}}}
+    in_concurrency = False
+    in_resource_leases = False
+    in_critical_domains = False
+    domains: list[str] = []
+    for raw in lines:
+        line = raw.split("#", 1)[0].rstrip()
+        if not line.strip():
+            continue
+        indent = len(line) - len(line.lstrip(" "))
+        stripped = line.strip()
+        if indent == 0:
+            in_concurrency = stripped == "concurrency_safety:"
+            in_resource_leases = False
+            in_critical_domains = False
+            continue
+        if not in_concurrency:
+            continue
+        if indent == 2:
+            in_resource_leases = stripped == "resource_leases:"
+            in_critical_domains = False
+            continue
+        if not in_resource_leases:
+            continue
+        if indent == 4 and stripped.startswith("default_ttl_seconds:"):
+            value = stripped.split(":", 1)[1].strip()
+            try:
+                data["concurrency_safety"]["resource_leases"]["default_ttl_seconds"] = int(value)
+            except ValueError:
+                pass
+            continue
+        if indent == 4 and stripped == "critical_domains:":
+            in_critical_domains = True
+            continue
+        if in_critical_domains and indent >= 6 and stripped.startswith("-"):
+            value = stripped[1:].strip().strip('"').strip("'")
+            if value:
+                domains.append(value)
+    if domains:
+        data["concurrency_safety"]["resource_leases"]["critical_domains"] = domains
+    return data
+
 
 def load_concurrency_safety_config(config_path: Optional[str] = None) -> ConcurrencySafetyConfig:
-    raw = _mapping(load_structured(config_path).get("concurrency_safety"))
+    try:
+        structured = load_structured(config_path)
+    except ImportError:
+        structured = _load_structured_stdlib_fallback(config_path)
+    raw = _mapping(structured.get("concurrency_safety"))
     preserve_raw = _mapping(raw.get("preserve_branches"))
     stash_raw = _mapping(raw.get("stash_leak_alarm"))
     plan_raw = _mapping(raw.get("plan_claims"))

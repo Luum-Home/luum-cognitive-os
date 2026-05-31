@@ -37,7 +37,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Callable
 
-import yaml
+try:
+    import yaml
+except ImportError:  # PyYAML is optional for stdlib-only internal calls.
+    yaml = None  # type: ignore[assignment]
+_YAML_ERRORS = (OSError, AttributeError) if yaml is None else (OSError, yaml.YAMLError, AttributeError)
 
 # ── Repository root (cos source directory) ───────────────────────────
 COS_SOURCE_DIR = Path(__file__).parent.parent.resolve()
@@ -137,8 +141,10 @@ def _load_install_boundary(mode: str) -> dict[str, object]:
     """
     profile = "full" if mode == "--full" else "default"
     try:
+        if yaml is None:
+            raise OSError("PyYAML unavailable")
         manifest = yaml.safe_load(INSTALL_BOUNDARY_MANIFEST.read_text(encoding="utf-8")) or {}
-    except (OSError, yaml.YAMLError):
+    except _YAML_ERRORS:
         return {
             "profile": profile,
             "active_distribution": "full" if profile == "full" else "core",

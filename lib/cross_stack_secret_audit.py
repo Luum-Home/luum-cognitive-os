@@ -10,7 +10,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-import yaml
+try:
+    import yaml  # type: ignore[import]
+except Exception:  # pragma: no cover - stdlib-only CLI fallback
+    yaml = None  # type: ignore[assignment]
 
 
 SCHEMA_VERSION = "cross-stack-secret-audit-report/v1"
@@ -37,7 +40,7 @@ class Finding:
 
 def load_policy(project_dir: Path) -> dict[str, Any]:
     manifest = project_dir / DEFAULT_MANIFEST
-    if not manifest.exists():
+    if not manifest.exists() or yaml is None:
         return {
             "schema_version": "cross-stack-secret-audit/v1",
             "primary": {"toolchain": "gitleaks-trufflehog", "tools": ["gitleaks", "trufflehog"]},

@@ -21,7 +21,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-import yaml
+try:
+    import yaml
+except ImportError:  # PyYAML is optional for status/audit JSON paths.
+    yaml = None  # type: ignore[assignment]
 
 REPO_IMPORT_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_IMPORT_ROOT) not in sys.path:
@@ -66,11 +69,79 @@ def _header_scope(path: Path) -> str | None:
     return match.group(1) if match else None
 
 
+def _parse_behavior_evidence_fallback(text: str) -> dict[str, Any]:
+    """Parse the repository's simple primitive-behavior-evidence YAML shape.
+
+    This fallback intentionally supports only the manifest structure consumed by
+    these portability audits: top-level `evidence` / `patterns` lists whose rows
+    contain scalar keys and scalar list values such as `tests`.
+    """
+    result: dict[str, Any] = {"evidence": [], "patterns": []}
+    current_section: str | None = None
+    current_row: dict[str, Any] | None = None
+    current_list_key: str | None = None
+
+    def finish_row() -> None:
+        nonlocal current_row
+        if current_section and current_row is not None:
+            result.setdefault(current_section, []).append(current_row)
+        current_row = None
+
+    for raw in text.splitlines():
+        if not raw.strip() or raw.lstrip().startswith("#"):
+            continue
+        stripped = raw.strip()
+        indent = len(raw) - len(raw.lstrip(" "))
+        if indent == 0 and stripped.endswith(":"):
+            finish_row()
+            key = stripped[:-1]
+            current_section = key if key in {"evidence", "patterns"} else None
+            current_list_key = None
+            continue
+        if current_section is None:
+            continue
+        if stripped.startswith("- ") and current_list_key and current_row is not None and indent > 0:
+            current_row.setdefault(current_list_key, []).append(stripped[2:].strip().strip("\"'"))
+            continue
+        if stripped.startswith("- ") and indent == 0:
+            finish_row()
+            current_row = {}
+            current_list_key = None
+            item = stripped[2:]
+            if ":" in item:
+                key, value = item.split(":", 1)
+                current_row[key.strip()] = value.strip().strip("\"'")
+            continue
+        if indent == 0:
+            finish_row()
+            current_list_key = None
+            continue
+        if current_row is None:
+            continue
+        if ":" in stripped:
+            key, value = stripped.split(":", 1)
+            key = key.strip()
+            value = value.strip()
+            if value:
+                current_row[key] = value.strip("\"'")
+                current_list_key = None
+            else:
+                current_row[key] = []
+                current_list_key = key
+    finish_row()
+    return result
+
+
 def _load_behavior_evidence(repo: Path) -> dict[str, dict[str, Any]]:
     path = repo / "manifests" / "primitive-behavior-evidence.yaml"
     if not path.exists():
         return {}
-    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    text = path.read_text(encoding="utf-8")
+    try:
+        data = yaml.safe_load(text) if yaml is not None else _parse_behavior_evidence_fallback(text)
+    except Exception:
+        data = _parse_behavior_evidence_fallback(text)
+    data = data or {}
     misplaced = [str(item.get("primitive")) for item in data.get("patterns", []) if isinstance(item, dict) and item.get("primitive")]
     if misplaced:
         joined = ", ".join(sorted(misplaced)[:10])
