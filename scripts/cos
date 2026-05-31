@@ -20,6 +20,7 @@
 #   cos reward-signal audit            -> scripts/cos-reward-signal-audit
 #   cos license audit                   -> scripts/cos-cross-stack-license-audit
 #   cos secret audit                    -> scripts/cos-cross-stack-secret-audit
+#   cos publication safety              -> scripts/cos-publication-safety
 #   cos adoption audit                  -> scripts/cos-cross-stack-adoption-truth
 #   cos history sanitize                -> scripts/cos-history-sanitization
 #   cos tool-discovery preuse        -> scripts/cos-tool-discovery-preuse
@@ -242,6 +243,14 @@ case "$SUBCMD" in
     echo "cos: unknown secret subcommand '${2:-}'. Try: cos secret audit [--json|--strict]" >&2
     exit 1
     ;;
+  publication)
+    if [ "${2:-}" = "safety" ]; then
+      shift 2
+      exec "$SCRIPT_DIR/cos-publication-safety" --project-dir "$PROJECT_ROOT" "$@"
+    fi
+    echo "cos: unknown publication subcommand '${2:-}'. Try: cos publication safety [--json|--strict]" >&2
+    exit 1
+    ;;
   adoption)
     if [ "${2:-}" = "audit" ]; then
       shift 2
@@ -429,6 +438,8 @@ Usage:
   cos imported-pattern closure-audit [--json]
                                          Audit ADR-208 imported producer/consumer/evaluator closure contracts
   cos secret audit [--json|--strict]     Audit ADR-215 secret scanner posture and sensitive surfaces
+  cos publication safety [--json|--strict]
+                                         Run project-configured publication-safety gates
   cos adoption audit [--json|--strict]   Audit ADR-217 lockfile/NOTICE/docs adoption truth
   cos history sanitize [--dry-run|--execute] [--json]
                                          Audit ADR-218 pre-public git history sanitization plan

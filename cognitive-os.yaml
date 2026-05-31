@@ -1232,6 +1232,12 @@ harness:
       matcher: Bash
       scope: both
 
+    publication-safety:
+      script: hooks/publication-safety.sh
+      event: PreToolUse
+      matcher: Bash
+      scope: both
+
     private-mode-gate:
       script: hooks/private-mode-gate.sh
       event: PreToolUse

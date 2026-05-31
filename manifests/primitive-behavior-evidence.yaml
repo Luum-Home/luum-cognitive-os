@@ -1,6 +1,23 @@
 schema_version: primitive-behavior-evidence.v1
 purpose: Explicit behavior evidence mapping for primitives whose proof should not rely only on text-reference heuristics.
 evidence:
+- primitive: hooks/publication-safety.sh
+  harnesses:
+  - claude
+  - codex
+  tests:
+  - tests/red_team/portability/test_publication_safety.py
+  - tests/behavior/test_publication_safety_cli.py
+  rationale: Publication-safety gate is project-configured and emits portable receipts without repository-specific Luum harness commands.
+- primitive: scripts/cos-publication-safety
+  harnesses:
+  - shell-ci
+  - claude
+  - codex
+  tests:
+  - tests/red_team/portability/test_publication_safety.py
+  - tests/behavior/test_publication_safety_cli.py
+  rationale: Publication-safety CLI is a portable runner over project-declared gates and does not embed compared-repository commands.
 - primitive: hooks/cosd-auth-guard.sh
   harnesses:
   - claude

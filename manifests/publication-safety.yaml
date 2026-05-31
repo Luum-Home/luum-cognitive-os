@@ -1,0 +1,19 @@
+schema_version: publication-safety-config/v0
+status: template
+enabled: false
+mode: strict
+purpose: >
+  Portable publication-safety bridge. Consumer repositories enable this manifest
+  and declare their own release/publication gates; Cognitive OS executes them
+  and emits a normalized publication-safety receipt without hardcoding project
+  paths or claims.
+default_timeout_seconds: 300
+commands: []
+# Example consumer shape:
+# commands:
+#   - id: release_gate
+#     command: ["scripts/project-release-gate", "--json"]
+#     required: true
+#   - id: docs_boundary
+#     command: ["python3", "scripts/project-docs-boundary.py", "--json"]
+#     required: true

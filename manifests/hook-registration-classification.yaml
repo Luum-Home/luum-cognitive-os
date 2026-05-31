@@ -3,6 +3,10 @@ scope: top-level hooks/*.sh absent from .claude/settings.json after ADR-144 proj
 contract: Every unregistered top-level hook must appear here with status, rationale,
   and next_action.
 entries:
+- path: hooks/publication-safety.sh
+  status: conditional_opt_in
+  rationale: Project-configured publication gate bridge; it no-ops unless a publication-safety manifest or explicit required flag is present, and should be enabled only for release/publication workflows.
+  next_action: Promote to active profile registration after cross-project release workflow adoption proves low false positives.
 - path: hooks/research-compliance-guard.sh
   status: active
   rationale: "Dual-surface research/license clean-room guard: registered as a self-host Claude Bash PreToolUse hook for Cognitive OS development and projected through the default/core install profile for consumer repositories."
