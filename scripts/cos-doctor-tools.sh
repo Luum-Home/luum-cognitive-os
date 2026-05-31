@@ -258,7 +258,9 @@ else
   warn "cos-deps-coverage-audit unavailable; dependency coverage drift was not checked"
 fi
 
+ENGRAM_AVAILABLE=0
 if command -v engram >/dev/null 2>&1; then
+  ENGRAM_AVAILABLE=1
   ENGRAM_BIN="$(command -v engram)"
   pass "engram CLI found: $ENGRAM_BIN"
   if python3 - "$PROJECT_ROOT" <<'PYEOF'
@@ -328,7 +330,10 @@ if [ "$ACTIVE_HARNESS" = "codex" ]; then
   fi
 fi
 
-if [ "${COS_DOCTOR_SKIP_MEMORY_LIFECYCLE:-0}" != "1" ] && [ "$failures" -eq 0 ]; then
+# In strict mode, earlier optional-tool warnings already determine the final
+# FAIL result. Do not spend the remaining per-test subprocess budget on the
+# memory-lifecycle doctor when the strict outcome is already known.
+if [ "${COS_DOCTOR_SKIP_MEMORY_LIFECYCLE:-0}" != "1" ] && [ "$ENGRAM_AVAILABLE" -eq 1 ] && [ "$failures" -eq 0 ] && { [ "$STRICT" != true ] || [ "$warnings" -eq 0 ]; }; then
   MEMORY_DOCTOR="$OS_SOURCE_ROOT/scripts/cos-doctor-memory-lifecycle.sh"
   if [ -x "$MEMORY_DOCTOR" ]; then
     MEMORY_OUTPUT="$(mktemp "${TMPDIR:-/tmp}/cos-memory-doctor.XXXXXX")"

@@ -7,7 +7,72 @@ import argparse, fcntl, fnmatch, json, os, shutil, subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Sequence
-import yaml
+try:
+    import yaml  # type: ignore[import]
+except Exception:  # standalone projected script fallback
+    class _MiniYaml:
+        class YAMLError(Exception):
+            pass
+        @staticmethod
+        def _scalar(value):
+            value = str(value).strip()
+            if value == "": return ""
+            if value.lower() == "true": return True
+            if value.lower() == "false": return False
+            if value.isdigit(): return int(value)
+            if value.startswith("[") and value.endswith("]"):
+                inner = value[1:-1].strip()
+                return [] if not inner else [x.strip().strip("\"'") for x in inner.split(",")]
+            if value.startswith('"') and value.endswith('"'):
+                return value[1:-1].replace("\\\\", "\\")
+            if value.startswith("'") and value.endswith("'"):
+                return value[1:-1]
+            return value
+        @classmethod
+        def safe_load(cls, text):
+            lines=[]
+            for raw in str(text).splitlines():
+                clean=raw.split('#',1)[0].rstrip()
+                if not clean.strip():
+                    continue
+                indent=len(clean)-len(clean.lstrip(' ')); stripped=clean.strip()
+                if ':' not in stripped and not stripped.startswith('- ') and lines:
+                    pi, pt = lines[-1]; lines[-1] = (pi, pt + ' ' + stripped)
+                else:
+                    lines.append((indent, stripped))
+            if not lines: return None
+            root=[] if lines[0][1].startswith('- ') else {}
+            stack=[(-1, root)]
+            def parent_for(indent, seq=False):
+                while stack and (stack[-1][0] > indent or (stack[-1][0] == indent and not seq)):
+                    stack.pop()
+                if seq:
+                    while stack and stack[-1][0] == indent and not isinstance(stack[-1][1], list):
+                        stack.pop()
+                if not stack: raise cls.YAMLError('invalid indentation')
+                return stack[-1][1]
+            for idx,(indent,stripped) in enumerate(lines):
+                parent=parent_for(indent, stripped.startswith('- '))
+                next_is_list=idx+1 < len(lines) and lines[idx+1][0] >= indent and lines[idx+1][1].startswith('- ')
+                if stripped.startswith('- '):
+                    if not isinstance(parent, list): raise cls.YAMLError('list item under non-list parent')
+                    item=stripped[2:].strip(); value={}
+                    if ':' in item:
+                        k,v=item.split(':',1); child=cls._scalar(v) if v.strip() else ([] if next_is_list else {})
+                        value={k.strip(): child}; parent.append(value); stack.append((indent,value))
+                        if isinstance(child,(dict,list)): stack.append((indent+1, child))
+                    elif item:
+                        parent.append(cls._scalar(item))
+                    else:
+                        parent.append(value); stack.append((indent,value))
+                    continue
+                if ':' not in stripped: continue
+                k,v=stripped.split(':',1); value=cls._scalar(v) if v.strip() else ([] if next_is_list else {})
+                if isinstance(parent, dict): parent[k.strip()]=value
+                else: parent.append({k.strip(): value})
+                if isinstance(value,(dict,list)): stack.append((indent,value))
+            return root
+    yaml = _MiniYaml()
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_MANIFEST = ROOT / "manifests" / "state-retention.yaml"

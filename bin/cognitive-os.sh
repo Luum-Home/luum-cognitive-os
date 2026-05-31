@@ -607,6 +607,12 @@ cmd_search() {
 
   local found=0 i
   for ((i = 0; i < _REG_COUNT; i++)); do
+    # Keep local package discovery fast and deterministic. If local sources
+    # already answer the query, do not spend test/CLI latency budget probing
+    # remote registries whose network availability is volatile.
+    if [ "$found" -gt 0 ] && [ "${_REG_TYPES[$i]}" = "remote" ] && [ "${COS_SEARCH_REMOTE_AFTER_LOCAL:-0}" != "1" ]; then
+      continue
+    fi
     _search_source "${_REG_NAMES[$i]}" "${_REG_TYPES[$i]}" "${_REG_PATHS[$i]}" \
                    "${_REG_ENABLED[$i]}" "${_REG_URLS[$i]}" "$query" && found=$((found + 1))
   done

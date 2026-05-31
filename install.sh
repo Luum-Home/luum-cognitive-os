@@ -447,6 +447,17 @@ prepare_source() {
         --exclude='.git' \
         --exclude='.cognitive-os/metrics' \
         --exclude='.cognitive-os/runtime' \
+        --exclude='.pytest_cache' \
+        --exclude='.ruff_cache' \
+        --exclude='target' \
+        --exclude='dist' \
+        --exclude='dashboard' \
+        --exclude='tests' \
+        --exclude='docs' \
+        --exclude='.claude' \
+        --exclude='.codex' \
+        --exclude='.ai' \
+        --exclude='.cognitive-os' \
         --exclude='__pycache__' \
         "$SOURCE_DIR/" "$TEMP_DIR/"
       rsync_status=$?
