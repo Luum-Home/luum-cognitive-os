@@ -6991,6 +6991,14 @@ primitives:
   behavior_evidence: Filesystem interrupt sentinel plus control.jsonl/answer.jsonl fallback provides orchestrator-to-agent signaling when Valkey is disabled or unavailable.
   evidence_commands:
   - python3 -m pytest tests/unit/test_agent_bus.py tests/integration/test_orchestrator_cli.py -q
+  promotion_evidence:
+    primary_signal: runtime-safety-fallback
+    from_state: advisory
+    to_state: blocking
+    approved_by: operator
+    promoted_on: '2026-06-01'
+    boring_reliability_command: scripts/cos-boring-reliability --profile core --json
+    rationale: Filesystem interrupt fallback is a core runtime-safety primitive for agent control when Valkey is unavailable; the behavior is covered by agent bus and orchestrator tests.
   rollback_or_repair_command: Remove interrupt sentinel files and fall back to next-prompt JSONL injection until the filesystem fallback is repaired.
   repair_message: Inspect .cognitive-os/agent-bus/<agent_id>/interrupt and control.jsonl, then rerun tests/unit/test_agent_bus.py before relying on stop/pause/resume fallback.
   false_positive_tests:
