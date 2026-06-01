@@ -6,7 +6,7 @@
   "harness": "claude",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 768,
+  "projected_primitive_count": 773,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": true,
@@ -909,6 +909,13 @@
       "fidelity": "documented-only",
       "portable_id": "hooks/session-knowledge-extractor.sh",
       "primitive_file": "primitives/hooks/hooks-session-knowledge-extractor-sh-6cbbd783ff.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/session-quality-close-gate.sh",
+      "primitive_file": "primitives/hooks/hooks-session-quality-close-gate-sh-8b24cfc544.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
@@ -5298,6 +5305,34 @@
       "fidelity": "documented-only",
       "portable_id": "scripts/cos-graphify-token-footprint",
       "primitive_file": "primitives/tools/scripts-cos-graphify-token-footprint-568b9a5c90.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-improve",
+      "primitive_file": "primitives/tools/scripts-cos-improve-4b29501255.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-improve-context",
+      "primitive_file": "primitives/tools/scripts-cos-improve-context-43ff720ebf.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-improve-feedback",
+      "primitive_file": "primitives/tools/scripts-cos-improve-feedback-85c1ab03dc.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-improve-run",
+      "primitive_file": "primitives/tools/scripts-cos-improve-run-83573d593a.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {

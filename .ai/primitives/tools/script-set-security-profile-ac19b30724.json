@@ -11,7 +11,7 @@
     },
     "contract_id": "script-set-security-profile",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "protected install/profile surface; surface=profile-application; primitive-readiness-ledger priority=protected",
@@ -106,7 +106,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "protected install/profile surface; surface=profile-application; primitive-readiness-ledger priority=protected",

@@ -11,7 +11,7 @@
     },
     "contract_id": "script-cos-flow-register",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "ADR-138 flow contract registration rejects incomplete or unsafe lab flow contracts",
@@ -109,7 +109,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "ADR-138 flow contract registration rejects incomplete or unsafe lab flow contracts",

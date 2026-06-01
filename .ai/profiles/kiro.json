@@ -20,7 +20,7 @@
     "agents"
   ],
   "projection_mode": "kiro-steering-hooks-mcp-investigation",
-  "proof_level": "none",
+  "proof_level": null,
   "schema_version": "portable-ai-profile.v1",
   "settings_paths": [
     ".kiro/steering",

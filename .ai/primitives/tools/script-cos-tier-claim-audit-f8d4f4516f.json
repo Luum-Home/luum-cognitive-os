@@ -11,7 +11,7 @@
     },
     "contract_id": "script-cos-tier-claim-audit",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "ADR tier/profile claims audit with regression tests",
@@ -107,7 +107,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "ADR tier/profile claims audit with regression tests",

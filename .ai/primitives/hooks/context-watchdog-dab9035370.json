@@ -11,7 +11,7 @@
     },
     "contract_id": "context-watchdog",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "harness-embedded-only"
     },
     "intent": "Watch context budget pressure and nudge compaction or scoped reads before overload.",
@@ -100,7 +100,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "harness-embedded-only"
     },
     "intent": "Watch context budget pressure and nudge compaction or scoped reads before overload.",

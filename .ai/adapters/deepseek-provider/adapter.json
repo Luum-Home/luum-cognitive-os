@@ -9,7 +9,7 @@
   "projected_primitive_count": 0,
   "projected_primitives": [],
   "projection_mode": "provider-via-existing-harness",
-  "proof_level": "none",
+  "proof_level": null,
   "schema_version": "portable-ai-adapter.v1",
   "settings_paths": [],
   "status": "planned"

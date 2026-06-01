@@ -11,7 +11,7 @@
     },
     "contract_id": "script-cos-adr-tombstone",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "wrapper delegates to scripts/adr_tombstone.py and inherits active-ADR safety tests",
@@ -109,7 +109,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "wrapper delegates to scripts/adr_tombstone.py and inherits active-ADR safety tests",

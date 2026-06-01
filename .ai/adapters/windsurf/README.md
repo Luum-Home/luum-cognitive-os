@@ -10,7 +10,7 @@ It is declarative: native IDE file emission is delegated to governed harness pro
 
 - harness id: `windsurf`
 - status: `planned`
-- proof level: `none`
+- proof level: `None`
 - projection mode: `ide-rules-or-wrapper`
 
 ## Settings paths

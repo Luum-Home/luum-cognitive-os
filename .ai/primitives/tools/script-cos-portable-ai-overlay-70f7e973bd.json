@@ -11,7 +11,7 @@
     },
     "contract_id": "script-cos-portable-ai-overlay",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Wrapper that generates the portable maintainer .ai overlay from COS canonical primitive contracts; consumer packages and native IDE files require separate fidelity-preserving projection.",
@@ -106,7 +106,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Wrapper that generates the portable maintainer .ai overlay from COS canonical primitive contracts; consumer packages and native IDE files require separate fidelity-preserving projection.",

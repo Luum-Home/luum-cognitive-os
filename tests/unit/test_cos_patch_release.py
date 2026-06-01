@@ -147,7 +147,7 @@ def test_plan_dry_run_covers_land_prepare_validate_publish_sequence(tmp_path: Pa
     ]
     commands = "\n".join(step["command"] for step in payload["steps"])
     assert "scripts/cos-patch-release prepare --version 0.29.7 --title 'Fixture Patch'" in commands
-    assert "scripts/check-bun-install-policy.py --json" in commands
+    assert "scripts/check_bun_install_policy.py --json" in commands
     assert "scripts/cos-patch-release validate" in commands
     assert "scripts/cos-patch-release doctor --version 0.29.7 --strict --contract-only --json" in commands
     assert commands.count("scripts/merge-to-main.sh") == 2
@@ -178,6 +178,6 @@ def test_validate_print_commands_matches_patch_lane(tmp_path: Path) -> None:
 
     assert result.returncode == 0, result.stderr
     assert "scripts/check-local-privacy.sh --root . --all" in result.stdout
-    assert "scripts/check-bun-install-policy.py --json" in result.stdout
+    assert "scripts/check_bun_install_policy.py --json" in result.stdout
     assert "tests/unit/test_check_local_privacy.py" in result.stdout
     assert "cd cmd/cos && go test ./..." in result.stdout

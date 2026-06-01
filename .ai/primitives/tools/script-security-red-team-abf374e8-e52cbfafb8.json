@@ -11,7 +11,7 @@
     },
     "contract_id": "script-security-red-team-abf374e8",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Python implementation behind the opt-in security-red-team wrapper; reads policy manifests and writes security assessment artifacts.",
@@ -109,7 +109,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Python implementation behind the opt-in security-red-team wrapper; reads policy manifests and writes security assessment artifacts.",

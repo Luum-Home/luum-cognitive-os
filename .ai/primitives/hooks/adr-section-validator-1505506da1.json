@@ -11,7 +11,7 @@
     },
     "contract_id": "adr-section-validator",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "harness-embedded-only"
     },
     "intent": "Warn or block malformed ADR section edits before architectural records drift.",
@@ -101,7 +101,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "harness-embedded-only"
     },
     "intent": "Warn or block malformed ADR section edits before architectural records drift.",

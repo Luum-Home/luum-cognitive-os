@@ -19,7 +19,7 @@
     "mcp"
   ],
   "projection_mode": "ide-rules-or-wrapper",
-  "proof_level": "none",
+  "proof_level": null,
   "schema_version": "portable-ai-profile.v1",
   "settings_paths": [
     ".windsurf/rules",

@@ -11,7 +11,7 @@
     },
     "contract_id": "agent-bus-py-filesystem-interrupt",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Filesystem interrupt sentinel plus control.jsonl/answer.jsonl fallback provides orchestrator-to-agent signaling when Valkey is disabled or unavailable.",
@@ -107,7 +107,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Filesystem interrupt sentinel plus control.jsonl/answer.jsonl fallback provides orchestrator-to-agent signaling when Valkey is disabled or unavailable.",

@@ -11,7 +11,7 @@
     },
     "contract_id": "task-event",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "shared JSONL task-event metric helper",
@@ -108,7 +108,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "shared JSONL task-event metric helper",

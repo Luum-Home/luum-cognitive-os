@@ -11,7 +11,7 @@
     },
     "contract_id": "confidentiality-enforcer",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "harness-embedded-only"
     },
     "intent": "Prevent private or confidential content from being written to unsafe destinations.",
@@ -101,7 +101,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "harness-embedded-only"
     },
     "intent": "Prevent private or confidential content from being written to unsafe destinations.",

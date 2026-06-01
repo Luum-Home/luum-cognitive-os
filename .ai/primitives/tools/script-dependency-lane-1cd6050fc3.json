@@ -11,7 +11,7 @@
     },
     "contract_id": "script-dependency-lane",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Splits dependency-sensitive checks into an explicit lane for adoption and license/security validation.",
@@ -107,7 +107,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Splits dependency-sensitive checks into an explicit lane for adoption and license/security validation.",

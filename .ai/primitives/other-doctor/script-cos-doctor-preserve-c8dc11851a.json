@@ -11,7 +11,7 @@
     },
     "contract_id": "script-cos-doctor-preserve",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "behavior-test; lab-runtime-projected-in-maintainer-repo",
@@ -107,7 +107,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "behavior-test; lab-runtime-projected-in-maintainer-repo",

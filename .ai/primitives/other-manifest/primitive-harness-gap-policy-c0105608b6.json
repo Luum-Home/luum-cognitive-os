@@ -11,7 +11,7 @@
     },
     "contract_id": "primitive-harness-gap-policy",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "gap policy manifest for ADR-189 harness coverage",
@@ -104,7 +104,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "gap policy manifest for ADR-189 harness coverage",

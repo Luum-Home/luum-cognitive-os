@@ -11,7 +11,7 @@
     },
     "contract_id": "agent-control-skill",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Operator skill routes natural-language requests like stop agent, answer agent, kill hung agent, list live agents, and scan stale agents to governed orchestrator verbs.",
@@ -106,7 +106,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Operator skill routes natural-language requests like stop agent, answer agent, kill hung agent, list live agents, and scan stale agents to governed orchestrator verbs.",

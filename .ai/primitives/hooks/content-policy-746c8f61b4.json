@@ -11,7 +11,7 @@
     },
     "contract_id": "content-policy",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "harness-embedded-only"
     },
     "intent": "Gate unsafe content-policy scenarios before action or durable output.",
@@ -101,7 +101,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "harness-embedded-only"
     },
     "intent": "Gate unsafe content-policy scenarios before action or durable output.",

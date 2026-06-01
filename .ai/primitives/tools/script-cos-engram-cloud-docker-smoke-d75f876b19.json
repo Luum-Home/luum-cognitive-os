@@ -11,7 +11,7 @@
     },
     "contract_id": "script-cos-engram-cloud-docker-smoke",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "opt-in Engram Cloud Docker smoke; requires Docker and Engram and is excluded from default laptop lanes",
@@ -107,7 +107,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "opt-in Engram Cloud Docker smoke; requires Docker and Engram and is excluded from default laptop lanes",

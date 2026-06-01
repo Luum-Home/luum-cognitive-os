@@ -11,7 +11,7 @@
     },
     "contract_id": "script-security-audit-writer",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "primitive-readiness lifecycle backlog closure; priority=high; role_source=usage:skill; skill_consumers=1; total_consumers=5",
@@ -105,7 +105,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "primitive-readiness lifecycle backlog closure; priority=high; role_source=usage:skill; skill_consumers=1; total_consumers=5",

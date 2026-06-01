@@ -11,7 +11,7 @@
     },
     "contract_id": "script-cos-service-readiness-gate",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Service-mode readiness gate CLI used by skills/docs to check whether primitive surfaces can run outside IDE lifecycle.",
@@ -105,7 +105,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Service-mode readiness gate CLI used by skills/docs to check whether primitive surfaces can run outside IDE lifecycle.",

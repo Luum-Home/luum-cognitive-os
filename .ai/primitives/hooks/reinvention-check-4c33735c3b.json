@@ -12,7 +12,7 @@
     },
     "contract_id": "reinvention-check",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "harness-embedded-only"
     },
     "intent": "Warn before creating duplicate primitives, docs, or implementation patterns when existing COS surfaces likely apply.",
@@ -115,7 +115,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "harness-embedded-only"
     },
     "intent": "Warn before creating duplicate primitives, docs, or implementation patterns when existing COS surfaces likely apply.",

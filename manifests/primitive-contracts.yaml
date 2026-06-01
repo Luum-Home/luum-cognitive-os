@@ -396,7 +396,26 @@ contracts:
     - .cognitive-os/metrics/primitive-interventions.jsonl
     proof_tests:
     - tests/unit/test_adr_relevance_hook.py
-  projection: *id001
+  projection:
+    claude:
+      fidelity: native-lifecycle-enforced
+      surface: lifecycle hook
+    codex:
+      fidelity: structural-advisory
+      surface: generated instructions and governed wrapper backlog
+    opencode:
+      fidelity: governed-wrapper-enforced
+      surface: OpenCode project plugin cos-primitive-guard.js tool.execute.before/after
+        smoke
+    cursor:
+      fidelity: structural-advisory
+      surface: project rules/context only
+    vscode-copilot:
+      fidelity: structural-advisory
+      surface: copilot instructions only
+    shell-ci:
+      fidelity: documented-only
+      surface: proof tests only until a shell/CI command lane is signed
   impact:
     consumer_fleet: none
     service_mode: harness-embedded-only
@@ -425,7 +444,26 @@ contracts:
     - .cognitive-os/metrics/primitive-interventions.jsonl
     proof_tests:
     - tests/audit/test_hooks_contracts.py
-  projection: *id001
+  projection:
+    claude:
+      fidelity: native-lifecycle-enforced
+      surface: lifecycle hook
+    codex:
+      fidelity: structural-advisory
+      surface: generated instructions and governed wrapper backlog
+    opencode:
+      fidelity: governed-wrapper-enforced
+      surface: OpenCode project plugin cos-primitive-guard.js tool.execute.before/after
+        smoke
+    cursor:
+      fidelity: structural-advisory
+      surface: project rules/context only
+    vscode-copilot:
+      fidelity: structural-advisory
+      surface: copilot instructions only
+    shell-ci:
+      fidelity: documented-only
+      surface: proof tests only until a shell/CI command lane is signed
   impact:
     consumer_fleet: none
     service_mode: harness-embedded-only
@@ -456,7 +494,26 @@ contracts:
     - .cognitive-os/metrics/primitive-interventions.jsonl
     proof_tests:
     - tests/integration/test_cwd_enforcer_warns.py
-  projection: *id001
+  projection:
+    claude:
+      fidelity: native-lifecycle-enforced
+      surface: lifecycle hook
+    codex:
+      fidelity: structural-advisory
+      surface: generated instructions and governed wrapper backlog
+    opencode:
+      fidelity: governed-wrapper-enforced
+      surface: OpenCode project plugin cos-primitive-guard.js tool.execute.before/after
+        smoke
+    cursor:
+      fidelity: structural-advisory
+      surface: project rules/context only
+    vscode-copilot:
+      fidelity: structural-advisory
+      surface: copilot instructions only
+    shell-ci:
+      fidelity: documented-only
+      surface: proof tests only until a shell/CI command lane is signed
   impact:
     consumer_fleet: none
     service_mode: harness-embedded-only
@@ -485,7 +542,26 @@ contracts:
     - .cognitive-os/metrics/primitive-interventions.jsonl
     proof_tests:
     - tests/contracts/test_agent_control_primitive_lifecycle.py
-  projection: *id001
+  projection:
+    claude:
+      fidelity: native-lifecycle-enforced
+      surface: lifecycle hook
+    codex:
+      fidelity: structural-advisory
+      surface: generated instructions and governed wrapper backlog
+    opencode:
+      fidelity: governed-wrapper-enforced
+      surface: OpenCode project plugin cos-primitive-guard.js tool.execute.before/after
+        smoke
+    cursor:
+      fidelity: structural-advisory
+      surface: project rules/context only
+    vscode-copilot:
+      fidelity: structural-advisory
+      surface: copilot instructions only
+    shell-ci:
+      fidelity: documented-only
+      surface: proof tests only until a shell/CI command lane is signed
   impact:
     consumer_fleet: none
     service_mode: harness-embedded-only
@@ -513,7 +589,26 @@ contracts:
     - .cognitive-os/metrics/primitive-interventions.jsonl
     proof_tests:
     - tests/chaos/test_auto_rollback_trigger_exercised.py
-  projection: *id001
+  projection:
+    claude:
+      fidelity: native-lifecycle-enforced
+      surface: lifecycle hook
+    codex:
+      fidelity: structural-advisory
+      surface: generated instructions and governed wrapper backlog
+    opencode:
+      fidelity: governed-wrapper-enforced
+      surface: OpenCode project plugin cos-primitive-guard.js tool.execute.before/after
+        smoke
+    cursor:
+      fidelity: structural-advisory
+      surface: project rules/context only
+    vscode-copilot:
+      fidelity: structural-advisory
+      surface: copilot instructions only
+    shell-ci:
+      fidelity: documented-only
+      surface: proof tests only until a shell/CI command lane is signed
   impact:
     consumer_fleet: none
     service_mode: harness-embedded-only
@@ -541,7 +636,26 @@ contracts:
     - .cognitive-os/metrics/primitive-interventions.jsonl
     proof_tests:
     - tests/chaos/test_auto_verify_exercised.py
-  projection: *id001
+  projection:
+    claude:
+      fidelity: native-lifecycle-enforced
+      surface: lifecycle hook
+    codex:
+      fidelity: structural-advisory
+      surface: generated instructions and governed wrapper backlog
+    opencode:
+      fidelity: governed-wrapper-enforced
+      surface: OpenCode project plugin cos-primitive-guard.js tool.execute.before/after
+        smoke
+    cursor:
+      fidelity: structural-advisory
+      surface: project rules/context only
+    vscode-copilot:
+      fidelity: structural-advisory
+      surface: copilot instructions only
+    shell-ci:
+      fidelity: documented-only
+      surface: proof tests only until a shell/CI command lane is signed
   impact:
     consumer_fleet: none
     service_mode: harness-embedded-only
@@ -571,7 +685,26 @@ contracts:
     - .cognitive-os/metrics/primitive-interventions.jsonl
     proof_tests:
     - tests/unit/test_capability_level5.py
-  projection: *id001
+  projection:
+    claude:
+      fidelity: native-lifecycle-enforced
+      surface: lifecycle hook
+    codex:
+      fidelity: structural-advisory
+      surface: generated instructions and governed wrapper backlog
+    opencode:
+      fidelity: governed-wrapper-enforced
+      surface: OpenCode project plugin cos-primitive-guard.js tool.execute.before/after
+        smoke
+    cursor:
+      fidelity: structural-advisory
+      surface: project rules/context only
+    vscode-copilot:
+      fidelity: structural-advisory
+      surface: copilot instructions only
+    shell-ci:
+      fidelity: documented-only
+      surface: proof tests only until a shell/CI command lane is signed
   impact:
     consumer_fleet: none
     service_mode: harness-embedded-only
@@ -600,7 +733,26 @@ contracts:
     - .cognitive-os/metrics/primitive-interventions.jsonl
     proof_tests:
     - tests/unit/test_trust_report_parser.py
-  projection: *id001
+  projection:
+    claude:
+      fidelity: native-lifecycle-enforced
+      surface: lifecycle hook
+    codex:
+      fidelity: structural-advisory
+      surface: generated instructions and governed wrapper backlog
+    opencode:
+      fidelity: governed-wrapper-enforced
+      surface: OpenCode project plugin cos-primitive-guard.js tool.execute.before/after
+        smoke
+    cursor:
+      fidelity: structural-advisory
+      surface: project rules/context only
+    vscode-copilot:
+      fidelity: structural-advisory
+      surface: copilot instructions only
+    shell-ci:
+      fidelity: documented-only
+      surface: proof tests only until a shell/CI command lane is signed
   impact:
     consumer_fleet: none
     service_mode: harness-embedded-only
@@ -629,7 +781,26 @@ contracts:
     - .cognitive-os/metrics/primitive-interventions.jsonl
     proof_tests:
     - tests/behavior/test_confidentiality_enforcer.py
-  projection: *id001
+  projection:
+    claude:
+      fidelity: native-lifecycle-enforced
+      surface: lifecycle hook
+    codex:
+      fidelity: structural-advisory
+      surface: generated instructions and governed wrapper backlog
+    opencode:
+      fidelity: governed-wrapper-enforced
+      surface: OpenCode project plugin cos-primitive-guard.js tool.execute.before/after
+        smoke
+    cursor:
+      fidelity: structural-advisory
+      surface: project rules/context only
+    vscode-copilot:
+      fidelity: structural-advisory
+      surface: copilot instructions only
+    shell-ci:
+      fidelity: documented-only
+      surface: proof tests only until a shell/CI command lane is signed
   impact:
     consumer_fleet: none
     service_mode: harness-embedded-only
@@ -658,7 +829,26 @@ contracts:
     - .cognitive-os/metrics/primitive-interventions.jsonl
     proof_tests:
     - tests/chaos/test_content_policy_exercised.py
-  projection: *id001
+  projection:
+    claude:
+      fidelity: native-lifecycle-enforced
+      surface: lifecycle hook
+    codex:
+      fidelity: structural-advisory
+      surface: generated instructions and governed wrapper backlog
+    opencode:
+      fidelity: governed-wrapper-enforced
+      surface: OpenCode project plugin cos-primitive-guard.js tool.execute.before/after
+        smoke
+    cursor:
+      fidelity: structural-advisory
+      surface: project rules/context only
+    vscode-copilot:
+      fidelity: structural-advisory
+      surface: copilot instructions only
+    shell-ci:
+      fidelity: documented-only
+      surface: proof tests only until a shell/CI command lane is signed
   impact:
     consumer_fleet: none
     service_mode: harness-embedded-only
@@ -687,7 +877,26 @@ contracts:
     - .cognitive-os/metrics/primitive-interventions.jsonl
     proof_tests:
     - tests/contracts/test_context_budget_hook_wiring.py
-  projection: *id001
+  projection:
+    claude:
+      fidelity: native-lifecycle-enforced
+      surface: lifecycle hook
+    codex:
+      fidelity: structural-advisory
+      surface: generated instructions and governed wrapper backlog
+    opencode:
+      fidelity: governed-wrapper-enforced
+      surface: OpenCode project plugin cos-primitive-guard.js tool.execute.before/after
+        smoke
+    cursor:
+      fidelity: structural-advisory
+      surface: project rules/context only
+    vscode-copilot:
+      fidelity: structural-advisory
+      surface: copilot instructions only
+    shell-ci:
+      fidelity: documented-only
+      surface: proof tests only until a shell/CI command lane is signed
   impact:
     consumer_fleet: none
     service_mode: harness-embedded-only
@@ -718,7 +927,26 @@ contracts:
     - .cognitive-os/metrics/primitive-interventions.jsonl
     proof_tests:
     - tests/contracts/test_cosd_auth_primitives.py
-  projection: *id001
+  projection:
+    claude:
+      fidelity: native-lifecycle-enforced
+      surface: lifecycle hook
+    codex:
+      fidelity: structural-advisory
+      surface: generated instructions and governed wrapper backlog
+    opencode:
+      fidelity: governed-wrapper-enforced
+      surface: OpenCode project plugin cos-primitive-guard.js tool.execute.before/after
+        smoke
+    cursor:
+      fidelity: structural-advisory
+      surface: project rules/context only
+    vscode-copilot:
+      fidelity: structural-advisory
+      surface: copilot instructions only
+    shell-ci:
+      fidelity: documented-only
+      surface: proof tests only until a shell/CI command lane is signed
   impact:
     consumer_fleet: none
     service_mode: cosd-service-safe
@@ -748,7 +976,26 @@ contracts:
     - .cognitive-os/metrics/primitive-interventions.jsonl
     proof_tests:
     - tests/integration/test_dispatch_gate_real_dispatch.py
-  projection: *id001
+  projection:
+    claude:
+      fidelity: native-lifecycle-enforced
+      surface: lifecycle hook
+    codex:
+      fidelity: structural-advisory
+      surface: generated instructions and governed wrapper backlog
+    opencode:
+      fidelity: governed-wrapper-enforced
+      surface: OpenCode project plugin cos-primitive-guard.js tool.execute.before/after
+        smoke
+    cursor:
+      fidelity: structural-advisory
+      surface: project rules/context only
+    vscode-copilot:
+      fidelity: structural-advisory
+      surface: copilot instructions only
+    shell-ci:
+      fidelity: documented-only
+      surface: proof tests only until a shell/CI command lane is signed
   impact:
     consumer_fleet: install-update-risk
     service_mode: headless-worker-safe
@@ -776,7 +1023,26 @@ contracts:
     - .cognitive-os/metrics/primitive-interventions.jsonl
     proof_tests:
     - tests/behavior/test_hooks_batch1.py
-  projection: *id001
+  projection:
+    claude:
+      fidelity: native-lifecycle-enforced
+      surface: lifecycle hook
+    codex:
+      fidelity: structural-advisory
+      surface: generated instructions and governed wrapper backlog
+    opencode:
+      fidelity: governed-wrapper-enforced
+      surface: OpenCode project plugin cos-primitive-guard.js tool.execute.before/after
+        smoke
+    cursor:
+      fidelity: structural-advisory
+      surface: project rules/context only
+    vscode-copilot:
+      fidelity: structural-advisory
+      surface: copilot instructions only
+    shell-ci:
+      fidelity: documented-only
+      surface: proof tests only until a shell/CI command lane is signed
   impact:
     consumer_fleet: none
     service_mode: harness-embedded-only
@@ -16214,7 +16480,7 @@ contracts:
 - id: agent-bus-py-filesystem-interrupt
   family: library
   source: packages/agent-coordination/lib/agent_bus.py
-  lifecycle_ref: packages/agent-coordination/lib/agent_bus.py#filesystem-interrupt
+  lifecycle_ref: "packages/agent-coordination/lib/agent_bus.py#filesystem-interrupt"
   generated_from_lifecycle: true
   intent: Filesystem interrupt sentinel plus control.jsonl/answer.jsonl fallback provides
     orchestrator-to-agent signaling when Valkey is disabled or unavailable.
@@ -16271,7 +16537,7 @@ contracts:
 - id: base-py-inbound-signal
   family: library
   source: packages/agent-lifecycle/lib/harness_adapter/base.py
-  lifecycle_ref: packages/agent-lifecycle/lib/harness_adapter/base.py#inbound-signal
+  lifecycle_ref: "packages/agent-lifecycle/lib/harness_adapter/base.py#inbound-signal"
   generated_from_lifecycle: true
   intent: Harness adapters surface inbound_signal records from filesystem/Valkey control
     paths so runtime loops can apply stop, pause, resume, and clarification answers.
@@ -16883,8 +17149,7 @@ contracts:
   source: hooks/adoption-freeze-gate.sh
   lifecycle_ref: hooks/adoption-freeze-gate.sh
   generated_from_lifecycle: true
-  intent: Pre-commit kill-switch gate blocking commits when external-tool-adoption-freeze.yaml
-    has frozen:true and a gated path is staged.
+  intent: "Pre-commit kill-switch gate blocking commits when external-tool-adoption-freeze.yaml has frozen:true and a gated path is staged."
   trigger:
     kind: lifecycle_declared_tool_event
     runtime_projection: true

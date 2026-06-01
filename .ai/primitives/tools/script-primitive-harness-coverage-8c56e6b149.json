@@ -11,7 +11,7 @@
     },
     "contract_id": "script-primitive-harness-coverage",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "machine-readable harness implementation coverage report separates scope intent from IDE/harness execution evidence",
@@ -107,7 +107,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "machine-readable harness implementation coverage report separates scope intent from IDE/harness execution evidence",

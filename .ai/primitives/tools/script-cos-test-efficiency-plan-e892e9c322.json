@@ -11,7 +11,7 @@
     },
     "contract_id": "script-cos-test-efficiency-plan",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Generates targeted test plans from git changes or failure logs before heavy laptop validation.",
@@ -108,7 +108,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Generates targeted test plans from git changes or failure logs before heavy laptop validation.",

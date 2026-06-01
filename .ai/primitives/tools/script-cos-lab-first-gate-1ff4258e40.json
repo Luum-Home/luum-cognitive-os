@@ -11,7 +11,7 @@
     },
     "contract_id": "script-cos-lab-first-gate",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "delta-based lifecycle manifest promotion gate with contract tests",
@@ -109,7 +109,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "delta-based lifecycle manifest promotion gate with contract tests",

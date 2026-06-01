@@ -11,7 +11,7 @@
     },
     "contract_id": "script-cos-service-control-plane",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Python implementation for Phase 1 local JSONL queue, leases, local-command worker, and artifact bundles; no provider calls.",
@@ -108,7 +108,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Python implementation for Phase 1 local JSONL queue, leases, local-command worker, and artifact bundles; no provider calls.",

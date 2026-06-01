@@ -11,7 +11,7 @@
     },
     "contract_id": "script-cosd",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Local cosd daemon/API entrypoint with ADR-194 remote bind guardrails; hook primitive blocks unsafe remote launch commands before execution.",
@@ -114,7 +114,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Local cosd daemon/API entrypoint with ADR-194 remote bind guardrails; hook primitive blocks unsafe remote launch commands before execution.",

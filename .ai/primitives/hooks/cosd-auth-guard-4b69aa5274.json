@@ -11,7 +11,7 @@
     },
     "contract_id": "cosd-auth-guard",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "cosd-service-safe"
     },
     "intent": "Enforce cosd authentication boundaries before service-control-plane access.",
@@ -102,7 +102,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "cosd-service-safe"
     },
     "intent": "Enforce cosd authentication boundaries before service-control-plane access.",

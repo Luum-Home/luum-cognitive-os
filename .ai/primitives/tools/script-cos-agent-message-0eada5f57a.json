@@ -11,7 +11,7 @@
     },
     "contract_id": "script-cos-agent-message",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "unit-tested directed message CLI for auditor to implementer communication",
@@ -106,7 +106,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "unit-tested directed message CLI for auditor to implementer communication",

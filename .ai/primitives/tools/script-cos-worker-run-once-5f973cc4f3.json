@@ -11,7 +11,7 @@
     },
     "contract_id": "script-cos-worker-run-once",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Claims and executes one pending local-command task, writing lease and artifact bundle evidence.",
@@ -111,7 +111,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Claims and executes one pending local-command task, writing lease and artifact bundle evidence.",

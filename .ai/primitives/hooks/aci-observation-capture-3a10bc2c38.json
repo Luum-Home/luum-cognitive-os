@@ -11,7 +11,7 @@
     },
     "contract_id": "aci-observation-capture",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "harness-embedded-only"
     },
     "intent": "Capture agent-computer-interaction observations as runtime evidence without exposing private content.",
@@ -107,7 +107,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "harness-embedded-only"
     },
     "intent": "Capture agent-computer-interaction observations as runtime evidence without exposing private content.",

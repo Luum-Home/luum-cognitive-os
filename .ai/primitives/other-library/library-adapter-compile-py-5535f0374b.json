@@ -11,7 +11,7 @@
     },
     "contract_id": "library-adapter-compile-py",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Fidelity-preserving adapter compiler API used by scripts/cos-adapter-compile and scripts/cos-adapters compile.",
@@ -105,7 +105,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Fidelity-preserving adapter compiler API used by scripts/cos-adapter-compile and scripts/cos-adapters compile.",

@@ -11,7 +11,7 @@
     },
     "contract_id": "confidence-gate",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "harness-embedded-only"
     },
     "intent": "Require calibrated confidence and uncertainty reporting for significant outputs.",
@@ -100,7 +100,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "harness-embedded-only"
     },
     "intent": "Require calibrated confidence and uncertainty reporting for significant outputs.",

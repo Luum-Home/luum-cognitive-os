@@ -11,7 +11,7 @@
     },
     "contract_id": "script-cos-new-adr",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "ADR authoring primitive creates contract-compliant drafts through atomic ADR reservation; maintainer-only until a consumer authoring workflow needs it.",
@@ -110,7 +110,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "ADR authoring primitive creates contract-compliant drafts through atomic ADR reservation; maintainer-only until a consumer authoring workflow needs it.",

@@ -11,7 +11,7 @@
     },
     "contract_id": "script-cos-cross-instance-drill",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "temporary-state manual drills for cross-instance runway scenarios",
@@ -110,7 +110,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "temporary-state manual drills for cross-instance runway scenarios",

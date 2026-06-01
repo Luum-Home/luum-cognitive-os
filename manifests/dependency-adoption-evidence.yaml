@@ -168,7 +168,7 @@ adoptions:
     owner_adr: Bun canonical package-manager policy
     due_diligence_id: bun-canonical-js-package-manager
     license: MIT
-    integration_pattern: first-party JavaScript package manager for dashboard and examples; enforced by scripts/check-bun-install-policy.py and .githooks/pre-commit
+    integration_pattern: first-party JavaScript package manager for dashboard and examples; enforced by scripts/check_bun_install_policy.py and .githooks/pre-commit
     rationale: Standardizes installs on one modern package manager, replaces npm lock drift with Bun locks, and keeps lifecycle scripts disabled by default through bunfig.toml `install.ignoreScripts = true`.
     audit_link: docs/09-Quality/security/supply-chain.md
 

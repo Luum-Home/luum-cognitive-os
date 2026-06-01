@@ -11,7 +11,7 @@
     },
     "contract_id": "script-cos-product-answer-refresh",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Skill-facing CLI to regenerate ADR-282 product answer cards and routing index from the product question bank.",
@@ -104,7 +104,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Skill-facing CLI to regenerate ADR-282 product answer cards and routing index from the product question bank.",

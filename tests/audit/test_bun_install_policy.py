@@ -4,7 +4,7 @@ import importlib.util
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
-SCRIPT = REPO / "scripts" / "check-bun-install-policy.py"
+SCRIPT = REPO / "scripts" / "check_bun_install_policy.py"
 
 
 def _module():

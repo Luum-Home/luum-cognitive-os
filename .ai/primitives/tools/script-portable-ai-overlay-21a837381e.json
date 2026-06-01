@@ -11,7 +11,7 @@
     },
     "contract_id": "script-portable-ai-overlay",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Wrapper CLI and library generating the portable maintainer .ai overlay from COS canonical primitive contracts.",
@@ -106,7 +106,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Wrapper CLI and library generating the portable maintainer .ai overlay from COS canonical primitive contracts.",

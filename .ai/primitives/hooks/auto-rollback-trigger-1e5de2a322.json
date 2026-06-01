@@ -11,7 +11,7 @@
     },
     "contract_id": "auto-rollback-trigger",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "harness-embedded-only"
     },
     "intent": "Detect rollback-worthy failure patterns and record rollback trigger evidence.",
@@ -100,7 +100,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "harness-embedded-only"
     },
     "intent": "Detect rollback-worthy failure patterns and record rollback trigger evidence.",

@@ -11,7 +11,7 @@
     },
     "contract_id": "script-security-red-team",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Opt-in security red-team workflow runner for inventory, threat modeling, abuse probes, risk scoring, and mitigation backlog generation.",
@@ -111,7 +111,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Opt-in security red-team workflow runner for inventory, threat modeling, abuse probes, risk scoring, and mitigation backlog generation.",

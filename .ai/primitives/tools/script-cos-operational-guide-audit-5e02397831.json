@@ -11,7 +11,7 @@
     },
     "contract_id": "script-cos-operational-guide-audit",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Skill-facing agentic primitive auditing operational guide documents for completeness and accuracy.",
@@ -105,7 +105,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Skill-facing agentic primitive auditing operational guide documents for completeness and accuracy.",

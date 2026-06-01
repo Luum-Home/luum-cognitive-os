@@ -11,7 +11,7 @@
     },
     "contract_id": "script-cos-closure-trust-signal",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Skill-facing agentic primitive emitting closure trust signals for session verification.",
@@ -105,7 +105,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Skill-facing agentic primitive emitting closure trust signals for session verification.",

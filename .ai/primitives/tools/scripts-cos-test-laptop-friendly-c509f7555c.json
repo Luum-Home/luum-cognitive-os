@@ -1,0 +1,88 @@
+{
+  "canonical_source": "scripts/cos-test-laptop-friendly",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Caps workers, nice level, and inter-lane sleep for laptop-safe validation; wrapper validation is covered by unit tests.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Caps workers, nice level, and inter-lane sleep for laptop-safe validation; wrapper validation is covered by unit tests.",
+    "evidence_commands": [
+      "python3 -m pytest tests/unit/test_laptop_friendly_runner.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "mixed",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "candidate",
+    "maturity": "advisory",
+    "owner_adr": "ADR-311",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "document",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "Caps workers, nice level, and inter-lane sleep for laptop-safe validation; wrapper validation is covered by unit tests.",
+      "evidence_commands": [
+        "python3 -m pytest tests/unit/test_laptop_friendly_runner.py -q"
+      ],
+      "metrics": []
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "unsupported"
+    },
+    "intent": "Caps workers, nice level, and inter-lane sleep for laptop-safe validation; wrapper validation is covered by unit tests.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "shell": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "scripts/cos-test-laptop-friendly",
+        "scripts/cos-validation-capsule.sh"
+      ],
+      "runtime_projection": false
+    }
+  },
+  "portable_id": "scripts/cos-test-laptop-friendly",
+  "projection_targets": [
+    "scripts/cos-test-laptop-friendly",
+    "scripts/cos-validation-capsule.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/cos-test-laptop-friendly",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

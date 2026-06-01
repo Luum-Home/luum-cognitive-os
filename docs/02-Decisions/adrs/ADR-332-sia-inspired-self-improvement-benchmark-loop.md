@@ -27,6 +27,10 @@ remaining_in_scope: true
 
 <!-- SCOPE: OS -->
 
+## Status
+
+Accepted — partially implemented on 2026-05-29.
+
 ## Context
 
 Hexo AI's SIA project presents a useful shape for self-improvement: a benchmark
@@ -77,6 +81,12 @@ Run artifacts are written to:
 Feedback writes `feedback.json` and `feedback.md`, but never applies patches.
 Any proposed skill, hook, rule, or agent change remains behind human review and
 required targeted tests.
+
+## Alternatives rejected
+
+- Vendoring SIA directly: rejected because Cognitive OS must not inherit an external self-modifying runtime or dependency surface before local governance evidence exists.
+- Fully autonomous patch application: rejected because ADR-083 keeps self-improvement behind an approval gate and targeted validation.
+- Benchmark-free prompt iteration: rejected because this primitive exists to make improvements measurable against held-out tasks.
 
 ## License and dependency posture
 

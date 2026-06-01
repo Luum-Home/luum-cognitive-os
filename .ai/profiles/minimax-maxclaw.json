@@ -19,7 +19,7 @@
     "mcp"
   ],
   "projection_mode": "hosted-agent-or-openclaw-compatible",
-  "proof_level": "none",
+  "proof_level": null,
   "schema_version": "portable-ai-profile.v1",
   "settings_paths": [],
   "status": "planned"

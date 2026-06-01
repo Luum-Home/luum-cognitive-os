@@ -111,25 +111,25 @@ benchmark:
   fixtures:
     - id: fp-auto-rollback-meta
       prompt: "Ignoro la sugerencia del router /auto-rollback (0.95), dogfood evidence"
-      expected: none
+      expected: "none"
       required: true
       rationale: Mentioning dangerous rollback as router critique must not become intent.
 
     - id: fp-deep-research-write-meta
       prompt: "el router sugirió /deep-research para escritura de archivos"
-      expected: none
+      expected: "none"
       required: true
       rationale: Mentioning a false-positive research suggestion must not route.
 
     - id: fp-auto-refine-meta
       prompt: "I ignore /auto-refine 0.95 for synthesis; router poorly calibrated"
-      expected: none
+      expected: "none"
       required: true
       rationale: Mentioning auto-refine as miscalibration must not route.
 
     - id: fp-self-improve-meta
       prompt: "Ignoro /self-improve 0.95 para Write batch; dogfood evidence"
-      expected: none
+      expected: "none"
       required: true
       rationale: Mentioning self-improve as dogfood evidence must not route.
 

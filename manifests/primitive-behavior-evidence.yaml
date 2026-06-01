@@ -1,6 +1,113 @@
 schema_version: primitive-behavior-evidence.v1
 purpose: Explicit behavior evidence mapping for primitives whose proof should not rely only on text-reference heuristics.
 evidence:
+- primitive: scripts/check-bun-install-policy
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  - tests/audit/test_bun_install_policy.py
+  - tests/unit/test_cos_patch_release.py
+  rationale: Compatibility shell wrapper preserves the Bun install policy command while the Python implementation uses snake_case naming.
+- primitive: scripts/check_bun_install_policy.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  - tests/audit/test_bun_install_policy.py
+  - tests/unit/test_cos_patch_release.py
+  rationale: Bun dependency policy is enforced by audit tests and release patch checks.
+- primitive: scripts/check_integration_lane_coverage.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  - tests/unit/test_integration_lane_coverage.py
+  rationale: Integration lane coverage checker is directly exercised by its contract lane.
+- primitive: scripts/cos-classify-failures
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  - tests/unit/test_cos_test_failure_and_reliability.py
+  rationale: Failure classification CLI behavior is covered by unit-level classifier tests.
+- primitive: scripts/cos-harness-projection-policy
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  - tests/unit/test_harness_hook_projection_policy.py
+  rationale: Harness projection policy is guarded by contract tests for cross-harness projection rules.
+- primitive: scripts/cos-improve
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  - tests/behavior/test_cos_improve_cli.py
+  - tests/unit/test_improve_loop.py
+  rationale: Dispatcher wrapper for the benchmark-bound improvement loop shares the cos improve CLI behavior proof.
+- primitive: scripts/cos-improve-context
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  - tests/behavior/test_cos_improve_cli.py
+  - tests/unit/test_improve_loop.py
+  rationale: Improvement context packet generation is exercised by the cos improve behavior lane.
+- primitive: scripts/cos-improve-feedback
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  - tests/behavior/test_cos_improve_cli.py
+  - tests/unit/test_improve_loop.py
+  rationale: Improvement feedback generation is exercised by the cos improve behavior lane.
+- primitive: scripts/cos-improve-run
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  - tests/behavior/test_cos_improve_cli.py
+  - tests/unit/test_improve_loop.py
+  rationale: Benchmark execution for self-improvement is exercised by the cos improve behavior lane.
+- primitive: scripts/cos-test-laptop-friendly
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  - tests/unit/test_laptop_friendly_runner.py
+  rationale: Laptop-friendly test runner behavior is covered by bounded runner unit tests.
+- primitive: scripts/cos-test-reliability-ledger
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  - tests/unit/test_cos_test_failure_and_reliability.py
+  rationale: Test reliability ledger generation is guarded by contract tests.
+- primitive: scripts/cos_improve.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  - tests/behavior/test_cos_improve_cli.py
+  - tests/unit/test_improve_loop.py
+  rationale: Python implementation for cos improve owns the benchmark-bound self-improvement behavior proof.
+- primitive: scripts/yaml.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  - tests/unit/test_yaml_fallback.py
+  rationale: YAML helper behavior is covered by direct helper unit tests.
+- primitive: skills/self-improvement-loop/SKILL.md
+  harnesses:
+  - claude
+  - codex
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  - tests/behavior/test_cos_improve_cli.py
+  - tests/unit/test_improve_loop.py
+  rationale: Skill documents the benchmark-bound improvement primitive whose CLI behavior is tested by the cos improve lane.
 - primitive: hooks/publication-safety.sh
   harnesses:
   - claude

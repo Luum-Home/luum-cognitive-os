@@ -11,7 +11,7 @@
     },
     "contract_id": "script-cos-import-consumer-evidence",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "consumer evidence import covered by cross-instance runway tests",
@@ -110,7 +110,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "consumer evidence import covered by cross-instance runway tests",

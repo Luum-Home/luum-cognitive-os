@@ -11,7 +11,7 @@
     },
     "contract_id": "script-orchestrator",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Orchestrator control CLI exposes list-live, scan-stale, kill-hung, control, and answer verbs over Valkey when enabled and filesystem fallback otherwise.",
@@ -109,7 +109,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Orchestrator control CLI exposes list-live, scan-stale, kill-hung, control, and answer verbs over Valkey when enabled and filesystem fallback otherwise.",

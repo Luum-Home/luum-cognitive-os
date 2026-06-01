@@ -11,7 +11,7 @@
     },
     "contract_id": "script-cos-headless-service-drill",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "opt-in Docker/headless service proof drill; excluded from default laptop lanes",
@@ -109,7 +109,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "opt-in Docker/headless service proof drill; excluded from default laptop lanes",

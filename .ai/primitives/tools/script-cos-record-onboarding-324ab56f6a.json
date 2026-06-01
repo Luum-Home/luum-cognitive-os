@@ -11,7 +11,7 @@
     },
     "contract_id": "script-cos-record-onboarding",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Maintainer onboarding recording helper for reproducible fresh-clone walkthroughs.",
@@ -106,7 +106,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Maintainer onboarding recording helper for reproducible fresh-clone walkthroughs.",

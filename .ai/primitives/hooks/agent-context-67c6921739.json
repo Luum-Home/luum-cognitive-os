@@ -11,7 +11,7 @@
     },
     "contract_id": "agent-context",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "transitive runtime dependency for destructive-operation blockers",
@@ -106,7 +106,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "transitive runtime dependency for destructive-operation blockers",

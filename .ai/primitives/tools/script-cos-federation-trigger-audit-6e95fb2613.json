@@ -11,7 +11,7 @@
     },
     "contract_id": "script-cos-federation-trigger-audit",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Shape-B trigger audit covered by cross-instance runway tests",
@@ -108,7 +108,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Shape-B trigger audit covered by cross-instance runway tests",

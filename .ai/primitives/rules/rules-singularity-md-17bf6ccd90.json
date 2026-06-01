@@ -5,14 +5,14 @@
     "actions": null,
     "contract_id": null,
     "impact": null,
-    "intent": "Manual scope calibration iteration 037: Singularity Rule \u2014 Autonomous MAPE-K Control Loop is repository governance guidance usable by COS maintainers and adopter-project agents.",
+    "intent": "Manual scope calibration iteration 037: Singularity Rule \\u2014 Autonomous MAPE-K Control Loop is repository governance guidance usable by COS maintainers and adopter-project agents.",
     "present": false,
     "projection_fidelity": {},
     "requires": [],
     "trigger": null
   },
   "evidence": {
-    "behavior_evidence": "Manual scope calibration iteration 037: Singularity Rule \u2014 Autonomous MAPE-K Control Loop is repository governance guidance usable by COS maintainers and adopter-project agents.",
+    "behavior_evidence": "Manual scope calibration iteration 037: Singularity Rule \\u2014 Autonomous MAPE-K Control Loop is repository governance guidance usable by COS maintainers and adopter-project agents.",
     "evidence_commands": [
       "python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/singularity.md"
     ],
@@ -42,7 +42,7 @@
     "contract_id": null,
     "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
     "evidence": {
-      "behavior_evidence": "Manual scope calibration iteration 037: Singularity Rule \u2014 Autonomous MAPE-K Control Loop is repository governance guidance usable by COS maintainers and adopter-project agents.",
+      "behavior_evidence": "Manual scope calibration iteration 037: Singularity Rule \\u2014 Autonomous MAPE-K Control Loop is repository governance guidance usable by COS maintainers and adopter-project agents.",
       "evidence_commands": [
         "python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/singularity.md"
       ],
@@ -52,7 +52,7 @@
       "consumer_fleet": "unknown",
       "service_mode": "unsupported"
     },
-    "intent": "Manual scope calibration iteration 037: Singularity Rule \u2014 Autonomous MAPE-K Control Loop is repository governance guidance usable by COS maintainers and adopter-project agents.",
+    "intent": "Manual scope calibration iteration 037: Singularity Rule \\u2014 Autonomous MAPE-K Control Loop is repository governance guidance usable by COS maintainers and adopter-project agents.",
     "is_full_contract": true,
     "projection_fidelity": {
       "claude": {

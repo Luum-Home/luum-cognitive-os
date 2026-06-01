@@ -11,7 +11,7 @@
     },
     "contract_id": "script-cos-queue-drain",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Reports Phase 1 local queue, lease, and task status without provider calls.",
@@ -111,7 +111,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Reports Phase 1 local queue, lease, and task status without provider calls.",

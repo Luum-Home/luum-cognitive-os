@@ -11,7 +11,7 @@
     },
     "contract_id": "script-cos-new-adr-561e4a84",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Python implementation behind scripts/cos-new-adr; renders frontmatter and ADR-067+ required sections.",
@@ -107,7 +107,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Python implementation behind scripts/cos-new-adr; renders frontmatter and ADR-067+ required sections.",

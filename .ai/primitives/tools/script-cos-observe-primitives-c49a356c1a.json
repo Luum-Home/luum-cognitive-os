@@ -11,7 +11,7 @@
     },
     "contract_id": "script-cos-observe-primitives",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "CLI report for observable primitive self-use from joined trace streams.",
@@ -105,7 +105,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "CLI report for observable primitive self-use from joined trace streams.",

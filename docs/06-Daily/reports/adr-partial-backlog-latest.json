@@ -164,10 +164,10 @@
       "implementation_status": "partial",
       "number": "024",
       "owner": "",
-      "partial_remaining": "Deferred**: valuable but orthogonal; doesn't solve in-session visibility",
+      "partial_remaining": "Deferred**: valuable but orthogonal; doesn''t solve in-session visibility",
       "partial_remaining_basis": "explicit body remaining signal",
       "path": "docs/02-Decisions/adrs/ADR-024-task-panel-bridge.md",
-      "remaining": "Deferred**: valuable but orthogonal; doesn't solve in-session visibility",
+      "remaining": "Deferred**: valuable but orthogonal; doesn''t solve in-session visibility",
       "remaining_in_scope": true,
       "title": "Task Panel Bridge \u2014 Correlate COS Tasks with Claude Code tool_use_id"
     },
@@ -2031,10 +2031,10 @@
       "implementation_status": "partial",
       "number": "289",
       "owner": "",
-      "partial_remaining": "Layer 1 (raw sources) has no canonical on-disk location and no ingest\npipeline from raw to vault; vault->engram retrieve pipeline is also not\nimplemented. Both are tracked as known gaps.\n",
+      "partial_remaining": "Layer 1 (raw sources) has no canonical on-disk location and no ingest pipeline from raw to vault; vault->engram retrieve pipeline is also not implemented. Both are tracked as known gaps. ",
       "partial_remaining_basis": "specific classification_basis",
       "path": "docs/02-Decisions/adrs/ADR-289-three-layer-knowledge-architecture.md",
-      "remaining": "Layer 1 (raw sources) has no canonical on-disk location and no ingest\npipeline from raw to vault; vault->engram retrieve pipeline is also not\nimplemented. Both are tracked as known gaps.\n",
+      "remaining": "Layer 1 (raw sources) has no canonical on-disk location and no ingest pipeline from raw to vault; vault->engram retrieve pipeline is also not implemented. Both are tracked as known gaps. ",
       "remaining_in_scope": null,
       "title": "Three-Layer Knowledge Architecture: Raw Sources, Compiled Vault, Operational Engram"
     },
@@ -2255,16 +2255,40 @@
       "remaining": "Partial implementation because the primitive shell, code-sliced Phase B baseline, Phase C hotspot reporting, Phase C.1 optimization targets, preload selector, token-footprint estimator, real-session telemetry joiner, controlled token-reduction smoke, real-context replay benchmark, Phase D semantic execution wrapper, and Phase D backend receipt are implemented while remaining environment-dependent work covers rerunning semantic extraction after a backend is available, Codex TokenUsage normalization, and IDE or CLI projection beyond the maintainer skill.",
       "remaining_in_scope": null,
       "title": "Graphify Portable Context Optimization Primitive"
+    },
+    {
+      "adr": "ADR-332",
+      "classification_basis": "SIA pattern adopted without vendoring; mutation remains gated.",
+      "date": "2026-05-29",
+      "decision_status": "accepted",
+      "follow_up_adr": "",
+      "implementation_files": [
+        "scripts/cos-improve-run",
+        "scripts/cos-improve-feedback",
+        "scripts/cos-improve-context",
+        "scripts/cos_improve.py",
+        "lib/improve_loop.py",
+        "skills/self-improvement-loop/SKILL.md"
+      ],
+      "implementation_status": "partial",
+      "number": "332",
+      "owner": "",
+      "partial_remaining": "The first implementation is a local spike with deterministic benchmark execution and proposal generation; it does not yet spawn live target/meta/feedback agents.",
+      "partial_remaining_basis": "",
+      "path": "docs/02-Decisions/adrs/ADR-332-sia-inspired-self-improvement-benchmark-loop.md",
+      "remaining": "The first implementation is a local spike with deterministic benchmark execution and proposal generation; it does not yet spawn live target/meta/feedback agents.",
+      "remaining_in_scope": true,
+      "title": "SIA-inspired self-improvement benchmark loop"
     }
   ],
   "schema_version": "adr-partial-backlog/v1",
   "summary": {
     "by_implementation_status": {
       "deferred": 1,
-      "partial": 119,
+      "partial": 120,
       "partial-blocked": 1
     },
     "missing_partial_remaining": 4,
-    "total": 121
+    "total": 122
   }
 }

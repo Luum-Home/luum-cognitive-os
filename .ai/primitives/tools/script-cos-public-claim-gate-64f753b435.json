@@ -11,7 +11,7 @@
     },
     "contract_id": "script-cos-public-claim-gate",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Skill-facing CLI for ADR-206 public claim decommission gate; scans for disallowed public-facing claim patterns.",
@@ -104,7 +104,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Skill-facing CLI for ADR-206 public claim decommission gate; scans for disallowed public-facing claim patterns.",

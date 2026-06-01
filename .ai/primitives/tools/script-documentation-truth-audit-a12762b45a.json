@@ -11,7 +11,7 @@
     },
     "contract_id": "script-documentation-truth-audit",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Skill-facing agentic primitive auditing documentation truth claims across the repo.",
@@ -106,7 +106,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Skill-facing agentic primitive auditing documentation truth claims across the repo.",

@@ -12,7 +12,7 @@
     },
     "contract_id": "large-file-advisor",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "harness-embedded-only"
     },
     "intent": "Advise targeted reads before loading large files into model context.",
@@ -106,7 +106,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "harness-embedded-only"
     },
     "intent": "Advise targeted reads before loading large files into model context.",

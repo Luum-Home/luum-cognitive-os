@@ -44,6 +44,12 @@ Add a portable `publication-safety` primitive:
 
 The primitive is a runner and normalizer, not a scanner. Repository-specific publication policy stays in the consumer repo.
 
+## Alternatives rejected
+
+- Hardcoding downstream Luum publication gates into Cognitive OS: rejected because it would violate the OS portability boundary and leak consumer-specific policy into core.
+- Replacing existing scanners with a COS scanner: rejected because this primitive normalizes receipts while consumer repositories retain their own scanners and allowlists.
+- Always-on blocking with no config: rejected because consumers need graceful no-op behavior until they opt into publication safety enforcement.
+
 ## Consequences
 
 - Cognitive OS can enforce publication safety claims across consumer repositories without learning their private gate internals.

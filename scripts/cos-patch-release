@@ -39,7 +39,7 @@ PATCH_MERGE_CMD = [
 PATCH_VALIDATION_COMMANDS = [
     ["bash", "-n", "scripts/check-local-privacy.sh", ".githooks/pre-commit"],
     ["scripts/check-local-privacy.sh", "--root", ".", "--all"],
-    ["scripts/check-bun-install-policy.py", "--json"],
+    ["scripts/check_bun_install_policy.py", "--json"],
     [
         ".venv/bin/python",
         "-m",
@@ -261,7 +261,7 @@ def release_flow_plan(args: argparse.Namespace) -> int:
             },
             {
                 "name": "supply_chain_policy",
-                "command": "scripts/check-bun-install-policy.py --json",
+                "command": "scripts/check_bun_install_policy.py --json",
             },
             {
                 "name": "validate_release",

@@ -703,7 +703,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 4,
+        "config": 5,
         "doc": 36,
         "script": 1,
         "skill": 1,
@@ -721,6 +721,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -914,7 +918,7 @@
         "skill_consumers:1",
         "test_consumers:7",
         "doc_consumers:36",
-        "config_consumers:4",
+        "config_consumers:5",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -931,7 +935,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 49,
+      "total_consumers": 50,
       "wrapper_for": "scripts/cos_coverage.py"
     },
     {
@@ -1220,7 +1224,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 2,
         "hook": 1,
         "script": 1,
@@ -1230,6 +1234,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "doc",
@@ -1265,7 +1273,7 @@
         "test_consumers:3",
         "hook_consumers:1",
         "doc_consumers:2",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -1280,7 +1288,7 @@
       "role_source": "heuristic:path",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 8,
+      "total_consumers": 9,
       "wrapper_for": null
     },
     {
@@ -1469,7 +1477,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 3,
+        "config": 4,
         "doc": 1,
         "test": 3
       },
@@ -1485,6 +1493,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "doc",
@@ -1507,7 +1519,7 @@
       "evidence": [
         "test_consumers:3",
         "doc_consumers:1",
-        "config_consumers:3"
+        "config_consumers:4"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -1521,7 +1533,7 @@
       "role_source": "heuristic:path",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -1529,7 +1541,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 4,
+        "config": 5,
         "doc": 1,
         "test": 3
       },
@@ -1545,6 +1557,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -1571,7 +1587,7 @@
       "evidence": [
         "test_consumers:3",
         "doc_consumers:1",
-        "config_consumers:4"
+        "config_consumers:5"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -1585,7 +1601,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 8,
+      "total_consumers": 9,
       "wrapper_for": null
     },
     {
@@ -3931,6 +3947,38 @@
       "wrapper_for": null
     },
     {
+      "confidence": "low",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "config_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/check-bun-install-policy",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "default",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 1,
+      "wrapper_for": null
+    },
+    {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
@@ -4117,6 +4165,68 @@
         "shell"
       ],
       "total_consumers": 12,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 2,
+        "doc": 1,
+        "script": 2,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/dependency-adoption-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/security/supply-chain.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/check-bun-install-policy"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-patch-release"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_bun_install_policy.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_patch_release.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:2",
+        "doc_consumers:1",
+        "config_consumers:2",
+        "script_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/check_bun_install_policy.py",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "usage:repo",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
@@ -4315,6 +4425,50 @@
       "wrapper_for": "scripts/apply-efficiency-profile.sh"
     },
     {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 1,
+        "script": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-patch-release"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_integration_lane_coverage.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "config_consumers:1",
+        "script_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/check_integration_lane_coverage.py",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "usage:repo",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 3,
+      "wrapper_for": null
+    },
+    {
       "confidence": "high",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
@@ -4438,8 +4592,8 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 6,
-        "doc": 1,
-        "script": 1,
+        "doc": 2,
+        "script": 2,
         "skill": 1,
         "test": 3
       },
@@ -4473,6 +4627,14 @@
           "path": "docs/05-Methodology/root/tooling-update-protocol.md"
         },
         {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/host-tooling-engram-mcp-verification.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-doctor-tools.sh"
+        },
+        {
           "family": "script",
           "path": "scripts/deps-update.sh"
         },
@@ -4498,9 +4660,9 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:3",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:6",
-        "script_consumers:1"
+        "script_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -4516,7 +4678,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 12,
+      "total_consumers": 14,
       "wrapper_for": null
     },
     {
@@ -4794,7 +4956,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 4,
+        "config": 5,
         "doc": 2,
         "hook": 2,
         "rule": 1,
@@ -4813,6 +4975,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -4853,7 +5019,7 @@
         "hook_consumers:2",
         "doc_consumers:2",
         "rule_consumers:1",
-        "config_consumers:4",
+        "config_consumers:5",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -4868,7 +5034,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 11,
+      "total_consumers": 12,
       "wrapper_for": null
     },
     {
@@ -5354,10 +5520,15 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "config": 1,
         "hook": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
+        },
         {
           "family": "hook",
           "path": "hooks/context-budget-meter.sh"
@@ -5370,7 +5541,8 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "hook_consumers:1"
+        "hook_consumers:1",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -5384,7 +5556,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 2,
+      "total_consumers": 3,
       "wrapper_for": null
     },
     {
@@ -5392,13 +5564,13 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 85,
-        "doc": 756,
-        "hook": 118,
+        "config": 86,
+        "doc": 759,
+        "hook": 119,
         "rule": 51,
-        "script": 364,
-        "skill": 82,
-        "test": 692,
+        "script": 371,
+        "skill": 83,
+        "test": 702,
         "workflow": 2
       },
       "consumers": [
@@ -5653,6 +5825,10 @@
         {
           "family": "config",
           "path": "manifests/provider-executor-contracts.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -7024,6 +7200,14 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-332-sia-inspired-self-improvement-benchmark-loop.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-333-publication-safety-primitive.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/INDEX.md"
         },
         {
@@ -7868,6 +8052,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/publication-safety-receipt-v0.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/python-stdin-heredoc-trap.md"
         },
         {
@@ -8540,10 +8728,6 @@
         },
         {
           "family": "doc",
-          "path": "docs/09-Quality/manual-tests/codex-host-tooling-verification.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/09-Quality/manual-tests/consumer-improvement-proposals.md"
         },
         {
@@ -8605,6 +8789,10 @@
         {
           "family": "doc",
           "path": "docs/09-Quality/manual-tests/host-cli-bridge-security-boundary.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/host-tooling-engram-mcp-verification.md"
         },
         {
           "family": "doc",
@@ -9061,6 +9249,10 @@
         {
           "family": "hook",
           "path": "hooks/promotion-proposer-weekly.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/publication-safety.sh"
         },
         {
           "family": "hook",
@@ -9636,6 +9828,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-classify-failures"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-cleanup.sh"
         },
         {
@@ -9921,6 +10117,22 @@
         {
           "family": "script",
           "path": "scripts/cos-import-consumer-improvement-proposals"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-improve"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-improve-context"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-improve-feedback"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-improve-run"
         },
         {
           "family": "script",
@@ -10213,6 +10425,10 @@
         {
           "family": "script",
           "path": "scripts/cos-team"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-test-laptop-friendly"
         },
         {
           "family": "script",
@@ -10899,6 +11115,10 @@
           "path": "scripts/write_context_marker.py"
         },
         {
+          "family": "script",
+          "path": "scripts/yaml.py"
+        },
+        {
           "family": "skill",
           "path": ".codex/skills/portability-work/SKILL.md"
         },
@@ -11181,6 +11401,10 @@
         {
           "family": "skill",
           "path": "skills/sdd-resume/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/self-improvement-loop/SKILL.md"
         },
         {
           "family": "skill",
@@ -11472,6 +11696,10 @@
         },
         {
           "family": "test",
+          "path": "tests/behavior/test_cos_improve_cli.py"
+        },
+        {
+          "family": "test",
           "path": "tests/behavior/test_cos_index_and_global_init.py"
         },
         {
@@ -11677,6 +11905,10 @@
         {
           "family": "test",
           "path": "tests/behavior/test_profile_bootstrap_cli.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_publication_safety_cli.py"
         },
         {
           "family": "test",
@@ -12021,6 +12253,10 @@
         {
           "family": "test",
           "path": "tests/contracts/test_proof_drill_registry.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_publication_safety_contract.py"
         },
         {
           "family": "test",
@@ -12952,6 +13188,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_publication_safety.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_queue_rebase.py"
         },
         {
@@ -12981,6 +13221,10 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_statusline-coverage.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/smoke/test_codex_install_status_smoke.py"
         },
         {
           "family": "test",
@@ -13284,6 +13528,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_cos_test_failure_and_reliability.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_cos_test_repair_loop.py"
         },
         {
@@ -13508,6 +13756,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_improve_loop.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_install_skill_skill.py"
         },
         {
@@ -13517,6 +13769,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_kpi_collector.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_laptop_friendly_runner.py"
         },
         {
           "family": "test",
@@ -13944,6 +14200,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_test_lanes_workflow.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_test_quality_auditor.py"
         },
         {
@@ -13995,6 +14255,10 @@
           "path": "tests/unit/test_workstation_container_benchmark_report.py"
         },
         {
+          "family": "test",
+          "path": "tests/unit/test_yaml_fallback.py"
+        },
+        {
           "family": "workflow",
           "path": ".github/workflows/cos-binary-release.yml"
         },
@@ -14007,14 +14271,14 @@
       "evidence": [
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
-        "skill_consumers:82",
-        "test_consumers:692",
-        "hook_consumers:118",
+        "skill_consumers:83",
+        "test_consumers:702",
+        "hook_consumers:119",
         "workflow_consumers:2",
-        "doc_consumers:756",
+        "doc_consumers:759",
         "rule_consumers:51",
-        "config_consumers:85",
-        "script_consumers:364"
+        "config_consumers:86",
+        "script_consumers:371"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -14026,11 +14290,11 @@
       "protected_install_surface": false,
       "role": "lab",
       "role_source": "lifecycle",
-      "skill_consumers": 82,
+      "skill_consumers": 83,
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 2150,
+      "total_consumers": 2173,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -14665,7 +14929,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 3,
+        "config": 4,
         "doc": 4,
         "test": 2
       },
@@ -14677,6 +14941,10 @@
         {
           "family": "config",
           "path": "manifests/control-plane-audits.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -14711,7 +14979,7 @@
       "evidence": [
         "test_consumers:2",
         "doc_consumers:4",
-        "config_consumers:3"
+        "config_consumers:4"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -14725,7 +14993,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 9,
+      "total_consumers": 10,
       "wrapper_for": null
     },
     {
@@ -16544,6 +16812,50 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 1,
+        "script": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-patch-release"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_test_failure_and_reliability.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "config_consumers:1",
+        "script_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/cos-classify-failures",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "heuristic:self-evolution",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 3,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 1,
         "doc": 1,
         "hook": 1,
         "test": 2
@@ -16688,7 +17000,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 5,
+        "config": 6,
         "doc": 3,
         "skill": 2,
         "test": 2
@@ -16713,6 +17025,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "doc",
@@ -16749,7 +17065,7 @@
         "skill_consumers:2",
         "test_consumers:2",
         "doc_consumers:3",
-        "config_consumers:5"
+        "config_consumers:6"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -16765,7 +17081,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 12,
+      "total_consumers": 13,
       "wrapper_for": null
     },
     {
@@ -18907,7 +19223,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 6,
+        "config": 7,
         "skill": 1,
         "test": 2
       },
@@ -18937,6 +19253,10 @@
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
+        },
+        {
           "family": "skill",
           "path": "skills/session-wrapup/SKILL.md"
         },
@@ -18954,7 +19274,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:2",
-        "config_consumers:6"
+        "config_consumers:7"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -18970,7 +19290,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 9,
+      "total_consumers": 10,
       "wrapper_for": null
     },
     {
@@ -19270,7 +19590,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/09-Quality/manual-tests/codex-host-tooling-verification.md"
+          "path": "docs/09-Quality/manual-tests/host-tooling-engram-mcp-verification.md"
         },
         {
           "family": "doc",
@@ -19515,7 +19835,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/09-Quality/manual-tests/codex-host-tooling-verification.md"
+          "path": "docs/09-Quality/manual-tests/host-tooling-engram-mcp-verification.md"
         },
         {
           "family": "doc",
@@ -22624,9 +22944,14 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "config": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
         {
           "family": "test",
           "path": "tests/unit/test_harness_hook_projection_policy.py"
@@ -22634,7 +22959,8 @@
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:1"
+        "test_consumers:1",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -22648,7 +22974,7 @@
       "role_source": "heuristic:path",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 1,
+      "total_consumers": 2,
       "wrapper_for": null
     },
     {
@@ -23638,6 +23964,254 @@
       "skill_consumers": 0,
       "supported_harnesses": [],
       "total_consumers": 6,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "consumer_families": {
+        "config": 2,
+        "doc": 3,
+        "skill": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-332-sia-inspired-self-improvement-benchmark-loop.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/cross-instance-learning-runway.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/consumer-improvement-proposals.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/self-improvement-loop/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_cos_improve_cli.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_improve_loop.py"
+        }
+      ],
+      "distribution": "team",
+      "evidence": [
+        "lifecycle",
+        "skill_consumers:1",
+        "test_consumers:2",
+        "doc_consumers:3",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-improve",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-improve",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 1,
+      "supported_harnesses": [
+        "shell",
+        "claude",
+        "codex"
+      ],
+      "total_consumers": 8,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "consumer_families": {
+        "config": 2,
+        "doc": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-332-sia-inspired-self-improvement-benchmark-loop.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/self-improvement-loop/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_cos_improve_cli.py"
+        }
+      ],
+      "distribution": "team",
+      "evidence": [
+        "lifecycle",
+        "skill_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-improve-context",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-improve-context",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 1,
+      "supported_harnesses": [
+        "shell",
+        "claude",
+        "codex"
+      ],
+      "total_consumers": 5,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "consumer_families": {
+        "config": 2,
+        "doc": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-332-sia-inspired-self-improvement-benchmark-loop.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/self-improvement-loop/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_cos_improve_cli.py"
+        }
+      ],
+      "distribution": "team",
+      "evidence": [
+        "lifecycle",
+        "skill_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-improve-feedback",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-improve-feedback",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 1,
+      "supported_harnesses": [
+        "shell",
+        "claude",
+        "codex"
+      ],
+      "total_consumers": 5,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "consumer_families": {
+        "config": 2,
+        "doc": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-332-sia-inspired-self-improvement-benchmark-loop.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/self-improvement-loop/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_cos_improve_cli.py"
+        }
+      ],
+      "distribution": "team",
+      "evidence": [
+        "lifecycle",
+        "skill_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-improve-run",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-improve-run",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 1,
+      "supported_harnesses": [
+        "shell",
+        "claude",
+        "codex"
+      ],
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
@@ -25607,7 +26181,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 5,
+        "config": 6,
         "doc": 4,
         "skill": 1,
         "test": 2
@@ -25632,6 +26206,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "doc",
@@ -25668,7 +26246,7 @@
         "skill_consumers:1",
         "test_consumers:2",
         "doc_consumers:4",
-        "config_consumers:5"
+        "config_consumers:6"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -25684,7 +26262,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 12,
+      "total_consumers": 13,
       "wrapper_for": null
     },
     {
@@ -25820,7 +26398,7 @@
         "config": 1,
         "rule": 1,
         "skill": 1,
-        "test": 4,
+        "test": 5,
         "workflow": 1
       },
       "consumers": [
@@ -25835,6 +26413,10 @@
         {
           "family": "skill",
           "path": "skills/patch-release/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_standalone_distribution_contract.py"
         },
         {
           "family": "test",
@@ -25860,9 +26442,9 @@
       "distribution": "team",
       "evidence": [
         "lifecycle",
-        "wrapper_for:scripts/check-local-privacy.sh",
+        "wrapper_for:scripts/merge-to-main.sh",
         "skill_consumers:1",
-        "test_consumers:4",
+        "test_consumers:5",
         "workflow_consumers:1",
         "rule_consumers:1",
         "config_consumers:1"
@@ -25881,8 +26463,8 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 8,
-      "wrapper_for": "scripts/check-local-privacy.sh"
+      "total_consumers": 9,
+      "wrapper_for": "scripts/merge-to-main.sh"
     },
     {
       "confidence": "high",
@@ -28297,6 +28879,70 @@
         "shell"
       ],
       "total_consumers": 15,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 1,
+        "doc": 1,
+        "hook": 1,
+        "script": 1,
+        "test": 3
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-333-publication-safety-primitive.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/publication-safety.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_publication_safety_cli.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_publication_safety_contract.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_publication_safety.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:3",
+        "hook_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:1",
+        "script_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/cos-publication-safety",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "heuristic:self-evolution",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
@@ -31897,7 +32543,7 @@
         "doc": 21,
         "script": 10,
         "skill": 1,
-        "test": 11,
+        "test": 12,
         "workflow": 1
       },
       "consumers": [
@@ -32087,6 +32733,10 @@
         },
         {
           "family": "test",
+          "path": "tests/smoke/test_codex_install_status_smoke.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_cross_platform_discipline.py"
         },
         {
@@ -32111,7 +32761,7 @@
         "lifecycle",
         "wrapper_for:scripts/active_primitive_index.py",
         "skill_consumers:1",
-        "test_consumers:11",
+        "test_consumers:12",
         "workflow_consumers:1",
         "doc_consumers:21",
         "config_consumers:7",
@@ -32131,7 +32781,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 51,
+      "total_consumers": 52,
       "wrapper_for": "scripts/active_primitive_index.py"
     },
     {
@@ -32185,7 +32835,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 5,
+        "config": 6,
         "doc": 1,
         "test": 2
       },
@@ -32201,6 +32851,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -32227,7 +32881,7 @@
       "evidence": [
         "test_consumers:2",
         "doc_consumers:1",
-        "config_consumers:5"
+        "config_consumers:6"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -32241,7 +32895,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 8,
+      "total_consumers": 9,
       "wrapper_for": null
     },
     {
@@ -32613,6 +33267,96 @@
         "shell"
       ],
       "total_consumers": 10,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_laptop_friendly_runner.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos-validation-capsule.sh",
+        "test_consumers:1",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-test-laptop-friendly",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-test-laptop-friendly",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 3,
+      "wrapper_for": "scripts/cos-validation-capsule.sh"
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 1,
+        "script": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-patch-release"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_test_failure_and_reliability.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "config_consumers:1",
+        "script_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/cos-test-reliability-ledger",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "heuristic:self-evolution",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 3,
       "wrapper_for": null
     },
     {
@@ -33801,7 +34545,7 @@
       "consumer_families": {
         "config": 4,
         "doc": 8,
-        "script": 1,
+        "script": 2,
         "test": 3
       },
       "consumers": [
@@ -33855,6 +34599,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-test-laptop-friendly"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_closure_discipline_audit.py"
         },
         {
@@ -33876,7 +34624,7 @@
         "test_consumers:3",
         "doc_consumers:8",
         "config_consumers:4",
-        "script_consumers:1"
+        "script_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -33892,7 +34640,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 16,
+      "total_consumers": 17,
       "wrapper_for": null
     },
     {
@@ -34825,7 +35573,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 5,
+        "config": 6,
         "doc": 4,
         "hook": 1,
         "script": 1,
@@ -34843,6 +35591,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -34891,7 +35643,7 @@
         "test_consumers:2",
         "hook_consumers:1",
         "doc_consumers:4",
-        "config_consumers:5",
+        "config_consumers:6",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -34910,7 +35662,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 13,
+      "total_consumers": 14,
       "wrapper_for": null
     },
     {
@@ -35466,7 +36218,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 4,
+        "config": 5,
         "script": 1,
         "test": 2
       },
@@ -35482,6 +36234,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -35503,7 +36259,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:2",
-        "config_consumers:4",
+        "config_consumers:5",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -35518,7 +36274,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -35658,7 +36414,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 4,
+        "config": 5,
         "doc": 3,
         "script": 1,
         "skill": 2,
@@ -35676,6 +36432,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -35724,7 +36484,7 @@
         "skill_consumers:2",
         "test_consumers:3",
         "doc_consumers:3",
-        "config_consumers:4",
+        "config_consumers:5",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -35741,7 +36501,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 13,
+      "total_consumers": 14,
       "wrapper_for": null
     },
     {
@@ -36153,7 +36913,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 4,
+        "config": 5,
         "doc": 3,
         "script": 1,
         "test": 2
@@ -36170,6 +36930,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -36205,7 +36969,7 @@
         "lifecycle",
         "test_consumers:2",
         "doc_consumers:3",
-        "config_consumers:4",
+        "config_consumers:5",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -36222,7 +36986,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 10,
+      "total_consumers": 11,
       "wrapper_for": null
     },
     {
@@ -36327,7 +37091,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 7,
+        "config": 8,
         "script": 2,
         "test": 2
       },
@@ -36351,6 +37115,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -36380,7 +37148,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:2",
-        "config_consumers:7",
+        "config_consumers:8",
         "script_consumers:2"
       ],
       "install_surface": null,
@@ -36395,7 +37163,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 11,
+      "total_consumers": 12,
       "wrapper_for": null
     },
     {
@@ -36972,7 +37740,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 1,
         "script": 1,
         "test": 2
@@ -36981,6 +37749,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "doc",
@@ -37003,7 +37775,7 @@
       "evidence": [
         "test_consumers:2",
         "doc_consumers:1",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -37018,7 +37790,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": null
     },
     {
@@ -37966,6 +38738,66 @@
       "wrapper_for": null
     },
     {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 2,
+        "doc": 1,
+        "script": 4
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-332-sia-inspired-self-improvement-benchmark-loop.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-improve"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-improve-context"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-improve-feedback"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-improve-run"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "doc_consumers:1",
+        "config_consumers:2",
+        "script_consumers:4"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/cos_improve.py",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "heuristic:self-evolution",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 7,
+      "wrapper_for": null
+    },
+    {
       "confidence": "high",
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
@@ -38439,7 +39271,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 7,
+        "config": 8,
         "doc": 2,
         "script": 1,
         "test": 1
@@ -38474,6 +39306,10 @@
           "path": "manifests/primitive-readiness-script-overrides.yaml"
         },
         {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
+        },
+        {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-163-cos-instance-installer.md"
         },
@@ -38497,7 +39333,7 @@
         "wrapper_for:scripts/cos_init.py",
         "test_consumers:1",
         "doc_consumers:2",
-        "config_consumers:7",
+        "config_consumers:8",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -38514,7 +39350,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 11,
+      "total_consumers": 12,
       "wrapper_for": "scripts/cos_init.py"
     },
     {
@@ -39182,7 +40018,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 2,
         "hook": 1,
         "script": 1,
@@ -39192,6 +40028,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -39227,7 +40067,7 @@
         "test_consumers:2",
         "hook_consumers:1",
         "doc_consumers:2",
-        "config_consumers:2",
+        "config_consumers:3",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -39242,7 +40082,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 8,
+      "total_consumers": 9,
       "wrapper_for": null
     },
     {
@@ -39315,7 +40155,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 3,
+        "config": 4,
         "doc": 1,
         "script": 1,
         "test": 1
@@ -39332,6 +40172,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "doc",
@@ -39351,7 +40195,7 @@
         "lifecycle",
         "test_consumers:1",
         "doc_consumers:1",
-        "config_consumers:3",
+        "config_consumers:4",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -39368,7 +40212,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
@@ -39438,7 +40282,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 4,
+        "config": 5,
         "doc": 1,
         "script": 2,
         "test": 2
@@ -39455,6 +40299,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -39486,7 +40334,7 @@
         "lifecycle",
         "test_consumers:2",
         "doc_consumers:1",
-        "config_consumers:4",
+        "config_consumers:5",
         "script_consumers:2"
       ],
       "install_surface": null,
@@ -39503,7 +40351,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 9,
+      "total_consumers": 10,
       "wrapper_for": null
     },
     {
@@ -39634,7 +40482,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 6,
+        "config": 7,
         "doc": 1,
         "script": 4,
         "test": 5
@@ -39659,6 +40507,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -39710,7 +40562,7 @@
         "lifecycle",
         "test_consumers:5",
         "doc_consumers:1",
-        "config_consumers:6",
+        "config_consumers:7",
         "script_consumers:4"
       ],
       "install_surface": null,
@@ -39727,7 +40579,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 16,
+      "total_consumers": 17,
       "wrapper_for": null
     },
     {
@@ -39821,7 +40673,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 5,
+        "config": 6,
         "doc": 1,
         "hook": 1,
         "script": 1,
@@ -39839,6 +40691,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -39875,7 +40731,7 @@
         "test_consumers:2",
         "hook_consumers:1",
         "doc_consumers:1",
-        "config_consumers:5",
+        "config_consumers:6",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -39892,7 +40748,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 10,
+      "total_consumers": 11,
       "wrapper_for": null
     },
     {
@@ -39988,7 +40844,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 5,
+        "config": 6,
         "doc": 3,
         "hook": 2,
         "script": 3,
@@ -40006,6 +40862,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -40074,7 +40934,7 @@
         "test_consumers:5",
         "hook_consumers:2",
         "doc_consumers:3",
-        "config_consumers:5",
+        "config_consumers:6",
         "script_consumers:3"
       ],
       "install_surface": null,
@@ -40091,7 +40951,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 18,
+      "total_consumers": 19,
       "wrapper_for": null
     },
     {
@@ -41017,7 +41877,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 4,
+        "config": 5,
         "doc": 3,
         "script": 1,
         "skill": 1,
@@ -41039,6 +41899,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "doc",
@@ -41071,7 +41935,7 @@
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:3",
-        "config_consumers:4",
+        "config_consumers:5",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -41088,7 +41952,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 10,
+      "total_consumers": 11,
       "wrapper_for": null
     },
     {
@@ -42501,7 +43365,7 @@
         "config": 2,
         "doc": 7,
         "hook": 1,
-        "script": 1,
+        "script": 2,
         "test": 3
       },
       "consumers": [
@@ -42547,6 +43411,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-patch-release"
+        },
+        {
+          "family": "script",
           "path": "scripts/merge-to-main.sh"
         },
         {
@@ -42569,7 +43437,7 @@
         "hook_consumers:1",
         "doc_consumers:7",
         "config_consumers:2",
-        "script_consumers:1"
+        "script_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -42583,7 +43451,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 14,
+      "total_consumers": 15,
       "wrapper_for": "scripts/_lib/settings-driver-claude-code.sh"
     },
     {
@@ -43035,7 +43903,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/09-Quality/manual-tests/codex-host-tooling-verification.md"
+          "path": "docs/09-Quality/manual-tests/host-tooling-engram-mcp-verification.md"
         },
         {
           "family": "doc",
@@ -43194,7 +44062,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 6,
+        "config": 7,
         "doc": 5,
         "rule": 1,
         "script": 3,
@@ -43221,6 +44089,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -43291,7 +44163,7 @@
         "test_consumers:3",
         "doc_consumers:5",
         "rule_consumers:1",
-        "config_consumers:6",
+        "config_consumers:7",
         "script_consumers:3"
       ],
       "install_surface": null,
@@ -43308,7 +44180,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 20,
+      "total_consumers": 21,
       "wrapper_for": "scripts/primitive_authority_audit.py"
     },
     {
@@ -43788,7 +44660,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "script": 1,
         "test": 1
       },
@@ -43802,6 +44674,10 @@
           "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
+        },
+        {
           "family": "script",
           "path": "scripts/cos-english-only-content-audit"
         },
@@ -43813,7 +44689,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "config_consumers:2",
+        "config_consumers:3",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -43828,7 +44704,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 4,
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
@@ -47731,7 +48607,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 1,
         "test": 2
       },
@@ -47739,6 +48615,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "doc",
@@ -47757,7 +48637,7 @@
       "evidence": [
         "test_consumers:2",
         "doc_consumers:1",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -47771,7 +48651,7 @@
       "role_source": "heuristic:path",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 4,
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
@@ -49042,8 +49922,8 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
-        "doc": 1,
-        "test": 1
+        "doc": 2,
+        "test": 2
       },
       "consumers": [
         {
@@ -49059,6 +49939,14 @@
           "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
+          "family": "doc",
+          "path": "docs/09-Quality/security/supply-chain.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_bun_install_policy.py"
+        },
+        {
           "family": "test",
           "path": "tests/red_team/portability/test_os_only_scope_family.py"
         }
@@ -49066,8 +49954,8 @@
       "distribution": null,
       "evidence": [
         "override_rationale",
-        "test_consumers:1",
-        "doc_consumers:1",
+        "test_consumers:2",
+        "doc_consumers:2",
         "config_consumers:2"
       ],
       "install_surface": null,
@@ -49082,7 +49970,7 @@
       "role_source": "override",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 4,
+      "total_consumers": 6,
       "wrapper_for": null
     },
     {
@@ -49366,7 +50254,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 4,
+        "config": 5,
         "doc": 1,
         "test": 3
       },
@@ -49382,6 +50270,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -49408,7 +50300,7 @@
       "evidence": [
         "test_consumers:3",
         "doc_consumers:1",
-        "config_consumers:4"
+        "config_consumers:5"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -49422,7 +50314,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 8,
+      "total_consumers": 9,
       "wrapper_for": null
     },
     {
@@ -49494,7 +50386,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 7,
+        "config": 8,
         "doc": 4,
         "test": 3
       },
@@ -49518,6 +50410,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-coherence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -49561,7 +50457,7 @@
         "wrapper_for:scripts/check_hook_registration.py",
         "test_consumers:3",
         "doc_consumers:4",
-        "config_consumers:7"
+        "config_consumers:8"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -49575,7 +50471,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 14,
+      "total_consumers": 15,
       "wrapper_for": "scripts/check_hook_registration.py"
     },
     {
@@ -50053,7 +50949,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 5,
+        "config": 6,
         "doc": 4,
         "script": 3,
         "test": 5
@@ -50074,6 +50970,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -50133,7 +51033,7 @@
         "lifecycle",
         "test_consumers:5",
         "doc_consumers:4",
-        "config_consumers:5",
+        "config_consumers:6",
         "script_consumers:3"
       ],
       "install_surface": null,
@@ -50150,7 +51050,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 17,
+      "total_consumers": 18,
       "wrapper_for": null
     },
     {
@@ -50206,7 +51106,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 1,
         "script": 1,
         "test": 2
@@ -50219,6 +51119,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "doc",
@@ -50241,7 +51145,7 @@
       "evidence": [
         "test_consumers:2",
         "doc_consumers:1",
-        "config_consumers:2",
+        "config_consumers:3",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -50256,7 +51160,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
@@ -50659,7 +51563,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 4,
         "script": 3,
         "test": 4
@@ -50668,6 +51572,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -50722,7 +51630,7 @@
       "evidence": [
         "test_consumers:4",
         "doc_consumers:4",
-        "config_consumers:2",
+        "config_consumers:3",
         "script_consumers:3"
       ],
       "install_surface": null,
@@ -50737,7 +51645,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 13,
+      "total_consumers": 14,
       "wrapper_for": null
     },
     {
@@ -50871,7 +51779,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 3,
+        "config": 4,
         "script": 2,
         "test": 4
       },
@@ -50887,6 +51795,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "script",
@@ -50917,7 +51829,7 @@
       "evidence": [
         "lifecycle",
         "test_consumers:4",
-        "config_consumers:3",
+        "config_consumers:4",
         "script_consumers:2"
       ],
       "install_surface": null,
@@ -50934,7 +51846,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 9,
+      "total_consumers": 10,
       "wrapper_for": null
     },
     {
@@ -51028,7 +51940,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 4,
+        "config": 5,
         "doc": 3,
         "test": 1
       },
@@ -51048,6 +51960,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "doc",
@@ -51071,7 +51987,7 @@
         "lifecycle",
         "test_consumers:1",
         "doc_consumers:3",
-        "config_consumers:4"
+        "config_consumers:5"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -51087,7 +52003,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 8,
+      "total_consumers": 9,
       "wrapper_for": null
     },
     {
@@ -51384,7 +52300,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 5,
+        "config": 6,
         "doc": 5,
         "rule": 2,
         "script": 6,
@@ -51412,6 +52328,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-scope-classification.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "doc",
@@ -51606,7 +52526,7 @@
         "workflow_consumers:1",
         "doc_consumers:5",
         "rule_consumers:2",
-        "config_consumers:5",
+        "config_consumers:6",
         "script_consumers:6"
       ],
       "install_surface": null,
@@ -51624,7 +52544,7 @@
         "shell",
         "github-actions"
       ],
-      "total_consumers": 51,
+      "total_consumers": 52,
       "wrapper_for": null
     },
     {
@@ -52193,7 +53113,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 1,
         "script": 2,
         "test": 2
@@ -52202,6 +53122,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -52232,7 +53156,7 @@
       "evidence": [
         "test_consumers:2",
         "doc_consumers:1",
-        "config_consumers:2",
+        "config_consumers:3",
         "script_consumers:2"
       ],
       "install_surface": null,
@@ -52247,7 +53171,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -52358,7 +53282,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 4,
+        "config": 5,
         "doc": 8,
         "script": 3,
         "test": 2
@@ -52375,6 +53299,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-scope-overrides.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -52437,7 +53365,7 @@
       "evidence": [
         "test_consumers:2",
         "doc_consumers:8",
-        "config_consumers:4",
+        "config_consumers:5",
         "script_consumers:3"
       ],
       "install_surface": null,
@@ -52452,7 +53380,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 17,
+      "total_consumers": 18,
       "wrapper_for": null
     },
     {
@@ -52683,7 +53611,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 4,
+        "config": 5,
         "doc": 1,
         "script": 1,
         "test": 1
@@ -52700,6 +53628,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -52723,7 +53655,7 @@
         "lifecycle",
         "test_consumers:1",
         "doc_consumers:1",
-        "config_consumers:4",
+        "config_consumers:5",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -52740,7 +53672,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -52748,7 +53680,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 5,
+        "config": 6,
         "doc": 1,
         "script": 1,
         "test": 1
@@ -52772,6 +53704,10 @@
         },
         {
           "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
+        },
+        {
+          "family": "config",
           "path": "manifests/script-exposure-dispositions.yaml"
         },
         {
@@ -52791,7 +53727,7 @@
       "evidence": [
         "test_consumers:1",
         "doc_consumers:1",
-        "config_consumers:5",
+        "config_consumers:6",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -52806,7 +53742,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 8,
+      "total_consumers": 9,
       "wrapper_for": null
     },
     {
@@ -53052,11 +53988,11 @@
         },
         {
           "family": "doc",
-          "path": "docs/09-Quality/manual-tests/codex-host-tooling-verification.md"
+          "path": "docs/09-Quality/manual-tests/engram-cloud-docker-sync.md"
         },
         {
           "family": "doc",
-          "path": "docs/09-Quality/manual-tests/engram-cloud-docker-sync.md"
+          "path": "docs/09-Quality/manual-tests/host-tooling-engram-mcp-verification.md"
         },
         {
           "family": "doc",
@@ -53803,7 +54739,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 4,
+        "config": 5,
         "doc": 1,
         "hook": 4,
         "script": 1,
@@ -53821,6 +54757,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -53885,7 +54825,7 @@
         "test_consumers:7",
         "hook_consumers:4",
         "doc_consumers:1",
-        "config_consumers:4",
+        "config_consumers:5",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -53902,7 +54842,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 17,
+      "total_consumers": 18,
       "wrapper_for": null
     },
     {
@@ -54607,7 +55547,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 4,
+        "config": 5,
         "doc": 1,
         "test": 1
       },
@@ -54623,6 +55563,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -54642,7 +55586,7 @@
         "lifecycle",
         "test_consumers:1",
         "doc_consumers:1",
-        "config_consumers:4"
+        "config_consumers:5"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -54658,7 +55602,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
@@ -55181,7 +56125,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 7,
+        "config": 8,
         "script": 1,
         "skill": 1,
         "test": 5
@@ -55206,6 +56150,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -55250,7 +56198,7 @@
         "wrapper_for:scripts/cos_credential_safe_run.py",
         "skill_consumers:1",
         "test_consumers:5",
-        "config_consumers:7",
+        "config_consumers:8",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -55267,7 +56215,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 14,
+      "total_consumers": 15,
       "wrapper_for": "scripts/cos_credential_safe_run.py"
     },
     {
@@ -55352,7 +56300,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 2,
         "script": 1,
         "test": 1
@@ -55361,6 +56309,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -55387,7 +56339,7 @@
       "evidence": [
         "test_consumers:1",
         "doc_consumers:2",
-        "config_consumers:2",
+        "config_consumers:3",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -55402,7 +56354,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
@@ -56335,7 +57287,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 3,
+        "config": 4,
         "doc": 1,
         "test": 4
       },
@@ -56347,6 +57299,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -56377,7 +57333,7 @@
       "evidence": [
         "test_consumers:4",
         "doc_consumers:1",
-        "config_consumers:3"
+        "config_consumers:4"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -56391,7 +57347,7 @@
       "role_source": "heuristic:path",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 8,
+      "total_consumers": 9,
       "wrapper_for": null
     },
     {
@@ -56399,7 +57355,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 4,
+        "config": 5,
         "doc": 1,
         "test": 3
       },
@@ -56415,6 +57371,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -56441,7 +57401,7 @@
       "evidence": [
         "test_consumers:3",
         "doc_consumers:1",
-        "config_consumers:4"
+        "config_consumers:5"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -56455,7 +57415,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 8,
+      "total_consumers": 9,
       "wrapper_for": null
     },
     {
@@ -57752,7 +58712,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 6,
+        "config": 7,
         "doc": 2,
         "hook": 3,
         "script": 2,
@@ -57774,6 +58734,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -57830,7 +58794,7 @@
         "test_consumers:3",
         "hook_consumers:3",
         "doc_consumers:2",
-        "config_consumers:6",
+        "config_consumers:7",
         "script_consumers:2"
       ],
       "install_surface": null,
@@ -57847,7 +58811,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 16,
+      "total_consumers": 17,
       "wrapper_for": null
     },
     {
@@ -57914,7 +58878,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 2,
         "hook": 1,
         "script": 1,
@@ -57924,6 +58888,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -57955,7 +58923,7 @@
         "test_consumers:1",
         "hook_consumers:1",
         "doc_consumers:2",
-        "config_consumers:2",
+        "config_consumers:3",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -57970,7 +58938,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -59439,31 +60407,76 @@
       "supported_harnesses": [],
       "total_consumers": 15,
       "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 1,
+        "doc": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-026a-decisions.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_yaml_fallback.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/yaml.py",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "usage:repo",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 3,
+      "wrapper_for": null
     }
   ],
   "summary": {
     "agentic_primitives_without_lifecycle": 0,
     "confidence": {
-      "high": 341,
-      "medium": 301
+      "high": 346,
+      "low": 1,
+      "medium": 308
     },
     "consumer_accessibility": {
       "install-profile-managed": 19,
-      "lifecycle-declared-consumer-candidate": 154,
-      "lifecycle-declared-maintainer": 142,
+      "lifecycle-declared-consumer-candidate": 158,
+      "lifecycle-declared-maintainer": 143,
       "skill-referenced-not-projectable": 3,
-      "so-local-only": 324
+      "so-local-only": 332
     },
-    "low_confidence_rows": 0,
+    "low_confidence_rows": 1,
     "roles": {
-      "agentic-primitive": 203,
+      "agentic-primitive": 208,
       "archive": 12,
       "driver-specific": 13,
       "lab": 98,
-      "maintainer-tool": 301,
+      "maintainer-tool": 309,
       "migration-only": 15
     },
-    "total_scripts": 642,
+    "total_scripts": 655,
     "without_consumers": 0
   },
   "target_family": "scripts"

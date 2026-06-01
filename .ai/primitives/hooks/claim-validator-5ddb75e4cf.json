@@ -11,7 +11,7 @@
     },
     "contract_id": "claim-validator",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "harness-embedded-only"
     },
     "intent": "Prevent unsupported completion or capability claims from entering durable output.",
@@ -101,7 +101,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "harness-embedded-only"
     },
     "intent": "Prevent unsupported completion or capability claims from entering durable output.",

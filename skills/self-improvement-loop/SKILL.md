@@ -1,7 +1,14 @@
 ---
 name: self-improvement-loop
 version: 0.1.0
-description: Run benchmark-bound Cognitive OS self-improvement loops with gated feedback and no automatic runtime mutation.
+audience: os-only
+platforms: [shell, claude, codex]
+description: Use when running benchmark-bound Cognitive OS self-improvement loops with gated feedback and no automatic runtime mutation.
+routing_patterns:
+  - pattern: "self-improvement benchmark loop"
+    confidence: 0.92
+  - pattern: "cos improve"
+    confidence: 0.9
 triggers:
   - self-improvement
   - benchmark task
@@ -10,6 +17,7 @@ triggers:
   - improve rule
   - cos improve
 ---
+<!-- SCOPE: os-only -->
 
 # Self-Improvement Loop Skill
 

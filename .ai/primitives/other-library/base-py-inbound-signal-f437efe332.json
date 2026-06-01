@@ -11,7 +11,7 @@
     },
     "contract_id": "base-py-inbound-signal",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Harness adapters surface inbound_signal records from filesystem/Valkey control paths so runtime loops can apply stop, pause, resume, and clarification answers.",
@@ -107,7 +107,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Harness adapters surface inbound_signal records from filesystem/Valkey control paths so runtime loops can apply stop, pause, resume, and clarification answers.",

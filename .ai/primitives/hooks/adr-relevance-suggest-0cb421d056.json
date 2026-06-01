@@ -11,7 +11,7 @@
     },
     "contract_id": "adr-relevance-suggest",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "harness-embedded-only"
     },
     "intent": "Suggest relevant ADR context when changes touch governed architecture surfaces.",
@@ -101,7 +101,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "harness-embedded-only"
     },
     "intent": "Suggest relevant ADR context when changes touch governed architecture surfaces.",

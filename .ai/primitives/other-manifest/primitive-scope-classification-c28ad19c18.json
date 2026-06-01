@@ -11,7 +11,7 @@
     },
     "contract_id": "primitive-scope-classification",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "scope-classification governance manifest with contract, integration, and red-team tests",
@@ -111,7 +111,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "scope-classification governance manifest with contract, integration, and red-team tests",

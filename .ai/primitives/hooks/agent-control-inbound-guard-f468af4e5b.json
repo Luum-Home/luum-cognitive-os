@@ -11,7 +11,7 @@
     },
     "contract_id": "agent-control-inbound-guard",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "harness-embedded-only"
     },
     "intent": "Guard inbound agent-control messages before unsafe delegation or interruption.",
@@ -101,7 +101,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "harness-embedded-only"
     },
     "intent": "Guard inbound agent-control messages before unsafe delegation or interruption.",

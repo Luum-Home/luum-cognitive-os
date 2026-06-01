@@ -11,7 +11,7 @@
     },
     "contract_id": "script-cos-product-answer",
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Skill-facing CLI for ADR-280/281 product question-to-evidence answers; queries the product question bank and claim-evidence manifests.",
@@ -104,7 +104,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": "none",
+      "consumer_fleet": null,
       "service_mode": "unsupported"
     },
     "intent": "Skill-facing CLI for ADR-280/281 product question-to-evidence answers; queries the product question bank and claim-evidence manifests.",

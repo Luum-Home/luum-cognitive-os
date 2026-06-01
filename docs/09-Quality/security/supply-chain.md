@@ -333,7 +333,7 @@ root-level lockfile by design.
 
 Do not commit `package-lock.json`, `pnpm-lock.yaml`, or `yarn.lock` in tracked
 COS JavaScript package roots. Those lockfiles indicate npm, pnpm, or Yarn drift;
-the pre-commit policy and `scripts/check-bun-install-policy.py` treat them as
+the pre-commit policy and `scripts/check_bun_install_policy.py` treat them as
 failures. Historical third-party reference trees under `reference/` and local
 Claude plugins under `.claude/plugins/` are excluded from this COS package-manager
 contract because they are not first-party runtime roots.
@@ -370,7 +370,7 @@ Impact in this repo:
 Audit command:
 
 ```bash
-scripts/check-bun-install-policy.py --json
+scripts/check_bun_install_policy.py --json
 ```
 
 The audit fails if any tracked first-party `package.json` root lacks an
