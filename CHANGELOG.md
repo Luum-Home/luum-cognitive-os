@@ -5,6 +5,21 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.29.18] - 2026-05-31 — "Publication Safety and Behavior Stabilization"
+
+### Added
+- Added the publication-safety agentic primitive, including receipt generation, hook wiring, manifest registration, contracts, ADR coverage, and red-team tests.
+- Added a Python helper duplication ratchet for `scripts + lib`, with a baseline report to prevent new helper-level duplication.
+
+### Fixed
+- Stabilized behavior-lane timeouts in install/search/doctor paths.
+- Added stdlib YAML fallbacks for system `python3` execution paths without PyYAML, including anchor-declared list support.
+- Fixed Agnix and blocked-preflight timeout regressions.
+
+### Validation
+- Full behavior lane passed: `1678 passed, 4 skipped`.
+- Patch-release doctor strict passed for `v0.29.18`.
+
 ## [0.29.17] - 2026-05-29 — "Laptop Runner and Bun Hardening"
 
 ### Security
