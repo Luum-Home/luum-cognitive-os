@@ -27,10 +27,10 @@ Public API
   Accepted (not Proposed, not Superseded).
 """
 from __future__ import annotations
+from lib.time_utils import now_iso as _utc_now_iso
 
 import re
 from dataclasses import dataclass, asdict
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -192,8 +192,6 @@ def validate_adr_accepted(project_dir: Path, adr_ref: str) -> tuple[bool, str]:
     return False, f"{path.name}: no status field found"
 
 
-def _utc_now_iso() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def append_entry(

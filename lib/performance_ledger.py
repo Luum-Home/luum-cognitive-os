@@ -5,6 +5,7 @@ exports an audit JSONL plus latest summary report. Slice 1 is intentionally
 small: it proves ADR-204 signal-quality quarantine is enforced before rollups.
 """
 from __future__ import annotations
+from lib.time_utils import now_iso as utc_now
 
 import json
 import sqlite3
@@ -34,8 +35,6 @@ def default_paths(project_dir: Path) -> LedgerPaths:
     )
 
 
-def utc_now() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def _ratio(numerator: int, denominator: int) -> float:

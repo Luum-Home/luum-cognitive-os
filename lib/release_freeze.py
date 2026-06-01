@@ -5,6 +5,7 @@ release-freeze receipt files. It gives destructive/public operations a stable
 transaction id without killing agents or mutating git state.
 """
 from __future__ import annotations
+from lib.time_utils import now_iso as utc_now
 
 import json
 import os
@@ -36,8 +37,6 @@ class FreezeFinding:
         return payload
 
 
-def utc_now() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def compact_ts() -> str:

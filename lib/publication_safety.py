@@ -6,6 +6,7 @@ execution, normalization, and receipt shape; consumer repositories own their
 publication commands and policy details.
 """
 from __future__ import annotations
+from lib.time_utils import now_iso as utc_now
 
 import hashlib
 import json
@@ -14,7 +15,6 @@ import shlex
 import subprocess
 import time
 from dataclasses import dataclass
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable, Literal
 
@@ -52,8 +52,6 @@ class PublicationSafetyConfigError(ValueError):
     """Raised when the publication-safety config is invalid."""
 
 
-def utc_now() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def sha256_text(text: str) -> str:

@@ -23,6 +23,7 @@ Python 3.9+ compatible. No external dependencies.
 """
 
 from __future__ import annotations
+from lib.time_utils import now_iso as _now_iso
 
 import json
 import os
@@ -52,8 +53,6 @@ _MAX_REQUEUE_ATTEMPTS = 2
 # ---------------------------------------------------------------------------
 
 
-def _now_iso() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def _now_utc() -> datetime:

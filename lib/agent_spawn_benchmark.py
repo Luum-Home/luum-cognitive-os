@@ -27,6 +27,7 @@ Record schema (one per run, appended to JSONL):
 """
 
 from __future__ import annotations
+from lib.time_utils import now_iso as now_iso
 
 import json
 import os
@@ -35,7 +36,6 @@ import shlex
 import subprocess
 import time
 from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -170,8 +170,6 @@ def file_size(path: Path) -> int:
         return 0
 
 
-def now_iso() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 # ─── Settings parsing ───────────────────────────────────────────────────────

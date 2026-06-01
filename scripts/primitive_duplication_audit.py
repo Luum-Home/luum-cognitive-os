@@ -25,6 +25,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from lib.script_io import read_text as read_text
+from lib.script_io import write_json as write_json
 from lib.similarity import jaccard, pair_key
 from lib.project_paths import relpath as rel
 from typing import Any
@@ -513,8 +514,94 @@ def audit(
     }
 
 
+
+def finding_identity(finding: dict[str, Any]) -> str:
+    """Return a stable identity for ratcheting across report regenerations."""
+    finding_id = finding.get("finding_id")
+    if isinstance(finding_id, str) and finding_id:
+        return f"id:{finding_id}"
+    pair = finding.get("pair_key")
+    kind = finding.get("kind")
+    if isinstance(pair, str) and isinstance(kind, str):
+        return f"pair:{kind}:{pair}"
+    left = finding.get("left")
+    right = finding.get("right")
+    if isinstance(left, str) and isinstance(right, str) and isinstance(kind, str):
+        return f"lr:{kind}:{pair_key(left, right)}"
+    return json.dumps(finding, sort_keys=True)
+
+
+def baseline_entries(data: dict[str, Any]) -> list[dict[str, Any]]:
+    """Serialize current findings into a compact ratchet baseline."""
+    entries: list[dict[str, Any]] = []
+    for finding in data.get("findings", []):
+        if not isinstance(finding, dict):
+            continue
+        entries.append(
+            {
+                "finding_id": finding.get("finding_id"),
+                "kind": finding.get("kind"),
+                "left": finding.get("left"),
+                "right": finding.get("right"),
+                "pair_key": finding.get("pair_key"),
+            }
+        )
+    return entries
+
+
+def write_baseline(path: Path, data: dict[str, Any]) -> None:
+    """Persist the current duplicate set as an explicit no-growth baseline."""
+    payload = {
+        "schema_version": "primitive-duplication-baseline.v1",
+        "timestamp": data.get("timestamp"),
+        "parameters": data.get("parameters", {}),
+        "summary": data.get("summary", {}),
+        "entries": baseline_entries(data),
+    }
+    write_json(path, payload)
+
+
+def load_baseline(path: Path | None) -> dict[str, Any] | None:
+    """Load a duplication baseline, returning None when absent."""
+    if path is None or not path.exists():
+        return None
+    loaded = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(loaded, dict):
+        raise ValueError(f"{path} must contain a JSON object baseline")
+    return loaded
+
+
+def apply_baseline_ratchet(data: dict[str, Any], baseline_path: Path | None) -> dict[str, Any]:
+    """Annotate audit data with new findings relative to the baseline."""
+    baseline = load_baseline(baseline_path)
+    findings = [item for item in data.get("findings", []) if isinstance(item, dict)]
+    if baseline is None:
+        data["ratchet"] = {
+            "baseline": str(baseline_path) if baseline_path else None,
+            "status": "missing-baseline",
+            "baseline_findings": 0,
+            "current_findings": len(findings),
+            "new_findings": len(findings),
+            "new_finding_ids": [finding.get("finding_id") for finding in findings],
+        }
+        return data
+
+    baseline_items = [item for item in baseline.get("entries", []) if isinstance(item, dict)]
+    baseline_identities = {finding_identity(item) for item in baseline_items}
+    new_findings = [finding for finding in findings if finding_identity(finding) not in baseline_identities]
+    data["ratchet"] = {
+        "baseline": str(baseline_path) if baseline_path else None,
+        "status": "pass" if not new_findings else "fail",
+        "baseline_findings": len(baseline_items),
+        "current_findings": len(findings),
+        "new_findings": len(new_findings),
+        "new_finding_ids": [finding.get("finding_id") for finding in new_findings],
+    }
+    return data
+
 def render_markdown(data: dict[str, Any]) -> str:
     summary = data["summary"]
+    ratchet = data.get("ratchet") if isinstance(data.get("ratchet"), dict) else None
     lines = [
         "# Primitive Duplication Audit — Latest",
         "",
@@ -527,6 +614,14 @@ def render_markdown(data: dict[str, Any]) -> str:
         f"- By kind: `{json.dumps(summary['by_kind'], sort_keys=True)}`",
         f"- By common home: `{json.dumps(summary['by_common_home'], sort_keys=True)}`",
         f"- By consumer relevance: `{json.dumps(summary['by_consumer_relevance'], sort_keys=True)}`",
+    ]
+    if ratchet:
+        lines += [
+            f"- Ratchet status: `{ratchet.get('status')}`",
+            f"- Baseline findings: {ratchet.get('baseline_findings')}",
+            f"- New findings: {ratchet.get('new_findings')}",
+        ]
+    lines += [
         "",
         "## Top Candidates",
         "",
@@ -562,6 +657,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--json-out", default="docs/06-Daily/reports/primitive-duplication-latest.json")
     parser.add_argument("--markdown", default="docs/06-Daily/reports/primitive-duplication-latest.md")
     parser.add_argument("--allowlist", default=DEFAULT_ALLOWLIST)
+    parser.add_argument("--baseline", default=None, help="JSON baseline used by --fail-on-new")
+    parser.add_argument("--write-baseline", action="store_true", help="Write current findings to --baseline")
+    parser.add_argument("--fail-on-new", action="store_true", help="Fail only when findings are not present in --baseline")
     parser.add_argument("--fail-on-findings", action="store_true")
     return parser.parse_args()
 
@@ -571,7 +669,14 @@ def main() -> int:
     root = Path(args.project_root).resolve()
     include = args.include or DEFAULT_INCLUDE
     allowlist_path = root / args.allowlist if args.allowlist else None
+    baseline_path = root / args.baseline if args.baseline else None
     data = audit(root, include, args.min_tokens, args.shingle_size, args.threshold, args.primitive_threshold, allowlist_path)
+    if baseline_path:
+        data = apply_baseline_ratchet(data, baseline_path)
+        if isinstance(data.get("ratchet"), dict):
+            data["ratchet"]["baseline"] = args.baseline
+        if args.write_baseline:
+            write_baseline(baseline_path, data)
 
     json_path = root / args.json_out
     json_path.parent.mkdir(parents=True, exist_ok=True)
@@ -584,7 +689,11 @@ def main() -> int:
     if args.json or True:
         print(json.dumps({"json": str(json_path), "markdown": str(md_path), "summary": data["summary"]}, sort_keys=True))
 
-    return 1 if args.fail_on_findings and data["summary"]["findings"] else 0
+    if args.fail_on_findings and data["summary"]["findings"]:
+        return 1
+    if args.fail_on_new and data.get("ratchet", {}).get("new_findings", 0):
+        return 1
+    return 0
 
 
 if __name__ == "__main__":

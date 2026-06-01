@@ -5,6 +5,7 @@ rollups change an operator or maintainer decision, and did accepted changes
 improve or regress after landing?
 """
 from __future__ import annotations
+from lib.time_utils import now_iso as utc_now
 
 import json
 from collections import Counter, defaultdict
@@ -32,8 +33,6 @@ DECISIONS_THAT_COUNT_AS_CHANGE = {
 OUTCOMES_REQUIRING_FAILURE_PROTOCOL = {"regressed", "inconclusive"}
 
 
-def utc_now() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def default_ledger_path(project_dir: Path) -> Path:

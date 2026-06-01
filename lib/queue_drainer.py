@@ -27,6 +27,7 @@ Python 3.9+ compatible. No external dependencies. Author: luum.
 """
 
 from __future__ import annotations
+from lib.time_utils import now_iso as _now_iso
 
 import fcntl
 import hashlib
@@ -34,7 +35,6 @@ import json
 import os
 import time
 import uuid
-from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
 from lib.paths import project_root
@@ -58,8 +58,6 @@ _CORRUPT_STATUS = "corrupt"
 # ---------------------------------------------------------------------------
 
 
-def _now_iso() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def _read_max_parallel_agents() -> int:

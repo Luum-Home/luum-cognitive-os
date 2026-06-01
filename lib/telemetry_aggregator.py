@@ -8,6 +8,7 @@ Pure stdlib + pyyaml. No subprocess, no network.
 """
 
 from __future__ import annotations
+from lib.time_utils import now_iso as _now_iso
 
 import hashlib
 import json
@@ -317,8 +318,6 @@ def compute_metric(slo: dict, records: list[dict]) -> tuple[float | None, dict]:
 # ─── Aggregation core ────────────────────────────────────────────────────────
 
 
-def _now_iso() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def _window_bucket(now: datetime | None = None) -> str:

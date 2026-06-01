@@ -190,3 +190,33 @@ def test_cli_writes_reports(tmp_path: Path, monkeypatch) -> None:
     assert primitive_duplication_audit.main() == 0
     assert (tmp_path / "docs/06-Daily/reports/primitive-duplication-latest.json").exists()
     assert "Primitive Duplication Audit" in (tmp_path / "docs/06-Daily/reports/primitive-duplication-latest.md").read_text(encoding="utf-8")
+
+
+def test_baseline_ratchet_reports_new_findings(tmp_path: Path) -> None:
+    body = """
+def shared_logic(value: str) -> str:
+    normalized = value.strip().lower()
+    parts = []
+    for item in normalized.split('-'):
+        if item:
+            parts.append(item.replace('_', '-'))
+    return '/'.join(parts)
+"""
+    write(tmp_path / "scripts/a.py", body)
+    write(tmp_path / "scripts/b.py", body.replace("shared_logic", "other_logic"))
+
+    data = primitive_duplication_audit.audit(tmp_path, ["scripts"], min_tokens=10, shingle_size=4, threshold=0.95, primitive_threshold=0.95)
+    baseline_path = tmp_path / "manifests/python-helper-duplication-baseline.json"
+    primitive_duplication_audit.write_baseline(baseline_path, data)
+
+    ratcheted = primitive_duplication_audit.apply_baseline_ratchet(data, baseline_path)
+
+    assert ratcheted["ratchet"]["status"] == "pass"
+    assert ratcheted["ratchet"]["new_findings"] == 0
+
+    write(tmp_path / "scripts/c.py", body.replace("shared_logic", "third_logic"))
+    changed = primitive_duplication_audit.audit(tmp_path, ["scripts"], min_tokens=10, shingle_size=4, threshold=0.95, primitive_threshold=0.95)
+    changed = primitive_duplication_audit.apply_baseline_ratchet(changed, baseline_path)
+
+    assert changed["ratchet"]["status"] == "fail"
+    assert changed["ratchet"]["new_findings"] >= 1

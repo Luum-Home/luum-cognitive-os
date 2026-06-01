@@ -25,6 +25,7 @@ State is persisted to .cognitive-os/metrics/circuit-breaker-state.json.
 Python 3.9+ compatible. No external dependencies.
 """
 
+from lib.time_utils import now_iso as _now_iso
 import json
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
@@ -212,8 +213,6 @@ class CircuitBreaker:
 # ---------------------------------------------------------------------------
 
 
-def _now_iso() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def _now_epoch() -> float:

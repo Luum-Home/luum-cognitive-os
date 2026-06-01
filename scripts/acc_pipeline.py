@@ -306,6 +306,32 @@ def refresh_adapters(root: Path, include_slow: bool) -> dict[str, AdapterStatus]
         ("primitive_projection_fidelity", ["python3", "scripts/primitive_projection_fidelity.py", "--project-dir", "."]),
         ("docs_execution", ["python3", "scripts/docs_execution_audit.py", "--project-dir", "."]),
         ("primitive_duplication", ["python3", "scripts/primitive_duplication_audit.py", "--project-root", "."]),
+        (
+            "python_helper_duplication",
+            [
+                "python3",
+                "scripts/primitive_duplication_audit.py",
+                "--project-root",
+                ".",
+                "--include",
+                "scripts",
+                "--include",
+                "lib",
+                "--min-tokens",
+                "60",
+                "--threshold",
+                "0.86",
+                "--primitive-threshold",
+                "0.75",
+                "--json-out",
+                "docs/06-Daily/reports/python-helper-duplication-latest.json",
+                "--markdown",
+                "docs/06-Daily/reports/python-helper-duplication-latest.md",
+                "--baseline",
+                "manifests/python-helper-duplication-baseline.json",
+                "--fail-on-new",
+            ],
+        ),
         ("primitive_gap_snapshot", ["python3", "scripts/primitive_gap_snapshot.py", "--project-root", ".", "--json"]),
         ("primitive_fitness_ledger", ["python3", "scripts/primitive_fitness_ledger.py", "--project-dir", "."]),
         ("primitive_authority_audit", ["python3", "scripts/primitive_authority_audit.py", "--project-dir", ".", "--json"]),
@@ -314,7 +340,8 @@ def refresh_adapters(root: Path, include_slow: bool) -> dict[str, AdapterStatus]
     if include_slow:
         commands.append(("primitive_coverage", ["python3", "scripts/primitive_coverage.py", "--project-dir", ".", "--adapter", "cognitive-os", "--format", "json"]))
     for name, command in commands:
-        status, _data = run_json_command(root, name, command, timeout=180 if name == "primitive_coverage" else 90)
+        timeout = 180 if name in {"primitive_coverage", "python_helper_duplication"} else 90
+        status, _data = run_json_command(root, name, command, timeout=timeout)
         adapters[name] = status
     return adapters
 

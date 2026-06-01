@@ -31,9 +31,9 @@ Usage:
 Python 3.9+ compatible. No external dependencies.
 """
 
+from lib.time_utils import now_iso as _now_iso
 import json
 import uuid
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -189,5 +189,3 @@ class DeadLetterQueue:
 # ---------------------------------------------------------------------------
 
 
-def _now_iso() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")

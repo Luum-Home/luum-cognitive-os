@@ -8,12 +8,12 @@ path classification, secret-path detection, and unknown .cognitive-os root
 reporting.
 """
 from __future__ import annotations
+from lib.time_utils import now_iso as utc_now
 
 import argparse
 import fnmatch
 import json
 import sys
-from datetime import datetime, timezone
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable
@@ -205,8 +205,6 @@ def validate_manifest(manifest: dict[str, Any]) -> list[Finding]:
 
 
 
-def utc_now() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def projection_decision(

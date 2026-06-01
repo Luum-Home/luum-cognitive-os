@@ -5,6 +5,7 @@ normalizes run/session/event identifiers, and writes a bounded trace without
 reading private content payloads directly.
 """
 from __future__ import annotations
+from lib.time_utils import now_iso as utc_now
 
 import hashlib
 import json
@@ -28,8 +29,6 @@ def repo_root() -> Path:
     return Path(__file__).resolve().parents[1]
 
 
-def utc_now() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 DEFAULT_STREAMS = [
