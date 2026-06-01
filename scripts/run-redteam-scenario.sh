@@ -166,6 +166,11 @@ try:
         mode_int = file_spec.get("mode", 0o644)
         if isinstance(mode_int, str):
             mode_int = int(mode_int, 8)
+        elif isinstance(mode_int, int) and mode_int > 0o777:
+            # YAML 1.2 parsers may read values like 0644 as decimal 644.
+            # Treat those legacy scenario mode literals as octal digits so
+            # git can read seeded files in replay mini-repositories.
+            mode_int = int(str(mode_int), 8)
         os.chmod(fpath, mode_int)
 
     # Apply overrides if fixture_dir used
