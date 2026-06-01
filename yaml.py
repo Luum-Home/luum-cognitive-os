@@ -177,7 +177,7 @@ if not _COS_YAML_DELEGATED:
             key, raw_value = stripped.split(":", 1)
             key = key.strip()
             raw_value = raw_value.strip()
-            value = _scalar(raw_value) if raw_value else ([] if next_is_list else {})
+            value = _scalar(raw_value) if raw_value and not raw_value.startswith("&") else ([] if next_is_list else {})
             if isinstance(parent, dict):
                 parent[key] = value
             else:
