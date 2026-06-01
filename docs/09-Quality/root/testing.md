@@ -268,8 +268,8 @@ Use `scripts/cos-doctor-tools.sh` when you need proof that the current host can
 see the active harness driver, declared dependencies, MCP registrations, and
 optional tools such as Engram.
 
-For the full Codex/Engram setup and expected output, see
-[Codex Host Tooling Verification](manual-tests/codex-host-tooling-verification.md).
+For the multi-host Engram/MCP setup and expected output, see
+[Host Tooling and Engram MCP Verification](manual-tests/host-tooling-engram-mcp-verification.md).
 
 Installed projects also run `hooks/host-tool-doctor.sh` on SessionStart. That
 hook schedules the doctor with the default dependency profile, caches the result

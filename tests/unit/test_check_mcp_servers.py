@@ -46,6 +46,7 @@ def test_find_mcp_configs_parses_standalone_file(tmp_claude_dir: Path):
     _write_mcp_config(mcp_dir, "engram", {"command": "engram", "args": ["mcp"]})
 
     with patch.object(cms, "MCP_DIR", mcp_dir), \
+         patch.object(cms, "CLAUDE_DIR", tmp_claude_dir), \
          patch.object(cms, "PLUGINS_CACHE", tmp_claude_dir / "plugins" / "cache"):
         configs = cms.find_mcp_configs()
 
@@ -66,6 +67,7 @@ def test_find_mcp_configs_parses_mcp_servers_format(tmp_claude_dir: Path):
     _write_mcp_config(mcp_dir, "multi", payload)
 
     with patch.object(cms, "MCP_DIR", mcp_dir), \
+         patch.object(cms, "CLAUDE_DIR", tmp_claude_dir), \
          patch.object(cms, "PLUGINS_CACHE", tmp_claude_dir / "plugins" / "cache"):
         configs = cms.find_mcp_configs()
 
@@ -86,11 +88,103 @@ def test_find_mcp_configs_reads_plugin_bundled_mcp_json(tmp_claude_dir: Path):
     }))
 
     with patch.object(cms, "MCP_DIR", tmp_claude_dir / "mcp"), \
+         patch.object(cms, "CLAUDE_DIR", tmp_claude_dir), \
          patch.object(cms, "PLUGINS_CACHE", plugins_cache):
         configs = cms.find_mcp_configs()
 
     assert "engram" in configs
     assert configs["engram"]["args"] == ["mcp", "--tools=agent"]
+
+
+def test_find_mcp_configs_reads_claude_settings_json(tmp_claude_dir: Path):
+    """find_mcp_configs reads user-global Claude settings.json mcpServers."""
+    settings = tmp_claude_dir / "settings.json"
+    settings.write_text(json.dumps({
+        "mcpServers": {
+            "engram": {"command": "engram", "args": ["mcp", "--tools=agent"]}
+        }
+    }))
+
+    with patch.object(cms, "CLAUDE_DIR", tmp_claude_dir), \
+         patch.object(cms, "MCP_DIR", tmp_claude_dir / "mcp"), \
+         patch.object(cms, "PLUGINS_CACHE", tmp_claude_dir / "plugins" / "cache"), \
+         patch.object(cms, "CODEX_CONFIG", tmp_claude_dir / "missing.toml"), \
+         patch.object(cms, "PROJECT_ROOT", tmp_claude_dir / "project"):
+        configs = cms.find_mcp_configs()
+
+    assert "engram" in configs
+    assert configs["engram"]["_source"] == str(settings)
+
+
+def test_find_mcp_configs_reads_codex_config_toml(tmp_path: Path):
+    """find_mcp_configs reads Codex config.toml [mcp_servers.*] tables."""
+    codex_config = tmp_path / "config.toml"
+    codex_config.write_text(
+        '[mcp_servers.engram]\n'
+        'command = "/opt/homebrew/bin/engram"\n'
+        'args = ["mcp", "--tools=agent"]\n'
+    )
+
+    with patch.object(cms, "CLAUDE_DIR", tmp_path / "claude"), \
+         patch.object(cms, "MCP_DIR", tmp_path / "claude" / "mcp"), \
+         patch.object(cms, "PLUGINS_CACHE", tmp_path / "claude" / "plugins" / "cache"), \
+         patch.object(cms, "CODEX_CONFIG", codex_config), \
+         patch.object(cms, "PROJECT_ROOT", tmp_path / "project"):
+        configs = cms.find_mcp_configs()
+
+    assert "engram" in configs
+    assert configs["engram"]["command"] == "/opt/homebrew/bin/engram"
+    assert configs["engram"]["args"] == ["mcp", "--tools=agent"]
+
+
+def test_find_mcp_configs_reads_project_ide_mcp_files(tmp_path: Path):
+    """Project-local IDE MCP files are checked, not only user-global Claude config."""
+    project = tmp_path / "project"
+    cursor_dir = project / ".cursor"
+    cursor_dir.mkdir(parents=True)
+    cursor_mcp = cursor_dir / "mcp.json"
+    cursor_mcp.write_text(json.dumps({
+        "mcpServers": {
+            "engram": {"command": "engram", "args": ["mcp", "--tools=agent"]}
+        }
+    }))
+
+    with patch.object(cms, "CLAUDE_DIR", tmp_path / "claude"), \
+         patch.object(cms, "MCP_DIR", tmp_path / "claude" / "mcp"), \
+         patch.object(cms, "PLUGINS_CACHE", tmp_path / "claude" / "plugins" / "cache"), \
+         patch.object(cms, "CODEX_CONFIG", tmp_path / "codex.toml"), \
+         patch.object(cms, "PROJECT_ROOT", project):
+        configs = cms.find_mcp_configs()
+
+    assert "engram" in configs
+    assert configs["engram"]["_source"] == str(cursor_mcp)
+
+
+def test_find_mcp_configs_keeps_duplicate_engram_registrations(tmp_path: Path):
+    """A stale duplicate must not be hidden by another healthy Engram config."""
+    claude = tmp_path / "claude"
+    claude.mkdir()
+    (claude / "settings.json").write_text(json.dumps({
+        "mcpServers": {
+            "engram": {"command": "engram", "args": ["mcp", "--tools=agent"]}
+        }
+    }))
+    codex_config = tmp_path / "config.toml"
+    codex_config.write_text(
+        "[mcp_servers.engram]\n"
+        'command = "/opt/homebrew/bin/engram"\n'
+    )
+
+    with patch.object(cms, "CLAUDE_DIR", claude), \
+         patch.object(cms, "MCP_DIR", claude / "mcp"), \
+         patch.object(cms, "PLUGINS_CACHE", claude / "plugins" / "cache"), \
+         patch.object(cms, "CODEX_CONFIG", codex_config), \
+         patch.object(cms, "PROJECT_ROOT", tmp_path / "project"):
+        configs = cms.find_mcp_configs()
+
+    assert "engram" in configs
+    assert "engram#2" in configs
+    assert configs["engram#2"]["_logical_name"] == "engram"
 
 
 # ---------------------------------------------------------------------------
@@ -151,7 +245,7 @@ def test_check_server_warns_when_process_not_running():
 
     assert result["process_running"] is False
     assert result["status"] == "WARN"
-    assert any("restart Claude Code" in issue for issue in result["issues"])
+    assert any("restart the host IDE/agent session" in issue for issue in result["issues"])
 
 
 def test_check_server_error_when_binary_missing():
@@ -168,6 +262,35 @@ def test_check_server_error_when_binary_missing():
     assert any("not found in PATH" in issue for issue in result["issues"])
 
 
+def test_check_server_errors_on_missing_homebrew_cellar_engram_path(tmp_path: Path):
+    """A deleted versioned Homebrew Cellar path is a hard MCP config error."""
+    missing = tmp_path / "Cellar" / "engram" / "1.15.15" / "bin" / "engram"
+    config = {"command": str(missing), "args": ["mcp", "--tools=agent"]}
+
+    result = cms.check_server("engram", config)
+
+    assert result["status"] == "ERROR"
+    assert result["binary_found"] is False
+    assert any("Homebrew Cellar" in issue for issue in result["issues"])
+
+
+def test_check_server_warns_on_existing_homebrew_cellar_engram_path(tmp_path: Path):
+    """Even existing Cellar paths are brittle because upgrades remove old versions."""
+    binary = tmp_path / "Cellar" / "engram" / "1.16.1" / "bin" / "engram"
+    binary.parent.mkdir(parents=True)
+    binary.write_text("#!/bin/sh\n")
+    binary.chmod(0o755)
+    config = {"command": str(binary), "args": ["mcp", "--tools=agent"]}
+
+    with patch.object(cms, "get_binary_version", return_value="1.16.1"), \
+         patch.object(cms, "is_process_running", return_value=True):
+        result = cms.check_server("engram", config)
+
+    assert result["status"] == "WARN"
+    assert result["binary_found"] is True
+    assert any("Homebrew Cellar" in issue for issue in result["issues"])
+
+
 # ---------------------------------------------------------------------------
 # Test 4: JSON output format
 # ---------------------------------------------------------------------------
@@ -178,6 +301,7 @@ def test_main_json_output_is_valid_json(tmp_claude_dir, capsys):
     _write_mcp_config(mcp_dir, "engram", {"command": "engram", "args": ["mcp"]})
 
     with patch.object(cms, "MCP_DIR", mcp_dir), \
+         patch.object(cms, "CLAUDE_DIR", tmp_claude_dir), \
          patch.object(cms, "PLUGINS_CACHE", tmp_claude_dir / "plugins" / "cache"), \
          patch.object(cms, "which_all", return_value=["/opt/homebrew/bin/engram"]), \
          patch("shutil.which", return_value="/opt/homebrew/bin/engram"), \

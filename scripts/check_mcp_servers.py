@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 # SCOPE: project
-"""check_mcp_servers.py — Diagnostic tool for Claude Code MCP server health.
+"""check_mcp_servers.py — Diagnostic tool for MCP server health.
 
 Reads MCP server definitions from:
-  1. ~/.claude/mcp/*.json   (standalone MCP configs — one file per server)
+  1. ~/.claude/settings.json and ~/.claude/mcp/*.json
   2. ~/.claude/plugins/cache/*/.mcp.json  (plugin-bundled MCP configs)
+  3. ~/.codex/config.toml
+  4. Project-local MCP files for Codex, Claude, Cursor, Windsurf, Qoder, etc.
 
 For each declared MCP server, checks:
   - Is the binary resolvable in PATH? (uses `which -a` to detect multi-path)
+  - Is the configured command a brittle Homebrew Cellar path?
   - Is a process currently running? (pgrep by command)
   - What version does the binary report?
 
@@ -21,11 +24,18 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import re
 import shutil
 import subprocess
 import sys
 from pathlib import Path
 from typing import Any
+
+try:
+    import tomllib
+except ImportError:  # pragma: no cover - Python <3.11 fallback not expected in CI
+    tomllib = None  # type: ignore[assignment]
 
 # ---------------------------------------------------------------------------
 # Config discovery
@@ -34,43 +44,127 @@ from typing import Any
 CLAUDE_DIR = Path.home() / ".claude"
 MCP_DIR = CLAUDE_DIR / "mcp"
 PLUGINS_CACHE = CLAUDE_DIR / "plugins" / "cache"
+CODEX_CONFIG = Path(os.environ.get("CODEX_HOME", str(Path.home() / ".codex"))) / "config.toml"
+PROJECT_ROOT = Path(
+    os.environ.get("COGNITIVE_OS_PROJECT_DIR")
+    or os.environ.get("CODEX_PROJECT_DIR")
+    or os.environ.get("CLAUDE_PROJECT_DIR")
+    or os.getcwd()
+)
+HOMEBREW_ENGRAM_CELLAR_RE = re.compile(
+    r"(^|/)Cellar/engram/[^/]+/bin/engram$"
+)
+
+
+def _insert_server(
+    servers: dict[str, dict[str, Any]],
+    name: str,
+    cfg: dict[str, Any],
+    source: Path,
+) -> None:
+    """Insert a server config without hiding duplicate host registrations."""
+    entry = dict(cfg, _source=str(source))
+    key = name
+    if key in servers:
+        suffix = 2
+        while f"{name}#{suffix}" in servers:
+            suffix += 1
+        key = f"{name}#{suffix}"
+        entry["_logical_name"] = name
+    servers[key] = entry
+
+
+def _load_json_mcp_servers(path: Path) -> dict[str, dict[str, Any]]:
+    try:
+        data = json.loads(path.read_text())
+    except (json.JSONDecodeError, OSError):
+        return {}
+
+    if "command" in data:
+        return {path.stem: data}
+
+    servers = data.get("mcpServers")
+    if isinstance(servers, dict):
+        return {
+            str(name): cfg
+            for name, cfg in servers.items()
+            if isinstance(cfg, dict)
+        }
+
+    return {}
+
+
+def _load_toml_mcp_servers(path: Path) -> dict[str, dict[str, Any]]:
+    if tomllib is None:
+        return {}
+    try:
+        data = tomllib.loads(path.read_text())
+    except (OSError, tomllib.TOMLDecodeError):
+        return {}
+
+    servers = data.get("mcp_servers")
+    if isinstance(servers, dict):
+        return {
+            str(name): cfg
+            for name, cfg in servers.items()
+            if isinstance(cfg, dict)
+        }
+    return {}
 
 
 def find_mcp_configs() -> dict[str, dict[str, Any]]:
     """Return a mapping of {server_name: server_config} from all known sources.
 
-    Config sources (earlier entries win on name collision):
-      1. ~/.claude/mcp/*.json
+    Config sources (duplicate names are retained with #2/#3 suffixes so stale
+    host-specific registrations cannot be hidden by another source):
+      1. ~/.claude/settings.json and ~/.claude/mcp/*.json
       2. ~/.claude/plugins/cache/**/.mcp.json
+      3. ~/.codex/config.toml
+      4. Project-local host MCP config files
     """
     servers: dict[str, dict[str, Any]] = {}
+
+    # Source 0: Claude user settings.
+    claude_settings = CLAUDE_DIR / "settings.json"
+    if claude_settings.is_file():
+        for name, cfg in _load_json_mcp_servers(claude_settings).items():
+            _insert_server(servers, name, cfg, claude_settings)
 
     # Source 1: standalone MCP configs
     if MCP_DIR.is_dir():
         for config_path in sorted(MCP_DIR.glob("*.json")):
-            try:
-                data = json.loads(config_path.read_text())
-            except (json.JSONDecodeError, OSError):
-                continue
-            # File may be {"command": ..., "args": ...} (single server, named by file)
-            # or {"mcpServers": {name: config, ...}}
-            if "command" in data:
-                name = config_path.stem
-                servers.setdefault(name, dict(data, _source=str(config_path)))
-            elif "mcpServers" in data:
-                for name, cfg in data["mcpServers"].items():
-                    servers.setdefault(name, dict(cfg, _source=str(config_path)))
+            for name, cfg in _load_json_mcp_servers(config_path).items():
+                _insert_server(servers, name, cfg, config_path)
 
     # Source 2: plugin-bundled .mcp.json files
     if PLUGINS_CACHE.is_dir():
         for mcp_json in sorted(PLUGINS_CACHE.glob("**/.mcp.json")):
-            try:
-                data = json.loads(mcp_json.read_text())
-            except (json.JSONDecodeError, OSError):
-                continue
-            if "mcpServers" in data:
-                for name, cfg in data["mcpServers"].items():
-                    servers.setdefault(name, dict(cfg, _source=str(mcp_json)))
+            for name, cfg in _load_json_mcp_servers(mcp_json).items():
+                _insert_server(servers, name, cfg, mcp_json)
+
+    # Source 3: Codex user config.
+    if CODEX_CONFIG.is_file():
+        for name, cfg in _load_toml_mcp_servers(CODEX_CONFIG).items():
+            _insert_server(servers, name, cfg, CODEX_CONFIG)
+
+    # Source 4: Project-local MCP config files installed by IDE projections.
+    project_sources = [
+        (PROJECT_ROOT / ".claude" / "settings.json", "json"),
+        (PROJECT_ROOT / ".codex" / "config.toml", "toml"),
+        (PROJECT_ROOT / ".cursor" / "mcp.json", "json"),
+        (PROJECT_ROOT / ".windsurf" / "mcp_config.json", "json"),
+        (PROJECT_ROOT / ".vscode" / "mcp.json", "json"),
+        (PROJECT_ROOT / ".mcp.json", "json"),
+        (PROJECT_ROOT / ".factory" / "mcp.json", "json"),
+        (PROJECT_ROOT / ".augment" / "mcp.json", "json"),
+        (PROJECT_ROOT / ".kimi" / "mcp.json", "json"),
+    ]
+    for path, kind in project_sources:
+        if not path.is_file():
+            continue
+        loader = _load_toml_mcp_servers if kind == "toml" else _load_json_mcp_servers
+        for name, cfg in loader(path).items():
+            _insert_server(servers, name, cfg, path)
 
     return servers
 
@@ -137,10 +231,28 @@ def get_binary_version(command: str) -> str:
     return "unknown"
 
 
+def is_homebrew_engram_cellar_path(command: str) -> bool:
+    """Return True when command pins Engram to a Homebrew Cellar version."""
+    return bool(HOMEBREW_ENGRAM_CELLAR_RE.search(command))
+
+
+def resolve_command(command: str) -> tuple[str | None, list[str]]:
+    """Resolve a command or absolute path to the executable candidates."""
+    if "/" in command:
+        path = Path(command).expanduser()
+        if path.exists():
+            return str(path), [str(path)]
+        return None, []
+
+    all_paths = which_all(command)
+    resolved = all_paths[0] if all_paths else shutil.which(command)
+    return resolved, all_paths
+
+
 def is_process_running(command: str, args: list[str]) -> bool:
     """Return True if a process matching the command+args is currently running."""
     # Build a search pattern from the command and first meaningful arg
-    pattern_parts = [command]
+    pattern_parts = [Path(command).name if "/" in command else command]
     if args:
         pattern_parts.append(args[0])
     pattern = " ".join(pattern_parts)
@@ -186,12 +298,18 @@ def check_server(name: str, config: dict[str, Any]) -> dict[str, Any]:
         result["status"] = "ERROR"
         return result
 
-    # Resolve all PATH entries (which_all includes shell-expanded fallback)
-    all_paths = which_all(command)
-    resolved = all_paths[0] if all_paths else shutil.which(command)
+    # Resolve all PATH entries (which_all includes shell-expanded fallback).
+    resolved, all_paths = resolve_command(command)
 
     result["binary_paths_all"] = all_paths
     result["binary_path"] = resolved
+
+    if is_homebrew_engram_cellar_path(command):
+        result["issues"].append(
+            "Engram MCP command is pinned to a Homebrew Cellar version; "
+            "use 'engram' or '/opt/homebrew/bin/engram' so upgrades do not "
+            "hide mem_* tools from new sessions"
+        )
 
     if not resolved:
         # Some commands (e.g. `npx` via fnm/nvm, `uvx`) are shell functions or managed
@@ -227,7 +345,7 @@ def check_server(name: str, config: dict[str, Any]) -> dict[str, Any]:
     if not result["process_running"]:
         result["issues"].append(
             f"No running process found for '{command}' — "
-            "restart Claude Code (cmd-Q + reopen) to spawn MCP server"
+            "restart the host IDE/agent session to spawn the MCP server"
         )
 
     # Determine overall status
@@ -290,12 +408,25 @@ def main() -> int:
     if not servers:
         msg = {
             "error": "No MCP server configs found",
-            "checked": [str(MCP_DIR), str(PLUGINS_CACHE)],
+            "checked": [
+                str(CLAUDE_DIR / "settings.json"),
+                str(MCP_DIR),
+                str(PLUGINS_CACHE),
+                str(CODEX_CONFIG),
+                str(PROJECT_ROOT),
+            ],
         }
         if args.json:
             print(json.dumps(msg))
         else:
-            print(f"No MCP server configs found. Checked:\n  {MCP_DIR}\n  {PLUGINS_CACHE}")
+            print(
+                "No MCP server configs found. Checked:\n"
+                f"  {CLAUDE_DIR / 'settings.json'}\n"
+                f"  {MCP_DIR}\n"
+                f"  {PLUGINS_CACHE}\n"
+                f"  {CODEX_CONFIG}\n"
+                f"  {PROJECT_ROOT} project-local MCP configs"
+            )
         # Not an error — may just be a fresh install
         return 0
 

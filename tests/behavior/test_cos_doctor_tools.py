@@ -51,6 +51,7 @@ def _run(project: Path, env: dict[str, str] | None = None) -> subprocess.Complet
             "COGNITIVE_OS_PROJECT_DIR": str(project),
             "COGNITIVE_OS_HARNESS": "codex",
             "CODEX_HOME": str(project / "codex-home"),
+            "HOME": str(project / "home"),
         }
     )
     if env:
@@ -152,7 +153,34 @@ def test_codex_project_reports_engram_and_driver_health(tmp_path: Path) -> None:
     assert "PASS required tools present" in result.stdout
     assert "PASS engram CLI search works" in result.stdout
     assert "PASS engram MCP stdio starts" in result.stdout
+    assert "PASS Engram MCP host configs use upgrade-safe command paths" in result.stdout
     assert "PASS memory lifecycle doctor passed" in result.stdout
+
+
+def test_codex_project_fails_stale_homebrew_cellar_engram_mcp_path(tmp_path: Path) -> None:
+    project = _codex_project(tmp_path)
+    manifest = _write_manifest(tmp_path)
+    codex_home = project / "codex-home"
+    codex_home.mkdir()
+    stale = tmp_path / "Cellar" / "engram" / "1.15.15" / "bin" / "engram"
+    (codex_home / "config.toml").write_text(
+        "[mcp_servers.engram]\n"
+        f'command = "{stale}"\n'
+        'args = ["mcp", "--tools=agent"]\n'
+    )
+    bin_dir = _fake_engram_bin(tmp_path)
+
+    result = _run(
+        project,
+        env={
+            "PATH": f"{bin_dir}:{os.environ.get('PATH', '')}",
+            "COS_MANIFEST_PATH": str(manifest),
+        },
+    )
+
+    assert result.returncode == 1
+    assert "FAIL Engram MCP host config has stale or missing command path" in result.stdout
+    assert "Cellar/engram/1.15.15/bin/engram" in result.stdout
 
 
 def test_missing_engram_is_warning_unless_strict(tmp_path: Path) -> None:
@@ -172,6 +200,7 @@ def test_missing_engram_is_warning_unless_strict(tmp_path: Path) -> None:
             "COGNITIVE_OS_PROJECT_DIR": str(project),
             "COGNITIVE_OS_HARNESS": "codex",
             "CODEX_HOME": str(project / "codex-home"),
+            "HOME": str(project / "home"),
             "PATH": "/usr/bin:/bin",
             "COS_MANIFEST_PATH": str(manifest),
         }

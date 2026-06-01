@@ -31,7 +31,7 @@ This document backs ADR-168.
 | `scripts/install-*.sh` | One-off installers for specific tools. | Useful helpers, but drift without manifest ownership. |
 | `docs/05-Methodology/setup/dependencies.md` | Human dependency guide. | Claims single source of truth but still mixes install commands in prose. |
 | `docs/05-Methodology/setup/obsidian-local.md` | macOS/Homebrew Obsidian install guide. | Explicitly not cross-platform yet. |
-| `docs/09-Quality/manual-tests/codex-host-tooling-verification.md` | Host-tooling proof path for Codex. | Verifies local host, not cross-device installation. |
+| `docs/09-Quality/manual-tests/host-tooling-engram-mcp-verification.md` | Host-tooling and Engram MCP proof path across active IDE/CLI surfaces. | Verifies local host configuration, not cross-device installation. |
 
 ---
 

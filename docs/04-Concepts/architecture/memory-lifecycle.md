@@ -196,6 +196,6 @@ python3 scripts/cos_profile_bootstrap.py wipe
 
 - [Bootstrap Portability](bootstrap-portability.md)
 - [Harness Driver Parity](harness-driver-parity.md)
-- [Codex Host Tooling Verification](../manual-tests/codex-host-tooling-verification.md)
+- [Host Tooling and Engram MCP Verification](../manual-tests/host-tooling-engram-mcp-verification.md)
 - [Testing Guide](../testing.md)
 - [ADR-071: Engram Lifecycle Evolution](../adrs/ADR-071-engram-lifecycle-evolution.md)

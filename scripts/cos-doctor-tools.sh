@@ -36,6 +36,7 @@ Checks:
   - recommended MCP registrations from manifests/dependencies.yaml
   - Engram CLI search availability
   - Engram MCP stdio startup availability
+  - Engram MCP host configs do not pin Homebrew Cellar versions
 
 Exit codes:
   0  Core host wiring passed; optional checks may warn.
@@ -328,6 +329,65 @@ if [ "$ACTIVE_HARNESS" = "codex" ]; then
   else
   warn "Codex config does not appear to register Engram MCP yet"
   fi
+fi
+
+MCP_CHECKER="$OS_SOURCE_ROOT/scripts/check_mcp_servers.py"
+if [ -f "$MCP_CHECKER" ] && command -v python3 >/dev/null 2>&1; then
+  MCP_JSON="$(mktemp "${TMPDIR:-/tmp}/cos-mcp-health.XXXXXX")"
+  COGNITIVE_OS_PROJECT_DIR="$PROJECT_ROOT" python3 "$MCP_CHECKER" --json >"$MCP_JSON" 2>/dev/null
+  MCP_CHECK_STATUS=$?
+  if python3 - "$MCP_JSON" <<'PYEOF' >/dev/null 2>&1
+import json
+import sys
+from pathlib import Path
+json.loads(Path(sys.argv[1]).read_text())
+PYEOF
+  then
+    MCP_BAD="$(mktemp "${TMPDIR:-/tmp}/cos-mcp-bad.XXXXXX")"
+    if python3 - "$MCP_JSON" >"$MCP_BAD" <<'PYEOF'
+import json
+import sys
+from pathlib import Path
+
+payload = json.loads(Path(sys.argv[1]).read_text())
+servers = payload.get("mcp_servers", [])
+engram = [
+    server for server in servers
+    if (server.get("_logical_name") or server.get("name")) == "engram"
+    or server.get("name", "").startswith("engram#")
+]
+if not engram:
+    raise SystemExit(2)
+
+bad = []
+for server in engram:
+    command = server.get("command", "")
+    issues = "\n".join(server.get("issues", []))
+    if "/Cellar/engram/" in command or "Homebrew Cellar" in issues:
+        bad.append(f"{server.get('source', 'unknown')} -> {command}")
+    if server.get("status") == "ERROR":
+        bad.append(f"{server.get('source', 'unknown')} -> {command} ({'; '.join(server.get('issues', []))})")
+
+if bad:
+    print(" | ".join(bad))
+    raise SystemExit(1)
+PYEOF
+    then
+      pass "Engram MCP host configs use upgrade-safe command paths"
+    else
+      MCP_BAD_STATUS=$?
+      case "$MCP_BAD_STATUS" in
+        2) warn "no Engram MCP host config found by check_mcp_servers.py" ;;
+        *) fail "Engram MCP host config has stale or missing command path: $(tr '\n' ' ' < "$MCP_BAD")" ;;
+      esac
+    fi
+    rm -f "$MCP_BAD"
+  else
+    warn "MCP server health diagnostic failed"
+  fi
+  rm -f "$MCP_JSON"
+else
+  warn "check_mcp_servers.py unavailable; MCP command path drift was not checked"
 fi
 
 # In strict mode, earlier optional-tool warnings already determine the final

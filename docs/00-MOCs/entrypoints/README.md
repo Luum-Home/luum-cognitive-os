@@ -336,7 +336,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [First-Run Onboarding Proof](manual-tests/first-run-onboarding.md) — executable proof that a fresh project can install, report status, and stay within onboarding budgets
 - [Five-Minute Demo](manual-tests/five-minute-demo.md) — a short executable/manual path for proving install, harness projection, quality checks, provider contracts, and status visibility
 - [Product Proof Paths](manual-tests/proof-paths.md) — product claims mapped to files, commands, tests, and manual checks
-- [Codex Host Tooling Verification](manual-tests/codex-host-tooling-verification.md) — manual proof path for Codex driver wiring, declared dependencies, and Engram MCP registration
+- [Host Tooling and Engram MCP Verification](manual-tests/host-tooling-engram-mcp-verification.md) — manual proof path for active host driver wiring, declared dependencies, and upgrade-safe Engram MCP registration across IDE/CLI surfaces
 - [Memory Lifecycle](architecture/memory-lifecycle.md) — simple map of the hooks, libraries, tests, and doctors that save and recover cross-session context
 - [Primitive Contamination Audit](reports/primitive-contamination-audit-2026-05-09.md) — audit and cleanup plan for consumer-project leakage across Cognitive OS agentic primitives.
 - [Context Rot and Token Budget Controls](architecture/context-rot-token-budget-controls.md) — current map of controls, metrics, gaps, and verification commands for preventing context rot and token multiplication.
