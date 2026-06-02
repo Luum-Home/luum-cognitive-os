@@ -5,6 +5,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.29.20] - 2026-06-02 — "Scope Portability CI Fix"
+
+### Added
+- Added the `cos-patch-release` primitive for repeatable patch release preparation, validation, publishing, and diagnostics.
+
+### Validation
+- `scripts/cos-patch-release validate` is the required patch-release validation lane.
+
 ## [0.29.19] - 2026-06-01 — "Engram MCP Host Drift Repair"
 
 ### Added
