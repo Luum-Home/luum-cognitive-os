@@ -1910,7 +1910,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 2,
         "script": 1,
         "test": 2
@@ -1919,6 +1919,10 @@
         {
           "family": "config",
           "path": "manifests/exercised-coverage-baseline.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
         },
         {
           "family": "doc",
@@ -1945,7 +1949,7 @@
       "evidence": [
         "test_consumers:2",
         "doc_consumers:2",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -1960,7 +1964,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
@@ -2074,7 +2078,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 2,
         "script": 1,
         "test": 2
@@ -2083,6 +2087,10 @@
         {
           "family": "config",
           "path": "manifests/exercised-coverage-baseline.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
         },
         {
           "family": "doc",
@@ -2109,7 +2117,7 @@
       "evidence": [
         "test_consumers:2",
         "doc_consumers:2",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -2124,7 +2132,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
@@ -2132,11 +2140,16 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "config": 1,
         "doc": 1,
         "script": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-325-ai-resource-economy-and-degradation.md"
@@ -2154,6 +2167,7 @@
       "evidence": [
         "test_consumers:1",
         "doc_consumers:1",
+        "config_consumers:1",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -2168,7 +2182,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 3,
+      "total_consumers": 4,
       "wrapper_for": null
     },
     {
@@ -2176,11 +2190,16 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "config": 1,
         "doc": 1,
         "script": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-325-ai-resource-economy-and-degradation.md"
@@ -2198,6 +2217,7 @@
       "evidence": [
         "test_consumers:1",
         "doc_consumers:1",
+        "config_consumers:1",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -2212,7 +2232,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 3,
+      "total_consumers": 4,
       "wrapper_for": null
     },
     {
@@ -3983,11 +4003,16 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "config": 1,
         "rule": 1,
         "script": 1,
         "test": 4
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
+        },
         {
           "family": "rule",
           "path": "rules/local-privacy-hygiene.md"
@@ -4017,6 +4042,7 @@
       "evidence": [
         "test_consumers:4",
         "rule_consumers:1",
+        "config_consumers:1",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -4031,7 +4057,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
@@ -5520,11 +5546,15 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "hook": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/python-helper-duplication-baseline.json"
@@ -5542,7 +5572,7 @@
       "evidence": [
         "test_consumers:1",
         "hook_consumers:1",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -5556,7 +5586,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 3,
+      "total_consumers": 4,
       "wrapper_for": null
     },
     {
@@ -5570,7 +5600,7 @@
         "rule": 51,
         "script": 371,
         "skill": 83,
-        "test": 702,
+        "test": 703,
         "workflow": 2
       },
       "consumers": [
@@ -13200,6 +13230,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_routing_quality_gate_rule.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_self_knowledge.py"
         },
         {
@@ -14272,7 +14306,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:83",
-        "test_consumers:702",
+        "test_consumers:703",
         "hook_consumers:119",
         "workflow_consumers:2",
         "doc_consumers:759",
@@ -14294,7 +14328,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 2173,
+      "total_consumers": 2174,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -26395,7 +26429,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "rule": 1,
         "skill": 1,
         "test": 5,
@@ -26405,6 +26439,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
         },
         {
           "family": "rule",
@@ -26447,7 +26485,7 @@
         "test_consumers:5",
         "workflow_consumers:1",
         "rule_consumers:1",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -26463,7 +26501,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 9,
+      "total_consumers": 10,
       "wrapper_for": "scripts/merge-to-main.sh"
     },
     {
@@ -28886,7 +28924,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 1,
         "hook": 1,
         "script": 1,
@@ -28896,6 +28934,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
         },
         {
           "family": "doc",
@@ -28927,7 +28969,7 @@
         "test_consumers:3",
         "hook_consumers:1",
         "doc_consumers:1",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -28942,7 +28984,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -30457,7 +30499,7 @@
       "consumer_families": {
         "config": 2,
         "rule": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -30475,11 +30517,15 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_os_only_missing_proof_smoke.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_routing_quality_gate_rule.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:1",
+        "test_consumers:2",
         "rule_consumers:1",
         "config_consumers:2"
       ],
@@ -30495,7 +30541,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 4,
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
@@ -33573,10 +33619,15 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "config": 1,
         "doc": 2,
         "test": 2
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/token-savings-qa.md"
@@ -33597,7 +33648,8 @@
       "distribution": null,
       "evidence": [
         "test_consumers:2",
-        "doc_consumers:2"
+        "doc_consumers:2",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -33611,7 +33663,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 4,
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
@@ -40959,9 +41011,14 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "config": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
+        },
         {
           "family": "test",
           "path": "tests/red_team/portability/test_cos_task_event_watcher.py"
@@ -40969,7 +41026,8 @@
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:1"
+        "test_consumers:1",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -40983,7 +41041,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 1,
+      "total_consumers": 2,
       "wrapper_for": null
     },
     {
@@ -45415,9 +45473,14 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "config": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
+        },
         {
           "family": "test",
           "path": "tests/red_team/portability/test_generate_runtime_compact_config.py"
@@ -45425,7 +45488,8 @@
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:1"
+        "test_consumers:1",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -45439,7 +45503,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 1,
+      "total_consumers": 2,
       "wrapper_for": null
     },
     {
@@ -46627,7 +46691,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 1,
         "test": 1
       },
@@ -46635,6 +46699,10 @@
         {
           "family": "config",
           "path": "manifests/dependencies.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
         },
         {
           "family": "doc",
@@ -46649,7 +46717,7 @@
       "evidence": [
         "test_consumers:1",
         "doc_consumers:1",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -46663,7 +46731,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 3,
+      "total_consumers": 4,
       "wrapper_for": null
     },
     {
@@ -54315,7 +54383,7 @@
         "config": 4,
         "doc": 2,
         "skill": 1,
-        "test": 3
+        "test": 2
       },
       "consumers": [
         {
@@ -54352,10 +54420,6 @@
         },
         {
           "family": "test",
-          "path": "tests/contracts/test_redteam_portability_coverage.py"
-        },
-        {
-          "family": "test",
           "path": "tests/red_team/portability/test_redteam_aggregate.py"
         }
       ],
@@ -54363,7 +54427,7 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
-        "test_consumers:3",
+        "test_consumers:2",
         "doc_consumers:2",
         "config_consumers:4"
       ],
@@ -54381,7 +54445,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 10,
+      "total_consumers": 9,
       "wrapper_for": null
     },
     {
@@ -55824,7 +55888,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 1,
         "test": 1
       },
@@ -55832,6 +55896,10 @@
         {
           "family": "config",
           "path": "manifests/dependencies.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
         },
         {
           "family": "doc",
@@ -55846,7 +55914,7 @@
       "evidence": [
         "test_consumers:1",
         "doc_consumers:1",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -55860,7 +55928,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 3,
+      "total_consumers": 4,
       "wrapper_for": null
     },
     {
@@ -55868,7 +55936,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 1,
         "test": 1
       },
@@ -55876,6 +55944,10 @@
         {
           "family": "config",
           "path": "manifests/dependencies.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
         },
         {
           "family": "doc",
@@ -55890,7 +55962,7 @@
       "evidence": [
         "test_consumers:1",
         "doc_consumers:1",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -55904,7 +55976,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 3,
+      "total_consumers": 4,
       "wrapper_for": null
     },
     {

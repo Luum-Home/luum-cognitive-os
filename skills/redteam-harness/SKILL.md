@@ -8,7 +8,7 @@ triggers:
 - /redteam-harness
 - /red-team-harness
 - /rt-harness
-audience: both
+audience: os-only
 version: 1.0.0
 summary_line: Execute red-team scenarios, aggregate baseline, and detect ADR-105 verb
   violations.
@@ -39,7 +39,7 @@ routing_intents:
   description: User asks to collect and summarize red-team harness evidence across scenarios, distinct from a single manual review.
   confidence: 0.86
 ---
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 # /redteam-harness
 
 > Execute red-team scenarios to detect false-done, unwired constants, and

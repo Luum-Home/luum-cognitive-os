@@ -12595,7 +12595,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 3,
+        "config": 4,
         "doc": 2,
         "hook": 1,
         "rule": 1,
@@ -12614,6 +12614,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
         },
         {
           "family": "doc",
@@ -12659,7 +12663,7 @@
         "script_consumers:2",
         "test_consumers:3",
         "doc_consumers:2",
-        "config_consumers:3"
+        "config_consumers:4"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -12669,7 +12673,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 12
+      "total_consumers": 13
     },
     {
       "confidence": "high",
@@ -12772,7 +12776,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "hook": 1,
         "rule": 1,
         "test": 1
@@ -12781,6 +12785,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
         },
         {
           "family": "hook",
@@ -12800,7 +12808,7 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "test_consumers:1",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -12810,7 +12818,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 4
+      "total_consumers": 5
     },
     {
       "confidence": "high",
@@ -13537,7 +13545,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 3,
         "rule": 1,
         "script": 1,
@@ -13547,6 +13555,10 @@
         {
           "family": "config",
           "path": "manifests/ai-resource-economy.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
         },
         {
           "family": "doc",
@@ -13579,7 +13591,7 @@
         "script_consumers:1",
         "test_consumers:1",
         "doc_consumers:3",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -13589,7 +13601,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 8
     },
     {
       "confidence": "high",
@@ -14208,7 +14220,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "rule": 1,
         "script": 1,
         "test": 2
@@ -14217,6 +14229,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
         },
         {
           "family": "rule",
@@ -14240,7 +14256,7 @@
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:2",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -14250,7 +14266,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 5
+      "total_consumers": 6
     },
     {
       "confidence": "high",
@@ -18316,7 +18332,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "rule": 1,
         "test": 1
       },
@@ -18324,6 +18340,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
         },
         {
           "family": "rule",
@@ -18338,7 +18358,7 @@
       "evidence": [
         "rule_consumers:1",
         "test_consumers:1",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -18348,7 +18368,7 @@
       "role": "context-only",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 3
+      "total_consumers": 4
     },
     {
       "confidence": "high",
@@ -18463,7 +18483,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 6,
+        "config": 7,
         "doc": 7,
         "hook": 1,
         "rule": 1,
@@ -18494,6 +18514,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
         },
         {
           "family": "doc",
@@ -18556,7 +18580,7 @@
         "script_consumers:1",
         "test_consumers:3",
         "doc_consumers:7",
-        "config_consumers:6"
+        "config_consumers:7"
       ],
       "family": "rules",
       "lifecycle_id": "rules/research-first-protocol.md",
@@ -18568,7 +18592,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 19
+      "total_consumers": 20
     },
     {
       "confidence": "high",
@@ -19311,7 +19335,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "rule": 1,
         "test": 1
       },
@@ -19319,6 +19343,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
         },
         {
           "family": "rule",
@@ -19333,7 +19361,7 @@
       "evidence": [
         "rule_consumers:1",
         "test_consumers:1",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -19343,17 +19371,17 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 3
+      "total_consumers": 4
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "rule": 1,
         "script": 2,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -19363,6 +19391,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
         },
         {
           "family": "rule",
@@ -19379,14 +19411,18 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_os_only_missing_proof_smoke.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_routing_quality_gate_rule.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "rule_consumers:1",
         "script_consumers:2",
-        "test_consumers:1",
-        "config_consumers:2"
+        "test_consumers:2",
+        "config_consumers:3"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -19396,7 +19432,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 6
+      "total_consumers": 8
     },
     {
       "confidence": "high",
@@ -21983,7 +22019,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 6,
+        "config": 7,
         "doc": 24,
         "hook": 1,
         "rule": 2,
@@ -22014,6 +22050,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
         },
         {
           "family": "doc",
@@ -22188,7 +22228,7 @@
         "script_consumers:4",
         "test_consumers:10",
         "doc_consumers:24",
-        "config_consumers:6"
+        "config_consumers:7"
       ],
       "family": "rules",
       "lifecycle_id": "rules/token-economy.md",
@@ -22202,7 +22242,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 47
+      "total_consumers": 48
     },
     {
       "confidence": "high",

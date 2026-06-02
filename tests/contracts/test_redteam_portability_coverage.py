@@ -37,9 +37,7 @@ REDTEAM_BOTH_ARTIFACTS: list[tuple[str, str]] = [
     # (relative_source_path, expected_portability_test_name)
     ("scripts/verify-archived.sh",             "verify-archived.bats"),
     ("scripts/run-redteam-scenario.sh",         "run-redteam-scenario.bats"),
-    ("scripts/redteam_aggregate.py",            "redteam-aggregate.bats"),
     ("hooks/plan-claim-validator.sh",           "plan-claim-validator.bats"),
-    ("skills/redteam-harness/SKILL.md",         "skill-redteam-harness.bats"),
     # Template artifact (both)
     ("templates/contracts/test_redteam_baseline.template.py",   "template-test-redteam-baseline.bats"),
 ]

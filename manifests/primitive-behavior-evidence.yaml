@@ -4099,8 +4099,8 @@ evidence:
   rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
 - primitive: rules/routing-quality-gate.md
   harnesses: [claude, codex, shell-ci]
-  tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]
-  rationale: Release red-team closure verifies os-only marker, path existence, and no local checkout coupling.
+  tests: [tests/red_team/portability/test_routing_quality_gate_rule.py]
+  rationale: Primitive-specific portability proof verifies the shared routing quality gate rule is consumer-neutral markdown with no source checkout coupling.
 - primitive: scripts/audit-routing-intents
   harnesses: [claude, codex, shell-ci]
   tests: [tests/red_team/portability/test_os_only_missing_proof_smoke.py]

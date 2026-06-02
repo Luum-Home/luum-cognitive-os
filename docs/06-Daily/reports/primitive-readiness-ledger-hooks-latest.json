@@ -1131,7 +1131,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/09-Quality/manual-tests/codex-host-tooling-verification.md"
+          "path": "docs/09-Quality/manual-tests/host-tooling-engram-mcp-verification.md"
         },
         {
           "family": "doc",
@@ -2190,7 +2190,7 @@
       "consumer_access_next_action": "prove projection into a consumer project before claiming availability",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 7,
+        "config": 8,
         "doc": 82,
         "hook": 83,
         "rule": 7,
@@ -2218,6 +2218,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -3205,7 +3209,7 @@
         "script_consumers:33",
         "test_consumers:34",
         "doc_consumers:82",
-        "config_consumers:7"
+        "config_consumers:8"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/_lib/common.sh",
@@ -3219,7 +3223,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 249
+      "total_consumers": 250
     },
     {
       "confidence": "high",
@@ -3480,11 +3484,16 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "config": 1,
         "doc": 3,
         "hook": 6,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-201-maintainer-agent-telemetry-promotion-loop.md"
@@ -3530,7 +3539,8 @@
       "evidence": [
         "hook_consumers:6",
         "test_consumers:1",
-        "doc_consumers:3"
+        "doc_consumers:3",
+        "config_consumers:1"
       ],
       "family": "hooks",
       "lifecycle_id": null,
@@ -3540,7 +3550,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 10
+      "total_consumers": 11
     },
     {
       "confidence": "high",
@@ -3631,10 +3641,10 @@
       "consumer_families": {
         "config": 4,
         "doc": 3,
-        "hook": 174,
+        "hook": 175,
         "script": 4,
         "skill": 1,
-        "test": 6
+        "test": 7
       },
       "consumers": [
         {
@@ -4195,6 +4205,10 @@
         },
         {
           "family": "hook",
+          "path": "hooks/session-quality-close-gate.sh"
+        },
+        {
+          "family": "hook",
           "path": "hooks/session-resume.sh"
         },
         {
@@ -4399,6 +4413,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_session-quality-close-gate.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_session_watchdog_launcher.py"
         },
         {
@@ -4410,9 +4428,9 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
-        "hook_consumers:174",
+        "hook_consumers:175",
         "script_consumers:4",
-        "test_consumers:6",
+        "test_consumers:7",
         "doc_consumers:3",
         "config_consumers:4"
       ],
@@ -4428,7 +4446,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 192
+      "total_consumers": 194
     },
     {
       "confidence": "high",
@@ -4486,12 +4504,12 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 18,
-        "doc": 163,
-        "hook": 24,
+        "doc": 166,
+        "hook": 25,
         "rule": 3,
         "script": 50,
         "skill": 9,
-        "test": 129
+        "test": 130
       },
       "consumers": [
         {
@@ -4820,6 +4838,14 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-332-sia-inspired-self-improvement-benchmark-loop.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-333-publication-safety-primitive.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/INDEX.md"
         },
         {
@@ -5037,6 +5063,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/primitive-scope-classification.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/publication-safety-receipt-v0.md"
         },
         {
           "family": "doc",
@@ -5273,6 +5303,10 @@
         {
           "family": "hook",
           "path": "hooks/profile-drift-autoapply.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/publication-safety.sh"
         },
         {
           "family": "hook",
@@ -5856,6 +5890,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_session-quality-close-gate.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_shared_hook_surfaces.py"
         },
         {
@@ -6083,11 +6121,11 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:9",
-        "hook_consumers:24",
+        "hook_consumers:25",
         "rule_consumers:3",
         "script_consumers:50",
-        "test_consumers:129",
-        "doc_consumers:163",
+        "test_consumers:130",
+        "doc_consumers:166",
         "config_consumers:18"
       ],
       "family": "hooks",
@@ -6102,7 +6140,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 396
+      "total_consumers": 401
     },
     {
       "confidence": "high",
@@ -7932,7 +7970,7 @@
       "consumer_access_next_action": "prove projection into a consumer project before claiming availability",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 13,
+        "config": 14,
         "doc": 54,
         "hook": 2,
         "rule": 1,
@@ -7984,6 +8022,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-readiness-script-overrides.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/python-helper-duplication-baseline.json"
         },
         {
           "family": "config",
@@ -8479,7 +8521,7 @@
         "script_consumers:18",
         "test_consumers:41",
         "doc_consumers:54",
-        "config_consumers:13"
+        "config_consumers:14"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/_lib/timing.sh",
@@ -8493,7 +8535,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 132
+      "total_consumers": 133
     },
     {
       "confidence": "high",
@@ -14137,11 +14179,11 @@
       "consumer_families": {
         "config": 11,
         "doc": 36,
-        "hook": 1,
+        "hook": 2,
         "rule": 9,
         "script": 9,
         "skill": 3,
-        "test": 17
+        "test": 18
       },
       "consumers": [
         {
@@ -14337,6 +14379,10 @@
           "path": "hooks/completion-gate.sh"
         },
         {
+          "family": "hook",
+          "path": "hooks/session-quality-close-gate.sh"
+        },
+        {
           "family": "rule",
           "path": "rules/ROADMAP.md"
         },
@@ -14487,16 +14533,20 @@
         {
           "family": "test",
           "path": "tests/unit/test_reinvention_semantic.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_session_quality_close_gate.py"
         }
       ],
       "distribution": "lab",
       "evidence": [
         "lifecycle",
         "skill_consumers:3",
-        "hook_consumers:1",
+        "hook_consumers:2",
         "rule_consumers:9",
         "script_consumers:9",
-        "test_consumers:17",
+        "test_consumers:18",
         "doc_consumers:36",
         "config_consumers:11"
       ],
@@ -14510,7 +14560,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 86
+      "total_consumers": 88
     },
     {
       "confidence": "high",
@@ -17333,10 +17383,10 @@
       "consumer_families": {
         "config": 15,
         "doc": 31,
-        "hook": 4,
+        "hook": 5,
         "rule": 6,
         "script": 7,
-        "test": 12
+        "test": 14
       },
       "consumers": [
         {
@@ -17540,6 +17590,10 @@
           "path": "hooks/self-install.sh"
         },
         {
+          "family": "hook",
+          "path": "hooks/session-quality-close-gate.sh"
+        },
+        {
           "family": "rule",
           "path": "rules/agent-audit-before-commit.md"
         },
@@ -17625,6 +17679,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_session-quality-close-gate.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_codex_guard_layer.py"
         },
         {
@@ -17637,16 +17695,20 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_session_quality_close_gate.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_skill_rewrite.py"
         }
       ],
       "distribution": "lab",
       "evidence": [
         "lifecycle",
-        "hook_consumers:4",
+        "hook_consumers:5",
         "rule_consumers:6",
         "script_consumers:7",
-        "test_consumers:12",
+        "test_consumers:14",
         "doc_consumers:31",
         "config_consumers:15"
       ],
@@ -17660,7 +17722,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 75
+      "total_consumers": 78
     },
     {
       "confidence": "high",
@@ -23603,7 +23665,7 @@
       "consumer_families": {
         "config": 10,
         "doc": 29,
-        "hook": 1,
+        "hook": 2,
         "rule": 4,
         "script": 4,
         "skill": 1,
@@ -23771,6 +23833,10 @@
           "path": "hooks/completion-gate.sh"
         },
         {
+          "family": "hook",
+          "path": "hooks/session-quality-close-gate.sh"
+        },
+        {
           "family": "rule",
           "path": "rules/ROADMAP.md"
         },
@@ -23843,7 +23909,7 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
-        "hook_consumers:1",
+        "hook_consumers:2",
         "rule_consumers:4",
         "script_consumers:4",
         "test_consumers:8",
@@ -23860,7 +23926,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 57
+      "total_consumers": 58
     },
     {
       "confidence": "high",
@@ -23975,7 +24041,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 6,
+        "config": 7,
         "script": 2,
         "test": 3
       },
@@ -24005,6 +24071,10 @@
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
+        },
+        {
           "family": "script",
           "path": "scripts/_lib/settings-driver-claude-code.sh"
         },
@@ -24030,7 +24100,7 @@
         "lifecycle",
         "script_consumers:2",
         "test_consumers:3",
-        "config_consumers:6"
+        "config_consumers:7"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/eas-validation-gate.sh",
@@ -24043,7 +24113,7 @@
         "claude",
         "codex"
       ],
-      "total_consumers": 11
+      "total_consumers": 12
     },
     {
       "confidence": "high",
@@ -27076,7 +27146,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/09-Quality/manual-tests/codex-host-tooling-verification.md"
+          "path": "docs/09-Quality/manual-tests/host-tooling-engram-mcp-verification.md"
         },
         {
           "family": "doc",
@@ -27338,7 +27408,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 6,
+        "config": 7,
         "doc": 1,
         "rule": 1,
         "script": 3,
@@ -27368,6 +27438,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
         },
         {
           "family": "doc",
@@ -27417,7 +27491,7 @@
         "script_consumers:3",
         "test_consumers:5",
         "doc_consumers:1",
-        "config_consumers:6"
+        "config_consumers:7"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/goal-stop-gate.sh",
@@ -27430,7 +27504,7 @@
         "claude",
         "codex"
       ],
-      "total_consumers": 16
+      "total_consumers": 17
     },
     {
       "confidence": "high",
@@ -27821,7 +27895,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/09-Quality/manual-tests/codex-host-tooling-verification.md"
+          "path": "docs/09-Quality/manual-tests/host-tooling-engram-mcp-verification.md"
         },
         {
           "family": "doc",
@@ -29466,7 +29540,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 13,
-        "doc": 26,
+        "doc": 25,
         "script": 7,
         "test": 6
       },
@@ -29605,10 +29679,6 @@
         },
         {
           "family": "doc",
-          "path": "docs/09-Quality/manual-tests/codex-host-tooling-verification.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/09-Quality/root/hook-security-profiles.md"
         },
         {
@@ -29685,7 +29755,7 @@
         "lifecycle",
         "script_consumers:7",
         "test_consumers:6",
-        "doc_consumers:26",
+        "doc_consumers:25",
         "config_consumers:13"
       ],
       "family": "hooks",
@@ -29698,7 +29768,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 52
+      "total_consumers": 51
     },
     {
       "confidence": "high",
@@ -34619,6 +34689,95 @@
       "total_consumers": 41
     },
     {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 6,
+        "doc": 3,
+        "script": 2,
+        "test": 4
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "cognitive-os.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/hook-registration-classification.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/publication-safety.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-333-publication-safety-primitive.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/INDEX.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/publication-safety-receipt-v0.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-publication-safety"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_publication_safety_cli.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_publication_safety_contract.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_publication_safety.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_publication_safety.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "script_consumers:2",
+        "test_consumers:4",
+        "doc_consumers:3",
+        "config_consumers:6"
+      ],
+      "family": "hooks",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "hooks/publication-safety.sh",
+      "role": "memory-lifecycle",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 15
+    },
+    {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
@@ -36587,7 +36746,7 @@
       "consumer_access_next_action": "keep install/profile/harness proof current",
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
-        "config": 6,
+        "config": 7,
         "hook": 1,
         "script": 4,
         "test": 3
@@ -36616,6 +36775,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
         },
         {
           "family": "hook",
@@ -36656,7 +36819,7 @@
         "hook_consumers:1",
         "script_consumers:4",
         "test_consumers:3",
-        "config_consumers:6"
+        "config_consumers:7"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/research-compliance-guard.sh",
@@ -36668,7 +36831,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 14
+      "total_consumers": 15
     },
     {
       "confidence": "high",
@@ -38245,7 +38408,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 1,
         "test": 1
       },
@@ -38253,6 +38416,10 @@
         {
           "family": "config",
           "path": "manifests/hook-registration-classification.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
         },
         {
           "family": "doc",
@@ -38267,7 +38434,7 @@
       "evidence": [
         "test_consumers:1",
         "doc_consumers:1",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "family": "hooks",
       "lifecycle_id": null,
@@ -38277,7 +38444,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 3
+      "total_consumers": 4
     },
     {
       "confidence": "high",
@@ -38735,7 +38902,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 13,
-        "doc": 82,
+        "doc": 81,
         "hook": 4,
         "rule": 3,
         "script": 17,
@@ -39105,10 +39272,6 @@
         },
         {
           "family": "doc",
-          "path": "docs/09-Quality/manual-tests/codex-host-tooling-verification.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/09-Quality/root/hook-security-profiles.md"
         },
         {
@@ -39324,7 +39487,7 @@
         "rule_consumers:3",
         "script_consumers:17",
         "test_consumers:21",
-        "doc_consumers:82",
+        "doc_consumers:81",
         "config_consumers:13"
       ],
       "family": "hooks",
@@ -39337,7 +39500,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 143
+      "total_consumers": 142
     },
     {
       "confidence": "high",
@@ -39742,7 +39905,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/09-Quality/manual-tests/codex-host-tooling-verification.md"
+          "path": "docs/09-Quality/manual-tests/host-tooling-engram-mcp-verification.md"
         },
         {
           "family": "doc",
@@ -41353,7 +41516,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/09-Quality/manual-tests/codex-host-tooling-verification.md"
+          "path": "docs/09-Quality/manual-tests/host-tooling-engram-mcp-verification.md"
         },
         {
           "family": "doc",
@@ -41469,6 +41632,77 @@
         "claude"
       ],
       "total_consumers": 60
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep install/profile/harness proof current",
+      "consumer_accessibility": "projected-consumer-surface",
+      "consumer_families": {
+        "config": 6,
+        "script": 2,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.json"
+        },
+        {
+          "family": "config",
+          "path": ".codex/hooks.json"
+        },
+        {
+          "family": "config",
+          "path": "cognitive-os.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
+        },
+        {
+          "family": "script",
+          "path": "scripts/_lib/settings-driver-claude-code.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/apply-efficiency-profile.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_session-quality-close-gate.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_session_quality_close_gate.py"
+        }
+      ],
+      "distribution": "team",
+      "evidence": [
+        "lifecycle",
+        "script_consumers:2",
+        "test_consumers:2",
+        "config_consumers:6"
+      ],
+      "family": "hooks",
+      "lifecycle_id": "hooks/session-quality-close-gate.sh",
+      "lifecycle_state": "blocking",
+      "next_action": "keep lifecycle, tests, and harness proof current",
+      "path": "hooks/session-quality-close-gate.sh",
+      "role": "memory-lifecycle",
+      "role_source": "lifecycle",
+      "supported_harnesses": [
+        "claude",
+        "codex"
+      ],
+      "total_consumers": 10
     },
     {
       "confidence": "high",
@@ -41624,7 +41858,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/09-Quality/manual-tests/codex-host-tooling-verification.md"
+          "path": "docs/09-Quality/manual-tests/host-tooling-engram-mcp-verification.md"
         },
         {
           "family": "doc",
@@ -45055,7 +45289,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 1,
         "test": 2
       },
@@ -45067,6 +45301,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
         },
         {
           "family": "doc",
@@ -45085,7 +45323,7 @@
       "evidence": [
         "test_consumers:2",
         "doc_consumers:1",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "family": "hooks",
       "lifecycle_id": null,
@@ -45095,7 +45333,7 @@
       "role": "observability",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 5
+      "total_consumers": 6
     },
     {
       "confidence": "high",
@@ -48039,25 +48277,25 @@
   "schema_version": 1,
   "summary": {
     "confidence": {
-      "high": 267,
-      "medium": 13
+      "high": 268,
+      "medium": 14
     },
     "consumer_accessibility": {
       "lifecycle-declared-consumer-candidate": 22,
       "lifecycle-declared-maintainer": 174,
-      "projected-consumer-surface": 71,
-      "so-local-only": 13
+      "projected-consumer-surface": 72,
+      "so-local-only": 14
     },
     "roles": {
       "driver-specific": 28,
       "lab": 103,
-      "memory-lifecycle": 99,
+      "memory-lifecycle": 101,
       "observability": 36,
       "runtime-safety": 14
     },
-    "total": 280,
+    "total": 282,
     "without_consumers": 0,
-    "without_lifecycle": 13
+    "without_lifecycle": 14
   },
   "target_family": "hooks"
 }
