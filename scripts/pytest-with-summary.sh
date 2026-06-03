@@ -29,6 +29,10 @@ fi
 if [ -z "${PYTEST_BIN:-}" ]; then
   PYTEST_BIN="$PYTHON_BIN -m pytest"
 fi
+PYTHON_BIN_DIR="$(cd "$(dirname "$PYTHON_BIN")" 2>/dev/null && pwd || true)"
+if [ -n "$PYTHON_BIN_DIR" ]; then
+  export PATH="$PYTHON_BIN_DIR:$PATH"
+fi
 REPORT_KEEP="${COS_TEST_REPORT_KEEP:-30}"
 REPORT_MAX_MIB="${COS_TEST_REPORT_MAX_MIB:-120}"
 
