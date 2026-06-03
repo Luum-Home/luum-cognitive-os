@@ -168,6 +168,8 @@ def test_review_by_is_future_dated(service_name):
         )
     review_by = _parse_review_by(cfg["review_by"])
     today = _dt.date.today()
+    if cfg.get("mode") == "disabled" and review_by < today:
+        return
     assert review_by >= today, (
         f"{service_name}: review_by={review_by.isoformat()} has passed (today={today.isoformat()}). "
         "HALT — operator must either extend the date (and justify) or downgrade "
@@ -195,14 +197,17 @@ def test_review_by_dates_are_staggered():
     )
 
 
-def test_memu_has_explicit_sunset_deadline():
-    """Part B: MemU sunset deadline is hard-coded to 2026-06-01."""
+def test_memu_has_executed_sunset_deadline():
+    """Part B: MemU sunset deadline was 2026-06-01 and is now executed."""
     services = _load_cognitive_os_services()
     memu = services.get("memu")
     assert memu, "memu entry missing from cognitive-os.yaml services block"
     assert "review_by" in memu, "memu must declare review_by per Part B"
     assert _parse_review_by(memu["review_by"]) == _dt.date(2026, 6, 1), (
         "MemU sunset deadline is fixed at 2026-06-01 per catalog §Memory."
+    )
+    assert memu.get("mode") == "disabled", (
+        "MemU review date has passed; catalog policy requires the sunset decision to be executed."
     )
 
 

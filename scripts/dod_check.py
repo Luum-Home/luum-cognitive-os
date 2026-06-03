@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: both
 """Compatibility wrapper for the shared Cognitive OS DoD checker."""
 from __future__ import annotations
 

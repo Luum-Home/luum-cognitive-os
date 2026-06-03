@@ -553,6 +553,76 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "config": 1,
+        "doc": 1,
+        "script": 5,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/harness-driver-capabilities.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/opencode-native-primitive-adapter-design.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/apply-efficiency-profile.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-doctor-harness.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_init.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/derived_artifact_gate.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/generate-project-settings.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_opencode_native_adapter_design.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_harness_driver_parity.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:2",
+        "doc_consumers:1",
+        "config_consumers:1",
+        "script_consumers:5"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "declare supported harnesses and fallback behavior",
+      "override_rationale": null,
+      "path": "scripts/_lib/settings-driver-opencode.sh",
+      "protected_install_surface": false,
+      "role": "driver-specific",
+      "role_source": "heuristic:path",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 9,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
         "config": 2,
         "doc": 8,
         "script": 15,
@@ -5598,9 +5668,9 @@
         "doc": 759,
         "hook": 119,
         "rule": 51,
-        "script": 371,
-        "skill": 83,
-        "test": 703,
+        "script": 373,
+        "skill": 84,
+        "test": 704,
         "workflow": 2
       },
       "consumers": [
@@ -9682,6 +9752,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/_lib/settings-driver-opencode.sh"
+        },
+        {
+          "family": "script",
           "path": "scripts/_lib/settings-driver.sh"
         },
         {
@@ -10814,6 +10888,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/derived_artifact_gate.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/doctor.sh"
         },
         {
@@ -11199,6 +11277,10 @@
         {
           "family": "skill",
           "path": "packages/ecosystem-tools/skills/tool-discovery/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "packages/quality-gates/skills/dod-check/SKILL.md"
         },
         {
           "family": "skill",
@@ -13410,6 +13492,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_codex_dod_check.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_codex_guard_layer.py"
         },
         {
@@ -14305,14 +14391,14 @@
       "evidence": [
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
-        "skill_consumers:83",
-        "test_consumers:703",
+        "skill_consumers:84",
+        "test_consumers:704",
         "hook_consumers:119",
         "workflow_consumers:2",
         "doc_consumers:759",
         "rule_consumers:51",
         "config_consumers:86",
-        "script_consumers:371"
+        "script_consumers:373"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -14324,11 +14410,11 @@
       "protected_install_surface": false,
       "role": "lab",
       "role_source": "lifecycle",
-      "skill_consumers": 83,
+      "skill_consumers": 84,
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 2174,
+      "total_consumers": 2178,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -43859,7 +43945,7 @@
       "consumer_families": {
         "config": 12,
         "doc": 15,
-        "script": 3,
+        "script": 4,
         "test": 7
       },
       "consumers": [
@@ -43977,6 +44063,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/_lib/settings-driver-opencode.sh"
+        },
+        {
+          "family": "script",
           "path": "scripts/generate-project-settings.sh"
         },
         {
@@ -44019,7 +44109,7 @@
         "test_consumers:7",
         "doc_consumers:15",
         "config_consumers:12",
-        "script_consumers:3"
+        "script_consumers:4"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -44035,7 +44125,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 37,
+      "total_consumers": 38,
       "wrapper_for": "scripts/setup.sh"
     },
     {
@@ -44240,6 +44330,63 @@
       ],
       "total_consumers": 21,
       "wrapper_for": "scripts/primitive_authority_audit.py"
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "consumer_families": {
+        "config": 1,
+        "skill": 2,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "skill",
+          "path": ".codex/skills/dod-check/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "packages/quality-gates/skills/dod-check/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_dod_check.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_portability_proof_paths.py"
+        }
+      ],
+      "distribution": "team",
+      "evidence": [
+        "lifecycle",
+        "skill_consumers:2",
+        "test_consumers:2",
+        "config_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/dod_check.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/dod_check.py",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 2,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 5,
+      "wrapper_for": null
     },
     {
       "confidence": "high",
@@ -45164,7 +45311,7 @@
       "evidence": [
         "lifecycle",
         "protected_install_surface:settings-projection",
-        "wrapper_for:scripts/cos_init.py",
+        "wrapper_for:scripts/_lib/settings-driver-opencode.sh",
         "skill_consumers:1",
         "test_consumers:5",
         "doc_consumers:13",
@@ -45186,7 +45333,7 @@
         "shell"
       ],
       "total_consumers": 29,
-      "wrapper_for": "scripts/cos_init.py"
+      "wrapper_for": "scripts/_lib/settings-driver-opencode.sh"
     },
     {
       "confidence": "medium",
@@ -48909,13 +49056,17 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 3,
+        "config": 4,
         "test": 1
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/harness-driver-capabilities.yaml"
         },
         {
           "family": "config",
@@ -48934,7 +49085,7 @@
       "evidence": [
         "lifecycle",
         "test_consumers:1",
-        "config_consumers:3"
+        "config_consumers:4"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -48950,7 +49101,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 4,
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
@@ -53509,6 +53660,48 @@
       ],
       "total_consumers": 6,
       "wrapper_for": "scripts/cos-doctor-preserve.sh"
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/prompt-modernization.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_prompt_aggressive_language_audit.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_prompt_aggressive_language_audit.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:2",
+        "doc_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/prompt_aggressive_language_audit.py",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "usage:repo",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 3,
+      "wrapper_for": null
     },
     {
       "confidence": "high",
@@ -60528,27 +60721,27 @@
   "summary": {
     "agentic_primitives_without_lifecycle": 0,
     "confidence": {
-      "high": 346,
+      "high": 347,
       "low": 1,
-      "medium": 308
+      "medium": 310
     },
     "consumer_accessibility": {
       "install-profile-managed": 19,
-      "lifecycle-declared-consumer-candidate": 158,
+      "lifecycle-declared-consumer-candidate": 159,
       "lifecycle-declared-maintainer": 143,
       "skill-referenced-not-projectable": 3,
-      "so-local-only": 332
+      "so-local-only": 334
     },
     "low_confidence_rows": 1,
     "roles": {
-      "agentic-primitive": 208,
+      "agentic-primitive": 209,
       "archive": 12,
-      "driver-specific": 13,
+      "driver-specific": 14,
       "lab": 98,
-      "maintainer-tool": 309,
+      "maintainer-tool": 310,
       "migration-only": 15
     },
-    "total_scripts": 655,
+    "total_scripts": 658,
     "without_consumers": 0
   },
   "target_family": "scripts"

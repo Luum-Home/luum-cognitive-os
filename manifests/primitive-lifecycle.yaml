@@ -22693,3 +22693,30 @@ primitives:
   exit_behavior: mixed
   metrics_file: "none"
   consumer_access_next_action: Keep as SO-maintainer helper unless consumer validation profiles require it.
+
+- id: scripts/dod_check.py
+  kind: script
+  owner_adr: ADR-126
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: quality-gate
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/dod_check.py
+  runtime_projection: false
+  behavior_evidence: Deterministic DoD wrapper is invoked by Codex and Claude dod-check skills and delegates to packages/quality-gates/skills/dod-check/scripts/check_dod.py.
+  evidence_commands:
+  - python3 -m py_compile scripts/dod_check.py
+  - python3 scripts/dod_check.py --format markdown
+  - python3 scripts/primitive_readiness_ledger.py --project-dir .
+  rollback_or_repair_command: Remove scripts/dod_check.py references from dod-check skills or update this lifecycle row before claiming skill-facing support.
+  sunset_criteria: Remove when dod-check skills invoke the package-local checker directly across all harnesses.
+  docs_claim_level: observe
+  exit_behavior: exit_0_or_nonzero
+  metrics_file: none

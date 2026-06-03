@@ -231,8 +231,7 @@ Required checks:
 - adapter manifests describe projection honestly without inventing knowledge;
 - `.ai/context.json` keeps the generated-overlay warning.
 
-Keep canonical primitives outside `.ai/` unless a future ADR
-explicitly changes the architecture and migration plan.
+Do not move canonical primitives physically into `.ai/`. Keep canonical primitives outside `.ai/` unless a future ADR explicitly changes the architecture and migration plan.
 
 ## 6. Consumer-fleet impact
 

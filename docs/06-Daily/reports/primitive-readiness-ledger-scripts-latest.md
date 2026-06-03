@@ -1,7 +1,7 @@
 # Primitive Readiness Ledger — Scripts
 
-Total scripts: 655
-Roles: agentic-primitive:208, archive:12, driver-specific:13, lab:98, maintainer-tool:309, migration-only:15
+Total scripts: 658
+Roles: agentic-primitive:209, archive:12, driver-specific:14, lab:98, maintainer-tool:310, migration-only:15
 Low confidence rows: 1
 Agentic primitives without lifecycle metadata: 0
 
@@ -12,6 +12,7 @@ Agentic primitives without lifecycle metadata: 0
 | `scripts/_lib/settings-driver-bare.sh` | driver-specific | heuristic:path | medium | so-local-only |  |  | 8 | declare supported harnesses and fallback behavior |
 | `scripts/_lib/settings-driver-claude-code.sh` | driver-specific | heuristic:path | medium | skill-referenced-not-projectable |  |  | 50 | declare supported harnesses and fallback behavior |
 | `scripts/_lib/settings-driver-codex.sh` | driver-specific | heuristic:path | medium | so-local-only |  |  | 21 | declare supported harnesses and fallback behavior |
+| `scripts/_lib/settings-driver-opencode.sh` | driver-specific | heuristic:path | medium | so-local-only |  |  | 9 | declare supported harnesses and fallback behavior |
 | `scripts/_lib/settings-driver.sh` | driver-specific | heuristic:path | medium | so-local-only |  |  | 29 | declare supported harnesses and fallback behavior |
 | `scripts/acc_pipeline.py` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | shell | 50 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/active_primitive_index.py` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | active | shell | 20 | keep lifecycle evidence and supported harness declarations current |
@@ -74,7 +75,7 @@ Agentic primitives without lifecycle metadata: 0
 | `scripts/component-lint.sh` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 11 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/compose_agent_prompt.py` | maintainer-tool | override | high | lifecycle-declared-maintainer | advisory | claude, codex, shell | 10 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/context_budget_meter_fast.py` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 4 | keep out of default user surface unless promoted through lifecycle metadata |
-| `scripts/cos` | lab | lifecycle | high | lifecycle-declared-consumer-candidate | sandbox | shell | 2174 | keep non-default until tests and operator value justify promotion |
+| `scripts/cos` | lab | lifecycle | high | lifecycle-declared-consumer-candidate | sandbox | shell | 2178 | keep non-default until tests and operator value justify promotion |
 | `scripts/cos-action-receipt` | lab | lifecycle | high | lifecycle-declared-consumer-candidate | sandbox | shell | 14 | keep non-default until tests and operator value justify promotion |
 | `scripts/cos-active-primitive-index` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | shell | 11 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos-adapter-compile` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | active | shell | 13 | keep lifecycle evidence and supported harness declarations current |
@@ -452,9 +453,10 @@ Agentic primitives without lifecycle metadata: 0
 | `scripts/doc_review_personas.py` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | active | shell | 10 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/docs_duplicate_audit.py` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 10 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/docs_execution_audit.py` | lab | lifecycle | high | lifecycle-declared-consumer-candidate | sandbox | shell | 18 | keep non-default until tests and operator value justify promotion |
-| `scripts/doctor.sh` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | advisory | shell | 37 | keep lifecycle evidence and supported harness declarations current |
+| `scripts/doctor.sh` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | advisory | shell | 38 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/document_feature_append.py` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | shell | 10 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/documentation_truth_audit.py` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | advisory | shell | 21 | keep lifecycle evidence and supported harness declarations current |
+| `scripts/dod_check.py` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | codex, claude, shell | 5 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/dogfood_score.py` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | active | shell | 19 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/domain_model.py` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | shell | 9 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/eas_validate.py` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | advisory | claude, codex, shell | 21 | keep lifecycle evidence and supported harness declarations current |
@@ -513,7 +515,7 @@ Agentic primitives without lifecycle metadata: 0
 | `scripts/migrate_skill_descriptions_use_when.py` | migration-only | heuristic:path | medium | so-local-only |  |  | 2 | add sunset criteria and archive after retention window |
 | `scripts/network_egress_guard.py` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 11 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/network_sandbox_run.py` | lab | heuristic:path | medium | so-local-only |  |  | 8 | keep non-default until tests and operator value justify promotion |
-| `scripts/opencode_primitive_adapter_smoke.py` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | candidate | shell | 4 | keep lifecycle evidence and supported harness declarations current |
+| `scripts/opencode_primitive_adapter_smoke.py` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | candidate | shell | 5 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/ops_runbook.py` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | shell | 9 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/orchestrator.py` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | claude, codex, shell | 41 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/orchestrator_claim_gate.py` | lab | lifecycle | high | lifecycle-declared-consumer-candidate | sandbox | shell | 22 | keep non-default until tests and operator value justify promotion |
@@ -573,6 +575,7 @@ Agentic primitives without lifecycle metadata: 0
 | `scripts/project_scaffold.py` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | shell | 15 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/project_shell_ci.py` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 18 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/promote_lifecycle_primitives_to_contracts.py` | maintainer-tool | override | high | lifecycle-declared-maintainer | advisory | shell | 6 | keep out of default user surface unless promoted through lifecycle metadata |
+| `scripts/prompt_aggressive_language_audit.py` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 3 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/proof-drill-evidence-record` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | active | shell | 10 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/proof-drill-select` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | shell | 12 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/proof_drill_evidence_record.py` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | shell | 8 | keep lifecycle evidence and supported harness declarations current |
