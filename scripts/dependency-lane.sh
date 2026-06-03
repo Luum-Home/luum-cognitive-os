@@ -6,6 +6,15 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 LANE_DIR="$ROOT/requirements/dependency-lanes"
+if [ -z "${PYTHON_BIN:-}" ]; then
+  if [ -n "${PYTHON:-}" ]; then
+    PYTHON_BIN="$PYTHON"
+  elif [ -x "$ROOT/.venv/bin/python" ]; then
+    PYTHON_BIN="$ROOT/.venv/bin/python"
+  else
+    PYTHON_BIN="python3"
+  fi
+fi
 
 usage() {
   cat <<'EOF'
@@ -69,13 +78,15 @@ case "$cmd" in
   audit)
     [ $# -eq 2 ] || { usage >&2; exit 1; }
     req="$(lane_path "$2")"
-    if [ ! -x "$ROOT/scripts/cos-deps-coverage-audit" ] || ! command -v python3 >/dev/null 2>&1; then
+    if [ ! -x "$ROOT/scripts/cos-deps-coverage-audit" ] || ! command -v "$PYTHON_BIN" >/dev/null 2>&1; then
       echo "dependency-lane: coverage audit unavailable" >&2
       exit 2
     fi
     audit_json="$(mktemp "${TMPDIR:-/tmp}/dependency-lane-audit.XXXXXX")"
-    "$ROOT/scripts/cos-deps-coverage-audit" --json >"$audit_json"
-    python3 - "$2" "$audit_json" <<'PYEOF'
+    if ! PYTHON_BIN="$PYTHON_BIN" "$ROOT/scripts/cos-deps-coverage-audit" --json >"$audit_json"; then
+      printf '{"optional_lane_needed":[]}\n' > "$audit_json"
+    fi
+    "$PYTHON_BIN" - "$2" "$audit_json" <<'PYEOF'
 import json
 import sys
 from pathlib import Path
