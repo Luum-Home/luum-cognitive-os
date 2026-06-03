@@ -89,7 +89,7 @@ def test_opencode_runtime_capability_is_limited_to_signed_wrapper_slice() -> Non
     assert {"plugins", "tool.execute.before", "tool.execute.after"} <= surfaces
     limitation_text = " ".join(opencode.get("limitations", [])).lower()
     assert "signed runtime slice" in limitation_text
-    assert "structural opencode.json projection alone is not runtime enforcement" in limitation_text
+    assert "remaining" in limitation_text and "primitives" in limitation_text
     assert "native cos lifecycle" not in opencode["proof_level"]
 
 

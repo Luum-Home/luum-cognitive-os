@@ -1094,8 +1094,12 @@ def _write_structural_instruction_harness_settings(project_dir: Path, cos_source
                     ".cognitive-os/rules/cos/*.md",
                     ".cognitive-os/skills/cos/*/SKILL.md",
                 ],
+                "plugin": [".opencode/plugins/cos-primitive-guard.js"],
                 "mcp": {},
                 "permission": {"bash": "ask", "edit": "ask"},
+                "experimental": {
+                    "cognitive_os_hooks": ".opencode/cos-hooks.json",
+                },
             },
         )
         plugin_source = cos_source / "packages" / "opencode-adapter" / "plugins" / "cos-primitive-guard.js"
@@ -1103,7 +1107,18 @@ def _write_structural_instruction_harness_settings(project_dir: Path, cos_source
         if plugin_source.exists():
             plugin_target.parent.mkdir(parents=True, exist_ok=True)
             plugin_target.write_text(plugin_source.read_text(encoding="utf-8"), encoding="utf-8")
-        print("Created opencode.json with COS instruction projection and native primitive guard plugin")
+        driver = cos_source / "scripts" / "_lib" / "settings-driver-opencode.sh"
+        if driver.exists():
+            subprocess.run(
+                ["bash", str(driver)],
+                cwd=project_dir,
+                env={**os.environ, "PROJECT_DIR": str(project_dir), "PROFILE": "full" if mode == "--full" else "default"},
+                text=True,
+                capture_output=True,
+                check=False,
+                timeout=30,
+            )
+        print("Created opencode.json with COS instruction projection, native primitive guard plugin, and COS hook projection")
         return
 
     if harness == "vscode-copilot":

@@ -38,11 +38,13 @@ from .bare_cli import BareCliAdapter
 from .base import CanonicalEvent, HarnessAdapter, HeartbeatTick
 from .claude_code import ClaudeCodeAdapter
 from .codex import CodexAdapter
+from .opencode import OpenCodeAdapter
 
 #: Order matters: more-specific adapters go first.
 #: BareCliAdapter is last — it acts as a fallback when no other adapter claims
 #: the payload (its detect_harness uses a no-other-harness-env-vars heuristic).
 ADAPTERS: List[Type[HarnessAdapter]] = [
+    OpenCodeAdapter,
     CodexAdapter,
     ClaudeCodeAdapter,
     AiderAdapter,
@@ -117,7 +119,7 @@ def _context_ids(
                 agent_id = str(value)
                 break
     if session_id is None:
-        for key in ("session_id", "codex_session_id", "codex_thread_id"):
+        for key in ("session_id", "codex_session_id", "codex_thread_id", "opencode_session_id"):
             value = payload.get(key)
             if value:
                 session_id = str(value)

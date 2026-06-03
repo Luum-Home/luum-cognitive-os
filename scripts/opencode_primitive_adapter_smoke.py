@@ -69,6 +69,29 @@ def _run_node_smoke(tmp: Path) -> dict[str, Any]:
     plugin_dir.mkdir(parents=True)
     (plugin_dir / "cos-primitive-guard.js").write_text(PLUGIN.read_text(encoding="utf-8"), encoding="utf-8")
     (plugin_dir / "package.json").write_text('{"type":"module"}\n', encoding="utf-8")
+    hooks_dir = project / "hooks"
+    hooks_dir.mkdir()
+    lifecycle_hook = hooks_dir / "opencode-lifecycle-smoke.sh"
+    lifecycle_hook.write_text("#!/usr/bin/env bash\nexit 0\n", encoding="utf-8")
+    lifecycle_hook.chmod(0o755)
+    (project / ".opencode" / "cos-hooks.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "cos-opencode-hooks.v1",
+                "harness": "opencode",
+                "events": {
+                    "session.created": [{"id": "opencode-lifecycle-smoke", "event": "SessionStart", "script": "hooks/opencode-lifecycle-smoke.sh"}],
+                    "tui.prompt.append": [{"id": "opencode-prompt-smoke", "event": "UserPromptSubmit", "script": "hooks/opencode-lifecycle-smoke.sh"}],
+                    "session.idle": [{"id": "opencode-stop-smoke", "event": "Stop", "script": "hooks/opencode-lifecycle-smoke.sh"}],
+                    "session.compacted": [{"id": "opencode-compact-smoke", "event": "PreCompact", "script": "hooks/opencode-lifecycle-smoke.sh"}],
+                },
+            },
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
     large_file = project / "large-private-file.txt"
     large_file.write_text("x" * 41000, encoding="utf-8")
 
@@ -78,6 +101,10 @@ def _run_node_smoke(tmp: Path) -> dict[str, Any]:
 import { CosPrimitiveGuard, SIGNED_PRIMITIVES } from './consumer/.opencode/plugins/cos-primitive-guard.js';
 const root = process.env.COGNITIVE_OS_PROJECT_DIR;
 const plugin = await CosPrimitiveGuard({ directory: root, worktree: root });
+await plugin['session.created']({ sessionID: 'opencode-smoke-session' });
+await plugin['tui.prompt.append']({ sessionID: 'opencode-smoke-session', prompt: 'private prompt omitted' });
+await plugin['session.idle']({ sessionID: 'opencode-smoke-session' });
+await plugin['session.compacted']({ sessionID: 'opencode-smoke-session' });
 const beforeCases = [
   ['destructive-git-blocker', 'bash', { command: 'git reset --hard private-branch-name' }, true],
   ['destructive-rm-blocker', 'bash', { command: 'rm -rf private-target-dir' }, true],
@@ -172,18 +199,21 @@ def build_report() -> dict[str, Any]:
     signed = [str(item) for item in raw_signed if item] if isinstance(raw_signed, list) else []
     by_id = {str(row.get("primitive_id")) for row in rows}
     missing_rows = sorted(set(signed) - by_id)
+    lifecycle_rows = sorted(item for item in by_id if item.startswith("opencode-") and item.endswith("-smoke"))
     failed_outcomes = sorted(key for key in signed if not bool(outcomes.get(key)))
-    status = "pass" if binary and node.get("node_returncode") == 0 and signed and not missing_rows and not failed_outcomes and node.get("content_free") else "fail"
+    lifecycle_ok = set(lifecycle_rows) == {"opencode-lifecycle-smoke", "opencode-prompt-smoke", "opencode-stop-smoke", "opencode-compact-smoke"}
+    status = "pass" if binary and node.get("node_returncode") == 0 and signed and not missing_rows and not failed_outcomes and lifecycle_ok and node.get("content_free") else "fail"
     return {
         "schema_version": "opencode-primitive-adapter-smoke.v1",
         "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
         "status": status,
         "opencode": {"binary": _portable_path(binary), "version": version},
-        "plugin": {"path": str(PLUGIN.relative_to(ROOT)), "events": ["tool.execute.before", "tool.execute.after"]},
+        "plugin": {"path": str(PLUGIN.relative_to(ROOT)), "events": ["session.created", "tui.prompt.append", "session.idle", "session.compacted", "experimental.session.compacting", "tool.execute.before", "tool.execute.after"]},
         "checks": {
             "plugin_loaded": node.get("node_returncode") == 0,
             "all_signed_outcomes_passed": not failed_outcomes,
             "all_signed_ledger_rows_present": not missing_rows,
+            "lifecycle_projection_rows_present": lifecycle_ok,
             "content_free_rows": bool(node.get("content_free")),
         },
         "supported_primitives": signed,
@@ -208,7 +238,7 @@ def render_markdown(report: dict[str, Any]) -> str:
         "",
         *[f"- {key}: `{value}`" for key, value in checks.items()],
         "",
-        "This smoke invokes the documented OpenCode project-plugin `tool.execute.before` and `tool.execute.after` event shapes without model calls. It does not run a paid LLM session.",
+        "This smoke invokes documented OpenCode project-plugin lifecycle, prompt, and tool event shapes without model calls. It does not run a paid LLM session.",
         "",
     ])
 

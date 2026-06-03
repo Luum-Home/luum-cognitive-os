@@ -16,6 +16,7 @@ It is declarative: native IDE file emission is delegated to governed harness pro
 ## Settings paths
 
 - `opencode.json`
+- `.opencode/cos-hooks.json`
 
 ## Rule
 

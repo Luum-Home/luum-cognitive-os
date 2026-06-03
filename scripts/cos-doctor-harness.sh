@@ -165,6 +165,39 @@ PYJSON
       emit_check warn "Bare-CLI projection" ".cognitive-os/cos-runner-hooks.json missing — run scripts/apply-efficiency-profile.sh --harness=bare-cli"
     fi
     ;;
+  opencode)
+    if [ -f "opencode.json" ]; then
+      emit_check ok "OpenCode projection" "opencode.json found"
+    else
+      emit_check fail "OpenCode projection" "opencode.json missing"
+    fi
+    if [ -f ".opencode/cos-hooks.json" ]; then
+      emit_check ok "OpenCode COS hook projection" ".opencode/cos-hooks.json found"
+      tmp="${TMPDIR:-/tmp}/cos_opencode_hook_check.$$"
+      python3 - <<'PYJSON' >"$tmp" 2>/dev/null || true
+import json
+from pathlib import Path
+p=Path('.opencode/cos-hooks.json')
+data=json.loads(p.read_text())
+events=(data.get('events') or {})
+for event in ['session.created','tui.prompt.append','tool.execute.before','tool.execute.after','session.idle','session.compacted']:
+    print(event, len(events.get(event, [])))
+PYJSON
+      if [ -s "$tmp" ]; then
+        while read -r event count; do emit_check ok "OpenCode event $event" "$count hook(s)"; done < "$tmp"
+      else
+        emit_check fail "OpenCode hook projection parse" "invalid .opencode/cos-hooks.json"
+      fi
+      rm -f "$tmp"
+    else
+      emit_check warn "OpenCode COS hook projection" ".opencode/cos-hooks.json missing — run scripts/apply-efficiency-profile.sh --harness=opencode"
+    fi
+    if [ -f ".opencode/plugins/cos-primitive-guard.js" ]; then
+      emit_check ok "OpenCode COS plugin" ".opencode/plugins/cos-primitive-guard.js found"
+    else
+      emit_check fail "OpenCode COS plugin" ".opencode/plugins/cos-primitive-guard.js missing"
+    fi
+    ;;
   *)
     emit_check warn "Harness projection" "unknown harness '$HARNESS'; running file-level checks only"
     ;;
@@ -202,6 +235,7 @@ check_adapter() {
 check_adapter "claude-code" "scripts/_lib/settings-driver-claude-code.sh" ".claude/settings.json" "lib/harness_adapter/claude_code.py"
 check_adapter "codex"       "scripts/_lib/settings-driver-codex.sh"       ".codex/hooks.json"      "lib/harness_adapter/codex.py"
 check_adapter "bare-cli"    "scripts/_lib/settings-driver-bare.sh"        ".cognitive-os/cos-runner-hooks.json" "lib/harness_adapter/bare_cli.py"
+check_adapter "opencode"    "scripts/_lib/settings-driver-opencode.sh"    "opencode.json"          "lib/harness_adapter/opencode.py"
 
 if command -v python3 >/dev/null 2>&1; then emit_check ok "python3" "available"; else emit_check fail "python3" "missing"; fi
 if command -v git >/dev/null 2>&1; then emit_check ok "git" "available"; else emit_check warn "git" "missing or unavailable"; fi

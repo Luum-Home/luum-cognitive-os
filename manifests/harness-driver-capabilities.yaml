@@ -102,20 +102,19 @@ drivers:
       - https://opencode.ai/docs/plugins/
       - https://opencode.ai/docs/agents/
       - https://open-code.ai/en/docs/rules
+      - scripts/_lib/settings-driver-opencode.sh
+      - lib/harness_adapter/opencode.py
+      - packages/opencode-adapter/plugins/cos-primitive-guard.js
+      - scripts/opencode_primitive_adapter_smoke.py
     supported_events:
       SessionStart:
-        status: limited
+        status: supported
         native_event: session.created
-        limitation: >
-          OpenCode exposes session events through plugins, but COS has not yet
-          signed a projection/smoke that maps SessionStart hooks into an
-          OpenCode plugin.
+        projection: settings-driver-opencode.sh plus cos-primitive-guard.js
       UserPromptSubmit:
-        status: limited
+        status: supported
         native_event: tui.prompt.append
-        limitation: >
-          TUI prompt events are plugin-accessible, but they are not yet signed
-          as equivalent to Claude/Codex UserPromptSubmit semantics.
+        projection: settings-driver-opencode.sh plus cos-primitive-guard.js
       PreToolUse:
         status: supported
         native_event: tool.execute.before
@@ -126,11 +125,9 @@ drivers:
         native_event: tool.execute.after
         matcher_semantics: tool_name_and_args
       Stop:
-        status: limited
+        status: supported
         native_event: session.idle
-        limitation: >
-          session.idle can support completion/summary style plugins, but stop
-          parity requires a signed COS adapter and runtime smoke.
+        projection: settings-driver-opencode.sh plus cos-primitive-guard.js
       SubagentStart:
         status: limited
         native_surface: agent.task_permissions
@@ -139,10 +136,12 @@ drivers:
           not yet signed lifecycle parity for SubagentStart.
       PreCompact:
         status: limited
-        native_event: experimental.session.compacting
+        native_event: session.compacted
+        legacy_native_event: experimental.session.compacting
         limitation: >
-          OpenCode exposes an experimental compaction hook; treat as limited
-          until COS signs a stable adapter contract.
+          Current OpenCode docs expose session.compacted while older builds may
+          use experimental.session.compacting. COS accepts both in the plugin,
+          but keeps PreCompact limited until compaction semantics are stable.
       TeammateIdle:
         status: cognitive_os_extension
         projection: requires_cos_or_opencode_plugin_adapter

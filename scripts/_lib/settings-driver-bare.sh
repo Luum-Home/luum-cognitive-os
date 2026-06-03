@@ -41,6 +41,14 @@ set -euo pipefail
 
 SCRIPT_SOURCE="${BASH_SOURCE[0]:-$0}"
 SCRIPT_DIR="$(cd "$(dirname "$SCRIPT_SOURCE")" && pwd)"
+COS_SOURCE_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
+if [ -z "${PYTHON_BIN:-}" ]; then
+  if [ -x "$COS_SOURCE_DIR/.venv/bin/python" ]; then
+    PYTHON_BIN="$COS_SOURCE_DIR/.venv/bin/python"
+  else
+    PYTHON_BIN="python3"
+  fi
+fi
 
 # ── Resolve project root ───────────────────────────────────────────────────────
 if [ -z "${PROJECT_DIR:-}" ]; then
@@ -68,7 +76,7 @@ done
 # canonical hook registry that drives Codex / Claude Code, with no shell-side
 # YAML parsing risk.  See settings-driver-codex.sh for the parallel pattern.
 bare_driver_emit() {
-  python3 - "$PROJECT_DIR" <<'PYEOF'
+  "$PYTHON_BIN" - "$PROJECT_DIR" <<'PYEOF'
 import json
 import sys
 from pathlib import Path
@@ -153,8 +161,8 @@ if [ "$SCRIPT_SOURCE" = "$0" ]; then
     TMP_GENERATED="$(mktemp)"
     trap 'rm -f "$TMP_GENERATED"' EXIT
     bare_driver_emit > "$TMP_GENERATED"
-    if command -v python3 >/dev/null 2>&1; then
-      python3 -c "
+    if [ -x "$PYTHON_BIN" ]; then
+      "$PYTHON_BIN" -c "
 import json, sys
 with open('$TMP_GENERATED') as f: a = json.dumps(json.load(f), sort_keys=True, indent=2)
 with open('$HOOKS_FILE') as f: b = json.dumps(json.load(f), sort_keys=True, indent=2)
@@ -169,7 +177,7 @@ else:
         echo "DRIFT: $HOOKS_FILE differs from generated output." >&2
         exit 1
       fi
-      echo "OK: $HOOKS_FILE is in sync (byte-level check, python3 not available)"
+      echo "OK: $HOOKS_FILE is in sync (byte-level check, python unavailable)"
     fi
     exit 0
   fi

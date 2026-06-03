@@ -27,9 +27,12 @@ DERIVED_BY_CONFIG = {
         "manifests/hook-quality.yaml",
         ".claude/settings.json",
         ".codex/hooks.json",
+        "opencode.json",
+        ".opencode/cos-hooks.json",
     ],
     "scripts/_lib/settings-driver-claude-code.sh": [".claude/settings.json"],
     "scripts/_lib/settings-driver-codex.sh": [".codex/hooks.json"],
+    "scripts/_lib/settings-driver-opencode.sh": ["opencode.json", ".opencode/cos-hooks.json"],
     "scripts/hook_quality_audit.py": ["manifests/hook-quality.yaml"],
 }
 
@@ -50,7 +53,7 @@ def fail(message: str, failures: list[str]) -> None:
 
 
 def check_hook_quality(failures: list[str]) -> None:
-    proc = run(["python3", "scripts/hook_quality_audit.py", "--check"])
+    proc = run([sys.executable, "scripts/hook_quality_audit.py", "--check"])
     if proc.returncode != 0:
         fail((proc.stderr + proc.stdout).strip(), failures)
 
@@ -121,7 +124,7 @@ def check_claude_registry_parity(failures: list[str]) -> None:
 
 
 def check_codex_supported_parity(failures: list[str]) -> None:
-    proc = run(["python3", "scripts/harness_parity_audit.py", "--source", "claude", "--target", "codex", "--strict", "--json"])
+    proc = run([sys.executable, "scripts/harness_parity_audit.py", "--source", "claude", "--target", "codex", "--strict", "--json"])
     if proc.returncode != 0:
         fail((proc.stderr + proc.stdout).strip(), failures)
 
@@ -152,6 +155,7 @@ def main() -> int:
     check_hook_quality(failures)
     check_driver("settings-driver-claude-code.sh", ".claude/settings.json", failures)
     check_driver("settings-driver-codex.sh", ".codex/hooks.json", failures)
+    check_driver("settings-driver-opencode.sh", "opencode.json", failures)
     check_claude_registry_parity(failures)
     check_codex_supported_parity(failures)
     report = {"status": "PASS" if not failures else "FAIL", "failures": failures}

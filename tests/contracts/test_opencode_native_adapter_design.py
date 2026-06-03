@@ -62,11 +62,18 @@ def _contracts() -> list[dict[str, Any]]:
 
 def test_opencode_adapter_design_has_native_surfaces_and_smoke_acceptance() -> None:
     text = DOC.read_text(encoding="utf-8")
+    assert "settings-driver-opencode.sh" in text
+    assert ".opencode/cos-hooks.json" in text
+    assert "lib/harness_adapter/opencode.py" in text
+    assert "session.created" in text
+    assert "tui.prompt.append" in text
+    assert "session.idle" in text
+    assert "session.compacted" in text
     assert "tool.execute.before" in text
     assert "tool.execute.after" in text
     assert "OpenCode permission" in text
     assert "primitive-interventions.jsonl" in text
-    assert "no raw command, file content, grep pattern, or secret" in text
+    assert "no raw command, file content, grep pattern, prompt text, or secret" in text
     assert "structural-advisory" in text
     assert "cos-primitive-guard.js" in text
 

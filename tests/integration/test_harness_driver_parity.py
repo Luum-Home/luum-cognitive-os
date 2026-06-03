@@ -27,6 +27,7 @@ LIB = REPO_ROOT / "scripts" / "_lib"
 BARE_DRIVER = LIB / "settings-driver-bare.sh"
 CC_DRIVER = LIB / "settings-driver-claude-code.sh"
 CODEX_DRIVER = LIB / "settings-driver-codex.sh"
+OPENCODE_DRIVER = LIB / "settings-driver-opencode.sh"
 DOCTOR = REPO_ROOT / "scripts" / "cos-doctor-harness.sh"
 APPLY = REPO_ROOT / "scripts" / "apply-efficiency-profile.sh"
 
@@ -46,6 +47,7 @@ def _isolated_project(tmp_path: Path) -> Path:
     (project / "scripts").symlink_to(REPO_ROOT / "scripts")
     (project / "hooks").symlink_to(REPO_ROOT / "hooks")
     (project / "lib").symlink_to(REPO_ROOT / "lib")
+    (project / "packages").symlink_to(REPO_ROOT / "packages")
     return project
 
 
@@ -169,7 +171,7 @@ def test_doctor_harness_lists_all_adapters():
         f"doctor exited unexpectedly: rc={result.returncode} stderr={result.stderr} stdout={result.stdout}"
     assert "adapters" in payload, "JSON output missing 'adapters' key"
     names = {a["adapter"] for a in payload["adapters"]}
-    assert names == {"claude-code", "codex", "bare-cli"}, \
+    assert names == {"claude-code", "codex", "bare-cli", "opencode"}, \
         f"adapter coverage incomplete: {names}"
     for entry in payload["adapters"]:
         assert entry["status"] == "ok", f"self-host adapter must be ready: {entry}"
@@ -221,3 +223,56 @@ def test_apply_profile_supports_bare_cli_harness(tmp_path: Path):
     assert out.exists(), "bare driver did not produce projection via apply wrapper"
     data = json.loads(out.read_text())
     assert data["harness"] == "bare_cli"
+
+
+def test_apply_profile_supports_opencode_harness(tmp_path: Path):
+    project = _isolated_project(tmp_path)
+    result = subprocess.run(
+        ["bash", str(APPLY), "default", "--harness=opencode"],
+        cwd=project,
+        env={**os.environ, "PROJECT_DIR": str(project)},
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert "OpenCode driver" in result.stdout
+    assert (project / "opencode.json").exists()
+    assert (project / ".opencode" / "cos-hooks.json").exists()
+
+
+def test_opencode_driver_emits_plugin_config_and_hook_projection(tmp_path: Path):
+    project = _isolated_project(tmp_path)
+    result = subprocess.run(
+        ["bash", str(OPENCODE_DRIVER)],
+        cwd=project,
+        env={**os.environ, "PROJECT_DIR": str(project)},
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    opencode = json.loads((project / "opencode.json").read_text())
+    hooks = json.loads((project / ".opencode/cos-hooks.json").read_text())
+    assert ".opencode/plugins/cos-primitive-guard.js" in opencode["plugin"]
+    assert opencode["experimental"]["cognitive_os_hooks"] == ".opencode/cos-hooks.json"
+    assert hooks["harness"] == "opencode"
+    assert "session.created" in hooks["events"]
+    assert "tui.prompt.append" in hooks["events"]
+    assert "session.idle" in hooks["events"]
+    assert (project / ".opencode/plugins/cos-primitive-guard.js").exists()
+
+    first_config = (project / "opencode.json").read_bytes()
+    first_hooks = (project / ".opencode/cos-hooks.json").read_bytes()
+    subprocess.run(["bash", str(OPENCODE_DRIVER)], cwd=project, env={**os.environ, "PROJECT_DIR": str(project)}, check=True, capture_output=True)
+    assert first_config == (project / "opencode.json").read_bytes()
+    assert first_hooks == (project / ".opencode/cos-hooks.json").read_bytes()
+
+    check = subprocess.run(
+        ["bash", str(OPENCODE_DRIVER), "--check"],
+        cwd=project,
+        env={**os.environ, "PROJECT_DIR": str(project)},
+        capture_output=True,
+        text=True,
+    )
+    assert check.returncode == 0, check.stderr + check.stdout

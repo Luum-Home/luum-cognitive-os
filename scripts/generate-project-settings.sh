@@ -37,7 +37,7 @@ while [ "$#" -gt 0 ]; do
       ;;
     --harness)
       if [ -z "${2:-}" ]; then
-        echo "Error: --harness requires a value (claude or codex)." >&2
+        echo "Error: --harness requires a value (claude, codex, or opencode)." >&2
         exit 1
       fi
       HARNESS="$2"
@@ -56,7 +56,7 @@ while [ "$#" -gt 0 ]; do
       echo ""
       echo "  --default  ADR-093 default tier (curated hook set)"
       echo "  --full     Full hook coverage"
-      echo "  --harness  Projection target: claude or codex (default: claude)"
+      echo "  --harness  Projection target: claude, codex, or opencode (default: claude)"
       echo ""
       echo "  Legacy (remapped to --default): --minimal, --standard, --lean"
       exit 0
@@ -75,8 +75,17 @@ case "$HARNESS" in
   codex)
     DRIVER_PROJECT_EXPR='${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}'
     ;;
+  opencode)
+    if [ -n "$OUTPUT" ]; then
+      PROJECT_DIR="$(cd "$(dirname "$OUTPUT")" && pwd)" PROFILE="${MODE#--}" bash "$COS_SOURCE_DIR/scripts/_lib/settings-driver-opencode.sh" >/dev/null
+    else
+      PROJECT_DIR="$(pwd)" PROFILE="${MODE#--}" bash "$COS_SOURCE_DIR/scripts/_lib/settings-driver-opencode.sh" >/dev/null
+      cat "$(pwd)/opencode.json"
+    fi
+    exit 0
+    ;;
   *)
-    echo "Error: unsupported harness '$HARNESS' (expected claude or codex)." >&2
+    echo "Error: unsupported harness '$HARNESS' (expected claude, codex, or opencode)." >&2
     exit 1
     ;;
 esac

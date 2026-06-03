@@ -1,0 +1,126 @@
+{
+  "events": {
+    "session.compacted": [
+      {
+        "command": "bash hooks/pre-compaction-flush.sh",
+        "event": "PreCompact",
+        "id": "pre-compaction-flush",
+        "matcher": "",
+        "native_event": "session.compacted",
+        "script": "hooks/pre-compaction-flush.sh"
+      }
+    ],
+    "session.created": [
+      {
+        "command": "bash hooks/crash-recovery.sh",
+        "event": "SessionStart",
+        "id": "crash-recovery",
+        "matcher": "",
+        "native_event": "session.created",
+        "script": "hooks/crash-recovery.sh"
+      },
+      {
+        "command": "bash hooks/host-tool-doctor.sh",
+        "event": "SessionStart",
+        "id": "host-tool-doctor",
+        "matcher": "",
+        "native_event": "session.created",
+        "script": "hooks/host-tool-doctor.sh"
+      },
+      {
+        "command": "bash hooks/session-init.sh",
+        "event": "SessionStart",
+        "id": "session-init",
+        "matcher": "",
+        "native_event": "session.created",
+        "script": "hooks/session-init.sh"
+      },
+      {
+        "command": "bash hooks/session-sanity.sh",
+        "event": "SessionStart",
+        "id": "session-sanity",
+        "matcher": "",
+        "native_event": "session.created",
+        "script": "hooks/session-sanity.sh"
+      }
+    ],
+    "session.idle": [
+      {
+        "command": "bash hooks/session-cleanup.sh",
+        "event": "Stop",
+        "id": "session-cleanup",
+        "matcher": "",
+        "native_event": "session.idle",
+        "script": "hooks/session-cleanup.sh"
+      },
+      {
+        "command": "bash hooks/session-learning.sh",
+        "event": "Stop",
+        "id": "session-learning",
+        "matcher": "",
+        "native_event": "session.idle",
+        "script": "hooks/session-learning.sh"
+      }
+    ],
+    "tool.execute.before": [
+      {
+        "command": "bash hooks/bash-hot-path-dispatcher.sh",
+        "event": "PreToolUse",
+        "id": "bash-hot-path-dispatcher",
+        "matcher": "Bash",
+        "native_event": "tool.execute.before",
+        "script": "hooks/bash-hot-path-dispatcher.sh"
+      }
+    ],
+    "tui.prompt.append": [
+      {
+        "command": "bash hooks/memory-prefetch.sh",
+        "event": "UserPromptSubmit",
+        "id": "memory-prefetch",
+        "matcher": "",
+        "native_event": "tui.prompt.append",
+        "script": "hooks/memory-prefetch.sh"
+      },
+      {
+        "command": "bash hooks/session-heartbeat.sh",
+        "event": "UserPromptSubmit",
+        "id": "session-heartbeat-on-prompt",
+        "matcher": "",
+        "native_event": "tui.prompt.append",
+        "script": "hooks/session-heartbeat.sh"
+      },
+      {
+        "command": "bash hooks/session-wrapup-trigger.sh",
+        "event": "UserPromptSubmit",
+        "id": "session-wrapup-trigger",
+        "matcher": "",
+        "native_event": "tui.prompt.append",
+        "script": "hooks/session-wrapup-trigger.sh"
+      },
+      {
+        "command": "bash hooks/user-prompt-capture.sh",
+        "event": "UserPromptSubmit",
+        "id": "user-prompt-capture",
+        "matcher": "",
+        "native_event": "tui.prompt.append",
+        "script": "hooks/user-prompt-capture.sh"
+      }
+    ]
+  },
+  "harness": "opencode",
+  "limited_events": {
+    "PreCompact": "OpenCode docs expose session.compacted; older builds may use experimental.session.compacting",
+    "SubagentStart": "OpenCode uses task permission semantics instead of a direct lifecycle hook"
+  },
+  "profile": "maintainer",
+  "schema_version": "cos-opencode-hooks.v1",
+  "source": "cognitive-os.yaml:harness.hooks",
+  "supported_events": [
+    "PostToolUse",
+    "PreCompact",
+    "PreToolUse",
+    "SessionStart",
+    "Stop",
+    "UserPromptSubmit"
+  ]
+}

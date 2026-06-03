@@ -33,6 +33,10 @@ func ResolveSettingsDriver(projectRoot string) SettingsDriver {
 
 	codexPath := filepath.Join(projectRoot, ".codex", "hooks.json")
 	claudePath := filepath.Join(projectRoot, ".claude", "settings.json")
+	opencodePath := filepath.Join(projectRoot, "opencode.json")
+	if fileExists(opencodePath) && !fileExists(codexPath) && !fileExists(claudePath) {
+		return settingsDriverForHarness("opencode")
+	}
 	if fileExists(codexPath) && !fileExists(claudePath) {
 		return settingsDriverForHarness("codex")
 	}
@@ -59,7 +63,12 @@ func settingsDriverForHarness(harness string) SettingsDriver {
 	case "agents-md":
 		return structuralSettingsDriver("agents-md", "AGENTS.md")
 	case "opencode":
-		return structuralSettingsDriver("opencode", "opencode.json")
+		return SettingsDriver{
+			Harness:         "opencode",
+			SettingsRelPath: "opencode.json",
+			ProjectExpr:     "${COGNITIVE_OS_PROJECT_DIR:-${OPENCODE_PROJECT_DIR:-$PWD}}",
+			DisplayPath:     "opencode.json (+ .opencode/cos-hooks.json)",
+		}
 	case "vscode-copilot":
 		return structuralSettingsDriver("vscode-copilot", filepath.Join(".github", "copilot-instructions.md"))
 	case "cursor":

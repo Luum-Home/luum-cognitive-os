@@ -2393,7 +2393,8 @@
   "proof_level": "governed-wrapper-enforced",
   "schema_version": "portable-ai-adapter.v1",
   "settings_paths": [
-    "opencode.json"
+    "opencode.json",
+    ".opencode/cos-hooks.json"
   ],
   "status": "implemented"
 }

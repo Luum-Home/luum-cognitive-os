@@ -3,19 +3,25 @@
     "all_signed_ledger_rows_present": true,
     "all_signed_outcomes_passed": true,
     "content_free_rows": true,
+    "lifecycle_projection_rows_present": true,
     "plugin_loaded": true
   },
   "failed_outcomes": [],
-  "generated_at": "2026-05-10T18:39:20+00:00",
-  "ledger_row_count": 30,
+  "generated_at": "2026-06-03T17:09:59+00:00",
+  "ledger_row_count": 34,
   "missing_ledger_rows": [],
   "node_stderr_tail": "",
   "opencode": {
-    "binary": "$HOME/bin/opencode",
-    "version": "Unable to find application named 'OpenCode'"
+    "binary": "$HOME/.opencode/bin/opencode",
+    "version": "1.15.12"
   },
   "plugin": {
     "events": [
+      "session.created",
+      "tui.prompt.append",
+      "session.idle",
+      "session.compacted",
+      "experimental.session.compacting",
       "tool.execute.before",
       "tool.execute.after"
     ],

@@ -3,8 +3,9 @@
 // Loaded from .opencode/plugins/cos-primitive-guard.js by OpenCode.
 // Emits content-free primitive-interventions rows and throws for blocking actions.
 
-import { mkdirSync, appendFileSync, statSync } from "node:fs"
+import { mkdirSync, appendFileSync, statSync, existsSync, readFileSync } from "node:fs"
 import { join, relative } from "node:path"
+import { spawnSync } from "node:child_process"
 
 const SIGNED_PRIMITIVES = [
   "destructive-git-blocker",
@@ -103,6 +104,91 @@ function emitIntervention(root, row) {
     target_ref: sanitize(row.target_ref),
   }
   appendFileSync(join(dir, "primitive-interventions.jsonl"), JSON.stringify(payload) + "\n")
+}
+
+function loadHookProjection(root) {
+  const path = join(root, ".opencode", "cos-hooks.json")
+  if (!existsSync(path)) return { events: {} }
+  try {
+    const parsed = JSON.parse(readFileSync(path, "utf8"))
+    return parsed && typeof parsed === "object" ? parsed : { events: {} }
+  } catch {
+    return { events: {} }
+  }
+}
+
+function eventSessionId(input) {
+  return (
+    process.env.COGNITIVE_OS_SESSION_ID ||
+    process.env.OPENCODE_SESSION_ID ||
+    input?.sessionID ||
+    input?.session_id ||
+    input?.session?.id ||
+    input?.event?.properties?.info?.id ||
+    input?.event?.properties?.sessionID ||
+    "opencode-session"
+  )
+}
+
+function projectedHooksFor(projection, nativeEvent) {
+  const events = projection?.events || {}
+  const direct = events[nativeEvent] || []
+  if (nativeEvent === "experimental.session.compacting") {
+    return [...direct, ...(events["session.compacted"] || [])]
+  }
+  return direct
+}
+
+function runProjectedHook(root, hook, nativeEvent, input) {
+  const script = String(hook?.script || "")
+  if (!script || script.includes("..")) return null
+  const scriptPath = join(root, script)
+  if (!existsSync(scriptPath)) return null
+  const timeout = Number(process.env.COS_OPENCODE_HOOK_TIMEOUT_MS || "1500")
+  const payload = {
+    hook_event: hook.event,
+    opencode_event: nativeEvent,
+    session_id: eventSessionId(input),
+    cwd: root,
+    harness: "opencode",
+  }
+  const result = spawnSync("bash", [scriptPath], {
+    cwd: root,
+    input: JSON.stringify(payload),
+    encoding: "utf8",
+    timeout,
+    env: {
+      ...process.env,
+      COGNITIVE_OS_HARNESS: "opencode",
+      COGNITIVE_OS_PROJECT_DIR: root,
+      OPENCODE_PROJECT_DIR: root,
+      COGNITIVE_OS_SESSION_ID: payload.session_id,
+      OPENCODE_SESSION_ID: payload.session_id,
+    },
+  })
+  return {
+    status: result.status,
+    signal: result.signal,
+    timedOut: Boolean(result.error && result.error.code === "ETIMEDOUT"),
+  }
+}
+
+function emitProjectedHookRows(root, projection, nativeEvent, input) {
+  const hooks = projectedHooksFor(projection, nativeEvent)
+  for (const hook of hooks) {
+    const result = runProjectedHook(root, hook, nativeEvent, input)
+    emitIntervention(root, {
+      primitive_id: hook.id || sanitize(hook.script),
+      primitive_source: hook.script || "unknown",
+      action_kind: result?.status === 2 ? "block" : result?.timedOut ? "warn" : "observe",
+      reason_code: result?.timedOut ? "opencode_projected_hook_timeout" : "opencode_projected_hook",
+      target_ref: nativeEvent,
+      native_event: nativeEvent,
+      hook_event: hook.event,
+      hook_status: result?.status ?? null,
+      hook_signal: result?.signal ?? null,
+    })
+  }
 }
 
 function row(primitiveId, actionKind, reasonCode, targetRef, extra = {}) {
@@ -206,7 +292,23 @@ function maybeThrow(rowData) {
 
 export const CosPrimitiveGuard = async (ctx) => {
   const root = projectRoot(ctx)
+  const projection = loadHookProjection(root)
   return {
+    "session.created": async (input) => {
+      emitProjectedHookRows(root, projection, "session.created", input)
+    },
+    "session.idle": async (input) => {
+      emitProjectedHookRows(root, projection, "session.idle", input)
+    },
+    "tui.prompt.append": async (input) => {
+      emitProjectedHookRows(root, projection, "tui.prompt.append", input)
+    },
+    "session.compacted": async (input) => {
+      emitProjectedHookRows(root, projection, "session.compacted", input)
+    },
+    "experimental.session.compacting": async (input) => {
+      emitProjectedHookRows(root, projection, "experimental.session.compacting", input)
+    },
     "tool.execute.before": async (input, output) => {
       const toolName = String(input?.tool || output?.tool || "unknown").toLowerCase()
       const args = output?.args || input?.args || {}

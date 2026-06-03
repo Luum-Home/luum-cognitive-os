@@ -89,8 +89,16 @@ def test_default_install_projects_core_primitives_into_consumer_project(tmp_path
     if harness == "opencode":
         opencode = json.loads((tmp_path / "opencode.json").read_text())
         assert ".cognitive-os/rules/cos/RULES-COMPACT.md" in opencode["instructions"]
+        assert ".opencode/plugins/cos-primitive-guard.js" in opencode["plugin"]
+        assert opencode["experimental"]["cognitive_os_hooks"] == ".opencode/cos-hooks.json"
         assert opencode["permission"]["bash"] == "ask"
         assert "COGNITIVE_OS_OPENCODE_START" in (tmp_path / "AGENTS.md").read_text()
+        assert (tmp_path / ".opencode" / "plugins" / "cos-primitive-guard.js").exists()
+        projected = json.loads((tmp_path / ".opencode" / "cos-hooks.json").read_text())
+        assert projected["harness"] == "opencode"
+        assert "session.created" in projected["events"]
+        assert "tui.prompt.append" in projected["events"]
+        assert "session.idle" in projected["events"]
     if harness == "vscode-copilot":
         assert "Cognitive OS" in (tmp_path / ".github/copilot-instructions.md").read_text()
         assert json.loads((tmp_path / ".vscode/mcp.json").read_text()) == {"servers": {}}

@@ -2050,7 +2050,7 @@
   "lifecycle_primitives_supporting_harness": 1,
   "limitations": [
     "The signed runtime slice is model-free and plugin-wrapper based; it does not prove a paid/account-backed OpenCode LLM session.",
-    "Structural opencode.json projection alone is not runtime enforcement. Runtime claims apply only to primitives covered by the signed cos-primitive-guard.js smoke.",
+    "OpenCode now has native driver projection for lifecycle, prompt, and tool events, but runtime enforcement claims still apply only to primitives covered by the signed cos-primitive-guard.js smoke.",
     "Remaining registry-backed primitives stay structural-advisory until their own smoke evidence is signed."
   ],
   "native_file_emission": false,
@@ -2065,7 +2065,8 @@
   "proof_level": "governed-wrapper-enforced",
   "schema_version": "portable-ai-profile.v1",
   "settings_paths": [
-    "opencode.json"
+    "opencode.json",
+    ".opencode/cos-hooks.json"
   ],
   "status": "implemented"
 }

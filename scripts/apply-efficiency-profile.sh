@@ -43,7 +43,7 @@
 # with a stderr note so existing deployments keep working.
 #
 # Usage:
-#   bash scripts/apply-efficiency-profile.sh [core|maintainer|default|full] [--harness=claude-code|codex|all]
+#   bash scripts/apply-efficiency-profile.sh [core|maintainer|default|full] [--harness=claude-code|codex|opencode|all]
 #
 # If no argument is given, reads from cognitive-os.yaml.
 # Idempotent — safe to run multiple times.
@@ -228,6 +228,11 @@ run_bare_driver() {
   bash "$LIB_DIR/settings-driver-bare.sh"
 }
 
+run_opencode_driver() {
+  echo "Running OpenCode driver..."
+  bash "$LIB_DIR/settings-driver-opencode.sh"
+}
+
 case "$HARNESS" in
   claude-code)
     run_claude_code_driver
@@ -238,13 +243,17 @@ case "$HARNESS" in
   bare-cli)
     run_bare_driver
     ;;
+  opencode)
+    run_opencode_driver
+    ;;
   all)
     run_claude_code_driver
     run_codex_driver
     run_bare_driver
+    run_opencode_driver
     ;;
   *)
-    echo "ERROR: Unknown harness '$HARNESS'. Valid: claude-code, codex, bare-cli, all." >&2
+    echo "ERROR: Unknown harness '$HARNESS'. Valid: claude-code, codex, bare-cli, opencode, all." >&2
     exit 1
     ;;
 esac
