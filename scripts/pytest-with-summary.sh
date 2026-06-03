@@ -17,19 +17,24 @@ set -uo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 REPORT_ROOT="${COS_TEST_REPORT_DIR:-$PROJECT_DIR/.cognitive-os/reports/test-runs}"
-if [ -z "${PYTEST_BIN:-}" ]; then
-  if [ -x "$PROJECT_DIR/.venv/bin/python" ]; then
-    PYTEST_BIN="$PROJECT_DIR/.venv/bin/python -m pytest"
+if [ -z "${PYTHON_BIN:-}" ]; then
+  if [ -n "${PYTHON:-}" ]; then
+    PYTHON_BIN="$PYTHON"
+  elif [ -x "$PROJECT_DIR/.venv/bin/python" ]; then
+    PYTHON_BIN="$PROJECT_DIR/.venv/bin/python"
   else
-    PYTEST_BIN="${PYTHON:-python3} -m pytest"
+    PYTHON_BIN="python3"
   fi
+fi
+if [ -z "${PYTEST_BIN:-}" ]; then
+  PYTEST_BIN="$PYTHON_BIN -m pytest"
 fi
 REPORT_KEEP="${COS_TEST_REPORT_KEEP:-30}"
 REPORT_MAX_MIB="${COS_TEST_REPORT_MAX_MIB:-120}"
 
 _prune_test_reports() {
   [ -d "$REPORT_ROOT" ] || return 0
-  REPORT_ROOT="$REPORT_ROOT" REPORT_KEEP="$REPORT_KEEP" REPORT_MAX_MIB="$REPORT_MAX_MIB" REPORT_PROTECT="${REPORT_PROTECT:-}" python3 - <<'PYPRUNE'
+  REPORT_ROOT="$REPORT_ROOT" REPORT_KEEP="$REPORT_KEEP" REPORT_MAX_MIB="$REPORT_MAX_MIB" REPORT_PROTECT="${REPORT_PROTECT:-}" "$PYTHON_BIN" - <<'PYPRUNE'
 from __future__ import annotations
 
 import os
@@ -191,7 +196,7 @@ if [ "$_has_n_flag" -eq 0 ]; then
       _lane_parallel=""
       _lane_name=""
       if [ -f "$_LANES_YAML" ]; then
-        _lane_result="$(python3 - "$_LANES_YAML" "$@" <<'PYLANE'
+        _lane_result="$("$PYTHON_BIN" - "$_LANES_YAML" "$@" <<'PYLANE'
 import sys, yaml, pathlib
 
 lanes_yaml = sys.argv[1]
@@ -231,7 +236,7 @@ PYLANE
         # YAML lane registry is present and matched a lane.
         case "$_lane_parallel" in
           true | True)
-            _workers="$(python3 "$SCRIPT_DIR/detect_runner_capacity.py" 2>/dev/null || echo "auto")"
+            _workers="$("$PYTHON_BIN" "$SCRIPT_DIR/detect_runner_capacity.py" 2>/dev/null || echo "auto")"
             echo "[pytest-with-summary] Lane: $_lane_name | parallel: true | workers: $_workers (adaptive)"
             ;;
           false | False)
@@ -245,7 +250,7 @@ PYLANE
             echo "[pytest-with-summary] Lane: $_lane_name | parallel: marker-split | workers: 0 (adaptive)"
             ;;
           *)
-            _workers="$(python3 "$SCRIPT_DIR/detect_runner_capacity.py" 2>/dev/null || echo "auto")"
+            _workers="$("$PYTHON_BIN" "$SCRIPT_DIR/detect_runner_capacity.py" 2>/dev/null || echo "auto")"
             echo "[pytest-with-summary] Lane: $_lane_name | parallel: unknown ($_lane_parallel) | workers: $_workers (adaptive fallback)"
             ;;
         esac
@@ -264,7 +269,7 @@ PYLANE
           _workers="0"
           echo "[pytest-with-summary] Lane: legacy-stateful | parallel: false | workers: 0 (stateful-default)"
         else
-          _workers="$(python3 "$SCRIPT_DIR/detect_runner_capacity.py" 2>/dev/null || echo "auto")"
+          _workers="$("$PYTHON_BIN" "$SCRIPT_DIR/detect_runner_capacity.py" 2>/dev/null || echo "auto")"
           echo "[pytest-with-summary] Lane: legacy-unknown | parallel: true | workers: $_workers (stateful-default)"
         fi
         unset _stateful_lane
@@ -332,8 +337,8 @@ echo "[pytest-with-summary] Command: $PYTEST_BIN $* --junitxml $junit"
 _metrics_dir="${COS_METRICS_DIR:-$PROJECT_DIR/.cognitive-os/metrics/test-runs}/${timestamp}"
 mkdir -p "$_metrics_dir"
 _capacity_json="$_metrics_dir/capacity.json"
-_capacity_raw="$(python3 "$SCRIPT_DIR/detect_runner_capacity.py" --json 2>/dev/null || echo '{}')"
-python3 - "$_capacity_json" "$timestamp" "${_effective_workers:-}" "$junit" "${COGNITIVE_OS_SESSION_ID:-}" "$_capacity_raw" <<'PYCAPACITY'
+_capacity_raw="$("$PYTHON_BIN" "$SCRIPT_DIR/detect_runner_capacity.py" --json 2>/dev/null || echo '{}')"
+"$PYTHON_BIN" - "$_capacity_json" "$timestamp" "${_effective_workers:-}" "$junit" "${COGNITIVE_OS_SESSION_ID:-}" "$_capacity_raw" <<'PYCAPACITY'
 from __future__ import annotations
 
 import json
@@ -443,7 +448,7 @@ skip_registry_tool="$SCRIPT_DIR/test_skip_registry.py"
 skip_registry_manifest="$PROJECT_DIR/manifests/test-skip-registry.yaml"
 if [ "${COS_TEST_SKIP_REGISTRY:-1}" != "0" ] && [ -n "${_caller_lane:-}" ] && [ -f "$skip_registry_tool" ] && [ -f "$skip_registry_manifest" ] && [ -f "$junit" ]; then
   set +e
-  python3 "$skip_registry_tool" \
+  "$PYTHON_BIN" "$skip_registry_tool" \
     --registry "$skip_registry_manifest" \
     --junit "$junit" \
     --lane "$_caller_lane" \
@@ -474,7 +479,7 @@ COS_TEST_RESOURCE_DOCKER_POLICY="${_caller_docker_policy:-}" \
 COS_TEST_RESOURCE_COST_POLICY="${_caller_cost_policy:-}" \
 COS_TEST_RESOURCE_ARTIFACT_POLICY="${_caller_artifact_policy:-}" \
 COS_TEST_RESOURCE_OUTCOME="$_resource_outcome" \
-python3 - "$resource_policy_json" <<'PYRESOURCE'
+"$PYTHON_BIN" - "$resource_policy_json" <<'PYRESOURCE'
 from __future__ import annotations
 
 import json
@@ -515,7 +520,7 @@ PYRESOURCE
   if [ -f "$skip_registry_json" ]; then
     echo
     echo "## Skip Registry"
-    python3 - "$skip_registry_json" <<'PYSKIPSUMMARY'
+    "$PYTHON_BIN" - "$skip_registry_json" <<'PYSKIPSUMMARY'
 from __future__ import annotations
 
 import json
@@ -545,7 +550,7 @@ PYSKIPSUMMARY
 ln -sfn "$run_dir" "$latest_link" 2>/dev/null || true
 
 if [ -f "$inventory_tool" ]; then
-  python3 "$inventory_tool" --run-dir "$run_dir" >/dev/null 2>&1 || true
+  "$PYTHON_BIN" "$inventory_tool" --run-dir "$run_dir" >/dev/null 2>&1 || true
 fi
 
 REPORT_PROTECT="$run_dir" _prune_test_reports
