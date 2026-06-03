@@ -5,6 +5,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.29.21] - 2026-06-03 — "Installer and Codex Projection Hardening"
+
+### Added
+- Added Codex/agents skill projection coverage for the shared DoD primitive.
+
+### Fixed
+- Fixed local `install.sh --from` installs by replacing the broad rsync staging path with a deterministic source allowlist copy.
+- Fixed Codex profile installs so the staged source includes `.claude/settings.json`, allowing the official settings generator to emit `.codex/hooks.json`.
+- Stabilized the patch-release validation lane by invoking the Bun install policy audit through `python3` and disabling pytest plugin autoload for bounded release tests.
+
+### Validation
+- `scripts/cos-patch-release validate` is the required patch-release validation lane.
+
 ## [0.29.20] - 2026-06-02 — "Scope Portability CI Fix"
 
 ### Added
