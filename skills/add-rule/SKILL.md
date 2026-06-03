@@ -65,7 +65,7 @@ Then fill in the template. The field contract (ADR-067 Phase 2) requires:
 
 | Field | Requirement |
 |---|---|
-| `<!-- SCOPE: ... -->` | Line 1. Must be one of: `os-only`, `project`, `both` |
+| `<!-- SCOPE: ... -->` | Line 1. One of: `os-only`, `project`, `both` |
 | `# Title` | H1 heading present |
 | Opening section | One of: `## Purpose`, `## Rule`, `## Principle`, `## Mandate` |
 | `## Contextual Trigger` | Required if body mentions "Contextual Trigger" or has `<!-- STATUS: contextual -->` |
@@ -84,7 +84,7 @@ What this rule enforces and why it exists.
 ## Rule
 
 The specific constraint or protocol. Use imperative language:
-- MUST, MUST NOT, SHOULD, NEVER
+- Required / prohibited / recommended language, using proportionate wording
 
 ## Rationale
 
@@ -96,7 +96,7 @@ This rule is loaded when: keyword1, keyword2, keyword3.
 ```
 
 Rule writing guidelines:
-- Be prescriptive ("DO this", "NEVER do that"), not descriptive
+- Be prescriptive (name the action and scope), not merely descriptive
 - Use tables for structured constraints
 - Reference other rules by filename if there are dependencies
 - Keep under 200 lines; split into multiple rules if longer
@@ -198,6 +198,6 @@ not use harness-specific projection as proof that the policy itself is portable.
 - [ ] `ls .claude/rules/{rule-name}.md` resolves (symlink present)
 - [ ] Rule appears in `rules/RULES-COMPACT.md` under the correct section
 - [ ] If always-active: rule has no "Contextual Trigger" requirement that would prevent loading
-- [ ] Rule uses imperative language (MUST/NEVER/SHOULD), not descriptive language
-- [ ] Harness-specific enforcement details do not replace the policy definition
+- [ ] Rule uses clear action language and explicit scope, not only descriptive language
+- [ ] Policy definition remains primary; harness-specific enforcement details support it
 - [ ] Hook-backed/generated projection changes pass `scripts/cos-install-projection-audit --json`

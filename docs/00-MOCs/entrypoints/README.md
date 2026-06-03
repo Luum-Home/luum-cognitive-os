@@ -10,6 +10,10 @@ The durable product promise is: make coding agents governable, verifiable, and p
 
 The repo still contains ambitious future architecture for squads, manager agents, dashboards, and control planes. Those surfaces are useful design material, but they are not first-contact product promises until backed by repeatable demos, tests, and operator workflows.
 
+## Prompt and context engineering
+
+- [Prompt Modernization Doctrine](../../04-Concepts/architecture/prompt-modernization.md) — guidance for updating prompts, rules, skills, and hook-injected context for modern Claude/Codex behavior without weakening deterministic safety gates.
+
 
 ## Goal-loop and completion-contract research
 

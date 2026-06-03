@@ -36,7 +36,7 @@ Session:
 - `claude-advantaged`
 - `claude-only`
 
-Do not call a surface portable unless it is either:
+Call a surface portable when it is either:
 
 - implemented through stable internal contracts, or
 - explicitly projected via a harness driver and tested that way

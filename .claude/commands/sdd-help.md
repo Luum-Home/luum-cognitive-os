@@ -21,7 +21,7 @@ description: Load full Spec-Driven Development pipeline spec (phases, DAG, fast-
 - `/sdd-improve [change]` → `sdd-improve`
 - `/sdd-archive [change]` → `sdd-archive`
 
-Meta-commands (`/sdd-new`, `/sdd-continue`, `/sdd-ff`) are orchestrator-handled. Do NOT invoke as skills.
+Meta-commands (`/sdd-new`, `/sdd-continue`, `/sdd-ff`) are orchestrator-handled rather than skill invocations.
 
 ## Dependency Graph
 ```
@@ -40,14 +40,14 @@ Use `SDDPipeline.get_phases(model, config)` from `lib/sdd_pipeline.py` to resolv
 
 ## Apply-Verify Cycle
 1. **PASS** / **PASS WITH WARNINGS** → `sdd-archive`. Warnings noted, no retries.
-2. **FAIL with CRITICALs** → retry loop: load DAG state (`sdd/{change}/state`), increment retry_count. If ≥3 → STOP, report. If <3 → re-launch `sdd-apply` with CRITICALs + failing scenarios, then re-launch `sdd-verify`. Update DAG state after EVERY phase transition.
-3. **FAIL without CRITICALs** → archive with warnings noted.
+2. **FAIL with blocking findings** → retry loop: load DAG state (`sdd/{change}/state`), increment retry_count. If ≥3 → STOP, report. If <3 → re-launch `sdd-apply` with blocking findings + failing scenarios, then re-launch `sdd-verify`. Update DAG state after EVERY phase transition.
+3. **FAIL without blocking findings** → archive with warnings noted.
 
 ## Loop Rules
-- NEVER retry without FAIL+CRITICALs
-- NEVER exceed 3 retries
+- Retry only after FAIL with blocking findings
+- Cap retries at 3
 - Save DAG state after EVERY transition
-- Pass only CRITICALs as retry context
+- Pass only blocking findings as retry context
 - Each retry = fresh sub-agent
 
 ## Result Contract

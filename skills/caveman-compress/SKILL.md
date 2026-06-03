@@ -72,7 +72,7 @@ cd .claude/plugins/caveman/caveman-compress && python3 -m scripts <absolute_file
 - Redundant phrasing: "in order to" → "to", "make sure to" → "ensure", "the reason is because" → "because"
 - Connective fluff: "however", "furthermore", "additionally", "in addition"
 
-### Preserve EXACTLY (never modify)
+### Preserve exactly
 - Code blocks (fenced ``` and indented)
 - Inline code (`backtick content`)
 - URLs and links (full URLs, markdown links)
@@ -92,32 +92,32 @@ cd .claude/plugins/caveman/caveman-compress && python3 -m scripts <absolute_file
 
 ### Compress
 - Use short synonyms: "big" not "extensive", "fix" not "implement a solution for", "use" not "utilize"
-- Fragments OK: "Run tests before commit" not "You should always run tests before committing"
+- Fragments OK: "Run tests before commit" not "You should run tests before committing"
 - Drop "you should", "make sure to", "remember to" — just state the action
 - Merge redundant bullets that say the same thing differently
 - Keep one example where multiple examples show the same pattern
 
-CRITICAL RULE:
-Anything inside ``` ... ``` must be copied EXACTLY.
-Do not:
+Code fence preservation:
+Anything inside ``` ... ``` is copied exactly.
+Avoid:
 - remove comments
 - remove spacing
 - reorder lines
 - shorten commands
 - simplify anything
 
-Inline code (`...`) must be preserved EXACTLY.
-Do not modify anything inside backticks.
+Inline code (`...`) is preserved exactly.
+Leave content inside backticks unchanged.
 
 If file contains code blocks:
 - Treat code blocks as read-only regions
 - Only compress text outside them
-- Do not merge sections around code
+- Keep sections around code separate
 
 ## Pattern
 
 Original:
-> You should always make sure to run the test suite before pushing any changes to the main branch. This is important because it helps catch bugs early and prevents broken builds from being deployed to production.
+> Run tests before pushing to main. Catches bugs early. Prevents broken deploys.
 
 Compressed:
 > Run tests before push to main. Catch bugs early, prevent broken prod deploys.
@@ -131,18 +131,18 @@ Compressed:
 ## Boundaries
 
 - ONLY compress natural language files (.md, .txt, extensionless)
-- NEVER modify: .py, .js, .ts, .json, .yaml, .yml, .toml, .env, .lock, .css, .html, .xml, .sql, .sh
+- Skip code/config/data files: .py, .js, .ts, .json, .yaml, .yml, .toml, .env, .lock, .css, .html, .xml, .sql, .sh
 - If file has mixed content (prose + code), compress ONLY the prose sections
 - If unsure whether something is code or prose, leave it unchanged
 - Original file is backed up as FILE.original.md before overwriting
-- Never compress FILE.original.md (skip it)
+- Skip FILE.original.md
 
-## WARNING: Do Not Compress Rules Files
+## Rule Files Are Out of Scope
 
-**NEVER run caveman-compress on files in `rules/`, `.cognitive-os/rules/`, or any file containing**
+Skip files in `rules/`, `.cognitive-os/rules/`, or any file containing
 **conditional logic, negations, or behavioral constraints.**
 
-Risk: compression strips negations ("NEVER", "NOT", "do not") and loses conditional nuance
+Risk: compression can strip negations ("NEVER", "NOT", "do not") and lose conditional nuance
 ("if X then Y, else Z" may compress to "X → Y" losing the else branch).
 
 **Recommended for compression:**

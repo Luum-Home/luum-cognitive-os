@@ -25,29 +25,29 @@ routing_intents:
 Read the current phase from `cognitive-os.yaml` -> `project.phase`.
 
 ### Phase: reconstruction
-When in reconstruction phase, ALL agents MUST:
+In reconstruction phase, agents:
 - Follow the project's declared framework STRICTLY (per `cognitive-os.yaml -> project.architecture.frameworks`)
-- REWRITE code that doesn't follow standards (don't patch, don't document as "future work")
+- Rewrite code that does not follow standards instead of patching around it or documenting it as future work
 - Break existing patterns if they're wrong
 - Not worry about backwards compatibility
 - If something doesn't compile after rewriting, FIX IT in the same session
 
 ### Phase: stabilization
-When in stabilization phase, ALL agents MUST:
+In stabilization phase, agents:
 - Follow the standard STRICTLY
 - REWRITE code that doesn't follow standards
 - Maintain backwards compatibility where possible
 - Fix remaining issues before they accumulate
 
 ### Phase: production
-When in production phase, ALL agents MUST:
+In production phase, agents:
 - NOT break existing functionality
 - Use feature flags for changes
 - Document risky changes as proposals, not implementations
 - Maintain backwards compatibility
 
 ### Phase: maintenance
-When in maintenance phase, ALL agents MUST:
+In maintenance phase, agents:
 - Only fix bugs and security issues
 - Minimal changes, maximum stability
 - Document everything as future work unless critical
@@ -67,10 +67,10 @@ Read architecture standards from `cognitive-os.yaml -> project.architecture`. Th
 
 ### Implementation Readiness Gate (BMAD v6)
 
-Before any `sdd-apply` phase, the orchestrator MUST run `/readiness-check`:
+Before any `sdd-apply` phase, the orchestrator runs `/readiness-check`:
 - Validates: specs complete, design reviewed, tasks broken down, dependencies identified, mocks configured, tests planned
-- Verdicts: PASS (proceed), CONCERNS (proceed with caution), FAIL (must fix first)
-- On FAIL: orchestrator MUST NOT launch sdd-apply. Report blockers to user.
+- Verdicts: PASS (proceed), CONCERNS (proceed with caution), FAIL (fix blockers first)
+- On FAIL: report blockers to the user and keep `sdd-apply` closed until readiness passes.
 - See: `.cognitive-os/skills/readiness-check/SKILL.md` for full checklist
 
 SDD dependency graph with readiness gate:
@@ -92,12 +92,12 @@ Use `SDDPipeline.get_phases(model, config)` from `lib/sdd_pipeline.py` to resolv
 
 ### Auto-Refinement (PITER Loop)
 When an agent task fails (test/build/lint errors detected by auto-refine hook):
-1. If phase is reconstruction: auto-retry ALWAYS enabled — agents fix their own work, up to 3 attempts
-2. If phase is stabilization: auto-retry ALWAYS enabled — agents fix their own work, up to 3 attempts
+1. If phase is reconstruction: auto-retry enabled — agents fix their own work, up to 3 attempts
+2. If phase is stabilization: auto-retry enabled — agents fix their own work, up to 3 attempts
 3. If phase is production: detect failure and SUGGEST retry, but require human approval before re-launch
 4. If phase is maintenance: detect failure and SUGGEST retry, but require human approval before re-launch
 
-The auto-refine hook (`auto-refine.sh`) enforces this automatically. The orchestrator must respond
+The auto-refine hook (`auto-refine.sh`) enforces this automatically. The orchestrator responds
 to `ORCHESTRATOR ACTION REQUIRED` messages by re-launching the agent with error context.
 
 ### Auto-Remediation
@@ -119,7 +119,7 @@ Task complexity determines BOTH the workflow AND the completion criteria:
 | Large | Multi-service, integration | SDD required | + `readiness_check` + `80% coverage` + `integration_tests` + `adversarial_review` |
 | Critical | Security, payments, migration | SDD + security review | + `security_review` + `idempotency` + `audit_trail` + `rollback_tested` |
 
-Agents MUST classify complexity BEFORE starting and CANNOT mark done without passing ALL DoD criteria for that level. Run `/dod-check` to verify.
+Agents classify complexity before starting and close work only after the DoD criteria for that level pass. Run `/dod-check` to verify.
 
 Phase modifies enforcement:
 - `reconstruction` / `stabilization`: Missing criteria = WARNING

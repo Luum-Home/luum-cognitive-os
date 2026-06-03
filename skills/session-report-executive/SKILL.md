@@ -2,8 +2,8 @@
 name: session-report-executive
 description: 'Use when you need this Cognitive OS skill: Generate an executive-level
   session report translating technical metrics into business language. For non-technical
-  leaders who need to know what the Cognitive OS did during a session.; do not use
-  when a narrower skill directly matches the task.'
+  leaders who need to know what the Cognitive OS did during a session. Prefer a
+  narrower skill when one directly matches the task.'
 routing_intents:
   - "Generate an executive summary of what happened during the agent session"
   - "Translate session metrics into business-readable outcomes and risks"
@@ -66,7 +66,7 @@ All JSONL reads below filter to entries within this window using the `timestamp`
 
 ### Step 3: Read Metrics Files
 
-For each file, check existence first. If the file is missing or empty, record "No data collected this session" for that section — never omit the section.
+For each file, check existence first. If the file is missing or empty, record "No data collected this session" for that section so the section remains visible.
 
 All files are under `.cognitive-os/metrics/` unless otherwise noted.
 
@@ -251,7 +251,7 @@ The OS raised {total_escalations} escalation(s) during this session, meaning it 
 - Average confidence: **{avg_trust}/100** — {HIGH/MEDIUM/LOW}
 - Lowest confidence: **{min_trust}/100** (agent: "{min_trust_agent}")
 - Total uncertainties acknowledged: {total_uncertainties} (agents are expected to report what they are unsure about)
-- Agents that reported zero uncertainty: {agents_without_uncertainty} ⚠️ (zero uncertainty is a red flag — it usually means the agent did not think critically)
+- Agents that reported zero uncertainty: {agents_without_uncertainty} ⚠️ (zero uncertainty is a red flag — it usually means the agent did not surface uncertainty or self-checks)
 
 ### Assumptions Made
 - Total assumptions detected: {total_assumptions}
@@ -280,7 +280,7 @@ Note: Costs are estimates based on token counts. Actual billing may differ.
 
 ## What Was NOT Verified
 
-This section is critical for understanding where human review may be needed.
+This section is central to understanding where human review may be needed.
 
 - **{no_parseable_count}** acceptance criteria were present but could not be automatically verified — a human should spot-check these results
 - **{no_criteria_count}** agents completed work with no measurable success criteria defined — outcomes are based on agent self-reporting only
@@ -315,11 +315,11 @@ mem_save(
 )
 ```
 
-## Important Rules
+## Reporting Rules
 
-- **Plain language only.** If you use a technical term, explain it in parentheses the first time. A VP with no engineering background must understand every line.
-- **Actual numbers, not vague statements.** Write "3 of 7 criteria verified" — never "most criteria verified."
-- **Never hide gaps.** If a metrics file is missing, say so explicitly in the relevant section. Do not silently omit a section.
-- **The "What Was NOT Verified" section is the most important for trust.** Populate it honestly even if it makes the session look less successful.
-- **Zero uncertainty agents are a red flag, not a success indicator.** Always call them out.
-- **Costs are always labeled as estimates.** Never present them as exact billing figures.
+- **Plain language only.** If you use a technical term, explain it in parentheses the first time so a VP with no engineering background can understand the line.
+- **Actual numbers, not vague statements.** Write "3 of 7 criteria verified" instead of "most criteria verified."
+- **Expose gaps.** If a metrics file is missing, say so explicitly in the relevant section and keep the section present.
+- **The "What Was NOT Verified" section carries the most trust weight.** Populate it honestly even if it makes the session look less successful.
+- **Zero uncertainty agents are a red flag, not a success indicator.** Call them out.
+- **Costs are estimates.** Label them as estimates rather than exact billing figures.

@@ -42,7 +42,7 @@ prints `TEST_REPAIR_LOOP_PASS`. If it reports `TEST_REPAIR_LOOP_TIMEOUT`, treat
 the timeout itself as the failing primitive: isolate the timed-out node/file,
 repair or quarantine via the skip registry, and rerun the loop.
 
-8. Do not treat “run all tests” as a single fire-and-forget command. In SO
+8. Treat “run all tests” as a bounded repair loop rather than a single fire-and-forget command. In SO
    maintenance, it means the full repair loop: bounded full run → exact failing
    node reruns → repair → exact rerun → full rerun.
 

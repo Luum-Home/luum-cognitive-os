@@ -26,9 +26,9 @@ This is the single biggest quality problem in agent-driven development.
 
 ### Fix 1: Mandatory Acceptance Criteria (`rules/acceptance-criteria.md`)
 
-Every agent prompt MUST include measurable, verifiable acceptance criteria. Not "rebrand the project" but "rebrand old-name to new-name where `grep -rl 'old-name'' --include='*.go' | wc -l` = 0."
+Every agent prompt includes measurable, verifiable acceptance criteria. Not "rebrand the project" but "rebrand old-name to new-name where `grep -rl 'old-name'' --include='*.go' | wc -l` = 0."
 
-The orchestrator defines what "done" means BEFORE the agent starts. If the orchestrator doesn't provide criteria, the agent must define them before beginning work.
+The orchestrator defines what "done" means BEFORE the agent starts. If the orchestrator does not provide criteria, the agent defines them before beginning work.
 
 ### Fix 2: Auto-Verification Loop (`hooks/auto-verify.sh`)
 
@@ -93,10 +93,10 @@ FAIL: orchestrator re-launches with failure context (max 3 retries)
 
 ## Rules for Orchestrators
 
-1. **Never launch an agent without acceptance criteria** — if you can't measure "done," the agent can't achieve it.
-2. **Enumerate, don't generalize** — "47 endpoints" not "all endpoints." "grep found 203 occurrences" not "everything."
+1. **Launch agents with acceptance criteria** — if you cannot measure "done," the agent cannot achieve it.
+2. **Enumerate instead of generalizing** — "47 endpoints" not "all endpoints." "grep found 203 occurrences" not "everything."
 3. **Include verification commands** — if you can't write a command to check it, it's not a criterion.
-4. **Re-launch on failure** — auto-verify failures mean the task is NOT done. Do not accept partial results.
+4. **Re-launch on failure** — auto-verify failures mean the task is open. Accept completion only after verification passes.
 5. **Use /exhaustive-prompt for medium+ tasks** — the 30 seconds spent on prompt generation saves hours of incomplete work.
 
 ## Rules for Agents
@@ -105,8 +105,8 @@ FAIL: orchestrator re-launches with failure context (max 3 retries)
 2. **Count before starting** — run grep/find to know the full scope before making changes.
 3. **Verify before claiming done** — run the acceptance criteria commands yourself.
 4. **Report actual numbers** — "renamed 203/203 occurrences" not "renamed all occurrences."
-5. **Never say "and similar changes"** — if you didn't list it, you didn't do it.
-6. **For documentation changes, NEVER use sed/grep replacement.** Always use an agent that reads context. Prose requires understanding, not pattern matching. See `rules/sandbox-sampling.md`.
+5. **List concrete changes instead of saying "and similar changes"** — if you did not list it, you did not do it.
+6. **For documentation changes, use context-aware prose editing.** Prefer an agent or manual rewrite that reads the surrounding section; prose requires understanding, not pattern replacement. See `rules/sandbox-sampling.md`.
 7. **For epic tasks (>100 files), use /sandbox-sample** to validate strategy before scaling. Classify files by type, sample 3-5 per type, verify in sandbox, then scale. See `skills/sandbox-sample/SKILL.md`.
 
 ## Metrics
@@ -122,31 +122,31 @@ Track the ratio of PASS vs FAIL+NO_CRITERIA to measure improvement over time.
 
 ## Implementation Completeness
 
-Code claimed as "done" must be production-ready. These anti-patterns are prohibited in committed code:
+Code claimed as "done" is production-ready. These anti-patterns are prohibited in committed code:
 
 ### No TODO Comments in Committed Code
 
-Every `TODO`, `FIXME`, `HACK`, or `XXX` comment must be resolved before marking a task as done. If the work genuinely cannot be completed now, create a tracking ticket/task and reference it instead of leaving a comment in the code.
+Resolve every `TODO`, `FIXME`, `HACK`, or `XXX` comment before marking a task as done. If the work genuinely cannot be completed now, create a tracking ticket/task and reference it instead of leaving a comment in the code.
 
 **Verification**: `grep -rn 'TODO\|FIXME\|HACK\|XXX' {changed_files}` returns 0 results.
 
 ### No Stub Implementations
 
-Every function, method, or handler must be fully implemented. Stubs that return hardcoded values, `nil`, empty strings, or `panic("not implemented")` are not acceptable as completed work.
+Every function, method, or handler is fully implemented. Stubs that return hardcoded values, `nil`, empty strings, or `panic("not implemented")` are not acceptable as completed work.
 
 **Verification**: `grep -rn 'not implemented\|NotImplemented\|panic.*implement\|raise.*NotImplemented' {changed_files}` returns 0 results.
 
 ### No Mock Objects in Production Code
 
-Mocks, fakes, and test doubles belong exclusively in test files (`*_test.go`, `*.spec.ts`, `*.test.ts`, `test_*.py`). Production source files must use real implementations or properly abstracted interfaces.
+Mocks, fakes, and test doubles belong exclusively in test files (`*_test.go`, `*.spec.ts`, `*.test.ts`, `test_*.py`). Production source files use real implementations or properly abstracted interfaces.
 
 **Verification**: `grep -rn 'mock\|Mock\|fake\|Fake' {production_files}` returns 0 results (excluding interface definitions and variable names where "mock" is part of the domain).
 
 ### No "Future Work" Deferred Without Tracking
 
-If a task cannot be fully completed, the remaining work must be captured in a tracking system (GitHub issue, task in active-tasks.json, or Engram observation). Untracked deferred work is invisible work that will be forgotten.
+If a task cannot be fully completed, capture the remaining work in a tracking system (GitHub issue, task in active-tasks.json, or Engram observation). Untracked deferred work is invisible work that will be forgotten.
 
-**Verification**: Any mention of "future work", "later", "eventually", or "phase 2" in code comments or PR descriptions must reference a tracking ID.
+**Verification**: Any mention of "future work", "later", "eventually", or "phase 2" in code comments or PR descriptions references a tracking ID.
 
 ### No Commented-Out Code Blocks
 
@@ -156,11 +156,11 @@ Dead code in comments clutters the codebase and confuses future readers. If the 
 
 ## Communication Quality
 
-Sycophantic output wastes tokens and erodes trust. ALL agents MUST follow these rules:
+Sycophantic output wastes tokens and erodes trust. Apply these response rules to all agent-facing output:
 
 ### Prohibited Openers
 
-Agents MUST NOT start responses with:
+Agents avoid starting responses with:
 - Flattery: "Great question!", "Excellent idea!", "That's a fantastic approach!", "What a thoughtful request!"
 - Filler affirmations: "Absolutely!", "Of course!", "Definitely!", "Sure thing!"
 - Performative enthusiasm: "I'd love to help with that!", "I'm excited to work on this!"
@@ -183,7 +183,7 @@ Sycophantic output:
 1. **Wastes tokens** — every "Great question!" is tokens not spent on the actual answer
 2. **Erodes trust** — if the agent praises everything, praise means nothing
 3. **Hides problems** — sugar-coating makes issues easy to miss in long outputs
-4. **Slows review** — humans must read through filler to find the substance
+4. **Slows review** — humans read through filler before finding the substance
 
 ## Contextual Trigger
 

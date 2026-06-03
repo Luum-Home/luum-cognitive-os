@@ -38,7 +38,7 @@ for row in rows:
     target = row.get("target") or "general"
     body = str(row.get("body") or "")[:160]
     lines.append(f"- {mid} [{sev}] from={sender} target={target}: {body}")
-lines.append("Acknowledge with scripts/cos-agent-message ack after applying/triaging.")
+lines.append("After applying or triaging a message, acknowledge it with scripts/cos-agent-message ack.")
 print(json.dumps({"additionalContext": "\n".join(lines)}, ensure_ascii=False))
 PY
 )"

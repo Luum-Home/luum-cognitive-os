@@ -45,22 +45,22 @@ Validates all Cognitive OS configuration files for correctness, completeness, an
 
 | Check | Severity | Rule |
 |-------|----------|------|
-| File exists and is valid YAML | ERROR | Must parse without errors |
+| File exists and is valid YAML | ERROR | Parses without errors |
 | `project.name` present | ERROR | Required field |
-| `project.phase` is valid | ERROR | Must be: reconstruction, stabilization, production, maintenance |
-| `resources.budget.monthly_limit_usd` > 0 | ERROR | Must have a positive budget |
+| `project.phase` is valid | ERROR | One of: reconstruction, stabilization, production, maintenance |
+| `resources.budget.monthly_limit_usd` > 0 | ERROR | Positive budget is present |
 | `models.routing.default` is valid model | WARNING | Should be opus, sonnet, or haiku |
 | `skills.loading.strategy` is valid | WARNING | Should be progressive or full |
 | `rules.loading.strategy` is valid | WARNING | Should be compact or full |
-| All contextual trigger filenames exist in `rules/` | ERROR | Referenced rules must exist |
+| All contextual trigger filenames exist in `rules/` | ERROR | Referenced rules exist |
 
 ### 2. `squads/*.yaml` — Squad Definitions
 
 | Check | Severity | Rule |
 |-------|----------|------|
-| File is valid YAML | ERROR | Must parse |
+| File is valid YAML | ERROR | Parses successfully |
 | All referenced agent names exist in `agents/` | ERROR | No phantom agents |
-| `lead` agent exists | ERROR | Squad must have a valid lead |
+| `lead` agent exists | ERROR | Squad has a valid lead |
 | No circular reporting (agent A reports to B, B reports to A) | ERROR | DAG only |
 | All referenced skills exist in CATALOG.md | WARNING | Skills should be registered |
 
@@ -69,7 +69,7 @@ Validates all Cognitive OS configuration files for correctness, completeness, an
 | Check | Severity | Rule |
 |-------|----------|------|
 | Every listed skill has a directory in `skills/` | ERROR | No phantom skills |
-| Every skill directory has `SKILL.md` | ERROR | Skill must have definition |
+| Every skill directory has `SKILL.md` | ERROR | Skill has a definition |
 | Every skill in `skills/` is listed in CATALOG.md | WARNING | Unlisted skills are invisible |
 | Invoke commands are unique (no duplicates) | ERROR | Ambiguous invocations |
 
@@ -95,14 +95,14 @@ Validates all Cognitive OS configuration files for correctness, completeness, an
 | Check | Severity | Rule |
 |-------|----------|------|
 | All hooks referenced in `cognitive-os.yaml` exist in `hooks/` | ERROR | No phantom hooks |
-| Hook files are executable (`chmod +x`) | WARNING | Hooks must be runnable |
+| Hook files are executable (`chmod +x`) | WARNING | Hooks are runnable |
 | Hook scripts have valid shebang line | WARNING | Should start with `#!/bin/bash` or similar |
 
 ### 7. Customizations — Override Validity
 
 | Check | Severity | Rule |
 |-------|----------|------|
-| Customization YAML is valid | ERROR | Must parse |
+| Customization YAML is valid | ERROR | Parses successfully |
 | Referenced agent exists in `agents/` | WARNING | Override for non-existent agent |
 | `model` is valid model name | WARNING | Should be opus, sonnet, or haiku |
 | `budget_limit_usd` <= `per_agent_max_usd` | WARNING | Should not exceed global limit |
@@ -138,7 +138,7 @@ Validates all Cognitive OS configuration files for correctness, completeness, an
 COGNITIVE OS CONFIG VALIDATION
 ==========================
 
-ERRORS (must fix):
+ERRORS (fix before proceeding):
   [E001] cognitive-os.yaml: missing required field 'project.name'
   [E002] squads/mobile-team.yaml: references non-existent agent 'ui-specialist'
   [E003] CATALOG.md: skill 'deploy-manager' listed but no directory exists
@@ -164,7 +164,7 @@ RESULT: {PASS | WARNINGS | ERRORS}
 |------|---------|
 | PASS | All checks passed, no errors or warnings |
 | WARNINGS | No errors, but warnings exist (non-blocking) |
-| ERRORS | Errors found (must fix before proceeding) |
+| ERRORS | Errors found (fix before proceeding) |
 
 ## Configuration
 

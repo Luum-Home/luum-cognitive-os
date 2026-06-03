@@ -14,7 +14,7 @@ Every agent prompt should include three elements that enable self-correction wit
 
 ## Prompt Structure
 
-When the orchestrator launches a sub-agent, the prompt MUST include:
+When the orchestrator launches a sub-agent, the prompt includes:
 
 ```
 ## Task
@@ -98,12 +98,12 @@ When escalating to human, provide:
 
 ## Auto-Refine Protocol (PITER Integration)
 
-Every agent prompt MUST include auto-refine instructions. This closes the PITER loop
+Every agent prompt includes auto-refine instructions. This closes the PITER loop
 (Evaluate -> Refine) so agents fix their own work instead of stopping at evaluation.
 
 ### Mandatory Prompt Additions
 
-When launching any sub-agent, the orchestrator MUST append:
+When launching a sub-agent, the orchestrator appends:
 
 ```
 ## Auto-Refine Protocol
@@ -140,16 +140,16 @@ The `auto-refine.sh` PostToolUse hook enforces this at the infrastructure level:
 When the auto-refine hook outputs `ORCHESTRATOR ACTION REQUIRED`:
 1. Re-launch the SAME agent with the error context provided by the hook
 2. Include the original task description PLUS the refinement instructions
-3. Do NOT start a new/different task — complete the current one first
+3. Stay on the current task until it is complete
 4. After 3 failed retries (escalation), report to the human with the full diagnosis
 
 ## HALT-and-WAIT Protocol (BMAD v6 Pattern 7)
 
-For ambiguous or high-risk tasks, agents MUST present their plan and WAIT for explicit approval before executing. This prevents unintended damage from misinterpreted instructions.
+For ambiguous or high-risk tasks, agents present their plan and wait for explicit approval before executing. This prevents unintended damage from misinterpreted instructions.
 
 ### HALT Triggers
 
-An agent MUST halt and wait when any of these conditions are true:
+An agent halts and waits when any of these conditions are true:
 
 | Trigger | Why |
 |---------|-----|
@@ -172,7 +172,7 @@ RISK: [what could go wrong if the plan is wrong]
 HALT: Waiting for approval before executing.
 ```
 
-The agent MUST NOT proceed until it receives explicit approval from the orchestrator or human.
+The agent proceeds only after explicit approval from the orchestrator or human.
 
 ### Phase-Dependent HALT Behavior
 
@@ -185,15 +185,15 @@ The agent MUST NOT proceed until it receives explicit approval from the orchestr
 
 ### HALT in Sub-Agent Prompts
 
-When launching sub-agents, the orchestrator MUST include:
+When launching sub-agents, the orchestrator includes:
 
 ```
 ## HALT Protocol
 If your task matches any HALT trigger (multi-service, data migration, API contract change,
-auth/security modification), you MUST:
+auth/security modification), follow this sequence:
 1. Output your PLAN with scope and risk assessment
 2. Output "HALT: Waiting for approval before executing"
-3. STOP and wait — do NOT proceed until approved
+3. STOP and wait for approval before proceeding
 
 Current phase: {phase} — HALT scope: {phase-specific scope from table above}
 ```
@@ -226,8 +226,8 @@ In `cognitive-os.yaml`:
 ```yaml
 closed_loop:
   default_max_attempts: 3
-  require_verification: true        # All agent prompts must include verification
-  require_success_criteria: true     # All agent prompts must include criteria
+  require_verification: true        # All agent prompts include verification
+  require_success_criteria: true     # All agent prompts include criteria
   escalation_on_same_error: true     # Stop if same error repeats
   log_all_attempts: true             # Log each attempt to error-learning
 ```
@@ -261,7 +261,7 @@ The first example lets the agent objectively verify; the second requires subject
 
 ## Rule: Always Active
 
-This rule applies to ALL sub-agent launches. The orchestrator MUST include success criteria and verification in every delegation prompt. If a skill does not define verification commands, the orchestrator should add appropriate ones based on the task type:
+This rule applies to all sub-agent launches. The orchestrator includes success criteria and verification in every delegation prompt. If a skill does not define verification commands, the orchestrator should add appropriate ones based on the task type:
 
 | Task Type | Default Verification |
 |-----------|---------------------|

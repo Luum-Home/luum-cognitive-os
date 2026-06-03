@@ -8,8 +8,8 @@
 #
 # Event:  UserPromptSubmit
 # Type:   command
-# Async:  true (NEVER blocks user input)
-# Exit:   always 0
+# Async:  true (does not block user input)
+# Exit:   advisory 0
 #
 # Logs every evaluation to .cognitive-os/metrics/skill-suggestion.jsonl
 # regardless of whether the threshold is met.
@@ -23,7 +23,7 @@ _HOOK_NAME="skill-router-prompt-suggest"
 source "$(dirname "$0")/_lib/common.sh"
 source "$(dirname "$0")/_lib/context_budget_lib.sh"
 
-# Always exit 0 — this hook must never block user input
+# Exit 0 on errors — this hook is advisory and does not block user input
 trap 'exit 0' ERR
 
 check_disabled_env "skill-router-prompt-suggest"
@@ -103,7 +103,7 @@ if threshold_met:
             "additionalContext": (
                 f"Skill router suggests `{match.invoke_command}` "
                 f"(confidence {match.confidence:.2f}) for this prompt. "
-                f"Consider invoking it instead of writing a bespoke prompt."
+                f"Invoke it when the workflow fits better than a bespoke prompt."
             ),
         }
     }

@@ -68,7 +68,7 @@ Cognitive OS uses these standards and near-standards deliberately:
 Invariant: **COS canonical internal registry != consumer .ai overlay**. The
 canonical primitive remains in COS source (`skills/`, `rules/`, `hooks/`,
 `scripts/`, `manifests/primitive-contracts.yaml`). The `.ai/` tree is generated
-packaging for consumers and IDE adapters; do not hand-edit it as canonical state.
+packaging for consumers and IDE adapters; treat it as generated state rather than canonical source.
 
 ## 1. Reuse check
 
@@ -128,7 +128,7 @@ evidence:
   proof_tests: []
 portable_contract:
   source: primitive-contract-registry|primitive-lifecycle-derived
-  warning: null|"Must be promoted into manifests/primitive-contracts.yaml before claiming full contract-registry governance."
+  warning: null|"Promote into manifests/primitive-contracts.yaml before claiming full contract-registry governance."
 projection:
   claude: {fidelity: native-lifecycle-enforced|structural-advisory|documented-only|unsupported}
   codex: {fidelity: native-lifecycle-enforced|governed-wrapper-enforced|structural-advisory|documented-only|unsupported}
@@ -150,7 +150,7 @@ When the primitive is a skill or any user-routed primitive, follow ADR-302:
 - Keep `routing_patterns` only for deterministic aliases: slash commands,
   primitive IDs, URLs, paths, file extensions, config keys, or other machine
   shapes.
-- Do not add keyword regexes for natural-language intent detection.
+- Keep keyword regexes out of natural-language intent detection.
 - Add `summary_line`: one short routing-oriented sentence.
 - Add `routing_intents`: semantic descriptions of what the user is asking for.
 - If broader language coverage is needed, use ADR-299 enrichment as corpus data,
@@ -164,7 +164,7 @@ scripts/cos-language-dependence-audit --output .cognitive-os/reports/language-de
 
 For SO primitives, semantic metadata belongs in canonical COS source. For
 consumer-project primitives, project-specific vocabulary belongs in the project
-overlay/config; do not hardcode downstream product/team language into OS-level
+overlay/config; keep downstream product/team language out of OS-level
 regex.
 
 ## 3c. SCOPE both portability proof scaffold
@@ -179,7 +179,7 @@ scripts/cos-portability-proof-scaffold --artifact skills/{skill-name}/SKILL.md
 ```
 
 Then replace the generated baseline with a primitive-specific falsification
-probe. Do not invent a different filename; the scope gate and audit both use
+probe. Use this filename; the scope gate and audit both use
 `lib/portability_proof_paths.py` for their suggested path logic.
 
 Before commit, run the automatic source-level contract checks:
@@ -201,11 +201,11 @@ scripts/cos status --portability
 `scripts/cos-install-projection-audit` is the hard install guard: it creates
 filtered Codex and Claude fixture installs and proves every generated hook
 registration points to a hook file actually copied by that same install scope
-and mode. Do not treat a SCOPE classifier pass as enough for install safety.
+and mode. Treat a SCOPE classifier pass as one signal, not complete install-safety proof.
 
 ## 4. Projection fidelity
 
-Do not claim stronger fidelity than the harness/service can prove.
+Claim fidelity only to the level the harness/service can prove.
 
 - IDE structural files are usually `structural-advisory`.
 - Native lifecycle hooks may be `native-lifecycle-enforced` only when the host emits the needed event.
@@ -227,11 +227,11 @@ Required checks:
 
 - every generated `.ai/primitives/**/*.json` row has `portable_contract`;
 - registry-backed primitives report `portable_contract.source = primitive-contract-registry`;
-- lifecycle-only primitives report `portable_contract.source = primitive-lifecycle-derived` and do not claim full governance;
+- lifecycle-only primitives report `portable_contract.source = primitive-lifecycle-derived` and avoid claiming full governance;
 - adapter manifests describe projection honestly without inventing knowledge;
 - `.ai/context.json` keeps the generated-overlay warning.
 
-Do not move canonical primitives physically into `.ai/` unless a future ADR
+Keep canonical primitives outside `.ai/` unless a future ADR
 explicitly changes the architecture and migration plan.
 
 ## 6. Consumer-fleet impact
@@ -245,7 +245,7 @@ scripts/cos-consumer-fleet-audit --json
 ```
 
 Use its `required_test_lanes[]` in validation when relevant. If registered
-projects are stale or missing install metadata, do not assume the primitive
+projects are stale or missing install metadata, treat the primitive as unproven until
 reaches them.
 
 ## 7. Service/headless impact
@@ -265,9 +265,9 @@ For service/headless claims, run or plan:
 scripts/cos-service-readiness-gate --json
 ```
 
-Do not assume IDE hooks fire in service mode. Do not expose provider calls,
-credentials, destructive actions, or raw shell through `cosd` without an ADR and
-readiness proof.
+Assume IDE hooks do not fire in service mode. Route provider calls,
+credentials, destructive actions, and raw shell through `cosd` only with an ADR
+and readiness proof.
 
 ## 8. Observable self-use and evidence plan
 
@@ -303,7 +303,7 @@ After this gate, use the family-specific primitive:
 - `skills/add-hook/SKILL.md`
 - ADR tooling for docs decisions
 
-Keep first slices small; do not migrate the world.
+Keep first slices small; migrate one bounded surface at a time.
 
 ## Acceptance criteria template
 

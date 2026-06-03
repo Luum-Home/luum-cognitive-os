@@ -62,7 +62,7 @@ The layer of OS constructs that agents compose at runtime is called **agentic pr
 - Build or test components (pytest component, Makefile component)
 - Third-party library components
 
-Within agentic-layer documentation, **always prefer "agentic primitive"** (or the specific slot name: skill, hook, rule, agent). Writing "OS component" when the referent is a skill or hook is imprecise and will confuse readers migrating from generic software-engineering backgrounds.
+Within agentic-layer documentation, **prefer "agentic primitive"** (or the specific slot name: skill, hook, rule, agent). Writing "OS component" when the referent is a skill or hook is imprecise and will confuse readers migrating from generic software-engineering backgrounds.
 
 ### Enforcement
 
@@ -113,7 +113,7 @@ Minimum coverage target: **80%** (enforced, blocks PRs below threshold).
 - Source `hooks/_lib/common.sh` at the top of every hook
 - Use `safe-jsonl` helper for writing metrics (prevents corruption)
 - Exit 0 = pass/advisory, exit 2 = BLOCK, exit 1 = error
-- Every hook must handle graceful degradation if optional tools are missing
+- Every hook handles graceful degradation if optional tools are missing
 
 **Skills (`skills/*/SKILL.md`)**
 - YAML frontmatter with `name`, `version`, `description`, `triggers` fields
@@ -144,7 +144,7 @@ In **reconstruction**: even small tasks can be done directly without ceremony. R
 
 ## Quality Standards
 
-### Every task MUST have acceptance criteria
+### Every task includes acceptance criteria
 ```
 ACCEPTANCE CRITERIA:
 1. grep -rl 'term' src/ | wc -l = 0
@@ -177,9 +177,9 @@ Claiming "100% confident, no uncertainties" is a RED FLAG.
 5. **Blocked paths** — never touch `.env`, `*.key`, `*.pem`, `secrets/*`, `.git/config`
 6. **License gate** — AGPL/SSPL/BSL/ELv2 are BLOCKED; MIT/Apache/BSD are safe
 7. **Docs require context** — never use `sed` for Markdown; always rewrite prose with context
-8. **Escalate, don't spin** — after 3 failed retries or same error twice, output `ESCALATION:` with diagnosis
+8. **Escalate instead of spinning** — after 3 failed retries or the same error twice, output `ESCALATION:` with diagnosis
 9. **Model routing** — opus for architecture/debugging, sonnet for implementation, haiku for docs/archiving
-10. **Reviews must find something** — "LGTM" is prohibited; every review needs at least one finding
+10. **Reviews surface findings** — "LGTM" is prohibited; every review needs at least one finding
 
 ---
 

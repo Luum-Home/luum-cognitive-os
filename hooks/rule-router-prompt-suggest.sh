@@ -8,8 +8,8 @@
 #
 # Event:  UserPromptSubmit
 # Type:   command
-# Async:  true (NEVER blocks user input)
-# Exit:   always 0
+# Async:  true (does not block user input)
+# Exit:   advisory 0
 #
 # Logs every evaluation to .cognitive-os/metrics/rule-suggestion.jsonl.
 # Killswitch env: DISABLE_HOOK_RULE_ROUTER_PROMPT_SUGGEST=1
@@ -20,7 +20,7 @@ _HOOK_NAME="rule-router-prompt-suggest"
 source "$(dirname "$0")/_lib/common.sh"
 source "$(dirname "$0")/_lib/context_budget_lib.sh"
 
-# Always exit 0 — this hook must never block user input
+# Exit 0 on errors — this hook is advisory and does not block user input
 trap 'exit 0' ERR
 
 check_disabled_env "rule-router-prompt-suggest"
@@ -100,7 +100,7 @@ if threshold_hit:
             "hookEventName": "UserPromptSubmit",
             "additionalContext": (
                 f"Suggested rules to load: {listing}. "
-                f"These are agent-instruction rules — read them before responding."
+                f"These are agent-instruction rules; read the relevant ones when they materially affect the answer or implementation path."
             ),
         }
     }

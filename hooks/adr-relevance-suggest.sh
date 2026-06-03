@@ -8,8 +8,8 @@
 #
 # Event:  UserPromptSubmit
 # Type:   command
-# Async:  true (NEVER blocks user input)
-# Exit:   always 0
+# Async:  true (does not block user input)
+# Exit:   advisory 0
 #
 # Logs every evaluation to .cognitive-os/metrics/adr-suggestion.jsonl
 # regardless of whether the threshold is met.
@@ -23,7 +23,7 @@ _HOOK_NAME="adr-relevance-suggest"
 source "$(dirname "$0")/_lib/common.sh"
 source "$(dirname "$0")/_lib/context_budget_lib.sh"
 
-# Always exit 0 — this hook must never block user input
+# Exit 0 on errors — this hook is advisory and does not block user input
 trap 'exit 0' ERR
 
 check_disabled_env "adr-relevance-suggest"
@@ -100,7 +100,7 @@ if threshold_met:
     context_msg = (
         "Relevant ADRs for this prompt: "
         + ", ".join(parts)
-        + ". Consider reading them before responding."
+        + ". Read them when they materially affect the answer or implementation path."
     )
     output = {
         "hookSpecificOutput": {
