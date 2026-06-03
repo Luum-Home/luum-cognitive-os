@@ -2,21 +2,21 @@
 <!-- TIER: 1 -->
 # Responsiveness Protocol
 
-## Rule: Never Appear Stuck
+## Rule: Show Progress While Work Is Running
 
-The orchestrator MUST communicate proactively. Silence while waiting for tools, agents, or commands is perceived as a hang by the user.
+The orchestrator communicates proactively. Silence while waiting for tools, agents, or commands is perceived as a hang by the user.
 
 ## Mandatory Behaviors
 
 ### Before Tool Calls
 - Before any bash command that may take >5 seconds, state what you are running
 - Use `run_in_background: true` for commands expected to take >5s
-- Never chain multiple blocking tool calls without speaking between them
+- Add a short status update between multiple blocking tool calls
 
 ### While Waiting for Agents
 - After launching agents, immediately tell the user what was launched
 - If an agent takes >60 seconds, proactively check its status and report
-- Never wait silently for an agent — continue the conversation or report status
+- While waiting for an agent, continue useful work or report status
 
 ### Reporting Results
 - When a background task completes, report the result immediately
@@ -33,24 +33,24 @@ The orchestrator MUST communicate proactively. Silence while waiting for tools, 
 
 ## Sub-Agent Progress Protocol
 
-Sub-agents MUST structure their output with progress markers so the orchestrator (and user) can track what happened:
+Sub-agents structure their output with progress markers so the orchestrator and user can track what happened:
 
 1. **Start**: 1-line summary of the task
 2. **During**: `PROGRESS: [step N/M] description` after each major step
 3. **Files**: `FILES_CREATED:` and `FILES_MODIFIED:` lists before finishing
 4. **End**: Structured result with counts (tests passed, lines changed, files created)
 
-This is enforced via the `agent-preamble.md` template that ALL sub-agents receive.
+This is enforced via the `agent-preamble.md` template that sub-agents receive.
 
 When using ClaudeExecutor (ORCHESTRATOR_MODE=executor), progress markers are published to the Agent Bus (Valkey pub/sub) for real-time visibility.
 
 ## Anti-Patterns
-- DO NOT stay silent for >10 seconds without explaining why
-- DO NOT launch 50+ agents in one session (causes context exhaustion)
-- DO NOT wait for a blocking command when you could run it in background
-- DO NOT say "te aviso cuando termine" and then forget to check
-- DO NOT launch sub-agents without the agent-preamble template (no progress markers)
-- DO NOT ignore PROGRESS markers in sub-agent output — relay them to the user
+- Give a status update when silence would exceed 10 seconds
+- Keep agent batches bounded; 50+ agents in one session causes context exhaustion
+- Run long blocking commands in the background when possible
+- If you say "te aviso cuando termine", keep checking and report back
+- Launch sub-agents with the agent-preamble template so progress markers exist
+- Relay relevant PROGRESS markers from sub-agent output to the user
 
 ## Contextual Trigger
 

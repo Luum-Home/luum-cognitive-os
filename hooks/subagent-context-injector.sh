@@ -4,8 +4,8 @@
 #
 # Event: SubagentStart
 # Type: command
-# Async: false (must complete before subagent starts)
-# Exit: always 0 (never blocks subagent launch)
+# Async: false (completes before subagent starts)
+# Exit: advisory 0 (does not block subagent launch)
 # Output: JSON with additionalContext field
 #
 # This hook replaces the need for the orchestrator to manually compose
@@ -67,8 +67,8 @@ fi
 sidecar=""
 
 if [ -n "$agent_name" ] && [ "${COS_SUBAGENT_SIDECAR_LOOKUP:-0}" = "1" ] && command -v python3 >/dev/null 2>&1; then
-  # Best-effort sidecar lookup. Opt-in because this hook is on the critical
-  # sub-agent cold-start path; missing/slow Engram must never add seconds to
+  # Best-effort sidecar lookup. Opt-in because this hook is on the cold-start
+  # path; missing/slow Engram should not add seconds to
   # every spawn.
   sidecar=$(timeout "${COS_SUBAGENT_SIDECAR_TIMEOUT:-0.4}" python3 - "$_PROJECT_DIR" "$agent_name" <<'PY' 2>/dev/null || true
 import sys
@@ -94,16 +94,16 @@ mandatory_rules=""
 if [ -f "$RULES_FILE" ]; then
   mandatory_rules=$(cat "$RULES_FILE")
 else
-  # Inline fallback: critical rules that every sub-agent MUST follow
-  mandatory_rules="## MANDATORY PROJECT RULES (injected by subagent-context-injector)
+  # Inline fallback: high-impact rules for every sub-agent
+  mandatory_rules="## PROJECT RULES (injected by subagent-context-injector)
 
 ### Filesystem: Symlinks
 This project uses symlinks extensively (hooks/ → packages/*/hooks/, tests/ → packages/*/tests/).
-- ALWAYS resolve symlinks to a canonical path before classifying any file as missing
-- ALWAYS use \`ls -la <path>\` to verify symlinks before reporting absence
+- Resolve symlinks to a canonical path before classifying any file as missing
+- Use \`ls -la <path>\` to verify symlinks before reporting absence
 - Use \`file_exists_strict()\` from \`hooks/_lib/file_checker.sh\` for file checks
-- NEVER report a file as 'missing' or 'ghost' without resolving symlinks first
-- Previous audits reported false 'missing' files due to naive checks — do NOT repeat this
+- Report a file as 'missing' or 'ghost' only after resolving symlinks first
+- Previous audits reported false 'missing' files due to naive checks; use the stricter path above
 
 ### Auditing
 - When counting components, resolve symlinks first — a symlink and its target are ONE component
@@ -111,16 +111,16 @@ This project uses symlinks extensively (hooks/ → packages/*/hooks/, tests/ →
 - Use /audit-integrity skill for standardized component audits
 
 ### Code Quality
-- Do NOT create tests that only verify file existence — tests MUST execute code and verify behavior
-- Do NOT add metadata fields to files unless code exists to consume them
-- Save important discoveries to engram via mem_save before returning"
+- Create tests that execute code and verify behavior, not only file existence
+- Add metadata fields only when code exists to consume them
+- Save durable discoveries to engram via mem_save before returning"
 fi
 
 # ─── Compose additionalContext ───────────────────────────────────────────────
 
 context=""
 
-# Mandatory rules always go first
+# Project rules go first
 if [ -n "$mandatory_rules" ]; then
   context="$mandatory_rules"
 fi

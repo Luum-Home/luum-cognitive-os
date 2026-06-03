@@ -2,8 +2,8 @@
 name: worktree-triage
 description: 'Use when you need this Cognitive OS skill: Triage linked Git worktrees
   or remote cleanup branches against a target branch, port only unapplied work, validate,
-  and remove/delete only when clean and safe.; do not use when a narrower skill directly
-  matches the task.'
+  and remove/delete only when clean and safe. Prefer a narrower skill when it
+  directly matches the task.'
 user-invocable: true
 version: 1.0.0
 last-updated: 2026-05-02
@@ -56,21 +56,20 @@ triggers:
 # Worktree Triage
 
 Use this skill when a branch/worktree such as `bb5a` may contain useful work and
-must be compared against `main` before cleanup.
+is compared against `main` before cleanup.
 
 The core rule is:
 
 > Triage first; port only unapplied work; validate; commit/merge; remove the
 > worktree only when the doctor says it is safe.
 
-This skill is read-first. Do not delete, reset, stash-drop, or remove a worktree
-until the checklist is green and the useful work is proven present on the target.
+This skill is read-first. Delete, reset, stash-drop, or remove a worktree only after the checklist is green and the useful work is proven present on the target.
 
 ## When to invoke
 
 - A linked worktree appears dirty, detached, or stale.
 - An IDE shows changes in a worktree that may already be merged elsewhere.
-- You need to clean up a worktree but must avoid losing work.
+- You need to clean up a worktree while preserving useful work.
 - A preserve/concurrent cleanup branch references a worktree path.
 - Before running `git worktree remove` on any non-temporary worktree.
 - Before deleting a remote backup/session branch that may already be patch-equivalent to `main`.
@@ -119,7 +118,7 @@ git switch main
 git cherry-pick <sha-from-commits_to_port>
 ```
 
-If a commit is listed under `already_applied_commits`, do not cherry-pick it just
+If a commit is listed under `already_applied_commits`, skip cherry-picking it just
 because it exists in the worktree history.
 
 ## Step 4: Resolve blockers before cleanup
@@ -131,16 +130,14 @@ git -C /path/to/bb5a status --short --branch
 git -C /path/to/bb5a diff --stat
 ```
 
-If it contains `worktree-stashes-present`, inspect by ref. Do not use blind
-`stash pop`:
+If it contains `worktree-stashes-present`, inspect by ref before applying a stash:
 
 ```bash
 git -C /path/to/bb5a stash list
 git -C /path/to/bb5a stash show --name-status stash@{N}
 ```
 
-Apply/drop only after you know whether the stash is duplicate, obsolete, or must
-be ported.
+Apply/drop only after you know whether the stash is duplicate, obsolete, or still needs to be ported.
 
 ## Step 5: Validate on target
 
@@ -198,7 +195,7 @@ scripts/cos-remote-branch-triage \
 The report marks a branch `safe_to_delete: true` only when every commit in
 `origin/main..origin/<branch>` is patch-equivalent to `origin/main` according to
 `git log --cherry-pick`. Branches with unique commits are reported as
-`needs_port` and must not be deleted.
+`needs_port` and remains protected from deletion.
 
 After reviewing the dry-run output, delete only safe branches explicitly:
 
@@ -210,20 +207,19 @@ scripts/cos-remote-branch-triage \
 ```
 
 Deletion refuses to run without `--yes`; protected branches such as `main` and
-`master` are never considered safe deletion candidates.
+`master` are protected branches and excluded from safe deletion candidates.
 
 ## Related cleanup primitive
 
 When the operator confirms there are no active agents and the remaining blockers
 are only preserved stashes, temporary validation capsule worktrees, or zombie
-session registry entries, switch to `preserved-wip-cleanup`. Do not use that
-skill for named feature worktrees that still need porting; this skill remains
+session registry entries, switch to `preserved-wip-cleanup`. Keep named feature worktrees with pending ports on this triage path; this skill remains
 the required path for branch/worktree triage.
 
 ## Exit codes
 
 - `0`: no blockers detected. Check `safe_to_remove` before cleanup.
-- `2`: blockers exist; do not remove the worktree.
+- `2`: blockers exist; keep the worktree in place.
 
 ## Contextual Trigger
 

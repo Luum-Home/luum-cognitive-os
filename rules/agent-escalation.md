@@ -4,9 +4,9 @@
 
 ## Purpose
 
-Agents currently retry 3 times mechanically then fail. They do not detect loops, do not measure their own progress, and do not escalate with diagnosis. This protocol gives agents the ability to self-detect unproductive patterns and escalate early with structured diagnosis instead of spinning on dead ends.
+Agents currently retry 3 times mechanically then fail. They currently miss loops, skip progress measurement, and fail without diagnosis. This protocol gives agents the ability to self-detect unproductive patterns and escalate early with structured diagnosis instead of spinning on dead ends.
 
-The key insight: it is better to escalate after 30 seconds of being stuck than to waste 3 minutes of retries that never had a chance of succeeding. Like a junior developer who should ask for help after 30 minutes, not after 3 hours.
+The key insight: escalate early when the approach is not converging. Like a junior developer, ask for help after a bounded attempt window rather than after repeated blind retries.
 
 ## When to Escalate
 
@@ -82,7 +82,7 @@ When the orchestrator receives an `ESCALATION:` marker:
 1. Log the signal
 2. Save the agent's partial progress and full diagnosis to Engram
 3. Report to the human with the full escalation report
-4. Do NOT auto-retry -- human decides next step
+4. Pause auto-retry; the human decides the next step
 
 ## Relationship to Existing Retry Mechanism
 
@@ -113,7 +113,7 @@ Attempt 2 -> Verify
 Attempt 3 -> Verify
     |
     ├── Pass -> Done
-    └── Fail -> ESCALATE (retries exhausted, always escalate)
+    └── Fail -> ESCALATE (retries exhausted)
 ```
 
 The escalation detector can fire BEFORE the 3 retries are exhausted. If the same error appears on attempt 1 and attempt 2 (error_repeat), escalation fires immediately instead of wasting a third attempt on the same failure.
@@ -123,14 +123,14 @@ The escalation detector can fire BEFORE the 3 retries are exhausted. If the same
 ### Escalating too early (<5 tool calls)
 Not enough data to diagnose the problem. The agent should attempt reasonable fixes before escalating. Exception: if the very first error is clearly outside scope (wrong language, missing dependency, permission denied).
 
-### Never escalating (overclaiming)
-An agent that retries 3 times and reports "failed" without ever outputting `ESCALATION:` is wasting tokens. After the first retry failure, the agent MUST check escalation signals.
+### Missing escalation after repeated failure
+An agent that retries 3 times and reports "failed" without ever outputting `ESCALATION:` wastes tokens. After the first retry failure, the agent checks escalation signals.
 
 ### Escalating without diagnosis
-The `ESCALATION:` output MUST include a `Diagnosis:` field with the agent's best guess at root cause. "I don't know why it fails" is not acceptable. The agent should at least state what it observed.
+The `ESCALATION:` output includes a `Diagnosis:` field with the agent's best guess at root cause. If root cause is unknown, state the observations and uncertainty.
 
 ### Escalating without saving progress
-Before escalating, the agent MUST save any partial progress to Engram. The next agent (or human) should not have to redo completed work.
+Before escalating, the agent saves any partial progress to Engram so the next agent or human can reuse completed work.
 
 ## Detection Library
 

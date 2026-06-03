@@ -3,8 +3,8 @@ name: bump-version
 invocation_pattern: on-demand
 command: /bump-version
 description: 'Use when you need this Cognitive OS skill: Calculate and write the new
-  version to the VERSION file; do not use when a narrower skill directly matches the
-  task.'
+  version to the VERSION file. Prefer a narrower skill when it directly matches
+  the task.'
 version: 0.1.0
 audience: os
 tags:
@@ -30,7 +30,7 @@ triggers:
 - /bump-version
 - Bump Version
 - 'Use when you need this Cognitive OS skill: Calculate and write the new version
-  to the VERSION file; do not use when a na'
+  to the VERSION file. Prefer a narrower skill when it directly matches the task.'
 ---
 <!-- SCOPE: os-only -->
 # Bump Version
@@ -88,7 +88,7 @@ Given the input:
 
 The OS uses TWO version files in lockstep (decided 2026-05-06):
 - `VERSION` (root) — canonical Cognitive OS version stream
-- `cmd/cos/VERSION` — Go binary build version, MUST equal root VERSION
+- `cmd/cos/VERSION` — Go binary build version, equal to root VERSION
 
 Write to BOTH:
 
@@ -104,19 +104,19 @@ test "$(cat VERSION)" = "$(cat cmd/cos/VERSION)" || { echo "VERSION drift"; exit
 cat VERSION
 ```
 
-Output must equal the new version string and both files must match.
+Output equals the new version string and both files match.
 
 Rationale: `cos` Go binary is Surface 1 of the OS (ADR-172). Streams stay
 synced unless a future ADR explicitly bifurcates (e.g. `cos-vX.Y` prefix
-tags). Until then, never let them drift.
+tags). Until then, keep them in lockstep.
 
 ## Safety Rules
 
-- NEVER downgrade the version (new must be > current)
-- NEVER write a non-semver string to VERSION
-- ALWAYS write VERSION + cmd/cos/VERSION in lockstep — drift is a release blocker
+- Keep version monotonic: new version > current version
+- Write only valid semver strings to VERSION
+- Write VERSION + cmd/cos/VERSION in lockstep — drift is a release blocker
 - If the user provides an explicit version that is <= current, ask for confirmation before proceeding
-- Do NOT commit — that is the responsibility of `/tag-release`
+- Leave committing to `/tag-release`
 
 ## Trust Report
 
