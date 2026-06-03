@@ -49,6 +49,15 @@ fi
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$("$SCRIPT_DIR/cos-root" project)"
 cd "$REPO_ROOT"
+if [ -z "${PYTHON_BIN:-}" ]; then
+  if [ -n "${PYTHON:-}" ]; then
+    PYTHON_BIN="$PYTHON"
+  elif [ -x "$REPO_ROOT/.venv/bin/python" ]; then
+    PYTHON_BIN="$REPO_ROOT/.venv/bin/python"
+  else
+    PYTHON_BIN="python3"
+  fi
+fi
 # COS_VALIDATION_CAPSULE_SAFE_WORKTREE_FALLBACK: keep validation usable in
 # minimal consumer repos that do not carry the COS helper library. The full COS
 # checkout uses ADR-129 safe_worktree_remove; minimal repos get a logged,
@@ -90,8 +99,8 @@ base_dir="${TMPDIR:-/tmp}/cos-validation-capsules"
 CAPSULE_DIR="$base_dir/$(basename "$REPO_ROOT")-$run_id"
 
 if [ -f "$LOCK_FILE" ]; then
-  if command -v python3 >/dev/null 2>&1; then
-    if python3 - "$LOCK_FILE" <<'PYLOCK'
+  if command -v "$PYTHON_BIN" >/dev/null 2>&1; then
+    if "$PYTHON_BIN" - "$LOCK_FILE" <<'PYLOCK'
 import json, os, sys, time
 from pathlib import Path
 p=Path(sys.argv[1])
@@ -115,7 +124,7 @@ PYLOCK
       exit 2
     fi
   else
-    echo "[validation-capsule] lock exists and python3 unavailable: $LOCK_FILE" >&2
+    echo "[validation-capsule] lock exists and Python unavailable: $LOCK_FILE" >&2
     exit 2
   fi
 fi
@@ -142,7 +151,7 @@ cleanup() {
 }
 trap cleanup EXIT INT TERM
 
-python3 - "$LOCK_FILE" "$run_id" "$HEAD_SHA" "$CAPSULE_DIR" "$expires_at" "$$" "$HEARTBEAT_INTERVAL_SECONDS" "$*" <<'PYJSON'
+"$PYTHON_BIN" - "$LOCK_FILE" "$run_id" "$HEAD_SHA" "$CAPSULE_DIR" "$expires_at" "$$" "$HEARTBEAT_INTERVAL_SECONDS" "$*" <<'PYJSON'
 import json, sys, time
 from pathlib import Path
 path, run_id, head, capsule, expires, shell_pid, hb_interval, command = sys.argv[1:]
@@ -168,7 +177,7 @@ PYJSON
 (
   while sleep "$HEARTBEAT_INTERVAL_SECONDS"; do
     [ -f "$LOCK_FILE" ] || exit 0
-    python3 - "$LOCK_FILE" <<'PYHB'
+    "$PYTHON_BIN" - "$LOCK_FILE" <<'PYHB'
 import json, sys, time, os, tempfile
 from pathlib import Path
 p = Path(sys.argv[1])

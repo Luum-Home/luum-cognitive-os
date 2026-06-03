@@ -92,14 +92,15 @@ _safe_wtr_log() {
   local caller="$5"
   local stderr_content="$6"
 
-  if ! command -v python3 >/dev/null 2>&1; then
+  local python_bin="${PYTHON_BIN:-${PYTHON:-python3}}"
+  if ! command -v "$python_bin" >/dev/null 2>&1; then
     # Fallback: append a minimal line without escaping. Better than silence.
     printf '{"ts":"%s","action":"%s","target":"%s","caller":"%s"}\n' \
       "$ts" "$action" "$target" "$caller" >> "$log_file" 2>/dev/null || true
     return 0
   fi
 
-  python3 - "$log_file" "$ts" "$action" "$target" "$caller" "$stderr_content" <<'PY' 2>/dev/null || true
+  "$python_bin" - "$log_file" "$ts" "$action" "$target" "$caller" "$stderr_content" <<'PY' 2>/dev/null || true
 import json, sys
 log_file, ts, action, target, caller, stderr_content = sys.argv[1:]
 entry = {
