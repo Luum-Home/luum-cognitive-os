@@ -206,6 +206,35 @@ def test_codex_projection_commands_point_to_installed_hooks(tmp_path: Path) -> N
     assert not not_executable, f"Codex projection references non-executable hooks: {not_executable}"
 
 
+
+
+def test_codex_install_projects_skills_to_agents_driver_without_changing_canonical_truth(tmp_path: Path) -> None:
+    """Codex gets a native `.agents/skills` view while canonical storage remains authoritative."""
+    project = tmp_path / "codex-client"
+    project.mkdir()
+    (project / "package.json").write_text('{"name": "codex-client"}\n')
+
+    result = _run_cos_init(project, "--full", "codex")
+    assert result.returncode == 0, result.stderr
+
+    canonical_skills = project / ".cognitive-os" / "skills" / "cos"
+    codex_driver = project / ".agents" / "skills"
+    source_names = _source_skill_names()
+
+    assert source_names, "source skills/ must contain at least one installable skill"
+    assert not (project / ".claude" / "skills").exists()
+
+    missing_driver = [
+        name for name in source_names if not (codex_driver / name / "SKILL.md").is_file()
+    ]
+    assert not missing_driver, f"skills missing from Codex .agents/skills projection: {missing_driver}"
+
+    for name in source_names[:10]:
+        driver_skill = codex_driver / name
+        assert driver_skill.is_symlink(), f"{driver_skill.relative_to(project)} must be a driver symlink"
+        assert driver_skill.resolve() == canonical_skills / name
+
+
 def test_codex_install_keeps_rules_and_skills_out_of_claude_driver(tmp_path: Path) -> None:
     """Codex installs canonical artifacts without making `.claude/` a center of gravity."""
     project = tmp_path / "codex-client"

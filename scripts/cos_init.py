@@ -435,8 +435,8 @@ def install_skill_dir(
       - when a driver dest is provided:
         ln -s ../../.cognitive-os/skills/cos/<name> driver/<name>  (relative symlink)
 
-    Codex and future hosts use canonical `.cognitive-os/skills/cos` as the
-    install surface until they have an explicit skills driver contract.
+    Driver destinations are harness views over canonical `.cognitive-os/skills/cos`.
+    Claude projects use `.claude/skills`; Codex/OpenAI projects use `.agents/skills`.
 
     Returns one of: "installed", "skipped" (scope-filtered), "error".
     """
@@ -1598,7 +1598,9 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
 
     driver_dirs = [str(Path(settings_relative_path).parent)]
     if harness == "claude":
-        driver_dirs.extend([".claude/rules/cos", ".claude/commands"])
+        driver_dirs.extend([".claude/rules/cos", ".claude/skills", ".claude/commands"])
+    elif harness == "codex":
+        driver_dirs.extend([".agents/skills"])
     elif harness == "vscode-copilot":
         driver_dirs.extend([".vscode"])
     elif harness == "cursor":
@@ -1737,11 +1739,12 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
     skills_installed = 0
     skills_source = cos_source / "skills"
     skill_dest_kernel = str(project_dir / ".cognitive-os" / "skills" / "cos")
-    skill_dest_driver = (
-        str(project_dir / ".claude" / "skills")
-        if harness == "claude"
-        else ""
-    )
+    if harness == "claude":
+        skill_dest_driver = str(project_dir / ".claude" / "skills")
+    elif harness == "codex":
+        skill_dest_driver = str(project_dir / ".agents" / "skills")
+    else:
+        skill_dest_driver = ""
 
     if skills_source.is_dir():
         Path(skill_dest_kernel).mkdir(parents=True, exist_ok=True)

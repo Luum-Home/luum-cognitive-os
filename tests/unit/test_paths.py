@@ -276,18 +276,20 @@ class TestArtifactContractPaths:
         assert canonical_rules_dir("/proj") == Path("/proj/.cognitive-os/rules/cos")
 
     def test_claude_projection_dirs(self):
-        from lib.paths import claude_rules_projection_dir, claude_skills_projection_dir
+        from lib.paths import claude_rules_projection_dir, claude_skills_projection_dir, codex_skills_projection_dir
 
         assert claude_skills_projection_dir("/proj") == Path("/proj/.claude/skills")
         assert claude_rules_projection_dir("/proj") == Path("/proj/.claude/rules/cos")
+        assert codex_skills_projection_dir("/proj") == Path("/proj/.agents/skills")
 
     def test_skill_lookup_candidates_are_canonical_first(self, tmp_path):
         from lib.paths import skill_lookup_candidates
 
         candidates = skill_lookup_candidates("demo", tmp_path)
         assert candidates[0] == tmp_path / "skills" / "demo" / "SKILL.md"
-        assert candidates[-2] == tmp_path / ".cognitive-os" / "skills" / "cos" / "demo" / "SKILL.md"
-        assert candidates[-1] == tmp_path / ".claude" / "skills" / "demo" / "SKILL.md"
+        assert candidates[-3] == tmp_path / ".cognitive-os" / "skills" / "cos" / "demo" / "SKILL.md"
+        assert candidates[-2] == tmp_path / ".claude" / "skills" / "demo" / "SKILL.md"
+        assert candidates[-1] == tmp_path / ".agents" / "skills" / "demo" / "SKILL.md"
 
     def test_canonical_first_skill_lookup_swaps_projection_order(self, tmp_path):
         from lib.paths import canonical_first_skill_lookup_candidates, skill_lookup_candidates
@@ -296,8 +298,9 @@ class TestArtifactContractPaths:
         default_candidates = skill_lookup_candidates("demo", tmp_path)
         assert candidates == default_candidates
         assert candidates[0] == tmp_path / "skills" / "demo" / "SKILL.md"
-        assert candidates[-2] == tmp_path / ".cognitive-os" / "skills" / "cos" / "demo" / "SKILL.md"
-        assert candidates[-1] == tmp_path / ".claude" / "skills" / "demo" / "SKILL.md"
+        assert candidates[-3] == tmp_path / ".cognitive-os" / "skills" / "cos" / "demo" / "SKILL.md"
+        assert candidates[-2] == tmp_path / ".claude" / "skills" / "demo" / "SKILL.md"
+        assert candidates[-1] == tmp_path / ".agents" / "skills" / "demo" / "SKILL.md"
 
     def test_preferred_rules_dirs_are_canonical_first(self, tmp_path):
         from lib.paths import preferred_rules_dirs

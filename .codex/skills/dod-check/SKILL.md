@@ -8,14 +8,14 @@ tags: [definition-of-done, verification, codex, quality]
 
 # DoD Check
 
-Use this skill before claiming work is complete in Codex.
+Use this skill before claiming work is complete in Codex. The deterministic checker is shared with the canonical `/dod-check` primitive and Claude projection.
 
 ## Workflow
 
 1. Run the deterministic checker from the repository root:
 
 ```bash
-python3 .codex/skills/dod-check/scripts/check_dod.py --format markdown
+python3 scripts/dod_check.py --format markdown
 ```
 
 2. Treat `FAIL` items as blockers for completion claims.

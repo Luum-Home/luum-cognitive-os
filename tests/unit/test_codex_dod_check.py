@@ -4,8 +4,8 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[2]
 SPEC = importlib.util.spec_from_file_location(
-    "codex_dod_check",
-    ROOT / ".codex" / "skills" / "dod-check" / "scripts" / "check_dod.py",
+    "dod_check",
+    ROOT / "packages" / "quality-gates" / "skills" / "dod-check" / "scripts" / "check_dod.py",
 )
 assert SPEC and SPEC.loader
 module = importlib.util.module_from_spec(SPEC)

@@ -39,6 +39,7 @@ __all__ = [
     "canonical_rules_dir",
     "claude_skills_projection_dir",
     "claude_rules_projection_dir",
+    "codex_skills_projection_dir",
     "skill_lookup_candidates",
     "canonical_first_skill_lookup_candidates",
     "preferred_rules_dirs",
@@ -154,6 +155,12 @@ def claude_rules_projection_dir(project_root: str | Path | None = None) -> Path:
     return root / ".claude" / "rules" / "cos"
 
 
+def codex_skills_projection_dir(project_root: str | Path | None = None) -> Path:
+    """Return the Codex/OpenAI agents projection directory for skill exposure."""
+    root = _artifact_project_root(project_root)
+    return root / ".agents" / "skills"
+
+
 def skill_lookup_candidates(skill_name: str, project_root: str | Path | None = None) -> tuple[Path, ...]:
     """Return ordered candidate locations for a skill's ``SKILL.md``.
 
@@ -163,6 +170,7 @@ def skill_lookup_candidates(skill_name: str, project_root: str | Path | None = N
     2. package skill exports ``packages/*/skills/{name}/SKILL.md``
     3. canonical OS skill path ``.cognitive-os/skills/cos/{name}/SKILL.md``
     4. Claude driver projection ``.claude/skills/{name}/SKILL.md``
+    5. Codex/OpenAI agents driver projection ``.agents/skills/{name}/SKILL.md``
 
     Claude remains fully supported as a driver projection, but it is no longer
     the runtime center of truth when canonical artifacts exist.
@@ -198,12 +206,13 @@ def _skill_lookup_candidates(
             if pkg.is_dir():
                 candidates.append(pkg / "skills" / skill_name / "SKILL.md")
 
-    driver_candidate = claude_skills_projection_dir(root) / skill_name / "SKILL.md"
+    claude_driver_candidate = claude_skills_projection_dir(root) / skill_name / "SKILL.md"
+    codex_driver_candidate = codex_skills_projection_dir(root) / skill_name / "SKILL.md"
     canonical_candidate = canonical_skills_dir(root) / skill_name / "SKILL.md"
     if prefer_canonical:
-        candidates.extend([canonical_candidate, driver_candidate])
+        candidates.extend([canonical_candidate, claude_driver_candidate, codex_driver_candidate])
     else:
-        candidates.extend([driver_candidate, canonical_candidate])
+        candidates.extend([claude_driver_candidate, codex_driver_candidate, canonical_candidate])
     return tuple(candidates)
 
 
