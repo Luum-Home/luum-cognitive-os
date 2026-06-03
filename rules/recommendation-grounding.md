@@ -40,7 +40,7 @@ Finding 6 of the 2026-05-11 self-critique: the orchestrator produced a P1/P2/P3 
 | 4 | **Session backlog** | `.cognitive-os/sessions/default/backlog.md` (promoted as `docs/06-Daily/reports/session-backlog-latest.md`) | Raw work surface accumulated across sessions. |
 | 5 | **Dogfood score** | `scripts/dogfood_score.py` + recent `docs/06-Daily/reports/orchestrator-dogfood-*` reports | Self-build maturity. Constrains whether COS can absorb the recommended primitive without regressing dogfood. |
 | 6 | **Engram decisions** | `mem_search(query: "decision/<topic>")` | Whether a prior decision already accepted/rejected this direction. Re-litigating without new evidence is forbidden. |
-| 7 | **Error-learning log** | `.cognitive-os/error-learning.jsonl` | Whether the new work is in a class with recurring failures. |
+| 7 | **Error-learning log** | `.cognitive-os/metrics/error-learning.jsonl` | Whether the new work is in a class with recurring failures. |
 | 8 | **Cost prediction** | `/cost-predict` / `scripts/cost_predict.py` | Whether the recommended path fits within the project's historical cost envelope. |
 | 9 | **Primitive readiness ledgers** | `docs/06-Daily/reports/primitive-readiness-ledger-<family>-latest.md` | Whether prerequisite primitives exist or must be built first. |
 | 10 | **Radar trackers** | `docs/06-Daily/reports/radar-<date>-implementation-tracker.md`, `docs/06-Daily/reports/external-tools-radar-*-latest.md` | Whether parallel external-tool adoption is already in flight. |

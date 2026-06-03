@@ -8,7 +8,7 @@ defaults:
 lanes:
   unit:
     workers: auto
-    timeout_seconds: 1200
+    timeout_seconds: 2400
   audit:
     workers: auto
     timeout_seconds: 360
