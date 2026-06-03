@@ -64,7 +64,7 @@ ENV_HASH="$({ env | grep -E '^(COS_HISTORY_SANITIZE_|COS_ALLOW_DESTRUCTIVE_GIT=|
 TRIPLE_HASH="$(printf '%s\n%s\n%s\n' "$HEAD_SHA" "$RULES_HASH" "$ENV_HASH" | shasum -a 256 | awk '{print $1}')"
 
 if [ -f "$STATE_FILE" ] && [ "$FORCE_RE_RUN" != "1" ]; then
-  PREV_TRIPLE="$(python3 - "$STATE_FILE" <<'PY' 2>/dev/null || true
+  PREV_TRIPLE="$("$PYTHON_BIN" - "$STATE_FILE" <<'PY' 2>/dev/null || true
 import json,sys
 try:
     print(json.load(open(sys.argv[1])).get('triple_hash',''))
@@ -79,7 +79,7 @@ PY
 fi
 
 snapshot_remotes() {
-  python3 - "$PROJECT_DIR" <<'PY'
+  "$PYTHON_BIN" - "$PROJECT_DIR" <<'PY'
 import json, subprocess, sys
 root=sys.argv[1]
 remotes={}
@@ -98,7 +98,7 @@ PY
 
 restore_remotes() {
   local json="$1"
-  python3 - "$PROJECT_DIR" "$json" <<'PY'
+  "$PYTHON_BIN" - "$PROJECT_DIR" "$json" <<'PY'
 import json, subprocess, sys
 root=sys.argv[1]
 remotes=json.loads(sys.argv[2] or '{}')
@@ -120,7 +120,7 @@ PY
 }
 
 snapshot_branch_upstreams() {
-  python3 - "$PROJECT_DIR" <<'PY'
+  "$PYTHON_BIN" - "$PROJECT_DIR" <<'PY'
 import json, subprocess, sys
 root=sys.argv[1]
 cur=subprocess.run(['git','-C',root,'branch','--show-current'],text=True,capture_output=True)
@@ -142,7 +142,7 @@ PY
 
 restore_branch_upstreams() {
   local json="$1"
-  python3 - "$PROJECT_DIR" "$json" <<'PY'
+  "$PYTHON_BIN" - "$PROJECT_DIR" "$json" <<'PY'
 import json, subprocess, sys
 root=sys.argv[1]
 snapshot=json.loads(sys.argv[2] or '{}')
@@ -183,7 +183,7 @@ PY
 REMOTES_JSON="$(snapshot_remotes)"
 BRANCH_UPSTREAMS_JSON="$(snapshot_branch_upstreams)"
 if [ "$DRY_RUN" = "1" ]; then
-  python3 - <<PY
+  "$PYTHON_BIN" - <<PY
 import json
 print(json.dumps({
   'schema_version':'cos-filter-repo-wrap-plan/v1',
@@ -203,14 +203,18 @@ FILTER_REPO_BIN="$(command -v git-filter-repo || true)"
 [ -n "$FILTER_REPO_BIN" ] || { echo "cos-filter-repo-wrap: git-filter-repo not found" >&2; exit 2; }
 PRE_HEAD="$HEAD_SHA"
 set +e
-(cd "$PROJECT_DIR" && "$PYTHON_BIN" "$FILTER_REPO_BIN" ${PASSTHROUGH+"${PASSTHROUGH[@]}"} --replace-text "$RULES_FILE" --force)
+if head -n 1 "$FILTER_REPO_BIN" 2>/dev/null | grep -Eq 'python|/env python'; then
+  (cd "$PROJECT_DIR" && "$PYTHON_BIN" "$FILTER_REPO_BIN" ${PASSTHROUGH+"${PASSTHROUGH[@]}"} --replace-text "$RULES_FILE" --force)
+else
+  (cd "$PROJECT_DIR" && "$FILTER_REPO_BIN" ${PASSTHROUGH+"${PASSTHROUGH[@]}"} --replace-text "$RULES_FILE" --force)
+fi
 RC=$?
 set -e
 RESTORED_JSON="$(restore_remotes "$REMOTES_JSON")"
 BRANCH_UPSTREAM_RESTORE_JSON="$(restore_branch_upstreams "$BRANCH_UPSTREAMS_JSON")"
 POST_HEAD="$(git -C "$PROJECT_DIR" rev-parse HEAD 2>/dev/null || true)"
 TS="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-python3 - "$RECOVERY_JSON" "$STATE_FILE" <<PY
+"$PYTHON_BIN" - "$RECOVERY_JSON" "$STATE_FILE" <<PY
 import json, pathlib, sys
 payload={
   'schema_version':'cos-filter-repo-recovery/v1',
@@ -235,7 +239,7 @@ PY
 
 # ADR-269 ledger append on success.
 if [ "$RC" = "0" ] && [ -n "$ADR_REF" ] && [ -n "$BACKUP_MIRROR" ]; then
-  PYTHONPATH="$PROJECT_DIR" python3 - "$PROJECT_DIR" "$ADR_REF" "$ADR_REASON" "$ADR_OPERATOR" "$BACKUP_MIRROR" "$PRE_HEAD" "$POST_HEAD" <<'PY' >&2 || true
+  PYTHONPATH="$PROJECT_DIR" "$PYTHON_BIN" - "$PROJECT_DIR" "$ADR_REF" "$ADR_REASON" "$ADR_OPERATOR" "$BACKUP_MIRROR" "$PRE_HEAD" "$POST_HEAD" <<'PY' >&2 || true
 import sys, os
 from pathlib import Path
 project, adr, reason, operator, backup, pre, post = sys.argv[1:8]
