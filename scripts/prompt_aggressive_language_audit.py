@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Audit prompt-style aggressive language in model-facing repository surfaces.
 
 The audit separates allowed protocol/security/severity wording from likely
