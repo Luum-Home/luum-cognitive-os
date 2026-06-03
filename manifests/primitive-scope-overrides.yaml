@@ -39,178 +39,178 @@ rules:
     rationale: Legacy extensionless scripts are maintainer-only unless header or exact override says otherwise.
   - pattern: hooks/_lib/governance-policy.sh
     scope: both
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: hooks/eas-validation-gate.sh
     scope: both
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: hooks/goal-stop-gate.sh
     scope: os-only
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: hooks/publication-safety.sh
     scope: both
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: hooks/research-compliance-guard.sh
     scope: both
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: hooks/secret-audit-pre-commit.sh
     scope: both
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: hooks/session-quality-close-gate.sh
     scope: both
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: hooks/subagent-input-schema-validator.sh
     scope: os-only
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: rules/goal-loop.md
     scope: os-only
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: rules/hook-maturity.md
     scope: os-only
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: rules/language-token-economy.md
     scope: both
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: rules/local-privacy-hygiene.md
     scope: both
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: rules/release-publishing.md
     scope: both
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: rules/research-first-protocol.md
     scope: both
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: rules/routing-pattern-authoring.md
     scope: os-only
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: rules/routing-quality-gate.md
     scope: both
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: scripts/ai-budget-preflight
     scope: both
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: scripts/ai-resource-economy-audit
     scope: both
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: scripts/ai_budget_preflight.py
     scope: both
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: scripts/ai_resource_economy_audit.py
     scope: both
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: scripts/check-local-privacy.sh
     scope: both
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: scripts/context_budget_meter_fast.py
     scope: both
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: scripts/cos-patch-release
     scope: both
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: scripts/cos-publication-safety
     scope: both
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: scripts/cos-token-savings-audit
     scope: both
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: scripts/cos_task_event_watcher.py
     scope: both
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: scripts/generate_runtime_compact_config.py
     scope: both
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: scripts/install-gitleaks-trufflehog.sh
     scope: both
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: scripts/secret-audit-gitleaks.sh
     scope: both
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: scripts/secret-audit-trufflehog.sh
     scope: both
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: skills/graphify-query/SKILL.md
     scope: os-only
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: skills/install-hook/SKILL.md
     scope: os-only
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: skills/install-skill/SKILL.md
     scope: os-only
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: skills/patch-release/SKILL.md
     scope: both
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: skills/self-improvement-loop/SKILL.md
     scope: os-only
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: templates/agent-planning.md
     scope: os-only
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: templates/blocked-strings.example.txt
     scope: project
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: templates/fintech-gates.md
     scope: project
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: templates/go-service-context.md
     scope: project
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: templates/local-privacy-patterns.example.txt
     scope: os-only
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: templates/project-templates/go/README.md.tmpl
     scope: project
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: templates/project-templates/go/cognitive-os.yaml.tmpl
     scope: project
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: templates/project-templates/go/gitignore.tmpl
     scope: project
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: templates/project-templates/go/go.mod.tmpl
     scope: project
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: templates/project-templates/go/main.go.tmpl
     scope: project
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: templates/project-templates/minimal/README.md.tmpl
     scope: project
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: templates/project-templates/minimal/cognitive-os.yaml.tmpl
     scope: project
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: templates/project-templates/minimal/gitignore.tmpl
     scope: project
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: templates/project-templates/python/README.md.tmpl
     scope: project
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: templates/project-templates/python/cognitive-os.yaml.tmpl
     scope: project
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: templates/project-templates/python/gitignore.tmpl
     scope: project
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: templates/project-templates/python/pyproject.toml.tmpl
     scope: project
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: templates/project-templates/settings.json.tmpl
     scope: project
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: templates/project-templates/typescript/README.md.tmpl
     scope: project
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: templates/project-templates/typescript/cognitive-os.yaml.tmpl
     scope: project
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: templates/project-templates/typescript/gitignore.tmpl
     scope: project
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: templates/project-templates/typescript/package.json.tmpl
     scope: project
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: templates/project-templates/typescript/tsconfig.json.tmpl
     scope: project
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."
   - pattern: templates/verification-commands.example.yaml
     scope: project
-    rationale: Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence.
+    rationale: "Strict scope classifier calibration: exact primitive metadata added after CI fail-low/fail-medium surfaced insufficient confidence."

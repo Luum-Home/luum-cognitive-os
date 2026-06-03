@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -39,7 +40,7 @@ def _valid_primitive() -> dict:
 
 def test_repository_manifest_is_valid_and_json_cli_reports_success() -> None:
     result = subprocess.run(
-        ["python3", str(SCRIPT), "--json"],
+        [sys.executable, str(SCRIPT), "--json"],
         cwd=REPO_ROOT,
         text=True,
         capture_output=True,

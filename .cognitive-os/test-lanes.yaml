@@ -102,6 +102,7 @@ lanes:
     - tests/integration/test_dispatch_gate_real_dispatch.py
     - tests/integration/test_harness_adapter_dispatch.py
     - tests/integration/test_harness_driver_parity.py
+    - tests/integration/test_opencode_harness_adapter_dispatch.py
     - tests/integration/test_agent_team_cross_harness_contract.py
     - tests/integration/test_cos_test_workers.py
     parallel: false

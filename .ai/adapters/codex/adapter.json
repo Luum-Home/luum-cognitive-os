@@ -6,7 +6,7 @@
   "harness": "codex",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 737,
+  "projected_primitive_count": 738,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": false,
@@ -5102,6 +5102,13 @@
       "fidelity": "documented-only",
       "portable_id": "scripts/cos-install-skill",
       "primitive_file": "primitives/tools/scripts-cos-install-skill-8bff19d184.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/dod_check.py",
+      "primitive_file": "primitives/tools/scripts-dod-check-py-00c7322a56.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {

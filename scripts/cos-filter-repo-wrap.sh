@@ -4,6 +4,15 @@
 set -euo pipefail
 
 PROJECT_DIR="$(pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
+COS_SOURCE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+if [ -z "${PYTHON_BIN:-}" ]; then
+  if [ -x "$COS_SOURCE_DIR/.venv/bin/python" ]; then
+    PYTHON_BIN="$COS_SOURCE_DIR/.venv/bin/python"
+  else
+    PYTHON_BIN="python3"
+  fi
+fi
 RULES_FILE=""
 BACKUP_MIRROR=""
 RECOVERY_JSON=""
@@ -190,10 +199,11 @@ PY
   exit 0
 fi
 
-command -v git-filter-repo >/dev/null 2>&1 || { echo "cos-filter-repo-wrap: git-filter-repo not found" >&2; exit 2; }
+FILTER_REPO_BIN="$(command -v git-filter-repo || true)"
+[ -n "$FILTER_REPO_BIN" ] || { echo "cos-filter-repo-wrap: git-filter-repo not found" >&2; exit 2; }
 PRE_HEAD="$HEAD_SHA"
 set +e
-git -C "$PROJECT_DIR" filter-repo ${PASSTHROUGH+"${PASSTHROUGH[@]}"} --replace-text "$RULES_FILE" --force
+(cd "$PROJECT_DIR" && "$PYTHON_BIN" "$FILTER_REPO_BIN" ${PASSTHROUGH+"${PASSTHROUGH[@]}"} --replace-text "$RULES_FILE" --force)
 RC=$?
 set -e
 RESTORED_JSON="$(restore_remotes "$REMOTES_JSON")"

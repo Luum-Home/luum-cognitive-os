@@ -7,7 +7,7 @@ inputs:
 - task_description (optional): What was done
 - complexity (optional): trivial | small | medium | large | critical. Auto-classified when omitted.
 outputs:
-- verdict: PASS | WARN | FAIL
+- verdict: PASS | PARTIAL | FAIL
 - complexity: classified complexity level
 - checks: deterministic hygiene and validation recommendations
 audience: project
@@ -48,15 +48,24 @@ python3 .cognitive-os/skills/cos/dod-check/scripts/check_dod.py --format markdow
 ```
 
 2. Treat `FAIL` items as blockers for completion claims.
-3. Treat `WARN` items as explicit uncertainties in the Trust Report.
-4. If the checker recommends a validation command, run the smallest command that covers the changed surface.
-5. Report the checker verdict and any skipped checks in the final answer.
+3. Treat `PARTIAL` as unfinished work unless the skipped lane is explicitly out of scope.
+4. Treat `WARN` items as explicit uncertainties in the Trust Report.
+5. If the checker recommends a validation command, run the smallest command that covers the changed surface.
+6. Report the checker verdict and any skipped checks in the final answer.
+
+## Output format
+
+The checker reports one of three verdicts: `PASS`, `PARTIAL`, or `FAIL`. `PASS` means deterministic checks found no blockers. `PARTIAL` means required evidence is incomplete or a validation lane was intentionally skipped. `FAIL` means at least one deterministic blocker is present.
+
+## Phase enforcement
+
+In `reconstruction` and `stabilization`, missing DoD evidence is usually a `WARN` unless the task is security-, release-, or credential-sensitive. In `production` and `maintenance`, missing required evidence is a `BLOCK` for completion claims.
 
 ## Notes
 
 - The checker does not run expensive test lanes by default.
 - Use `--run-recommended` only when the recommended command is safe for the current machine and task scope.
-- Security, credential, release, and destructive-git boundaries remain governed by hooks/scripts rather than prose.
+- Security, credential, release, and destructive-git boundaries remain governed by deterministic hook and script checks rather than prose.
 - Claude Code invokes this as `/dod-check`; Codex invokes the projected skill as `$dod-check`. Both use the same deterministic checker logic.
 
 ## Contextual Trigger

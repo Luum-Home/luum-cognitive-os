@@ -22719,4 +22719,4 @@ primitives:
   sunset_criteria: Remove when dod-check skills invoke the package-local checker directly across all harnesses.
   docs_claim_level: observe
   exit_behavior: exit_0_or_nonzero
-  metrics_file: none
+  metrics_file: "none"

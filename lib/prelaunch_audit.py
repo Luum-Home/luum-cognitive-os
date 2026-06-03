@@ -12,6 +12,7 @@ import os
 import re
 import shutil
 import subprocess
+import sys
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -22,6 +23,20 @@ PLAN_SCHEMA_VERSION = "prelaunch-rewrite-plan/v1"
 DEFAULT_PLAN_DIR = Path(".cognitive-os/prelaunch")
 DEFAULT_REPORT_DIR = Path("docs/06-Daily/reports")
 
+
+
+def filter_repo_command(args: list[str]) -> list[str]:
+    """Return a git-filter-repo invocation pinned to the active Python runtime.
+
+    Homebrew's git-filter-repo entrypoint uses `/usr/bin/env python3`; on some
+    developer machines that global interpreter can hang before the tool starts.
+    Invoking the installed script with the current interpreter keeps rewrite
+    tests and controlled execution deterministic.
+    """
+    path = shutil.which("git-filter-repo")
+    if not path:
+        raise SystemExit("git-filter-repo is required")
+    return [sys.executable, path, *args]
 
 @dataclass(frozen=True)
 class AuditRule:
@@ -627,9 +642,9 @@ def apply_rewrite(repo: Path, *, plan_dir: Path | None = None, dry_run: bool = F
     replacement_has_rules = replacements.exists() and any(line.strip() and not line.lstrip().startswith("#") for line in replacements.read_text(encoding="utf-8").splitlines())
     actions: list[list[str]] = []
     if replacement_has_rules:
-        actions.append(["git", "filter-repo", "--force", "--replace-text", str(replacements)])
+        actions.append(filter_repo_command(["--force", "--replace-text", str(replacements)]))
     if rewrites:
-        actions.append(["git", "filter-repo", "--force", "--message-callback", _message_callback_source(rewrites)])
+        actions.append(filter_repo_command(["--force", "--message-callback", _message_callback_source(rewrites)]))
     if dry_run:
         return {"schema_version": PLAN_SCHEMA_VERSION, "status": "dry-run", "actions": actions, "message_rewrites": len(rewrites), "content_replacements": replacement_has_rules}
     if os.environ.get("COS_ALLOW_PRELAUNCH_REWRITE") != "1":

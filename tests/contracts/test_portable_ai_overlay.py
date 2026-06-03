@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import subprocess
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -43,7 +44,7 @@ def _primitive_files() -> list[Path]:
 
 def test_portable_ai_overlay_is_generated_and_current() -> None:
     result = subprocess.run(
-        ["python3", "scripts/portable_ai_overlay.py", "--check"],
+        [sys.executable, "scripts/portable_ai_overlay.py", "--check"],
         cwd=REPO_ROOT,
         text=True,
         stdout=subprocess.PIPE,

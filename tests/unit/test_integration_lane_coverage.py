@@ -1,5 +1,6 @@
 import json
 import subprocess
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -8,7 +9,7 @@ SCRIPT = ROOT / "scripts" / "check_integration_lane_coverage.py"
 
 def test_integration_lane_coverage_contract_passes_for_repo_registry():
     result = subprocess.run(
-        [str(SCRIPT), "--strict", "--json"],
+        [sys.executable, str(SCRIPT), "--strict", "--json"],
         cwd=ROOT,
         text=True,
         capture_output=True,
