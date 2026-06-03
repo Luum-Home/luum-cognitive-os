@@ -5,6 +5,20 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.29.22] - 2026-06-03 — "Scope Portability and Status Stabilization"
+
+### Added
+- Added red-team portability proof coverage for the root DoD wrapper.
+
+### Fixed
+- Fixed Scope portability CI by adding missing portability proof coverage and classifying the prompt aggressive-language audit as OS-only.
+- Stabilized `cos-status.sh` by making the expensive governance ROI dashboard opt-in for default status output.
+- Bounded governance ROI git stash inspection so local fsmonitor stalls do not block status.
+
+### Validation
+- GitHub Actions Scope portability passed for main at `7436cd6b`.
+- `scripts/cos-patch-release validate` is the required patch-release validation lane.
+
 ## [0.29.21] - 2026-06-03 — "Installer and Codex Projection Hardening"
 
 ### Added
