@@ -20,8 +20,8 @@ from typing import Any, Sequence
 from scripts.cos_task_claims import claims_path, normalize_claims, prune_claims, project_dir, read_json
 
 
-def run(project: Path, args: Sequence[str]) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(["git", *args], cwd=project, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False, timeout=60)
+def run(project: Path, args: Sequence[str], *, timeout: float = 10) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(["git", *args], cwd=project, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False, timeout=timeout)
 
 
 def parse_iso_epoch(value: Any) -> float | None:
@@ -92,7 +92,10 @@ def stashes(project: Path) -> list[str]:
 
 
 def orphan_commits(project: Path) -> list[str]:
-    proc = run(project, ["fsck", "--no-reflogs", "--unreachable", "--no-progress"])
+    try:
+        proc = run(project, ["fsck", "--no-reflogs", "--unreachable", "--no-progress"], timeout=2)
+    except subprocess.TimeoutExpired:
+        return ["git fsck timed out; orphan scan skipped"]
     shas = []
     for line in (proc.stdout + proc.stderr).splitlines():
         parts = line.split()
@@ -121,7 +124,15 @@ def worktrees(project: Path) -> list[dict[str, str]]:
     for row in rows:
         path = row.get("worktree")
         if path:
-            status = subprocess.run(["git", "status", "--short"], cwd=path, text=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=False, timeout=60)
+            if not Path(path).exists():
+                row["wip_count"] = "stale"
+                row["stale"] = "true"
+                continue
+        try:
+            status = subprocess.run(["git", "status", "--short"], cwd=path, text=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=False, timeout=5)
+        except subprocess.TimeoutExpired:
+            row["wip_count"] = "timeout"
+            continue
             row["wip_count"] = str(len([l for l in status.stdout.splitlines() if l.strip()])) if status.returncode == 0 else "?"
     return rows
 

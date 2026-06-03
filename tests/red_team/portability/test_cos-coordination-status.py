@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 import subprocess
+import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -22,7 +23,7 @@ CLI_PY = REPO_ROOT / "scripts" / "cos_coordination_status.py"
 
 
 def run_cli(*extra: str, direct_python: bool = False) -> "subprocess.CompletedProcess[str]":
-    command = ["python3", str(CLI_PY), *extra] if direct_python else ["bash", str(CLI_SH), *extra]
+    command = [sys.executable, str(CLI_PY), *extra] if direct_python else ["bash", str(CLI_SH), *extra]
     return subprocess.run(
         command,
         text=True,
