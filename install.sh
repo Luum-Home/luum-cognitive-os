@@ -434,51 +434,39 @@ fi
 # ── Prepare source (local copy or remote clone) ──────────────────────
 prepare_source() {
   if [ -n "$SOURCE_DIR" ]; then
-    # Local: copy only the directories cos-init.sh needs, skip .venv/reference/node_modules
+    # Local: copy only the directories cos-init.sh needs. Keep this as an
+    # allowlist; blacklist-style whole-repo rsync can traverse large local
+    # runtime/plugin directories and hang during --from installs.
     echo "Copying from local source..."
     mkdir -p "$TEMP_DIR"
-    # Use rsync if available (excludes broken symlinks in .venv, reference/, etc.)
-    if command -v rsync >/dev/null 2>&1; then
-      set +e
-      rsync -a \
-        --exclude='.venv' \
-        --exclude='node_modules' \
-        --exclude='reference' \
-        --exclude='.git' \
-        --exclude='.cognitive-os/metrics' \
-        --exclude='.cognitive-os/runtime' \
-        --exclude='.pytest_cache' \
-        --exclude='.ruff_cache' \
-        --exclude='target' \
-        --exclude='dist' \
-        --exclude='dashboard' \
-        --exclude='tests' \
-        --exclude='docs' \
-        --exclude='.claude' \
-        --exclude='.codex' \
-        --exclude='.ai' \
-        --exclude='.cognitive-os' \
-        --exclude='__pycache__' \
-        "$SOURCE_DIR/" "$TEMP_DIR/"
-      rsync_status=$?
-      set -e
-      if [ "$rsync_status" -ne 0 ]; then
-        # Local source installs can race with live agent/test artifacts being
-        # created or removed. rsync returns 23/24 for partial transfer or
-        # vanished files; continue and let required-file checks below catch
-        # any genuinely missing installer inputs.
-        if [ "$rsync_status" -eq 23 ] || [ "$rsync_status" -eq 24 ]; then
-          echo "WARNING: local source changed during copy; continuing with partial rsync." >&2
-        else
-          exit "$rsync_status"
-        fi
-      fi
-    else
-      # Fallback: cp with error suppression for broken symlinks
-      cp -r "$SOURCE_DIR" "$TEMP_DIR.bak" 2>/dev/null || true
-      mv "$TEMP_DIR.bak" "$TEMP_DIR"
-      rm -rf "$TEMP_DIR/.cognitive-os/metrics" "$TEMP_DIR/.cognitive-os/runtime" 2>/dev/null || true
-    fi
+
+    copy_source_path() {
+      local rel="$1"
+      [ -e "$SOURCE_DIR/$rel" ] || return 0
+      mkdir -p "$(dirname "$TEMP_DIR/$rel")"
+      cp -Rp "$SOURCE_DIR/$rel" "$TEMP_DIR/$(dirname "$rel")/"
+    }
+
+    for rel in \
+      install.sh \
+      cognitive-os.yaml \
+      package.json \
+      pyproject.toml \
+      requirements.txt \
+      VERSION \
+      yaml.py \
+      .claude/settings.json \
+      hooks \
+      lib \
+      manifests \
+      packages \
+      rules \
+      scripts \
+      skills \
+      templates
+    do
+      copy_source_path "$rel"
+    done
   else
     # Remote: git clone
     echo "Downloading Cognitive OS ($VERSION)..."

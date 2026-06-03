@@ -90,7 +90,7 @@ def _run_installer(project: Path, cos_source: Path, *args: str, env: dict[str, s
     if env:
         merged_env.update(env)
     return subprocess.run(
-        [str(INSTALLER), "--from", str(cos_source), "--force", *args],
+        ["bash", str(INSTALLER), "--from", str(cos_source), "--force", *args],
         cwd=project,
         capture_output=True,
         text=True,
@@ -110,7 +110,7 @@ class TestFreshInstall:
     def test_creates_cognitive_os_dir(self, install_dir, cos_source):
         """install.sh creates .cognitive-os/ in the target directory."""
         result = subprocess.run(
-            [str(INSTALLER), "--force"],
+            ["bash", str(INSTALLER), "--force"],
             cwd=install_dir,
             capture_output=True,
             text=True,
@@ -121,7 +121,7 @@ class TestFreshInstall:
     def test_creates_claude_rules(self, install_dir, cos_source):
         """install.sh creates .claude/rules/cos/ with rule files."""
         subprocess.run(
-            [str(INSTALLER), "--force"],
+            ["bash", str(INSTALLER), "--force"],
             cwd=install_dir,
             capture_output=True,
             text=True,
@@ -134,7 +134,7 @@ class TestFreshInstall:
     def test_creates_settings_json(self, install_dir, cos_source):
         """install.sh creates .claude/settings.json with hooks."""
         subprocess.run(
-            [str(INSTALLER), "--force"],
+            ["bash", str(INSTALLER), "--force"],
             cwd=install_dir,
             capture_output=True,
             text=True,
@@ -147,7 +147,7 @@ class TestFreshInstall:
     def test_creates_codex_hooks_when_harness_is_codex(self, install_dir, cos_source):
         """install.sh projects hooks into .codex/hooks.json when Codex is selected."""
         result = subprocess.run(
-            [str(INSTALLER), "--force", "--harness=codex"],
+            ["bash", str(INSTALLER), "--force", "--harness=codex"],
             cwd=install_dir,
             capture_output=True,
             text=True,
@@ -165,7 +165,7 @@ class TestFreshInstall:
     def test_creates_cognitive_os_yaml(self, install_dir, cos_source):
         """install.sh creates cognitive-os.yaml config."""
         subprocess.run(
-            [str(INSTALLER), "--force"],
+            ["bash", str(INSTALLER), "--force"],
             cwd=install_dir,
             capture_output=True,
             text=True,
@@ -176,7 +176,7 @@ class TestFreshInstall:
     def test_creates_claude_md(self, install_dir, cos_source):
         """install.sh creates .claude/CLAUDE.md from template."""
         subprocess.run(
-            [str(INSTALLER), "--force"],
+            ["bash", str(INSTALLER), "--force"],
             cwd=install_dir,
             capture_output=True,
             text=True,
@@ -187,7 +187,7 @@ class TestFreshInstall:
     def test_installs_cross_harness_authoring_template(self, install_dir, cos_source):
         """install.sh installs the cross-harness authoring guide into templates/cos."""
         result = subprocess.run(
-            [str(INSTALLER), "--force"],
+            ["bash", str(INSTALLER), "--force"],
             cwd=install_dir,
             capture_output=True,
             text=True,
@@ -201,7 +201,7 @@ class TestFreshInstall:
     def test_output_reports_success(self, install_dir, cos_source):
         """install.sh prints success message on completion."""
         result = subprocess.run(
-            [str(INSTALLER), "--force"],
+            ["bash", str(INSTALLER), "--force"],
             cwd=install_dir,
             capture_output=True,
             text=True,
@@ -220,7 +220,7 @@ class TestFreshInstall:
         (project / "README.md").write_text("# New Codex App\n")
 
         result = subprocess.run(
-            [str(INSTALLER), "--from", str(cos_source), "--force", "--harness=codex"],
+            ["bash", str(INSTALLER), "--from", str(cos_source), "--force", "--harness=codex"],
             cwd=project,
             capture_output=True,
             text=True,
@@ -272,7 +272,7 @@ class TestFreshInstall:
         (project / "package.json").write_text('{"name": "new-cursor-app"}\n')
 
         result = subprocess.run(
-            [str(INSTALLER), "--from", str(cos_source), "--force", "--harness=cursor"],
+            ["bash", str(INSTALLER), "--from", str(cos_source), "--force", "--harness=cursor"],
             cwd=project,
             capture_output=True,
             text=True,
@@ -302,7 +302,7 @@ class TestFreshInstall:
         (project / "go.mod").write_text("module example.com/new-claude-app\n\ngo 1.22\n")
 
         result = subprocess.run(
-            [str(INSTALLER), "--from", str(cos_source), "--force", "--harness=claude"],
+            ["bash", str(INSTALLER), "--from", str(cos_source), "--force", "--harness=claude"],
             cwd=project,
             capture_output=True,
             text=True,
@@ -541,7 +541,7 @@ class TestSelfInstallGuard:
     def test_blocks_self_install(self, cos_source):
         """Running install.sh from the COS repo itself should fail."""
         result = subprocess.run(
-            [str(INSTALLER), "--force"],
+            ["bash", str(INSTALLER), "--force"],
             cwd=cos_source,
             capture_output=True,
             text=True,
@@ -553,7 +553,7 @@ class TestSelfInstallGuard:
     def test_blocks_self_install_with_from(self, cos_source):
         """--from pointing to the same dir as cwd should be blocked."""
         result = subprocess.run(
-            [str(INSTALLER), "--from", str(cos_source), "--force"],
+            ["bash", str(INSTALLER), "--from", str(cos_source), "--force"],
             cwd=cos_source,
             capture_output=True,
             text=True,
@@ -563,7 +563,7 @@ class TestSelfInstallGuard:
     def test_blocks_self_install_relative_from(self, cos_source):
         """--from with relative path '.' should also be blocked."""
         result = subprocess.run(
-            [str(INSTALLER), "--from", ".", "--force"],
+            ["bash", str(INSTALLER), "--from", ".", "--force"],
             cwd=cos_source,
             capture_output=True,
             text=True,
@@ -582,9 +582,9 @@ class TestBrokenSymlinks:
     def test_survives_broken_symlinks_in_source(self, install_dir, cos_source):
         """Installer should not fail even if source has broken symlinks."""
         # Create a broken symlink in a temp copy to simulate the issue
-        # The real fix is that rsync --exclude skips .venv entirely
+        # The real fix is that local --from copies an allowlist and skips runtime directories entirely
         result = subprocess.run(
-            [str(INSTALLER), "--force"],
+            ["bash", str(INSTALLER), "--force"],
             cwd=install_dir,
             capture_output=True,
             text=True,
@@ -605,7 +605,7 @@ class TestUpdate:
         """--force should overwrite an existing installation."""
         # First install
         subprocess.run(
-            [str(INSTALLER), "--force"],
+            ["bash", str(INSTALLER), "--force"],
             cwd=install_dir,
             capture_output=True,
             text=True,
@@ -614,7 +614,7 @@ class TestUpdate:
 
         # Second install (update)
         result = subprocess.run(
-            [str(INSTALLER), "--force"],
+            ["bash", str(INSTALLER), "--force"],
             cwd=install_dir,
             capture_output=True,
             text=True,
@@ -626,7 +626,7 @@ class TestUpdate:
         """Updating should not overwrite an existing .claude/CLAUDE.md."""
         # First install
         subprocess.run(
-            [str(INSTALLER), "--force"],
+            ["bash", str(INSTALLER), "--force"],
             cwd=install_dir,
             capture_output=True,
             text=True,
@@ -639,7 +639,7 @@ class TestUpdate:
 
         # Update
         result = subprocess.run(
-            [str(INSTALLER), "--force"],
+            ["bash", str(INSTALLER), "--force"],
             cwd=install_dir,
             capture_output=True,
             text=True,
@@ -653,7 +653,7 @@ class TestUpdate:
         """Updating should not touch project-specific rules outside cos/."""
         # First install
         subprocess.run(
-            [str(INSTALLER), "--force"],
+            ["bash", str(INSTALLER), "--force"],
             cwd=install_dir,
             capture_output=True,
             text=True,
@@ -666,7 +666,7 @@ class TestUpdate:
 
         # Update
         subprocess.run(
-            [str(INSTALLER), "--force"],
+            ["bash", str(INSTALLER), "--force"],
             cwd=install_dir,
             capture_output=True,
             text=True,
@@ -680,7 +680,7 @@ class TestUpdate:
         """Updating should refresh COS rules under cos/ namespace."""
         # First install
         subprocess.run(
-            [str(INSTALLER), "--force"],
+            ["bash", str(INSTALLER), "--force"],
             cwd=install_dir,
             capture_output=True,
             text=True,
@@ -690,7 +690,7 @@ class TestUpdate:
 
         # Update
         subprocess.run(
-            [str(INSTALLER), "--force"],
+            ["bash", str(INSTALLER), "--force"],
             cwd=install_dir,
             capture_output=True,
             text=True,
@@ -712,7 +712,7 @@ class TestFromFlag:
     def test_from_with_valid_path(self, install_dir, cos_source):
         """--from with a valid COS repo path should work."""
         result = subprocess.run(
-            [str(INSTALLER), "--from", str(cos_source), "--force"],
+            ["bash", str(INSTALLER), "--from", str(cos_source), "--force"],
             cwd=install_dir,
             capture_output=True,
             text=True,
@@ -723,7 +723,7 @@ class TestFromFlag:
     def test_from_with_invalid_path(self, install_dir):
         """--from with a non-existent path should fail gracefully."""
         result = subprocess.run(
-            [str(INSTALLER), "--from", "/nonexistent/path", "--force"],
+            ["bash", str(INSTALLER), "--from", "/nonexistent/path", "--force"],
             cwd=install_dir,
             capture_output=True,
             text=True,
@@ -736,7 +736,7 @@ class TestFromFlag:
         fake_source = tmp_path / "not-cos"
         fake_source.mkdir()
         result = subprocess.run(
-            [str(INSTALLER), "--from", str(fake_source), "--force"],
+            ["bash", str(INSTALLER), "--from", str(fake_source), "--force"],
             cwd=install_dir,
             capture_output=True,
             text=True,
@@ -851,7 +851,7 @@ class TestRegistrySource:
         registry = Path(os.environ["COS_REGISTRY_FILE"])
 
         subprocess.run(
-            [str(INSTALLER), "--force"],
+            ["bash", str(INSTALLER), "--force"],
             cwd=install_dir,
             capture_output=True,
             text=True,
@@ -871,7 +871,7 @@ class TestRegistrySource:
     def test_install_meta_source_is_real_repo(self, install_dir, cos_source):
         """install-meta.json source field should be the real COS repo path."""
         subprocess.run(
-            [str(INSTALLER), "--force"],
+            ["bash", str(INSTALLER), "--force"],
             cwd=install_dir,
             capture_output=True,
             text=True,
@@ -900,7 +900,7 @@ class TestProjectGitignore:
     def test_creates_gitignore_if_missing(self, install_dir, cos_source):
         """Installer should create .gitignore in the project if none exists."""
         subprocess.run(
-            [str(INSTALLER), "--force"],
+            ["bash", str(INSTALLER), "--force"],
             cwd=install_dir,
             capture_output=True,
             text=True,
@@ -922,7 +922,7 @@ class TestProjectGitignore:
     def test_gitignore_contains_cos_patterns(self, install_dir, cos_source, pattern):
         """Project .gitignore must contain all COS runtime patterns."""
         subprocess.run(
-            [str(INSTALLER), "--force"],
+            ["bash", str(INSTALLER), "--force"],
             cwd=install_dir,
             capture_output=True,
             text=True,
@@ -934,7 +934,7 @@ class TestProjectGitignore:
         """Re-running installer should add new patterns without duplicates."""
         # First install
         subprocess.run(
-            [str(INSTALLER), "--force"],
+            ["bash", str(INSTALLER), "--force"],
             cwd=install_dir,
             capture_output=True,
             text=True,
@@ -944,7 +944,7 @@ class TestProjectGitignore:
 
         # Second install (update)
         subprocess.run(
-            [str(INSTALLER), "--force"],
+            ["bash", str(INSTALLER), "--force"],
             cwd=install_dir,
             capture_output=True,
             text=True,
@@ -961,7 +961,7 @@ class TestProjectGitignore:
         gitignore.write_text("# My project\nnode_modules/\n*.log\n")
 
         subprocess.run(
-            [str(INSTALLER), "--force"],
+            ["bash", str(INSTALLER), "--force"],
             cwd=install_dir,
             capture_output=True,
             text=True,
@@ -984,7 +984,7 @@ class TestHelpFlag:
     def test_help_mentions_project_directory(self):
         """--help should clearly explain to run from project dir."""
         result = subprocess.run(
-            [str(INSTALLER), "--help"],
+            ["bash", str(INSTALLER), "--help"],
             capture_output=True,
             text=True,
         )
@@ -994,7 +994,7 @@ class TestHelpFlag:
     def test_help_documents_harness_drivers(self):
         """--help should document supported harness drivers and the default."""
         result = subprocess.run(
-            [str(INSTALLER), "--help"],
+            ["bash", str(INSTALLER), "--help"],
             capture_output=True,
             text=True,
         )
@@ -1037,7 +1037,7 @@ class TestHelpFlag:
     def test_help_explains_from_flag(self):
         """--help should explain when --from is needed."""
         result = subprocess.run(
-            [str(INSTALLER), "--help"],
+            ["bash", str(INSTALLER), "--help"],
             capture_output=True,
             text=True,
         )
