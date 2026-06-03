@@ -4,7 +4,7 @@ import json
 import subprocess
 from pathlib import Path
 
-from scripts.cos_governance_roi import build_report, log_catch, phase_allows_block
+from scripts.cos_governance_roi import build_report, collect_snapshot_benefits, log_catch, phase_allows_block
 
 
 def write_jsonl(path: Path, rows: list[dict]) -> None:
@@ -53,6 +53,21 @@ def test_governance_roi_flags_discovery_overload_and_residue(tmp_path: Path) -> 
     assert report["discovery"]["discovery_overload"] is True
     assert any("distribution tiers" in item for item in report["recommendations"])
     assert report["roi"]["status"] == "negative"
+
+
+def test_snapshot_benefits_treats_slow_git_stash_as_fail_soft(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    def slow_git(*args, **kwargs):
+        raise subprocess.TimeoutExpired(kwargs.get("args", ["git"]), timeout=0.01)
+
+    monkeypatch.setattr(subprocess, "run", slow_git)
+
+    benefits = collect_snapshot_benefits(tmp_path, since_epoch=None)
+
+    assert benefits["auto_pre_agent_stash_count"] == 0
+    assert benefits["orphan_marker_count"] == 0
 
 
 def test_cos_dispatches_governance_roi_json(tmp_path: Path) -> None:
@@ -266,4 +281,3 @@ def test_phase_policy_covers_next_guard_adoption_categories() -> None:
     assert phase_allows_block("reconstruction", "release")["allowed_to_block"] is False
     assert phase_allows_block("production", "config-protection")["allowed_to_block"] is True
     assert phase_allows_block("production", "release")["allowed_to_block"] is True
-

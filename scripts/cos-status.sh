@@ -750,6 +750,7 @@ print(json.dumps(out))
 # ── Governance ROI (friction-vs-catch) ─────────────────────────────────
 # Fail-soft dashboard slice: cos status must remain usable even when metrics,
 # PyYAML, or the ROI module are unavailable in a consumer project.
+if [ "${COS_STATUS_INCLUDE_GOVERNANCE_ROI:-0}" = "1" ] || [ "$VERBOSE" -eq 1 ]; then
 GOVERNANCE_ROI_JSON=$(PYTHONPATH="$PROJECT_ROOT${PYTHONPATH:+:$PYTHONPATH}" python3 - "$PROJECT_ROOT" <<'PYEOF_GOV' 2>/dev/null
 import json
 import sys
@@ -772,6 +773,9 @@ except Exception as exc:
 print(json.dumps(out))
 PYEOF_GOV
 )
+else
+GOVERNANCE_ROI_JSON='{"roi":{"status":"skipped","reason":"set COS_STATUS_INCLUDE_GOVERNANCE_ROI=1 or use --verbose to compute governance ROI"},"friction_vs_catch":{},"catch_ledger":{},"phase_policy":{},"recommendations":[]}'
+fi
 [ -z "$GOVERNANCE_ROI_JSON" ] && GOVERNANCE_ROI_JSON='{}'
 
 # ── JSON output ────────────────────────────────────────────────────────
