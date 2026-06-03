@@ -56,7 +56,7 @@ Use `scripts/prompt_aggressive_language_audit.py` to separate prompt-style debt 
 python3 scripts/prompt_aggressive_language_audit.py path/to/file.md --fail-debt
 ```
 
-For repo-wide planning, run without `--fail-debt` to get the current debt inventory before choosing the next wave. Treat repo-wide output as planning data until the backlog is ratcheted down; use `--fail-debt` only for bounded file sets in the active wave.
+For repo-wide planning, run without `--fail-debt` to get the current debt inventory before choosing the next wave. Treat repo-wide output as planning data until the backlog is ratcheted down; use `--fail-debt` only for bounded file sets in the active wave. For day-to-day prevention of new debt, run `python3 scripts/prompt_aggressive_language_audit.py --changed --fail-debt`.
 
 ## Validation
 

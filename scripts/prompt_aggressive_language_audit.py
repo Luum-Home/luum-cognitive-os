@@ -66,6 +66,35 @@ def git_tracked_files() -> set[str]:
     return {line for line in proc.stdout.splitlines() if line}
 
 
+def is_text_surface(path: Path) -> bool:
+    return path.suffix in TEXT_SUFFIXES or path.name == "AGENTS.md"
+
+
+def is_default_surface(rel: str) -> bool:
+    return any(rel == raw or rel.startswith(raw.rstrip("/") + "/") for raw in DEFAULT_PATHS)
+
+
+def changed_paths() -> list[str]:
+    proc = subprocess.run(
+        ["git", "diff", "--name-only", "HEAD", "--", *DEFAULT_PATHS],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    paths = [line.strip() for line in proc.stdout.splitlines() if line.strip()] if proc.returncode == 0 else []
+    untracked = subprocess.run(
+        ["git", "ls-files", "--others", "--exclude-standard", "--", *DEFAULT_PATHS],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if untracked.returncode == 0:
+        paths.extend(line.strip() for line in untracked.stdout.splitlines() if line.strip())
+    return sorted(dict.fromkeys(path for path in paths if is_default_surface(path) and is_text_surface(ROOT / path)))
+
+
 def iter_files(paths: list[str]) -> list[Path]:
     selected: list[Path] = []
     tracked = git_tracked_files()
@@ -82,7 +111,7 @@ def iter_files(paths: list[str]) -> list[Path]:
             rel = child.relative_to(ROOT).as_posix()
             if tracked and rel not in tracked:
                 continue
-            if child.suffix in TEXT_SUFFIXES or child.name == "AGENTS.md":
+            if is_text_surface(child):
                 selected.append(child)
     return selected
 
@@ -114,9 +143,11 @@ def main() -> int:
     parser.add_argument("paths", nargs="*", default=list(DEFAULT_PATHS))
     parser.add_argument("--json", action="store_true")
     parser.add_argument("--fail-debt", action="store_true")
+    parser.add_argument("--changed", action="store_true", help="audit only changed/untracked model-facing files under the default surfaces")
     args = parser.parse_args()
 
-    findings = audit(args.paths)
+    paths = changed_paths() if args.changed else args.paths
+    findings = audit(paths)
     debt = [f for f in findings if f.classification == "debt"]
     allowed = [f for f in findings if f.classification == "allowed"]
     report = {
@@ -124,6 +155,7 @@ def main() -> int:
         "total": len(findings),
         "allowed": len(allowed),
         "debt": len(debt),
+        "paths": paths,
         "findings": [asdict(f) for f in findings],
     }
     if args.json:
