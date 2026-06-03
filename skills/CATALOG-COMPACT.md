@@ -3,7 +3,7 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | scope | audience | 1-line description`. `scope` is `[core]` for top-level skills and `[ext:pack]` for packaged extension skills. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 182
+Total skills: 183
 
 ## os (23)
 
@@ -82,7 +82,7 @@ Total skills: 182
 | tool-discovery | [core] | Discover new open-source tools that could enhance Cognitive OS capabilities |
 | vulnerability-scan | [core] | Run LLM vulnerability probes using Garak against configured endpoints. |
 
-## both (38)
+## both (37)
 
 | Skill | Scope | Description |
 |-------|-------|-------------|
@@ -109,7 +109,6 @@ Total skills: 182
 | primitive-harness-coverage | [core] | Generate the primitive surface coverage report and inspect IDE/CLI/UI/report |
 | primitive-harvester | [core] | Turn repeatable high-value conversation recipes into governed primitive |
 | proof-drill | [core] | Select opt-in proof drills and smoke checks without default-lane pollution. |
-| redteam-harness | [core] | Execute red-team scenarios, aggregate baseline, and detect ADR-105 verb |
 | repo-forensics | [core] | Deep forensic analysis of git repositories. |
 | repo-scout | [core] | Scout external git repositories for tech radar classification (bulk |
 | reverse-engineer | [core] | Deep source code analysis of a dependency to understand its internal |
@@ -145,7 +144,7 @@ Total skills: 182
 | devbox-checkpoint | [core] | Save and restore environment state snapshots using devbox |
 | doc-sync | [core] | Synchronize documentation that became stale after code changes |
 | document-feature | [core] | Generate or update structured feature documentation using 3-layer detection… |
-| dod-check | [core] | Verify Definition of Done criteria for a task at a given complexity level |
+| dod-check | [core] | Run a deterministic Definition of Done check before claiming implementation, review, prompt-moderni… |
 | domain-model | [core] | Scaffold DDD domain-model.md (bounded contexts + entities + language) |
 | error-analyzer | [core] | Analyze accumulated errors from test/lint/build runs and propose skill… |
 | evaluate-plan | [core] | Evaluate any existing plan file with a 0-50 scoring system. |
@@ -209,11 +208,13 @@ Total skills: 182
 |-------|-------|-------------|
 | session-report-executive | [core] | Generate an executive-level session report translating technical metrics |
 
-## os-only (3)
+## os-only (5)
 
 | Skill | Scope | Description |
 |-------|-------|-------------|
 | decision-triage | [core] | Surface pending operator decisions across research reports + ADR open |
+| redteam-harness | [core] | Execute red-team scenarios, aggregate baseline, and detect ADR-105 verb |
 | self-improve | [core] | META skill — orchestrates analyze-improvements → (human reviews) →… |
+| self-improvement-loop | [core] | Use when running benchmark-bound Cognitive OS self-improvement loops with gated feedback and no aut… |
 | so-vs-vanilla | [core] | A/B benchmark harness that measures Cognitive OS governance value by |
 

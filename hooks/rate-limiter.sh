@@ -39,6 +39,15 @@ source "$(dirname "$0")/_lib/common.sh"
 check_disabled_env "rate-limiter"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 COGNITIVE_OS_HOOK_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+if [ -z "${PYTHON_BIN:-}" ]; then
+    if [ -n "${PYTHON:-}" ]; then
+        PYTHON_BIN="$PYTHON"
+    elif [ -x "$COGNITIVE_OS_HOOK_ROOT/.venv/bin/python" ]; then
+        PYTHON_BIN="$COGNITIVE_OS_HOOK_ROOT/.venv/bin/python"
+    else
+        PYTHON_BIN="python3"
+    fi
+fi
 
 # Skip in private mode
 check_private_mode
@@ -94,7 +103,7 @@ export RATE_LIMIT_BLOCKED_COMMAND_HASH="$BLOCKED_COMMAND_HASH"
 export RATE_LIMIT_PRIORITY_LANE="$PRIORITY_LANE"
 
 # Check rate limit via Python (passing phase for modifier calculation)
-RESULT=$(python3 -c "
+RESULT=$("$PYTHON_BIN" -c "
 import sys, os
 sys.path.insert(0, os.environ['COGNITIVE_OS_HOOK_ROOT'])
 os.environ.setdefault('CLAUDE_PROJECT_DIR', '$_PROJECT_DIR')
@@ -178,7 +187,7 @@ if [[ "$RESULT" == *"BLOCKED"* ]]; then
     echo "" >&2
 
     # Show detailed limit status with queue info (kept for power users)
-    python3 -c "
+    "$PYTHON_BIN" -c "
 import sys, os
 sys.path.insert(0, '$_PROJECT_DIR')
 os.environ.setdefault('CLAUDE_PROJECT_DIR', '$_PROJECT_DIR')

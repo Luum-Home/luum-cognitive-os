@@ -17,6 +17,6 @@ def test_routing_quality_gate_rule_loads_from_arbitrary_project_root(tmp_path: P
 
     text = target.read_text(encoding="utf-8")
 
-    assert "SCOPE: both" in text
+    assert "SCOPE: os-only" in text
     assert "scripts/cos-routing-max-gate" in text
     assert str(REPO_ROOT) not in text

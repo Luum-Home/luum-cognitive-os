@@ -3,7 +3,7 @@
 
 > Level-1 always-load routing hints. Load `skills/CATALOG-COMPACT.md` for broader discovery; load full `SKILL.md` only on invocation.
 
-Total skills: 182
+Total skills: 183
 
 - agent-kpis [b]: Calculate and report Cognit…; k=agent-kpis,calculate
 - analyze-improvements [b]: Analyze KPIs, error pattern…; k=analyze-improvements,analyze
@@ -28,7 +28,6 @@ Total skills: 182
 - primitive-harness-coverage [b]: Generate the primitive surf…; k=primitive-harness-coverage,generate
 - primitive-harvester [b]: Turn repeatable high-value…; k=primitive-harvester,turn
 - proof-drill [b]: Select opt-in proof drills…; k=proof-drill,select
-- redteam-harness [b]: Execute red-team scenarios,…; k=redteam-harness,execute
 - repo-forensics [b]: Deep forensic analysis of g…; k=repo-forensics,deep
 - repo-scout [b]: Scout external git reposito…; k=repo-scout,scout
 - reverse-engineer [b]: Deep source code analysis o…; k=reverse-engineer,deep
@@ -112,7 +111,9 @@ Total skills: 182
 - tool-discovery [d]: Discover new open-source to…; k=tool-discovery,discover
 - vulnerability-scan [d]: Run LLM vulnerability probe…; k=vulnerability-scan,run
 - decision-triage [o]: Surface pending operator de…; k=decision-triage,surface
+- redteam-harness [o]: Execute red-team scenarios,…; k=redteam-harness,execute
 - self-improve [o]: META skill — orchestrates a…; k=self-improve,meta
+- self-improvement-loop [o]: Use when running benchmark-…; k=self-improvement-loop,running
 - so-vs-vanilla [o]: A/B benchmark harness that…; k=so-vs-vanilla,benchmark
 - audit-website [p]: Perform a comprehensive 6-c…; k=audit-website,perform
 - auto-refine [p]: Analyze a failed agent's ou…; k=auto-refine,analyze
@@ -130,7 +131,7 @@ Total skills: 182
 - devbox-checkpoint [p]: Save and restore environmen…; k=devbox-checkpoint,save
 - doc-sync [p]: Synchronize documentation t…; k=doc-sync,synchronize
 - document-feature [p]: Generate or update structur…; k=document-feature,generate
-- dod-check [p]: Verify Definition of Done c…; k=dod-check,verify
+- dod-check [p]: Run a deterministic Definit…; k=dod-check,run
 - domain-model [p]: Scaffold DDD domain-model.m…; k=domain-model,scaffold
 - error-analyzer [p]: Analyze accumulated errors…; k=error-analyzer,analyze
 - evaluate-plan [p]: Evaluate any existing plan…; k=evaluate-plan,evaluate

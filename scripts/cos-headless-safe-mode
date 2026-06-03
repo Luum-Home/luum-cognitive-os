@@ -5,4 +5,13 @@
 # @on-demand: Manage local headless safe mode / kill switch for task admission.
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-exec python3 "$SCRIPT_DIR/cos_headless_safe_mode.py" "$@"
+if [ -z "${PYTHON_BIN:-}" ]; then
+  if [ -n "${PYTHON:-}" ]; then
+    PYTHON_BIN="$PYTHON"
+  elif [ -x "$SCRIPT_DIR/../.venv/bin/python" ]; then
+    PYTHON_BIN="$SCRIPT_DIR/../.venv/bin/python"
+  else
+    PYTHON_BIN="python3"
+  fi
+fi
+exec "$PYTHON_BIN" "$SCRIPT_DIR/cos_headless_safe_mode.py" "$@"
