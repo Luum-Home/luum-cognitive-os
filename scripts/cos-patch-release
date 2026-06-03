@@ -39,7 +39,7 @@ PATCH_MERGE_CMD = [
 PATCH_VALIDATION_COMMANDS = [
     ["bash", "-n", "scripts/check-local-privacy.sh", ".githooks/pre-commit"],
     ["scripts/check-local-privacy.sh", "--root", ".", "--all"],
-    ["scripts/check_bun_install_policy.py", "--json"],
+    ["python3", "scripts/check_bun_install_policy.py", "--json"],
     [
         ".venv/bin/python",
         "-m",
@@ -226,7 +226,10 @@ def validate(args: argparse.Namespace) -> int:
         return 0
     for command in commands:
         cwd = root / "cmd/cos" if command == ["go", "test", "./..."] else root
-        run(command, cwd=cwd)
+        env = os.environ.copy()
+        if "pytest" in command:
+            env.setdefault("PYTEST_DISABLE_PLUGIN_AUTOLOAD", "1")
+        run(command, cwd=cwd, env=env)
     print("patch-release-validate-ok")
     return 0
 
