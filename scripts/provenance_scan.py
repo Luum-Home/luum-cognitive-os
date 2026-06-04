@@ -231,7 +231,18 @@ def is_relative_import(value: str) -> bool:
     return value.startswith((".", "..", "/"))
 
 
-def import_findings(path: Path, line_no: int, line: str, policy: Policy) -> list[Finding]:
+def is_internal_go_replace(path: Path, root: Path, target: str) -> bool:
+    if not target.startswith(("./", "../")):
+        return False
+    try:
+        resolved = (path.parent / target).resolve()
+        resolved.relative_to(root.resolve())
+    except (OSError, ValueError):
+        return False
+    return True
+
+
+def import_findings(path: Path, root: Path, line_no: int, line: str, policy: Policy) -> list[Finding]:
     if not policy.scan_imports:
         return []
     lang = language_for(path)
@@ -246,7 +257,9 @@ def import_findings(path: Path, line_no: int, line: str, policy: Policy) -> list
             imports.append(m.group(1))
         if path.name == "go.mod" and (m := GO_REPLACE_RE.search(line)):
             target = m.group(2)
-            if target.startswith(("/", "../", "./")) and not allowed_by_prefix(target, policy.allowed_absolute_paths):
+            if target.startswith(("../", "./")) and is_internal_go_replace(path, root, target):
+                pass
+            elif target.startswith(("/", "../", "./")) and not allowed_by_prefix(target, policy.allowed_absolute_paths):
                 findings.append(Finding(path, line_no, "external-go-replace", "Go replace points outside allowed roots", target))
     elif lang == "python":
         if m := PY_IMPORT_RE.search(line):
@@ -302,7 +315,7 @@ def scan_text(path: Path, root: Path, text: str, policy: Policy) -> list[Finding
         for regex in compiled_provenance:
             if m := regex.search(line):
                 findings.append(Finding(path, line_no, "provenance-language", "sensitive provenance wording", m.group(0)))
-        findings.extend(import_findings(path, line_no, line, policy))
+        findings.extend(import_findings(path, root, line_no, line, policy))
     return findings
 
 

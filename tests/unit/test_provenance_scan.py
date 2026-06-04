@@ -141,3 +141,36 @@ def test_prefers_project_cognitive_os_config(tmp_path: Path) -> None:
     data = payload(proc)
     assert data["config"] == ".cognitive-os/provenance-scan.yaml"
     assert any(item["category"] == "forbidden-term" for item in data["findings"])
+
+
+def test_go_replace_allows_relative_target_inside_repo(tmp_path: Path) -> None:
+    cfg = write_config(tmp_path)
+    nested = tmp_path / "backend" / "apps" / "api"
+    nested.mkdir(parents=True)
+    go_mod = nested / "go.mod"
+    go_mod.write_text(
+        "module github.com/example/app/backend/apps/api\n\n"
+        "replace github.com/example/app => ../../..\n",
+        encoding="utf-8",
+    )
+
+    proc = run_scan(tmp_path, "--config", str(cfg), str(go_mod))
+
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    assert payload(proc)["status"] == "pass"
+
+
+def test_go_replace_blocks_relative_target_outside_repo(tmp_path: Path) -> None:
+    cfg = write_config(tmp_path)
+    go_mod = tmp_path / "module" / "go.mod"
+    go_mod.parent.mkdir()
+    go_mod.write_text(
+        "module github.com/example/app/module\n\n"
+        "replace github.com/example/app => ../../outside\n",
+        encoding="utf-8",
+    )
+
+    proc = run_scan(tmp_path, "--config", str(cfg), str(go_mod))
+
+    assert proc.returncode == 1
+    assert any(item["category"] == "external-go-replace" for item in payload(proc)["findings"])
