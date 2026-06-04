@@ -4,8 +4,7 @@
 
 The scanner blocks host-local paths, sensitive source-project terms, prohibited
 imports/path hacks, external Go replace directives, and explicit provenance
-language such as "copied from private repo X". Projects configure policy in  # cos-allow-provenance-scan: scanner pattern literal
-`manifests/provenance-scan.yaml` or `.cognitive-os/provenance-scan.yaml`.
+language that identifies private/local origins. Projects configure policy in `manifests/provenance-scan.yaml` or `.cognitive-os/provenance-scan.yaml`.
 """
 from __future__ import annotations
 

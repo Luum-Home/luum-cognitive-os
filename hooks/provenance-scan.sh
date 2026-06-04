@@ -7,8 +7,18 @@ set -uo pipefail
 [ "${DISABLE_HOOK_PROVENANCE_SCAN:-}" = "true" ] && exit 0
 
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
-CLI_PATH="${COS_PROVENANCE_SCAN_CLI:-$PROJECT_DIR/scripts/provenance-scan}"
-CONFIG_PATH="${COS_PROVENANCE_SCAN_CONFIG:-$PROJECT_DIR/manifests/provenance-scan.yaml}"
+CLI_PATH="${COS_PROVENANCE_SCAN_CLI:-$PROJECT_DIR/.cognitive-os/bin/provenance-scan}"
+if [ ! -x "$CLI_PATH" ] && [ -x "$PROJECT_DIR/scripts/provenance-scan" ]; then
+  CLI_PATH="$PROJECT_DIR/scripts/provenance-scan"
+fi
+CONFIG_PATH="${COS_PROVENANCE_SCAN_CONFIG:-}"
+if [ -z "$CONFIG_PATH" ]; then
+  if [ -f "$PROJECT_DIR/.cognitive-os/provenance-scan.yaml" ]; then
+    CONFIG_PATH="$PROJECT_DIR/.cognitive-os/provenance-scan.yaml"
+  else
+    CONFIG_PATH="$PROJECT_DIR/manifests/provenance-scan.yaml"
+  fi
+fi
 
 [ -x "$CLI_PATH" ] || exit 0
 

@@ -7,4 +7,9 @@ if [ -z "$PYTHON_BIN" ] && [ -x "$PROJECT_DIR/.venv/bin/python" ]; then
   PYTHON_BIN="$PROJECT_DIR/.venv/bin/python"
 fi
 PYTHON_BIN="${PYTHON_BIN:-python3}"
-exec "$PYTHON_BIN" "$PROJECT_DIR/scripts/provenance_scan.py" --root "$PROJECT_DIR" "$@"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCAN_PY="$PROJECT_DIR/scripts/provenance_scan.py"
+if [ ! -f "$SCAN_PY" ] && [ -f "$SCRIPT_DIR/provenance_scan.py" ]; then
+  SCAN_PY="$SCRIPT_DIR/provenance_scan.py"
+fi
+exec "$PYTHON_BIN" "$SCAN_PY" --root "$PROJECT_DIR" "$@"

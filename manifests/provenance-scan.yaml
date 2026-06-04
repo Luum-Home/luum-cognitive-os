@@ -4,7 +4,7 @@ provenance:
   forbidden_paths:
     - "(?i)Projects/(?:otra-plataforma|otra-organizacion|consumidor-i|<service-monorepo>|FinOpenPOS)[A-Za-z0-9._/-]*"
   forbidden_provenance_language:
-    - "(?i)sourcePattern:\s*adapted-"
+    - '(?i)sourcePattern:\s*adapted-'
   allowed_absolute_paths:
     - /tmp/
     - /var/folders/
