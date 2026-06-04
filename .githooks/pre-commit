@@ -67,6 +67,12 @@ if [ -f "$COS_ROOT/scripts/check_absolute_paths.py" ]; then
   fi
 fi
 
+if [ -x "$COS_ROOT/scripts/provenance-scan" ]; then
+  if ! "$COS_ROOT/scripts/provenance-scan" --staged; then
+    exit 1
+  fi
+fi
+
 # --- Gate 1e: Bun is the canonical JavaScript package manager ---
 staged_js_package_policy=$(git diff --cached --name-only --diff-filter=ACMRD -- \
   'package.json' '*/package.json' 'bun.lock' '*/bun.lock' 'bun.lockb' '*/bun.lockb' \

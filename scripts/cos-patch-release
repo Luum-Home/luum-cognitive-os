@@ -37,8 +37,9 @@ PATCH_MERGE_CMD = [
     "patch-release",
 ]
 PATCH_VALIDATION_COMMANDS = [
-    ["bash", "-n", "scripts/check-local-privacy.sh", ".githooks/pre-commit"],
+    ["bash", "-n", "scripts/check-local-privacy.sh", ".githooks/pre-commit", "hooks/provenance-scan.sh", "scripts/provenance-scan"],
     ["scripts/check-local-privacy.sh", "--root", ".", "--all"],
+    ["scripts/provenance-scan", "--json"],
     ["python3", "scripts/check_bun_install_policy.py", "--json"],
     [
         ".venv/bin/python",

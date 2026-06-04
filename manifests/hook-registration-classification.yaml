@@ -3,6 +3,10 @@ scope: top-level hooks/*.sh absent from .claude/settings.json after ADR-144 proj
 contract: Every unregistered top-level hook must appear here with status, rationale,
   and next_action.
 entries:
+- path: hooks/provenance-scan.sh
+  status: conditional_opt_in
+  rationale: Project-configured provenance hygiene bridge; deterministic enforcement runs in pre-commit, make provenance-scan, and release validation, while hook-time Bash interception remains conditional to avoid scanning on every shell command in projects without provenance policy.
+  next_action: Promote to active profile registration after cross-project adoption proves low false positives and acceptable hook latency.
 - path: hooks/publication-safety.sh
   status: conditional_opt_in
   rationale: Project-configured publication gate bridge; it no-ops unless a publication-safety manifest or explicit required flag is present, and should be enabled only for release/publication workflows.

@@ -1238,6 +1238,12 @@ harness:
       matcher: Bash
       scope: both
 
+    provenance-scan:
+      script: hooks/provenance-scan.sh
+      event: PreToolUse
+      matcher: Bash
+      scope: both
+
     private-mode-gate:
       script: hooks/private-mode-gate.sh
       event: PreToolUse

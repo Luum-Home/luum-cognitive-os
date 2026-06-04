@@ -1,0 +1,28 @@
+schema_version: provenance-scan/v1
+provenance:
+  forbidden_terms: []
+  forbidden_paths:
+    - "(?i)Projects/(?:otra-plataforma|otra-organizacion|consumidor-i|<service-monorepo>|FinOpenPOS)[A-Za-z0-9._/-]*"
+  forbidden_provenance_language:
+    - "(?i)sourcePattern:\s*adapted-"
+  allowed_absolute_paths:
+    - /tmp/
+    - /var/folders/
+    - /private/var/folders/
+    - /home/jovyan/
+  allowed_import_roots:
+    go: []
+    python: []
+    ts: []
+  forbidden_import_roots:
+    go: []
+    python: []
+    ts: []
+  exclude_globs:
+    - "tests/unit/test_provenance_scan.py"
+    - ".claude/plugins/**"
+    - "docs/06-Daily/reports/**"
+    - "docs/07-Capabilities/acc/latest.json"
+    - ".ai/primitives/**"
+  scan_imports: true
+  scan_path_hacks: true

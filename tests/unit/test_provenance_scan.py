@@ -1,0 +1,109 @@
+from __future__ import annotations
+
+import json
+import subprocess
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+SCRIPT = ROOT / "scripts" / "provenance_scan.py"
+
+
+def run_scan(tmp_path: Path, *args: str) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        [sys.executable, str(SCRIPT), "--root", str(tmp_path), "--json", *args],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+
+def write_config(root: Path, body: str = "") -> Path:
+    path = root / "manifests" / "provenance-scan.yaml"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        "schema_version: provenance-scan/v1\n"
+        "provenance:\n"
+        "  forbidden_terms: [FinOpenPOS, consumidor-i]\n"
+        "  allowed_absolute_paths: [/tmp/]\n"
+        "  allowed_import_roots:\n"
+        "    go: [github.com/example/app, github.com/spf13/cobra]\n"
+        "    python: [app, pytest]\n"
+        "    ts: ['@example/', react]\n"
+        "  forbidden_import_roots:\n"
+        "    go: [github.com/private/]\n"
+        "  exclude_globs: []\n"
+        f"{body}",
+        encoding="utf-8",
+    )
+    return path
+
+
+def payload(proc: subprocess.CompletedProcess[str]) -> dict:
+    return json.loads(proc.stdout)
+
+
+def test_blocks_local_paths_and_source_terms(tmp_path: Path) -> None:
+    cfg = write_config(tmp_path)
+    doc = tmp_path / "README.md"
+    doc.write_text(
+        "copied from private repo FinOpenPOS at /Users/me/Projects/source\n",  # cos-allow-provenance-scan cos-allow-absolute-path cos-allow-local-privacy-pattern: deliberate scanner fixture
+        encoding="utf-8",
+    )
+
+    proc = run_scan(tmp_path, "--config", str(cfg), str(doc))
+
+    assert proc.returncode == 1
+    categories = {item["category"] for item in payload(proc)["findings"]}
+    assert {"forbidden-path", "forbidden-term", "provenance-language"} <= categories
+
+
+def test_allows_tmp_and_marker(tmp_path: Path) -> None:
+    cfg = write_config(tmp_path)
+    doc = tmp_path / "README.md"
+    doc.write_text(
+        "/tmp/build is acceptable\n"
+        "copied from private repo X  # cos-allow-provenance-scan\n",
+        encoding="utf-8",
+    )
+
+    proc = run_scan(tmp_path, "--config", str(cfg), str(doc))
+
+    assert proc.returncode == 0, proc.stderr
+    assert payload(proc)["status"] == "pass"
+
+
+def test_go_import_allowlist_and_replace(tmp_path: Path) -> None:
+    cfg = write_config(tmp_path)
+    go_mod = tmp_path / "go.mod"
+    go_mod.write_text(
+        "module github.com/example/app\n\n"
+        "require github.com/private/lib v0.0.0\n"
+        "replace github.com/example/app/lib => /Users/me/Projects/lib\n",  # cos-allow-provenance-scan cos-allow-absolute-path cos-allow-local-privacy-pattern: deliberate scanner fixture
+        encoding="utf-8",
+    )
+    source = tmp_path / "main.go"
+    source.write_text('package main\nimport "github.com/private/lib"\n', encoding="utf-8")
+
+    proc = run_scan(tmp_path, "--config", str(cfg), str(go_mod), str(source))
+
+    assert proc.returncode == 1
+    categories = {item["category"] for item in payload(proc)["findings"]}
+    assert "forbidden-go-import" in categories
+    assert "external-go-replace" in categories
+
+
+def test_python_path_hack_detected(tmp_path: Path) -> None:
+    cfg = write_config(tmp_path)
+    source = tmp_path / "app.py"
+    source.write_text("import sys\nsys.path.insert(0, '/Users/me/Projects/core')\n", encoding="utf-8")  # cos-allow-provenance-scan cos-allow-absolute-path cos-allow-local-privacy-pattern: deliberate scanner fixture
+
+    proc = run_scan(tmp_path, "--config", str(cfg), str(source))
+
+    assert proc.returncode == 1
+    assert any(item["category"] == "python-path-hack" for item in payload(proc)["findings"])
+
+
+def test_wrapper_uses_repo_script(tmp_path: Path) -> None:
+    assert (ROOT / "scripts" / "provenance-scan").exists()
+    assert (ROOT / "hooks" / "provenance-scan.sh").exists()

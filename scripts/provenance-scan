@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# SCOPE: both
+set -euo pipefail
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}}}"
+PYTHON_BIN="${PYTHON:-}"
+if [ -z "$PYTHON_BIN" ] && [ -x "$PROJECT_DIR/.venv/bin/python" ]; then
+  PYTHON_BIN="$PROJECT_DIR/.venv/bin/python"
+fi
+PYTHON_BIN="${PYTHON_BIN:-python3}"
+exec "$PYTHON_BIN" "$PROJECT_DIR/scripts/provenance_scan.py" --root "$PROJECT_DIR" "$@"
