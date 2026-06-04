@@ -21,6 +21,7 @@ profiles:
         - hooks/blast-radius.sh
         - hooks/scope-proportionality.sh
         - hooks/bash-hot-path-dispatcher.sh
+        - hooks/provenance-scan.sh
         - hooks/orchestrator-claim-gate.sh
         - hooks/error-pattern-detector.sh
         - hooks/auto-refine.sh

@@ -1241,7 +1241,7 @@ harness:
     provenance-scan:
       script: hooks/provenance-scan.sh
       event: PreToolUse
-      matcher: Bash
+      matcher: Edit|Write
       scope: both
 
     private-mode-gate:

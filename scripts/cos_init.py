@@ -93,7 +93,7 @@ DEFAULT_RULES = (
 DEFAULT_HOOKS = (
     "error-learning error-pipeline result-truncator session-init host-tool-doctor session-cleanup "
     "user-prompt-capture session-wrapup-trigger session-heartbeat memory-prefetch "
-    "clarification-gate blast-radius scope-proportionality bash-hot-path-dispatcher orchestrator-claim-gate "
+    "clarification-gate blast-radius scope-proportionality bash-hot-path-dispatcher provenance-scan orchestrator-claim-gate "
     "error-pattern-detector auto-refine auto-verify dod-gate "
     "trust-score-validator skill-metrics-tracker inject-phase-context stack-detector "
     "pre-compaction-flush rate-limiter large-file-advisor secret-detector content-policy "
@@ -1408,6 +1408,30 @@ def _write_structural_instruction_harness_settings(project_dir: Path, cos_source
     raise ValueError(f"unsupported structural instruction harness: {harness}")
 
 
+
+def _install_provenance_scan_guardrail(project_dir: Path, cos_source: Path) -> bool:
+    """Install the project-local provenance scanner binary and default policy."""
+    bin_dir = project_dir / ".cognitive-os" / "bin"
+    bin_dir.mkdir(parents=True, exist_ok=True)
+
+    copied = False
+    for name in ("provenance-scan", "provenance_scan.py"):
+        src = cos_source / "scripts" / name
+        if not src.is_file():
+            continue
+        dest = bin_dir / name
+        shutil.copy2(str(src), str(dest))
+        if name == "provenance-scan":
+            dest.chmod(dest.stat().st_mode | 0o111)
+        copied = True
+
+    policy_src = cos_source / "manifests" / "provenance-scan.yaml"
+    policy_dest = project_dir / ".cognitive-os" / "provenance-scan.yaml"
+    if policy_src.is_file() and not policy_dest.exists():
+        shutil.copy2(str(policy_src), str(policy_dest))
+        copied = True
+    return copied
+
 def _write_shell_ci_harness_settings(project_dir: Path, cos_source: Path, mode: str) -> None:
     """Project Shell/CI commands and workflow as a first-class harness."""
 
@@ -1809,6 +1833,9 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
                 continue
             shutil.copy2(str(tmpl), str(tmpl_dest / tmpl.name))
 
+    # ── 7b. Install repo-local provenance guardrail support ─────────────
+    provenance_scan_installed = _install_provenance_scan_guardrail(project_dir, cos_source)
+
     # ── 8. Create cognitive-os.yaml ──────────────────────────────────
     _write_cognitive_os_yaml(project_dir, project_name, detected_stack, mode)
 
@@ -1837,6 +1864,7 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
         "rules_installed": rules_installed,
         "hooks_installed": hooks_installed,
         "skills_installed": skills_installed,
+        "provenance_scan_installed": provenance_scan_installed,
     }
     meta_path = project_dir / ".cognitive-os" / "install-meta.json"
     meta_path.write_text(json.dumps(meta, indent=2), encoding="utf-8")

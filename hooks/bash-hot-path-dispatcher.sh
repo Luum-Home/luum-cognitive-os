@@ -130,6 +130,7 @@ _run_gate "hooks/orchestrator-skill-invocation-gate.sh" || exit $?
 
 if _is_git_commit; then
   _run_many \
+    "hooks/provenance-scan.sh" \
     "hooks/git-commit-scope-guard.sh" \
     "hooks/orchestrator-claim-gate.sh" \
     "hooks/pre-commit-content-hash-dedupe.sh" \

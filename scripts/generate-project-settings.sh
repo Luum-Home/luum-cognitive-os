@@ -143,7 +143,7 @@ filter_hook_list_by_scope() {
 # Scope controls eligibility; this list controls projection surface.
 DEFAULT_HOOKS="error-learning.sh error-pipeline.sh result-truncator.sh session-init.sh host-tool-doctor.sh session-cleanup.sh
   user-prompt-capture.sh session-wrapup-trigger.sh session-heartbeat.sh memory-prefetch.sh
-  clarification-gate.sh blast-radius.sh scope-proportionality.sh bash-hot-path-dispatcher.sh orchestrator-claim-gate.sh
+  clarification-gate.sh blast-radius.sh scope-proportionality.sh bash-hot-path-dispatcher.sh provenance-scan.sh orchestrator-claim-gate.sh
   error-pattern-detector.sh auto-refine.sh auto-verify.sh dod-gate.sh
   trust-score-validator.sh skill-metrics-tracker.sh inject-phase-context.sh stack-detector.sh
   pre-compaction-flush.sh rate-limiter.sh large-file-advisor.sh secret-detector.sh content-policy.sh research-compliance-guard.sh

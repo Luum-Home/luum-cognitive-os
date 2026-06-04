@@ -267,6 +267,7 @@ cc_driver_emit() {
 
   local pre_edit_write
   pre_edit_write=$(_cc_hook_group "PreToolUse" "Edit|Write" \
+    "hooks/provenance-scan.sh"               "false" \
     "hooks/project-docs-convention.sh"       "false" \
     "hooks/edit-lock-pre-tool.sh"            "false" \
     "hooks/concurrent-write-guard.sh"        "false" \

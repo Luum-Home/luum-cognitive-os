@@ -1321,7 +1321,7 @@
     "provenance-scan": {
       "script": "hooks/provenance-scan.sh",
       "event": "PreToolUse",
-      "matcher": "Bash",
+      "matcher": "Edit|Write",
       "scope": "both",
       "criticality": "standard",
       "max_runtime_ms": 1500,
@@ -1331,9 +1331,10 @@
       "false_positive_tests": [],
       "harness_tiers": {
         "claude": "native",
-        "codex": "native"
+        "codex": "governed"
       },
       "behavior_tests": [
+        "tests/unit/test_cos_init_py.py",
         "tests/unit/test_provenance_scan.py"
       ]
     },
