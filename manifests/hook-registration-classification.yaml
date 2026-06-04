@@ -1,522 +1,649 @@
-generated_on: '2026-05-04'
-scope: top-level hooks/*.sh absent from .claude/settings.json after ADR-144 projection
-contract: Every unregistered top-level hook must appear here with status, rationale,
-  and next_action.
-entries:
-- path: hooks/provenance-scan.sh
-  status: conditional_opt_in
-  rationale: Project-configured provenance hygiene bridge; deterministic enforcement runs in pre-commit, make provenance-scan, and release validation, while hook-time Bash interception remains conditional to avoid scanning on every shell command in projects without provenance policy.
-  next_action: Promote to active profile registration after cross-project adoption proves low false positives and acceptable hook latency.
-- path: hooks/publication-safety.sh
-  status: conditional_opt_in
-  rationale: Project-configured publication gate bridge; it no-ops unless a publication-safety manifest or explicit required flag is present, and should be enabled only for release/publication workflows.
-  next_action: Promote to active profile registration after cross-project release workflow adoption proves low false positives.
-- path: hooks/research-compliance-guard.sh
-  status: active
-  rationale: "Dual-surface research/license clean-room guard: registered as a self-host Claude Bash PreToolUse hook for Cognitive OS development and projected through the default/core install profile for consumer repositories."
-  next_action: Keep active in self-host settings and default/core projection; preserve tests that prove both the Claude lifecycle registration and consumer install copy.
-- path: hooks/subagent-input-schema-validator.sh
-  status: conditional_opt_in
-  rationale: "ADR-038 Wave 2 — validates sub-agent inputs against INPUT SCHEMA blocks declared in orchestrator prompts. Only activates when the prompt contains an INPUT SCHEMA block; safe no-op otherwise. Blocking by design (permissionDecision=block) when required fields are missing or mistyped. Not registered globally because it requires the lib/agent_input_validator.py Wave 1 library to be present."
-  next_action: "Promote to standard profile PreToolUse Agent after one sprint of production observation confirming low false-positive rate."
-- path: hooks/ai-provider-identity-guard.sh
-  status: conditional_opt_in
-  rationale: ADR-238 follow-up — blocks invented AI-provider identities at commit
-    time. Wired into the public-rewrites bypass path; not registered globally
-    because it would conflict with non-AI-assisted workflows.
-  next_action: Promote to active once the bypass-path safety case is documented.
-- path: hooks/session-end-cleanup.sh
-  status: conditional_opt_in
-  rationale: ADR-238 follow-up — runs cos-cleanup tier-1 (low-risk auto cleanup)
-    on session close. Operator action — not registered by default to avoid silent
-    state mutation on every session.
-  next_action: Promote to active after operator opt-in via cognitive-os.yaml.
-- path: hooks/adr-detector.sh
-  status: future
-  rationale: ADR-reference prompt detection is planned for UserPromptSubmit; no default
-    ROI/latency proof yet.
-  next_action: Keep unregistered until trigger precision and latency are proven.
-- path: hooks/agent-bus-monitor.sh
-  status: conditional_opt_in
-  rationale: Requires AGENT_BUS_ENABLED=true and Valkey/executor mode; default sessions
-    use lighter file/runtime state.
-  next_action: Wire only in executor/Valkey profile.
-- path: hooks/agent-output-verifier.sh
-  status: demoted
-  rationale: File-claim verification is intentionally not projected; it is a regex-only
-    advisory that overlaps completion-gate/post-agent-verify and has high false-positive
-    risk on prose paths.
-  next_action: Keep as manual diagnostic only; do not merge until a structured Agent
-    return contract supplies machine-readable file claims.
-- path: hooks/agent-quota-advisor.sh
-  status: conditional_opt_in
-  rationale: ADR-056 L1 quota advisory only matters when quota-aware dispatch is enabled.
-  next_action: Wire in quota-aware profile only.
-- path: hooks/agent-quota-redirect.sh
-  status: conditional_opt_in
-  rationale: ADR-056 L2 blocks native Agent launches under quota pressure.
-  next_action: Keep opt-in because it changes execution routing.
-- path: hooks/agent-qwen-bridge.sh
-  status: conditional_opt_in
-  rationale: ADR-056 L3 transparent Qwen bridge is per-skill opt-in.
-  next_action: Wire only after per-skill routing proof.
-- path: hooks/agnix-lint.sh
-  status: deprecated
-  rationale: Superseded by architecture/compliance validation paths; agnix is not
-    a default dependency.
-  next_action: Archive after confirming no package still references it.
-- path: hooks/aguara-scan.sh
-  status: conditional_opt_in
-  rationale: Requires Aguara scanner availability and explicit security profile.
-  next_action: Wire only when AGUARA_ENABLED/security extension is active.
-- path: hooks/architecture-compliance.sh
-  status: future
-  rationale: Project architecture checker for Agent output; not yet calibrated for
-    default false positives.
-  next_action: Promote after tests prove low-noise findings.
-- path: hooks/background-agent-reminder.sh
-  status: future
-  rationale: UserPromptSubmit reminder for pending background agents; not yet proven
-    against native/session backlog flows.
-  next_action: Revisit with background-agent UX work.
-- path: hooks/clarification-interceptor.sh
-  status: deprecated
-  rationale: Split-and-resume clarification behavior moved into clarification-gate/orchestrator
-    flow.
-  next_action: Archive after reference audit.
-- path: hooks/code-review-on-commit.sh
-  status: git_or_manual
-  rationale: Designed as a Git pre-commit hook, not a Claude hook.
-  next_action: Keep out of Claude settings; install via git hook if adopted.
-- path: hooks/cognitive-os-health.sh
-  status: manual_trigger
-  rationale: Full OS health report is an operator/status command, not a per-session
-    default.
-  next_action: Expose via /cos-status or doctor, not SessionStart.
-- path: hooks/completeness-check-llm.sh
-  status: deprecated
-  rationale: LLM variant superseded by registered rule-based completeness-check for
-    default hot path.
-  next_action: Archive after ADR-022 migration cleanup.
-- path: hooks/concurrent-write-guard-codex-proxy.sh
-  status: projected_elsewhere
-  rationale: Codex-only UserPromptSubmit proxy; intentionally absent from Claude settings
-    and present in .codex/hooks.json.
-  next_action: Keep Codex projection; do not add to Claude settings.
-- path: hooks/confidence-gate-llm.sh
-  status: deprecated
-  rationale: LLM variant superseded by registered rule-based confidence gate.
-  next_action: Archive after ADR-022 migration cleanup.
-- path: hooks/context-diet.sh
-  status: active
-  rationale: Task-aware context selection now has measured token-savings evidence,
-    safe no-op behavior when unsupported lifecycle payloads are absent, and an
-    active Claude projection for Agent launches.
-  next_action: Keep projected as advisory context selection and continue tracking
-    Codex lifecycle gaps separately.
-- path: hooks/contextual-rule-loader.sh
-  status: future
-  rationale: Dynamic full-rule injection needs prompt/event support and bounded context
-    guarantees.
-  next_action: Implement as stage-2 loader before projection.
-- path: hooks/conversation-capture.sh
-  status: future
-  rationale: Transcript capture has privacy/storage implications and overlaps Engram/session
-    summaries.
-  next_action: Keep unregistered pending privacy and retention contract.
-- path: hooks/cos-executor-heartbeat.sh
-  status: deprecated
-  rationale: Compatibility alias for cos-executor-daemon-launcher; registering both
-    duplicates daemon checks.
-  next_action: Archive alias after compatibility window.
-- path: hooks/dry-run-preview.sh
-  status: future
-  rationale: DRY_RUN agent preview is useful but not a default session guard.
-  next_action: Wire only in dry-run/sandbox workflows.
-- path: hooks/ecosystem-check.sh
-  status: future
-  rationale: Weekly ecosystem reevaluation is broad and better suited to scheduled/manual
-    audits.
-  next_action: Keep out of SessionStart default.
-- path: hooks/engram-auto-import.sh
-  status: future
-  rationale: Automatic memory import can mutate context/session state at startup.
-  next_action: Wait for Engram import conflict policy.
-- path: hooks/engram-auto-sync.sh
-  status: future
-  rationale: Automatic memory export/commit at Stop has git/privacy side effects.
-  next_action: Wait for Engram sync policy and explicit opt-in.
-- path: hooks/epic-task-detector.sh
-  status: future
-  rationale: Heuristic large-task detector overlaps blast-radius/adaptive-bypass and
-    needs precision proof.
-  next_action: Evaluate as advisory before default.
-- path: hooks/global-verify.sh
-  status: manual_trigger
-  rationale: Targeted verification runner is intentionally invoked by explicit verification
-    flows, not every Agent completion.
-  next_action: Keep manual/conditional; avoid test runs inside hooks.
-- path: hooks/guardrails-validator.sh
-  status: conditional_opt_in
-  rationale: Requires guardrails integration and GUARDRAILS_ENABLED.
-  next_action: Wire only in guardrails/security extension.
-- path: hooks/idle-service-cleanup.sh
-  status: manual_trigger
-  rationale: Service cleanup is cron/operator maintenance, not a Claude event hook.
-  next_action: Keep manual or scheduled automation.
-- path: hooks/infra-intent-detector.sh
-  status: internal_helper
-  rationale: Infrastructure intent is consumed by agent-prelaunch; standalone registration
-    would duplicate prompt scanning.
-  next_action: Keep as helper unless prelaunch stops calling it.
-- path: hooks/jupyter-sandbox.sh
-  status: conditional_opt_in
-  rationale: Only applies when JUPYTER_SANDBOX=true and Jupyter execution is available.
-  next_action: Wire in Jupyter profile only.
-- path: hooks/memu-sync.sh
-  status: future
-  rationale: MemU sync is optional memory backend work and overlaps Engram lifecycle.
-  next_action: Keep unregistered pending memory backend decision.
-- path: hooks/metrics-calibrator-trigger.sh
-  status: future
-  rationale: Metrics calibration is periodic maintainer work, not a default hook.
-  next_action: Use scheduled/manual calibration.
-- path: hooks/metrics-rotation.sh
-  status: manual_trigger
-  rationale: Metrics rotation should run via cron/operator maintenance to avoid startup
-    I/O.
-  next_action: Keep scheduled/manual.
-- path: hooks/mlflow-sync.sh
-  status: conditional_opt_in
-  rationale: Requires MLflow package/service and observability profile.
-  next_action: Wire only when MLflow is enabled.
-- path: hooks/notify.sh
-  status: manual_trigger
-  rationale: Generic notification wrapper is called by other flows; standalone registration
-    would be noisy.
-  next_action: Keep as callable helper.
-- path: hooks/orchestrator-mode-detect.sh
-  status: internal_helper
-  rationale: Mode detection is sourced/used by other hooks and docs; standalone SessionStart
-    output is redundant.
-  next_action: Keep helper/manual.
-- path: hooks/package-sync.sh
-  status: manual_trigger
-  rationale: Package dependency sync mutates repo/package state and belongs in CI/developer
-    command.
-  next_action: Keep manual or post-merge automation.
-- path: hooks/parry-scan.sh
-  status: conditional_opt_in
-  rationale: Requires Parry scanner installation/security profile.
-  next_action: Wire only in security extension.
-- path: hooks/pattern-check.sh
-  status: future
-  rationale: Critical-pattern scanning belongs to explicit pattern audit until latency/noise
-    are proven.
-  next_action: Keep manual via detection skill.
-- path: hooks/pre-cleanup-snapshot.sh
-  status: manual_trigger
-  rationale: Cleanup snapshots are admin/refactor workflow actions, not global Agent
-    preflight.
-  next_action: Invoke from cleanup skills only.
-- path: hooks/pre-commit-gate.sh
-  status: git_or_manual
-  rationale: Git pre-commit gate is installed through git hooks, not Claude settings.
-  next_action: Keep out of Claude settings.
-- path: hooks/pyrefly-typecheck-advisory.sh
-  status: active
-  rationale: Codex-only advisory typecheck hook is now registered through .codex/hooks.json; classification must not keep it in the unregistered queue.
-  next_action: Keep active in Codex projection and revisit cross-harness promotion after pyrefly dependency drift is resolved.
-- path: hooks/rate-limit-protection.sh
-  status: deprecated
-  rationale: Backward-compat shim for token-budget-monitor.
-  next_action: Archive after external caller compatibility window.
-- path: hooks/reaper-heartbeat.sh
-  status: deprecated
-  rationale: Compatibility alias for reaper-daemon-launcher; registering both duplicates
-    scheduling.
-  next_action: Archive alias after compatibility window.
-- path: hooks/recap-sync.sh
-  status: future
-  rationale: Native /recap integration should stay opt-in until provider behavior
-    is stable.
-  next_action: Revisit with recap provider adapter work.
-- path: hooks/registration-check.sh
-  status: manual_trigger
-  rationale: Registration checks are CI/manual audits; running before Agent would
-    be noisy.
-  next_action: Keep manual; this classification test covers default drift.
-- path: hooks/resource-check.sh
-  status: demoted
-  rationale: Budget preflight is intentionally not projected; token-budget-monitor
-    and rate-limiter already cover hot-path budget/rate pressure without a second
-    Agent launch gate.
-  next_action: Keep demoted; merge only if token-budget-monitor gains cost-event budget
-    semantics.
-- path: hooks/semgrep-scan.sh
-  status: conditional_opt_in
-  rationale: Requires Semgrep and security scan workflow; default hook would add heavy
-    scans.
-  next_action: Wire only in semgrep/security profile.
-- path: hooks/session-hygiene.sh
-  status: future
-  rationale: Stop hygiene can mutate/clean state and needs scoped policy after session
-    cleanup/reaper work.
-  next_action: Keep out of default Stop until cleanup policy is unified.
-- path: hooks/session-knowledge-extractor.sh
-  status: future
-  rationale: Knowledge extraction overlaps Engram/passive capture and has privacy/context
-    risks.
-  next_action: Revisit after memory lifecycle consolidation.
-- path: hooks/session-state-save.sh
-  status: future
-  rationale: Session state checkpoint overlaps current session lifecycle/backlog files.
-  next_action: Consolidate with session lifecycle before projection.
-- path: hooks/singularity-check.sh
-  status: conditional_opt_in
-  rationale: Explicitly disabled unless SINGULARITY_CHECK=true.
-  next_action: Keep opt-in.
-- path: hooks/sync-to-repo.sh
-  status: manual_trigger
-  rationale: Syncing .cognitive-os to another repo has git side effects and requires
-    COGNITIVE_OS_REPO_PATH.
-  next_action: Keep manual/explicit environment opt-in.
-- path: hooks/task-bridge-notify.sh
-  status: future
-  rationale: Task bridge additionalContext overlaps task-panel-sync/work-queue and
-    needs native UI contract.
-  next_action: Pick one task-state projection path before registering.
-- path: hooks/task-completed.sh
-  status: demoted
-  rationale: Lifecycle manifest marks TaskCompleted default_projection=false.
-  next_action: Keep opt-in task systems only.
-- path: hooks/task-panel-sync.sh
-  status: future
-  rationale: Task panel sync overlaps task-bridge-notify and work-queue-sync.
-  next_action: Consolidate task UI projection before registering.
-- path: hooks/task-recorder.sh
-  status: future
-  rationale: Task history recording at Stop needs session/task lifecycle consolidation.
-  next_action: Revisit with task lifecycle ledger work.
-- path: hooks/tool-discovery-trigger.sh
-  status: future
-  rationale: Tool discovery is periodic maintainer research, not a startup default.
-  next_action: Run scheduled/manual discovery.
-- path: hooks/tool-loop-detector.sh
-  status: demoted
-  rationale: Loop detection was folded into tool-sequence-capture.sh so repeated signatures
-    and ping-pong patterns are detected from the existing PostToolUse stream.
-  next_action: Keep standalone hook unprojected; archive after compatibility window
-    if no manual callers remain.
-- path: hooks/usage-health-check.sh
-  status: future
-  rationale: Daily health check overlaps host-tool-doctor/cos-status and can be scheduled.
-  next_action: Keep scheduled/manual until status surfaces consolidate.
-- path: hooks/valkey-ensure.sh
-  status: conditional_opt_in
-  rationale: Only needed when ORCHESTRATOR_MODE=executor and Valkey is required.
-  next_action: Wire in executor profile only.
-- path: hooks/worktree-submodule-fix.sh
-  status: manual_trigger
-  rationale: Worktree submodule repair mutates git metadata and should be explicit
-    after worktree operations.
-  next_action: Keep manual/admin-triggered.
-- path: hooks/cosd-intent-submit.sh
-  status: manual_trigger
-  rationale: ADR-184 workflow command for submitting explicit cosd intents; no lifecycle
-    event payload can supply its required intent arguments yet.
-  next_action: Keep out of Claude/Codex lifecycle projections until cosd v1 defines
-    a typed event payload and integration lane.
-- path: hooks/state-retention-audit.sh
-  status: manual_trigger
-  rationale: State-retention audit can archive or reap state and must be invoked by explicit operator/session-retention flows, not every Claude lifecycle event.
-  next_action: Keep manual until the retention controller promotes a specific safe lifecycle projection.
-- path: hooks/subagent-capability-preflight.sh
-  status: manual_trigger
-  rationale: ADR-203 capability checks are available as an explicit launch-preflight wrapper, but are not yet projected into Claude or Codex lifecycle settings.
-  next_action: Promote through a concrete launch path before changing this status to projected_elsewhere.
-- path: hooks/agent-control-inbound-guard.sh
-  status: active
-  rationale: Active inbound control guard for stop/pause/resume signals at hook boundaries.
-  next_action: Keep projected while bidirectional agent control relies on filesystem inbound signals.
-- path: hooks/spdx-header-required.sh
-  status: active
-  rationale: |
-    ADR-267 Hook #4 (Layer 1). Pre-commit gate; new files in lib/, packages/*/lib/,
-    scripts/ (.py/.sh/.js/.ts) must carry SPDX-License-Identifier in first 10 lines.
-    Existing files at install snapshot are grandfathered via manifests/spdx-grandfather.txt.
-    Bypass: COS_ALLOW_MISSING_SPDX=1 (logged).
-  next_action: Monitor false-positive rate; tighten grandfather list when feasible.
-- path: hooks/external-cache-content-leak.sh
-  status: active
-  rationale: |
-    ADR-267 Hook #2 (Layer 1). Generalises external-pattern-cleanroom-gate.sh to
-    scan staged content against the whole .cognitive-os/external-source-cache/ tree.
-    Bypass: COS_ALLOW_EXTERNAL_CACHE_LEAK=1 (logged).
-  next_action: Tune token threshold + generic allowlist after soak.
-- path: hooks/attribution-completeness-validator.sh
-  status: active
-  rationale: |
-    ADR-267 Hook #5 (Layer 1). Pre-commit gate for docs/03-PoCs/research/*-annex-*.md
-    requiring Source-Pattern / License / Clean-Room-Protocol header fields plus
-    per-block source attribution on verbatim code fences.
-    Bypass: COS_ALLOW_INCOMPLETE_ATTRIBUTION=1 (logged).
-  next_action: Promote annex-glob to a structured frontmatter schema after first 5 annexes pass.
-- path: hooks/history-rewrite-documented.sh
-  status: active
-  rationale: |
-    ADR-269 Primitive 2. SessionStart non-blocking warn for recovery bundles
-    (.cognitive-os/recovery/pre-history-sanitization-*.bundle) not registered
-    in manifests/history-rewrite-ledger.yaml. Registered in Claude Code driver
-    (settings-driver-claude-code.sh maintainer SessionStart group),
-    all three security profiles (minimal/standard/paranoid), and the
-    apply-efficiency-profile.sh sanity loop. Logs to
-    .cognitive-os/logs/history-rewrite-documented.jsonl.
-    Bypass: COS_ALLOW_UNDOCUMENTED_REWRITES=1 (logged).
-  next_action: Keep active; promote ledger auto-register when cos-history-sanitization --execute auto-writes ledger entries.
-- path: hooks/lib-symlink-divergence-detector.sh
-  status: active
-  rationale: |
-    Closes the silent-drift gap exposed by review_agent.py audit 2026-05-11.
-    PreToolUse Bash gate that blocks commits when a file staged to lib/ has
-    a same-named counterpart in packages/*/lib/ AND neither is a symlink to
-    the other AND content differs.
-  next_action: Keep active; promote to error severity for typechange events.
-- path: hooks/legal-review-required-on-runtime-import.sh
-  status: active
-  rationale: |
-    ADR-270 Primitive 8. PreToolUse Bash gate matching `git commit`. Scans
-    staged .py files in lib/, packages/*/lib/, scripts/ for attribution
-    headers ("# Ported from <tool>" / "# Adapted from <tool>" / etc.).
-    Blocks commit when the referenced tool's entry in
-    manifests/legal-review-ledger.yaml is not `approved` or
-    `approved-with-conditions`. Registered in settings-driver-claude-code.sh
-    pre_bash group, all three security profiles, and the
-    apply-efficiency-profile.sh sanity loop. Logs to
-    .cognitive-os/logs/legal-review-required.jsonl.
-    Bypass: COS_ALLOW_PRE_LEGAL_REVIEW_IMPORT=1 (logged).
-  next_action: Keep active; revisit threshold list if BLOCKER license set expands.
-- path: hooks/pending-truth-drift-detector.sh
-  status: active
-  rationale: ADR-273 Slice C anti-drift hook, ACTIVE. PostToolUse Edit|Write advisory registered in cognitive-os.yaml > harness.hooks and projected to .claude/settings.json + .codex/hooks.json by the maintainer profile.
-  next_action: Maintain. Promote escalation thresholds via operator profile.
-- path: hooks/pending-truth-verify-weekly.sh
-  status: active
-  rationale: ADR-273 Slice C async Stop hook, ACTIVE. Fires scripts/cos-pending-truth-verify in background if ledger >7d stale. Non-blocking, fire-and-forget. Projected to maintainer profile.
-  next_action: Maintain. Promote escalation thresholds via operator profile.
-- path: hooks/pending-truth-staleness-gate.sh
-  status: active
-  rationale: ADR-273 Slice C PreToolUse Bash advisory, ACTIVE. On `git commit*` if ledger is older than 30 days, emits a non-blocking warning to refresh aggregator+verifier. Projected to maintainer profile.
-  next_action: Maintain. Promote escalation thresholds via operator profile.
-- path: hooks/cos-session-start-projector.sh
-  status: active
-  rationale: ADR-275 SessionStart wrapper. Bash wrapper that invokes
-    scripts/cos-session-start-projector (Python) so the canonical
-    driver schema (.sh-only) is satisfied. Non-blocking; projector
-    exits 0 always.
-  next_action: Maintain. Future driver refactor may inline Python
-    entries (ADR-008 cross-harness portability work).
-- path: hooks/clean-room-ast-similarity-gate.sh
-  status: manual_trigger
-  rationale: ADR-271 Hook #8 - AST-normalized similarity gate (Tier 2 clone detection). Manual trigger pending ADR-271 acceptance and soak period (Phase 3). Listed in hooks/_lib/registration-allowlist.txt until promoted.
-  next_action: Promote to an active security profile once soak validates false-positive rate.
-- path: hooks/auto-refine.sh
-  status: future
-  rationale: Per rules/ROADMAP.md (section 2.3) - built in UX2 sprint but registration status not yet verified; needs PostToolUse matcher definition before active projection.
-  next_action: Define trigger matcher and register once the refinement pipeline is proven.
-- path: hooks/auto-verify.sh
-  status: future
-  rationale: Per rules/ROADMAP.md (section 2.1) - built in UX2 sprint but registration status not yet verified; needs PostToolUse matcher definition before active projection.
-  next_action: Define trigger matcher and register once the verification pipeline is proven.
-- path: hooks/dod-gate.sh
-  status: future
-  rationale: Per rules/ROADMAP.md (section 2.2) - built in UX2 sprint; registration status unverified; needs PreToolUse or PostToolUse matcher definition.
-  next_action: Define trigger matcher and register once DoD-gate is production-ready.
-- path: hooks/skill-drift-detector.sh
-  status: active
-  rationale: ADR-285 — runtime SHA-256 drift detection against skills/REGISTRY.lock. Wired in SessionStart on standard/full profiles. 8/8 unit tests pass.
-  next_action: Monitor drift events in .cognitive-os/metrics/skill-drift.jsonl. Promote policy from warn to block after soak period.
-- path: hooks/session-start-stack-recommend.sh
-  status: active
-  rationale: ADR-286 — async SessionStart hook that runs stack_skill_recommender and writes .cognitive-os/state/stack-recommendations.json. Complementary to skill_router (intent vs stack). 6/6 unit tests pass.
-  next_action: Wire HUD/panel consumer of stack-recommendations.json so suggestions reach the user.
-- path: hooks/telemetry-budget-violator-detect.sh
-  status: conditional_opt_in
-  rationale: ADR-304 control-plane-only hook; invoked via cos-control-plane-audit hourly lane, not registered as a Claude event hook.
-  next_action: Operator runs scripts/cos-telemetry-aggregate or waits for the hourly lane.
-- path: hooks/agent-bash-cwd-enforcer.sh
-  status: profile_scoped
-  rationale: Bash PreToolUse working-directory guard projected by the Claude settings driver in the full profile and by security profiles; classified so registration audits do not treat profile-scoped enforcement as unowned drift.
-  next_action: Keep active; dispatcher adoption may later route this guard on the default hot path if command-context evidence shows enough value.
-- path: hooks/rate-limit-precheck.sh
-  status: profile_scoped
-  rationale: Advisory rate-limit precheck is retained for full/security profiles but is intentionally absent from the default maintainer hot path.
-  next_action: Keep classified as profile-scoped unless quota-pressure evidence justifies default projection.
-- path: hooks/rate-limiter.sh
-  status: profile_scoped
-  rationale: Blocking rate limiter is available in security profiles; the default profile relies on lighter budget and quota primitives to avoid hot-path false positives.
-  next_action: Keep out of default projection unless runtime quota evidence requires blocking enforcement.
-- path: hooks/bash-hot-path-dispatcher.sh
-  status: active
-  rationale: Default/maintainer Bash PreToolUse dispatcher for Claude and Codex. It is the effective projection root for command-scoped gates that should not all run on every Bash command.
-  next_action: Keep active and require dispatcher-route tests whenever a codex_required or default-profile Bash gate moves behind it.
-- path: hooks/branch-ownership-lock.sh
-  status: active
-  rationale: Git-boundary guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by the Claude full profile.
-  next_action: Keep active; preserve dispatcher coverage for git-boundary commands.
-- path: hooks/external-pattern-cleanroom-gate.sh
-  status: active
-  rationale: Commit-boundary clean-room guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by the Claude full profile.
-  next_action: Keep active; preserve dispatcher coverage for git commit commands.
-- path: hooks/git-commit-scope-guard.sh
-  status: active
-  rationale: Commit-scope guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by security profiles and the Claude full profile.
-  next_action: Keep active; preserve dispatcher coverage for git commit commands.
-- path: hooks/network-egress-guard.sh
-  status: active
-  rationale: External-network boundary guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by security profiles and the Claude full profile.
-  next_action: Keep active; preserve dispatcher coverage for curl/wget/ssh/git network commands.
-- path: hooks/orchestrator-claim-gate.sh
-  status: active
-  rationale: Commit-boundary claim guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by the Claude full profile.
-  next_action: Keep active; preserve dispatcher coverage for git commit commands.
-- path: hooks/pre-commit-content-hash-dedupe.sh
-  status: active
-  rationale: Commit-boundary duplicate-content guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by the Claude full profile.
-  next_action: Keep active; preserve dispatcher coverage for git commit commands.
-- path: hooks/release-guard.sh
-  status: active
-  rationale: Release-boundary guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by the Claude full profile.
-  next_action: Keep active; preserve dispatcher coverage for git tag and VERSION mutation commands.
-- path: hooks/scope-marker-portability-gate.sh
-  status: active
-  rationale: Commit-boundary portability metadata guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by security profiles and the Claude full profile.
-  next_action: Keep active; preserve dispatcher coverage for git commit commands.
-- path: hooks/skill-router-bash-gate.sh
-  status: active
-  rationale: Dependency-mutation skill-routing guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by security profiles and the Claude full profile.
-  next_action: Keep active; preserve dispatcher coverage for package-manager mutation commands.
-- path: hooks/symlink-mutation-guard.sh
-  status: active
-  rationale: Filesystem mutation guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by security profiles and the Claude full profile.
-  next_action: Keep active; preserve dispatcher coverage for rm/mv/ln/find-delete commands.
-- path: hooks/untracked-work-preservation-guard.sh
-  status: active
-  rationale: Git-boundary work-preservation guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by security profiles and the Claude full profile.
-  next_action: Keep active; preserve dispatcher coverage for destructive git boundary commands.
-- path: hooks/adversarial-review-gate.sh
-  status: active
-  rationale: "PostToolUse Agent hook enforcing adversarial-review rule deterministically. Warns when agent review output contains no findings or prohibited phrases like 'looks good' / 'no issues found'. Converts agent-instruction rule to hook-enforced because models are non-deterministic. SCOPE: os-only."
-  next_action: Keep active; promote to blocking (exit 1) after signal collection from metrics/adversarial-review-gate.jsonl confirms false-positive rate is acceptable.
-- path: hooks/decision-depth-gate.sh
-  status: active
-  rationale: "PostToolUse Agent hook enforcing decision-depth-gate rule deterministically. Warns when agent closes a finding via documentation alone without investigating the underlying invariant. Converts agent-instruction rule to hook-enforced because models are non-deterministic. SCOPE: os-only."
-  next_action: Keep active; promote to blocking after signal collection from metrics/decision-depth-gate.jsonl confirms false-positive rate is acceptable.
-- path: hooks/eas-validation-gate.sh
-  status: active
-  rationale: "ADR-319/324 — Stop hook registered in settings and gated by COS_REVIEW_SURFACE or COS_EAS_PATH. It skips silently when no EAS-bound review surface is active, so the classification must reflect active registration rather than conditional absence. SCOPE: os-only."
-  next_action: Keep active with environment gating and review metric/false-positive baseline before increasing enforcement.
-- path: hooks/secret-audit-pre-commit.sh
-  status: conditional_opt_in
-  rationale: ADR-215 release-scope secret audit wrapper; intended for explicit security/pre-commit profiles because it may require optional scanner binaries and strict release policy.
-  next_action: Wire in a security profile after scanner availability and allowlist baselines are operator-approved.
+{
+  "generated_on": "2026-05-04",
+  "scope": "top-level hooks/*.sh absent from .claude/settings.json after ADR-144 projection",
+  "contract": "Every unregistered top-level hook must appear here with status, rationale, and next_action.",
+  "entries": [
+    {
+      "path": "hooks/publication-safety.sh",
+      "status": "conditional_opt_in",
+      "rationale": "Project-configured publication gate bridge; it no-ops unless a publication-safety manifest or explicit required flag is present, and should be enabled only for release/publication workflows.",
+      "next_action": "Promote to active profile registration after cross-project release workflow adoption proves low false positives."
+    },
+    {
+      "path": "hooks/research-compliance-guard.sh",
+      "status": "active",
+      "rationale": "Dual-surface research/license clean-room guard: registered as a self-host Claude Bash PreToolUse hook for Cognitive OS development and projected through the default/core install profile for consumer repositories.",
+      "next_action": "Keep active in self-host settings and default/core projection; preserve tests that prove both the Claude lifecycle registration and consumer install copy."
+    },
+    {
+      "path": "hooks/subagent-input-schema-validator.sh",
+      "status": "conditional_opt_in",
+      "rationale": "ADR-038 Wave 2 — validates sub-agent inputs against INPUT SCHEMA blocks declared in orchestrator prompts. Only activates when the prompt contains an INPUT SCHEMA block; safe no-op otherwise. Blocking by design (permissionDecision=block) when required fields are missing or mistyped. Not registered globally because it requires the lib/agent_input_validator.py Wave 1 library to be present.",
+      "next_action": "Promote to standard profile PreToolUse Agent after one sprint of production observation confirming low false-positive rate."
+    },
+    {
+      "path": "hooks/ai-provider-identity-guard.sh",
+      "status": "conditional_opt_in",
+      "rationale": "ADR-238 follow-up — blocks invented AI-provider identities at commit time. Wired into the public-rewrites bypass path; not registered globally because it would conflict with non-AI-assisted workflows.",
+      "next_action": "Promote to active once the bypass-path safety case is documented."
+    },
+    {
+      "path": "hooks/session-end-cleanup.sh",
+      "status": "conditional_opt_in",
+      "rationale": "ADR-238 follow-up — runs cos-cleanup tier-1 (low-risk auto cleanup) on session close. Operator action — not registered by default to avoid silent state mutation on every session.",
+      "next_action": "Promote to active after operator opt-in via cognitive-os.yaml."
+    },
+    {
+      "path": "hooks/adr-detector.sh",
+      "status": "future",
+      "rationale": "ADR-reference prompt detection is planned for UserPromptSubmit; no default ROI/latency proof yet.",
+      "next_action": "Keep unregistered until trigger precision and latency are proven."
+    },
+    {
+      "path": "hooks/agent-bus-monitor.sh",
+      "status": "conditional_opt_in",
+      "rationale": "Requires AGENT_BUS_ENABLED=true and Valkey/executor mode; default sessions use lighter file/runtime state.",
+      "next_action": "Wire only in executor/Valkey profile."
+    },
+    {
+      "path": "hooks/agent-output-verifier.sh",
+      "status": "demoted",
+      "rationale": "File-claim verification is intentionally not projected; it is a regex-only advisory that overlaps completion-gate/post-agent-verify and has high false-positive risk on prose paths.",
+      "next_action": "Keep as manual diagnostic only; do not merge until a structured Agent return contract supplies machine-readable file claims."
+    },
+    {
+      "path": "hooks/agent-quota-advisor.sh",
+      "status": "conditional_opt_in",
+      "rationale": "ADR-056 L1 quota advisory only matters when quota-aware dispatch is enabled.",
+      "next_action": "Wire in quota-aware profile only."
+    },
+    {
+      "path": "hooks/agent-quota-redirect.sh",
+      "status": "conditional_opt_in",
+      "rationale": "ADR-056 L2 blocks native Agent launches under quota pressure.",
+      "next_action": "Keep opt-in because it changes execution routing."
+    },
+    {
+      "path": "hooks/agent-qwen-bridge.sh",
+      "status": "conditional_opt_in",
+      "rationale": "ADR-056 L3 transparent Qwen bridge is per-skill opt-in.",
+      "next_action": "Wire only after per-skill routing proof."
+    },
+    {
+      "path": "hooks/agnix-lint.sh",
+      "status": "deprecated",
+      "rationale": "Superseded by architecture/compliance validation paths; agnix is not a default dependency.",
+      "next_action": "Archive after confirming no package still references it."
+    },
+    {
+      "path": "hooks/aguara-scan.sh",
+      "status": "conditional_opt_in",
+      "rationale": "Requires Aguara scanner availability and explicit security profile.",
+      "next_action": "Wire only when AGUARA_ENABLED/security extension is active."
+    },
+    {
+      "path": "hooks/architecture-compliance.sh",
+      "status": "future",
+      "rationale": "Project architecture checker for Agent output; not yet calibrated for default false positives.",
+      "next_action": "Promote after tests prove low-noise findings."
+    },
+    {
+      "path": "hooks/background-agent-reminder.sh",
+      "status": "future",
+      "rationale": "UserPromptSubmit reminder for pending background agents; not yet proven against native/session backlog flows.",
+      "next_action": "Revisit with background-agent UX work."
+    },
+    {
+      "path": "hooks/clarification-interceptor.sh",
+      "status": "deprecated",
+      "rationale": "Split-and-resume clarification behavior moved into clarification-gate/orchestrator flow.",
+      "next_action": "Archive after reference audit."
+    },
+    {
+      "path": "hooks/code-review-on-commit.sh",
+      "status": "git_or_manual",
+      "rationale": "Designed as a Git pre-commit hook, not a Claude hook.",
+      "next_action": "Keep out of Claude settings; install via git hook if adopted."
+    },
+    {
+      "path": "hooks/cognitive-os-health.sh",
+      "status": "manual_trigger",
+      "rationale": "Full OS health report is an operator/status command, not a per-session default.",
+      "next_action": "Expose via /cos-status or doctor, not SessionStart."
+    },
+    {
+      "path": "hooks/completeness-check-llm.sh",
+      "status": "deprecated",
+      "rationale": "LLM variant superseded by registered rule-based completeness-check for default hot path.",
+      "next_action": "Archive after ADR-022 migration cleanup."
+    },
+    {
+      "path": "hooks/concurrent-write-guard-codex-proxy.sh",
+      "status": "projected_elsewhere",
+      "rationale": "Codex-only UserPromptSubmit proxy; intentionally absent from Claude settings and present in .codex/hooks.json.",
+      "next_action": "Keep Codex projection; do not add to Claude settings."
+    },
+    {
+      "path": "hooks/confidence-gate-llm.sh",
+      "status": "deprecated",
+      "rationale": "LLM variant superseded by registered rule-based confidence gate.",
+      "next_action": "Archive after ADR-022 migration cleanup."
+    },
+    {
+      "path": "hooks/context-diet.sh",
+      "status": "active",
+      "rationale": "Task-aware context selection now has measured token-savings evidence, safe no-op behavior when unsupported lifecycle payloads are absent, and an active Claude projection for Agent launches.",
+      "next_action": "Keep projected as advisory context selection and continue tracking Codex lifecycle gaps separately."
+    },
+    {
+      "path": "hooks/contextual-rule-loader.sh",
+      "status": "future",
+      "rationale": "Dynamic full-rule injection needs prompt/event support and bounded context guarantees.",
+      "next_action": "Implement as stage-2 loader before projection."
+    },
+    {
+      "path": "hooks/conversation-capture.sh",
+      "status": "future",
+      "rationale": "Transcript capture has privacy/storage implications and overlaps Engram/session summaries.",
+      "next_action": "Keep unregistered pending privacy and retention contract."
+    },
+    {
+      "path": "hooks/cos-executor-heartbeat.sh",
+      "status": "deprecated",
+      "rationale": "Compatibility alias for cos-executor-daemon-launcher; registering both duplicates daemon checks.",
+      "next_action": "Archive alias after compatibility window."
+    },
+    {
+      "path": "hooks/dry-run-preview.sh",
+      "status": "future",
+      "rationale": "DRY_RUN agent preview is useful but not a default session guard.",
+      "next_action": "Wire only in dry-run/sandbox workflows."
+    },
+    {
+      "path": "hooks/ecosystem-check.sh",
+      "status": "future",
+      "rationale": "Weekly ecosystem reevaluation is broad and better suited to scheduled/manual audits.",
+      "next_action": "Keep out of SessionStart default."
+    },
+    {
+      "path": "hooks/engram-auto-import.sh",
+      "status": "future",
+      "rationale": "Automatic memory import can mutate context/session state at startup.",
+      "next_action": "Wait for Engram import conflict policy."
+    },
+    {
+      "path": "hooks/engram-auto-sync.sh",
+      "status": "future",
+      "rationale": "Automatic memory export/commit at Stop has git/privacy side effects.",
+      "next_action": "Wait for Engram sync policy and explicit opt-in."
+    },
+    {
+      "path": "hooks/epic-task-detector.sh",
+      "status": "future",
+      "rationale": "Heuristic large-task detector overlaps blast-radius/adaptive-bypass and needs precision proof.",
+      "next_action": "Evaluate as advisory before default."
+    },
+    {
+      "path": "hooks/global-verify.sh",
+      "status": "manual_trigger",
+      "rationale": "Targeted verification runner is intentionally invoked by explicit verification flows, not every Agent completion.",
+      "next_action": "Keep manual/conditional; avoid test runs inside hooks."
+    },
+    {
+      "path": "hooks/guardrails-validator.sh",
+      "status": "conditional_opt_in",
+      "rationale": "Requires guardrails integration and GUARDRAILS_ENABLED.",
+      "next_action": "Wire only in guardrails/security extension."
+    },
+    {
+      "path": "hooks/idle-service-cleanup.sh",
+      "status": "manual_trigger",
+      "rationale": "Service cleanup is cron/operator maintenance, not a Claude event hook.",
+      "next_action": "Keep manual or scheduled automation."
+    },
+    {
+      "path": "hooks/infra-intent-detector.sh",
+      "status": "internal_helper",
+      "rationale": "Infrastructure intent is consumed by agent-prelaunch; standalone registration would duplicate prompt scanning.",
+      "next_action": "Keep as helper unless prelaunch stops calling it."
+    },
+    {
+      "path": "hooks/jupyter-sandbox.sh",
+      "status": "conditional_opt_in",
+      "rationale": "Only applies when JUPYTER_SANDBOX=true and Jupyter execution is available.",
+      "next_action": "Wire in Jupyter profile only."
+    },
+    {
+      "path": "hooks/memu-sync.sh",
+      "status": "future",
+      "rationale": "MemU sync is optional memory backend work and overlaps Engram lifecycle.",
+      "next_action": "Keep unregistered pending memory backend decision."
+    },
+    {
+      "path": "hooks/metrics-calibrator-trigger.sh",
+      "status": "future",
+      "rationale": "Metrics calibration is periodic maintainer work, not a default hook.",
+      "next_action": "Use scheduled/manual calibration."
+    },
+    {
+      "path": "hooks/metrics-rotation.sh",
+      "status": "manual_trigger",
+      "rationale": "Metrics rotation should run via cron/operator maintenance to avoid startup I/O.",
+      "next_action": "Keep scheduled/manual."
+    },
+    {
+      "path": "hooks/mlflow-sync.sh",
+      "status": "conditional_opt_in",
+      "rationale": "Requires MLflow package/service and observability profile.",
+      "next_action": "Wire only when MLflow is enabled."
+    },
+    {
+      "path": "hooks/notify.sh",
+      "status": "manual_trigger",
+      "rationale": "Generic notification wrapper is called by other flows; standalone registration would be noisy.",
+      "next_action": "Keep as callable helper."
+    },
+    {
+      "path": "hooks/orchestrator-mode-detect.sh",
+      "status": "internal_helper",
+      "rationale": "Mode detection is sourced/used by other hooks and docs; standalone SessionStart output is redundant.",
+      "next_action": "Keep helper/manual."
+    },
+    {
+      "path": "hooks/package-sync.sh",
+      "status": "manual_trigger",
+      "rationale": "Package dependency sync mutates repo/package state and belongs in CI/developer command.",
+      "next_action": "Keep manual or post-merge automation."
+    },
+    {
+      "path": "hooks/parry-scan.sh",
+      "status": "conditional_opt_in",
+      "rationale": "Requires Parry scanner installation/security profile.",
+      "next_action": "Wire only in security extension."
+    },
+    {
+      "path": "hooks/pattern-check.sh",
+      "status": "future",
+      "rationale": "Critical-pattern scanning belongs to explicit pattern audit until latency/noise are proven.",
+      "next_action": "Keep manual via detection skill."
+    },
+    {
+      "path": "hooks/pre-cleanup-snapshot.sh",
+      "status": "manual_trigger",
+      "rationale": "Cleanup snapshots are admin/refactor workflow actions, not global Agent preflight.",
+      "next_action": "Invoke from cleanup skills only."
+    },
+    {
+      "path": "hooks/pre-commit-gate.sh",
+      "status": "git_or_manual",
+      "rationale": "Git pre-commit gate is installed through git hooks, not Claude settings.",
+      "next_action": "Keep out of Claude settings."
+    },
+    {
+      "path": "hooks/pyrefly-typecheck-advisory.sh",
+      "status": "active",
+      "rationale": "Codex-only advisory typecheck hook is now registered through .codex/hooks.json; classification must not keep it in the unregistered queue.",
+      "next_action": "Keep active in Codex projection and revisit cross-harness promotion after pyrefly dependency drift is resolved."
+    },
+    {
+      "path": "hooks/rate-limit-protection.sh",
+      "status": "deprecated",
+      "rationale": "Backward-compat shim for token-budget-monitor.",
+      "next_action": "Archive after external caller compatibility window."
+    },
+    {
+      "path": "hooks/reaper-heartbeat.sh",
+      "status": "deprecated",
+      "rationale": "Compatibility alias for reaper-daemon-launcher; registering both duplicates scheduling.",
+      "next_action": "Archive alias after compatibility window."
+    },
+    {
+      "path": "hooks/recap-sync.sh",
+      "status": "future",
+      "rationale": "Native /recap integration should stay opt-in until provider behavior is stable.",
+      "next_action": "Revisit with recap provider adapter work."
+    },
+    {
+      "path": "hooks/registration-check.sh",
+      "status": "manual_trigger",
+      "rationale": "Registration checks are CI/manual audits; running before Agent would be noisy.",
+      "next_action": "Keep manual; this classification test covers default drift."
+    },
+    {
+      "path": "hooks/resource-check.sh",
+      "status": "demoted",
+      "rationale": "Budget preflight is intentionally not projected; token-budget-monitor and rate-limiter already cover hot-path budget/rate pressure without a second Agent launch gate.",
+      "next_action": "Keep demoted; merge only if token-budget-monitor gains cost-event budget semantics."
+    },
+    {
+      "path": "hooks/semgrep-scan.sh",
+      "status": "conditional_opt_in",
+      "rationale": "Requires Semgrep and security scan workflow; default hook would add heavy scans.",
+      "next_action": "Wire only in semgrep/security profile."
+    },
+    {
+      "path": "hooks/session-hygiene.sh",
+      "status": "future",
+      "rationale": "Stop hygiene can mutate/clean state and needs scoped policy after session cleanup/reaper work.",
+      "next_action": "Keep out of default Stop until cleanup policy is unified."
+    },
+    {
+      "path": "hooks/session-knowledge-extractor.sh",
+      "status": "future",
+      "rationale": "Knowledge extraction overlaps Engram/passive capture and has privacy/context risks.",
+      "next_action": "Revisit after memory lifecycle consolidation."
+    },
+    {
+      "path": "hooks/session-state-save.sh",
+      "status": "future",
+      "rationale": "Session state checkpoint overlaps current session lifecycle/backlog files.",
+      "next_action": "Consolidate with session lifecycle before projection."
+    },
+    {
+      "path": "hooks/singularity-check.sh",
+      "status": "conditional_opt_in",
+      "rationale": "Explicitly disabled unless SINGULARITY_CHECK=true.",
+      "next_action": "Keep opt-in."
+    },
+    {
+      "path": "hooks/sync-to-repo.sh",
+      "status": "manual_trigger",
+      "rationale": "Syncing .cognitive-os to another repo has git side effects and requires COGNITIVE_OS_REPO_PATH.",
+      "next_action": "Keep manual/explicit environment opt-in."
+    },
+    {
+      "path": "hooks/task-bridge-notify.sh",
+      "status": "future",
+      "rationale": "Task bridge additionalContext overlaps task-panel-sync/work-queue and needs native UI contract.",
+      "next_action": "Pick one task-state projection path before registering."
+    },
+    {
+      "path": "hooks/task-completed.sh",
+      "status": "demoted",
+      "rationale": "Lifecycle manifest marks TaskCompleted default_projection=false.",
+      "next_action": "Keep opt-in task systems only."
+    },
+    {
+      "path": "hooks/task-panel-sync.sh",
+      "status": "future",
+      "rationale": "Task panel sync overlaps task-bridge-notify and work-queue-sync.",
+      "next_action": "Consolidate task UI projection before registering."
+    },
+    {
+      "path": "hooks/task-recorder.sh",
+      "status": "future",
+      "rationale": "Task history recording at Stop needs session/task lifecycle consolidation.",
+      "next_action": "Revisit with task lifecycle ledger work."
+    },
+    {
+      "path": "hooks/tool-discovery-trigger.sh",
+      "status": "future",
+      "rationale": "Tool discovery is periodic maintainer research, not a startup default.",
+      "next_action": "Run scheduled/manual discovery."
+    },
+    {
+      "path": "hooks/tool-loop-detector.sh",
+      "status": "demoted",
+      "rationale": "Loop detection was folded into tool-sequence-capture.sh so repeated signatures and ping-pong patterns are detected from the existing PostToolUse stream.",
+      "next_action": "Keep standalone hook unprojected; archive after compatibility window if no manual callers remain."
+    },
+    {
+      "path": "hooks/usage-health-check.sh",
+      "status": "future",
+      "rationale": "Daily health check overlaps host-tool-doctor/cos-status and can be scheduled.",
+      "next_action": "Keep scheduled/manual until status surfaces consolidate."
+    },
+    {
+      "path": "hooks/valkey-ensure.sh",
+      "status": "conditional_opt_in",
+      "rationale": "Only needed when ORCHESTRATOR_MODE=executor and Valkey is required.",
+      "next_action": "Wire in executor profile only."
+    },
+    {
+      "path": "hooks/worktree-submodule-fix.sh",
+      "status": "manual_trigger",
+      "rationale": "Worktree submodule repair mutates git metadata and should be explicit after worktree operations.",
+      "next_action": "Keep manual/admin-triggered."
+    },
+    {
+      "path": "hooks/cosd-intent-submit.sh",
+      "status": "manual_trigger",
+      "rationale": "ADR-184 workflow command for submitting explicit cosd intents; no lifecycle event payload can supply its required intent arguments yet.",
+      "next_action": "Keep out of Claude/Codex lifecycle projections until cosd v1 defines a typed event payload and integration lane."
+    },
+    {
+      "path": "hooks/state-retention-audit.sh",
+      "status": "manual_trigger",
+      "rationale": "State-retention audit can archive or reap state and must be invoked by explicit operator/session-retention flows, not every Claude lifecycle event.",
+      "next_action": "Keep manual until the retention controller promotes a specific safe lifecycle projection."
+    },
+    {
+      "path": "hooks/subagent-capability-preflight.sh",
+      "status": "manual_trigger",
+      "rationale": "ADR-203 capability checks are available as an explicit launch-preflight wrapper, but are not yet projected into Claude or Codex lifecycle settings.",
+      "next_action": "Promote through a concrete launch path before changing this status to projected_elsewhere."
+    },
+    {
+      "path": "hooks/agent-control-inbound-guard.sh",
+      "status": "active",
+      "rationale": "Active inbound control guard for stop/pause/resume signals at hook boundaries.",
+      "next_action": "Keep projected while bidirectional agent control relies on filesystem inbound signals."
+    },
+    {
+      "path": "hooks/spdx-header-required.sh",
+      "status": "active",
+      "rationale": "ADR-267 Hook #4 (Layer 1). Pre-commit gate; new files in lib/, packages/*/lib/,\\nscripts/ (.py/.sh/.js/.ts) must carry SPDX-License-Identifier in first 10 lines.\\nExisting files at install snapshot are grandfathered via manifests/spdx-grandfather.txt.\\nBypass: COS_ALLOW_MISSING_SPDX=1 (logged).",
+      "next_action": "Monitor false-positive rate; tighten grandfather list when feasible."
+    },
+    {
+      "path": "hooks/external-cache-content-leak.sh",
+      "status": "active",
+      "rationale": "ADR-267 Hook #2 (Layer 1). Generalises external-pattern-cleanroom-gate.sh to\\nscan staged content against the whole .cognitive-os/external-source-cache/ tree.\\nBypass: COS_ALLOW_EXTERNAL_CACHE_LEAK=1 (logged).",
+      "next_action": "Tune token threshold + generic allowlist after soak."
+    },
+    {
+      "path": "hooks/attribution-completeness-validator.sh",
+      "status": "active",
+      "rationale": "ADR-267 Hook #5 (Layer 1). Pre-commit gate for docs/03-PoCs/research/*-annex-*.md\\nrequiring Source-Pattern / License / Clean-Room-Protocol header fields plus\\nper-block source attribution on verbatim code fences.\\nBypass: COS_ALLOW_INCOMPLETE_ATTRIBUTION=1 (logged).",
+      "next_action": "Promote annex-glob to a structured frontmatter schema after first 5 annexes pass."
+    },
+    {
+      "path": "hooks/history-rewrite-documented.sh",
+      "status": "active",
+      "rationale": "ADR-269 Primitive 2. SessionStart non-blocking warn for recovery bundles\\n(.cognitive-os/recovery/pre-history-sanitization-*.bundle) not registered\\nin manifests/history-rewrite-ledger.yaml. Registered in Claude Code driver\\n(settings-driver-claude-code.sh maintainer SessionStart group),\\nall three security profiles (minimal/standard/paranoid), and the\\napply-efficiency-profile.sh sanity loop. Logs to\\n.cognitive-os/logs/history-rewrite-documented.jsonl.\\nBypass: COS_ALLOW_UNDOCUMENTED_REWRITES=1 (logged).",
+      "next_action": "Keep active; promote ledger auto-register when cos-history-sanitization --execute auto-writes ledger entries."
+    },
+    {
+      "path": "hooks/lib-symlink-divergence-detector.sh",
+      "status": "active",
+      "rationale": "Closes the silent-drift gap exposed by review_agent.py audit 2026-05-11.\\nPreToolUse Bash gate that blocks commits when a file staged to lib/ has\\na same-named counterpart in packages/*/lib/ AND neither is a symlink to\\nthe other AND content differs.",
+      "next_action": "Keep active; promote to error severity for typechange events."
+    },
+    {
+      "path": "hooks/legal-review-required-on-runtime-import.sh",
+      "status": "active",
+      "rationale": "ADR-270 Primitive 8. PreToolUse Bash gate matching `git commit`. Scans\\nstaged .py files in lib/, packages/*/lib/, scripts/ for attribution\\nheaders (\\\"# Ported from <tool>\\\" / \\\"# Adapted from <tool>\\\" / etc.).\\nBlocks commit when the referenced tool's entry in\\nmanifests/legal-review-ledger.yaml is not `approved` or\\n`approved-with-conditions`. Registered in settings-driver-claude-code.sh\\npre_bash group, all three security profiles, and the\\napply-efficiency-profile.sh sanity loop. Logs to\\n.cognitive-os/logs/legal-review-required.jsonl.\\nBypass: COS_ALLOW_PRE_LEGAL_REVIEW_IMPORT=1 (logged).",
+      "next_action": "Keep active; revisit threshold list if BLOCKER license set expands."
+    },
+    {
+      "path": "hooks/pending-truth-drift-detector.sh",
+      "status": "active",
+      "rationale": "ADR-273 Slice C anti-drift hook, ACTIVE. PostToolUse Edit|Write advisory registered in cognitive-os.yaml > harness.hooks and projected to .claude/settings.json + .codex/hooks.json by the maintainer profile.",
+      "next_action": "Maintain. Promote escalation thresholds via operator profile."
+    },
+    {
+      "path": "hooks/pending-truth-verify-weekly.sh",
+      "status": "active",
+      "rationale": "ADR-273 Slice C async Stop hook, ACTIVE. Fires scripts/cos-pending-truth-verify in background if ledger >7d stale. Non-blocking, fire-and-forget. Projected to maintainer profile.",
+      "next_action": "Maintain. Promote escalation thresholds via operator profile."
+    },
+    {
+      "path": "hooks/pending-truth-staleness-gate.sh",
+      "status": "active",
+      "rationale": "ADR-273 Slice C PreToolUse Bash advisory, ACTIVE. On `git commit*` if ledger is older than 30 days, emits a non-blocking warning to refresh aggregator+verifier. Projected to maintainer profile.",
+      "next_action": "Maintain. Promote escalation thresholds via operator profile."
+    },
+    {
+      "path": "hooks/cos-session-start-projector.sh",
+      "status": "active",
+      "rationale": "ADR-275 SessionStart wrapper. Bash wrapper that invokes scripts/cos-session-start-projector (Python) so the canonical driver schema (.sh-only) is satisfied. Non-blocking; projector exits 0 always.",
+      "next_action": "Maintain. Future driver refactor may inline Python entries (ADR-008 cross-harness portability work)."
+    },
+    {
+      "path": "hooks/clean-room-ast-similarity-gate.sh",
+      "status": "manual_trigger",
+      "rationale": "ADR-271 Hook",
+      "next_action": "Promote to an active security profile once soak validates false-positive rate."
+    },
+    {
+      "path": "hooks/auto-refine.sh",
+      "status": "future",
+      "rationale": "Per rules/ROADMAP.md (section 2.3) - built in UX2 sprint but registration status not yet verified; needs PostToolUse matcher definition before active projection.",
+      "next_action": "Define trigger matcher and register once the refinement pipeline is proven."
+    },
+    {
+      "path": "hooks/auto-verify.sh",
+      "status": "future",
+      "rationale": "Per rules/ROADMAP.md (section 2.1) - built in UX2 sprint but registration status not yet verified; needs PostToolUse matcher definition before active projection.",
+      "next_action": "Define trigger matcher and register once the verification pipeline is proven."
+    },
+    {
+      "path": "hooks/dod-gate.sh",
+      "status": "future",
+      "rationale": "Per rules/ROADMAP.md (section 2.2) - built in UX2 sprint; registration status unverified; needs PreToolUse or PostToolUse matcher definition.",
+      "next_action": "Define trigger matcher and register once DoD-gate is production-ready."
+    },
+    {
+      "path": "hooks/skill-drift-detector.sh",
+      "status": "active",
+      "rationale": "ADR-285 — runtime SHA-256 drift detection against skills/REGISTRY.lock. Wired in SessionStart on standard/full profiles. 8/8 unit tests pass.",
+      "next_action": "Monitor drift events in .cognitive-os/metrics/skill-drift.jsonl. Promote policy from warn to block after soak period."
+    },
+    {
+      "path": "hooks/session-start-stack-recommend.sh",
+      "status": "active",
+      "rationale": "ADR-286 — async SessionStart hook that runs stack_skill_recommender and writes .cognitive-os/state/stack-recommendations.json. Complementary to skill_router (intent vs stack). 6/6 unit tests pass.",
+      "next_action": "Wire HUD/panel consumer of stack-recommendations.json so suggestions reach the user."
+    },
+    {
+      "path": "hooks/telemetry-budget-violator-detect.sh",
+      "status": "conditional_opt_in",
+      "rationale": "ADR-304 control-plane-only hook; invoked via cos-control-plane-audit hourly lane, not registered as a Claude event hook.",
+      "next_action": "Operator runs scripts/cos-telemetry-aggregate or waits for the hourly lane."
+    },
+    {
+      "path": "hooks/agent-bash-cwd-enforcer.sh",
+      "status": "profile_scoped",
+      "rationale": "Bash PreToolUse working-directory guard projected by the Claude settings driver in the full profile and by security profiles; classified so registration audits do not treat profile-scoped enforcement as unowned drift.",
+      "next_action": "Keep active; dispatcher adoption may later route this guard on the default hot path if command-context evidence shows enough value."
+    },
+    {
+      "path": "hooks/rate-limit-precheck.sh",
+      "status": "profile_scoped",
+      "rationale": "Advisory rate-limit precheck is retained for full/security profiles but is intentionally absent from the default maintainer hot path.",
+      "next_action": "Keep classified as profile-scoped unless quota-pressure evidence justifies default projection."
+    },
+    {
+      "path": "hooks/rate-limiter.sh",
+      "status": "profile_scoped",
+      "rationale": "Blocking rate limiter is available in security profiles; the default profile relies on lighter budget and quota primitives to avoid hot-path false positives.",
+      "next_action": "Keep out of default projection unless runtime quota evidence requires blocking enforcement."
+    },
+    {
+      "path": "hooks/bash-hot-path-dispatcher.sh",
+      "status": "active",
+      "rationale": "Default/maintainer Bash PreToolUse dispatcher for Claude and Codex. It is the effective projection root for command-scoped gates that should not all run on every Bash command.",
+      "next_action": "Keep active and require dispatcher-route tests whenever a codex_required or default-profile Bash gate moves behind it."
+    },
+    {
+      "path": "hooks/branch-ownership-lock.sh",
+      "status": "active",
+      "rationale": "Git-boundary guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by the Claude full profile.",
+      "next_action": "Keep active; preserve dispatcher coverage for git-boundary commands."
+    },
+    {
+      "path": "hooks/external-pattern-cleanroom-gate.sh",
+      "status": "active",
+      "rationale": "Commit-boundary clean-room guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by the Claude full profile.",
+      "next_action": "Keep active; preserve dispatcher coverage for git commit commands."
+    },
+    {
+      "path": "hooks/git-commit-scope-guard.sh",
+      "status": "active",
+      "rationale": "Commit-scope guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by security profiles and the Claude full profile.",
+      "next_action": "Keep active; preserve dispatcher coverage for git commit commands."
+    },
+    {
+      "path": "hooks/network-egress-guard.sh",
+      "status": "active",
+      "rationale": "External-network boundary guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by security profiles and the Claude full profile.",
+      "next_action": "Keep active; preserve dispatcher coverage for curl/wget/ssh/git network commands."
+    },
+    {
+      "path": "hooks/orchestrator-claim-gate.sh",
+      "status": "active",
+      "rationale": "Commit-boundary claim guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by the Claude full profile.",
+      "next_action": "Keep active; preserve dispatcher coverage for git commit commands."
+    },
+    {
+      "path": "hooks/pre-commit-content-hash-dedupe.sh",
+      "status": "active",
+      "rationale": "Commit-boundary duplicate-content guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by the Claude full profile.",
+      "next_action": "Keep active; preserve dispatcher coverage for git commit commands."
+    },
+    {
+      "path": "hooks/release-guard.sh",
+      "status": "active",
+      "rationale": "Release-boundary guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by the Claude full profile.",
+      "next_action": "Keep active; preserve dispatcher coverage for git tag and VERSION mutation commands."
+    },
+    {
+      "path": "hooks/scope-marker-portability-gate.sh",
+      "status": "active",
+      "rationale": "Commit-boundary portability metadata guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by security profiles and the Claude full profile.",
+      "next_action": "Keep active; preserve dispatcher coverage for git commit commands."
+    },
+    {
+      "path": "hooks/skill-router-bash-gate.sh",
+      "status": "active",
+      "rationale": "Dependency-mutation skill-routing guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by security profiles and the Claude full profile.",
+      "next_action": "Keep active; preserve dispatcher coverage for package-manager mutation commands."
+    },
+    {
+      "path": "hooks/symlink-mutation-guard.sh",
+      "status": "active",
+      "rationale": "Filesystem mutation guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by security profiles and the Claude full profile.",
+      "next_action": "Keep active; preserve dispatcher coverage for rm/mv/ln/find-delete commands."
+    },
+    {
+      "path": "hooks/untracked-work-preservation-guard.sh",
+      "status": "active",
+      "rationale": "Git-boundary work-preservation guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by security profiles and the Claude full profile.",
+      "next_action": "Keep active; preserve dispatcher coverage for destructive git boundary commands."
+    },
+    {
+      "path": "hooks/adversarial-review-gate.sh",
+      "status": "active",
+      "rationale": "PostToolUse Agent hook enforcing adversarial-review rule deterministically. Warns when agent review output contains no findings or prohibited phrases like 'looks good' / 'no issues found'. Converts agent-instruction rule to hook-enforced because models are non-deterministic. SCOPE: os-only.",
+      "next_action": "Keep active; promote to blocking (exit 1) after signal collection from metrics/adversarial-review-gate.jsonl confirms false-positive rate is acceptable."
+    },
+    {
+      "path": "hooks/decision-depth-gate.sh",
+      "status": "active",
+      "rationale": "PostToolUse Agent hook enforcing decision-depth-gate rule deterministically. Warns when agent closes a finding via documentation alone without investigating the underlying invariant. Converts agent-instruction rule to hook-enforced because models are non-deterministic. SCOPE: os-only.",
+      "next_action": "Keep active; promote to blocking after signal collection from metrics/decision-depth-gate.jsonl confirms false-positive rate is acceptable."
+    },
+    {
+      "path": "hooks/eas-validation-gate.sh",
+      "status": "active",
+      "rationale": "ADR-319/324 — Stop hook registered in settings and gated by COS_REVIEW_SURFACE or COS_EAS_PATH. It skips silently when no EAS-bound review surface is active, so the classification must reflect active registration rather than conditional absence. SCOPE: os-only.",
+      "next_action": "Keep active with environment gating and review metric/false-positive baseline before increasing enforcement."
+    },
+    {
+      "path": "hooks/secret-audit-pre-commit.sh",
+      "status": "conditional_opt_in",
+      "rationale": "ADR-215 release-scope secret audit wrapper; intended for explicit security/pre-commit profiles because it may require optional scanner binaries and strict release policy.",
+      "next_action": "Wire in a security profile after scanner availability and allowlist baselines are operator-approved."
+    }
+  ]
+}

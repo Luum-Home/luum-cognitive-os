@@ -22720,3 +22720,38 @@ primitives:
   docs_claim_level: observe
   exit_behavior: exit_0_or_nonzero
   metrics_file: "none"
+
+- id: hooks/provenance-scan.sh
+  kind: hook
+  owner_adr: ADR-126
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: runtime-safety
+  risk_class: blocking
+  supported_harnesses:
+  - claude
+  - codex
+  projection_targets:
+  - .claude/settings.json
+  - .codex/hooks.json
+  - hooks/bash-hot-path-dispatcher.sh
+  - hooks/provenance-scan.sh
+  runtime_projection: true
+  behavior_evidence: Project-local scanner and policy are installed in adopted repos; Claude Edit/Write projection and Bash dispatcher commit-boundary routing are covered by targeted unit and red-team portability tests.
+  evidence_commands:
+  - bash -n hooks/provenance-scan.sh scripts/provenance-scan
+  - python3 -m pytest tests/unit/test_provenance_scan.py tests/red_team/portability/test_provenance-scan.py tests/red_team/portability/test_provenance_scan.py -q
+  - cd cmd/cos && go test ./internal/cli -run TestE2E_ProvenanceScanCommand -count=1
+  rollback_or_repair_command: Remove provenance-scan from cognitive-os.yaml harness.hooks and hooks/bash-hot-path-dispatcher.sh, regenerate settings, and rerun release validation.
+  sunset_criteria: Archive only if provenance hygiene moves to an equivalent typed native harness primitive with adopted-repo install tests.
+  latency_budget_ms: 1000
+  repair_message: provenance-scan blocked sensitive provenance or local-source leakage; inspect findings, remove or explicitly allow safe scanner literals, then retry.
+  false_positive_tests:
+  - tests/unit/test_provenance_scan.py
+  - tests/red_team/portability/test_provenance-scan.py
+  - tests/red_team/portability/test_provenance_scan.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: "none"
