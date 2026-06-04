@@ -640,3 +640,22 @@ def test_registry_register_honors_explicit_registry_for_tmp_install(tmp_path, mo
     data = json.loads(registry_file.read_text())
     assert data["installations"][0]["project_name"] == "cos-canary-default"
 
+
+
+def test_install_provenance_scan_guardrail_copies_project_policy_and_bin(tmp_path: Path) -> None:
+    project = tmp_path / "project"
+    source = tmp_path / "source"
+    (source / "scripts").mkdir(parents=True)
+    (source / "manifests").mkdir(parents=True)
+    (source / "scripts" / "provenance-scan").write_text("#!/usr/bin/env bash\nexit 0\n", encoding="utf-8")
+    (source / "scripts" / "provenance_scan.py").write_text("print('ok')\n", encoding="utf-8")
+    (source / "manifests" / "provenance-scan.yaml").write_text("schema_version: provenance-scan/v1\n", encoding="utf-8")
+    project.mkdir()
+
+    assert cos_init._install_provenance_scan_guardrail(project, source) is True
+
+    wrapper = project / ".cognitive-os" / "bin" / "provenance-scan"
+    assert wrapper.exists()
+    assert wrapper.stat().st_mode & 0o111
+    assert (project / ".cognitive-os" / "bin" / "provenance_scan.py").exists()
+    assert (project / ".cognitive-os" / "provenance-scan.yaml").read_text(encoding="utf-8").startswith("schema_version")

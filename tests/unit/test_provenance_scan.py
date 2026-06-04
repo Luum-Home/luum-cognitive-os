@@ -107,3 +107,37 @@ def test_python_path_hack_detected(tmp_path: Path) -> None:
 def test_wrapper_uses_repo_script(tmp_path: Path) -> None:
     assert (ROOT / "scripts" / "provenance-scan").exists()
     assert (ROOT / "hooks" / "provenance-scan.sh").exists()
+
+
+def test_ts_import_allowlist_blocks_unapproved_root(tmp_path: Path) -> None:
+    cfg = write_config(tmp_path)
+    source = tmp_path / "index.ts"
+    source.write_text("import React from 'react'\nimport secret from '@private/sdk'\n", encoding="utf-8")
+
+    proc = run_scan(tmp_path, "--config", str(cfg), str(source))
+
+    assert proc.returncode == 1
+    assert any(
+        item["category"] == "unapproved-ts-import" and item["matched"] == "@private/sdk"
+        for item in payload(proc)["findings"]
+    )
+
+
+def test_prefers_project_cognitive_os_config(tmp_path: Path) -> None:
+    cfg = tmp_path / ".cognitive-os" / "provenance-scan.yaml"
+    cfg.parent.mkdir(parents=True, exist_ok=True)
+    cfg.write_text(
+        "schema_version: provenance-scan/v1\n"
+        "provenance:\n"
+        "  forbidden_terms: [PrivateThing]\n",
+        encoding="utf-8",
+    )
+    doc = tmp_path / "README.md"
+    doc.write_text("PrivateThing\n", encoding="utf-8")
+
+    proc = run_scan(tmp_path, str(doc))
+
+    assert proc.returncode == 1
+    data = payload(proc)
+    assert data["config"] == ".cognitive-os/provenance-scan.yaml"
+    assert any(item["category"] == "forbidden-term" for item in data["findings"])
