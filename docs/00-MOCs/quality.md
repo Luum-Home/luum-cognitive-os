@@ -79,3 +79,5 @@ was it a manual edit?" — feeds the trust score per ADR-244.
 - [workflow.md](workflow.md) — when in the SDD cycle each gate fires
 
 Last updated: 2026-05-12
+
+- [ADR-334 — Portable Duplicate-Code Quality Primitive](../02-Decisions/adrs/ADR-334-portable-duplicate-code-quality-primitive.md) — portable duplicate-code scanning for SO and consumer projects with jscpd/PMD/Semgrep adapters and fallback ratchets.

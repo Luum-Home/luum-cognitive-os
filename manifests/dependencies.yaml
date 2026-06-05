@@ -1053,6 +1053,119 @@ tools:
   scope: system
   syncable: 'no'
   auth_bound: false
+- name: jscpd
+  criticality: recommended
+  check: jscpd --version
+  install:
+    macos:
+      manager: npm
+      command: npm install -g jscpd
+    linux:
+      manager: npm
+      command: npm install -g jscpd
+    windows_wsl:
+      manager: npm
+      command: npm install -g jscpd
+    windows:
+      manager: npm
+      command: npm install -g jscpd
+  consumed_by:
+  - scripts/cos-quality-duplicates lexical lane
+  - .cognitive-os/bin/cos-quality-duplicates in consumer projects
+  category: cli
+  profiles:
+  - dev
+  - ci
+  - full
+  - headless-instance
+  scope: user
+  syncable: 'no'
+  auth_bound: false
+  manual_url: https://jscpd.dev/
+- name: pmd
+  criticality: optional
+  check: pmd --version
+  install:
+    macos:
+      manager: brew
+      command: brew install pmd
+    linux:
+      manager: manual
+      url: https://pmd.github.io/pmd/pmd_userdocs_installation.html
+    windows_wsl:
+      manager: manual
+      url: https://pmd.github.io/pmd/pmd_userdocs_installation.html
+    windows:
+      manager: choco
+      command: choco install pmd
+  consumed_by:
+  - scripts/cos-quality-duplicates optional PMD CPD adapter status
+  category: cli
+  profiles:
+  - dev
+  - ci
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+  manual_url: https://pmd.github.io/pmd/pmd_userdocs_cpd.html
+- name: dupl
+  criticality: optional
+  check: dupl --help
+  install:
+    macos:
+      manager: go
+      command: go install github.com/mibk/dupl@latest
+    linux:
+      manager: go
+      command: go install github.com/mibk/dupl@latest
+    windows_wsl:
+      manager: go
+      command: go install github.com/mibk/dupl@latest
+    windows:
+      manager: go
+      command: go install github.com/mibk/dupl@latest
+  consumed_by:
+  - scripts/cos-quality-duplicates optional Go AST clone lane
+  category: cli
+  profiles:
+  - dev
+  - ci
+  - full
+  - headless-instance
+  scope: user
+  syncable: 'no'
+  auth_bound: false
+  manual_url: https://github.com/mibk/dupl
+- name: ast-grep
+  criticality: optional
+  check: ast-grep --version
+  install:
+    macos:
+      manager: npm
+      command: npm install -g @ast-grep/cli
+    linux:
+      manager: npm
+      command: npm install -g @ast-grep/cli
+    windows_wsl:
+      manager: npm
+      command: npm install -g @ast-grep/cli
+    windows:
+      manager: npm
+      command: npm install -g @ast-grep/cli
+  consumed_by:
+  - scripts/cos-quality-duplicates optional AST policy lane
+  category: cli
+  profiles:
+  - dev
+  - ci
+  - full
+  - headless-instance
+  scope: user
+  syncable: 'no'
+  auth_bound: false
+  manual_url: https://ast-grep.github.io/
 - name: codespell
   criticality: recommended
   check: codespell --version
@@ -2115,6 +2228,11 @@ profiles:
     - node
     - npm
     - npx
+    - jscpd
+    - pmd
+    - dupl
+    - ast-grep
+    - semgrep
     - pip
     - pytest
     - shellcheck
@@ -2185,6 +2303,11 @@ profiles:
     - node
     - npm
     - npx
+    - jscpd
+    - pmd
+    - dupl
+    - ast-grep
+    - semgrep
     - pip
     - pytest
     - shellcheck
@@ -2218,6 +2341,11 @@ profiles:
     - node
     - npm
     - npx
+    - jscpd
+    - pmd
+    - dupl
+    - ast-grep
+    - semgrep
     - pip
     - pytest
     - shellcheck
@@ -2280,6 +2408,11 @@ profiles:
     - node
     - npm
     - npx
+    - jscpd
+    - pmd
+    - dupl
+    - ast-grep
+    - semgrep
     - pip
     - rg
     - yq
