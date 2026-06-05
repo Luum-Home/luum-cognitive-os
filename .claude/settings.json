@@ -802,6 +802,16 @@
             "async": true
           }
         ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" Stop \"$CLAUDE_PROJECT_DIR/hooks/quality-duplicates.sh\"",
+            "async": true
+          }
+        ]
       }
     ],
     "TeammateIdle": [
@@ -826,9 +836,7 @@
         ]
       }
     ],
-    "TaskCompleted": [
-
-    ]
+    "TaskCompleted": []
   },
   "permissions": {
     "deny": [

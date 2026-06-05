@@ -138,6 +138,7 @@ DEFAULT_HOOKS = {
     "hooks/teammate-idle.sh",
     "hooks/task-created.sh",
     "hooks/task-completed.sh",
+    "hooks/quality-duplicates.sh",
 }
 
 projected = []

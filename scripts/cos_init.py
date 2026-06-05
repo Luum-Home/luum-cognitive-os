@@ -100,7 +100,7 @@ DEFAULT_HOOKS = (
     "research-compliance-guard "
     "doc-sync-detector auto-checkpoint claim-validator completion-gate "
     "clarification-interceptor agent-checkpoint session-sanity confidentiality-enforcer "
-    "session-learning crash-recovery teammate-idle task-created task-completed"
+    "session-learning crash-recovery teammate-idle task-created task-completed quality-duplicates"
 ).split()
 
 DEFAULT_SKILLS = (

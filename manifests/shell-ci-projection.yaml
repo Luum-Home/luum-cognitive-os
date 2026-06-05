@@ -26,6 +26,12 @@ commands:
   - path: scripts/cos-coordination-status.sh
     class: shell-ci-command
     executable: true
+  - path: scripts/cos-quality-duplicates
+    class: shell-ci-command
+    executable: true
+  - path: scripts/cos_quality_duplicates.py
+    class: shell-ci-command
+    executable: true
   - path: scripts/cos-release-check.sh
     class: shell-ci-command
     executable: true
@@ -70,3 +76,4 @@ workflows:
       - scripts/cos-status.sh
       - scripts/check_mcp_servers.py
       - scripts/project_scaffold.py
+      - scripts/cos-quality-duplicates

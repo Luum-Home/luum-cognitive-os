@@ -1836,6 +1836,12 @@ harness:
       event: Stop
       scope: both
 
+    quality-duplicates:
+      script: hooks/quality-duplicates.sh
+      event: Stop
+      async: true
+      scope: both
+
     skill-synthesis-scanner:
       script: hooks/skill-synthesis-scanner.sh
       event: Stop

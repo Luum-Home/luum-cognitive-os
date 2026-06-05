@@ -10,7 +10,13 @@ from __future__ import annotations
 import os as _cos_os
 import sys as _cos_sys
 _cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
-from lib.script_helpers import shingles
+from lib.duplicate_scanner import (
+    collect_text_files,
+    generic_function_repeats,
+    lexical_pairs,
+    read_text,
+    stable_id,
+)
 from lib.project_paths import relpath as _rel
 
 import argparse
@@ -46,12 +52,6 @@ TEXT_SUFFIXES = {
     ".cs", ".rb", ".php", ".swift", ".scala", ".sql", ".lua", ".dart", ".ex", ".exs",
     ".yaml", ".yml", ".json", ".toml", ".md", ".svelte", ".vue", ".astro",
 }
-WORD_RE = re.compile(r"[A-Za-z0-9_./:-]+")
-SHELL_FUNCTION_RE = re.compile(r"(?m)^\s*(?:function\s+([A-Za-z_][A-Za-z0-9_-]*)\s*(?:\(\))?|([A-Za-z_][A-Za-z0-9_-]*)\s*\(\))\s*\{\s*$")
-PY_FUNC_RE = re.compile(r"^\s*(?:async\s+def|def)\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(")
-JS_FUNC_RE = re.compile(r"\b(function\s+[A-Za-z_$][\w$]*\s*\(|[A-Za-z_$][\w$]*\s*=\s*\([^)]*\)\s*=>|[A-Za-z_$][\w$]*\s*\([^)]*\)\s*\{)")
-
-
 @dataclass(frozen=True)
 class Finding:
     finding_id: str
@@ -70,168 +70,39 @@ class Finding:
         return " :: ".join(sorted((self.left, self.right)))
 
 
-def stable_id(kind: str, left: str, right: str, extra: str = "") -> str:
-    digest = hashlib.sha1(f"{kind}\0{left}\0{right}\0{extra}".encode()).hexdigest()[:12]
-    return f"{kind}:{digest}"
-
-
-def read_text(path: Path) -> str:
-    return path.read_text(encoding="utf-8", errors="ignore")
-
-
-def is_text_candidate(path: Path) -> bool:
-    if path.suffix.lower() in TEXT_SUFFIXES:
-        return True
-    if path.name in {"Dockerfile", "Makefile", "AGENTS.md", "README.md", "cognitive-os.yaml"}:
-        return True
-    return False
-
-
 def collect_files(root: Path, include: Iterable[str], exclude_globs: Iterable[str] = ()) -> list[Path]:
-    files: list[Path] = []
-    exclude_patterns = tuple(exclude_globs)
-    tracked: set[str] | None = None
-    try:
-        proc = subprocess.run(["git", "ls-files"], cwd=root, text=True, capture_output=True, timeout=10, check=False)
-        if proc.returncode == 0:
-            tracked = {line.strip() for line in proc.stdout.splitlines() if line.strip()}
-    except Exception:
-        tracked = None
-    for item in include:
-        base = (root / item).resolve() if not Path(item).is_absolute() else Path(item)
-        candidates = [base] if base.is_file() else sorted(base.rglob("*")) if base.exists() else []
-        for path in candidates:
-            if not path.is_file() or path.is_symlink():
-                continue
-            rel = _rel(root, path)
-            if tracked is not None and rel not in tracked:
-                continue
-            if any(part in DEFAULT_EXCLUDE_PARTS for part in path.parts):
-                continue
-            if exclude_patterns and any(path.match(pattern) or rel.startswith(pattern.rstrip("/")) for pattern in exclude_patterns):
-                continue
-            if is_text_candidate(path):
-                files.append(path)
-    # de-dupe by real path
-    by_real: dict[Path, Path] = {}
-    for path in files:
-        try:
-            by_real.setdefault(path.resolve(strict=True), path)
-        except OSError:
-            by_real.setdefault(path.resolve(), path)
-    return sorted(by_real.values(), key=lambda p: _rel(root, p))
-
-
-def normalize_line(line: str) -> str:
-    line = line.strip()
-    if not line or line.startswith(("#", "//", "/*", "*")) or line in {"{", "}", "};"}:
-        return ""
-    line = re.sub(r'"(?:\\.|[^"])*"', '"STR"', line)
-    line = re.sub(r"'(?:\\.|[^'])*'", "'STR'", line)
-    line = re.sub(r"\b\d+(?:\.\d+)?\b", "0", line)
-    line = re.sub(r"\b[a-f0-9]{8,}\b", "HASH", line, flags=re.I)
-    return re.sub(r"\s+", " ", line).lower()
-
-
-def normalize_text(text: str) -> str:
-    return "\n".join(line for line in (normalize_line(line) for line in text.splitlines()) if line)
+    return collect_text_files(
+        root,
+        include,
+        text_suffixes=TEXT_SUFFIXES,
+        exclude_parts=DEFAULT_EXCLUDE_PARTS,
+        special_names={"Dockerfile", "Makefile", "AGENTS.md", "README.md", "cognitive-os.yaml"},
+        tracked_only=True,
+        exclude_globs=exclude_globs,
+    )
 
 
 def lexical_findings(root: Path, files: list[Path], min_tokens: int, shingle_size: int, threshold: float) -> list[Finding]:
-    records: list[tuple[str, int, set[str]]] = []
-    for path in files:
-        tokens = WORD_RE.findall(normalize_text(read_text(path)))
-        if len(tokens) < min_tokens:
-            continue
-        records.append((_rel(root, path), len(tokens), shingles(tokens, shingle_size)))
     findings: list[Finding] = []
-    for i, left in enumerate(records):
-        left_path, left_count, left_shingles = left
-        for right_path, right_count, right_shingles in records[i + 1:]:
-            if min(left_count, right_count) / max(left_count, right_count) < 0.55:
-                continue
-            union = len(left_shingles | right_shingles)
-            similarity = round(len(left_shingles & right_shingles) / union, 4) if union else 0.0
-            if similarity >= threshold:
-                findings.append(Finding(
-                    stable_id("lexical-near-copy", left_path, right_path),
-                    "lexical", "lexical-near-copy", "medium", 0.72,
-                    left_path, right_path, similarity,
-                    "review-abstraction-or-allowlist", "normalized token shingles are highly similar",
-                ))
+    for pair in lexical_pairs(root, files, min_tokens=min_tokens, shingle_size=shingle_size, threshold=threshold):
+        findings.append(Finding(
+            stable_id("lexical-near-copy", pair.left, pair.right),
+            "lexical", "lexical-near-copy", "medium", 0.72,
+            pair.left, pair.right, pair.similarity,
+            "review-abstraction-or-allowlist", "normalized token shingles are highly similar",
+        ))
     return findings
 
 
-def function_blocks_for(path: Path, root: Path, min_tokens: int) -> list[tuple[str, str]]:
-    text = read_text(path)
-    rel = _rel(root, path)
-    blocks: list[tuple[str, str]] = []
-    lines = text.splitlines()
-    if path.suffix == ".py":
-        for i, line in enumerate(lines):
-            match = PY_FUNC_RE.match(line)
-            if not match:
-                continue
-            indent = len(line) - len(line.lstrip())
-            end = i + 1
-            for j in range(i + 1, len(lines)):
-                if lines[j].strip() and len(lines[j]) - len(lines[j].lstrip()) <= indent:
-                    break
-                end = j + 1
-            blocks.append((f"{rel}:{i+1}:{match.group(1)}", normalize_text("\n".join(lines[i:end]))))
-    elif path.suffix in {".sh", ".bash", ".zsh"} or path.name.endswith(".sh"):
-        idx = 0
-        while idx < len(lines):
-            m = SHELL_FUNCTION_RE.match(lines[idx])
-            if not m:
-                idx += 1
-                continue
-            name = m.group(1) or m.group(2) or "function"
-            start = idx
-            depth = lines[idx].count("{") - lines[idx].count("}")
-            idx += 1
-            while idx < len(lines) and depth > 0:
-                depth += lines[idx].count("{") - lines[idx].count("}")
-                idx += 1
-            blocks.append((f"{rel}:{start+1}:{name}", normalize_text("\n".join(lines[start + 1:idx]))))
-    elif path.suffix in {".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs"}:
-        for m in JS_FUNC_RE.finditer(text):
-            start = text[:m.start()].count("\n") + 1
-            # Lightweight brace-balanced extraction from first opening brace.
-            brace_at = text.find("{", m.start())
-            if brace_at < 0:
-                continue
-            depth = 0
-            end = brace_at
-            for pos in range(brace_at, min(len(text), brace_at + 12000)):
-                if text[pos] == "{":
-                    depth += 1
-                elif text[pos] == "}":
-                    depth -= 1
-                    if depth == 0:
-                        end = pos + 1
-                        break
-            blocks.append((f"{rel}:{start}:js-function", normalize_text(text[brace_at:end])))
-    return [(label, body) for label, body in blocks if len(WORD_RE.findall(body)) >= min_tokens]
-
-
 def function_findings(root: Path, files: list[Path], min_tokens: int) -> list[Finding]:
-    seen: dict[str, str] = {}
     findings: list[Finding] = []
-    for path in files:
-        for label, body in function_blocks_for(path, root, min_tokens):
-            normalized = re.sub(r"\b[A-Za-z_][A-Za-z0-9_]*\b", "ID", body)
-            digest = hashlib.sha1(normalized.encode()).hexdigest()
-            if digest in seen and seen[digest].split(":", 1)[0] != label.split(":", 1)[0]:
-                left = seen[digest]
-                findings.append(Finding(
-                    stable_id("normalized-function-repeat", left, label, digest),
-                    "function", "normalized-function-repeat", "medium", 0.84,
-                    left, label, 1.0,
-                    "extract-common-function-or-document-isolation", "function bodies are identical after literal/identifier normalization",
-                ))
-            else:
-                seen[digest] = label
+    for repeat in generic_function_repeats(root, files, min_tokens=min_tokens):
+        findings.append(Finding(
+            stable_id("normalized-function-repeat", repeat.left, repeat.right, repeat.digest),
+            "function", "normalized-function-repeat", "medium", 0.84,
+            repeat.left, repeat.right, repeat.similarity,
+            "extract-common-function-or-document-isolation", "function bodies are identical after literal/identifier normalization",
+        ))
     return findings
 
 

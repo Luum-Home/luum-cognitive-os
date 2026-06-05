@@ -58,6 +58,8 @@ def render_workflow(commands: list[str]) -> str:
             syntax_lines.append(f"bash -n {command}")
         elif command.endswith(".py"):
             syntax_lines.append(f"python3 -m py_compile {command}")
+        elif command == "scripts/cos-quality-duplicates":
+            syntax_lines.append(f"{command} --help >/dev/null")
     syntax = "\n          ".join(syntax_lines) if syntax_lines else "echo no shell-ci commands"
     return f"""name: Cognitive OS Shell CI
 

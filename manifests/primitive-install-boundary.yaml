@@ -50,6 +50,7 @@ profiles:
         - hooks/teammate-idle.sh
         - hooks/task-created.sh
         - hooks/task-completed.sh
+        - hooks/quality-duplicates.sh
       rules:
         - rules/trust-score.md
         - rules/acceptance-criteria.md

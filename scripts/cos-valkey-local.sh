@@ -59,14 +59,7 @@ _emit_metric() {
 
 # ── --status ────────────────────────────────────────────────────────────────
 _status() {
-    if _daemon_alive; then
-        local pid port
-        pid=$(cat "$PID_FILE")
-        port=$(cat "$PORT_FILE" 2>/dev/null || echo "?")
-        echo "[cos-valkey-local] RUNNING  pid=$pid  port=$port  binary=${SERVER_BIN:-unknown}"
-    else
-        echo "[cos-valkey-local] STOPPED"
-    fi
+    _emit_local_service_status "cos-valkey-local" "binary=${SERVER_BIN:-unknown}"
 }
 
 # ── --stop ──────────────────────────────────────────────────────────────────

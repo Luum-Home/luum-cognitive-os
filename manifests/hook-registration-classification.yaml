@@ -10,6 +10,12 @@
       "next_action": "Promote to active profile registration after cross-project release workflow adoption proves low false positives."
     },
     {
+      "path": "hooks/quality-duplicates.sh",
+      "status": "active",
+      "rationale": "Portable duplicate-quality trigger: runs advisory duplicate scans at session Stop/shutdown and projects through Claude, Codex, OpenCode, and shell/CI surfaces.",
+      "next_action": "Keep advisory by default; only block when COS_QUALITY_DUPLICATES_ENFORCE=1 or a project baseline enables fail-on-new policy."
+    },
+    {
       "path": "hooks/research-compliance-guard.sh",
       "status": "active",
       "rationale": "Dual-surface research/license clean-room guard: registered as a self-host Claude Bash PreToolUse hook for Cognitive OS development and projected through the default/core install profile for consumer repositories.",
@@ -18,19 +24,19 @@
     {
       "path": "hooks/subagent-input-schema-validator.sh",
       "status": "conditional_opt_in",
-      "rationale": "ADR-038 Wave 2 — validates sub-agent inputs against INPUT SCHEMA blocks declared in orchestrator prompts. Only activates when the prompt contains an INPUT SCHEMA block; safe no-op otherwise. Blocking by design (permissionDecision=block) when required fields are missing or mistyped. Not registered globally because it requires the lib/agent_input_validator.py Wave 1 library to be present.",
+      "rationale": "ADR-038 Wave 2 \u2014 validates sub-agent inputs against INPUT SCHEMA blocks declared in orchestrator prompts. Only activates when the prompt contains an INPUT SCHEMA block; safe no-op otherwise. Blocking by design (permissionDecision=block) when required fields are missing or mistyped. Not registered globally because it requires the lib/agent_input_validator.py Wave 1 library to be present.",
       "next_action": "Promote to standard profile PreToolUse Agent after one sprint of production observation confirming low false-positive rate."
     },
     {
       "path": "hooks/ai-provider-identity-guard.sh",
       "status": "conditional_opt_in",
-      "rationale": "ADR-238 follow-up — blocks invented AI-provider identities at commit time. Wired into the public-rewrites bypass path; not registered globally because it would conflict with non-AI-assisted workflows.",
+      "rationale": "ADR-238 follow-up \u2014 blocks invented AI-provider identities at commit time. Wired into the public-rewrites bypass path; not registered globally because it would conflict with non-AI-assisted workflows.",
       "next_action": "Promote to active once the bypass-path safety case is documented."
     },
     {
       "path": "hooks/session-end-cleanup.sh",
       "status": "conditional_opt_in",
-      "rationale": "ADR-238 follow-up — runs cos-cleanup tier-1 (low-risk auto cleanup) on session close. Operator action — not registered by default to avoid silent state mutation on every session.",
+      "rationale": "ADR-238 follow-up \u2014 runs cos-cleanup tier-1 (low-risk auto cleanup) on session close. Operator action \u2014 not registered by default to avoid silent state mutation on every session.",
       "next_action": "Promote to active after operator opt-in via cognitive-os.yaml."
     },
     {
@@ -516,13 +522,13 @@
     {
       "path": "hooks/skill-drift-detector.sh",
       "status": "active",
-      "rationale": "ADR-285 — runtime SHA-256 drift detection against skills/REGISTRY.lock. Wired in SessionStart on standard/full profiles. 8/8 unit tests pass.",
+      "rationale": "ADR-285 \u2014 runtime SHA-256 drift detection against skills/REGISTRY.lock. Wired in SessionStart on standard/full profiles. 8/8 unit tests pass.",
       "next_action": "Monitor drift events in .cognitive-os/metrics/skill-drift.jsonl. Promote policy from warn to block after soak period."
     },
     {
       "path": "hooks/session-start-stack-recommend.sh",
       "status": "active",
-      "rationale": "ADR-286 — async SessionStart hook that runs stack_skill_recommender and writes .cognitive-os/state/stack-recommendations.json. Complementary to skill_router (intent vs stack). 6/6 unit tests pass.",
+      "rationale": "ADR-286 \u2014 async SessionStart hook that runs stack_skill_recommender and writes .cognitive-os/state/stack-recommendations.json. Complementary to skill_router (intent vs stack). 6/6 unit tests pass.",
       "next_action": "Wire HUD/panel consumer of stack-recommendations.json so suggestions reach the user."
     },
     {
@@ -636,7 +642,7 @@
     {
       "path": "hooks/eas-validation-gate.sh",
       "status": "active",
-      "rationale": "ADR-319/324 — Stop hook registered in settings and gated by COS_REVIEW_SURFACE or COS_EAS_PATH. It skips silently when no EAS-bound review surface is active, so the classification must reflect active registration rather than conditional absence. SCOPE: os-only.",
+      "rationale": "ADR-319/324 \u2014 Stop hook registered in settings and gated by COS_REVIEW_SURFACE or COS_EAS_PATH. It skips silently when no EAS-bound review surface is active, so the classification must reflect active registration rather than conditional absence. SCOPE: os-only.",
       "next_action": "Keep active with environment gating and review metric/false-positive baseline before increasing enforcement."
     },
     {

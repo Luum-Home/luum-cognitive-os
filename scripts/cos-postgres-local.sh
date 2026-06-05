@@ -122,14 +122,7 @@ _init() {
 
 # ── --status ────────────────────────────────────────────────────────────────
 _status() {
-    if _daemon_alive; then
-        local pid port
-        pid=$(cat "$PID_FILE")
-        port=$(cat "$PORT_FILE" 2>/dev/null || echo "?")
-        echo "[cos-postgres-local] RUNNING  pid=$pid  port=$port  data=$DATA_DIR"
-    else
-        echo "[cos-postgres-local] STOPPED"
-    fi
+    _emit_local_service_status "cos-postgres-local" "data=$DATA_DIR"
 }
 
 # ── --stop ──────────────────────────────────────────────────────────────────

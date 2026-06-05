@@ -190,7 +190,7 @@ PYASYNC
     control-plane-audit.sh content-policy.sh ai-provider-identity-guard.sh doc-sync-detector.sh claim-validator.sh post-agent-verify.sh direct-main-guard.sh cross-session-coordination-guard.sh agent-message-inbox-guard.sh orchestrator-claim-gate.sh pre-commit-content-hash-dedupe.sh concurrent-write-guard.sh plan-claim-validator.sh completion-gate.sh \
     aci-observation-capture.sh trust-score-validator.sh auto-repair-dispatcher.sh dequeue-notify.sh state-heartbeat.sh adversarial-review-gate.sh decision-depth-gate.sh \
     skill-usage-tracker.sh kpi-trigger.sh teammate-idle.sh \
-    task-created.sh session-sanity.sh validation-lock-cleanup.sh session-start-stash-reapply.sh promotion-proposer-weekly.sh validator-soak-weekly.sh \
+    task-created.sh quality-duplicates.sh session-sanity.sh validation-lock-cleanup.sh session-start-stash-reapply.sh promotion-proposer-weekly.sh validator-soak-weekly.sh \
     error-learning.sh document-ingest-guard.sh large-file-advisor.sh auto-refine.sh dod-gate.sh \
     destructive-git-blocker.sh untracked-work-preservation-guard.sh branch-ownership-lock.sh symlink-mutation-guard.sh scope-marker-portability-gate.sh auto-verify.sh private-mode-gate.sh \
     private-mode-metrics-gate.sh session-end-reap.sh control-plane-audit-hourly.sh state-retention-audit.sh skill-tracker.sh stash-budget-warn.sh \

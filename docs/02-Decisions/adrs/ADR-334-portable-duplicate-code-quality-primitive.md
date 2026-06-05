@@ -10,6 +10,8 @@ implementation_files:
   - scripts/cos-quality-duplicates
   - scripts/cos_quality_duplicates.py
   - scripts/cos_init.py
+  - hooks/quality-duplicates.sh
+  - lib/duplicate_scanner.py
   - manifests/dependencies.yaml
   - docs/04-Concepts/architecture/language-agnostic-duplication-tooling-audit-2026-06-05.md
 tier: consumer
@@ -60,6 +62,8 @@ Add a portable duplicate-code primitive:
 6. The dependency manifest installs/plans these tools in dev, CI, full, and headless profiles. The default/core profile stays lightweight.
 7. The CLI supports `--write-baseline`, `--fail-on-new`, `--fail-on-findings`, and `--fleet`.
 8. Fleet discovery uses the existing COS installations registry first and marker scan second.
+9. Scanner mechanics live in `lib/duplicate_scanner.py` and are reused by `scripts/primitive_duplication_audit.py`; report schemas remain separate because the portable consumer primitive and SO-local primitive audit answer different questions.
+10. Harness-native triggers project the duplicate-quality lane into Claude Code, Codex, OpenCode, and shell/CI surfaces through `hooks/quality-duplicates.sh` or the shell/CI workflow.
 
 ## Alternatives rejected
 
@@ -75,6 +79,7 @@ Add a portable duplicate-code primitive:
 - CI can use fail-new ratchets instead of strict all-debt blocking on first adoption.
 - COS maintainers can run fleet discovery to find projects using the SO and coordinate quality tooling adoption.
 - External tool absence degrades to fallback lanes rather than blocking basic quality visibility.
+- Claude Code, Codex, OpenCode, and shell/CI installs get a native trigger or workflow entry rather than only a manually discoverable CLI.
 
 ## Acceptance Criteria
 
@@ -85,13 +90,15 @@ ACCEPTANCE CRITERIA:
 3. `--fleet --json` discovers registry projects and marker-scan projects with paths redacted by default.
 4. `cos_init.py` installs `.cognitive-os/bin/cos-quality-duplicates` and `.cognitive-os/bin/cos_quality_duplicates.py` into consumer projects.
 5. `manifests/dependencies.yaml` includes `jscpd`, `pmd`, `dupl`, `ast-grep`, and `semgrep` in dev/CI/full/headless install profiles.
-6. The dependency manifest validates.
+6. Claude Code, Codex, OpenCode, and shell/CI projections include duplicate-quality triggers.
+7. `scripts/primitive_duplication_audit.py` and `scripts/cos-quality-duplicates` share scanner mechanics through `lib/duplicate_scanner.py`.
+8. The dependency manifest validates.
 ```
 
 ## Verification
 
 ```bash
-python3 -m pytest tests/unit/test_cos_quality_duplicates.py tests/behavior/test_cos_quality_duplicates_cli.py tests/integration/test_install_quality_duplicates_primitive.py -q
+python3 -m pytest tests/unit/test_cos_quality_duplicates.py tests/behavior/test_cos_quality_duplicates_cli.py tests/integration/test_install_quality_duplicates_primitive.py tests/integration/test_quality_duplicates_harness_triggers.py -q
 bash scripts/manifest-check.sh --json
-python3 -m py_compile scripts/cos_quality_duplicates.py scripts/cos_init.py
+python3 -m py_compile lib/duplicate_scanner.py scripts/cos_quality_duplicates.py scripts/primitive_duplication_audit.py scripts/cos_init.py
 ```

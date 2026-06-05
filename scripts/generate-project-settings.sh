@@ -149,7 +149,7 @@ DEFAULT_HOOKS="error-learning.sh error-pipeline.sh result-truncator.sh session-i
   pre-compaction-flush.sh rate-limiter.sh large-file-advisor.sh secret-detector.sh content-policy.sh research-compliance-guard.sh
   doc-sync-detector.sh auto-checkpoint.sh claim-validator.sh completion-gate.sh
   clarification-interceptor.sh agent-checkpoint.sh session-sanity.sh confidentiality-enforcer.sh
-  session-learning.sh crash-recovery.sh teammate-idle.sh task-created.sh task-completed.sh"
+  session-learning.sh crash-recovery.sh teammate-idle.sh task-created.sh task-completed.sh quality-duplicates.sh"
 
 # ── Step 1: Transform paths ─────────────────────────────────────────
 # $CLAUDE_PROJECT_DIR/hooks/X.sh -> ${driver_project_expr}/.cognitive-os/hooks/cos/X.sh

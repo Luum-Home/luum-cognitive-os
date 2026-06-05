@@ -12,7 +12,6 @@ or skills/ and whether the duplicated surface is consumer-project relevant.
 from __future__ import annotations
 
 import argparse
-import ast
 import hashlib
 import json
 import re
@@ -25,6 +24,15 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from lib.script_io import read_text as read_text
+from lib.duplicate_scanner import (
+    collect_text_files,
+    lexical_pairs,
+    normalized_tokens,
+    python_ast_function_repeats,
+    shell_function_repeats,
+    stable_id,
+)
+from lib.script_helpers import shingles
 from lib.script_io import write_json as write_json
 from lib.similarity import jaccard, pair_key
 from lib.project_paths import relpath as rel
@@ -61,51 +69,15 @@ class Finding:
     classification: str = "candidate"
 
     pair_key = property(lambda self: pair_key(self.left, self.right))
-def stable_id(kind: str, left: str, right: str, extra: str = "") -> str:
-    digest = hashlib.sha1(f"{kind}\0{left}\0{right}\0{extra}".encode("utf-8")).hexdigest()[:12]
-    return f"{kind}:{digest}"
-
-
 def collect_files(root: Path, include: list[str]) -> list[Path]:
-    files: list[Path] = []
-    by_realpath: dict[Path, Path] = {}
-    for item in include:
-        base = root / item
-        candidates = [base] if base.is_file() else sorted(base.rglob("*")) if base.exists() else []
-        for path in candidates:
-            if not path.is_file():
-                continue
-            if any(part in EXCLUDE_PARTS for part in path.parts):
-                continue
-            if path.suffix in TEXT_SUFFIXES or path.name in {"cognitive-os.yaml", "AGENTS.md", "README.md"}:
-                try:
-                    realpath = path.resolve(strict=True)
-                except OSError:
-                    realpath = path.resolve()
-                by_realpath.setdefault(realpath, path)
-    files.extend(by_realpath.values())
-    return sorted(set(files))
-
-
-def normalize_text(text: str) -> str:
-    lines: list[str] = []
-    in_fence = False
-    for line in text.splitlines():
-        stripped = line.strip()
-        if stripped.startswith("```"):
-            in_fence = not in_fence
-            continue
-        if in_fence or not stripped or stripped.startswith("#"):
-            continue
-        lines.append(re.sub(r"\s+", " ", stripped.lower()))
-    return "\n".join(lines)
-
-
-def shingles(text: str, size: int) -> set[str]:
-    tokens = WORD_RE.findall(normalize_text(text))
-    if len(tokens) < size:
-        return set(tokens)
-    return {" ".join(tokens[index : index + size]) for index in range(len(tokens) - size + 1)}
+    return collect_text_files(
+        root,
+        include,
+        text_suffixes=TEXT_SUFFIXES,
+        exclude_parts=EXCLUDE_PARTS,
+        special_names={"cognitive-os.yaml", "AGENTS.md", "README.md"},
+        tracked_only=False,
+    )
 
 
 def common_home_for_path(path: str, kind: str) -> str:
@@ -130,187 +102,85 @@ def consumer_relevance(left: str, right: str) -> str:
 
 
 def exact_and_near_findings(root: Path, files: list[Path], min_tokens: int, shingle_size: int, threshold: float) -> list[Finding]:
-    records: list[tuple[str, str, int, set[str]]] = []
-    for path in files:
-        relative = rel(root, path)
-        if path.suffix == ".md" and relative.startswith(("skills/", "rules/")):
-            # Rule/skill prose is handled by primitive_overlap_findings. Keeping
-            # it out of generic near-copy comparisons avoids quadratic scans
-            # over large instructional documents.
-            continue
-        text = read_text(path)
-        tokens = WORD_RE.findall(normalize_text(text))
-        if len(tokens) < min_tokens:
-            continue
-        records.append((relative, text, len(tokens), shingles(text, shingle_size)))
     findings: list[Finding] = []
-    for index, (left_path, left_text, left_count, left_shingles) in enumerate(records):
-        for right_path, right_text, right_count, right_shingles in records[index + 1 :]:
-            if min(left_count, right_count) / max(left_count, right_count) < 0.55:
-                continue
-            similarity = round(jaccard(left_shingles, right_shingles), 4)
-            exact = normalize_text(left_text) == normalize_text(right_text)
-            if exact or similarity >= threshold:
-                kind = "exact-copy" if exact else "near-copy"
-                home = common_home_for_path(left_path, kind)
-                findings.append(
-                    Finding(
-                        stable_id(kind, left_path, right_path),
-                        kind,
-                        "high" if exact else "medium",
-                        0.9 if exact else 0.72,
-                        left_path,
-                        right_path,
-                        1.0 if exact else similarity,
-                        "extract-common" if exact else "review-abstraction",
-                        home,
-                        consumer_relevance(left_path, right_path),
-                        "normalized file content is duplicated" if exact else "token shingles are highly similar",
-                    )
-                )
+    for pair in lexical_pairs(
+        root,
+        files,
+        min_tokens=min_tokens,
+        shingle_size=shingle_size,
+        threshold=threshold,
+        skip_fenced_blocks=True,
+        ignore_markdown_primitives=True,
+    ):
+        kind = "exact-copy" if pair.exact else "near-copy"
+        home = common_home_for_path(pair.left, kind)
+        findings.append(
+            Finding(
+                stable_id(kind, pair.left, pair.right),
+                kind,
+                "high" if pair.exact else "medium",
+                0.9 if pair.exact else 0.72,
+                pair.left,
+                pair.right,
+                pair.similarity,
+                "extract-common" if pair.exact else "review-abstraction",
+                home,
+                consumer_relevance(pair.left, pair.right),
+                "normalized file content is duplicated" if pair.exact else "token shingles are highly similar",
+            )
+        )
     return findings
+
+
 
 
 def python_function_fingerprints(root: Path, files: list[Path]) -> list[Finding]:
-    seen: dict[str, tuple[str, str]] = {}
     findings: list[Finding] = []
-    for path in files:
-        if path.suffix != ".py":
-            continue
-        text = read_text(path)
-        try:
-            tree = ast.parse(text)
-        except SyntaxError:
-            continue
-        for node in ast.walk(tree):
-            if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
-                continue
-            if is_trivial_python_wrapper(node):
-                continue
-            body_dump = ast.dump(ast.Module(body=node.body, type_ignores=[]), include_attributes=False)
-            if len(body_dump) < 180:
-                continue
-            digest = hashlib.sha1(body_dump.encode("utf-8")).hexdigest()
-            current = (rel(root, path), node.name)
-            if digest in seen and seen[digest][0] != current[0]:
-                left_path, left_name = seen[digest]
-                right = f"{current[0]}::{current[1]}"
-                left = f"{left_path}::{left_name}"
-                findings.append(
-                    Finding(
-                        stable_id("python-function-repeat", left, right, digest),
-                        "python-function-repeat",
-                        "medium",
-                        0.86,
-                        left,
-                        right,
-                        1.0,
-                        "extract-common-python-helper",
-                        "lib/",
-                        consumer_relevance(left_path, current[0]),
-                        "Python functions have identical normalized AST bodies",
-                    )
-                )
-            else:
-                seen[digest] = current
-    return findings
-
-
-def is_trivial_python_wrapper(node: ast.FunctionDef | ast.AsyncFunctionDef) -> bool:
-    """Ignore tiny command dispatch wrappers that are clearer repeated in CLIs."""
-    if node.name != "main":
-        return False
-    body = list(node.body)
-    if len(body) == 2 and isinstance(body[0], ast.Assign):
-        targets = body[0].targets
-        value = body[0].value
-        assigns_args = (
-            len(targets) == 1
-            and isinstance(targets[0], ast.Name)
-            and targets[0].id == "args"
-            and isinstance(value, ast.Call)
-            and isinstance(value.func, ast.Attribute)
-            and value.func.attr == "parse_args"
+    for repeat in python_ast_function_repeats(root, files, min_dump_chars=180, skip_trivial_main=True):
+        left_path = repeat.left.split("::", 1)[0]
+        right_path = repeat.right.split("::", 1)[0]
+        findings.append(
+            Finding(
+                stable_id("python-function-repeat", repeat.left, repeat.right, repeat.digest),
+                "python-function-repeat",
+                "medium",
+                0.86,
+                repeat.left,
+                repeat.right,
+                repeat.similarity,
+                "extract-common-python-helper",
+                "lib/",
+                consumer_relevance(left_path, right_path),
+                "Python functions have identical normalized AST bodies",
+            )
         )
-        if not assigns_args:
-            return False
-        statement = body[1]
-    elif len(body) == 1:
-        statement = body[0]
-    else:
-        return False
-    if not isinstance(statement, ast.Return):
-        return False
-    value = statement.value
-    if isinstance(value, ast.Call) and isinstance(value.func, ast.Name) and value.func.id == "int" and value.args:
-        value = value.args[0]
-    if not isinstance(value, ast.Call):
-        return False
-    func = value.func
-    return (
-        isinstance(func, ast.Attribute)
-        and func.attr == "func"
-        and isinstance(func.value, ast.Name)
-        and func.value.id == "args"
-    )
-
-
-def shell_function_blocks(text: str) -> list[tuple[str, str]]:
-    lines = text.splitlines()
-    blocks: list[tuple[str, str]] = []
-    index = 0
-    while index < len(lines):
-        match = SHELL_FUNCTION_RE.match(lines[index])
-        if not match:
-            index += 1
-            continue
-        name = match.group(1) or match.group(2)
-        start = index
-        depth = lines[index].count("{") - lines[index].count("}")
-        index += 1
-        while index < len(lines) and depth > 0:
-            depth += lines[index].count("{") - lines[index].count("}")
-            index += 1
-        # Normalize the body without the declaration line so equivalent helpers
-        # with different names are still detected as extraction candidates.
-        block = "\n".join(lines[start + 1 : index])
-        if len(WORD_RE.findall(block)) >= 20:
-            blocks.append((name, normalize_text(block)))
-    return blocks
+    return findings
 
 
 def shell_function_findings(root: Path, files: list[Path]) -> list[Finding]:
-    seen: dict[str, tuple[str, str]] = {}
     findings: list[Finding] = []
-    for path in files:
-        if path.suffix not in {".sh", ".bash", ".zsh"} and not path.name.endswith(".sh"):
-            continue
-        for name, block in shell_function_blocks(read_text(path)):
-            digest = hashlib.sha1(block.encode("utf-8")).hexdigest()
-            current = (rel(root, path), name)
-            if digest in seen and seen[digest][0] != current[0]:
-                left_path, left_name = seen[digest]
-                left = f"{left_path}::{left_name}"
-                right = f"{current[0]}::{current[1]}"
-                home = common_home_for_path(current[0], "bash-function-repeat")
-                findings.append(
-                    Finding(
-                        stable_id("bash-function-repeat", left, right, digest),
-                        "bash-function-repeat",
-                        "medium",
-                        0.84,
-                        left,
-                        right,
-                        1.0,
-                        "extract-common-shell-helper",
-                        home,
-                        consumer_relevance(left_path, current[0]),
-                        "Shell functions have identical normalized bodies",
-                    )
-                )
-            else:
-                seen[digest] = current
+    for repeat in shell_function_repeats(root, files, min_tokens=20):
+        left_path = repeat.left.split("::", 1)[0]
+        right_path = repeat.right.split("::", 1)[0]
+        home = common_home_for_path(right_path, "bash-function-repeat")
+        findings.append(
+            Finding(
+                stable_id("bash-function-repeat", repeat.left, repeat.right, repeat.digest),
+                "bash-function-repeat",
+                "medium",
+                0.84,
+                repeat.left,
+                repeat.right,
+                repeat.similarity,
+                "extract-common-shell-helper",
+                home,
+                consumer_relevance(left_path, right_path),
+                "Shell functions have identical normalized bodies",
+            )
+        )
     return findings
+
+
 
 
 def yaml_signature(value: Any) -> str:
@@ -366,7 +236,7 @@ def yaml_structural_findings(root: Path, files: list[Path]) -> list[Finding]:
 
 def primitive_overlap_findings(root: Path, files: list[Path], threshold: float) -> list[Finding]:
     primitive_files = [path for path in files if path.as_posix().endswith("SKILL.md") or rel(root, path).startswith("rules/")]
-    records = [(rel(root, path), shingles(read_text(path), 6)) for path in primitive_files]
+    records = [(rel(root, path), shingles(normalized_tokens(read_text(path), skip_fenced_blocks=True), 6)) for path in primitive_files]
     findings: list[Finding] = []
     for index, (left, left_shingles) in enumerate(records):
         for right, right_shingles in records[index + 1 :]:

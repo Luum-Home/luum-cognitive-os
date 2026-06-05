@@ -55,3 +55,16 @@ with p.open("a", encoding="utf-8") as handle:
     handle.write(json.dumps(record) + "\n")
 PY
 }
+
+_emit_local_service_status() {
+    local label="$1"
+    local detail="$2"
+    if _daemon_alive; then
+        local pid port
+        pid=$(cat "$PID_FILE")
+        port=$(cat "$PORT_FILE" 2>/dev/null || echo "?")
+        echo "[$label] RUNNING  pid=$pid  port=$port  $detail"
+    else
+        echo "[$label] STOPPED"
+    fi
+}
