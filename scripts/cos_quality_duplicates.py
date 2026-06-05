@@ -252,9 +252,9 @@ def external_tool_status(root: Path, include: list[str], run_external: bool) -> 
     for name, version_cmd in tools.items():
         binary = shutil.which(version_cmd[0])
         status[name] = {"present": bool(binary), "path": binary, "ran": False, "returncode": None, "role": tool_role(name)}
-        if binary:
+        if binary and run_external:
             try:
-                proc = subprocess.run(version_cmd, cwd=root, text=True, capture_output=True, timeout=10, check=False)
+                proc = subprocess.run(version_cmd, cwd=root, text=True, capture_output=True, timeout=3, check=False)
                 status[name]["version"] = (proc.stdout or proc.stderr).splitlines()[:2]
             except Exception as exc:
                 status[name]["version_error"] = str(exc)
