@@ -2,11 +2,19 @@
 # SCOPE: os-only
 """Select proof-drill and smoke opt-in commands from the governed registry."""
 from __future__ import annotations
+import os as _cos_os
+import sys as _cos_sys
+_cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
+from lib.script_helpers import read_yaml_required as load_registry
 
 import argparse
 import json
 import sys
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 from typing import Any
 
 import yaml
@@ -14,10 +22,6 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parents[1]
 REGISTRY = REPO_ROOT / "manifests" / "proof-drill-registry.yaml"
 OPT_IN_CLASSES = {"smoke-opt-in", "proof-drill", "manual-proof"}
-
-
-def load_registry(path: Path = REGISTRY) -> dict[str, Any]:
-    return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
 
 
 def _contains(entry: dict[str, Any], token: str) -> bool:

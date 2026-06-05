@@ -610,29 +610,9 @@ def remote_restore_issues(repo: Path, expected: dict[str, dict[str, str]]) -> li
 
 
 def branch_upstream_restore_issues(repo: Path, expected: dict[str, Any]) -> list[str]:
-    issues: list[str] = []
-    actual = snapshot_branch_upstreams(repo)
-    expected_branches = expected.get("branches", {})
-    actual_branches = actual.get("branches", {})
-    if not isinstance(expected_branches, dict) or not isinstance(actual_branches, dict):
-        return ["branch upstream snapshot is malformed"]
-    for branch, config in expected_branches.items():
-        if not isinstance(branch, str) or not isinstance(config, dict):
-            continue
-        if git(repo, ["rev-parse", "--verify", f"refs/heads/{branch}"]).returncode != 0:
-            issues.append(f"{branch}: missing local branch")
-            continue
-        actual_config = actual_branches.get(branch, {})
-        if not isinstance(actual_config, dict):
-            actual_config = {}
-        for key in ("remote", "merge"):
-            expected_value = config.get(key)
-            if isinstance(expected_value, str) and expected_value and actual_config.get(key) != expected_value:
-                issues.append(f"{branch}: {key} mismatch")
-        tracking_ref = upstream_tracking_ref(config.get("remote"), config.get("merge"))
-        if tracking_ref and git(repo, ["show-ref", "--verify", "--quiet", tracking_ref]).returncode != 0:
-            issues.append(f"{branch}: upstream ref missing")
-    return issues
+    from lib.history_sanitization import _branch_upstream_restore_issues
+
+    return _branch_upstream_restore_issues(repo, expected)
 
 
 def apply_rewrite(repo: Path, *, plan_dir: Path | None = None, dry_run: bool = False) -> dict[str, Any]:

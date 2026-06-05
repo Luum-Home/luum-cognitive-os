@@ -3,6 +3,10 @@
 """Cross-session coordination CLI for claims, ADR ownership, and worktree intake."""
 
 from __future__ import annotations
+import os as _cos_os
+import sys as _cos_sys
+_cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
+from lib.script_helpers import emit_result as emit
 
 import argparse
 import json
@@ -81,14 +85,6 @@ def parse_metadata(pairs: Sequence[str]) -> dict[str, str]:
             raise SystemExit(f"metadata must be key=value: {pair}")
         metadata[key] = value
     return metadata
-
-
-def emit(args: argparse.Namespace, payload: dict[str, object], human: str, *, ok: bool = True) -> int:
-    if args.json:
-        print(json.dumps({"ok": ok, **payload}, indent=2, sort_keys=True))
-    else:
-        print(human)
-    return 0 if ok else 2
 
 
 def main(argv: Sequence[str] | None = None) -> int:

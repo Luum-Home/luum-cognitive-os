@@ -14,6 +14,10 @@ Usage:
   python3 scripts/cos-adr-implementation-audit.py --strict    # exit 2 if any overclaim
 """
 from __future__ import annotations
+import os as _cos_os
+import sys as _cos_sys
+_cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
+from lib.script_helpers import resolve_project_dir as _resolve_project_dir
 
 import argparse
 import fnmatch
@@ -23,20 +27,15 @@ import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 from typing import Any
 
 SCHEMA_VERSION = "adr-implementation-audit/v1"
 ALLOWLIST_PATH = "manifests/adr-implementation-runtime-allowlist.yaml"
 ADR_GLOB = "docs/02-Decisions/adrs/ADR-*.md"
-
-
-def _resolve_project_dir(arg: str | None) -> Path:
-    if arg:
-        return Path(arg).resolve()
-    for env_var in ("COGNITIVE_OS_PROJECT_DIR", "CODEX_PROJECT_DIR", "CLAUDE_PROJECT_DIR"):
-        if env_var in os.environ:
-            return Path(os.environ[env_var]).resolve()
-    return Path.cwd().resolve()
 
 
 def _load_allowlist(root: Path) -> list[dict[str, Any]]:

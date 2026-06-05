@@ -2,6 +2,11 @@
 # SCOPE: os-only
 """Run the ADR-250 minimal skill-router benchmark fixtures."""
 from __future__ import annotations
+import os as _cos_os
+import sys as _cos_sys
+_cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
+from lib.script_helpers import read_yaml_dict as load_yaml
+from lib.script_helpers import repo_root
 
 import argparse
 import json
@@ -20,19 +25,6 @@ from lib.skill_router import SkillRouter
 
 SCHEMA_VERSION = "skill-router-benchmark/v1"
 DEFAULT_MANIFEST = Path("manifests/skill-router-retrieval.yaml")
-
-
-def repo_root(start: Path) -> Path:
-    proc = subprocess.run(["git", "-C", str(start), "rev-parse", "--show-toplevel"], text=True, capture_output=True, check=False, timeout=60)
-    if proc.returncode == 0 and proc.stdout.strip():
-        return Path(proc.stdout.strip()).resolve()
-    return start.resolve()
-
-
-def load_yaml(path: Path) -> dict[str, Any]:
-    if not path.exists():
-        return {}
-    return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
 
 
 def evaluate_fixture(router: SkillRouter, fixture: dict[str, Any]) -> dict[str, Any]:

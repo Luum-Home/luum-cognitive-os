@@ -3,10 +3,17 @@
 """Audit the ADR-251 agent orchestration adapter boundary.
 
 Read-only: verifies that multi-agent orchestration stays declared, adapterized,
-and does not silently import optional orchestration frameworks into COS core
+and does not silently import sys
+import optional orchestration frameworks into COS core
 hot-path files.
 """
 from __future__ import annotations
+import os as _cos_os
+import sys as _cos_sys
+_cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
+from lib.script_helpers import read_yaml_dict as load_yaml
+from lib.script_helpers import repo_root
+from lib.script_helpers import imported_roots
 
 import argparse
 import ast
@@ -15,6 +22,10 @@ import re
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 from typing import Any
 
 import yaml
@@ -44,31 +55,6 @@ class Finding:
         if self.details:
             payload["details"] = self.details
         return payload
-
-
-def repo_root(start: Path) -> Path:
-    proc = subprocess.run(["git", "-C", str(start), "rev-parse", "--show-toplevel"], text=True, capture_output=True, check=False, timeout=60)
-    if proc.returncode == 0 and proc.stdout.strip():
-        return Path(proc.stdout.strip()).resolve()
-    return start.resolve()
-
-
-def load_yaml(path: Path) -> dict[str, Any]:
-    if not path.exists():
-        return {}
-    return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-
-
-def imported_roots(path: Path) -> set[str]:
-    tree = ast.parse(path.read_text(encoding="utf-8", errors="replace"), filename=str(path))
-    roots: set[str] = set()
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Import):
-            for alias in node.names:
-                roots.add(alias.name.split(".", 1)[0])
-        elif isinstance(node, ast.ImportFrom) and node.module:
-            roots.add(node.module.split(".", 1)[0])
-    return roots
 
 
 def _as_list(value: Any) -> list[Any]:

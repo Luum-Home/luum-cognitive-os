@@ -34,6 +34,11 @@ Exit codes:
   2 — required inputs missing (ledger absent)
 """
 from __future__ import annotations
+import os as _cos_os
+import sys as _cos_sys
+_cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
+import sys
+from lib.script_helpers import resolve_project_dir as _resolve_project_dir
 
 import argparse
 import json
@@ -41,21 +46,16 @@ import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 from typing import Any
 
 LEDGER_PATH = "docs/06-Daily/reports/pending-truth-latest.json"
 TRAIL_PATH = ".cognitive-os/audit/closure-trail.jsonl"
 BASELINE_PATH = "docs/06-Daily/reports/closure-trust-baseline.json"
 SCHEMA_VERSION = "closure-trust-signal/v1"
-
-
-def _resolve_project_dir(arg: str | None) -> Path:
-    if arg:
-        return Path(arg).resolve()
-    for env_var in ("COGNITIVE_OS_PROJECT_DIR", "CODEX_PROJECT_DIR", "CLAUDE_PROJECT_DIR"):
-        if env_var in os.environ:
-            return Path(os.environ[env_var]).resolve()
-    return Path.cwd().resolve()
 
 
 def _load_audited_ids(trail_path: Path, baseline_path: Path | None = None) -> set[str]:

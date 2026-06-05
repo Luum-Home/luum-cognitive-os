@@ -7,6 +7,11 @@ fallback detection everywhere, and opportunistically records external tool statu
 for jscpd, PMD CPD, Semgrep, dupl, golangci-lint, and ast-grep when present.
 """
 from __future__ import annotations
+import os as _cos_os
+import sys as _cos_sys
+_cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
+from lib.script_helpers import shingles
+from lib.project_paths import relpath as _rel
 
 import argparse
 import hashlib
@@ -19,6 +24,10 @@ import sys
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 from typing import Any, Iterable
 
 SCHEMA_VERSION = "cos-quality-duplicates.v1"
@@ -59,13 +68,6 @@ class Finding:
     @property
     def pair_key(self) -> str:
         return " :: ".join(sorted((self.left, self.right)))
-
-
-def _rel(root: Path, path: Path) -> str:
-    try:
-        return path.resolve().relative_to(root.resolve()).as_posix()
-    except ValueError:
-        return path.as_posix()
 
 
 def stable_id(kind: str, left: str, right: str, extra: str = "") -> str:
@@ -135,12 +137,6 @@ def normalize_text(text: str) -> str:
     return "\n".join(line for line in (normalize_line(line) for line in text.splitlines()) if line)
 
 
-def shingles(tokens: list[str], n: int) -> set[str]:
-    if len(tokens) < n:
-        return set(tokens)
-    return {" ".join(tokens[i:i+n]) for i in range(len(tokens) - n + 1)}
-
-
 def lexical_findings(root: Path, files: list[Path], min_tokens: int, shingle_size: int, threshold: float) -> list[Finding]:
     records: list[tuple[str, int, set[str]]] = []
     for path in files:
@@ -166,7 +162,7 @@ def lexical_findings(root: Path, files: list[Path], min_tokens: int, shingle_siz
     return findings
 
 
-def function_blocks_for(path: Path, root: Path) -> list[tuple[str, str]]:
+def function_blocks_for(path: Path, root: Path, min_tokens: int) -> list[tuple[str, str]]:
     text = read_text(path)
     rel = _rel(root, path)
     blocks: list[tuple[str, str]] = []
@@ -216,14 +212,14 @@ def function_blocks_for(path: Path, root: Path) -> list[tuple[str, str]]:
                         end = pos + 1
                         break
             blocks.append((f"{rel}:{start}:js-function", normalize_text(text[brace_at:end])))
-    return [(label, body) for label, body in blocks if len(WORD_RE.findall(body)) >= 25]
+    return [(label, body) for label, body in blocks if len(WORD_RE.findall(body)) >= min_tokens]
 
 
-def function_findings(root: Path, files: list[Path]) -> list[Finding]:
+def function_findings(root: Path, files: list[Path], min_tokens: int) -> list[Finding]:
     seen: dict[str, str] = {}
     findings: list[Finding] = []
     for path in files:
-        for label, body in function_blocks_for(path, root):
+        for label, body in function_blocks_for(path, root, min_tokens):
             normalized = re.sub(r"\b[A-Za-z_][A-Za-z0-9_]*\b", "ID", body)
             digest = hashlib.sha1(normalized.encode()).hexdigest()
             if digest in seen and seen[digest].split(":", 1)[0] != label.split(":", 1)[0]:
@@ -327,7 +323,7 @@ def summarize(findings: list[Finding], files_scanned: int, tools: dict[str, Any]
 
 def audit_project(root: Path, include: list[str], exclude: list[str], min_tokens: int, shingle_size: int, threshold: float, run_external: bool, baseline: Path | None = None) -> dict[str, Any]:
     files = collect_files(root, include, exclude)
-    findings = [*lexical_findings(root, files, min_tokens, shingle_size, threshold), *function_findings(root, files)]
+    findings = [*lexical_findings(root, files, min_tokens, shingle_size, threshold), *function_findings(root, files, min_tokens)]
     by_id: dict[str, Finding] = {}
     for finding in findings:
         by_id.setdefault(finding.finding_id, finding)

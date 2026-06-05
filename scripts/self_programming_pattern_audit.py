@@ -6,10 +6,19 @@ This keeps OpenSage-like self-programming ideas as governed patterns until COS
 has observable primitive contracts, gates, and evidence for each adoption lane.
 """
 from __future__ import annotations
+import os as _cos_os
+import sys as _cos_sys
+_cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
+import sys
+from lib.script_helpers import read_yaml_required as load_manifest
 
 import argparse
 import json
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 from typing import Any
 
 import yaml
@@ -30,10 +39,6 @@ REQUIRED_POLICY_GATES = {
 }
 ALLOWED_ADOPTION_KINDS = {"pattern-only", "adapter-lab"}
 SCHEMA_VERSION = "self-programming-pattern-audit/v1"
-
-
-def load_manifest(path: Path) -> dict[str, Any]:
-    return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
 
 
 def finding(severity: str, code: str, message: str, target: str) -> dict[str, str]:

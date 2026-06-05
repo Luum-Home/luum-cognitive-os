@@ -9,6 +9,10 @@ functional tests.
 """
 
 from __future__ import annotations
+import os as _cos_os
+import sys as _cos_sys
+_cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
+from lib.script_helpers import read_yaml_dict as _load_yaml
 
 import argparse
 import importlib.util
@@ -74,12 +78,6 @@ class Finding:
     severity: str
     code: str
     rationale: str
-
-
-def _load_yaml(path: Path) -> dict[str, Any]:
-    if not path.exists():
-        return {}
-    return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
 
 
 def _load_behavior_evidence(root: Path) -> dict[str, dict[str, Any]]:

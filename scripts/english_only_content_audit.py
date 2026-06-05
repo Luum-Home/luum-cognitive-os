@@ -11,6 +11,12 @@ v2 replaces the static base64 blocklist with statistical language detection
 to catch mixed-language text that the keyword list missed.
 """
 from __future__ import annotations
+import os as _cos_os
+import sys as _cos_sys
+_cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
+import sys
+from lib.script_helpers import is_probably_text
+from lib.script_helpers import run_git_ls_files
 
 import argparse
 import fnmatch
@@ -20,6 +26,10 @@ import subprocess
 import unicodedata
 from dataclasses import asdict, dataclass
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 from typing import Iterator, Sequence
 
 SCHEMA_VERSION = "english-only-content-audit/v2"
@@ -214,18 +224,6 @@ class Report:
 # File discovery
 # ---------------------------------------------------------------------------
 
-def run_git_ls_files(root: Path) -> list[str]:
-    proc = subprocess.run(
-        ["git", "ls-files", "-z"],
-        cwd=root,
-        check=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        timeout=60,
-    )
-    return [p for p in proc.stdout.decode("utf-8", errors="ignore").split("\0") if p]
-
-
 def discover_files(root: Path, include_untracked: bool = False) -> list[str]:
     tracked = run_git_ls_files(root)
     if not include_untracked:
@@ -239,16 +237,6 @@ def discover_files(root: Path, include_untracked: bool = False) -> list[str]:
             tracked.append(rel)
             seen.add(rel)
     return tracked
-
-
-def is_probably_text(path: Path) -> bool:
-    if path.suffix.lower() not in TEXT_SUFFIXES:
-        return False
-    try:
-        chunk = path.read_bytes()[:4096]
-    except OSError:
-        return False
-    return b"\0" not in chunk
 
 
 def excluded(rel_path: str, exclude_globs: Sequence[str]) -> bool:
@@ -654,7 +642,7 @@ def scan_file(
     min_confidence: float = 0.85,
 ) -> list[Finding]:
     path = root / rel_path
-    if not is_probably_text(path):
+    if not is_probably_text(path, TEXT_SUFFIXES):
         return []
 
     try:
@@ -717,7 +705,7 @@ def audit(
         if excluded(rel_path, all_excludes):
             continue
         path = root / rel_path
-        if not path.is_file() or not is_probably_text(path):
+        if not path.is_file() or not is_probably_text(path, TEXT_SUFFIXES):
             continue
         scanned_files += 1
         findings.extend(
@@ -739,7 +727,7 @@ def audit(
 def smoke_scan_file(root: Path, rel_path: str) -> list[Finding]:
     """Per-line keyword + script + punctuation scan, no model load."""
     path = root / rel_path
-    if not is_probably_text(path):
+    if not is_probably_text(path, TEXT_SUFFIXES):
         return []
     findings: list[Finding] = []
     pattern = _get_smoke_pattern()
@@ -798,7 +786,7 @@ def smoke_audit(
         if excluded(rel_path, all_excludes):
             continue
         path = root / rel_path
-        if not path.is_file() or not is_probably_text(path):
+        if not path.is_file() or not is_probably_text(path, TEXT_SUFFIXES):
             continue
         scanned_files += 1
         findings.extend(smoke_scan_file(root, rel_path))

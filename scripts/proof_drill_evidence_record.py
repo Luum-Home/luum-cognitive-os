@@ -2,19 +2,24 @@
 # SCOPE: os-only
 """Record machine-readable proof-drill evidence rows for ACC."""
 from __future__ import annotations
+import os as _cos_os
+import sys as _cos_sys
+_cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
+import sys
+from lib.script_helpers import utc_now
 
 import argparse
 import json
 import time
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUT = ROOT / "docs" / "06-Daily" / "reports" / "proof-drill-evidence-latest.json"
-
-
-def utc_now() -> str:
-    return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 
 
 def load(path: Path) -> dict[str, Any]:

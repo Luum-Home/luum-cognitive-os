@@ -8,6 +8,9 @@ path classification, secret-path detection, and unknown .cognitive-os root
 reporting.
 """
 from __future__ import annotations
+import os as _cos_os
+import sys as _cos_sys
+_cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
 
 import argparse
 import fnmatch
@@ -15,6 +18,7 @@ import json
 import sys
 from dataclasses import dataclass
 from pathlib import Path
+from lib.script_helpers import script_repo_root as repo_root
 from typing import Any, Iterable
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -66,10 +70,6 @@ class Finding:
             "path": self.path,
             "message": self.message,
         }
-
-
-def repo_root() -> Path:
-    return Path(__file__).resolve().parents[1]
 
 
 def rel_posix(path: Path, project_dir: Path) -> str:

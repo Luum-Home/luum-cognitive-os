@@ -6,6 +6,10 @@ Stores advisory claims in .cognitive-os/tasks/active-claims.json and emits
 append-only session events in .cognitive-os/sessions/events.jsonl.
 """
 from __future__ import annotations
+import os as _cos_os
+import sys as _cos_sys
+_cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
+from lib.script_helpers import read_json_or as read_json
 
 import argparse
 import fcntl
@@ -50,13 +54,6 @@ def events_path(project: Path) -> Path:
 
 def active_sessions_path(project: Path) -> Path:
     return sessions_dir(project) / "active-sessions.json"
-
-
-def read_json(path: Path, fallback: Any) -> Any:
-    try:
-        return json.loads(path.read_text(encoding="utf-8"))
-    except Exception:
-        return fallback
 
 
 def atomic_write_json(path: Path, data: Any) -> None:

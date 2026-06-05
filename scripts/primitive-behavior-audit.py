@@ -7,6 +7,12 @@ files for manifest-declared falsification evidence. It does not run heavy test
 lanes and it does not repair tests.
 """
 from __future__ import annotations
+import os as _cos_os
+import sys as _cos_sys
+_cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
+import sys
+from lib.script_helpers import read_yaml_dict as load_yaml
+from lib.script_helpers import repo_root
 
 import argparse
 import json
@@ -14,6 +20,10 @@ import re
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 from typing import Any
 
 import yaml
@@ -63,25 +73,6 @@ class Finding:
         if self.details:
             payload["details"] = self.details
         return payload
-
-
-def repo_root(start: Path) -> Path:
-    proc = subprocess.run(
-        ["git", "-C", str(start), "rev-parse", "--show-toplevel"],
-        text=True,
-        capture_output=True,
-        check=False,
-        timeout=60,
-    )
-    if proc.returncode == 0 and proc.stdout.strip():
-        return Path(proc.stdout.strip()).resolve()
-    return start.resolve()
-
-
-def load_yaml(path: Path) -> dict[str, Any]:
-    if not path.exists():
-        return {}
-    return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
 
 
 def read_text(path: Path) -> str:

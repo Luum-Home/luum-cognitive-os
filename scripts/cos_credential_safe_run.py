@@ -9,6 +9,12 @@ record. It does not expose env-file contents to the caller.
 """
 
 from __future__ import annotations
+import os as _cos_os
+import sys as _cos_sys
+_cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
+from lib.script_helpers import iso_utc_z as _utc
+from lib.script_helpers import read_yaml_required as _load_manifest
+from lib.script_helpers import sha256_file as _sha256_file
 
 import argparse
 import base64
@@ -21,6 +27,10 @@ import sys
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 from typing import Any
 from urllib.parse import quote
 
@@ -50,14 +60,6 @@ class RunResult:
     loaded_keys: list[str]
     audit_path: str
     command_sha256: str
-
-
-def _utc() -> str:
-    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
-
-
-def _load_manifest(path: Path = MANIFEST) -> dict[str, Any]:
-    return yaml.safe_load(path.read_text(encoding="utf-8"))
 
 
 def _script_entry(script_id: str, manifest: dict[str, Any]) -> dict[str, Any]:
@@ -118,10 +120,6 @@ def _sanitized_child_env(entry: dict[str, Any], allowed: set[str], loaded: dict[
     child_env.update({str(k): str(v) for k, v in entry.get("forced_env", {}).items()})
     secret_values = list(parent_allowed.values()) + list(loaded.values())
     return child_env, secret_values
-
-
-def _sha256_file(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def _verify_command_integrity(project_dir: Path, entry: dict[str, Any]) -> str:

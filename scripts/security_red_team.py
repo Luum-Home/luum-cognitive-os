@@ -9,6 +9,12 @@ security primitives, and writes JSON/Markdown reports.
 """
 
 from __future__ import annotations
+import os as _cos_os
+import sys as _cos_sys
+_cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
+import sys
+from lib.script_helpers import iso_utc_z as _utc
+from lib.script_helpers import sha256_file as _file_sha256
 
 import argparse
 import hashlib
@@ -17,6 +23,10 @@ import os
 from dataclasses import dataclass, asdict
 from datetime import datetime, timezone
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 from typing import Any
 
 import yaml
@@ -52,20 +62,12 @@ class PrimitiveScore:
     notes: list[str]
 
 
-def _utc() -> str:
-    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
-
-
 def _read_yaml(path: Path) -> dict[str, Any]:
     return yaml.safe_load(path.read_text(encoding="utf-8"))
 
 
 def _exists(path: str) -> bool:
     return (REPO_ROOT / path).exists()
-
-
-def _file_sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def _safe_count_files(root: Path) -> int:

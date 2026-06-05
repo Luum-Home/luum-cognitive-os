@@ -13,6 +13,9 @@ execution_analyses.task_id prevent duplicate rows on re-run.
 """
 
 from __future__ import annotations
+import os as _cos_os
+import sys as _cos_sys
+_cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
 
 import argparse
 import hashlib
@@ -20,6 +23,7 @@ import json
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+from lib.script_helpers import naive_utc_iso as _now_iso
 from typing import Any, Dict, List, Tuple
 
 # Ensure lib/ is importable when run from repo root
@@ -39,10 +43,6 @@ DEFAULT_DB = _REPO_ROOT / ".cognitive-os" / "skill_store.db"
 
 def _sha256(data: str) -> str:
     return hashlib.sha256(data.encode("utf-8")).hexdigest()
-
-
-def _now_iso() -> str:
-    return datetime.now(timezone.utc).isoformat()
 
 
 def _map_entry(entry: Dict[str, Any]) -> Tuple[Dict[str, Any], Dict[str, Any]]:

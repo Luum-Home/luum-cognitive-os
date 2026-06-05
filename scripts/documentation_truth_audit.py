@@ -8,6 +8,12 @@ reports/manifests, and docs are checked for stale forbidden prose, required
 phrases, source report availability, and generated fact blocks.
 """
 from __future__ import annotations
+import os as _cos_os
+import sys as _cos_sys
+_cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
+from lib.script_helpers import read_yaml_dict as read_yaml
+from lib.script_helpers import read_json_dict as read_json
+from lib.project_paths import relpath as rel
 
 import argparse
 import json
@@ -16,6 +22,10 @@ import sys
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 from typing import Any
 
 import yaml
@@ -39,25 +49,6 @@ class TruthRow:
     message: str
     evidence: list[str]
     next_action: str
-
-
-def read_yaml(path: Path) -> dict[str, Any]:
-    if not path.exists():
-        return {}
-    return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-
-
-def read_json(path: Path) -> dict[str, Any]:
-    if not path.exists():
-        return {}
-    return json.loads(path.read_text(encoding="utf-8"))
-
-
-def rel(root: Path, path: Path) -> str:
-    try:
-        return path.resolve().relative_to(root.resolve()).as_posix()
-    except ValueError:
-        return path.as_posix()
 
 
 def implemented_harnesses(root: Path) -> list[str]:

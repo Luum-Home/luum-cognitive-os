@@ -7,6 +7,11 @@ conservative: dry-run by default, writes an external backup before destructive
 operations, and only targets explicitly requested cleanup classes.
 """
 from __future__ import annotations
+import os as _cos_os
+import sys as _cos_sys
+_cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
+import sys
+from lib.script_helpers import utc_stamp
 
 import argparse
 import json
@@ -17,6 +22,10 @@ import tempfile
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 from typing import Any
 
 
@@ -38,10 +47,6 @@ def run_git(repo: Path, args: list[str], *, check: bool = False) -> subprocess.C
         check=check,
         timeout=60,
     )
-
-
-def utc_stamp() -> str:
-    return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
 
 def parse_worktrees(output: str) -> list[Worktree]:

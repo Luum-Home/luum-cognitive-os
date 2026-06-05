@@ -27,6 +27,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from lib.portability_proof_paths import paired_candidates, suggested_test_path
+from lib.primitive_file_inventory import primitive_files
 from lib.primitive_parser import parse_primitive_file
 from lib.project_paths import relpath
 from lib.primitive_readiness_common import load_lifecycle
@@ -202,38 +203,6 @@ class ScopeRow:
     paired_portability_test: str | None = None
     contradiction: str = ""
     next_action: str = ""
-
-
-def _is_text_file(path: Path) -> bool:
-    if not path.is_file() or any(part in {".git", "__pycache__", ".venv", "node_modules"} for part in path.parts):
-        return False
-    try:
-        path.read_text(encoding="utf-8", errors="ignore")[:128]
-        return True
-    except OSError:
-        return False
-
-
-def _primitive_files(root: Path) -> list[Path]:
-    found: dict[str, Path] = {}
-    for root_name in SOURCE_ROOTS:
-        base = root / root_name
-        if not base.exists():
-            continue
-        if root_name == "skills":
-            for path in base.rglob("SKILL.md"):
-                if _is_text_file(path):
-                    found[relpath(root, path)] = path
-            continue
-        if root_name == "packages":
-            for path in base.glob("*/skills/*/SKILL.md"):
-                if _is_text_file(path):
-                    found[relpath(root, path)] = path
-            continue
-        for path in base.rglob("*"):
-            if _is_text_file(path):
-                found[relpath(root, path)] = path
-    return [found[key] for key in sorted(found)]
 
 
 def _load_scope_overrides(root: Path) -> list[dict[str, str]]:
@@ -597,7 +566,7 @@ def build_rows(root: Path, changed_only: bool = False, only_paths: set[str] | No
     lifecycle = load_lifecycle(root)
     rows: list[ScopeRow] = []
     changed = _changed_paths(root) if changed_only else set()
-    for path in _primitive_files(root):
+    for path in primitive_files(root):
         rel = relpath(root, path)
         contract = parse_primitive_file(path, root)
         if not contract.is_primitive:

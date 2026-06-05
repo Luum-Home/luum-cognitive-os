@@ -25,3 +25,33 @@ _daemon_alive() {
     pid=$(cat "$PID_FILE" 2>/dev/null || echo "")
     [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null
 }
+
+_emit_local_service_metric() {
+    local metric_file="$1"
+    local metric_source="$2"
+    local event_type="$3"
+    local severity="${4:-info}"
+    local detail="${5:-}"
+    local port="${6:-unknown}"
+    python3 - "$PROJECT_DIR" "$metric_file" "$metric_source" "$event_type" "$severity" "$detail" "$port" <<'PY' 2>/dev/null || true
+import json
+import sys
+import time
+from pathlib import Path
+
+project_dir, metric_file, metric_source, event_type, severity, detail, port = sys.argv[1:8]
+p = Path(project_dir) / ".cognitive-os" / "metrics" / metric_file
+p.parent.mkdir(parents=True, exist_ok=True)
+record = {
+    "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+    "source": metric_source,
+    "event_type": event_type,
+    "severity": severity,
+    "connection_type": "local-daemon",
+    "port": int(port) if port.isdigit() else port,
+    "detail": detail,
+}
+with p.open("a", encoding="utf-8") as handle:
+    handle.write(json.dumps(record) + "\n")
+PY
+}

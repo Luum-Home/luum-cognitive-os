@@ -9,6 +9,9 @@ Exits:
   1 usage/config error
 """
 from __future__ import annotations
+import os as _cos_os
+import sys as _cos_sys
+_cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
 
 import argparse
 import json
@@ -16,6 +19,7 @@ import re
 import sys
 from dataclasses import dataclass
 from pathlib import Path
+from lib.script_helpers import script_repo_root as repo_root
 from typing import Any
 
 try:
@@ -58,10 +62,6 @@ class PreflightResult:
             "hook_payload_seen": self.hook_payload_seen,
             "tool_name": self.tool_name,
         }
-
-
-def repo_root() -> Path:
-    return Path(__file__).resolve().parents[1]
 
 
 def load_manifest(path: Path) -> dict[str, Any]:

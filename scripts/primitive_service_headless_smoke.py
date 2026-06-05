@@ -2,6 +2,9 @@
 # SCOPE: os-only
 """Smoke portable primitive enforcement outside an IDE lifecycle."""
 from __future__ import annotations
+import os as _cos_os
+import sys as _cos_sys
+_cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
 
 import argparse
 import json
@@ -11,6 +14,8 @@ import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+
+from lib.smoke_report_cli import run_smoke_report_cli
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_JSON = ROOT / "docs" / "06-Daily" / "reports" / "primitive-service-headless-smoke-latest.json"
@@ -96,23 +101,15 @@ def render_markdown(report: dict[str, Any]) -> str:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--json", action="store_true")
-    mode = parser.add_mutually_exclusive_group()
-    mode.add_argument("--check", action="store_true", help="Run validation without updating tracked latest reports (default).")
-    mode.add_argument("--write-report", action="store_true", help="Update tracked docs/06-Daily/reports/*-latest artifacts.")
-    mode.add_argument("--no-write", action="store_true", help=argparse.SUPPRESS)
-    args = parser.parse_args(argv)
-    report = build_report()
-    if args.write_report:
-        DEFAULT_JSON.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-        DEFAULT_MD.write_text(render_markdown(report), encoding="utf-8")
-    if args.json:
-        print(json.dumps(report, indent=2, sort_keys=True))
-    else:
-        print(f"primitive-service-headless-smoke: {report['status']} rows={report['ledger_row_count']}")
-    return 0 if report["status"] == "pass" else 1
-
+    return run_smoke_report_cli(
+        argv,
+        description=__doc__,
+        build_report=build_report,
+        render_markdown=render_markdown,
+        default_json=DEFAULT_JSON,
+        default_md=DEFAULT_MD,
+        summary=lambda report: f"primitive-service-headless-smoke: {report['status']} rows={report['ledger_row_count']}",
+    )
 
 if __name__ == "__main__":
     raise SystemExit(main())

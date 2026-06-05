@@ -8,6 +8,12 @@ Dynamic pass: run a small set of safe smokes in temporary workspaces and verify
 filesystem deltas stay inside declared surfaces.
 """
 from __future__ import annotations
+import os as _cos_os
+import sys as _cos_sys
+_cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
+from lib.script_helpers import read_yaml_dict as read_yaml
+from lib.script_helpers import read_json_dict as read_json
+from lib.project_paths import relpath as rel
 
 import argparse
 import ast
@@ -21,6 +27,10 @@ import tempfile
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 from typing import Any
 
 import yaml
@@ -44,25 +54,6 @@ WRITE_FUNCS = {"open", "copy2", "copy", "copyfile", "copytree", "rmtree", "move"
 SHELL_MUTATING_CMD_RE = re.compile(r"(^|[;&|]\s*)(cp|mv|rm|rsync|tee|ln)\b")
 SHELL_REDIRECT_RE = re.compile(r"(?<![0-9&])>{1,2}\s*(?P<target>[^\s;&|]+)")
 PATH_LITERAL_RE = re.compile(r"(?P<path>(?:\.?/?(?:hooks|rules|skills|scripts|templates|manifests|\.claude|\.codex|\.cursor|\.cognitive-os|docs/06-Daily/reports|docs/03-PoCs/proposals|\.github/workflows|secrets|src|lib|app|packages|internal|cmd)/)[A-Za-z0-9_./{}@:+,=-]+|\.env(?:\.[A-Za-z0-9_-]+)?)")
-
-
-def rel(root: Path, path: Path) -> str:
-    try:
-        return path.resolve().relative_to(root.resolve()).as_posix()
-    except ValueError:
-        return path.as_posix()
-
-
-def read_yaml(path: Path) -> dict[str, Any]:
-    if not path.exists():
-        return {}
-    return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-
-
-def read_json(path: Path) -> dict[str, Any]:
-    if not path.exists():
-        return {}
-    return json.loads(path.read_text(encoding="utf-8"))
 
 
 @dataclass

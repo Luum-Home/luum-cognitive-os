@@ -10,6 +10,10 @@ score, gate outcome, and persistence metadata.
 """
 
 from __future__ import annotations
+import os as _cos_os
+import sys as _cos_sys
+_cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
+from lib.script_helpers import utc_now
 
 import argparse
 import fnmatch
@@ -98,10 +102,6 @@ class Finding:
     message: str
     evidence: list[str] = field(default_factory=list)
     next_action: str = ""
-
-
-def utc_now() -> str:
-    return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 
 
 def scrub_project_paths(value: Any, root: Path) -> Any:

@@ -71,30 +71,8 @@ PGCTL_BIN="$(_pgctl_binary)"
 
 # ── Metric helper ───────────────────────────────────────────────────────────
 _emit_metric() {
-    local event_type="$1"
-    local severity="${2:-info}"
-    local detail="${3:-}"
-    local port="${4:-unknown}"
-    python3 - "$PROJECT_DIR" "$event_type" "$severity" "$detail" "$port" <<'PYEOF' 2>/dev/null || true
-import sys, json, time
-from pathlib import Path
-project_dir, event_type, severity, detail, port = sys.argv[1:6]
-p = Path(project_dir) / ".cognitive-os" / "metrics" / "postgres-health.jsonl"
-p.parent.mkdir(parents=True, exist_ok=True)
-record = {
-    "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-    "source": "cos-postgres-local",
-    "event_type": event_type,
-    "severity": severity,
-    "connection_type": "local-daemon",
-    "port": int(port) if port.isdigit() else port,
-    "detail": detail,
+    _emit_local_service_metric "postgres-health.jsonl" "cos-postgres-local" "$@"
 }
-with p.open("a") as f:
-    f.write(json.dumps(record) + "\n")
-PYEOF
-}
-
 # ── TCP port probe ──────────────────────────────────────────────────────────
 
 # ── Check if our daemon is alive ────────────────────────────────────────────

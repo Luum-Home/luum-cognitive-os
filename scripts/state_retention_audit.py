@@ -2,10 +2,20 @@
 # SCOPE: os-only
 """Audit and safely reap bounded Cognitive OS state surfaces."""
 from __future__ import annotations
+import os as _cos_os
+import sys as _cos_sys
+_cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
+import sys
+from lib.script_helpers import read_json_or as read_json
+from lib.script_helpers import read_yaml_required as load_manifest
 
 import argparse, fcntl, fnmatch, json, os, shutil, subprocess
 from datetime import datetime, timezone
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 from typing import Any, Sequence
 try:
     import yaml  # type: ignore[import]
@@ -97,9 +107,6 @@ def git(project: Path, args: Sequence[str], check: bool=False) -> subprocess.Com
     if check and r.returncode != 0: raise RuntimeError(r.stderr or r.stdout)
     return r
 
-def load_manifest(path: Path) -> dict[str, Any]:
-    return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-
 def validate_manifest(data: dict[str, Any]) -> list[dict[str, Any]]:
     out=[]; seen=set(); surfaces=data.get("surfaces", [])
     if not isinstance(surfaces, list): return [{"level":"BLOCK","code":"manifest-surfaces-invalid","message":"surfaces must be a list"}]
@@ -145,10 +152,6 @@ def audit_stashes(project: Path, surface: dict[str, Any]) -> dict[str, Any]:
     if stale: findings.append({"level":"BLOCK","code":"auto-stash-stale","count":len(stale)})
     if max_count is not None and len(entries)>max_count: findings.append({"level":"WARN","code":"auto-stash-count","count":len(entries),"max_count":max_count})
     return {"surface":surface["id"],"kind":surface["kind"],"count":len(entries),"stale_count":len(stale),"items":[{k:e[k] for k in ("ref","sha","age_seconds","subject","file_count")} for e in entries],"findings":findings}
-
-def read_json(path: Path, fallback: Any) -> Any:
-    try: return json.loads(path.read_text(encoding="utf-8"))
-    except Exception: return fallback
 
 def row_ts(row: dict[str, Any]) -> str | None:
     for k in ("released_at","completed_at","stale_at","completedAt","updated_at"):

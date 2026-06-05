@@ -8,6 +8,14 @@ reports exact missing paths, unmatched globs, legacy numbered-vault drift, and
 historical allowlisted references.
 """
 from __future__ import annotations
+import os as _cos_os
+import sys as _cos_sys
+_cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
+import sys
+from lib.script_helpers import object_maps as _finding_maps
+from lib.script_helpers import object_map as _object_map
+from lib.script_helpers import is_probably_text
+from lib.script_helpers import run_git_ls_files
 
 import argparse
 import json
@@ -16,6 +24,10 @@ import re
 import subprocess
 from dataclasses import asdict, dataclass
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 from typing import Sequence
 
 SCHEMA_VERSION = "doc-path-audit/v1"
@@ -108,28 +120,6 @@ class Finding:
     reference: str
     normalized: str
     message: str
-
-
-def run_git_ls_files(root: Path) -> list[str]:
-    proc = subprocess.run(
-        ["git", "ls-files", "-z"],
-        cwd=root,
-        check=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        timeout=60,
-    )
-    return [p for p in proc.stdout.decode("utf-8", errors="ignore").split("\0") if p]
-
-
-def is_probably_text(path: Path) -> bool:
-    if path.suffix.lower() not in TEXT_SUFFIXES:
-        return False
-    try:
-        chunk = path.read_bytes()[:4096]
-    except OSError:
-        return False
-    return b"\0" not in chunk
 
 
 def surface_for(rel_file: str) -> str:
@@ -354,7 +344,7 @@ def classify_reference(root: Path, rel_file: str, line_no: int, line: str, previ
 
 def scan_file(root: Path, rel_file: str) -> list[Finding]:
     path = root / rel_file
-    if not path.exists() or not is_probably_text(path):
+    if not path.exists() or not is_probably_text(path, TEXT_SUFFIXES):
         return []
     try:
         lines = path.read_text(encoding="utf-8", errors="ignore").splitlines()
@@ -390,7 +380,7 @@ def audit(root: Path, tracked_files: Sequence[str] | None = None) -> dict[str, o
         if rel_file in EXCLUDED_TRACKED_FILES:
             continue
         path = root / rel_file
-        if not is_probably_text(path):
+        if not is_probably_text(path, TEXT_SUFFIXES):
             continue
         scanned_text_files += 1
         try:
@@ -424,16 +414,6 @@ def audit(root: Path, tracked_files: Sequence[str] | None = None) -> dict[str, o
         "counts": counts,
         "findings": [asdict(f) for f in findings],
     }
-
-
-def _object_map(value: object) -> dict[str, object]:
-    return value if isinstance(value, dict) else {}
-
-
-def _finding_maps(value: object) -> list[dict[str, object]]:
-    if not isinstance(value, list):
-        return []
-    return [item for item in value if isinstance(item, dict)]
 
 
 def report_markdown(payload: dict[str, object]) -> str:

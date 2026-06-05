@@ -10,6 +10,9 @@ NEVER modifies primitive-lifecycle.yaml or agentic-primitive-registry.lock.yaml.
 """
 
 from __future__ import annotations
+import os as _cos_os
+import sys as _cos_sys
+_cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
 
 import argparse
 import json
@@ -18,6 +21,7 @@ import sqlite3
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from lib.script_helpers import naive_utc_iso as _now_iso
 from typing import Any, Dict, Iterable, List, Optional
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -162,10 +166,6 @@ def _skill_evidence(db_path: Path, name: str, window_days: int = 30) -> Dict[str
 # ---------------------------------------------------------------------------
 # Proposal generation
 # ---------------------------------------------------------------------------
-
-
-def _now_iso() -> str:
-    return datetime.now(timezone.utc).isoformat()
 
 
 def _today_dir() -> str:

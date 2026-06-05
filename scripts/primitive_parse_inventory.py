@@ -20,42 +20,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from lib.primitive_file_inventory import primitive_files
 from lib.primitive_parser import parse_primitive_file
-from lib.project_paths import relpath
-
-SOURCE_ROOTS = ("hooks", "skills", "rules", "scripts", "templates", "packages")
-
-
-def _is_text_file(path: Path) -> bool:
-    if not path.is_file() or any(part in {".git", "__pycache__", ".venv", "node_modules"} for part in path.parts):
-        return False
-    try:
-        path.read_text(encoding="utf-8", errors="ignore")[:128]
-        return True
-    except OSError:
-        return False
-
-
-def primitive_files(root: Path) -> list[Path]:
-    found: dict[str, Path] = {}
-    for root_name in SOURCE_ROOTS:
-        base = root / root_name
-        if not base.exists():
-            continue
-        if root_name == "skills":
-            for path in base.rglob("SKILL.md"):
-                if _is_text_file(path):
-                    found[relpath(root, path)] = path
-            continue
-        if root_name == "packages":
-            for path in base.glob("*/skills/*/SKILL.md"):
-                if _is_text_file(path):
-                    found[relpath(root, path)] = path
-            continue
-        for path in base.rglob("*"):
-            if _is_text_file(path):
-                found[relpath(root, path)] = path
-    return [found[key] for key in sorted(found)]
 
 
 def summarize(contracts: list[dict[str, Any]]) -> dict[str, Any]:
