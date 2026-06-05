@@ -8,7 +8,7 @@ The safety requirement is: **do not delete or rewrite primitives until current c
 
 ## Acceptance criteria for this sweep
 
-1. Raw private token examples (`otra-organizacion`, `servicio-g`, `otra-plataforma`, `servicio-a`, etc.) do not appear in OS primitives or public docs outside private external evidence.
+1. Raw private repository token examples do not appear in OS primitives or public docs outside private external evidence.
 2. `skills/`, `hooks/`, `rules/`, `agents/`, `squads/`, and `templates/` do not contain consumer-specific service inventories.
 3. Current consumer projects are inventoried before removal decisions.
 4. Usage-map tooling is fast enough to audit all primitive families without scanning bundled plugin/vendor payloads.
@@ -29,7 +29,7 @@ Scanned local consumers under the local sibling-project workspace (`<consumer-wo
 
 | Consumer project | OS config present | Local skills found | Domain-token hits in `.claude` / `.cognitive-os` |
 |---|---:|---|---|
-| `FinOpenPOS` | yes | `agent-dashboard`, `auto-refine`, `compose-prompt`, `cos-status`, `exhaustive-prompt`, `paperclip-dashboard`, `plan-feature`, `resource-governor`, `session-backlog`, `verification-before-completion` | only inherited generic “smart contract” wording before this patch |
+| Private consumer repo | yes | `agent-dashboard`, `auto-refine`, `compose-prompt`, `cos-status`, `exhaustive-prompt`, `paperclip-dashboard`, `plan-feature`, `resource-governor`, `session-backlog`, `verification-before-completion` | only inherited generic “smart contract” wording before this patch |
 | `cos-consumer-e2e-drill` | yes | none | only inherited generic “smart contract” wording before this patch |
 | `luum-puppy` | no `cognitive-os.yaml` found | none | none |
 | `stock-ventas-backend` | no `cognitive-os.yaml` found | none | none |

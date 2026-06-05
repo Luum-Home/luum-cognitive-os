@@ -61,7 +61,7 @@ The primitive is a runner and normalizer, not a scanner. Repository-specific pub
 
 ```text
 ACCEPTANCE CRITERIA:
-1. No Cognitive OS code hardcodes luum-agent-harness paths or Luum-specific gate names.
+1. No Cognitive OS code hardcodes consumer repository paths or Luum-specific gate names.
 2. A temp consumer config with passing commands produces publication-safety-receipt/v0 status=pass.
 3. A required failing command produces status=fail and CLI exit 2.
 4. An optional failing command produces status=warn and strict CLI exit 2.
