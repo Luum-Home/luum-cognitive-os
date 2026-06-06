@@ -429,6 +429,7 @@ cc_driver_emit() {
       "hooks/control-plane-audit-hourly.sh"    "false" \
       "hooks/pending-truth-verify-weekly.sh"   "true"  \
       "hooks/pyrefly-typecheck-advisory.sh"   "true"  \
+      "hooks/quality-duplicates.sh"            "true"  \
     )
   else
     stop_hooks=$(_cc_hook_group "Stop" "" \
@@ -452,6 +453,7 @@ cc_driver_emit() {
       "hooks/control-plane-audit-hourly.sh"    "false" \
       "hooks/pending-truth-verify-weekly.sh"   "true"  \
       "hooks/pyrefly-typecheck-advisory.sh"   "true"  \
+      "hooks/quality-duplicates.sh"            "true"  \
     )
   fi
 

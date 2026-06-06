@@ -53,6 +53,7 @@ lanes:
     - tests/integration/test_installer.py
     - tests/integration/test_install_scope.py
     - tests/integration/test_install_projection_audit.py
+    - tests/integration/test_install_quality_duplicates_primitive.py
     - tests/integration/test_project_settings_generation.py
     - tests/integration/test_fresh_install_canary.py
     parallel: false
@@ -86,6 +87,7 @@ lanes:
     - tests/integration/test_rate_limit_precheck_lift.py
     - tests/integration/test_rate_limiter_hook_retry_flow.py
     - tests/integration/test_post_agent_snapshot_restore.py
+    - tests/integration/test_quality_duplicates_harness_triggers.py
     - tests/integration/test_post_commit_banner.py
     - tests/integration/test_session_start_worktree_nudge.py
     parallel: false

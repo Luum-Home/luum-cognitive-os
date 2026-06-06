@@ -256,6 +256,10 @@
         },
         {
           "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/quality-duplicates.sh\" ]; then bash \"$PWD/hooks/quality-duplicates.sh\"; fi"
+        },
+        {
+          "type": "command",
           "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/skill-synthesis-scanner.sh\" ]; then bash \"$PWD/hooks/skill-synthesis-scanner.sh\"; fi"
         },
         {

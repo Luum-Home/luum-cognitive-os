@@ -4644,6 +4644,40 @@ primitives:
   docs_claim_level: advisory
   rollback_or_repair_command: Remove the hook from cognitive-os.yaml harness.hooks and regenerate settings, or restore the excluded rule to startup context.
   sunset_criteria: Archive only if hook-enforced rule exclusion moves into a typed projection compiler with equivalent tests.
+- id: hooks/quality-duplicates.sh
+  kind: hook
+  owner_adr: ADR-334
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: quality
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - opencode
+  - shell-ci
+  projection_targets:
+  - .claude/settings.json
+  - .codex/hooks.json
+  - .opencode/hooks.json
+  - .cognitive-os/hooks/cos/quality-duplicates.sh
+  runtime_projection: true
+  behavior_evidence: Harness-native duplicate-quality trigger that runs the shared cos-quality-duplicates scanner when local tracked changes exist, degrades safely when the scanner is absent, and only blocks when COS_QUALITY_DUPLICATES_ENFORCE=1.
+  evidence_commands:
+  - bash -n hooks/quality-duplicates.sh
+  - python3 -m pytest tests/unit/test_cos_quality_duplicates.py tests/behavior/test_cos_quality_duplicates_cli.py tests/contracts/test_quality_duplicates_harness_triggers.py -q
+  rollback_or_repair_command: Remove hooks/quality-duplicates.sh from generated harness projections or unset COS_QUALITY_DUPLICATES_ENFORCE while repairing duplicate-quality scanner regressions.
+  sunset_criteria: Revisit when all supported harnesses expose an equivalent native duplicate-quality lifecycle gate or the scanner primitive is replaced.
+  latency_budget_ms: 30000
+  repair_message: Review .cognitive-os/reports/quality-duplicates/latest.md, extract shared helpers or baseline intentional clones, then rerun the duplicate-quality lane.
+  false_positive_tests:
+  - tests/unit/test_cos_quality_duplicates.py
+  - tests/contracts/test_quality_duplicates_harness_triggers.py
+  docs_claim_level: advisory
+  exit_behavior: conditional_exit_2
+  metrics_file: .cognitive-os/reports/quality-duplicates/latest.json
 - id: hooks/protected-config-write-guard.sh
   kind: hook
   owner_adr: ADR-164

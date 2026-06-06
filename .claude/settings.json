@@ -800,12 +800,7 @@
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" Stop \"$CLAUDE_PROJECT_DIR/hooks/pyrefly-typecheck-advisory.sh\"",
             "async": true
-          }
-        ]
-      },
-      {
-        "matcher": "",
-        "hooks": [
+          },
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" Stop \"$CLAUDE_PROJECT_DIR/hooks/quality-duplicates.sh\"",
@@ -836,7 +831,9 @@
         ]
       }
     ],
-    "TaskCompleted": []
+    "TaskCompleted": [
+
+    ]
   },
   "permissions": {
     "deny": [

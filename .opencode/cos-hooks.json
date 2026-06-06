@@ -46,6 +46,14 @@
     ],
     "session.idle": [
       {
+        "command": "bash hooks/quality-duplicates.sh",
+        "event": "Stop",
+        "id": "quality-duplicates",
+        "matcher": "",
+        "native_event": "session.idle",
+        "script": "hooks/quality-duplicates.sh"
+      },
+      {
         "command": "bash hooks/session-cleanup.sh",
         "event": "Stop",
         "id": "session-cleanup",
