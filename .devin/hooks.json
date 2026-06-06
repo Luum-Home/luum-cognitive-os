@@ -1,17 +1,17 @@
 {
-  "_comment": "Cognitive OS hooks portability shim for Windsurf / Cascade (hooks schema v1).",
+  "_comment": "Cognitive OS hooks portability shim for Devin (hooks schema v1).",
   "_note": "Hook scripts are identical to Claude Code. Only this registration config differs.",
-  "_variable": "Windsurf hooks run with cwd = workspace root by default. Use relative paths from project root or set working_directory explicitly.",
+  "_variable": "Devin hooks run with cwd = workspace root by default. Use relative paths from project root or set working_directory explicitly.",
   "_gaps": {
-    "SessionStart": "Windsurf has no sessionStart lifecycle event. 'pre_user_prompt' is the closest substitute — fires before each user message, not only on session open. Guard with a flag file in the scripts.",
-    "PreCompact": "Windsurf has no context-compaction event. pre-compaction-flush.sh cannot be wired here.",
-    "PreToolUse_Agent": "Windsurf maps agent/MCP tool calls to pre_mcp_tool_use. Claude Code 'Agent' matcher hooks are placed there.",
-    "PostToolUse_Agent": "Windsurf maps post-MCP to post_mcp_tool_use. Claude Code 'Agent' PostToolUse hooks are placed there.",
-    "PostToolUse_Bash_error_pipeline": "Windsurf's post_run_command fires after each shell command — a finer granularity than Claude Code's PostToolUse[Bash], so error learning is more precise here.",
+    "SessionStart": "Devin has no sessionStart lifecycle event. 'pre_user_prompt' is the closest substitute — fires before each user message, not only on session open. Guard with a flag file in the scripts.",
+    "PreCompact": "Devin has no context-compaction event. pre-compaction-flush.sh cannot be wired here.",
+    "PreToolUse_Agent": "Devin maps agent/MCP tool calls to pre_mcp_tool_use. Claude Code 'Agent' matcher hooks are placed there.",
+    "PostToolUse_Agent": "Devin maps post-MCP to post_mcp_tool_use. Claude Code 'Agent' PostToolUse hooks are placed there.",
+    "PostToolUse_Bash_error_pipeline": "Devin's post_run_command fires after each shell command — a finer granularity than Claude Code's PostToolUse[Bash], so error learning is more precise here.",
     "stop": "post_cascade_response is the equivalent of Claude Code's Stop event.",
-    "TeammateIdle": "Windsurf-specific concept — not applicable.",
-    "TaskCreated": "Not applicable in Windsurf.",
-    "TaskCompleted": "Not applicable in Windsurf."
+    "TeammateIdle": "Devin-specific concept — not applicable.",
+    "TaskCreated": "Not applicable in Devin.",
+    "TaskCompleted": "Not applicable in Devin."
   },
   "hooks": {
     "pre_user_prompt": [
@@ -247,7 +247,7 @@
 
     "post_cascade_response": [
       {
-        "_comment": "Maps to Stop — session wrap-up hooks that fire at end of each Cascade response turn.",
+        "_comment": "Maps to Stop — session wrap-up hooks that fire at end of each Devin response turn.",
         "command": "bash \"${PWD}/hooks/session-learning.sh\"",
         "working_directory": "${workspaceFolder}"
       },
