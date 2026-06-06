@@ -352,7 +352,7 @@ Use this checklist as the working board for the primitive-by-primitive reality a
 - [ ] Map config keys to readers and runtime effects.
 - [ ] Identify dead config keys with no readers.
 - [ ] Identify hardcoded behavior that should read config.
-- [ ] Verify projection into Claude, Codex, Cursor, Windsurf, or other drivers.
+- [ ] Verify projection into Claude, Codex, Cursor, Devin, or other drivers.
 - [ ] Identify profile drift between default, standard, full, and self-hosting.
 - [ ] Classify projection paths as proven, partial, aspirational, or portability-risk.
 - [ ] Recommend config deletion, migration, or projection hardening.

@@ -15,7 +15,7 @@ engram_id: pending
 **Evaluation Level**: 2 (Deep — gh api tree + repo metadata)
 
 ### Summary
-Open spec + landing-site for `AGENTS.md` — a single Markdown file at the repo root that coding agents (Claude Code, Codex, Cursor, Aider, Goose, Factory, Gemini, OpenCode, Warp, Windsurf, Zed, Copilot, Junie, Jules, Kilo, Phoenix, Roo, Ona, Devin, Augment, etc.) read for project conventions. The repo IS a Next.js website — there is no library or runtime here. The "tech" we adopt is the spec format itself plus the cross-harness compatibility roster. Direct fit for COS `cognitive-os-init` to emit AGENTS.md alongside CLAUDE.md.
+Open spec + landing-site for `AGENTS.md` — a single Markdown file at the repo root that coding agents (Claude Code, Codex, Cursor, Aider, Goose, Factory, Gemini, OpenCode, Warp, Devin, Zed, Copilot, Junie, Jules, Kilo, Phoenix, Roo, Ona, Devin, Augment, etc.) read for project conventions. The repo IS a Next.js website — there is no library or runtime here. The "tech" we adopt is the spec format itself plus the cross-harness compatibility roster. Direct fit for COS `cognitive-os-init` to emit AGENTS.md alongside CLAUDE.md.
 
 ### Scoring Breakdown
 | Criterion | Weight | Score | Rationale |

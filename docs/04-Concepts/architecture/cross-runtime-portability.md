@@ -48,7 +48,7 @@ graph TB
     subgraph "Driver Layer (Per-Tool)"
         CC["Claude Code Driver"]
         CU["Cursor Driver"]
-        WS["Windsurf Driver"]
+        WS["Devin Driver"]
         OC["OpenCode Driver"]
         GE["Gemini CLI Driver"]
     end
@@ -56,7 +56,7 @@ graph TB
     subgraph "Generated Config"
         CCS[".claude/settings.json"]
         CUR[".cursor/hooks.json + .cursor/rules/"]
-        WSR[".windsurfrules + .windsurf/hooks.json"]
+        WSR[".devinrules + .devin/hooks.json"]
         AGM["AGENTS.md"]
         GEM["GEMINI.md"]
     end
@@ -91,7 +91,7 @@ Each tool needs a thin adapter that:
 
 ### Event Name Mapping
 
-| COS Event | Claude Code | Cursor | Windsurf | Gemini CLI |
+| COS Event | Claude Code | Cursor | Devin | Gemini CLI |
 |-----------|------------|--------|----------|------------|
 | before_tool | PreToolUse | pre_tool | pre_hook | PreToolUse |
 | after_tool | PostToolUse | post_tool | post_hook | PostToolUse |
@@ -116,7 +116,7 @@ Each tool needs a thin adapter that:
 ## Existing Portability Infrastructure
 
 ### ide-bridge.sh
-Already generates configs for 15 IDEs: Cursor, Windsurf, Aider, Gemini, Copilot, Codex/OpenCode, Trae, Roo, Continue.dev, Augment, Warp, Cline, Zed. Two strategies: per-file copy (Cursor, Roo, Continue) or single concatenated file (Windsurf, Cline, Trae).
+Already generates configs for 15 IDEs: Cursor, Devin, Aider, Gemini, Copilot, Codex/OpenCode, Trae, Roo, Continue.dev, Augment, Warp, Cline, Zed. Two strategies: per-file copy (Cursor, Roo, Continue) or single concatenated file (Devin, Cline, Trae).
 
 ### common.sh Abstraction
 Project directory resolution with fallback chain:
@@ -133,7 +133,7 @@ The OS kernel lives in `.cognitive-os/` (universal). Claude Code integration liv
 | Phase | Scope | Effort | Impact |
 |-------|-------|--------|--------|
 | 1. AGENTS.md generation | Generate from RULES-COMPACT.md | 1-2 days | Tier 3 coverage for 9+ tools |
-| 2. Hook adapters (Cursor + Windsurf) | Config generators + event mapping | 3-4 days | Tier 2 coverage for 2 more tools |
+| 2. Hook adapters (Cursor + Devin) | Config generators + event mapping | 3-4 days | Tier 2 coverage for 2 more tools |
 | 3. MCP config templates | Generate .cursor/mcp.json, .kiro/mcp.json, etc. | 1-2 days | Engram everywhere |
 | 4. Pipeline runner (external) | Tool-agnostic Python CLI orchestration | 5-7 days | Workflows work with any CLI tool |
 | 5. Cross-tool test suite | Validate COS on Cursor + OpenCode | 2-3 days | Confidence |
@@ -164,7 +164,7 @@ fatal: not a git repository: .claude/plugins/hermes-agent/../../../.git/modules/
 
 ### Scheduling / Recurring Tasks
 
-`CronCreate` is a Claude Code native tool that creates scheduled tasks within the current session. It is **not portable** — it has no equivalent in Cursor, Windsurf, or Kiro, and tasks die when the session ends.
+`CronCreate` is a Claude Code native tool that creates scheduled tasks within the current session. It is **not portable** — it has no equivalent in Cursor, Devin, or Kiro, and tasks die when the session ends.
 
 | Mechanism | Provider | Persists across sessions | Survives reboots | Independent of Claude Code |
 |-----------|----------|--------------------------|-----------------|---------------------------|

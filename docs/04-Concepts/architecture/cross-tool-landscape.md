@@ -23,7 +23,7 @@ The AI coding tool landscape in 2026 mirrors the browser wars. Each tool has its
 |------|-----------|-----------|-----------|-----------|
 | Claude Code | CLAUDE.md + .claude/settings.json | .claude/rules/ | No (reads CLAUDE.md) | .claude/rules/*.md auto-loaded |
 | Cursor | .cursor/rules/*.mdc | .cursor/rules/ | Yes (reads) | Glob-scoped .mdc rules |
-| Windsurf | .windsurfrules + .windsurf/rules/ | .windsurf/rules/ | Yes (reads) | Yes |
+| Devin | .devinrules + .devin/rules/ | .devin/rules/ | Yes (reads) | Yes |
 | OpenCode | AGENTS.md + opencode.json | .opencode/ | Native | Yes |
 | Gemini CLI | GEMINI.md + .gemini/ | .gemini/rules/ | No | Yes |
 | Copilot CLI | .agent.md + .github/copilot-instructions.md | — | Yes (reads) | Single file |
@@ -38,7 +38,7 @@ The AI coding tool landscape in 2026 mirrors the browser wars. Each tool has its
 |------|------------|-------------|-------------------|----------|
 | Claude Code | 21 events (PreToolUse, PostToolUse, Stop, SessionStart, SubagentStart/Stop, PreCompact, UserPromptSubmit, Notification, etc.) | Shell/Python, JSON stdin/stdout | 0=allow, 1=block, 2=reconsider | Production |
 | Cursor | Pre/Post agent loop | Shell, JSON stdio | Similar exit codes | Production |
-| Windsurf | Pre/Post hooks | Shell | Similar | Early |
+| Devin | Pre/Post hooks | Shell | Similar | Early |
 | Gemini CLI | Hooks support | Shell | Similar | Early |
 | Copilot CLI | Hooks support | Shell | Similar | Early |
 | Kiro | .kiro/hooks/ | Shell | TBD | Early |
@@ -52,7 +52,7 @@ The AI coding tool landscape in 2026 mirrors the browser wars. Each tool has its
 |------|-------------|-------------|--------|-------------|
 | Claude Code | SKILL.md (YAML frontmatter) | .claude/agents/*.md with model/color/tools | Per-agent MEMORY.md + MCP | Full native |
 | Cursor | .mdc rules (auto/manual) | Composer 2 (10 parallel workers) | Partial MCP | Partial |
-| Windsurf | No formal system | Cascade model | Partial MCP | Partial |
+| Devin | No formal system | Cascade model | Partial MCP | Partial |
 | OpenCode | Skills system (docs/07-Capabilities/skills) | Dual Plan/Build agents | MCP native | Full |
 | Gemini CLI | No formal system | No | MCP support | Yes |
 | Kiro | Spec-driven | No | MCP | .kiro/mcp.json |
@@ -62,7 +62,7 @@ The AI coding tool landscape in 2026 mirrors the browser wars. Each tool has its
 ### AGENTS.md (Linux Foundation / AAIF)
 - **What it is**: Plain markdown file with instructions for AI coding agents
 - **Governance**: Donated to Agentic AI Foundation under Linux Foundation (Dec 2025)
-- **Supported by**: Codex CLI, GitHub Copilot, Cursor, Windsurf, Amp, Devin, OpenCode, Factory, Augment, Aider, Zed, Warp, Roo Code, Jules (Google) — 14+ tools
+- **Supported by**: Codex CLI, GitHub Copilot, Cursor, Devin, Amp, Devin, OpenCode, Factory, Augment, Aider, Zed, Warp, Roo Code, Jules (Google) — 14+ tools
 - **What it covers**: Rules, build/test commands, architecture overview, conventions
 - **What it does NOT cover**: Hooks, skills, workflows, evaluations, agent communication
 - **Key finding (ETH Zurich)**: Auto-generated AGENTS.md REDUCES task success rates by 0.5-2% and INCREASES costs by 20%+. Rules should respond to observed failure, not be speculatively generated.
@@ -70,7 +70,7 @@ The AI coding tool landscape in 2026 mirrors the browser wars. Each tool has its
 ### MCP (Model Context Protocol)
 - **What it is**: Open protocol for tool/resource integration between AI agents and external services
 - **Governance**: Donated to Linux Foundation Dec 2025
-- **Supported by**: Nearly universal — Claude Code, Cursor, Windsurf, OpenCode, Gemini CLI, Cline, Zed, and more
+- **Supported by**: Nearly universal — Claude Code, Cursor, Devin, OpenCode, Gemini CLI, Cline, Zed, and more
 - **Status**: De facto standard for AI tool integration
 
 ### ACP (Agent Client Protocol) → A2A
@@ -94,7 +94,7 @@ The AI coding tool landscape in 2026 mirrors the browser wars. Each tool has its
 | Tier | Tools | COS Coverage | What Works |
 |------|-------|-------------|------------|
 | 1 (Full) | Claude Code | 100% | Everything: hooks, skills, rules, MCP, memory, pipelines |
-| 2 (Hooks+Rules) | Cursor, Windsurf, Gemini CLI, Copilot CLI, Kiro | 70-90% | Rules, hooks (with adapter), MCP, skills (manual ref) |
+| 2 (Hooks+Rules) | Cursor, Devin, Gemini CLI, Copilot CLI, Kiro | 70-90% | Rules, hooks (with adapter), MCP, skills (manual ref) |
 | 3 (Rules+MCP) | OpenCode, Aider, Cline, Roo Code, Continue.dev, Zed, Warp, Augment, Trae | 30-50% | Rules via AGENTS.md, MCP for memory. No automated governance. |
 | 4 (MCP only) | JetBrains AI, Sourcegraph Cody, PearAI | 10-20% | Engram via MCP only |
 | 5 (None) | Devin, Replit Agent, Bolt.new, Lovable, v0 | 0% | Closed platforms |
@@ -109,7 +109,7 @@ The AI coding tool landscape in 2026 mirrors the browser wars. Each tool has its
 **Medium confidence (18-24 months)**:
 - Hook lifecycle spec proposed to AAIF (Claude Code's 21-event model is best candidate)
 - A2A reaches production maturity
-- Cursor and Windsurf converge on hook format
+- Cursor and Devin converge on hook format
 
 **Low confidence (24+ months)**:
 - Cross-tool workflow definition standard
@@ -119,7 +119,7 @@ The AI coding tool landscape in 2026 mirrors the browser wars. Each tool has its
 ## Recommendations for COS
 
 1. **Generate AGENTS.md from RULES-COMPACT.md** — instant portability to 14+ tools
-2. **Write hook adapters for Cursor and Windsurf** — 6 tools with hooks = Tier 2 coverage
+2. **Write hook adapters for Cursor and Devin** — 6 tools with hooks = Tier 2 coverage
 3. **Keep MCP as the memory/tool standard** — it's already universal
 4. **Propose hook lifecycle spec to AAIF** — COS has the most mature hook ecosystem
 5. **Don't bet on A2A yet** — wait for ACP merge to complete

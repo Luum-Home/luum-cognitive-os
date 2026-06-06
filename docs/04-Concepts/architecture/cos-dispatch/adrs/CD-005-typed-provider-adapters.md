@@ -14,7 +14,7 @@ The generic approach is more flexible but loses type safety and makes debugging 
 
 ## Decision
 
-Typed Go adapters per provider. klaudiush already has Claude, Codex, and Gemini adapters. We extend with Cursor and Windsurf.
+Typed Go adapters per provider. klaudiush already has Claude, Codex, and Gemini adapters. We extend with Cursor and Devin.
 
 Each adapter implements the `Provider` interface:
 - `Detect()`: check env vars to identify the active agent
@@ -28,5 +28,5 @@ Each adapter implements the `Provider` interface:
 - Type safety prevents runtime JSON mapping surprises
 - Adding a new provider is explicit: create a file, implement 4 methods, add to registry
 - The trade-off versus a generic mapper is that new providers require code changes, but the code is trivial
-- Provider-specific quirks (Cursor uses camelCase events, Windsurf has cascade context, Gemini uses GEMINI_PROJECT_DIR) are handled in one place per provider
+- Provider-specific quirks (Cursor uses camelCase events, Devin has cascade context, Gemini uses GEMINI_PROJECT_DIR) are handled in one place per provider
 - Provider detection is deterministic: check env vars in order, fall back to Claude Code

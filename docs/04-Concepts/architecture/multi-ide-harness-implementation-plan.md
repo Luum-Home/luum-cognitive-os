@@ -19,7 +19,7 @@ Only the first implemented slice is in this change: structural projection for Op
 | OpenCode | Official config supports `opencode.json`, `instructions`, `mcp`, plugins, permissions, and tool lifecycle events. See https://opencode.ai/docs/config/, https://opencode.ai/docs/mcp-servers, https://opencode.ai/docs/plugins/, and https://opencode.ai/docs/agents/. | Structural config projection exists now. Do not reinvent enforcement: implement COS primitives through OpenCode permissions/plugins before claiming runtime parity. |
 | VS Code Copilot | Official VS Code docs auto-detect `.github/copilot-instructions.md`, support `AGENTS.md`, and document workspace/user MCP config. See https://code.visualstudio.com/docs/copilot/customization/custom-instructions and https://code.visualstudio.com/docs/copilot/customization/mcp-servers. | Implement instruction + workspace MCP placeholder projection now. Account-backed extension smoke later. |
 | Cursor | Official docs describe project rules under `.cursor/rules`, MDC metadata, `AGENTS.md`, and MCP configuration. See https://docs.cursor.com/en/context and https://docs.cursor.com/advanced/model-context-protocol. | Implement project rule + MCP placeholder projection now. Account-backed Cursor smoke later. |
-| Windsurf | Official docs describe Cascade MCP management/admin whitelist, but the repo has not signed a project-local rules/config surface. See https://docs.windsurf.com/windsurf/cascade/mcp. | Keep planned until project-local instruction/rule contract is confirmed. |
+| Devin | Official docs describe Cascade MCP management/admin whitelist, but the repo has not signed a project-local rules/config surface. See https://docs.devin.com/devin/cascade/mcp. | Keep planned until project-local instruction/rule contract is confirmed. |
 | Qwen Code | Official docs describe project `.qwen/settings.json`, `mcpServers`, and hierarchical context files such as `QWEN.md`. See https://qwenlm.github.io/qwen-code-docs/en/users/configuration/settings/ and https://qwenlm.github.io/qwen-code-docs/en/users/features/mcp/. | Implemented structural projection; account-backed runtime smoke later. |
 | Kimi Code | Official docs describe Kimi Code CLI, `--work-dir`, `--mcp-config-file`, MCP configuration, and project-level `AGENTS.md`; VS Code extension remains account-backed runtime proof. See https://www.kimi.com/code/docs/en/kimi-code-cli/reference/kimi-command.html and https://www.kimi.com/help/kimi-code/cli-customization. | Implemented structural CLI projection; account-backed runtime smoke later. |
 | Google Antigravity | Current local-project config evidence is not signed in this repo from a primary source. | Keep planned; research before projection. |
@@ -64,14 +64,14 @@ Deliverables:
 - ACC records `shell-ci/default` and `shell-ci/full` projection counts.
 - Workflow syntax and generated command-driver tests cover the structural baseline.
 
-### Phase 3 — Qwen/Windsurf/Kimi structural candidates
+### Phase 3 — Qwen/Devin/Kimi structural candidates
 
-Status: in progress. Qwen Code and Kimi Code CLI are implemented; Windsurf remains planned.
+Status: in progress. Qwen Code and Kimi Code CLI are implemented; Devin remains planned.
 
 Deliverables:
 
 - Qwen: `cos_init.py --default/--full --harness qwen-code` generates `.qwen/settings.json` and `QWEN.md` with conservative `mcpServers` placeholder and COS context references.
-- Windsurf: only generate project-local files after confirming a project-scoped rules/instructions contract from primary docs.
+- Devin: only generate project-local files after confirming a project-scoped rules/instructions contract from primary docs.
 - Kimi: `cos_init.py --default/--full --harness kimi-code` generates a bounded `AGENTS.md` block plus `.kimi/mcp.json` and `.kimi/README.md`; account-backed runtime smoke remains optional.
 
 ### Phase 4 — Provider/hosted surfaces
@@ -102,7 +102,7 @@ Deliverables:
 - [x] Cursor structural projection implemented and tested.
 - [x] Shell/CI promoted to implemented harness semantics.
 - [x] Qwen structural projection researched and implemented.
-- [ ] Windsurf project-local projection surface confirmed from primary docs.
+- [ ] Devin project-local projection surface confirmed from primary docs.
 - [x] Kimi Code CLI projection mode selected and implemented.
 - [ ] DeepSeek provider proof separated from IDE projection.
 - [ ] MiniMax/MaxClaw classified as hosted/provider unless local repo config emerges.

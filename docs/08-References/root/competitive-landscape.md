@@ -72,7 +72,7 @@ The AI coding agent market has exploded in 2025-2026. What started as autocomple
 - **Key differentiator**: IDE-native experience plus cloud agent execution engine. Video proof of agent work enables 30-second review instead of 500-line code review. Self-hosted workers keep code on customer infrastructure. Many devs use Cursor + Claude Code together.
 - **What we can learn**: .cursorrules showed the market wants project-level AI configuration. Cloud agents with video proof change the review paradigm. Self-hosted workers address enterprise data sovereignty concerns. The execution engine is powerful but lacks governance, memory, and quality gates -- a natural complementarity with Cognitive OS.
 
-### Windsurf (Cognition/Codeium)
+### Devin (Cognition/Codeium)
 - **GitHub**: Closed source
 - **Stars**: N/A
 - **License**: Proprietary ($15-60/mo)
@@ -189,7 +189,7 @@ The AI coding agent market has exploded in 2025-2026. What started as autocomple
 - **Website**: devin.ai
 - **Stars**: N/A (proprietary)
 - **License**: Proprietary ($20-500/mo)
-- **What it does**: Autonomous AI software engineer. Plans, executes, debugs, deploys, monitors. Cloud-based IDE with parallel Devins. 83% more tasks completed per compute unit vs v1. Integrates with Windsurf IDE.
+- **What it does**: Autonomous AI software engineer. Plans, executes, debugs, deploys, monitors. Cloud-based IDE with parallel Devins. 83% more tasks completed per compute unit vs v1. Integrates with Devin IDE.
 - **Key differentiator**: Full autonomy -- end-to-end from plan to deploy. Cloud-based parallel instances. Now affordable at $20/mo entry.
 - **What we can learn**: The price drop from $500 to $20 shows the market pressure. Parallel agent instances in cloud is the future.
 
@@ -241,7 +241,7 @@ The AI coding agent market has exploded in 2025-2026. What started as autocomple
 - **GitHub**: https://github.com/agentsmd/agents.md
 - **Stars**: High adoption (60k+ repos)
 - **License**: Open (Linux Foundation / AAIF)
-- **What it does**: Open standard for AI coding agent configuration. Machine-readable project instructions for build, test, conventions. Supported by every major AI coding tool (Copilot, Cursor, Windsurf, Claude Code, Codex, Gemini CLI, etc.).
+- **What it does**: Open standard for AI coding agent configuration. Machine-readable project instructions for build, test, conventions. Supported by every major AI coding tool (Copilot, Cursor, Devin, Claude Code, Codex, Gemini CLI, etc.).
 - **Key differentiator**: Industry standard. Linux Foundation backing. Universal adoption.
 - **What we can learn**: We should generate AGENTS.md from our Cognitive OS config so our rules work with ANY tool, not just Claude Code.
 

@@ -58,7 +58,7 @@ Contrast every Cognitive OS harness projection claim with current official vendo
 | Harness | Current stance | Why not promoted |
 |---|---|---|
 | Kiro | lifecycle investigation | Official hooks are promising, but COS still needs event adapter, generated config, and runtime smoke. |
-| Windsurf | planned | Official docs sign `.windsurf/rules/*.md` and MCP config, but projection driver was not part of this audit slice. |
+| Devin | planned | Official docs sign `.devin/rules/*.md` and MCP config, but projection driver was not part of this audit slice. |
 | Google Antigravity | planned | Could not confirm a stable official project-local projection contract from Google docs in this audit. |
 | MiniMax / MaxClaw | planned/provider-tooling | Current evidence is provider/tooling, not a signed local coding harness projection. |
 | DeepSeek | provider-only | Official DeepSeek coding-agent docs route through existing coding agents/providers, not a first-party project-local harness. |
@@ -75,7 +75,7 @@ ACC refresh is run after this report to regenerate current projection evidence.
 
 ## Follow-up backlog
 
-1. Add a Windsurf structural driver from current `.windsurf/rules/*.md` + MCP docs if desired.
+1. Add a Devin structural driver from current `.devin/rules/*.md` + MCP docs if desired.
 2. Perform a focused Codex docs review against the latest OpenAI Codex app/CLI config and decide whether `.codex/hooks.json` remains a `native-lifecycle` claim or should be reframed.
 3. Implement Kiro event adapter only after config path/syntax and runtime smoke are available.
 4. Add a periodic harness-docs-currentness audit script that checks every implemented harness has a current official source and a manual/runtime proof level.

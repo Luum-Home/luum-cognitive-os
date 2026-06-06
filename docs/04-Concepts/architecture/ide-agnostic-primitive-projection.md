@@ -109,7 +109,7 @@ package view. The consumer package may resemble:
     claude-code/
     codex/
     cursor/
-    windsurf/
+    devin/
     copilot/
   scripts/
   logs/
@@ -145,7 +145,7 @@ The impact analysis for this distinction is recorded in
 
 The current maintainer `.ai/adapters/*` surface is descriptive: it declares
 adapter fidelity and links to primitive rows. It does not itself install Cursor,
-Windsurf, Copilot, Continue, Aider, or other native files. Actual projection
+Devin, Copilot, Continue, Aider, or other native files. Actual projection
 exists in separate COS harness drivers such as `scripts/cos_init.py`.
 
 The first compiler boundary now exists as `lib/adapter_compile.py`,
@@ -162,7 +162,7 @@ manifests/primitive-contracts.yaml
       -> AGENTS.md bounded blocks
       -> .cursor/rules/*.mdc
       -> .github/copilot-instructions.md
-      -> .windsurf/rules/*.md or .windsurfrules
+      -> .devin/rules/*.md or .devinrules
       -> CLAUDE.md / .claude/*
       -> CONVENTIONS.md / .aider.conf.yml
       -> opencode.json / .opencode/plugins/* where runtime-capable

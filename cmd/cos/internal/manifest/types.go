@@ -119,7 +119,7 @@ type Platform struct {
 	// External tools that must be in PATH.
 	Tools []ToolRequirement `yaml:"tools,omitempty"`
 
-	// IDE compatibility: claude-code, cursor, windsurf, cline.
+	// IDE compatibility: claude-code, cursor, devin, cline.
 	IDE []string `yaml:"ide,omitempty"`
 }
 

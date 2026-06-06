@@ -87,7 +87,7 @@ Each block follows C4. Effort sizes: S = ≤2 days, M = 2–5 days, L = 5–15 d
 - **Footprint**: OS repo small (~400 LOC implementing 9 tools) · Implementing projects opt-in MCP-server config · Service mode optional · Docker +~5 MB (fastmcp + deps)
 - **Test tiers**: T1 ✅ T2 ✅ T3 ✅ T4 ✅ T5 ✅ T6 ⬜ T7 ⬜ T8 ✅ T9 ✅ T10 ⬜
 - **Effort**: M
-- **Leverage**: HIGH — distribution channel to every MCP-aware tool (Cursor, Windsurf, Cline, Codex, Claude Code) without per-harness adapters
+- **Leverage**: HIGH — distribution channel to every MCP-aware tool (Cursor, Devin, Cline, Codex, Claude Code) without per-harness adapters
 - **ADR candidate**: yes — **ADR-231** (Phase 2; read-mostly tools first, write tools after the read surface stabilizes)
 
 ### G5. Sandbox primitive integration (`sandbox-primitives-integration.md`)

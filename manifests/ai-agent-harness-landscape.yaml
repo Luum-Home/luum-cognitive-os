@@ -505,8 +505,8 @@ candidates:
   - unknown
   official_sources: []
   next_action: Research official local projection docs.
-- id: windsurf
-  display_name: Windsurf
+- id: devin
+  display_name: Devin
   category: ide
   status: planned
   proof_level: none

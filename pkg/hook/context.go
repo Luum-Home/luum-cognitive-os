@@ -2,7 +2,7 @@
 //
 // The Context type is the canonical representation of any AI agent hook
 // invocation, normalized across providers (Claude, Codex, Gemini, Cursor,
-// Windsurf). Provider-specific parsers produce a Context; validators and
+// Devin). Provider-specific parsers produce a Context; validators and
 // transformers consume it.
 package hook
 
@@ -27,8 +27,8 @@ const (
 	// ProviderCursor represents Cursor editor hook payloads.
 	ProviderCursor Provider = "cursor"
 
-	// ProviderWindsurf represents Windsurf (Codeium) hook payloads.
-	ProviderWindsurf Provider = "windsurf"
+	// ProviderDevin represents Devin (Codeium) hook payloads.
+	ProviderDevin Provider = "devin"
 )
 
 // CanonicalEvent is the normalized, provider-agnostic hook event name.

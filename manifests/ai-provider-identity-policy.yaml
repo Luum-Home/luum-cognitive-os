@@ -15,7 +15,7 @@ blocked_email_domains:
   - deepmind.com
   - google.com
   - cursor.com
-  - windsurf.com
+  - devin.com
   - cognition.ai
 
 blocked_email_local_parts:
@@ -34,7 +34,7 @@ blocked_email_local_parts:
   - gemini
   - copilot
   - cursor
-  - windsurf
+  - devin
   - devin
 
 provider_names:
@@ -47,7 +47,7 @@ provider_names:
   - gemini
   - copilot
   - cursor
-  - windsurf
+  - devin
   - devin
 
 allowed_emails:

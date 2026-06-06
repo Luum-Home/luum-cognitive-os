@@ -20,7 +20,7 @@
 | Cost governance | Budget limits, model downgrade chain, cost prediction, workload scheduling | Unknown | Unknown | None | None |
 | Skill creation | skill-creator skill + cos init + cos publish | create-plugin skill | Unknown | None | None |
 | Configuration | cognitive-os.yaml (single source of truth) | Unknown | Unknown | Env-based | Settings override (per env/test) |
-| IDE support | Claude Code (primary), extensible to Cursor/Windsurf/Cline | Custom UI + CLI | Unknown | Any (API-based) | Claude Code + others |
+| IDE support | Claude Code (primary), extensible to Cursor/Devin/Cline | Custom UI + CLI | Unknown | Any (API-based) | Claude Code + others |
 | Observability | Langfuse, Opik, performance monitoring, metrics JSONL | Unknown | Unknown | None | None |
 | Chaos testing | Tero (fault injection, latency simulation) | Unknown | Unknown | None | None |
 | File mutation safety | lib/file_mutation_queue.py (serialized ops) | Unknown | Unknown | None | file-mutation-queue.ts (source) |

@@ -59,7 +59,7 @@ That dismissal was wrong.
 ### The cross-harness lens
 
 ADR-057 and ADR-064 establish that COS is harness-agnostic: the same cognitive
-OS must run on Claude Code, Cursor, Windsurf, VS Code Agent, Cline, and any
+OS must run on Claude Code, Cursor, Devin, VS Code Agent, Cline, and any
 future harness that executes the SKILLS + RULES surface. The practical
 consequence is that features the Claude Code runtime provides for free —
 automatic context compaction, native prompt caching, a single unified rate-limit
@@ -372,7 +372,7 @@ compute and data dependency.
 ## Open questions
 
 1. **Target harness priority list — resolved.** Claude Code (full adapter) and
-   Codex (ADR-081, in progress) are the two real targets. Cursor, Windsurf,
+   Codex (ADR-081, in progress) are the two real targets. Cursor, Devin,
    Cline, and VS Code Agent are Tier C / on-demand; they will be addressed based
    on observed demand after Tier 1 stabilizes. No separate harness-validation
    report is needed to unblock this ADR.

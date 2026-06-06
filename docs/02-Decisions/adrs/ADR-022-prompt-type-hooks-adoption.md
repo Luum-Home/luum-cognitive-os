@@ -124,7 +124,7 @@ the pre-commit gate (Gate 3a) does not block them.
 ### Negative
 
 - **Vendor coupling.** `type: "prompt"` is a Claude Code extension. Other
-  harnesses (Codex/Gemini/Cursor/Windsurf) don't natively support it.
+  harnesses (Codex/Gemini/Cursor/Devin) don't natively support it.
 - **LLM dependency.** If Haiku is unreachable, the hook degrades to a no-op.
   Acceptable because these are *advisory* hooks — they never block.
 - **Cost.** ~$0.0003 per Haiku call × N agent invocations per session.
@@ -140,7 +140,7 @@ adapters. The same pattern applies here:
   everywhere).
 - The **Claude Code adapter** is the new `*-llm.sh` hook (faster, smarter,
   Claude Code-specific).
-- For Codex/Gemini/Cursor/Windsurf the legacy Bash hook continues to run.
+- For Codex/Gemini/Cursor/Devin the legacy Bash hook continues to run.
 - If another harness adds an equivalent of `type: "prompt"`, an adapter for
   that harness can be written by copying the LLM hook and changing the JSON
   envelope.

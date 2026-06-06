@@ -8,7 +8,7 @@ Reads canonical state from .cognitive-os/tasks/active-tasks.json and emits
 additionalContext JSON that Claude Code adds to the agent's context window.
 One-way sync: COS → Claude Code UI. The COS file remains the source of truth.
 
-When running under Codex/Gemini/Cursor/Windsurf, other adapters handle the
+When running under Codex/Gemini/Cursor/Devin, other adapters handle the
 same role. This file is specific to Claude Code.
 """
 

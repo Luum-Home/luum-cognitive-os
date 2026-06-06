@@ -32,7 +32,7 @@ healthy Engram registration must not hide a stale one.
 | Claude project projection | `.claude/settings.json` | JSON `mcpServers` when present |
 | Codex project projection | `.codex/config.toml` | TOML `mcp_servers` when present |
 | Cursor | `.cursor/mcp.json` | JSON `mcpServers` |
-| Windsurf | `.windsurf/mcp_config.json` | JSON `mcpServers` |
+| Devin | `.devin/mcp_config.json` | JSON `mcpServers` |
 | VS Code / Copilot | `.vscode/mcp.json` | JSON `mcpServers` |
 | Qoder-style project MCP | `.mcp.json` | JSON `mcpServers` |
 | Factory Droid | `.factory/mcp.json` | JSON `mcpServers` |

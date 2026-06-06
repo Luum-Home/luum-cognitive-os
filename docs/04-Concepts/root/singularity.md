@@ -264,7 +264,7 @@ Runs inside the current Claude Code session. Dies when the session ends. Use onl
 # Prompt: "cd /path/to/project && PYTHONPATH=. SINGULARITY_ENABLED=true python3 lib/singularity.py run"
 ```
 
-**Warning**: `CronCreate` has no portable equivalent in Cursor, Windsurf, or Kiro. Do not rely on it for production scheduling.
+**Warning**: `CronCreate` has no portable equivalent in Cursor, Devin, or Kiro. Do not rely on it for production scheduling.
 
 ### Option 2: Claude Code Durable Scheduled Task
 

@@ -22,7 +22,7 @@ The external sweep found three maturity levels:
 
 1. **Strong standards:** `AGENTS.md`, `SKILL.md` / Agent Skills, and MCP.
 2. **Strong host-specific surfaces:** Claude hooks/skills, OpenCode permissions
-   and plugins, Cursor/Windsurf/Kiro/Cline/Continue rules, Copilot custom
+   and plugins, Cursor/Devin/Kiro/Cline/Continue rules, Copilot custom
    instructions, Amp/Qoder/Junie AGENTS-based guidance.
 3. **Emerging `.ai/` overlay standard:** VERSA / dotAIslash proposes exactly the
    shape we saw in the practice repo: one `.ai/` folder, canonical primitives,
@@ -60,9 +60,9 @@ avoid making `.ai` / portable primitive decisions from local intuition only.
 | 2 | [AGENTS.md](https://github.com/agentsmd/agents.md) | Open Markdown guidance format | Strong baseline for project-level instructions. |
 | 3 | [GitHub Copilot custom instructions](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions) | `.github/copilot-instructions.md`, `.github/instructions`, `AGENTS.md` | Adapter target; mostly advisory. |
 | 4 | [Cursor rules](https://docs.cursor.com/es/context/rules) | `.cursor/rules`, `AGENTS.md`, legacy `.cursorrules` | Adapter target; structural/advisory. |
-| 5 | [Windsurf rules/memories](https://docs.windsurf.com/ro/windsurf/cascade/memories) | `.windsurf/rules/`, `AGENTS.md`, rule activation modes | Adapter target; structural/advisory plus workflow concepts. |
+| 5 | [Devin rules/memories](https://docs.devin.com/ro/devin/cascade/memories) | `.devin/rules/`, `AGENTS.md`, rule activation modes | Adapter target; structural/advisory plus workflow concepts. |
 | 6 | [Kiro steering](https://kiro.dev/docs/steering/) | `.kiro/steering/`, `AGENTS.md`, inclusion modes | Adapter target; richer steering than plain AGENTS. |
-| 7 | [Cline rules](https://docs.cline.bot/customization/cline-rules) | `.clinerules/`, Cursor/Windsurf compatibility, `AGENTS.md` | Cross-tool rule compatibility signal. |
+| 7 | [Cline rules](https://docs.cline.bot/customization/cline-rules) | `.clinerules/`, Cursor/Devin compatibility, `AGENTS.md` | Cross-tool rule compatibility signal. |
 | 8 | [Continue rules](https://docs.continue.dev/customize/rules) | `.continue/rules`, Hub rules | Adapter target; rule distribution model. |
 | 9 | [OpenCode permissions](https://opencode.ai/docs/permissions/) | `permission` allow/ask/deny keyed by tools | Runtime enforcement candidate. |
 | 10 | [OpenCode plugins](https://dev.opencode.ai/docs/plugins/) | plugin lifecycle including tool execution hooks | Runtime adapter candidate for primitive interventions. |
@@ -186,13 +186,13 @@ COS internal source of truth
 .ai overlay generator
   .ai/context.json
   .ai/primitives/{hooks,skills,rules,workflows,tools}/...
-  .ai/profiles/{claude,codex,cursor,windsurf,copilot,kiro,opencode}/...
-  .ai/adapters/{claude-code,codex,cursor,windsurf,copilot,kiro,opencode}/...
+  .ai/profiles/{claude,codex,cursor,devin,copilot,kiro,opencode}/...
+  .ai/adapters/{claude-code,codex,cursor,devin,copilot,kiro,opencode}/...
   .ai/logs/schema/*.json
           |
           v
 host-specific projection
-  AGENTS.md, SKILL.md dirs, .cursor/rules, .windsurf/rules,
+  AGENTS.md, SKILL.md dirs, .cursor/rules, .devin/rules,
   .github/copilot-instructions.md, .kiro/steering,
   opencode.json/plugins, Claude/Codex hooks, CI scripts
           |

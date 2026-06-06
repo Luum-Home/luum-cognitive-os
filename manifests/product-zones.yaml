@@ -80,9 +80,9 @@ path_classification:
   - path: .cursor
     zone: compatibility
     reason: "Cursor projection surface."
-  - path: .windsurf
+  - path: .devin
     zone: compatibility
-    reason: "Windsurf projection surface."
+    reason: "Devin projection surface."
   - path: .kiro
     zone: compatibility
     reason: "Kiro projection surface."

@@ -79,7 +79,7 @@ The machine-readable registry is `manifests/harness-projection.yaml`. ACC treats
 | Gemini CLI | Implemented structural projection. | `GEMINI.md` and `.gemini/settings.json` are generated. | Native runtime proof if available. |
 | Warp / Amp / Qoder / Factory Droid / Cline / Continue / Kilo / Zed / Augment / Goose / Aider | Implemented structural projection. | Project-local instruction/config files are generated per harness driver; no runtime enforcement parity is implied. | Harness-specific native/runtime proof. |
 | Shell/CI | Implemented structural command/workflow projection. | Declared commands are copied to `.cognitive-os/scripts/cos/`, symlinked from `scripts/`, and wired into `.github/workflows/cognitive-os-shell-ci.yml`. | Behavioral side-effect proof for each projected command under real arguments. |
-| Windsurf / Google Antigravity / MiniMax MaxClaw / DeepSeek provider / Kiro | Planned. | Roadmap-only; no consumer availability inherited from implemented harnesses. | Add explicit projection driver and temp-project proof. |
+| Devin / Google Antigravity / MiniMax MaxClaw / DeepSeek provider / Kiro | Planned. | Roadmap-only; no consumer availability inherited from implemented harnesses. | Add explicit projection driver and temp-project proof. |
 
 ## Acceptance criteria for future claims
 

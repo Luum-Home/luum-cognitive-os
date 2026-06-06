@@ -319,9 +319,9 @@ func TestCursorConfigPaths(t *testing.T) {
 	}
 }
 
-// --- Windsurf Provider Tests ---
+// --- Devin Provider Tests ---
 
-func TestWindsurfParse_PreCascadeAction(t *testing.T) {
+func TestDevinParse_PreCascadeAction(t *testing.T) {
 	raw := []byte(`{
 		"hook_event": "PreCascadeAction",
 		"tool_name": "Bash",
@@ -329,21 +329,21 @@ func TestWindsurfParse_PreCascadeAction(t *testing.T) {
 		"session_id": "ws-session"
 	}`)
 
-	p := NewWindsurfProvider()
+	p := NewDevinProvider()
 	ctx, err := p.Parse(raw)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	if ctx.Provider != hook.ProviderWindsurf {
-		t.Errorf("provider = %q, want %q", ctx.Provider, hook.ProviderWindsurf)
+	if ctx.Provider != hook.ProviderDevin {
+		t.Errorf("provider = %q, want %q", ctx.Provider, hook.ProviderDevin)
 	}
 	if ctx.Event != hook.CanonicalEventBeforeTool {
 		t.Errorf("event = %q, want %q", ctx.Event, hook.CanonicalEventBeforeTool)
 	}
 }
 
-func TestWindsurfParse_PostCascadeAction(t *testing.T) {
+func TestDevinParse_PostCascadeAction(t *testing.T) {
 	raw := []byte(`{
 		"hook_event": "PostCascadeAction",
 		"tool_name": "Write",
@@ -351,7 +351,7 @@ func TestWindsurfParse_PostCascadeAction(t *testing.T) {
 		"session_id": "ws-session-2"
 	}`)
 
-	p := NewWindsurfProvider()
+	p := NewDevinProvider()
 	ctx, err := p.Parse(raw)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -362,11 +362,11 @@ func TestWindsurfParse_PostCascadeAction(t *testing.T) {
 	}
 }
 
-func TestWindsurfConfigPaths(t *testing.T) {
-	p := NewWindsurfProvider()
+func TestDevinConfigPaths(t *testing.T) {
+	p := NewDevinProvider()
 	paths := p.ConfigPaths("/myproject")
-	if len(paths) != 1 || paths[0] != "/myproject/.windsurf/hooks.json" {
-		t.Errorf("config paths = %v, want [/myproject/.windsurf/hooks.json]", paths)
+	if len(paths) != 1 || paths[0] != "/myproject/.devin/hooks.json" {
+		t.Errorf("config paths = %v, want [/myproject/.devin/hooks.json]", paths)
 	}
 }
 
@@ -408,12 +408,12 @@ func TestRegistryDetect_WithGeminiEnv(t *testing.T) {
 	}
 }
 
-func TestRegistryDetect_WithWindsurfEnv(t *testing.T) {
-	t.Setenv("WINDSURF_SESSION_ID", "ws-abc")
+func TestRegistryDetect_WithDevinEnv(t *testing.T) {
+	t.Setenv("DEVIN_SESSION_ID", "ws-abc")
 	reg := NewRegistry()
 	p := reg.Detect()
-	if p.Name() != hook.ProviderWindsurf {
-		t.Errorf("detected provider = %q, want %q", p.Name(), hook.ProviderWindsurf)
+	if p.Name() != hook.ProviderDevin {
+		t.Errorf("detected provider = %q, want %q", p.Name(), hook.ProviderDevin)
 	}
 }
 
@@ -534,10 +534,10 @@ func TestCursorBuildResponse_VendorEnvelope(t *testing.T) {
 	})
 }
 
-// TestWindsurfBuildResponse_VendorEnvelope verifies that Windsurf emits its
+// TestDevinBuildResponse_VendorEnvelope verifies that Devin emits its
 // vendor-conformant {"cascadeDecision","reason"} envelope.
-func TestWindsurfBuildResponse_VendorEnvelope(t *testing.T) {
-	p := NewWindsurfProvider()
+func TestDevinBuildResponse_VendorEnvelope(t *testing.T) {
+	p := NewDevinProvider()
 
 	t.Run("deny", func(t *testing.T) {
 		resp := p.BuildResponse(nil, "deny", "blocked by policy", "")
@@ -552,7 +552,7 @@ func TestWindsurfBuildResponse_VendorEnvelope(t *testing.T) {
 		}
 
 		if _, hasHSO := result["hookSpecificOutput"]; hasHSO {
-			t.Error("windsurf response must NOT have hookSpecificOutput (wrong envelope)")
+			t.Error("devin response must NOT have hookSpecificOutput (wrong envelope)")
 		}
 		if result["cascadeDecision"] != "deny" {
 			t.Errorf("cascadeDecision = %q, want %q", result["cascadeDecision"], "deny")
@@ -591,7 +591,7 @@ func TestProviderNames(t *testing.T) {
 		{NewCodexProvider(), hook.ProviderCodex},
 		{NewGeminiProvider(), hook.ProviderGemini},
 		{NewCursorProvider(), hook.ProviderCursor},
-		{NewWindsurfProvider(), hook.ProviderWindsurf},
+		{NewDevinProvider(), hook.ProviderDevin},
 	}
 
 	for _, tt := range tests {

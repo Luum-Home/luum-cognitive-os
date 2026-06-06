@@ -70,14 +70,14 @@ func TestInstallProfilePlanShowsUnregisteredProfile(t *testing.T) {
 	}
 }
 
-func TestProjectRejectsPlannedButUnsupportedWindsurf(t *testing.T) {
+func TestProjectRejectsPlannedButUnsupportedDevin(t *testing.T) {
 	dir := createTestProject(t)
 
-	out, code := runCos(t, dir, "project", "--harness", "windsurf")
+	out, code := runCos(t, dir, "project", "--harness", "devin")
 	if code == 0 {
-		t.Fatalf("expected non-zero for unsupported windsurf\n%s", out)
+		t.Fatalf("expected non-zero for unsupported devin\n%s", out)
 	}
-	if !strings.Contains(out, "unsupported harness \"windsurf\"") || !strings.Contains(out, "planned") {
+	if !strings.Contains(out, "unsupported harness \"devin\"") || !strings.Contains(out, "planned") {
 		t.Fatalf("expected planned unsupported harness message\n%s", out)
 	}
 }

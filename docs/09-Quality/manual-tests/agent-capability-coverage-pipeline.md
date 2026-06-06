@@ -101,7 +101,7 @@ import json, yaml
 manifest = yaml.safe_load(open('manifests/harness-projection.yaml'))
 ids = {item['id'] for item in manifest['harnesses']}
 required = {
-    'claude', 'codex', 'cursor', 'windsurf', 'vscode-copilot', 'opencode',
+    'claude', 'codex', 'cursor', 'devin', 'vscode-copilot', 'opencode',
     'google-antigravity', 'qwen-code', 'kimi-code', 'minimax-maxclaw',
     'deepseek-provider', 'shell-ci',
 }

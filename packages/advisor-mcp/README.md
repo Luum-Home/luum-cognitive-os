@@ -2,7 +2,7 @@
 
 Optional external-advisor MCP server for Cognitive OS.
 
-Any AI coding agent (Claude Code, Cursor, Windsurf, etc.) can call
+Any AI coding agent (Claude Code, Cursor, Devin, etc.) can call
 `consult_advisor` to get concise architectural guidance from a smarter model
 mid-task — without that model writing code.
 

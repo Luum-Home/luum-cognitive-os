@@ -1,6 +1,6 @@
 # Cognitive OS Portability Plan — Multi-IDE Support
 
-> How to make our Cognitive OS work across Claude Code, Cursor, Gemini CLI, VS Code Copilot, OpenCode, Kiro, Windsurf, and Codex.
+> How to make our Cognitive OS work across Claude Code, Cursor, Gemini CLI, VS Code Copilot, OpenCode, Kiro, Devin, and Codex.
 
 ## Current State
 
@@ -11,7 +11,7 @@
 ## Target State
 
 - **Primary**: Claude Code (full features, vendor lock-in advantage)
-- **Portable**: Cursor, Gemini CLI, VS Code Copilot, OpenCode, Kiro, Windsurf, Codex
+- **Portable**: Cursor, Gemini CLI, VS Code Copilot, OpenCode, Kiro, Devin, Codex
 
 The goal is not to abandon Claude Code, but to ensure the investment in rules, skills, and hooks is recoverable and portable.
 
@@ -48,7 +48,7 @@ The goal is not to abandon Claude Code, but to ensure the investment in rules, s
 **Problem**: MCP config location differs per tool, but the protocol is universal.
 
 - Engram already runs as MCP server
-- MCP supported by: Claude Code, Cursor, VS Code, OpenCode, Gemini CLI, Goose, Windsurf, Kiro
+- MCP supported by: Claude Code, Cursor, VS Code, OpenCode, Gemini CLI, Goose, Devin, Kiro
 - Just need MCP config snippets for each tool
 
 **How it works**:
@@ -93,7 +93,7 @@ The canonical hook scripts remain unchanged. Only the adapter layer (JSON config
 | Gemini CLI | GEMINI.md + .gemini/ | .claude/skills/ | .gemini/settings.json | .gemini/settings.json |
 | OpenCode | AGENTS.md | .claude/skills/ | opencode.json | opencode.json |
 | Kiro | .kiro/ + specs/ | .claude/skills/ | .kiro/hooks/ | .kiro/mcp.json |
-| Windsurf | .windsurf/rules/*.md | .claude/skills/ | .windsurf/hooks.json | .windsurf/mcp.json |
+| Devin | .devin/rules/*.md | .claude/skills/ | .devin/hooks.json | .devin/mcp.json |
 | Codex | AGENTS.md | .claude/skills/ | Experimental | — |
 
 ---

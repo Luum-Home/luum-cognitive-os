@@ -129,4 +129,4 @@ python3 scripts/acc_pipeline.py --project-dir . --refresh
 
 The ACC pipeline now runs a temp-project projection adapter for Claude Code and OpenAI Codex default installs. The adapter invokes `scripts/cos_init.py --default --harness claude` and `--harness codex`, inventories `.cognitive-os/hooks/cos/`, `.cognitive-os/skills/cos/`, and `.cognitive-os/rules/cos/`, and marks matching hook/skill/rule capability rows as `aligned` with `consumer_accessibility: projected-consumer-surface`.
 
-This adapter is deliberately evidence-first: it signs only the primitives that actually appear in generated consumer projects. It does not imply Cursor, Windsurf, VS Code Copilot, Google Antigravity, OpenCode, full-profile projection, or script CLI availability.
+This adapter is deliberately evidence-first: it signs only the primitives that actually appear in generated consumer projects. It does not imply Cursor, Devin, VS Code Copilot, Google Antigravity, OpenCode, full-profile projection, or script CLI availability.

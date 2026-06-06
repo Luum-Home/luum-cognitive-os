@@ -6,7 +6,7 @@
 
 Cross-harness portability does not mean every script should immediately write every harness format.
 
-Some scripts operate on Cognitive OS runtime state and should be portable now. Others operate on a specific harness driver, such as Claude Code settings or Claude MCP registration. Those scripts must be explicit instead of silently writing `.claude/` during Codex, OpenCode, Cursor, Windsurf, or other host sessions.
+Some scripts operate on Cognitive OS runtime state and should be portable now. Others operate on a specific harness driver, such as Claude Code settings or Claude MCP registration. Those scripts must be explicit instead of silently writing `.claude/` during Codex, OpenCode, Cursor, Devin, or other host sessions.
 
 The rule is:
 

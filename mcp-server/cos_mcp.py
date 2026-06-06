@@ -1,6 +1,6 @@
 """Cognitive OS MCP Server — Expose COS knowledge to any MCP-compatible editor.
 
-Makes Cognitive OS accessible from VS Code, Cursor, Windsurf, and any other
+Makes Cognitive OS accessible from VS Code, Cursor, Devin, and any other
 editor that supports the Model Context Protocol. Exposes Engram memory, task
 state, rules, metrics, quality checks, and skill suggestions as MCP tools.
 

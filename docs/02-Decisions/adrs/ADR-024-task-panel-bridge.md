@@ -85,7 +85,7 @@ Ready for drain — invoke `/drain-queue` or Task tool:
 ### Alt 1: Wrap dispatch through Agent tool directly
 - Each COS-launched task would invoke the Agent tool, making it natively visible
 - **Rejected**: requires vendor lock-in, ties internal orchestration to Claude Code API
-- Would break when running under Codex/Gemini/Cursor/Windsurf
+- Would break when running under Codex/Gemini/Cursor/Devin
 
 ### Alt 2: External dashboard (Datasette / web UI)
 - Serve `active-tasks.json` over HTTP on localhost

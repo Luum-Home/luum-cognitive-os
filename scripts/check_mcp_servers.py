@@ -6,7 +6,7 @@ Reads MCP server definitions from:
   1. ~/.claude/settings.json and ~/.claude/mcp/*.json
   2. ~/.claude/plugins/cache/*/.mcp.json  (plugin-bundled MCP configs)
   3. ~/.codex/config.toml
-  4. Project-local MCP files for Codex, Claude, Cursor, Windsurf, Qoder, etc.
+  4. Project-local MCP files for Codex, Claude, Cursor, Devin, Qoder, etc.
 
 For each declared MCP server, checks:
   - Is the binary resolvable in PATH? (uses `which -a` to detect multi-path)
@@ -152,7 +152,7 @@ def find_mcp_configs() -> dict[str, dict[str, Any]]:
         (PROJECT_ROOT / ".claude" / "settings.json", "json"),
         (PROJECT_ROOT / ".codex" / "config.toml", "toml"),
         (PROJECT_ROOT / ".cursor" / "mcp.json", "json"),
-        (PROJECT_ROOT / ".windsurf" / "mcp_config.json", "json"),
+        (PROJECT_ROOT / ".devin" / "mcp_config.json", "json"),
         (PROJECT_ROOT / ".vscode" / "mcp.json", "json"),
         (PROJECT_ROOT / ".mcp.json", "json"),
         (PROJECT_ROOT / ".factory" / "mcp.json", "json"),

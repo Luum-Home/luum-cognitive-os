@@ -396,18 +396,18 @@
       "next_action": "Decide whether MaxClaw is a harness target, hosted deployment target, or provider behind OpenClaw before adding projection proof."
     },
     {
-      "id": "windsurf",
-      "display_name": "Windsurf",
+      "id": "devin",
+      "display_name": "Devin",
       "status": "planned",
       "projection_mode": "ide-rules-or-wrapper",
       "proof_level": "none",
       "settings_paths": [
-        ".windsurf/rules",
-        ".windsurf/mcp.json"
+        ".devin/rules",
+        ".devin/mcp.json"
       ],
-      "primary_settings_path": ".windsurf/rules",
+      "primary_settings_path": ".devin/rules",
       "runtime_smoke_command": [],
-      "next_action": "Define Windsurf settings/rules/MCP projection driver and temp-project proof."
+      "next_action": "Define Devin settings/rules/MCP projection driver and temp-project proof."
     }
   ]
 }

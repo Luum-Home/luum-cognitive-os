@@ -175,9 +175,9 @@ func TestDispatch_DryRun_CursorEnvelope(t *testing.T) {
 	}
 }
 
-// TestDispatch_DryRun_WindsurfEnvelope verifies that buildDryRunAllowResponse
-// handles the Windsurf {"cascadeDecision":"deny"} envelope correctly.
-func TestDispatch_DryRun_WindsurfEnvelope(t *testing.T) {
+// TestDispatch_DryRun_DevinEnvelope verifies that buildDryRunAllowResponse
+// handles the Devin {"cascadeDecision":"deny"} envelope correctly.
+func TestDispatch_DryRun_DevinEnvelope(t *testing.T) {
 	denyPayload := []byte(`{"cascadeDecision":"deny","reason":"blocked"}`)
 
 	result := buildDryRunAllowResponse(denyPayload)

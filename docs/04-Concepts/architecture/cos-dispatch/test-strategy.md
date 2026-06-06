@@ -102,18 +102,18 @@ means PR review blocks without these; authors may (and should) add more.
 - [ ] **Negative**: `cos-dispatch review --enable DOES_NOT_EXIST` exits
   non-zero, writes nothing to the DB, and emits a diagnostic to stderr.
 
-### 5.4 — Cursor / Windsurf Provider Hardening
+### 5.4 — Cursor / Devin Provider Hardening
 
 - [ ] **Unit**: each provider's `Detect()` runs against vendor-shaped fixture
   JSON committed under `internal/provider/testdata/providers/`
-  (`cursor-beforeshellexecution.json`, `windsurf-pretool.json`, etc.).
+  (`cursor-beforeshellexecution.json`, `devin-pretool.json`, etc.).
 - [ ] **Unit**: `BuildResponse()` emits a spec-conformant envelope compared
   against a golden file in `testdata/` — diff-testable, regenerate with an
   explicit `-update` flag.
 - [ ] **Integration**: full pipeline run with each provider selected via
   `dispatcher.WithProviderOverride(...)`; tracker records the correct
   `tool_type` for the synthesized event.
-- [ ] **Negative**: malformed Cursor and malformed Windsurf payloads each
+- [ ] **Negative**: malformed Cursor and malformed Devin payloads each
   return a provider error; the dispatcher falls open with no DB write and
   exit code 0.
 
@@ -138,7 +138,7 @@ means PR review blocks without these; authors may (and should) add more.
   applied, committed as a binary file. Regenerate on any schema change; the
   PR that changes the schema updates the fixture in the same commit.
 - **Hook event fixtures**: one JSON file per provider
-  (`claude.json`, `cursor.json`, `windsurf.json`, `codex.json`,
+  (`claude.json`, `cursor.json`, `devin.json`, `codex.json`,
   `gemini.json`) representing a canonical `PreToolUse`-equivalent event.
 - **Golden files**: response envelopes the binary is expected to emit,
   compared byte-for-byte. Golden files are updated with an explicit

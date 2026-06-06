@@ -83,7 +83,7 @@ each projection.
 | Should COS copy backup/merge/retry behavior? | Upstream has practical operator safeguards. | **Yes, clean-room.** Apply to projection writers. |
 | Is COS projection architecture wrong? | No; `cos_init.py` already has the better agnostic split. | **Keep.** Improve installer exposure and proof docs. |
 | Is `install.sh` fully aligned? | No; it still presents mostly `claude|codex`. | **Fix next.** Delegate/expand harness validation. |
-| Can we claim every IDE today? | No; some harnesses are structural-only and Windsurf is planned. | **Do not overclaim.** Publish proof-level-specific claims only. |
+| Can we claim every IDE today? | No; some harnesses are structural-only and Devin is planned. | **Do not overclaim.** Publish proof-level-specific claims only. |
 
 ## Adoption boundary
 
@@ -99,7 +99,7 @@ Blocked:
 1. Moving primitive truth into `.claude`.
 2. Bulk importing upstream agents/skills/components without license and credential review.
 3. Claiming runtime lifecycle parity for structural-only harnesses.
-4. Claiming Windsurf support before driver and proof exist.
+4. Claiming Devin support before driver and proof exist.
 
 ## Radar status
 

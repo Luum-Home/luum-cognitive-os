@@ -111,10 +111,10 @@ primitive catalog plus harness-aware projection profiles.
 validates mostly `claude|codex`. That makes the product look less multi-IDE than
 the internal projector already is.
 
-### 5. Windsurf remains a signed gap
+### 5. Devin remains a signed gap
 
-`manifests/harness-projection.yaml` marks Windsurf as planned, not implemented.
-If the product claim is "each IDE", Windsurf needs a projection driver, proof
+`manifests/harness-projection.yaml` marks Devin as planned, not implemented.
+If the product claim is "each IDE", Devin needs a projection driver, proof
 level, and consumer smoke before it is claimed.
 
 ## Verdict
@@ -144,4 +144,4 @@ harness projector a better public installer/catalog UX.
 2. Add a canonical primitive catalog UX inspired by the upstream component flags.
 3. Keep `.claude` as a projection target only.
 4. Add/refresh consumer smokes for any new harness driver before public claims.
-5. Implement Windsurf only after its project-local rule/MCP surfaces are signed.
+5. Implement Devin only after its project-local rule/MCP surfaces are signed.

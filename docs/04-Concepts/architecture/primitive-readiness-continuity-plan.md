@@ -108,7 +108,7 @@ python3 scripts/primitive_coverage.py --project-dir . --adapter cognitive-os --f
 
 The script readiness ledger is the canonical machine-readable script role surface. The family readiness ledger provides first-pass role and consumer-accessibility rows for hooks, skills, and rules. Usage and coverage reports remain supporting evidence.
 
-The ledger must also answer whether a script is reachable from a downstream project that implements the SO. A repository-local document or skill reference is not enough: consumer agents in VS Code/Copilot, Cursor, Windsurf, Google Antigravity, Claude Code, OpenAI Codex, OpenCode, and shell/CI only get a script when an install/profile/projection path exports it. The `consumer_accessibility` field separates:
+The ledger must also answer whether a script is reachable from a downstream project that implements the SO. A repository-local document or skill reference is not enough: consumer agents in VS Code/Copilot, Cursor, Devin, Google Antigravity, Claude Code, OpenAI Codex, OpenCode, and shell/CI only get a script when an install/profile/projection path exports it. The `consumer_accessibility` field separates:
 
 - `install-profile-managed`: bootstrap/profile/settings/update surfaces that can affect generated consumer projects and require profile projection proof;
 - `lifecycle-declared-consumer-candidate`: core/team lifecycle rows that still need package/install proof per harness;
@@ -175,7 +175,7 @@ Universal IDE support is not a binary claim. Each harness gets a capability prof
 | Claude Code | strongest; native hooks/settings/rules path | Keep runtime projection and hook reality green. |
 | OpenAI Codex | emerging; settings driver and governed fallback path exist | Expand lifecycle `supported_harnesses: codex` and projection tests. |
 | Cursor | provider/adapter evidence exists, runtime parity incomplete | Produce capability manifest and manual/automated projection proof. |
-| Windsurf | provider/adapter evidence exists, runtime parity incomplete | Produce capability manifest and manual/automated projection proof. |
+| Devin | provider/adapter evidence exists, runtime parity incomplete | Produce capability manifest and manual/automated projection proof. |
 | VS Code Copilot | not yet signed | Define available surfaces: instructions, tasks, MCP, extension hooks, wrappers. |
 | Google Antigravity | not yet signed | Audit supported skill/rule/tool formats and create adapter plan. |
 | OpenCode | mentioned/evaluated, not signed | Define wrapper or native config projection and tests. |

@@ -179,7 +179,7 @@ pattern mining only.
 | Contributors | 28 |
 | Infra requirement | Supabase (PostgreSQL + PGVector), Docker, OpenAI/Gemini/Ollama |
 
-**What Archon is**: A knowledge management and task management "command center" for AI coding assistants. It functions as an MCP server that provides RAG-powered documentation search, project/task hierarchies, and agent work orders to MCP-compatible editors (Claude Code, Cursor, Windsurf). It is NOT an agent OS or orchestrator -- it is a context/knowledge backend that agents connect to.
+**What Archon is**: A knowledge management and task management "command center" for AI coding assistants. It functions as an MCP server that provides RAG-powered documentation search, project/task hierarchies, and agent work orders to MCP-compatible editors (Claude Code, Cursor, Devin). It is NOT an agent OS or orchestrator -- it is a context/knowledge backend that agents connect to.
 
 **Architecture**: True microservices (5 Docker containers):
 - archon-server (FastAPI + SocketIO, port 8181) -- core API, web crawling, document processing

@@ -64,7 +64,7 @@ Implemented:
 Implemented Slice B:
 
 - Optional OpenTelemetry spans around all eight MCP tools. Instrumentation is no-op when OTel is absent.
-- `manifests/mcp-server-registration.yaml` declares stdio registration plans for Claude Code, Codex, Cursor, and Windsurf.
+- `manifests/mcp-server-registration.yaml` declares stdio registration plans for Claude Code, Codex, Cursor, and Devin.
 - `scripts/cos-mcp-registration-plan` plus `cos mcp registration-plan` emit host-specific registration plans without mutating user-global config.
 
 Implemented Slice C:
@@ -91,7 +91,7 @@ Not implemented in Slice C:
 - T1 unit: `tests/unit/test_cos_mcp_server.py`
 - T3 contract/audit: `tests/audit/test_mcp_server_package_surface.py`
 - T4 smoke: `tests/behavior/test_mcp_server_smoke.py`
-- T8 cross-harness: `tests/behavior/test_mcp_registration_plan_cli.py` verifies host registration plans for Claude Code, Codex, Cursor, and Windsurf
+- T8 cross-harness: `tests/behavior/test_mcp_registration_plan_cli.py` verifies host registration plans for Claude Code, Codex, Cursor, and Devin
 - T9 adoption-truth: package manifest must match importable tools
 
 ## Acceptance criteria

@@ -126,7 +126,7 @@ packages:
     repo: "Luum-Home/luum-cognitive-os"
     path: "packages/mcp-server"
     version: "1.0.0"
-    description: "MCP server exposing Cognitive OS knowledge to any MCP-compatible editor (VS Code, Cursor, Windsurf)"
+    description: "MCP server exposing Cognitive OS knowledge to any MCP-compatible editor (VS Code, Cursor, Devin)"
     tags: [mcp, server, integration, memory, tools]
 
     repo: "Luum-Home/luum-cognitive-os"

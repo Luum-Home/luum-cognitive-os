@@ -31,7 +31,7 @@ these conditions:
 - developers who are afraid of breaking things without noticing;
 - onboarding of new developers or new AI agents;
 - more than one harness or provider, such as Claude Code, Codex, OpenCode,
-  Cursor, Windsurf, or similar tools.
+  Cursor, Devin, or similar tools.
 
 The value is not "having many hooks." The value is that the project gains:
 

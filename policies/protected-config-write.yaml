@@ -12,7 +12,7 @@ rules:
         - ".claude/**"
         - ".codex/**"
         - ".cursor/**"
-        - ".windsurf/**"
+        - ".devin/**"
         - ".continue/**"
         - "mcp.json"
         - ".mcp/**"

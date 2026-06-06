@@ -38,7 +38,7 @@ project=Path(os.environ.get('PROJECT_DIR','.')).resolve()
 policy_path=Path(os.environ.get('POLICY',''))
 def default_policy():
     return {
-      'protected_globs':['.claude/**','.codex/**','.cursor/**','.windsurf/**','.continue/**','mcp.json','.mcp/**','hooks/**','rules/**','skills/*/SKILL.md','manifests/*security*.yaml','manifests/credential-safe-scripts.yaml','manifests/runtime-env-flags.yaml'],
+      'protected_globs':['.claude/**','.codex/**','.cursor/**','.devin/**','.continue/**','mcp.json','.mcp/**','hooks/**','rules/**','skills/*/SKILL.md','manifests/*security*.yaml','manifests/credential-safe-scripts.yaml','manifests/runtime-env-flags.yaml'],
       'allowlisted_generated_outputs':['.cognitive-os/reports/**','.cognitive-os/metrics/**','.cognitive-os/sessions/**']
     }
 if yaml and policy_path.exists():

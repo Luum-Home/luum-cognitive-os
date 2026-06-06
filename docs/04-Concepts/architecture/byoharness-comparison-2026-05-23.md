@@ -12,7 +12,7 @@
 
 `byo-coding-agent` is a compact educational implementation of a full coding-agent harness. It owns the REPL, agent loop, LLM provider calls, tools, permission prompts, subagent delegation, MCP registration, compaction, token accounting, debug UI, and file-backed memory.
 
-Cognitive OS is a different product layer: it governs existing harnesses and projects portable agentic primitives into Claude Code, Codex, Cursor, Windsurf, and service/headless surfaces. The external repo should not replace Cognitive OS hook governance. It is most useful as a reference implementation for the still-partial COS-owned runtime path: ADR-291 `agent-service`, `cosd`, Surface 5 TUI, and optional local runtime labs.
+Cognitive OS is a different product layer: it governs existing harnesses and projects portable agentic primitives into Claude Code, Codex, Cursor, Devin, and service/headless surfaces. The external repo should not replace Cognitive OS hook governance. It is most useful as a reference implementation for the still-partial COS-owned runtime path: ADR-291 `agent-service`, `cosd`, Surface 5 TUI, and optional local runtime labs.
 
 ## Architecture Comparison
 
@@ -75,7 +75,7 @@ Cognitive OS is a different product layer: it governs existing harnesses and pro
 
 Document the separation between:
 
-- harness driver provider: Claude/Codex/Cursor/Windsurf hook payload adapter;
+- harness driver provider: Claude/Codex/Cursor/Devin hook payload adapter;
 - LLM provider: Anthropic/OpenAI/local model adapter;
 - tool registry: runtime-callable tools;
 - agentic primitives: skills/hooks/rules/agents/memory projected into host surfaces.

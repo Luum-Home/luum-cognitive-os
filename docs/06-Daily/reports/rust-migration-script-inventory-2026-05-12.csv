@@ -431,8 +431,8 @@ internal/provider/cursor_test.go,go,core_runtime,267,Go internal/runtime model u
 internal/provider/gemini.go,go,core_runtime,123,Go internal/runtime model used by CLI or hooks; candidate for Rust core crate
 internal/provider/provider.go,go,core_runtime,69,Go internal/runtime model used by CLI or hooks; candidate for Rust core crate
 internal/provider/provider_test.go,go,core_runtime,604,Go internal/runtime model used by CLI or hooks; candidate for Rust core crate
-internal/provider/windsurf.go,go,core_runtime,164,Go internal/runtime model used by CLI or hooks; candidate for Rust core crate
-internal/provider/windsurf_test.go,go,core_runtime,236,Go internal/runtime model used by CLI or hooks; candidate for Rust core crate
+internal/provider/devin.go,go,core_runtime,164,Go internal/runtime model used by CLI or hooks; candidate for Rust core crate
+internal/provider/devin_test.go,go,core_runtime,236,Go internal/runtime model used by CLI or hooks; candidate for Rust core crate
 internal/transformer/result_truncator.go,go,core_runtime,77,Go internal/runtime model used by CLI or hooks; candidate for Rust core crate
 internal/transformer/symlink_resolver.go,go,core_runtime,56,Go internal/runtime model used by CLI or hooks; candidate for Rust core crate
 internal/transformer/transformer.go,go,core_runtime,131,Go internal/runtime model used by CLI or hooks; candidate for Rust core crate

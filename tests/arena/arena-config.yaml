@@ -91,11 +91,11 @@ arena:
       installed: false
       notes: "AI-native IDE. Not CLI-automatable. Manual benchmark only."
 
-    - id: windsurf
-      name: "Windsurf (Codeium)"
+    - id: devin
+      name: "Devin (Codeium)"
       type: ide
-      install: "Download from windsurf.com"
-      requires: ["Windsurf subscription"]
+      install: "Download from devin.com"
+      requires: ["Devin subscription"]
       installed: false
       notes: "Codeium's AI IDE. Not CLI-automatable. Manual benchmark only."
 

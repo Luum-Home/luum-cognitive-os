@@ -41,7 +41,7 @@ type dispatchFlags struct {
 // the values struct so the caller can read them after fs.Parse.
 func registerDispatchFlags(fs *flag.FlagSet) *dispatchFlags {
 	f := &dispatchFlags{}
-	fs.StringVar(&f.provider, "provider", "", "Override provider detection (claude|codex|gemini|cursor|windsurf)")
+	fs.StringVar(&f.provider, "provider", "", "Override provider detection (claude|codex|gemini|cursor|devin)")
 	fs.StringVar(&f.config, "config", "", "Path to config file")
 	fs.StringVar(&f.logLevel, "log-level", "", "Log level (debug|info|warn|error)")
 	fs.StringVar(&f.disable, "disable", "", "Comma-separated validator names to disable")
@@ -200,7 +200,7 @@ func newGeneratorForDispatch(tracker *pattern.SQLTracker, cfg *config.Config, pr
 
 // containsDeny checks if the response JSON contains a deny decision.
 // It covers both the Claude/Codex/Gemini envelope (permissionDecision) and the
-// Cursor envelope (action) and Windsurf envelope (cascadeDecision).
+// Cursor envelope (action) and Devin envelope (cascadeDecision).
 func containsDeny(resp []byte) bool {
 	s := string(resp)
 	return strings.Contains(s, `"permissionDecision":"deny"`) ||
@@ -235,7 +235,7 @@ func buildDryRunAllowResponse(denyResp []byte) []byte {
 		obj["dryRunDeniedReason"] = obj["message"]
 	}
 
-	// Windsurf envelope: {"cascadeDecision":"deny",...}
+	// Devin envelope: {"cascadeDecision":"deny",...}
 	if cd, ok := obj["cascadeDecision"].(string); ok && cd == "deny" {
 		obj["cascadeDecision"] = "allow"
 		obj["dryRunDeniedReason"] = obj["reason"]

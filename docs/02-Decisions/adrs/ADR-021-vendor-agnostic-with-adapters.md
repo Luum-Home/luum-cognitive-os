@@ -34,7 +34,7 @@ The Cognitive OS maintains its own state for many concepts that Claude Code also
 | Session memory | Engram `session_summary` | `~/.claude/memory/` |
 | Skill catalog | `skills/CATALOG.md` + skill_router | Native skill system |
 
-This is intentional duplication per ADR-008 (multi-tool support). If we used Claude Code's native APIs directly, the OS would only work in Claude Code and break in Codex/Gemini/Cursor/Windsurf.
+This is intentional duplication per ADR-008 (multi-tool support). If we used Claude Code's native APIs directly, the OS would only work in Claude Code and break in Codex/Gemini/Cursor/Devin.
 
 However, the duplication has a cost: users running in Claude Code don't see our OS-managed state in the native Task panel, TodoWrite UI, or memory browser. It feels disconnected.
 
@@ -44,7 +44,7 @@ However, the duplication has a cost: users running in Claude Code don't see our 
 
 Specifically:
 1. `.cognitive-os/` directory remains the canonical state (works in any tool)
-2. For each supported provider (Claude/Codex/Gemini/Cursor/Windsurf), implement an adapter that:
+2. For each supported provider (Claude/Codex/Gemini/Cursor/Devin), implement an adapter that:
    - Reads from our canonical state
    - Syncs relevant pieces to the provider's native APIs/UIs
    - One-way sync: our state → provider UI (provider UI changes don't override our state)
@@ -82,7 +82,7 @@ Specifically:
 - Provider APIs can evolve independently — we only update the adapter
 
 ### Negative
-- Need to implement 5 adapters (Claude/Codex/Gemini/Cursor/Windsurf)
+- Need to implement 5 adapters (Claude/Codex/Gemini/Cursor/Devin)
 - Each provider API change requires adapter update
 - Slight state sync overhead (our state → provider UI)
 

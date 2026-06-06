@@ -43,8 +43,8 @@ hosts:
     config_path: .cursor/mcp.json
     key_path: mcpServers.cos
     supported: true
-  windsurf:
-    config_path: .windsurf/mcp_config.json
+  devin:
+    config_path: .devin/mcp_config.json
     key_path: mcpServers.cos
     supported: true
 hard_rules:

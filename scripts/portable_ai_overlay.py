@@ -28,12 +28,12 @@ CONTEXT_SCHEMA_VERSION = "portable-ai-context.v1"
 PRIMITIVE_SCHEMA_VERSION = "portable-ai-primitive.v1"
 PROFILE_SCHEMA_VERSION = "portable-ai-profile.v1"
 ADAPTER_SCHEMA_VERSION = "portable-ai-adapter.v1"
-DEFAULT_HARNESSES = ["claude", "codex", "cursor", "windsurf", "vscode-copilot", "kiro", "opencode", "shell-ci"]
+DEFAULT_HARNESSES = ["claude", "codex", "cursor", "devin", "vscode-copilot", "kiro", "opencode", "shell-ci"]
 ADAPTER_DIR_NAMES = {
     "claude": "claude-code",
     "codex": "codex",
     "cursor": "cursor",
-    "windsurf": "windsurf",
+    "devin": "devin",
     "vscode-copilot": "copilot",
     "kiro": "kiro",
     "opencode": "opencode",

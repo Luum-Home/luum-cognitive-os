@@ -4,7 +4,7 @@
   "tool_input": {
     "command": "rm -rf /tmp/data"
   },
-  "session_id": "windsurf-sess-xyz789",
+  "session_id": "devin-sess-xyz789",
   "cascade_context": {
     "workspace": "/workspace/project",
     "active_file": "main.go"

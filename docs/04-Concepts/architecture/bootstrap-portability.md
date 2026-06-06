@@ -205,7 +205,7 @@ entry point for consumer-facing rule files: `lib/adapter_compile.py`,
 `scripts/cos-adapter-compile`, and `cos adapters compile`. The first slice
 preserves fidelity and delegates writes to existing harness drivers. Future work
 can broaden the backends for native files such as `AGENTS.md` bounded blocks,
-`.cursor/rules/*.mdc`, Copilot instructions, Windsurf rules, and Aider
+`.cursor/rules/*.mdc`, Copilot instructions, Devin rules, and Aider
 conventions without flattening all projection fidelity into generic
 instructions.
 

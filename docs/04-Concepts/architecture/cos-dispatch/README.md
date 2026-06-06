@@ -15,7 +15,7 @@ Additionally, hooks are configured via Claude Code's `.claude/settings.json`, cr
 A single Go binary (`cos-dispatch`) that:
 
 1. Replaces N process spawns with 1 process per hook event
-2. Abstracts across providers (Claude Code, Codex, Gemini CLI, Cursor, Windsurf)
+2. Abstracts across providers (Claude Code, Codex, Gemini CLI, Cursor, Devin)
 3. Adds a Transformer pipeline for hooks that modify input/output
 4. Tracks execution patterns and auto-generates validators from recurring issues
 
@@ -25,7 +25,7 @@ Inspired by [klaudiush](https://github.com/smykla-skalski/klaudiush) (MIT, Go, 7
 
 5 of 7 AI coding tools share the same hook protocol:
 
-| Feature | Claude Code | Codex | Gemini CLI | Cursor | Windsurf | Continue | OpenCode |
+| Feature | Claude Code | Codex | Gemini CLI | Cursor | Devin | Continue | OpenCode |
 |---------|-------------|-------|------------|--------|----------|----------|----------|
 | Shell command hooks | Yes | Yes | Yes | Yes | Yes | Yes | No (JS) |
 | JSON stdin | Yes | Yes | Yes | Yes | Yes | Yes | No |
@@ -49,7 +49,7 @@ Differences are trivial: event names (`PreToolUse` vs `BeforeTool` vs `beforeShe
 |  | codex     |    |   redactor |    |   + preds |    | codex    | |
 |  | gemini    |    | symlink-   |    |           |    | gemini   | |
 |  | cursor    |    |   resolver |    | Sequential|    | cursor   | |
-|  | windsurf  |    |            |    | Parallel  |    | windsurf | |
+|  | devin  |    |            |    | Parallel  |    | devin | |
 |  +-----------+    +-----+------+    | Executor  |    +----+-----+ |
 |       |                 |           +-----+-----+         |      |
 |       |                 |                 |               |      |
@@ -116,7 +116,7 @@ internal/
   dispatcher/                      # Core orchestrator
   validator/                       # Validator interface, Registry, predicates
   transformer/                     # Transformer interface, pipeline
-  provider/                        # Provider adapters (claude, codex, gemini, cursor, windsurf)
+  provider/                        # Provider adapters (claude, codex, gemini, cursor, devin)
   executor/                        # Sequential + Parallel executors with category pools
   plugin/                          # Bash plugin loader and adapter
   pattern/                         # Pattern tracker, detector, auto-generator
@@ -148,7 +148,7 @@ generated/                         # Auto-generated validators/transformers
 | 2. Parallel + Providers | 3 | 5 | Executor, Codex + Gemini adapters | **DONE** |
 | 3. Native Validators | 4-5 | 11 | Port 17 hooks → Go (6 of 17 done, rest as plugins) | **DONE (partial, acceptable)** |
 | 4. Pattern Tracking | 6 | 7 | SQLite tracker + detector with 3 of 6 pattern types | **DONE (partial)** |
-| 5. Auto-Gen + Providers | 7-8 | 8 | Generator, feedback, Cursor + Windsurf, remaining 3 detectors | Pending |
+| 5. Auto-Gen + Providers | 7-8 | 8 | Generator, feedback, Cursor + Devin, remaining 3 detectors | Pending |
 | **Total** | **8** | **39** | ~80% effort complete as of 2026-04-16 | |
 
 ## Related Documents
@@ -178,4 +178,4 @@ generated/                         # Auto-generated validators/transformers
 - [Codex Hooks docs](https://developers.openai.com/codex/hooks)
 - [Gemini CLI Hooks](https://geminicli.com/docs/hooks/)
 - [Cursor Hooks](https://cursor.com/docs/hooks)
-- [Windsurf Cascade Hooks](https://docs.windsurf.com/windsurf/cascade/hooks)
+- [Devin Cascade Hooks](https://docs.devin.com/devin/cascade/hooks)

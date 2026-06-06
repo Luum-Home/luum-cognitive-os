@@ -15,6 +15,6 @@ def test_mcp_registration_manifest_declares_hosts_and_otel_attrs() -> None:
     assert data["server"]["transport"] == "stdio"
     assert set(data["server"]["transports"]) == {"stdio", "streamable-http"}
     assert data["server"]["transports"]["streamable-http"]["trust_pin_required"] is True
-    assert {"claude-code", "codex", "cursor", "windsurf"} <= set(data["hosts"])
+    assert {"claude-code", "codex", "cursor", "devin"} <= set(data["hosts"])
     attrs = set(data["server"]["otel"]["attributes"])
     assert {"mcp.server.name", "mcp.tool.name", "mcp.transport", "mcp.response.error_code"} <= attrs

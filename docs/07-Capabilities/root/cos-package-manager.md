@@ -22,7 +22,7 @@
 
 ### Problem
 
-AI coding agents (Claude Code, Cursor, Windsurf, Cline) use skills, rules, hooks, and templates to extend their capabilities. Today, sharing these agentic primitives means copy-pasting files between repos. There is no versioning, no dependency resolution, no quality assurance, and no discovery mechanism.
+AI coding agents (Claude Code, Cursor, Devin, Cline) use skills, rules, hooks, and templates to extend their capabilities. Today, sharing these agentic primitives means copy-pasting files between repos. There is no versioning, no dependency resolution, no quality assurance, and no discovery mechanism.
 
 ### Solution
 
@@ -32,7 +32,7 @@ AI coding agents (Claude Code, Cursor, Windsurf, Cline) use skills, rules, hooks
 
 | Principle | What It Means |
 |-----------|---------------|
-| **IDE-agnostic** | Packages work for Claude Code today. The manifest format is extensible to Cursor, Windsurf, Cline, and future IDEs via the `platform.ide` field. |
+| **IDE-agnostic** | Packages work for Claude Code today. The manifest format is extensible to Cursor, Devin, Cline, and future IDEs via the `platform.ide` field. |
 | **Go-style naming** | Package identity uses domain-based paths (`github.com/luum/safety-mesh`) like Go modules. No central authority assigns names. |
 | **Scoped aliases** | For ergonomics, `@luum/safety-mesh` resolves to `github.com/luum/safety-mesh` via a centralized index. Both forms are valid. |
 | **Coexistence** | Installed packages live in namespaced subdirectories (`cos/@org/pkg/`) and never overwrite user-authored files. |
@@ -493,7 +493,7 @@ platform:
       version: ">=1.6"
     - name: "git"
       version: ">=2.30"
-  # IDE compatibility. Values: claude-code, cursor, windsurf, cline
+  # IDE compatibility. Values: claude-code, cursor, devin, cline
   ide:
     - claude-code
 
@@ -1710,7 +1710,7 @@ Follow semver 2.0:
 | **No sandboxed script execution** | Post-install scripts run with the user's permissions. | Scripts are restricted by convention (only modify `cos/` subdirectories). Future: chroot/container sandbox. |
 | **No automatic hook ordering** | When multiple packages install hooks for the same event, cos appends in install order. It does not resolve priority. | User can manually reorder hooks in `settings.json`. |
 | **No rollback on failed install** | If installation fails midway (e.g., postinstall script fails), partial files may remain. | Run `cos uninstall` to clean up. Future: transactional installs. |
-| **No cross-IDE package format** | Packages target Claude Code (`.claude/` directory structure). Cursor/Windsurf support requires adaptation layers. | Use `platform.ide` field to declare compatibility. Adapter skills can translate. |
+| **No cross-IDE package format** | Packages target Claude Code (`.claude/` directory structure). Cursor/Devin support requires adaptation layers. | Use `platform.ide` field to declare compatibility. Adapter skills can translate. |
 | **No signed packages** | No cryptographic package signing (no GPG, Sigstore, etc.). | Integrity verification via SHA-256 hashes in `cos.lock`. Signing is a future enhancement. |
 | **No dependency vendoring** | Unlike Go's `vendor/`, cos does not support vendoring dependencies into the project. | Lock file ensures reproducibility. Cache serves as local copy. |
 | **No workspace dependency hoisting** | In workspaces, each member gets its own copy of shared dependencies. | Shared dependencies are declared once but installed per-member. Storage is cheap for text files. |
@@ -1731,7 +1731,7 @@ Follow semver 2.0:
 |-------------|-------------|
 | Dedicated registry server (REST API) | Phase 4+ |
 | Package signing (Sigstore) | Phase 4+ |
-| IDE adapters (Cursor, Windsurf) | Phase 4+ |
+| IDE adapters (Cursor, Devin) | Phase 4+ |
 | Dependency vendoring | Phase 6+ |
 | Automatic conflict resolution | Phase 6+ |
 | Transactional installs (rollback on failure) | Phase 6+ |
@@ -1752,7 +1752,7 @@ Every AI coding tool invented its own format for rules, skills, and configuratio
 | `GEMINI.md` | Gemini CLI | Instructions file |
 | `AGENTS.md` | OpenAI Codex CLI | Instructions file |
 | `.cursorrules` / `.cursor/rules/` | Cursor | Rules dir/file |
-| `.windsurfrules` | Windsurf | Single file |
+| `.devinrules` | Devin | Single file |
 | `.clinerules` | Cline | Single file |
 | `.rules` | Trae | Rules files |
 | `.roo/rules-{mode}/` | Roo Code | Mode-scoped dirs |
@@ -1761,7 +1761,7 @@ Every AI coding tool invented its own format for rules, skills, and configuratio
 | `WARP.md` | Warp | Instructions file |
 | `.github/copilot-instructions.md` | GitHub Copilot | Instructions file |
 
-No two tools use the same format. A skill written for Claude Code doesn't work in Cursor. A hook written for Gemini CLI doesn't work in Windsurf.
+No two tools use the same format. A skill written for Claude Code doesn't work in Cursor. A hook written for Gemini CLI doesn't work in Devin.
 
 ### The Solution: cos as Transpiler
 
@@ -1775,7 +1775,7 @@ cos-package.yaml (universal source)
           ├── .claude/settings.json  (Claude Code hooks)
           ├── GEMINI.md              (Gemini CLI)
           ├── .cursor/rules/         (Cursor)
-          ├── .windsurfrules         (Windsurf)
+          ├── .devinrules         (Devin)
           ├── .clinerules            (Cline)
           ├── AGENTS.md              (Codex CLI)
           ├── .roo/rules-code/       (Roo Code)
@@ -1785,9 +1785,9 @@ cos-package.yaml (universal source)
 
 ### What Gets Transpiled
 
-| cos-package.yaml section | Claude Code | Cursor | Windsurf | Gemini CLI |
+| cos-package.yaml section | Claude Code | Cursor | Devin | Gemini CLI |
 |---|---|---|---|---|
-| `exports.rules` | `.claude/rules/cos/` | `.cursor/rules/` | Appended to `.windsurfrules` | Referenced in `GEMINI.md` |
+| `exports.rules` | `.claude/rules/cos/` | `.cursor/rules/` | Appended to `.devinrules` | Referenced in `GEMINI.md` |
 | `exports.hooks` | `settings.json` hooks | Not supported | Cascade Hooks (partial) | `settings.json` hooks |
 | `exports.skills` | `.claude/commands/` | Not supported | Not supported | Not supported |
 | `dependencies` | Resolved by cos | Resolved by cos | Resolved by cos | Resolved by cos |
@@ -1800,7 +1800,7 @@ When `cos install` runs, it detects which IDE(s) are present and generates the a
 | Tier | What gets generated | IDEs |
 |---|---|---|
 | **Full** | Rules + hooks + skills + MCP | Claude Code, Gemini CLI |
-| **Rules + MCP** | Rules only (no hooks) + MCP config | Cursor, Copilot CLI, Windsurf, Cline |
+| **Rules + MCP** | Rules only (no hooks) + MCP config | Cursor, Copilot CLI, Devin, Cline |
 | **Rules only** | Rules converted to tool-specific format | Aider, Trae, Roo Code, Continue.dev, Augment |
 | **None** | Warning: "this tool doesn't support external rules" | Devin, Replit, Bolt.new |
 
@@ -1812,7 +1812,7 @@ $ cos install @luum/safety-mesh
 Detecting IDEs...
   ✓ Claude Code (.claude/ found)
   ✓ Cursor (.cursor/ found)
-  ✗ Windsurf (not detected)
+  ✗ Devin (not detected)
 
 Installing @luum/safety-mesh v1.0.0...
   → .claude/rules/cos/safety-mesh/   (13 rules)

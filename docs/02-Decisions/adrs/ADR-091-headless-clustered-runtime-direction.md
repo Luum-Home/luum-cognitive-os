@@ -72,7 +72,7 @@ Cognitive OS will evolve toward a portable engineering-agent runtime with two
 explicit modes:
 
 1. **Local harness runtime** — the current mode, driven by local tool harnesses
-   such as Codex, Claude Code, OpenCode, Cursor, Windsurf, and similar hosts.
+   such as Codex, Claude Code, OpenCode, Cursor, Devin, and similar hosts.
 2. **Headless runtime** — a future mode where Cognitive OS runs without an
    interactive developer harness and can accept tasks from queues, CI, tickets,
    bug reports, or product-building workflows.

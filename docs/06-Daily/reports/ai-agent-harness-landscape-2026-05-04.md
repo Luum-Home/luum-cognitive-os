@@ -73,7 +73,7 @@ These candidates have enough official documentation to justify backlog tracking,
 | MiniMax Mini-Agent / mmx-cli | provider tools + agent sample | `mmx-cli`, Mini-Agent, MCP/skills signals | provider/tooling candidate, not yet coding-harness projection |
 | DeepSeek | provider | official guide integrates DeepSeek into existing coding agents | provider-only until first-party coding harness appears |
 | Google Antigravity | IDE/agent | already tracked as planned, but local projection remains unsigned here | keep planned/none |
-| Windsurf | IDE agent | already tracked as planned; needs current official rules/MCP verification before implementation | planned structural candidate |
+| Devin | IDE agent | already tracked as planned; needs current official rules/MCP verification before implementation | planned structural candidate |
 | Trae | IDE agent | MCP and `.rules` signals exist, but official syntax maturity is uncertain | research candidate |
 
 ## Gaps found versus the previous repo list

@@ -265,7 +265,7 @@ native `/recap` UI shows the COS-managed work alongside its native event log.
 
 Sync direction is one-way: this skill writes the canonical state, the
 adapter only reads. /recap output never overwrites COS files. Other
-providers (Codex/Gemini/Cursor/Windsurf) can ship their own adapters
+providers (Codex/Gemini/Cursor/Devin) can ship their own adapters
 against the same canonical artifacts.
 
 ## When to Use This Skill

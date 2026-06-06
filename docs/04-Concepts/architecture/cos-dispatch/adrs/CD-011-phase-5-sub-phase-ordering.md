@@ -23,7 +23,7 @@ Insert a new sub-phase 5.0 before 5.1, dedicated to unblocking end-to-end data f
 | 5.1 | Complete detectors (FalsePositive, MissingCoverage, SequenceCorrelation) |
 | 5.2 | Generator core (Go-only per ADR-009) |
 | 5.3 | Review CLI + `cos-dispatch` subcommand refactor per ADR-008 |
-| 5.4 | Cursor and Windsurf provider hardening (building on ADR-005) |
+| 5.4 | Cursor and Devin provider hardening (building on ADR-005) |
 | 5.5 | Final E2E verification |
 
 ## Alternatives Considered

@@ -58,7 +58,7 @@ def build_plan(project_dir: Path, host: str | None = None, transport: str = "std
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--project-dir", default=str(ROOT))
-    parser.add_argument("--host", choices=["claude-code", "codex", "cursor", "windsurf"])
+    parser.add_argument("--host", choices=["claude-code", "codex", "cursor", "devin"])
     parser.add_argument("--transport", choices=["stdio", "streamable-http"], default="stdio")
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args()

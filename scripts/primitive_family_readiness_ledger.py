@@ -48,7 +48,7 @@ CONSUMER_PATTERNS = [
     ".claude/**/*.json",
     ".codex/**/*.json",
     ".cursor/**/*.json",
-    ".windsurf/**/*.json",
+    ".devin/**/*.json",
     "manifests/**/*.yaml",
     "manifests/**/*.json",
     "AGENTS.md",
@@ -122,7 +122,7 @@ def classify_consumer(root: Path, path: Path) -> str:
         return "script"
     if rel.startswith(".github/workflows/"):
         return "workflow"
-    if rel.startswith((".claude/", ".codex/", ".cursor/", ".windsurf/", "manifests/")) or rel in {"AGENTS.md", "README.md", "cognitive-os.yaml"}:
+    if rel.startswith((".claude/", ".codex/", ".cursor/", ".devin/", "manifests/")) or rel in {"AGENTS.md", "README.md", "cognitive-os.yaml"}:
         return "config"
     if rel.startswith("agents/"):
         return "agent"
@@ -179,7 +179,7 @@ def classify_role(root: Path, family: str, path: Path, lifecycle: dict[str, Any]
             return "memory-lifecycle", "lifecycle" if lifecycle else "heuristic:text", "high" if lifecycle else "medium"
         if any(token in text for token in ("metric", "timing", "statusline", "telemetry", "observability")):
             return "observability", "lifecycle" if lifecycle else "heuristic:text", "high" if lifecycle else "medium"
-        if any(token in text for token in ("claude", "codex", "cursor", "windsurf", "harness", "driver")):
+        if any(token in text for token in ("claude", "codex", "cursor", "devin", "harness", "driver")):
             return "driver-specific", "lifecycle" if lifecycle else "heuristic:text", "high" if lifecycle else "medium"
         return "runtime-safety", "lifecycle" if lifecycle else "default", "high" if lifecycle else "medium"
     if family == "skills":
@@ -195,7 +195,7 @@ def classify_role(root: Path, family: str, path: Path, lifecycle: dict[str, Any]
     if family == "rules":
         if any(token in text for token in ("hook-enforced", "enforced by", "pretooluse", "posttooluse", "sessionstart", "stop hook")):
             return "hook-enforced", "heuristic:text", "medium"
-        if any(token in text for token in ("claude", "codex", "cursor", "windsurf", "harness", "ide")):
+        if any(token in text for token in ("claude", "codex", "cursor", "devin", "harness", "ide")):
             return "driver-specific", "heuristic:text", "medium"
         if any(token in text for token in ("adr", "doctrine", "architecture", "decision", "policy")):
             return "doctrine", "heuristic:text", "medium"

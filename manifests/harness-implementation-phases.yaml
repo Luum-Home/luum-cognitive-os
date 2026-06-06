@@ -4,7 +4,7 @@ phase_order:
 - ratchet-baseline
 - structural-instruction-harnesses
 - shell-ci-formal-harness
-- qwen-windsurf-kimi-structural
+- qwen-devin-kimi-structural
 - provider-hosted-surfaces
 - account-backed-runtime-proof
 phases:
@@ -47,10 +47,10 @@ phases:
     - command_smoke_tests
     implemented_harnesses:
     - shell-ci
-  qwen-windsurf-kimi-structural:
+  qwen-devin-kimi-structural:
     status: in_progress
     candidate_harnesses:
-    - windsurf
+    - devin
     acceptance:
     - primary_docs_confirm_project_local_config
     - temp_project_projection_driver
@@ -88,7 +88,7 @@ phases:
     - qwen-code
     - vscode-copilot
     - warp
-    - windsurf
+    - devin
     - zed-ai
     acceptance:
     - optional_manual_runtime_smoke

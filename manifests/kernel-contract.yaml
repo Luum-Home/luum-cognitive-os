@@ -26,8 +26,8 @@ compatibility_layer:
       adapter_path: internal/provider/gemini.go
     - name: cursor
       adapter_path: internal/provider/cursor.go
-    - name: windsurf
-      adapter_path: internal/provider/windsurf.go
+    - name: devin
+      adapter_path: internal/provider/devin.go
   gateways:
     - name: bifrost
       adapter_path: lib/gateway_selector.py

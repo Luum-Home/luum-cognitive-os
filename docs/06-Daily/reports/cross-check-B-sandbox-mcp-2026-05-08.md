@@ -90,7 +90,7 @@ This is a reasonable subset; it is not critical debt.
 
 **Comparison with native Claude Code ToolSearch (visible in this same prompt):**
 - Claude Code exposes deferred tools in `<system-reminder>` with their names and a native `ToolSearch` tool that loads schemas via `select:`/keyword query. Already works, without our manifest.
-- Our code does NOT replace that — it complements it for cases where the provider is NOT Claude Code (Cursor, Windsurf, futures providers).
+- Our code does NOT replace that — it complements it for cases where the provider is NOT Claude Code (Cursor, Devin, futures providers).
 
 **Real delta over native ToolSearch:**
 1. **Manifest-driven policy** — `always_available`, `load_mode: eager|deferred`, `category` declared in YAML, not hardcoded in the client. Claude Code decides alone.
@@ -104,7 +104,7 @@ This is a reasonable subset; it is not critical debt.
 
 **Recommendation:**
 1. Keep `deferred_tool_loading.py` as a layer of governance multi-provider (is worth it).
-2. Document explicitly in ADR-236: "in Claude Code the module is a no-op (the host handles deferring); real value emerges when integrated with Cursor/Windsurf or an own MCP host".
+2. Document explicitly in ADR-236: "in Claude Code the module is a no-op (the host handles deferring); real value emerges when integrated with Cursor/Devin or an own MCP host".
 3. Do NOT publish the "85% reduction" without measuring. Run a test with/without manifest in Cursor (which has MCP native limited) and publish the real delta.
 4. Remove the "85%" from research if not measured or calibrate it.
 

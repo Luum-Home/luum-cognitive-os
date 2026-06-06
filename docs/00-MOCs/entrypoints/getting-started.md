@@ -526,8 +526,8 @@ Cognitive OS is designed for Claude Code but provides partial support for other 
 # For Cursor: creates .cursor/rules/ with individual rule files
 bash scripts/ide-bridge.sh cursor
 
-# For Windsurf: creates .windsurfrules with concatenated rules
-bash scripts/ide-bridge.sh windsurf
+# For Devin: creates .devinrules with concatenated rules
+bash scripts/ide-bridge.sh devin
 
 # For Aider: creates .aider.conf.yml with key conventions
 bash scripts/ide-bridge.sh aider

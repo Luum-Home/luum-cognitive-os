@@ -11512,7 +11512,7 @@
       "actionable_gaps": [],
       "claims": [
         "| 1. AGENTS.md generation | Generate from RULES-COMPACT.md | 1-2 days | Tier 3 coverage for 9+ tools |",
-        "| 2. Hook adapters (Cursor + Windsurf) | Config generators + event mapping | 3-4 days | Tier 2 coverage for 2 more tools |",
+        "| 2. Hook adapters (Cursor + Devin) | Config generators + event mapping | 3-4 days | Tier 2 coverage for 2 more tools |",
         "**Status**: Known git limitation. Claude Code issue anthropics/claude-code#27201 (closed without fix). The `hooks/worktree-submodule-fix.sh` SessionStart hook handles this automatically.",
         "Each feature has a graceful degradation: COS detects the tool via env vars and silently disables unsupported features rather than failing."
       ],
@@ -11551,7 +11551,7 @@
       "actionable_gaps": [],
       "claims": [
         "| Tier | Tools | COS Coverage | What Works |",
-        "2. **Write hook adapters for Cursor and Windsurf** — 6 tools with hooks = Tier 2 coverage"
+        "2. **Write hook adapters for Cursor and Devin** — 6 tools with hooks = Tier 2 coverage"
       ],
       "consumers": [
         "docs/02-Decisions/adrs/ADR-057-cross-harness-authoring-and-driver-projection.md",

@@ -21,10 +21,10 @@ def test_harness_phase_manifest_tracks_implemented_structural_harnesses() -> Non
     assert shell_ci["status"] == "done"
     assert shell_ci["implemented_harnesses"] == ["shell-ci"]
 
-    qwen_phase = phases["phases"]["qwen-windsurf-kimi-structural"]
+    qwen_phase = phases["phases"]["qwen-devin-kimi-structural"]
     assert qwen_phase["status"] == "in_progress"
     assert qwen_phase["implemented_harnesses"] == ["kimi-code", "qwen-code"]
-    assert qwen_phase["candidate_harnesses"] == ["windsurf"]
+    assert qwen_phase["candidate_harnesses"] == ["devin"]
 
 
 def test_implemented_harnesses_have_projection_commands_and_limitations() -> None:

@@ -1454,7 +1454,7 @@ b4f470f3736dc97d6c4a86ce2f57d9b3f8efbad9 2026-04-16 22:13:43 -0300 fix: restore 
 c0db69899e36802c08817f070cd828fc03373be3 2026-04-16 22:09:04 -0300 refactor: Sprint 2a — archive squads/agents + move declarative rules to docs/04-Concepts/patterns
 1e8a6fd2c8205bc6a137e5df38180ac592e55678 2026-04-16 22:08:00 -0300 fix: restore skill frontmatter + arena path + audit marker (post-revert recovery)
 682b0665092283504765f3e33d4c132bbcc72494 2026-04-16 21:06:00 -0300 fix: harness-gap systemic audit — 4 install scripts hardened
-ab3322cc61b270798a63806a14aaa3a3543203c6 2026-04-16 21:02:54 -0300 feat(cos-dispatch): Phase 5.4 Cursor/Windsurf provider hardening + flag semantics
+ab3322cc61b270798a63806a14aaa3a3543203c6 2026-04-16 21:02:54 -0300 feat(cos-dispatch): Phase 5.4 Cursor/Devin provider hardening + flag semantics
 d378506ac20859e8d61b3420347dc5966424f320 2026-04-16 20:50:57 -0300 fix: expose 126 COS skills to harness — install path correction
 3839e528b40c25830c3fd6c183aadeb2788fe935 2026-04-16 20:41:38 -0300 docs: add P0 entry for harness adoption gap (86 ghost skills)
 eb710a5d6b24cc7682f49e21b4a5ba1cfebf2f6e 2026-04-16 20:40:57 -0300 fixup(cos-dispatch): Phase 5.3 partial commit — add missing refactor files

@@ -108,7 +108,7 @@ go test ./... -count=1 -race
 | `internal/validator` | Validator interface + Registry + predicates |
 | `internal/validator/impl` | 6 ported hooks (rate-limiter, secret-detector, etc.) |
 | `internal/transformer` | Pre/post transformation pipeline |
-| `internal/provider` | 5 AI coding agent adapters (Claude/Codex/Gemini/Cursor/Windsurf) |
+| `internal/provider` | 5 AI coding agent adapters (Claude/Codex/Gemini/Cursor/Devin) |
 | `internal/executor` | Sequential + Parallel (CPU/IO/Git pools) |
 | `internal/config` | TOML config loader |
 | `internal/plugin` | Bash plugin adapter |

@@ -145,7 +145,7 @@ Ship `cos-dispatch` binary alongside existing hooks. No hooks removed yet.
 
 1. Generator implementation (template-based code generation)
 2. Feedback loop tracking
-3. Cursor + Windsurf provider adapters
+3. Cursor + Devin provider adapters
 4. `cos-dispatch review` CLI for generated artifact review
 5. Migrate Tier 5 hooks to CLAUDE.md rules
 6. Remove Tier 6 hooks (replaced by pattern tracker)

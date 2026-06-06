@@ -12,7 +12,7 @@
 
 ```toml
 [dispatch]
-provider = "auto"          # "auto", "claude", "codex", "gemini", "cursor", "windsurf"
+provider = "auto"          # "auto", "claude", "codex", "gemini", "cursor", "devin"
 parallel = true            # use parallel executor (vs sequential)
 log_level = "info"         # "debug", "info", "warn", "error"
 timeout_ms = 5000          # per-validator timeout
@@ -123,7 +123,7 @@ max_per_session = 3        # max artifacts generated per session
 cos-dispatch [flags]
 
 Flags:
-  --provider string     Override provider detection (claude|codex|gemini|cursor|windsurf)
+  --provider string     Override provider detection (claude|codex|gemini|cursor|devin)
   --config string       Path to config file (default: auto-discover)
   --event string        Event type override (for providers that don't include it in JSON)
   --log-level string    Log level (debug|info|warn|error)

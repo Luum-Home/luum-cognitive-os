@@ -102,7 +102,7 @@ Evidence anchors:
 ### 5. Harness/provider normalization
 
 Vanilla tools expose their own events and settings. COS can become valuable by
-normalizing capability contracts across Claude Code, Codex, Cursor, Windsurf, and
+normalizing capability contracts across Claude Code, Codex, Cursor, Devin, and
 CLI workers while being honest about degraded paths.
 
 Evidence anchors:

@@ -25,7 +25,7 @@
     "profiles/shell-ci.json",
     "profiles/vscode-copilot.json",
     "profiles/warp.json",
-    "profiles/windsurf.json",
+    "profiles/devin.json",
     "profiles/zed-ai.json"
   ],
   "canonical_source_of_truth": [

@@ -90,13 +90,13 @@ harnesses:
   - --default
   - --harness
   - cursor
-- id: windsurf
-  display_name: Windsurf
+- id: devin
+  display_name: Devin
   status: planned
   projection_mode: ide-rules-or-wrapper
   settings_paths:
-  - .windsurf/rules
-  - .windsurf/mcp.json
+  - .devin/rules
+  - .devin/mcp.json
   projected_surfaces:
   - rules
   - skills
@@ -106,7 +106,7 @@ harnesses:
   limitations:
   - Native lifecycle hook semantics are not signed.
   - Projection driver has not been implemented.
-  next_action: Define Windsurf settings/rules/MCP projection driver and temp-project
+  next_action: Define Devin settings/rules/MCP projection driver and temp-project
     proof.
 - id: vscode-copilot
   display_name: VS Code Copilot

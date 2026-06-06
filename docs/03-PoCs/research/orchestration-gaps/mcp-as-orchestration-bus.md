@@ -148,7 +148,7 @@ The registry itself is becoming a governance challenge — no centralized securi
 | **Cursor** | Native, mature | Polished IDE UX, 360K paying users, Agents Window | Teams wanting IDE experience |
 | **Cline** | Most mature community marketplace | Open-source, BYOK, human-in-loop approvals | Budget-conscious devs |
 | **Continue.dev** | Present but lightweight | Works with any LLM, VS Code + JetBrains | Devs wanting minimal autonomy |
-| **Windsurf** | Native | Parallel multi-agent sessions, Cascade Hooks | Teams needing parallel workstreams |
+| **Devin** | Native | Parallel multi-agent sessions, Cascade Hooks | Teams needing parallel workstreams |
 | **Codex (OpenAI)** | TOML config, clean scoping | Cloud sandbox execution, PR delivery | GPT-native teams |
 | **ChatGPT** | Apps SDK (announced 2025) | Widest consumer reach | Consumer/non-dev workflows |
 
@@ -267,7 +267,7 @@ The `hooks/mcp-scan.sh` hook is the enforcement point: it should fire on any `to
 **Priority order for implementation:**
 
 1. `cos_check_quality` — Runs the existing quality gate logic (prohibited terms, credential detection, TODOs, stubs) against a provided code snippet or path. Pure read. No external dependencies. Fast to implement.
-2. `cos_search_memory` — Wraps Engram's `mem_search` + `mem_get_observation` as a single MCP tool. Allows any Cursor/Cline/Windsurf user to query COS's cross-session memory without launching a full COS session.
+2. `cos_search_memory` — Wraps Engram's `mem_search` + `mem_get_observation` as a single MCP tool. Allows any Cursor/Cline/Devin user to query COS's cross-session memory without launching a full COS session.
 3. `cos_get_rules` — Returns relevant rules from the contextual rule index, given a task description. Allows non-COS agents to check governance rules before acting.
 4. `cos_status` — Reports COS installation health. Diagnostic tool; low risk, high visibility.
 5. `cos_check_credentials` (new, not yet in cos-package.yaml) — Wraps the `secret-audit` skill's detection logic. The most direct security value.

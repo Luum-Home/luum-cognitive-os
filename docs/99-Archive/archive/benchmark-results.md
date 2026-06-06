@@ -72,7 +72,7 @@ The closest equivalent to Cognitive OS is the stack you would need to build and 
 | BMAD v6 | Spec governance | Complementary — defines WHAT, COS defines HOW |
 | Builder Methods Agent OS (4.2K stars) | Standards management | Complementary — aligns agents, COS executes + heals |
 | OpenClaw (64K stars) | Personal AI assistant | Different domain — conversations, not code |
-| Aider / Codex / Cursor / Windsurf | Coding tools | COS can USE these as execution backends |
+| Aider / Codex / Cursor / Devin | Coding tools | COS can USE these as execution backends |
 | StackStorm / Rundeck | Infra automation | COS includes SRE protocol for this |
 | LangGraph / AutoGen / CrewAI | Agent frameworks | COS has squads + orchestration built-in |
 

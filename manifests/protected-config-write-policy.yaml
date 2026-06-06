@@ -9,7 +9,7 @@ protected_globs:
   - .claude/**
   - .codex/**
   - .cursor/**
-  - .windsurf/**
+  - .devin/**
   - .continue/**
   - mcp.json
   - .mcp/**

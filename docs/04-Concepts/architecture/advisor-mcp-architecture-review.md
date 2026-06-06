@@ -34,7 +34,7 @@ Commit `47d81773` added two advisor paths at the same time:
      Ollama.
    - The server logs cost estimates to
      `.cognitive-os/metrics/advisor-consultations.jsonl`.
-   - It was positioned as portable across Claude Code, Cursor, Windsurf, and
+   - It was positioned as portable across Claude Code, Cursor, Devin, and
      other MCP clients.
 
 The conflation is the root problem: "advisor" is an execution strategy, while

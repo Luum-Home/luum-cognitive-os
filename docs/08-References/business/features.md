@@ -316,7 +316,7 @@ Your investment in rules, skills, and memory is not tied to a single tool, but s
 | Codex | `native-lifecycle` with tool-coverage limits | Native lifecycle projection where Codex supports events; governed runner covers known gaps. |
 | OpenCode | `governed-wrapper-enforced` starter slice plus structural projection | `opencode.json` structural projection; selected primitives have signed `cos-primitive-guard.js` smoke evidence. |
 | Cursor / VS Code Copilot / Gemini CLI / Goose / Aider / Cline / Continue / Kilo / Zed / Qwen / Kimi and similar | `structural` | Project files, instructions, MCP placeholders, or config are generated; runtime enforcement is not claimed. |
-| Kiro / Windsurf / Google Antigravity and other planned hosts | `planned` | Product direction exists; no runtime support claim. |
+| Kiro / Devin / Google Antigravity and other planned hosts | `planned` | Product direction exists; no runtime support claim. |
 
 ---
 

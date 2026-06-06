@@ -28,7 +28,7 @@ source and does not claim runtime enforcement for structural harnesses.
 Examples:
   cos project --harness cursor
   cos project --harness claude --profile full
-  cos project --harness windsurf`,
+  cos project --harness devin`,
 	Args: cobra.NoArgs,
 	RunE: runProjectProjection,
 }

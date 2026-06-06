@@ -24,7 +24,7 @@ Observed shape:
 | Adapter format | Generated `adapter.json` plus README per harness; descriptive, not install scripts | `install.sh` scripts plus README per IDE; mutates native project files |
 | Source of truth | `manifests/primitive-contracts.yaml`, `manifests/primitive-lifecycle.yaml`, `manifests/harness-projection.yaml`, plus `hooks/`, `skills/`, `rules/`, `scripts/` | `.ai/primitives/*`, `.ai/context/*`, `.ai/scripts/*` |
 | Primitive count shape | Hundreds of catalogued lifecycle/script/hook rows; optimized for audit and fidelity proof | Dozens of human-sized primitives; optimized for direct agent use |
-| IDE output from `.ai/` itself | No direct native-file emission from `.ai/adapters/*`; emission lives in separate COS projection drivers | Yes: adapters write `.cursor/rules/*.mdc`, `.windsurfrules`, `.github/copilot-instructions.md`, `.codex/AGENTS.md`, etc. |
+| IDE output from `.ai/` itself | No direct native-file emission from `.ai/adapters/*`; emission lives in separate COS projection drivers | Yes: adapters write `.cursor/rules/*.mdc`, `.devinrules`, `.github/copilot-instructions.md`, `.codex/AGENTS.md`, etc. |
 | Main asset | Honest fidelity matrix and enforcement claims per harness | Working portability loop that a consumer repo can run and inspect |
 
 The difference is intentional, but it was under-documented. Cognitive OS is the
@@ -40,11 +40,11 @@ universal file:
 - OpenAI Codex loads `AGENTS.md` through a global/project/subdirectory instruction chain, with override precedence and size limits: <https://developers.openai.com/codex/guides/agents-md>.
 - Claude Code separates `CLAUDE.md`, `.claude/settings.json`, hooks, subagents, MCP, and skills with scoped configuration: <https://code.claude.com/docs/en/settings> and <https://code.claude.com/docs/en/skills>.
 - Cursor project rules live under `.cursor/rules/*.mdc` and can coexist with `AGENTS.md`: <https://docs.cursor.com/context/rules-for-ai>.
-- Windsurf distinguishes Memories, Rules, Workflows, Skills, and `AGENTS.md`, with `.windsurf/rules/*.md` as a workspace rules surface: <https://docs.windsurf.com/windsurf/cascade/memories>.
+- Devin distinguishes Memories, Rules, Workflows, Skills, and `AGENTS.md`, with `.devin/rules/*.md` as a workspace rules surface: <https://docs.devin.com/devin/cascade/memories>.
 - Continue local rules live under `.continue/rules`, while Hub rules are referenced separately: <https://docs.continue.dev/customize/rules>.
 - GitHub Copilot uses repository custom instructions such as `.github/copilot-instructions.md`: <https://docs.github.com/en/copilot/how-tos/custom-instructions/adding-repository-custom-instructions-for-github-copilot>.
 - The Linux Foundation / Agentic AI Foundation announcement describes `AGENTS.md` as an open project guidance standard and reports adoption across 60,000+ open-source projects and frameworks including Amp, Codex, Cursor, Devin, Factory, Gemini CLI, GitHub Copilot, Jules, and VS Code: <https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation>.
-- `rulesync`-style tools validate the single-source/multi-target compiler pattern: one canonical rules file can generate `AGENTS.md`, `CLAUDE.md`, `.cursor/rules/*.mdc`, `.github/copilot-instructions.md`, `GEMINI.md`, `.windsurfrules`, Aider config, and OpenCode/Codex-friendly outputs. Examples: <https://pypi.org/project/rulesync/> and <https://github.com/dyoshikawa/rulesync>.
+- `rulesync`-style tools validate the single-source/multi-target compiler pattern: one canonical rules file can generate `AGENTS.md`, `CLAUDE.md`, `.cursor/rules/*.mdc`, `.github/copilot-instructions.md`, `GEMINI.md`, `.devinrules`, Aider config, and OpenCode/Codex-friendly outputs. Examples: <https://pypi.org/project/rulesync/> and <https://github.com/dyoshikawa/rulesync>.
 - The `.agents` draft protocol is another convergence signal for keeping portable agent configuration separate from vendor-specific files: <https://dotagentsprotocol.com/>.
 - ACP separates editor-agent transport from the agent's internal primitive model: <https://agentclientprotocol.com/get-started/introduction>.
 
@@ -180,7 +180,7 @@ contracts when it is produced by Cognitive OS.
 - Add or extend tests that prove generated consumer `.ai` packages do not mutate
   canonical maintainer files.
 - Keep ACC language tied to `manifests/harness-projection.yaml` proof levels.
-- Avoid runtime-enforcement claims for Cursor, Copilot, Windsurf, Continue, and
+- Avoid runtime-enforcement claims for Cursor, Copilot, Devin, Continue, and
   other structural hosts until account-backed runtime smoke or native plugin
   adapters exist.
 

@@ -44,7 +44,7 @@ def test_repository_acc_pipeline_generates_report() -> None:
     assert payload["adapters"]["shell_ci_projection"]["status"] == "ok"
     assert payload["adapters"]["harness_coverage"]["status"] == "ok"
     assert payload["adapters"]["harness_coverage"]["summary"]["unclassified_gaps"] == 0
-    assert payload["adapters"]["shell_ci_projection"]["summary"]["commands"] == 15
+    assert payload["adapters"]["shell_ci_projection"]["summary"]["commands"] == 17
     assert payload["adapters"]["consumer_availability"]["summary"]["statuses"]["maintainer-only"] > 0
     assert payload["adapters"]["consumer_projection"]["summary"]["by_harness_profile"]["claude/default"] > 0
     assert payload["adapters"]["consumer_projection"]["summary"]["by_harness_profile"]["claude/full"] > 0
@@ -80,7 +80,7 @@ def test_harness_projection_manifest_declares_named_ides() -> None:
         "claude",
         "codex",
         "cursor",
-        "windsurf",
+        "devin",
         "vscode-copilot",
         "opencode",
         "google-antigravity",

@@ -1,4 +1,4 @@
-# Windsurf portable `.ai` adapter
+# Devin portable `.ai` adapter
 
 Schema: `portable-ai-adapter.v1`
 
@@ -8,17 +8,17 @@ It is declarative: native IDE file emission is delegated to governed harness pro
 
 ## Current projection
 
-- harness id: `windsurf`
+- harness id: `devin`
 - status: `planned`
 - proof level: `None`
 - projection mode: `ide-rules-or-wrapper`
 
 ## Settings paths
 
-- `.windsurf/rules`
-- `.windsurf/mcp.json`
+- `.devin/rules`
+- `.devin/mcp.json`
 
 ## Rule
 
-Read `.ai/profiles/windsurf.json` for declared fidelity before projecting primitives into this host.
+Read `.ai/profiles/devin.json` for declared fidelity before projecting primitives into this host.
 Structural advisory surfaces are not runtime enforcement.

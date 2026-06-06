@@ -178,7 +178,7 @@ func NewRegistry() *Registry {
             NewCodexProvider(),
             NewGeminiProvider(),
             NewCursorProvider(),
-            NewWindsurfProvider(),
+            NewDevinProvider(),
         },
         fallback: NewClaudeProvider(),
     }
@@ -211,7 +211,7 @@ func (r *Registry) Get(name hook.Provider) (Provider, bool) {
 // Codex:        CODEX_PROJECT_DIR (or similar)
 // Gemini CLI:   GEMINI_PROJECT_DIR, GEMINI_CWD
 // Cursor:       CURSOR_SESSION_ID (inferred from .cursor/ presence)
-// Windsurf:     WINDSURF_SESSION_ID (inferred from cascade context)
+// Devin:     DEVIN_SESSION_ID (inferred from cascade context)
 ```
 
 ## Pattern Detector (NEW)

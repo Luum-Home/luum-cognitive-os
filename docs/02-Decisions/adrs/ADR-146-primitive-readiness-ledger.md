@@ -142,7 +142,7 @@ Primitive readiness does not equal downstream project accessibility. The docs in
 - `skill-referenced-not-projectable`: rows used by skills but missing lifecycle/package/projection metadata, so downstream agents cannot assume access.
 - `so-local-only`: rows that should not be relied on from consumer projects unless a future install/projection path exports them.
 
-This keeps the ledger honest for VS Code/Copilot, Cursor, Windsurf, Google Antigravity, Claude Code, OpenAI Codex, OpenCode, and other IDE agents: a row can be documented and useful inside the SO repo while still being unavailable to consumer-project agents.
+This keeps the ledger honest for VS Code/Copilot, Cursor, Devin, Google Antigravity, Claude Code, OpenAI Codex, OpenCode, and other IDE agents: a row can be documented and useful inside the SO repo while still being unavailable to consumer-project agents.
 
 ## 2026-05-04 Family Ledger and Consumer Projection Update
 

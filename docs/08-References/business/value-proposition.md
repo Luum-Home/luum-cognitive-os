@@ -46,7 +46,7 @@ Developer --> Cognitive OS --> AI Assistant (any)
 
 7. **Enterprise security** — Sensitive data detection, dangerous action blocking, complete audit trail. Agents cannot access production, leak secrets, or execute destructive commands.
 
-8. **Works with any tool — and ships its own MCP server** — You're not locked into one IDE. Compatible with the 7 most popular editors. The OS itself exposes core primitives (memory search, quality check, status, secret scan) over MCP — every MCP-aware tool (Cursor, Windsurf, Cline, Codex, Claude Code) gets governance access without per-harness adapters.
+8. **Works with any tool — and ships its own MCP server** — You're not locked into one IDE. Compatible with the 7 most popular editors. The OS itself exposes core primitives (memory search, quality check, status, secret scan) over MCP — every MCP-aware tool (Cursor, Devin, Cline, Codex, Claude Code) gets governance access without per-harness adapters.
 
 9. **Manifest-driven governance** — Every primitive declares a schema-versioned manifest under `manifests/`. License audit, secret audit, adoption truth, history sanitization, retry contract, session budget, handoff protocol, sandbox tiers — all canonical CLIs `cos <domain> <verb> --json [--strict]` reading from a single source of truth. Auditable, machine-readable, no policy hidden in shell scripts.
 
@@ -114,7 +114,7 @@ The honest comparison is against the stack you would need to build and maintain 
 | Tool | Category | Relationship |
 |---|---|---|
 | BMAD v6 | Spec governance | Complementary — defines WHAT, COS defines HOW |
-| Aider / Codex / Cursor / Windsurf | Coding tools | COS can USE these as execution backends |
+| Aider / Codex / Cursor / Devin | Coding tools | COS can USE these as execution backends |
 | StackStorm / Rundeck | Infra automation | COS includes SRE protocol for this |
 | LangGraph / AutoGen / CrewAI | Agent frameworks | COS has squads + orchestration built-in |
 

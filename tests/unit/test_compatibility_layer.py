@@ -47,7 +47,7 @@ def test_inventory_distinguishes_implemented_and_documented_surfaces():
     harness_names = {item["name"] for item in inventory["harness_adapters"]}
     documented_names = {item["name"] for item in inventory["documented_targets"]}
 
-    assert {"claude", "codex", "gemini", "cursor", "windsurf"} <= provider_names
+    assert {"claude", "codex", "gemini", "cursor", "devin"} <= provider_names
     assert {"claude_code", "aider"} <= harness_names
     assert {"opencode", "continue", "cline"} <= documented_names
 

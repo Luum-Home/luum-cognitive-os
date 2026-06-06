@@ -1,4 +1,4 @@
-# Phase 5.4 — Cursor/Windsurf Provider Hardening + Dispatch Flags
+# Phase 5.4 — Cursor/Devin Provider Hardening + Dispatch Flags
 
 ## What Changed
 
@@ -20,21 +20,21 @@ under `"cursor_model_id"` for downstream validators.
 **ProjectDir**: populated from `CURSOR_PROJECT_DIR`; falls back to
 `CLAUDE_PROJECT_DIR` for sessions where both runtimes are active.
 
-### 2. Windsurf provider (`internal/provider/windsurf.go`)
+### 2. Devin provider (`internal/provider/devin.go`)
 
-**Vendor signal**: `WINDSURF_SESSION_ID` (primary) or `CASCADE_CONTEXT` (secondary).
+**Vendor signal**: `DEVIN_SESSION_ID` (primary) or `CASCADE_CONTEXT` (secondary).
 
 **Event mapping**: `PreCascadeAction` / `PreToolUse` → `before_tool`;
 `PostCascadeAction` / `PostToolUse` → `after_tool`.
 
-**Response envelope**: `{"cascadeDecision":"allow"|"deny","reason":"..."}` — Windsurf
+**Response envelope**: `{"cascadeDecision":"allow"|"deny","reason":"..."}` — Devin
 Cascade uses `cascadeDecision` not `permissionDecision`.
 
 **Cascade context**: The `cascade_context` object from the payload (containing
 `workspace` and `active_file`) is preserved in `Context.Metadata` under
 `"cascade_workspace"` and `"cascade_active_file"`.
 
-**ProjectDir**: populated from `WINDSURF_PROJECT_DIR` (env var, highest priority),
+**ProjectDir**: populated from `DEVIN_PROJECT_DIR` (env var, highest priority),
 falling back to `cascade_context.workspace` when available.
 
 ### 3. Validator Registry (`internal/validator/registry.go`)
@@ -51,7 +51,7 @@ When `--dry-run` is set:
 - The replacement response includes `"dryRun":true` and `"dryRunDeniedReason"` for
   observability.
 - Handles all three vendor envelopes: `permissionDecision` (Claude/Codex/Gemini),
-  `action` (Cursor), `cascadeDecision` (Windsurf).
+  `action` (Cursor), `cascadeDecision` (Devin).
 - Exit code is always 0 when `--dry-run` is active.
 
 ### 5. `--disable NAME1,NAME2` flag (`cmd/cos-dispatch/dispatch.go`)
@@ -66,15 +66,15 @@ When `--disable` is set:
 ## Test Artifacts
 
 - `internal/provider/testdata/providers/` — fixture JSON payloads and golden
-  response files for Cursor and Windsurf.
+  response files for Cursor and Devin.
 - `internal/provider/cursor_test.go` — unit tests for Detect, Parse, BuildResponse.
-- `internal/provider/windsurf_test.go` — unit tests for Detect, Parse, BuildResponse.
+- `internal/provider/devin_test.go` — unit tests for Detect, Parse, BuildResponse.
 - `cmd/cos-dispatch/dispatch_test.go` — integration tests for `--dry-run` and
   `--disable` (including CSV parsing, multi-envelope coverage, full dispatch path).
 
 ## Decisions
 
-- **Cursor/Windsurf use different response envelopes** than Claude/Codex/Gemini.
+- **Cursor/Devin use different response envelopes** than Claude/Codex/Gemini.
   This is the correct ADR-005 interpretation: vendor quirks are handled per-adapter.
   The pre-existing `TestAllProviders_BuildResponse_Format` test was wrong for these
   two providers and has been replaced with per-provider assertions.

@@ -14,7 +14,7 @@ Claude Code's native event log.
 One-way sync: COS -> Claude Code UI. /recap output never overwrites the COS
 state files; the .cognitive-os/sessions/ directory remains the source of truth.
 
-When running under Codex/Gemini/Cursor/Windsurf, other adapters handle the
+When running under Codex/Gemini/Cursor/Devin, other adapters handle the
 same role. This module is specific to Claude Code.
 
 Used by hooks/recap-sync.sh on the Stop event.

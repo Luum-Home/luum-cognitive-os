@@ -3636,10 +3636,10 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:adapters,claude,codex,cursor,gemini,implement,need,windsurf"
+        "terms:adapters,claude,codex,cursor,gemini,implement,need,devin"
       ],
       "inferred_status": "planned",
-      "item": "Need to implement 5 adapters (Claude/Codex/Gemini/Cursor/Windsurf)",
+      "item": "Need to implement 5 adapters (Claude/Codex/Gemini/Cursor/Devin)",
       "kind": "bullet",
       "line": 85,
       "next_action": "keep planned or add implementation proof when complete",
@@ -39266,10 +39266,10 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:cursor,each,malformed,negative,payloads,windsurf"
+        "terms:cursor,each,malformed,negative,payloads,devin"
       ],
       "inferred_status": "planned",
-      "item": "**Negative**: malformed Cursor and malformed Windsurf payloads each",
+      "item": "**Negative**: malformed Cursor and malformed Devin payloads each",
       "kind": "checkbox",
       "line": 116,
       "next_action": "keep planned or add implementation proof when complete",
@@ -42704,10 +42704,10 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:code,implemented,kimi,planned,progress,qwen,remains,windsurf"
+        "terms:code,implemented,kimi,planned,progress,qwen,remains,devin"
       ],
       "inferred_status": "done_weak_proof",
-      "item": "Status: in progress. Qwen Code and Kimi Code CLI are implemented; Windsurf remains planned.",
+      "item": "Status: in progress. Qwen Code and Kimi Code CLI are implemented; Devin remains planned.",
       "kind": "prose",
       "line": 69,
       "next_action": "add explicit test/workflow/proof link",
@@ -42821,10 +42821,10 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:confirmed,primary,project-local,projection,surface,windsurf"
+        "terms:confirmed,primary,project-local,projection,surface,devin"
       ],
       "inferred_status": "planned",
-      "item": "Windsurf project-local projection surface confirmed from primary docs.",
+      "item": "Devin project-local projection surface confirmed from primary docs.",
       "kind": "checkbox",
       "line": 105,
       "next_action": "keep planned or add implementation proof when complete",
@@ -46408,10 +46408,10 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:claude,codex,cursor,drivers,other,projection,verify,windsurf"
+        "terms:claude,codex,cursor,drivers,other,projection,verify,devin"
       ],
       "inferred_status": "planned",
-      "item": "Verify projection into Claude, Codex, Cursor, Windsurf, or other drivers.",
+      "item": "Verify projection into Claude, Codex, Cursor, Devin, or other drivers.",
       "kind": "checkbox",
       "line": 355,
       "next_action": "keep planned or add implementation proof when complete",
@@ -54180,7 +54180,7 @@
         "terms:autonomous,completed,compute,debugs,deploys,does,engineer,executes"
       ],
       "inferred_status": "done_weak_proof",
-      "item": "**What it does**: Autonomous AI software engineer. Plans, executes, debugs, deploys, monitors. Cloud-based IDE with parallel Devins. 83% more tasks completed per compute unit vs v1. Integrates with Windsurf IDE.",
+      "item": "**What it does**: Autonomous AI software engineer. Plans, executes, debugs, deploys, monitors. Cloud-based IDE with parallel Devins. 83% more tasks completed per compute unit vs v1. Integrates with Devin IDE.",
       "kind": "bullet",
       "line": 192,
       "next_action": "add explicit test/workflow/proof link",

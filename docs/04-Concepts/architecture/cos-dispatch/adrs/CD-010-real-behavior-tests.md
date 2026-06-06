@@ -34,7 +34,7 @@ Phase 5 is higher risk than Phase 4. It introduces:
   (per ADR-004, ADR-009).
 - **5.3** — `cos-dispatch review` subcommand with CLI-observable state
   transitions on the `enabled` column (per ADR-008).
-- **5.4** — Cursor and Windsurf provider adapters that must conform to the
+- **5.4** — Cursor and Devin provider adapters that must conform to the
   typed envelope contract (per ADR-005).
 - **5.5** — Final end-to-end: failure events → detected patterns → generated
   artifacts → human review → enabled.

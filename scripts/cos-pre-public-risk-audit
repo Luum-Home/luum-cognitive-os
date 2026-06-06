@@ -36,8 +36,8 @@ TOKEN_ENV_VARS = [
 ]
 
 PROVIDER_IDENTITY_RE = re.compile(
-    r"(?i)(^|[<\s])(?:claude|anthropic|codex|openai|qwen|gemini|copilot|cursor|windsurf)"
-    r"[^\n<>]*<[A-Z0-9._%+-]+@[A-Z0-9.-]*(?:anthropic|openai|google|github|cursor|windsurf|qwen)[A-Z0-9.-]*>"
+    r"(?i)(^|[<\s])(?:claude|anthropic|codex|openai|qwen|gemini|copilot|cursor|devin)"
+    r"[^\n<>]*<[A-Z0-9._%+-]+@[A-Z0-9.-]*(?:anthropic|openai|google|github|cursor|devin|qwen)[A-Z0-9.-]*>"
 )
 
 X_COS_RE = re.compile(r"^X-COS-(Origin|Session|Harness):", re.MULTILINE)

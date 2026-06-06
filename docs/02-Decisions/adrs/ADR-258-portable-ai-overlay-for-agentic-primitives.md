@@ -75,7 +75,7 @@ consumer-facing package:
     claude.json
     codex.json
     cursor.json
-    windsurf.json
+    devin.json
     copilot.json
     kiro.json
     opencode.json
@@ -83,7 +83,7 @@ consumer-facing package:
     claude-code/
     codex/
     cursor/
-    windsurf/
+    devin/
     copilot/
     kiro/
     opencode/
@@ -214,7 +214,7 @@ discussed.
 
 
 Projection consequence: the generated overlay is not enough by itself to make
-portability effective for a user opening Cursor, Windsurf, Copilot, Aider, or a
+portability effective for a user opening Cursor, Devin, Copilot, Aider, or a
 similar host. The first compiler entry point now exists as `lib/adapter_compile.py`,
 `scripts/cos-adapter-compile`, and `cos adapters compile`; it delegates native
 file writes to governed harness projection drivers and records fidelity-aware

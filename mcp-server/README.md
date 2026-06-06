@@ -1,6 +1,6 @@
 # Cognitive OS MCP Server
 
-Exposes Cognitive OS knowledge (Engram memory, task state, rules, metrics, quality checks) as MCP tools. This makes COS accessible from **any MCP-compatible editor** — VS Code, Cursor, Windsurf, and others — not just Claude Code.
+Exposes Cognitive OS knowledge (Engram memory, task state, rules, metrics, quality checks) as MCP tools. This makes COS accessible from **any MCP-compatible editor** — VS Code, Cursor, Devin, and others — not just Claude Code.
 
 ## Requirements
 
@@ -154,9 +154,9 @@ Add to your VS Code `settings.json`:
 
 Or configure via the Cline sidebar: click the MCP servers icon, then "Configure MCP Servers" to edit the JSON directly.
 
-### Windsurf
+### Devin
 
-Add to `~/.codeium/windsurf/mcp_config.json`:
+Add to `~/.codeium/devin/mcp_config.json`:
 
 ```json
 {

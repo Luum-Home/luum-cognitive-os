@@ -53,7 +53,7 @@ DRIVER_PATTERNS = (
     "claude",
     "codex",
     "cursor",
-    "windsurf",
+    "devin",
     "harness",
     "opencode",
     "antigravity",
@@ -148,7 +148,7 @@ def consumer_files(root: Path) -> list[Path]:
         ".claude/**/*.json",
         ".codex/**/*.json",
         ".cursor/**/*.json",
-        ".windsurf/**/*.json",
+        ".devin/**/*.json",
         "manifests/**/*.yaml",
         "manifests/**/*.json",
         "cognitive-os.yaml",
@@ -185,7 +185,7 @@ def classify_consumer(root: Path, path: Path) -> str:
         return "workflow"
     if rel.startswith("scripts/"):
         return "script"
-    if rel.startswith((".claude/", ".codex/", ".cursor/", ".windsurf/", "manifests/")) or rel in {
+    if rel.startswith((".claude/", ".codex/", ".cursor/", ".devin/", "manifests/")) or rel in {
         "cognitive-os.yaml",
         "AGENTS.md",
     }:

@@ -3,7 +3,7 @@
 # normalize-stdin.sh — Stdin normalization layer for Cognitive OS hooks
 #
 # Abstracts the JSON input format so hooks work across different AI coding
-# tools: Claude Code, Cursor, Windsurf, OpenCode, Kiro.
+# tools: Claude Code, Cursor, Devin, OpenCode, Kiro.
 #
 # Usage:
 #   source "$(dirname "$0")/_lib/normalize-stdin.sh"
@@ -15,7 +15,7 @@
 #   HOOK_TOOL_PROMPT    — Agent prompt (for Agent tools)
 #   HOOK_TOOL_DESC      — Agent description (for Agent tools)
 #   HOOK_RAW_INPUT      — Original raw stdin (for fallback / re-parsing)
-#   HOOK_SOURCE_TOOL    — Which IDE: claude-code, cursor, windsurf, opencode, kiro, unknown
+#   HOOK_SOURCE_TOOL    — Which IDE: claude-code, cursor, devin, opencode, kiro, unknown
 #
 # Helper functions:
 #   hook_get_field <jq_path> [default]  — extract a field from HOOK_RAW_INPUT
@@ -34,7 +34,7 @@
 #   --------------|----------------------|------------------|---------------
 #   Claude Code   | .tool_name           | .tool_input      | .tool_response
 #   Cursor        | .toolName            | .toolInput       | .toolOutput
-#   Windsurf      | .agent_action_name   | .tool_info       | .result
+#   Devin      | .agent_action_name   | .tool_info       | .result
 #   Kiro          | .tool_name           | .tool_input      | .tool_result
 #   OpenCode      | (JS plugin API)      | —                | —
 #   Unknown       | —                    | —                | —
@@ -114,8 +114,8 @@ if [ "$_HAS_JQ" = "true" ]; then
       (.toolInput.prompt // .toolInput.description // ""),
       (.toolInput.description // "")
     elif has("agent_action_name") then
-      # Windsurf
-      "windsurf",
+      # Devin
+      "devin",
       (.agent_action_name // ""),
       (if has("tool_info") then (.tool_info | tojson) else "{}" end),
       (.result // ""),
@@ -172,7 +172,7 @@ else
     HOOK_TOOL_NAME=$(echo "$HOOK_RAW_INPUT" | grep -o '"toolName"[[:space:]]*:[[:space:]]*"[^"]*"' \
       | head -1 | sed 's/.*"toolName"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/')
   elif echo "$HOOK_RAW_INPUT" | grep -q '"agent_action_name"'; then
-    HOOK_SOURCE_TOOL="windsurf"
+    HOOK_SOURCE_TOOL="devin"
     HOOK_TOOL_NAME=$(echo "$HOOK_RAW_INPUT" | grep -o '"agent_action_name"[[:space:]]*:[[:space:]]*"[^"]*"' \
       | head -1 | sed 's/.*"agent_action_name"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/')
   else

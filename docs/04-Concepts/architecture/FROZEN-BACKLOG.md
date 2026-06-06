@@ -75,7 +75,7 @@ Reason: requires Anthropic Haiku API access. Users without API access can't run 
 **→ `packages/claude-code-integration/` (NEW):**
 - `hooks/recap-sync.sh` + `hooks/_lib/recap_adapter.py` (integrates with Claude Code `/recap`)
 
-Reason: Claude Code-specific. Other AI coding agents (Codex, Gemini, Cursor, Windsurf) don't have `/recap`. Belongs as provider-specific extension.
+Reason: Claude Code-specific. Other AI coding agents (Codex, Gemini, Cursor, Devin) don't have `/recap`. Belongs as provider-specific extension.
 
 ### Deprecate / remove (superseded)
 

@@ -22,7 +22,7 @@ def test_mcp_registration_plan_lists_cross_harness_hosts(tmp_path: Path) -> None
     assert result.returncode == 0, result.stderr
     payload = json.loads(result.stdout)
     hosts = {plan["host"] for plan in payload["plans"]}
-    assert {"claude-code", "codex", "cursor", "windsurf"} <= hosts
+    assert {"claude-code", "codex", "cursor", "devin"} <= hosts
     for plan in payload["plans"]:
         assert plan["server"]["transport"] == "stdio"
         assert plan["server"]["args"][0].endswith("mcp-server/cos_mcp.py")

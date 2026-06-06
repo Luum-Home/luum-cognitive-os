@@ -1,4 +1,4 @@
-// windsurf_test.go — Phase 5.4 tests for the Windsurf provider adapter.
+// devin_test.go — Phase 5.4 tests for the Devin provider adapter.
 //
 // Per ADR-010 + test-strategy 5.4:
 //   - Unit: Detect() env var logic, Parse() against fixture JSON, BuildResponse()
@@ -14,48 +14,48 @@ import (
 	"github.com/luum/cos-dispatch/pkg/hook"
 )
 
-const windsurfTestdataDir = "testdata/providers"
+const devinTestdataDir = "testdata/providers"
 
 // ---- Detect() tests ----------------------------------------------------------
 
-func TestWindsurfDetect_SessionID(t *testing.T) {
-	t.Setenv("WINDSURF_SESSION_ID", "ws-sess-001")
-	p := NewWindsurfProvider()
+func TestDevinDetect_SessionID(t *testing.T) {
+	t.Setenv("DEVIN_SESSION_ID", "ws-sess-001")
+	p := NewDevinProvider()
 	if !p.Detect() {
-		t.Error("Detect() = false with WINDSURF_SESSION_ID set, want true")
+		t.Error("Detect() = false with DEVIN_SESSION_ID set, want true")
 	}
 }
 
-func TestWindsurfDetect_CascadeContext(t *testing.T) {
+func TestDevinDetect_CascadeContext(t *testing.T) {
 	t.Setenv("CASCADE_CONTEXT", "active")
-	p := NewWindsurfProvider()
+	p := NewDevinProvider()
 	if !p.Detect() {
 		t.Error("Detect() = false with CASCADE_CONTEXT set, want true")
 	}
 }
 
-func TestWindsurfDetect_NoEnv(t *testing.T) {
-	t.Setenv("WINDSURF_SESSION_ID", "")
+func TestDevinDetect_NoEnv(t *testing.T) {
+	t.Setenv("DEVIN_SESSION_ID", "")
 	t.Setenv("CASCADE_CONTEXT", "")
-	p := NewWindsurfProvider()
+	p := NewDevinProvider()
 	if p.Detect() {
-		t.Error("Detect() = true with no Windsurf signals, want false")
+		t.Error("Detect() = true with no Devin signals, want false")
 	}
 }
 
 // ---- Parse() tests against fixture JSON --------------------------------------
 
-func TestWindsurfParse_FixturePreTool(t *testing.T) {
-	raw := readFixture(t, filepath.Join(windsurfTestdataDir, "windsurf-pretool.json"))
+func TestDevinParse_FixturePreTool(t *testing.T) {
+	raw := readFixture(t, filepath.Join(devinTestdataDir, "devin-pretool.json"))
 
-	p := NewWindsurfProvider()
+	p := NewDevinProvider()
 	ctx, err := p.Parse(raw)
 	if err != nil {
 		t.Fatalf("Parse: %v", err)
 	}
 
-	if ctx.Provider != hook.ProviderWindsurf {
-		t.Errorf("Provider = %q, want %q", ctx.Provider, hook.ProviderWindsurf)
+	if ctx.Provider != hook.ProviderDevin {
+		t.Errorf("Provider = %q, want %q", ctx.Provider, hook.ProviderDevin)
 	}
 	if ctx.Event != hook.CanonicalEventBeforeTool {
 		t.Errorf("Event = %q, want %q", ctx.Event, hook.CanonicalEventBeforeTool)
@@ -66,15 +66,15 @@ func TestWindsurfParse_FixturePreTool(t *testing.T) {
 	if ctx.ToolInput.Command != "rm -rf /tmp/data" {
 		t.Errorf("Command = %q, want %q", ctx.ToolInput.Command, "rm -rf /tmp/data")
 	}
-	if ctx.SessionID != "windsurf-sess-xyz789" {
-		t.Errorf("SessionID = %q, want %q", ctx.SessionID, "windsurf-sess-xyz789")
+	if ctx.SessionID != "devin-sess-xyz789" {
+		t.Errorf("SessionID = %q, want %q", ctx.SessionID, "devin-sess-xyz789")
 	}
 }
 
-func TestWindsurfParse_FixturePostTool(t *testing.T) {
-	raw := readFixture(t, filepath.Join(windsurfTestdataDir, "windsurf-posttool.json"))
+func TestDevinParse_FixturePostTool(t *testing.T) {
+	raw := readFixture(t, filepath.Join(devinTestdataDir, "devin-posttool.json"))
 
-	p := NewWindsurfProvider()
+	p := NewDevinProvider()
 	ctx, err := p.Parse(raw)
 	if err != nil {
 		t.Fatalf("Parse: %v", err)
@@ -88,10 +88,10 @@ func TestWindsurfParse_FixturePostTool(t *testing.T) {
 	}
 }
 
-func TestWindsurfParse_CascadeContextPreservedInMetadata(t *testing.T) {
-	raw := readFixture(t, filepath.Join(windsurfTestdataDir, "windsurf-pretool.json"))
+func TestDevinParse_CascadeContextPreservedInMetadata(t *testing.T) {
+	raw := readFixture(t, filepath.Join(devinTestdataDir, "devin-pretool.json"))
 
-	p := NewWindsurfProvider()
+	p := NewDevinProvider()
 	ctx, err := p.Parse(raw)
 	if err != nil {
 		t.Fatalf("Parse: %v", err)
@@ -108,13 +108,13 @@ func TestWindsurfParse_CascadeContextPreservedInMetadata(t *testing.T) {
 	}
 }
 
-func TestWindsurfParse_ProjectDirFromCascadeContext(t *testing.T) {
-	// When WINDSURF_PROJECT_DIR is not set, the workspace field from
+func TestDevinParse_ProjectDirFromCascadeContext(t *testing.T) {
+	// When DEVIN_PROJECT_DIR is not set, the workspace field from
 	// cascade_context should populate ProjectDir.
-	t.Setenv("WINDSURF_PROJECT_DIR", "")
-	raw := readFixture(t, filepath.Join(windsurfTestdataDir, "windsurf-pretool.json"))
+	t.Setenv("DEVIN_PROJECT_DIR", "")
+	raw := readFixture(t, filepath.Join(devinTestdataDir, "devin-pretool.json"))
 
-	p := NewWindsurfProvider()
+	p := NewDevinProvider()
 	ctx, err := p.Parse(raw)
 	if err != nil {
 		t.Fatalf("Parse: %v", err)
@@ -125,11 +125,11 @@ func TestWindsurfParse_ProjectDirFromCascadeContext(t *testing.T) {
 	}
 }
 
-func TestWindsurfParse_ProjectDirFromEnvTakesPriority(t *testing.T) {
-	t.Setenv("WINDSURF_PROJECT_DIR", "/explicit/path")
-	raw := readFixture(t, filepath.Join(windsurfTestdataDir, "windsurf-pretool.json"))
+func TestDevinParse_ProjectDirFromEnvTakesPriority(t *testing.T) {
+	t.Setenv("DEVIN_PROJECT_DIR", "/explicit/path")
+	raw := readFixture(t, filepath.Join(devinTestdataDir, "devin-pretool.json"))
 
-	p := NewWindsurfProvider()
+	p := NewDevinProvider()
 	ctx, err := p.Parse(raw)
 	if err != nil {
 		t.Fatalf("Parse: %v", err)
@@ -142,8 +142,8 @@ func TestWindsurfParse_ProjectDirFromEnvTakesPriority(t *testing.T) {
 
 // ---- BuildResponse() golden file tests ---------------------------------------
 
-func TestWindsurfBuildResponse_GoldenAllow(t *testing.T) {
-	p := NewWindsurfProvider()
+func TestDevinBuildResponse_GoldenAllow(t *testing.T) {
+	p := NewDevinProvider()
 	resp := p.BuildResponse(nil, "allow", "", "")
 
 	data, err := json.Marshal(resp)
@@ -151,12 +151,12 @@ func TestWindsurfBuildResponse_GoldenAllow(t *testing.T) {
 		t.Fatalf("marshal: %v", err)
 	}
 
-	goldenPath := filepath.Join(windsurfTestdataDir, "windsurf-response-allow.golden.json")
+	goldenPath := filepath.Join(devinTestdataDir, "devin-response-allow.golden.json")
 	assertOrUpdateGolden(t, goldenPath, data)
 }
 
-func TestWindsurfBuildResponse_GoldenDeny(t *testing.T) {
-	p := NewWindsurfProvider()
+func TestDevinBuildResponse_GoldenDeny(t *testing.T) {
+	p := NewDevinProvider()
 	resp := p.BuildResponse(nil, "deny", "blocked by policy", "")
 
 	data, err := json.Marshal(resp)
@@ -164,12 +164,12 @@ func TestWindsurfBuildResponse_GoldenDeny(t *testing.T) {
 		t.Fatalf("marshal: %v", err)
 	}
 
-	goldenPath := filepath.Join(windsurfTestdataDir, "windsurf-response-deny.golden.json")
+	goldenPath := filepath.Join(devinTestdataDir, "devin-response-deny.golden.json")
 	assertOrUpdateGolden(t, goldenPath, data)
 }
 
-func TestWindsurfBuildResponse_AdditionalContext(t *testing.T) {
-	p := NewWindsurfProvider()
+func TestDevinBuildResponse_AdditionalContext(t *testing.T) {
+	p := NewDevinProvider()
 	resp := p.BuildResponse(nil, "deny", "blocked", "see rule COS-002")
 
 	data, err := json.Marshal(resp)
@@ -189,22 +189,22 @@ func TestWindsurfBuildResponse_AdditionalContext(t *testing.T) {
 
 // ---- Negative tests ----------------------------------------------------------
 
-func TestWindsurfParse_MalformedJSON(t *testing.T) {
-	p := NewWindsurfProvider()
+func TestDevinParse_MalformedJSON(t *testing.T) {
+	p := NewDevinProvider()
 	_, err := p.Parse([]byte(`{{invalid`))
 	if err == nil {
 		t.Fatal("expected error for malformed JSON, got nil")
 	}
 }
 
-func TestWindsurfParse_EmptyToolInput(t *testing.T) {
+func TestDevinParse_EmptyToolInput(t *testing.T) {
 	raw := []byte(`{
 		"hook_event": "PreCascadeAction",
 		"tool_name":  "Bash",
 		"session_id": "ws-empty"
 	}`)
 
-	p := NewWindsurfProvider()
+	p := NewDevinProvider()
 	ctx, err := p.Parse(raw)
 	if err != nil {
 		t.Fatalf("Parse: %v", err)
@@ -214,7 +214,7 @@ func TestWindsurfParse_EmptyToolInput(t *testing.T) {
 	}
 }
 
-func TestWindsurfParse_NoCascadeContext(t *testing.T) {
+func TestDevinParse_NoCascadeContext(t *testing.T) {
 	raw := []byte(`{
 		"hook_event": "PreCascadeAction",
 		"tool_name":  "Bash",
@@ -222,7 +222,7 @@ func TestWindsurfParse_NoCascadeContext(t *testing.T) {
 		"session_id": "ws-nocc"
 	}`)
 
-	p := NewWindsurfProvider()
+	p := NewDevinProvider()
 	ctx, err := p.Parse(raw)
 	if err != nil {
 		t.Fatalf("Parse: %v", err)

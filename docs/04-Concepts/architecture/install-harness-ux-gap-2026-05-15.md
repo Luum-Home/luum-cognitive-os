@@ -126,11 +126,11 @@ instruction/rule/MCP-placeholder surfaces. This split is correct, but the docs
 and helper errors should call it out as "native lifecycle settings" rather than
 "the harness list".
 
-### 5. Windsurf remains planned, not implemented
+### 5. Devin remains planned, not implemented
 
-`manifests/harness-projection.yaml` marks Windsurf as planned. It is not in
+`manifests/harness-projection.yaml` marks Devin as planned. It is not in
 `cos_init.py`'s supported harness list. That is the right honest posture until a
-project-local Windsurf projection driver and proof exist.
+project-local Devin projection driver and proof exist.
 
 ## Claude Code Templates pattern extraction
 
@@ -212,7 +212,7 @@ architecture.
    instead of assuming Claude.
 4. [x] A primitive/profile/project catalog command can plan one skill/profile
    projection with a harness-specific proof-level summary.
-5. [x] Windsurf stays absent from supported first-run harnesses until projection
+5. [x] Devin stays absent from supported first-run harnesses until projection
    files and tests exist, despite being in the planned manifest.
 6. [x] Mutation/apply mode for granular primitive/profile commands writes
    backups and receipts, with deeper structured merge still tracked as follow-up.
@@ -241,7 +241,7 @@ The granular UX has moved beyond plan-only for the first safe slice:
   mapped command-line harnesses (`cursor`, `qwen-code`, `gemini-cli`,
   `opencode`). Missing binaries are recorded as skipped rather than treated as a
   product proof.
-- `windsurf` is explicitly recognized as planned-but-unsupported, so operators
+- `devin` is explicitly recognized as planned-but-unsupported, so operators
   get an honest error instead of a generic unknown-harness message.
 
 The canonical primitive catalog now has a generated lockfile at

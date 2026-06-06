@@ -78,8 +78,8 @@ PROVIDER_ADAPTERS: tuple[ProviderAdapterContract, ...] = (
         compatibility_surface="Editor event payload parsing and canonical tool mapping.",
     ),
     ProviderAdapterContract(
-        name="windsurf",
-        adapter_path="internal/provider/windsurf.go",
+        name="devin",
+        adapter_path="internal/provider/devin.go",
         normalized_into="pkg/hook/context.go",
         compatibility_surface="Editor event payload parsing and canonical tool mapping.",
     ),

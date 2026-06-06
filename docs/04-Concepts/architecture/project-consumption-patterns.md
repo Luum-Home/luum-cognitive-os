@@ -23,7 +23,7 @@ graph LR
 ### Standard (Claude Code or Hook-Capable Tools)
 - Install: `cos init --standard` → rules + 15 hooks + skills + Engram
 - What you get: Automated quality gates, error learning, security scanning, persistent memory
-- Works with: Claude Code (full), Cursor/Windsurf (with adapters)
+- Works with: Claude Code (full), Cursor/Devin (with adapters)
 - Limitations: No external pipeline orchestration, no CI/CD integration
 
 ### Full Pipeline (Python + Claude CLI)

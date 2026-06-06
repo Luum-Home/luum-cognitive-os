@@ -41,7 +41,7 @@ func NewRegistry() *Registry {
 			NewCodexProvider(),
 			NewGeminiProvider(),
 			NewCursorProvider(),
-			NewWindsurfProvider(),
+			NewDevinProvider(),
 		},
 		fallback: NewClaudeProvider(),
 	}

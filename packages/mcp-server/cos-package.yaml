@@ -1,6 +1,6 @@
 name: "@luum/mcp-server"
 version: "1.0.1"
-description: "MCP server exposing Cognitive OS knowledge to any MCP-compatible editor (VS Code, Cursor, Windsurf)"
+description: "MCP server exposing Cognitive OS knowledge to any MCP-compatible editor (VS Code, Cursor, Devin)"
 authors: ["luum"]
 license: "Apache-2.0"
 keywords: ["mcp", "server", "integration", "memory", "tools", "editor"]
@@ -48,6 +48,6 @@ tools:
 registration:
     manifest: ../../manifests/mcp-server-registration.yaml
     command: scripts/cos-mcp-registration-plan
-    hosts: [claude-code, codex, cursor, windsurf]
+    hosts: [claude-code, codex, cursor, devin]
     transport: stdio
     otel: optional

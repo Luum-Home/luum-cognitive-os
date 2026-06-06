@@ -188,7 +188,7 @@ func TestContextUnmarshalJSON_WithToolInput(t *testing.T) {
 func TestProviderConstants(t *testing.T) {
 	providers := []Provider{
 		ProviderClaude, ProviderCodex, ProviderGemini,
-		ProviderCursor, ProviderWindsurf,
+		ProviderCursor, ProviderDevin,
 	}
 	seen := make(map[Provider]bool)
 	for _, p := range providers {
