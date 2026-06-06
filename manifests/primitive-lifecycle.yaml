@@ -12647,7 +12647,7 @@ primitives:
   runtime_projection: false
   behavior_evidence: Portable task/front closure ledger gate validates project-owned completion ledgers and blocks false complete claims through require-closed and closureGate evidence modes.
   evidence_commands:
-  - uv run python -m pytest tests/unit/test_cos_task_closure_gate.py tests/red_team/portability/test_cos_task_closure_gate.py tests/red_team/portability/test_cos-task-closure-gate.py tests/integration/test_install_task_closure_gate_primitive.py -q
+  - python3 -m pytest tests/unit/test_cos_task_closure_gate.py tests/red_team/portability/test_cos_task_closure_gate.py tests/red_team/portability/test_cos-task-closure-gate.py tests/integration/test_install_task_closure_gate_primitive.py -q
   - scripts/cos-scope-both-portability-audit --strict
   rollback_or_repair_command: Remove the CLI from consumer install projection or restore the task closure ledger schema/tests before advertising closure-ledger support.
   sunset_criteria: Archive only if EAS or another typed acceptance primitive subsumes project-local multi-front closure ledgers with equivalent strict and portability tests.
@@ -12673,7 +12673,7 @@ primitives:
   runtime_projection: false
   behavior_evidence: Dependency-free Python engine behind cos-task-closure-gate; validates cos.task-closure-ledger.v1 ledgers, strict closure mode, gate evidence mode, and executable closureGate runs.
   evidence_commands:
-  - uv run python -m pytest tests/unit/test_cos_task_closure_gate.py tests/red_team/portability/test_cos_task_closure_gate.py -q
+  - python3 -m pytest tests/unit/test_cos_task_closure_gate.py tests/red_team/portability/test_cos_task_closure_gate.py -q
   rollback_or_repair_command: Restore the engine tests and wrapper contract, or demote the wrapper lifecycle row.
   sunset_criteria: Archive only when the wrapper is removed and no consumer install surface depends on this engine.
   docs_claim_level: advisory
