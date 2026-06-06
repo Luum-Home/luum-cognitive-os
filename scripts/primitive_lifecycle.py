@@ -65,7 +65,16 @@ RUNTIME_KINDS = {"hook", "doctor"}
 BLOCKING_STATES = {"blocking", "default-on"}
 BLOCKING_RISKS = {"blocking", "mutating", "destructive"}
 INACTIVE_STATES = {"demoted", "archived", "deleted"}
-SUPPORTED_HARNESSES = {"claude", "codex", "shell", "shell-ci", "github-actions", "generic-cli", "generic-doc"}
+SUPPORTED_HARNESSES = {
+    "claude",
+    "codex",
+    "opencode",
+    "shell",
+    "shell-ci",
+    "github-actions",
+    "generic-cli",
+    "generic-doc",
+}
 
 
 @dataclass(frozen=True)
