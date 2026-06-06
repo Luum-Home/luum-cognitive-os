@@ -1449,6 +1449,23 @@ def _install_quality_duplicates_primitive(project_dir: Path, cos_source: Path) -
         copied = True
     return copied
 
+
+def _install_task_closure_gate_primitive(project_dir: Path, cos_source: Path) -> bool:
+    """Install the project-local task closure ledger gate wrapper and engine."""
+    bin_dir = project_dir / ".cognitive-os" / "bin"
+    bin_dir.mkdir(parents=True, exist_ok=True)
+    copied = False
+    for name in ("cos-task-closure-gate", "cos_task_closure_gate.py"):
+        src = cos_source / "scripts" / name
+        if not src.is_file() or not scope_allows(str(src), os.environ.get("COS_INSTALL_SCOPE", "both")):
+            continue
+        dest = bin_dir / name
+        shutil.copy2(str(src), str(dest))
+        if name == "cos-task-closure-gate":
+            dest.chmod(dest.stat().st_mode | 0o111)
+        copied = True
+    return copied
+
 def _write_shell_ci_harness_settings(project_dir: Path, cos_source: Path, mode: str) -> None:
     """Project Shell/CI commands and workflow as a first-class harness."""
 
@@ -1845,7 +1862,7 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
     if templates_source.is_dir():
         tmpl_dest = project_dir / ".cognitive-os" / "templates" / "cos"
         tmpl_dest.mkdir(parents=True, exist_ok=True)
-        for tmpl in sorted(templates_source.glob("*.md")):
+        for tmpl in sorted(list(templates_source.glob("*.md")) + list(templates_source.glob("*.json"))):
             if not scope_allows(str(tmpl), install_scope):
                 continue
             shutil.copy2(str(tmpl), str(tmpl_dest / tmpl.name))
@@ -1853,6 +1870,7 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
     # ── 7b. Install repo-local provenance guardrail support ─────────────
     provenance_scan_installed = _install_provenance_scan_guardrail(project_dir, cos_source)
     quality_duplicates_installed = _install_quality_duplicates_primitive(project_dir, cos_source)
+    task_closure_gate_installed = _install_task_closure_gate_primitive(project_dir, cos_source)
 
     # ── 8. Create cognitive-os.yaml ──────────────────────────────────
     _write_cognitive_os_yaml(project_dir, project_name, detected_stack, mode)

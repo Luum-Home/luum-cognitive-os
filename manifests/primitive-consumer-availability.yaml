@@ -2470,6 +2470,15 @@ items:
   status: shared-surface
   rationale: 'ADR-317: EAS template is a reusable documentation artifact for COS SDD
     changes and adopter-project app changes.'
+- path: scripts/cos-task-closure-gate
+  availability: consumer
+  rationale: ADR-335 generic task closure ledger gate is copied into consumer `.cognitive-os/bin/` and has SCOPE: both portability proof.
+- path: scripts/cos_task_closure_gate.py
+  availability: consumer
+  rationale: ADR-335 dependency-free engine for the generic task closure ledger gate is copied with the wrapper into consumer `.cognitive-os/bin/`.
+- path: templates/task-closure-ledger.example.json
+  availability: consumer
+  rationale: ADR-335 template is copied into consumer `.cognitive-os/templates/cos/` so projects can author local closure ledgers without SO-specific names.
 - path: scripts/eas_validate.py
   status: shared-surface
   rationale: 'ADR-317: EAS validator checks generic Markdown evidence artifacts and

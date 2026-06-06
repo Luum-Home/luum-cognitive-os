@@ -54,6 +54,7 @@ lanes:
     - tests/integration/test_install_scope.py
     - tests/integration/test_install_projection_audit.py
     - tests/integration/test_install_quality_duplicates_primitive.py
+    - tests/integration/test_install_task_closure_gate_primitive.py
     - tests/integration/test_project_settings_generation.py
     - tests/integration/test_fresh_install_canary.py
     parallel: false

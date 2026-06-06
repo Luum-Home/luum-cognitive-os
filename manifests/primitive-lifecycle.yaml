@@ -12627,6 +12627,58 @@ primitives:
     boring_reliability_command: scripts/cos-boring-reliability --profile core
     boring_reliability_artifact: docs/02-Decisions/adrs/ADR-143-closure-discipline-gate.md
     rationale: Converts known broad-validation drift classes into a quick local-CI gate.
+- id: scripts/cos-task-closure-gate
+  kind: script
+  owner_adr: ADR-335
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: quality-validator
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  - shell-ci
+  - generic-cli
+  projection_targets:
+  - scripts/cos-task-closure-gate
+  - scripts/cos_task_closure_gate.py
+  - templates/task-closure-ledger.example.json
+  runtime_projection: false
+  behavior_evidence: Portable task/front closure ledger gate validates project-owned completion ledgers and blocks false complete claims through require-closed and closureGate evidence modes.
+  evidence_commands:
+  - uv run python -m pytest tests/unit/test_cos_task_closure_gate.py tests/red_team/portability/test_cos_task_closure_gate.py tests/red_team/portability/test_cos-task-closure-gate.py tests/integration/test_install_task_closure_gate_primitive.py -q
+  - scripts/cos-scope-both-portability-audit --strict
+  rollback_or_repair_command: Remove the CLI from consumer install projection or restore the task closure ledger schema/tests before advertising closure-ledger support.
+  sunset_criteria: Archive only if EAS or another typed acceptance primitive subsumes project-local multi-front closure ledgers with equivalent strict and portability tests.
+  docs_claim_level: advisory
+  exit_behavior: blocking-on-invocation
+  metrics_file: "none"
+- id: scripts/cos_task_closure_gate.py
+  kind: script
+  owner_adr: ADR-335
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: quality-validator
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  - shell-ci
+  - generic-cli
+  projection_targets:
+  - scripts/cos_task_closure_gate.py
+  - scripts/cos-task-closure-gate
+  runtime_projection: false
+  behavior_evidence: Dependency-free Python engine behind cos-task-closure-gate; validates cos.task-closure-ledger.v1 ledgers, strict closure mode, gate evidence mode, and executable closureGate runs.
+  evidence_commands:
+  - uv run python -m pytest tests/unit/test_cos_task_closure_gate.py tests/red_team/portability/test_cos_task_closure_gate.py -q
+  rollback_or_repair_command: Restore the engine tests and wrapper contract, or demote the wrapper lifecycle row.
+  sunset_criteria: Archive only when the wrapper is removed and no consumer install surface depends on this engine.
+  docs_claim_level: advisory
+  exit_behavior: blocking-on-invocation
+  metrics_file: "none"
 - id: scripts/cos-closure-trust-signal.py
   kind: script
   owner_adr: ADR-126

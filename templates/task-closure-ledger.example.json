@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "contract": "cos.task-closure-ledger.v1",
+  "fronts": [
+    {
+      "id": "example-front",
+      "title": "Example front",
+      "status": "ready_next_slice",
+      "canClaimComplete": false,
+      "closureGate": "python3 -m pytest tests/unit/test_example.py -q",
+      "doneEvidence": [
+        "initial executable proof exists"
+      ],
+      "remaining": [
+        "production-scale behavior is not proved yet"
+      ],
+      "nextPrimitive": "Add the production-scale proof and mark closed only after the closureGate passes."
+    }
+  ]
+}
