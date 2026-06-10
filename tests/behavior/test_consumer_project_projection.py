@@ -182,7 +182,7 @@ def test_default_install_projects_core_primitives_into_consumer_project(tmp_path
         assert "CONVENTIONS.md" in (tmp_path / ".aider.conf.yml").read_text()
     if harness == "shell-ci":
         shell_meta = json.loads((tmp_path / ".cognitive-os/shell-ci-projection.json").read_text())
-        assert shell_meta["commands_projected"] == 15
+        assert shell_meta["commands_projected"] == 17
         assert (tmp_path / ".github/workflows/cognitive-os-shell-ci.yml").is_file()
         assert (tmp_path / "scripts/cos-status.sh").is_symlink()
     if harness in STRUCTURAL_INSTRUCTION_FILES:

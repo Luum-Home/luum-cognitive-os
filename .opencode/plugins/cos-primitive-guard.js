@@ -5,7 +5,7 @@
 
 import { mkdirSync, appendFileSync, statSync, existsSync, readFileSync } from "node:fs"
 import { join, relative } from "node:path"
-import { spawnSync } from "node:child_process"
+import { spawn, spawnSync } from "node:child_process"
 
 const SIGNED_PRIMITIVES = [
   "destructive-git-blocker",
@@ -139,12 +139,22 @@ function projectedHooksFor(projection, nativeEvent) {
   return direct
 }
 
+function hookEnv(root, sessionId) {
+  return {
+    ...process.env,
+    COGNITIVE_OS_HARNESS: "opencode",
+    COGNITIVE_OS_PROJECT_DIR: root,
+    OPENCODE_PROJECT_DIR: root,
+    COGNITIVE_OS_SESSION_ID: sessionId,
+    OPENCODE_SESSION_ID: sessionId,
+  }
+}
+
 function runProjectedHook(root, hook, nativeEvent, input) {
   const script = String(hook?.script || "")
   if (!script || script.includes("..")) return null
   const scriptPath = join(root, script)
   if (!existsSync(scriptPath)) return null
-  const timeout = Number(process.env.COS_OPENCODE_HOOK_TIMEOUT_MS || "1500")
   const payload = {
     hook_event: hook.event,
     opencode_event: nativeEvent,
@@ -152,19 +162,31 @@ function runProjectedHook(root, hook, nativeEvent, input) {
     cwd: root,
     harness: "opencode",
   }
+  if (hook.async) {
+    // Fire-and-forget: detached process group, no inherited pipes, never
+    // blocks the event loop. Used for daemon launchers and advisory hooks.
+    const child = spawn("bash", [scriptPath], {
+      cwd: root,
+      detached: true,
+      stdio: ["pipe", "ignore", "ignore"],
+      env: hookEnv(root, payload.session_id),
+    })
+    child.on("error", () => {})
+    child.stdin.on("error", () => {})
+    child.stdin.end(JSON.stringify(payload))
+    child.unref()
+    return { status: null, signal: null, timedOut: false, detached: true }
+  }
+  const timeout = Number(process.env.COS_OPENCODE_HOOK_TIMEOUT_MS || "1500")
+  // stdout/stderr are "ignore" on purpose: a hook that backgrounds a child
+  // with inherited stdio would otherwise hold the pipes open and block
+  // spawnSync forever, even after the timeout kills the hook itself.
   const result = spawnSync("bash", [scriptPath], {
     cwd: root,
     input: JSON.stringify(payload),
-    encoding: "utf8",
+    stdio: ["pipe", "ignore", "ignore"],
     timeout,
-    env: {
-      ...process.env,
-      COGNITIVE_OS_HARNESS: "opencode",
-      COGNITIVE_OS_PROJECT_DIR: root,
-      OPENCODE_PROJECT_DIR: root,
-      COGNITIVE_OS_SESSION_ID: payload.session_id,
-      OPENCODE_SESSION_ID: payload.session_id,
-    },
+    env: hookEnv(root, payload.session_id),
   })
   return {
     status: result.status,
@@ -175,13 +197,24 @@ function runProjectedHook(root, hook, nativeEvent, input) {
 
 function emitProjectedHookRows(root, projection, nativeEvent, input) {
   const hooks = projectedHooksFor(projection, nativeEvent)
+  // Total wall-clock budget for the synchronous hooks of one native event.
+  // Async hooks are exempt (they cost one detached spawn each).
+  const budgetMs = Number(process.env.COS_OPENCODE_HOOK_EVENT_BUDGET_MS || "4000")
+  const startedAt = Date.now()
   for (const hook of hooks) {
-    const result = runProjectedHook(root, hook, nativeEvent, input)
+    const overBudget = !hook.async && Date.now() - startedAt > budgetMs
+    const result = overBudget ? null : runProjectedHook(root, hook, nativeEvent, input)
     emitIntervention(root, {
       primitive_id: hook.id || sanitize(hook.script),
       primitive_source: hook.script || "unknown",
-      action_kind: result?.status === 2 ? "block" : result?.timedOut ? "warn" : "observe",
-      reason_code: result?.timedOut ? "opencode_projected_hook_timeout" : "opencode_projected_hook",
+      action_kind: overBudget ? "warn" : result?.status === 2 ? "block" : result?.timedOut ? "warn" : "observe",
+      reason_code: overBudget
+        ? "opencode_hook_budget_exhausted"
+        : result?.detached
+          ? "opencode_projected_hook_async"
+          : result?.timedOut
+            ? "opencode_projected_hook_timeout"
+            : "opencode_projected_hook",
       target_ref: nativeEvent,
       native_event: nativeEvent,
       hook_event: hook.event,
