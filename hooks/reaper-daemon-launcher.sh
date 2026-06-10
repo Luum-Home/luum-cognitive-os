@@ -74,14 +74,17 @@ if [ ! -f "$REAPER" ]; then
 fi
 
 # ── Launch background loop ──────────────────────────────────────────────────
+# stdio MUST be fully detached: an inherited stdout/stderr pipe keeps any
+# synchronous hook runner (e.g. OpenCode's spawnSync) blocked forever, even
+# after its timeout kills this launcher.
 (
     # Give the main session a moment to fully initialise before first run.
     sleep 10
     while true; do
-        bash "$REAPER" 2>&1 || true
+        bash "$REAPER" || true
         sleep 300
     done
-) &
+) </dev/null >>"$RUNTIME_DIR/reaper-daemon.log" 2>&1 &
 
 LOOP_PID=$!
 echo "$LOOP_PID" > "$PID_FILE"

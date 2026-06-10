@@ -1,134 +1,524 @@
 {
+  "schema_version": 1,
+  "harness": "opencode",
+  "generated_by": "scripts/_lib/settings-driver-opencode.sh",
+  "source": "cognitive-os.yaml > harness.hooks",
   "events": {
-    "session.compacted": [
-      {
-        "command": "bash hooks/pre-compaction-flush.sh",
-        "event": "PreCompact",
-        "id": "pre-compaction-flush",
-        "matcher": "",
-        "native_event": "session.compacted",
-        "script": "hooks/pre-compaction-flush.sh"
-      }
-    ],
     "session.created": [
       {
-        "command": "bash hooks/crash-recovery.sh",
+        "id": "self-install",
+        "script": "hooks/self-install.sh",
         "event": "SessionStart",
-        "id": "crash-recovery",
         "matcher": "",
-        "native_event": "session.created",
-        "script": "hooks/crash-recovery.sh"
+        "async": false,
+        "scope": "os-only"
       },
       {
-        "command": "bash hooks/host-tool-doctor.sh",
-        "event": "SessionStart",
-        "id": "host-tool-doctor",
-        "matcher": "",
-        "native_event": "session.created",
-        "script": "hooks/host-tool-doctor.sh"
-      },
-      {
-        "command": "bash hooks/session-init.sh",
-        "event": "SessionStart",
         "id": "session-init",
-        "matcher": "",
-        "native_event": "session.created",
-        "script": "hooks/session-init.sh"
-      },
-      {
-        "command": "bash hooks/session-sanity.sh",
+        "script": "hooks/session-init.sh",
         "event": "SessionStart",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      },
+      {
+        "id": "host-tool-doctor",
+        "script": "hooks/host-tool-doctor.sh",
+        "event": "SessionStart",
+        "matcher": "",
+        "async": true,
+        "scope": "os-only"
+      },
+      {
+        "id": "profile-drift-autoapply",
+        "script": "hooks/profile-drift-autoapply.sh",
+        "event": "SessionStart",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      },
+      {
+        "id": "reaper-daemon-launcher",
+        "script": "hooks/reaper-daemon-launcher.sh",
+        "event": "SessionStart",
+        "matcher": "",
+        "async": true,
+        "scope": "os-only"
+      },
+      {
+        "id": "session-watchdog-launcher",
+        "script": "hooks/session-watchdog-launcher.sh",
+        "event": "SessionStart",
+        "matcher": "",
+        "async": true,
+        "scope": "os-only"
+      },
+      {
+        "id": "docker-drift-detector",
+        "script": "hooks/docker-drift-detector.sh",
+        "event": "SessionStart",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      },
+      {
+        "id": "cos-executor-daemon-launcher",
+        "script": "hooks/cos-executor-daemon-launcher.sh",
+        "event": "SessionStart",
+        "matcher": "",
+        "async": true,
+        "scope": "os-only"
+      },
+      {
+        "id": "engram-daemon-launcher",
+        "script": "hooks/engram-daemon-launcher.sh",
+        "event": "SessionStart",
+        "matcher": "",
+        "async": true,
+        "scope": "os-only"
+      },
+      {
+        "id": "crash-recovery",
+        "script": "hooks/crash-recovery.sh",
+        "event": "SessionStart",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      },
+      {
+        "id": "session-resume",
+        "script": "hooks/session-resume.sh",
+        "event": "SessionStart",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      },
+      {
         "id": "session-sanity",
+        "script": "hooks/session-sanity.sh",
+        "event": "SessionStart",
         "matcher": "",
-        "native_event": "session.created",
-        "script": "hooks/session-sanity.sh"
-      }
-    ],
-    "session.idle": [
-      {
-        "command": "bash hooks/quality-duplicates.sh",
-        "event": "Stop",
-        "id": "quality-duplicates",
-        "matcher": "",
-        "native_event": "session.idle",
-        "script": "hooks/quality-duplicates.sh"
+        "async": false,
+        "scope": "os-only"
       },
       {
-        "command": "bash hooks/session-cleanup.sh",
-        "event": "Stop",
-        "id": "session-cleanup",
+        "id": "validation-lock-cleanup",
+        "script": "hooks/validation-lock-cleanup.sh",
+        "event": "SessionStart",
         "matcher": "",
-        "native_event": "session.idle",
-        "script": "hooks/session-cleanup.sh"
+        "async": false,
+        "scope": "os-only"
       },
       {
-        "command": "bash hooks/session-learning.sh",
-        "event": "Stop",
-        "id": "session-learning",
+        "id": "infra-health",
+        "script": "hooks/infra-health.sh",
+        "event": "SessionStart",
         "matcher": "",
-        "native_event": "session.idle",
-        "script": "hooks/session-learning.sh"
-      }
-    ],
-    "tool.execute.before": [
+        "async": true,
+        "scope": "os-only"
+      },
       {
-        "command": "bash hooks/bash-hot-path-dispatcher.sh",
-        "event": "PreToolUse",
-        "id": "bash-hot-path-dispatcher",
-        "matcher": "Bash",
-        "native_event": "tool.execute.before",
-        "script": "hooks/bash-hot-path-dispatcher.sh"
+        "id": "aspirational-audit-weekly",
+        "script": "hooks/aspirational-audit-weekly.sh",
+        "event": "SessionStart",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      },
+      {
+        "id": "self-knowledge-refresh",
+        "script": "hooks/self-knowledge-refresh.sh",
+        "event": "SessionStart",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      },
+      {
+        "id": "session-start-worktree-nudge",
+        "script": "hooks/session-start-worktree-nudge.sh",
+        "event": "SessionStart",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      },
+      {
+        "id": "session-start-stash-reapply",
+        "script": "hooks/session-start-stash-reapply.sh",
+        "event": "SessionStart",
+        "matcher": "",
+        "async": false,
+        "scope": "both"
+      },
+      {
+        "id": "session-startup-protocol",
+        "script": "hooks/session-startup-protocol.sh",
+        "event": "SessionStart",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      },
+      {
+        "id": "mcp-scan",
+        "script": "hooks/mcp-scan.sh",
+        "event": "SessionStart",
+        "matcher": "",
+        "async": true,
+        "scope": "os-only"
+      },
+      {
+        "id": "dangerous-env-flag-detector",
+        "script": "hooks/dangerous-env-flag-detector.sh",
+        "event": "SessionStart",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      },
+      {
+        "id": "promotion-proposer-weekly",
+        "script": "hooks/promotion-proposer-weekly.sh",
+        "event": "SessionStart",
+        "matcher": "",
+        "async": true,
+        "scope": "os-only"
+      },
+      {
+        "id": "validator-soak-weekly",
+        "script": "hooks/validator-soak-weekly.sh",
+        "event": "SessionStart",
+        "matcher": "",
+        "async": true,
+        "scope": "os-only"
+      },
+      {
+        "id": "history-rewrite-documented",
+        "script": "hooks/history-rewrite-documented.sh",
+        "event": "SessionStart",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      },
+      {
+        "id": "cos-session-start-projector",
+        "script": "hooks/cos-session-start-projector.sh",
+        "event": "SessionStart",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      },
+      {
+        "id": "skill-drift-detector",
+        "script": "hooks/skill-drift-detector.sh",
+        "event": "SessionStart",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      },
+      {
+        "id": "session-start-stack-recommend",
+        "script": "hooks/session-start-stack-recommend.sh",
+        "event": "SessionStart",
+        "matcher": "",
+        "async": true,
+        "scope": "os-only"
       }
     ],
     "tui.prompt.append": [
       {
-        "command": "bash hooks/memory-prefetch.sh",
-        "event": "UserPromptSubmit",
-        "id": "memory-prefetch",
-        "matcher": "",
-        "native_event": "tui.prompt.append",
-        "script": "hooks/memory-prefetch.sh"
-      },
-      {
-        "command": "bash hooks/session-heartbeat.sh",
-        "event": "UserPromptSubmit",
-        "id": "session-heartbeat-on-prompt",
-        "matcher": "",
-        "native_event": "tui.prompt.append",
-        "script": "hooks/session-heartbeat.sh"
-      },
-      {
-        "command": "bash hooks/session-wrapup-trigger.sh",
-        "event": "UserPromptSubmit",
-        "id": "session-wrapup-trigger",
-        "matcher": "",
-        "native_event": "tui.prompt.append",
-        "script": "hooks/session-wrapup-trigger.sh"
-      },
-      {
-        "command": "bash hooks/user-prompt-capture.sh",
-        "event": "UserPromptSubmit",
         "id": "user-prompt-capture",
+        "script": "hooks/user-prompt-capture.sh",
+        "event": "UserPromptSubmit",
         "matcher": "",
-        "native_event": "tui.prompt.append",
-        "script": "hooks/user-prompt-capture.sh"
+        "async": true,
+        "scope": "os-only"
+      },
+      {
+        "id": "session-wrapup-trigger",
+        "script": "hooks/session-wrapup-trigger.sh",
+        "event": "UserPromptSubmit",
+        "matcher": "",
+        "async": true,
+        "scope": "os-only"
+      },
+      {
+        "id": "session-heartbeat-on-prompt",
+        "script": "hooks/session-heartbeat.sh",
+        "event": "UserPromptSubmit",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      },
+      {
+        "id": "memory-prefetch",
+        "script": "hooks/memory-prefetch.sh",
+        "event": "UserPromptSubmit",
+        "matcher": "",
+        "async": true,
+        "scope": "os-only"
+      },
+      {
+        "id": "edit-lock-process-negotiations",
+        "script": "hooks/edit-lock-process-negotiations.sh",
+        "event": "UserPromptSubmit",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      },
+      {
+        "id": "stash-budget-warn",
+        "script": "hooks/stash-budget-warn.sh",
+        "event": "UserPromptSubmit",
+        "matcher": "",
+        "async": true,
+        "scope": "os-only"
+      },
+      {
+        "id": "concurrent-write-guard-codex-proxy",
+        "script": "hooks/concurrent-write-guard-codex-proxy.sh",
+        "event": "UserPromptSubmit",
+        "matcher": "",
+        "async": false,
+        "scope": "both"
+      },
+      {
+        "id": "cross-session-peer-context",
+        "script": "hooks/cross-session-peer-context.sh",
+        "event": "UserPromptSubmit",
+        "matcher": "",
+        "async": true,
+        "scope": "os-only"
+      },
+      {
+        "id": "agent-message-inbox-context",
+        "script": "hooks/agent-message-inbox-context.sh",
+        "event": "UserPromptSubmit",
+        "matcher": "",
+        "async": true,
+        "scope": "os-only"
+      },
+      {
+        "id": "rule-router-prompt-suggest",
+        "script": "hooks/rule-router-prompt-suggest.sh",
+        "event": "UserPromptSubmit",
+        "matcher": "",
+        "async": true,
+        "scope": "os-only"
+      },
+      {
+        "id": "adr-relevance-suggest",
+        "script": "hooks/adr-relevance-suggest.sh",
+        "event": "UserPromptSubmit",
+        "matcher": "",
+        "async": true,
+        "scope": "os-only"
+      },
+      {
+        "id": "context-budget-meter",
+        "script": "hooks/context-budget-meter.sh",
+        "event": "UserPromptSubmit",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      },
+      {
+        "id": "skill-router-prompt-suggest",
+        "script": "hooks/skill-router-prompt-suggest.sh",
+        "event": "UserPromptSubmit",
+        "matcher": "",
+        "async": true,
+        "scope": "both"
+      }
+    ],
+    "tool.execute.before": [],
+    "tool.execute.after": [],
+    "session.idle": [
+      {
+        "id": "session-summary-reminder",
+        "script": "hooks/session-summary-reminder.sh",
+        "event": "Stop",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      },
+      {
+        "id": "session-learning",
+        "script": "hooks/session-learning.sh",
+        "event": "Stop",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      },
+      {
+        "id": "session-cleanup",
+        "script": "hooks/session-cleanup.sh",
+        "event": "Stop",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      },
+      {
+        "id": "edit-lock-session-end",
+        "script": "hooks/edit-lock-session-end.sh",
+        "event": "Stop",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      },
+      {
+        "id": "git-context-capture",
+        "script": "hooks/git-context-capture.sh",
+        "event": "Stop",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      },
+      {
+        "id": "session-changelog",
+        "script": "hooks/session-changelog.sh",
+        "event": "Stop",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      },
+      {
+        "id": "skill-failure-monitor",
+        "script": "hooks/skill-failure-monitor.sh",
+        "event": "Stop",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      },
+      {
+        "id": "control-plane-audit-hourly",
+        "script": "hooks/control-plane-audit-hourly.sh",
+        "event": "Stop",
+        "matcher": "",
+        "async": false,
+        "scope": "both"
+      },
+      {
+        "id": "quality-duplicates",
+        "script": "hooks/quality-duplicates.sh",
+        "event": "Stop",
+        "matcher": "",
+        "async": true,
+        "scope": "both"
+      },
+      {
+        "id": "skill-synthesis-scanner",
+        "script": "hooks/skill-synthesis-scanner.sh",
+        "event": "Stop",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      },
+      {
+        "id": "kpi-trigger",
+        "script": "hooks/kpi-trigger.sh",
+        "event": "Stop",
+        "matcher": "",
+        "async": true,
+        "scope": "os-only"
+      },
+      {
+        "id": "engram-crystallize-on-session-end",
+        "script": "hooks/engram-crystallize-on-session-end.sh",
+        "event": "Stop",
+        "matcher": "",
+        "async": true,
+        "scope": "os-only"
+      },
+      {
+        "id": "engram-obsidian-export-on-stop",
+        "script": "hooks/engram-obsidian-export-on-stop.sh",
+        "event": "Stop",
+        "matcher": "",
+        "async": true,
+        "scope": "os-only"
+      },
+      {
+        "id": "session-end-reap",
+        "script": "hooks/session-end-reap.sh",
+        "event": "Stop",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      },
+      {
+        "id": "goal-stop-gate",
+        "script": "hooks/goal-stop-gate.sh",
+        "event": "Stop",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      },
+      {
+        "id": "eas-validation-gate",
+        "script": "hooks/eas-validation-gate.sh",
+        "event": "Stop",
+        "matcher": "",
+        "async": false,
+        "scope": "both"
+      },
+      {
+        "id": "session-quality-close-gate",
+        "script": "hooks/session-quality-close-gate.sh",
+        "event": "Stop",
+        "matcher": "",
+        "async": false,
+        "scope": "both"
+      },
+      {
+        "id": "cross-session-event-emit-stop",
+        "script": "hooks/cross-session-event-emit.sh",
+        "event": "Stop",
+        "matcher": "",
+        "async": true,
+        "scope": "os-only"
+      },
+      {
+        "id": "branch-ownership-release",
+        "script": "hooks/branch-ownership-release.sh",
+        "event": "Stop",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      },
+      {
+        "id": "pending-truth-verify-weekly",
+        "script": "hooks/pending-truth-verify-weekly.sh",
+        "event": "Stop",
+        "matcher": "",
+        "async": true,
+        "scope": "both"
+      },
+      {
+        "id": "pyrefly-typecheck-advisory",
+        "script": "hooks/pyrefly-typecheck-advisory.sh",
+        "event": "Stop",
+        "matcher": "",
+        "async": true,
+        "scope": "os-only"
+      }
+    ],
+    "experimental.session.compacting": [
+      {
+        "id": "pre-compaction-flush",
+        "script": "hooks/pre-compaction-flush.sh",
+        "event": "PreCompact",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      }
+    ],
+    "session.compacted": [
+      {
+        "id": "pre-compaction-flush",
+        "script": "hooks/pre-compaction-flush.sh",
+        "event": "PreCompact",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
       }
     ]
-  },
-  "harness": "opencode",
-  "limited_events": {
-    "PreCompact": "OpenCode docs expose session.compacted; older builds may use experimental.session.compacting",
-    "SubagentStart": "OpenCode uses task permission semantics instead of a direct lifecycle hook"
-  },
-  "profile": "maintainer",
-  "schema_version": "cos-opencode-hooks.v1",
-  "source": "cognitive-os.yaml:harness.hooks",
-  "supported_events": [
-    "PostToolUse",
-    "PreCompact",
-    "PreToolUse",
-    "SessionStart",
-    "Stop",
-    "UserPromptSubmit"
-  ]
+  }
 }
