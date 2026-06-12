@@ -352,7 +352,7 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **session-wrapup** — Use when you need this Cognitive OS skill: End-of-session routine —
 - **simulation-arena** — Run scripted end-to-end agent workflow simulations to validate safety
 - **singularity** — Codebase Singularity — autonomous MAPE-K control loop that monitors,
-- **skill-creator** — Use when you need this Cognitive OS skill: Creates new AI agent skills
+- **skill-creator** — Create or update portable AI agent skills from a high-level workflow description. Use when a user asks to create a new SKILL.md, turn repeated instructions into a reusable skill, migrate a Claude c...
 - **smoke-test** — Run end-to-end smoke tests that validate the real Cognitive OS system
 - **so-vs-vanilla** — Use when you need this Cognitive OS skill: A/B benchmark harness that
 - **sprint** — Lightweight agent-managed sprint tracking — plan, status, retro, course-correct

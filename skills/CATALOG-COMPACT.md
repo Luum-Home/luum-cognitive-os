@@ -118,7 +118,7 @@ Total skills: 184
 | session-pending-brief | [core] | Bridge prompt → cos-session-start-projector → ranked attack list. |
 | session-pending-close | [core] | Atomic close of pending-truth task and/or ADR-decision items with audit |
 | session-wrapup | [core] | End-of-session routine — run session-backlog inventory, save to engram, |
-| skill-creator | [core] | Create new AI agent skills + cos package scaffolding. |
+| skill-creator | [core] | Create or update portable AI agent skills from high-level workflow descriptions. |
 | stash-quarantine | [core] | Safely isolate, inspect, restore, or discard temporary Git stash quarantine entries without positional stash refs. |
 | trust-audit | [core] | Analyze trust scores across agents and tasks, identify patterns, recommend… |
 | validate-config | [core] | Validate all Cognitive OS configuration files — agents, squads, skills, |
