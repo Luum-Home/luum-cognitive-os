@@ -16840,7 +16840,7 @@
         "hook": 16,
         "rule": 1,
         "script": 8,
-        "test": 16
+        "test": 17
       },
       "consumers": [
         {
@@ -17041,6 +17041,10 @@
         },
         {
           "family": "test",
+          "path": "tests/behavior/conftest.py"
+        },
+        {
+          "family": "test",
           "path": "tests/behavior/test_aguara_integration.py"
         },
         {
@@ -17102,7 +17106,7 @@
         "hook_consumers:16",
         "rule_consumers:1",
         "script_consumers:8",
-        "test_consumers:16",
+        "test_consumers:17",
         "doc_consumers:14",
         "config_consumers:8"
       ],
@@ -17118,7 +17122,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 63
+      "total_consumers": 64
     },
     {
       "confidence": "high",

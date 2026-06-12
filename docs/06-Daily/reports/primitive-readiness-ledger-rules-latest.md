@@ -89,7 +89,7 @@ Consumer accessibility: lifecycle-declared-maintainer:117, projected-consumer-su
 | `rules/phase-aware-agents.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 43 | keep maintainer-only or add explicit export path |
 | `rules/pre-commit-gate.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 53 | keep maintainer-only or add explicit export path |
 | `rules/pre-dev-readiness-gate.md` | hook-enforced | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 12 | keep maintainer-only or add explicit export path |
-| `rules/private-mode.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 63 | keep maintainer-only or add explicit export path |
+| `rules/private-mode.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 64 | keep maintainer-only or add explicit export path |
 | `rules/prompt-composition.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 20 | keep maintainer-only or add explicit export path |
 | `rules/prompt-quality.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 52 | keep maintainer-only or add explicit export path |
 | `rules/python-naming.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 19 | keep maintainer-only or add explicit export path |

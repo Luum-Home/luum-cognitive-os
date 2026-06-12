@@ -3546,15 +3546,14 @@
           "claude-posttool-agent-only": 1,
           "codex-adapter-needed": 53,
           "hook-helper-library": 30,
-          "on-demand-command-only": 137,
+          "on-demand-command-only": 136,
           "optional-env-gated-surface": 1,
           "optional-governance-observer": 2,
-          "os-internal-observability-surface": 1,
           "profile-scoped-hook": 3,
           "shell-command-only": 13,
           "structural-only-ok": 72
         },
-        "gaps": 345,
+        "gaps": 343,
         "gaps_by_policy": {
           "acceptable-claude-only": 4,
           "acceptable-codex-limited-tool-events": 6,
@@ -3562,16 +3561,15 @@
           "claude-posttool-agent-only": 1,
           "codex-adapter-needed": 53,
           "hook-helper-library": 30,
-          "on-demand-command-only": 137,
+          "on-demand-command-only": 136,
           "optional-env-gated-surface": 1,
           "optional-governance-observer": 2,
-          "os-internal-observability-surface": 1,
           "profile-scoped-hook": 3,
           "shell-command-only": 13,
           "structural-only-ok": 72
         },
         "gaps_by_status": {
-          "aligned": 292,
+          "aligned": 290,
           "partial": 53
         },
         "harness_projected_or_wired": {
@@ -3702,8 +3700,8 @@
         "actions": {
           "advise": 3,
           "allow": 19,
-          "block": 123,
-          "warn": 209
+          "block": 131,
+          "warn": 212
         },
         "primitive_count": 9
       }
@@ -4743,7 +4741,7 @@
       "evidence": [
         "test_consumers:1",
         "hook_consumers:1",
-        "config_consumers:1",
+        "config_consumers:2",
         "role_source:usage:repo",
         "consumer_accessibility:so-local-only",
         "availability_override:so-local-only",
@@ -21527,7 +21525,7 @@
         "lifecycle",
         "test_consumers:4",
         "doc_consumers:2",
-        "config_consumers:3",
+        "config_consumers:4",
         "script_consumers:2",
         "role_source:lifecycle",
         "lifecycle_state:advisory",
@@ -31205,6 +31203,7 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "test_consumers:1",
+        "config_consumers:1",
         "script_consumers:1",
         "role_source:usage:repo",
         "consumer_accessibility:so-local-only",
@@ -65069,9 +65068,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:acc-report+claude+codex+dashboard+tui",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:os-internal-observability-surface"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/session-token-aggregator.sh",
       "kind": "harness_coverage",
@@ -65088,7 +65085,7 @@
       "risk": "low",
       "signature": {
         "coverage": "acc-report+claude+codex+dashboard+tui",
-        "gap_policy": "os-internal-observability-surface",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -91923,9 +91920,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:acc-report+dashboard+tui",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:on-demand-command-only"
+        "scope:os-only"
       ],
       "id": "harness_coverage:scripts/token_report.py",
       "kind": "harness_coverage",
@@ -91942,7 +91937,7 @@
       "risk": "low",
       "signature": {
         "coverage": "acc-report+dashboard+tui",
-        "gap_policy": "on-demand-command-only",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -128207,7 +128202,7 @@
       "confidence": 0.82,
       "consumer_accessibility": "runtime-evidence",
       "evidence": [
-        "intervention_rows:150"
+        "intervention_rows:153"
       ],
       "id": "primitive_intervention:reinvention-check",
       "kind": "primitive_intervention",
@@ -128222,7 +128217,7 @@
       ],
       "risk": "medium",
       "signature": {
-        "rows": 150
+        "rows": 153
       },
       "source": {
         "path": ".cognitive-os/metrics/primitive-interventions.jsonl",
@@ -128234,7 +128229,7 @@
       "confidence": 0.82,
       "consumer_accessibility": "runtime-evidence",
       "evidence": [
-        "intervention_rows:40"
+        "intervention_rows:48"
       ],
       "id": "primitive_intervention:skill-router",
       "kind": "primitive_intervention",
@@ -128249,7 +128244,7 @@
       ],
       "risk": "medium",
       "signature": {
-        "rows": 40
+        "rows": 48
       },
       "source": {
         "path": ".cognitive-os/metrics/primitive-interventions.jsonl",
@@ -143295,7 +143290,7 @@
         "lifecycle",
         "test_consumers:4",
         "doc_consumers:2",
-        "config_consumers:3",
+        "config_consumers:4",
         "script_consumers:2",
         "role_source:lifecycle",
         "lifecycle_state:advisory",
@@ -146644,7 +146639,7 @@
       "coverage_debt:181"
     ]
   },
-  "generated_at": "2026-06-12T18:22:37Z",
+  "generated_at": "2026-06-12T18:47:17Z",
   "harness_projection": {
     "agents-md": {
       "display_name": "AGENTS.md",
