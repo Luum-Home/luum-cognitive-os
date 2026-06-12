@@ -1,6 +1,5 @@
 ---
 name: skill-creator
-audience: both
 description: Use when a user asks to create a new SKILL.md, turn repeated instructions into a reusable skill, migrate a Claude custom command or prompt into an Agent Skills-style skill, or adapt a skill for any project stack. Create or update portable AI agent skills from a high-level workflow description. Do not use for implementing the workflow itself unless the user asked to create the reusable skill.
 metadata:
   version: 1.2.0

@@ -71,11 +71,13 @@ def test_skills_declare_scope_audience_and_platforms_when_user_invocable() -> No
         if scope not in VALID_SCOPES:
             failures.append(f"{rel}: invalid SCOPE {scope!r}")
         data = _frontmatter(path)
-        audience = data.get("audience")
+        metadata = data.get("metadata") if isinstance(data.get("metadata"), dict) else {}
+        audience = data.get("audience") or metadata.get("audience")
         if audience not in VALID_AUDIENCES:
             failures.append(f"{rel}: invalid audience {audience!r}")
-        if data.get("user-invocable") is True:
-            platforms = data.get("platforms")
+        user_invocable = data.get("user-invocable") is True or metadata.get("user-invocable") is True
+        if user_invocable:
+            platforms = data.get("platforms") or metadata.get("platforms")
             if not isinstance(platforms, list) or not platforms or not all(isinstance(item, str) and item for item in platforms):
                 failures.append(f"{rel}: user-invocable skill must declare non-empty platforms list")
     assert not failures, "Skill classification failures:\n" + "\n".join(failures)
