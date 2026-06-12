@@ -5,14 +5,14 @@
     "actions": null,
     "contract_id": null,
     "impact": null,
-    "intent": "Manual scope calibration iteration 013; package-backed skill `quality-gates/dod-check` remains shared between COS and adopter projects and is covered by aggregate package skill portability proof.",
+    "intent": "Manual scope calibration iteration 020; package-backed skill `quality-gates/dod-check` remains shared between COS and adopter projects, now with portable backend/frontend/ui-component/storybook DoD profile inference and stack-agnostic profile guidance.",
     "present": false,
     "projection_fidelity": {},
     "requires": [],
     "trigger": null
   },
   "evidence": {
-    "behavior_evidence": "Manual scope calibration iteration 013; package-backed skill `quality-gates/dod-check` remains shared between COS and adopter projects and is covered by aggregate package skill portability proof.",
+    "behavior_evidence": "Manual scope calibration iteration 020; package-backed skill `quality-gates/dod-check` remains shared between COS and adopter projects, now with portable backend/frontend/ui-component/storybook DoD profile inference and stack-agnostic profile guidance.",
     "evidence_commands": [
       "python3 -m pytest tests/red_team/portability/test_package_skills.py -q",
       "python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/quality-gates/skills/dod-check/SKILL.md"
@@ -43,7 +43,7 @@
     "contract_id": null,
     "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
     "evidence": {
-      "behavior_evidence": "Manual scope calibration iteration 013; package-backed skill `quality-gates/dod-check` remains shared between COS and adopter projects and is covered by aggregate package skill portability proof.",
+      "behavior_evidence": "Manual scope calibration iteration 020; package-backed skill `quality-gates/dod-check` remains shared between COS and adopter projects, now with portable backend/frontend/ui-component/storybook DoD profile inference and stack-agnostic profile guidance.",
       "evidence_commands": [
         "python3 -m pytest tests/red_team/portability/test_package_skills.py -q",
         "python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/quality-gates/skills/dod-check/SKILL.md"
@@ -54,7 +54,7 @@
       "consumer_fleet": "unknown",
       "service_mode": "unsupported"
     },
-    "intent": "Manual scope calibration iteration 013; package-backed skill `quality-gates/dod-check` remains shared between COS and adopter projects and is covered by aggregate package skill portability proof.",
+    "intent": "Manual scope calibration iteration 020; package-backed skill `quality-gates/dod-check` remains shared between COS and adopter projects, now with portable backend/frontend/ui-component/storybook DoD profile inference and stack-agnostic profile guidance.",
     "is_full_contract": true,
     "projection_fidelity": {
       "claude": {

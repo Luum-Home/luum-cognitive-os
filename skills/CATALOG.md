@@ -248,7 +248,7 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **doc-sync** — Synchronize documentation that became stale after code changes
 - **docs-execution-audit** — Use when you need this Cognitive OS skill: Classify documentation items
 - **document-feature** — Generate or update structured feature documentation using 3-layer detection
-- **dod-check** — Run a deterministic Definition of Done check before claiming implementation, review, prompt-modernization, hook, skill, rule, or release-prep work is complete.
+- **dod-check** — Run a deterministic Definition of Done check before claiming implementation, review, prompt-modernization, hook, skill, rule, release-prep, backend, frontend, UI component, or Storybook/documentati...
 - **dogfood-score** — Use when you need this Cognitive OS skill: Measure the SO''s self-build
 - **domain-model** — Use when you need this Cognitive OS skill: Scaffold a DDD domain-model.md
 - **error-analyzer** — Analyze accumulated errors from test/lint/build runs and propose skill
