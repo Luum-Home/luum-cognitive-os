@@ -1996,11 +1996,15 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "hook": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -2018,7 +2022,7 @@
       "evidence": [
         "test_consumers:1",
         "hook_consumers:1",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -2032,7 +2036,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 3,
+      "total_consumers": 4,
       "wrapper_for": null
     },
     {
@@ -42149,7 +42153,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 3,
+        "config": 4,
         "doc": 2,
         "script": 2,
         "test": 4
@@ -42158,6 +42162,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -42205,7 +42213,7 @@
         "lifecycle",
         "test_consumers:4",
         "doc_consumers:2",
-        "config_consumers:3",
+        "config_consumers:4",
         "script_consumers:2"
       ],
       "install_surface": null,
@@ -42224,7 +42232,7 @@
         "shell-ci",
         "generic-cli"
       ],
-      "total_consumers": 11,
+      "total_consumers": 12,
       "wrapper_for": null
     },
     {
@@ -61089,10 +61097,15 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "config": 1,
         "script": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
         {
           "family": "script",
           "path": "scripts/aggregate_session_tokens.py"
@@ -61105,6 +61118,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
+        "config_consumers:1",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -61119,7 +61133,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 2,
+      "total_consumers": 3,
       "wrapper_for": null
     },
     {

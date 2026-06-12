@@ -329,13 +329,20 @@ def _adapter_manifest_rows(root: Path, primitive_rows: list[tuple[str, dict[str,
         for rel, row in primitive_rows:
             projection = ((row.get("portable_contract") or {}).get("projection_fidelity") or {}).get(harness)
             derived_from_harness = None
-            if not projection and isinstance(projection_fallback, dict) and (row.get("contract") or {}).get("present"):
+            if (
+                not projection
+                and isinstance(projection_fallback, dict)
+                and (
+                    (row.get("contract") or {}).get("present")
+                    or harness in (row.get("supported_harnesses") or [])
+                )
+            ):
                 projection = {
                     "fidelity": projection_fallback.get("fidelity"),
                     "surface": projection_fallback.get("surface"),
                     "claims_runtime_enforcement": False,
                 }
-                derived_from_harness = "harness-projection.yaml:contract_projection_fallback"
+                derived_from_harness = "harness-projection.yaml:structural_projection_fallback"
             if projection:
                 portable_id = str(row.get("portable_id"))
                 if portable_id in projected_ids:
@@ -351,18 +358,6 @@ def _adapter_manifest_rows(root: Path, primitive_rows: list[tuple[str, dict[str,
                 if derived_from_harness:
                     item["derived_from"] = derived_from_harness
                 projected.append(item)
-        if isinstance(projection_fallback, dict):
-            projected = [
-                {
-                    "portable_id": str(contract.get("id")),
-                    "primitive_file": str(contract.get("source", "primitive-contract-registry")),
-                    "fidelity": str(((contract.get("projection") or {}).get(harness) or projection_fallback).get("fidelity")),
-                    "surface": ((contract.get("projection") or {}).get(harness) or projection_fallback).get("surface"),
-                    "claims_runtime_enforcement": False,
-                    "derived_from": "harness-projection.yaml:contract_projection_fallback",
-                }
-                for contract in load_contracts(root)
-            ]
         projected_count = len(projected)
         manifest = {
             "schema_version": ADAPTER_SCHEMA_VERSION,
