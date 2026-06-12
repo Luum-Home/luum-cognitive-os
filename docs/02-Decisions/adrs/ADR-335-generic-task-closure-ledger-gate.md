@@ -60,6 +60,11 @@ Add a generic task closure ledger primitive:
 9. `--require-gates-passed` requires closed fronts to record gate evidence.
 10. `--run-closure-gates` can execute `closureGate` commands for closed/claimable fronts; `--run-all-gates` is explicit for all fronts.
 
+## Alternatives rejected
+
+- Keep closure ledgers as project-specific scripts only. Rejected because each adopter project would have to reimplement the same schema checks and false-completion guardrails.
+- Reuse the Definition of Done checker as the ledger validator. Rejected because DoD verifies completion criteria for a slice, while the closure ledger tracks multi-front claimability and remaining work over time.
+
 ## Consequences
 
 - Consumer projects can keep domain-specific closure ledgers without copying validator logic.

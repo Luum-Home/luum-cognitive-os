@@ -26,7 +26,7 @@ Consumer accessibility: lifecycle-declared-maintainer:19, projected-consumer-sur
 | `templates/prompt-hooks/clarification-gate-prompt.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 4 | keep maintainer-only or add explicit export path |
 | `templates/prompt-hooks/prompt-quality-prompt.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 4 | keep maintainer-only or add explicit export path |
 | `templates/prompt-hooks/scope-creep-prompt.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 4 | keep maintainer-only or add explicit export path |
-| `templates/quality-gates.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 35 | keep maintainer-only or add explicit export path |
+| `templates/quality-gates.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 38 | keep maintainer-only or add explicit export path |
 | `templates/rebranding-checklist.md` | recovery | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 12 | keep maintainer-only or add explicit export path |
 | `templates/rule-template.md` | prompt-composition | default | medium | lifecycle-declared-maintainer | advisory | 9 | keep maintainer-only or add explicit export path |
 | `templates/skill-template.md` | prompt-composition | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 7 | keep maintainer-only or add explicit export path |

@@ -1677,7 +1677,7 @@
         "doc": 21,
         "rule": 2,
         "script": 1,
-        "test": 7
+        "test": 10
       },
       "consumers": [
         {
@@ -1794,6 +1794,10 @@
         },
         {
           "family": "test",
+          "path": "tests/behavior/test_dod_stack_detection_smoke.py"
+        },
+        {
+          "family": "test",
           "path": "tests/integration/test_auto_update_safety.py"
         },
         {
@@ -1814,6 +1818,14 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_cross_cli_ide_projection.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_dod_profiles_portability.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_portability_proof_paths.py"
         },
         {
@@ -1826,7 +1838,7 @@
         "lifecycle",
         "rule_consumers:2",
         "script_consumers:1",
-        "test_consumers:7",
+        "test_consumers:10",
         "doc_consumers:21",
         "config_consumers:4"
       ],
@@ -1842,7 +1854,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 35
+      "total_consumers": 38
     },
     {
       "confidence": "medium",

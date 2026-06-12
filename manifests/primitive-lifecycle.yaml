@@ -2687,6 +2687,31 @@ primitives:
   docs_claim_level: blocking
   exit_behavior: exit_2
   metrics_file: .cognitive-os/metrics/git-op-blocks.jsonl
+- id: hooks/session-token-aggregator.sh
+  kind: hook
+  owner_adr: ADR-287
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: cost-telemetry
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  projection_targets:
+  - cognitive-os.yaml
+  - hooks/session-token-aggregator.sh
+  runtime_projection: true
+  behavior_evidence: Stop-hook wrapper invokes scripts/aggregate_session_tokens.py asynchronously and degrades to exit 0 when transcripts or Python are unavailable; behavior tests use synthetic transcripts only.
+  evidence_commands:
+  - bash -n hooks/session-token-aggregator.sh
+  - python3 -m pytest tests/behavior/test_aggregate_session_tokens.py -q
+  rollback_or_repair_command: Disable session-token-aggregator in cognitive-os.yaml or set DISABLE_HOOK_SESSION_TOKEN_AGGREGATOR=1 while preserving manual scripts/aggregate_session_tokens.py runs.
+  sunset_criteria: Remove when all supported harnesses expose native real-token usage events with equivalent deduped cost-events.jsonl writes.
+  docs_claim_level: advisory
+  exit_behavior: zero-nonzero-hook
+  metrics_file: .cognitive-os/metrics/cost-events.jsonl
 - id: hooks/conflict-marker-guard.sh
   kind: hook
   owner_adr: ADR-116
@@ -14153,7 +14178,7 @@ primitives:
   sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
   docs_claim_level: advisory
   exit_behavior: manual
-  metrics_file: none
+  metrics_file: no_metrics
   consumer_access_next_action: Keep as explicit maintainer/advisory tooling until release packaging decides whether to project Graphify wrappers.
 - id: scripts/cos-headless-pipeline
   kind: script
@@ -15323,8 +15348,8 @@ primitives:
   rollback_or_repair_command: Remove the hook registration from generated harness settings and require manual git diff --check plus scripts/cos-conflict-marker-guard until repaired.
   sunset_criteria: Archive only if every supported harness provides an equivalent native conflict-marker guard with path:line diagnostics and tests.
   docs_claim_level: blocking
-  exit_behavior: exit_1
-  metrics_file: "none"
+  exit_behavior: exit_2
+  metrics_file: no_metrics
   latency_budget_ms: 2000
   repair_message: Resolve every <<<<<<< / ||||||| / >>>>>>> conflict marker before committing or landing.
   false_positive_tests:

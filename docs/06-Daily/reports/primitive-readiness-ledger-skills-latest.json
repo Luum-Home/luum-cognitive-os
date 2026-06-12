@@ -69,7 +69,7 @@
         "rule": 3,
         "script": 1,
         "skill": 2,
-        "test": 3
+        "test": 6
       },
       "consumers": [
         {
@@ -158,11 +158,23 @@
         },
         {
           "family": "test",
+          "path": "tests/behavior/test_dod_stack_detection_smoke.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_codex_dod_check.py"
         },
         {
           "family": "test",
+          "path": "tests/unit/test_cross_cli_ide_projection.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_dod_check.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_dod_profiles_portability.py"
         },
         {
           "family": "test",
@@ -174,7 +186,7 @@
         "skill_consumers:2",
         "rule_consumers:3",
         "script_consumers:1",
-        "test_consumers:3",
+        "test_consumers:6",
         "doc_consumers:11",
         "config_consumers:4"
       ],
@@ -186,7 +198,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 24
+      "total_consumers": 27
     },
     {
       "confidence": "high",
@@ -5485,7 +5497,7 @@
       "consumer_families": {
         "config": 4,
         "doc": 4,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -5527,12 +5539,16 @@
         {
           "family": "test",
           "path": "tests/unit/test_cos_graphify_projection.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cross_cli_ide_projection.py"
         }
       ],
       "distribution": "maintainer",
       "evidence": [
         "lifecycle",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:4",
         "config_consumers:4"
       ],
@@ -5546,9 +5562,33 @@
       "supported_harnesses": [
         "claude",
         "codex",
-        "shell"
+        "cursor",
+        "devin",
+        "vscode-copilot",
+        "agents-md",
+        "opencode",
+        "google-antigravity",
+        "qwen-code",
+        "kimi-code",
+        "minimax-maxclaw",
+        "deepseek-provider",
+        "shell-ci",
+        "gemini-cli",
+        "warp",
+        "amp-code",
+        "jetbrains-junie",
+        "qoder",
+        "factory-droid",
+        "kiro",
+        "cline",
+        "continue-dev",
+        "kilo-code",
+        "zed-ai",
+        "augment-code",
+        "goose",
+        "aider"
       ],
-      "total_consumers": 10
+      "total_consumers": 11
     },
     {
       "confidence": "high",
@@ -7019,7 +7059,7 @@
         "doc": 7,
         "rule": 2,
         "script": 1,
-        "skill": 7,
+        "skill": 6,
         "test": 5
       },
       "consumers": [
@@ -7109,10 +7149,6 @@
         },
         {
           "family": "skill",
-          "path": "skills/skill-creator/SKILL.md"
-        },
-        {
-          "family": "skill",
           "path": "skills/synthesize-skill/SKILL.md"
         },
         {
@@ -7139,7 +7175,7 @@
       "distribution": "lab",
       "evidence": [
         "lifecycle",
-        "skill_consumers:7",
+        "skill_consumers:6",
         "rule_consumers:2",
         "script_consumers:1",
         "test_consumers:5",
@@ -7158,7 +7194,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 28
+      "total_consumers": 27
     },
     {
       "confidence": "high",
@@ -8519,7 +8555,7 @@
         "hook": 1,
         "rule": 3,
         "script": 10,
-        "skill": 7,
+        "skill": 6,
         "test": 11
       },
       "consumers": [
@@ -8796,10 +8832,6 @@
           "path": "skills/security-red-team/SKILL.md"
         },
         {
-          "family": "skill",
-          "path": "skills/skill-creator/SKILL.md"
-        },
-        {
           "family": "test",
           "path": "tests/behavior/test_security_integrations.py"
         },
@@ -8847,7 +8879,7 @@
       "distribution": "lab",
       "evidence": [
         "lifecycle",
-        "skill_consumers:7",
+        "skill_consumers:6",
         "hook_consumers:1",
         "rule_consumers:3",
         "script_consumers:10",
@@ -8867,7 +8899,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 80
+      "total_consumers": 79
     },
     {
       "confidence": "high",
@@ -13174,7 +13206,7 @@
         "rule": 5,
         "script": 1,
         "skill": 1,
-        "test": 4
+        "test": 5
       },
       "consumers": [
         {
@@ -13339,6 +13371,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_cross_cli_ide_projection.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_skill_router.py"
         }
       ],
@@ -13348,7 +13384,7 @@
         "skill_consumers:1",
         "rule_consumers:5",
         "script_consumers:1",
-        "test_consumers:4",
+        "test_consumers:5",
         "doc_consumers:27",
         "config_consumers:3"
       ],
@@ -13362,9 +13398,33 @@
       "supported_harnesses": [
         "claude",
         "codex",
-        "generic-cli"
+        "cursor",
+        "devin",
+        "vscode-copilot",
+        "agents-md",
+        "opencode",
+        "google-antigravity",
+        "qwen-code",
+        "kimi-code",
+        "minimax-maxclaw",
+        "deepseek-provider",
+        "shell-ci",
+        "gemini-cli",
+        "warp",
+        "amp-code",
+        "jetbrains-junie",
+        "qoder",
+        "factory-droid",
+        "kiro",
+        "cline",
+        "continue-dev",
+        "kilo-code",
+        "zed-ai",
+        "augment-code",
+        "goose",
+        "aider"
       ],
-      "total_consumers": 41
+      "total_consumers": 42
     },
     {
       "confidence": "high",

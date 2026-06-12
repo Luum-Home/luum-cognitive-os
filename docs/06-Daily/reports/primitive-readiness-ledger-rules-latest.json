@@ -8007,7 +8007,7 @@
         "rule": 3,
         "script": 1,
         "skill": 1,
-        "test": 4
+        "test": 5
       },
       "consumers": [
         {
@@ -8161,6 +8161,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_catalog_loading.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_graphify_projection.py"
         }
       ],
       "distribution": "lab",
@@ -8170,7 +8174,7 @@
         "hook_consumers:1",
         "rule_consumers:3",
         "script_consumers:1",
-        "test_consumers:4",
+        "test_consumers:5",
         "doc_consumers:23",
         "config_consumers:5"
       ],
@@ -8186,7 +8190,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 38
+      "total_consumers": 39
     },
     {
       "confidence": "high",
