@@ -2,13 +2,13 @@
 
 ## How to Use This Index
 
-This generated table is the status inventory for all 343 Architecture Decision Record files (ADRs).
+This generated table is the status inventory for all 345 Architecture Decision Record files (ADRs).
 Status semantics are defined in [STATUS-TAXONOMY.md](STATUS-TAXONOMY.md): decision status, implementation status, and index bucket are separate fields.
 Rows link to the canonical ADR file and group by index bucket for human and agent navigation.
 
 ## Active
 
-### Active / Implemented (167)
+### Active / Implemented (169)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
@@ -179,6 +179,8 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [323](ADR-323-primitive-behavior-depth-ratchet.md) | Primitive Behavior Depth Ratchet | accepted | implemented | 2026-05-15 | Accepted. |
 | [329](ADR-329-skill-platform-support-levels.md) | Skill Platform Support Levels | accepted | implemented | 2026-05-20 | Accepted and implemented for the existing `generic-cli` skill surface. |
 | [333](ADR-333-publication-safety-primitive.md) | Publication Safety Primitive | accepted | implemented | 2026-05-31 | Accepted — implemented on 2026-05-31. |
+| [334](ADR-334-portable-duplicate-code-quality-primitive.md) | Portable Duplicate-Code Quality Primitive | accepted | implemented | 2026-06-05 | Accepted — implemented on 2026-06-05. |
+| [335](ADR-335-generic-task-closure-ledger-gate.md) | Generic Task Closure Ledger Gate | accepted | implemented | 2026-06-06 | Accepted — implemented on 2026-06-06. |
 
 ### Active / Partial (120)
 

@@ -37,6 +37,7 @@ harnesses:
               - hooks/rate-limiter.sh
               - hooks/destructive-rm-blocker.sh
               - hooks/destructive-git-blocker.sh
+              - hooks/conflict-marker-guard.sh
               - hooks/untracked-work-preservation-guard.sh
               - hooks/branch-ownership-lock.sh
               - hooks/symlink-mutation-guard.sh

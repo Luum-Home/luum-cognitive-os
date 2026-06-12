@@ -5728,11 +5728,11 @@
       "consumer_families": {
         "config": 86,
         "doc": 764,
-        "hook": 122,
+        "hook": 123,
         "rule": 51,
-        "script": 397,
-        "skill": 84,
-        "test": 719,
+        "script": 398,
+        "skill": 86,
+        "test": 725,
         "workflow": 2
       },
       "consumers": [
@@ -9250,6 +9250,10 @@
         },
         {
           "family": "hook",
+          "path": "hooks/conflict-marker-guard.sh"
+        },
+        {
+          "family": "hook",
           "path": "hooks/consequence-evaluator.sh"
         },
         {
@@ -10055,6 +10059,10 @@
         {
           "family": "script",
           "path": "scripts/cos-config-audit.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-conflict-marker-guard"
         },
         {
           "family": "script",
@@ -11482,6 +11490,14 @@
         },
         {
           "family": "skill",
+          "path": "packages/sdd-compound/skills/plan-chore/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "packages/sdd-compound/skills/plan-feature/SKILL.md"
+        },
+        {
+          "family": "skill",
           "path": "packages/sdd-compound/skills/singularity/SKILL.md"
         },
         {
@@ -12858,6 +12874,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_conflict-marker-guard.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_cos-action-receipt.py"
         },
         {
@@ -12899,6 +12919,10 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_cos-config-audit.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos-conflict-marker-guard.py"
         },
         {
           "family": "test",
@@ -13570,6 +13594,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_skill_creator.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_statusline-coverage.py"
         },
         {
@@ -13743,6 +13771,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_config_loader.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_conflict_marker_guard.py"
         },
         {
           "family": "test",
@@ -13931,6 +13963,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_credential_safe_run.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cross_cli_ide_projection.py"
         },
         {
           "family": "test",
@@ -14215,6 +14251,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_phase_timing.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_plan_feature_skill.py"
         },
         {
           "family": "test",
@@ -14641,14 +14681,14 @@
       "evidence": [
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
-        "skill_consumers:84",
-        "test_consumers:719",
-        "hook_consumers:122",
+        "skill_consumers:86",
+        "test_consumers:725",
+        "hook_consumers:123",
         "workflow_consumers:2",
         "doc_consumers:764",
         "rule_consumers:51",
         "config_consumers:86",
-        "script_consumers:397"
+        "script_consumers:398"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -14660,11 +14700,11 @@
       "protected_install_surface": false,
       "role": "lab",
       "role_source": "lifecycle",
-      "skill_consumers": 84,
+      "skill_consumers": 86,
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 2225,
+      "total_consumers": 2235,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -17702,6 +17742,95 @@
       ],
       "total_consumers": 25,
       "wrapper_for": "scripts/so_session_watchdog.py"
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "consumer_families": {
+        "config": 2,
+        "hook": 1,
+        "test": 4
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/conflict-marker-guard.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_conflict-marker-guard.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos-conflict-marker-guard.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_conflict_marker_guard.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cross_cli_ide_projection.py"
+        }
+      ],
+      "distribution": "core",
+      "evidence": [
+        "lifecycle",
+        "test_consumers:4",
+        "hook_consumers:1",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-conflict-marker-guard",
+      "lifecycle_state": "blocking",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-conflict-marker-guard",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "claude",
+        "codex",
+        "cursor",
+        "devin",
+        "vscode-copilot",
+        "agents-md",
+        "opencode",
+        "google-antigravity",
+        "qwen-code",
+        "kimi-code",
+        "minimax-maxclaw",
+        "deepseek-provider",
+        "shell-ci",
+        "gemini-cli",
+        "warp",
+        "amp-code",
+        "jetbrains-junie",
+        "qoder",
+        "factory-droid",
+        "kiro",
+        "cline",
+        "continue-dev",
+        "kilo-code",
+        "zed-ai",
+        "augment-code",
+        "goose",
+        "aider"
+      ],
+      "total_consumers": 7,
+      "wrapper_for": null
     },
     {
       "confidence": "high",
@@ -22757,7 +22886,7 @@
         "doc": 5,
         "script": 1,
         "skill": 1,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -22811,13 +22940,17 @@
         {
           "family": "test",
           "path": "tests/unit/test_cos_graphify_projection.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cross_cli_ide_projection.py"
         }
       ],
       "distribution": "team",
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:5",
         "config_consumers:3",
         "script_consumers:1"
@@ -22836,9 +22969,33 @@
       "supported_harnesses": [
         "claude",
         "codex",
-        "shell"
+        "cursor",
+        "devin",
+        "vscode-copilot",
+        "agents-md",
+        "opencode",
+        "google-antigravity",
+        "qwen-code",
+        "kimi-code",
+        "minimax-maxclaw",
+        "deepseek-provider",
+        "shell-ci",
+        "gemini-cli",
+        "warp",
+        "amp-code",
+        "jetbrains-junie",
+        "qoder",
+        "factory-droid",
+        "kiro",
+        "cline",
+        "continue-dev",
+        "kilo-code",
+        "zed-ai",
+        "augment-code",
+        "goose",
+        "aider"
       ],
-      "total_consumers": 13,
+      "total_consumers": 14,
       "wrapper_for": null
     },
     {
@@ -22848,7 +23005,7 @@
       "consumer_families": {
         "config": 3,
         "doc": 3,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -22886,12 +23043,16 @@
         {
           "family": "test",
           "path": "tests/unit/test_cos_graphify_projection.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cross_cli_ide_projection.py"
         }
       ],
       "distribution": "team",
       "evidence": [
         "lifecycle",
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:3",
         "config_consumers:3"
       ],
@@ -22909,9 +23070,33 @@
       "supported_harnesses": [
         "claude",
         "codex",
-        "shell"
+        "cursor",
+        "devin",
+        "vscode-copilot",
+        "agents-md",
+        "opencode",
+        "google-antigravity",
+        "qwen-code",
+        "kimi-code",
+        "minimax-maxclaw",
+        "deepseek-provider",
+        "shell-ci",
+        "gemini-cli",
+        "warp",
+        "amp-code",
+        "jetbrains-junie",
+        "qoder",
+        "factory-droid",
+        "kiro",
+        "cline",
+        "continue-dev",
+        "kilo-code",
+        "zed-ai",
+        "augment-code",
+        "goose",
+        "aider"
       ],
-      "total_consumers": 9,
+      "total_consumers": 10,
       "wrapper_for": null
     },
     {
@@ -22923,7 +23108,7 @@
         "doc": 2,
         "script": 1,
         "skill": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -22961,13 +23146,17 @@
         {
           "family": "test",
           "path": "tests/unit/test_cos_graphify_projection.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cross_cli_ide_projection.py"
         }
       ],
       "distribution": "team",
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:2",
         "config_consumers:3",
         "script_consumers:1"
@@ -22986,9 +23175,33 @@
       "supported_harnesses": [
         "claude",
         "codex",
-        "shell"
+        "cursor",
+        "devin",
+        "vscode-copilot",
+        "agents-md",
+        "opencode",
+        "google-antigravity",
+        "qwen-code",
+        "kimi-code",
+        "minimax-maxclaw",
+        "deepseek-provider",
+        "shell-ci",
+        "gemini-cli",
+        "warp",
+        "amp-code",
+        "jetbrains-junie",
+        "qoder",
+        "factory-droid",
+        "kiro",
+        "cline",
+        "continue-dev",
+        "kilo-code",
+        "zed-ai",
+        "augment-code",
+        "goose",
+        "aider"
       ],
-      "total_consumers": 9,
+      "total_consumers": 10,
       "wrapper_for": null
     },
     {
@@ -22998,7 +23211,7 @@
       "consumer_families": {
         "config": 3,
         "doc": 2,
-        "test": 4
+        "test": 5
       },
       "consumers": [
         {
@@ -23036,12 +23249,16 @@
         {
           "family": "test",
           "path": "tests/unit/test_cos_graphify_projection.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cross_cli_ide_projection.py"
         }
       ],
       "distribution": "team",
       "evidence": [
         "lifecycle",
-        "test_consumers:4",
+        "test_consumers:5",
         "doc_consumers:2",
         "config_consumers:3"
       ],
@@ -23059,9 +23276,33 @@
       "supported_harnesses": [
         "claude",
         "codex",
-        "shell"
+        "cursor",
+        "devin",
+        "vscode-copilot",
+        "agents-md",
+        "opencode",
+        "google-antigravity",
+        "qwen-code",
+        "kimi-code",
+        "minimax-maxclaw",
+        "deepseek-provider",
+        "shell-ci",
+        "gemini-cli",
+        "warp",
+        "amp-code",
+        "jetbrains-junie",
+        "qoder",
+        "factory-droid",
+        "kiro",
+        "cline",
+        "continue-dev",
+        "kilo-code",
+        "zed-ai",
+        "augment-code",
+        "goose",
+        "aider"
       ],
-      "total_consumers": 9,
+      "total_consumers": 10,
       "wrapper_for": null
     },
     {
@@ -23073,7 +23314,7 @@
         "doc": 4,
         "script": 3,
         "skill": 1,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -23131,6 +23372,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_cos_graphify_projection.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cross_cli_ide_projection.py"
         }
       ],
       "distribution": "team",
@@ -23138,7 +23383,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos-filter-repo-wrap.sh",
         "skill_consumers:1",
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:4",
         "config_consumers:3",
         "script_consumers:3"
@@ -23157,9 +23402,33 @@
       "supported_harnesses": [
         "claude",
         "codex",
-        "shell"
+        "cursor",
+        "devin",
+        "vscode-copilot",
+        "agents-md",
+        "opencode",
+        "google-antigravity",
+        "qwen-code",
+        "kimi-code",
+        "minimax-maxclaw",
+        "deepseek-provider",
+        "shell-ci",
+        "gemini-cli",
+        "warp",
+        "amp-code",
+        "jetbrains-junie",
+        "qoder",
+        "factory-droid",
+        "kiro",
+        "cline",
+        "continue-dev",
+        "kilo-code",
+        "zed-ai",
+        "augment-code",
+        "goose",
+        "aider"
       ],
-      "total_consumers": 14,
+      "total_consumers": 15,
       "wrapper_for": "scripts/cos-filter-repo-wrap.sh"
     },
     {
@@ -23170,7 +23439,7 @@
         "config": 3,
         "doc": 3,
         "script": 2,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -23216,12 +23485,16 @@
         {
           "family": "test",
           "path": "tests/unit/test_cos_graphify_run_telemetry.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cross_cli_ide_projection.py"
         }
       ],
       "distribution": "team",
       "evidence": [
         "lifecycle",
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:3",
         "config_consumers:3",
         "script_consumers:2"
@@ -23240,9 +23513,33 @@
       "supported_harnesses": [
         "claude",
         "codex",
-        "shell"
+        "cursor",
+        "devin",
+        "vscode-copilot",
+        "agents-md",
+        "opencode",
+        "google-antigravity",
+        "qwen-code",
+        "kimi-code",
+        "minimax-maxclaw",
+        "deepseek-provider",
+        "shell-ci",
+        "gemini-cli",
+        "warp",
+        "amp-code",
+        "jetbrains-junie",
+        "qoder",
+        "factory-droid",
+        "kiro",
+        "cline",
+        "continue-dev",
+        "kilo-code",
+        "zed-ai",
+        "augment-code",
+        "goose",
+        "aider"
       ],
-      "total_consumers": 11,
+      "total_consumers": 12,
       "wrapper_for": null
     },
     {
@@ -23253,7 +23550,7 @@
         "config": 3,
         "doc": 3,
         "skill": 1,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -23295,13 +23592,17 @@
         {
           "family": "test",
           "path": "tests/unit/test_cos_graphify_token_footprint.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cross_cli_ide_projection.py"
         }
       ],
       "distribution": "team",
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:3",
         "config_consumers:3"
       ],
@@ -23319,9 +23620,33 @@
       "supported_harnesses": [
         "claude",
         "codex",
-        "shell"
+        "cursor",
+        "devin",
+        "vscode-copilot",
+        "agents-md",
+        "opencode",
+        "google-antigravity",
+        "qwen-code",
+        "kimi-code",
+        "minimax-maxclaw",
+        "deepseek-provider",
+        "shell-ci",
+        "gemini-cli",
+        "warp",
+        "amp-code",
+        "jetbrains-junie",
+        "qoder",
+        "factory-droid",
+        "kiro",
+        "cline",
+        "continue-dev",
+        "kilo-code",
+        "zed-ai",
+        "augment-code",
+        "goose",
+        "aider"
       ],
-      "total_consumers": 10,
+      "total_consumers": 11,
       "wrapper_for": null
     },
     {
@@ -23331,7 +23656,7 @@
       "consumer_families": {
         "config": 3,
         "doc": 3,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -23369,12 +23694,16 @@
         {
           "family": "test",
           "path": "tests/unit/test_cos_graphify_token_reduction_smoke.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cross_cli_ide_projection.py"
         }
       ],
       "distribution": "team",
       "evidence": [
         "lifecycle",
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:3",
         "config_consumers:3"
       ],
@@ -23392,9 +23721,33 @@
       "supported_harnesses": [
         "claude",
         "codex",
-        "shell"
+        "cursor",
+        "devin",
+        "vscode-copilot",
+        "agents-md",
+        "opencode",
+        "google-antigravity",
+        "qwen-code",
+        "kimi-code",
+        "minimax-maxclaw",
+        "deepseek-provider",
+        "shell-ci",
+        "gemini-cli",
+        "warp",
+        "amp-code",
+        "jetbrains-junie",
+        "qoder",
+        "factory-droid",
+        "kiro",
+        "cline",
+        "continue-dev",
+        "kilo-code",
+        "zed-ai",
+        "augment-code",
+        "goose",
+        "aider"
       ],
-      "total_consumers": 9,
+      "total_consumers": 10,
       "wrapper_for": null
     },
     {
@@ -26324,7 +26677,7 @@
       "consumer_families": {
         "config": 4,
         "doc": 2,
-        "hook": 1,
+        "hook": 2,
         "test": 1
       },
       "consumers": [
@@ -26354,6 +26707,10 @@
         },
         {
           "family": "hook",
+          "path": "hooks/conflict-marker-guard.sh"
+        },
+        {
+          "family": "hook",
           "path": "hooks/direct-main-guard.sh"
         },
         {
@@ -26366,7 +26723,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos-gate-stack.sh",
         "test_consumers:1",
-        "hook_consumers:1",
+        "hook_consumers:2",
         "doc_consumers:2",
         "config_consumers:4"
       ],
@@ -26384,7 +26741,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 8,
+      "total_consumers": 9,
       "wrapper_for": "scripts/cos-gate-stack.sh"
     },
     {
@@ -33578,7 +33935,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 3,
-        "doc": 2,
+        "doc": 3,
         "script": 1,
         "test": 4
       },
@@ -33602,6 +33959,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/task-closure-ledger-gate.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/07-Capabilities/acc/latest.md"
         },
         {
           "family": "script",
@@ -33628,7 +33989,7 @@
       "evidence": [
         "lifecycle",
         "test_consumers:4",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:3",
         "script_consumers:1"
       ],
@@ -33648,7 +34009,7 @@
         "shell-ci",
         "generic-cli"
       ],
-      "total_consumers": 10,
+      "total_consumers": 11,
       "wrapper_for": null
     },
     {
@@ -41783,7 +42144,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 3,
-        "doc": 1,
+        "doc": 2,
         "script": 2,
         "test": 4
       },
@@ -41803,6 +42164,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-335-generic-task-closure-ledger-gate.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/07-Capabilities/acc/latest.md"
         },
         {
           "family": "script",
@@ -41833,7 +42198,7 @@
       "evidence": [
         "lifecycle",
         "test_consumers:4",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:3",
         "script_consumers:2"
       ],
@@ -41853,7 +42218,7 @@
         "shell-ci",
         "generic-cli"
       ],
-      "total_consumers": 10,
+      "total_consumers": 11,
       "wrapper_for": null
     },
     {
@@ -48391,7 +48756,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 6,
-        "doc": 3,
+        "doc": 2,
         "script": 1,
         "test": 3
       },
@@ -48426,10 +48791,6 @@
         },
         {
           "family": "doc",
-          "path": "docs/07-Capabilities/acc/latest.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/09-Quality/manual-tests/cross-stack-license-audit-cli.md"
         },
         {
@@ -48454,7 +48815,7 @@
         "lifecycle",
         "wrapper_for:scripts/license-audit-trivy.sh",
         "test_consumers:3",
-        "doc_consumers:3",
+        "doc_consumers:2",
         "config_consumers:6",
         "script_consumers:1"
       ],
@@ -48472,7 +48833,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 13,
+      "total_consumers": 12,
       "wrapper_for": "scripts/license-audit-trivy.sh"
     },
     {
@@ -48481,7 +48842,6 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 4,
-        "doc": 1,
         "rule": 1,
         "skill": 1,
         "test": 3
@@ -48502,10 +48862,6 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
-        },
-        {
-          "family": "doc",
-          "path": "docs/07-Capabilities/acc/latest.md"
         },
         {
           "family": "rule",
@@ -48533,7 +48889,6 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:3",
-        "doc_consumers:1",
         "rule_consumers:1",
         "config_consumers:4"
       ],
@@ -48551,7 +48906,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 10,
+      "total_consumers": 9,
       "wrapper_for": null
     },
     {
@@ -49326,7 +49681,7 @@
       "consumer_families": {
         "config": 4,
         "doc": 7,
-        "hook": 1,
+        "hook": 2,
         "rule": 1,
         "script": 2,
         "skill": 2,
@@ -49376,6 +49731,10 @@
         {
           "family": "doc",
           "path": "docs/08-References/root/adoption-tiers.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/conflict-marker-guard.sh"
         },
         {
           "family": "hook",
@@ -49436,7 +49795,7 @@
         "wrapper_for:scripts/derived_artifact_gate.py",
         "skill_consumers:2",
         "test_consumers:7",
-        "hook_consumers:1",
+        "hook_consumers:2",
         "doc_consumers:7",
         "rule_consumers:1",
         "config_consumers:4",
@@ -49456,7 +49815,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 24,
+      "total_consumers": 25,
       "wrapper_for": "scripts/derived_artifact_gate.py"
     },
     {
@@ -53339,7 +53698,7 @@
         "doc": 5,
         "rule": 2,
         "script": 6,
-        "skill": 9,
+        "skill": 8,
         "test": 23,
         "workflow": 1
       },
@@ -53454,10 +53813,6 @@
         },
         {
           "family": "skill",
-          "path": "skills/skill-creator/SKILL.md"
-        },
-        {
-          "family": "skill",
           "path": "skills/synthesize-skill/SKILL.md"
         },
         {
@@ -53560,7 +53915,7 @@
       "distribution": "maintainer",
       "evidence": [
         "lifecycle",
-        "skill_consumers:9",
+        "skill_consumers:8",
         "test_consumers:23",
         "workflow_consumers:1",
         "doc_consumers:5",
@@ -53578,12 +53933,12 @@
       "protected_install_surface": false,
       "role": "agentic-primitive",
       "role_source": "lifecycle",
-      "skill_consumers": 9,
+      "skill_consumers": 8,
       "supported_harnesses": [
         "shell",
         "github-actions"
       ],
-      "total_consumers": 53,
+      "total_consumers": 52,
       "wrapper_for": null
     },
     {
@@ -61760,27 +62115,27 @@
   "summary": {
     "agentic_primitives_without_lifecycle": 0,
     "confidence": {
-      "high": 353,
+      "high": 354,
       "low": 1,
       "medium": 312
     },
     "consumer_accessibility": {
       "install-profile-managed": 19,
-      "lifecycle-declared-consumer-candidate": 165,
+      "lifecycle-declared-consumer-candidate": 166,
       "lifecycle-declared-maintainer": 143,
       "skill-referenced-not-projectable": 3,
       "so-local-only": 336
     },
     "low_confidence_rows": 1,
     "roles": {
-      "agentic-primitive": 215,
+      "agentic-primitive": 216,
       "archive": 12,
       "driver-specific": 14,
       "lab": 97,
       "maintainer-tool": 313,
       "migration-only": 15
     },
-    "total_scripts": 666,
+    "total_scripts": 667,
     "without_consumers": 0
   },
   "target_family": "scripts"

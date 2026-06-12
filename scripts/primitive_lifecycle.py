@@ -65,7 +65,7 @@ RUNTIME_KINDS = {"hook", "doctor"}
 BLOCKING_STATES = {"blocking", "default-on"}
 BLOCKING_RISKS = {"blocking", "mutating", "destructive"}
 INACTIVE_STATES = {"demoted", "archived", "deleted"}
-SUPPORTED_HARNESSES = {
+LEGACY_SUPPORTED_HARNESSES = {
     "claude",
     "codex",
     "opencode",
@@ -75,6 +75,32 @@ SUPPORTED_HARNESSES = {
     "generic-cli",
     "generic-doc",
 }
+
+
+def load_supported_harnesses(root: Path = REPO_ROOT) -> set[str]:
+    """Return lifecycle-supported harness ids from the projection manifest.
+
+    The lifecycle manifest should validate against the same harness universe that
+    projection uses. Keep a small legacy fallback for generic/non-project driver
+    aliases that are not first-class harness projection targets.
+    """
+    supported = set(LEGACY_SUPPORTED_HARNESSES)
+    projection_manifest = root / "manifests" / "harness-projection.yaml"
+    try:
+        loaded = yaml.safe_load(projection_manifest.read_text(encoding="utf-8"))
+    except OSError:
+        return supported
+    if not isinstance(loaded, dict):
+        return supported
+    for row in loaded.get("harnesses", []):
+        if isinstance(row, dict):
+            harness_id = row.get("id")
+            if isinstance(harness_id, str) and harness_id.strip():
+                supported.add(harness_id.strip())
+    return supported
+
+
+SUPPORTED_HARNESSES = load_supported_harnesses()
 
 
 @dataclass(frozen=True)

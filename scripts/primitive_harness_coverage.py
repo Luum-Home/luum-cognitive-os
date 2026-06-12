@@ -463,23 +463,48 @@ def _coverage_and_gap(scope: str | None, family: str, harnesses: dict[str, Harne
     return coverage, None
 
 
+def _scalar_values(value: Any) -> set[str]:
+    """Normalize policy selector values to comparable strings.
+
+    Policy manifests may contain plain string selectors or richer mapping rows
+    used by adjacent audits. Only scalar ids participate in this matcher; mapping
+    rows contribute their common id/name/family field when present.
+    """
+    if value is None:
+        return set()
+    if isinstance(value, str):
+        return {value}
+    if isinstance(value, dict):
+        for key in ("id", "name", "family"):
+            item = value.get(key)
+            if isinstance(item, str):
+                return {item}
+        return set()
+    if isinstance(value, list):
+        result: set[str] = set()
+        for item in value:
+            result.update(_scalar_values(item))
+        return result
+    return {str(value)}
+
+
 def _policy_matches(rule: dict[str, Any], primitive: str, family: str, scope: str | None, harnesses: dict[str, HarnessState], gap: str | None) -> bool:
     if not gap:
         return False
     if rule.get("family") and rule.get("family") != family:
         return False
-    if rule.get("families") and family not in set(rule.get("families") or []):
+    if rule.get("families") and family not in _scalar_values(rule.get("families")):
         return False
-    if rule.get("scopes") and scope not in set(rule.get("scopes") or []):
+    if rule.get("scopes") and scope not in _scalar_values(rule.get("scopes")):
         return False
-    if rule.get("primitives") and primitive not in set(rule.get("primitives") or []):
+    if rule.get("primitives") and primitive not in _scalar_values(rule.get("primitives")):
         return False
     if rule.get("path_prefix") and not primitive.startswith(str(rule.get("path_prefix"))):
         return False
     missing = [name for name, state in harnesses.items() if not (state.projected or state.wired)]
     if rule.get("missing_harness") and rule.get("missing_harness") not in missing:
         return False
-    if rule.get("missing_harness_any") and not (set(rule.get("missing_harness_any") or []) & set(missing)):
+    if rule.get("missing_harness_any") and not (_scalar_values(rule.get("missing_harness_any")) & set(missing)):
         return False
     if rule.get("harness") and not harnesses.get(str(rule.get("harness")), HarnessState()).projected:
         return False

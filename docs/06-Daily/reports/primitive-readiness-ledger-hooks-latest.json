@@ -440,7 +440,7 @@
         "doc": 155,
         "hook": 41,
         "rule": 6,
-        "script": 64,
+        "script": 65,
         "skill": 11,
         "test": 87
       },
@@ -1395,6 +1395,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-conflict-marker-guard"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-counsel-packet"
         },
         {
@@ -2004,7 +2008,7 @@
         "skill_consumers:11",
         "hook_consumers:41",
         "rule_consumers:6",
-        "script_consumers:64",
+        "script_consumers:65",
         "test_consumers:87",
         "doc_consumers:155",
         "config_consumers:24"
@@ -2021,7 +2025,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 388
+      "total_consumers": 389
     },
     {
       "confidence": "high",
@@ -2203,10 +2207,10 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 8,
-        "doc": 84,
+        "doc": 85,
         "hook": 83,
         "rule": 7,
-        "script": 34,
+        "script": 35,
         "skill": 3,
         "test": 34
       },
@@ -2534,6 +2538,10 @@
         {
           "family": "doc",
           "path": "docs/06-Daily/measurements/stage2-expansion-baseline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/07-Capabilities/acc/latest.md"
         },
         {
           "family": "doc",
@@ -2953,6 +2961,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-conflict-marker-guard"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-graphify-hotspot-report"
         },
         {
@@ -3230,9 +3242,9 @@
         "skill_consumers:3",
         "hook_consumers:83",
         "rule_consumers:7",
-        "script_consumers:34",
+        "script_consumers:35",
         "test_consumers:34",
-        "doc_consumers:84",
+        "doc_consumers:85",
         "config_consumers:8"
       ],
       "family": "hooks",
@@ -3247,7 +3259,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 253
+      "total_consumers": 255
     },
     {
       "confidence": "high",
@@ -3665,7 +3677,7 @@
       "consumer_families": {
         "config": 4,
         "doc": 3,
-        "hook": 176,
+        "hook": 177,
         "script": 4,
         "skill": 1,
         "test": 7
@@ -3858,6 +3870,10 @@
         {
           "family": "hook",
           "path": "hooks/confidentiality-enforcer.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/conflict-marker-guard.sh"
         },
         {
           "family": "hook",
@@ -4456,7 +4472,7 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
-        "hook_consumers:176",
+        "hook_consumers:177",
         "script_consumers:4",
         "test_consumers:7",
         "doc_consumers:3",
@@ -4474,7 +4490,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 195
+      "total_consumers": 196
     },
     {
       "confidence": "high",
@@ -4536,8 +4552,8 @@
         "hook": 25,
         "rule": 3,
         "script": 53,
-        "skill": 9,
-        "test": 133
+        "skill": 10,
+        "test": 139
       },
       "consumers": [
         {
@@ -5653,6 +5669,10 @@
           "path": "skills/session-backlog/SKILL.md"
         },
         {
+          "family": "skill",
+          "path": "skills/skill-creator/SKILL.md"
+        },
+        {
           "family": "test",
           "path": "tests/audit/test_adrs_frontmatter.py"
         },
@@ -5962,6 +5982,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_skill_creator.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_subagent-budget-enforcer.py"
         },
         {
@@ -6018,6 +6042,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_conflict_marker_guard.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_cos_evolve_tick.py"
         },
         {
@@ -6042,11 +6070,19 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_cross_cli_ide_projection.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_cross_platform_discipline.py"
         },
         {
           "family": "test",
           "path": "tests/unit/test_dispatch_model_advisor.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_dod_profiles_portability.py"
         },
         {
           "family": "test",
@@ -6107,6 +6143,14 @@
         {
           "family": "test",
           "path": "tests/unit/test_pattern_detector.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_plan_chore_skill.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_plan_feature_skill.py"
         },
         {
           "family": "test",
@@ -6188,11 +6232,11 @@
       "distribution": "core",
       "evidence": [
         "lifecycle",
-        "skill_consumers:9",
+        "skill_consumers:10",
         "hook_consumers:25",
         "rule_consumers:3",
         "script_consumers:53",
-        "test_consumers:133",
+        "test_consumers:139",
         "doc_consumers:170",
         "config_consumers:18"
       ],
@@ -6208,7 +6252,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 411
+      "total_consumers": 418
     },
     {
       "confidence": "high",
@@ -14746,7 +14790,7 @@
         "config": 11,
         "doc": 1,
         "script": 11,
-        "test": 12
+        "test": 13
       },
       "consumers": [
         {
@@ -14879,6 +14923,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_conflict_marker_guard.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_harness_hook_projection_policy.py"
         },
         {
@@ -14894,7 +14942,7 @@
       "evidence": [
         "lifecycle",
         "script_consumers:11",
-        "test_consumers:12",
+        "test_consumers:13",
         "doc_consumers:1",
         "config_consumers:11"
       ],
@@ -14909,7 +14957,7 @@
         "claude",
         "codex"
       ],
-      "total_consumers": 35
+      "total_consumers": 36
     },
     {
       "confidence": "high",
@@ -18826,6 +18874,84 @@
         "claude"
       ],
       "total_consumers": 43
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep install/profile/harness proof current",
+      "consumer_accessibility": "projected-consumer-surface",
+      "consumer_families": {
+        "config": 3,
+        "hook": 1,
+        "script": 3,
+        "test": 4
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "cognitive-os.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/bash-hot-path-dispatcher.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/_lib/settings-driver-claude-code.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/apply-efficiency-profile.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-conflict-marker-guard"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_conflict-marker-guard.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos-conflict-marker-guard.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_conflict_marker_guard.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cross_cli_ide_projection.py"
+        }
+      ],
+      "distribution": "core",
+      "evidence": [
+        "lifecycle",
+        "hook_consumers:1",
+        "script_consumers:3",
+        "test_consumers:4",
+        "config_consumers:3"
+      ],
+      "family": "hooks",
+      "lifecycle_id": "hooks/conflict-marker-guard.sh",
+      "lifecycle_state": "blocking",
+      "next_action": "keep lifecycle, tests, and harness proof current",
+      "path": "hooks/conflict-marker-guard.sh",
+      "role": "driver-specific",
+      "role_source": "lifecycle",
+      "supported_harnesses": [
+        "claude",
+        "codex",
+        "shell-ci"
+      ],
+      "total_consumers": 11
     },
     {
       "confidence": "high",
@@ -43164,8 +43290,8 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 3,
-        "script": 1
+        "config": 4,
+        "script": 2
       },
       "consumers": [
         {
@@ -43181,14 +43307,22 @@
           "path": "cognitive-os.yaml"
         },
         {
+          "family": "config",
+          "path": "manifests/hook-registration-classification.yaml"
+        },
+        {
           "family": "script",
           "path": "scripts/_lib/settings-driver-claude-code.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/apply-efficiency-profile.sh"
         }
       ],
       "distribution": null,
       "evidence": [
-        "script_consumers:1",
-        "config_consumers:3"
+        "script_consumers:2",
+        "config_consumers:4"
       ],
       "family": "hooks",
       "lifecycle_id": null,
@@ -43198,7 +43332,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 4
+      "total_consumers": 6
     },
     {
       "confidence": "high",
@@ -48728,23 +48862,23 @@
   "schema_version": 1,
   "summary": {
     "confidence": {
-      "high": 270,
+      "high": 271,
       "medium": 15
     },
     "consumer_accessibility": {
       "lifecycle-declared-consumer-candidate": 22,
       "lifecycle-declared-maintainer": 174,
-      "projected-consumer-surface": 74,
+      "projected-consumer-surface": 75,
       "so-local-only": 15
     },
     "roles": {
-      "driver-specific": 29,
+      "driver-specific": 30,
       "lab": 103,
       "memory-lifecycle": 103,
       "observability": 36,
       "runtime-safety": 14
     },
-    "total": 285,
+    "total": 286,
     "without_consumers": 0,
     "without_lifecycle": 15
   },

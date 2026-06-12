@@ -423,16 +423,16 @@ candidates:
 - id: devin
   display_name: Devin
   category: hosted-agent
-  status: hosted-candidate
+  status: planned
   proof_level: none
-  availability_boundary: hosted
+  availability_boundary: local-project
   projection_surface:
-  - mcp-server
-  - sessions
-  - playbooks
+  - rules
+  - skills
+  - mcp
   official_sources:
   - https://docs.devin.ai/work-with-devin/devin-mcp
-  next_action: Treat as remote-agent/MCP integration, not local projection.
+  next_action: Define Devin settings/rules/MCP projection driver and temp-project proof.
 - id: replit-agent
   display_name: Replit Agent
   category: hosted-agent
@@ -505,17 +505,6 @@ candidates:
   - unknown
   official_sources: []
   next_action: Research official local projection docs.
-- id: devin
-  display_name: Devin
-  category: ide
-  status: planned
-  proof_level: none
-  availability_boundary: local-project
-  projection_surface:
-  - rules
-  - mcp
-  official_sources: []
-  next_action: Refresh official docs before implementation.
 - id: trae
   display_name: Trae IDE
   category: ide

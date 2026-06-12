@@ -1,5 +1,6 @@
 ---
 name: plan-chore
+audience: both
 description: Create a stack-agnostic engineering chore plan for maintenance, cleanup, migration, dependency, config, documentation, or refactor work before implementation. Use when a user asks to plan non-feature and non-bug work, create a chore plan, break down cleanup/refactor/migration tasks, or produce acceptance criteria and validation commands for a maintenance slice across any project stack. Do not use for new product features or root-cause bug fixes; use plan-feature or plan-bug instead.
 metadata:
   user-invocable: true

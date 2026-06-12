@@ -43,7 +43,7 @@ Consumer accessibility: lifecycle-declared-maintainer:117, projected-consumer-su
 | `rules/consequence-system.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 18 | keep maintainer-only or add explicit export path |
 | `rules/content-policy.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 109 | keep maintainer-only or add explicit export path |
 | `rules/context-management.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 41 | keep maintainer-only or add explicit export path |
-| `rules/context-optimization.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 38 | keep maintainer-only or add explicit export path |
+| `rules/context-optimization.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 39 | keep maintainer-only or add explicit export path |
 | `rules/context7-auto-trigger.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 13 | keep maintainer-only or add explicit export path |
 | `rules/cosd-secure-api.md` | driver-specific | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 8 | keep maintainer-only or add explicit export path |
 | `rules/cost-prediction.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 14 | keep maintainer-only or add explicit export path |
