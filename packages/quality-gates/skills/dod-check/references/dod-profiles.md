@@ -2,6 +2,17 @@
 
 Use these profiles as evidence-based overlays on top of the base Definition of Done. They are portable categories, not stack mandates. Apply a profile only when changed files or task scope show that surface is involved.
 
+Before applying a profile, read the checker output:
+
+- `dod_profiles` tells you which work surface changed.
+- `stack_signals` tells you which language/framework/package-manager/test-runner
+  evidence was detected from manifests and config files.
+
+Bind each checklist item to the detected stack. If `stack_signals` is empty or
+does not cover the touched surface, keep the generic DoD, state the uncertainty,
+and ask for or inspect project-local validation instructions before making a
+stack-specific completion claim.
+
 ## Backend API / Server Work
 
 Use for server handlers, API routes, services, jobs, webhooks, auth, persistence, migrations, queues, and scheduled work.
@@ -73,4 +84,4 @@ Check:
 
 Apply every profile touched by the diff. For example, a reusable dialog plus its stories uses both `ui-component` and `storybook-docs`; a checkout mutation plus a client form uses both `backend-api` and `frontend-feature`.
 
-Do not copy these bullets into a PR blindly. Convert them into concrete acceptance criteria and commands for the repository's actual stack.
+Do not copy these bullets into a PR blindly. Convert them into concrete acceptance criteria and commands for the repository's detected stack and actual configured tooling.

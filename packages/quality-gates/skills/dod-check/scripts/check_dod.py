@@ -42,6 +42,7 @@ class Report:
     complexity: str
     changed_files: list[str]
     dod_profiles: list[str]
+    stack_signals: list[str]
     recommended_command: str | None
     checks: list[Check]
 
@@ -158,6 +159,105 @@ def infer_dod_profiles(files: list[str]) -> list[str]:
     return sorted(profiles)
 
 
+def _read_optional(path: Path) -> str:
+    try:
+        return path.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return ""
+
+
+def detect_stack_signals(root: Path = ROOT) -> list[str]:
+    """Detect stack/tooling signals from repository files.
+
+    This is evidence-only. A signal means the repo contains a conventional
+    manifest/config/dependency reference; it does not mean the checker may invent
+    commands. Validation commands still come from configured scripts or explicit
+    project files.
+    """
+
+    signals: set[str] = set()
+
+    package_json = root / "package.json"
+    if package_json.exists():
+        signals.add("node")
+        text = _read_optional(package_json).lower()
+        dependency_markers = {
+            '"next"': "nextjs",
+            '"react"': "react",
+            '"vue"': "vue",
+            '"svelte"': "svelte",
+            '"@angular/core"': "angular",
+            '"@storybook/': "storybook",
+            '"storybook"': "storybook",
+            '"vitest"': "vitest",
+            '"jest"': "jest",
+            '"playwright"': "playwright",
+            '"cypress"': "cypress",
+            '"typescript"': "typescript",
+            '"tailwindcss"': "tailwind",
+            '"zod"': "zod",
+        }
+        for marker, signal in dependency_markers.items():
+            if marker in text:
+                signals.add(signal)
+        for manager_file, signal in {
+            "pnpm-lock.yaml": "pnpm",
+            "yarn.lock": "yarn",
+            "package-lock.json": "npm",
+            "bun.lockb": "bun",
+            "bun.lock": "bun",
+        }.items():
+            if (root / manager_file).exists():
+                signals.add(signal)
+
+    python_manifests = ("pyproject.toml", "requirements.txt", "setup.py", "setup.cfg", "Pipfile", "uv.lock")
+    if any((root / name).exists() for name in python_manifests):
+        signals.add("python")
+        text = "\n".join(_read_optional(root / name).lower() for name in python_manifests)
+        for marker, signal in {
+            "django": "django",
+            "fastapi": "fastapi",
+            "flask": "flask",
+            "pytest": "pytest",
+            "ruff": "ruff",
+            "mypy": "mypy",
+        }.items():
+            if marker in text:
+                signals.add(signal)
+
+    manifest_signals = {
+        "go.mod": "go",
+        "Cargo.toml": "rust",
+        "pom.xml": "maven",
+        "build.gradle": "gradle",
+        "build.gradle.kts": "gradle",
+        "Gemfile": "ruby",
+        "composer.json": "php",
+        "mix.exs": "elixir",
+        "deno.json": "deno",
+        "deno.jsonc": "deno",
+        "Dockerfile": "docker",
+        "docker-compose.yml": "docker-compose",
+        "docker-compose.yaml": "docker-compose",
+    }
+    for manifest, signal in manifest_signals.items():
+        if (root / manifest).exists():
+            signals.add(signal)
+
+    if any(root.glob("*.csproj")) or any(root.glob("**/*.csproj")):
+        signals.add("dotnet")
+    if (root / ".storybook").exists():
+        signals.add("storybook")
+    if (root / "tsconfig.json").exists():
+        signals.add("typescript")
+    if any((root / name).exists() for name in ("vite.config.ts", "vite.config.js", "vite.config.mts")):
+        signals.add("vite")
+    if any((root / name).exists() for name in ("next.config.js", "next.config.mjs", "next.config.ts")):
+        signals.add("nextjs")
+
+    return sorted(signals)
+
+
 def file_text(path: str) -> str:
     try:
         return (ROOT / path).read_text(encoding="utf-8", errors="replace")
@@ -199,6 +299,7 @@ def build_report(run_validation: bool = False) -> Report:
     files = changed_files()
     complexity = classify(files)
     profiles = infer_dod_profiles(files)
+    stack_signals = detect_stack_signals(ROOT)
     command = recommended_command(files)
     checks = check_hygiene(files)
     checks.append(
@@ -206,6 +307,13 @@ def build_report(run_validation: bool = False) -> Report:
             "dod_profiles",
             "PASS",
             ", ".join(profiles) if profiles else "no surface-specific DoD profile inferred; base DoD applies",
+        )
+    )
+    checks.append(
+        Check(
+            "stack_signals",
+            "PASS" if stack_signals else "WARN",
+            ", ".join(stack_signals) if stack_signals else "no stack manifest/config signals detected",
         )
     )
     if command:
@@ -216,13 +324,14 @@ def build_report(run_validation: bool = False) -> Report:
         checks.append(run_recommended(command))
     statuses = [check.status for check in checks]
     verdict = "FAIL" if "FAIL" in statuses else "WARN" if "WARN" in statuses else "PASS"
-    return Report(verdict, complexity, files, profiles, command, checks)
+    return Report(verdict, complexity, files, profiles, stack_signals, command, checks)
 
 
 def markdown(report: Report) -> str:
     lines = [f"## DoD Check: {report.verdict}", f"Complexity: {report.complexity}", ""]
     lines.append(f"Changed files: {len(report.changed_files)}")
     lines.append(f"DoD profiles: {', '.join(report.dod_profiles) if report.dod_profiles else 'none'}")
+    lines.append(f"Stack signals: {', '.join(report.stack_signals) if report.stack_signals else 'none'}")
     if report.recommended_command:
         lines.append(f"Recommended validation: `{report.recommended_command}`")
     lines.append("\n| Check | Status | Evidence |")
