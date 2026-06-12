@@ -528,18 +528,23 @@ def _build_default_routing_table(project_root: Optional[Path] = None) -> List[_R
 
     # Step 1: Load frontmatter-derived entries
     _fm_entries = _load_routing_from_frontmatter(_project_root)
-    _fm_skill_names: Set[str] = {e.skill_name for e in _fm_entries}
+    _fm_by_skill: dict[str, _RoutingEntry] = {entry.skill_name: entry for entry in _fm_entries}
 
     # Step 2: Load disk skill index for orphan detection
     _disk_skills = _detect_skill_md_paths(_project_root)
 
-    # Step 3: Load hand-coded entries, warn on orphans, skip if frontmatter present
+    # Step 3: Load hand-coded entries, warn on orphans, and keep regex fallbacks
+    # when frontmatter is semantic-only. This preserves routing when optional
+    # semantic dependencies (for example numpy) are unavailable.
     _hand_coded = _build_hand_coded_routing_table()
     _merged: List[_RoutingEntry] = list(_fm_entries)
     for entry in _hand_coded:
-        if entry.skill_name in _fm_skill_names:
-            # Frontmatter entry takes precedence; skip hand-coded
+        fm_entry = _fm_by_skill.get(entry.skill_name)
+        if fm_entry is not None and fm_entry.patterns:
+            # Regex-capable frontmatter entry takes precedence; skip hand-coded.
             continue
+        if fm_entry is not None and not fm_entry.patterns:
+            _merged = [existing for existing in _merged if existing.skill_name != entry.skill_name]
         if entry.skill_name not in _disk_skills:
             # Orphan: hand-coded entry with no SKILL.md on disk
             # Known orphans as of ADR-174: "context-analysis", "traceability-check"
