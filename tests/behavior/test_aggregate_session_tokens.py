@@ -20,8 +20,10 @@ sys.path.insert(0, str(REPO))
 from scripts.aggregate_session_tokens import (
     _is_pricing_known,
     _session_already_recorded,
+    find_portable_session_jsonl,
     main as aggregate_main,
     parse_claude_transcript,
+    parse_usage_transcript,
     write_transcript_cost_event,
 )
 from scripts.token_report import (
@@ -107,6 +109,8 @@ class TestParseClaudeTranscript:
         assert totals["cache_creation_input_tokens"] == 300
         assert totals["turn_count"] == 2
         assert totals["model"] == "claude-fable-5"
+        assert totals["providers_seen"] == ["anthropic"]
+        assert totals["harnesses_seen"] == ["claude-code"]
 
     def test_dominant_model_most_frequent(self, tmp_path: Path) -> None:
         """Dominant model is the most-frequently-seen model across turns."""
@@ -187,6 +191,8 @@ class TestWriteTranscriptCostEvent:
             "model": "claude-fable-5",
             "models_seen": ["claude-fable-5"],
             "turn_count": 3,
+            "providers_seen": ["anthropic"],
+            "harnesses_seen": ["claude-code"],
         }
 
         write_transcript_cost_event(metrics_dir, "session-cost-known", totals)
@@ -197,7 +203,10 @@ class TestWriteTranscriptCostEvent:
         payload = rows[0]["payload"]
         assert payload["is_estimate"] is False
         assert payload["source"] == "transcript"
+        assert payload["telemetry_schema"] == "token-usage-normalized.v1"
         assert payload["session_id"] == "session-cost-known"
+        assert payload["providers_seen"] == ["anthropic"]
+        assert payload["harnesses_seen"] == ["claude-code"]
         assert payload["pricing_known"] is True
         assert payload["actual_cost_usd"] is not None
         assert payload["actual_cost_usd"] > 0
@@ -213,6 +222,8 @@ class TestWriteTranscriptCostEvent:
             "model": "some-future-unknown-model-x99",
             "models_seen": ["some-future-unknown-model-x99"],
             "turn_count": 1,
+            "providers_seen": ["unknown"],
+            "harnesses_seen": ["ide-x"],
         }
 
         write_transcript_cost_event(metrics_dir, "session-unknown-model", totals)
@@ -264,6 +275,58 @@ class TestZeroTokenGuard:
         assert rows[0]["payload"]["input_tokens"] == 100
 
 
+class TestPortableUsageAggregation:
+    def test_openai_style_jsonl_is_aggregated(self, tmp_path: Path) -> None:
+        transcript = tmp_path / "codex-session.jsonl"
+        _write_transcript(transcript, [
+            {
+                "provider": "openai",
+                "harness": "codex",
+                "model": "gpt-5.1",
+                "usage": {
+                    "prompt_tokens": 1200,
+                    "completion_tokens": 300,
+                    "prompt_tokens_details": {"cached_tokens": 128},
+                },
+            }
+        ])
+
+        totals = parse_usage_transcript(str(transcript), default_harness="codex")
+
+        assert totals["input_tokens"] == 1200
+        assert totals["output_tokens"] == 300
+        assert totals["cache_read_input_tokens"] == 128
+        assert totals["providers_seen"] == ["openai"]
+        assert totals["harnesses_seen"] == ["codex"]
+
+    def test_camel_case_opencode_usage_is_recorded_with_provenance(self, tmp_path: Path) -> None:
+        transcript = tmp_path / "opencode-session.jsonl"
+        _write_transcript(transcript, [
+            {
+                "payload": {"provider": "anthropic", "harness": "opencode", "model": "claude-haiku-4"},
+                "usage": {"inputTokens": 700, "outputTokens": 80, "cachedInputTokens": 50},
+            }
+        ])
+
+        rc = aggregate_main([str(transcript), "--project-dir", str(tmp_path)])
+
+        assert rc == 0
+        cost_file = tmp_path / ".cognitive-os" / "metrics" / "cost-events.jsonl"
+        payload = json.loads(cost_file.read_text().splitlines()[0])["payload"]
+        assert payload["telemetry_schema"] == "token-usage-normalized.v1"
+        assert payload["providers_seen"] == ["anthropic"]
+        assert payload["harnesses_seen"] == ["opencode"]
+        assert payload["input_tokens"] == 700
+        assert payload["output_tokens"] == 80
+
+    def test_explicit_session_env_wins_for_portable_discovery(self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+        transcript = tmp_path / "explicit-session.jsonl"
+        _write_transcript(transcript, [{"usage": {"totalTokens": 1}}])
+        monkeypatch.setenv("COGNITIVE_OS_SESSION_JSONL", str(transcript))
+
+        assert find_portable_session_jsonl(str(tmp_path)) == str(transcript)
+
+
 # ---------------------------------------------------------------------------
 # token_report tests (read path)
 # ---------------------------------------------------------------------------
@@ -285,6 +348,8 @@ def _transcript_row(
     cache_write: int = 0,
     cost: float | None = 0.10,
     pricing_known: bool = True,
+    providers_seen: list[str] | None = None,
+    harnesses_seen: list[str] | None = None,
 ) -> dict:
     return {
         "source": "aggregate_session_tokens",
@@ -292,8 +357,11 @@ def _transcript_row(
         "timestamp": f"{date}T12:00:00+00:00",
         "payload": {
             "source": "transcript",
+            "telemetry_schema": "token-usage-normalized.v1",
             "session_id": session_id,
             "model": model,
+            "providers_seen": providers_seen or ["anthropic"],
+            "harnesses_seen": harnesses_seen or ["claude-code"],
             "input_tokens": input_tokens,
             "output_tokens": output_tokens,
             "cache_read_input_tokens": cache_read,
@@ -327,13 +395,15 @@ class TestTokenReport:
         assert s1["output_tokens"] == 500
         assert s1["cache_read"] == 2000
         assert s1["cache_write"] == 1000
+        assert s1["providers_seen"] == ["anthropic"]
+        assert s1["harnesses_seen"] == ["claude-code"]
 
     def test_per_day_rollup(self, tmp_path: Path) -> None:
         """per-day aggregation groups sessions by calendar date."""
         cost_file = tmp_path / "cost-events.jsonl"
         _build_cost_events_file(cost_file, [
             _transcript_row("sess-001", "2026-06-10", "claude-fable-5", 10_000, 500),
-            _transcript_row("sess-002", "2026-06-10", "claude-fable-5", 8_000, 400),
+            _transcript_row("sess-002", "2026-06-10", "gpt-5.1", 8_000, 400, providers_seen=["openai"], harnesses_seen=["codex"]),
             _transcript_row("sess-003", "2026-06-11", "claude-fable-5", 5_000, 200),
         ])
 
@@ -344,6 +414,8 @@ class TestTokenReport:
         day_10 = next(d for d in days if d["date"] == "2026-06-10")
         assert day_10["sessions"] == 2
         assert day_10["input_tokens"] == 18_000
+        assert day_10["providers_seen"] == ["anthropic", "openai"]
+        assert day_10["harnesses_seen"] == ["claude-code", "codex"]
 
         day_11 = next(d for d in days if d["date"] == "2026-06-11")
         assert day_11["sessions"] == 1
@@ -359,7 +431,7 @@ class TestTokenReport:
         assert _cache_hit_ratio(0, 0, 0) == 0.0
 
     def test_estimate_rows_excluded(self, tmp_path: Path) -> None:
-        """Estimate rows (source != 'transcript') must be excluded from report."""
+        """Estimate rows without normalized real-usage schema must be excluded."""
         cost_file = tmp_path / "cost-events.jsonl"
         estimate_row = {
             "source": "record_completion",
