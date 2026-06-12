@@ -351,13 +351,19 @@ def _adapter_manifest_rows(root: Path, primitive_rows: list[tuple[str, dict[str,
                 if derived_from_harness:
                     item["derived_from"] = derived_from_harness
                 projected.append(item)
-        projected_count = len(projected)
         if isinstance(projection_fallback, dict):
-            projected_count = sum(
-                1
+            projected = [
+                {
+                    "portable_id": str(contract.get("id")),
+                    "primitive_file": str(contract.get("source", "primitive-contract-registry")),
+                    "fidelity": str(((contract.get("projection") or {}).get(harness) or projection_fallback).get("fidelity")),
+                    "surface": ((contract.get("projection") or {}).get(harness) or projection_fallback).get("surface"),
+                    "claims_runtime_enforcement": False,
+                    "derived_from": "harness-projection.yaml:contract_projection_fallback",
+                }
                 for contract in load_contracts(root)
-                if isinstance((contract.get("projection") or {}).get(harness), dict) or isinstance(projection_fallback, dict)
-            )
+            ]
+        projected_count = len(projected)
         manifest = {
             "schema_version": ADAPTER_SCHEMA_VERSION,
             "adapter_contract_kind": "declarative-manifest",

@@ -313,9 +313,3 @@ unrouted_skill_allowlist:
 - skill: cost-predictor
   routing_class: name-field-mismatch
   rationale: See exemptions.name_field_mismatch
-- skill: tag-release
-  routing_class: disabled-skill
-  rationale: See exemptions.disabled_skills
-- skill: validate-release
-  routing_class: disabled-skill
-  rationale: See exemptions.disabled_skills
