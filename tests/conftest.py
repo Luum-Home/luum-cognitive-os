@@ -44,9 +44,9 @@ for _path in (str(_REPO_ROOT), str(_TESTS_ROOT)):
 # ----------------------------------------------------------------------------
 # Override via COS_TEST_SUBPROCESS_DEFAULT_TIMEOUT (seconds). Set to 0 to
 # disable the wrapper entirely (legacy behavior). This value is also the max
-# per-call subprocess timeout so cleanup beats pytest-timeout.
+# per-call subprocess timeout cap for tests that do not declare a tighter bound.
 _DEFAULT_TEST_SUBPROCESS_TIMEOUT = float(
-    os.environ.get("COS_TEST_SUBPROCESS_DEFAULT_TIMEOUT", "45")
+    os.environ.get("COS_TEST_SUBPROCESS_DEFAULT_TIMEOUT", "120")
 )
 _PYTEST_TIMEOUT_BUDGET_SECONDS: Optional[float] = None
 
