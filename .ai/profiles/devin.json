@@ -19,7 +19,7 @@
     "mcp"
   ],
   "projection_mode": "ide-rules-or-wrapper",
-  "proof_level": null,
+  "proof_level": "none",
   "schema_version": "portable-ai-profile.v1",
   "settings_paths": [
     ".devin/rules",
