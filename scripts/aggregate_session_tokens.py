@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 # SCOPE: os-only
-"""Aggregate real token usage from a Claude Code session transcript.
+"""Aggregate real token usage from agent session transcripts.
 
-Reads all ``assistant`` events from a session JSONL file, sums ``message.usage``
-across every turn, and appends ONE real cost event (``is_estimate: false``,
-``source: "transcript"``) to ``.cognitive-os/metrics/cost-events.jsonl``.
+Reads JSONL transcript/session files from supported harnesses, normalizes provider
+usage into a portable schema, and appends ONE real cost event
+(``is_estimate: false``, ``source: "transcript"``) to
+``.cognitive-os/metrics/cost-events.jsonl``.
+
+Supported input shapes include Claude Code ``message.usage``, OpenAI
+Responses/Chat ``usage`` blocks, and generic Codex/OpenCode JSONL usage events.
 
 Dedup: if a row with the same ``session_id`` and ``source: "transcript"`` already
 exists in ``cost-events.jsonl``, the script exits 0 without writing a duplicate.
@@ -15,8 +19,9 @@ Usage::
 
     python3 scripts/aggregate_session_tokens.py [<session_jsonl_path>]
 
-If no path is given the most-recently-modified JSONL in the project's
-``~/.claude/projects/<hash>/`` directory is used (Stop-hook mode).
+If no path is given the script checks explicit transcript env vars first, then
+known Claude/Codex/OpenCode local session directories, then the legacy Claude
+project-hash finder (Stop-hook mode).
 """
 
 import argparse
@@ -39,6 +44,50 @@ from lib.record_completion import (
 )
 from lib.metric_event import MetricEvent, append_event
 from lib.paths import runtime_project_root_or_cwd
+from lib.token_usage import summarize_usage_jsonl
+
+_TRANSCRIPT_ENV_VARS = (
+    "COGNITIVE_OS_SESSION_JSONL",
+    "CODEX_SESSION_JSONL",
+    "OPENCODE_SESSION_JSONL",
+    "CLAUDE_SESSION_JSONL",
+)
+
+
+def _latest_jsonl_under(path: Path) -> str | None:
+    if not path.exists():
+        return None
+    try:
+        candidates = [item for item in path.rglob("*.jsonl") if item.is_file()]
+    except OSError:
+        return None
+    if not candidates:
+        return None
+    return str(max(candidates, key=lambda item: item.stat().st_mtime))
+
+
+def find_portable_session_jsonl(project_dir: str) -> str | None:
+    """Find the most likely local transcript across supported harnesses."""
+    for env_name in _TRANSCRIPT_ENV_VARS:
+        value = os.environ.get(env_name)
+        if value and Path(value).exists():
+            return value
+
+    home = Path.home()
+    search_roots = (
+        home / ".codex" / "sessions",
+        home / ".opencode" / "sessions",
+        home / ".local" / "share" / "opencode" / "sessions",
+    )
+    discovered: list[str] = []
+    for root in search_roots:
+        latest = _latest_jsonl_under(root)
+        if latest:
+            discovered.append(latest)
+    if discovered:
+        return max(discovered, key=lambda item: Path(item).stat().st_mtime)
+
+    return find_session_jsonl(project_dir)
 
 
 # ---------------------------------------------------------------------------
@@ -46,73 +95,13 @@ from lib.paths import runtime_project_root_or_cwd
 # ---------------------------------------------------------------------------
 
 def parse_claude_transcript(path: str) -> dict:
-    """Sum ``message.usage`` across all ``assistant`` events in a session JSONL.
+    """Backward-compatible wrapper for Claude transcript aggregation."""
+    return parse_usage_transcript(path, default_harness="claude-code")
 
-    Returns a dict:
-      {
-        "input_tokens": int,
-        "output_tokens": int,
-        "cache_read_input_tokens": int,
-        "cache_creation_input_tokens": int,
-        "model": str,             # most-frequent model seen
-        "turn_count": int,
-        "models_seen": list[str],
-      }
 
-    Raises ``FileNotFoundError`` if ``path`` does not exist.
-    """
-    p = Path(path)
-    if not p.exists():
-        raise FileNotFoundError(f"Transcript not found: {path}")
-
-    totals = {
-        "input_tokens": 0,
-        "output_tokens": 0,
-        "cache_read_input_tokens": 0,
-        "cache_creation_input_tokens": 0,
-    }
-    model_counts: dict[str, int] = {}
-    turn_count = 0
-
-    with p.open("r", encoding="utf-8") as fh:
-        for raw_line in fh:
-            raw_line = raw_line.strip()
-            if not raw_line:
-                continue
-            try:
-                record = json.loads(raw_line)
-            except json.JSONDecodeError:
-                continue
-
-            if record.get("type") != "assistant":
-                continue
-
-            message = record.get("message", {})
-            usage = message.get("usage")
-            if not usage:
-                continue
-
-            turn_count += 1
-            totals["input_tokens"] += usage.get("input_tokens", 0)
-            totals["output_tokens"] += usage.get("output_tokens", 0)
-            totals["cache_read_input_tokens"] += usage.get("cache_read_input_tokens", 0)
-            totals["cache_creation_input_tokens"] += usage.get("cache_creation_input_tokens", 0)
-
-            model = message.get("model", "")
-            if model:
-                model_counts[model] = model_counts.get(model, 0) + 1
-
-    # Pick the most-frequent model; fall back to "unknown"
-    dominant_model = (
-        max(model_counts, key=lambda m: model_counts[m]) if model_counts else "unknown"
-    )
-
-    return {
-        **totals,
-        "model": dominant_model,
-        "turn_count": turn_count,
-        "models_seen": sorted(model_counts.keys()),
-    }
+def parse_usage_transcript(path: str, *, default_harness: str = "unknown") -> dict:
+    """Normalize and sum real usage across supported harness transcript shapes."""
+    return summarize_usage_jsonl(path, default_harness=default_harness).as_dict()
 
 
 # ---------------------------------------------------------------------------
@@ -186,9 +175,14 @@ def write_transcript_cost_event(
 
     payload: dict = {
         "source": "transcript",
+        "telemetry_schema": "token-usage-normalized.v1",
         "session_id": session_id,
         "model": model,
         "models_seen": totals.get("models_seen", []),
+        "providers_seen": totals.get("providers_seen", []),
+        "harnesses_seen": totals.get("harnesses_seen", []),
+        "source_kind": totals.get("source_kind", "usage"),
+        "parser_version": totals.get("parser_version", "token-usage-normalizer.v1"),
         "turn_count": totals.get("turn_count", 0),
         "input_tokens": input_tokens,
         "output_tokens": output_tokens,
@@ -215,8 +209,8 @@ def write_transcript_cost_event(
 
 def main(argv: Optional[list] = None) -> int:
     parser = argparse.ArgumentParser(
-        description="Aggregate token usage from a Claude Code session transcript "
-        "and append a real cost event to cost-events.jsonl.",
+        description="Aggregate real token usage from supported harness session transcripts "
+        "and append a normalized cost event to cost-events.jsonl.",
     )
     parser.add_argument(
         "transcript",
@@ -242,7 +236,7 @@ def main(argv: Optional[list] = None) -> int:
     # Resolve transcript path
     transcript_path = args.transcript
     if not transcript_path:
-        transcript_path = find_session_jsonl(project_dir)
+        transcript_path = find_portable_session_jsonl(project_dir)
 
     if not transcript_path or not Path(transcript_path).exists():
         # Graceful exit in CI / remote where transcript is unavailable
@@ -262,7 +256,7 @@ def main(argv: Optional[list] = None) -> int:
         return 0
 
     try:
-        totals = parse_claude_transcript(transcript_path)
+        totals = parse_usage_transcript(transcript_path, default_harness="auto")
     except FileNotFoundError as exc:
         print(f"[aggregate_session_tokens] {exc} — skipping.", file=sys.stderr)
         return 0

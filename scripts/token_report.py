@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 # SCOPE: os-only
-"""Read-path report: tokens/cost per session and per day from cost-events.jsonl.
+"""Read-path report: portable token/cost telemetry from cost-events.jsonl.
 
 Reads ``.cognitive-os/metrics/cost-events.jsonl`` and prints a summary table
-with per-session and per-day totals, cache-hit ratio, and cost breakdown.
-Real rows (``is_estimate: false``, ``source: "transcript"``) are distinguished
-from estimate rows.
+with per-session and per-day totals, cache-hit ratio, provider/harness coverage,
+and cost breakdown. Real rows (``is_estimate: false`` and
+``source: "transcript"`` or ``telemetry_schema: token-usage-normalized.v1``) are
+distinguished from estimate rows.
 
 Usage::
 
@@ -71,12 +72,22 @@ def load_cost_events(cost_file: str) -> list[dict]:
 # Aggregation
 # ---------------------------------------------------------------------------
 
+def _is_real_usage_payload(payload: dict) -> bool:
+    return (
+        payload.get("is_estimate") is False
+        and (
+            payload.get("source") == "transcript"
+            or payload.get("telemetry_schema") == "token-usage-normalized.v1"
+        )
+    )
+
+
 def _aggregate_session(rows: list[dict]) -> list[dict]:
-    """Return one summary dict per session_id from transcript rows."""
+    """Return one summary dict per session_id from normalized real-usage rows."""
     by_session: dict[str, dict] = {}
     for row in rows:
         payload = row.get("payload", {})
-        if payload.get("source") != "transcript":
+        if not _is_real_usage_payload(payload):
             continue
         sid = payload.get("session_id", "unknown")
         if sid not in by_session:
@@ -84,6 +95,8 @@ def _aggregate_session(rows: list[dict]) -> list[dict]:
                 "session_id": sid,
                 "date": _parse_event_date(row),
                 "model": payload.get("model", "unknown"),
+                "providers_seen": set(payload.get("providers_seen") or []),
+                "harnesses_seen": set(payload.get("harnesses_seen") or []),
                 "input_tokens": 0,
                 "output_tokens": 0,
                 "cache_read": 0,
@@ -93,6 +106,8 @@ def _aggregate_session(rows: list[dict]) -> list[dict]:
                 "pricing_known": payload.get("pricing_known", True),
             }
         s = by_session[sid]
+        s["providers_seen"].update(payload.get("providers_seen") or [])
+        s["harnesses_seen"].update(payload.get("harnesses_seen") or [])
         s["input_tokens"] += payload.get("input_tokens", 0)
         s["output_tokens"] += payload.get("output_tokens", 0)
         s["cache_read"] += payload.get("cache_read_input_tokens", 0)
@@ -104,15 +119,20 @@ def _aggregate_session(rows: list[dict]) -> list[dict]:
             s["actual_cost_usd"] = (s["actual_cost_usd"] or 0.0) + float(cost)
         if not payload.get("pricing_known", True):
             s["pricing_known"] = False
-    return sorted(by_session.values(), key=lambda r: r["date"])
+    out = []
+    for row in by_session.values():
+        row["providers_seen"] = sorted(row["providers_seen"])
+        row["harnesses_seen"] = sorted(row["harnesses_seen"])
+        out.append(row)
+    return sorted(out, key=lambda r: r["date"])
 
 
 def _aggregate_day(rows: list[dict]) -> list[dict]:
-    """Return one summary dict per calendar day from transcript rows."""
+    """Return one summary dict per calendar day from normalized real-usage rows."""
     by_day: dict[str, dict] = {}
     for row in rows:
         payload = row.get("payload", {})
-        if payload.get("source") != "transcript":
+        if not _is_real_usage_payload(payload):
             continue
         day = _parse_event_date(row)
         if day not in by_day:
@@ -125,8 +145,12 @@ def _aggregate_day(rows: list[dict]) -> list[dict]:
                 "cache_write": 0,
                 "actual_cost_usd": 0.0,
                 "has_null_cost": False,
+                "providers_seen": set(payload.get("providers_seen") or []),
+                "harnesses_seen": set(payload.get("harnesses_seen") or []),
             }
         d = by_day[day]
+        d["providers_seen"].update(payload.get("providers_seen") or [])
+        d["harnesses_seen"].update(payload.get("harnesses_seen") or [])
         d["sessions"] += 1
         d["input_tokens"] += payload.get("input_tokens", 0)
         d["output_tokens"] += payload.get("output_tokens", 0)
@@ -137,7 +161,12 @@ def _aggregate_day(rows: list[dict]) -> list[dict]:
             d["has_null_cost"] = True
         else:
             d["actual_cost_usd"] = (d["actual_cost_usd"] or 0.0) + float(cost)
-    return sorted(by_day.values(), key=lambda r: r["date"])
+    out = []
+    for row in by_day.values():
+        row["providers_seen"] = sorted(row["providers_seen"])
+        row["harnesses_seen"] = sorted(row["harnesses_seen"])
+        out.append(row)
+    return sorted(out, key=lambda r: r["date"])
 
 
 def _cache_hit_ratio(input_tokens: int, cache_read: int, cache_write: int) -> float:
@@ -160,18 +189,20 @@ def _fmt_cost(cost: float, has_null: bool) -> str:
 
 def print_session_table(sessions: list[dict]) -> None:
     if not sessions:
-        print("No transcript cost events found.")
+        print("No real token usage events found.")
         return
-    header = f"{'SESSION':<38} {'DATE':<12} {'MODEL':<20} {'INPUT':>8} {'OUTPUT':>8} {'CACHE_R':>8} {'CACHE_W':>8} {'RATIO':>6} {'COST':>10}"
+    header = f"{'SESSION':<30} {'DATE':<12} {'MODEL':<16} {'PROVIDER':<12} {'HARNESS':<12} {'INPUT':>8} {'OUTPUT':>8} {'CACHE_R':>8} {'CACHE_W':>8} {'RATIO':>6} {'COST':>10}"
     print(header)
     print("-" * len(header))
     for s in sessions:
         ratio = _cache_hit_ratio(s["input_tokens"], s["cache_read"], s["cache_write"])
         cost_str = _fmt_cost(s["actual_cost_usd"] or 0.0, s["has_null_cost"])
         row = (
-            f"{s['session_id'][:36]:<38} "
+            f"{s['session_id'][:28]:<30} "
             f"{s['date']:<12} "
-            f"{s['model'][:18]:<20} "
+            f"{s['model'][:14]:<16} "
+            f"{','.join(s.get('providers_seen') or ['unknown'])[:10]:<12} "
+            f"{','.join(s.get('harnesses_seen') or ['unknown'])[:10]:<12} "
             f"{s['input_tokens']:>8} "
             f"{s['output_tokens']:>8} "
             f"{s['cache_read']:>8} "
@@ -186,9 +217,9 @@ def print_session_table(sessions: list[dict]) -> None:
 
 def print_day_table(days: list[dict]) -> None:
     if not days:
-        print("No transcript cost events found.")
+        print("No real token usage events found.")
         return
-    header = f"{'DATE':<12} {'SESSIONS':>8} {'INPUT':>10} {'OUTPUT':>8} {'CACHE_R':>8} {'CACHE_W':>8} {'RATIO':>6} {'COST':>10}"
+    header = f"{'DATE':<12} {'SESSIONS':>8} {'PROVIDERS':<16} {'HARNESSES':<16} {'INPUT':>10} {'OUTPUT':>8} {'CACHE_R':>8} {'CACHE_W':>8} {'RATIO':>6} {'COST':>10}"
     print(header)
     print("-" * len(header))
     for d in days:
@@ -197,6 +228,8 @@ def print_day_table(days: list[dict]) -> None:
         row = (
             f"{d['date']:<12} "
             f"{d['sessions']:>8} "
+            f"{','.join(d.get('providers_seen') or ['unknown'])[:14]:<16} "
+            f"{','.join(d.get('harnesses_seen') or ['unknown'])[:14]:<16} "
             f"{d['input_tokens']:>10} "
             f"{d['output_tokens']:>8} "
             f"{d['cache_read']:>8} "
@@ -215,7 +248,7 @@ def print_day_table(days: list[dict]) -> None:
 
 def main(argv: Optional[list] = None) -> int:
     parser = argparse.ArgumentParser(
-        description="Report token usage and cost from cost-events.jsonl (transcript rows).",
+        description="Report portable real token usage and cost from cost-events.jsonl.",
     )
     parser.add_argument(
         "--by",
