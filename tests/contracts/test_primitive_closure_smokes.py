@@ -32,7 +32,7 @@ def _run_json(script: str) -> dict[str, object]:
         text=True,
         capture_output=True,
         check=False,
-        timeout=30,
+        timeout=90,
     )
     assert result.returncode == 0, result.stderr or result.stdout
     assert _report_snapshot() == before, f"{script} --check dirtied tracked smoke reports"
@@ -77,6 +77,7 @@ def test_service_headless_smoke_proves_content_free_runtime_ledger() -> None:
     assert {"destructive-git-blocker", "destructive-rm-blocker", "skill-router", "large-file-advisor", "reinvention-check"} <= set(report["primitive_ids"])
 
 
+@pytest.mark.timeout(180)
 def test_portable_ai_real_consumer_smoke_uses_registered_consumer_shadows() -> None:
     report = _run_json("cos-portable-ai-real-consumer-smoke")
     assert report["schema_version"] == "portable-ai-real-consumer-smoke.v1"

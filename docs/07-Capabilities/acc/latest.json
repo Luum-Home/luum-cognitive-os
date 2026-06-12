@@ -6,20 +6,20 @@
       "source": "docs/06-Daily/reports/primitive-authority-latest.json",
       "status": "ok",
       "summary": {
-        "block_count": 1,
+        "block_count": 0,
         "by_mode": {
-          "observe-only": 131,
+          "observe-only": 132,
           "os-maintainer-write": 494,
           "profile-projection-write": 37,
           "propose-only": 3
         },
         "by_status": {
-          "pass": 655,
+          "pass": 656,
           "warn": 10
         },
-        "dynamic_blocks": 1,
+        "dynamic_blocks": 0,
         "dynamic_smokes": 4,
-        "total_scripts": 665
+        "total_scripts": 666
       }
     },
     "codebase_itinerary": {
@@ -3497,7 +3497,7 @@
       "source": "docs/06-Daily/reports/documentation-truth-latest.json",
       "status": "ok",
       "summary": {
-        "block_count": 1,
+        "block_count": 0,
         "by_claim": {
           "consumer_projection_harnesses": {
             "pass": 17
@@ -3506,8 +3506,7 @@
             "pass": 8
           },
           "primitive_authority_write_effects": {
-            "block": 1,
-            "pass": 15
+            "pass": 16
           },
           "session_pending_protocol": {
             "pass": 75
@@ -3517,8 +3516,7 @@
           }
         },
         "by_status": {
-          "block": 1,
-          "pass": 125
+          "pass": 126
         },
         "rows": 126
       }
@@ -3705,7 +3703,7 @@
           "advise": 3,
           "allow": 19,
           "block": 123,
-          "warn": 202
+          "warn": 204
         },
         "primitive_count": 9
       }
@@ -4745,6 +4743,7 @@
       "evidence": [
         "test_consumers:1",
         "hook_consumers:1",
+        "config_consumers:1",
         "role_source:usage:repo",
         "consumer_accessibility:so-local-only",
         "availability_override:so-local-only",
@@ -110350,6 +110349,37 @@
     },
     {
       "confidence": 0.9,
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "evidence": [
+        "authority_mode:observe-only",
+        "authority_source:derived:shared-default",
+        "scope:both"
+      ],
+      "id": "authority_write_effects:scripts/cos-conflict-marker-guard",
+      "kind": "authority_write_effects",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "scripts/cos-conflict-marker-guard",
+          "kind": "authority_contract",
+          "role": "write-effects-boundary"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "mode": "observe-only",
+        "scope": "both",
+        "status": "pass"
+      },
+      "source": {
+        "path": "docs/06-Daily/reports/primitive-authority-latest.json",
+        "primitive": "scripts/cos-conflict-marker-guard"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "evidence": [
         "authority_mode:os-maintainer-write",
@@ -127806,7 +127836,7 @@
       "weight": 3
     },
     {
-      "confidence": 0.75,
+      "confidence": 0.9,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "dynamic_smoke:cos-init-codex",
@@ -127815,7 +127845,7 @@
       "id": "authority_write_effects:dynamic:cos-init-codex",
       "kind": "authority_write_effects",
       "lifecycle_status": "real",
-      "mapping_status": "overexposed",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "cos-init-codex",
@@ -127823,20 +127853,10 @@
           "role": "filesystem-delta-proof"
         }
       ],
-      "risk": "high",
+      "risk": "medium",
       "signature": {
-        "status": "block",
-        "unexpected_paths": [
-          ".agents/skills/CATALOG.md",
-          ".agents/skills/auto-refine",
-          ".agents/skills/compose-prompt",
-          ".agents/skills/cos-status",
-          ".agents/skills/exhaustive-prompt",
-          ".agents/skills/plan-feature",
-          ".agents/skills/resource-governor",
-          ".agents/skills/session-backlog",
-          ".agents/skills/verification-before-completion"
-        ]
+        "status": "pass",
+        "unexpected_paths": []
       },
       "source": {
         "path": "docs/06-Daily/reports/primitive-authority-latest.json",
@@ -127905,17 +127925,16 @@
       "weight": 2
     },
     {
-      "confidence": 0.82,
+      "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "checks:16",
-        "blocks:1",
-        "block:source_report_status:docs/06-Daily/reports/primitive-authority-latest.json"
+        "blocks:0"
       ],
       "id": "documentation_truth:primitive_authority_write_effects",
       "kind": "documentation_truth",
       "lifecycle_status": "real",
-      "mapping_status": "stale",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "primitive_authority_write_effects",
@@ -127925,9 +127944,9 @@
       ],
       "risk": "high",
       "signature": {
-        "blocks": 1,
+        "blocks": 0,
         "checks": 16,
-        "status": "stale"
+        "status": "aligned"
       },
       "source": {
         "claim": "primitive_authority_write_effects",
@@ -128188,7 +128207,7 @@
       "confidence": 0.82,
       "consumer_accessibility": "runtime-evidence",
       "evidence": [
-        "intervention_rows:143"
+        "intervention_rows:145"
       ],
       "id": "primitive_intervention:reinvention-check",
       "kind": "primitive_intervention",
@@ -128203,7 +128222,7 @@
       ],
       "risk": "medium",
       "signature": {
-        "rows": 143
+        "rows": 145
       },
       "source": {
         "path": ".cognitive-os/metrics/primitive-interventions.jsonl",
@@ -145359,31 +145378,6 @@
       "status": "partial"
     },
     {
-      "capability_id": "authority_write_effects:dynamic:cos-init-codex",
-      "evidence": [
-        "dynamic_smoke:cos-init-codex",
-        "returncode:0",
-        "unexpected:.agents/skills/CATALOG.md",
-        "unexpected:.agents/skills/auto-refine",
-        "unexpected:.agents/skills/compose-prompt",
-        "unexpected:.agents/skills/cos-status"
-      ],
-      "message": "Dynamic authority smoke changed paths outside declared allowlist",
-      "next_action": "tighten the command allowlist or fix the primitive writes",
-      "severity": "high",
-      "status": "overexposed"
-    },
-    {
-      "capability_id": "documentation_truth:primitive_authority_write_effects",
-      "evidence": [
-        "status:block"
-      ],
-      "message": "Source report is currently blocking",
-      "next_action": "fix source report blockers before claiming docs are current",
-      "severity": "high",
-      "status": "stale"
-    },
-    {
       "capability_id": "doc_claim:docs/00-MOCs/decisions.md:7",
       "evidence": [
         "path:docs/02-Decisions/adrs/INDEX.md",
@@ -146650,7 +146644,7 @@
       "coverage_debt:181"
     ]
   },
-  "generated_at": "2026-06-12T18:01:04Z",
+  "generated_at": "2026-06-12T18:13:24Z",
   "harness_projection": {
     "agents-md": {
       "display_name": "AGENTS.md",
@@ -147398,22 +147392,22 @@
   },
   "schema_version": "acc.report.v1",
   "summary": {
-    "acc": 0.9129,
-    "acc_effective": 0.9124,
-    "aligned_weight": 6899,
+    "acc": 0.9139,
+    "acc_effective": 0.9143,
+    "aligned_weight": 6907,
     "mapping_weight_by_status": {
-      "aligned": 6899,
+      "aligned": 6907,
       "missing": 0,
-      "overexposed": 3,
+      "overexposed": 0,
       "partial": 434,
-      "stale": 218,
+      "stale": 214,
       "unverified": 3
     },
     "missing_weight": 0,
-    "overexposed_weight": 3,
+    "overexposed_weight": 0,
     "partial_weight": 434,
-    "stale_weight": 218,
-    "total_weight": 7557,
+    "stale_weight": 214,
+    "total_weight": 7558,
     "unverified_weight": 3
   },
   "weights": {

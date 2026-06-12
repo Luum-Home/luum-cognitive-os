@@ -5,6 +5,8 @@
 #
 # Async-safe: runs in the background after session end. Dedup is handled in
 # the Python script -- repeated fires for the same session are no-ops.
+# @on-demand: Stop-hook telemetry runs only when the harness supplies a session
+# transcript; synthetic behavior coverage lives in tests/behavior/test_aggregate_session_tokens.py.
 #
 # Killswitch: honours DISABLE_HOOK_SESSION_TOKEN_AGGREGATOR=1 for emergency
 # suppression (e.g. when running integration tests against fixture transcripts).
