@@ -5,16 +5,17 @@
     "actions": null,
     "contract_id": null,
     "impact": null,
-    "intent": "Manual scope calibration iteration 020: skill authoring is portable across COS, adopter projects, and user-local skill surfaces; COS package scaffolding is optional rather than the default behavior.",
+    "intent": "Manual scope calibration iteration 021: skill authoring is portable across COS, adopter projects, and user-local skill surfaces; COS package scaffolding is optional rather than the default behavior, and canonical skill authoring projects across every harness declared in manifests/harness-projection.yaml.",
     "present": false,
     "projection_fidelity": {},
     "requires": [],
     "trigger": null
   },
   "evidence": {
-    "behavior_evidence": "Manual scope calibration iteration 020: skill authoring is portable across COS, adopter projects, and user-local skill surfaces; COS package scaffolding is optional rather than the default behavior.",
+    "behavior_evidence": "Manual scope calibration iteration 021: skill authoring is portable across COS, adopter projects, and user-local skill surfaces; COS package scaffolding is optional rather than the default behavior, and canonical skill authoring projects across every harness declared in manifests/harness-projection.yaml.",
     "evidence_commands": [
-      "python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/skill-creator/SKILL.md"
+      "python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/skill-creator/SKILL.md",
+      "python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q"
     ],
     "metrics_file": "none"
   },
@@ -42,9 +43,10 @@
     "contract_id": null,
     "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
     "evidence": {
-      "behavior_evidence": "Manual scope calibration iteration 020: skill authoring is portable across COS, adopter projects, and user-local skill surfaces; COS package scaffolding is optional rather than the default behavior.",
+      "behavior_evidence": "Manual scope calibration iteration 021: skill authoring is portable across COS, adopter projects, and user-local skill surfaces; COS package scaffolding is optional rather than the default behavior, and canonical skill authoring projects across every harness declared in manifests/harness-projection.yaml.",
       "evidence_commands": [
-        "python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/skill-creator/SKILL.md"
+        "python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/skill-creator/SKILL.md",
+        "python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q"
       ],
       "metrics": []
     },
@@ -52,10 +54,35 @@
       "consumer_fleet": "unknown",
       "service_mode": "unsupported"
     },
-    "intent": "Manual scope calibration iteration 020: skill authoring is portable across COS, adopter projects, and user-local skill surfaces; COS package scaffolding is optional rather than the default behavior.",
+    "intent": "Manual scope calibration iteration 021: skill authoring is portable across COS, adopter projects, and user-local skill surfaces; COS package scaffolding is optional rather than the default behavior, and canonical skill authoring projects across every harness declared in manifests/harness-projection.yaml.",
     "is_full_contract": true,
     "projection_fidelity": {
+      "agents-md": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "aider": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "amp-code": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "augment-code": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
       "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "cline": {
         "claims_runtime_enforcement": false,
         "fidelity": "documented-only",
         "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
@@ -65,7 +92,102 @@
         "fidelity": "documented-only",
         "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
       },
-      "generic-cli": {
+      "continue-dev": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "deepseek-provider": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "devin": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "factory-droid": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "gemini-cli": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "google-antigravity": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "goose": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "jetbrains-junie": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "kilo-code": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "kimi-code": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "kiro": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "minimax-maxclaw": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "qoder": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "qwen-code": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "warp": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "zed-ai": {
         "claims_runtime_enforcement": false,
         "fidelity": "documented-only",
         "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
@@ -93,6 +215,30 @@
   "supported_harnesses": [
     "claude",
     "codex",
-    "generic-cli"
+    "cursor",
+    "devin",
+    "vscode-copilot",
+    "agents-md",
+    "opencode",
+    "google-antigravity",
+    "qwen-code",
+    "kimi-code",
+    "minimax-maxclaw",
+    "deepseek-provider",
+    "shell-ci",
+    "gemini-cli",
+    "warp",
+    "amp-code",
+    "jetbrains-junie",
+    "qoder",
+    "factory-droid",
+    "kiro",
+    "cline",
+    "continue-dev",
+    "kilo-code",
+    "zed-ai",
+    "augment-code",
+    "goose",
+    "aider"
   ]
 }

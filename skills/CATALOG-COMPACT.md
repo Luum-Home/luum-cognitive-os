@@ -82,7 +82,7 @@ Total skills: 184
 | tool-discovery | [core] | Discover new open-source tools that could enhance Cognitive OS capabilities |
 | vulnerability-scan | [core] | Run LLM vulnerability probes using Garak against configured endpoints. |
 
-## both (38)
+## both (39)
 
 | Skill | Scope | Description |
 |-------|-------|-------------|
@@ -105,6 +105,7 @@ Total skills: 184
 | model-optimizer | [core] | Analyze skill execution metrics and recommend optimal model routing |
 | pattern-audit | [core] | Grep/regex audit with mandatory sampling — forbids unverified severity |
 | plan-chore | [core] | Create a portable chore plan with verified assumptions, reversible steps, and stack-specific validation. |
+| plan-feature | [core] | Create a portable feature plan with detected stack, assumptions, acceptance criteria, validation, and rollback. |
 | preserved-wip-cleanup | [core] | Backup preserved WIP, remove temporary blockers, and prove the inventory |
 | primitive-authoring | [core] | 'Use when building a new skill/rule/hook/script/workflow, converting |
 | primitive-harness-coverage | [core] | Generate the primitive surface coverage report and inspect IDE/CLI/UI/report |
@@ -125,7 +126,7 @@ Total skills: 184
 | wiki-ingest | [core] | Use when raw URLs, files, or pasted text need to be ingested into the |
 | worktree-triage | [core] | Compare a worktree or remote branch to main and produce a safe port/validate/remove/delete |
 
-## project (73)
+## project (72)
 
 | Skill | Scope | Description |
 |-------|-------|-------------|
@@ -162,7 +163,6 @@ Total skills: 184
 | persistent-agent | [core] | Create persistent agents that maintain their own state across sessions. |
 | phoenix-trace-ui | [core] | Start the Arize Phoenix LLM-native trace UI locally (pip-based, no Docker). |
 | plan-bug | [core] | Create a bug fix plan with root cause analysis and evaluation scoring. |
-| plan-feature | [core] | Create a feature implementation plan with evaluation scoring. |
 | planning-poker | [core] | Multi-agent complexity estimation via planning-poker rounds. |
 | pr-review | [core] | Pull Request review skill. |
 | private-mode | [core] | Toggle private conversation mode. |

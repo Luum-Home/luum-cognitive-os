@@ -6,7 +6,7 @@
   "display_name": "Qwen Code",
   "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
   "harness": "qwen-code",
-  "lifecycle_primitives_supporting_harness": 0,
+  "lifecycle_primitives_supporting_harness": 13,
   "limitations": [
     "Structural project settings/context proof only; no account-backed Qwen Code runtime invocation in automated tests.",
     "No native COS lifecycle hook parity is claimed.",

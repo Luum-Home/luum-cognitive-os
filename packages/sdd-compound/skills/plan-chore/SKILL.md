@@ -8,9 +8,8 @@ metadata:
   effort: opus
   summary_line: Create a portable chore plan with verified assumptions, reversible steps, and stack-specific validation.
   platforms:
-  - claude-code
-  - codex
-  - shell
+  - cos-projected-cli-ide
+  - generic-cli
   prerequisites: []
   triggers:
   - plan-chore

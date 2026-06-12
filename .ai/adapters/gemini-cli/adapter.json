@@ -6,8 +6,100 @@
   "harness": "gemini-cli",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 0,
-  "projected_primitives": [],
+  "projected_primitive_count": 13,
+  "projected_primitives": [
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/quality-gates/skills/dod-check/SKILL.md",
+      "primitive_file": "primitives/skills/packages-quality-gates-skills-dod-check-skill-md-dc0f6be0ec.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/sdd-compound/skills/plan-chore/SKILL.md",
+      "primitive_file": "primitives/skills/packages-sdd-compound-skills-plan-chore-skill-md-4ee20f2810.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/sdd-compound/skills/plan-feature/SKILL.md",
+      "primitive_file": "primitives/skills/packages-sdd-compound-skills-plan-feature-skill-md-5cc9745a60.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/graphify-query/SKILL.md",
+      "primitive_file": "primitives/skills/skills-graphify-query-skill-md-dec9ff2bac.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/skill-creator/SKILL.md",
+      "primitive_file": "primitives/skills/skills-skill-creator-skill-md-be30425771.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-graphify-build",
+      "primitive_file": "primitives/tools/scripts-cos-graphify-build-cf69ece77c.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-graphify-context-replay-benchmark",
+      "primitive_file": "primitives/tools/scripts-cos-graphify-context-replay-benchmark-eea619452a.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-graphify-hotspot-report",
+      "primitive_file": "primitives/tools/scripts-cos-graphify-hotspot-report-ddaf7ee73d.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-graphify-phase-d-semantic",
+      "primitive_file": "primitives/tools/scripts-cos-graphify-phase-d-semantic-7ebe273be8.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-graphify-preload-matrix",
+      "primitive_file": "primitives/tools/scripts-cos-graphify-preload-matrix-5efe492931.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-graphify-run-telemetry",
+      "primitive_file": "primitives/tools/scripts-cos-graphify-run-telemetry-5ae6febf68.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-graphify-token-footprint",
+      "primitive_file": "primitives/tools/scripts-cos-graphify-token-footprint-568b9a5c90.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-graphify-token-reduction-smoke",
+      "primitive_file": "primitives/tools/scripts-cos-graphify-token-reduction-smoke-96140ed14d.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    }
+  ],
   "projection_mode": "gemini-project-settings-context-mcp",
   "proof_level": "structural",
   "schema_version": "portable-ai-adapter.v1",

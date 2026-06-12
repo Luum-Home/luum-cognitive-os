@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-06-12T16:33:10+00:00'
+generated_at: '2026-06-12T16:52:22+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 skills:
 - path: skills/__contracts__/SKILL.md
@@ -121,7 +121,7 @@ skills:
 - path: skills/document-feature/SKILL.md
   sha256: e22997e9e08feab519b6480833ab631d40117612f164e099b08fc0ca00043cd0
 - path: skills/dod-check/SKILL.md
-  sha256: 3c3ec032b7ae559aab069a7cab27e52f9c77aef07aa048504adda1cafe301b33
+  sha256: d7e58ca73f641c5ba327003ca391ad17ad56414766475893535e9f655724ac39
 - path: skills/dogfood-score/SKILL.md
   sha256: ff1733c6d423344c41ffba8cce8e34c61549e012a0418ea2da0856c980b05c8d
 - path: skills/domain-model/SKILL.md
@@ -143,7 +143,7 @@ skills:
 - path: skills/gpu-sandbox/SKILL.md
   sha256: f83c0d571d3dca485e4d0a8faaee47d370ee4408e07a0c23452242e03c337a00
 - path: skills/graphify-query/SKILL.md
-  sha256: 643467de361229cbbf83b3649628473995809750a2c84d9933dfba3cef92dfd5
+  sha256: a40094fe7e13bdb2f628fe2bfcbc4bd60a3949f60f20770b959ad8463d58c57a
 - path: skills/harness-audit/SKILL.md
   sha256: 50146324ab411e494aeda3802bc1c7f635686598720ae13006820ec1d26969c7
 - path: skills/hook-timing/SKILL.md
@@ -195,9 +195,9 @@ skills:
 - path: skills/plan-bug/SKILL.md
   sha256: c534b1452405e2e4d31ed837efbfae664d7f7244a4d0207e429a89316149a114
 - path: skills/plan-chore/SKILL.md
-  sha256: 5d035121287d25a6b51b3acec11693597a557e78134a0a17b7636b87341e3f02
+  sha256: 36ceb82f887522d33a4af12eb5fa29f585dae65e51dd15562e792e4c57272e0d
 - path: skills/plan-feature/SKILL.md
-  sha256: 551113045ea78451aea55ac8a37efb4c9e6f215686cbece1d75c51d026dc6bd7
+  sha256: f4386473a5618175895b5616d0a19b1da5cddfa2f2c2fc9e47f3f88bcdae4ebe
 - path: skills/planning-poker/SKILL.md
   sha256: 50b5be30c9fc3f3ae68fb9f43f7222244188779481830fdebb259226716dfd78
 - path: skills/pr-review/SKILL.md
@@ -327,7 +327,7 @@ skills:
 - path: skills/singularity/SKILL.md
   sha256: 3e155eb9af93033026aa00a91e614d4c56bca786840703ac8164731db0ced00e
 - path: skills/skill-creator/SKILL.md
-  sha256: 9fa77da0eafc959edb58707dd27ada0fb2f76e09582d40f6aeef4e79394896d5
+  sha256: 3c586428f61b7d0085e92d7795ff061c8f5b51369a88f0dbc512ceed1cfdcf24
 - path: skills/smoke-test/SKILL.md
   sha256: fb418cdb0f744dfe8fbbacb77dd98b34f08435fdd5a5cd3fc6513df4a4e7bcd6
 - path: skills/so-vs-vanilla/SKILL.md
