@@ -22,7 +22,7 @@ if [[ "${RATE_LIMIT_OVERRIDE:-false}" == "true" ]]; then
     exit 0
 fi
 
-PROJECT_DIR="${CLAUDE_PROJECT_DIR:-.}"
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-.}}}"
 METRICS_DIR="${PROJECT_DIR}/.cognitive-os/metrics"
 COST_EVENTS="${METRICS_DIR}/cost-events.jsonl"
 RESOURCE_LEDGER="${METRICS_DIR}/ai-resource-ledger.jsonl"
@@ -81,9 +81,15 @@ def read_jsonl(path):
 for e in read_jsonl(cost_events_path):
     ts = parse_epoch(e.get("timestamp") or e.get("ts") or e.get("timestamp_epoch"))
     if ts >= cutoff:
-        tok = e.get("total_tokens", 0) or (e.get("input_tokens", 0) + e.get("output_tokens", 0))
+        payload = e.get("payload") if isinstance(e.get("payload"), dict) else {}
+        tok = (
+            e.get("total_tokens", 0)
+            or payload.get("total_tokens", 0)
+            or (e.get("input_tokens", 0) + e.get("output_tokens", 0))
+            or (payload.get("input_tokens", 0) + payload.get("output_tokens", 0) + payload.get("cache_read_input_tokens", 0) + payload.get("cache_creation_input_tokens", 0))
+        )
         tokens_used += int(tok or 0)
-        if e.get("action") == "agent_launch":
+        if e.get("action") == "agent_launch" or payload.get("action") == "agent_launch" or payload.get("kind") == "agent_launch":
             agents_used += 1
 
 for e in read_jsonl(resource_ledger_path):

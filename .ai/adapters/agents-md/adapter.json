@@ -6,7 +6,7 @@
   "harness": "agents-md",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 354,
+  "projected_primitive_count": 355,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": false,
@@ -2824,6 +2824,13 @@
       "fidelity": "documented-only",
       "portable_id": "scripts/cos-graphify-token-reduction-smoke",
       "primitive_file": "primitives/tools/scripts-cos-graphify-token-reduction-smoke-96140ed14d.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-token-optimization-consumer-smoke",
+      "primitive_file": "primitives/tools/scripts-cos-token-optimization-consumer-smoke-7289e35962.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     }
   ],

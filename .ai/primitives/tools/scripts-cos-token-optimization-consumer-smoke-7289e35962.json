@@ -1,25 +1,24 @@
 {
-  "canonical_source": "scripts/cos-graphify-phase-d-semantic",
+  "canonical_source": "scripts/cos-token-optimization-consumer-smoke",
   "canonical_source_kind": "cos-internal",
   "contract": {
     "actions": null,
     "contract_id": null,
     "impact": null,
-    "intent": "ADR-331 Graphify portable context optimization primitive; controlled-trial, Phase D receipts, direct executable smoke, and generated overlay metadata cover local wrapper behavior across every harness declared in manifests/harness-projection.yaml without installing upstream IDE surfaces.",
+    "intent": "Stack-diverse consumer smoke exercises normalized token-usage telemetry across OpenAI/Codex, Anthropic/OpenCode, and generic IDE shapes for Node, Python, and Go fixtures; it proves portable measurement path only and does not claim live provider savings.",
     "present": false,
     "projection_fidelity": {},
     "requires": [],
     "trigger": null
   },
   "evidence": {
-    "behavior_evidence": "ADR-331 Graphify portable context optimization primitive; controlled-trial, Phase D receipts, direct executable smoke, and generated overlay metadata cover local wrapper behavior across every harness declared in manifests/harness-projection.yaml without installing upstream IDE surfaces.",
+    "behavior_evidence": "Stack-diverse consumer smoke exercises normalized token-usage telemetry across OpenAI/Codex, Anthropic/OpenCode, and generic IDE shapes for Node, Python, and Go fixtures; it proves portable measurement path only and does not claim live provider savings.",
     "evidence_commands": [
-      ".venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q",
+      ".venv/bin/python -m pytest tests/unit/test_cos_token_optimization_consumer_smoke.py tests/red_team/portability/test_cos-token-optimization-consumer-smoke.py -q",
       "python3 scripts/portable_ai_overlay.py --check",
-      "scripts/cos-registry-lock --audit",
-      "python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q"
+      "scripts/cos-registry-lock --audit"
     ],
-    "metrics_file": "docs/06-Daily/reports/graphify-*.md"
+    "metrics_file": ".cognitive-os/metrics/token-optimization-consumer-smoke.jsonl"
   },
   "family": "script",
   "lifecycle": {
@@ -45,22 +44,21 @@
     "contract_id": null,
     "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
     "evidence": {
-      "behavior_evidence": "ADR-331 Graphify portable context optimization primitive; controlled-trial, Phase D receipts, direct executable smoke, and generated overlay metadata cover local wrapper behavior across every harness declared in manifests/harness-projection.yaml without installing upstream IDE surfaces.",
+      "behavior_evidence": "Stack-diverse consumer smoke exercises normalized token-usage telemetry across OpenAI/Codex, Anthropic/OpenCode, and generic IDE shapes for Node, Python, and Go fixtures; it proves portable measurement path only and does not claim live provider savings.",
       "evidence_commands": [
-        ".venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q",
+        ".venv/bin/python -m pytest tests/unit/test_cos_token_optimization_consumer_smoke.py tests/red_team/portability/test_cos-token-optimization-consumer-smoke.py -q",
         "python3 scripts/portable_ai_overlay.py --check",
-        "scripts/cos-registry-lock --audit",
-        "python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q"
+        "scripts/cos-registry-lock --audit"
       ],
       "metrics": [
-        "docs/06-Daily/reports/graphify-*.md"
+        ".cognitive-os/metrics/token-optimization-consumer-smoke.jsonl"
       ]
     },
     "impact": {
       "consumer_fleet": "unknown",
       "service_mode": "unsupported"
     },
-    "intent": "ADR-331 Graphify portable context optimization primitive; controlled-trial, Phase D receipts, direct executable smoke, and generated overlay metadata cover local wrapper behavior across every harness declared in manifests/harness-projection.yaml without installing upstream IDE surfaces.",
+    "intent": "Stack-diverse consumer smoke exercises normalized token-usage telemetry across OpenAI/Codex, Anthropic/OpenCode, and generic IDE shapes for Node, Python, and Go fixtures; it proves portable measurement path only and does not claim live provider savings.",
     "is_full_contract": true,
     "projection_fidelity": {
       "agents-md": {
@@ -207,17 +205,17 @@
     "trigger": {
       "kind": "documented_or_on_demand",
       "projection_targets": [
-        "scripts/cos-graphify-phase-d-semantic"
+        "scripts/cos-token-optimization-consumer-smoke"
       ],
       "runtime_projection": false
     }
   },
-  "portable_id": "scripts/cos-graphify-phase-d-semantic",
+  "portable_id": "scripts/cos-token-optimization-consumer-smoke",
   "projection_targets": [
-    "scripts/cos-graphify-phase-d-semantic"
+    "scripts/cos-token-optimization-consumer-smoke"
   ],
   "schema_version": "portable-ai-primitive.v1",
-  "source_id": "scripts/cos-graphify-phase-d-semantic",
+  "source_id": "scripts/cos-token-optimization-consumer-smoke",
   "supported_harnesses": [
     "claude",
     "codex",

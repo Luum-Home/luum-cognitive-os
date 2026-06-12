@@ -29,8 +29,9 @@ so we can measure before/after runs.
 | Context budget metrics | `lib/context_budget.py`, `hooks/context-budget-meter.sh`, `.cognitive-os/metrics/context-budget.jsonl` | Context token estimates for hook-added context | Hook/context hygiene | Good for context budget proxy, not real provider usage. |
 | Token budget monitor | `hooks/token-budget-monitor.sh` | Hourly token guard from cost/resource ledgers | PreToolUse Agent guard | Enforcement primitive, not enough for before/after Graphify analysis. |
 | Graphify token footprint | `scripts/cos-graphify-token-footprint` | Deterministic local token proxy for preload vs broad slice | Graphify context selection | Good proxy, not real run telemetry. |
-| Graphify run telemetry | `scripts/cos-graphify-run-telemetry` | Joins Graphify preload selections with real session totals from `lib.session_parser.py` | Explicit operator-provided session JSONL | Implemented joiner for before/after reporting without single-run causality claims. |
-| Graphify token-reduction smoke | `scripts/cos-graphify-token-reduction-smoke` | Deterministic controlled baseline/current token reduction through synthetic Claude JSONL fixtures | Offline smoke test | Proves the causal-measurement harness without live model calls. |
+| Graphify run telemetry | `scripts/cos-graphify-run-telemetry` | Joins Graphify preload selections with normalized real session totals from `lib.token_usage.py`, plus structural tool metrics from `lib.session_parser.py` when available | Explicit operator-provided session JSONL | Implemented joiner for before/after reporting without single-run causality claims; supports Claude/Anthropic, OpenAI/Codex, OpenCode, and generic usage shapes. |
+| Graphify token-reduction smoke | `scripts/cos-graphify-token-reduction-smoke` | Deterministic controlled baseline/current token reduction through normalized JSONL fixtures | Offline smoke test | Proves the causal-measurement harness without live model calls. |
+| Consumer token optimization smoke | `scripts/cos-token-optimization-consumer-smoke` | Stack-diverse Node/Python/Go baseline-vs-COS traces using OpenAI/Codex, Anthropic/OpenCode, and generic IDE usage shapes | Offline consumer smoke | Proves cross-stack, cross-harness measurement portability; not a live savings claim. |
 | Graphify context replay benchmark | `scripts/cos-graphify-context-replay-benchmark` | Controlled prompt-token replay using real repository file content | Offline benchmark | Simulates broad-context versus Graphify-preload savings without provider billing. |
 
 ## Evidence
@@ -184,3 +185,15 @@ This closes the tooling gap and provides real telemetry evidence, but it does no
    passes a session path or opts into `--latest-claude-session` local scanning.
 3. Label actual versus estimated metrics.
 4. Keep Graphify as context-selection evidence, not verification evidence.
+
+## 2026-06-12 hardening update — portable measurement boundary
+
+The measurement plane now uses `lib/token_usage.py` as the normalized real-token schema. `scripts/aggregate_session_tokens.py` writes `telemetry_schema: token-usage-normalized.v1` rows into `cost-events.jsonl`; `scripts/token_report.py` preserves `providers_seen` and `harnesses_seen` so reports show which surfaces actually emitted usage.
+
+Graphify remains advisory context selection, but its measured workflow is stronger:
+
+1. `scripts/cos-graphify-run-telemetry` parses supported provider/harness JSONL usage through `lib.token_usage.py` instead of relying only on Claude transcript token fields.
+2. `scripts/cos-graphify-token-reduction-smoke` keeps the controlled before/after harness for Graphify preload measurement.
+3. `scripts/cos-token-optimization-consumer-smoke` creates Node, Python, and Go consumer fixtures and compares vanilla versus Cognitive OS traces using OpenAI/Codex, Anthropic/OpenCode, and generic IDE usage shapes.
+
+Claim boundary: this proves portable telemetry ingestion, reportability, and controlled-smoke measurement. It still does not prove live savings for a specific provider or IDE unless the operator supplies paired real task sessions with matching task, model, prompt policy, tool policy, and cache state.

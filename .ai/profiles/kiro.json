@@ -6,7 +6,7 @@
   "display_name": "Kiro",
   "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
   "harness": "kiro",
-  "lifecycle_primitives_supporting_harness": 14,
+  "lifecycle_primitives_supporting_harness": 15,
   "limitations": [
     "Official docs expose lifecycle/tool hooks, but COS has not mapped event payloads or generated a project agent configuration yet.",
     "No runtime smoke or native lifecycle parity is claimed."

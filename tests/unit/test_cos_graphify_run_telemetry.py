@@ -85,6 +85,9 @@ def test_run_telemetry_joins_matrix_with_actual_session_usage(tmp_path: Path) ->
     assert payload["session_metrics"]["total_tokens"] == 1250
     assert payload["session_metrics"]["cache_creation_tokens"] == 30
     assert payload["session_metrics"]["cache_read_tokens"] == 40
+    assert payload["session_metrics"]["providers_seen"] == ["anthropic"]
+    assert payload["session_metrics"]["harnesses_seen"] == ["graphify-run-telemetry"]
+    assert payload["session_metrics"]["telemetry_schema"] == "token-usage-normalized.v1"
     assert payload["session_metrics"]["tool_use_count"] == 1
     assert payload["session_metrics"]["subagent_count"] == 1
     assert payload["comparison"]["mode"] == "single-run"
@@ -123,6 +126,42 @@ def test_run_telemetry_supports_paired_baseline_without_causal_claim(tmp_path: P
     assert "directional evidence" in payload["comparison"]["interpretation"]
 
 
+def test_run_telemetry_supports_openai_codex_usage_shape(tmp_path: Path) -> None:
+    session = tmp_path / "codex-openai.jsonl"
+    matrix = tmp_path / "matrix.json"
+    session.write_text(
+        json.dumps({
+            "provider": "openai",
+            "harness": "codex",
+            "model": "gpt-5.1",
+            "usage": {
+                "prompt_tokens": 900,
+                "completion_tokens": 120,
+                "prompt_tokens_details": {"cached_tokens": 100},
+            },
+        })
+        + "\n",
+        encoding="utf-8",
+    )
+    _write_matrix(matrix)
+
+    completed = subprocess.run(
+        [str(SCRIPT), "--session", str(session), "--matrix-json", str(matrix), "--json"],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    payload = json.loads(completed.stdout)
+
+    assert payload["session_metrics"]["total_input_tokens"] == 900
+    assert payload["session_metrics"]["total_output_tokens"] == 120
+    assert payload["session_metrics"]["cache_read_tokens"] == 100
+    assert payload["session_metrics"]["providers_seen"] == ["openai"]
+    assert payload["session_metrics"]["harnesses_seen"] == ["codex"]
+    assert payload["claims_boundary"]["evidence"].startswith("Graphify selected preload bundles and token_usage")
+
+
 def test_run_telemetry_writes_markdown_report(tmp_path: Path) -> None:
     session = tmp_path / "current.jsonl"
     matrix = tmp_path / "matrix.json"
@@ -143,6 +182,8 @@ def test_run_telemetry_writes_markdown_report(tmp_path: Path) -> None:
     assert "# Graphify Run Telemetry Report" in report
     assert "Metric label: `mixed`" in report
     assert "Actual total input+output tokens: 150" in report
+    assert "Providers: anthropic" in report
+    assert "Harnesses: graphify-run-telemetry" in report
     assert "does not establish before/after token reduction" in report
 
 

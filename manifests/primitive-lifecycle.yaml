@@ -6641,27 +6641,32 @@ primitives:
 - id: hooks/token-budget-monitor.sh
   kind: hook
   owner_adr: ADR-144
-  lifecycle_state: sandbox
-  maturity: advisory
-  distribution: lab
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
   - claude
+  - codex
+  - shell
   projection_targets:
   - .claude/settings.json
   - cognitive-os.yaml
   - hooks/token-budget-monitor.sh
   runtime_projection: true
-  behavior_evidence: hook-enforced projection for token budget rule exclusion
+  behavior_evidence: Hook-enforced Agent preflight for Claude settings plus portable shell execution proof; counts legacy top-level cost events, normalized token-usage payload rows, and ADR-325 resource-ledger rows. Codex/shell support is executable/advisory unless a native lifecycle adapter wires the hook.
   evidence_commands:
   - bash -n hooks/token-budget-monitor.sh
+  - .venv/bin/python -m pytest tests/unit/test_rate_limit_protection.py tests/red_team/portability/test_token-budget-monitor.py -q
   - python3 -m pytest tests/audit/test_hook_enforced_exclusions.py tests/behavior/test_skill_router_bash_gate.py -q
-  exit_behavior: mixed
-  metrics_file: "none"
+  exit_behavior: exit_0_or_exit_2_when_enabled
+  metrics_file: .cognitive-os/metrics/rate-limit-checks.jsonl
   docs_claim_level: advisory
   rollback_or_repair_command: Remove the hook from cognitive-os.yaml harness.hooks and regenerate settings, or restore the excluded rule to startup context.
   sunset_criteria: Archive only if hook-enforced rule exclusion moves into a typed projection compiler with equivalent tests.
+  consumer_accessibility: lifecycle-declared-shared-surface
+  consumer_access_next_action: Keep claim boundary explicit; only Claude-style lifecycle projection is blocking by default, while other harnesses use executable/advisory wrapper support until native lifecycle adapters exist.
 - id: hooks/tool-discovery-trigger.sh
   kind: hook
   owner_adr: ADR-314
@@ -13762,7 +13767,7 @@ primitives:
   evidence_commands:
   - .venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q
   - python3 scripts/portable_ai_overlay.py --check
-  - python3 scripts/cos-registry-lock --audit
+  - scripts/cos-registry-lock --audit
   - python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q
   rollback_or_repair_command: Remove Graphify skill/script references or downgrade the wrapper role before claiming portable context-optimization support.
   sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
@@ -13814,7 +13819,7 @@ primitives:
   evidence_commands:
   - .venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q
   - python3 scripts/portable_ai_overlay.py --check
-  - python3 scripts/cos-registry-lock --audit
+  - scripts/cos-registry-lock --audit
   - python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q
   rollback_or_repair_command: Remove Graphify skill/script references or downgrade the wrapper role before claiming portable context-optimization support.
   sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
@@ -13866,7 +13871,7 @@ primitives:
   evidence_commands:
   - .venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q
   - python3 scripts/portable_ai_overlay.py --check
-  - python3 scripts/cos-registry-lock --audit
+  - scripts/cos-registry-lock --audit
   - python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q
   rollback_or_repair_command: Remove Graphify skill/script references or downgrade the wrapper role before claiming portable context-optimization support.
   sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
@@ -13918,7 +13923,7 @@ primitives:
   evidence_commands:
   - .venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q
   - python3 scripts/portable_ai_overlay.py --check
-  - python3 scripts/cos-registry-lock --audit
+  - scripts/cos-registry-lock --audit
   - python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q
   rollback_or_repair_command: Remove Graphify skill/script references or downgrade the wrapper role before claiming portable context-optimization support.
   sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
@@ -13970,7 +13975,7 @@ primitives:
   evidence_commands:
   - .venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q
   - python3 scripts/portable_ai_overlay.py --check
-  - python3 scripts/cos-registry-lock --audit
+  - scripts/cos-registry-lock --audit
   - python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q
   rollback_or_repair_command: Remove Graphify skill/script references or downgrade the wrapper role before claiming portable context-optimization support.
   sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
@@ -14022,7 +14027,7 @@ primitives:
   evidence_commands:
   - .venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q
   - python3 scripts/portable_ai_overlay.py --check
-  - python3 scripts/cos-registry-lock --audit
+  - scripts/cos-registry-lock --audit
   - python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q
   rollback_or_repair_command: Remove Graphify skill/script references or downgrade the wrapper role before claiming portable context-optimization support.
   sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
@@ -14074,7 +14079,7 @@ primitives:
   evidence_commands:
   - .venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q
   - python3 scripts/portable_ai_overlay.py --check
-  - python3 scripts/cos-registry-lock --audit
+  - scripts/cos-registry-lock --audit
   - python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q
   rollback_or_repair_command: Remove Graphify skill/script references or downgrade the wrapper role before claiming portable context-optimization support.
   sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
@@ -14126,7 +14131,7 @@ primitives:
   evidence_commands:
   - .venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q
   - python3 scripts/portable_ai_overlay.py --check
-  - python3 scripts/cos-registry-lock --audit
+  - scripts/cos-registry-lock --audit
   - python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q
   rollback_or_repair_command: Remove Graphify skill/script references or downgrade the wrapper role before claiming portable context-optimization support.
   sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
@@ -14134,6 +14139,57 @@ primitives:
   exit_behavior: zero-nonzero-cli
   metrics_file: docs/06-Daily/reports/graphify-*.md
   consumer_access_next_action: Keep as explicit team/advisory tooling until release packaging decides whether to project Graphify wrappers.
+- id: scripts/cos-token-optimization-consumer-smoke
+  kind: script
+  owner_adr: ADR-331
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: context-optimization
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - cursor
+  - devin
+  - vscode-copilot
+  - agents-md
+  - opencode
+  - google-antigravity
+  - qwen-code
+  - kimi-code
+  - minimax-maxclaw
+  - deepseek-provider
+  - shell-ci
+  - gemini-cli
+  - warp
+  - amp-code
+  - jetbrains-junie
+  - qoder
+  - factory-droid
+  - kiro
+  - cline
+  - continue-dev
+  - kilo-code
+  - zed-ai
+  - augment-code
+  - goose
+  - aider
+  projection_targets:
+  - scripts/cos-token-optimization-consumer-smoke
+  runtime_projection: false
+  behavior_evidence: Stack-diverse consumer smoke exercises normalized token-usage telemetry across OpenAI/Codex, Anthropic/OpenCode, and generic IDE shapes for Node, Python, and Go fixtures; it proves portable measurement path only and does not claim live provider savings.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_token_optimization_consumer_smoke.py tests/red_team/portability/test_cos-token-optimization-consumer-smoke.py -q
+  - python3 scripts/portable_ai_overlay.py --check
+  - scripts/cos-registry-lock --audit
+  rollback_or_repair_command: Remove the consumer smoke projection row or restore normalized usage parsing before claiming portable token optimization measurement support.
+  sunset_criteria: Remove when replaced by live paired-run harness receipts for all projected CLI/IDE surfaces.
+  docs_claim_level: advisory
+  exit_behavior: zero-nonzero-cli
+  metrics_file: .cognitive-os/metrics/token-optimization-consumer-smoke.jsonl
+  consumer_access_next_action: Keep as advisory measurement tooling until live provider receipts exist per harness.
 - id: skills/graphify-query/SKILL.md
   kind: skill
   owner_adr: ADR-331
@@ -14180,7 +14236,7 @@ primitives:
   evidence_commands:
   - .venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q
   - python3 scripts/portable_ai_overlay.py --check
-  - python3 scripts/cos-registry-lock --audit
+  - scripts/cos-registry-lock --audit
   - python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q
   rollback_or_repair_command: Remove or demote the Graphify skill projection rows before claiming /graphify-query support.
   sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.

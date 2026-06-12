@@ -6,7 +6,7 @@
   "harness": "shell-ci",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 358,
+  "projected_primitive_count": 359,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": false,
@@ -2512,6 +2512,13 @@
       "fidelity": "documented-only",
       "portable_id": "scripts/cos_task_closure_gate.py",
       "primitive_file": "primitives/tools/scripts-cos-task-closure-gate-py-ce4b9db3bd.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-token-optimization-consumer-smoke",
+      "primitive_file": "primitives/tools/scripts-cos-token-optimization-consumer-smoke-7289e35962.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     }
   ],

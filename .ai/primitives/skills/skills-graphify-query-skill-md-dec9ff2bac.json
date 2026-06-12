@@ -16,7 +16,7 @@
     "evidence_commands": [
       ".venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q",
       "python3 scripts/portable_ai_overlay.py --check",
-      "python3 scripts/cos-registry-lock --audit",
+      "scripts/cos-registry-lock --audit",
       "python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q"
     ],
     "metrics_file": "no_metrics"
@@ -49,7 +49,7 @@
       "evidence_commands": [
         ".venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q",
         "python3 scripts/portable_ai_overlay.py --check",
-        "python3 scripts/cos-registry-lock --audit",
+        "scripts/cos-registry-lock --audit",
         "python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q"
       ],
       "metrics": [
