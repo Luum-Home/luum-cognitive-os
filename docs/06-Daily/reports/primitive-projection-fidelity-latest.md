@@ -1,16 +1,16 @@
 # Primitive Projection Fidelity — Latest
 
-Generated: 2026-05-12T17:50:05+00:00
+Generated: 2026-06-12T15:43:58+00:00
 Schema: `primitive-projection-fidelity.v1`
 
 This report compares declared primitive contract fidelity with observed harness coverage. Declared contracts are not runtime proof.
 
 ## Summary
 
-- contracts: 308
-- projection_rows: 1848
-- aligned: 1845
-- gaps: 3
+- contracts: 340
+- projection_rows: 2040
+- aligned: 2040
+- gaps: 0
 - pending_runtime_smoke: 0
 - unknown: 0
 
@@ -141,7 +141,7 @@ This report compares declared primitive contract fidelity with observed harness 
 - source: `hooks/auto-verify.sh`
 - consumer fleet impact: `none`
 - service mode impact: `harness-embedded-only`
-  - claude: `native-lifecycle-enforced` → `gap` — declared enforcement fidelity lacks observed wiring/behavior proof in harness coverage
+  - claude: `native-lifecycle-enforced` → `aligned`
   - codex: `structural-advisory` → `aligned`
   - cursor: `structural-advisory` → `aligned`
   - opencode: `governed-wrapper-enforced` → `aligned`
@@ -383,7 +383,7 @@ This report compares declared primitive contract fidelity with observed harness 
 - source: `hooks/auto-refine.sh`
 - consumer fleet impact: `unknown`
 - service mode impact: `harness-embedded-only`
-  - claude: `native-lifecycle-enforced` → `gap` — declared enforcement fidelity lacks observed wiring/behavior proof in harness coverage
+  - claude: `native-lifecycle-enforced` → `aligned`
   - codex: `structural-advisory` → `aligned`
   - cursor: `structural-advisory` → `aligned`
   - opencode: `structural-advisory` → `aligned`
@@ -595,7 +595,7 @@ This report compares declared primitive contract fidelity with observed harness 
   - claude: `native-lifecycle-enforced` → `aligned`
   - codex: `structural-advisory` → `aligned`
   - cursor: `structural-advisory` → `aligned`
-  - opencode: `structural-advisory` → `aligned`
+  - opencode: `governed-wrapper-enforced` → `aligned`
   - shell-ci: `documented-only` → `aligned`
   - vscode-copilot: `structural-advisory` → `aligned`
 
@@ -625,7 +625,7 @@ This report compares declared primitive contract fidelity with observed harness 
 - source: `hooks/dod-gate.sh`
 - consumer fleet impact: `unknown`
 - service mode impact: `harness-embedded-only`
-  - claude: `native-lifecycle-enforced` → `gap` — declared enforcement fidelity lacks observed wiring/behavior proof in harness coverage
+  - claude: `native-lifecycle-enforced` → `aligned`
   - codex: `structural-advisory` → `aligned`
   - cursor: `structural-advisory` → `aligned`
   - opencode: `structural-advisory` → `aligned`
@@ -881,7 +881,7 @@ This report compares declared primitive contract fidelity with observed harness 
   - claude: `native-lifecycle-enforced` → `aligned`
   - codex: `structural-advisory` → `aligned`
   - cursor: `structural-advisory` → `aligned`
-  - opencode: `structural-advisory` → `aligned`
+  - opencode: `governed-wrapper-enforced` → `aligned`
   - shell-ci: `documented-only` → `aligned`
   - vscode-copilot: `structural-advisory` → `aligned`
 
@@ -1013,7 +1013,7 @@ This report compares declared primitive contract fidelity with observed harness 
   - claude: `native-lifecycle-enforced` → `aligned`
   - codex: `structural-advisory` → `aligned`
   - cursor: `structural-advisory` → `aligned`
-  - opencode: `structural-advisory` → `aligned`
+  - opencode: `governed-wrapper-enforced` → `aligned`
   - shell-ci: `documented-only` → `aligned`
   - vscode-copilot: `structural-advisory` → `aligned`
 
@@ -1068,7 +1068,7 @@ This report compares declared primitive contract fidelity with observed harness 
   - claude: `native-lifecycle-enforced` → `aligned`
   - codex: `structural-advisory` → `aligned`
   - cursor: `structural-advisory` → `aligned`
-  - opencode: `structural-advisory` → `aligned`
+  - opencode: `governed-wrapper-enforced` → `aligned`
   - shell-ci: `documented-only` → `aligned`
   - vscode-copilot: `structural-advisory` → `aligned`
 
@@ -1079,7 +1079,7 @@ This report compares declared primitive contract fidelity with observed harness 
   - claude: `native-lifecycle-enforced` → `aligned`
   - codex: `structural-advisory` → `aligned`
   - cursor: `structural-advisory` → `aligned`
-  - opencode: `structural-advisory` → `aligned`
+  - opencode: `governed-wrapper-enforced` → `aligned`
   - shell-ci: `documented-only` → `aligned`
   - vscode-copilot: `structural-advisory` → `aligned`
 
@@ -1178,7 +1178,7 @@ This report compares declared primitive contract fidelity with observed harness 
   - claude: `native-lifecycle-enforced` → `aligned`
   - codex: `structural-advisory` → `aligned`
   - cursor: `structural-advisory` → `aligned`
-  - opencode: `structural-advisory` → `aligned`
+  - opencode: `governed-wrapper-enforced` → `aligned`
   - shell-ci: `documented-only` → `aligned`
   - vscode-copilot: `structural-advisory` → `aligned`
 
@@ -1233,7 +1233,7 @@ This report compares declared primitive contract fidelity with observed harness 
   - claude: `native-lifecycle-enforced` → `aligned`
   - codex: `structural-advisory` → `aligned`
   - cursor: `structural-advisory` → `aligned`
-  - opencode: `structural-advisory` → `aligned`
+  - opencode: `governed-wrapper-enforced` → `aligned`
   - shell-ci: `documented-only` → `aligned`
   - vscode-copilot: `structural-advisory` → `aligned`
 
@@ -1266,7 +1266,7 @@ This report compares declared primitive contract fidelity with observed harness 
   - claude: `native-lifecycle-enforced` → `aligned`
   - codex: `structural-advisory` → `aligned`
   - cursor: `structural-advisory` → `aligned`
-  - opencode: `structural-advisory` → `aligned`
+  - opencode: `governed-wrapper-enforced` → `aligned`
   - shell-ci: `documented-only` → `aligned`
   - vscode-copilot: `structural-advisory` → `aligned`
 
@@ -1651,7 +1651,7 @@ This report compares declared primitive contract fidelity with observed harness 
   - claude: `native-lifecycle-enforced` → `aligned`
   - codex: `structural-advisory` → `aligned`
   - cursor: `structural-advisory` → `aligned`
-  - opencode: `structural-advisory` → `aligned`
+  - opencode: `governed-wrapper-enforced` → `aligned`
   - shell-ci: `documented-only` → `aligned`
   - vscode-copilot: `structural-advisory` → `aligned`
 
@@ -1673,7 +1673,7 @@ This report compares declared primitive contract fidelity with observed harness 
   - claude: `native-lifecycle-enforced` → `aligned`
   - codex: `structural-advisory` → `aligned`
   - cursor: `structural-advisory` → `aligned`
-  - opencode: `structural-advisory` → `aligned`
+  - opencode: `governed-wrapper-enforced` → `aligned`
   - shell-ci: `documented-only` → `aligned`
   - vscode-copilot: `structural-advisory` → `aligned`
 
@@ -3338,6 +3338,17 @@ This report compares declared primitive contract fidelity with observed harness 
   - shell-ci: `documented-only` → `aligned`
   - vscode-copilot: `structural-advisory` → `aligned`
 
+### `library-adapter-compile-py`
+- source: `lib/adapter_compile.py`
+- consumer fleet impact: `none`
+- service mode impact: `unsupported`
+  - claude: `documented-only` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
 ### `script-cos-adapter-compile`
 - source: `scripts/cos-adapter-compile`
 - consumer fleet impact: `install-update-risk`
@@ -3395,6 +3406,347 @@ This report compares declared primitive contract fidelity with observed harness 
 
 ### `script-promote-lifecycle-primitives-to-contracts`
 - source: `scripts/promote_lifecycle_primitives_to_contracts.py`
+- consumer fleet impact: `none`
+- service mode impact: `unsupported`
+  - claude: `documented-only` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `hook-adoption-freeze-gate`
+- source: `hooks/adoption-freeze-gate.sh`
+- consumer fleet impact: `unknown`
+- service mode impact: `harness-embedded-only`
+  - claude: `native-lifecycle-enforced` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `hook-attribution-completeness-validator`
+- source: `hooks/attribution-completeness-validator.sh`
+- consumer fleet impact: `unknown`
+- service mode impact: `harness-embedded-only`
+  - claude: `native-lifecycle-enforced` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `hook-cos-session-start-projector`
+- source: `hooks/cos-session-start-projector.sh`
+- consumer fleet impact: `unknown`
+- service mode impact: `harness-embedded-only`
+  - claude: `native-lifecycle-enforced` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `hook-dependency-license-classifier`
+- source: `hooks/dependency-license-classifier.sh`
+- consumer fleet impact: `unknown`
+- service mode impact: `harness-embedded-only`
+  - claude: `native-lifecycle-enforced` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `hook-external-cache-content-leak`
+- source: `hooks/external-cache-content-leak.sh`
+- consumer fleet impact: `unknown`
+- service mode impact: `harness-embedded-only`
+  - claude: `native-lifecycle-enforced` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `hook-external-pattern-cleanroom-gate`
+- source: `hooks/external-pattern-cleanroom-gate.sh`
+- consumer fleet impact: `unknown`
+- service mode impact: `harness-embedded-only`
+  - claude: `native-lifecycle-enforced` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `hook-history-rewrite-documented`
+- source: `hooks/history-rewrite-documented.sh`
+- consumer fleet impact: `unknown`
+- service mode impact: `harness-embedded-only`
+  - claude: `native-lifecycle-enforced` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `hook-legal-review-required-on-runtime-import`
+- source: `hooks/legal-review-required-on-runtime-import.sh`
+- consumer fleet impact: `unknown`
+- service mode impact: `harness-embedded-only`
+  - claude: `native-lifecycle-enforced` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `hook-lib-symlink-divergence-detector`
+- source: `hooks/lib-symlink-divergence-detector.sh`
+- consumer fleet impact: `unknown`
+- service mode impact: `harness-embedded-only`
+  - claude: `native-lifecycle-enforced` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `hook-pending-truth-drift-detector`
+- source: `hooks/pending-truth-drift-detector.sh`
+- consumer fleet impact: `unknown`
+- service mode impact: `harness-embedded-only`
+  - claude: `native-lifecycle-enforced` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `hook-pending-truth-staleness-gate`
+- source: `hooks/pending-truth-staleness-gate.sh`
+- consumer fleet impact: `unknown`
+- service mode impact: `harness-embedded-only`
+  - claude: `native-lifecycle-enforced` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `hook-pending-truth-verify-weekly`
+- source: `hooks/pending-truth-verify-weekly.sh`
+- consumer fleet impact: `unknown`
+- service mode impact: `harness-embedded-only`
+  - claude: `native-lifecycle-enforced` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `hook-research-to-runtime-firewall`
+- source: `hooks/research-to-runtime-firewall.sh`
+- consumer fleet impact: `unknown`
+- service mode impact: `harness-embedded-only`
+  - claude: `native-lifecycle-enforced` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `hook-spdx-header-required`
+- source: `hooks/spdx-header-required.sh`
+- consumer fleet impact: `unknown`
+- service mode impact: `harness-embedded-only`
+  - claude: `native-lifecycle-enforced` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `script-documentation-truth-audit`
+- source: `scripts/documentation_truth_audit.py`
+- consumer fleet impact: `none`
+- service mode impact: `unsupported`
+  - claude: `documented-only` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `script-cos-closure-trust-signal`
+- source: `scripts/cos-closure-trust-signal.py`
+- consumer fleet impact: `none`
+- service mode impact: `unsupported`
+  - claude: `documented-only` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `script-cos-session-start-projector`
+- source: `scripts/cos-session-start-projector`
+- consumer fleet impact: `none`
+- service mode impact: `unsupported`
+  - claude: `documented-only` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `script-cos-pending-truth-verify`
+- source: `scripts/cos-pending-truth-verify`
+- consumer fleet impact: `none`
+- service mode impact: `unsupported`
+  - claude: `documented-only` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `script-cos-adr-close`
+- source: `scripts/cos-adr-close`
+- consumer fleet impact: `none`
+- service mode impact: `unsupported`
+  - claude: `documented-only` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `script-cos-pending-truth-aggregator`
+- source: `scripts/cos-pending-truth-aggregator`
+- consumer fleet impact: `none`
+- service mode impact: `unsupported`
+  - claude: `documented-only` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `script-cos-pending-truth-close`
+- source: `scripts/cos-pending-truth-close`
+- consumer fleet impact: `none`
+- service mode impact: `unsupported`
+  - claude: `documented-only` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `script-cos-adr-partial-ledger`
+- source: `scripts/cos-adr-partial-ledger`
+- consumer fleet impact: `none`
+- service mode impact: `unsupported`
+  - claude: `documented-only` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `script-cos-operational-guide-audit`
+- source: `scripts/cos-operational-guide-audit.py`
+- consumer fleet impact: `none`
+- service mode impact: `unsupported`
+  - claude: `documented-only` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `script-cos-doc-cross-reference-audit`
+- source: `scripts/cos-doc-cross-reference-audit.py`
+- consumer fleet impact: `none`
+- service mode impact: `unsupported`
+  - claude: `documented-only` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `script-portable-ai-overlay`
+- source: `scripts/portable_ai_overlay.py`
+- consumer fleet impact: `none`
+- service mode impact: `unsupported`
+  - claude: `documented-only` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `skill-self-improve`
+- source: `skills/self-improve/SKILL.md`
+- consumer fleet impact: `none`
+- service mode impact: `unsupported`
+  - claude: `documented-only` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `skill-agent-kpis`
+- source: `skills/agent-kpis/SKILL.md`
+- consumer fleet impact: `none`
+- service mode impact: `unsupported`
+  - claude: `documented-only` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `rule-self-improvement-protocol`
+- source: `rules/self-improvement-protocol.md`
+- consumer fleet impact: `none`
+- service mode impact: `unsupported`
+  - claude: `documented-only` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `script-cos-product-answer`
+- source: `scripts/cos-product-answer`
+- consumer fleet impact: `none`
+- service mode impact: `unsupported`
+  - claude: `documented-only` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `script-cos-product-answer-refresh`
+- source: `scripts/cos-product-answer-refresh`
+- consumer fleet impact: `none`
+- service mode impact: `unsupported`
+  - claude: `documented-only` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `script-cos-public-claim-gate`
+- source: `scripts/cos-public-claim-gate`
 - consumer fleet impact: `none`
 - service mode impact: `unsupported`
   - claude: `documented-only` → `aligned`

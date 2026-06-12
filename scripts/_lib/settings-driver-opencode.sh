@@ -86,13 +86,15 @@ done
 opencode_driver_emit() {
   "$PYTHON_BIN" - "$PROJECT_DIR" <<'PYEOF'
 import json
+import os
 import sys
 from pathlib import Path
 
 import yaml
 
 project_dir = Path(sys.argv[1])
-config = yaml.safe_load((project_dir / "cognitive-os.yaml").read_text()) or {}
+source_project_dir = Path(os.environ.get("COGNITIVE_OS_HOOK_REGISTRY_PROJECT_DIR") or project_dir)
+config = yaml.safe_load((source_project_dir / "cognitive-os.yaml").read_text()) or {}
 hooks = (config.get("harness") or {}).get("hooks") or {}
 
 # OpenCode capability matrix (mirror manifests/harness-driver-capabilities.yaml):

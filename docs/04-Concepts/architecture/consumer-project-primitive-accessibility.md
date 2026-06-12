@@ -94,7 +94,7 @@ A primitive can be described as available to consumer projects only when all are
 <!-- GENERATED:documentation-truth:consumer_projection_harnesses:start -->
 Generated documentation truth: consumer projection harnesses.
 Implemented harnesses (22): agents-md, aider, amp-code, augment-code, claude, cline, codex, continue-dev, cursor, factory-droid, gemini-cli, goose, jetbrains-junie, kilo-code, kimi-code, opencode, qoder, qwen-code, shell-ci, vscode-copilot, warp, zed-ai.
-Projection fidelity summary: {"aligned": 1845, "contracts": 308, "gaps": 3, "pending_runtime_smoke": 0, "projection_rows": 1848, "unknown": 0}.
+Projection fidelity summary: {"aligned": 2040, "contracts": 340, "gaps": 0, "pending_runtime_smoke": 0, "projection_rows": 2040, "unknown": 0}.
 Structural projection is not runtime enforcement; native lifecycle enforcement remains harness-specific.
 Sources: manifests/harness-projection.yaml; docs/06-Daily/reports/primitive-projection-fidelity-latest.json.
 <!-- GENERATED:documentation-truth:consumer_projection_harnesses:end -->

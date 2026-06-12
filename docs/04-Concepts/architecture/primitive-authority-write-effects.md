@@ -87,8 +87,8 @@ python3 -m pytest tests/behavior/test_consumer_project_projection.py -q
 
 <!-- GENERATED:documentation-truth:primitive_authority_write_effects:start -->
 Generated documentation truth: primitive authority/write-effects.
-Authority audit status: pass.
-Scripts audited: 536; blockers: 0; dynamic smokes: 4; dynamic blocks: 0.
+Authority audit status: block.
+Scripts audited: 665; blockers: 1; dynamic smokes: 4; dynamic blocks: 1.
 Contract surfaces: manifests/primitive-authority.yaml; scripts/primitive_authority_audit.py; ACC adapter authority_write_effects.
 Sources: docs/06-Daily/reports/primitive-authority-latest.json; docs/02-Decisions/adrs/ADR-276-primitive-authority-write-effects.md.
 <!-- GENERATED:documentation-truth:primitive_authority_write_effects:end -->

@@ -110,6 +110,12 @@ _MODEL_PRICING: dict[str, dict[str, float]] = {
     "claude-haiku-4-5": {"input": 0.25, "output": 1.25, "cache_read": 0.025, "cache_write": 0.0625},
     "claude-haiku-3-5": {"input": 0.25, "output": 1.25, "cache_read": 0.025, "cache_write": 0.0625},
     "haiku":            {"input": 0.25, "output": 1.25, "cache_read": 0.025, "cache_write": 0.0625},
+    # claude-fable-5 — confirmed from live transcripts; mapped to opus tier
+    # (input $15/output $75 per 1M, cache read $1.50, cache write $3.75).
+    # Rate sourced from transcript model field "claude-fable-5"; pricing_known
+    # will be False for truly unknown models (see aggregate_session_tokens.py).
+    "claude-fable-5":   {"input": 15.0, "output": 75.0, "cache_read": 1.50, "cache_write": 3.75},
+    "fable":            {"input": 15.0, "output": 75.0, "cache_read": 1.50, "cache_write": 3.75},
 }
 _DEFAULT_PRICING = {"input": 3.0, "output": 15.0, "cache_read": 0.30, "cache_write": 0.75}
 

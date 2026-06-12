@@ -305,6 +305,10 @@
         {
           "type": "command",
           "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/pyrefly-typecheck-advisory.sh\" ]; then bash \"$PWD/hooks/pyrefly-typecheck-advisory.sh\"; fi"
+        },
+        {
+          "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-token-aggregator.sh\" ]; then bash \"$PWD/hooks/session-token-aggregator.sh\"; fi"
         }
       ],
       "matcher": "shutdown"

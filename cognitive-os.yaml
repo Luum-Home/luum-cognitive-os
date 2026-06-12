@@ -2124,6 +2124,12 @@ harness:
       async: true
       scope: os-only
 
+    session-token-aggregator:
+      script: hooks/session-token-aggregator.sh
+      event: Stop
+      async: true
+      scope: os-only
+
     pending-truth-staleness-gate:
       script: hooks/pending-truth-staleness-gate.sh
       event: PreToolUse

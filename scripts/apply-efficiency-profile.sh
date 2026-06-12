@@ -205,7 +205,7 @@ PYASYNC
     lib-symlink-divergence-detector.sh \
     skill-drift-detector.sh \
     session-start-stack-recommend.sh \
-    eas-validation-gate.sh session-quality-close-gate.sh \
+    eas-validation-gate.sh session-quality-close-gate.sh session-token-aggregator.sh \
 ; do
     if ! grep -q "$hook" "$SETTINGS_FILE"; then
       echo "Warning: expected hook '$hook' missing from settings.json after apply." >&2

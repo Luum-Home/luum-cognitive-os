@@ -177,7 +177,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 1,
         "test": 3
       },
@@ -185,6 +185,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
         },
         {
           "family": "doc",
@@ -207,7 +211,7 @@
       "evidence": [
         "test_consumers:3",
         "doc_consumers:1",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "family": "templates",
       "lifecycle_id": null,
@@ -217,7 +221,7 @@
       "role": "agent-preamble",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 5
+      "total_consumers": 6
     },
     {
       "confidence": "medium",
@@ -1218,7 +1222,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 2,
         "test": 2
       },
@@ -1230,6 +1234,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
         },
         {
           "family": "doc",
@@ -1252,7 +1260,7 @@
       "evidence": [
         "test_consumers:2",
         "doc_consumers:2",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "family": "templates",
       "lifecycle_id": null,
@@ -1262,7 +1270,7 @@
       "role": "quality-gate",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 6
+      "total_consumers": 7
     },
     {
       "confidence": "high",
@@ -1321,7 +1329,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 2,
         "test": 1
       },
@@ -1333,6 +1341,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
         },
         {
           "family": "doc",
@@ -1351,7 +1363,7 @@
       "evidence": [
         "test_consumers:1",
         "doc_consumers:2",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "family": "templates",
       "lifecycle_id": null,
@@ -1361,7 +1373,7 @@
       "role": "prompt-composition",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 5
+      "total_consumers": 6
     },
     {
       "confidence": "medium",
@@ -1664,7 +1676,8 @@
         "config": 4,
         "doc": 21,
         "rule": 2,
-        "test": 6
+        "script": 1,
+        "test": 7
       },
       "consumers": [
         {
@@ -1776,12 +1789,20 @@
           "path": "rules/skill-rewrite.md"
         },
         {
+          "family": "script",
+          "path": "scripts/dod_check.py"
+        },
+        {
           "family": "test",
           "path": "tests/integration/test_auto_update_safety.py"
         },
         {
           "family": "test",
           "path": "tests/red_team/portability/test_quality-gates.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_codex_dod_check.py"
         },
         {
           "family": "test",
@@ -1804,7 +1825,8 @@
       "evidence": [
         "lifecycle",
         "rule_consumers:2",
-        "test_consumers:6",
+        "script_consumers:1",
+        "test_consumers:7",
         "doc_consumers:21",
         "config_consumers:4"
       ],
@@ -1820,7 +1842,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 33
+      "total_consumers": 35
     },
     {
       "confidence": "medium",

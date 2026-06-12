@@ -1,7 +1,7 @@
 {
   "_profile": "paranoid",
   "_description": "Paranoid security profile \u2014 maximum defense. For pre-production validation and security audits.",
-  "_hook_count": 160,
+  "_hook_count": 161,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -812,6 +812,11 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/quality-duplicates.sh\"",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" Stop \"$CLAUDE_PROJECT_DIR/hooks/session-token-aggregator.sh\"",
             "async": true
           }
         ]
