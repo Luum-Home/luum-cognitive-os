@@ -26,7 +26,7 @@ Consumer accessibility: lifecycle-declared-maintainer:117, projected-consumer-su
 | `rules/anti-hallucination.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 26 | keep maintainer-only or add explicit export path |
 | `rules/assumption-tracking.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 25 | keep maintainer-only or add explicit export path |
 | `rules/audit-trail.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 53 | keep maintainer-only or add explicit export path |
-| `rules/auto-repair.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 92 | keep maintainer-only or add explicit export path |
+| `rules/auto-repair.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 94 | keep maintainer-only or add explicit export path |
 | `rules/auto-rollback.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 82 | keep maintainer-only or add explicit export path |
 | `rules/auto-skill-generation.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 27 | keep maintainer-only or add explicit export path |
 | `rules/bash-naming.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 14 | keep maintainer-only or add explicit export path |
@@ -63,7 +63,7 @@ Consumer accessibility: lifecycle-declared-maintainer:117, projected-consumer-su
 | `rules/error-learning.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 158 | keep maintainer-only or add explicit export path |
 | `rules/estimation-calibration.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 16 | keep maintainer-only or add explicit export path |
 | `rules/fault-tolerance.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 34 | keep maintainer-only or add explicit export path |
-| `rules/goal-loop.md` | driver-specific | heuristic:text | medium | so-local-only |  | 13 | add lifecycle/package/projection metadata or keep SO-local |
+| `rules/goal-loop.md` | driver-specific | heuristic:text | medium | so-local-only |  | 16 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/hcom-integration.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 15 | keep maintainer-only or add explicit export path |
 | `rules/hook-maturity.md` | driver-specific | heuristic:text | medium | so-local-only |  | 5 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/hook-security-profiles.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 18 | keep maintainer-only or add explicit export path |
@@ -106,7 +106,7 @@ Consumer accessibility: lifecycle-declared-maintainer:117, projected-consumer-su
 | `rules/response-compression.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 12 | keep maintainer-only or add explicit export path |
 | `rules/responsiveness.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 33 | keep maintainer-only or add explicit export path |
 | `rules/result-management.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 26 | keep maintainer-only or add explicit export path |
-| `rules/retry-contract.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 20 | keep maintainer-only or add explicit export path |
+| `rules/retry-contract.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 22 | keep maintainer-only or add explicit export path |
 | `rules/routing-pattern-authoring.md` | driver-specific | heuristic:text | medium | so-local-only |  | 4 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/routing-quality-gate.md` | driver-specific | heuristic:text | medium | so-local-only |  | 8 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/sandbox-sampling.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 24 | keep maintainer-only or add explicit export path |
@@ -125,7 +125,7 @@ Consumer accessibility: lifecycle-declared-maintainer:117, projected-consumer-su
 | `rules/split-and-resume.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 14 | keep maintainer-only or add explicit export path |
 | `rules/squad-protocol.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 21 | keep maintainer-only or add explicit export path |
 | `rules/startup-protocol.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 33 | keep maintainer-only or add explicit export path |
-| `rules/stash-quarantine.md` | driver-specific | heuristic:text | medium | projected-consumer-surface | advisory | 13 | keep lifecycle, tests, and harness proof current |
+| `rules/stash-quarantine.md` | driver-specific | heuristic:text | medium | projected-consumer-surface | advisory | 15 | keep lifecycle, tests, and harness proof current |
 | `rules/step-files.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 15 | keep maintainer-only or add explicit export path |
 | `rules/supply-chain-defense.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 18 | keep maintainer-only or add explicit export path |
 | `rules/task-dag.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 13 | keep maintainer-only or add explicit export path |

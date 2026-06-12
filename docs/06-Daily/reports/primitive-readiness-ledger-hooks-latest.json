@@ -438,11 +438,11 @@
       "consumer_families": {
         "config": 24,
         "doc": 155,
-        "hook": 41,
+        "hook": 42,
         "rule": 6,
-        "script": 65,
+        "script": 66,
         "skill": 11,
-        "test": 87
+        "test": 89
       },
       "consumers": [
         {
@@ -1315,6 +1315,10 @@
         },
         {
           "family": "hook",
+          "path": "hooks/token-budget-monitor.sh"
+        },
+        {
+          "family": "hook",
           "path": "hooks/tool-loop-detector.sh"
         },
         {
@@ -1456,6 +1460,10 @@
         {
           "family": "script",
           "path": "scripts/cos-subprocess-timeout-audit.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-token-optimization-consumer-smoke"
         },
         {
           "family": "script",
@@ -1943,6 +1951,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_rate_limit_protection.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_record_completion.py"
         },
         {
@@ -1999,6 +2011,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_token_usage.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_work_identity.py"
         }
       ],
@@ -2006,10 +2022,10 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:11",
-        "hook_consumers:41",
+        "hook_consumers:42",
         "rule_consumers:6",
-        "script_consumers:65",
-        "test_consumers:87",
+        "script_consumers:66",
+        "test_consumers:89",
         "doc_consumers:155",
         "config_consumers:24"
       ],
@@ -2025,7 +2041,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 389
+      "total_consumers": 393
     },
     {
       "confidence": "high",
@@ -2036,7 +2052,7 @@
         "doc": 13,
         "hook": 3,
         "rule": 2,
-        "script": 1,
+        "script": 2,
         "test": 6
       },
       "consumers": [
@@ -2150,6 +2166,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_agent_flicker_report.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/hook-timing-wrapper.sh"
         },
         {
@@ -2182,7 +2202,7 @@
         "lifecycle",
         "hook_consumers:3",
         "rule_consumers:2",
-        "script_consumers:1",
+        "script_consumers:2",
         "test_consumers:6",
         "doc_consumers:13",
         "config_consumers:9"
@@ -2199,7 +2219,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 34
+      "total_consumers": 35
     },
     {
       "confidence": "high",
@@ -4544,12 +4564,12 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 18,
-        "doc": 171,
+        "doc": 173,
         "hook": 25,
         "rule": 3,
-        "script": 53,
+        "script": 54,
         "skill": 10,
-        "test": 139
+        "test": 141
       },
       "consumers": [
         {
@@ -4982,6 +5002,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-flicker-control.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/agent-training-harness.md"
         },
         {
@@ -5059,6 +5083,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/graphify-portable-optimization-plan-2026-05-22.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-real-token-telemetry-tooling-audit-2026-05-22.md"
         },
         {
           "family": "doc",
@@ -5626,6 +5654,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/token_report.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/validate_tier_filter.py"
         },
         {
@@ -5691,6 +5723,10 @@
         {
           "family": "test",
           "path": "tests/behavior/test_agent_escalation.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_aggregate_session_tokens.py"
         },
         {
           "family": "test",
@@ -6226,6 +6262,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_token_usage.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_work_identity.py"
         }
       ],
@@ -6235,9 +6275,9 @@
         "skill_consumers:10",
         "hook_consumers:25",
         "rule_consumers:3",
-        "script_consumers:53",
-        "test_consumers:139",
-        "doc_consumers:171",
+        "script_consumers:54",
+        "test_consumers:141",
+        "doc_consumers:173",
         "config_consumers:18"
       ],
       "family": "hooks",
@@ -6252,7 +6292,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 419
+      "total_consumers": 424
     },
     {
       "confidence": "high",
@@ -10979,9 +11019,9 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 6,
-        "doc": 4,
+        "doc": 5,
         "rule": 1,
-        "script": 1,
+        "script": 2,
         "test": 5
       },
       "consumers": [
@@ -11015,6 +11055,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-flicker-control.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
@@ -11028,6 +11072,10 @@
         {
           "family": "rule",
           "path": "rules/agent-audit-before-commit.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_agent_flicker_report.py"
         },
         {
           "family": "script",
@@ -11058,9 +11106,9 @@
       "evidence": [
         "lifecycle",
         "rule_consumers:1",
-        "script_consumers:1",
+        "script_consumers:2",
         "test_consumers:5",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "config_consumers:6"
       ],
       "family": "hooks",
@@ -11075,7 +11123,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 17
+      "total_consumers": 19
     },
     {
       "confidence": "high",
@@ -13028,10 +13076,10 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 14,
-        "doc": 21,
+        "doc": 22,
         "hook": 4,
         "rule": 1,
-        "script": 6,
+        "script": 7,
         "test": 10
       },
       "consumers": [
@@ -13110,6 +13158,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-flicker-control.md"
         },
         {
           "family": "doc",
@@ -13205,6 +13257,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_agent_flicker_report.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_init.py"
         },
         {
@@ -13265,9 +13321,9 @@
         "lifecycle",
         "hook_consumers:4",
         "rule_consumers:1",
-        "script_consumers:6",
+        "script_consumers:7",
         "test_consumers:10",
-        "doc_consumers:21",
+        "doc_consumers:22",
         "config_consumers:14"
       ],
       "family": "hooks",
@@ -13280,7 +13336,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 56
+      "total_consumers": 58
     },
     {
       "confidence": "high",
@@ -13674,10 +13730,10 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 12,
-        "doc": 17,
+        "doc": 18,
         "hook": 2,
         "rule": 1,
-        "script": 4,
+        "script": 5,
         "test": 4
       },
       "consumers": [
@@ -13751,6 +13807,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-flicker-control.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
@@ -13819,6 +13879,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_agent_flicker_report.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/primitive_scope_classifier.py"
         },
         {
@@ -13847,9 +13911,9 @@
         "lifecycle",
         "hook_consumers:2",
         "rule_consumers:1",
-        "script_consumers:4",
+        "script_consumers:5",
         "test_consumers:4",
-        "doc_consumers:17",
+        "doc_consumers:18",
         "config_consumers:12"
       ],
       "family": "hooks",
@@ -13862,7 +13926,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 40
+      "total_consumers": 42
     },
     {
       "confidence": "high",
@@ -14313,7 +14377,7 @@
         "doc": 36,
         "hook": 2,
         "rule": 9,
-        "script": 9,
+        "script": 10,
         "skill": 3,
         "test": 18
       },
@@ -14564,6 +14628,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_agent_flicker_report.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_chaos_template.py"
         },
         {
@@ -14677,7 +14745,7 @@
         "skill_consumers:3",
         "hook_consumers:2",
         "rule_consumers:9",
-        "script_consumers:9",
+        "script_consumers:10",
         "test_consumers:18",
         "doc_consumers:36",
         "config_consumers:11"
@@ -14692,7 +14760,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 88
+      "total_consumers": 89
     },
     {
       "confidence": "high",
@@ -15767,10 +15835,10 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 15,
-        "doc": 40,
+        "doc": 41,
         "hook": 3,
         "rule": 4,
-        "script": 11,
+        "script": 12,
         "test": 18
       },
       "consumers": [
@@ -15885,6 +15953,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/adr-frontmatter-schema.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-flicker-control.md"
         },
         {
           "family": "doc",
@@ -16036,6 +16108,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_agent_flicker_report.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_init.py"
         },
         {
@@ -16144,9 +16220,9 @@
         "lifecycle",
         "hook_consumers:3",
         "rule_consumers:4",
-        "script_consumers:11",
+        "script_consumers:12",
         "test_consumers:18",
-        "doc_consumers:40",
+        "doc_consumers:41",
         "config_consumers:15"
       ],
       "family": "hooks",
@@ -16159,7 +16235,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 91
+      "total_consumers": 93
     },
     {
       "confidence": "high",
@@ -17988,10 +18064,10 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 13,
-        "doc": 21,
+        "doc": 22,
         "hook": 1,
         "rule": 1,
-        "script": 5,
+        "script": 6,
         "skill": 1,
         "test": 11
       },
@@ -18078,6 +18154,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-flicker-control.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/cognitive-prosthesis.md"
         },
         {
@@ -18154,6 +18234,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_agent_flicker_report.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_default_visible_reducer.py"
         },
         {
@@ -18215,9 +18299,9 @@
         "skill_consumers:1",
         "hook_consumers:1",
         "rule_consumers:1",
-        "script_consumers:5",
+        "script_consumers:6",
         "test_consumers:11",
-        "doc_consumers:21",
+        "doc_consumers:22",
         "config_consumers:13"
       ],
       "family": "hooks",
@@ -18230,7 +18314,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 53
+      "total_consumers": 55
     },
     {
       "confidence": "medium",
@@ -19637,8 +19721,8 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 10,
-        "doc": 6,
-        "script": 4,
+        "doc": 7,
+        "script": 5,
         "test": 6
       },
       "consumers": [
@@ -19696,6 +19780,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-flicker-control.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/context-budget-observability.md"
         },
         {
@@ -19721,6 +19809,10 @@
         {
           "family": "script",
           "path": "scripts/context_budget_meter_fast.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_agent_flicker_report.py"
         },
         {
           "family": "test",
@@ -19750,9 +19842,9 @@
       "distribution": "maintainer",
       "evidence": [
         "lifecycle",
-        "script_consumers:4",
+        "script_consumers:5",
         "test_consumers:6",
-        "doc_consumers:6",
+        "doc_consumers:7",
         "config_consumers:10"
       ],
       "family": "hooks",
@@ -19765,7 +19857,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 26
+      "total_consumers": 28
     },
     {
       "confidence": "high",
@@ -21513,9 +21605,9 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 11,
-        "doc": 1,
+        "doc": 2,
         "hook": 1,
-        "script": 3,
+        "script": 4,
         "test": 2
       },
       "consumers": [
@@ -21565,6 +21657,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-flicker-control.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/cross-session-coordination-ledger.md"
         },
         {
@@ -21578,6 +21674,10 @@
         {
           "family": "script",
           "path": "scripts/apply-efficiency-profile.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_agent_flicker_report.py"
         },
         {
           "family": "script",
@@ -21596,9 +21696,9 @@
       "evidence": [
         "lifecycle",
         "hook_consumers:1",
-        "script_consumers:3",
+        "script_consumers:4",
         "test_consumers:2",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:11"
       ],
       "family": "hooks",
@@ -21611,7 +21711,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 18
+      "total_consumers": 20
     },
     {
       "confidence": "high",
@@ -27663,9 +27763,9 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 8,
-        "doc": 1,
+        "doc": 2,
         "rule": 1,
-        "script": 3,
+        "script": 4,
         "test": 5
       },
       "consumers": [
@@ -27703,6 +27803,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-flicker-control.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/goal-loop.md"
         },
         {
@@ -27716,6 +27820,10 @@
         {
           "family": "script",
           "path": "scripts/apply-efficiency-profile.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_agent_flicker_report.py"
         },
         {
           "family": "script",
@@ -27746,9 +27854,9 @@
       "evidence": [
         "lifecycle",
         "rule_consumers:1",
-        "script_consumers:3",
+        "script_consumers:4",
         "test_consumers:5",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:8"
       ],
       "family": "hooks",
@@ -27762,7 +27870,7 @@
         "claude",
         "codex"
       ],
-      "total_consumers": 18
+      "total_consumers": 20
     },
     {
       "confidence": "high",
@@ -31186,9 +31294,9 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 13,
-        "doc": 13,
+        "doc": 14,
         "hook": 2,
-        "script": 6,
+        "script": 7,
         "test": 10
       },
       "consumers": [
@@ -31266,6 +31374,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-flicker-control.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/claim-verification-matrix.md"
         },
         {
@@ -31311,6 +31423,10 @@
         {
           "family": "script",
           "path": "scripts/apply-efficiency-profile.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_agent_flicker_report.py"
         },
         {
           "family": "script",
@@ -31373,9 +31489,9 @@
       "evidence": [
         "lifecycle",
         "hook_consumers:2",
-        "script_consumers:6",
+        "script_consumers:7",
         "test_consumers:10",
-        "doc_consumers:13",
+        "doc_consumers:14",
         "config_consumers:13"
       ],
       "family": "hooks",
@@ -31388,7 +31504,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 44
+      "total_consumers": 46
     },
     {
       "confidence": "high",
@@ -35621,9 +35737,9 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 10,
-        "doc": 1,
+        "doc": 2,
         "hook": 1,
-        "script": 3,
+        "script": 4,
         "test": 7
       },
       "consumers": [
@@ -35672,6 +35788,10 @@
           "path": "docs/02-Decisions/adrs/ADR-101-intent-aware-rate-limiter.md"
         },
         {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-flicker-control.md"
+        },
+        {
           "family": "hook",
           "path": "hooks/rate-limiter.sh"
         },
@@ -35682,6 +35802,10 @@
         {
           "family": "script",
           "path": "scripts/apply-efficiency-profile.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_agent_flicker_report.py"
         },
         {
           "family": "script",
@@ -35720,9 +35844,9 @@
       "evidence": [
         "lifecycle",
         "hook_consumers:1",
-        "script_consumers:3",
+        "script_consumers:4",
         "test_consumers:7",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:10"
       ],
       "family": "hooks",
@@ -35735,7 +35859,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 22
+      "total_consumers": 24
     },
     {
       "confidence": "high",
@@ -35743,8 +35867,8 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 11,
-        "doc": 2,
-        "script": 2,
+        "doc": 3,
+        "script": 3,
         "test": 5
       },
       "consumers": [
@@ -35794,6 +35918,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-flicker-control.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/06-Daily/measurements/hook-timing-runbook.md"
         },
         {
@@ -35803,6 +35931,10 @@
         {
           "family": "script",
           "path": "scripts/_lib/settings-driver-claude-code.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_agent_flicker_report.py"
         },
         {
           "family": "script",
@@ -35832,9 +35964,9 @@
       "distribution": "team",
       "evidence": [
         "lifecycle",
-        "script_consumers:2",
+        "script_consumers:3",
         "test_consumers:5",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:11"
       ],
       "family": "hooks",
@@ -35847,7 +35979,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 20
+      "total_consumers": 22
     },
     {
       "confidence": "medium",
@@ -35996,10 +36128,10 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 14,
-        "doc": 44,
+        "doc": 45,
         "hook": 4,
         "rule": 3,
-        "script": 8,
+        "script": 9,
         "skill": 1,
         "test": 22
       },
@@ -36119,6 +36251,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/LESSONS-LEARNED.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-flicker-control.md"
         },
         {
           "family": "doc",
@@ -36278,6 +36414,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_agent_flicker_report.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_classify_coverage.py"
         },
         {
@@ -36395,9 +36535,9 @@
         "skill_consumers:1",
         "hook_consumers:4",
         "rule_consumers:3",
-        "script_consumers:8",
+        "script_consumers:9",
         "test_consumers:22",
-        "doc_consumers:44",
+        "doc_consumers:45",
         "config_consumers:14"
       ],
       "family": "hooks",
@@ -36410,7 +36550,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 96
+      "total_consumers": 98
     },
     {
       "confidence": "high",
@@ -42171,7 +42311,8 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 7,
-        "script": 2,
+        "doc": 1,
+        "script": 3,
         "test": 2
       },
       "consumers": [
@@ -42204,12 +42345,20 @@
           "path": "manifests/primitive-scope-overrides.yaml"
         },
         {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-flicker-control.md"
+        },
+        {
           "family": "script",
           "path": "scripts/_lib/settings-driver-claude-code.sh"
         },
         {
           "family": "script",
           "path": "scripts/apply-efficiency-profile.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_agent_flicker_report.py"
         },
         {
           "family": "test",
@@ -42223,8 +42372,9 @@
       "distribution": "team",
       "evidence": [
         "lifecycle",
-        "script_consumers:2",
+        "script_consumers:3",
         "test_consumers:2",
+        "doc_consumers:1",
         "config_consumers:7"
       ],
       "family": "hooks",
@@ -42238,7 +42388,7 @@
         "claude",
         "codex"
       ],
-      "total_consumers": 11
+      "total_consumers": 13
     },
     {
       "confidence": "high",
@@ -43298,7 +43448,7 @@
       "consumer_access_next_action": "keep install/profile/harness proof current",
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
-        "config": 7,
+        "config": 8,
         "script": 2
       },
       "consumers": [
@@ -43313,6 +43463,10 @@
         {
           "family": "config",
           "path": "cognitive-os.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
         },
         {
           "family": "config",
@@ -43343,7 +43497,7 @@
       "evidence": [
         "lifecycle",
         "script_consumers:2",
-        "config_consumers:7"
+        "config_consumers:8"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/session-token-aggregator.sh",
@@ -43356,7 +43510,7 @@
         "claude",
         "codex"
       ],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "high",
@@ -43720,8 +43874,8 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 10,
-        "doc": 1,
-        "script": 2,
+        "doc": 2,
+        "script": 3,
         "test": 1
       },
       "consumers": [
@@ -43770,12 +43924,20 @@
           "path": "docs/02-Decisions/adrs/ADR-285-skill-registry-runtime-drift-detection.md"
         },
         {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-flicker-control.md"
+        },
+        {
           "family": "script",
           "path": "scripts/_lib/settings-driver-claude-code.sh"
         },
         {
           "family": "script",
           "path": "scripts/apply-efficiency-profile.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_agent_flicker_report.py"
         },
         {
           "family": "test",
@@ -43785,9 +43947,9 @@
       "distribution": "maintainer",
       "evidence": [
         "lifecycle",
-        "script_consumers:2",
+        "script_consumers:3",
         "test_consumers:1",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:10"
       ],
       "family": "hooks",
@@ -43801,7 +43963,7 @@
         "claude",
         "codex"
       ],
-      "total_consumers": 14
+      "total_consumers": 16
     },
     {
       "confidence": "high",
@@ -47050,8 +47212,8 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_access_next_action": "prove projection into a consumer project before claiming availability",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 10,
         "doc": 8,
@@ -47206,7 +47368,7 @@
           "path": "tests/unit/test_rate_limit_protection.py"
         }
       ],
-      "distribution": "lab",
+      "distribution": "team",
       "evidence": [
         "lifecycle",
         "hook_consumers:2",
@@ -47218,13 +47380,15 @@
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/token-budget-monitor.sh",
-      "lifecycle_state": "sandbox",
-      "next_action": "keep maintainer-only or add explicit export path",
+      "lifecycle_state": "candidate",
+      "next_action": "prove consumer project projection per supported harness before promotion",
       "path": "hooks/token-budget-monitor.sh",
-      "role": "lab",
+      "role": "observability",
       "role_source": "lifecycle",
       "supported_harnesses": [
-        "claude"
+        "claude",
+        "codex",
+        "shell"
       ],
       "total_consumers": 36
     },
@@ -48890,16 +49054,16 @@
       "medium": 14
     },
     "consumer_accessibility": {
-      "lifecycle-declared-consumer-candidate": 22,
-      "lifecycle-declared-maintainer": 174,
+      "lifecycle-declared-consumer-candidate": 23,
+      "lifecycle-declared-maintainer": 173,
       "projected-consumer-surface": 76,
       "so-local-only": 14
     },
     "roles": {
       "driver-specific": 30,
-      "lab": 103,
+      "lab": 102,
       "memory-lifecycle": 103,
-      "observability": 36,
+      "observability": 37,
       "runtime-safety": 14
     },
     "total": 286,

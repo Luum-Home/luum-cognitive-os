@@ -115,7 +115,7 @@ Consumer accessibility: lifecycle-declared-maintainer:99, projected-consumer-sur
 | `skills/session-wrapup/SKILL.md` | lab | lifecycle | high | lifecycle-declared-maintainer | active | 45 | keep maintainer-only or add explicit export path |
 | `skills/skill-creator/SKILL.md` | lab | lifecycle | high | lifecycle-declared-maintainer | active | 42 | keep maintainer-only or add explicit export path |
 | `skills/so-vs-vanilla/SKILL.md` | compatibility-wrapper | usage:script-hook | high | lifecycle-declared-maintainer | advisory | 13 | keep maintainer-only or add explicit export path |
-| `skills/stash-quarantine/SKILL.md` | compatibility-wrapper | usage:script-hook | high | projected-consumer-surface | advisory | 12 | keep lifecycle, tests, and harness proof current |
+| `skills/stash-quarantine/SKILL.md` | compatibility-wrapper | usage:script-hook | high | projected-consumer-surface | advisory | 14 | keep lifecycle, tests, and harness proof current |
 | `skills/synthesize-skill/SKILL.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 6 | keep maintainer-only or add explicit export path |
 | `skills/tag-release/SKILL.md` | so-maintainer | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 18 | keep maintainer-only or add explicit export path |
 | `skills/test-contract-repair/SKILL.md` | compatibility-wrapper | usage:script-hook | high | lifecycle-declared-maintainer | advisory | 14 | keep maintainer-only or add explicit export path |
