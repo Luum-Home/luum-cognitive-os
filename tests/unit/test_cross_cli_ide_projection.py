@@ -15,6 +15,7 @@ RECENT_PORTABLE_PRIMITIVES = (
     "packages/sdd-compound/skills/plan-feature/SKILL.md",
     "skills/skill-creator/SKILL.md",
     "skills/graphify-query/SKILL.md",
+    "scripts/cos-conflict-marker-guard",
     "scripts/cos-graphify-build",
     "scripts/cos-graphify-context-replay-benchmark",
     "scripts/cos-graphify-hotspot-report",

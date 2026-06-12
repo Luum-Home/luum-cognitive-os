@@ -6,7 +6,7 @@
   "display_name": "Kimi Code",
   "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
   "harness": "kimi-code",
-  "lifecycle_primitives_supporting_harness": 13,
+  "lifecycle_primitives_supporting_harness": 14,
   "limitations": [
     "Structural Kimi Code CLI project-context proof only; no account-backed CLI runtime invocation in automated tests.",
     "No native COS lifecycle hook parity is claimed.",

@@ -6,7 +6,7 @@
   "harness": "claude",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 782,
+  "projected_primitive_count": 784,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": true,
@@ -671,6 +671,13 @@
       "fidelity": "documented-only",
       "portable_id": "hooks/concurrent-write-guard-codex-proxy.sh",
       "primitive_file": "primitives/hooks/hooks-concurrent-write-guard-codex-proxy-sh-58c12dea6f.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/conflict-marker-guard.sh",
+      "primitive_file": "primitives/hooks/hooks-conflict-marker-guard-sh-d9c4c175c4.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
@@ -5263,6 +5270,13 @@
       "fidelity": "documented-only",
       "portable_id": "scripts/cos_agent_message.py",
       "primitive_file": "primitives/tools/scripts-cos-agent-message-py-5501c97218.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-conflict-marker-guard",
+      "primitive_file": "primitives/tools/scripts-cos-conflict-marker-guard-498acf8f29.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {

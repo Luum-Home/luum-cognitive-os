@@ -216,6 +216,7 @@ cc_driver_emit() {
       "hooks/rate-limiter.sh"                "false" \
       "hooks/destructive-rm-blocker.sh"      "false" \
       "hooks/destructive-git-blocker.sh"     "false" \
+      "hooks/conflict-marker-guard.sh"      "false" \
       "hooks/untracked-work-preservation-guard.sh" "false" \
       "hooks/branch-ownership-lock.sh"       "false" \
       "hooks/symlink-mutation-guard.sh"      "false" \

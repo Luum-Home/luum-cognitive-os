@@ -1,7 +1,7 @@
 {
   "_profile": "minimal",
-  "_description": "Minimal security profile \u2014 core safety only. For exploration and single-dev sessions where speed matters.",
-  "_hook_count": 109,
+  "_description": "Minimal security profile — core safety only. For exploration and single-dev sessions where speed matters.",
+  "_hook_count": 116,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -254,6 +254,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/destructive-git-blocker.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/conflict-marker-guard.sh\""
           },
           {
             "type": "command",

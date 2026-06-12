@@ -1,7 +1,7 @@
 {
   "_profile": "standard",
-  "_description": "Standard security profile \u2014 balanced safety and speed. Recommended for daily development.",
-  "_hook_count": 145,
+  "_description": "Standard security profile — balanced safety and speed. Recommended for daily development.",
+  "_hook_count": 154,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -230,6 +230,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/destructive-git-blocker.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/conflict-marker-guard.sh\""
           },
           {
             "type": "command",

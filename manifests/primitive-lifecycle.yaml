@@ -2687,6 +2687,37 @@ primitives:
   docs_claim_level: blocking
   exit_behavior: exit_2
   metrics_file: .cognitive-os/metrics/git-op-blocks.jsonl
+- id: hooks/conflict-marker-guard.sh
+  kind: hook
+  owner_adr: ADR-116
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: runtime-safety
+  risk_class: blocking
+  supported_harnesses:
+  - claude
+  - codex
+  - shell-ci
+  projection_targets:
+  - .claude/settings.json
+  - .codex/hooks.json
+  - hooks/conflict-marker-guard.sh
+  runtime_projection: true
+  behavior_evidence: Harness-native Bash PreToolUse guard blocks git commit/merge/rebase/pull and governed landing commands when the portable conflict-marker scanner finds leftover markers.
+  evidence_commands:
+  - bash -n hooks/conflict-marker-guard.sh scripts/cos-conflict-marker-guard
+  - python3 -m pytest tests/unit/test_conflict_marker_guard.py -q
+  rollback_or_repair_command: Remove conflict-marker-guard from cognitive-os.yaml harness.hooks and regenerate harness settings while requiring manual scripts/cos-conflict-marker-guard runs.
+  sunset_criteria: Revisit when all supported harnesses expose equivalent native pre-commit/merge conflict-marker lifecycle checks.
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: "none"
+  latency_budget_ms: 2500
+  repair_message: conflict-marker-guard blocked a git command; resolve markers and rerun the command.
+  false_positive_tests:
+  - tests/unit/test_conflict_marker_guard.py
 - id: hooks/destructive-rm-blocker.sh
   kind: hook
   owner_adr: ADR-126
@@ -15244,6 +15275,60 @@ primitives:
   exit_behavior: exit_0
   metrics_file: "none"
   consumer_accessibility: maintainer-only
+- id: scripts/cos-conflict-marker-guard
+  kind: script
+  owner_adr: ADR-116
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: runtime-safety
+  risk_class: blocking
+  supported_harnesses:
+  - claude
+  - codex
+  - cursor
+  - devin
+  - vscode-copilot
+  - agents-md
+  - opencode
+  - google-antigravity
+  - qwen-code
+  - kimi-code
+  - minimax-maxclaw
+  - deepseek-provider
+  - shell-ci
+  - gemini-cli
+  - warp
+  - amp-code
+  - jetbrains-junie
+  - qoder
+  - factory-droid
+  - kiro
+  - cline
+  - continue-dev
+  - kilo-code
+  - zed-ai
+  - augment-code
+  - goose
+  - aider
+  projection_targets:
+  - .ai/primitives/tools
+  - scripts/cos-conflict-marker-guard
+  runtime_projection: false
+  behavior_evidence: Portable conflict-marker scanner detects tracked-tree and staged Git conflict markers while intentionally ignoring bare separator lines to avoid documentation false positives.
+  evidence_commands:
+  - python3 -m pytest tests/unit/test_conflict_marker_guard.py -q
+  - bash -n scripts/cos-conflict-marker-guard
+  rollback_or_repair_command: Remove the hook registration from generated harness settings and require manual git diff --check plus scripts/cos-conflict-marker-guard until repaired.
+  sunset_criteria: Archive only if every supported harness provides an equivalent native conflict-marker guard with path:line diagnostics and tests.
+  docs_claim_level: blocking
+  exit_behavior: exit_1
+  metrics_file: "none"
+  latency_budget_ms: 2000
+  repair_message: Resolve every <<<<<<< / ||||||| / >>>>>>> conflict marker before committing or landing.
+  false_positive_tests:
+  - tests/unit/test_conflict_marker_guard.py
 - id: scripts/cos-registry-lock
   kind: script
   owner_adr: ADR-136
