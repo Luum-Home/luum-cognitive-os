@@ -79,7 +79,7 @@
     "exit_behavior": "exit_0_or_exit_2_when_enabled",
     "governance_class": "meta-governance",
     "lifecycle_state": "candidate",
-    "maturity": "observe",
+    "maturity": "advisory",
     "owner_adr": "ADR-144",
     "risk_class": "advisory",
     "runtime_projection": true
