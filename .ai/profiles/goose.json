@@ -6,7 +6,7 @@
   "display_name": "Goose",
   "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
   "harness": "goose",
-  "lifecycle_primitives_supporting_harness": 14,
+  "lifecycle_primitives_supporting_harness": 15,
   "limitations": [
     "Structural Goose project guidance proof only; no account-backed Goose runtime invocation in automated tests.",
     "No native COS lifecycle hook parity is claimed.",

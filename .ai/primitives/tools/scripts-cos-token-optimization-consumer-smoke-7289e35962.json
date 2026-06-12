@@ -1,0 +1,248 @@
+{
+  "canonical_source": "scripts/cos-token-optimization-consumer-smoke",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Stack-diverse consumer smoke exercises normalized token-usage telemetry across OpenAI/Codex, Anthropic/OpenCode, and generic IDE shapes for Node, Python, and Go fixtures; it proves portable measurement path only and does not claim live provider savings.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Stack-diverse consumer smoke exercises normalized token-usage telemetry across OpenAI/Codex, Anthropic/OpenCode, and generic IDE shapes for Node, Python, and Go fixtures; it proves portable measurement path only and does not claim live provider savings.",
+    "evidence_commands": [
+      ".venv/bin/python -m pytest tests/unit/test_cos_token_optimization_consumer_smoke.py tests/red_team/portability/test_cos-token-optimization-consumer-smoke.py -q",
+      "python3 scripts/portable_ai_overlay.py --check",
+      "scripts/cos-registry-lock --audit"
+    ],
+    "metrics_file": ".cognitive-os/metrics/token-optimization-consumer-smoke.jsonl"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "team",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "zero-nonzero-cli",
+    "governance_class": "context-optimization",
+    "lifecycle_state": "candidate",
+    "maturity": "advisory",
+    "owner_adr": "ADR-331",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "document",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "Stack-diverse consumer smoke exercises normalized token-usage telemetry across OpenAI/Codex, Anthropic/OpenCode, and generic IDE shapes for Node, Python, and Go fixtures; it proves portable measurement path only and does not claim live provider savings.",
+      "evidence_commands": [
+        ".venv/bin/python -m pytest tests/unit/test_cos_token_optimization_consumer_smoke.py tests/red_team/portability/test_cos-token-optimization-consumer-smoke.py -q",
+        "python3 scripts/portable_ai_overlay.py --check",
+        "scripts/cos-registry-lock --audit"
+      ],
+      "metrics": [
+        ".cognitive-os/metrics/token-optimization-consumer-smoke.jsonl"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "unsupported"
+    },
+    "intent": "Stack-diverse consumer smoke exercises normalized token-usage telemetry across OpenAI/Codex, Anthropic/OpenCode, and generic IDE shapes for Node, Python, and Go fixtures; it proves portable measurement path only and does not claim live provider savings.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "agents-md": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "aider": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "amp-code": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "augment-code": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "cline": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "continue-dev": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "deepseek-provider": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "devin": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "factory-droid": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "gemini-cli": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "google-antigravity": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "goose": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "jetbrains-junie": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "kilo-code": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "kimi-code": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "kiro": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "minimax-maxclaw": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "qoder": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "qwen-code": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "warp": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "zed-ai": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "scripts/cos-token-optimization-consumer-smoke"
+      ],
+      "runtime_projection": false
+    }
+  },
+  "portable_id": "scripts/cos-token-optimization-consumer-smoke",
+  "projection_targets": [
+    "scripts/cos-token-optimization-consumer-smoke"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/cos-token-optimization-consumer-smoke",
+  "supported_harnesses": [
+    "claude",
+    "codex",
+    "cursor",
+    "devin",
+    "vscode-copilot",
+    "agents-md",
+    "opencode",
+    "google-antigravity",
+    "qwen-code",
+    "kimi-code",
+    "minimax-maxclaw",
+    "deepseek-provider",
+    "shell-ci",
+    "gemini-cli",
+    "warp",
+    "amp-code",
+    "jetbrains-junie",
+    "qoder",
+    "factory-droid",
+    "kiro",
+    "cline",
+    "continue-dev",
+    "kilo-code",
+    "zed-ai",
+    "augment-code",
+    "goose",
+    "aider"
+  ]
+}

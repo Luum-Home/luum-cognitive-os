@@ -232,3 +232,10 @@ creates a portable enforcement path for the highest-risk gaps while preserving
 honest driver projection: lifecycle and Bash hooks remain native in
 `.codex/hooks.json`; Agent and Edit/Write gates are governed by an explicit COS
 runner until Codex exposes native matchers with proven semantics.
+
+
+## Token telemetry portability boundary
+
+Token optimization is portable as a measurement contract when a harness exposes provider usage records. Cognitive OS normalizes Claude/Anthropic, OpenAI/Codex, OpenCode, and generic IDE usage shapes into `token-usage-normalized.v1`; reports must show `providers_seen` and `harnesses_seen` rather than implying universal live enforcement.
+
+Runtime enforcement still varies by harness. Claude-style hooks can block or warn at lifecycle points, while other IDE/CLI surfaces may receive projected tool metadata and advisory workflows only. Promotion from advisory to enforced requires a harness-specific projection proof and paired real usage receipts.

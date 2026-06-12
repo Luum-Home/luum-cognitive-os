@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-06-12T17:23:15+00:00'
+generated_at: '2026-06-12T21:27:23+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
@@ -2534,6 +2534,17 @@ primitives:
   - .claude/settings.json
   - hooks/session-summary-reminder.sh
   sha256: f5183b4b06a5a9414019b1028b97d6765bd3bdaed92315401eab16567f8c7137
+- id: hooks/session-token-aggregator.sh
+  kind: hook
+  owner_adr: ADR-287
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  runtime_projection: true
+  projection_targets:
+  - cognitive-os.yaml
+  - hooks/session-token-aggregator.sh
+  sha256: cb4ecfa80132e9fb9f8c0573b76ed4bda886e9aaa7759ab50f29333a5800a93b
 - id: hooks/session-watchdog-launcher.sh
   kind: hook
   owner_adr: ADR-126
@@ -2855,15 +2866,15 @@ primitives:
 - id: hooks/token-budget-monitor.sh
   kind: hook
   owner_adr: ADR-144
-  lifecycle_state: sandbox
-  maturity: advisory
-  distribution: lab
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
   runtime_projection: true
   projection_targets:
   - .claude/settings.json
   - cognitive-os.yaml
   - hooks/token-budget-monitor.sh
-  sha256: a5b1df1ad5952861b46fbe69d00b115468589c333a2d8d440b901ccfb8c96105
+  sha256: 22fd8ffede2da57b20cc2d2c6a8d5520a0a5ac0a5696937e10b960e5da06c976
 - id: hooks/tool-discovery-trigger.sh
   kind: hook
   owner_adr: ADR-314
@@ -6727,6 +6738,16 @@ primitives:
   - scripts/cos_tier_claim_audit.py
   - docs/02-Decisions/adrs/ADR-133-expansion-without-monsterization.md
   sha256: 4399ae532c89d2ba3c2604784e524364b5faed342054980689b96e2f2679bdcb
+- id: scripts/cos-token-optimization-consumer-smoke
+  kind: script
+  owner_adr: ADR-331
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-token-optimization-consumer-smoke
+  sha256: e93bc4729c2613544add10f51d75594dca646f5297209c66643931fb4ad698ee
 - id: scripts/cos-tui
   kind: script
   owner_adr: ADR-146

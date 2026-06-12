@@ -64,21 +64,22 @@
     }
   },
   "evidence": {
-    "behavior_evidence": "hook-enforced projection for token budget rule exclusion",
+    "behavior_evidence": "Hook-enforced Agent preflight for Claude settings plus portable shell execution proof; counts legacy top-level cost events, normalized token-usage payload rows, and ADR-325 resource-ledger rows. Codex/shell support is executable/advisory unless a native lifecycle adapter wires the hook.",
     "evidence_commands": [
       "bash -n hooks/token-budget-monitor.sh",
+      ".venv/bin/python -m pytest tests/unit/test_rate_limit_protection.py tests/red_team/portability/test_token-budget-monitor.py -q",
       "python3 -m pytest tests/audit/test_hook_enforced_exclusions.py tests/behavior/test_skill_router_bash_gate.py -q"
     ],
-    "metrics_file": "none"
+    "metrics_file": ".cognitive-os/metrics/rate-limit-checks.jsonl"
   },
   "family": "hook",
   "lifecycle": {
-    "distribution": "lab",
+    "distribution": "team",
     "docs_claim_level": "advisory",
-    "exit_behavior": "mixed",
+    "exit_behavior": "exit_0_or_exit_2_when_enabled",
     "governance_class": "meta-governance",
-    "lifecycle_state": "sandbox",
-    "maturity": "advisory",
+    "lifecycle_state": "candidate",
+    "maturity": "observe",
     "owner_adr": "ADR-144",
     "risk_class": "advisory",
     "runtime_projection": true
@@ -170,6 +171,8 @@
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "hooks/token-budget-monitor.sh",
   "supported_harnesses": [
-    "claude"
+    "claude",
+    "codex",
+    "shell"
   ]
 }

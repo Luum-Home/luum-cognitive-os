@@ -6,7 +6,7 @@
   "display_name": "Gemini CLI",
   "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
   "harness": "gemini-cli",
-  "lifecycle_primitives_supporting_harness": 14,
+  "lifecycle_primitives_supporting_harness": 15,
   "limitations": [
     "Structural project settings/context proof only; no account-backed Gemini CLI runtime invocation in automated tests.",
     "No native COS lifecycle hook parity is claimed.",

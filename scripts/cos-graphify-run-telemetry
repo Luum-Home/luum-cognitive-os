@@ -16,6 +16,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from lib.session_parser import get_session_metrics  # noqa: E402
+from lib.token_usage import summarize_usage_jsonl  # noqa: E402
 
 
 def _read_json(path: Path) -> dict[str, Any]:
@@ -114,23 +115,29 @@ def _comparison(primary: dict[str, Any], baseline: dict[str, Any] | None) -> dic
     }
 
 
-def _normalize_metrics(metrics: dict[str, Any]) -> dict[str, Any]:
-    return {
-        "session_id": metrics.get("session_id", ""),
-        "total_input_tokens": int(metrics.get("total_input_tokens", 0)),
-        "total_output_tokens": int(metrics.get("total_output_tokens", 0)),
-        "total_tokens": _real_token_total(metrics),
-        "cache_creation_tokens": int(metrics.get("cache_creation_tokens", 0)),
-        "cache_read_tokens": int(metrics.get("cache_read_tokens", 0)),
-        "tool_use_count": int(metrics.get("tool_use_count", 0)),
-        "tool_uses": metrics.get("tool_uses", []),
-        "models_used": metrics.get("models_used", []),
-        "subagent_count": int(metrics.get("subagent_count", 0)),
-        "duration_minutes": metrics.get("duration_minutes", 0.0),
-        "message_count": int(metrics.get("message_count", 0)),
-        "thinking_count": int(metrics.get("thinking_count", 0)),
-        "source": "lib.session_parser.get_session_metrics",
+def _normalize_metrics(session_path: str) -> dict[str, Any]:
+    structural_metrics = get_session_metrics(session_path)
+    usage_summary = summarize_usage_jsonl(session_path, default_harness="graphify-run-telemetry")
+    metrics = {
+        "session_id": structural_metrics.get("session_id", ""),
+        "total_input_tokens": usage_summary.input_tokens,
+        "total_output_tokens": usage_summary.output_tokens,
+        "cache_creation_tokens": usage_summary.cache_creation_input_tokens,
+        "cache_read_tokens": usage_summary.cache_read_input_tokens,
+        "tool_use_count": int(structural_metrics.get("tool_use_count", 0)),
+        "tool_uses": structural_metrics.get("tool_uses", []),
+        "models_used": usage_summary.models_seen,
+        "providers_seen": usage_summary.providers_seen,
+        "harnesses_seen": usage_summary.harnesses_seen,
+        "subagent_count": int(structural_metrics.get("subagent_count", 0)),
+        "duration_minutes": structural_metrics.get("duration_minutes", 0.0),
+        "message_count": int(structural_metrics.get("message_count", 0)),
+        "thinking_count": int(structural_metrics.get("thinking_count", 0)),
+        "source": "lib.token_usage.summarize_usage_jsonl + lib.session_parser.get_session_metrics",
+        "telemetry_schema": "token-usage-normalized.v1",
     }
+    metrics["total_tokens"] = _real_token_total(metrics)
+    return metrics
 
 
 def _bundle_keys(matrix: dict[str, Any]) -> list[str]:
@@ -202,8 +209,8 @@ def _payload(args: argparse.Namespace) -> dict[str, Any]:
     matrix = _read_json(matrix_path)
     preload_files = _unique(path for path in matrix.get("preload_files", []) if isinstance(path, str))
     preload = _preload_estimate(preload_files)
-    session_metrics = _normalize_metrics(get_session_metrics(session))
-    baseline_metrics = _normalize_metrics(get_session_metrics(args.baseline_session)) if args.baseline_session else None
+    session_metrics = _normalize_metrics(session)
+    baseline_metrics = _normalize_metrics(args.baseline_session) if args.baseline_session else None
     metric_label = _metric_label(session_metrics, preload)
     return {
         "schema_version": 1,
@@ -221,7 +228,7 @@ def _payload(args: argparse.Namespace) -> dict[str, Any]:
         "baseline_session_metrics": baseline_metrics,
         "comparison": _comparison(session_metrics, baseline_metrics),
         "claims_boundary": {
-            "evidence": "Graphify selected preload bundles and session_parser extracted real token usage from the provided session JSONL.",
+            "evidence": "Graphify selected preload bundles and token_usage extracted normalized real token usage from the provided session JSONL.",
             "inference": "Any token-reduction claim requires comparable before/after runs; one run only shows observed usage plus estimated preload context size.",
         },
     }
@@ -234,7 +241,7 @@ def _render_markdown(payload: dict[str, Any]) -> str:
     lines = [
         "# Graphify Run Telemetry Report",
         "",
-        "This report joins Graphify preload selection with real session telemetry. Preload token counts are deterministic local estimates; session token counts come from Claude Code JSONL usage parsed by `lib.session_parser.py`.",
+        "This report joins Graphify preload selection with normalized real session telemetry. Preload token counts are deterministic local estimates; session token counts come from supported provider JSONL usage parsed by `lib.token_usage.py`; structural tool metrics are parsed by `lib.session_parser.py` when available.",
         "",
         "## Summary",
         "",
@@ -251,6 +258,8 @@ def _render_markdown(payload: dict[str, Any]) -> str:
         f"Tool uses: {metrics['tool_use_count']}",
         f"Subagents: {metrics['subagent_count']}",
         f"Models: {', '.join(metrics['models_used']) or 'none detected'}",
+        f"Providers: {', '.join(metrics.get('providers_seen', [])) or 'none detected'}",
+        f"Harnesses: {', '.join(metrics.get('harnesses_seen', [])) or 'none detected'}",
         "",
         "## Graphify Preload Bundles",
         "",

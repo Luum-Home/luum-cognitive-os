@@ -348,6 +348,66 @@ class TestTokenCountingHook:
         result = _run_hook(str(tmp_path), extra_env={"RATE_LIMIT_OVERRIDE": "false"})
         assert result.returncode == 0, f"Should not be blocked; stderr={result.stderr}"
 
+
+    def test_counts_normalized_payload_token_usage(self, tmp_path: Path) -> None:
+        """Normalized cost-event payload rows contribute to hourly enforcement."""
+        from datetime import datetime, timezone
+
+        metrics_dir = tmp_path / ".cognitive-os" / "metrics"
+        metrics_dir.mkdir(parents=True, exist_ok=True)
+        with open(metrics_dir / "cost-events.jsonl", "w", encoding="utf-8") as f:
+            f.write(json.dumps({
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "event_type": "cost.recorded",
+                "payload": {
+                    "telemetry_schema": "token-usage-normalized.v1",
+                    "source": "transcript",
+                    "input_tokens": 80,
+                    "output_tokens": 10,
+                    "cache_read_input_tokens": 4,
+                    "cache_creation_input_tokens": 2,
+                    "is_estimate": False,
+                },
+            }) + "\n")
+
+        result = _run_hook(
+            str(tmp_path),
+            extra_env={
+                "RATE_LIMIT_OVERRIDE": "false",
+                "RATE_LIMIT_HOURLY_TOKENS": "100",
+            },
+        )
+
+        assert result.returncode == 2
+        assert "RATE LIMIT REACHED (96%)" in result.stderr
+
+    def test_prefers_cognitive_os_project_dir_over_claude_project_dir(self, tmp_path: Path) -> None:
+        """Portable project-dir precedence prevents Claude-only metrics lookup."""
+        from datetime import datetime, timezone
+
+        claude_dir = tmp_path / "claude"
+        cos_dir = tmp_path / "cos"
+        metrics_dir = cos_dir / ".cognitive-os" / "metrics"
+        metrics_dir.mkdir(parents=True, exist_ok=True)
+        with open(metrics_dir / "cost-events.jsonl", "w", encoding="utf-8") as f:
+            f.write(json.dumps({
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "payload": {"input_tokens": 96, "output_tokens": 0},
+            }) + "\n")
+
+        result = _run_hook(
+            str(cos_dir),
+            extra_env={
+                "CLAUDE_PROJECT_DIR": str(claude_dir),
+                "COGNITIVE_OS_PROJECT_DIR": str(cos_dir),
+                "RATE_LIMIT_OVERRIDE": "false",
+                "RATE_LIMIT_HOURLY_TOKENS": "100",
+            },
+        )
+
+        assert result.returncode == 2
+        assert "RATE LIMIT REACHED (96%)" in result.stderr
+
     def test_token_counting_consults_adr_325_resource_ledger(self, tmp_path: Path) -> None:
         """ADR-325 resource ledger rows contribute to hourly token enforcement."""
         from datetime import datetime, timezone

@@ -6,7 +6,7 @@
   "display_name": "Aider",
   "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
   "harness": "aider",
-  "lifecycle_primitives_supporting_harness": 14,
+  "lifecycle_primitives_supporting_harness": 15,
   "limitations": [
     "Structural Aider conventions/config proof only; no account-backed runtime/model invocation in automated tests.",
     "No native COS lifecycle hook parity is claimed.",
