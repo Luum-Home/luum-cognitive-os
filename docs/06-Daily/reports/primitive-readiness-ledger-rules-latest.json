@@ -4030,10 +4030,10 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 15,
-        "doc": 49,
+        "doc": 50,
         "hook": 8,
         "rule": 2,
-        "script": 6,
+        "script": 7,
         "test": 12
       },
       "consumers": [
@@ -4148,6 +4148,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-flicker-control.md"
         },
         {
           "family": "doc",
@@ -4343,6 +4347,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_agent_flicker_report.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/primitive-behavior-audit.py"
         },
         {
@@ -4411,9 +4419,9 @@
         "lifecycle",
         "hook_consumers:8",
         "rule_consumers:2",
-        "script_consumers:6",
+        "script_consumers:7",
         "test_consumers:12",
-        "doc_consumers:49",
+        "doc_consumers:50",
         "config_consumers:15"
       ],
       "family": "rules",
@@ -4428,7 +4436,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 92
+      "total_consumers": 94
     },
     {
       "confidence": "high",
@@ -12616,11 +12624,11 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 4,
-        "doc": 2,
+        "doc": 3,
         "hook": 1,
         "rule": 1,
-        "script": 2,
-        "test": 3
+        "script": 3,
+        "test": 4
       },
       "consumers": [
         {
@@ -12645,6 +12653,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-flicker-control.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/goal-loop.md"
         },
         {
@@ -12661,6 +12673,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_agent_flicker_report.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_goal.py"
         },
         {
@@ -12674,15 +12690,19 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_os_only_missing_proof_smoke.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_agent_flicker_report.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:1",
-        "script_consumers:2",
-        "test_consumers:3",
-        "doc_consumers:2",
+        "script_consumers:3",
+        "test_consumers:4",
+        "doc_consumers:3",
         "config_consumers:4"
       ],
       "family": "rules",
@@ -12693,7 +12713,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 13
+      "total_consumers": 16
     },
     {
       "confidence": "high",
@@ -19246,8 +19266,9 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 6,
-        "doc": 11,
+        "doc": 12,
         "rule": 1,
+        "script": 1,
         "test": 2
       },
       "consumers": [
@@ -19301,6 +19322,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-flicker-control.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/05-Methodology/runbooks/cost-budget-and-retry.md"
         },
         {
@@ -19324,6 +19349,10 @@
           "path": "rules/RULES-COMPACT.md"
         },
         {
+          "family": "script",
+          "path": "scripts/cos_agent_flicker_report.py"
+        },
+        {
           "family": "test",
           "path": "tests/audit/test_retry_contract_manifest.py"
         },
@@ -19336,8 +19365,9 @@
       "evidence": [
         "lifecycle",
         "rule_consumers:1",
+        "script_consumers:1",
         "test_consumers:2",
-        "doc_consumers:11",
+        "doc_consumers:12",
         "config_consumers:6"
       ],
       "family": "rules",
@@ -19352,7 +19382,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 20
+      "total_consumers": 22
     },
     {
       "confidence": "medium",
@@ -21572,9 +21602,9 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 5,
-        "doc": 3,
+        "doc": 4,
         "rule": 1,
-        "script": 1,
+        "script": 2,
         "skill": 1,
         "test": 2
       },
@@ -21612,8 +21642,16 @@
           "path": "docs/02-Decisions/adrs/INDEX.md"
         },
         {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-flicker-control.md"
+        },
+        {
           "family": "rule",
           "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_agent_flicker_report.py"
         },
         {
           "family": "script",
@@ -21637,9 +21675,9 @@
         "lifecycle",
         "skill_consumers:1",
         "rule_consumers:1",
-        "script_consumers:1",
+        "script_consumers:2",
         "test_consumers:2",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:5"
       ],
       "family": "rules",
@@ -21654,7 +21692,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 13
+      "total_consumers": 15
     },
     {
       "confidence": "high",

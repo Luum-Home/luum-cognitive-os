@@ -1997,6 +1997,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
+        "doc": 1,
         "hook": 1,
         "test": 1
       },
@@ -2008,6 +2009,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-real-token-telemetry-tooling-audit-2026-05-22.md"
         },
         {
           "family": "hook",
@@ -2022,6 +2027,7 @@
       "evidence": [
         "test_consumers:1",
         "hook_consumers:1",
+        "doc_consumers:1",
         "config_consumers:2"
       ],
       "install_surface": null,
@@ -2036,7 +2042,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 4,
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
@@ -5125,10 +5131,10 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 5,
-        "doc": 2,
+        "doc": 3,
         "hook": 2,
         "rule": 1,
-        "script": 1,
+        "script": 2,
         "test": 1
       },
       "consumers": [
@@ -5161,6 +5167,10 @@
           "path": "docs/02-Decisions/adrs/INDEX.md"
         },
         {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-flicker-control.md"
+        },
+        {
           "family": "hook",
           "path": "hooks/claim-validator.sh"
         },
@@ -5171,6 +5181,10 @@
         {
           "family": "rule",
           "path": "rules/trust-score.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_agent_flicker_report.py"
         },
         {
           "family": "script",
@@ -5185,10 +5199,10 @@
       "evidence": [
         "test_consumers:1",
         "hook_consumers:2",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "rule_consumers:1",
         "config_consumers:5",
-        "script_consumers:1"
+        "script_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -5202,7 +5216,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 12,
+      "total_consumers": 14,
       "wrapper_for": null
     },
     {
@@ -5737,12 +5751,12 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 86,
-        "doc": 764,
+        "doc": 765,
         "hook": 123,
         "rule": 51,
-        "script": 397,
+        "script": 400,
         "skill": 86,
-        "test": 725,
+        "test": 729,
         "workflow": 2
       },
       "consumers": [
@@ -7737,6 +7751,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/agent-capability-coverage-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-flicker-control.md"
         },
         {
           "family": "doc",
@@ -9988,6 +10006,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-agent-flicker-report"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-agent-message"
         },
         {
@@ -10672,6 +10694,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-token-optimization-consumer-smoke"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-token-savings-audit"
         },
         {
@@ -10745,6 +10771,10 @@
         {
           "family": "script",
           "path": "scripts/cos-worktree-triage.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_agent_flicker_report.py"
         },
         {
           "family": "script",
@@ -13280,6 +13310,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cos-token-optimization-consumer-smoke.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_cos-token-savings-audit.py"
         },
         {
@@ -13608,6 +13642,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_token_usage.py"
+        },
+        {
+          "family": "test",
           "path": "tests/smoke/test_codex_install_status_smoke.py"
         },
         {
@@ -13653,6 +13691,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_agent_daemon.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_agent_flicker_report.py"
         },
         {
           "family": "test",
@@ -13937,6 +13979,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_cos_test_repair_loop.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_token_optimization_consumer_smoke.py"
         },
         {
           "family": "test",
@@ -14688,13 +14734,13 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:86",
-        "test_consumers:725",
+        "test_consumers:729",
         "hook_consumers:123",
         "workflow_consumers:2",
-        "doc_consumers:764",
+        "doc_consumers:765",
         "rule_consumers:51",
         "config_consumers:86",
-        "script_consumers:397"
+        "script_consumers:400"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -14710,7 +14756,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 2234,
+      "total_consumers": 2242,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -15797,6 +15843,61 @@
         "shell"
       ],
       "total_consumers": 15,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "doc": 2,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-flicker-control.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/business/master-plan-checklist.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_agent_flicker_report.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "test_consumers:1",
+        "doc_consumers:2",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-agent-flicker-report",
+      "lifecycle_state": "advisory",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-agent-flicker-report",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
@@ -22578,10 +22679,10 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 3,
-        "doc": 2,
+        "doc": 3,
         "hook": 1,
         "rule": 1,
-        "script": 2,
+        "script": 3,
         "test": 2
       },
       "consumers": [
@@ -22603,6 +22704,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-flicker-control.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/goal-loop.md"
         },
         {
@@ -22616,6 +22721,10 @@
         {
           "family": "script",
           "path": "scripts/_lib/settings-driver-claude-code.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_agent_flicker_report.py"
         },
         {
           "family": "script",
@@ -22636,10 +22745,10 @@
         "wrapper_for:scripts/cos_goal.py",
         "test_consumers:2",
         "hook_consumers:1",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "rule_consumers:1",
         "config_consumers:3",
-        "script_consumers:2"
+        "script_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -22657,7 +22766,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 11,
+      "total_consumers": 13,
       "wrapper_for": "scripts/cos_goal.py"
     },
     {
@@ -33941,8 +34050,8 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 3,
-        "doc": 3,
-        "script": 1,
+        "doc": 4,
+        "script": 2,
         "test": 4
       },
       "consumers": [
@@ -33964,11 +34073,19 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-flicker-control.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/task-closure-ledger-gate.md"
         },
         {
           "family": "doc",
           "path": "docs/07-Capabilities/acc/latest.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_agent_flicker_report.py"
         },
         {
           "family": "script",
@@ -33995,9 +34112,9 @@
       "evidence": [
         "lifecycle",
         "test_consumers:4",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:3",
-        "script_consumers:1"
+        "script_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -34015,7 +34132,7 @@
         "shell-ci",
         "generic-cli"
       ],
-      "total_consumers": 11,
+      "total_consumers": 13,
       "wrapper_for": null
     },
     {
@@ -34644,6 +34761,87 @@
         "shell"
       ],
       "total_consumers": 24,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "consumer_families": {
+        "config": 2,
+        "doc": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-real-token-telemetry-tooling-audit-2026-05-22.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos-token-optimization-consumer-smoke.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_token_optimization_consumer_smoke.py"
+        }
+      ],
+      "distribution": "team",
+      "evidence": [
+        "lifecycle",
+        "test_consumers:2",
+        "doc_consumers:1",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-token-optimization-consumer-smoke",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-token-optimization-consumer-smoke",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "claude",
+        "codex",
+        "cursor",
+        "devin",
+        "vscode-copilot",
+        "agents-md",
+        "opencode",
+        "google-antigravity",
+        "qwen-code",
+        "kimi-code",
+        "minimax-maxclaw",
+        "deepseek-provider",
+        "shell-ci",
+        "gemini-cli",
+        "warp",
+        "amp-code",
+        "jetbrains-junie",
+        "qoder",
+        "factory-droid",
+        "kiro",
+        "cline",
+        "continue-dev",
+        "kilo-code",
+        "zed-ai",
+        "augment-code",
+        "goose",
+        "aider"
+      ],
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
@@ -36659,6 +36857,58 @@
       ],
       "total_consumers": 9,
       "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "script": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-agent-flicker-report"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_agent_flicker_report.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_goal.py",
+        "test_consumers:1",
+        "config_consumers:2",
+        "script_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos_agent_flicker_report.py",
+      "lifecycle_state": "advisory",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos_agent_flicker_report.py",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 4,
+      "wrapper_for": "scripts/cos_goal.py"
     },
     {
       "confidence": "high",
@@ -39413,7 +39663,7 @@
         "config": 2,
         "doc": 1,
         "rule": 1,
-        "script": 1,
+        "script": 2,
         "test": 2
       },
       "consumers": [
@@ -39438,6 +39688,10 @@
           "path": "scripts/cos-goal"
         },
         {
+          "family": "script",
+          "path": "scripts/cos_agent_flicker_report.py"
+        },
+        {
           "family": "test",
           "path": "tests/behavior/test_goal_cli.py"
         },
@@ -39452,7 +39706,7 @@
         "doc_consumers:1",
         "rule_consumers:1",
         "config_consumers:2",
-        "script_consumers:1"
+        "script_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -39466,7 +39720,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -42150,8 +42404,8 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 4,
-        "doc": 2,
-        "script": 2,
+        "doc": 3,
+        "script": 3,
         "test": 4
       },
       "consumers": [
@@ -42177,11 +42431,19 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-flicker-control.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/07-Capabilities/acc/latest.md"
         },
         {
           "family": "script",
           "path": "scripts/cos-task-closure-gate"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_agent_flicker_report.py"
         },
         {
           "family": "script",
@@ -42208,9 +42470,9 @@
       "evidence": [
         "lifecycle",
         "test_consumers:4",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:4",
-        "script_consumers:2"
+        "script_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -42228,7 +42490,7 @@
         "shell-ci",
         "generic-cli"
       ],
-      "total_consumers": 12,
+      "total_consumers": 14,
       "wrapper_for": null
     },
     {
@@ -50567,7 +50829,7 @@
         "config": 8,
         "doc": 8,
         "hook": 1,
-        "script": 1,
+        "script": 2,
         "test": 4
       },
       "consumers": [
@@ -50641,6 +50903,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_agent_flicker_report.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/setup-git-hooks.sh"
         },
         {
@@ -50668,7 +50934,7 @@
         "hook_consumers:1",
         "doc_consumers:8",
         "config_consumers:8",
-        "script_consumers:1"
+        "script_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -50684,7 +50950,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 22,
+      "total_consumers": 23,
       "wrapper_for": "scripts/claim_enforcer.py"
     },
     {
@@ -61094,6 +61360,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 1,
+        "doc": 1,
         "script": 1,
         "test": 1
       },
@@ -61101,6 +61368,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-real-token-telemetry-tooling-audit-2026-05-22.md"
         },
         {
           "family": "script",
@@ -61114,6 +61385,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
+        "doc_consumers:1",
         "config_consumers:1",
         "script_consumers:1"
       ],
@@ -61129,7 +61401,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 3,
+      "total_consumers": 4,
       "wrapper_for": null
     },
     {
@@ -62131,27 +62403,27 @@
   "summary": {
     "agentic_primitives_without_lifecycle": 0,
     "confidence": {
-      "high": 354,
+      "high": 357,
       "low": 1,
       "medium": 312
     },
     "consumer_accessibility": {
       "install-profile-managed": 19,
-      "lifecycle-declared-consumer-candidate": 166,
-      "lifecycle-declared-maintainer": 143,
+      "lifecycle-declared-consumer-candidate": 167,
+      "lifecycle-declared-maintainer": 145,
       "skill-referenced-not-projectable": 3,
       "so-local-only": 336
     },
     "low_confidence_rows": 1,
     "roles": {
-      "agentic-primitive": 216,
+      "agentic-primitive": 219,
       "archive": 12,
       "driver-specific": 14,
       "lab": 97,
       "maintainer-tool": 313,
       "migration-only": 15
     },
-    "total_scripts": 667,
+    "total_scripts": 670,
     "without_consumers": 0
   },
   "target_family": "scripts"
