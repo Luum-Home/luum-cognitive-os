@@ -7,7 +7,7 @@ Consumer accessibility: lifecycle-declared-maintainer:117, projected-consumer-su
 | Path | Role | Source | Confidence | Consumer Access | Lifecycle | Consumers | Next action |
 |---|---|---|---|---|---|---:|---|
 | `rules/ROADMAP.md` | hook-enforced | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 29 | keep maintainer-only or add explicit export path |
-| `rules/RULES-COMPACT.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 179 | keep maintainer-only or add explicit export path |
+| `rules/RULES-COMPACT.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 180 | keep maintainer-only or add explicit export path |
 | `rules/acceptance-criteria.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 73 | keep maintainer-only or add explicit export path |
 | `rules/adaptive-bypass.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 66 | keep maintainer-only or add explicit export path |
 | `rules/adversarial-review.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 55 | keep maintainer-only or add explicit export path |
@@ -52,9 +52,9 @@ Consumer accessibility: lifecycle-declared-maintainer:117, projected-consumer-su
 | `rules/cross-harness-authoring.md` | driver-specific | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 30 | keep maintainer-only or add explicit export path |
 | `rules/decision-depth-gate.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 20 | keep maintainer-only or add explicit export path |
 | `rules/decomposition.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 32 | keep maintainer-only or add explicit export path |
-| `rules/definition-of-done.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 52 | keep maintainer-only or add explicit export path |
+| `rules/definition-of-done.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 53 | keep maintainer-only or add explicit export path |
 | `rules/doc-sync.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 65 | keep maintainer-only or add explicit export path |
-| `rules/dry-run.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 288 | keep maintainer-only or add explicit export path |
+| `rules/dry-run.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 290 | keep maintainer-only or add explicit export path |
 | `rules/dynamic-tool-creation.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 10 | keep maintainer-only or add explicit export path |
 | `rules/e2b-integration.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 21 | keep maintainer-only or add explicit export path |
 | `rules/eas-evidence-artifact.md` | driver-specific | heuristic:text | medium | projected-consumer-surface | advisory | 11 | keep lifecycle, tests, and harness proof current |

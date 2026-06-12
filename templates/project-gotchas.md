@@ -11,7 +11,7 @@
   - **File-level** (most): `lib/ground_truth.py`, `lib/peer_card.py`, etc. → `packages/<pkg>/lib/<file>.py`
   - **Directory-level**: `lib/harness_adapter/` → `packages/agent-lifecycle/lib/harness_adapter/` (the WHOLE directory is a symlink). Mutations in `lib/harness_adapter/X.py` affect `packages/agent-lifecycle/lib/harness_adapter/X.py` directly. **Do NOT** `rm + ln -s` "to recreate the symlink" — relative targets resolve from the symlink's TARGET, not its literal path → broken/looped. Run `bash scripts/topology-discover.sh` for full topology. (See 2026-05-02 incident; `hooks/symlink-mutation-guard.sh` blocks the pattern.)
   - **Other dir-symlinks**: `lib/providers/` → `packages/llm-providers/lib/`
-- **settings.json is GENERATED** by `scripts/apply-efficiency-profile.sh`. Never edit directly. Update the script, then run it.
+- **settings.json is GENERATED** (ADR-064): the canonical hook registry is `cognitive-os.yaml > harness.hooks` (`{script, event, async, scope}` entries), projected into `.claude/settings.json` by `scripts/_lib/settings-driver-claude-code.sh` (`scripts/apply-efficiency-profile.sh` merely delegates to it). Never edit `.claude/settings.json` directly — register the hook in `cognitive-os.yaml`, then run `bash scripts/apply-efficiency-profile.sh <profile>`.
 - **.cognitive-os/ = OS kernel** (universal). **.claude/ = driver** (Claude Code-specific). Don't mix.
 - **48/93 hooks are intentionally not wired** — controlled by efficiency profile (lean=7, standard=18, full=all). This is by design, not a bug.
 
@@ -20,8 +20,8 @@
 | If touching... | First read... | Because... |
 |---|---|---|
 | `lib/*.py` | `ls -la lib/<file>` | May be a symlink to packages/ |
-| `.claude/settings.json` | `scripts/apply-efficiency-profile.sh` | Script regenerates the file |
-| `hooks/*.sh` (new) | `scripts/apply-efficiency-profile.sh` | Must add hook to a profile tier |
+| `.claude/settings.json` | `cognitive-os.yaml > harness.hooks` | Canonical registry (ADR-064); `scripts/_lib/settings-driver-claude-code.sh` projects it into settings.json — never hand-edit |
+| `hooks/*.sh` (new) | `cognitive-os.yaml > harness.hooks` | Register `{script, event, async, scope}` entry there, then run `bash scripts/apply-efficiency-profile.sh <profile>` |
 | `packages/*/lib/*.py` | `ls -la lib/` for symlinks | lib/ symlinks point here |
 | `.cognitive-os/workflows/` | `docs/08-References/root/adw-patterns.md` | Defines the YAML schema |
 | `cognitive-os.yaml` | Current value first (`grep` it) | Don't duplicate existing sections |

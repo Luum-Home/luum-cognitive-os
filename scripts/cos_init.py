@@ -1112,7 +1112,7 @@ def _write_structural_instruction_harness_settings(project_dir: Path, cos_source
             subprocess.run(
                 ["bash", str(driver)],
                 cwd=project_dir,
-                env={**os.environ, "PROJECT_DIR": str(project_dir), "PROFILE": "full" if mode == "--full" else "default"},
+                env={**os.environ, "PROJECT_DIR": str(project_dir), "COGNITIVE_OS_HOOK_REGISTRY_PROJECT_DIR": str(cos_source), "PROFILE": "full" if mode == "--full" else "default"},
                 text=True,
                 capture_output=True,
                 check=False,

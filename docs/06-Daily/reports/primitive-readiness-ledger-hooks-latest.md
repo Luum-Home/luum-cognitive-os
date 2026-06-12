@@ -1,26 +1,26 @@
 # Primitive Readiness Ledger — Hooks
 
-Total rows: 282
-Rows without lifecycle metadata: 14
-Consumer accessibility: lifecycle-declared-consumer-candidate:22, lifecycle-declared-maintainer:174, projected-consumer-surface:72, so-local-only:14
+Total rows: 285
+Rows without lifecycle metadata: 15
+Consumer accessibility: lifecycle-declared-consumer-candidate:22, lifecycle-declared-maintainer:174, projected-consumer-surface:74, so-local-only:15
 
 | Path | Role | Source | Confidence | Consumer Access | Lifecycle | Consumers | Next action |
 |---|---|---|---|---|---|---:|---|
 | `hooks/_lib/agent-context.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 51 | keep lifecycle, tests, and harness proof current |
 | `hooks/_lib/artifact-status.sh` | runtime-safety | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 10 | prove consumer project projection per supported harness before promotion |
 | `hooks/_lib/bypass-resolver.sh` | driver-specific | lifecycle | high | projected-consumer-surface | advisory | 18 | keep lifecycle, tests, and harness proof current |
-| `hooks/_lib/cache.sh` | driver-specific | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 385 | prove consumer project projection per supported harness before promotion |
+| `hooks/_lib/cache.sh` | driver-specific | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 388 | prove consumer project projection per supported harness before promotion |
 | `hooks/_lib/circuit-breaker.sh` | observability | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 34 | prove consumer project projection per supported harness before promotion |
-| `hooks/_lib/common.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 250 | prove consumer project projection per supported harness before promotion |
+| `hooks/_lib/common.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 253 | prove consumer project projection per supported harness before promotion |
 | `hooks/_lib/context_budget_lib.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 14 | prove consumer project projection per supported harness before promotion |
 | `hooks/_lib/execute-repair.sh` | observability | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 9 | prove consumer project projection per supported harness before promotion |
 | `hooks/_lib/file_checker.sh` | runtime-safety | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 15 | prove consumer project projection per supported harness before promotion |
 | `hooks/_lib/governance-policy.sh` | driver-specific | heuristic:text | medium | so-local-only |  | 11 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/_lib/hook-pipe.sh` | driver-specific | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 12 | prove consumer project projection per supported harness before promotion |
-| `hooks/_lib/killswitch_check.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 194 | keep lifecycle, tests, and harness proof current |
+| `hooks/_lib/killswitch_check.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 195 | keep lifecycle, tests, and harness proof current |
 | `hooks/_lib/normalize-stdin.sh` | driver-specific | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 5 | prove consumer project projection per supported harness before promotion |
-| `hooks/_lib/portable.sh` | runtime-safety | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 401 | prove consumer project projection per supported harness before promotion |
-| `hooks/_lib/primitive-intervention.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 47 | keep lifecycle, tests, and harness proof current |
+| `hooks/_lib/portable.sh` | runtime-safety | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 411 | prove consumer project projection per supported harness before promotion |
+| `hooks/_lib/primitive-intervention.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 48 | keep lifecycle, tests, and harness proof current |
 | `hooks/_lib/push-collision-check.sh` | observability | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 15 | prove consumer project projection per supported harness before promotion |
 | `hooks/_lib/register-bg.sh` | observability | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 6 | prove consumer project projection per supported harness before promotion |
 | `hooks/_lib/remediation.sh` | observability | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 102 | prove consumer project projection per supported harness before promotion |
@@ -39,7 +39,7 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:22, lifecycle-decl
 | `hooks/aci-observation-capture.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 22 | keep maintainer-only or add explicit export path |
 | `hooks/adaptive-bypass.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 65 | keep maintainer-only or add explicit export path |
 | `hooks/adoption-freeze-gate.sh` | runtime-safety | lifecycle | high | lifecycle-declared-maintainer | advisory | 16 | keep maintainer-only or add explicit export path |
-| `hooks/adr-detector.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 19 | keep lifecycle, tests, and harness proof current |
+| `hooks/adr-detector.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 20 | keep lifecycle, tests, and harness proof current |
 | `hooks/adr-relevance-suggest.sh` | lab | lifecycle | high | projected-consumer-surface | sandbox | 25 | keep lifecycle, tests, and harness proof current |
 | `hooks/adr-section-validator.sh` | observability | lifecycle | high | lifecycle-declared-maintainer | blocking | 26 | keep maintainer-only or add explicit export path |
 | `hooks/adversarial-review-gate.sh` | observability | lifecycle | high | lifecycle-declared-maintainer | advisory | 12 | keep maintainer-only or add explicit export path |
@@ -57,9 +57,9 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:22, lifecycle-decl
 | `hooks/agent-qwen-bridge.sh` | observability | heuristic:text | medium | so-local-only |  | 11 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/agent-working-dir-inject.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 27 | keep maintainer-only or add explicit export path |
 | `hooks/agnix-lint.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 16 | keep maintainer-only or add explicit export path |
-| `hooks/aguara-scan.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 37 | keep lifecycle, tests, and harness proof current |
-| `hooks/ai-provider-identity-guard.sh` | driver-specific | lifecycle | high | projected-consumer-surface | advisory | 16 | keep lifecycle, tests, and harness proof current |
-| `hooks/architecture-compliance.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 32 | keep lifecycle, tests, and harness proof current |
+| `hooks/aguara-scan.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 38 | keep lifecycle, tests, and harness proof current |
+| `hooks/ai-provider-identity-guard.sh` | driver-specific | lifecycle | high | projected-consumer-surface | advisory | 17 | keep lifecycle, tests, and harness proof current |
+| `hooks/architecture-compliance.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 33 | keep lifecycle, tests, and harness proof current |
 | `hooks/aspirational-audit-weekly.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 25 | keep maintainer-only or add explicit export path |
 | `hooks/assumption-tracker.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 47 | keep maintainer-only or add explicit export path |
 | `hooks/attribution-completeness-validator.sh` | runtime-safety | lifecycle | high | lifecycle-declared-maintainer | advisory | 17 | keep maintainer-only or add explicit export path |
@@ -79,7 +79,7 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:22, lifecycle-decl
 | `hooks/clarification-gate.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | blocking | 99 | keep maintainer-only or add explicit export path |
 | `hooks/clarification-interceptor.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 25 | keep lifecycle, tests, and harness proof current |
 | `hooks/clean-room-ast-similarity-gate.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 11 | keep maintainer-only or add explicit export path |
-| `hooks/code-review-on-commit.sh` | driver-specific | lifecycle | high | projected-consumer-surface | advisory | 17 | keep lifecycle, tests, and harness proof current |
+| `hooks/code-review-on-commit.sh` | driver-specific | lifecycle | high | projected-consumer-surface | advisory | 18 | keep lifecycle, tests, and harness proof current |
 | `hooks/codebase-itinerary-capture.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 14 | keep maintainer-only or add explicit export path |
 | `hooks/cognitive-os-health.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 22 | keep maintainer-only or add explicit export path |
 | `hooks/completeness-check-llm.sh` | driver-specific | heuristic:text | medium | so-local-only |  | 15 | add lifecycle/package/projection metadata or keep SO-local |
@@ -93,13 +93,13 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:22, lifecycle-decl
 | `hooks/consequence-evaluator.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 40 | keep maintainer-only or add explicit export path |
 | `hooks/content-policy.sh` | observability | lifecycle | high | projected-consumer-surface | blocking | 109 | keep lifecycle, tests, and harness proof current |
 | `hooks/context-budget-meter.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | blocking | 26 | keep maintainer-only or add explicit export path |
-| `hooks/context-diet.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 29 | keep lifecycle, tests, and harness proof current |
+| `hooks/context-diet.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 30 | keep lifecycle, tests, and harness proof current |
 | `hooks/context-watchdog.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 42 | keep maintainer-only or add explicit export path |
 | `hooks/contextual-rule-loader.sh` | observability | lifecycle | high | projected-consumer-surface | advisory | 17 | keep lifecycle, tests, and harness proof current |
 | `hooks/control-plane-audit-hourly.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 15 | keep lifecycle, tests, and harness proof current |
 | `hooks/control-plane-audit.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | blocking | 51 | keep lifecycle, tests, and harness proof current |
 | `hooks/conversation-capture.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 20 | keep maintainer-only or add explicit export path |
-| `hooks/cos-executor-daemon-launcher.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 22 | keep maintainer-only or add explicit export path |
+| `hooks/cos-executor-daemon-launcher.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 23 | keep maintainer-only or add explicit export path |
 | `hooks/cos-executor-heartbeat.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 10 | keep maintainer-only or add explicit export path |
 | `hooks/cos-session-start-projector.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 27 | keep maintainer-only or add explicit export path |
 | `hooks/cosd-auth-guard.sh` | driver-specific | lifecycle | high | projected-consumer-surface | blocking | 21 | keep lifecycle, tests, and harness proof current |
@@ -120,9 +120,9 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:22, lifecycle-decl
 | `hooks/docker-drift-detector.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 18 | keep maintainer-only or add explicit export path |
 | `hooks/document-ingest-guard.sh` | runtime-safety | lifecycle | high | lifecycle-declared-maintainer | blocking | 16 | keep maintainer-only or add explicit export path |
 | `hooks/dod-gate.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 58 | keep maintainer-only or add explicit export path |
-| `hooks/dry-run-preview.sh` | observability | lifecycle | high | projected-consumer-surface | advisory | 19 | keep lifecycle, tests, and harness proof current |
-| `hooks/eas-validation-gate.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | blocking | 12 | keep maintainer-only or add explicit export path |
-| `hooks/ecosystem-check.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 13 | keep maintainer-only or add explicit export path |
+| `hooks/dry-run-preview.sh` | observability | lifecycle | high | projected-consumer-surface | advisory | 20 | keep lifecycle, tests, and harness proof current |
+| `hooks/eas-validation-gate.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | blocking | 13 | keep maintainer-only or add explicit export path |
+| `hooks/ecosystem-check.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 14 | keep maintainer-only or add explicit export path |
 | `hooks/edit-lock-drain-parked.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 13 | keep maintainer-only or add explicit export path |
 | `hooks/edit-lock-pre-tool.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | blocking | 19 | keep lifecycle, tests, and harness proof current |
 | `hooks/edit-lock-process-negotiations.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 14 | keep maintainer-only or add explicit export path |
@@ -130,7 +130,7 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:22, lifecycle-decl
 | `hooks/engram-auto-import.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 21 | keep maintainer-only or add explicit export path |
 | `hooks/engram-auto-sync.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 23 | keep maintainer-only or add explicit export path |
 | `hooks/engram-crystallize-on-session-end.sh` | lab | lifecycle | high | projected-consumer-surface | sandbox | 26 | keep lifecycle, tests, and harness proof current |
-| `hooks/engram-daemon-launcher.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 27 | keep lifecycle, tests, and harness proof current |
+| `hooks/engram-daemon-launcher.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 28 | keep lifecycle, tests, and harness proof current |
 | `hooks/engram-obsidian-export-on-stop.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 24 | keep maintainer-only or add explicit export path |
 | `hooks/engram-reinforce-on-access.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 21 | keep lifecycle, tests, and harness proof current |
 | `hooks/epic-task-detector.sh` | lab | lifecycle | high | projected-consumer-surface | advisory | 26 | keep lifecycle, tests, and harness proof current |
@@ -141,17 +141,17 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:22, lifecycle-decl
 | `hooks/external-pattern-cleanroom-gate.sh` | driver-specific | lifecycle | high | lifecycle-declared-maintainer | advisory | 19 | keep maintainer-only or add explicit export path |
 | `hooks/git-commit-scope-guard.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | blocking | 29 | keep lifecycle, tests, and harness proof current |
 | `hooks/git-context-capture.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 42 | keep maintainer-only or add explicit export path |
-| `hooks/global-verify.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 31 | keep lifecycle, tests, and harness proof current |
-| `hooks/goal-stop-gate.sh` | driver-specific | lifecycle | high | lifecycle-declared-maintainer | blocking | 17 | keep maintainer-only or add explicit export path |
-| `hooks/guardrails-validator.sh` | observability | lifecycle | high | projected-consumer-surface | advisory | 18 | keep lifecycle, tests, and harness proof current |
+| `hooks/global-verify.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 32 | keep lifecycle, tests, and harness proof current |
+| `hooks/goal-stop-gate.sh` | driver-specific | lifecycle | high | lifecycle-declared-maintainer | blocking | 18 | keep maintainer-only or add explicit export path |
+| `hooks/guardrails-validator.sh` | observability | lifecycle | high | projected-consumer-surface | advisory | 19 | keep lifecycle, tests, and harness proof current |
 | `hooks/history-rewrite-documented.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 16 | keep maintainer-only or add explicit export path |
 | `hooks/hook-header-validator.sh` | observability | lifecycle | high | lifecycle-declared-maintainer | blocking | 17 | keep maintainer-only or add explicit export path |
 | `hooks/host-tool-doctor.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 29 | keep maintainer-only or add explicit export path |
 | `hooks/idle-service-cleanup.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 16 | keep maintainer-only or add explicit export path |
 | `hooks/infra-health.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 41 | keep maintainer-only or add explicit export path |
-| `hooks/infra-intent-detector.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 27 | keep lifecycle, tests, and harness proof current |
+| `hooks/infra-intent-detector.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 28 | keep lifecycle, tests, and harness proof current |
 | `hooks/inject-phase-context.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 59 | keep maintainer-only or add explicit export path |
-| `hooks/jupyter-sandbox.sh` | lab | lifecycle | high | projected-consumer-surface | advisory | 16 | keep lifecycle, tests, and harness proof current |
+| `hooks/jupyter-sandbox.sh` | lab | lifecycle | high | projected-consumer-surface | advisory | 17 | keep lifecycle, tests, and harness proof current |
 | `hooks/kpi-trigger.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 38 | keep maintainer-only or add explicit export path |
 | `hooks/large-file-advisor.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 50 | keep maintainer-only or add explicit export path |
 | `hooks/legal-review-required-on-runtime-import.sh` | runtime-safety | lifecycle | high | lifecycle-declared-maintainer | advisory | 16 | keep maintainer-only or add explicit export path |
@@ -171,7 +171,7 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:22, lifecycle-decl
 | `hooks/orchestrator-mode-detect.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 13 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/orchestrator-skill-invocation-gate.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | blocking | 24 | keep lifecycle, tests, and harness proof current |
 | `hooks/package-sync.sh` | driver-specific | lifecycle | high | lifecycle-declared-maintainer | advisory | 11 | keep maintainer-only or add explicit export path |
-| `hooks/parry-scan.sh` | observability | lifecycle | high | projected-consumer-surface | advisory | 19 | keep lifecycle, tests, and harness proof current |
+| `hooks/parry-scan.sh` | observability | lifecycle | high | projected-consumer-surface | advisory | 20 | keep lifecycle, tests, and harness proof current |
 | `hooks/pattern-check.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 12 | keep maintainer-only or add explicit export path |
 | `hooks/pending-truth-drift-detector.sh` | driver-specific | lifecycle | high | lifecycle-declared-maintainer | advisory | 16 | keep maintainer-only or add explicit export path |
 | `hooks/pending-truth-staleness-gate.sh` | driver-specific | lifecycle | high | lifecycle-declared-maintainer | advisory | 17 | keep maintainer-only or add explicit export path |
@@ -181,7 +181,7 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:22, lifecycle-decl
 | `hooks/post-agent-verify.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 23 | keep maintainer-only or add explicit export path |
 | `hooks/post-git-orphan-notifier.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 15 | keep maintainer-only or add explicit export path |
 | `hooks/pre-agent-snapshot.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 69 | keep maintainer-only or add explicit export path |
-| `hooks/pre-cleanup-snapshot.sh` | observability | lifecycle | high | lifecycle-declared-maintainer | advisory | 22 | keep maintainer-only or add explicit export path |
+| `hooks/pre-cleanup-snapshot.sh` | observability | lifecycle | high | lifecycle-declared-maintainer | advisory | 23 | keep maintainer-only or add explicit export path |
 | `hooks/pre-commit-content-hash-dedupe.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | blocking | 20 | keep maintainer-only or add explicit export path |
 | `hooks/pre-commit-gate.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 53 | keep lifecycle, tests, and harness proof current |
 | `hooks/pre-compaction-flush.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 68 | keep maintainer-only or add explicit export path |
@@ -193,21 +193,23 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:22, lifecycle-decl
 | `hooks/promotion-proposer-weekly.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 18 | keep maintainer-only or add explicit export path |
 | `hooks/prompt-quality-llm.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 26 | keep maintainer-only or add explicit export path |
 | `hooks/protected-config-write-guard.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | blocking | 41 | keep maintainer-only or add explicit export path |
+| `hooks/provenance-scan.sh` | driver-specific | lifecycle | high | projected-consumer-surface | blocking | 18 | keep lifecycle, tests, and harness proof current |
 | `hooks/publication-safety.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 15 | add lifecycle/package/projection metadata or keep SO-local |
-| `hooks/pyrefly-typecheck-advisory.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 12 | keep maintainer-only or add explicit export path |
+| `hooks/pyrefly-typecheck-advisory.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 13 | keep maintainer-only or add explicit export path |
+| `hooks/quality-duplicates.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 24 | keep lifecycle, tests, and harness proof current |
 | `hooks/query-tailored-context-inject.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 21 | keep maintainer-only or add explicit export path |
 | `hooks/rate-limit-detector.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 22 | keep maintainer-only or add explicit export path |
 | `hooks/rate-limit-drain.sh` | lab | lifecycle | high | projected-consumer-surface | sandbox | 22 | keep lifecycle, tests, and harness proof current |
 | `hooks/rate-limit-precheck.sh` | runtime-safety | lifecycle | high | projected-consumer-surface | advisory | 20 | keep lifecycle, tests, and harness proof current |
 | `hooks/rate-limit-protection.sh` | runtime-safety | default | medium | so-local-only |  | 27 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/rate-limiter.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | blocking | 96 | keep lifecycle, tests, and harness proof current |
-| `hooks/reaper-daemon-launcher.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 28 | keep maintainer-only or add explicit export path |
+| `hooks/reaper-daemon-launcher.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 29 | keep maintainer-only or add explicit export path |
 | `hooks/reaper-heartbeat.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 21 | keep maintainer-only or add explicit export path |
 | `hooks/recap-sync.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 13 | keep maintainer-only or add explicit export path |
 | `hooks/registration-check.sh` | driver-specific | lifecycle | high | lifecycle-declared-maintainer | advisory | 17 | keep maintainer-only or add explicit export path |
 | `hooks/reinvention-check.sh` | lab | lifecycle | high | projected-consumer-surface | sandbox | 51 | keep lifecycle, tests, and harness proof current |
 | `hooks/release-guard.sh` | driver-specific | lifecycle | high | projected-consumer-surface | blocking | 31 | keep lifecycle, tests, and harness proof current |
-| `hooks/research-compliance-guard.sh` | driver-specific | lifecycle | high | projected-consumer-surface | blocking | 15 | keep lifecycle, tests, and harness proof current |
+| `hooks/research-compliance-guard.sh` | driver-specific | lifecycle | high | projected-consumer-surface | blocking | 16 | keep lifecycle, tests, and harness proof current |
 | `hooks/research-quality-validator.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 14 | keep maintainer-only or add explicit export path |
 | `hooks/research-to-runtime-firewall.sh` | runtime-safety | lifecycle | high | lifecycle-declared-maintainer | advisory | 16 | keep maintainer-only or add explicit export path |
 | `hooks/resource-check.sh` | observability | lifecycle | high | projected-consumer-surface | advisory | 26 | keep lifecycle, tests, and harness proof current |
@@ -230,10 +232,10 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:22, lifecycle-decl
 | `hooks/session-end-reap.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 24 | keep maintainer-only or add explicit export path |
 | `hooks/session-heartbeat.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 27 | keep maintainer-only or add explicit export path |
 | `hooks/session-hygiene.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 18 | keep maintainer-only or add explicit export path |
-| `hooks/session-init.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 126 | keep maintainer-only or add explicit export path |
+| `hooks/session-init.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 127 | keep maintainer-only or add explicit export path |
 | `hooks/session-knowledge-extractor.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 19 | keep maintainer-only or add explicit export path |
 | `hooks/session-learning.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 60 | keep maintainer-only or add explicit export path |
-| `hooks/session-quality-close-gate.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | blocking | 10 | keep lifecycle, tests, and harness proof current |
+| `hooks/session-quality-close-gate.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | blocking | 11 | keep lifecycle, tests, and harness proof current |
 | `hooks/session-resume.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 52 | keep maintainer-only or add explicit export path |
 | `hooks/session-sanity.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 27 | keep maintainer-only or add explicit export path |
 | `hooks/session-start-stack-recommend.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 15 | keep maintainer-only or add explicit export path |
@@ -242,7 +244,8 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:22, lifecycle-decl
 | `hooks/session-startup-protocol.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 26 | keep maintainer-only or add explicit export path |
 | `hooks/session-state-save.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 16 | keep maintainer-only or add explicit export path |
 | `hooks/session-summary-reminder.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 20 | keep maintainer-only or add explicit export path |
-| `hooks/session-watchdog-launcher.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 23 | keep maintainer-only or add explicit export path |
+| `hooks/session-token-aggregator.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 4 | add lifecycle/package/projection metadata or keep SO-local |
+| `hooks/session-watchdog-launcher.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 24 | keep maintainer-only or add explicit export path |
 | `hooks/session-wrapup-trigger.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 27 | keep maintainer-only or add explicit export path |
 | `hooks/singularity-check.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 14 | keep maintainer-only or add explicit export path |
 | `hooks/skill-drift-detector.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 14 | keep maintainer-only or add explicit export path |
@@ -269,7 +272,7 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:22, lifecycle-decl
 | `hooks/symlink-mutation-guard.sh` | driver-specific | lifecycle | high | projected-consumer-surface | blocking | 21 | keep lifecycle, tests, and harness proof current |
 | `hooks/sync-to-repo.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 14 | keep maintainer-only or add explicit export path |
 | `hooks/task-bridge-notify.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 16 | keep maintainer-only or add explicit export path |
-| `hooks/task-completed.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 35 | add lifecycle/package/projection metadata or keep SO-local |
+| `hooks/task-completed.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 34 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/task-created.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | blocking | 30 | keep maintainer-only or add explicit export path |
 | `hooks/task-panel-sync.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 12 | keep maintainer-only or add explicit export path |
 | `hooks/task-recorder.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 17 | add lifecycle/package/projection metadata or keep SO-local |
@@ -285,6 +288,6 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:22, lifecycle-decl
 | `hooks/user-prompt-capture.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 54 | keep maintainer-only or add explicit export path |
 | `hooks/validation-lock-cleanup.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 21 | keep maintainer-only or add explicit export path |
 | `hooks/validator-soak-weekly.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 16 | keep maintainer-only or add explicit export path |
-| `hooks/valkey-ensure.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 18 | keep lifecycle, tests, and harness proof current |
+| `hooks/valkey-ensure.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 19 | keep lifecycle, tests, and harness proof current |
 | `hooks/work-queue-sync.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 16 | keep maintainer-only or add explicit export path |
-| `hooks/worktree-submodule-fix.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 12 | keep lifecycle, tests, and harness proof current |
+| `hooks/worktree-submodule-fix.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 13 | keep lifecycle, tests, and harness proof current |

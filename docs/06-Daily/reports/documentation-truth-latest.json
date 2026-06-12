@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-18T21:33:30+00:00",
+  "generated_at": "2026-06-12T15:45:06+00:00",
   "manifest": "manifests/documentation-truth-claims.yaml",
   "rows": [
     {
@@ -303,16 +303,16 @@
       "status": "pass"
     },
     {
-      "check": "source_report_exists",
+      "check": "source_report_status",
       "claim_id": "primitive_authority_write_effects",
       "doc": "docs/06-Daily/reports/primitive-authority-latest.json",
       "evidence": [
-        "docs/06-Daily/reports/primitive-authority-latest.json"
+        "status:block"
       ],
-      "message": "Required source report exists",
-      "next_action": "keep report generated",
+      "message": "Source report is currently blocking",
+      "next_action": "fix source report blockers before claiming docs are current",
       "severity": "high",
-      "status": "pass"
+      "status": "block"
     },
     {
       "check": "required_doc_exists",
@@ -1516,9 +1516,9 @@
     }
   ],
   "schema_version": "documentation-truth-audit.v1",
-  "status": "pass",
+  "status": "block",
   "summary": {
-    "block_count": 0,
+    "block_count": 1,
     "by_claim": {
       "consumer_projection_harnesses": {
         "pass": 17
@@ -1527,7 +1527,8 @@
         "pass": 8
       },
       "primitive_authority_write_effects": {
-        "pass": 16
+        "block": 1,
+        "pass": 15
       },
       "session_pending_protocol": {
         "pass": 75
@@ -1537,7 +1538,8 @@
       }
     },
     "by_status": {
-      "pass": 126
+      "block": 1,
+      "pass": 125
     },
     "rows": 126
   }

@@ -3,8 +3,7 @@
 """Audit the ADR-251 agent orchestration adapter boundary.
 
 Read-only: verifies that multi-agent orchestration stays declared, adapterized,
-and does not silently import sys
-import optional orchestration frameworks into COS core
+and does not silently import optional orchestration frameworks into COS core
 hot-path files.
 """
 from __future__ import annotations
@@ -24,8 +23,8 @@ from dataclasses import dataclass
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-if str(ROOT) not in sys.path:
-    sys.path.insert(0, str(ROOT))
+if str(ROOT) not in _cos_sys.path:
+    _cos_sys.path.insert(0, str(ROOT))
 from typing import Any
 
 import yaml

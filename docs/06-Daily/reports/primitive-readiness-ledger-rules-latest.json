@@ -169,7 +169,7 @@
         "doc": 102,
         "hook": 5,
         "rule": 7,
-        "script": 16,
+        "script": 17,
         "skill": 5,
         "test": 34
       },
@@ -672,6 +672,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/_lib/settings-driver-opencode.sh"
+        },
+        {
+          "family": "script",
           "path": "scripts/aspirational_audit.py"
         },
         {
@@ -897,7 +901,7 @@
         "skill_consumers:5",
         "hook_consumers:5",
         "rule_consumers:7",
-        "script_consumers:16",
+        "script_consumers:17",
         "test_consumers:34",
         "doc_consumers:102",
         "config_consumers:10"
@@ -914,7 +918,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 179
+      "total_consumers": 180
     },
     {
       "confidence": "high",
@@ -9430,7 +9434,7 @@
         "hook": 1,
         "rule": 5,
         "script": 4,
-        "skill": 1,
+        "skill": 2,
         "test": 11
       },
       "consumers": [
@@ -9596,6 +9600,10 @@
         },
         {
           "family": "skill",
+          "path": ".codex/skills/dod-check/SKILL.md"
+        },
+        {
+          "family": "skill",
           "path": "skills/rules-export/SKILL.md"
         },
         {
@@ -9646,7 +9654,7 @@
       "distribution": "lab",
       "evidence": [
         "lifecycle",
-        "skill_consumers:1",
+        "skill_consumers:2",
         "hook_consumers:1",
         "rule_consumers:5",
         "script_consumers:4",
@@ -9666,7 +9674,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 52
+      "total_consumers": 53
     },
     {
       "confidence": "high",
@@ -9975,7 +9983,7 @@
         "doc": 101,
         "hook": 8,
         "rule": 3,
-        "script": 76,
+        "script": 78,
         "skill": 17,
         "test": 68
       },
@@ -10494,6 +10502,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/aggregate_session_tokens.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/aspirational_audit.py"
         },
         {
@@ -10703,6 +10715,10 @@
         {
           "family": "script",
           "path": "scripts/cos_promotion_proposer.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_quality_duplicates.py"
         },
         {
           "family": "script",
@@ -11139,7 +11155,7 @@
         "skill_consumers:17",
         "hook_consumers:8",
         "rule_consumers:3",
-        "script_consumers:76",
+        "script_consumers:78",
         "test_consumers:68",
         "doc_consumers:101",
         "config_consumers:15"
@@ -11156,7 +11172,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 288
+      "total_consumers": 290
     },
     {
       "confidence": "high",

@@ -498,6 +498,14 @@
         "matcher": "",
         "async": true,
         "scope": "os-only"
+      },
+      {
+        "id": "session-token-aggregator",
+        "script": "hooks/session-token-aggregator.sh",
+        "event": "Stop",
+        "matcher": "",
+        "async": true,
+        "scope": "os-only"
       }
     ],
     "experimental.session.compacting": [
