@@ -9,15 +9,21 @@ service: skill-routing
 audience: both
 ---
 
-# Feature: Skill Routing Evals for Plan Feature Boundaries
+# Feature: Portable Plan Feature Skill and Routing Evals
 
 ## Context
 
-the provided `evals.md` download defines six routing evals for
-`plan-feature`: two positive, two negative, and two adjacent/boundary cases. The
-source file is useful, but it assumes a Claude-only location/schema
-(`.claude/skills/benchmarks/evals-schema.md`) and mentions project-specific skill
-names that do not map exactly to this repository (`plan-bug-resolution`,
+The provided source should be treated as a `skills/plan-feature/` folder with
+both `SKILL.md` and `evals.md`. `SKILL.md` contains the intended feature-planning
+workflow, while `evals.md` defines six routing evals for `plan-feature`: two
+positive, two negative, and two adjacent/boundary cases.
+
+The source package is useful, but it assumes a Claude-specific skill surface,
+project-local paths, and a specific Next/Firebase/design-system application:
+`.claude/rules/**`, `.claude/sub-rules/**`, `src/app`, `src/features`,
+`src/ui`, `@/ui`, Storybook, and `ai/plans/features/`. The eval file also assumes
+`.claude/skills/benchmarks/evals-schema.md` and mentions skill names that do not
+map exactly to this repository (`plan-bug-resolution`,
 `plan-design-system-component`, `implement-approved-plan`).
 
 Cognitive OS already has `lib/skill_router.py` and unit tests in
@@ -36,16 +42,19 @@ can own deterministic routing behavior.
 
 ## Approach
 
-Build a portable skill-routing eval feature with a deterministic first slice:
+Build this in two portable slices:
 
-1. Define a repo-native eval case schema that can represent positive, negative,
-   and adjacent routing cases without depending on Claude-specific directories.
-2. Add a parser/importer for markdown eval cases like the provided `evals.md`.
-3. Normalize legacy/source skill aliases to current COS skills.
-4. Run cases against `lib.skill_router.SkillRouter` as a code-based grader.
-5. Store the adapted eval dataset under a repo-owned path, not under `.claude/`.
-6. Add focused regression tests for the `plan-feature` boundaries in the source
-   evals.
+1. **Skill adaptation slice:** update `packages/sdd-compound/skills/plan-feature/SKILL.md`
+   using the useful source workflow ideas while removing stack/harness coupling.
+   Preserve the source intent: plan before implementation, distinguish new
+   feature vs feature update, detect backend/frontend/design surfaces, write a
+   durable plan, include assumptions/out-of-scope/documentation scope, and keep
+   evaluation as a separate `/evaluate-plan` step. Replace project-specific
+   paths/rules with automatic stack and surface detection, plus configurable
+   output-root selection like `plan-chore`.
+2. **Eval harness slice:** define a repo-native eval case schema, adapt the six
+   source evals, normalize aliases, and run them against `lib.skill_router.SkillRouter`
+   as deterministic code-based routing checks.
 
 This is not a replacement for model-based trajectory evals, Promptfoo, DeepEval,
 or Strands Evals. It is the cheap deterministic layer that should run before
@@ -57,19 +66,47 @@ heavier eval systems.
 
 - `lib/skill_router.py` — target routing implementation under evaluation.
 - `tests/unit/test_skill_router.py` — existing router regression suite.
-- `skills/plan-feature/SKILL.md` and `packages/sdd-compound/skills/plan-feature/SKILL.md` — target skill metadata and behavior.
+- `skills/plan-feature/SKILL.md` and `packages/sdd-compound/skills/plan-feature/SKILL.md` — target skill metadata and behavior; primary adaptation target for source `SKILL.md`.
 - `packages/sdd-compound/skills/plan-chore/SKILL.md` — expected boundary skill for dependency/maintenance requests.
 - `skills/skill-creator/SKILL.md` — precedent for strict portable frontmatter + metadata.
 - `scripts/generate_compact_catalog.py` and `skills/CATALOG*.md` — only if routing metadata changes require catalog regeneration.
 
 ### New files
 
-- `tests/fixtures/skill-routing-evals/plan-feature-boundaries.md` — adapted source cases in repo-native, portable markdown.
+- `tests/fixtures/skill-routing-evals/plan-feature-boundaries.md` — adapted source eval cases in repo-native, portable markdown.
+- `tests/unit/test_plan_feature_skill.py` — portability regression tests for adapted `plan-feature` behavior and absence of source stack coupling.
 - `lib/skill_routing_evals.py` or `scripts/skill-routing-evals` — parser/runner for eval cases.
 - `tests/unit/test_skill_routing_evals.py` — parser/runner tests and the six adapted cases.
 - Optional later: `docs/09-Quality/testing/skill-routing-evals.md` if the feature graduates beyond test-only usage.
 
 ## Tasks
+
+
+### Task 0: Modernize `plan-feature` from source `SKILL.md`
+
+- Convert `plan-feature` frontmatter to the strict portable shape used by newer
+  adopted skills: top-level `name`, `description`, and `metadata`.
+- Keep source capabilities that are broadly useful:
+  - new feature vs feature update classification;
+  - ticket-ID awareness for deterministic IDs like `MVP-123` and `SAZ-123`;
+  - domain/surface detection;
+  - plan output with assumptions, out-of-scope, relevant files, documentation
+    scope, tasks, validation, risks, and rollback;
+  - explicit anti-boundaries for bug fixes and chores;
+  - no implementation before plan approval.
+- Replace source-specific assumptions:
+  - `.claude/rules/**` / `.claude/sub-rules/**` -> discover local instructions
+    from `AGENTS.md`, `.cognitive-os/`, `.claude/`, `.codex/`, docs, and project
+    manifests when present;
+  - Firebase/Next/React/Storybook/Tailwind -> stack signals discovered from repo
+    manifests/config, similar to `dod-check`;
+  - `ai/plans/features/` only -> first existing planning root, defaulting to
+    `.cognitive-os/plans/features/` when none exists;
+  - `@/ui` inventory -> generic design-system/shared-UI discovery.
+
+**Done when:** adapted `plan-feature` validates with `quick_validate`, package
+skill portability tests, scope classifier, and a dedicated regression test that
+fails on source stack coupling.
 
 ### Task 1: Define portable routing eval schema
 
@@ -175,6 +212,7 @@ needed.
 
 ### Regression gates
 
+- `.venv/bin/python -m pytest tests/unit/test_plan_feature_skill.py -q`
 - `.venv/bin/python -m pytest tests/unit/test_skill_routing_evals.py -q`
 - `.venv/bin/python -m pytest tests/unit/test_skill_router.py -q`
 - `python3 scripts/primitive_scope_classifier.py --project-dir . --paths <new primitive path> --fail-contradictions` only if a new primitive path is created.
@@ -195,6 +233,9 @@ needed.
 - **Harness coupling.**
   - Mitigation: keep dataset under repo/test fixtures, not `.claude/`, and avoid
     assuming Claude command semantics.
+- **Stack coupling from source `SKILL.md`.**
+  - Mitigation: preserve the workflow shape but bind stack-specific guidance to
+    detected stack signals and project-local instructions.
 
 ## Rollback Plan
 
@@ -217,6 +258,7 @@ needed.
 
 ## Recommendation
 
-Approve as a diagnostic-first feature slice. The first implementation should land
-the portable eval harness and adapted fixture, then report whether current router
-behavior matches the desired `plan-feature` contract before changing routing.
+Approve as a two-step feature slice. First adapt `plan-feature` itself into a
+portable, stack-aware feature-planning skill. Then land the eval harness and
+adapted fixture to report whether current router behavior matches the desired
+`plan-feature` contract before changing routing.
