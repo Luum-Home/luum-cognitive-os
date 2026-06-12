@@ -15,7 +15,7 @@ Total open partial/deferred/blocked ADRs: 122
 | [021](../../02-Decisions/adrs/ADR-021-vendor-agnostic-with-adapters.md) | partial | `.cognitive-os/` directory remains the canonical state (works in any tool) 2. | true |  |  |
 | [022](../../02-Decisions/adrs/ADR-022-prompt-type-hooks-adoption.md) | partial | The legacy Bash hook still runs in parallel as the 4. | true |  |  |
 | [023](../../02-Decisions/adrs/ADR-023-updated-input-pattern.md) | partial | updatedInput behavior exists in secret-detector, but related advisory/profile surfaces named by the ADR are not fully present | unknown |  |  |
-| [024](../../02-Decisions/adrs/ADR-024-task-panel-bridge.md) | partial | Deferred**: valuable but orthogonal; doesn''t solve in-session visibility | true |  |  |
+| [024](../../02-Decisions/adrs/ADR-024-task-panel-bridge.md) | partial | Deferred**: valuable but orthogonal; doesn't solve in-session visibility | true |  |  |
 | [025](../../02-Decisions/adrs/ADR-025-install-update-loop.md) | partial | Three coordinated decisions made on 2026-04-17 across v0.10.0 and follow-up | true |  |  |
 | [026](../../02-Decisions/adrs/ADR-026-r2-r3-design-review.md) | partial | Each refactor was **deliberately deferred**: the PR author added characterization tests that lock in current behavior (including the divergences) and explicitly left reconciliation to a human decision. | true |  |  |
 | [026a](../../02-Decisions/adrs/ADR-026a-decisions.md) | partial | Follow-up R2b (scope-limited deferred from D2.3): absorb 6+ adjacent parsers once characterization tests exist. | true |  |  |

@@ -10,7 +10,7 @@ It is declarative: native IDE file emission is delegated to governed harness pro
 
 - harness id: `minimax-maxclaw`
 - status: `planned`
-- proof level: `None`
+- proof level: `none`
 - projection mode: `hosted-agent-or-openclaw-compatible`
 
 ## Settings paths

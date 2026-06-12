@@ -11,7 +11,7 @@
     },
     "contract_id": "script-cos-doctrine-proposer",
     "impact": {
-      "consumer_fleet": null,
+      "consumer_fleet": "none",
       "service_mode": "unsupported"
     },
     "intent": "self-evolving doctrine proposal generator with unit tests",
@@ -110,7 +110,7 @@
       ]
     },
     "impact": {
-      "consumer_fleet": null,
+      "consumer_fleet": "none",
       "service_mode": "unsupported"
     },
     "intent": "self-evolving doctrine proposal generator with unit tests",

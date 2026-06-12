@@ -5740,7 +5740,7 @@
         "doc": 764,
         "hook": 123,
         "rule": 51,
-        "script": 398,
+        "script": 397,
         "skill": 86,
         "test": 725,
         "workflow": 2
@@ -11431,10 +11431,6 @@
           "path": "scripts/write_context_marker.py"
         },
         {
-          "family": "script",
-          "path": "scripts/yaml.py"
-        },
-        {
           "family": "skill",
           "path": ".codex/skills/portability-work/SKILL.md"
         },
@@ -14698,7 +14694,7 @@
         "doc_consumers:764",
         "rule_consumers:51",
         "config_consumers:86",
-        "script_consumers:398"
+        "script_consumers:397"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -14714,7 +14710,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 2235,
+      "total_consumers": 2234,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
