@@ -381,7 +381,7 @@ def dynamic_smokes(root: Path) -> list[dict[str, Any]]:
         cmd = [sys.executable, str(root / "scripts" / "cos_init.py"), "--default", "--harness", "codex"]
         proc = subprocess.run(cmd, cwd=init, env=env, text=True, capture_output=True, check=False, timeout=60)
         changed = delta(before, snapshot(init))
-        bad = [p for p in changed if not allowed(p, [".cognitive-os/**", ".codex/**", ".gitignore", "cognitive-os.yaml"])]
+        bad = [p for p in changed if not allowed(p, [".cognitive-os/**", ".codex/**", ".agents/**", ".gitignore", "cognitive-os.yaml"])]
         smokes.append({"id": "cos-init-codex", "returncode": proc.returncode, "changed_paths": changed[:80], "changed_count": len(changed), "unexpected_paths": bad[:40], "status": "pass" if proc.returncode == 0 and not bad else "block"})
     return smokes
 

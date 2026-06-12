@@ -2707,6 +2707,14 @@ primitives:
   evidence_commands:
   - bash -n hooks/session-token-aggregator.sh
   - python3 -m pytest tests/behavior/test_aggregate_session_tokens.py -q
+  promotion_evidence:
+    primary_signal: transcript-cost-telemetry
+    from_state: untracked-runtime-hook
+    to_state: active
+    approved_by: operator
+    promoted_on: '2026-06-12'
+    boring_reliability_command: scripts/cos-boring-reliability --profile core
+    rationale: The hook is already wired as an async Stop hook; lifecycle metadata now records existing cost telemetry behavior and synthetic transcript tests without changing runtime enforcement.
   rollback_or_repair_command: Disable session-token-aggregator in cognitive-os.yaml or set DISABLE_HOOK_SESSION_TOKEN_AGGREGATOR=1 while preserving manual scripts/aggregate_session_tokens.py runs.
   sunset_criteria: Remove when all supported harnesses expose native real-token usage events with equivalent deduped cost-events.jsonl writes.
   docs_claim_level: advisory

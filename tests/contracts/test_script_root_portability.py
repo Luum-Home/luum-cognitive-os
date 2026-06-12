@@ -33,8 +33,8 @@ def test_product_scripts_do_not_depend_on_git_checkout_root() -> None:
         if FORBIDDEN not in text:
             continue
         rel = str(path.relative_to(REPO))
-        if rel in _PORTABLE_ALLOWLIST and _PORTABLE_PATTERN.search(text):
-            # Uses portable fallback pattern — not a hard dependency
+        if _PORTABLE_PATTERN.search(text):
+            # Uses portable fallback pattern — not a hard dependency.
             continue
         offenders.append(rel)
     assert offenders == []

@@ -1,0 +1,98 @@
+{
+  "canonical_source": "hooks/session-token-aggregator.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Stop-hook wrapper invokes scripts/aggregate_session_tokens.py asynchronously and degrades to exit 0 when transcripts or Python are unavailable; behavior tests use synthetic transcripts only.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Stop-hook wrapper invokes scripts/aggregate_session_tokens.py asynchronously and degrades to exit 0 when transcripts or Python are unavailable; behavior tests use synthetic transcripts only.",
+    "evidence_commands": [
+      "bash -n hooks/session-token-aggregator.sh",
+      "python3 -m pytest tests/behavior/test_aggregate_session_tokens.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/cost-events.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "core",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "zero-nonzero-hook",
+    "governance_class": "cost-telemetry",
+    "lifecycle_state": "active",
+    "maturity": "advisory",
+    "owner_adr": "ADR-287",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "observe",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "Stop-hook wrapper invokes scripts/aggregate_session_tokens.py asynchronously and degrades to exit 0 when transcripts or Python are unavailable; behavior tests use synthetic transcripts only.",
+      "evidence_commands": [
+        "bash -n hooks/session-token-aggregator.sh",
+        "python3 -m pytest tests/behavior/test_aggregate_session_tokens.py -q"
+      ],
+      "metrics": [
+        ".cognitive-os/metrics/cost-events.jsonl"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "Stop-hook wrapper invokes scripts/aggregate_session_tokens.py asynchronously and degrades to exit 0 when transcripts or Python are unavailable; behavior tests use synthetic transcripts only.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "lifecycle_declared",
+      "projection_targets": [
+        "cognitive-os.yaml",
+        "hooks/session-token-aggregator.sh"
+      ],
+      "runtime_projection": true
+    }
+  },
+  "portable_id": "hooks/session-token-aggregator.sh",
+  "projection_targets": [
+    "cognitive-os.yaml",
+    "hooks/session-token-aggregator.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/session-token-aggregator.sh",
+  "supported_harnesses": [
+    "claude",
+    "codex"
+  ]
+}

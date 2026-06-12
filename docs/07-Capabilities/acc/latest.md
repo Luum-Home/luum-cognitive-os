@@ -1,6 +1,6 @@
 # Agent Capability Coverage — Latest
 
-Generated: 2026-06-12T17:35:39Z
+Generated: 2026-06-12T18:01:04Z
 Phase: reconstruction
 Gate: pass
 
@@ -28,11 +28,11 @@ Gate: pass
 | harness_coverage | ok | `docs/06-Daily/reports/primitive-harness-coverage-latest.json` | `{"by_family": {"hooks": 286, "rules": 129, "scripts": 667, "skills": 119, "templates": 24}, "by_scope": {"both": 497, "os-only": 700, "project": 28}, "gap_policies": {"acceptable-claude-only": 4, "acceptable-codex-limited-tool-events": 6, "` |
 | harness_projection | ok | `manifests/harness-projection.yaml` | `{"implemented": 22, "planned": 5, "total": 27, "unsupported": 0}` |
 | primitive_fitness_ledger | ok | `docs/06-Daily/reports/primitive-fitness-ledger-latest.json` | `{"families": {}, "mapping_statuses": {}, "reports": 0, "verdicts": {}}` |
-| primitive_interventions | ok | `.cognitive-os/metrics/primitive-interventions.jsonl` | `{"actions": {"advise": 3, "allow": 19, "block": 121, "warn": 198}, "primitive_count": 9}` |
+| primitive_interventions | ok | `.cognitive-os/metrics/primitive-interventions.jsonl` | `{"actions": {"advise": 3, "allow": 19, "block": 123, "warn": 202}, "primitive_count": 9}` |
 | projection_fidelity | ok | `docs/06-Daily/reports/primitive-projection-fidelity-latest.json` | `{"contracts": 340, "statuses": {"aligned": 340}}` |
 | projection_profiles | ok | `manifests/primitive-projection-profiles.yaml` | `{"profile_driver_scripts": 19, "profiles": ["default", "full"], "projection_classes": ["default", "full", "maintainer-only", "profile-driver", "shared"]}` |
 | proof_drill_evidence | ok | `docs/06-Daily/reports/proof-drill-evidence-latest.json` | `{"claim_map": {"claims": 4, "proof_status_counts": {"passed": 4}}, "rows": 5, "status_counts": {"passed": 5}}` |
-| readiness:hooks | ok | `docs/06-Daily/reports/primitive-readiness-ledger-hooks-latest.json` | `{"confidence": {"high": 271, "medium": 15}, "consumer_accessibility": {"lifecycle-declared-consumer-candidate": 22, "lifecycle-declared-maintainer": 174, "projected-consumer-surface": 75, "so-local-only": 15}, "roles": {"driver-specific": 3` |
+| readiness:hooks | ok | `docs/06-Daily/reports/primitive-readiness-ledger-hooks-latest.json` | `{"confidence": {"high": 272, "medium": 14}, "consumer_accessibility": {"lifecycle-declared-consumer-candidate": 22, "lifecycle-declared-maintainer": 174, "projected-consumer-surface": 76, "so-local-only": 14}, "roles": {"driver-specific": 3` |
 | readiness:rules | ok | `docs/06-Daily/reports/primitive-readiness-ledger-rules-latest.json` | `{"confidence": {"high": 104, "medium": 25}, "consumer_accessibility": {"lifecycle-declared-maintainer": 117, "projected-consumer-surface": 5, "so-local-only": 7}, "roles": {"context-only": 2, "driver-specific": 16, "hook-enforced": 7, "lab"` |
 | readiness:scripts | ok | `docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json` | `{"agentic_primitives_without_lifecycle": 0, "confidence": {"high": 354, "low": 1, "medium": 312}, "consumer_accessibility": {"install-profile-managed": 19, "lifecycle-declared-consumer-candidate": 166, "lifecycle-declared-maintainer": 143, ` |
 | readiness:skills | ok | `docs/06-Daily/reports/primitive-readiness-ledger-skills-latest.json` | `{"confidence": {"high": 107, "medium": 12}, "consumer_accessibility": {"lifecycle-declared-maintainer": 99, "projected-consumer-surface": 7, "repo-skill-not-projectable": 7, "so-local-only": 6}, "roles": {"compatibility-wrapper": 53, "lab":` |

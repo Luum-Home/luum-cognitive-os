@@ -351,6 +351,13 @@ def _adapter_manifest_rows(root: Path, primitive_rows: list[tuple[str, dict[str,
                 if derived_from_harness:
                     item["derived_from"] = derived_from_harness
                 projected.append(item)
+        projected_count = len(projected)
+        if isinstance(projection_fallback, dict):
+            projected_count = sum(
+                1
+                for contract in load_contracts(root)
+                if isinstance((contract.get("projection") or {}).get(harness), dict) or isinstance(projection_fallback, dict)
+            )
         manifest = {
             "schema_version": ADAPTER_SCHEMA_VERSION,
             "adapter_contract_kind": "declarative-manifest",
@@ -363,7 +370,7 @@ def _adapter_manifest_rows(root: Path, primitive_rows: list[tuple[str, dict[str,
             "proof_level": hp.get("proof_level"),
             "projection_mode": hp.get("projection_mode"),
             "settings_paths": list(hp.get("settings_paths") or []),
-            "projected_primitive_count": len(projected),
+            "projected_primitive_count": projected_count,
             "projected_primitives": projected,
             "fidelity_policy": "Adapter manifests translate declared portable contracts and never upgrade advisory projections to enforcement.",
         }

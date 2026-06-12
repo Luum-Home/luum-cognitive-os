@@ -27,7 +27,7 @@ Agentic primitives without lifecycle metadata: 0
 | `scripts/agentic-tool-license-matrix.sh` | maintainer-tool | override | high | so-local-only |  |  | 9 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/agentic_mastery_summary.py` | maintainer-tool | override | high | so-local-only |  |  | 5 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/agentic_tool_license_matrix.py` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 9 | keep out of default user surface unless promoted through lifecycle metadata |
-| `scripts/aggregate_session_tokens.py` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 2 | keep out of default user surface unless promoted through lifecycle metadata |
+| `scripts/aggregate_session_tokens.py` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 3 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/ai-budget-preflight` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 7 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/ai-provider-identity-guard` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 18 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/ai-resource-economy-audit` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 7 | keep out of default user surface unless promoted through lifecycle metadata |

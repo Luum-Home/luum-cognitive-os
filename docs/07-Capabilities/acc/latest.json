@@ -3704,8 +3704,8 @@
         "actions": {
           "advise": 3,
           "allow": 19,
-          "block": 121,
-          "warn": 198
+          "block": 123,
+          "warn": 202
         },
         "primitive_count": 9
       }
@@ -3767,14 +3767,14 @@
       "status": "ok",
       "summary": {
         "confidence": {
-          "high": 271,
-          "medium": 15
+          "high": 272,
+          "medium": 14
         },
         "consumer_accessibility": {
           "lifecycle-declared-consumer-candidate": 22,
           "lifecycle-declared-maintainer": 174,
-          "projected-consumer-surface": 75,
-          "so-local-only": 15
+          "projected-consumer-surface": 76,
+          "so-local-only": 14
         },
         "roles": {
           "driver-specific": 30,
@@ -3785,7 +3785,7 @@
         },
         "total": 286,
         "without_consumers": 0,
-        "without_lifecycle": 15
+        "without_lifecycle": 14
       }
     },
     "readiness:rules": {
@@ -32014,7 +32014,7 @@
         "rule_consumers:7",
         "script_consumers:35",
         "test_consumers:34",
-        "doc_consumers:85",
+        "doc_consumers:84",
         "config_consumers:8",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -32369,7 +32369,7 @@
         "rule_consumers:3",
         "script_consumers:53",
         "test_consumers:139",
-        "doc_consumers:170",
+        "doc_consumers:171",
         "config_consumers:18",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -35512,7 +35512,7 @@
         "hook_consumers:1",
         "script_consumers:3",
         "test_consumers:4",
-        "config_consumers:3",
+        "config_consumers:5",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
         "consumer_accessibility:projected-consumer-surface",
@@ -42322,10 +42322,12 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
+        "lifecycle",
         "script_consumers:2",
-        "config_consumers:4",
-        "role_source:heuristic:text",
-        "consumer_accessibility:so-local-only",
+        "config_consumers:6",
+        "role_source:lifecycle",
+        "lifecycle_state:active",
+        "consumer_accessibility:projected-consumer-surface",
         "availability_override:so-local-only",
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
@@ -42333,7 +42335,7 @@
       ],
       "id": "hook:hooks/session-token-aggregator.sh",
       "kind": "hook",
-      "lifecycle_status": "aspirational",
+      "lifecycle_status": "dormant",
       "mapping_status": "aligned",
       "represented_by": [
         {
@@ -42346,9 +42348,12 @@
       ],
       "risk": "high",
       "signature": {
-        "distribution": null,
+        "distribution": "core",
         "role": "memory-lifecycle",
-        "supported_harnesses": []
+        "supported_harnesses": [
+          "claude",
+          "codex"
+        ]
       },
       "source": {
         "family": "hooks",
@@ -128183,7 +128188,7 @@
       "confidence": 0.82,
       "consumer_accessibility": "runtime-evidence",
       "evidence": [
-        "intervention_rows:139"
+        "intervention_rows:143"
       ],
       "id": "primitive_intervention:reinvention-check",
       "kind": "primitive_intervention",
@@ -128198,7 +128203,7 @@
       ],
       "risk": "medium",
       "signature": {
-        "rows": 139
+        "rows": 143
       },
       "source": {
         "path": ".cognitive-os/metrics/primitive-interventions.jsonl",
@@ -128210,7 +128215,7 @@
       "confidence": 0.82,
       "consumer_accessibility": "runtime-evidence",
       "evidence": [
-        "intervention_rows:38"
+        "intervention_rows:40"
       ],
       "id": "primitive_intervention:skill-router",
       "kind": "primitive_intervention",
@@ -128225,7 +128230,7 @@
       ],
       "risk": "medium",
       "signature": {
-        "rows": 38
+        "rows": 40
       },
       "source": {
         "path": ".cognitive-os/metrics/primitive-interventions.jsonl",
@@ -144293,7 +144298,7 @@
         "rule_consumers:7",
         "script_consumers:35",
         "test_consumers:34",
-        "doc_consumers:85",
+        "doc_consumers:84",
         "config_consumers:8",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -144412,7 +144417,7 @@
         "rule_consumers:3",
         "script_consumers:53",
         "test_consumers:139",
-        "doc_consumers:170",
+        "doc_consumers:171",
         "config_consumers:18",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -146645,7 +146650,7 @@
       "coverage_debt:181"
     ]
   },
-  "generated_at": "2026-06-12T17:35:39Z",
+  "generated_at": "2026-06-12T18:01:04Z",
   "harness_projection": {
     "agents-md": {
       "display_name": "AGENTS.md",

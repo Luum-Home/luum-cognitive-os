@@ -316,21 +316,27 @@ def _parse_routing_intents_block(skill_md_path: Path) -> Optional[List[RoutingIn
     if "routing_intents" not in text:
         return None
     fm = _parse_frontmatter(text)
-    raw = fm.get("routing_intents")
+    metadata = fm.get("metadata") if isinstance(fm.get("metadata"), dict) else {}
+    raw = fm.get("routing_intents") or metadata.get("routing_intents")
     if not raw or not isinstance(raw, list):
         return None
     result: List[RoutingIntent] = []
     for entry in raw:
-        if not isinstance(entry, dict):
+        if isinstance(entry, str):
+            intent = entry.strip()
+            description = entry.strip()
+            confidence = 0.80
+        elif isinstance(entry, dict):
+            intent = str(entry.get("intent") or entry.get("name") or entry.get("description") or "").strip()
+            description = str(entry.get("description") or entry.get("intent") or "").strip()
+            try:
+                confidence = float(entry.get("confidence", 0.80))
+            except (TypeError, ValueError):
+                confidence = 0.80
+        else:
             continue
-        intent = str(entry.get("intent") or "").strip()
-        description = str(entry.get("description") or "").strip()
         if not intent or not description:
             continue
-        try:
-            confidence = float(entry.get("confidence", 0.80))
-        except (TypeError, ValueError):
-            confidence = 0.80
         result.append(RoutingIntent(intent=intent, description=description, confidence=confidence))
     return result if result else None
 

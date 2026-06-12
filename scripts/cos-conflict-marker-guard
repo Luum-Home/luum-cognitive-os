@@ -63,13 +63,12 @@ self_test() {
     echo "guard self-test FAILED: clean line flagged" >&2; exit 2; fi
 }
 
+ROOT="$(git rev-parse --show-toplevel 2>/dev/null || printf '%s\n' "${COGNITIVE_OS_PROJECT_DIR:-$PWD}")"
+cd "$ROOT" 2>/dev/null || { echo "cos-conflict-marker-guard: cannot enter project root: $ROOT" >&2; exit 2; }
 if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   echo "cos-conflict-marker-guard: not inside a git worktree" >&2
   exit 2
 fi
-
-ROOT="$(git rev-parse --show-toplevel)"
-cd "$ROOT"
 self_test
 
 hits="$(python3 - "$MODE" <<'PY'
