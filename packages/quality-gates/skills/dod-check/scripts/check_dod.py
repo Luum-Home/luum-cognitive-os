@@ -153,7 +153,7 @@ def infer_dod_profiles(files: list[str]) -> list[str]:
             or "/database/" in path
             or "/repositories/" in path
             or name in {"route.ts", "route.js", "server.ts", "server.js"}
-        ) and suffix in {".ts", ".tsx", ".js", ".jsx", ".py", ".go", ".rs", ".java", ".kt", ".rb", ".php", ".cs", ".sql"}:
+        ) and suffix in {".ts", ".tsx", ".js", ".jsx", ".py", ".go", ".rs", ".java", ".kt", ".rb", ".php", ".cs", ".ex", ".exs", ".sql"}:
             profiles.add("backend-api")
 
     return sorted(profiles)

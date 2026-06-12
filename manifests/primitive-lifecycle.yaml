@@ -7822,10 +7822,11 @@ primitives:
   projection_targets:
   - packages/quality-gates/skills/dod-check/SKILL.md
   runtime_projection: false
-  behavior_evidence: Manual scope calibration iteration 020; package-backed skill `quality-gates/dod-check` remains shared between COS and adopter projects, now with portable backend/frontend/ui-component/storybook DoD profile inference and stack-agnostic profile guidance.
+  behavior_evidence: Manual scope calibration iteration 021; package-backed skill `quality-gates/dod-check` remains shared between COS and adopter projects, with portable DoD profile inference, automatic stack-signal detection, and hermetic smoke coverage across simulated consumer project stacks.
   evidence_commands:
   - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/quality-gates/skills/dod-check/SKILL.md
+  - python3 -m pytest tests/behavior/test_dod_stack_detection_smoke.py -q
   docs_claim_level: advisory
   exit_behavior: manual
   metrics_file: "none"
