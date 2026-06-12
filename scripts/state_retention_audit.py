@@ -4,10 +4,21 @@
 from __future__ import annotations
 import os as _cos_os
 import sys as _cos_sys
+import json as _cos_json
 _cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
 import sys
-from lib.script_helpers import read_json_or as read_json
-from lib.script_helpers import read_yaml_required as load_manifest
+try:
+    from lib.script_helpers import read_json_or as read_json
+    from lib.script_helpers import read_yaml_required as load_manifest
+except Exception:
+    def read_json(path, default):
+        try:
+            return _cos_json.loads(Path(path).read_text(encoding="utf-8"))
+        except Exception:
+            return default
+
+    def load_manifest(path):
+        return yaml.safe_load(Path(path).read_text(encoding="utf-8")) or {}
 
 import argparse, fcntl, fnmatch, json, os, shutil, subprocess
 from datetime import datetime, timezone
@@ -212,8 +223,11 @@ def archive_stash(project: Path, entry: dict[str, Any], archive: Path, index: in
     return {"sha":entry["sha"],"subject":entry["subject"],"preserved_ref":ref_name,"patch":str(patch.relative_to(project)),"name_status":str(ns.relative_to(project))}
 
 def ref_by_sha(project: Path, sha: str) -> str | None:
-    for e in stash_entries(project):
-        if e["sha"]==sha: return e["ref"]
+    r = git(project, ["stash", "list", "--format=%H"])
+    if r.returncode == 0:
+        for index, row in enumerate(r.stdout.splitlines()):
+            if row.strip() == sha:
+                return f"stash@{{{index}}}"
     return None
 
 def reap_stashes(project: Path, surface: dict[str, Any], execute: bool) -> dict[str, Any]:

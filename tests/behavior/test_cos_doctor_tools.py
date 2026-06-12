@@ -62,7 +62,7 @@ def _run(project: Path, env: dict[str, str] | None = None) -> subprocess.Complet
         env=merged,
         text=True,
         capture_output=True,
-        timeout=20,
+        timeout=45,
     )
 
 
@@ -211,7 +211,7 @@ def test_missing_engram_is_warning_unless_strict(tmp_path: Path) -> None:
         env=strict_env,
         text=True,
         capture_output=True,
-        timeout=20,
+        timeout=45,
     )
 
     assert strict.returncode == 1

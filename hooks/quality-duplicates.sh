@@ -33,6 +33,13 @@ if "$SCANNER" "${MODE_ARGS[@]}" >/dev/null 2>&1; then
   exit 0
 fi
 
+# Consumer projections may carry the scanner without the full COS Python lib.
+# Preserve the hook contract by materializing an advisory report instead of
+# silently exiting without the promised artifact.
+mkdir -p .cognitive-os/reports/quality-duplicates
+printf '{"schema_version":"cos-quality-duplicates.v1","status":"warn","findings":[],"summary":{"scanner":"unavailable"}}\n' > .cognitive-os/reports/quality-duplicates/latest.json
+printf '# Quality duplicates\n\nStatus: warn — scanner unavailable in this projection.\n' > .cognitive-os/reports/quality-duplicates/latest.md
+
 if [ "${COS_QUALITY_DUPLICATES_ENFORCE:-0}" = "1" ]; then
   echo "quality-duplicates: new duplicate findings detected; see .cognitive-os/reports/quality-duplicates/latest.md" >&2
   exit 2

@@ -1,6 +1,35 @@
 schema_version: primitive-behavior-evidence.v1
 purpose: Explicit behavior evidence mapping for primitives whose proof should not rely only on text-reference heuristics.
 evidence:
+- primitive: hooks/session-token-aggregator.sh
+  harnesses:
+  - claude
+  - codex
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  - tests/behavior/test_aggregate_session_tokens.py
+  rationale: Stop-hook wrapper delegates to aggregate_session_tokens and is covered by synthetic transcript behavior tests.
+- primitive: scripts/aggregate_session_tokens.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  - tests/behavior/test_aggregate_session_tokens.py
+  rationale: Transcript parsing, deduplication, and real cost event writing are covered by behavior tests.
+- primitive: scripts/token_report.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  - tests/behavior/test_aggregate_session_tokens.py
+  rationale: Token report aggregation helpers are exercised by the aggregate session token behavior lane.
+- primitive: templates/task-closure-ledger.example.json
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  - tests/unit/test_cos_task_closure_gate.py
+  rationale: Example ledger template is validated through the task closure gate unit contract.
 - primitive: scripts/check-bun-install-policy
   harnesses:
   - shell-ci

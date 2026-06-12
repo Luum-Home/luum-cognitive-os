@@ -75,6 +75,7 @@ def cognitive_os_env(tmp_path: Path):
     # Create standard directory structure
     for subdir in [
         "metrics",
+        "runtime",
         "tasks",
         "sessions",
         "checkpoints",
@@ -101,6 +102,7 @@ def cognitive_os_env(tmp_path: Path):
         "COGNITIVE_OS_PROJECT_DIR": str(project_dir),
         "COGNITIVE_OS_SESSION_ID": session_id,
         "COGNITIVE_OS_HOOK_HEARTBEAT": "false",
+        "CLAUDE_PRIVATE_MODE_FLAG": str(cos_dir / "runtime" / "claude-private-mode-active"),
     }
 
     return {
