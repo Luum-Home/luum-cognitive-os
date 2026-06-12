@@ -15,15 +15,16 @@ spec.loader.exec_module(project_shell_ci)
 
 
 def test_project_shell_ci_creates_canonical_drivers_and_workflow(tmp_path: Path) -> None:
+    expected_commands = len(project_shell_ci.load_manifest(project_shell_ci.DEFAULT_MANIFEST).get("commands", []))
     meta = project_shell_ci.project_shell_ci(tmp_path, "default")
 
-    assert meta["commands_projected"] == 15
+    assert meta["commands_projected"] == expected_commands
     assert (tmp_path / ".cognitive-os/scripts/cos/cos-status.sh").is_file()
     assert (tmp_path / "scripts/cos-status.sh").is_symlink()
     assert (tmp_path / ".github/workflows/cognitive-os-shell-ci.yml").is_file()
     assert str(Path(__file__).resolve().parents[2]) not in (tmp_path / ".github/workflows/cognitive-os-shell-ci.yml").read_text()
     saved = json.loads((tmp_path / ".cognitive-os/shell-ci-projection.json").read_text())
-    assert saved["commands_projected"] == 15
+    assert saved["commands_projected"] == expected_commands
     workflow = (tmp_path / ".github/workflows/cognitive-os-shell-ci.yml").read_text()
     assert "bash -n scripts/cos-status.sh" in workflow
     assert "python3 -m py_compile scripts/check_mcp_servers.py" in workflow

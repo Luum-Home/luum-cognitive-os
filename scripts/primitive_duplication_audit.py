@@ -157,9 +157,9 @@ def python_function_fingerprints(root: Path, files: list[Path]) -> list[Finding]
     return findings
 
 
-def shell_function_findings(root: Path, files: list[Path]) -> list[Finding]:
+def shell_function_findings(root: Path, files: list[Path], min_tokens: int = 20) -> list[Finding]:
     findings: list[Finding] = []
-    for repeat in shell_function_repeats(root, files, min_tokens=20):
+    for repeat in shell_function_repeats(root, files, min_tokens=min_tokens):
         left_path = repeat.left.split("::", 1)[0]
         right_path = repeat.right.split("::", 1)[0]
         home = common_home_for_path(right_path, "bash-function-repeat")
@@ -360,7 +360,7 @@ def audit(
         [
             *exact_and_near_findings(root, files, min_tokens, shingle_size, threshold),
             *python_function_fingerprints(root, files),
-            *shell_function_findings(root, files),
+            *shell_function_findings(root, files, min_tokens=min_tokens),
             *yaml_structural_findings(root, files),
             *primitive_overlap_findings(root, files, primitive_threshold),
         ]

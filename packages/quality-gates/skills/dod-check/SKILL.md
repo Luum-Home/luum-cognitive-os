@@ -1,6 +1,5 @@
 ---
 name: dod-check
-audience: project
 description: Run a deterministic Definition of Done check before claiming implementation, review, prompt-modernization, hook, skill, rule, release-prep, backend, frontend, UI component, or Storybook/documentation work is complete. Use when verifying finished work, selecting completion criteria, or mapping changed files to portable DoD profiles across any project stack.
 metadata:
   command: /dod-check

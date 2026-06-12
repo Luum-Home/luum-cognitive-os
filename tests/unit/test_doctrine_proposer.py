@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from lib.doctrine_proposer import build_doctrine_proposals, render_markdown, write_markdown
@@ -69,11 +70,12 @@ status: sandbox
     )
     metrics = tmp_path / ".cognitive-os" / "metrics"
     metrics.mkdir(parents=True)
+    recent_timestamp = (datetime.now(timezone.utc) - timedelta(days=5)).replace(microsecond=0).isoformat()
     (metrics / "skill-invocations.jsonl").write_text(
         "".join(
             json.dumps(
                 {
-                    "timestamp": "2026-05-05T12:00:00+00:00",
+                    "timestamp": recent_timestamp,
                     "payload": {"skill_name": "triage-flaky-tests"},
                 }
             )
@@ -84,7 +86,7 @@ status: sandbox
     )
     (metrics / "skill-feedback.jsonl").write_text(
         "".join(
-            json.dumps({"timestamp": "2026-05-05T12:01:00Z", "skill": "triage-flaky-tests", "success": True})
+            json.dumps({"timestamp": recent_timestamp, "skill": "triage-flaky-tests", "success": True})
             + "\n"
             for _ in range(5)
         ),

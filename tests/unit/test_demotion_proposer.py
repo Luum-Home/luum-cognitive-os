@@ -8,6 +8,7 @@ from __future__ import annotations
 import json
 import sqlite3
 import sys
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import pytest
@@ -73,7 +74,8 @@ def test_evaluate_uses_windowed_skillstore_events_for_demotion(
     store.record_execution("active-skill", "session-x", 1, 100, "success")
     store.close()
     conn = sqlite3.connect(str(db))
-    conn.execute("UPDATE skill_execution_events SET timestamp = ?", ("2026-03-07T12:00:00+00:00",))
+    recent_timestamp = (datetime.now(timezone.utc) - timedelta(days=10)).replace(microsecond=0).isoformat()
+    conn.execute("UPDATE skill_execution_events SET timestamp = ?", (recent_timestamp,))
     conn.commit()
     conn.close()
 

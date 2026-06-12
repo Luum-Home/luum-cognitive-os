@@ -1,6 +1,5 @@
 ---
 name: plan-feature
-audience: both
 description: Create a stack-agnostic feature implementation plan before coding. Use when a user asks to plan a new product capability, extend an existing feature, turn a ticket into implementation steps, or define acceptance criteria and validation for feature work across any project stack. Do not use for root-cause bug fixes or maintenance chores; use plan-bug or plan-chore instead.
 metadata:
   user-invocable: true
