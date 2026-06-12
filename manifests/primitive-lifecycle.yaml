@@ -6642,7 +6642,7 @@ primitives:
   kind: hook
   owner_adr: ADR-144
   lifecycle_state: candidate
-  maturity: observe
+  maturity: advisory
   distribution: team
   governance_class: meta-governance
   risk_class: advisory
