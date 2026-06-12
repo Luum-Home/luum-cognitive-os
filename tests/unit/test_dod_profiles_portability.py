@@ -26,7 +26,15 @@ def test_dod_profiles_are_stack_agnostic_overlays() -> None:
     for profile in ("Backend API / Server Work", "Frontend Feature / App Work", "UI Component / Design-System Work", "Storybook / Component Documentation Work"):
         assert profile in text
     assert "They are portable categories, not stack mandates" in text
+    assert "`stack_signals` tells you which language/framework/package-manager/test-runner" in text
     assert "Do not copy these bullets into a PR blindly" in text
+
+
+def test_dod_check_documents_automatic_stack_signal_detection() -> None:
+    text = SKILL.read_text(encoding="utf-8")
+    assert "stack_signals" in text
+    assert "Stack signal detection" in text
+    assert "Signals are advisory evidence, not command permission" in text
 
 
 def test_dod_profiles_do_not_embed_source_project_stack_policy() -> None:

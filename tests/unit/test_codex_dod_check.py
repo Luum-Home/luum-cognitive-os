@@ -52,8 +52,36 @@ def test_markdown_reports_dod_profiles() -> None:
         complexity="medium",
         changed_files=["src/ui/button.tsx"],
         dod_profiles=["ui-component"],
+        stack_signals=["node", "react", "typescript"],
         recommended_command="git diff --check",
         checks=[module.Check("dod_profiles", "PASS", "ui-component")],
     )
     rendered = module.markdown(report)
     assert "DoD profiles: ui-component" in rendered
+    assert "Stack signals: node, react, typescript" in rendered
+
+
+def test_detects_node_next_storybook_stack_signals(tmp_path: Path) -> None:
+    (tmp_path / "package.json").write_text(
+        '{"dependencies":{"next":"1.0.0","react":"1.0.0","@storybook/nextjs":"1.0.0"},'
+        '"devDependencies":{"vitest":"1.0.0","typescript":"1.0.0"}}',
+        encoding="utf-8",
+    )
+    (tmp_path / "pnpm-lock.yaml").write_text("lockfileVersion: '9.0'\n", encoding="utf-8")
+    (tmp_path / "tsconfig.json").write_text("{}", encoding="utf-8")
+    (tmp_path / ".storybook").mkdir()
+
+    signals = module.detect_stack_signals(tmp_path)
+
+    assert {"node", "nextjs", "react", "storybook", "typescript", "vitest", "pnpm"}.issubset(signals)
+
+
+def test_detects_python_fastapi_pytest_stack_signals(tmp_path: Path) -> None:
+    (tmp_path / "pyproject.toml").write_text(
+        '[project]\ndependencies = ["fastapi", "pytest", "ruff", "mypy"]\n',
+        encoding="utf-8",
+    )
+
+    signals = module.detect_stack_signals(tmp_path)
+
+    assert {"python", "fastapi", "pytest", "ruff", "mypy"}.issubset(signals)
