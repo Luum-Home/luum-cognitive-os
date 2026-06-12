@@ -1,0 +1,114 @@
+{
+  "canonical_source": "hooks/quality-duplicates.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Harness-native duplicate-quality trigger that runs the shared cos-quality-duplicates scanner when local tracked changes exist, degrades safely when the scanner is absent, and only blocks when COS_QUALITY_DUPLICATES_ENFORCE=1.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Harness-native duplicate-quality trigger that runs the shared cos-quality-duplicates scanner when local tracked changes exist, degrades safely when the scanner is absent, and only blocks when COS_QUALITY_DUPLICATES_ENFORCE=1.",
+    "evidence_commands": [
+      "bash -n hooks/quality-duplicates.sh",
+      "python3 -m pytest tests/unit/test_cos_quality_duplicates.py tests/behavior/test_cos_quality_duplicates_cli.py tests/contracts/test_quality_duplicates_harness_triggers.py -q"
+    ],
+    "metrics_file": ".cognitive-os/reports/quality-duplicates/latest.json"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "team",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "conditional_exit_2",
+    "governance_class": "quality",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-334",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "observe",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "Harness-native duplicate-quality trigger that runs the shared cos-quality-duplicates scanner when local tracked changes exist, degrades safely when the scanner is absent, and only blocks when COS_QUALITY_DUPLICATES_ENFORCE=1.",
+      "evidence_commands": [
+        "bash -n hooks/quality-duplicates.sh",
+        "python3 -m pytest tests/unit/test_cos_quality_duplicates.py tests/behavior/test_cos_quality_duplicates_cli.py tests/contracts/test_quality_duplicates_harness_triggers.py -q"
+      ],
+      "metrics": [
+        ".cognitive-os/reports/quality-duplicates/latest.json"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "Harness-native duplicate-quality trigger that runs the shared cos-quality-duplicates scanner when local tracked changes exist, degrades safely when the scanner is absent, and only blocks when COS_QUALITY_DUPLICATES_ENFORCE=1.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "lifecycle_declared",
+      "projection_targets": [
+        ".claude/settings.json",
+        ".codex/hooks.json",
+        ".opencode/hooks.json",
+        ".cognitive-os/hooks/cos/quality-duplicates.sh"
+      ],
+      "runtime_projection": true
+    }
+  },
+  "portable_id": "hooks/quality-duplicates.sh",
+  "projection_targets": [
+    ".claude/settings.json",
+    ".codex/hooks.json",
+    ".opencode/hooks.json",
+    ".cognitive-os/hooks/cos/quality-duplicates.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/quality-duplicates.sh",
+  "supported_harnesses": [
+    "claude",
+    "codex",
+    "opencode",
+    "shell-ci"
+  ]
+}

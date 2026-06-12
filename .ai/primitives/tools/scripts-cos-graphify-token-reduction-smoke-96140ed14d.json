@@ -1,5 +1,5 @@
 {
-  "canonical_source": "scripts/cos-graphify-hotspot-report",
+  "canonical_source": "scripts/cos-graphify-token-reduction-smoke",
   "canonical_source_kind": "cos-internal",
   "contract": {
     "actions": null,
@@ -85,17 +85,17 @@
     "trigger": {
       "kind": "documented_or_on_demand",
       "projection_targets": [
-        "scripts/cos-graphify-hotspot-report"
+        "scripts/cos-graphify-token-reduction-smoke"
       ],
       "runtime_projection": false
     }
   },
-  "portable_id": "scripts/cos-graphify-hotspot-report",
+  "portable_id": "scripts/cos-graphify-token-reduction-smoke",
   "projection_targets": [
-    "scripts/cos-graphify-hotspot-report"
+    "scripts/cos-graphify-token-reduction-smoke"
   ],
   "schema_version": "portable-ai-primitive.v1",
-  "source_id": "scripts/cos-graphify-hotspot-report",
+  "source_id": "scripts/cos-graphify-token-reduction-smoke",
   "supported_harnesses": [
     "claude",
     "codex",

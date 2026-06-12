@@ -6,7 +6,7 @@
   "harness": "opencode",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 340,
+  "projected_primitive_count": 341,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": true,
@@ -588,6 +588,13 @@
       "portable_id": "hook-spdx-header-required",
       "primitive_file": "primitives/hooks/hook-spdx-header-required-6044a391b9.json",
       "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/quality-duplicates.sh",
+      "primitive_file": "primitives/hooks/hooks-quality-duplicates-sh-ecdd88ee07.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
       "claims_runtime_enforcement": false,
