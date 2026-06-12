@@ -18,6 +18,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 ## Goal-loop and completion-contract research
 
 - [Goal Loop — Architecture](../../04-Concepts/architecture/goal-loop.md) — state machine, evidence contract model, budget dimensions, hook profile registration, and operator surface for the COS-native goal primitive.
+- [Agent Flicker Control](../../04-Concepts/architecture/agent-flicker-control.md) — explicit capability layer and runtime report for controlling false completion, retry thrashing, no-progress loops, claim drift, runtime drift, and concurrent-agent overwrite risk.
 - [Operator Rule: goal-loop](../../../rules/goal-loop.md) — operator-facing contract with `cos-goal` quick reference, evidence-contract examples, and budget dimension reference.
 - [Goal Features Internals — 2026-05-16](../../06-Daily/reports/goal-features-internals-2026-05-16.md) — comparison of Codex and Claude Code goal mechanics feeding the COS-native `/goal` SDD under `.cognitive-os/sdd/changes/cos-native-goal-loop/`.
 

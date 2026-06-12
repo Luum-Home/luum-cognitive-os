@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-06-12T21:27:23+00:00'
+generated_at: '2026-06-12T22:32:08+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
@@ -2867,14 +2867,14 @@ primitives:
   kind: hook
   owner_adr: ADR-144
   lifecycle_state: candidate
-  maturity: observe
+  maturity: advisory
   distribution: team
   runtime_projection: true
   projection_targets:
   - .claude/settings.json
   - cognitive-os.yaml
   - hooks/token-budget-monitor.sh
-  sha256: 22fd8ffede2da57b20cc2d2c6a8d5520a0a5ac0a5696937e10b960e5da06c976
+  sha256: 02b4a9e61d833c32faad5f539d7ff8a6e36443c53dc73b2363e51ada0feabdc0
 - id: hooks/tool-discovery-trigger.sh
   kind: hook
   owner_adr: ADR-314
@@ -5329,6 +5329,16 @@ primitives:
   - lib/agent_lifecycle.py
   - lib/agent_team.py
   sha256: 3b69ec1501a0f6f3849dad3f659cda1109ee57e69762c1eb37df1b617e05b721
+- id: scripts/cos-agent-flicker-report
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: advisory
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-agent-flicker-report
+  sha256: 620496d1c85cb5ac6759dec2d8063c5fbc3808099a2f6644f643fd61f51709ba
 - id: scripts/cos-agent-message
   kind: script
   owner_adr: ADR-185
@@ -6882,6 +6892,16 @@ primitives:
   projection_targets:
   - scripts/cos_adoption_profile.py
   sha256: 0bb9e8e3ca90383995a9771767c362e94726c7139e70fc5a6460a216bf23f052
+- id: scripts/cos_agent_flicker_report.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: advisory
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos_agent_flicker_report.py
+  sha256: c4ff82e22fe2b3c4fcc5b4b52472ee22ad441925eb5245b0534d127498e91610
 - id: scripts/cos_agent_message.py
   kind: script
   owner_adr: ADR-185

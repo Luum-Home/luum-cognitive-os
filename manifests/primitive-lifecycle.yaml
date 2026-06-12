@@ -16610,6 +16610,54 @@ primitives:
   docs_claim_level: observe
   exit_behavior: manual
   metrics_file: "none"
+- id: scripts/cos_agent_flicker_report.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: advisory
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos_agent_flicker_report.py
+  runtime_projection: false
+  behavior_evidence: Agent Flicker Control report groups existing anti-flicker controls and local runtime signals without claiming a single always-on model-level algorithm.
+  evidence_commands:
+  - python3 -m py_compile scripts/cos_agent_flicker_report.py
+  - python3 -m pytest tests/unit/test_agent_flicker_report.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos_agent_flicker_report.py --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/cos_agent_flicker_report.py lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if Agent Flicker Control becomes a projected consumer-project runtime hook instead of a maintainer report.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: "none"
+- id: scripts/cos-agent-flicker-report
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: advisory
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-agent-flicker-report
+  runtime_projection: false
+  behavior_evidence: Thin shell wrapper for scripts/cos_agent_flicker_report.py so operators can run the unified Agent Flicker Control report.
+  evidence_commands:
+  - bash -n scripts/cos-agent-flicker-report
+  - python3 -m pytest tests/unit/test_agent_flicker_report.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos-agent-flicker-report --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/cos-agent-flicker-report lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if Agent Flicker Control becomes a projected consumer-project runtime hook instead of a maintainer report.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: "none"
 - id: scripts/cos_coordination_status.py
   kind: script
   owner_adr: ADR-146
