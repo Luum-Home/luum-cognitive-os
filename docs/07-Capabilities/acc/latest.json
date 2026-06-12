@@ -3703,7 +3703,7 @@
           "advise": 3,
           "allow": 19,
           "block": 123,
-          "warn": 204
+          "warn": 209
         },
         "primitive_count": 9
       }
@@ -128207,7 +128207,7 @@
       "confidence": 0.82,
       "consumer_accessibility": "runtime-evidence",
       "evidence": [
-        "intervention_rows:145"
+        "intervention_rows:150"
       ],
       "id": "primitive_intervention:reinvention-check",
       "kind": "primitive_intervention",
@@ -128222,7 +128222,7 @@
       ],
       "risk": "medium",
       "signature": {
-        "rows": 145
+        "rows": 150
       },
       "source": {
         "path": ".cognitive-os/metrics/primitive-interventions.jsonl",
@@ -146644,7 +146644,7 @@
       "coverage_debt:181"
     ]
   },
-  "generated_at": "2026-06-12T18:13:24Z",
+  "generated_at": "2026-06-12T18:22:37Z",
   "harness_projection": {
     "agents-md": {
       "display_name": "AGENTS.md",
