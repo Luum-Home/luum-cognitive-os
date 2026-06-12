@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-06-12T22:32:08+00:00'
+generated_at: '2026-06-12T23:53:43+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
@@ -6342,6 +6342,17 @@ primitives:
   projection_targets:
   - scripts/cos-primitive-authority-audit
   sha256: 1fd8d70858e4572c6496120afb9092e77f8771fc8e1513b95d956b2ce0d41225
+- id: scripts/cos-primitive-closure-check
+  kind: script
+  owner_adr: ADR-311
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-primitive-closure-check
+  - scripts/cos_primitive_closure_check.py
+  sha256: 25d5a7ed06ce3f2472d537a24c8d11ed66d5835345576bd18b783d166b3d61a2
 - id: scripts/cos-primitive-fitness
   kind: script
   owner_adr: ADR-146
@@ -6412,6 +6423,17 @@ primitives:
   projection_targets:
   - docs/06-Daily/reports/pyrefly-pilot-latest.json
   sha256: 095a5bc6220c4a2e63d9322f57c968eb8867274b29b922b87340ebce028b6632
+- id: scripts/cos-pytest-lastfailed-health
+  kind: script
+  owner_adr: ADR-311
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-pytest-lastfailed-health
+  - scripts/cos_pytest_lastfailed_health.py
+  sha256: 46ba5090a72a54e36e7661340b9552dbdb4baa94cca2ae77b519fd80191a3d4d
 - id: scripts/cos-pytest-serial-repair
   kind: script
   owner_adr: ADR-072

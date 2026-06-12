@@ -1,5 +1,21 @@
 {
-  "findings": [],
+  "findings": [
+    {
+      "classification": "candidate",
+      "common_home": "lib/",
+      "confidence": 0.86,
+      "consumer_relevance": "so-local-first",
+      "finding_id": "python-function-repeat:824701f53c8a",
+      "kind": "python-function-repeat",
+      "left": "scripts/cos_agent_flicker_report.py::_utc_now",
+      "pair_key": "scripts/cos_agent_flicker_report.py::_utc_now :: scripts/cos_instance_init.py::utc_now",
+      "rationale": "Python functions have identical normalized AST bodies",
+      "recommendation": "extract-common-python-helper",
+      "right": "scripts/cos_instance_init.py::utc_now",
+      "severity": "medium",
+      "similarity": 1.0
+    }
+  ],
   "parameters": {
     "allowlist": "manifests/primitive-duplication-allowlist.yaml",
     "include": [
@@ -20,11 +36,17 @@
   },
   "schema_version": "primitive-duplication-audit.v1",
   "summary": {
-    "by_common_home": {},
-    "by_consumer_relevance": {},
-    "by_kind": {},
-    "files_scanned": 1025,
-    "findings": 0
+    "by_common_home": {
+      "lib/": 1
+    },
+    "by_consumer_relevance": {
+      "so-local-first": 1
+    },
+    "by_kind": {
+      "python-function-repeat": 1
+    },
+    "files_scanned": 1029,
+    "findings": 1
   },
-  "timestamp": "2026-06-12T15:44:27.615023+00:00"
+  "timestamp": "2026-06-12T23:52:42.300648+00:00"
 }

@@ -102,3 +102,40 @@ def test_wrapper_executes_text() -> None:
 
     assert proc.returncode in {0, 2}
     assert "Agent Flicker Control:" in proc.stdout
+
+
+def test_historical_claim_blocks_become_info_after_latest_pass(tmp_path: Path) -> None:
+    materialize_control_files(tmp_path)
+    append_jsonl(
+        tmp_path / ".cognitive-os" / "metrics" / "claim-enforcer.jsonl",
+        [
+            {"timestamp": "2026-06-10T00:00:00Z", "status": "block", "ok": False},
+            {"timestamp": "2026-06-11T00:00:00Z", "status": "pass", "ok": True},
+        ],
+    )
+
+    report = flicker.build_report(tmp_path)
+
+    assert report["status"] == "pass"
+    signals = {item["signal_id"]: item for item in report["runtime_signals"]}
+    assert signals["claim-enforcer-history"]["severity"] == "info"
+    assert "claim-enforcer-blocks" not in signals
+
+
+def test_current_skill_drift_warns_even_when_history_exists(tmp_path: Path) -> None:
+    materialize_control_files(tmp_path)
+    skill = tmp_path / "skills" / "example" / "SKILL.md"
+    skill.parent.mkdir(parents=True, exist_ok=True)
+    skill.write_text("changed\n", encoding="utf-8")
+    lock = tmp_path / "skills" / "REGISTRY.lock"
+    lock.write_text(
+        "schema_version: 1\nskills:\n- path: skills/example/SKILL.md\n  sha256: deadbeef\n",
+        encoding="utf-8",
+    )
+    append_jsonl(tmp_path / ".cognitive-os" / "metrics" / "skill-drift.jsonl", [{"ts": "2026-06-10T00:00:00+00:00"}])
+
+    report = flicker.build_report(tmp_path)
+
+    assert report["status"] == "warn"
+    signals = {item["signal_id"]: item for item in report["runtime_signals"]}
+    assert signals["skill-drift-events"]["severity"] == "warn"

@@ -23494,6 +23494,57 @@ primitives:
   metrics_file: "none"
   consumer_access_next_action: Keep as SO-maintainer helper unless consumer validation profiles require it.
 
+- id: scripts/cos-primitive-closure-check
+  kind: script
+  owner_adr: ADR-311
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-primitive-closure-check
+  - scripts/cos_primitive_closure_check.py
+  runtime_projection: false
+  behavior_evidence: Runs the atomic primitive closure workflow across ACC/readiness reports, portable .ai overlay, registry locks, and harness-derived artifact checks before broad tests.
+  evidence_commands:
+  - python3 -m pytest tests/unit/test_primitive_closure_check.py -q
+  - scripts/cos-primitive-closure-check --strict
+  rollback_or_repair_command: Remove the wrapper and use scripts/acc_pipeline.py --refresh, python3 scripts/portable_ai_overlay.py, scripts/cos-registry-lock --write, and scripts/derived_artifact_gate.py separately.
+  sunset_criteria: Archive if primitive closure becomes an always-on typed commit hook with equivalent repair mode.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_nonzero
+  metrics_file: "none"
+  consumer_access_next_action: Keep as SO-maintainer helper unless consumer primitive authoring workflows require it.
+
+- id: scripts/cos-pytest-lastfailed-health
+  kind: script
+  owner_adr: ADR-311
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: quality-gate
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-pytest-lastfailed-health
+  - scripts/cos_pytest_lastfailed_health.py
+  runtime_projection: false
+  behavior_evidence: Reports whether pytest lastfailed cache entries are active repair evidence or stale historical failures, and clears the cache only after pytest --lf passes.
+  evidence_commands:
+  - python3 -m pytest tests/unit/test_pytest_lastfailed_health.py -q
+  rollback_or_repair_command: Delete .pytest_cache/v/cache/lastfailed manually after rerunning pytest --lf successfully.
+  sunset_criteria: Archive if pytest-with-summary owns stale-cache detection and repair directly.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_nonzero
+  metrics_file: "none"
+  consumer_access_next_action: Keep as SO-maintainer helper unless consumer validation repair profiles require it.
+
 - id: scripts/dod_check.py
   kind: script
   owner_adr: ADR-126

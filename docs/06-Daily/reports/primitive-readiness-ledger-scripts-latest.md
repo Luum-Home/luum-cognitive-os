@@ -1,7 +1,7 @@
 # Primitive Readiness Ledger — Scripts
 
-Total scripts: 670
-Roles: agentic-primitive:219, archive:12, driver-specific:14, lab:97, maintainer-tool:313, migration-only:15
+Total scripts: 674
+Roles: agentic-primitive:221, archive:12, driver-specific:14, lab:97, maintainer-tool:315, migration-only:15
 Low confidence rows: 1
 Agentic primitives without lifecycle metadata: 0
 
@@ -14,7 +14,7 @@ Agentic primitives without lifecycle metadata: 0
 | `scripts/_lib/settings-driver-codex.sh` | driver-specific | heuristic:path | medium | so-local-only |  |  | 22 | declare supported harnesses and fallback behavior |
 | `scripts/_lib/settings-driver-opencode.sh` | driver-specific | heuristic:path | medium | so-local-only |  |  | 9 | declare supported harnesses and fallback behavior |
 | `scripts/_lib/settings-driver.sh` | driver-specific | heuristic:path | medium | so-local-only |  |  | 29 | declare supported harnesses and fallback behavior |
-| `scripts/acc_pipeline.py` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | shell | 50 | keep lifecycle evidence and supported harness declarations current |
+| `scripts/acc_pipeline.py` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | shell | 52 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/active_primitive_index.py` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | active | shell | 20 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/adr100_live_headroom_check.py` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 5 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/adr_implementation_ledger.py` | lab | lifecycle | high | lifecycle-declared-consumer-candidate | sandbox | shell | 18 | keep non-default until tests and operator value justify promotion |
@@ -76,7 +76,7 @@ Agentic primitives without lifecycle metadata: 0
 | `scripts/component-lint.sh` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 11 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/compose_agent_prompt.py` | maintainer-tool | override | high | lifecycle-declared-maintainer | advisory | claude, codex, shell | 10 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/context_budget_meter_fast.py` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 4 | keep out of default user surface unless promoted through lifecycle metadata |
-| `scripts/cos` | lab | lifecycle | high | lifecycle-declared-consumer-candidate | sandbox | shell | 2242 | keep non-default until tests and operator value justify promotion |
+| `scripts/cos` | lab | lifecycle | high | lifecycle-declared-consumer-candidate | sandbox | shell | 2251 | keep non-default until tests and operator value justify promotion |
 | `scripts/cos-action-receipt` | lab | lifecycle | high | lifecycle-declared-consumer-candidate | sandbox | shell | 14 | keep non-default until tests and operator value justify promotion |
 | `scripts/cos-active-primitive-index` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | shell | 11 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos-adapter-compile` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | active | shell | 13 | keep lifecycle evidence and supported harness declarations current |
@@ -90,7 +90,7 @@ Agentic primitives without lifecycle metadata: 0
 | `scripts/cos-adr-resolve` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 6 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/cos-adr-tombstone` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | blocking | claude, codex, shell | 7 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos-agent-daemon` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | advisory | claude, codex, shell | 15 | keep lifecycle evidence and supported harness declarations current |
-| `scripts/cos-agent-flicker-report` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | shell | 5 | keep lifecycle evidence and supported harness declarations current |
+| `scripts/cos-agent-flicker-report` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | shell | 7 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos-agent-message` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | pending-sunset | claude, codex, shell | 16 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos-agent-spawn-benchmark` | lab | heuristic:path | medium | so-local-only |  |  | 7 | keep non-default until tests and operator value justify promotion |
 | `scripts/cos-agent-worktree-prepare` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 13 | keep out of default user surface unless promoted through lifecycle metadata |
@@ -254,6 +254,7 @@ Agentic primitives without lifecycle metadata: 0
 | `scripts/cos-pre-public-risk-audit` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 12 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/cos-preamble-budget` | maintainer-tool | override | high | lifecycle-declared-maintainer | advisory | shell | 14 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/cos-primitive-authority-audit` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | candidate | shell | 7 | keep lifecycle evidence and supported harness declarations current |
+| `scripts/cos-primitive-closure-check` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | candidate | shell | 3 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos-primitive-closure-ratchet` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 5 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/cos-primitive-fitness` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | shell | 14 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos-primitive-fitness-ledger` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 7 | keep out of default user surface unless promoted through lifecycle metadata |
@@ -270,13 +271,14 @@ Agentic primitives without lifecycle metadata: 0
 | `scripts/cos-public-claim-gate` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | shell | 15 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos-publication-safety` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 8 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/cos-pyrefly-pilot` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | shell, github-actions | 13 | keep lifecycle evidence and supported harness declarations current |
+| `scripts/cos-pytest-lastfailed-health` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | candidate | shell | 4 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos-pytest-serial-repair` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | advisory | shell | 9 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos-python-stdin-antipattern-audit` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 6 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/cos-quality-duplicates` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 15 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/cos-queue-drain` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | shell | 13 | keep non-default until tests and operator value justify promotion |
 | `scripts/cos-record-onboarding.sh` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | shell | 8 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos-recovery-drill` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 9 | keep out of default user surface unless promoted through lifecycle metadata |
-| `scripts/cos-registry-lock` | maintainer-tool | override | high | lifecycle-declared-maintainer | blocking | shell | 15 | keep out of default user surface unless promoted through lifecycle metadata |
+| `scripts/cos-registry-lock` | maintainer-tool | override | high | lifecycle-declared-maintainer | blocking | shell | 17 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/cos-registry.sh` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 20 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/cos-release-check.sh` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | shell | 12 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos-release-external-readiness` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 6 | keep out of default user surface unless promoted through lifecycle metadata |
@@ -357,7 +359,7 @@ Agentic primitives without lifecycle metadata: 0
 | `scripts/cos-worktree-sweeper.sh` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 6 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/cos-worktree-triage.sh` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | shell | 11 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos_adoption_profile.py` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | active | shell | 9 | keep lifecycle evidence and supported harness declarations current |
-| `scripts/cos_agent_flicker_report.py` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | shell | 4 | keep lifecycle evidence and supported harness declarations current |
+| `scripts/cos_agent_flicker_report.py` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | shell | 5 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos_agent_message.py` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | advisory | claude, codex, shell | 14 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos_architecture_readiness.py` | maintainer-tool | override | high | lifecycle-declared-maintainer | active | shell | 15 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/cos_auth_probe.py` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | shell | 11 | keep non-default until tests and operator value justify promotion |
@@ -413,11 +415,13 @@ Agentic primitives without lifecycle metadata: 0
 | `scripts/cos_new_adr.py` | maintainer-tool | override | high | lifecycle-declared-maintainer | advisory | shell | 9 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/cos_operational_status.py` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 4 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/cos_preamble_budget.py` | lab | lifecycle | high | lifecycle-declared-consumer-candidate | sandbox | shell | 9 | keep non-default until tests and operator value justify promotion |
+| `scripts/cos_primitive_closure_check.py` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 3 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/cos_primitive_fitness.py` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | active | shell | 7 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos_primitive_harvester.py` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | shell | 16 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos_profile_bootstrap.py` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | shell | 7 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos_profile_explain.py` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 4 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/cos_promotion_proposer.py` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 9 | keep out of default user surface unless promoted through lifecycle metadata |
+| `scripts/cos_pytest_lastfailed_health.py` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 3 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/cos_quality_duplicates.py` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 11 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/cos_recovery_drill.py` | maintainer-tool | override | high | lifecycle-declared-maintainer | advisory | shell | 7 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/cos_remote_branch_triage.py` | lab | lifecycle | high | lifecycle-declared-consumer-candidate | sandbox | shell | 7 | keep non-default until tests and operator value justify promotion |
@@ -457,7 +461,7 @@ Agentic primitives without lifecycle metadata: 0
 | `scripts/demo-portability-proof.sh` | lab | override | high | lifecycle-declared-maintainer | advisory | shell | 11 | keep non-default until tests and operator value justify promotion |
 | `scripts/dependency-lane.sh` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | advisory | shell | 14 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/deps-update.sh` | agentic-primitive | lifecycle | high | install-profile-managed | active | shell | 19 | profile-managed install/projection surface: review generated profiles and harness settings before demotion or archive |
-| `scripts/derived_artifact_gate.py` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 15 | keep out of default user surface unless promoted through lifecycle metadata |
+| `scripts/derived_artifact_gate.py` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 17 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/detect_runner_capacity.py` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 10 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/doc_review_personas.py` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | active | shell | 10 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/docs_duplicate_audit.py` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 10 | keep out of default user surface unless promoted through lifecycle metadata |
@@ -474,7 +478,7 @@ Agentic primitives without lifecycle metadata: 0
 | `scripts/engram-sync.sh` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | claude, codex, shell | 21 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/export-engram-to-obsidian.sh` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 8 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/extract-agent-output.sh` | maintainer-tool | override | high | lifecycle-declared-consumer-candidate | advisory | claude, shell | 9 | keep out of default user surface unless promoted through lifecycle metadata |
-| `scripts/generate-project-settings.sh` | agentic-primitive | lifecycle | high | install-profile-managed | active | shell | 29 | profile-managed install/projection surface: review generated profiles and harness settings before demotion or archive |
+| `scripts/generate-project-settings.sh` | agentic-primitive | lifecycle | high | install-profile-managed | active | shell | 30 | profile-managed install/projection surface: review generated profiles and harness settings before demotion or archive |
 | `scripts/generate_adr_index.py` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 8 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/generate_adversarial_scenario.py` | lab | override | high | so-local-only |  |  | 4 | keep non-default until tests and operator value justify promotion |
 | `scripts/generate_compact_catalog.py` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | shell | 18 | keep lifecycle evidence and supported harness declarations current |
@@ -536,7 +540,7 @@ Agentic primitives without lifecycle metadata: 0
 | `scripts/portable_ai_consumer_impact.py` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | shell | 8 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/portable_ai_consumer_package.py` | archive | override | high | lifecycle-declared-consumer-candidate | sandbox | shell | 6 | archive-first and remove active references |
 | `scripts/portable_ai_consumer_smoke.py` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | shell | 6 | keep lifecycle evidence and supported harness declarations current |
-| `scripts/portable_ai_overlay.py` | maintainer-tool | override | high | lifecycle-declared-maintainer | advisory | shell | 12 | keep out of default user surface unless promoted through lifecycle metadata |
+| `scripts/portable_ai_overlay.py` | maintainer-tool | override | high | lifecycle-declared-maintainer | advisory | shell | 15 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/portable_ai_real_consumer_smoke.py` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 6 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/postinstall.js` | maintainer-tool | override | high | so-local-only |  |  | 6 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/precommit_content_hash.py` | lab | lifecycle | high | lifecycle-declared-consumer-candidate | sandbox | shell | 12 | keep non-default until tests and operator value justify promotion |
@@ -569,7 +573,7 @@ Agentic primitives without lifecycle metadata: 0
 | `scripts/primitive_lifecycle.py` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 13 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/primitive_parse_inventory.py` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | shell | 9 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/primitive_projection_fidelity.py` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | active | shell | 19 | keep lifecycle evidence and supported harness declarations current |
-| `scripts/primitive_readiness_ledger.py` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 19 | keep out of default user surface unless promoted through lifecycle metadata |
+| `scripts/primitive_readiness_ledger.py` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 20 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/primitive_row_audit.py` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 8 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/primitive_scope_classifier.py` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | shell, github-actions | 52 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/primitive_scope_dependency_audit.py` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 5 | keep out of default user surface unless promoted through lifecycle metadata |

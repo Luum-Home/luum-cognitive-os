@@ -8,18 +8,18 @@
       "summary": {
         "block_count": 0,
         "by_mode": {
-          "observe-only": 132,
-          "os-maintainer-write": 494,
+          "observe-only": 133,
+          "os-maintainer-write": 500,
           "profile-projection-write": 37,
           "propose-only": 3
         },
         "by_status": {
-          "pass": 656,
+          "pass": 663,
           "warn": 10
         },
         "dynamic_blocks": 0,
         "dynamic_smokes": 4,
-        "total_scripts": 666
+        "total_scripts": 673
       }
     },
     "codebase_itinerary": {
@@ -111,6 +111,47 @@
           "zed-ai/full": 397
         },
         "projected_primitives": 416
+      }
+    },
+    "cos_coverage": {
+      "command": "python3 scripts/cos_coverage.py --project-dir . --json --refresh",
+      "error": null,
+      "source": "cos_coverage",
+      "status": "ok",
+      "summary": {
+        "aspirational": 0,
+        "coverage_pct": 0.0,
+        "dormant": 0,
+        "generated_at": "2026-06-12T23:51:21Z",
+        "mapped": 268,
+        "metadata": 0,
+        "on_demand": 0,
+        "project": "<repo-root>",
+        "real": 0,
+        "tiers": {
+          "A": 8,
+          "B": 2,
+          "C": 55,
+          "D": 181
+        },
+        "trend": {
+          "coverage_pct": "down",
+          "dormant": "down",
+          "real": "down"
+        },
+        "unmapped": 0,
+        "weak_proof": 0
+      }
+    },
+    "docs_execution": {
+      "command": "python3 scripts/docs_execution_audit.py --project-dir .",
+      "error": null,
+      "source": "docs_execution",
+      "status": "ok",
+      "summary": {
+        "items": 5792,
+        "json": "<repo-root>/docs/06-Daily/reports/docs-execution-latest.json",
+        "markdown": "<repo-root>/docs/06-Daily/reports/docs-execution-latest.md"
       }
     },
     "docs_execution_report": {
@@ -1747,7 +1788,7 @@
             "proposed": 1
           },
           "docs/02-Decisions/adrs/ADR-335-generic-task-closure-ledger-gate.md": {
-            "done_weak_proof": 8,
+            "done_weak_proof": 9,
             "planned": 2
           },
           "docs/02-Decisions/adrs/README.md": {
@@ -2291,6 +2332,10 @@
           "docs/04-Concepts/architecture/agent-computer-interface.md": {
             "done_weak_proof": 1
           },
+          "docs/04-Concepts/architecture/agent-flicker-control.md": {
+            "done_weak_proof": 1,
+            "planned": 1
+          },
           "docs/04-Concepts/architecture/agent-message-bus.md": {
             "done_weak_proof": 1,
             "planned": 1
@@ -2688,6 +2733,9 @@
           "docs/04-Concepts/architecture/primitive-authority-write-effects.md": {
             "planned": 1,
             "proposed": 1
+          },
+          "docs/04-Concepts/architecture/primitive-closure-atomic-check.md": {
+            "done_weak_proof": 1
           },
           "docs/04-Concepts/architecture/primitive-contract-registry-implementation-plan.md": {
             "done_weak_proof": 3
@@ -3211,7 +3259,7 @@
           },
           "docs/08-References/business/master-plan-checklist.md": {
             "done_weak_proof": 111,
-            "done_with_proof": 45,
+            "done_with_proof": 47,
             "planned": 29,
             "stale": 99
           },
@@ -3480,12 +3528,12 @@
             "done_weak_proof": 1
           }
         },
-        "items": 5786,
+        "items": 5792,
         "statuses": {
           "claimed_done_no_proof": 1,
-          "done_weak_proof": 2726,
-          "done_with_proof": 293,
-          "planned": 2025,
+          "done_weak_proof": 2729,
+          "done_with_proof": 295,
+          "planned": 2026,
           "proposed": 634,
           "stale": 107
         }
@@ -3521,6 +3569,153 @@
         "rows": 126
       }
     },
+    "documentation_truth_audit": {
+      "command": "python3 scripts/documentation_truth_audit.py --project-dir . --update-generated --json",
+      "error": null,
+      "source": "documentation_truth_audit",
+      "status": "ok",
+      "summary": {
+        "block_count": 0,
+        "by_claim": {
+          "consumer_projection_harnesses": {
+            "pass": 17
+          },
+          "documentation_truth_control": {
+            "pass": 8
+          },
+          "primitive_authority_write_effects": {
+            "pass": 16
+          },
+          "session_pending_protocol": {
+            "pass": 75
+          },
+          "subprocess_timeout_discipline": {
+            "pass": 10
+          }
+        },
+        "by_status": {
+          "pass": 126
+        },
+        "rows": 126
+      }
+    },
+    "family_readiness_hooks": {
+      "command": "python3 scripts/primitive_family_readiness_ledger.py --project-dir . --target-family hooks",
+      "error": null,
+      "source": "family_readiness_hooks",
+      "status": "ok",
+      "summary": {
+        "confidence": {
+          "high": 272,
+          "medium": 14
+        },
+        "consumer_accessibility": {
+          "lifecycle-declared-consumer-candidate": 23,
+          "lifecycle-declared-maintainer": 173,
+          "projected-consumer-surface": 76,
+          "so-local-only": 14
+        },
+        "json": "<repo-root>/docs/06-Daily/reports/primitive-readiness-ledger-hooks-latest.json",
+        "markdown": "<repo-root>/docs/06-Daily/reports/primitive-readiness-ledger-hooks-latest.md",
+        "roles": {
+          "driver-specific": 30,
+          "lab": 102,
+          "memory-lifecycle": 103,
+          "observability": 37,
+          "runtime-safety": 14
+        },
+        "total": 286,
+        "without_consumers": 0,
+        "without_lifecycle": 14
+      }
+    },
+    "family_readiness_rules": {
+      "command": "python3 scripts/primitive_family_readiness_ledger.py --project-dir . --target-family rules",
+      "error": null,
+      "source": "family_readiness_rules",
+      "status": "ok",
+      "summary": {
+        "confidence": {
+          "high": 104,
+          "medium": 25
+        },
+        "consumer_accessibility": {
+          "lifecycle-declared-maintainer": 117,
+          "projected-consumer-surface": 5,
+          "so-local-only": 7
+        },
+        "json": "<repo-root>/docs/06-Daily/reports/primitive-readiness-ledger-rules-latest.json",
+        "markdown": "<repo-root>/docs/06-Daily/reports/primitive-readiness-ledger-rules-latest.md",
+        "roles": {
+          "context-only": 2,
+          "driver-specific": 16,
+          "hook-enforced": 7,
+          "lab": 104
+        },
+        "total": 129,
+        "without_consumers": 0,
+        "without_lifecycle": 7
+      }
+    },
+    "family_readiness_skills": {
+      "command": "python3 scripts/primitive_family_readiness_ledger.py --project-dir . --target-family skills",
+      "error": null,
+      "source": "family_readiness_skills",
+      "status": "ok",
+      "summary": {
+        "confidence": {
+          "high": 107,
+          "medium": 12
+        },
+        "consumer_accessibility": {
+          "lifecycle-declared-maintainer": 99,
+          "projected-consumer-surface": 7,
+          "repo-skill-not-projectable": 7,
+          "so-local-only": 6
+        },
+        "json": "<repo-root>/docs/06-Daily/reports/primitive-readiness-ledger-skills-latest.json",
+        "markdown": "<repo-root>/docs/06-Daily/reports/primitive-readiness-ledger-skills-latest.md",
+        "roles": {
+          "compatibility-wrapper": 53,
+          "lab": 52,
+          "project-extension": 4,
+          "shared-agent-tool": 2,
+          "so-maintainer": 8
+        },
+        "total": 119,
+        "without_consumers": 1,
+        "without_lifecycle": 13
+      }
+    },
+    "family_readiness_templates": {
+      "command": "python3 scripts/primitive_family_readiness_ledger.py --project-dir . --target-family templates",
+      "error": null,
+      "source": "family_readiness_templates",
+      "status": "ok",
+      "summary": {
+        "confidence": {
+          "high": 10,
+          "medium": 14
+        },
+        "consumer_accessibility": {
+          "lifecycle-declared-maintainer": 19,
+          "projected-consumer-surface": 1,
+          "so-local-only": 4
+        },
+        "json": "<repo-root>/docs/06-Daily/reports/primitive-readiness-ledger-templates-latest.json",
+        "markdown": "<repo-root>/docs/06-Daily/reports/primitive-readiness-ledger-templates-latest.md",
+        "roles": {
+          "agent-preamble": 2,
+          "lab": 10,
+          "prompt-composition": 7,
+          "quality-gate": 4,
+          "recovery": 1
+        },
+        "total": 24,
+        "without_consumers": 0,
+        "without_lifecycle": 4
+      }
+    },
     "harness_coverage": {
       "command": null,
       "error": null,
@@ -3530,13 +3725,13 @@
         "by_family": {
           "hooks": 286,
           "rules": 129,
-          "scripts": 667,
+          "scripts": 674,
           "skills": 119,
           "templates": 24
         },
         "by_scope": {
-          "both": 497,
-          "os-only": 700,
+          "both": 498,
+          "os-only": 706,
           "project": 28
         },
         "gap_policies": {
@@ -3546,14 +3741,14 @@
           "claude-posttool-agent-only": 1,
           "codex-adapter-needed": 53,
           "hook-helper-library": 30,
-          "on-demand-command-only": 136,
+          "on-demand-command-only": 141,
           "optional-env-gated-surface": 1,
           "optional-governance-observer": 2,
           "profile-scoped-hook": 3,
           "shell-command-only": 13,
           "structural-only-ok": 72
         },
-        "gaps": 343,
+        "gaps": 348,
         "gaps_by_policy": {
           "acceptable-claude-only": 4,
           "acceptable-codex-limited-tool-events": 6,
@@ -3561,7 +3756,7 @@
           "claude-posttool-agent-only": 1,
           "codex-adapter-needed": 53,
           "hook-helper-library": 30,
-          "on-demand-command-only": 136,
+          "on-demand-command-only": 141,
           "optional-env-gated-surface": 1,
           "optional-governance-observer": 2,
           "profile-scoped-hook": 3,
@@ -3569,11 +3764,11 @@
           "structural-only-ok": 72
         },
         "gaps_by_status": {
-          "aligned": 290,
+          "aligned": 295,
           "partial": 53
         },
         "harness_projected_or_wired": {
-          "acc-report": 1225,
+          "acc-report": 1232,
           "agents-md": 0,
           "aider": 187,
           "amp-code": 187,
@@ -3584,7 +3779,7 @@
           "continue-dev": 187,
           "cos-cli": 5,
           "cursor": 187,
-          "dashboard": 1225,
+          "dashboard": 1232,
           "factory-droid": 187,
           "gemini-cli": 187,
           "goose": 187,
@@ -3595,7 +3790,7 @@
           "qoder": 187,
           "qwen-code": 187,
           "shell-ci": 17,
-          "tui": 1225,
+          "tui": 1232,
           "vscode-copilot": 187,
           "warp": 187,
           "zed-ai": 187
@@ -3629,7 +3824,7 @@
           "zed-ai": 0
         },
         "surface_projected_or_wired": {
-          "acc-report": 1225,
+          "acc-report": 1232,
           "agents-md": 0,
           "aider": 187,
           "amp-code": 187,
@@ -3640,7 +3835,7 @@
           "continue-dev": 187,
           "cos-cli": 5,
           "cursor": 187,
-          "dashboard": 1225,
+          "dashboard": 1232,
           "factory-droid": 187,
           "gemini-cli": 187,
           "goose": 187,
@@ -3651,7 +3846,7 @@
           "qoder": 187,
           "qwen-code": 187,
           "shell-ci": 17,
-          "tui": 1225,
+          "tui": 1232,
           "vscode-copilot": 187,
           "warp": 187,
           "zed-ai": 187
@@ -3663,7 +3858,141 @@
           "shell-ci": 1,
           "ui": 2
         },
-        "total_primitives": 1225,
+        "total_primitives": 1232,
+        "unclassified_gaps": 0
+      }
+    },
+    "harness_coverage_refresh": {
+      "command": "python3 scripts/primitive_harness_coverage.py --project-dir .",
+      "error": null,
+      "source": "harness_coverage_refresh",
+      "status": "ok",
+      "summary": {
+        "by_family": {
+          "hooks": 286,
+          "rules": 129,
+          "scripts": 674,
+          "skills": 119,
+          "templates": 24
+        },
+        "by_scope": {
+          "both": 498,
+          "os-only": 706,
+          "project": 28
+        },
+        "gaps": 348,
+        "gaps_by_policy": {
+          "acceptable-claude-only": 4,
+          "acceptable-codex-limited-tool-events": 6,
+          "acceptable-codex-no-agent-event": 22,
+          "claude-posttool-agent-only": 1,
+          "codex-adapter-needed": 53,
+          "hook-helper-library": 30,
+          "on-demand-command-only": 141,
+          "optional-env-gated-surface": 1,
+          "optional-governance-observer": 2,
+          "profile-scoped-hook": 3,
+          "shell-command-only": 13,
+          "structural-only-ok": 72
+        },
+        "gaps_by_status": {
+          "aligned": 295,
+          "partial": 53
+        },
+        "harness_projected_or_wired": {
+          "acc-report": 1232,
+          "agents-md": 0,
+          "aider": 187,
+          "amp-code": 187,
+          "augment-code": 187,
+          "claude": 354,
+          "cline": 187,
+          "codex": 272,
+          "continue-dev": 187,
+          "cos-cli": 5,
+          "cursor": 187,
+          "dashboard": 1232,
+          "factory-droid": 187,
+          "gemini-cli": 187,
+          "goose": 187,
+          "jetbrains-junie": 187,
+          "kilo-code": 187,
+          "kimi-code": 187,
+          "opencode": 187,
+          "qoder": 187,
+          "qwen-code": 187,
+          "shell-ci": 17,
+          "tui": 1232,
+          "vscode-copilot": 187,
+          "warp": 187,
+          "zed-ai": 187
+        },
+        "harness_wired_hooks": {
+          "acc-report": 0,
+          "agents-md": 0,
+          "aider": 0,
+          "amp-code": 0,
+          "augment-code": 0,
+          "claude": 180,
+          "cline": 0,
+          "codex": 98,
+          "continue-dev": 0,
+          "cos-cli": 0,
+          "cursor": 0,
+          "dashboard": 0,
+          "factory-droid": 0,
+          "gemini-cli": 0,
+          "goose": 0,
+          "jetbrains-junie": 0,
+          "kilo-code": 0,
+          "kimi-code": 0,
+          "opencode": 0,
+          "qoder": 0,
+          "qwen-code": 0,
+          "shell-ci": 0,
+          "tui": 0,
+          "vscode-copilot": 0,
+          "warp": 0,
+          "zed-ai": 0
+        },
+        "json": "<repo-root>/docs/06-Daily/reports/primitive-harness-coverage-latest.json",
+        "markdown": "<repo-root>/docs/06-Daily/reports/primitive-harness-coverage-latest.md",
+        "surface_projected_or_wired": {
+          "acc-report": 1232,
+          "agents-md": 0,
+          "aider": 187,
+          "amp-code": 187,
+          "augment-code": 187,
+          "claude": 354,
+          "cline": 187,
+          "codex": 272,
+          "continue-dev": 187,
+          "cos-cli": 5,
+          "cursor": 187,
+          "dashboard": 1232,
+          "factory-droid": 187,
+          "gemini-cli": 187,
+          "goose": 187,
+          "jetbrains-junie": 187,
+          "kilo-code": 187,
+          "kimi-code": 187,
+          "opencode": 187,
+          "qoder": 187,
+          "qwen-code": 187,
+          "shell-ci": 17,
+          "tui": 1232,
+          "vscode-copilot": 187,
+          "warp": 187,
+          "zed-ai": 187
+        },
+        "surfaces_by_kind": {
+          "cli": 1,
+          "ide-harness": 21,
+          "report": 1,
+          "shell-ci": 1,
+          "ui": 2
+        },
+        "total_primitives": 1232,
         "unclassified_gaps": 0
       }
     },
@@ -3679,6 +4008,47 @@
         "unsupported": 0
       }
     },
+    "primitive_authority_audit": {
+      "command": "python3 scripts/primitive_authority_audit.py --project-dir . --json",
+      "error": null,
+      "source": "primitive_authority_audit",
+      "status": "ok",
+      "summary": {
+        "block_count": 0,
+        "by_mode": {
+          "observe-only": 133,
+          "os-maintainer-write": 500,
+          "profile-projection-write": 37,
+          "propose-only": 3
+        },
+        "by_status": {
+          "pass": 663,
+          "warn": 10
+        },
+        "dynamic_blocks": 0,
+        "dynamic_smokes": 4,
+        "total_scripts": 673
+      }
+    },
+    "primitive_duplication": {
+      "command": "python3 scripts/primitive_duplication_audit.py --project-root .",
+      "error": null,
+      "source": "primitive_duplication",
+      "status": "ok",
+      "summary": {
+        "by_common_home": {
+          "lib/": 1
+        },
+        "by_consumer_relevance": {
+          "so-local-first": 1
+        },
+        "by_kind": {
+          "python-function-repeat": 1
+        },
+        "files_scanned": 1029,
+        "findings": 1
+      }
+    },
     "primitive_fitness_ledger": {
       "command": null,
       "error": null,
@@ -3691,6 +4061,114 @@
         "verdicts": {}
       }
     },
+    "primitive_gap_snapshot": {
+      "command": "python3 scripts/primitive_gap_snapshot.py --project-root . --json",
+      "error": null,
+      "source": "primitive_gap_snapshot",
+      "status": "ok",
+      "summary": {
+        "families": [
+          {
+            "aspirational_signal": 4,
+            "evidence": "row-audit proven=113 partial_nonblocking=180 actionable_gaps=4",
+            "family": "hooks",
+            "next_action": "close actionable rows",
+            "partial_signal": 180,
+            "proven_signal": 113,
+            "severity": "high",
+            "total": 297
+          },
+          {
+            "aspirational_signal": 2,
+            "evidence": "row-audit proven=212 partial_nonblocking=53 actionable_gaps=2",
+            "family": "skills",
+            "next_action": "close actionable rows",
+            "partial_signal": 53,
+            "proven_signal": 212,
+            "severity": "high",
+            "total": 267
+          },
+          {
+            "aspirational_signal": 0,
+            "evidence": "row-audit proven=129 partial_nonblocking=0 actionable_gaps=0",
+            "family": "rules",
+            "next_action": "no actionable gaps; harden weak proof opportunistically",
+            "partial_signal": 0,
+            "proven_signal": 129,
+            "severity": "low",
+            "total": 129
+          },
+          {
+            "aspirational_signal": 0,
+            "evidence": "memory-named=12 runtime-or-test-referenced=12; actionable_gaps=0",
+            "family": "memory",
+            "next_action": "row-audit memory primitives when Engram APIs change",
+            "partial_signal": 0,
+            "proven_signal": 12,
+            "severity": "low",
+            "total": 12
+          },
+          {
+            "aspirational_signal": 0,
+            "evidence": "mcp-mentioned-files=433 test-mentioned-files=161; actionable_gaps=0",
+            "family": "mcp_tools",
+            "next_action": "separate installed/optional/reference-only integrations before promotion",
+            "partial_signal": 272,
+            "proven_signal": 161,
+            "severity": "low",
+            "total": 433
+          },
+          {
+            "aspirational_signal": 0,
+            "evidence": "projection-files=14 test-mentioned=10; actionable_gaps=0",
+            "family": "config_projection",
+            "next_action": "map config keys to readers and projected driver outputs",
+            "partial_signal": 4,
+            "proven_signal": 10,
+            "severity": "low",
+            "total": 14
+          },
+          {
+            "aspirational_signal": 24,
+            "evidence": "row-audit proven=82 partial_nonblocking=1 actionable_gaps=24",
+            "family": "metrics",
+            "next_action": "close actionable rows",
+            "partial_signal": 1,
+            "proven_signal": 82,
+            "severity": "high",
+            "total": 107
+          },
+          {
+            "aspirational_signal": 0,
+            "evidence": "test_py=2053 audit-contract-quality=78; actionable_gaps=0",
+            "family": "tests_quality_gates",
+            "next_action": "keep test-quality audit coverage growing; no actionable primitive gap in this snapshot",
+            "partial_signal": 1975,
+            "proven_signal": 78,
+            "severity": "low",
+            "total": 2053
+          },
+          {
+            "aspirational_signal": 108,
+            "evidence": "docs_hard_gaps=108 unmapped_claims=0 done_with_proof=295 mapped_claims=538",
+            "family": "docs_adrs",
+            "next_action": "fix stale/unproved docs claims",
+            "partial_signal": 5390,
+            "proven_signal": 833,
+            "severity": "high",
+            "total": 6331
+          }
+        ],
+        "hook_latency": {
+          "events": 2860,
+          "max_ms": 131068,
+          "p50_ms": 143,
+          "p95_ms": 854
+        },
+        "overall_risk": "high",
+        "timestamp": "2026-06-12T23:53:23.130029+00:00"
+      }
+    },
     "primitive_interventions": {
       "command": null,
       "error": null,
@@ -3700,11 +4178,18 @@
         "actions": {
           "advise": 3,
           "allow": 19,
-          "block": 137,
-          "warn": 232
+          "block": 139,
+          "warn": 238
         },
         "primitive_count": 9
       }
+    },
+    "primitive_projection_fidelity": {
+      "command": "python3 scripts/primitive_projection_fidelity.py --project-dir .",
+      "error": "non-json output: Expecting value: line 1 column 1 (char 0)",
+      "source": "primitive_projection_fidelity",
+      "status": "unverified",
+      "summary": {}
     },
     "projection_fidelity": {
       "command": null,
@@ -3756,6 +4241,13 @@
         }
       }
     },
+    "python_helper_duplication": {
+      "command": "python3 scripts/primitive_duplication_audit.py --project-root . --include scripts --include lib --min-tokens 60 --threshold 0.86 --primitive-threshold 0.75 --json-out docs/06-Daily/reports/python-helper-duplication-latest.json --markdown docs/06-Daily/reports/python-helper-duplication-latest.md --baseline manifests/python-helper-duplication-baseline.json --fail-on-new",
+      "error": "{\"json\": \"<repo-root>/docs/06-Daily/reports/python-helper-duplication-latest.json\", \"markdown\": \"<repo-root>/docs/06-Daily/reports/python-helper-duplication-latest.md\", \"summary\": {\"by_common_home\": {\"lib/\": 83}, \"by_consumer_relevance\": {\"so-local-first\": 83}, \"by_kind\": {\"python-function-repeat\": 83}, \"files_scanned\": 723, \"findings\": 83}}\n",
+      "source": "python_helper_duplication",
+      "status": "failed",
+      "summary": {}
+    },
     "readiness:hooks": {
       "command": null,
       "error": null,
@@ -3767,16 +4259,16 @@
           "medium": 14
         },
         "consumer_accessibility": {
-          "lifecycle-declared-consumer-candidate": 22,
-          "lifecycle-declared-maintainer": 174,
+          "lifecycle-declared-consumer-candidate": 23,
+          "lifecycle-declared-maintainer": 173,
           "projected-consumer-surface": 76,
           "so-local-only": 14
         },
         "roles": {
           "driver-specific": 30,
-          "lab": 103,
+          "lab": 102,
           "memory-lifecycle": 103,
-          "observability": 36,
+          "observability": 37,
           "runtime-safety": 14
         },
         "total": 286,
@@ -3818,27 +4310,27 @@
       "summary": {
         "agentic_primitives_without_lifecycle": 0,
         "confidence": {
-          "high": 354,
+          "high": 359,
           "low": 1,
-          "medium": 312
+          "medium": 314
         },
         "consumer_accessibility": {
           "install-profile-managed": 19,
-          "lifecycle-declared-consumer-candidate": 166,
-          "lifecycle-declared-maintainer": 143,
+          "lifecycle-declared-consumer-candidate": 167,
+          "lifecycle-declared-maintainer": 147,
           "skill-referenced-not-projectable": 3,
-          "so-local-only": 336
+          "so-local-only": 338
         },
         "low_confidence_rows": 1,
         "roles": {
-          "agentic-primitive": 216,
+          "agentic-primitive": 221,
           "archive": 12,
           "driver-specific": 14,
           "lab": 97,
-          "maintainer-tool": 313,
+          "maintainer-tool": 315,
           "migration-only": 15
         },
-        "total_scripts": 667,
+        "total_scripts": 674,
         "without_consumers": 0
       }
     },
@@ -3896,6 +4388,13 @@
         "without_consumers": 0,
         "without_lifecycle": 4
       }
+    },
+    "script_readiness_refresh": {
+      "command": "python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence",
+      "error": "y\": {\"install-profile-managed\": 19, \"lifecycle-declared-consumer-candidate\": 167, \"lifecycle-declared-maintainer\": 147, \"skill-referenced-not-projectable\": 3, \"so-local-only\": 338}, \"json\": \"<repo-root>/docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json\", \"lifecycle_backlog_json\": \"<repo-root>/docs/06-Daily/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json\", \"lifecycle_backlog_markdown\": \"<repo-root>/docs/06-Daily/reports/primitive-readiness-lifecycle-backlog-scripts-latest.md\", \"low_confidence_rows\": 1, \"markdown\": \"<repo-root>/docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.md\", \"roles\": {\"agentic-primitive\": 221, \"archive\": 12, \"driver-specific\": 14, \"lab\": 97, \"maintainer-tool\": 315, \"migration-only\": 15}, \"total_scripts\": 674, \"without_consumers\": 0}\n",
+      "source": "script_readiness_refresh",
+      "status": "failed",
+      "summary": {}
     },
     "shell_ci_projection": {
       "command": null,
@@ -4204,9 +4703,9 @@
         "wrapper_for:scripts/cos_coverage.py",
         "skill_consumers:1",
         "test_consumers:7",
-        "doc_consumers:36",
+        "doc_consumers:37",
         "config_consumers:5",
-        "script_consumers:1",
+        "script_consumers:2",
         "role_source:lifecycle",
         "lifecycle_state:advisory",
         "consumer_accessibility:lifecycle-declared-maintainer",
@@ -4741,6 +5240,7 @@
       "evidence": [
         "test_consumers:1",
         "hook_consumers:1",
+        "doc_consumers:1",
         "config_consumers:2",
         "role_source:usage:repo",
         "consumer_accessibility:so-local-only",
@@ -6400,10 +6900,10 @@
       "evidence": [
         "test_consumers:1",
         "hook_consumers:2",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "rule_consumers:1",
         "config_consumers:5",
-        "script_consumers:1",
+        "script_consumers:2",
         "role_source:usage:repo",
         "consumer_accessibility:so-local-only",
         "availability_override:so-local-only",
@@ -6733,13 +7233,13 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:86",
-        "test_consumers:725",
+        "test_consumers:733",
         "hook_consumers:123",
         "workflow_consumers:2",
-        "doc_consumers:764",
+        "doc_consumers:766",
         "rule_consumers:51",
         "config_consumers:86",
-        "script_consumers:397",
+        "script_consumers:404",
         "role_source:lifecycle",
         "lifecycle_state:sandbox"
       ],
@@ -7320,6 +7820,49 @@
       "source": {
         "family": "scripts",
         "path": "scripts/cos-agent-daemon"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "lifecycle",
+        "test_consumers:2",
+        "doc_consumers:3",
+        "config_consumers:2",
+        "role_source:lifecycle",
+        "lifecycle_state:advisory",
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:scripts/**",
+        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+      ],
+      "id": "script:scripts/cos-agent-flicker-report",
+      "kind": "script",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/cos-agent-flicker-report",
+          "kind": "script",
+          "role": "agentic-primitive",
+          "source": "scripts/cos-agent-flicker-report"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": "maintainer",
+        "role": "agentic-primitive",
+        "supported_harnesses": [
+          "shell"
+        ]
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos-agent-flicker-report"
       },
       "weight": 3
     },
@@ -10832,10 +11375,10 @@
         "wrapper_for:scripts/cos_goal.py",
         "test_consumers:2",
         "hook_consumers:1",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "rule_consumers:1",
         "config_consumers:3",
-        "script_consumers:2",
+        "script_consumers:3",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
         "consumer_accessibility:lifecycle-declared-maintainer",
@@ -14318,6 +14861,49 @@
     },
     {
       "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_primitive_closure_check.py",
+        "doc_consumers:1",
+        "config_consumers:2",
+        "role_source:lifecycle",
+        "lifecycle_state:candidate",
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:scripts/**",
+        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+      ],
+      "id": "script:scripts/cos-primitive-closure-check",
+      "kind": "script",
+      "lifecycle_status": "dormant",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/cos-primitive-closure-check",
+          "kind": "script",
+          "role": "agentic-primitive",
+          "source": "scripts/cos-primitive-closure-check"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": "maintainer",
+        "role": "agentic-primitive",
+        "supported_harnesses": [
+          "shell"
+        ]
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos-primitive-closure-check"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
       "consumer_accessibility": "maintainer-only",
       "evidence": [
         "wrapper_for:scripts/primitive_closure_ratchet.py",
@@ -14966,6 +15552,50 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "lifecycle",
+        "wrapper_for:scripts/cos_pytest_lastfailed_health.py",
+        "doc_consumers:1",
+        "config_consumers:2",
+        "script_consumers:1",
+        "role_source:lifecycle",
+        "lifecycle_state:candidate",
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:scripts/**",
+        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+      ],
+      "id": "script:scripts/cos-pytest-lastfailed-health",
+      "kind": "script",
+      "lifecycle_status": "dormant",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/cos-pytest-lastfailed-health",
+          "kind": "script",
+          "role": "agentic-primitive",
+          "source": "scripts/cos-pytest-lastfailed-health"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": "maintainer",
+        "role": "agentic-primitive",
+        "supported_harnesses": [
+          "shell"
+        ]
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos-pytest-lastfailed-health"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "lifecycle",
         "skill_consumers:2",
         "test_consumers:2",
         "doc_consumers:1",
@@ -15220,9 +15850,9 @@
         "lifecycle",
         "override_rationale",
         "test_consumers:2",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:6",
-        "script_consumers:4",
+        "script_consumers:5",
         "role_source:override",
         "lifecycle_state:blocking",
         "consumer_accessibility:lifecycle-declared-maintainer",
@@ -17043,9 +17673,9 @@
       "evidence": [
         "lifecycle",
         "test_consumers:4",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:3",
-        "script_consumers:1",
+        "script_consumers:2",
         "role_source:lifecycle",
         "lifecycle_state:advisory",
         "consumer_accessibility:lifecycle-declared-consumer-candidate",
@@ -17417,6 +18047,75 @@
       "source": {
         "family": "scripts",
         "path": "scripts/cos-tier-claim-audit"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "lifecycle",
+        "test_consumers:2",
+        "doc_consumers:1",
+        "config_consumers:2",
+        "role_source:lifecycle",
+        "lifecycle_state:candidate",
+        "consumer_accessibility:lifecycle-declared-consumer-candidate",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:scripts/**",
+        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+      ],
+      "id": "script:scripts/cos-token-optimization-consumer-smoke",
+      "kind": "script",
+      "lifecycle_status": "dormant",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/cos-token-optimization-consumer-smoke",
+          "kind": "script",
+          "role": "agentic-primitive",
+          "source": "scripts/cos-token-optimization-consumer-smoke"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": "team",
+        "role": "agentic-primitive",
+        "supported_harnesses": [
+          "claude",
+          "codex",
+          "cursor",
+          "devin",
+          "vscode-copilot",
+          "agents-md",
+          "opencode",
+          "google-antigravity",
+          "qwen-code",
+          "kimi-code",
+          "minimax-maxclaw",
+          "deepseek-provider",
+          "shell-ci",
+          "gemini-cli",
+          "warp",
+          "amp-code",
+          "jetbrains-junie",
+          "qoder",
+          "factory-droid",
+          "kiro",
+          "cline",
+          "continue-dev",
+          "kilo-code",
+          "zed-ai",
+          "augment-code",
+          "goose",
+          "aider"
+        ]
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos-token-optimization-consumer-smoke"
       },
       "weight": 3
     },
@@ -18530,6 +19229,50 @@
       "source": {
         "family": "scripts",
         "path": "scripts/cos_adoption_profile.py"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_goal.py",
+        "test_consumers:2",
+        "config_consumers:2",
+        "script_consumers:1",
+        "role_source:lifecycle",
+        "lifecycle_state:advisory",
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:scripts/**",
+        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+      ],
+      "id": "script:scripts/cos_agent_flicker_report.py",
+      "kind": "script",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/cos_agent_flicker_report.py",
+          "kind": "script",
+          "role": "agentic-primitive",
+          "source": "scripts/cos_agent_flicker_report.py"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": "maintainer",
+        "role": "agentic-primitive",
+        "supported_harnesses": [
+          "shell"
+        ]
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos_agent_flicker_report.py"
       },
       "weight": 3
     },
@@ -20110,7 +20853,7 @@
         "doc_consumers:1",
         "rule_consumers:1",
         "config_consumers:2",
-        "script_consumers:1",
+        "script_consumers:2",
         "role_source:heuristic:self-evolution",
         "consumer_accessibility:so-local-only",
         "availability_override:so-local-only",
@@ -20804,6 +21547,45 @@
     },
     {
       "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "wrapper_for:scripts/acc_pipeline.py",
+        "config_consumers:2",
+        "script_consumers:1",
+        "role_source:heuristic:self-evolution",
+        "consumer_accessibility:so-local-only",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:scripts/**",
+        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+      ],
+      "id": "script:scripts/cos_primitive_closure_check.py",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/cos_primitive_closure_check.py",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/cos_primitive_closure_check.py"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos_primitive_closure_check.py"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
       "consumer_accessibility": "maintainer-only",
       "evidence": [
         "lifecycle",
@@ -21007,6 +21789,44 @@
       "source": {
         "family": "scripts",
         "path": "scripts/cos_promotion_proposer.py"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "config_consumers:2",
+        "script_consumers:1",
+        "role_source:heuristic:self-evolution",
+        "consumer_accessibility:so-local-only",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:scripts/**",
+        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+      ],
+      "id": "script:scripts/cos_pytest_lastfailed_health.py",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/cos_pytest_lastfailed_health.py",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/cos_pytest_lastfailed_health.py"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos_pytest_lastfailed_health.py"
       },
       "weight": 3
     },
@@ -21524,9 +22344,9 @@
       "evidence": [
         "lifecycle",
         "test_consumers:4",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:4",
-        "script_consumers:2",
+        "script_consumers:3",
         "role_source:lifecycle",
         "lifecycle_state:advisory",
         "consumer_accessibility:lifecycle-declared-consumer-candidate",
@@ -22663,8 +23483,8 @@
         "test_consumers:3",
         "hook_consumers:1",
         "doc_consumers:7",
-        "config_consumers:2",
-        "script_consumers:2",
+        "config_consumers:3",
+        "script_consumers:3",
         "role_source:usage:repo",
         "consumer_accessibility:so-local-only",
         "availability_override:so-local-only",
@@ -23398,7 +24218,7 @@
         "test_consumers:5",
         "doc_consumers:13",
         "config_consumers:9",
-        "script_consumers:1",
+        "script_consumers:2",
         "role_source:lifecycle",
         "lifecycle_state:active",
         "consumer_accessibility:install-profile-managed",
@@ -25593,7 +26413,7 @@
         "hook_consumers:1",
         "doc_consumers:8",
         "config_consumers:8",
-        "script_consumers:1",
+        "script_consumers:2",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
         "consumer_accessibility:lifecycle-declared-consumer-candidate",
@@ -25963,10 +26783,10 @@
         "lifecycle",
         "override_rationale",
         "wrapper_for:scripts/cos_init.py",
-        "test_consumers:2",
-        "doc_consumers:2",
+        "test_consumers:3",
+        "doc_consumers:3",
         "config_consumers:7",
-        "script_consumers:1",
+        "script_consumers:2",
         "role_source:override",
         "lifecycle_state:advisory",
         "consumer_accessibility:lifecycle-declared-maintainer",
@@ -27284,7 +28104,7 @@
         "test_consumers:6",
         "doc_consumers:7",
         "config_consumers:5",
-        "script_consumers:1",
+        "script_consumers:2",
         "role_source:heuristic:self-evolution",
         "consumer_accessibility:so-local-only",
         "availability_override:so-local-only",
@@ -31203,6 +32023,7 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "test_consumers:1",
+        "doc_consumers:1",
         "config_consumers:1",
         "script_consumers:1",
         "role_source:usage:repo",
@@ -31916,11 +32737,11 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:11",
-        "hook_consumers:41",
+        "hook_consumers:42",
         "rule_consumers:6",
-        "script_consumers:65",
-        "test_consumers:87",
-        "doc_consumers:155",
+        "script_consumers:68",
+        "test_consumers:90",
+        "doc_consumers:156",
         "config_consumers:24",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -31963,7 +32784,7 @@
         "lifecycle",
         "hook_consumers:3",
         "rule_consumers:2",
-        "script_consumers:1",
+        "script_consumers:2",
         "test_consumers:6",
         "doc_consumers:13",
         "config_consumers:9",
@@ -32012,7 +32833,7 @@
         "rule_consumers:7",
         "script_consumers:35",
         "test_consumers:34",
-        "doc_consumers:84",
+        "doc_consumers:85",
         "config_consumers:8",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -32365,9 +33186,9 @@
         "skill_consumers:10",
         "hook_consumers:25",
         "rule_consumers:3",
-        "script_consumers:53",
-        "test_consumers:139",
-        "doc_consumers:171",
+        "script_consumers:55",
+        "test_consumers:142",
+        "doc_consumers:174",
         "config_consumers:18",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -32547,8 +33368,8 @@
         "skill_consumers:3",
         "hook_consumers:5",
         "rule_consumers:4",
-        "script_consumers:5",
-        "test_consumers:16",
+        "script_consumers:6",
+        "test_consumers:17",
         "doc_consumers:55",
         "config_consumers:14",
         "role_source:lifecycle",
@@ -33746,9 +34567,9 @@
       "evidence": [
         "lifecycle",
         "rule_consumers:1",
-        "script_consumers:1",
+        "script_consumers:2",
         "test_consumers:5",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "config_consumers:6",
         "role_source:lifecycle",
         "lifecycle_state:advisory",
@@ -34365,9 +35186,9 @@
         "lifecycle",
         "hook_consumers:4",
         "rule_consumers:1",
-        "script_consumers:6",
+        "script_consumers:7",
         "test_consumers:10",
-        "doc_consumers:21",
+        "doc_consumers:22",
         "config_consumers:14",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
@@ -34453,9 +35274,9 @@
         "lifecycle",
         "hook_consumers:2",
         "rule_consumers:1",
-        "script_consumers:4",
+        "script_consumers:5",
         "test_consumers:4",
-        "doc_consumers:17",
+        "doc_consumers:18",
         "config_consumers:12",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
@@ -34586,7 +35407,7 @@
         "skill_consumers:3",
         "hook_consumers:2",
         "rule_consumers:9",
-        "script_consumers:9",
+        "script_consumers:10",
         "test_consumers:18",
         "doc_consumers:36",
         "config_consumers:11",
@@ -34850,9 +35671,9 @@
         "lifecycle",
         "hook_consumers:3",
         "rule_consumers:4",
-        "script_consumers:11",
+        "script_consumers:12",
         "test_consumers:18",
-        "doc_consumers:40",
+        "doc_consumers:41",
         "config_consumers:15",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
@@ -35336,9 +36157,9 @@
         "skill_consumers:1",
         "hook_consumers:1",
         "rule_consumers:1",
-        "script_consumers:5",
+        "script_consumers:6",
         "test_consumers:11",
-        "doc_consumers:21",
+        "doc_consumers:22",
         "config_consumers:13",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
@@ -35641,9 +36462,9 @@
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
-        "script_consumers:4",
+        "script_consumers:5",
         "test_consumers:6",
-        "doc_consumers:6",
+        "doc_consumers:7",
         "config_consumers:10",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
@@ -36215,9 +37036,9 @@
       "evidence": [
         "lifecycle",
         "hook_consumers:1",
-        "script_consumers:3",
+        "script_consumers:4",
         "test_consumers:2",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:11",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
@@ -37842,9 +38663,9 @@
       "evidence": [
         "lifecycle",
         "rule_consumers:1",
-        "script_consumers:3",
+        "script_consumers:4",
         "test_consumers:5",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:8",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
@@ -38899,9 +39720,9 @@
       "evidence": [
         "lifecycle",
         "hook_consumers:2",
-        "script_consumers:6",
+        "script_consumers:7",
         "test_consumers:10",
-        "doc_consumers:13",
+        "doc_consumers:14",
         "config_consumers:13",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
@@ -40351,9 +41172,9 @@
       "evidence": [
         "lifecycle",
         "hook_consumers:1",
-        "script_consumers:3",
+        "script_consumers:4",
         "test_consumers:7",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:10",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
@@ -40394,9 +41215,9 @@
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
-        "script_consumers:2",
+        "script_consumers:3",
         "test_consumers:5",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:11",
         "role_source:lifecycle",
         "lifecycle_state:advisory",
@@ -40483,9 +41304,9 @@
         "skill_consumers:1",
         "hook_consumers:4",
         "rule_consumers:3",
-        "script_consumers:8",
+        "script_consumers:9",
         "test_consumers:22",
-        "doc_consumers:44",
+        "doc_consumers:45",
         "config_consumers:14",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
@@ -41926,8 +42747,9 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "lifecycle",
-        "script_consumers:2",
+        "script_consumers:3",
         "test_consumers:2",
+        "doc_consumers:1",
         "config_consumers:7",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
@@ -41935,8 +42757,7 @@
         "availability_override:so-local-only",
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
-        "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:agents-md,aider,amp-code,augment-code,claude,cline,codex,continue-dev,cursor,factory-droid,gemini-cli,goose,jetbrains-junie,kilo-code,kimi-code,opencode,qoder,qwen-code,shell-ci,vscode-copilot,warp,zed-ai"
+        "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them."
       ],
       "id": "hook:hooks/session-quality-close-gate.sh",
       "kind": "hook",
@@ -42322,7 +43143,7 @@
       "evidence": [
         "lifecycle",
         "script_consumers:2",
-        "config_consumers:7",
+        "config_consumers:8",
         "role_source:lifecycle",
         "lifecycle_state:active",
         "consumer_accessibility:projected-consumer-surface",
@@ -42495,9 +43316,9 @@
       "consumer_accessibility": "maintainer-only",
       "evidence": [
         "lifecycle",
-        "script_consumers:2",
+        "script_consumers:3",
         "test_consumers:1",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:10",
         "role_source:lifecycle",
         "lifecycle_state:advisory",
@@ -43805,8 +44626,8 @@
         "doc_consumers:8",
         "config_consumers:10",
         "role_source:lifecycle",
-        "lifecycle_state:sandbox",
-        "consumer_accessibility:lifecycle-declared-maintainer",
+        "lifecycle_state:candidate",
+        "consumer_accessibility:lifecycle-declared-consumer-candidate",
         "availability_override:shared-surface",
         "availability_match:exact"
       ],
@@ -43819,16 +44640,18 @@
           "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/token-budget-monitor.sh",
           "kind": "hook",
-          "role": "lab",
+          "role": "observability",
           "source": "hooks/token-budget-monitor.sh"
         }
       ],
       "risk": "medium",
       "signature": {
-        "distribution": "lab",
-        "role": "lab",
+        "distribution": "team",
+        "role": "observability",
         "supported_harnesses": [
-          "claude"
+          "claude",
+          "codex",
+          "shell"
         ]
       },
       "source": {
@@ -47962,7 +48785,7 @@
         "skill_consumers:6",
         "hook_consumers:1",
         "rule_consumers:3",
-        "script_consumers:10",
+        "script_consumers:11",
         "test_consumers:11",
         "doc_consumers:39",
         "config_consumers:9",
@@ -49298,9 +50121,9 @@
       "evidence": [
         "lifecycle",
         "rule_consumers:1",
-        "script_consumers:1",
+        "script_consumers:2",
         "test_consumers:2",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:5",
         "role_source:usage:script-hook",
         "lifecycle_state:advisory",
@@ -50669,9 +51492,9 @@
         "lifecycle",
         "hook_consumers:8",
         "rule_consumers:2",
-        "script_consumers:6",
+        "script_consumers:7",
         "test_consumers:12",
-        "doc_consumers:49",
+        "doc_consumers:50",
         "config_consumers:15",
         "role_source:lifecycle",
         "lifecycle_state:advisory",
@@ -52369,9 +53192,9 @@
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:1",
-        "script_consumers:2",
-        "test_consumers:3",
-        "doc_consumers:2",
+        "script_consumers:3",
+        "test_consumers:4",
+        "doc_consumers:3",
         "config_consumers:4",
         "role_source:heuristic:text",
         "consumer_accessibility:so-local-only",
@@ -54323,16 +55146,16 @@
       "evidence": [
         "lifecycle",
         "rule_consumers:1",
+        "script_consumers:1",
         "test_consumers:2",
-        "doc_consumers:11",
+        "doc_consumers:12",
         "config_consumers:6",
         "role_source:lifecycle",
         "lifecycle_state:advisory",
         "consumer_accessibility:lifecycle-declared-maintainer",
         "availability_override:shared-surface",
         "availability_match:exact",
-        "availability_rationale:Manual scope calibration iteration 037: Retry Contract is repository governance guidance usable by COS maintainers and a",
-        "projected_harnesses:agents-md,aider,amp-code,augment-code,claude,cline,codex,continue-dev,cursor,factory-droid,gemini-cli,goose,jetbrains-junie,kilo-code,kimi-code,opencode,qoder,qwen-code,shell-ci,vscode-copilot,warp,zed-ai"
+        "availability_rationale:Manual scope calibration iteration 037: Retry Contract is repository governance guidance usable by COS maintainers and a"
       ],
       "id": "rule:rules/retry-contract.md",
       "kind": "rule",
@@ -55185,9 +56008,9 @@
         "lifecycle",
         "skill_consumers:1",
         "rule_consumers:1",
-        "script_consumers:1",
+        "script_consumers:2",
         "test_consumers:2",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:5",
         "role_source:heuristic:text",
         "lifecycle_state:advisory",
@@ -73440,6 +74263,38 @@
         "harness_coverage:acc-report+dashboard+tui",
         "scope:os-only"
       ],
+      "id": "harness_coverage:scripts/cos-agent-flicker-report",
+      "kind": "harness_coverage",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "scripts/cos-agent-flicker-report",
+          "kind": "harness_coverage",
+          "role": "harness-implementation",
+          "source": "scripts/cos-agent-flicker-report"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "coverage": "acc-report+dashboard+tui",
+        "gap_policy": null,
+        "scope": "os-only"
+      },
+      "source": {
+        "family": "scripts",
+        "path": "docs/06-Daily/reports/primitive-harness-coverage-latest.json",
+        "primitive": "scripts/cos-agent-flicker-report"
+      },
+      "weight": 1
+    },
+    {
+      "confidence": 0.86,
+      "consumer_accessibility": "projected-consumer-surface",
+      "evidence": [
+        "harness_coverage:acc-report+dashboard+tui",
+        "scope:os-only"
+      ],
       "id": "harness_coverage:scripts/cos-agent-message",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
@@ -78708,6 +79563,40 @@
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:acc-report+dashboard+tui",
+        "scope:os-only",
+        "gap:projected/wired but no direct behavior proof reference detected",
+        "gap_policy:on-demand-command-only"
+      ],
+      "id": "harness_coverage:scripts/cos-primitive-closure-check",
+      "kind": "harness_coverage",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "scripts/cos-primitive-closure-check",
+          "kind": "harness_coverage",
+          "role": "harness-implementation",
+          "source": "scripts/cos-primitive-closure-check"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "coverage": "acc-report+dashboard+tui",
+        "gap_policy": "on-demand-command-only",
+        "scope": "os-only"
+      },
+      "source": {
+        "family": "scripts",
+        "path": "docs/06-Daily/reports/primitive-harness-coverage-latest.json",
+        "primitive": "scripts/cos-primitive-closure-check"
+      },
+      "weight": 1
+    },
+    {
+      "confidence": 0.86,
+      "consumer_accessibility": "projected-consumer-surface",
+      "evidence": [
+        "harness_coverage:acc-report+dashboard+tui",
         "scope:os-only"
       ],
       "id": "harness_coverage:scripts/cos-primitive-closure-ratchet",
@@ -79216,6 +80105,40 @@
         "family": "scripts",
         "path": "docs/06-Daily/reports/primitive-harness-coverage-latest.json",
         "primitive": "scripts/cos-pyrefly-pilot"
+      },
+      "weight": 1
+    },
+    {
+      "confidence": 0.86,
+      "consumer_accessibility": "projected-consumer-surface",
+      "evidence": [
+        "harness_coverage:acc-report+dashboard+tui",
+        "scope:os-only",
+        "gap:projected/wired but no direct behavior proof reference detected",
+        "gap_policy:on-demand-command-only"
+      ],
+      "id": "harness_coverage:scripts/cos-pytest-lastfailed-health",
+      "kind": "harness_coverage",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "scripts/cos-pytest-lastfailed-health",
+          "kind": "harness_coverage",
+          "role": "harness-implementation",
+          "source": "scripts/cos-pytest-lastfailed-health"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "coverage": "acc-report+dashboard+tui",
+        "gap_policy": "on-demand-command-only",
+        "scope": "os-only"
+      },
+      "source": {
+        "family": "scripts",
+        "path": "docs/06-Daily/reports/primitive-harness-coverage-latest.json",
+        "primitive": "scripts/cos-pytest-lastfailed-health"
       },
       "weight": 1
     },
@@ -81140,6 +82063,40 @@
         "gap:scope=both but missing projected/wired support for: claude, codex",
         "gap_policy:on-demand-command-only"
       ],
+      "id": "harness_coverage:scripts/cos-token-optimization-consumer-smoke",
+      "kind": "harness_coverage",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "scripts/cos-token-optimization-consumer-smoke",
+          "kind": "harness_coverage",
+          "role": "harness-implementation",
+          "source": "scripts/cos-token-optimization-consumer-smoke"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "coverage": "acc-report+dashboard+tui",
+        "gap_policy": "on-demand-command-only",
+        "scope": "both"
+      },
+      "source": {
+        "family": "scripts",
+        "path": "docs/06-Daily/reports/primitive-harness-coverage-latest.json",
+        "primitive": "scripts/cos-token-optimization-consumer-smoke"
+      },
+      "weight": 1
+    },
+    {
+      "confidence": 0.86,
+      "consumer_accessibility": "projected-consumer-surface",
+      "evidence": [
+        "harness_coverage:acc-report+dashboard+tui",
+        "scope:both",
+        "gap:scope=both but missing projected/wired support for: claude, codex",
+        "gap_policy:on-demand-command-only"
+      ],
       "id": "harness_coverage:scripts/cos-token-savings-audit",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
@@ -82006,6 +82963,38 @@
         "family": "scripts",
         "path": "docs/06-Daily/reports/primitive-harness-coverage-latest.json",
         "primitive": "scripts/cos_adoption_profile.py"
+      },
+      "weight": 1
+    },
+    {
+      "confidence": 0.86,
+      "consumer_accessibility": "projected-consumer-surface",
+      "evidence": [
+        "harness_coverage:acc-report+dashboard+tui",
+        "scope:os-only"
+      ],
+      "id": "harness_coverage:scripts/cos_agent_flicker_report.py",
+      "kind": "harness_coverage",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "scripts/cos_agent_flicker_report.py",
+          "kind": "harness_coverage",
+          "role": "harness-implementation",
+          "source": "scripts/cos_agent_flicker_report.py"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "coverage": "acc-report+dashboard+tui",
+        "gap_policy": null,
+        "scope": "os-only"
+      },
+      "source": {
+        "family": "scripts",
+        "path": "docs/06-Daily/reports/primitive-harness-coverage-latest.json",
+        "primitive": "scripts/cos_agent_flicker_report.py"
       },
       "weight": 1
     },
@@ -83790,6 +84779,40 @@
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:acc-report+dashboard+tui",
+        "scope:os-only",
+        "gap:projected/wired but no direct behavior proof reference detected",
+        "gap_policy:on-demand-command-only"
+      ],
+      "id": "harness_coverage:scripts/cos_primitive_closure_check.py",
+      "kind": "harness_coverage",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "scripts/cos_primitive_closure_check.py",
+          "kind": "harness_coverage",
+          "role": "harness-implementation",
+          "source": "scripts/cos_primitive_closure_check.py"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "coverage": "acc-report+dashboard+tui",
+        "gap_policy": "on-demand-command-only",
+        "scope": "os-only"
+      },
+      "source": {
+        "family": "scripts",
+        "path": "docs/06-Daily/reports/primitive-harness-coverage-latest.json",
+        "primitive": "scripts/cos_primitive_closure_check.py"
+      },
+      "weight": 1
+    },
+    {
+      "confidence": 0.86,
+      "consumer_accessibility": "projected-consumer-surface",
+      "evidence": [
+        "harness_coverage:acc-report+dashboard+tui",
         "scope:os-only"
       ],
       "id": "harness_coverage:scripts/cos_primitive_fitness.py",
@@ -83942,6 +84965,40 @@
         "family": "scripts",
         "path": "docs/06-Daily/reports/primitive-harness-coverage-latest.json",
         "primitive": "scripts/cos_promotion_proposer.py"
+      },
+      "weight": 1
+    },
+    {
+      "confidence": 0.86,
+      "consumer_accessibility": "projected-consumer-surface",
+      "evidence": [
+        "harness_coverage:acc-report+dashboard+tui",
+        "scope:os-only",
+        "gap:projected/wired but no direct behavior proof reference detected",
+        "gap_policy:on-demand-command-only"
+      ],
+      "id": "harness_coverage:scripts/cos_pytest_lastfailed_health.py",
+      "kind": "harness_coverage",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "scripts/cos_pytest_lastfailed_health.py",
+          "kind": "harness_coverage",
+          "role": "harness-implementation",
+          "source": "scripts/cos_pytest_lastfailed_health.py"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "coverage": "acc-report+dashboard+tui",
+        "gap_policy": "on-demand-command-only",
+        "scope": "os-only"
+      },
+      "source": {
+        "family": "scripts",
+        "path": "docs/06-Daily/reports/primitive-harness-coverage-latest.json",
+        "primitive": "scripts/cos_pytest_lastfailed_health.py"
       },
       "weight": 1
     },
@@ -109668,6 +110725,37 @@
         "authority_source:derived:os-only-default",
         "scope:os-only"
       ],
+      "id": "authority_write_effects:scripts/cos-agent-flicker-report",
+      "kind": "authority_write_effects",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "scripts/cos-agent-flicker-report",
+          "kind": "authority_contract",
+          "role": "write-effects-boundary"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "mode": "os-maintainer-write",
+        "scope": "os-only",
+        "status": "pass"
+      },
+      "source": {
+        "path": "docs/06-Daily/reports/primitive-authority-latest.json",
+        "primitive": "scripts/cos-agent-flicker-report"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "evidence": [
+        "authority_mode:os-maintainer-write",
+        "authority_source:derived:os-only-default",
+        "scope:os-only"
+      ],
       "id": "authority_write_effects:scripts/cos-agent-message",
       "kind": "authority_write_effects",
       "lifecycle_status": "real",
@@ -114717,6 +115805,37 @@
     },
     {
       "confidence": 0.9,
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "evidence": [
+        "authority_mode:os-maintainer-write",
+        "authority_source:derived:os-only-default",
+        "scope:os-only"
+      ],
+      "id": "authority_write_effects:scripts/cos-primitive-closure-check",
+      "kind": "authority_write_effects",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "scripts/cos-primitive-closure-check",
+          "kind": "authority_contract",
+          "role": "write-effects-boundary"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "mode": "os-maintainer-write",
+        "scope": "os-only",
+        "status": "pass"
+      },
+      "source": {
+        "path": "docs/06-Daily/reports/primitive-authority-latest.json",
+        "primitive": "scripts/cos-primitive-closure-check"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "authority_mode:os-maintainer-write",
@@ -115208,6 +116327,37 @@
       "source": {
         "path": "docs/06-Daily/reports/primitive-authority-latest.json",
         "primitive": "scripts/cos-pyrefly-pilot"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "evidence": [
+        "authority_mode:os-maintainer-write",
+        "authority_source:derived:os-only-default",
+        "scope:os-only"
+      ],
+      "id": "authority_write_effects:scripts/cos-pytest-lastfailed-health",
+      "kind": "authority_write_effects",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "scripts/cos-pytest-lastfailed-health",
+          "kind": "authority_contract",
+          "role": "write-effects-boundary"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "mode": "os-maintainer-write",
+        "scope": "os-only",
+        "status": "pass"
+      },
+      "source": {
+        "path": "docs/06-Daily/reports/primitive-authority-latest.json",
+        "primitive": "scripts/cos-pytest-lastfailed-health"
       },
       "weight": 3
     },
@@ -117042,6 +118192,37 @@
     },
     {
       "confidence": 0.9,
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "evidence": [
+        "authority_mode:observe-only",
+        "authority_source:derived:shared-default",
+        "scope:both"
+      ],
+      "id": "authority_write_effects:scripts/cos-token-optimization-consumer-smoke",
+      "kind": "authority_write_effects",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "scripts/cos-token-optimization-consumer-smoke",
+          "kind": "authority_contract",
+          "role": "write-effects-boundary"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "mode": "observe-only",
+        "scope": "both",
+        "status": "pass"
+      },
+      "source": {
+        "path": "docs/06-Daily/reports/primitive-authority-latest.json",
+        "primitive": "scripts/cos-token-optimization-consumer-smoke"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "authority_mode:observe-only",
@@ -117875,6 +119056,37 @@
       "source": {
         "path": "docs/06-Daily/reports/primitive-authority-latest.json",
         "primitive": "scripts/cos_adoption_profile.py"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "evidence": [
+        "authority_mode:os-maintainer-write",
+        "authority_source:derived:os-only-default",
+        "scope:os-only"
+      ],
+      "id": "authority_write_effects:scripts/cos_agent_flicker_report.py",
+      "kind": "authority_write_effects",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "scripts/cos_agent_flicker_report.py",
+          "kind": "authority_contract",
+          "role": "write-effects-boundary"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "mode": "os-maintainer-write",
+        "scope": "os-only",
+        "status": "pass"
+      },
+      "source": {
+        "path": "docs/06-Daily/reports/primitive-authority-latest.json",
+        "primitive": "scripts/cos_agent_flicker_report.py"
       },
       "weight": 3
     },
@@ -119586,6 +120798,37 @@
     },
     {
       "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "authority_mode:os-maintainer-write",
+        "authority_source:derived:os-only-default",
+        "scope:os-only"
+      ],
+      "id": "authority_write_effects:scripts/cos_primitive_closure_check.py",
+      "kind": "authority_write_effects",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "scripts/cos_primitive_closure_check.py",
+          "kind": "authority_contract",
+          "role": "write-effects-boundary"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "mode": "os-maintainer-write",
+        "scope": "os-only",
+        "status": "pass"
+      },
+      "source": {
+        "path": "docs/06-Daily/reports/primitive-authority-latest.json",
+        "primitive": "scripts/cos_primitive_closure_check.py"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "evidence": [
         "authority_mode:os-maintainer-write",
@@ -119736,6 +120979,37 @@
       "source": {
         "path": "docs/06-Daily/reports/primitive-authority-latest.json",
         "primitive": "scripts/cos_promotion_proposer.py"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "authority_mode:os-maintainer-write",
+        "authority_source:derived:os-only-default",
+        "scope:os-only"
+      ],
+      "id": "authority_write_effects:scripts/cos_pytest_lastfailed_health.py",
+      "kind": "authority_write_effects",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "scripts/cos_pytest_lastfailed_health.py",
+          "kind": "authority_contract",
+          "role": "write-effects-boundary"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "mode": "os-maintainer-write",
+        "scope": "os-only",
+        "status": "pass"
+      },
+      "source": {
+        "path": "docs/06-Daily/reports/primitive-authority-latest.json",
+        "primitive": "scripts/cos_pytest_lastfailed_health.py"
       },
       "weight": 3
     },
@@ -128202,7 +129476,7 @@
       "confidence": 0.82,
       "consumer_accessibility": "runtime-evidence",
       "evidence": [
-        "intervention_rows:173"
+        "intervention_rows:179"
       ],
       "id": "primitive_intervention:reinvention-check",
       "kind": "primitive_intervention",
@@ -128217,7 +129491,7 @@
       ],
       "risk": "medium",
       "signature": {
-        "rows": 173
+        "rows": 179
       },
       "source": {
         "path": ".cognitive-os/metrics/primitive-interventions.jsonl",
@@ -128229,7 +129503,7 @@
       "confidence": 0.82,
       "consumer_accessibility": "runtime-evidence",
       "evidence": [
-        "intervention_rows:54"
+        "intervention_rows:56"
       ],
       "id": "primitive_intervention:skill-router",
       "kind": "primitive_intervention",
@@ -128244,7 +129518,7 @@
       ],
       "risk": "medium",
       "signature": {
-        "rows": 54
+        "rows": 56
       },
       "source": {
         "path": ".cognitive-os/metrics/primitive-interventions.jsonl",
@@ -142925,9 +144199,9 @@
       "evidence": [
         "lifecycle",
         "test_consumers:4",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:3",
-        "script_consumers:1",
+        "script_consumers:2",
         "role_source:lifecycle",
         "lifecycle_state:advisory",
         "consumer_accessibility:lifecycle-declared-consumer-candidate",
@@ -143289,9 +144563,9 @@
       "evidence": [
         "lifecycle",
         "test_consumers:4",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:4",
-        "script_consumers:2",
+        "script_consumers:3",
         "role_source:lifecycle",
         "lifecycle_state:advisory",
         "consumer_accessibility:lifecycle-declared-consumer-candidate",
@@ -143888,7 +145162,7 @@
         "hook_consumers:1",
         "doc_consumers:8",
         "config_consumers:8",
-        "script_consumers:1",
+        "script_consumers:2",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
         "consumer_accessibility:lifecycle-declared-consumer-candidate",
@@ -144266,11 +145540,11 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:11",
-        "hook_consumers:41",
+        "hook_consumers:42",
         "rule_consumers:6",
-        "script_consumers:65",
-        "test_consumers:87",
-        "doc_consumers:155",
+        "script_consumers:68",
+        "test_consumers:90",
+        "doc_consumers:156",
         "config_consumers:24",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -144288,7 +145562,7 @@
         "lifecycle",
         "hook_consumers:3",
         "rule_consumers:2",
-        "script_consumers:1",
+        "script_consumers:2",
         "test_consumers:6",
         "doc_consumers:13",
         "config_consumers:9",
@@ -144312,7 +145586,7 @@
         "rule_consumers:7",
         "script_consumers:35",
         "test_consumers:34",
-        "doc_consumers:84",
+        "doc_consumers:85",
         "config_consumers:8",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -144429,9 +145703,9 @@
         "skill_consumers:10",
         "hook_consumers:25",
         "rule_consumers:3",
-        "script_consumers:53",
-        "test_consumers:139",
-        "doc_consumers:171",
+        "script_consumers:55",
+        "test_consumers:142",
+        "doc_consumers:174",
         "config_consumers:18",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -144490,8 +145764,8 @@
         "skill_consumers:3",
         "hook_consumers:5",
         "rule_consumers:4",
-        "script_consumers:5",
-        "test_consumers:16",
+        "script_consumers:6",
+        "test_consumers:17",
         "doc_consumers:55",
         "config_consumers:14",
         "role_source:lifecycle",
@@ -145564,7 +146838,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:38",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:39",
       "evidence": [
         "terms:abstraction,accepted,adrs,agentic,before,literacy",
         "missing_path:docs/08-References/adrs/ADR-316-agentic-literacy-before-os-abstraction.md"
@@ -145575,7 +146849,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:39",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:40",
       "evidence": [
         "path:docs/05-Methodology/root/executable-acceptance-specification.md",
         "path:rules/eas-evidence-artifact.md",
@@ -145590,7 +146864,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:42",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:43",
       "evidence": [
         "path:docs/09-Quality/manual-tests/cos-vs-ai-slop-falsification.md",
         "terms:adr-317,adrs,cos-vs-slop,doctrine,documented,falsification,manual,manual-tests",
@@ -145602,7 +146876,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:45",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:46",
       "evidence": [
         "path:.cognitive-os/product-answers/",
         "terms:adr-282,adrs,answer,answers,cards,checks,cognitive-os,commercial",
@@ -145614,7 +146888,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:49",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:50",
       "evidence": [
         "terms:contract,exists,kernel,kernel-contract,machine-readable,manifests,yaml",
         "missing_path:docs/manifests/kernel-contract.yaml"
@@ -145625,7 +146899,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:50",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:51",
       "evidence": [
         "terms:contract,documented,kernel,kernel-contract,scope",
         "missing_path:docs/08-References/kernel-contract.md"
@@ -145636,7 +146910,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:52",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:53",
       "evidence": [
         "terms:architecture,documented,portability,rules,skills,skills-rules-portability-gap",
         "missing_path:docs/08-References/architecture/skills-rules-portability-gap.md"
@@ -145647,7 +146921,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:53",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:54",
       "evidence": [
         "terms:analysis,architecture,canonicalization,claude,documented,moving,risk,rules",
         "missing_path:docs/08-References/architecture/skills-rules-canonicalization-risk-analysis.md"
@@ -145658,7 +146932,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:54",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:55",
       "evidence": [
         "terms:architecture,canonicalization,cognitive-os,exists,migration,plan,plans,rules",
         "missing_path:docs/.cognitive-os/plans/architecture/skills-rules-canonicalization-workplan.md"
@@ -145669,7 +146943,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:56",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:57",
       "evidence": [
         "terms:compatibility,core,documented,experimental,extension,product,product-zones,taxonomy",
         "missing_path:docs/08-References/product-zones.md"
@@ -145680,7 +146954,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:57",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:58",
       "evidence": [
         "terms:additions,classified,consistently,guardrails,manifest,manifests,product,product-zones",
         "missing_path:docs/manifests/product-zones.yaml"
@@ -145691,7 +146965,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:58",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:59",
       "evidence": [
         "path:tests/contracts/test_runtime_hardcoding.py",
         "terms:architecture,avoid,central,contracts,default,discipline,hardcoding,non-core",
@@ -145703,7 +146977,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:69",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:70",
       "evidence": [
         "terms:account,anthropic,architecture,centralized,claude,code,direct,direct-anthropic-api-policy",
         "missing_path:docs/08-References/architecture/direct-anthropic-api-policy.md"
@@ -145714,7 +146988,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:70",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:71",
       "evidence": [
         "terms:advisor,advisor-mcp-architecture-review,architecture,canonical,classified,external-advisor,native,optional",
         "missing_path:docs/08-References/architecture/advisor-mcp-architecture-review.md"
@@ -145725,7 +146999,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:74",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:75",
       "evidence": [
         "path:hooks/destructive-git-blocker.sh",
         "terms:block,branch,changes,checkout,commit,context,covered,destination",
@@ -145737,7 +147011,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:91",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:92",
       "evidence": [
         "terms:claims,explicit,manual-tests,paths,pitch,product,proof,proof-paths",
         "missing_path:docs/08-References/manual-tests/proof-paths.md"
@@ -145748,7 +147022,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:92",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:93",
       "evidence": [
         "path:tests/contracts/test_canonical_projection_behavior.py",
         "terms:architecture,behavioral,behavioral-test-contracts,being,claims,contracts,converted,product",
@@ -145760,7 +147034,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:93",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:94",
       "evidence": [
         "path:scripts/pytest-with-summary.sh",
         "path:scripts/test_run_inventory.py",
@@ -145773,7 +147047,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:104",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:105",
       "evidence": [
         "terms:adoption,architecture,backend,before,benchmark,candidates,coverage,documented",
         "missing_path:docs/08-References/architecture/primitive-coverage-backend-benchmark-2026-05.md"
@@ -145784,7 +147058,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:106",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:107",
       "evidence": [
         "terms:accepted,adr-144,cloud-flow,executable,gates,implementation,implementation-status,local",
         "missing_path:docs/08-References/reports/adr-137-plus-implementation-review-2026-05-04.md"
@@ -145795,7 +147069,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:110",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:111",
       "evidence": [
         "terms:architecture,captured,cosd,evidence,including,portability,readiness,release",
         "missing_path:docs/08-References/architecture/standalone-ship-readiness-2026-05-06.md"
@@ -145806,7 +147080,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:111",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:112",
       "evidence": [
         "terms:adapter,adr-291,architecture,autonomous,clarifying,control-plane,cosd,documented",
         "missing_path:docs/08-References/architecture/standalone-agent-runtime-adapter-options.md"
@@ -145817,7 +147091,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:112",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:113",
       "evidence": [
         "terms:adr-291,architecture,before,comparison,cos-native,evaluate,first,harness",
         "missing_path:docs/08-References/architecture/byoharness-comparison-2026-05-23.md"
@@ -145828,7 +147102,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:113",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:114",
       "evidence": [
         "terms:architecture,audit,backend,benchmark,candidates,cloned,code,compared",
         "missing_path:docs/08-References/architecture/runtime-candidates-deep-code-audit-2026-05-14.md"
@@ -145839,7 +147113,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:114",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:115",
       "evidence": [
         "terms:architecture,captured,clarity,combining,contracts,cos-owned,design,embedded",
         "missing_path:docs/08-References/architecture/cos-native-runtime-harness-design.md"
@@ -145850,7 +147124,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:115",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:116",
       "evidence": [
         "terms:architecture,cosd,existing,features,grounded,roadmap,scope,secure",
         "missing_path:docs/08-References/architecture/surface-5-and-secure-cosd-roadmap.md"
@@ -145861,7 +147135,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:116",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:117",
       "evidence": [
         "terms:adr-194,adr-194-cosd-secure-remote-api,adrs,allow-remote,audit,auth,bearer-token,binds",
         "missing_path:docs/08-References/adrs/ADR-194-cosd-secure-remote-api.md"
@@ -145872,7 +147146,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:117",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:118",
       "evidence": [
         "terms:adrs,operator,read-only,snapshot,surface,through",
         "missing_path:docs/08-References/adrs/ADR-195-surface-5-operable-tui-contract.md"
@@ -145883,7 +147157,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:118",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:119",
       "evidence": [
         "path:.github/workflows/cos-binary-release.yml",
         "terms:adrs,cos-binary-release,formula,github,goreleaser,head,homebrew,plumbing",
@@ -145895,7 +147169,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:119",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:120",
       "evidence": [
         "terms:adrs,bubble,decision,package,proof,sourced,substrate,surface",
         "missing_path:docs/08-References/adrs/ADR-192-surface-5-adopt-bubbletea.md"
@@ -145906,7 +147180,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:120",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:121",
       "evidence": [
         "path:scripts/cos_daemon.py",
         "terms:adr-193,adr-193-cosd-local-network-api,adrs,cos_daemon,cosd,decision,implementation,local",
@@ -145918,7 +147192,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:122",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:123",
       "evidence": [
         "terms:first-run,first-run-onboarding,installation,low-friction,manual-tests,onboarding,proof,through",
         "missing_path:docs/08-References/manual-tests/first-run-onboarding.md"
@@ -145929,7 +147203,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:155",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:156",
       "evidence": [
         "path:manifests/ai-agent-harness-landscape.yaml",
         "terms:adrs,ai-agent-harness-landscape,harness,hosted-agent,landscape,manifests,overclaiming,reports",
@@ -145942,7 +147216,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:156",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:157",
       "evidence": [
         "terms:across,covering,current,deepseek,delegation,kimi,minimax,multi-provider",
         "missing_path:docs/08-References/reports/multi-provider-agent-delegation-research-2026-05-05.md"
@@ -145953,7 +147227,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:159",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:160",
       "evidence": [
         "terms:against,audit,augment,claims,correcting,current,drift,goose",
         "missing_path:docs/08-References/reports/harness-docs-currentness-audit-2026-05-05.md"
@@ -145964,7 +147238,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:161",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:162",
       "evidence": [
         "path:manifests/harness-profiles.yaml",
         "terms:architecture,dispatch,doctor,documented,engineering,harness,harness-engineering,harness-profiles",
@@ -145976,7 +147250,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:162",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:163",
       "evidence": [
         "terms:adapter,advisory,architecture,between,canonical,clarifying,contract,documented",
         "missing_path:docs/08-References/architecture/ide-agnostic-primitive-projection.md"
@@ -145987,7 +147261,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:163",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:164",
       "evidence": [
         "terms:adr-256,adrs,after,architecture,before,codebase,consumer,contract",
         "missing_path:docs/08-References/adrs/ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md",
@@ -146000,7 +147274,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:164",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:165",
       "evidence": [
         "path:manifests/primitive-contracts.yaml",
         "terms:adrs,bridge,completed,contract,cross-ide,deep,direction,existing",
@@ -146012,7 +147286,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:165",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:166",
       "evidence": [
         "path:manifests/primitive-contracts.yaml",
         "path:tests/contracts/test_primitive_contract_registry.py",
@@ -146025,7 +147299,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:167",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:168",
       "evidence": [
         "terms:adr-257,adr-258,adr-258-portable-ai-overlay-for-agentic-primitives,adrs,before,canonical,conformance,contracts",
         "missing_path:docs/08-References/adrs/ADR-258-portable-ai-overlay-for-agentic-primitives.md",
@@ -146037,7 +147311,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:168",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:169",
       "evidence": [
         "path:packages/opencode-adapter/plugins/cos-primitive-guard.js",
         "terms:adapter,cos-opencode-primitive-adapter-smoke,cos-primitive-guard,destructive-git-blocker,destructive-rm-blocker,host-plugin-lifecycle-capable,implement,large-file-advisor",
@@ -146049,7 +147323,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:170",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:171",
       "evidence": [
         "terms:adapters,bundles,consumer,contract,fleet,headless,hooks,impact",
         "missing_path:docs/08-References/reports/primitive-portability-test-impact-review-2026-05-09.md"
@@ -146060,7 +147334,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:171",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:172",
       "evidence": [
         "terms:consumer,headless,portable,portable-ai-consumer-smoke-latest,primitive,primitive-service-headless-smoke-latest,proof,reports",
         "missing_path:docs/08-References/reports/portable-ai-consumer-smoke-latest.md",
@@ -146072,7 +147346,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:172",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:173",
       "evidence": [
         "terms:canonical,consumer,contracts,documented,generated,impact,maintainer,model",
         "missing_path:docs/08-References/reports/portable-ai-overlay-consumer-model-impact-2026-05-12.md"
@@ -146083,7 +147357,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:173",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:174",
       "evidence": [
         "terms:architecture,canonical,consumer,contracts,cos-portable-ai-consumer-package-smoke,data,generated,human-readable",
         "missing_path:docs/08-References/architecture/portable-ai-consumer-package-spec.md"
@@ -146094,7 +147368,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:175",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:176",
       "evidence": [
         "terms:adr-272,adr-272-structural-rule-backend-boundary,adrs,authority,backend,backends,behind,compiler",
         "missing_path:docs/08-References/adrs/ADR-272-structural-rule-backend-boundary.md"
@@ -146105,7 +147379,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:179",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:180",
       "evidence": [
         "terms:architecture,baseline,deep,first-run,first-run-onboarding,manual-tests,onboarding,proof",
         "missing_path:docs/08-References/manual-tests/first-run-onboarding.md"
@@ -146116,7 +147390,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:183",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:184",
       "evidence": [
         "terms:classified,compatibility,core,experimental,explicitly,extensions,manifests,product-zones",
         "missing_path:docs/manifests/product-zones.yaml"
@@ -146127,7 +147401,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:184",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:185",
       "evidence": [
         "terms:index,major,non-core,optional,present,product,product-zones,readme",
         "missing_path:docs/README.md",
@@ -146140,7 +147414,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:189",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:190",
       "evidence": [
         "terms:architecture,decision,default,evaluated,external,frame,infrastructure,lightweight",
         "missing_path:docs/08-References/architecture/tooling-stack-rationalization.md"
@@ -146151,7 +147425,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:190",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:191",
       "evidence": [
         "terms:architecture,catalog,cataloged,cloud,docker,infrastructure,infrastructure-service-catalog,python",
         "missing_path:docs/08-References/architecture/infrastructure-service-catalog.md"
@@ -146162,7 +147436,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:191",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:192",
       "evidence": [
         "terms:boundaries,checks,connected,connected-system,dependency,documented,including,local",
         "missing_path:docs/08-References/manual-tests/local-connected-systems-validation.md"
@@ -146173,7 +147447,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:192",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:193",
       "evidence": [
         "terms:architecture,backend,backends,decision,evaluated,evaluation,observability,observability-backend-evaluation-2026-04-24",
         "missing_path:docs/08-References/architecture/observability-backend-evaluation-2026-04-24.md"
@@ -146184,7 +147458,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:193",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:194",
       "evidence": [
         "terms:adr-201,adrs,alone,close,documented,does,loop,maintainer",
         "missing_path:docs/08-References/reports/self-improvement-maintainer-agent-gap-2026-05-06.md",
@@ -146196,7 +147470,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:194",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:195",
       "evidence": [
         "terms:adr-202,adrs,content,cross-harness,documented,harness,memory,metrics",
         "missing_path:docs/08-References/reports/private-content-portability-gap-2026-05-06.md",
@@ -146208,7 +147482,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:195",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:196",
       "evidence": [
         "terms:added,auto-rollback,coverage,documented,false,forensics,guard,narrow",
         "missing_path:docs/08-References/reports/auto-rollback-router-trigger-forensics-2026-05-06.md"
@@ -146219,7 +147493,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:196",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:197",
       "evidence": [
         "terms:auto-refine,auto-rollback,broader,cluster,covered,deep-research,documented,false-positive",
         "missing_path:docs/08-References/reports/skill-router-false-positive-cluster-2026-05-06.md"
@@ -146230,7 +147504,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:197",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:198",
       "evidence": [
         "terms:absolute,block,confidentiality,confidentiality-enforcer,downgrade,edit,enforcer,false",
         "missing_path:docs/08-References/reports/confidentiality-enforcer-gitignored-downgrade-2026-05-06.md"
@@ -146241,7 +147515,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:198",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:199",
       "evidence": [
         "path:manifests/subagent-capabilities.yaml",
         "terms:adr-203,adrs,capability,contract,documented,manifests,mismatch,preflight",
@@ -146254,7 +147528,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:204",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:205",
       "evidence": [
         "path:scripts/demo-portability-proof.sh",
         "terms:canonical,demo,demo-portability-proof,five-minute,harness,manual-tests,provider,rewrites",
@@ -146266,7 +147540,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:205",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:206",
       "evidence": [
         "terms:action,canonical,demo,five-minute,gates,manual-tests,quality,real",
         "missing_path:docs/08-References/manual-tests/five-minute-demo.md"
@@ -146277,7 +147551,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:206",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:207",
       "evidence": [
         "terms:becoming,canonical,core,demo,five-minute,manual-tests,minutes,shows",
         "missing_path:docs/08-References/manual-tests/five-minute-demo.md"
@@ -146288,7 +147562,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:207",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:208",
       "evidence": [
         "terms:adopt,contains,easy,manual-tests,path,paths,product,proof",
         "missing_path:docs/08-References/manual-tests/proof-paths.md"
@@ -146299,7 +147573,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:208",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:209",
       "evidence": [
         "terms:churn,contains,ecosystem,manual-tests,path,paths,product,proof",
         "missing_path:docs/08-References/manual-tests/proof-paths.md"
@@ -146310,7 +147584,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:213",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:214",
       "evidence": [
         "path:manifests/state-retention.yaml",
         "terms:adr-199,adr-199-state-retention-policy-and-reaper-protocol,adrs,diagnosis,documented,given,manifest-backed,manifests",
@@ -146323,7 +147597,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:219",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:220",
       "evidence": [
         "terms:canonical,demo,five-minute,manual-tests,path,prepare,product,through",
         "missing_path:docs/08-References/manual-tests/five-minute-demo.md"
@@ -146334,7 +147608,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:224",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:225",
       "evidence": [
         "terms:branch,diagnostic,documented,governance,preserve,reports",
         "missing_path:docs/08-References/reports/preserve-branch-governance-2026-05-02.md"
@@ -146345,7 +147619,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:225",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:226",
       "evidence": [
         "terms:adr-110,adr-110-preserve-branch-governance,adrs,branch,defines,governance,preserve",
         "missing_path:docs/08-References/adrs/ADR-110-preserve-branch-governance.md"
@@ -146356,7 +147630,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:226",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:227",
       "evidence": [
         "terms:architecture,branch,consumer,documented,lifecycle,preserve,projection",
         "missing_path:docs/08-References/architecture/preserve-branch-lifecycle.md"
@@ -146367,7 +147641,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:234",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:235",
       "evidence": [
         "terms:adr-320,adrs,aliases,both,cover,debt,documented,does",
         "missing_path:docs/08-References/adrs/ADR-320-install-scope-surface-debt.md"
@@ -146378,7 +147652,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:239",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:240",
       "evidence": [
         "terms:adr-091,adr-091-headless-clustered-runtime-direction,adrs,architecture,cluster,clustered,cognitive-os,direction",
         "missing_path:docs/08-References/adrs/ADR-091-headless-clustered-runtime-direction.md",
@@ -146390,7 +147664,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:240",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:241",
       "evidence": [
         "terms:architecture,behind,cloud,cloud-worker-runtime-tooling-research-2026-05,documented,headless,lightweight,options",
         "missing_path:docs/08-References/architecture/cloud-worker-runtime-tooling-research-2026-05.md"
@@ -146401,7 +147675,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:241",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:242",
       "evidence": [
         "terms:across,architecture,benchmark,claude,codex,cognitive-os,comparison,competitive",
         "missing_path:docs/.cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md"
@@ -146412,7 +147686,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:244",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:245",
       "evidence": [
         "terms:architecture,behavior,cognitive-os,covered,detect,documented,draft,execution",
         "missing_path:docs/.cognitive-os/plans/architecture/governed-self-improvement-roadmap.md"
@@ -146423,7 +147697,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:245",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:246",
       "evidence": [
         "path:lib/primitive_fitness.py",
         "terms:architecture,baseline-vs-candidate,contract,cos-primitive-fitness,evaluation,evidence,fitness,gated",
@@ -146435,7 +147709,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:251",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:252",
       "evidence": [
         "path:manifests/ai-resource-economy.yaml",
         "path:rules/language-token-economy.md",
@@ -146448,7 +147722,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:252",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:253",
       "evidence": [
         "terms:adr-103,adr-103-audit-contract-lane-recovery,adrs,archive,audit,audit-contract-lane-recovery-plan,before,cognitive-os",
         "missing_path:docs/08-References/adrs/ADR-103-audit-contract-lane-recovery.md",
@@ -146460,7 +147734,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:253",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:254",
       "evidence": [
         "path:scripts/cos-validation-capsule.sh",
         "terms:adrs,architecture,capsule,capsules,cos-validation-capsule,documented,global,hook",
@@ -146473,7 +147747,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:258",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:259",
       "evidence": [
         "terms:architecture,boring,boring-reliability-control-plane,clis,control,covered,dashboard,default-visible",
         "missing_path:docs/08-References/architecture/boring-reliability-control-plane.md"
@@ -146484,7 +147758,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:259",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:260",
       "evidence": [
         "terms:agentic,architecture,doctrine,documented,driver,establishing,evidence-backed,kernel",
         "missing_path:docs/08-References/architecture/agentic-kernel-philosophy.md"
@@ -146495,7 +147769,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:260",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:261",
       "evidence": [
         "terms:adr-133,adr-133-expansion-without-monsterization,adrs,architecture,blocking,core,cos-lab-first-gate,default-on",
         "missing_path:docs/08-References/architecture/expansion-hardening-plan.md",
@@ -146507,7 +147781,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:261",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:262",
       "evidence": [
         "terms:adr-134,adrs,architecture,audit,blocking,cognitive-os,converting,cos-self-improvement-discipline-gate",
         "missing_path:docs/08-References/architecture/headless-self-improvement-proposer.md",
@@ -146520,7 +147794,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:288",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:289",
       "evidence": [
         "terms:adrs,amendments,architecture,control-plane,cos-doctrine-proposer,doctrine,documented,evidence",
         "missing_path:docs/08-References/architecture/self-evolving-doctrine-proposals.md",
@@ -146532,7 +147806,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:289",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:290",
       "evidence": [
         "terms:adrs,architecture,audit,bundles,consumer,cross-instance,deterministic,documented",
         "missing_path:docs/08-References/architecture/cross-instance-learning-runway.md",
@@ -146544,7 +147818,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:290",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:291",
       "evidence": [
         "terms:architecture,audit,claim-signature,consumer,consumer-fleet-audit,cos-consumer-fleet-audit,documented,drift",
         "missing_path:docs/08-References/architecture/consumer-fleet-audit.md"
@@ -146555,7 +147829,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:291",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:292",
       "evidence": [
         "terms:claims,consumer,cross-instance,documented,does,drill,drills,evidence",
         "missing_path:docs/08-References/reports/cross-instance-consumer-e2e-2026-05-03.md"
@@ -146566,7 +147840,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:305",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:306",
       "evidence": [
         "path:manifests/orchestration-research-evaluation.yaml",
         "terms:allowlist,block,blocklist,canonical,caveat,chat,contract,directives",
@@ -146578,7 +147852,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:306",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:307",
       "evidence": [
         "path:scripts/validate_substrate_consumers.py",
         "terms:across,budget,checks,dimensions,guardrail,invariant,liveness,pass",
@@ -146590,7 +147864,7 @@
       "status": "stale"
     },
     {
-      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:363",
+      "capability_id": "doc_claim:docs/08-References/business/master-plan-checklist.md:364",
       "evidence": [
         "terms:cognitive-os,full,narrative,private,strategy",
         "missing_path:docs/.cognitive-os/strategy/04-license-repo-and-corrections-log.md"
@@ -146639,7 +147913,7 @@
       "coverage_debt:181"
     ]
   },
-  "generated_at": "2026-06-12T20:46:17Z",
+  "generated_at": "2026-06-12T23:53:40Z",
   "harness_projection": {
     "agents-md": {
       "display_name": "AGENTS.md",
@@ -147223,8 +148497,8 @@
   "new_debt": {
     "count": 0,
     "items": [],
-    "status": "pass",
-    "strict_local_defaults": true
+    "status": "not_evaluated",
+    "strict_local_defaults": null
   },
   "persistence": {
     "engram": {
@@ -147387,11 +148661,11 @@
   },
   "schema_version": "acc.report.v1",
   "summary": {
-    "acc": 0.9139,
-    "acc_effective": 0.9143,
-    "aligned_weight": 6907,
+    "acc": 0.9144,
+    "acc_effective": 0.9148,
+    "aligned_weight": 6956,
     "mapping_weight_by_status": {
-      "aligned": 6907,
+      "aligned": 6956,
       "missing": 0,
       "overexposed": 0,
       "partial": 434,
@@ -147402,7 +148676,7 @@
     "overexposed_weight": 0,
     "partial_weight": 434,
     "stale_weight": 214,
-    "total_weight": 7558,
+    "total_weight": 7607,
     "unverified_weight": 3
   },
   "weights": {

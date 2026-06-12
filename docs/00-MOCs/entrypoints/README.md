@@ -933,6 +933,7 @@ No AGPL, SSPL, BSL, or ELv2 components are permitted. See [Blocked Tools](blocke
 - [Cognitive OS Core in 30 Minutes](getting-started/core-30-minute-onboarding.md) — smallest reliable adoption path.
 
 ## Architecture
+- [Primitive Closure Atomic Check](../../04-Concepts/architecture/primitive-closure-atomic-check.md) — maintainer gate for closing lifecycle, overlay, ACC, registry, projection, flicker, and pytest-cache evidence before broad validation.
 
 - [ADR-111: Core/Consumer Boundary for Concurrent-Agent Safety](adrs/ADR-111-core-consumer-concurrency-safety-boundary.md)
 - [Concurrent-Agent Safety Core/Consumer Contract](architecture/concurrency-safety-core-consumer-contract.md)

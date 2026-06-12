@@ -8554,7 +8554,7 @@
         "doc": 39,
         "hook": 1,
         "rule": 3,
-        "script": 10,
+        "script": 11,
         "skill": 6,
         "test": 11
       },
@@ -8781,6 +8781,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_primitive_closure_check.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/install-promptfoo.sh"
         },
         {
@@ -8882,7 +8886,7 @@
         "skill_consumers:6",
         "hook_consumers:1",
         "rule_consumers:3",
-        "script_consumers:10",
+        "script_consumers:11",
         "test_consumers:11",
         "doc_consumers:39",
         "config_consumers:9"
@@ -8899,7 +8903,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 79
+      "total_consumers": 80
     },
     {
       "confidence": "high",

@@ -437,12 +437,12 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 24,
-        "doc": 155,
+        "doc": 156,
         "hook": 42,
         "rule": 6,
-        "script": 66,
+        "script": 68,
         "skill": 11,
-        "test": 89
+        "test": 90
       },
       "consumers": [
         {
@@ -991,6 +991,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/primitive-closure-atomic-check.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/profile-aware-skill-routing.md"
         },
         {
@@ -1507,6 +1511,14 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_primitive_closure_check.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_pytest_lastfailed_health.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_quality_duplicates.py"
         },
         {
@@ -1951,6 +1963,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_pytest_lastfailed_health.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_rate_limit_protection.py"
         },
         {
@@ -2024,9 +2040,9 @@
         "skill_consumers:11",
         "hook_consumers:42",
         "rule_consumers:6",
-        "script_consumers:66",
-        "test_consumers:89",
-        "doc_consumers:155",
+        "script_consumers:68",
+        "test_consumers:90",
+        "doc_consumers:156",
         "config_consumers:24"
       ],
       "family": "hooks",
@@ -2041,7 +2057,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 393
+      "total_consumers": 397
     },
     {
       "confidence": "high",
@@ -2227,7 +2243,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 8,
-        "doc": 84,
+        "doc": 85,
         "hook": 83,
         "rule": 7,
         "script": 35,
@@ -2558,6 +2574,10 @@
         {
           "family": "doc",
           "path": "docs/06-Daily/measurements/stage2-expansion-baseline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/07-Capabilities/acc/latest.md"
         },
         {
           "family": "doc",
@@ -3260,7 +3280,7 @@
         "rule_consumers:7",
         "script_consumers:35",
         "test_consumers:34",
-        "doc_consumers:84",
+        "doc_consumers:85",
         "config_consumers:8"
       ],
       "family": "hooks",
@@ -3275,7 +3295,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 254
+      "total_consumers": 255
     },
     {
       "confidence": "high",
@@ -4564,12 +4584,12 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 18,
-        "doc": 173,
+        "doc": 174,
         "hook": 25,
         "rule": 3,
-        "script": 54,
+        "script": 55,
         "skill": 10,
-        "test": 141
+        "test": 142
       },
       "consumers": [
         {
@@ -5142,6 +5162,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/primitive-closure-atomic-check.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/primitive-parser-contracts.md"
         },
         {
@@ -5531,6 +5555,10 @@
         {
           "family": "script",
           "path": "scripts/cos_cross_instance_drill.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_primitive_closure_check.py"
         },
         {
           "family": "script",
@@ -6198,6 +6226,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_primitive_closure_check.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_primitive_scope_classifier.py"
         },
         {
@@ -6275,9 +6307,9 @@
         "skill_consumers:10",
         "hook_consumers:25",
         "rule_consumers:3",
-        "script_consumers:54",
-        "test_consumers:141",
-        "doc_consumers:173",
+        "script_consumers:55",
+        "test_consumers:142",
+        "doc_consumers:174",
         "config_consumers:18"
       ],
       "family": "hooks",
@@ -6292,7 +6324,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 424
+      "total_consumers": 427
     },
     {
       "confidence": "high",
@@ -6685,9 +6717,9 @@
         "doc": 55,
         "hook": 5,
         "rule": 4,
-        "script": 5,
+        "script": 6,
         "skill": 3,
-        "test": 16
+        "test": 17
       },
       "consumers": [
         {
@@ -7020,6 +7052,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_primitive_closure_check.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/stash-leak-alarm.sh"
         },
         {
@@ -7080,6 +7116,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_primitive_closure_check.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_public_claim_gate.py"
         },
         {
@@ -7105,8 +7145,8 @@
         "skill_consumers:3",
         "hook_consumers:5",
         "rule_consumers:4",
-        "script_consumers:5",
-        "test_consumers:16",
+        "script_consumers:6",
+        "test_consumers:17",
         "doc_consumers:55",
         "config_consumers:14"
       ],
@@ -7122,7 +7162,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 102
+      "total_consumers": 104
     },
     {
       "confidence": "high",

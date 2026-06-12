@@ -1,17 +1,17 @@
 # Primitive Duplication Audit — Latest
 
-Generated: `2026-06-12T15:44:33.478431+00:00`
+Generated: `2026-06-12T23:52:48.742726+00:00`
 
 ## Summary
 
-- Files scanned: 719
-- Findings: 81
-- By kind: `{"python-function-repeat": 81}`
-- By common home: `{"lib/": 81}`
-- By consumer relevance: `{"so-local-first": 81}`
+- Files scanned: 723
+- Findings: 83
+- By kind: `{"python-function-repeat": 83}`
+- By common home: `{"lib/": 83}`
+- By consumer relevance: `{"so-local-first": 83}`
 - Ratchet status: `fail`
 - Baseline findings: 134
-- New findings: 8
+- New findings: 10
 
 ## Top Candidates
 
@@ -40,8 +40,10 @@ Generated: `2026-06-12T15:44:33.478431+00:00`
 | python-function-repeat | candidate | 1.0 | `lib/branch_lock.py::_pid_alive` | `lib/intent_arbiter.py::pid_alive` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/branch_lock.py::_pid_alive` | `lib/session_bus.py::_pid_alive` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/concurrent_agent_safety_status.py::_now_iso` | `lib/intent_arbiter.py::utc_now_iso` | extract-common-python-helper | `lib/` | so-local-first |
+| python-function-repeat | candidate | 1.0 | `lib/concurrent_agent_safety_status.py::_now_iso` | `scripts/cos_agent_flicker_report.py::_utc_now` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/concurrent_agent_safety_status.py::_now_iso` | `scripts/cos_instance_init.py::utc_now` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/concurrent_agent_safety_status.py::_read_json_object` | `scripts/resource_lease.py::read_json` | extract-common-python-helper | `lib/` | so-local-first |
+| python-function-repeat | candidate | 1.0 | `lib/concurrent_agent_safety_status.py::_read_text` | `scripts/cos_agent_flicker_report.py::_read_text` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/consumer_improvement_proposals.py::_utc_now` | `lib/cross_instance_learning.py::_utc_now` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/consumer_improvement_proposals.py::_utc_now` | `lib/governed_self_improvement.py::_utc_now` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/consumer_improvement_proposals.py::_utc_now` | `lib/key_learning_capture.py::utc_now` | extract-common-python-helper | `lib/` | so-local-first |
