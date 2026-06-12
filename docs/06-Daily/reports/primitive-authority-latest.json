@@ -8,7 +8,7 @@
     },
     {
       "changed_paths": [
-        ".cognitive-os/improvements/proposals/consumer-improvement-proposals-demo-20260612T154506Z.json"
+        ".cognitive-os/improvements/proposals/consumer-improvement-proposals-demo-20260612T180536Z.json"
       ],
       "id": "consumer-improvement-import",
       "returncode": 0,
@@ -145,21 +145,11 @@
       ],
       "id": "cos-init-codex",
       "returncode": 0,
-      "status": "block",
-      "unexpected_paths": [
-        ".agents/skills/CATALOG.md",
-        ".agents/skills/auto-refine",
-        ".agents/skills/compose-prompt",
-        ".agents/skills/cos-status",
-        ".agents/skills/exhaustive-prompt",
-        ".agents/skills/plan-feature",
-        ".agents/skills/resource-governor",
-        ".agents/skills/session-backlog",
-        ".agents/skills/verification-before-completion"
-      ]
+      "status": "pass",
+      "unexpected_paths": []
     }
   ],
-  "generated_at": "2026-06-12T15:45:06+00:00",
+  "generated_at": "2026-06-12T18:05:36+00:00",
   "items": [
     {
       "authority_mode": "os-maintainer-write",
@@ -1513,6 +1503,18 @@
       "path": "scripts/cos-config-audit.sh",
       "role": "agentic-primitive",
       "scope": "os-only",
+      "status": "pass",
+      "writes": []
+    },
+    {
+      "authority_mode": "observe-only",
+      "authority_source": "derived:shared-default",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "detected_write_surfaces": [],
+      "findings": [],
+      "path": "scripts/cos-conflict-marker-guard",
+      "role": "agentic-primitive",
+      "scope": "both",
       "status": "pass",
       "writes": []
     },
@@ -8428,21 +8430,21 @@
   ],
   "manifest": "manifests/primitive-authority.yaml",
   "schema_version": "primitive-authority-audit.v1",
-  "status": "block",
+  "status": "pass",
   "summary": {
-    "block_count": 1,
+    "block_count": 0,
     "by_mode": {
-      "observe-only": 131,
+      "observe-only": 132,
       "os-maintainer-write": 494,
       "profile-projection-write": 37,
       "propose-only": 3
     },
     "by_status": {
-      "pass": 655,
+      "pass": 656,
       "warn": 10
     },
-    "dynamic_blocks": 1,
+    "dynamic_blocks": 0,
     "dynamic_smokes": 4,
-    "total_scripts": 665
+    "total_scripts": 666
   }
 }

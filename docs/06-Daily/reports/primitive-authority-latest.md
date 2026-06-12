@@ -1,16 +1,16 @@
 # Primitive Authority Audit — Latest
 
-Generated: 2026-06-12T15:45:06+00:00
-Status: `block`
+Generated: 2026-06-12T18:05:36+00:00
+Status: `pass`
 
 ## Summary
 
-- total_scripts: `665`
-- by_mode: `{'observe-only': 131, 'os-maintainer-write': 494, 'profile-projection-write': 37, 'propose-only': 3}`
-- by_status: `{'pass': 655, 'warn': 10}`
+- total_scripts: `666`
+- by_mode: `{'observe-only': 132, 'os-maintainer-write': 494, 'profile-projection-write': 37, 'propose-only': 3}`
+- by_status: `{'pass': 656, 'warn': 10}`
 - dynamic_smokes: `4`
-- dynamic_blocks: `1`
-- block_count: `1`
+- dynamic_blocks: `0`
+- block_count: `0`
 
 ## Blocking findings
 
@@ -25,4 +25,4 @@ Status: `block`
 | `consumer-improvement-export` | `pass` | 0 | `` |
 | `consumer-improvement-import` | `pass` | 1 | `` |
 | `project-shell-ci` | `pass` | 36 | `` |
-| `cos-init-codex` | `block` | 138 | `.agents/skills/CATALOG.md, .agents/skills/auto-refine, .agents/skills/compose-prompt, .agents/skills/cos-status, .agents/skills/exhaustive-prompt, .agents/skills/plan-feature, .agents/skills/resource-governor, .agents/skills/session-backlog, .agents/skills/verification-before-completion` |
+| `cos-init-codex` | `pass` | 138 | `` |

@@ -19,7 +19,7 @@
       "python3 scripts/cos-registry-lock --audit",
       "python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q"
     ],
-    "metrics_file": null
+    "metrics_file": "no_metrics"
   },
   "family": "skill",
   "lifecycle": {
@@ -52,7 +52,9 @@
         "python3 scripts/cos-registry-lock --audit",
         "python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q"
       ],
-      "metrics": []
+      "metrics": [
+        "no_metrics"
+      ]
     },
     "impact": {
       "consumer_fleet": "unknown",

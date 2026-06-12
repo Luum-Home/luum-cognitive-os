@@ -1996,10 +1996,15 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "config": 1,
         "hook": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "hook",
           "path": "hooks/session-token-aggregator.sh"
@@ -2012,7 +2017,8 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "hook_consumers:1"
+        "hook_consumers:1",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -2026,7 +2032,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 2,
+      "total_consumers": 3,
       "wrapper_for": null
     },
     {

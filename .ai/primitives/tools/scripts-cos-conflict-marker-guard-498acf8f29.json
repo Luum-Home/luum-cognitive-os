@@ -17,13 +17,13 @@
       "python3 -m pytest tests/unit/test_conflict_marker_guard.py -q",
       "bash -n scripts/cos-conflict-marker-guard"
     ],
-    "metrics_file": "none"
+    "metrics_file": "no_metrics"
   },
   "family": "script",
   "lifecycle": {
     "distribution": "core",
     "docs_claim_level": "blocking",
-    "exit_behavior": "exit_1",
+    "exit_behavior": "exit_2",
     "governance_class": "runtime-safety",
     "lifecycle_state": "blocking",
     "maturity": "blocking",
@@ -48,7 +48,9 @@
         "python3 -m pytest tests/unit/test_conflict_marker_guard.py -q",
         "bash -n scripts/cos-conflict-marker-guard"
       ],
-      "metrics": []
+      "metrics": [
+        "no_metrics"
+      ]
     },
     "impact": {
       "consumer_fleet": "unknown",

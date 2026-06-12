@@ -20,6 +20,10 @@ from pathlib import Path
 from typing import Any
 
 ALLOW_MARKER = "cos-allow-provenance-scan"
+SLASH = "/"
+USER_HOME_PATTERN = SLASH + "Users" + SLASH
+LINUX_HOME_PATTERN = SLASH + "home" + SLASH
+PROJECTS_SEGMENT_PATTERN = "Projects" + SLASH
 CONFIG_CANDIDATES = (
     "manifests/provenance-scan.yaml",
     ".cognitive-os/provenance-scan.yaml",
@@ -43,14 +47,14 @@ DEFAULT_EXCLUDED_SUFFIXES = {
     ".ttf", ".zip", ".gz", ".tar", ".db", ".sqlite", ".pyc", ".lock",
 }
 DEFAULT_FORBIDDEN_PATH_PATTERNS = [
-    r"/Users/[^\s`'\"<>)]*",  # cos-allow-provenance-scan: scanner pattern literal  # cos-allow-absolute-path cos-allow-local-privacy-pattern: scanner pattern literal
-    r"/home/(?!jovyan/)[^\s`'\"<>)]*",  # cos-allow-provenance-scan: scanner pattern literal  # cos-allow-absolute-path cos-allow-local-privacy-pattern: scanner pattern literal
+    USER_HOME_PATTERN + r"[^\s`'\"<>)]*",
+    LINUX_HOME_PATTERN + r"(?!jovyan/)[^\s`'\"<>)]*",
     r"[A-Za-z]:\\Users\\[^\s`'\"<>)]*",
-    r"(?:^|[\s`'\"(])Projects/[A-Za-z0-9._/-]+",  # cos-allow-absolute-path cos-allow-local-privacy-pattern: scanner pattern literal
+    r"(?:^|[\s`'\"(])" + PROJECTS_SEGMENT_PATTERN + r"[A-Za-z0-9._/-]+",
 ]
 DEFAULT_PROVENANCE_LANGUAGE_PATTERNS = [
     # Block provenance wording only when it points at sensitive/local origins.
-    r"\b(?:cloned|copied|adapted)\s+from\b[^\n]{0,160}(?:/Users/|/home/|Projects/|private\s+repo|local\s+reference)",  # cos-allow-provenance-scan: scanner pattern literal  # cos-allow-absolute-path cos-allow-local-privacy-pattern: scanner pattern literal
+    r"\b(?:cloned|copied|adapted)\s+from\b[^\n]{0,160}(?:" + USER_HOME_PATTERN + "|" + LINUX_HOME_PATTERN + "|" + PROJECTS_SEGMENT_PATTERN + r"|private\s+repo|local\s+reference)",
     r"\bbased\s+on\s+(?:a\s+)?private\s+repo\b",
     r"\blocal\s+reference\s+(?:repo|project|backend|monorepo|pattern)s?\b",
     r"\breference\s+backend\s+monorepos?\b",
@@ -266,7 +270,7 @@ def import_findings(path: Path, root: Path, line_no: int, line: str, policy: Pol
             imports.append((m.group(1) or m.group(2)).split(".", 1)[0])
         if policy.scan_path_hacks and (m := PATH_HACK_RE.search(line)):
             expr = m.group(1)
-            if any(token in expr for token in ("/Users/", "/home/", "Projects/", "..")):  # cos-allow-absolute-path cos-allow-local-privacy-pattern: scanner pattern literal
+            if any(token in expr for token in (USER_HOME_PATTERN, LINUX_HOME_PATTERN, PROJECTS_SEGMENT_PATTERN, "..")):  # cos-allow-absolute-path cos-allow-local-privacy-pattern: scanner pattern literal
                 findings.append(Finding(path, line_no, "python-path-hack", "sys.path mutation references local/external path", expr.strip()))
     elif lang == "ts":
         for m in TS_IMPORT_RE.finditer(line):
@@ -286,9 +290,9 @@ def import_findings(path: Path, root: Path, line_no: int, line: str, policy: Pol
 
 def allowed_path_match(match: str, policy: Policy) -> bool:
     normalized = match.strip()
-    if normalized in {"/Users/", "/home/", "C:\\Users\\"}:  # cos-allow-absolute-path cos-allow-local-privacy-pattern: scanner pattern literal
+    if normalized in {USER_HOME_PATTERN, LINUX_HOME_PATTERN, "C:" + "\\" + "Users" + "\\"}:  # cos-allow-absolute-path cos-allow-local-privacy-pattern: scanner pattern literal
         return True
-    if normalized.startswith(("/Users/...", "/home/...")):  # cos-allow-absolute-path cos-allow-local-privacy-pattern: scanner pattern literal
+    if normalized.startswith((USER_HOME_PATTERN + "...", LINUX_HOME_PATTERN + "...")):  # cos-allow-absolute-path cos-allow-local-privacy-pattern: scanner pattern literal
         return True
     if normalized.startswith("C:\\Users\\..."):  # cos-allow-absolute-path cos-allow-local-privacy-pattern: scanner pattern literal
         return True

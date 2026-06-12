@@ -2207,7 +2207,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 8,
-        "doc": 85,
+        "doc": 84,
         "hook": 83,
         "rule": 7,
         "script": 35,
@@ -2538,10 +2538,6 @@
         {
           "family": "doc",
           "path": "docs/06-Daily/measurements/stage2-expansion-baseline.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/07-Capabilities/acc/latest.md"
         },
         {
           "family": "doc",
@@ -3244,7 +3240,7 @@
         "rule_consumers:7",
         "script_consumers:35",
         "test_consumers:34",
-        "doc_consumers:85",
+        "doc_consumers:84",
         "config_consumers:8"
       ],
       "family": "hooks",
@@ -3259,7 +3255,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 255
+      "total_consumers": 254
     },
     {
       "confidence": "high",
@@ -4548,7 +4544,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 18,
-        "doc": 170,
+        "doc": 171,
         "hook": 25,
         "rule": 3,
         "script": 53,
@@ -5047,6 +5043,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/external-tool-adoption-doctrine.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-hooks.md"
         },
         {
           "family": "doc",
@@ -6237,7 +6237,7 @@
         "rule_consumers:3",
         "script_consumers:53",
         "test_consumers:139",
-        "doc_consumers:170",
+        "doc_consumers:171",
         "config_consumers:18"
       ],
       "family": "hooks",
@@ -6252,7 +6252,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 418
+      "total_consumers": 419
     },
     {
       "confidence": "high",
@@ -18880,7 +18880,7 @@
       "consumer_access_next_action": "keep install/profile/harness proof current",
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
-        "config": 3,
+        "config": 5,
         "hook": 1,
         "script": 3,
         "test": 4
@@ -18893,6 +18893,14 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/harness-hook-projection-policy.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/hook-quality.yaml"
         },
         {
           "family": "config",
@@ -18937,7 +18945,7 @@
         "hook_consumers:1",
         "script_consumers:3",
         "test_consumers:4",
-        "config_consumers:3"
+        "config_consumers:5"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/conflict-marker-guard.sh",
@@ -18951,7 +18959,7 @@
         "codex",
         "shell-ci"
       ],
-      "total_consumers": 11
+      "total_consumers": 13
     },
     {
       "confidence": "high",
@@ -43286,11 +43294,11 @@
       "total_consumers": 20
     },
     {
-      "confidence": "medium",
-      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
-      "consumer_accessibility": "so-local-only",
+      "confidence": "high",
+      "consumer_access_next_action": "keep install/profile/harness proof current",
+      "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
-        "config": 4,
+        "config": 6,
         "script": 2
       },
       "consumers": [
@@ -43308,7 +43316,15 @@
         },
         {
           "family": "config",
+          "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/hook-registration-classification.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
         },
         {
           "family": "script",
@@ -43319,20 +43335,24 @@
           "path": "scripts/apply-efficiency-profile.sh"
         }
       ],
-      "distribution": null,
+      "distribution": "core",
       "evidence": [
+        "lifecycle",
         "script_consumers:2",
-        "config_consumers:4"
+        "config_consumers:6"
       ],
       "family": "hooks",
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "lifecycle_id": "hooks/session-token-aggregator.sh",
+      "lifecycle_state": "active",
+      "next_action": "keep lifecycle, tests, and harness proof current",
       "path": "hooks/session-token-aggregator.sh",
       "role": "memory-lifecycle",
-      "role_source": "heuristic:text",
-      "supported_harnesses": [],
-      "total_consumers": 6
+      "role_source": "lifecycle",
+      "supported_harnesses": [
+        "claude",
+        "codex"
+      ],
+      "total_consumers": 8
     },
     {
       "confidence": "high",
@@ -48862,14 +48882,14 @@
   "schema_version": 1,
   "summary": {
     "confidence": {
-      "high": 271,
-      "medium": 15
+      "high": 272,
+      "medium": 14
     },
     "consumer_accessibility": {
       "lifecycle-declared-consumer-candidate": 22,
       "lifecycle-declared-maintainer": 174,
-      "projected-consumer-surface": 75,
-      "so-local-only": 15
+      "projected-consumer-surface": 76,
+      "so-local-only": 14
     },
     "roles": {
       "driver-specific": 30,
@@ -48880,7 +48900,7 @@
     },
     "total": 286,
     "without_consumers": 0,
-    "without_lifecycle": 15
+    "without_lifecycle": 14
   },
   "target_family": "hooks"
 }

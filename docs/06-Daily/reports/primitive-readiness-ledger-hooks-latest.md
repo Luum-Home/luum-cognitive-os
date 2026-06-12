@@ -1,8 +1,8 @@
 # Primitive Readiness Ledger — Hooks
 
 Total rows: 286
-Rows without lifecycle metadata: 15
-Consumer accessibility: lifecycle-declared-consumer-candidate:22, lifecycle-declared-maintainer:174, projected-consumer-surface:75, so-local-only:15
+Rows without lifecycle metadata: 14
+Consumer accessibility: lifecycle-declared-consumer-candidate:22, lifecycle-declared-maintainer:174, projected-consumer-surface:76, so-local-only:14
 
 | Path | Role | Source | Confidence | Consumer Access | Lifecycle | Consumers | Next action |
 |---|---|---|---|---|---|---:|---|
@@ -11,7 +11,7 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:22, lifecycle-decl
 | `hooks/_lib/bypass-resolver.sh` | driver-specific | lifecycle | high | projected-consumer-surface | advisory | 18 | keep lifecycle, tests, and harness proof current |
 | `hooks/_lib/cache.sh` | driver-specific | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 389 | prove consumer project projection per supported harness before promotion |
 | `hooks/_lib/circuit-breaker.sh` | observability | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 34 | prove consumer project projection per supported harness before promotion |
-| `hooks/_lib/common.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 255 | prove consumer project projection per supported harness before promotion |
+| `hooks/_lib/common.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 254 | prove consumer project projection per supported harness before promotion |
 | `hooks/_lib/context_budget_lib.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 14 | prove consumer project projection per supported harness before promotion |
 | `hooks/_lib/execute-repair.sh` | observability | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 9 | prove consumer project projection per supported harness before promotion |
 | `hooks/_lib/file_checker.sh` | runtime-safety | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 15 | prove consumer project projection per supported harness before promotion |
@@ -19,7 +19,7 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:22, lifecycle-decl
 | `hooks/_lib/hook-pipe.sh` | driver-specific | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 12 | prove consumer project projection per supported harness before promotion |
 | `hooks/_lib/killswitch_check.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 196 | keep lifecycle, tests, and harness proof current |
 | `hooks/_lib/normalize-stdin.sh` | driver-specific | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 5 | prove consumer project projection per supported harness before promotion |
-| `hooks/_lib/portable.sh` | runtime-safety | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 418 | prove consumer project projection per supported harness before promotion |
+| `hooks/_lib/portable.sh` | runtime-safety | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 419 | prove consumer project projection per supported harness before promotion |
 | `hooks/_lib/primitive-intervention.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 48 | keep lifecycle, tests, and harness proof current |
 | `hooks/_lib/push-collision-check.sh` | observability | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 15 | prove consumer project projection per supported harness before promotion |
 | `hooks/_lib/register-bg.sh` | observability | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 6 | prove consumer project projection per supported harness before promotion |
@@ -90,7 +90,7 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:22, lifecycle-decl
 | `hooks/confidence-gate-llm.sh` | driver-specific | heuristic:text | medium | so-local-only |  | 16 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/confidence-gate.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | blocking | 76 | keep maintainer-only or add explicit export path |
 | `hooks/confidentiality-enforcer.sh` | observability | lifecycle | high | projected-consumer-surface | blocking | 43 | keep lifecycle, tests, and harness proof current |
-| `hooks/conflict-marker-guard.sh` | driver-specific | lifecycle | high | projected-consumer-surface | blocking | 11 | keep lifecycle, tests, and harness proof current |
+| `hooks/conflict-marker-guard.sh` | driver-specific | lifecycle | high | projected-consumer-surface | blocking | 13 | keep lifecycle, tests, and harness proof current |
 | `hooks/consequence-evaluator.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 40 | keep maintainer-only or add explicit export path |
 | `hooks/content-policy.sh` | observability | lifecycle | high | projected-consumer-surface | blocking | 109 | keep lifecycle, tests, and harness proof current |
 | `hooks/context-budget-meter.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | blocking | 26 | keep maintainer-only or add explicit export path |
@@ -245,7 +245,7 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:22, lifecycle-decl
 | `hooks/session-startup-protocol.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 26 | keep maintainer-only or add explicit export path |
 | `hooks/session-state-save.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 16 | keep maintainer-only or add explicit export path |
 | `hooks/session-summary-reminder.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 20 | keep maintainer-only or add explicit export path |
-| `hooks/session-token-aggregator.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 6 | add lifecycle/package/projection metadata or keep SO-local |
+| `hooks/session-token-aggregator.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | active | 8 | keep lifecycle, tests, and harness proof current |
 | `hooks/session-watchdog-launcher.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 24 | keep maintainer-only or add explicit export path |
 | `hooks/session-wrapup-trigger.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 27 | keep maintainer-only or add explicit export path |
 | `hooks/singularity-check.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 14 | keep maintainer-only or add explicit export path |
