@@ -6,7 +6,7 @@
   "harness": "cursor",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 353,
+  "projected_primitive_count": 354,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": false,
@@ -2422,6 +2422,13 @@
       "portable_id": "script-weekly-aspirational-audit",
       "primitive_file": "primitives/tools/script-weekly-aspirational-audit-70a8646427.json",
       "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-conflict-marker-guard",
+      "primitive_file": "primitives/tools/scripts-cos-conflict-marker-guard-498acf8f29.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
       "claims_runtime_enforcement": false,

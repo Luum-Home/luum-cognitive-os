@@ -1166,6 +1166,12 @@ harness:
       matcher: Bash
       scope: both
 
+    conflict-marker-guard:
+      script: hooks/conflict-marker-guard.sh
+      event: PreToolUse
+      matcher: Bash
+      scope: both
+
     untracked-work-preservation-guard:
       script: hooks/untracked-work-preservation-guard.sh
       event: PreToolUse

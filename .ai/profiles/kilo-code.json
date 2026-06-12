@@ -6,7 +6,7 @@
   "display_name": "Kilo Code",
   "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
   "harness": "kilo-code",
-  "lifecycle_primitives_supporting_harness": 13,
+  "lifecycle_primitives_supporting_harness": 14,
   "limitations": [
     "Structural Kilo project files proof only; no account-backed runtime invocation in automated tests.",
     "No native COS lifecycle hook parity is claimed.",

@@ -6,7 +6,7 @@
   "harness": "deepseek-provider",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 13,
+  "projected_primitive_count": 14,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": false,
@@ -41,6 +41,13 @@
       "fidelity": "documented-only",
       "portable_id": "skills/skill-creator/SKILL.md",
       "primitive_file": "primitives/skills/skills-skill-creator-skill-md-be30425771.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-conflict-marker-guard",
+      "primitive_file": "primitives/tools/scripts-cos-conflict-marker-guard-498acf8f29.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {

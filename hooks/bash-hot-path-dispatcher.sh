@@ -112,6 +112,7 @@ fi
 if _is_git_boundary; then
   _run_many \
     "hooks/destructive-git-blocker.sh" \
+    "hooks/conflict-marker-guard.sh" \
     "hooks/untracked-work-preservation-guard.sh" \
     "hooks/direct-main-guard.sh" \
     "hooks/branch-ownership-lock.sh" \

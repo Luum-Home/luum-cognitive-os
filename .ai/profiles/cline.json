@@ -6,7 +6,7 @@
   "display_name": "Cline",
   "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
   "harness": "cline",
-  "lifecycle_primitives_supporting_harness": 13,
+  "lifecycle_primitives_supporting_harness": 14,
   "limitations": [
     "Structural workspace rule proof only; no account-backed Cline runtime invocation in automated tests.",
     "No native COS lifecycle hook parity is claimed.",

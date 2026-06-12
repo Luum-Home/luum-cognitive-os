@@ -6,7 +6,7 @@
   "display_name": "MiniMax MaxClaw / MiniMax Agent",
   "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
   "harness": "minimax-maxclaw",
-  "lifecycle_primitives_supporting_harness": 13,
+  "lifecycle_primitives_supporting_harness": 14,
   "limitations": [
     "Current evidence points to hosted/cloud agent surfaces; local IDE/project projection contract is not signed."
   ],

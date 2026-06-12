@@ -1,7 +1,7 @@
 {
   "_profile": "paranoid",
-  "_description": "Paranoid security profile \u2014 maximum defense. For pre-production validation and security audits.",
-  "_hook_count": 161,
+  "_description": "Paranoid security profile — maximum defense. For pre-production validation and security audits.",
+  "_hook_count": 170,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -235,6 +235,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/destructive-git-blocker.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/conflict-marker-guard.sh\""
           },
           {
             "type": "command",

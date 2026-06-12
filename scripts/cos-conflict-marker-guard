@@ -1,0 +1,210 @@
+#!/usr/bin/env bash
+# SCOPE: both
+# cos-conflict-marker-guard — reject leftover Git conflict markers.
+#
+# Detects unresolved merge-conflict begin/base/end markers in tracked files or
+# staged additions. It intentionally ignores bare ======= separator lines: those
+# are common in Markdown/RST headings and ASCII banners, while real conflicts
+# include <<<<<<< and >>>>>>> markers.
+#
+# Usage:
+#   scripts/cos-conflict-marker-guard [--staged|--tree] [--json]
+#
+# Exit: 0 clean, 1 markers found, 2 usage/self-test/environment error.
+set -euo pipefail
+
+MARKER_RE='^(<{7}|>{7}|\|{7})([ 	]|$)'
+MODE="tree"
+JSON=false
+
+usage() {
+  cat >&2 <<'USAGE'
+Usage: scripts/cos-conflict-marker-guard [--staged|--tree] [--json]
+
+  --tree     Scan tracked working-tree content (default).
+  --staged   Scan staged added lines from git diff --cached.
+  --json     Emit a small JSON result.
+USAGE
+}
+
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --tree) MODE="tree"; shift ;;
+    --staged) MODE="staged"; shift ;;
+    --json) JSON=true; shift ;;
+    --help|-h) usage; exit 0 ;;
+    *) echo "unknown argument: $1" >&2; usage; exit 2 ;;
+  esac
+done
+
+emit_json() {
+  local status="$1" hits_text="$2"
+  HITS_TEXT="$hits_text" python3 - "$status" "$MODE" <<'PY'
+import json
+import os
+import sys
+status = sys.argv[1]
+mode = sys.argv[2]
+hits = [line for line in os.environ.get("HITS_TEXT", "").splitlines() if line]
+print(json.dumps({"status": status, "mode": mode, "hit_count": len(hits), "hits": hits}, sort_keys=True))
+PY
+}
+
+self_test() {
+  if ! printf '%s\n' '<<<<<<< HEAD' | grep -qE "$MARKER_RE"; then
+    echo "guard self-test FAILED: begin marker not detected" >&2; exit 2; fi
+  if ! printf '%s\n' '>>>>>>> branch' | grep -qE "$MARKER_RE"; then
+    echo "guard self-test FAILED: end marker not detected" >&2; exit 2; fi
+  if ! printf '%s\n' '||||||| base' | grep -qE "$MARKER_RE"; then
+    echo "guard self-test FAILED: base marker not detected" >&2; exit 2; fi
+  if printf '%s\n' '=======' | grep -qE "$MARKER_RE"; then
+    echo "guard self-test FAILED: separator false-positive" >&2; exit 2; fi
+  if printf '%s\n' 'no conflict here' | grep -qE "$MARKER_RE"; then
+    echo "guard self-test FAILED: clean line flagged" >&2; exit 2; fi
+}
+
+if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  echo "cos-conflict-marker-guard: not inside a git worktree" >&2
+  exit 2
+fi
+
+ROOT="$(git rev-parse --show-toplevel)"
+cd "$ROOT"
+self_test
+
+hits="$(python3 - "$MODE" <<'PY'
+from __future__ import annotations
+
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+mode = sys.argv[1]
+marker_re = re.compile(r"^(<{7}|>{7}|\|{7})([ \t]|$)")
+aider_marker_re = re.compile(r"^(<<<<<<< SEARCH|>>>>>>> REPLACE)[ \t]*$")
+exclude_paths = {
+    "scripts/cos-conflict-marker-guard",
+    "hooks/conflict-marker-guard.sh",
+    "tests/unit/test_conflict_marker_guard.py",
+}
+
+
+def run_git(args: list[str]) -> subprocess.CompletedProcess[bytes]:
+    return subprocess.run(["git", *args], check=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+
+def is_excluded(path: str) -> bool:
+    normalized = path.removeprefix("./")
+    return normalized in exclude_paths
+
+
+def is_conflict_marker_line(line: str) -> bool:
+    return bool(marker_re.match(line)) and not bool(aider_marker_re.match(line))
+
+
+def tree_hits() -> list[str]:
+    files = run_git(["ls-files", "-z"])
+    if files.returncode != 0:
+        sys.stderr.buffer.write(files.stderr)
+        sys.exit(2)
+    hits: list[str] = []
+    for raw_path in files.stdout.split(b"\0"):
+        if not raw_path:
+            continue
+        path = raw_path.decode("utf-8", errors="surrogateescape")
+        if is_excluded(path):
+            continue
+        file_path = Path(path)
+        try:
+            data = file_path.read_bytes()
+        except OSError:
+            continue
+        if b"\0" in data:
+            continue
+        text = data.decode("utf-8", errors="replace")
+        for line_no, line in enumerate(text.splitlines(), start=1):
+            if is_conflict_marker_line(line):
+                hits.append(f"{path}:{line_no}:{line}")
+    return hits
+
+
+def parse_hunk_start(line: str) -> int | None:
+    match = re.search(r"@@ -\d+(?:,\d+)? \+(\d+)(?:,\d+)? @@", line)
+    if not match:
+        return None
+    return int(match.group(1))
+
+
+def staged_hits() -> list[str]:
+    diff = subprocess.run(
+        ["git", "diff", "--cached", "--no-color", "-U0", "--", "."],
+        check=False,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    if diff.returncode not in {0, 1}:
+        sys.stderr.write(diff.stderr)
+        sys.exit(2)
+
+    hits: list[str] = []
+    current_path: str | None = None
+    new_line: int | None = None
+    for line in diff.stdout.splitlines():
+        if line.startswith("+++ "):
+            target = line[4:]
+            if target == "/dev/null":
+                current_path = None
+            elif target.startswith("b/"):
+                current_path = target[2:]
+            else:
+                current_path = target
+            if current_path and is_excluded(current_path):
+                current_path = None
+            continue
+
+        hunk_start = parse_hunk_start(line)
+        if hunk_start is not None:
+            new_line = hunk_start
+            continue
+
+        if current_path is None or new_line is None:
+            continue
+        if line.startswith("+++"):
+            continue
+        if line.startswith("+"):
+            content = line[1:]
+            if is_conflict_marker_line(content):
+                hits.append(f"{current_path}:{new_line}:+{content}")
+            new_line += 1
+        elif line.startswith("-"):
+            continue
+        else:
+            new_line += 1
+    return hits
+
+
+for item in (staged_hits() if mode == "staged" else tree_hits()):
+    print(item)
+PY
+)"
+
+if [ -n "$hits" ]; then
+  if [ "$JSON" = true ]; then
+    emit_json "fail" "$hits"
+  else
+    echo "FAIL: leftover git conflict markers detected ($MODE scan):" >&2
+    echo "$hits" >&2
+    echo "" >&2
+    echo "Resolve the conflict(s) and remove every <<<<<<< / ||||||| / >>>>>>> line before committing or landing." >&2
+  fi
+  exit 1
+fi
+
+if [ "$JSON" = true ]; then
+  emit_json "pass" ""
+else
+  echo "PASS: no conflict markers ($MODE scan)"
+fi
+exit 0

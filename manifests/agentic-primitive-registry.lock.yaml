@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-06-12T16:52:22+00:00'
+generated_at: '2026-06-12T17:23:15+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
@@ -893,6 +893,18 @@ primitives:
   - .claude/settings.json
   - hooks/confidentiality-enforcer.sh
   sha256: 159fb758f163545c36f1892f3d4a13bfbf24a12dfd93387b0b52544ee8d06566
+- id: hooks/conflict-marker-guard.sh
+  kind: hook
+  owner_adr: ADR-116
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: core
+  runtime_projection: true
+  projection_targets:
+  - .claude/settings.json
+  - .codex/hooks.json
+  - hooks/conflict-marker-guard.sh
+  sha256: 4fc4ccb2d4145d63cb45302ec9bf6a2a61f39eb68b7702c5b7b3d1dd0ad08707
 - id: hooks/consequence-evaluator.sh
   kind: hook
   owner_adr: ADR-144
@@ -5410,6 +5422,17 @@ primitives:
   - scripts/cos-config-audit.sh
   - manifests/primitive-readiness-protected-install-surfaces.yaml
   sha256: baa7137a8a31f37b2ac1779b80136e6b94bd6d7d221b3d7ebea32b099edc9f74
+- id: scripts/cos-conflict-marker-guard
+  kind: script
+  owner_adr: ADR-116
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - .ai/primitives/tools
+  - scripts/cos-conflict-marker-guard
+  sha256: 0db20f5977a472dd326478e1d882f1443adbed4a6d65c932cf3a64c4e1cfef0a
 - id: scripts/cos-consumer-fleet-audit
   kind: script
   owner_adr: ADR-136
