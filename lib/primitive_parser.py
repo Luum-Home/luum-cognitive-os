@@ -227,7 +227,11 @@ def _parse_markdown_like(text: str) -> _ParsedMarkdown:
             try:
                 loaded = yaml.safe_load(raw) or {}
                 if isinstance(loaded, dict):
-                    frontmatter = loaded
+                    frontmatter = dict(loaded)
+                    metadata = loaded.get("metadata")
+                    if isinstance(metadata, dict):
+                        for key, value in metadata.items():
+                            frontmatter.setdefault(str(key), value)
                 else:
                     frontmatter_error = "frontmatter-not-mapping"
             except yaml.YAMLError:

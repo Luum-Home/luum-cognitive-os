@@ -3,7 +3,7 @@
 
 > Level-1 always-load routing hints. Load `skills/CATALOG-COMPACT.md` for broader discovery; load full `SKILL.md` only on invocation.
 
-Total skills: 183
+Total skills: 184
 
 - agent-kpis [b]: Calculate and report Cognit…; k=agent-kpis,calculate
 - analyze-improvements [b]: Analyze KPIs, error pattern…; k=analyze-improvements,analyze
@@ -23,6 +23,7 @@ Total skills: 183
 - llm-status [b]: Inspect LLM dispatch state…; k=llm-status,inspect
 - model-optimizer [b]: Analyze skill execution met…; k=model-optimizer,analyze
 - pattern-audit [b]: Grep/regex audit with manda…; k=pattern-audit,grep
+- plan-chore [b]: Create a portable chore pla…; k=plan-chore,create
 - preserved-wip-cleanup [b]: Backup preserved WIP, remov…; k=preserved-wip-cleanup,backup
 - primitive-authoring [b]: 'Use when building a new sk…; k=primitive-authoring,building
 - primitive-harness-coverage [b]: Generate the primitive surf…; k=primitive-harness-coverage,generate

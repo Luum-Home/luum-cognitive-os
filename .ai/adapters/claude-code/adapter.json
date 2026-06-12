@@ -6,7 +6,7 @@
   "harness": "claude",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 781,
+  "projected_primitive_count": 782,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": true,
@@ -3240,6 +3240,13 @@
       "fidelity": "documented-only",
       "portable_id": "packages/sdd-compound/skills/plan-bug/SKILL.md",
       "primitive_file": "primitives/skills/packages-sdd-compound-skills-plan-bug-skill-md-0fb513cb65.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/sdd-compound/skills/plan-chore/SKILL.md",
+      "primitive_file": "primitives/skills/packages-sdd-compound-skills-plan-chore-skill-md-4ee20f2810.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {

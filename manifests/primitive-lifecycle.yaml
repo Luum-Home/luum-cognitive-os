@@ -8289,6 +8289,30 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: manual
   metrics_file: "none"
+- id: packages/sdd-compound/skills/plan-chore/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-sdd-compound
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/sdd-compound/skills/plan-chore/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; package-backed skill `sdd-compound/plan-chore` remains shared between COS and adopter projects and is covered by aggregate package skill portability proof plus dedicated stack-agnostic regression coverage.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/sdd-compound/skills/plan-chore/SKILL.md
+  - python3 -m pytest tests/unit/test_plan_chore_skill.py -q
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: "none"
 - id: packages/sdd-compound/skills/plan-feature/SKILL.md
   kind: skill
   owner_adr: ADR-314

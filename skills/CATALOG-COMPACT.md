@@ -3,7 +3,7 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | scope | audience | 1-line description`. `scope` is `[core]` for top-level skills and `[ext:pack]` for packaged extension skills. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 183
+Total skills: 184
 
 ## os (23)
 
@@ -82,7 +82,7 @@ Total skills: 183
 | tool-discovery | [core] | Discover new open-source tools that could enhance Cognitive OS capabilities |
 | vulnerability-scan | [core] | Run LLM vulnerability probes using Garak against configured endpoints. |
 
-## both (37)
+## both (38)
 
 | Skill | Scope | Description |
 |-------|-------|-------------|
@@ -104,6 +104,7 @@ Total skills: 183
 | llm-status | [core] | Inspect LLM dispatch state — provider inventory, kill-switches, cascade |
 | model-optimizer | [core] | Analyze skill execution metrics and recommend optimal model routing |
 | pattern-audit | [core] | Grep/regex audit with mandatory sampling — forbids unverified severity |
+| plan-chore | [core] | Create a portable chore plan with verified assumptions, reversible steps, and stack-specific validation. |
 | preserved-wip-cleanup | [core] | Backup preserved WIP, remove temporary blockers, and prove the inventory |
 | primitive-authoring | [core] | 'Use when building a new skill/rule/hook/script/workflow, converting |
 | primitive-harness-coverage | [core] | Generate the primitive surface coverage report and inspect IDE/CLI/UI/report |

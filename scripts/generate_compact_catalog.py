@@ -71,6 +71,25 @@ def parse_frontmatter(text: str) -> dict:
             val = val[1:-1]
         result[key] = val
         i += 1
+    metadata: dict[str, str] = {}
+    metadata_start: int | None = None
+    for index, line in enumerate(lines):
+        if re.match(r"^metadata\s*:\s*$", line):
+            metadata_start = index + 1
+            break
+    if metadata_start is not None:
+        for line in lines[metadata_start:]:
+            if not line.startswith((" ", "\t")):
+                break
+            m = re.match(r"^\s+([A-Za-z_][A-Za-z0-9_-]*)\s*:\s*(.*)$", line)
+            if not m:
+                continue
+            key, val = m.group(1), m.group(2).rstrip()
+            if len(val) >= 2 and ((val[0] == val[-1] == '"') or (val[0] == val[-1] == "'")):
+                val = val[1:-1]
+            metadata[key] = val
+    for key, val in metadata.items():
+        result.setdefault(key, val)
     return result
 
 

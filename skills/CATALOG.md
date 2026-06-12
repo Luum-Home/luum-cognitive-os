@@ -81,6 +81,7 @@
 | evaluate-plan | Evaluate a plan before implementation, score 0-50 | `/evaluate-plan` | project |
 | plan-bug | Plan bug resolution with systematic approach | `/plan-bug` | project |
 | plan-feature | Plan feature implementation with phases | `/plan-feature` | project |
+| plan-chore | Plan maintenance, cleanup, refactor, migration, dependency, config, documentation, or test-quality work across stacks | `/plan-chore` | both |
 | resource-governor | Budget enforcement, model downgrade chain, efficiency metrics | `/resource-governor` | project |
 | readiness-check | Implementation readiness gate: validates prerequisites before coding | `/readiness-check` | project |
 | sprint | Lightweight sprint tracking: plan, status, retro, course-correct | `/sprint` | project |
@@ -284,6 +285,7 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **persistent-agent** — Create persistent agents that maintain their own state across sessions.
 - **phoenix-trace-ui** — Use when you need this Cognitive OS skill: Start the Arize Phoenix LLM-native
 - **plan-bug** — Create a bug fix plan with root cause analysis and evaluation scoring.
+- **plan-chore** — Create a stack-agnostic engineering chore plan for maintenance, cleanup, migration, dependency, config, documentation, or refactor work before implementation. Use when a user asks to plan non-featu...
 - **plan-feature** — Create a feature implementation plan with evaluation scoring. Use before
 - **planning-poker** — Multi-agent complexity estimation using planning-poker rounds — triangulate
 - **pr-review** — Use when you need this Cognitive OS skill: Pull Request review skill.
