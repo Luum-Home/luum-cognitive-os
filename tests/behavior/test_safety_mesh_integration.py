@@ -862,7 +862,7 @@ class TestPrivateModeSkipsHooks:
         self, run_hook, cognitive_os_env, hook_name, tmp_path
     ):
         env = cognitive_os_env["env"]
-        private_flag = Path("/tmp/claude-private-mode-active")
+        private_flag = Path(env.get("CLAUDE_PRIVATE_MODE_FLAG", "/tmp/claude-private-mode-active"))
         try:
             private_flag.touch()
             input_json = make_agent_input("fix all the bugs everywhere")

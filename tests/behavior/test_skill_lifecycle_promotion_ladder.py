@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import subprocess
+from datetime import datetime, timezone
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -21,6 +22,9 @@ def _write_jsonl(path: Path, rows: list[dict]) -> None:
 
 
 def test_doctrine_proposer_writes_skill_lifecycle_proposal_without_promoting(tmp_path: Path) -> None:
+    now = datetime.now(timezone.utc)
+    invocation_time = now.replace(microsecond=0).isoformat()
+    feedback_time = now.replace(microsecond=0).isoformat().replace("+00:00", "Z")
     skill = tmp_path / ".cognitive-os" / "skills" / "auto-generated" / "useful-sandbox" / "SKILL.md"
     _write(
         skill,
@@ -40,13 +44,13 @@ status: sandbox
     _write_jsonl(
         tmp_path / ".cognitive-os" / "metrics" / "skill-invocations.jsonl",
         [
-            {"timestamp": "2026-05-05T10:00:00+00:00", "payload": {"skill_name": "useful-sandbox"}}
+            {"timestamp": invocation_time, "payload": {"skill_name": "useful-sandbox"}}
             for _ in range(50)
         ],
     )
     _write_jsonl(
         tmp_path / ".cognitive-os" / "metrics" / "skill-feedback.jsonl",
-        [{"timestamp": "2026-05-05T10:01:00Z", "skill": "useful-sandbox", "success": True} for _ in range(5)],
+        [{"timestamp": feedback_time, "skill": "useful-sandbox", "success": True} for _ in range(5)],
     )
 
     result = subprocess.run(

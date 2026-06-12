@@ -23,8 +23,9 @@ if command -v jq >/dev/null 2>&1; then
   fi
 fi
 
-TMP=$(mktemp "${TMPDIR:-/tmp}/cos-subagent-preflight.XXXXXX.json")
-OUT=$(mktemp "${TMPDIR:-/tmp}/cos-subagent-preflight.XXXXXX.out")
+TMP_DIR="${TMPDIR:-/tmp}"
+TMP=$(mktemp "$TMP_DIR/cos-subagent-preflight-json.XXXXXX")
+OUT=$(mktemp "$TMP_DIR/cos-subagent-preflight-out.XXXXXX")
 printf '%s' "$INPUT" > "$TMP"
 set +e
 python3 "$SCRIPT" --hook-json-file "$TMP" --json > "$OUT" 2>&1

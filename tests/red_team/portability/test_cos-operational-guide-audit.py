@@ -25,12 +25,13 @@ import json
 import os
 import subprocess
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 SCRIPT = REPO_ROOT / "scripts" / "cos-operational-guide-audit.py"
 
-TODAY = "2026-05-12"
+TODAY = datetime.now(timezone.utc).date().isoformat()
 
 
 def _write_adr(

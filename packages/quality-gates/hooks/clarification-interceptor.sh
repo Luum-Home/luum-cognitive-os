@@ -55,7 +55,8 @@ if [ "$TOOL_NAME" != "Agent" ] && [ "$TOOL_NAME" != "task" ] && [ "$TOOL_NAME" !
 fi
 
 # Check private mode — skip if active
-if [ -f "/tmp/claude-private-mode-active" ]; then
+PRIVATE_MODE_FLAG="${CLAUDE_PRIVATE_MODE_FLAG:-/tmp/claude-private-mode-active}"
+if [ -f "$PRIVATE_MODE_FLAG" ]; then
   exit 0
 fi
 
