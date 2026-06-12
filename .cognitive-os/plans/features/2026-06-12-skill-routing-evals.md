@@ -42,7 +42,10 @@ can own deterministic routing behavior.
 
 ## Approach
 
-Build this in two portable slices:
+Build this in two portable slices. In both slices, keep the canonical artifact
+cross-CLI/IDE: Claude Code, Codex, OpenCode, shell/CI, and generated `.ai`
+overlays should consume the same behavior contract without embedding one
+harness's execution model into the skill body.
 
 1. **Skill adaptation slice:** update `packages/sdd-compound/skills/plan-feature/SKILL.md`
    using the useful source workflow ideas while removing stack/harness coupling.
@@ -74,7 +77,7 @@ heavier eval systems.
 ### New files
 
 - `tests/fixtures/skill-routing-evals/plan-feature-boundaries.md` — adapted source eval cases in repo-native, portable markdown.
-- `tests/unit/test_plan_feature_skill.py` — portability regression tests for adapted `plan-feature` behavior and absence of source stack coupling.
+- `tests/unit/test_plan_feature_skill.py` — portability regression tests for adapted `plan-feature` behavior and absence of source stack or harness coupling.
 - `lib/skill_routing_evals.py` or `scripts/skill-routing-evals` — parser/runner for eval cases.
 - `tests/unit/test_skill_routing_evals.py` — parser/runner tests and the six adapted cases.
 - Optional later: `docs/09-Quality/testing/skill-routing-evals.md` if the feature graduates beyond test-only usage.
@@ -95,9 +98,12 @@ heavier eval systems.
   - explicit anti-boundaries for bug fixes and chores;
   - no implementation before plan approval.
 - Replace source-specific assumptions:
+  - Claude-only execution fields (`context: fork`, `agent`, `allowed-tools`,
+    `disable-model-invocation`) -> portable `metadata` and lifecycle/projection
+    evidence, with harness-specific behavior left to adapters;
   - `.claude/rules/**` / `.claude/sub-rules/**` -> discover local instructions
-    from `AGENTS.md`, `.cognitive-os/`, `.claude/`, `.codex/`, docs, and project
-    manifests when present;
+    from `AGENTS.md`, `.cognitive-os/`, `.claude/`, `.codex/`, `.opencode/`,
+    `.ai/`, docs, and project manifests when present;
   - Firebase/Next/React/Storybook/Tailwind -> stack signals discovered from repo
     manifests/config, similar to `dod-check`;
   - `ai/plans/features/` only -> first existing planning root, defaulting to
@@ -105,8 +111,8 @@ heavier eval systems.
   - `@/ui` inventory -> generic design-system/shared-UI discovery.
 
 **Done when:** adapted `plan-feature` validates with `quick_validate`, package
-skill portability tests, scope classifier, and a dedicated regression test that
-fails on source stack coupling.
+skill portability tests, scope classifier, and dedicated regression tests that
+fail on source stack coupling or Claude/IDE-only coupling.
 
 ### Task 1: Define portable routing eval schema
 
@@ -232,7 +238,9 @@ needed.
     for deterministic aliases such as ticket IDs.
 - **Harness coupling.**
   - Mitigation: keep dataset under repo/test fixtures, not `.claude/`, and avoid
-    assuming Claude command semantics.
+    assuming Claude command semantics. The canonical skill must remain usable from
+    Claude Code, Codex, OpenCode, shell/CI, and generated `.ai` overlays; any
+    CLI/IDE-specific invocation belongs in projection metadata or adapters.
 - **Stack coupling from source `SKILL.md`.**
   - Mitigation: preserve the workflow shape but bind stack-specific guidance to
     detected stack signals and project-local instructions.
@@ -259,6 +267,6 @@ needed.
 ## Recommendation
 
 Approve as a two-step feature slice. First adapt `plan-feature` itself into a
-portable, stack-aware feature-planning skill. Then land the eval harness and
+portable, stack-aware, cross-CLI/IDE feature-planning skill. Then land the eval harness and
 adapted fixture to report whether current router behavior matches the desired
 `plan-feature` contract before changing routing.
