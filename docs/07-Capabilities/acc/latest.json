@@ -3700,8 +3700,8 @@
         "actions": {
           "advise": 3,
           "allow": 19,
-          "block": 135,
-          "warn": 226
+          "block": 137,
+          "warn": 230
         },
         "primitive_count": 9
       }
@@ -128202,7 +128202,7 @@
       "confidence": 0.82,
       "consumer_accessibility": "runtime-evidence",
       "evidence": [
-        "intervention_rows:167"
+        "intervention_rows:171"
       ],
       "id": "primitive_intervention:reinvention-check",
       "kind": "primitive_intervention",
@@ -128217,7 +128217,7 @@
       ],
       "risk": "medium",
       "signature": {
-        "rows": 167
+        "rows": 171
       },
       "source": {
         "path": ".cognitive-os/metrics/primitive-interventions.jsonl",
@@ -128229,7 +128229,7 @@
       "confidence": 0.82,
       "consumer_accessibility": "runtime-evidence",
       "evidence": [
-        "intervention_rows:52"
+        "intervention_rows:54"
       ],
       "id": "primitive_intervention:skill-router",
       "kind": "primitive_intervention",
@@ -128244,7 +128244,7 @@
       ],
       "risk": "medium",
       "signature": {
-        "rows": 52
+        "rows": 54
       },
       "source": {
         "path": ".cognitive-os/metrics/primitive-interventions.jsonl",
@@ -146639,7 +146639,7 @@
       "coverage_debt:181"
     ]
   },
-  "generated_at": "2026-06-12T20:13:11Z",
+  "generated_at": "2026-06-12T20:40:54Z",
   "harness_projection": {
     "agents-md": {
       "display_name": "AGENTS.md",

@@ -10,6 +10,8 @@ Scope:
 - `review_by` MUST be parseable as an ISO date and MUST be >= today. A passed
   review_by means the sunset decision is overdue — the test fails to force
   the operator to act (keep with new date, or downgrade to `disabled`).
+- MemU is an explicit historical exception: ADR-060 keeps it as `pip` while
+  preserving the 2026-06-01 review marker as audit evidence.
 
 Truth sources:
 - `cognitive-os.yaml` services block (authoritative for mode + review_by).
@@ -33,7 +35,8 @@ pytestmark = [pytest.mark.contract, pytest.mark.unit]
 
 # Modes that REQUIRE a review_by declaration. Services in `pip` / `cli` /
 # `always` mode are either library-backed or truly core and are not in scope
-# for the sunset policy (MemU is the one explicit exception — Part B spec).
+# for the generic sunset policy. MemU has its own historical audit contract
+# below because ADR-060 keeps it as pip while preserving its 2026-06-01 marker.
 REVIEW_REQUIRED_MODES = {"on_demand", "cloud", "disabled"}
 
 # Classifications considered "reference / optional-extension" for the sunset
@@ -49,8 +52,9 @@ REVIEW_REQUIRED_CLASSIFICATIONS = {
 }
 
 # Explicit inclusions that don't fit the mode filter but are required by
-# catalog policy (Part B — MemU has explicit sunset deadline 2026-06-01).
-ALWAYS_REQUIRED = {"memu"}
+# catalog policy. MemU is intentionally not listed here; see
+# test_memu_preserves_historical_review_marker_while_remaining_pip.
+ALWAYS_REQUIRED: set[str] = set()
 
 
 def _repo_root() -> Path:
@@ -131,7 +135,7 @@ def test_sunset_policy_covers_at_least_the_known_services():
     ADR-060 (2026-04-24): Opik removed per local-only policy (was mode:cloud,
     Phoenix covers observability locally)."""
     names = {name for name, _ in _services_requiring_review_by()}
-    expected_subset = {"valkey", "memu", "automaker"}
+    expected_subset = {"valkey", "automaker"}
     missing = expected_subset - names
     assert not missing, (
         "Sunset-policy filter lost services it should cover. "
@@ -197,17 +201,18 @@ def test_review_by_dates_are_staggered():
     )
 
 
-def test_memu_has_executed_sunset_deadline():
-    """Part B: MemU sunset deadline was 2026-06-01 and is now executed."""
+def test_memu_preserves_historical_review_marker_while_remaining_pip():
+    """ADR-060 keeps MemU pip-first while preserving its 2026-06-01 audit marker."""
     services = _load_cognitive_os_services()
     memu = services.get("memu")
     assert memu, "memu entry missing from cognitive-os.yaml services block"
-    assert "review_by" in memu, "memu must declare review_by per Part B"
+    assert "review_by" in memu, "memu must keep historical review_by audit evidence"
     assert _parse_review_by(memu["review_by"]) == _dt.date(2026, 6, 1), (
-        "MemU sunset deadline is fixed at 2026-06-01 per catalog §Memory."
+        "MemU review marker is fixed at 2026-06-01 per catalog §Memory."
     )
-    assert memu.get("mode") == "disabled", (
-        "MemU review date has passed; catalog policy requires the sunset decision to be executed."
+    assert memu.get("mode") == "pip", (
+        "ADR-060 and the service-health contract keep MemU classified as pip; "
+        "Docker remains a reference/opt-in fallback, not the default runtime."
     )
 
 
