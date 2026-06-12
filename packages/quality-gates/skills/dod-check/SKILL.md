@@ -6,8 +6,8 @@ metadata:
   version: 1.2.0
   audience: project
   platforms:
-  - claude-code
-  - codex
+  - cos-projected-cli-ide
+  - generic-cli
   prerequisites: []
   inputs:
   - task_description (optional): What was done

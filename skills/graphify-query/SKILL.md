@@ -9,8 +9,7 @@ effort: sonnet
 summary_line: Maintainer workflow for Graphify-backed repository graph builds and context-selection queries.
 version: 1.0.0
 platforms:
-- claude-code
-- codex
+- cos-projected-cli-ide
 - generic-cli
 platform_support:
   generic-cli:

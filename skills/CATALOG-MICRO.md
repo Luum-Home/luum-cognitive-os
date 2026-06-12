@@ -24,6 +24,7 @@ Total skills: 184
 - model-optimizer [b]: Analyze skill execution met…; k=model-optimizer,analyze
 - pattern-audit [b]: Grep/regex audit with manda…; k=pattern-audit,grep
 - plan-chore [b]: Create a portable chore pla…; k=plan-chore,create
+- plan-feature [b]: Create a portable feature p…; k=plan-feature,create
 - preserved-wip-cleanup [b]: Backup preserved WIP, remov…; k=preserved-wip-cleanup,backup
 - primitive-authoring [b]: 'Use when building a new sk…; k=primitive-authoring,building
 - primitive-harness-coverage [b]: Generate the primitive surf…; k=primitive-harness-coverage,generate
@@ -149,7 +150,6 @@ Total skills: 184
 - persistent-agent [p]: Create persistent agents th…; k=persistent-agent,create
 - phoenix-trace-ui [p]: Start the Arize Phoenix LLM…; k=phoenix-trace-ui,start
 - plan-bug [p]: Create a bug fix plan with…; k=plan-bug,create
-- plan-feature [p]: Create a feature implementa…; k=plan-feature,create
 - planning-poker [p]: Multi-agent complexity esti…; k=planning-poker,multi-agent
 - pr-review [p]: Pull Request review skill.; k=pr-review,pull
 - private-mode [p]: Toggle private conversation…; k=private-mode,toggle

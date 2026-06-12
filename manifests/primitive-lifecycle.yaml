@@ -7818,15 +7818,40 @@ primitives:
   supported_harnesses:
   - claude
   - codex
-  - shell
+  - cursor
+  - devin
+  - vscode-copilot
+  - agents-md
+  - opencode
+  - google-antigravity
+  - qwen-code
+  - kimi-code
+  - minimax-maxclaw
+  - deepseek-provider
+  - shell-ci
+  - gemini-cli
+  - warp
+  - amp-code
+  - jetbrains-junie
+  - qoder
+  - factory-droid
+  - kiro
+  - cline
+  - continue-dev
+  - kilo-code
+  - zed-ai
+  - augment-code
+  - goose
+  - aider
   projection_targets:
   - packages/quality-gates/skills/dod-check/SKILL.md
   runtime_projection: false
-  behavior_evidence: Manual scope calibration iteration 021; package-backed skill `quality-gates/dod-check` remains shared between COS and adopter projects, with portable DoD profile inference, automatic stack-signal detection, and hermetic smoke coverage across simulated consumer project stacks.
+  behavior_evidence: Manual scope calibration iteration 022; package-backed skill `quality-gates/dod-check` remains shared between COS and adopter projects, with portable DoD profile inference, automatic stack-signal detection, hermetic smoke coverage across simulated consumer project stacks, and documented projection across every harness declared in manifests/harness-projection.yaml.
   evidence_commands:
   - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/quality-gates/skills/dod-check/SKILL.md
   - python3 -m pytest tests/behavior/test_dod_stack_detection_smoke.py -q
+  - python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q
   docs_claim_level: advisory
   exit_behavior: manual
   metrics_file: "none"
@@ -8302,15 +8327,40 @@ primitives:
   supported_harnesses:
   - claude
   - codex
-  - shell
+  - cursor
+  - devin
+  - vscode-copilot
+  - agents-md
+  - opencode
+  - google-antigravity
+  - qwen-code
+  - kimi-code
+  - minimax-maxclaw
+  - deepseek-provider
+  - shell-ci
+  - gemini-cli
+  - warp
+  - amp-code
+  - jetbrains-junie
+  - qoder
+  - factory-droid
+  - kiro
+  - cline
+  - continue-dev
+  - kilo-code
+  - zed-ai
+  - augment-code
+  - goose
+  - aider
   projection_targets:
   - packages/sdd-compound/skills/plan-chore/SKILL.md
   runtime_projection: false
-  behavior_evidence: Manual scope calibration iteration 014; package-backed skill `sdd-compound/plan-chore` remains shared between COS and adopter projects and is covered by aggregate package skill portability proof plus dedicated stack-agnostic regression coverage.
+  behavior_evidence: Manual scope calibration iteration 015; package-backed skill `sdd-compound/plan-chore` remains shared between COS and adopter projects and is covered by aggregate package skill portability proof, dedicated stack-agnostic regression coverage, and documented projection across every harness declared in manifests/harness-projection.yaml.
   evidence_commands:
   - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/sdd-compound/skills/plan-chore/SKILL.md
   - python3 -m pytest tests/unit/test_plan_chore_skill.py -q
+  - python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q
   docs_claim_level: advisory
   exit_behavior: manual
   metrics_file: "none"
@@ -8326,14 +8376,40 @@ primitives:
   supported_harnesses:
   - claude
   - codex
-  - shell
+  - cursor
+  - devin
+  - vscode-copilot
+  - agents-md
+  - opencode
+  - google-antigravity
+  - qwen-code
+  - kimi-code
+  - minimax-maxclaw
+  - deepseek-provider
+  - shell-ci
+  - gemini-cli
+  - warp
+  - amp-code
+  - jetbrains-junie
+  - qoder
+  - factory-droid
+  - kiro
+  - cline
+  - continue-dev
+  - kilo-code
+  - zed-ai
+  - augment-code
+  - goose
+  - aider
   projection_targets:
   - packages/sdd-compound/skills/plan-feature/SKILL.md
   runtime_projection: false
-  behavior_evidence: Manual scope calibration iteration 013; package-backed skill `sdd-compound/plan-feature` remains shared between COS and adopter projects and is covered by aggregate package skill portability proof.
+  behavior_evidence: Manual scope calibration iteration 016; package-backed skill `sdd-compound/plan-feature` is stack-agnostic, shared between COS and adopter projects, uses canonical CLI/IDE projection metadata instead of one-harness fields, and is covered by aggregate package skill portability proof plus dedicated feature-plan regression coverage.
   evidence_commands:
   - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/sdd-compound/skills/plan-feature/SKILL.md
+  - python3 -m pytest tests/unit/test_plan_feature_skill.py -q
+  - python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q
   docs_claim_level: advisory
   exit_behavior: manual
   metrics_file: "none"
@@ -13590,15 +13666,40 @@ primitives:
   supported_harnesses:
   - claude
   - codex
-  - shell
+  - cursor
+  - devin
+  - vscode-copilot
+  - agents-md
+  - opencode
+  - google-antigravity
+  - qwen-code
+  - kimi-code
+  - minimax-maxclaw
+  - deepseek-provider
+  - shell-ci
+  - gemini-cli
+  - warp
+  - amp-code
+  - jetbrains-junie
+  - qoder
+  - factory-droid
+  - kiro
+  - cline
+  - continue-dev
+  - kilo-code
+  - zed-ai
+  - augment-code
+  - goose
+  - aider
   projection_targets:
   - scripts/cos-graphify-build
   runtime_projection: false
-  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial, Phase D receipts, direct executable smoke, and generated overlay metadata cover local wrapper behavior without installing upstream IDE surfaces.
+  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial, Phase D receipts, direct executable smoke, and generated overlay metadata cover local wrapper behavior across every harness declared in manifests/harness-projection.yaml without installing upstream IDE surfaces.
   evidence_commands:
   - .venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q
   - python3 scripts/portable_ai_overlay.py --check
   - python3 scripts/cos-registry-lock --audit
+  - python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q
   rollback_or_repair_command: Remove Graphify skill/script references or downgrade the wrapper role before claiming portable context-optimization support.
   sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
   docs_claim_level: advisory
@@ -13617,15 +13718,40 @@ primitives:
   supported_harnesses:
   - claude
   - codex
-  - shell
+  - cursor
+  - devin
+  - vscode-copilot
+  - agents-md
+  - opencode
+  - google-antigravity
+  - qwen-code
+  - kimi-code
+  - minimax-maxclaw
+  - deepseek-provider
+  - shell-ci
+  - gemini-cli
+  - warp
+  - amp-code
+  - jetbrains-junie
+  - qoder
+  - factory-droid
+  - kiro
+  - cline
+  - continue-dev
+  - kilo-code
+  - zed-ai
+  - augment-code
+  - goose
+  - aider
   projection_targets:
   - scripts/cos-graphify-context-replay-benchmark
   runtime_projection: false
-  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial, Phase D receipts, direct executable smoke, and generated overlay metadata cover local wrapper behavior without installing upstream IDE surfaces.
+  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial, Phase D receipts, direct executable smoke, and generated overlay metadata cover local wrapper behavior across every harness declared in manifests/harness-projection.yaml without installing upstream IDE surfaces.
   evidence_commands:
   - .venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q
   - python3 scripts/portable_ai_overlay.py --check
   - python3 scripts/cos-registry-lock --audit
+  - python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q
   rollback_or_repair_command: Remove Graphify skill/script references or downgrade the wrapper role before claiming portable context-optimization support.
   sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
   docs_claim_level: advisory
@@ -13644,15 +13770,40 @@ primitives:
   supported_harnesses:
   - claude
   - codex
-  - shell
+  - cursor
+  - devin
+  - vscode-copilot
+  - agents-md
+  - opencode
+  - google-antigravity
+  - qwen-code
+  - kimi-code
+  - minimax-maxclaw
+  - deepseek-provider
+  - shell-ci
+  - gemini-cli
+  - warp
+  - amp-code
+  - jetbrains-junie
+  - qoder
+  - factory-droid
+  - kiro
+  - cline
+  - continue-dev
+  - kilo-code
+  - zed-ai
+  - augment-code
+  - goose
+  - aider
   projection_targets:
   - scripts/cos-graphify-hotspot-report
   runtime_projection: false
-  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial, Phase D receipts, direct executable smoke, and generated overlay metadata cover local wrapper behavior without installing upstream IDE surfaces.
+  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial, Phase D receipts, direct executable smoke, and generated overlay metadata cover local wrapper behavior across every harness declared in manifests/harness-projection.yaml without installing upstream IDE surfaces.
   evidence_commands:
   - .venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q
   - python3 scripts/portable_ai_overlay.py --check
   - python3 scripts/cos-registry-lock --audit
+  - python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q
   rollback_or_repair_command: Remove Graphify skill/script references or downgrade the wrapper role before claiming portable context-optimization support.
   sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
   docs_claim_level: advisory
@@ -13671,15 +13822,40 @@ primitives:
   supported_harnesses:
   - claude
   - codex
-  - shell
+  - cursor
+  - devin
+  - vscode-copilot
+  - agents-md
+  - opencode
+  - google-antigravity
+  - qwen-code
+  - kimi-code
+  - minimax-maxclaw
+  - deepseek-provider
+  - shell-ci
+  - gemini-cli
+  - warp
+  - amp-code
+  - jetbrains-junie
+  - qoder
+  - factory-droid
+  - kiro
+  - cline
+  - continue-dev
+  - kilo-code
+  - zed-ai
+  - augment-code
+  - goose
+  - aider
   projection_targets:
   - scripts/cos-graphify-phase-d-semantic
   runtime_projection: false
-  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial, Phase D receipts, direct executable smoke, and generated overlay metadata cover local wrapper behavior without installing upstream IDE surfaces.
+  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial, Phase D receipts, direct executable smoke, and generated overlay metadata cover local wrapper behavior across every harness declared in manifests/harness-projection.yaml without installing upstream IDE surfaces.
   evidence_commands:
   - .venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q
   - python3 scripts/portable_ai_overlay.py --check
   - python3 scripts/cos-registry-lock --audit
+  - python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q
   rollback_or_repair_command: Remove Graphify skill/script references or downgrade the wrapper role before claiming portable context-optimization support.
   sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
   docs_claim_level: advisory
@@ -13698,15 +13874,40 @@ primitives:
   supported_harnesses:
   - claude
   - codex
-  - shell
+  - cursor
+  - devin
+  - vscode-copilot
+  - agents-md
+  - opencode
+  - google-antigravity
+  - qwen-code
+  - kimi-code
+  - minimax-maxclaw
+  - deepseek-provider
+  - shell-ci
+  - gemini-cli
+  - warp
+  - amp-code
+  - jetbrains-junie
+  - qoder
+  - factory-droid
+  - kiro
+  - cline
+  - continue-dev
+  - kilo-code
+  - zed-ai
+  - augment-code
+  - goose
+  - aider
   projection_targets:
   - scripts/cos-graphify-preload-matrix
   runtime_projection: false
-  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial, Phase D receipts, direct executable smoke, and generated overlay metadata cover local wrapper behavior without installing upstream IDE surfaces.
+  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial, Phase D receipts, direct executable smoke, and generated overlay metadata cover local wrapper behavior across every harness declared in manifests/harness-projection.yaml without installing upstream IDE surfaces.
   evidence_commands:
   - .venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q
   - python3 scripts/portable_ai_overlay.py --check
   - python3 scripts/cos-registry-lock --audit
+  - python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q
   rollback_or_repair_command: Remove Graphify skill/script references or downgrade the wrapper role before claiming portable context-optimization support.
   sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
   docs_claim_level: advisory
@@ -13725,15 +13926,40 @@ primitives:
   supported_harnesses:
   - claude
   - codex
-  - shell
+  - cursor
+  - devin
+  - vscode-copilot
+  - agents-md
+  - opencode
+  - google-antigravity
+  - qwen-code
+  - kimi-code
+  - minimax-maxclaw
+  - deepseek-provider
+  - shell-ci
+  - gemini-cli
+  - warp
+  - amp-code
+  - jetbrains-junie
+  - qoder
+  - factory-droid
+  - kiro
+  - cline
+  - continue-dev
+  - kilo-code
+  - zed-ai
+  - augment-code
+  - goose
+  - aider
   projection_targets:
   - scripts/cos-graphify-run-telemetry
   runtime_projection: false
-  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial, Phase D receipts, direct executable smoke, and generated overlay metadata cover local wrapper behavior without installing upstream IDE surfaces.
+  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial, Phase D receipts, direct executable smoke, and generated overlay metadata cover local wrapper behavior across every harness declared in manifests/harness-projection.yaml without installing upstream IDE surfaces.
   evidence_commands:
   - .venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q
   - python3 scripts/portable_ai_overlay.py --check
   - python3 scripts/cos-registry-lock --audit
+  - python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q
   rollback_or_repair_command: Remove Graphify skill/script references or downgrade the wrapper role before claiming portable context-optimization support.
   sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
   docs_claim_level: advisory
@@ -13752,15 +13978,40 @@ primitives:
   supported_harnesses:
   - claude
   - codex
-  - shell
+  - cursor
+  - devin
+  - vscode-copilot
+  - agents-md
+  - opencode
+  - google-antigravity
+  - qwen-code
+  - kimi-code
+  - minimax-maxclaw
+  - deepseek-provider
+  - shell-ci
+  - gemini-cli
+  - warp
+  - amp-code
+  - jetbrains-junie
+  - qoder
+  - factory-droid
+  - kiro
+  - cline
+  - continue-dev
+  - kilo-code
+  - zed-ai
+  - augment-code
+  - goose
+  - aider
   projection_targets:
   - scripts/cos-graphify-token-footprint
   runtime_projection: false
-  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial, Phase D receipts, direct executable smoke, and generated overlay metadata cover local wrapper behavior without installing upstream IDE surfaces.
+  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial, Phase D receipts, direct executable smoke, and generated overlay metadata cover local wrapper behavior across every harness declared in manifests/harness-projection.yaml without installing upstream IDE surfaces.
   evidence_commands:
   - .venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q
   - python3 scripts/portable_ai_overlay.py --check
   - python3 scripts/cos-registry-lock --audit
+  - python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q
   rollback_or_repair_command: Remove Graphify skill/script references or downgrade the wrapper role before claiming portable context-optimization support.
   sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
   docs_claim_level: advisory
@@ -13779,15 +14030,40 @@ primitives:
   supported_harnesses:
   - claude
   - codex
-  - shell
+  - cursor
+  - devin
+  - vscode-copilot
+  - agents-md
+  - opencode
+  - google-antigravity
+  - qwen-code
+  - kimi-code
+  - minimax-maxclaw
+  - deepseek-provider
+  - shell-ci
+  - gemini-cli
+  - warp
+  - amp-code
+  - jetbrains-junie
+  - qoder
+  - factory-droid
+  - kiro
+  - cline
+  - continue-dev
+  - kilo-code
+  - zed-ai
+  - augment-code
+  - goose
+  - aider
   projection_targets:
   - scripts/cos-graphify-token-reduction-smoke
   runtime_projection: false
-  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial, Phase D receipts, direct executable smoke, and generated overlay metadata cover local wrapper behavior without installing upstream IDE surfaces.
+  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial, Phase D receipts, direct executable smoke, and generated overlay metadata cover local wrapper behavior across every harness declared in manifests/harness-projection.yaml without installing upstream IDE surfaces.
   evidence_commands:
   - .venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q
   - python3 scripts/portable_ai_overlay.py --check
   - python3 scripts/cos-registry-lock --audit
+  - python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q
   rollback_or_repair_command: Remove Graphify skill/script references or downgrade the wrapper role before claiming portable context-optimization support.
   sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
   docs_claim_level: advisory
@@ -13806,17 +14082,42 @@ primitives:
   supported_harnesses:
   - claude
   - codex
-  - shell
+  - cursor
+  - devin
+  - vscode-copilot
+  - agents-md
+  - opencode
+  - google-antigravity
+  - qwen-code
+  - kimi-code
+  - minimax-maxclaw
+  - deepseek-provider
+  - shell-ci
+  - gemini-cli
+  - warp
+  - amp-code
+  - jetbrains-junie
+  - qoder
+  - factory-droid
+  - kiro
+  - cline
+  - continue-dev
+  - kilo-code
+  - zed-ai
+  - augment-code
+  - goose
+  - aider
   projection_targets:
   - skills/graphify-query/SKILL.md
   - .cognitive-os/skills/cos/graphify-query/SKILL.md
   - .claude/skills/graphify-query/SKILL.md
   runtime_projection: false
-  behavior_evidence: ADR-331 Graphify portable context optimization skill is materialized in source and harness skill projections; it forbids upstream IDE/hook installers and treats graph output as navigation support requiring source/test confirmation.
+  behavior_evidence: ADR-331 Graphify portable context optimization skill is materialized in canonical source and generated harness projections; it forbids upstream IDE/hook installers, projects as documented/advisory across every harness declared in manifests/harness-projection.yaml, and treats graph output as navigation support requiring source/test confirmation.
   evidence_commands:
   - .venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q
   - python3 scripts/portable_ai_overlay.py --check
   - python3 scripts/cos-registry-lock --audit
+  - python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q
   rollback_or_repair_command: Remove or demote the Graphify skill projection rows before claiming /graphify-query support.
   sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
   docs_claim_level: advisory
@@ -21858,13 +22159,38 @@ primitives:
   supported_harnesses:
   - claude
   - codex
-  - generic-cli
+  - cursor
+  - devin
+  - vscode-copilot
+  - agents-md
+  - opencode
+  - google-antigravity
+  - qwen-code
+  - kimi-code
+  - minimax-maxclaw
+  - deepseek-provider
+  - shell-ci
+  - gemini-cli
+  - warp
+  - amp-code
+  - jetbrains-junie
+  - qoder
+  - factory-droid
+  - kiro
+  - cline
+  - continue-dev
+  - kilo-code
+  - zed-ai
+  - augment-code
+  - goose
+  - aider
   projection_targets:
   - skills/skill-creator/SKILL.md
   runtime_projection: false
-  behavior_evidence: 'Manual scope calibration iteration 020: skill authoring is portable across COS, adopter projects, and user-local skill surfaces; COS package scaffolding is optional rather than the default behavior.'
+  behavior_evidence: 'Manual scope calibration iteration 021: skill authoring is portable across COS, adopter projects, and user-local skill surfaces; COS package scaffolding is optional rather than the default behavior, and canonical skill authoring projects across every harness declared in manifests/harness-projection.yaml.'
   evidence_commands:
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/skill-creator/SKILL.md
+  - python3 -m pytest tests/unit/test_cross_cli_ide_projection.py -q
   docs_claim_level: advisory
   exit_behavior: skill-procedure
   metrics_file: "none"

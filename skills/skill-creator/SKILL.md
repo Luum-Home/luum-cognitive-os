@@ -8,9 +8,8 @@ metadata:
   effort: opus
   summary_line: Create or update portable AI agent skills from high-level workflow descriptions.
   platforms:
-  - claude-code
-  - codex
-  - shell
+  - cos-projected-cli-ide
+  - generic-cli
   prerequisites: []
   routing_patterns:
   - pattern: \bskill[- ]?creator\b

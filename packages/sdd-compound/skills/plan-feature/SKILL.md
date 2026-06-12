@@ -1,116 +1,263 @@
 ---
 name: plan-feature
-description: Create a feature implementation plan with evaluation scoring. Use before
-  implementing any significant feature.
-user-invocable: true
-version: 1.0.0
-audience: project
-effort: opus
-summary_line: Create a feature implementation plan with evaluation scoring.
-platforms:
-- claude-code
-prerequisites: []
-triggers:
-- plan-feature
-- /plan-feature
-- Plan Feature
-- Create a feature implementation plan with evaluation scoring
-routing_intents:
-  - "create a feature implementation plan with acceptance criteria"
-  - "plan a new capability before coding"
-  - "score a feature design proposal before implementation"
-  - "break down feature work into steps"
+description: Create a stack-agnostic feature implementation plan before coding. Use when a user asks to plan a new product capability, extend an existing feature, turn a ticket into implementation steps, or define acceptance criteria and validation for feature work across any project stack. Do not use for root-cause bug fixes or maintenance chores; use plan-bug or plan-chore instead.
+metadata:
+  user-invocable: true
+  version: 1.1.0
+  audience: both
+  effort: opus
+  summary_line: Create a portable feature plan with detected stack, assumptions, acceptance criteria, validation, and rollback.
+  platforms:
+  - cos-projected-cli-ide
+  - generic-cli
+  prerequisites: []
+  triggers:
+  - plan-feature
+  - /plan-feature
+  - feature plan
+  - plan feature
+  - create a feature implementation plan
+  routing_intents:
+  - create a feature implementation plan with acceptance criteria before coding
+  - plan a new product capability or user-facing workflow
+  - extend an existing feature with implementation steps and validation
+  - turn a ticket or feature request into a durable plan
+  - score a feature design proposal before implementation
 ---
 <!-- SCOPE: both -->
 # Plan Feature
 
-Create a structured implementation plan for a new feature, then self-evaluate it.
+Create a structured, stack-agnostic implementation plan for feature work before
+coding. Use this skill in COS itself and in adopter projects. The skill is a
+canonical source procedure that can be projected into any supported CLI or IDE;
+do not encode Claude-only, Codex-only, OpenCode-only, or one-editor execution
+semantics in the plan.
 
-## Procedure
+A feature is a new or expanded product capability. If the primary intent is to
+fix a defect, route to `plan-bug`. If the primary intent is cleanup, migration,
+dependency, config, docs, or refactor work, route to `plan-chore`.
 
-### 1. Gather Context
+## Output Location
 
-- If no feature description is provided, ask the user what feature to plan
-- Identify the target service(s) from the description
-- Read relevant source files to understand current architecture
-- Check `.cognitive-os/plans/features/` for similar past plans
+Prefer the first existing planning root in this order:
 
-### 2. Research the Codebase
+1. `.cognitive-os/plans/features/`
+2. `.cognitive-os/plans/feature/`
+3. `ai/plans/features/`
+4. `docs/plans/features/`
 
-- Read `cognitive-os.yaml -> project.architecture` for framework, layer, and evaluation criteria config
-- Read the service's directory structure
-- Identify existing patterns (controllers, use cases, entities, DTOs) based on `project.architecture.layers`
-- Check for related tests and their patterns
-- Review constitutional gates that apply (`.claude/rules/constitutional-gates.md`)
-- Check the current project phase (`cognitive-os.yaml -> project.phase`)
+If none exists, create `.cognitive-os/plans/features/`. Name the file
+`YYYY-MM-DD-<slug>.md`. If the user supplies a deterministic ticket ID such as
+`MVP-123`, include it in the slug when it improves traceability.
 
-### 3. Write the Plan
+## Workflow
 
-Save to `.cognitive-os/plans/features/{YYYY-MM-DD}-{slug}.md` with this format:
+1. Clarify only if the feature request is ambiguous enough that a plan would be
+   misleading. Otherwise proceed with reasonable assumptions and mark them.
+2. Classify the request:
+   - `new-feature`: net-new capability, page, endpoint, workflow, integration,
+     report, automation, or user-visible behavior.
+   - `feature-update`: expansion or behavior change for an existing capability.
+   - `boundary`: adjacent design-system, platform, or data work that may need a
+     feature plan plus another skill.
+3. Detect stack, surfaces, and local conventions from repository evidence:
+   - Instructions: `AGENTS.md`, `.cognitive-os/`, `.claude/`, `.codex/`,
+     `.opencode/`, `.ai/`, docs, and manifests when present.
+   - Language/tooling: `package.json`, `pyproject.toml`, `go.mod`, `Cargo.toml`,
+     `pom.xml`, `build.gradle`, `.csproj`, `Gemfile`, `composer.json`, Docker/CI.
+   - Product surfaces: routes/screens, APIs, jobs, schemas, storage, shared UI,
+     design-system packages, generated clients, tests, docs, and deployment files.
+   - Existing plan examples under the output roots above.
+4. Research relevant source and tests with targeted search. Prefer source facts
+   and command evidence over broad guesses.
+5. Write the plan using the format below. Keep it implementation-ready: every
+   step has a verifiable `Done when`, touched files, and rollback or reversibility
+   notes.
+6. Self-evaluate the plan using the score table. Improve once if the score is
+   below 25/50 and the improvement is based on evidence, not speculation.
+7. If this repo has `evaluate-plan`, mention it as a next step; do not run it
+   unless the user asked for evaluation.
+8. Do not implement the feature until the user or governing workflow approves the
+   plan.
+
+## Stack Detection Hints
+
+Use evidence-based validation commands. Examples, not defaults:
+
+| Evidence | Candidate validation commands |
+|---|---|
+| `package.json` | package scripts such as test, lint, typecheck, build |
+| `pyproject.toml` or `requirements.txt` | `python -m pytest`, type/lint tools if configured |
+| `go.mod` | `go test ./...`, `go vet ./...` when configured |
+| `Cargo.toml` | `cargo test`, `cargo clippy` when configured |
+| Maven/Gradle files | project wrapper commands when present |
+| UI/story files | local component, visual, accessibility, or story commands when configured |
+| CI workflows | smallest workflow-equivalent local commands |
+
+Do not invent `npm`, `pytest`, `go test`, Storybook, database, cloud, auth, or
+design-system commands without repository evidence. If no command is
+discoverable, state that validation is manual or requires user/project input.
+
+## Plan Format
 
 ```markdown
 ---
-title: {Feature Name}
+title: <Feature Name>
 type: feature
 status: draft
 score: 0
-created: {YYYY-MM-DD}
+created: <YYYY-MM-DD>
 author: agent
-service: {service-name}
+feature_kind: <new-feature|feature-update|boundary|mixed>
+stack: <detected stack summary or unknown>
 ---
 
+# Feature: <Feature Name>
+
 ## Context
-{Why this feature is needed, background, user story}
+
+<Why this feature is needed, user story/background, and what success means.>
+
+## Classification
+
+- **Feature Kind:** <one or more kinds>
+- **Detected Stack:** <languages/frameworks/package managers inferred from files>
+- **Planning Root:** <selected output root>
+- **Rules/Conventions Applied:**
+  - `<path>` — <why it matters>
+
+## Assumptions
+
+Every plan must list at least three assumptions. Mark each as `verified` with a
+file/line or command result, or `unverified`. A high-impact unverified assumption
+is a blocker for execution approval.
+
+| # | Assumption | Verification | If wrong, impact |
+|---|---|---|---|
+| 1 | <assumption> | <file:line, command result, or unverified> | low/medium/high |
+| 2 | <assumption> | <file:line, command result, or unverified> | low/medium/high |
+| 3 | <assumption> | <file:line, command result, or unverified> | low/medium/high |
+
+## Out of Scope
+
+- <explicit non-goal or `N/A — minimal scope` with justification>
 
 ## Approach
-{High-level technical approach, architecture decisions}
+
+<High-level implementation approach and architecture decisions.>
 
 ## Affected Files
-{List of files to create/modify with brief description of changes}
 
-## Tasks
-- [ ] {Task 1 with concrete deliverable}
-- [ ] {Task 2}
-- [ ] {Task N}
+### Existing Files to Reference
+
+- `<path>` — <why relevant>
+
+### New Files
+
+- `<path>` — <purpose, or `none`>
+
+## Step by Step Tasks
+
+### Step 1: <Step title>
+
+**Done when:** <verifiable result>
+**Files touched:** <paths or `none — analysis step`>
+**Reversible:** <yes|no> — <why>
+
+- <action>
+- <action>
+
+### Step 2: <Step title>
+
+**Done when:** <verifiable result>
+**Files touched:** <paths>
+**Reversible:** <yes|no> — <why>
+
+- <action>
+
+### Final Step: Validation
+
+**Done when:** all validation commands below pass or documented manual checks are complete.
+**Files touched:** none
+**Reversible:** N/A
+
+- Run validation commands.
+- Inspect `git diff` for unintended behavior/API/config changes.
+
+## Acceptance Criteria
+
+- <measurable criterion>
+- <measurable criterion>
+- No unrelated files are changed, or unrelated generated changes are explicitly justified.
 
 ## Test Strategy
-{What tests to write, test patterns to follow, coverage targets}
+
+### Regression Tests
+
+- <existing test suites or `none discovered`>
+
+### New Tests
+
+- <new tests if the feature changes logic; otherwise `none` with justification>
+
+### Manual Verification
+
+- <manual checks if relevant>
+
+## Validation Commands
+
+- `<command>` — <what it proves>
 
 ## Risks
-- {Risk 1} -> {Mitigation}
-- {Risk 2} -> {Mitigation}
+
+- <risk> -> <mitigation>
 
 ## Rollback Plan
-{How to safely revert if something goes wrong}
-```
 
-### 4. Self-Evaluate (0-50)
+<How to revert safely. For irreversible migrations, data changes, public API
+changes, or user-visible behavior changes, name compatibility or restore steps.>
 
-Score the plan on 5 criteria (0-10 each):
+## Documentation Scope
+
+| Area/Feature | Path | Action |
+|---|---|---|
+| <area> | <path> | create/update/reference-only |
+
+If no docs are impacted, write: `No documentation updates required — <reason>`.
+
+## Self-Evaluation
 
 | Category | Score | Justification |
-|----------|-------|---------------|
-| Completeness | X/10 | Are all requirements covered? |
-| Feasibility | X/10 | Can be built with current tools and patterns? |
-| Risk Assessment | X/10 | Are risks identified with concrete mitigations? |
-| Architecture Alignment | X/10 | Follows architecture criteria from `cognitive-os.yaml -> project.architecture.evaluation_criteria`? |
-| Test Coverage Plan | X/10 | Tests defined for happy path, edge cases, error cases? |
+|---|---:|---|
+| Completeness | X/10 | <justification> |
+| Feasibility | X/10 | <justification> |
+| Risk Assessment | X/10 | <justification> |
+| Architecture Alignment | X/10 | <justification> |
+| Test Coverage Plan | X/10 | <justification> |
 
-**Total: X/50**
+**Total:** X/50
+```
 
-### 5. Auto-Improve if Needed
+## Quality Bar
 
-- If score < 25: identify weak areas, improve the plan, re-evaluate
-- Iterate until score >= 25 or 3 iterations reached
-- Update the plan file with improvements and new score
+- Keep project-specific rules in the plan, not in the skill. This skill is
+  portable; the repository supplies domain conventions.
+- Bind backend, frontend, UI, data, infra, and docs guidance to detected files,
+  not assumed stacks.
+- Prefer smaller reversible slices over one giant feature rollout.
+- Include user-visible acceptance criteria and test evidence appropriate to the
+  detected stack.
+- Preserve boundaries: Graph/query/navigation tools can suggest context, but
+  source inspection and tests remain the authority.
 
-### 6. Present to User
+## Report
 
-- Show the plan summary and score
-- If score >= 25: recommend approval
-- If score < 25 after improvements: flag concerns, ask for human guidance
-- On user approval: update status to `approved` in frontmatter
+Return the plan path, score, detected stack summary, validation command
+confidence, and any high-impact unverified assumptions. If the caller or pipeline
+requires path-only output, return only the path as the final line.
 
-## Output
+## Contextual Trigger
 
-Return the plan file path and evaluation score.
+- User asks for `/plan-feature`, `plan-feature`, a feature plan, product feature
+  plan, new capability plan, ticket-to-plan conversion, or acceptance criteria for
+  a feature before implementation.
