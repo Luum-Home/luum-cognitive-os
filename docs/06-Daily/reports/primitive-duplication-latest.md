@@ -1,20 +1,20 @@
 # Primitive Duplication Audit — Latest
 
-Generated: `2026-06-12T15:44:27.615023+00:00`
+Generated: `2026-06-12T23:52:42.300648+00:00`
 
 ## Summary
 
-- Files scanned: 1025
-- Findings: 0
-- By kind: `{}`
-- By common home: `{}`
-- By consumer relevance: `{}`
+- Files scanned: 1029
+- Findings: 1
+- By kind: `{"python-function-repeat": 1}`
+- By common home: `{"lib/": 1}`
+- By consumer relevance: `{"so-local-first": 1}`
 
 ## Top Candidates
 
 | Kind | Classification | Similarity | Left | Right | Recommendation | Common home | Consumer relevance |
 |---|---|---:|---|---|---|---|---|
-| none | none | 0 |  |  |  |  |  |
+| python-function-repeat | candidate | 1.0 | `scripts/cos_agent_flicker_report.py::_utc_now` | `scripts/cos_instance_init.py::utc_now` | extract-common-python-helper | `lib/` | so-local-first |
 
 ## Interpretation
 

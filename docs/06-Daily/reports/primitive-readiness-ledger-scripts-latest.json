@@ -790,8 +790,8 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 5,
-        "doc": 36,
-        "script": 1,
+        "doc": 37,
+        "script": 2,
         "skill": 1,
         "test": 7
       },
@@ -894,6 +894,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/primitive-closure-atomic-check.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/primitive-duplication-audit-implementation-plan.md"
         },
         {
@@ -962,6 +966,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_primitive_closure_check.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/primitive_harness_coverage.py"
         },
         {
@@ -1003,9 +1011,9 @@
         "wrapper_for:scripts/cos_coverage.py",
         "skill_consumers:1",
         "test_consumers:7",
-        "doc_consumers:36",
+        "doc_consumers:37",
         "config_consumers:5",
-        "script_consumers:1"
+        "script_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -1021,7 +1029,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 50,
+      "total_consumers": 52,
       "wrapper_for": "scripts/cos_coverage.py"
     },
     {
@@ -5751,12 +5759,12 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 86,
-        "doc": 765,
+        "doc": 766,
         "hook": 123,
         "rule": 51,
-        "script": 400,
+        "script": 404,
         "skill": 86,
-        "test": 729,
+        "test": 733,
         "workflow": 2
       },
       "consumers": [
@@ -8206,6 +8214,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/primitive-closure-atomic-check.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/primitive-contract-registry-implementation-plan.md"
         },
         {
@@ -10514,6 +10526,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-primitive-closure-check"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-primitive-fitness"
         },
         {
@@ -10543,6 +10559,10 @@
         {
           "family": "script",
           "path": "scripts/cos-pyrefly-pilot"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-pytest-lastfailed-health"
         },
         {
           "family": "script",
@@ -10926,6 +10946,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_primitive_closure_check.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_primitive_fitness.py"
         },
         {
@@ -10935,6 +10959,10 @@
         {
           "family": "script",
           "path": "scripts/cos_promotion_proposer.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_pytest_lastfailed_health.py"
         },
         {
           "family": "script",
@@ -12938,6 +12966,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cos-agent-flicker-report.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_cos-architecture-readiness.py"
         },
         {
@@ -13343,6 +13375,10 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_cos_adoption_profile.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_agent_flicker_report.py"
         },
         {
           "family": "test",
@@ -14326,6 +14362,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_primitive_closure_check.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_primitive_coverage.py"
         },
         {
@@ -14403,6 +14443,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_providers/test_qwen.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_pytest_lastfailed_health.py"
         },
         {
           "family": "test",
@@ -14734,13 +14778,13 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:86",
-        "test_consumers:729",
+        "test_consumers:733",
         "hook_consumers:123",
         "workflow_consumers:2",
-        "doc_consumers:765",
+        "doc_consumers:766",
         "rule_consumers:51",
         "config_consumers:86",
-        "script_consumers:400"
+        "script_consumers:404"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -14756,7 +14800,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 2242,
+      "total_consumers": 2251,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -15851,8 +15895,8 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 2,
-        "doc": 2,
-        "test": 1
+        "doc": 3,
+        "test": 2
       },
       "consumers": [
         {
@@ -15869,7 +15913,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/primitive-closure-atomic-check.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/08-References/business/master-plan-checklist.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos-agent-flicker-report.py"
         },
         {
           "family": "test",
@@ -15879,8 +15931,8 @@
       "distribution": "maintainer",
       "evidence": [
         "lifecycle",
-        "test_consumers:1",
-        "doc_consumers:2",
+        "test_consumers:2",
+        "doc_consumers:3",
         "config_consumers:2"
       ],
       "install_surface": null,
@@ -15897,7 +15949,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
@@ -28905,6 +28957,52 @@
       "wrapper_for": null
     },
     {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "doc": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/primitive-closure-atomic-check.md"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_primitive_closure_check.py",
+        "doc_consumers:1",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-primitive-closure-check",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-primitive-closure-check",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 3,
+      "wrapper_for": "scripts/cos_primitive_closure_check.py"
+    },
+    {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
@@ -30027,6 +30125,58 @@
     },
     {
       "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "doc": 1,
+        "script": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/primitive-closure-atomic-check.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_pytest_lastfailed_health.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_pytest_lastfailed_health.py",
+        "doc_consumers:1",
+        "config_consumers:2",
+        "script_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-pytest-lastfailed-health",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-pytest-lastfailed-health",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 4,
+      "wrapper_for": "scripts/cos_pytest_lastfailed_health.py"
+    },
+    {
+      "confidence": "high",
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
@@ -30487,8 +30637,8 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 6,
-        "doc": 3,
-        "script": 4,
+        "doc": 4,
+        "script": 5,
         "test": 2
       },
       "consumers": [
@@ -30529,6 +30679,10 @@
           "path": "docs/04-Concepts/architecture/cross-instance-learning-runway.md"
         },
         {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/primitive-closure-atomic-check.md"
+        },
+        {
           "family": "script",
           "path": "scripts/cos-engram-bundle"
         },
@@ -30545,6 +30699,10 @@
           "path": "scripts/cos-import-consumer-evidence"
         },
         {
+          "family": "script",
+          "path": "scripts/cos_primitive_closure_check.py"
+        },
+        {
           "family": "test",
           "path": "tests/contracts/test_control_plane_primitives.py"
         },
@@ -30558,9 +30716,9 @@
         "lifecycle",
         "override_rationale",
         "test_consumers:2",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:6",
-        "script_consumers:4"
+        "script_consumers:5"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -30576,7 +30734,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 15,
+      "total_consumers": 17,
       "wrapper_for": null
     },
     {
@@ -36865,7 +37023,7 @@
       "consumer_families": {
         "config": 2,
         "script": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -36882,6 +37040,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cos_agent_flicker_report.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_agent_flicker_report.py"
         }
       ],
@@ -36889,7 +37051,7 @@
       "evidence": [
         "lifecycle",
         "wrapper_for:scripts/cos_goal.py",
-        "test_consumers:1",
+        "test_consumers:2",
         "config_consumers:2",
         "script_consumers:1"
       ],
@@ -36907,7 +37069,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 4,
+      "total_consumers": 5,
       "wrapper_for": "scripts/cos_goal.py"
     },
     {
@@ -41102,6 +41264,49 @@
       "wrapper_for": null
     },
     {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 2,
+        "script": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-primitive-closure-check"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "wrapper_for:scripts/acc_pipeline.py",
+        "config_consumers:2",
+        "script_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/cos_primitive_closure_check.py",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "heuristic:self-evolution",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 3,
+      "wrapper_for": "scripts/acc_pipeline.py"
+    },
+    {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
@@ -41449,6 +41654,48 @@
       "skill_consumers": 0,
       "supported_harnesses": [],
       "total_consumers": 9,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 2,
+        "script": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-pytest-lastfailed-health"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "config_consumers:2",
+        "script_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/cos_pytest_lastfailed_health.py",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "heuristic:self-evolution",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 3,
       "wrapper_for": null
     },
     {
@@ -44911,13 +45158,17 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 7,
         "hook": 1,
-        "script": 2,
+        "script": 3,
         "test": 3
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/script-exposure-dispositions.yaml"
@@ -44964,6 +45215,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_primitive_closure_check.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/merge-to-main.sh"
         },
         {
@@ -44985,8 +45240,8 @@
         "test_consumers:3",
         "hook_consumers:1",
         "doc_consumers:7",
-        "config_consumers:2",
-        "script_consumers:2"
+        "config_consumers:3",
+        "script_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -45000,7 +45255,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 15,
+      "total_consumers": 17,
       "wrapper_for": "scripts/_lib/settings-driver-claude-code.sh"
     },
     {
@@ -46590,7 +46845,7 @@
       "consumer_families": {
         "config": 9,
         "doc": 13,
-        "script": 1,
+        "script": 2,
         "skill": 1,
         "test": 5
       },
@@ -46688,6 +46943,10 @@
           "path": "scripts/cos_init.py"
         },
         {
+          "family": "script",
+          "path": "scripts/cos_primitive_closure_check.py"
+        },
+        {
           "family": "skill",
           "path": ".codex/skills/portability-work/SKILL.md"
         },
@@ -46721,7 +46980,7 @@
         "test_consumers:5",
         "doc_consumers:13",
         "config_consumers:9",
-        "script_consumers:1"
+        "script_consumers:2"
       ],
       "install_surface": "settings-projection",
       "install_surface_rationale": "Generates harness settings that install/project active primitives.",
@@ -46737,7 +46996,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 29,
+      "total_consumers": 30,
       "wrapper_for": "scripts/_lib/settings-driver-opencode.sh"
     },
     {
@@ -51441,9 +51700,9 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 7,
-        "doc": 2,
-        "script": 1,
-        "test": 2
+        "doc": 3,
+        "script": 2,
+        "test": 3
       },
       "consumers": [
         {
@@ -51483,8 +51742,16 @@
           "path": "docs/04-Concepts/architecture/portable-ai-consumer-package-spec.md"
         },
         {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/primitive-closure-atomic-check.md"
+        },
+        {
           "family": "script",
           "path": "scripts/cos-portable-ai-overlay"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_primitive_closure_check.py"
         },
         {
           "family": "test",
@@ -51493,6 +51760,10 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_portable_ai_overlay.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_closure_check.py"
         }
       ],
       "distribution": "maintainer",
@@ -51500,10 +51771,10 @@
         "lifecycle",
         "override_rationale",
         "wrapper_for:scripts/cos_init.py",
-        "test_consumers:2",
-        "doc_consumers:2",
+        "test_consumers:3",
+        "doc_consumers:3",
         "config_consumers:7",
-        "script_consumers:1"
+        "script_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -51519,7 +51790,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 12,
+      "total_consumers": 15,
       "wrapper_for": "scripts/cos_init.py"
     },
     {
@@ -53796,7 +54067,7 @@
       "consumer_families": {
         "config": 5,
         "doc": 7,
-        "script": 1,
+        "script": 2,
         "test": 6
       },
       "consumers": [
@@ -53853,6 +54124,10 @@
           "path": "scripts/acc_pipeline.py"
         },
         {
+          "family": "script",
+          "path": "scripts/cos_primitive_closure_check.py"
+        },
+        {
           "family": "test",
           "path": "tests/behavior/test_primitive_readiness_coordination.py"
         },
@@ -53882,7 +54157,7 @@
         "test_consumers:6",
         "doc_consumers:7",
         "config_consumers:5",
-        "script_consumers:1"
+        "script_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -53896,7 +54171,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 19,
+      "total_consumers": 20,
       "wrapper_for": null
     },
     {
@@ -62403,27 +62678,27 @@
   "summary": {
     "agentic_primitives_without_lifecycle": 0,
     "confidence": {
-      "high": 357,
+      "high": 359,
       "low": 1,
-      "medium": 312
+      "medium": 314
     },
     "consumer_accessibility": {
       "install-profile-managed": 19,
       "lifecycle-declared-consumer-candidate": 167,
-      "lifecycle-declared-maintainer": 145,
+      "lifecycle-declared-maintainer": 147,
       "skill-referenced-not-projectable": 3,
-      "so-local-only": 336
+      "so-local-only": 338
     },
     "low_confidence_rows": 1,
     "roles": {
-      "agentic-primitive": 219,
+      "agentic-primitive": 221,
       "archive": 12,
       "driver-specific": 14,
       "lab": 97,
-      "maintainer-tool": 313,
+      "maintainer-tool": 315,
       "migration-only": 15
     },
-    "total_scripts": 670,
+    "total_scripts": 674,
     "without_consumers": 0
   },
   "target_family": "scripts"

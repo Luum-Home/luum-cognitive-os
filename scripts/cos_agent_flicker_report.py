@@ -330,6 +330,55 @@ def _jsonl_rows(path: Path, max_rows: int = 2000) -> list[dict[str, Any]]:
     return rows
 
 
+
+
+def _parse_timestamp(value: Any) -> datetime | None:
+    if not value:
+        return None
+    text = str(value).strip()
+    if not text:
+        return None
+    if text.endswith("Z"):
+        text = text[:-1] + "+00:00"
+    try:
+        parsed = datetime.fromisoformat(text)
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
+
+
+def _latest_timestamp(rows: Iterable[dict[str, Any]]) -> datetime | None:
+    latest: datetime | None = None
+    for row in rows:
+        parsed = _parse_timestamp(row.get("timestamp") or row.get("ts"))
+        if parsed is not None and (latest is None or parsed > latest):
+            latest = parsed
+    return latest
+
+
+def _current_skill_drift(project_dir: Path) -> list[dict[str, str]]:
+    try:
+        from lib.skill_drift_detector import SkillDriftDetector, _sha256_file  # type: ignore
+    except Exception:
+        return []
+    detector = SkillDriftDetector(project_root=project_dir)
+    registry = detector._get_registry()  # noqa: SLF001 - report uses detector internals to avoid writing audit events.
+    current: list[dict[str, str]] = []
+    for rel_path, expected_hash in registry.items():
+        abs_path = project_dir / rel_path
+        if not abs_path.exists():
+            current.append({"skill": rel_path, "expected": expected_hash, "actual": "<missing>"})
+            continue
+        try:
+            actual_hash = _sha256_file(abs_path)
+        except OSError:
+            actual_hash = "<unreadable>"
+        if actual_hash != expected_hash:
+            current.append({"skill": rel_path, "expected": expected_hash, "actual": actual_hash})
+    return current
+
 def _queue_items(project_dir: Path) -> list[dict[str, Any]]:
     queue_path = project_dir / ".cognitive-os" / "rate-limit-queue.jsonl"
     rows = _jsonl_rows(queue_path)
@@ -402,26 +451,63 @@ def build_runtime_signals(project_dir: Path) -> list[RuntimeSignal]:
     blocked_claims = [
         row for row in claim_rows if str(row.get("status", "")).lower() == "block" or row.get("ok") is False
     ]
-    if blocked_claims:
+    latest_claim = claim_rows[-1] if claim_rows else {}
+    latest_claim_blocks = bool(
+        latest_claim
+        and (str(latest_claim.get("status", "")).lower() == "block" or latest_claim.get("ok") is False)
+    )
+    if latest_claim_blocks:
         signals.append(
             RuntimeSignal(
                 "claim-enforcer-blocks",
                 "warn",
                 (
-                    f"Claim enforcer recorded {len(blocked_claims)} blocking "
-                    "high-stakes claim event(s) in sampled metrics."
+                    f"Latest claim-enforcer event is blocking; sampled metrics contain "
+                    f"{len(blocked_claims)} blocking high-stakes claim event(s)."
+                ),
+                ".cognitive-os/metrics/claim-enforcer.jsonl",
+            )
+        )
+    elif blocked_claims:
+        latest = _latest_timestamp(blocked_claims)
+        suffix = f"; latest block at {latest.isoformat().replace('+00:00', 'Z')}" if latest else ""
+        signals.append(
+            RuntimeSignal(
+                "claim-enforcer-history",
+                "info",
+                (
+                    f"Claim enforcer has {len(blocked_claims)} historical block event(s) in sampled metrics"
+                    f"{suffix}; latest event is no longer blocking."
                 ),
                 ".cognitive-os/metrics/claim-enforcer.jsonl",
             )
         )
 
     drift_rows = _jsonl_rows(project_dir / ".cognitive-os" / "metrics" / "skill-drift.jsonl")
-    if drift_rows:
+    current_drift = _current_skill_drift(project_dir)
+    if current_drift:
         signals.append(
             RuntimeSignal(
                 "skill-drift-events",
                 "warn",
-                f"Skill drift detector recorded {len(drift_rows)} drift event(s) in sampled metrics.",
+                (
+                    f"Skill drift detector currently finds {len(current_drift)} drifted skill(s); "
+                    f"sampled metrics contain {len(drift_rows)} historical drift event(s)."
+                ),
+                "skills/REGISTRY.lock",
+            )
+        )
+    elif drift_rows:
+        latest = _latest_timestamp(drift_rows)
+        suffix = f"; latest recorded drift at {latest.isoformat().replace('+00:00', 'Z')}" if latest else ""
+        signals.append(
+            RuntimeSignal(
+                "skill-drift-history",
+                "info",
+                (
+                    f"Skill drift metrics contain {len(drift_rows)} historical event(s){suffix}, "
+                    "but current skill files match skills/REGISTRY.lock."
+                ),
                 ".cognitive-os/metrics/skill-drift.jsonl",
             )
         )

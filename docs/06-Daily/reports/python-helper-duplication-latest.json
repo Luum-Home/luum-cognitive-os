@@ -350,6 +350,21 @@
       "common_home": "lib/",
       "confidence": 0.86,
       "consumer_relevance": "so-local-first",
+      "finding_id": "python-function-repeat:509d9c5d269f",
+      "kind": "python-function-repeat",
+      "left": "lib/concurrent_agent_safety_status.py::_now_iso",
+      "pair_key": "lib/concurrent_agent_safety_status.py::_now_iso :: scripts/cos_agent_flicker_report.py::_utc_now",
+      "rationale": "Python functions have identical normalized AST bodies",
+      "recommendation": "extract-common-python-helper",
+      "right": "scripts/cos_agent_flicker_report.py::_utc_now",
+      "severity": "medium",
+      "similarity": 1.0
+    },
+    {
+      "classification": "candidate",
+      "common_home": "lib/",
+      "confidence": 0.86,
+      "consumer_relevance": "so-local-first",
       "finding_id": "python-function-repeat:ee751a958652",
       "kind": "python-function-repeat",
       "left": "lib/concurrent_agent_safety_status.py::_now_iso",
@@ -372,6 +387,21 @@
       "rationale": "Python functions have identical normalized AST bodies",
       "recommendation": "extract-common-python-helper",
       "right": "scripts/resource_lease.py::read_json",
+      "severity": "medium",
+      "similarity": 1.0
+    },
+    {
+      "classification": "candidate",
+      "common_home": "lib/",
+      "confidence": 0.86,
+      "consumer_relevance": "so-local-first",
+      "finding_id": "python-function-repeat:ed54d35e38a1",
+      "kind": "python-function-repeat",
+      "left": "lib/concurrent_agent_safety_status.py::_read_text",
+      "pair_key": "lib/concurrent_agent_safety_status.py::_read_text :: scripts/cos_agent_flicker_report.py::_read_text",
+      "rationale": "Python functions have identical normalized AST bodies",
+      "recommendation": "extract-common-python-helper",
+      "right": "scripts/cos_agent_flicker_report.py::_read_text",
       "severity": "medium",
       "similarity": 1.0
     },
@@ -1233,9 +1263,11 @@
   "ratchet": {
     "baseline": "manifests/python-helper-duplication-baseline.json",
     "baseline_findings": 134,
-    "current_findings": 81,
+    "current_findings": 83,
     "new_finding_ids": [
       "python-function-repeat:9247f359f197",
+      "python-function-repeat:509d9c5d269f",
+      "python-function-repeat:ed54d35e38a1",
       "python-function-repeat:9da85dd79b73",
       "python-function-repeat:c4b1378c9129",
       "python-function-repeat:c30423c0bdd6",
@@ -1244,22 +1276,22 @@
       "python-function-repeat:5f9b2361a7e8",
       "python-function-repeat:9e2aefc953ee"
     ],
-    "new_findings": 8,
+    "new_findings": 10,
     "status": "fail"
   },
   "schema_version": "primitive-duplication-audit.v1",
   "summary": {
     "by_common_home": {
-      "lib/": 81
+      "lib/": 83
     },
     "by_consumer_relevance": {
-      "so-local-first": 81
+      "so-local-first": 83
     },
     "by_kind": {
-      "python-function-repeat": 81
+      "python-function-repeat": 83
     },
-    "files_scanned": 719,
-    "findings": 81
+    "files_scanned": 723,
+    "findings": 83
   },
-  "timestamp": "2026-06-12T15:44:33.478431+00:00"
+  "timestamp": "2026-06-12T23:52:48.742726+00:00"
 }
