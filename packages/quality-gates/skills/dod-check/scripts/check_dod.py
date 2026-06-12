@@ -41,6 +41,7 @@ class Report:
     verdict: str
     complexity: str
     changed_files: list[str]
+    dod_profiles: list[str]
     recommended_command: str | None
     checks: list[Check]
 
@@ -94,6 +95,69 @@ def recommended_command(files: list[str]) -> str | None:
     return "git diff --check"
 
 
+def infer_dod_profiles(files: list[str]) -> list[str]:
+    """Infer portable DoD profile overlays from changed paths.
+
+    Profiles are intentionally stack-neutral. They identify the kind of work
+    touched by the diff so the skill can load profile-specific completion
+    criteria without assuming a framework, package manager, database, or UI
+    library.
+    """
+
+    profiles: set[str] = set()
+    for raw_path in files:
+        path = raw_path.lower()
+        name = Path(path).name
+        suffix = Path(path).suffix
+
+        if (
+            ".storybook/" in path
+            or "/stories/" in path
+            or name.endswith((".stories.tsx", ".stories.ts", ".stories.jsx", ".stories.js", ".stories.mdx"))
+            or suffix == ".mdx"
+        ):
+            profiles.add("storybook-docs")
+
+        if (
+            "/ui/" in path
+            or "/components/" in path
+            or "/component" in path
+            or "/tokens/" in path
+            or "/theme" in path
+            or name in {"preview.tsx", "preview.ts", "theme.ts", "tokens.css"}
+        ) and suffix in {".ts", ".tsx", ".js", ".jsx", ".css", ".scss", ".vue", ".svelte"}:
+            profiles.add("ui-component")
+
+        if (
+            "/features/" in path
+            or "/app/" in path
+            or "/pages/" in path
+            or "/routes/" in path
+            or "/hooks/" in path
+            or "/contexts/" in path
+        ) and suffix in {".ts", ".tsx", ".js", ".jsx", ".vue", ".svelte"}:
+            profiles.add("frontend-feature")
+
+        if (
+            "/api/" in path
+            or "/handlers/" in path
+            or "/services/" in path
+            or "/server/" in path
+            or "/auth/" in path
+            or "/webhook" in path
+            or "/cron" in path
+            or "/jobs/" in path
+            or "/migrations/" in path
+            or "/db/" in path
+            or "/database/" in path
+            or "/repositories/" in path
+            or name in {"route.ts", "route.js", "server.ts", "server.js"}
+        ) and suffix in {".ts", ".tsx", ".js", ".jsx", ".py", ".go", ".rs", ".java", ".kt", ".rb", ".php", ".cs", ".sql"}:
+            profiles.add("backend-api")
+
+    return sorted(profiles)
+
+
 def file_text(path: str) -> str:
     try:
         return (ROOT / path).read_text(encoding="utf-8", errors="replace")
@@ -134,8 +198,16 @@ def run_recommended(command: str | None) -> Check:
 def build_report(run_validation: bool = False) -> Report:
     files = changed_files()
     complexity = classify(files)
+    profiles = infer_dod_profiles(files)
     command = recommended_command(files)
     checks = check_hygiene(files)
+    checks.append(
+        Check(
+            "dod_profiles",
+            "PASS",
+            ", ".join(profiles) if profiles else "no surface-specific DoD profile inferred; base DoD applies",
+        )
+    )
     if command:
         checks.append(Check("recommended_command_present", "PASS", command))
     else:
@@ -144,12 +216,13 @@ def build_report(run_validation: bool = False) -> Report:
         checks.append(run_recommended(command))
     statuses = [check.status for check in checks]
     verdict = "FAIL" if "FAIL" in statuses else "WARN" if "WARN" in statuses else "PASS"
-    return Report(verdict, complexity, files, command, checks)
+    return Report(verdict, complexity, files, profiles, command, checks)
 
 
 def markdown(report: Report) -> str:
     lines = [f"## DoD Check: {report.verdict}", f"Complexity: {report.complexity}", ""]
     lines.append(f"Changed files: {len(report.changed_files)}")
+    lines.append(f"DoD profiles: {', '.join(report.dod_profiles) if report.dod_profiles else 'none'}")
     if report.recommended_command:
         lines.append(f"Recommended validation: `{report.recommended_command}`")
     lines.append("\n| Check | Status | Evidence |")
