@@ -26,7 +26,17 @@ def test_agents_md_backend_boundary_flows_through_overlay_and_compile_receipt(tm
 
     assert profile["projection_mode"] == "universal-markdown"
     assert profile["contract_projection_fidelity"]
-    assert manifest["projected_primitive_count"] == len(profile["contract_projection_fidelity"])
+    contract_ids = {row["contract_id"] for row in profile["contract_projection_fidelity"]}
+    contract_manifest_rows = [
+        row for row in manifest["projected_primitives"]
+        if row["portable_id"] in contract_ids
+    ]
+    assert len(contract_manifest_rows) == len(profile["contract_projection_fidelity"])
+    assert manifest["projected_primitive_count"] >= len(profile["contract_projection_fidelity"])
+    assert all(
+        row["claims_runtime_enforcement"] is False
+        for row in manifest["projected_primitives"]
+    )
     assert receipt["status"] == "planned"
     assert receipt["settings_paths"] == ["AGENTS.md"]
     assert receipt["fidelity_summary"]["structural-advisory"] == len(profile["contract_projection_fidelity"])
