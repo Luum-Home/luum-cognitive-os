@@ -505,7 +505,7 @@ resources:
       memu:
         mode: pip                  # ADR-060 local-first memory extension: default supported mode is pip; Docker memory profile remains reference/opt-in.
         idle_timeout_minutes: 15
-        review_by: 2026-08-15      # Revalidate optional memory extension adoption and Docker reference-stack health.
+        review_by: 2026-06-01      # Historical sunset deadline, see catalog §Memory "MemU review 2026-06-01".
       # --- Agent Testing & Evaluation (Python packages, not Docker services) ---
       deepeval:
         status: planned                # Python package, not a Docker service
