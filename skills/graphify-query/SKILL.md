@@ -50,12 +50,14 @@ triggers:
 
 Use Graphify as a maintainer-only context optimization primitive. It can reduce
 repository-reading cost, reveal code relationships, and help choose files before a
-change. It is not a correctness proof, security review, test substitute, or source
-of architectural truth.
+change. It is not a correctness proof, security review, test substitute, visual
+exploration product, or source of architectural truth.
 
-Cognitive OS owns the primitive and projects it to each IDE or CLI through the
-normal skill/catalog/projection surfaces. Do not install upstream Graphify hooks or
-persistent IDE instructions from this skill.
+Cognitive OS owns the context-graph primitive and treats Graphify as one optional
+backend adapter. The user-facing capability is graph-backed context selection, not
+a web graph viewer. Project it to each IDE or CLI through the normal
+skill/catalog/projection surfaces. Do not install upstream Graphify hooks, web UI
+helpers, or persistent IDE instructions from this skill.
 
 ## Default Workflow
 
@@ -91,6 +93,9 @@ Rules:
 
 - Do not run `graphify codex install`, `graphify hook install`, or
   `graphify install --platform ...` from this skill.
+- Do not run upstream visual/web/export surfaces such as `graphify export html`,
+  `graphify export svg`, GraphML/Neo4j export, watch mode, or the Graphify MCP
+  server unless a human explicitly approves a separate UI/integration task.
 - Do not enable semantic documentation extraction unless the user explicitly
   approves the backend and token budget. Use `--include-docs` only after approval.
 - Keep generated `graphify-out/` artifacts ignored unless a human explicitly asks
@@ -105,6 +110,28 @@ Generate a Phase C hotspot report from a Phase B summary:
 ```bash
 scripts/cos-graphify-hotspot-report /tmp/cos-graphify-phase-b/cos-graphify-slices-summary.json --out docs/06-Daily/reports/graphify-phase-c-hotspot-report.md
 ```
+
+
+## Backend Boundary
+
+The COS capability is `context graph`; Graphify is only the current backend for
+building and querying that graph. Keep the default surface simple:
+
+```text
+cos context graph = scoped graph.json + symbol/path/affected queries + preload files + token telemetry
+```
+
+Out of scope for normal Graphify work:
+
+- interactive web graph viewers;
+- HTML, SVG, GraphML, or Neo4j visual exports;
+- watch-mode background graph rebuilders;
+- Graphify-managed MCP servers;
+- upstream IDE installers or hook installers.
+
+If a maintainer needs any of those, treat it as a new explicit integration task
+with its own acceptance criteria. Do not smuggle visual/UI work into context
+selection.
 
 ## Command Selection
 

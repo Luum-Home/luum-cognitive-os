@@ -13569,11 +13569,39 @@ primitives:
   projection_targets:
   - scripts/cos-graphify-build
   runtime_projection: false
-  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial and Phase D receipts cover local wrapper behavior without installing upstream IDE surfaces.
+  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial, Phase D receipts, direct executable smoke, and generated overlay metadata cover local wrapper behavior without installing upstream IDE surfaces.
   evidence_commands:
-  - python3 -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py -q
-  - python3 -m pytest tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py -q
-  rollback_or_repair_command: Remove Graphify skill references or downgrade the wrapper role before claiming portable context-optimization support.
+  - .venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q
+  - python3 scripts/portable_ai_overlay.py --check
+  - python3 scripts/cos-registry-lock --audit
+  rollback_or_repair_command: Remove Graphify skill/script references or downgrade the wrapper role before claiming portable context-optimization support.
+  sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
+  docs_claim_level: advisory
+  exit_behavior: zero-nonzero-cli
+  metrics_file: docs/06-Daily/reports/graphify-*.md
+  consumer_access_next_action: Keep as explicit team/advisory tooling until release packaging decides whether to project Graphify wrappers.
+- id: scripts/cos-graphify-context-replay-benchmark
+  kind: script
+  owner_adr: ADR-331
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: context-optimization
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - scripts/cos-graphify-context-replay-benchmark
+  runtime_projection: false
+  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial, Phase D receipts, direct executable smoke, and generated overlay metadata cover local wrapper behavior without installing upstream IDE surfaces.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q
+  - python3 scripts/portable_ai_overlay.py --check
+  - python3 scripts/cos-registry-lock --audit
+  rollback_or_repair_command: Remove Graphify skill/script references or downgrade the wrapper role before claiming portable context-optimization support.
   sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
   docs_claim_level: advisory
   exit_behavior: zero-nonzero-cli
@@ -13595,11 +13623,39 @@ primitives:
   projection_targets:
   - scripts/cos-graphify-hotspot-report
   runtime_projection: false
-  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial and Phase D receipts cover local wrapper behavior without installing upstream IDE surfaces.
+  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial, Phase D receipts, direct executable smoke, and generated overlay metadata cover local wrapper behavior without installing upstream IDE surfaces.
   evidence_commands:
-  - python3 -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py -q
-  - python3 -m pytest tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py -q
-  rollback_or_repair_command: Remove Graphify skill references or downgrade the wrapper role before claiming portable context-optimization support.
+  - .venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q
+  - python3 scripts/portable_ai_overlay.py --check
+  - python3 scripts/cos-registry-lock --audit
+  rollback_or_repair_command: Remove Graphify skill/script references or downgrade the wrapper role before claiming portable context-optimization support.
+  sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
+  docs_claim_level: advisory
+  exit_behavior: zero-nonzero-cli
+  metrics_file: docs/06-Daily/reports/graphify-*.md
+  consumer_access_next_action: Keep as explicit team/advisory tooling until release packaging decides whether to project Graphify wrappers.
+- id: scripts/cos-graphify-phase-d-semantic
+  kind: script
+  owner_adr: ADR-331
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: context-optimization
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - scripts/cos-graphify-phase-d-semantic
+  runtime_projection: false
+  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial, Phase D receipts, direct executable smoke, and generated overlay metadata cover local wrapper behavior without installing upstream IDE surfaces.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q
+  - python3 scripts/portable_ai_overlay.py --check
+  - python3 scripts/cos-registry-lock --audit
+  rollback_or_repair_command: Remove Graphify skill/script references or downgrade the wrapper role before claiming portable context-optimization support.
   sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
   docs_claim_level: advisory
   exit_behavior: zero-nonzero-cli
@@ -13621,11 +13677,39 @@ primitives:
   projection_targets:
   - scripts/cos-graphify-preload-matrix
   runtime_projection: false
-  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial and Phase D receipts cover local wrapper behavior without installing upstream IDE surfaces.
+  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial, Phase D receipts, direct executable smoke, and generated overlay metadata cover local wrapper behavior without installing upstream IDE surfaces.
   evidence_commands:
-  - python3 -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py -q
-  - python3 -m pytest tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py -q
-  rollback_or_repair_command: Remove Graphify skill references or downgrade the wrapper role before claiming portable context-optimization support.
+  - .venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q
+  - python3 scripts/portable_ai_overlay.py --check
+  - python3 scripts/cos-registry-lock --audit
+  rollback_or_repair_command: Remove Graphify skill/script references or downgrade the wrapper role before claiming portable context-optimization support.
+  sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
+  docs_claim_level: advisory
+  exit_behavior: zero-nonzero-cli
+  metrics_file: docs/06-Daily/reports/graphify-*.md
+  consumer_access_next_action: Keep as explicit team/advisory tooling until release packaging decides whether to project Graphify wrappers.
+- id: scripts/cos-graphify-run-telemetry
+  kind: script
+  owner_adr: ADR-331
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: context-optimization
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - scripts/cos-graphify-run-telemetry
+  runtime_projection: false
+  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial, Phase D receipts, direct executable smoke, and generated overlay metadata cover local wrapper behavior without installing upstream IDE surfaces.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q
+  - python3 scripts/portable_ai_overlay.py --check
+  - python3 scripts/cos-registry-lock --audit
+  rollback_or_repair_command: Remove Graphify skill/script references or downgrade the wrapper role before claiming portable context-optimization support.
   sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
   docs_claim_level: advisory
   exit_behavior: zero-nonzero-cli
@@ -13647,16 +13731,73 @@ primitives:
   projection_targets:
   - scripts/cos-graphify-token-footprint
   runtime_projection: false
-  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial and Phase D receipts cover local wrapper behavior without installing upstream IDE surfaces.
+  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial, Phase D receipts, direct executable smoke, and generated overlay metadata cover local wrapper behavior without installing upstream IDE surfaces.
   evidence_commands:
-  - python3 -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py -q
-  - python3 -m pytest tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py -q
-  rollback_or_repair_command: Remove Graphify skill references or downgrade the wrapper role before claiming portable context-optimization support.
+  - .venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q
+  - python3 scripts/portable_ai_overlay.py --check
+  - python3 scripts/cos-registry-lock --audit
+  rollback_or_repair_command: Remove Graphify skill/script references or downgrade the wrapper role before claiming portable context-optimization support.
   sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
   docs_claim_level: advisory
   exit_behavior: zero-nonzero-cli
   metrics_file: docs/06-Daily/reports/graphify-*.md
   consumer_access_next_action: Keep as explicit team/advisory tooling until release packaging decides whether to project Graphify wrappers.
+- id: scripts/cos-graphify-token-reduction-smoke
+  kind: script
+  owner_adr: ADR-331
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: context-optimization
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - scripts/cos-graphify-token-reduction-smoke
+  runtime_projection: false
+  behavior_evidence: ADR-331 Graphify portable context optimization primitive; controlled-trial, Phase D receipts, direct executable smoke, and generated overlay metadata cover local wrapper behavior without installing upstream IDE surfaces.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q
+  - python3 scripts/portable_ai_overlay.py --check
+  - python3 scripts/cos-registry-lock --audit
+  rollback_or_repair_command: Remove Graphify skill/script references or downgrade the wrapper role before claiming portable context-optimization support.
+  sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
+  docs_claim_level: advisory
+  exit_behavior: zero-nonzero-cli
+  metrics_file: docs/06-Daily/reports/graphify-*.md
+  consumer_access_next_action: Keep as explicit team/advisory tooling until release packaging decides whether to project Graphify wrappers.
+- id: skills/graphify-query/SKILL.md
+  kind: skill
+  owner_adr: ADR-331
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: context-optimization
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/graphify-query/SKILL.md
+  - .cognitive-os/skills/cos/graphify-query/SKILL.md
+  - .claude/skills/graphify-query/SKILL.md
+  runtime_projection: false
+  behavior_evidence: ADR-331 Graphify portable context optimization skill is materialized in source and harness skill projections; it forbids upstream IDE/hook installers and treats graph output as navigation support requiring source/test confirmation.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_graphify_build.py tests/unit/test_cos_graphify_preload_matrix.py tests/unit/test_cos_graphify_token_footprint.py tests/unit/test_cos_graphify_context_replay_benchmark.py tests/unit/test_cos_graphify_phase_d_semantic.py tests/unit/test_cos_graphify_run_telemetry.py tests/unit/test_cos_graphify_token_reduction_smoke.py tests/unit/test_cos_graphify_projection.py -q
+  - python3 scripts/portable_ai_overlay.py --check
+  - python3 scripts/cos-registry-lock --audit
+  rollback_or_repair_command: Remove or demote the Graphify skill projection rows before claiming /graphify-query support.
+  sunset_criteria: Remove when Graphify is replaced by an owned COS context graph primitive with equivalent receipts.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_access_next_action: Keep as explicit maintainer/advisory tooling until release packaging decides whether to project Graphify wrappers.
 - id: scripts/cos-headless-pipeline
   kind: script
   owner_adr: ADR-146

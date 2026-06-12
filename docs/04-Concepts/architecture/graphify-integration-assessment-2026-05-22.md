@@ -4,7 +4,7 @@
 
 Adopt Graphify as an **optional graph-indexing and query-optimization tool** for Cognitive OS maintainer workflows. Do not make it a core runtime dependency, a mandatory hook, or an unfiltered whole-repository scan.
 
-Graphify is useful as a repository navigation layer: it turns selected code and documentation into `graphify-out/graph.json`, then supports lower-token queries such as `graphify query`, impact checks such as `graphify affected`, graph paths, benchmarks, and optional visual exports.
+Graphify is useful as a repository navigation layer: it turns selected code and documentation into `graphify-out/graph.json`, then supports lower-token queries such as `graphify query`, impact checks such as `graphify affected`, graph paths, and benchmarks. Optional visual exports exist upstream, but they are out of scope for the default COS context-graph slice.
 
 ## Current Verdict
 
@@ -49,7 +49,7 @@ Important local capabilities:
 - Query commands over existing `graphify-out/graph.json`.
 - Path and explanation commands for known nodes.
 - Affected-node traversal for impact-style questions.
-- Optional HTML, SVG, GraphML, Neo4j, MCP, watch, and hook integrations.
+- Optional HTML, SVG, GraphML, Neo4j, MCP, watch, and hook integrations exist upstream, but COS does not enable them by default.
 - Optional semantic extraction for docs, papers, images, office files, Google Workspace files, audio, and video.
 
 Supported code surfaces overlap well with Cognitive OS: Python, Bash, Go, JavaScript/TypeScript, JSON, YAML-like docs, SQL, Rust, and other languages.
@@ -291,7 +291,7 @@ Before promoting Graphify beyond a local maintainer trial:
 
 Proceed with the controlled trial.
 
-Do not vendor Graphify into the repository. Install it as an operator tool with `uvx --from graphifyy graphify` or a local venv. Keep any Cognitive OS integration as thin wrapper scripts and documentation until repeated maintainer use proves value.
+Do not vendor Graphify into the repository. Install it as an operator tool with `uvx --from graphifyy graphify` or a local venv. Keep any Cognitive OS integration as thin wrapper scripts and documentation until repeated maintainer use proves value. Do not add the upstream visual/web, watch, Neo4j, or MCP surfaces without a separate approved integration task.
 
 ## Trust Report
 

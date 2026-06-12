@@ -9,7 +9,8 @@ of being installed as an upstream Codex or Claude add-on.
 
 The primitive boundary is: Graphify helps agents select context, inspect dependency
 paths, and estimate impact. It does not become the source of truth for correctness,
-architecture, or governance.
+architecture, governance, or a visual graph product. In COS terms, Graphify is a
+replaceable backend for a simpler `context graph` capability.
 
 ## Decision Summary
 
@@ -20,7 +21,23 @@ Adopt Graphify in controlled phases:
 3. build curated code graphs first;
 4. add semantic documentation extraction only after explicit budget approval;
 5. project the resulting primitive through the normal Cognitive OS projection
-   surfaces for each IDE or CLI.
+   surfaces for each IDE or CLI;
+6. keep web viewers, visual exports, watch mode, Neo4j export, GraphML export,
+   and Graphify-managed MCP servers out of the default path.
+
+
+## Non-Goals — Visual and Integration Surfaces
+
+Graphify has optional surfaces that are intentionally not part of this COS slice:
+HTML or SVG visualization, GraphML export, Neo4j export, watch-mode rebuilders,
+Graphify-managed MCP servers, and upstream IDE installers. Those may be useful in
+other products, but they add UI, persistence, or integration scope that does not
+serve the current objective: smaller, auditable context selection for agents.
+
+The default COS shape is deliberately simpler: scoped `graph.json`, symbol/path
+queries, affected-node hints, preload bundles, and token telemetry. Any visual or
+server integration must arrive as a separate approved task with source, security,
+and projection acceptance criteria.
 
 ## Phase A — Primitive Shell
 
@@ -43,6 +60,7 @@ Acceptance criteria:
    expensive extraction.
 2. The skill forbids upstream IDE/hook installers.
 3. Generated `graphify-out/` directories are ignored by Git.
+4. No web/visual export surface is part of Phase A.
 
 ## Phase B — Curated Code Graph Baseline
 

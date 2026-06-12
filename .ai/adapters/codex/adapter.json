@@ -6,7 +6,7 @@
   "harness": "codex",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 738,
+  "projected_primitive_count": 745,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": false,
@@ -774,8 +774,22 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": "hooks/provenance-scan.sh",
+      "primitive_file": "primitives/hooks/hooks-provenance-scan-sh-3445fc9aab.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": "hooks/pyrefly-typecheck-advisory.sh",
       "primitive_file": "primitives/hooks/hooks-pyrefly-typecheck-advisory-sh-c8ec9e74e5.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/quality-duplicates.sh",
+      "primitive_file": "primitives/hooks/hooks-quality-duplicates-sh-ecdd88ee07.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
@@ -3504,6 +3518,13 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": "skills/graphify-query/SKILL.md",
+      "primitive_file": "primitives/skills/skills-graphify-query-skill-md-dec9ff2bac.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": "skills/install-recommended/SKILL.md",
       "primitive_file": "primitives/skills/skills-install-recommended-skill-md-544b84434f.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
@@ -5044,8 +5065,22 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": "scripts/cos-graphify-context-replay-benchmark",
+      "primitive_file": "primitives/tools/scripts-cos-graphify-context-replay-benchmark-eea619452a.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": "scripts/cos-graphify-hotspot-report",
       "primitive_file": "primitives/tools/scripts-cos-graphify-hotspot-report-ddaf7ee73d.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-graphify-phase-d-semantic",
+      "primitive_file": "primitives/tools/scripts-cos-graphify-phase-d-semantic-7ebe273be8.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
@@ -5058,8 +5093,22 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": "scripts/cos-graphify-run-telemetry",
+      "primitive_file": "primitives/tools/scripts-cos-graphify-run-telemetry-5ae6febf68.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": "scripts/cos-graphify-token-footprint",
       "primitive_file": "primitives/tools/scripts-cos-graphify-token-footprint-568b9a5c90.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-graphify-token-reduction-smoke",
+      "primitive_file": "primitives/tools/scripts-cos-graphify-token-reduction-smoke-96140ed14d.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {

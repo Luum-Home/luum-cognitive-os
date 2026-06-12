@@ -1,0 +1,104 @@
+{
+  "canonical_source": "scripts/cos-task-closure-gate",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Portable task/front closure ledger gate validates project-owned completion ledgers and blocks false complete claims through require-closed and closureGate evidence modes.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Portable task/front closure ledger gate validates project-owned completion ledgers and blocks false complete claims through require-closed and closureGate evidence modes.",
+    "evidence_commands": [
+      "python3 -m pytest tests/unit/test_cos_task_closure_gate.py tests/red_team/portability/test_cos_task_closure_gate.py tests/red_team/portability/test_cos-task-closure-gate.py tests/integration/test_install_task_closure_gate_primitive.py -q",
+      "scripts/cos-scope-both-portability-audit --strict"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "core",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "blocking-on-invocation",
+    "governance_class": "quality-validator",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-335",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "document",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "Portable task/front closure ledger gate validates project-owned completion ledgers and blocks false complete claims through require-closed and closureGate evidence modes.",
+      "evidence_commands": [
+        "python3 -m pytest tests/unit/test_cos_task_closure_gate.py tests/red_team/portability/test_cos_task_closure_gate.py tests/red_team/portability/test_cos-task-closure-gate.py tests/integration/test_install_task_closure_gate_primitive.py -q",
+        "scripts/cos-scope-both-portability-audit --strict"
+      ],
+      "metrics": []
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "unsupported"
+    },
+    "intent": "Portable task/front closure ledger gate validates project-owned completion ledgers and blocks false complete claims through require-closed and closureGate evidence modes.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "generic-cli": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "shell": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "scripts/cos-task-closure-gate",
+        "scripts/cos_task_closure_gate.py",
+        "templates/task-closure-ledger.example.json"
+      ],
+      "runtime_projection": false
+    }
+  },
+  "portable_id": "scripts/cos-task-closure-gate",
+  "projection_targets": [
+    "scripts/cos-task-closure-gate",
+    "scripts/cos_task_closure_gate.py",
+    "templates/task-closure-ledger.example.json"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/cos-task-closure-gate",
+  "supported_harnesses": [
+    "shell",
+    "shell-ci",
+    "generic-cli"
+  ]
+}

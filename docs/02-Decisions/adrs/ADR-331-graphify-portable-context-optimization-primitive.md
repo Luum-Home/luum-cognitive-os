@@ -78,8 +78,9 @@ Claude Code, and generic CLI surfaces with explicit support levels.
 
 ## Decision
 
-Adopt Graphify as a maintainer-only context optimization primitive in controlled
-phases.
+Adopt Graphify as a maintainer-only context optimization backend for the owned
+COS context-graph primitive in controlled phases. The durable capability is
+graph-backed context selection; Graphify is replaceable adapter machinery.
 
 Cognitive OS will:
 
@@ -94,13 +95,16 @@ Cognitive OS will:
 7. join Graphify preload decisions with real session telemetry through
    `scripts/cos-graphify-run-telemetry` before making before/after token claims;
 8. project the primitive through existing skill/catalog/projection mechanisms for
-   each IDE or CLI.
+   each IDE or CLI;
+9. keep upstream web viewers, visual exports, Neo4j export, watch mode, MCP
+   servers, and Graphify-managed UI/integration surfaces out of the default
+   workflow unless explicitly approved as a separate integration task.
 
 ## Consequences
 
 Positive:
 
-- Maintainers get cheaper graph-backed context selection for code relationships.
+- Maintainers get cheaper graph-backed context selection for code relationships without inheriting a visual graph product surface.
 - Adoption remains portable across IDE and CLI surfaces.
 - Generated graph artifacts do not pollute the repository by default.
 - The OS can later add richer projection or hook behavior without inheriting
@@ -108,8 +112,8 @@ Positive:
 
 Negative:
 
-- Graphify is not a full-repository optimizer by itself; it needs scoped queries,
-  source confirmation, and tests.
+- Graphify is not a full-repository optimizer or UI product by itself; it needs
+  scoped queries, source confirmation, and tests.
 - Semantic documentation extraction has meaningful token cost and remains gated.
 - The first implementation is advisory/executable for maintainers, not automatic
   lifecycle enforcement.
@@ -121,6 +125,7 @@ Negative:
 - Direct upstream IDE installation was rejected because it mutates one IDE surface outside the OS projection model.
 - No adoption was rejected because the local trial showed enough navigation and context-reduction value for a controlled wrapper.
 - Immediate semantic indexing of all docs, ADRs, rules, and skills was deferred because the token cost belongs behind an explicit budget gate.
+- Default visual/web graph adoption was rejected because COS needs context selection and token telemetry first, not a graph-viewing product.
 
 ### Direct upstream IDE installation
 
@@ -155,18 +160,20 @@ The phases are defined in
 2. `skills/graphify-query/SKILL.md` documents command selection, freshness checks,
    and the prohibition on upstream IDE/hook installers.
 3. `graphify-out/` is ignored by Git.
-4. Documentation links from the entrypoint MOC to the plan, ADR, investigation,
+4. Visual/web export, watch, Neo4j, and Graphify MCP surfaces stay out of the
+   default workflow unless a separate task approves them.
+5. Documentation links from the entrypoint MOC to the plan, ADR, investigation,
    manual test, and receipt.
-5. Graphify-derived recommendations are labeled as navigation support and verified
+6. Graphify-derived recommendations are labeled as navigation support and verified
    with source inspection or tests before implementation.
-6. `scripts/cos-graphify-run-telemetry` reports bundles, preload files, estimated
+7. `scripts/cos-graphify-run-telemetry` reports bundles, preload files, estimated
    preload tokens, real session tokens, tools, duration, models, subagents, and
    a clear actual/estimated/mixed metric label.
-7. Latest-session discovery requires explicit `--latest-claude-session`; otherwise
+8. Latest-session discovery requires explicit `--latest-claude-session`; otherwise
    operators must pass `--session`.
-8. `scripts/cos-graphify-token-reduction-smoke` proves the causal-measurement
+9. `scripts/cos-graphify-token-reduction-smoke` proves the causal-measurement
    harness with controlled paired fixtures before live model experiments are run.
-9. `scripts/cos-graphify-context-replay-benchmark` simulates a controlled run
+10. `scripts/cos-graphify-context-replay-benchmark` simulates a controlled run
    with real repository file content and excludes generated caches/artifacts from
    broad baselines.
 
