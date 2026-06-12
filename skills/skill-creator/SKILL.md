@@ -1,162 +1,191 @@
 ---
 name: skill-creator
-description: 'Use when you need this Cognitive OS skill: Creates new AI agent skills
-  following the Agent Skills spec, then generates cos package scaffolding for sharing.;
-  do not use when a narrower skill directly matches the task.'
-routing_intents:
-  - "Design a new AI agent skill and package it for Cognitive OS sharing"
-  - "Create skill instructions plus cos package scaffolding for distribution"
-  - "Turn a reusable agent workflow into a documented installable skill"
-  - "Build a new SKILL.md from user requirements and usage examples"
-  - "Generate packaging metadata for a skill intended to be reused by agents"
-summary_line: Create new AI agent skills + cos package scaffolding.
-version: 1.1.0
-audience: both
-invoke: /skill-creator
-effort: opus
-platforms:
-- claude-code
-prerequisites: []
-routing_patterns:
-- pattern: \bskill[- ]?creator\b
-  confidence: 0.96
-- pattern: \bcreate\s+(a\s+)?(new\s+)?skill\b
-  confidence: 0.9
-- pattern: \bagent\s+skills?\s+spec\b
-  confidence: 0.82
-triggers:
-- skill-creator
-- /skill-creator
-- Skill Creator with cos Packaging
-- Create new AI agent skills + cos package scaffolding
-
+description: Create or update portable AI agent skills from a high-level workflow description. Use when a user asks to create a new SKILL.md, turn repeated instructions into a reusable skill, migrate a Claude custom command or prompt into an Agent Skills-style skill, or adapt a skill for any project stack. Do not use for implementing the workflow itself unless the user asked to create the reusable skill.
+metadata:
+  version: 1.2.0
+  audience: both
+  invoke: /skill-creator
+  effort: opus
+  summary_line: Create or update portable AI agent skills from high-level workflow descriptions.
+  platforms:
+  - claude-code
+  - codex
+  - shell
+  prerequisites: []
+  routing_patterns:
+  - pattern: \bskill[- ]?creator\b
+    confidence: 0.96
+  - pattern: \bcreate\s+(a\s+)?(new\s+)?skill\b
+    confidence: 0.9
+  - pattern: \bagent\s+skills?\s+spec\b
+    confidence: 0.82
+  triggers:
+  - skill-creator
+  - /skill-creator
+  - create skill
+  - create prompt
+  - metaprompt-workflow
+  routing_intents:
+  - Design a new AI agent skill from user requirements and usage examples.
+  - Turn a reusable agent workflow into a portable SKILL.md.
+  - Adapt a Claude custom command or prompt into an Agent Skills-style skill.
+  - Decide where a skill belongs across COS, project-local, user-local, or packaged surfaces.
+  - Update catalogs, lifecycle metadata, tests, and projections when working inside Cognitive OS.
 ---
 <!-- SCOPE: both -->
-# Skill Creator with cos Packaging
+# Skill Creator
 
-> Creates new AI agent skills following the Agent Skills spec, then generates cos package scaffolding for sharing.
+Create or update a reusable AI agent skill from a high-level description. Prefer
+portable Agent Skills-style `SKILL.md` instructions that work across project
+stacks and harnesses. Keep project-specific conventions in the target project,
+not in this skill.
 
-## Trigger
+## Inputs
 
-When user asks to create a new skill, add agent instructions, or document patterns for AI.
+- High-level workflow description or source prompt/command/skill.
+- Optional target location, such as a repository skill directory, `.claude/skills/`,
+  `$CODEX_HOME/skills`, or a package-backed COS skill path.
+- Optional invocation name, arguments, required tools, or known validation cases.
 
-## Steps
+If the requested behavior, target location, or write permissions are unclear and
+reasonable assumptions could create files in the wrong surface, ask one concise
+clarifying question. Otherwise proceed and record assumptions in the output.
 
-### Phase 1: Create the Skill
+## Workflow
 
-Follow the standard skill creation process:
+### 1. Classify the request
 
-1. Ask the user what the skill should do (name, trigger, purpose)
-2. Create the skill directory under `skills/{skill-name}/`
-3. Write `SKILL.md` with:
-   - Title and description
-   - Trigger conditions
-   - Step-by-step instructions
-   - Success criteria
-   - Examples (if applicable)
-   - A short portability note when the skill is not fully core-agnostic
-4. Update `CATALOG.md` with a one-line entry for the new skill
-5. Keep harness-specific trigger syntax, instruction surfaces, and file-path
-   assumptions out of the main behavior unless they are explicitly marked as a
-   driver projection
+Choose one outcome before writing files:
 
-### Phase 2: Generate cos Package Scaffolding
+- `use-existing`: an existing skill already covers the request.
+- `update-existing`: an existing skill should be improved or generalized.
+- `create-project-skill`: create a project-local skill for the current repo.
+- `create-user-skill`: create a reusable personal/user skill outside the repo.
+- `create-cos-primitive`: create or modify a Cognitive OS source primitive.
+- `discard`: the source is too specific, unsafe, or better kept as ad-hoc prompt text.
 
-After the skill SKILL.md is created, generate cos package files to make the skill publishable:
+Search existing skill surfaces first. In a repository, inspect likely locations
+such as `skills/`, `packages/*/skills/`, `.claude/skills/`, `.cognitive-os/skills/`,
+`.codex/skills/`, and project docs that mention skill ownership.
 
-6. Create `cos-package.yaml` in the skill directory:
+### 2. Pick the target surface
+
+Use the narrowest surface that matches the skill's reuse boundary:
+
+| Target | Use when |
+|---|---|
+| Project-local skill | The workflow is useful only in one repository or product domain. |
+| User-local skill | The workflow is personal and reusable across unrelated repos. |
+| Package-backed/shared skill | The workflow is reusable by many projects and needs distribution metadata. |
+| Cognitive OS source skill | The workflow changes COS internals, projection, catalogs, lifecycle, or governance. |
+
+Do not assume `.claude/skills/` is the only target. Claude Code supports skills
+and custom commands, while other harnesses may project skills through different
+surfaces. Prefer `SKILL.md` as the portable source and generate/adapt harness
+projection files only when the target repo requires them.
+
+### 3. Extract the reusable behavior
+
+From the source prompt or high-level description, keep:
+
+- The task the skill performs.
+- Concrete trigger contexts and non-goals.
+- Inputs and outputs.
+- Step order that protects correctness.
+- Required validation commands or manual checks.
+- Tool permissions that are truly required.
+
+Remove or parameterize:
+
+- Hardcoded stack assumptions, package managers, test runners, frameworks, and
+  source directories.
+- Company or project names that are not part of the reusable behavior.
+- Harness-only instructions such as one specific tool name, model name, or slash
+  command format unless the target surface explicitly requires them.
+- Mandatory web/documentation fetching unless current external documentation is
+  needed for the requested skill and a primary source is known.
+
+### 4. Write portable frontmatter
+
+For maximum cross-tool compatibility, use only `name`, `description`, and
+optional `metadata` at the top level. Put COS or harness-specific routing fields
+under `metadata` when needed.
 
 ```yaml
-name: "@luum/{skill-name}"
-version: "0.1.0"
-description: "{one-line description from SKILL.md}"
-authors:
-  - "{detect from git config user.name and user.email}"
-license: "MIT"
-provides:
-  - skill
-exports:
-  - source: "SKILL.md"
-    type: skill
-    description: "{skill description}"
-keywords:
-  - "{relevant keywords}"
-cos_version: ">=0.1.0"
+---
+name: example-skill
+description: Do the reusable workflow. Use when ... Do not use when ...
+metadata:
+  version: 0.1.0
+  audience: both
+  triggers:
+  - example-skill
+  - /example-skill
+  routing_intents:
+  - User asks to perform the reusable workflow.
+---
 ```
 
-7. Create a minimal `README.md` for the package:
+Description is the primary routing surface. Include what the skill does, when to
+use it, and when not to use it in that field.
 
-```markdown
-# {Skill Name}
+### 5. Write the body
 
-{Description from SKILL.md}
+Keep the body concise and operational:
 
-## Installation
+1. Purpose and inputs.
+2. Decision workflow.
+3. Output format or artifact contract.
+4. Validation and reporting.
+5. Contextual trigger section if the target repo's skill contracts require it.
 
-```bash
-cos install @luum/{skill-name}
-```
+Use plain imperative instructions. Avoid stacked emphasis, repeated rules, and
+all-caps warnings unless a silent-failure gate needs one explicit hard rule.
 
-## Usage
+When a skill supports multiple stacks, providers, or harnesses, keep only the
+selection logic in `SKILL.md`; move detailed variant instructions into direct
+reference files only when they are large enough to justify progressive disclosure.
 
-{Brief usage instructions derived from SKILL.md trigger and steps}
+### 6. Add supporting files only when useful
 
-## License
+Create extra `scripts/`, `references/`, `assets/`, or `agents/openai.yaml` files
+only when they directly improve repeated execution. Do not create README,
+installation guide, changelog, or process notes unless the target ecosystem
+requires those artifacts.
 
-MIT
-```
+If adding scripts, run them or a representative sample before claiming the skill
+works.
 
-8. Inform the user:
-   - The skill is ready to use locally
-   - To share it: `cos publish` (when cos CLI is available)
-   - To score it: `cos score skills/{skill-name}/`
-   - The cos-package.yaml can be customized (add dependencies, features, platform requirements)
+### 7. Register and validate according to the target
 
-### Phase 3: Register in Skill Registry
+For a plain user/project skill:
 
-9. If the project has a skill registry in Engram, save the new skill:
+- Run the available skill validator when present.
+- Verify the skill path, frontmatter, and referenced support files.
+- Run any tests or manual checks named by the target project.
 
-```
-mem_save(
-  title: "New skill: {skill-name}",
-  type: "discovery",
-  scope: "project",
-  topic_key: "implementation/{skill-name}/creation",
-  content: "**What**: Created skill {skill-name}\n**Why**: {user's reason}\n**Where**: skills/{skill-name}/SKILL.md\n**Learned**: {any decisions made during creation}"
-)
-```
+For Cognitive OS source changes:
 
-### Phase 4: Primitive classification and portability gate
+- Add or update lifecycle/catalog/registry/projection metadata as required.
+- If the skill declares `SCOPE: both`, add portability proof or targeted tests
+  that falsify project-specific assumptions.
+- Regenerate `.ai` overlay when the primitive is consumer-visible.
+- Run targeted repo gates before committing.
 
-Before committing a new or regenerated skill, run the shared
-`/primitive-authoring` workflow and validate the exact artifact:
+### 8. Report
 
-```bash
-python3 scripts/primitive_scope_classifier.py \
-  --project-dir . \
-  --paths skills/{skill-name}/SKILL.md \
-  --fail-contradictions \
-  --fail-low-confidence
-```
+Return:
 
-For consumer-visible skills, add `primitive-consumer-availability.yaml` and
-behavior evidence. For `SCOPE: both`, add paired red-team portability proof
-before accepting the marker. If the skill generates hooks, scripts, rules, or
-templates, classify those generated primitives too.
+- Decision: `use-existing`, `update-existing`, `create-project-skill`,
+  `create-user-skill`, `create-cos-primitive`, or `discard`.
+- Skill path and invocation name.
+- Portability scope and any target-specific assumptions.
+- Validation performed and remaining gaps.
 
-## Success Criteria
+## Contextual Trigger
 
-- [ ] `skills/{skill-name}/SKILL.md` exists and follows the standard format
-- [ ] `skills/{skill-name}/cos-package.yaml` exists with valid manifest
-- [ ] `skills/{skill-name}/README.md` exists with installation instructions
-- [ ] CATALOG.md updated with new skill entry
-- [ ] Skill is functional (can be invoked)
-- [ ] The skill is authored once at the behavioral level and any harness
-      projection is explicit
-
-## Notes
-
-- The cos-package.yaml makes the skill equivalent to an Agent Zero "plugin" but with proper versioning, dependency resolution, and quality scoring
-- If the skill has dependencies on other skills or rules, add them to the `dependencies` section of cos-package.yaml
-- For skills that include hooks, add hook exports with `hook_event` and `hook_matcher` fields
-- Quality score can be improved by adding tests in a `tests/` subdirectory
+- User asks to create, update, migrate, generalize, or package an AI agent skill,
+  prompt, slash command, custom command, or reusable agent workflow.
+- User provides a `SKILL.md` or prompt file and asks whether to adopt it across
+  projects or make it stack-agnostic.
+- User asks for `/skill-creator`, `skill-creator`, or `metaprompt-workflow`.

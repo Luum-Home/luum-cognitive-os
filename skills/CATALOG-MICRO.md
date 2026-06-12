@@ -37,7 +37,7 @@ Total skills: 184
 - session-pending-brief [b]: Bridge prompt → cos-session…; k=session-pending-brief,bridge
 - session-pending-close [b]: Atomic close of pending-tru…; k=session-pending-close,atomic
 - session-wrapup [b]: End-of-session routine — ru…; k=session-wrapup,end-of-session
-- skill-creator [b]: Create new AI agent skills…; k=skill-creator,create
+- skill-creator [b]: Create or update portable A…; k=skill-creator,create
 - stash-quarantine [b]: Safely isolate, inspect, re…; k=stash-quarantine,safely
 - trust-audit [b]: Analyze trust scores across…; k=trust-audit,analyze
 - validate-config [b]: Validate all Cognitive OS c…; k=validate-config,validate
