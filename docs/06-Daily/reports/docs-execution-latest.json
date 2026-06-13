@@ -42749,6 +42749,58 @@
       "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-runtime.md"
     },
     {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:accepted"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "status: accepted",
+      "kind": "prose",
+      "line": 4,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/02-Decisions/adrs/ADR-337-agent-process-loop-contract-layer.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:implementation_status,implemented"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "implementation_status: implemented",
+      "kind": "prose",
+      "line": 5,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/02-Decisions/adrs/ADR-337-agent-process-loop-contract-layer.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:accepted,implemented"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Accepted \u2014 implemented on 2026-06-13.",
+      "kind": "prose",
+      "line": 27,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/02-Decisions/adrs/ADR-337-agent-process-loop-contract-layer.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "terms:action,advisory,candidate,does,every,initial,intercept,maturity"
+      ],
+      "inferred_status": "proposed",
+      "item": "Initial maturity is advisory/candidate. It does not forcibly intercept every IDE/CLI action.",
+      "kind": "bullet",
+      "line": 69,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/02-Decisions/adrs/ADR-337-agent-process-loop-contract-layer.md"
+    },
+    {
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
@@ -77701,6 +77753,10 @@
         "done_weak_proof": 3,
         "planned": 1
       },
+      "docs/02-Decisions/adrs/ADR-337-agent-process-loop-contract-layer.md": {
+        "done_weak_proof": 3,
+        "proposed": 1
+      },
       "docs/02-Decisions/adrs/README.md": {
         "planned": 1
       },
@@ -79438,13 +79494,13 @@
         "done_weak_proof": 1
       }
     },
-    "items": 5796,
+    "items": 5800,
     "statuses": {
       "claimed_done_no_proof": 1,
-      "done_weak_proof": 2732,
+      "done_weak_proof": 2735,
       "done_with_proof": 295,
       "planned": 2027,
-      "proposed": 634,
+      "proposed": 635,
       "stale": 107
     }
   }

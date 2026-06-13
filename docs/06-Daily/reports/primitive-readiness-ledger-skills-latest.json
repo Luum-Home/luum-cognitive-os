@@ -69,7 +69,7 @@
         "rule": 3,
         "script": 1,
         "skill": 2,
-        "test": 6
+        "test": 7
       },
       "consumers": [
         {
@@ -166,6 +166,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_cos_process_loop.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_cross_cli_ide_projection.py"
         },
         {
@@ -186,7 +190,7 @@
         "skill_consumers:2",
         "rule_consumers:3",
         "script_consumers:1",
-        "test_consumers:6",
+        "test_consumers:7",
         "doc_consumers:11",
         "config_consumers:4"
       ],
@@ -198,7 +202,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 27
+      "total_consumers": 28
     },
     {
       "confidence": "high",

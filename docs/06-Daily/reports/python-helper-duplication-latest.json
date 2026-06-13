@@ -1070,6 +1070,21 @@
       "common_home": "lib/",
       "confidence": 0.86,
       "consumer_relevance": "so-local-first",
+      "finding_id": "python-function-repeat:db0546676663",
+      "kind": "python-function-repeat",
+      "left": "lib/goal_state.py::_now_iso",
+      "pair_key": "lib/goal_state.py::_now_iso :: scripts/cos_process_loop.py::utc_now",
+      "rationale": "Python functions have identical normalized AST bodies",
+      "recommendation": "extract-common-python-helper",
+      "right": "scripts/cos_process_loop.py::utc_now",
+      "severity": "medium",
+      "similarity": 1.0
+    },
+    {
+      "classification": "candidate",
+      "common_home": "lib/",
+      "confidence": 0.86,
+      "consumer_relevance": "so-local-first",
       "finding_id": "python-function-repeat:0be0aee99974",
       "kind": "python-function-repeat",
       "left": "lib/history_rewrite_ledger.py::__init__",
@@ -1274,6 +1289,51 @@
       "right": "lib/skill_synthesizer.py::_default_metrics_dir",
       "severity": "medium",
       "similarity": 1.0
+    },
+    {
+      "classification": "candidate",
+      "common_home": "lib/",
+      "confidence": 0.86,
+      "consumer_relevance": "so-local-first",
+      "finding_id": "python-function-repeat:9b3d37d2e6b1",
+      "kind": "python-function-repeat",
+      "left": "scripts/cos_loop.py::load_json",
+      "pair_key": "scripts/cos_loop.py::load_json :: scripts/cos_process_loop.py::load_json",
+      "rationale": "Python functions have identical normalized AST bodies",
+      "recommendation": "extract-common-python-helper",
+      "right": "scripts/cos_process_loop.py::load_json",
+      "severity": "medium",
+      "similarity": 1.0
+    },
+    {
+      "classification": "candidate",
+      "common_home": "lib/",
+      "confidence": 0.86,
+      "consumer_relevance": "so-local-first",
+      "finding_id": "python-function-repeat:4c2d62980299",
+      "kind": "python-function-repeat",
+      "left": "scripts/cos_loop.py::load_jsonl",
+      "pair_key": "scripts/cos_loop.py::load_jsonl :: scripts/cos_process_loop.py::load_jsonl",
+      "rationale": "Python functions have identical normalized AST bodies",
+      "recommendation": "extract-common-python-helper",
+      "right": "scripts/cos_process_loop.py::load_jsonl",
+      "severity": "medium",
+      "similarity": 1.0
+    },
+    {
+      "classification": "candidate",
+      "common_home": "lib/",
+      "confidence": 0.86,
+      "consumer_relevance": "so-local-first",
+      "finding_id": "python-function-repeat:bd9c1d200afb",
+      "kind": "python-function-repeat",
+      "left": "scripts/cos_loop.py::main",
+      "pair_key": "scripts/cos_loop.py::main :: scripts/cos_process_loop.py::main",
+      "rationale": "Python functions have identical normalized AST bodies",
+      "recommendation": "extract-common-python-helper",
+      "right": "scripts/cos_process_loop.py::main",
+      "severity": "medium",
+      "similarity": 1.0
     }
   ],
   "parameters": {
@@ -1293,7 +1353,7 @@
   "ratchet": {
     "baseline": "manifests/python-helper-duplication-baseline.json",
     "baseline_findings": 134,
-    "current_findings": 85,
+    "current_findings": 89,
     "new_finding_ids": [
       "python-function-repeat:9247f359f197",
       "python-function-repeat:509d9c5d269f",
@@ -1304,26 +1364,30 @@
       "python-function-repeat:c4b1378c9129",
       "python-function-repeat:c30423c0bdd6",
       "python-function-repeat:d7df92bc0135",
+      "python-function-repeat:db0546676663",
       "python-function-repeat:8da987ccf3f3",
       "python-function-repeat:3c5d41f9382a",
-      "python-function-repeat:5f9b2361a7e8"
+      "python-function-repeat:5f9b2361a7e8",
+      "python-function-repeat:9b3d37d2e6b1",
+      "python-function-repeat:4c2d62980299",
+      "python-function-repeat:bd9c1d200afb"
     ],
-    "new_findings": 12,
+    "new_findings": 16,
     "status": "fail"
   },
   "schema_version": "primitive-duplication-audit.v1",
   "summary": {
     "by_common_home": {
-      "lib/": 85
+      "lib/": 89
     },
     "by_consumer_relevance": {
-      "so-local-first": 85
+      "so-local-first": 89
     },
     "by_kind": {
-      "python-function-repeat": 85
+      "python-function-repeat": 89
     },
-    "files_scanned": 725,
-    "findings": 85
+    "files_scanned": 726,
+    "findings": 89
   },
-  "timestamp": "2026-06-13T05:25:56.988045+00:00"
+  "timestamp": "2026-06-13T05:49:37.400507+00:00"
 }

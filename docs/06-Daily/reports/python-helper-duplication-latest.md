@@ -1,17 +1,17 @@
 # Primitive Duplication Audit — Latest
 
-Generated: `2026-06-13T05:25:56.988045+00:00`
+Generated: `2026-06-13T05:49:37.400507+00:00`
 
 ## Summary
 
-- Files scanned: 725
-- Findings: 85
-- By kind: `{"python-function-repeat": 85}`
-- By common home: `{"lib/": 85}`
-- By consumer relevance: `{"so-local-first": 85}`
+- Files scanned: 726
+- Findings: 89
+- By kind: `{"python-function-repeat": 89}`
+- By common home: `{"lib/": 89}`
+- By consumer relevance: `{"so-local-first": 89}`
 - Ratchet status: `fail`
 - Baseline findings: 134
-- New findings: 12
+- New findings: 16
 
 ## Top Candidates
 
@@ -88,6 +88,7 @@ Generated: `2026-06-13T05:25:56.988045+00:00`
 | python-function-repeat | candidate | 1.0 | `lib/fleet_confidence.py::load_yaml` | `lib/memory_retrieval_benchmark.py::load_yaml` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/fleet_confidence.py::load_yaml` | `lib/script_helpers.py::read_yaml_required` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/goal_state.py::_now_iso` | `scripts/cos_loop.py::utc_now` | extract-common-python-helper | `lib/` | so-local-first |
+| python-function-repeat | candidate | 1.0 | `lib/goal_state.py::_now_iso` | `scripts/cos_process_loop.py::utc_now` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/history_rewrite_ledger.py::__init__` | `lib/history_sanitization.py::__init__` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/history_sanitization.py::_upstream_tracking_ref` | `lib/prelaunch_audit.py::upstream_tracking_ref` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/improve_loop.py::utc_stamp` | `lib/prelaunch_audit.py::utc_stamp` | extract-common-python-helper | `lib/` | so-local-first |
@@ -102,6 +103,9 @@ Generated: `2026-06-13T05:25:56.988045+00:00`
 | python-function-repeat | candidate | 1.0 | `lib/script_helpers.py::object_maps` | `scripts/private_content_audit.py::_payload_list` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/skill_description_enricher.py::_read_text` | `scripts/primitive-behavior-audit.py::read_text` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/skill_failure_repair.py::_default_metrics_dir` | `lib/skill_synthesizer.py::_default_metrics_dir` | extract-common-python-helper | `lib/` | so-local-first |
+| python-function-repeat | candidate | 1.0 | `scripts/cos_loop.py::load_json` | `scripts/cos_process_loop.py::load_json` | extract-common-python-helper | `lib/` | so-local-first |
+| python-function-repeat | candidate | 1.0 | `scripts/cos_loop.py::load_jsonl` | `scripts/cos_process_loop.py::load_jsonl` | extract-common-python-helper | `lib/` | so-local-first |
+| python-function-repeat | candidate | 1.0 | `scripts/cos_loop.py::main` | `scripts/cos_process_loop.py::main` | extract-common-python-helper | `lib/` | so-local-first |
 
 ## Interpretation
 

@@ -5153,6 +5153,39 @@ evidence:
   tests: *id001
   rationale: Example loop contract is exercised by wrapper smoke tests that copy it
     into a temp consumer project and run all cos-loop commands.
+
+- primitive: scripts/cos-process-loop
+  harnesses:
+  - shell-ci
+  tests: &process_loop_tests
+  - tests/unit/test_cos_process_loop.py
+  - tests/red_team/portability/test_cos_process_loop_primitives.py
+  rationale: Process-loop wrapper initializes/reports process contracts and gates final verdicts from project-local state.
+- primitive: scripts/cos-apply-progress
+  harnesses:
+  - shell-ci
+  tests: *process_loop_tests
+  rationale: Apply-progress wrapper records task state and evidence into process-local JSONL and summary state.
+- primitive: scripts/cos-fresh-review
+  harnesses:
+  - shell-ci
+  tests: *process_loop_tests
+  rationale: Fresh-review wrapper records findings, severities, and resolution state used by verdict gating.
+- primitive: scripts/cos-verify-report
+  harnesses:
+  - shell-ci
+  tests: *process_loop_tests
+  rationale: Verify-report wrapper runs verification commands and persists pass/fail evidence for final verdicts.
+- primitive: scripts/cos_process_loop.py
+  harnesses:
+  - shell-ci
+  tests: *process_loop_tests
+  rationale: Shared Python implementation is covered by unit behavior tests plus wrapper portability tests.
+- primitive: templates/process-contract.example.yaml
+  harnesses:
+  - shell-ci
+  tests: *process_loop_tests
+  rationale: Example process contract is copied into temp consumer projects and exercised through all process-loop wrappers.
 patterns:
 - pattern: tests/**
   behavior_proven: true

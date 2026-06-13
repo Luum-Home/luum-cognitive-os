@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-06-13T05:26:46+00:00'
+generated_at: '2026-06-13T05:50:26+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
@@ -5350,6 +5350,17 @@ primitives:
   - docs/04-Concepts/architecture/agent-message-bus.md
   - scripts/cos-agent-message
   sha256: 039e90c4fc8cd02c95e9282c1f59d4dce006fa1bde1ae29ea8c7698eba414bcc
+- id: scripts/cos-apply-progress
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-apply-progress
+  - scripts/cos_process_loop.py
+  sha256: 9d5d1b87cefb7aeaf9062c51487eeaa3c253a9b39326367b8cf6f7a1252ea69a
 - id: scripts/cos-architecture-readiness
   kind: script
   owner_adr: ADR-127
@@ -5761,6 +5772,17 @@ primitives:
   - skills/vuln-remediation-flow/flow_contract.yaml
   - docs/02-Decisions/adrs/ADR-138-flow-contract-schema.md
   sha256: 5c1bf2c1060ab0077567b307a4cd3b7afee045094cd1d20071d8fb2f04edbeed
+- id: scripts/cos-fresh-review
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-fresh-review
+  - scripts/cos_process_loop.py
+  sha256: 8d439f13ff2fd9cfcf9c57546b88ded494463b22c0833ab4f54cb760cd3dc3fd
 - id: scripts/cos-gate-stack.sh
   kind: script
   owner_adr: ADR-146
@@ -6428,6 +6450,17 @@ primitives:
   projection_targets:
   - scripts/cos-primitive-projection-fidelity
   sha256: f14401131683741ca4c6d3d11292a1bc09ea944dae0b98706d64096a86a0f171
+- id: scripts/cos-process-loop
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-process-loop
+  - scripts/cos_process_loop.py
+  sha256: b7d5420ea77d3f41bccfdd136eaf7098fe269f960ddd6f12704f96227d7f7b7b
 - id: scripts/cos-product-answer
   kind: script
   owner_adr: ADR-280
@@ -6926,6 +6959,17 @@ primitives:
   projection_targets:
   - scripts/cos-valkey-local.sh
   sha256: 317f81fe8a847a3b940956580f10ecabd480371a434016c160e647cdde194be0
+- id: scripts/cos-verify-report
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-verify-report
+  - scripts/cos_process_loop.py
+  sha256: 0009cbf01b3b2e844e03b24f1a8d555f3d644496966238b3cee61fef2e6dfa6f
 - id: scripts/cos-weekly-config-audit.sh
   kind: script
   owner_adr: ADR-146
@@ -7275,6 +7319,16 @@ primitives:
   projection_targets:
   - scripts/cos_primitive_harvester.py
   sha256: 4b9a48ae0b0fe4471107ba6fd7af1594e34e1fead7eba6cba81e660330319506
+- id: scripts/cos_process_loop.py
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos_process_loop.py
+  sha256: c10e5a71310bad4daa18f3de908ad6b55ddebc6203e6b233fd8fe7bf5185c017
 - id: scripts/cos_profile_bootstrap.py
   kind: script
   owner_adr: ADR-146
@@ -9873,6 +9927,16 @@ primitives:
   projection_targets:
   - templates/hook-template.sh
   sha256: ea90d0eb78e343ad8d6b2117027b3b9b5869f5bd17eccb16ff058cd8f0159746
+- id: templates/process-contract.example.yaml
+  kind: template
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - templates/process-contract.example.yaml
+  sha256: 7088ae9d320ac624791c575f33f4f2995d5dcabede4184c206cd8490d80eaab8
 - id: templates/prompt-hooks/assumption-tracker-prompt.md
   kind: template
   owner_adr: ADR-314
