@@ -19,7 +19,7 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:23, lifecycle-decl
 | `hooks/_lib/hook-pipe.sh` | driver-specific | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 12 | prove consumer project projection per supported harness before promotion |
 | `hooks/_lib/killswitch_check.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 196 | keep lifecycle, tests, and harness proof current |
 | `hooks/_lib/normalize-stdin.sh` | driver-specific | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 5 | prove consumer project projection per supported harness before promotion |
-| `hooks/_lib/portable.sh` | runtime-safety | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 428 | prove consumer project projection per supported harness before promotion |
+| `hooks/_lib/portable.sh` | runtime-safety | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 431 | prove consumer project projection per supported harness before promotion |
 | `hooks/_lib/primitive-intervention.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 48 | keep lifecycle, tests, and harness proof current |
 | `hooks/_lib/push-collision-check.sh` | observability | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 15 | prove consumer project projection per supported harness before promotion |
 | `hooks/_lib/register-bg.sh` | observability | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 6 | prove consumer project projection per supported harness before promotion |
@@ -33,7 +33,7 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:23, lifecycle-decl
 | `hooks/_lib/stash-lock.sh` | driver-specific | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 13 | prove consumer project projection per supported harness before promotion |
 | `hooks/_lib/task-event.sh` | observability | lifecycle | high | projected-consumer-surface | advisory | 11 | keep lifecycle, tests, and harness proof current |
 | `hooks/_lib/task-identity.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 8 | prove consumer project projection per supported harness before promotion |
-| `hooks/_lib/timing.sh` | observability | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 136 | prove consumer project projection per supported harness before promotion |
+| `hooks/_lib/timing.sh` | observability | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 137 | prove consumer project projection per supported harness before promotion |
 | `hooks/_lib/tuning.sh` | observability | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | 55 | prove consumer project projection per supported harness before promotion |
 | `hooks/_lib/validation-lock.sh` | driver-specific | lifecycle | high | projected-consumer-surface | advisory | 30 | keep lifecycle, tests, and harness proof current |
 | `hooks/aci-observation-capture.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 22 | keep maintainer-only or add explicit export path |

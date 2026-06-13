@@ -1025,6 +1025,21 @@
       "common_home": "lib/",
       "confidence": 0.86,
       "consumer_relevance": "so-local-first",
+      "finding_id": "python-function-repeat:d7df92bc0135",
+      "kind": "python-function-repeat",
+      "left": "lib/goal_state.py::_now_iso",
+      "pair_key": "lib/goal_state.py::_now_iso :: scripts/cos_loop.py::utc_now",
+      "rationale": "Python functions have identical normalized AST bodies",
+      "recommendation": "extract-common-python-helper",
+      "right": "scripts/cos_loop.py::utc_now",
+      "severity": "medium",
+      "similarity": 1.0
+    },
+    {
+      "classification": "candidate",
+      "common_home": "lib/",
+      "confidence": 0.86,
+      "consumer_relevance": "so-local-first",
       "finding_id": "python-function-repeat:0be0aee99974",
       "kind": "python-function-repeat",
       "left": "lib/history_rewrite_ledger.py::__init__",
@@ -1263,7 +1278,7 @@
   "ratchet": {
     "baseline": "manifests/python-helper-duplication-baseline.json",
     "baseline_findings": 134,
-    "current_findings": 83,
+    "current_findings": 84,
     "new_finding_ids": [
       "python-function-repeat:9247f359f197",
       "python-function-repeat:509d9c5d269f",
@@ -1271,27 +1286,28 @@
       "python-function-repeat:9da85dd79b73",
       "python-function-repeat:c4b1378c9129",
       "python-function-repeat:c30423c0bdd6",
+      "python-function-repeat:d7df92bc0135",
       "python-function-repeat:8da987ccf3f3",
       "python-function-repeat:3c5d41f9382a",
       "python-function-repeat:5f9b2361a7e8",
       "python-function-repeat:9e2aefc953ee"
     ],
-    "new_findings": 10,
+    "new_findings": 11,
     "status": "fail"
   },
   "schema_version": "primitive-duplication-audit.v1",
   "summary": {
     "by_common_home": {
-      "lib/": 83
+      "lib/": 84
     },
     "by_consumer_relevance": {
-      "so-local-first": 83
+      "so-local-first": 84
     },
     "by_kind": {
-      "python-function-repeat": 83
+      "python-function-repeat": 84
     },
-    "files_scanned": 724,
-    "findings": 83
+    "files_scanned": 725,
+    "findings": 84
   },
-  "timestamp": "2026-06-13T01:14:18.948087+00:00"
+  "timestamp": "2026-06-13T03:10:44.251532+00:00"
 }

@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-06-13T01:15:12+00:00'
+generated_at: '2026-06-13T03:11:37+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
@@ -6117,6 +6117,61 @@ primitives:
   projection_targets:
   - scripts/cos-language-dependence-audit
   sha256: a5a81094d661d9cd3b64eaa1fc6822e8684df6a6921e1a56a879595a78b6d42e
+- id: scripts/cos-loop-eval
+  kind: script
+  owner_adr: ADR-336
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-loop-eval
+  - scripts/cos_loop.py
+  sha256: 7d68a3eb605647cd3277f5b884c22b07c01e1f7ab1d0779331246ba79472c53a
+- id: scripts/cos-loop-guard
+  kind: script
+  owner_adr: ADR-336
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-loop-guard
+  - scripts/cos_loop.py
+  sha256: 4caa499f8e088ecb41dc022587198b25b02be723eb12cc60b256b2278c6a10ba
+- id: scripts/cos-loop-replay
+  kind: script
+  owner_adr: ADR-336
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-loop-replay
+  - scripts/cos_loop.py
+  sha256: 7895a69206d02e075b9656b2f9aec99fe351b7e826eb03363ab496f16db34439
+- id: scripts/cos-loop-report
+  kind: script
+  owner_adr: ADR-336
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-loop-report
+  - scripts/cos_loop.py
+  sha256: 1cc7e525dab1e003e21a78d9fe29c4c1bce3322ad355499c43027e3ccddf988a
+- id: scripts/cos-loop-run
+  kind: script
+  owner_adr: ADR-336
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-loop-run
+  - scripts/cos_loop.py
+  sha256: 5b7a48fc31cc04116bb84626810bdcd9d29fbd2f5208de1ec70d5e2cdda0a575
 - id: scripts/cos-manifest-tier-claim-audit
   kind: script
   owner_adr: ADR-132
@@ -7159,6 +7214,16 @@ primitives:
   projection_targets:
   - scripts/cos_key_learnings_capture.py
   sha256: dbe76cf23b375486b392a087cf2b46fb14b40e1f30ef041f92ccbd5fc6a1134b
+- id: scripts/cos_loop.py
+  kind: script
+  owner_adr: ADR-336
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos_loop.py
+  sha256: 69c6188ed4e3d95b7e693e2dc4dc8ff39c5303fdca17a5251da2aad94daf8522
 - id: scripts/cos_new_adr.py
   kind: script
   owner_adr: ADR-148

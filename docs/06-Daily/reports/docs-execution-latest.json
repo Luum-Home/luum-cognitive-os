@@ -1218,7 +1218,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-311: Primitive Closure Ratchets and Subagent Budget Enforcement](adrs/ADR-311-primitive-closure-ratchets-and-subagent-budget-enforcement.md) \u2014 accepted closure layer for projection/runtime proof ratchets and subagent 50-call enforcement",
       "kind": "bullet",
-      "line": 945,
+      "line": 946,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -42697,6 +42697,32 @@
       "path": "docs/02-Decisions/adrs/ADR-335-generic-task-closure-ledger-gate.md"
     },
     {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:accepted"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Accepted",
+      "kind": "prose",
+      "line": 5,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-plane.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:advisory,call,candidate,command,does,every,gate,harness"
+      ],
+      "inferred_status": "planned",
+      "item": "Initial maturity is advisory/candidate. The runtime can gate its own command results, but it does not yet forcibly intercept every tool call in every IDE/CLI harness.",
+      "kind": "bullet",
+      "line": 39,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-plane.md"
+    },
+    {
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
@@ -49500,6 +49526,19 @@
       "line": 10,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/04-Concepts/architecture/agent-flicker-control.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "terms:design,explore,handled,implement,loop,phases,propose,spec"
+      ],
+      "inferred_status": "proposed",
+      "item": "SDD phases are handled as an agent loop: explore, propose, spec, design, implement, verify.",
+      "kind": "bullet",
+      "line": 83,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/04-Concepts/architecture/agent-loop-engineering-plane.md"
     },
     {
       "confidence": 0.62,
@@ -77645,6 +77684,10 @@
         "done_weak_proof": 9,
         "planned": 2
       },
+      "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-plane.md": {
+        "done_weak_proof": 1,
+        "planned": 1
+      },
       "docs/02-Decisions/adrs/README.md": {
         "planned": 1
       },
@@ -78189,6 +78232,9 @@
       "docs/04-Concepts/architecture/agent-flicker-control.md": {
         "done_weak_proof": 1,
         "planned": 1
+      },
+      "docs/04-Concepts/architecture/agent-loop-engineering-plane.md": {
+        "proposed": 1
       },
       "docs/04-Concepts/architecture/agent-message-bus.md": {
         "done_weak_proof": 1,
@@ -79382,13 +79428,13 @@
         "done_weak_proof": 1
       }
     },
-    "items": 5792,
+    "items": 5795,
     "statuses": {
       "claimed_done_no_proof": 1,
-      "done_weak_proof": 2729,
+      "done_weak_proof": 2730,
       "done_with_proof": 295,
-      "planned": 2026,
-      "proposed": 634,
+      "planned": 2027,
+      "proposed": 635,
       "stale": 107
     }
   }
