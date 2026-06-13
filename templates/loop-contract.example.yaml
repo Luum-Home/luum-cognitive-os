@@ -1,0 +1,38 @@
+schemaVersion: cos.loop-contract.v1
+id: example-agent-loop
+trigger:
+  type: manual
+  description: Run when an agent starts a bounded multi-step repair or implementation loop.
+goal:
+  statement: Complete the requested change without oscillation, unbounded retries, or false completion.
+  acceptance:
+    - id: verification-pass
+      description: Required verification commands pass before completion is accepted.
+stopConditions:
+  maxIterations: 5
+  maxRetries: 2
+  maxNoProgressIterations: 2
+  maxToolRepetitions: 3
+  requireVerification: true
+allowedTools:
+  - name: shell
+    mode: write
+  - name: apply_patch
+    mode: write
+  - name: web
+    mode: read-only
+verificationCommands:
+  - id: unit
+    command: python3 -m pytest tests/unit/test_cos_loop.py -q
+    required: true
+memoryPolicy:
+  write: observations
+  retention: project-local
+  paths:
+    - .cognitive-os/loops
+budgetPolicy:
+  maxIterations: 5
+  maxRetries: 2
+  maxWallClockSeconds: 1800
+  maxVerificationSeconds: 120
+  maxObservationBytes: 200000

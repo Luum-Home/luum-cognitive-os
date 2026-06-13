@@ -6,7 +6,7 @@
   "harness": "claude",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 786,
+  "projected_primitive_count": 792,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": true,
@@ -5424,6 +5424,48 @@
       "fidelity": "documented-only",
       "portable_id": "scripts/cos-install-skill",
       "primitive_file": "primitives/tools/scripts-cos-install-skill-8bff19d184.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-loop-eval",
+      "primitive_file": "primitives/tools/scripts-cos-loop-eval-496573a3d7.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-loop-guard",
+      "primitive_file": "primitives/tools/scripts-cos-loop-guard-5bd960beb5.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos_loop.py",
+      "primitive_file": "primitives/tools/scripts-cos-loop-py-45549f3550.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-loop-replay",
+      "primitive_file": "primitives/tools/scripts-cos-loop-replay-473eea7c0b.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-loop-report",
+      "primitive_file": "primitives/tools/scripts-cos-loop-report-9e1c2d7399.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-loop-run",
+      "primitive_file": "primitives/tools/scripts-cos-loop-run-660d71e4c7.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {

@@ -5759,12 +5759,12 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 86,
-        "doc": 767,
+        "doc": 769,
         "hook": 123,
         "rule": 51,
-        "script": 407,
+        "script": 413,
         "skill": 86,
-        "test": 742,
+        "test": 744,
         "workflow": 2
       },
       "consumers": [
@@ -7410,6 +7410,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-plane.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/INDEX.md"
         },
         {
@@ -7763,6 +7767,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/agent-flicker-control.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-loop-engineering-plane.md"
         },
         {
           "family": "doc",
@@ -10442,6 +10450,26 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-loop-eval"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-loop-guard"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-loop-replay"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-loop-report"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-loop-run"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-maintainer-agent"
         },
         {
@@ -10947,6 +10975,10 @@
         {
           "family": "script",
           "path": "scripts/cos_lib_symlink_invariant_audit.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_loop.py"
         },
         {
           "family": "script",
@@ -13506,6 +13538,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cos_loop_primitives.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_cos_manifest_tier_claim_audit.py"
         },
         {
@@ -14007,6 +14043,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_cos_legal_approve.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_loop.py"
         },
         {
           "family": "test",
@@ -14830,13 +14870,13 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:86",
-        "test_consumers:742",
+        "test_consumers:744",
         "hook_consumers:123",
         "workflow_consumers:2",
-        "doc_consumers:767",
+        "doc_consumers:769",
         "rule_consumers:51",
         "config_consumers:86",
-        "script_consumers:407"
+        "script_consumers:413"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -14852,7 +14892,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 2264,
+      "total_consumers": 2274,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -26455,6 +26495,296 @@
       "supported_harnesses": [],
       "total_consumers": 2,
       "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "doc": 2,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-plane.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-loop-engineering-plane.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_loop_primitives.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_loop.py",
+        "test_consumers:1",
+        "doc_consumers:2",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-loop-eval",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-loop-eval",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 5,
+      "wrapper_for": "scripts/cos_loop.py"
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "doc": 2,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-plane.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-loop-engineering-plane.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_loop_primitives.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_loop.py",
+        "test_consumers:1",
+        "doc_consumers:2",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-loop-guard",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-loop-guard",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 5,
+      "wrapper_for": "scripts/cos_loop.py"
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "doc": 2,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-plane.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-loop-engineering-plane.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_loop_primitives.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_loop.py",
+        "test_consumers:1",
+        "doc_consumers:2",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-loop-replay",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-loop-replay",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 5,
+      "wrapper_for": "scripts/cos_loop.py"
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "doc": 2,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-plane.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-loop-engineering-plane.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_loop_primitives.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_loop.py",
+        "test_consumers:1",
+        "doc_consumers:2",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-loop-report",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-loop-report",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 5,
+      "wrapper_for": "scripts/cos_loop.py"
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "doc": 2,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-plane.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-loop-engineering-plane.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_loop_primitives.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_loop.py",
+        "test_consumers:1",
+        "doc_consumers:2",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-loop-run",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-loop-run",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 5,
+      "wrapper_for": "scripts/cos_loop.py"
     },
     {
       "confidence": "medium",
@@ -41181,6 +41511,81 @@
       "skill_consumers": 0,
       "supported_harnesses": [],
       "total_consumers": 7,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "doc": 1,
+        "script": 5,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-plane.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-loop-eval"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-loop-guard"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-loop-replay"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-loop-report"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-loop-run"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_loop_primitives.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "test_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:2",
+        "script_consumers:5"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos_loop.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos_loop.py",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 9,
       "wrapper_for": null
     },
     {
@@ -62917,27 +63322,27 @@
   "summary": {
     "agentic_primitives_without_lifecycle": 0,
     "confidence": {
-      "high": 361,
+      "high": 367,
       "low": 1,
       "medium": 315
     },
     "consumer_accessibility": {
       "install-profile-managed": 19,
       "lifecycle-declared-consumer-candidate": 167,
-      "lifecycle-declared-maintainer": 149,
+      "lifecycle-declared-maintainer": 155,
       "skill-referenced-not-projectable": 3,
       "so-local-only": 339
     },
     "low_confidence_rows": 1,
     "roles": {
-      "agentic-primitive": 223,
+      "agentic-primitive": 229,
       "archive": 12,
       "driver-specific": 14,
       "lab": 97,
       "maintainer-tool": 316,
       "migration-only": 15
     },
-    "total_scripts": 677,
+    "total_scripts": 683,
     "without_consumers": 0
   },
   "target_family": "scripts"

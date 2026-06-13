@@ -2,12 +2,12 @@
 
 ## Summary
 
-Total items: 5792
+Total items: 5795
 - claimed_done_no_proof: 1
-- done_weak_proof: 2729
+- done_weak_proof: 2730
 - done_with_proof: 295
-- planned: 2026
-- proposed: 634
+- planned: 2027
+- proposed: 635
 - stale: 107
 
 ## Items Needing Attention
@@ -45,7 +45,7 @@ Total items: 5792
 | docs/00-MOCs/entrypoints/README.md | 681 | done | done_weak_proof | 0.62 | The self-improvement loop is a closed feedback cycle where every agent execution produces data that improves future executions: | terms:closed,cycle,data,every,execution,executions,feedback,future | add explicit test/workflow/proof link |
 | docs/00-MOCs/entrypoints/README.md | 853 | done | done_weak_proof | 0.62 | Extending from dev-time to production-capable (partially done): | terms:done,extending,partially | add explicit test/workflow/proof link |
 | docs/00-MOCs/entrypoints/README.md | 920 | done | done_weak_proof | 0.62 | [ADR-203: Subagent Capability Contract and Launch Preflight](adrs/ADR-203-subagent-capability-contract-and-launch-preflight.md) — accepted manifest/preflight contract preventing read-only subagents from being launched for file-artifact tasks | terms:accepted,adr-203,adrs,being,capability,contract,file-artifact,launch | add explicit test/workflow/proof link |
-| docs/00-MOCs/entrypoints/README.md | 945 | done | done_weak_proof | 0.62 | [ADR-311: Primitive Closure Ratchets and Subagent Budget Enforcement](adrs/ADR-311-primitive-closure-ratchets-and-subagent-budget-enforcement.md) — accepted closure layer for projection/runtime proof ratchets and subagent 50-call enforcement | terms:accepted,adr-311,adrs,budget,call,closure,enforcement,layer | add explicit test/workflow/proof link |
+| docs/00-MOCs/entrypoints/README.md | 946 | done | done_weak_proof | 0.62 | [ADR-311: Primitive Closure Ratchets and Subagent Budget Enforcement](adrs/ADR-311-primitive-closure-ratchets-and-subagent-budget-enforcement.md) — accepted closure layer for projection/runtime proof ratchets and subagent 50-call enforcement | terms:accepted,adr-311,adrs,budget,call,closure,enforcement,layer | add explicit test/workflow/proof link |
 | docs/00-MOCs/entrypoints/getting-started.md | 324 | done | done_weak_proof | 0.62 | The state is stored in Engram. It loads the last completed phase and continues from there. | terms:completed,continues,engram,last,loads,phase,state,stored | add explicit test/workflow/proof link |
 | docs/00-MOCs/entrypoints/overview.md | 215 | done | done_weak_proof | 0.62 | **Sub-agents** are delegated specific tasks with skill references pre-resolved | terms:delegated,references,skill,specific,sub-agents,tasks | add explicit test/workflow/proof link |
 | docs/00-MOCs/entrypoints/quickstart.md | 19 | done | done_weak_proof | 0.62 | **Quality gates** -- verifies its own work before claiming done | terms:before,claiming,done,gates,quality,verifies,work | add explicit test/workflow/proof link |
@@ -1831,6 +1831,7 @@ Total items: 5792
 | docs/02-Decisions/adrs/ADR-335-generic-task-closure-ledger-gate.md | 60 | done | done_weak_proof | 0.62 | 9. `--require-gates-passed` requires closed fronts to record gate evidence. | terms:closed,evidence,fronts,gate,record,require-gates-passed,requires | add explicit test/workflow/proof link |
 | docs/02-Decisions/adrs/ADR-335-generic-task-closure-ledger-gate.md | 61 | done | done_weak_proof | 0.62 | 10. `--run-closure-gates` can execute `closureGate` commands for closed/claimable fronts; `--run-all-gates` is explicit for all fronts. | terms:claimable,closed,closuregate,commands,execute,explicit,fronts,run-all-gates | add explicit test/workflow/proof link |
 | docs/02-Decisions/adrs/ADR-335-generic-task-closure-ledger-gate.md | 66 | done | done_weak_proof | 0.62 | Reuse the Definition of Done checker as the ledger validator. Rejected because DoD verifies completion criteria for a slice, while the closure ledger tracks multi-front claimability and remaining work over time. | terms:because,checker,claimability,closure,completion,criteria,definition,done | add explicit test/workflow/proof link |
+| docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-plane.md | 5 | done | done_weak_proof | 0.62 | Accepted | weak_terms:accepted | add explicit test/workflow/proof link |
 | docs/02-Decisions/adrs/STATUS-TAXONOMY.md | 13 | done | done_weak_proof | 0.62 | accepted, exploratory, closed, replaced, deprecated, or a reserved tombstone. | terms:accepted,closed,deprecated,exploratory,replaced,reserved,tombstone | add explicit test/workflow/proof link |
 | docs/02-Decisions/adrs/STATUS-TAXONOMY.md | 14 | done | done_weak_proof | 0.62 | 2. **Implementation status** — whether the accepted work is implemented, | terms:accepted,implementation,implemented,whether,work | add explicit test/workflow/proof link |
 | docs/02-Decisions/adrs/STATUS-TAXONOMY.md | 19 | done | done_weak_proof | 0.62 | When these concepts are mixed, ADRs acquire labels such as `Phase`, `Resolved`, | terms:acquire,adrs,concepts,labels,mixed,phase,resolved,such | add explicit test/workflow/proof link |

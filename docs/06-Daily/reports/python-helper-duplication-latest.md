@@ -1,17 +1,17 @@
 # Primitive Duplication Audit — Latest
 
-Generated: `2026-06-13T01:14:18.948087+00:00`
+Generated: `2026-06-13T03:10:44.251532+00:00`
 
 ## Summary
 
-- Files scanned: 724
-- Findings: 83
-- By kind: `{"python-function-repeat": 83}`
-- By common home: `{"lib/": 83}`
-- By consumer relevance: `{"so-local-first": 83}`
+- Files scanned: 725
+- Findings: 84
+- By kind: `{"python-function-repeat": 84}`
+- By common home: `{"lib/": 84}`
+- By consumer relevance: `{"so-local-first": 84}`
 - Ratchet status: `fail`
 - Baseline findings: 134
-- New findings: 10
+- New findings: 11
 
 ## Top Candidates
 
@@ -85,6 +85,7 @@ Generated: `2026-06-13T01:14:18.948087+00:00`
 | python-function-repeat | candidate | 1.0 | `lib/feedback_detector.py::_compile_patterns` | `lib/prompt_classifier.py::_compile_patterns` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/fleet_confidence.py::load_yaml` | `lib/memory_retrieval_benchmark.py::load_yaml` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/fleet_confidence.py::load_yaml` | `lib/script_helpers.py::read_yaml_required` | extract-common-python-helper | `lib/` | so-local-first |
+| python-function-repeat | candidate | 1.0 | `lib/goal_state.py::_now_iso` | `scripts/cos_loop.py::utc_now` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/history_rewrite_ledger.py::__init__` | `lib/history_sanitization.py::__init__` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/history_sanitization.py::_upstream_tracking_ref` | `lib/prelaunch_audit.py::upstream_tracking_ref` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/improve_loop.py::utc_stamp` | `lib/prelaunch_audit.py::utc_stamp` | extract-common-python-helper | `lib/` | so-local-first |
