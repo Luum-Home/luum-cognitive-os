@@ -2,7 +2,7 @@
 
 > Context diet entrypoint. Read this before opening `docs/07-Capabilities/acc/latest.json`.
 
-Generated: 2026-06-12T23:53:40Z
+Generated: 2026-06-13T00:29:13Z
 Gate: pass (reconstruction)
 ACC: 0.9144
 ACC effective: 0.9148

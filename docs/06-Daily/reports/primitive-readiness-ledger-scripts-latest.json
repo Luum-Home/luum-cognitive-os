@@ -5764,7 +5764,7 @@
         "rule": 51,
         "script": 404,
         "skill": 86,
-        "test": 733,
+        "test": 737,
         "workflow": 2
       },
       "consumers": [
@@ -13234,6 +13234,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cos-primitive-closure-check.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_cos-primitive-closure-ratchet.py"
         },
         {
@@ -13251,6 +13255,10 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_cos-provider-call.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos-pytest-lastfailed-health.py"
         },
         {
           "family": "test",
@@ -13486,6 +13494,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cos_primitive_closure_check.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_cos_primitive_fitness.py"
         },
         {
@@ -13499,6 +13511,10 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_cos_profile_bootstrap.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_pytest_lastfailed_health.py"
         },
         {
           "family": "test",
@@ -14778,7 +14794,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:86",
-        "test_consumers:733",
+        "test_consumers:737",
         "hook_consumers:123",
         "workflow_consumers:2",
         "doc_consumers:766",
@@ -14800,7 +14816,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 2251,
+      "total_consumers": 2255,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -28962,7 +28978,8 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 2,
-        "doc": 1
+        "doc": 1,
+        "test": 1
       },
       "consumers": [
         {
@@ -28976,12 +28993,17 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/primitive-closure-atomic-check.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos-primitive-closure-check.py"
         }
       ],
       "distribution": "maintainer",
       "evidence": [
         "lifecycle",
         "wrapper_for:scripts/cos_primitive_closure_check.py",
+        "test_consumers:1",
         "doc_consumers:1",
         "config_consumers:2"
       ],
@@ -28999,7 +29021,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 3,
+      "total_consumers": 4,
       "wrapper_for": "scripts/cos_primitive_closure_check.py"
     },
     {
@@ -30130,7 +30152,8 @@
       "consumer_families": {
         "config": 2,
         "doc": 1,
-        "script": 1
+        "script": 1,
+        "test": 1
       },
       "consumers": [
         {
@@ -30148,12 +30171,17 @@
         {
           "family": "script",
           "path": "scripts/cos_pytest_lastfailed_health.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos-pytest-lastfailed-health.py"
         }
       ],
       "distribution": "maintainer",
       "evidence": [
         "lifecycle",
         "wrapper_for:scripts/cos_pytest_lastfailed_health.py",
+        "test_consumers:1",
         "doc_consumers:1",
         "config_consumers:2",
         "script_consumers:1"
@@ -30172,7 +30200,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 4,
+      "total_consumers": 5,
       "wrapper_for": "scripts/cos_pytest_lastfailed_health.py"
     },
     {
@@ -41269,7 +41297,8 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
-        "script": 1
+        "script": 1,
+        "test": 2
       },
       "consumers": [
         {
@@ -41283,11 +41312,20 @@
         {
           "family": "script",
           "path": "scripts/cos-primitive-closure-check"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos-primitive-closure-check.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_primitive_closure_check.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "wrapper_for:scripts/acc_pipeline.py",
+        "test_consumers:2",
         "config_consumers:2",
         "script_consumers:1"
       ],
@@ -41303,7 +41341,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 3,
+      "total_consumers": 5,
       "wrapper_for": "scripts/acc_pipeline.py"
     },
     {
@@ -41662,7 +41700,8 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
-        "script": 1
+        "script": 1,
+        "test": 2
       },
       "consumers": [
         {
@@ -41676,10 +41715,19 @@
         {
           "family": "script",
           "path": "scripts/cos-pytest-lastfailed-health"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos-pytest-lastfailed-health.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_pytest_lastfailed_health.py"
         }
       ],
       "distribution": null,
       "evidence": [
+        "test_consumers:2",
         "config_consumers:2",
         "script_consumers:1"
       ],
@@ -41695,7 +41743,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 3,
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
