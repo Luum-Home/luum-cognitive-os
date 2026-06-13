@@ -2416,6 +2416,7 @@
         "doc": 21,
         "hook": 2,
         "rule": 3,
+        "script": 1,
         "skill": 1,
         "test": 18
       },
@@ -2573,6 +2574,10 @@
           "path": "rules/decision-depth-gate.md"
         },
         {
+          "family": "script",
+          "path": "scripts/cos_process_loop.py"
+        },
+        {
           "family": "skill",
           "path": "skills/pr-review/SKILL.md"
         },
@@ -2655,6 +2660,7 @@
         "skill_consumers:1",
         "hook_consumers:2",
         "rule_consumers:3",
+        "script_consumers:1",
         "test_consumers:18",
         "doc_consumers:21",
         "config_consumers:12"
@@ -2671,7 +2677,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 57
+      "total_consumers": 58
     },
     {
       "confidence": "high",
@@ -4563,7 +4569,7 @@
         "config": 4,
         "doc": 1,
         "rule": 2,
-        "script": 2,
+        "script": 3,
         "test": 2
       },
       "consumers": [
@@ -4597,6 +4603,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_process_loop.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/doc_review_personas.py"
         },
         {
@@ -4616,7 +4626,7 @@
       "evidence": [
         "lifecycle",
         "rule_consumers:2",
-        "script_consumers:2",
+        "script_consumers:3",
         "test_consumers:2",
         "doc_consumers:1",
         "config_consumers:4"
@@ -4633,7 +4643,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 11
+      "total_consumers": 12
     },
     {
       "confidence": "high",
@@ -9817,7 +9827,7 @@
         "config": 7,
         "doc": 16,
         "rule": 1,
-        "script": 1,
+        "script": 2,
         "skill": 2,
         "test": 13
       },
@@ -9920,6 +9930,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_process_loop.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/routing_intent_audit.py"
         },
         {
@@ -9988,7 +10002,7 @@
         "lifecycle",
         "skill_consumers:2",
         "rule_consumers:1",
-        "script_consumers:1",
+        "script_consumers:2",
         "test_consumers:13",
         "doc_consumers:16",
         "config_consumers:7"
@@ -10005,7 +10019,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 40
+      "total_consumers": 41
     },
     {
       "confidence": "high",
@@ -10731,7 +10745,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 4,
-        "doc": 40,
+        "doc": 39,
         "hook": 6,
         "rule": 14,
         "skill": 2,
@@ -10817,10 +10831,6 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/architecture/agent-loop-engineering-runtime.md"
         },
         {
           "family": "doc",
@@ -11158,7 +11168,7 @@
         "hook_consumers:6",
         "rule_consumers:14",
         "test_consumers:37",
-        "doc_consumers:40",
+        "doc_consumers:39",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -11173,7 +11183,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 103
+      "total_consumers": 102
     },
     {
       "confidence": "high",
@@ -11181,7 +11191,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 3,
-        "doc": 9,
+        "doc": 8,
         "rule": 1,
         "test": 3
       },
@@ -11213,10 +11223,6 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/architecture/agent-loop-engineering-runtime.md"
         },
         {
           "family": "doc",
@@ -11256,7 +11262,7 @@
         "lifecycle",
         "rule_consumers:1",
         "test_consumers:3",
-        "doc_consumers:9",
+        "doc_consumers:8",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -11271,7 +11277,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 16
+      "total_consumers": 15
     },
     {
       "confidence": "high",
@@ -11279,7 +11285,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 3,
-        "doc": 15,
+        "doc": 14,
         "hook": 3,
         "rule": 5,
         "skill": 2,
@@ -11321,10 +11327,6 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-262-evolve-loop-spike.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/architecture/agent-loop-engineering-runtime.md"
         },
         {
           "family": "doc",
@@ -11446,7 +11448,7 @@
         "hook_consumers:3",
         "rule_consumers:5",
         "test_consumers:10",
-        "doc_consumers:15",
+        "doc_consumers:14",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -11461,7 +11463,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 38
+      "total_consumers": 37
     },
     {
       "confidence": "high",
@@ -11551,7 +11553,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 3,
-        "doc": 13,
+        "doc": 12,
         "hook": 2,
         "rule": 3,
         "skill": 1,
@@ -11585,10 +11587,6 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-324-executable-acceptance-specification-eas.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/architecture/agent-loop-engineering-runtime.md"
         },
         {
           "family": "doc",
@@ -11678,7 +11676,7 @@
         "hook_consumers:2",
         "rule_consumers:3",
         "test_consumers:6",
-        "doc_consumers:13",
+        "doc_consumers:12",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -11693,7 +11691,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 28
+      "total_consumers": 27
     },
     {
       "confidence": "high",
@@ -11701,7 +11699,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 3,
-        "doc": 13,
+        "doc": 12,
         "hook": 1,
         "rule": 2,
         "skill": 3,
@@ -11731,10 +11729,6 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-324-executable-acceptance-specification-eas.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/architecture/agent-loop-engineering-runtime.md"
         },
         {
           "family": "doc",
@@ -11836,7 +11830,7 @@
         "hook_consumers:1",
         "rule_consumers:2",
         "test_consumers:8",
-        "doc_consumers:13",
+        "doc_consumers:12",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -11851,7 +11845,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 30
+      "total_consumers": 29
     },
     {
       "confidence": "high",
@@ -11859,7 +11853,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 4,
-        "doc": 33,
+        "doc": 32,
         "hook": 4,
         "rule": 11,
         "script": 1,
@@ -11938,10 +11932,6 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/architecture/agent-loop-engineering-runtime.md"
         },
         {
           "family": "doc",
@@ -12216,7 +12206,7 @@
         "rule_consumers:11",
         "script_consumers:1",
         "test_consumers:27",
-        "doc_consumers:33",
+        "doc_consumers:32",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -12231,7 +12221,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 85
+      "total_consumers": 84
     },
     {
       "confidence": "high",

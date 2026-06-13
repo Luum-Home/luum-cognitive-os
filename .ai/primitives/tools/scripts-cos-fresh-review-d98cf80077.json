@@ -5,16 +5,16 @@
     "actions": null,
     "contract_id": null,
     "impact": null,
-    "intent": "Agent Process Loop Contract advisory wrapper with project-local fresh-review findings; portable invocation covered by unit and red-team portability tests. This primitive records review findings and resolution state for fix-review loops.",
+    "intent": "Agent Process Loop Contract advisory wrapper with project-local fresh-review findings and optional executable review commands; portable invocation covered by unit and red-team portability tests. This primitive records review findings and resolution state for fix-review loops.",
     "present": false,
     "projection_fidelity": {},
     "requires": [],
     "trigger": null
   },
   "evidence": {
-    "behavior_evidence": "Agent Process Loop Contract advisory wrapper with project-local fresh-review findings; portable invocation covered by unit and red-team portability tests. This primitive records review findings and resolution state for fix-review loops.",
+    "behavior_evidence": "Agent Process Loop Contract advisory wrapper with project-local fresh-review findings and optional executable review commands; portable invocation covered by unit and red-team portability tests. This primitive records review findings and resolution state for fix-review loops.",
     "evidence_commands": [
-      "python3 -m pytest tests/unit/test_cos_process_loop.py tests/red_team/portability/test_cos_process_loop_primitives.py -q"
+      ".venv/bin/python -m pytest tests/unit/test_cos_process_loop.py tests/red_team/portability/test_cos_process_loop_primitives.py -q"
     ],
     "metrics_file": ".cognitive-os/process-loops/{process-id}/review-findings.jsonl"
   },
@@ -42,9 +42,9 @@
     "contract_id": null,
     "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
     "evidence": {
-      "behavior_evidence": "Agent Process Loop Contract advisory wrapper with project-local fresh-review findings; portable invocation covered by unit and red-team portability tests. This primitive records review findings and resolution state for fix-review loops.",
+      "behavior_evidence": "Agent Process Loop Contract advisory wrapper with project-local fresh-review findings and optional executable review commands; portable invocation covered by unit and red-team portability tests. This primitive records review findings and resolution state for fix-review loops.",
       "evidence_commands": [
-        "python3 -m pytest tests/unit/test_cos_process_loop.py tests/red_team/portability/test_cos_process_loop_primitives.py -q"
+        ".venv/bin/python -m pytest tests/unit/test_cos_process_loop.py tests/red_team/portability/test_cos_process_loop_primitives.py -q"
       ],
       "metrics": [
         ".cognitive-os/process-loops/{process-id}/review-findings.jsonl"
@@ -54,7 +54,7 @@
       "consumer_fleet": "unknown",
       "service_mode": "unsupported"
     },
-    "intent": "Agent Process Loop Contract advisory wrapper with project-local fresh-review findings; portable invocation covered by unit and red-team portability tests. This primitive records review findings and resolution state for fix-review loops.",
+    "intent": "Agent Process Loop Contract advisory wrapper with project-local fresh-review findings and optional executable review commands; portable invocation covered by unit and red-team portability tests. This primitive records review findings and resolution state for fix-review loops.",
     "is_full_contract": true,
     "projection_fidelity": {
       "claude": {

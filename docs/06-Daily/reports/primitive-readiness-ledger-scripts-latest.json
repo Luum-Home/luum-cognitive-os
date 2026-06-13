@@ -5762,9 +5762,9 @@
         "doc": 771,
         "hook": 123,
         "rule": 51,
-        "script": 418,
+        "script": 419,
         "skill": 86,
-        "test": 746,
+        "test": 747,
         "workflow": 2
       },
       "consumers": [
@@ -10718,6 +10718,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-skill-selection-report"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-smoke.sh"
         },
         {
@@ -13402,6 +13406,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cos-skill-selection-report.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_cos-smoke.py"
         },
         {
@@ -14906,13 +14914,13 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:86",
-        "test_consumers:746",
+        "test_consumers:747",
         "hook_consumers:123",
         "workflow_consumers:2",
         "doc_consumers:771",
         "rule_consumers:51",
         "config_consumers:86",
-        "script_consumers:418"
+        "script_consumers:419"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -14928,7 +14936,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 2283,
+      "total_consumers": 2285,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -34295,6 +34303,64 @@
     },
     {
       "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "doc": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-337-agent-process-loop-contract-layer.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos-skill-selection-report.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_process_loop_primitives.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_process_loop.py",
+        "test_consumers:2",
+        "doc_consumers:1",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-skill-selection-report",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-skill-selection-report",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 5,
+      "wrapper_for": "scripts/cos_process_loop.py"
+    },
+    {
+      "confidence": "high",
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
@@ -42386,7 +42452,7 @@
       "consumer_families": {
         "config": 3,
         "doc": 1,
-        "script": 4
+        "script": 5
       },
       "consumers": [
         {
@@ -42419,6 +42485,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-skill-selection-report"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-verify-report"
         }
       ],
@@ -42427,7 +42497,7 @@
         "lifecycle",
         "doc_consumers:1",
         "config_consumers:3",
-        "script_consumers:4"
+        "script_consumers:5"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -42445,7 +42515,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 8,
+      "total_consumers": 9,
       "wrapper_for": null
     },
     {
@@ -63717,27 +63787,27 @@
   "summary": {
     "agentic_primitives_without_lifecycle": 0,
     "confidence": {
-      "high": 372,
+      "high": 373,
       "low": 1,
       "medium": 315
     },
     "consumer_accessibility": {
       "install-profile-managed": 19,
       "lifecycle-declared-consumer-candidate": 167,
-      "lifecycle-declared-maintainer": 160,
+      "lifecycle-declared-maintainer": 161,
       "skill-referenced-not-projectable": 3,
       "so-local-only": 339
     },
     "low_confidence_rows": 1,
     "roles": {
-      "agentic-primitive": 234,
+      "agentic-primitive": 235,
       "archive": 12,
       "driver-specific": 14,
       "lab": 97,
       "maintainer-tool": 316,
       "migration-only": 15
     },
-    "total_scripts": 688,
+    "total_scripts": 689,
     "without_consumers": 0
   },
   "target_family": "scripts"

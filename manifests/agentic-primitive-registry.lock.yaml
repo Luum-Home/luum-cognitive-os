@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-06-13T05:50:26+00:00'
+generated_at: '2026-06-13T06:48:10+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
@@ -6761,6 +6761,17 @@ primitives:
   projection_targets:
   - scripts/cos-skill-description-enrich
   sha256: 8461b4529997dad900bda6e48d777dd25aeab86697c26630b4d6f944e4b045b1
+- id: scripts/cos-skill-selection-report
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-skill-selection-report
+  - scripts/cos_process_loop.py
+  sha256: e4d140748140afd8ce285918756ec3600391de1a7655b9a5eba9a74079d9af4e
 - id: scripts/cos-smoke.sh
   kind: script
   owner_adr: ADR-146

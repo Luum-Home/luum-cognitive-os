@@ -2,11 +2,11 @@
 
 Scope declares intent; surface coverage proves effective implementation per IDE, CLI, UI, CI, service, or report surface.
 
-Total primitives: 1246
-Gaps: 345
+Total primitives: 1247
+Gaps: 346
 Unclassified gaps: 0
-Gaps by status: {'aligned': 292, 'partial': 53}
-Projected/wired by surface: {'claude': 354, 'codex': 272, 'cursor': 187, 'vscode-copilot': 187, 'agents-md': 0, 'opencode': 187, 'qwen-code': 187, 'kimi-code': 187, 'shell-ci': 17, 'gemini-cli': 187, 'warp': 187, 'amp-code': 187, 'jetbrains-junie': 187, 'qoder': 187, 'factory-droid': 187, 'cline': 187, 'continue-dev': 187, 'kilo-code': 187, 'zed-ai': 187, 'augment-code': 187, 'goose': 187, 'aider': 187, 'cos-cli': 5, 'acc-report': 1246, 'dashboard': 1246, 'tui': 1246}
+Gaps by status: {'aligned': 293, 'partial': 53}
+Projected/wired by surface: {'claude': 354, 'codex': 272, 'cursor': 187, 'vscode-copilot': 187, 'agents-md': 0, 'opencode': 187, 'qwen-code': 187, 'kimi-code': 187, 'shell-ci': 17, 'gemini-cli': 187, 'warp': 187, 'amp-code': 187, 'jetbrains-junie': 187, 'qoder': 187, 'factory-droid': 187, 'cline': 187, 'continue-dev': 187, 'kilo-code': 187, 'zed-ai': 187, 'augment-code': 187, 'goose': 187, 'aider': 187, 'cos-cli': 5, 'acc-report': 1247, 'dashboard': 1247, 'tui': 1247}
 Surfaces by kind: {'ide-harness': 21, 'shell-ci': 1, 'cli': 1, 'report': 1, 'ui': 2}
 Wired hooks by harness: {'claude': 180, 'codex': 98, 'cursor': 0, 'vscode-copilot': 0, 'agents-md': 0, 'opencode': 0, 'qwen-code': 0, 'kimi-code': 0, 'shell-ci': 0, 'gemini-cli': 0, 'warp': 0, 'amp-code': 0, 'jetbrains-junie': 0, 'qoder': 0, 'factory-droid': 0, 'cline': 0, 'continue-dev': 0, 'kilo-code': 0, 'zed-ai': 0, 'augment-code': 0, 'goose': 0, 'aider': 0, 'cos-cli': 0, 'acc-report': 0, 'dashboard': 0, 'tui': 0}
 
@@ -750,6 +750,7 @@ Wired hooks by harness: {'claude': 180, 'codex': 98, 'cursor': 0, 'vscode-copilo
 | `scripts/cos-silent-failure-audit` | scripts | os-only | acc-report+dashboard+tui |  |  | installed<br>proven | installed<br>proven | installed<br>proven | installed<br>proven | wired:<br>observable<br>json<br>exit<br>proven | wired:<br>observable<br>proven | wired:<br>observable<br>proven |
 | `scripts/cos-skill-description-enrich` | scripts | os-only | acc-report+dashboard+tui |  |  | installed<br>proven | installed<br>proven | installed<br>proven | installed<br>proven | wired:<br>observable<br>json<br>exit<br>proven | wired:<br>observable<br>proven | wired:<br>observable<br>proven |
 | `scripts/cos-skill-performance-ledger` | scripts | os-only | acc-report+dashboard+tui |  |  | installed<br>proven | installed<br>proven | installed<br>proven | installed<br>proven | wired:<br>observable<br>json<br>exit<br>proven | wired:<br>observable<br>proven | wired:<br>observable<br>proven |
+| `scripts/cos-skill-selection-report` | scripts | both | acc-report+dashboard+tui | scope=both but missing projected/wired support for: claude, codex | on-demand-command-only | installed | installed | installed | installed | wired:<br>observable<br>json<br>exit | wired:<br>observable | wired:<br>observable |
 | `scripts/cos-smoke.sh` | scripts | both | acc-report+dashboard+shell-ci+tui | scope=both but missing projected/wired support for: claude, codex | shell-command-only | installed<br>proven | installed<br>proven | projected<br>proven | installed<br>proven | wired:<br>observable<br>json<br>exit<br>proven | wired:<br>observable<br>proven | wired:<br>observable<br>proven |
 | `scripts/cos-startup-recover.sh` | scripts | os-only | acc-report+dashboard+tui |  |  | installed<br>proven | installed<br>proven | installed<br>proven | installed<br>proven | wired:<br>observable<br>json<br>exit<br>proven | wired:<br>observable<br>proven | wired:<br>observable<br>proven |
 | `scripts/cos-status.sh` | scripts | both | acc-report+cos-cli+dashboard+shell-ci+tui | scope=both but missing projected/wired support for: claude, codex | shell-command-only | installed<br>proven | installed<br>proven | projected<br>proven | projected<br>observable<br>operable<br>json<br>exit<br>proven | wired:<br>observable<br>json<br>exit<br>proven | wired:<br>observable<br>proven | wired:<br>observable<br>proven |

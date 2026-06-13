@@ -8,7 +8,7 @@
     },
     {
       "changed_paths": [
-        ".cognitive-os/improvements/proposals/consumer-improvement-proposals-demo-20260613T055010Z.json"
+        ".cognitive-os/improvements/proposals/consumer-improvement-proposals-demo-20260613T064755Z.json"
       ],
       "id": "consumer-improvement-import",
       "returncode": 0,
@@ -149,7 +149,7 @@
       "unexpected_paths": []
     }
   ],
-  "generated_at": "2026-06-13T05:50:10+00:00",
+  "generated_at": "2026-06-13T06:47:55+00:00",
   "items": [
     {
       "authority_mode": "os-maintainer-write",
@@ -4081,6 +4081,18 @@
       "path": "scripts/cos-skill-performance-ledger",
       "role": "maintainer-tool",
       "scope": "os-only",
+      "status": "pass",
+      "writes": []
+    },
+    {
+      "authority_mode": "observe-only",
+      "authority_source": "derived:shared-default",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "detected_write_surfaces": [],
+      "findings": [],
+      "path": "scripts/cos-skill-selection-report",
+      "role": "agentic-primitive",
+      "scope": "both",
       "status": "pass",
       "writes": []
     },
@@ -8686,17 +8698,17 @@
   "summary": {
     "block_count": 0,
     "by_mode": {
-      "observe-only": 134,
+      "observe-only": 135,
       "os-maintainer-write": 513,
       "profile-projection-write": 37,
       "propose-only": 3
     },
     "by_status": {
-      "pass": 677,
+      "pass": 678,
       "warn": 10
     },
     "dynamic_blocks": 0,
     "dynamic_smokes": 4,
-    "total_scripts": 687
+    "total_scripts": 688
   }
 }
