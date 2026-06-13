@@ -431,6 +431,7 @@ cc_driver_emit() {
       "hooks/pending-truth-verify-weekly.sh"   "true"  \
       "hooks/pyrefly-typecheck-advisory.sh"   "true"  \
       "hooks/quality-duplicates.sh"            "true"  \
+      "hooks/so-impact-eval-trigger.sh"        "true"  \
       "hooks/session-token-aggregator.sh"      "true"  \
     )
   else
@@ -456,6 +457,7 @@ cc_driver_emit() {
       "hooks/pending-truth-verify-weekly.sh"   "true"  \
       "hooks/pyrefly-typecheck-advisory.sh"   "true"  \
       "hooks/quality-duplicates.sh"            "true"  \
+      "hooks/so-impact-eval-trigger.sh"        "true"  \
       "hooks/session-token-aggregator.sh"      "true"  \
     )
   fi

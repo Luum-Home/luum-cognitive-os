@@ -100,7 +100,7 @@ DEFAULT_HOOKS = (
     "research-compliance-guard "
     "doc-sync-detector auto-checkpoint claim-validator completion-gate "
     "clarification-interceptor agent-checkpoint session-sanity confidentiality-enforcer "
-    "session-learning crash-recovery teammate-idle task-created task-completed quality-duplicates"
+    "session-learning crash-recovery teammate-idle task-created task-completed quality-duplicates so-impact-eval-trigger"
 ).split()
 
 DEFAULT_SKILLS = (
@@ -1462,6 +1462,49 @@ def _install_quality_duplicates_primitive(project_dir: Path, cos_source: Path) -
     return copied
 
 
+def _install_so_impact_eval_primitive(project_dir: Path, cos_source: Path) -> bool:
+    """Install the project-local SO impact smoke runner and fixture capsule."""
+    bin_dir = project_dir / ".cognitive-os" / "bin"
+    benchmark_dir = project_dir / ".cognitive-os" / "benchmarks"
+    fixture_dest = project_dir / ".cognitive-os" / "fixtures" / "so-impact" / "money-format-refactor"
+    bin_dir.mkdir(parents=True, exist_ok=True)
+    benchmark_dir.mkdir(parents=True, exist_ok=True)
+    copied = False
+
+    engine_src = cos_source / "scripts" / "cos_so_impact_eval.py"
+    if engine_src.is_file() and scope_allows(str(engine_src), os.environ.get("COS_INSTALL_SCOPE", "both")):
+        shutil.copy2(str(engine_src), str(bin_dir / "cos_so_impact_eval.py"))
+        wrapper = bin_dir / "cos-so-impact-eval"
+        wrapper.write_text(
+            '#!/usr/bin/env bash\nset -euo pipefail\nexec python3 "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/cos_so_impact_eval.py" "$@"\n',
+            encoding="utf-8",
+        )
+        wrapper.chmod(wrapper.stat().st_mode | 0o111)
+        copied = True
+
+    contract_src = cos_source / "docs" / "08-References" / "benchmarks" / "so-impact-money-format-refactor.yaml"
+    if contract_src.is_file():
+        contract_text = contract_src.read_text(encoding="utf-8")
+        contract_text = contract_text.replace(
+            "repo_fixture: ../../../fixtures/so-impact/money-format-refactor",
+            "repo_fixture: ../fixtures/so-impact/money-format-refactor",
+        )
+        (benchmark_dir / "so-impact-money-format-refactor.yaml").write_text(contract_text, encoding="utf-8")
+        copied = True
+
+    fixture_src = cos_source / "fixtures" / "so-impact" / "money-format-refactor"
+    if fixture_src.is_dir():
+        if fixture_dest.exists():
+            shutil.rmtree(str(fixture_dest))
+        shutil.copytree(
+            str(fixture_src),
+            str(fixture_dest),
+            ignore=shutil.ignore_patterns("__pycache__", "*.pyc"),
+        )
+        copied = True
+
+    return copied
+
 def _install_task_closure_gate_primitive(project_dir: Path, cos_source: Path) -> bool:
     """Install the project-local task closure ledger gate wrapper and engine."""
     bin_dir = project_dir / ".cognitive-os" / "bin"
@@ -1882,6 +1925,7 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
     # ── 7b. Install repo-local provenance guardrail support ─────────────
     provenance_scan_installed = _install_provenance_scan_guardrail(project_dir, cos_source)
     quality_duplicates_installed = _install_quality_duplicates_primitive(project_dir, cos_source)
+    so_impact_eval_installed = _install_so_impact_eval_primitive(project_dir, cos_source)
     task_closure_gate_installed = _install_task_closure_gate_primitive(project_dir, cos_source)
 
     # ── 8. Create cognitive-os.yaml ──────────────────────────────────
@@ -1914,6 +1958,7 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
         "skills_installed": skills_installed,
         "provenance_scan_installed": provenance_scan_installed,
         "quality_duplicates_installed": quality_duplicates_installed,
+        "so_impact_eval_installed": so_impact_eval_installed,
     }
     meta_path = project_dir / ".cognitive-os" / "install-meta.json"
     meta_path.write_text(json.dumps(meta, indent=2), encoding="utf-8")

@@ -4742,6 +4742,38 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: conditional_exit_2
   metrics_file: .cognitive-os/reports/quality-duplicates/latest.json
+- id: hooks/so-impact-eval-trigger.sh
+  kind: hook
+  owner_adr: ADR-338
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: quality
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - opencode
+  projection_targets:
+  - .claude/settings.json
+  - .codex/hooks.json
+  - .opencode/cos-hooks.json
+  - .cognitive-os/hooks/cos/so-impact-eval-trigger.sh
+  runtime_projection: true
+  behavior_evidence: Stop-lifecycle advisory trigger that auto-runs the deterministic SO-wide impact smoke when SO impact, Graphify, or process-loop surfaces changed, records a JSONL metric, and exits 0 even when the smoke warns.
+  evidence_commands:
+  - bash -n hooks/so-impact-eval-trigger.sh
+  - python3 -m pytest tests/unit/test_so_impact_eval_trigger_hook.py tests/unit/test_cos_so_impact_eval.py -q
+  rollback_or_repair_command: Disable hooks/so-impact-eval-trigger.sh in harness projections or set COS_SO_IMPACT_EVAL_TRIGGER_DISABLE=1 while repairing impact-eval smoke regressions.
+  sunset_criteria: Revisit when all supported harnesses expose a native impact-eval lifecycle trigger with equivalent metrics and dedupe behavior.
+  latency_budget_ms: 10000
+  repair_message: Review .cognitive-os/metrics/so-impact-eval-trigger.jsonl and the referenced report.md, then rerun make test-so-impact-smoke.
+  false_positive_tests:
+  - tests/unit/test_so_impact_eval_trigger_hook.py
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/so-impact-eval-trigger.jsonl
 - id: hooks/protected-config-write-guard.sh
   kind: hook
   owner_adr: ADR-164

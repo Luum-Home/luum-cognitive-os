@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: os-only
+# SCOPE: both
 """SO-wide impact evaluation runner.
 
 Runs controlled workflow-level comparisons across vanilla, full Cognitive OS,

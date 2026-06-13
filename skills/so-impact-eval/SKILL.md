@@ -105,6 +105,23 @@ make test-so-impact-smoke
 
 This runs `vanilla` vs `full-so` and prints the verdict plus the report path.
 
+
+## Automatic advisory trigger
+
+The same smoke is also connected as a lifecycle advisory hook:
+
+```text
+hooks/so-impact-eval-trigger.sh
+```
+
+On supported hook-capable harnesses, the Stop/shutdown lifecycle checks for dirty changes in SO impact eval, Graphify, or process-loop surfaces. When it finds a relevant change, it auto-runs the deterministic `vanilla` vs `full-so` smoke, writes receipts under `.cognitive-os/reports/so-impact-auto/`, and appends `.cognitive-os/metrics/so-impact-eval-trigger.jsonl`.
+
+The hook is intentionally advisory and exits 0. Disable it with:
+
+```bash
+COS_SO_IMPACT_EVAL_TRIGGER_DISABLE=1
+```
+
 ## Receipts to inspect
 
 Every mode writes:

@@ -6,7 +6,7 @@
   "harness": "opencode",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 356,
+  "projected_primitive_count": 357,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": true,
@@ -594,6 +594,13 @@
       "fidelity": "documented-only",
       "portable_id": "hooks/quality-duplicates.sh",
       "primitive_file": "primitives/hooks/hooks-quality-duplicates-sh-ecdd88ee07.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/so-impact-eval-trigger.sh",
+      "primitive_file": "primitives/hooks/hooks-so-impact-eval-trigger-sh-ad9acd00a8.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {

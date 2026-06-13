@@ -51,6 +51,7 @@ profiles:
         - hooks/task-created.sh
         - hooks/task-completed.sh
         - hooks/quality-duplicates.sh
+        - hooks/so-impact-eval-trigger.sh
       rules:
         - rules/trust-score.md
         - rules/acceptance-criteria.md
