@@ -1,13 +1,13 @@
 # Primitive Authority Audit — Latest
 
-Generated: 2026-06-13T00:28:57+00:00
+Generated: 2026-06-13T01:14:54+00:00
 Status: `pass`
 
 ## Summary
 
-- total_scripts: `673`
-- by_mode: `{'observe-only': 133, 'os-maintainer-write': 500, 'profile-projection-write': 37, 'propose-only': 3}`
-- by_status: `{'pass': 663, 'warn': 10}`
+- total_scripts: `676`
+- by_mode: `{'observe-only': 133, 'os-maintainer-write': 503, 'profile-projection-write': 37, 'propose-only': 3}`
+- by_status: `{'pass': 666, 'warn': 10}`
 - dynamic_smokes: `4`
 - dynamic_blocks: `0`
 - block_count: `0`

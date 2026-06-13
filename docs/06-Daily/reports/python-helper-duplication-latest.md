@@ -1,10 +1,10 @@
 # Primitive Duplication Audit — Latest
 
-Generated: `2026-06-13T00:28:22.394819+00:00`
+Generated: `2026-06-13T01:14:18.948087+00:00`
 
 ## Summary
 
-- Files scanned: 723
+- Files scanned: 724
 - Findings: 83
 - By kind: `{"python-function-repeat": 83}`
 - By common home: `{"lib/": 83}`

@@ -1,0 +1,133 @@
+#!/bin/bash
+# SCOPE: os-only
+# Start a laptop validation lane in the background and return the terminal.
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+LOG_DIR="${COS_TEST_BG_LOG_DIR:-$ROOT/.cognitive-os/reports/background-tests}"
+JSON=0
+DRY_RUN=0
+CMD=()
+
+usage() {
+  cat <<'USAGE'
+Usage: scripts/cos-test-laptop-bg [--json] [--dry-run] [--log-dir DIR] [-- COMMAND...]
+
+Starts a validation command with nohup in the repository root and returns
+immediately. Defaults to: make test-laptop
+
+Environment:
+  COS_TEST_BG_LOG_DIR   Override log directory.
+  COS_TEST_BG_COMMAND   Shell command string to run instead of make test-laptop.
+USAGE
+}
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --help|-h)
+      usage
+      exit 0
+      ;;
+    --json)
+      JSON=1
+      shift
+      ;;
+    --dry-run)
+      DRY_RUN=1
+      shift
+      ;;
+    --log-dir)
+      if [[ $# -lt 2 ]]; then
+        echo "[cos-test-laptop-bg] --log-dir requires a value" >&2
+        exit 2
+      fi
+      LOG_DIR="$2"
+      shift 2
+      ;;
+    --)
+      shift
+      CMD=("$@")
+      break
+      ;;
+    *)
+      echo "[cos-test-laptop-bg] unknown argument: $1" >&2
+      usage >&2
+      exit 2
+      ;;
+  esac
+done
+
+if [[ ${#CMD[@]} -eq 0 ]]; then
+  if [[ -n "${COS_TEST_BG_COMMAND:-}" ]]; then
+    CMD=(bash -lc "$COS_TEST_BG_COMMAND")
+  else
+    CMD=(make test-laptop)
+  fi
+fi
+
+mkdir -p "$LOG_DIR"
+STAMP="$(date -u +%Y%m%dT%H%M%SZ)"
+LOG_FILE="$LOG_DIR/test-laptop-$STAMP.log"
+PID_FILE="$LOG_DIR/latest.pid"
+LATEST_LINK="$LOG_DIR/latest.log"
+COMMAND_TEXT="$(printf '%q ' "${CMD[@]}")"
+COMMAND_TEXT="${COMMAND_TEXT% }"
+
+emit_json() {
+  local status="$1"
+  local pid="${2:-}"
+  python3 - "$status" "$pid" "$LOG_FILE" "$PID_FILE" "$LATEST_LINK" "$ROOT" "$COMMAND_TEXT" <<'PY'
+import json
+import sys
+
+status, pid, log, pid_file, latest_log, cwd, command = sys.argv[1:8]
+payload = {
+    "status": status,
+    "pid": int(pid) if pid else None,
+    "log": log,
+    "pid_file": pid_file,
+    "latest_log": latest_log,
+    "cwd": cwd,
+    "command": command,
+}
+print(json.dumps(payload, sort_keys=True))
+PY
+}
+
+if [[ "$DRY_RUN" -eq 1 ]]; then
+  if [[ "$JSON" -eq 1 ]]; then
+    emit_json dry-run ""
+  else
+    echo "[cos-test-laptop-bg] dry-run cwd=$ROOT"
+    echo "[cos-test-laptop-bg] dry-run log=$LOG_FILE"
+    echo "[cos-test-laptop-bg] dry-run command=$COMMAND_TEXT"
+  fi
+  exit 0
+fi
+
+(
+  cd "$ROOT"
+  nohup bash -c '
+    set -euo pipefail
+    root="$1"
+    shift
+    echo "[cos-test-laptop-bg] started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+    echo "[cos-test-laptop-bg] cwd=$root"
+    printf "[cos-test-laptop-bg] command:"
+    printf " %q" "$@"
+    echo
+    exec "$@"
+  ' bash "$ROOT" "${CMD[@]}" > "$LOG_FILE" 2>&1 &
+  echo $! > "$PID_FILE"
+)
+PID="$(cat "$PID_FILE")"
+ln -sfn "$LOG_FILE" "$LATEST_LINK" 2>/dev/null || cp "$LOG_FILE" "$LATEST_LINK"
+
+if [[ "$JSON" -eq 1 ]]; then
+  emit_json started "$PID"
+else
+  echo "[cos-test-laptop-bg] started pid=$PID"
+  echo "[cos-test-laptop-bg] log=$LOG_FILE"
+  echo "[cos-test-laptop-bg] latest=$LATEST_LINK"
+  echo "[cos-test-laptop-bg] follow: tail -f '$LOG_FILE'"
+fi

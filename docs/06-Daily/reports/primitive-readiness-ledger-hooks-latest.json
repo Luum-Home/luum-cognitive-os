@@ -4593,7 +4593,7 @@
         "rule": 3,
         "script": 55,
         "skill": 10,
-        "test": 142
+        "test": 143
       },
       "consumers": [
         {
@@ -5966,6 +5966,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cos-test-laptop-bg.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_cos_cleanup_preserved_wip_portability.py"
         },
         {
@@ -6312,7 +6316,7 @@
         "hook_consumers:25",
         "rule_consumers:3",
         "script_consumers:55",
-        "test_consumers:142",
+        "test_consumers:143",
         "doc_consumers:174",
         "config_consumers:18"
       ],
@@ -6328,7 +6332,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 427
+      "total_consumers": 428
     },
     {
       "confidence": "high",
@@ -8175,12 +8179,12 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 14,
-        "doc": 54,
+        "doc": 55,
         "hook": 2,
         "rule": 1,
-        "script": 18,
+        "script": 19,
         "skill": 3,
-        "test": 41
+        "test": 42
       },
       "consumers": [
         {
@@ -8385,6 +8389,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/test-execution-dx.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/root/dashboard-architecture.md"
         },
         {
@@ -8490,6 +8498,10 @@
         {
           "family": "script",
           "path": "scripts/cos_init.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_test_slow_report.py"
         },
         {
           "family": "script",
@@ -8665,6 +8677,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_cos_test_slow_report.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_efficiency_optimization.py"
         },
         {
@@ -8722,9 +8738,9 @@
         "skill_consumers:3",
         "hook_consumers:2",
         "rule_consumers:1",
-        "script_consumers:18",
-        "test_consumers:41",
-        "doc_consumers:54",
+        "script_consumers:19",
+        "test_consumers:42",
+        "doc_consumers:55",
         "config_consumers:14"
       ],
       "family": "hooks",
@@ -8739,7 +8755,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 133
+      "total_consumers": 136
     },
     {
       "confidence": "high",

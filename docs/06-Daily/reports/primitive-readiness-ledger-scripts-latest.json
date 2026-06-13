@@ -5759,12 +5759,12 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 86,
-        "doc": 766,
+        "doc": 767,
         "hook": 123,
         "rule": 51,
-        "script": 404,
+        "script": 407,
         "skill": 86,
-        "test": 737,
+        "test": 742,
         "workflow": 2
       },
       "consumers": [
@@ -8366,6 +8366,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/test-execution-dx.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/token-savings-qa.md"
         },
         {
@@ -10702,11 +10706,19 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-test-laptop-bg"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-test-laptop-friendly"
         },
         {
           "family": "script",
           "path": "scripts/cos-test-repair-loop"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-test-slow-report"
         },
         {
           "family": "script",
@@ -11027,6 +11039,10 @@
         {
           "family": "script",
           "path": "scripts/cos_test_quality_audit.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_test_slow_report.py"
         },
         {
           "family": "script",
@@ -13346,6 +13362,14 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cos-test-laptop-bg.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos-test-slow-report.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_cos-tier-claim-audit.py"
         },
         {
@@ -13559,6 +13583,10 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_cos_test_quality_audit.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_test_slow_report.py"
         },
         {
           "family": "test",
@@ -14034,6 +14062,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_cos_test_slow_report.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_cos_token_optimization_consumer_smoke.py"
         },
         {
@@ -14275,6 +14307,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_kpi_collector.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_laptop_bg_runner.py"
         },
         {
           "family": "test",
@@ -14794,13 +14830,13 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:86",
-        "test_consumers:737",
+        "test_consumers:742",
         "hook_consumers:123",
         "workflow_consumers:2",
-        "doc_consumers:766",
+        "doc_consumers:767",
         "rule_consumers:51",
         "config_consumers:86",
-        "script_consumers:404"
+        "script_consumers:407"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -14816,7 +14852,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 2255,
+      "total_consumers": 2264,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -34651,6 +34687,61 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
+        "config": 2,
+        "doc": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/test-execution-dx.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos-test-laptop-bg.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_laptop_bg_runner.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "test_consumers:2",
+        "doc_consumers:1",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-test-laptop-bg",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-test-laptop-bg",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 5,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
         "config": 3,
         "test": 1
       },
@@ -34814,6 +34905,58 @@
       ],
       "total_consumers": 10,
       "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "script": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_test_slow_report.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos-test-slow-report.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_test_slow_report.py",
+        "test_consumers:1",
+        "config_consumers:2",
+        "script_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-test-slow-report",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-test-slow-report",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 4,
+      "wrapper_for": "scripts/cos_test_slow_report.py"
     },
     {
       "confidence": "high",
@@ -42991,6 +43134,54 @@
         "shell"
       ],
       "total_consumers": 13,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 2,
+        "script": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-test-slow-report"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_test_slow_report.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "config_consumers:2",
+        "script_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/cos_test_slow_report.py",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "heuristic:self-evolution",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 4,
       "wrapper_for": null
     },
     {
@@ -62726,27 +62917,27 @@
   "summary": {
     "agentic_primitives_without_lifecycle": 0,
     "confidence": {
-      "high": 359,
+      "high": 361,
       "low": 1,
-      "medium": 314
+      "medium": 315
     },
     "consumer_accessibility": {
       "install-profile-managed": 19,
       "lifecycle-declared-consumer-candidate": 167,
-      "lifecycle-declared-maintainer": 147,
+      "lifecycle-declared-maintainer": 149,
       "skill-referenced-not-projectable": 3,
-      "so-local-only": 338
+      "so-local-only": 339
     },
     "low_confidence_rows": 1,
     "roles": {
-      "agentic-primitive": 221,
+      "agentic-primitive": 223,
       "archive": 12,
       "driver-specific": 14,
       "lab": 97,
-      "maintainer-tool": 315,
+      "maintainer-tool": 316,
       "migration-only": 15
     },
-    "total_scripts": 674,
+    "total_scripts": 677,
     "without_consumers": 0
   },
   "target_family": "scripts"

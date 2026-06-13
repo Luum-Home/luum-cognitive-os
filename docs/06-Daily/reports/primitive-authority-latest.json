@@ -8,7 +8,7 @@
     },
     {
       "changed_paths": [
-        ".cognitive-os/improvements/proposals/consumer-improvement-proposals-demo-20260613T002856Z.json"
+        ".cognitive-os/improvements/proposals/consumer-improvement-proposals-demo-20260613T011453Z.json"
       ],
       "id": "consumer-improvement-import",
       "returncode": 0,
@@ -149,7 +149,7 @@
       "unexpected_paths": []
     }
   ],
-  "generated_at": "2026-06-13T00:28:57+00:00",
+  "generated_at": "2026-06-13T01:14:54+00:00",
   "items": [
     {
       "authority_mode": "os-maintainer-write",
@@ -4126,6 +4126,18 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "detected_write_surfaces": [],
       "findings": [],
+      "path": "scripts/cos-test-laptop-bg",
+      "role": "agentic-primitive",
+      "scope": "os-only",
+      "status": "pass",
+      "writes": []
+    },
+    {
+      "authority_mode": "os-maintainer-write",
+      "authority_source": "derived:os-only-default",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "detected_write_surfaces": [],
+      "findings": [],
       "path": "scripts/cos-test-laptop-friendly",
       "role": "agentic-primitive",
       "scope": "os-only",
@@ -4151,6 +4163,18 @@
       "detected_write_surfaces": [],
       "findings": [],
       "path": "scripts/cos-test-repair-loop",
+      "role": "agentic-primitive",
+      "scope": "os-only",
+      "status": "pass",
+      "writes": []
+    },
+    {
+      "authority_mode": "os-maintainer-write",
+      "authority_source": "derived:os-only-default",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "detected_write_surfaces": [],
+      "findings": [],
+      "path": "scripts/cos-test-slow-report",
       "role": "agentic-primitive",
       "scope": "os-only",
       "status": "pass",
@@ -5504,6 +5528,18 @@
       "path": "scripts/cos_test_quality_audit.py",
       "role": "lab",
       "scope": "both",
+      "status": "pass",
+      "writes": []
+    },
+    {
+      "authority_mode": "os-maintainer-write",
+      "authority_source": "derived:os-only-default",
+      "consumer_accessibility": "so-local-only",
+      "detected_write_surfaces": [],
+      "findings": [],
+      "path": "scripts/cos_test_slow_report.py",
+      "role": "maintainer-tool",
+      "scope": "os-only",
       "status": "pass",
       "writes": []
     },
@@ -8519,16 +8555,16 @@
     "block_count": 0,
     "by_mode": {
       "observe-only": 133,
-      "os-maintainer-write": 500,
+      "os-maintainer-write": 503,
       "profile-projection-write": 37,
       "propose-only": 3
     },
     "by_status": {
-      "pass": 663,
+      "pass": 666,
       "warn": 10
     },
     "dynamic_blocks": 0,
     "dynamic_smokes": 4,
-    "total_scripts": 673
+    "total_scripts": 676
   }
 }

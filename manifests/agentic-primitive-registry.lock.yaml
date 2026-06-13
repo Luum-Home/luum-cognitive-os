@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-06-13T00:29:16+00:00'
+generated_at: '2026-06-13T01:15:12+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
@@ -6737,6 +6737,16 @@ primitives:
   - scripts/cos-test-efficiency-plan
   - .codex/skills/test-efficiency/SKILL.md
   sha256: d14765c19700dcd298fab436e40e1c0c7691ba4cc7d6398a032aa5112e91fa70
+- id: scripts/cos-test-laptop-bg
+  kind: script
+  owner_adr: ADR-311
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-test-laptop-bg
+  sha256: 1c876ab6a32feb2974f3294425b1bd4d0eec5994047190dd38c759291cc1ce97
 - id: scripts/cos-test-laptop-friendly
   kind: script
   owner_adr: ADR-311
@@ -6758,6 +6768,17 @@ primitives:
   projection_targets:
   - scripts/cos-test-repair-loop
   sha256: 7029ef136f52f9615449d77c620d7cdbc326c055b698550fdd624c20cbf3c893
+- id: scripts/cos-test-slow-report
+  kind: script
+  owner_adr: ADR-311
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-test-slow-report
+  - scripts/cos_test_slow_report.py
+  sha256: 11507928a18139d25f7bedde05117d83a2dc05263ced0625f86410c2d75d2cd3
 - id: scripts/cos-tier-claim-audit
   kind: script
   owner_adr: ADR-133
