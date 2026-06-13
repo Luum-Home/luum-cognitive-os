@@ -9992,12 +9992,12 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 15,
-        "doc": 101,
+        "doc": 102,
         "hook": 8,
         "rule": 3,
-        "script": 78,
+        "script": 79,
         "skill": 17,
-        "test": 68
+        "test": 70
       },
       "consumers": [
         {
@@ -10343,6 +10343,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/session-filesystem-reaper.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/test-execution-dx.md"
         },
         {
           "family": "doc",
@@ -10694,6 +10698,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-test-laptop-bg"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-tui"
         },
         {
@@ -11042,6 +11050,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cos-test-laptop-bg.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_cos_cleanup_preserved_wip_portability.py"
         },
         {
@@ -11118,6 +11130,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_laptop_bg_runner.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_merge_rollback.py"
         },
         {
@@ -11167,9 +11183,9 @@
         "skill_consumers:17",
         "hook_consumers:8",
         "rule_consumers:3",
-        "script_consumers:78",
-        "test_consumers:68",
-        "doc_consumers:101",
+        "script_consumers:79",
+        "test_consumers:70",
+        "doc_consumers:102",
         "config_consumers:15"
       ],
       "family": "rules",
@@ -11184,7 +11200,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 290
+      "total_consumers": 294
     },
     {
       "confidence": "high",

@@ -10,7 +10,7 @@
 #   cos-test cluster --lane <name>      — validate one lane
 #   cos-test broad                      — full pre-push sweep
 
-.PHONY: help provenance-scan test-agentic-mastery test test-local-fast test-laptop test-laptop-direct test-laptop-integration test-local-wide-no-docker test-ci-default test-integration-no-docker test-release test-docker test-optional test-docker-explicit test-optional-cost test-fast test-unit test-integration test-e2e test-chaos test-all test-changed typecheck-pyrefly smoke audit clean ci-deps check-docs-convention test-no-docker test-no-docker-shard-a test-no-docker-shard-b test-skip-report cos-test install-test
+.PHONY: help provenance-scan test-agentic-mastery test test-local-fast test-targeted test-targeted-plan test-laptop test-laptop-bg test-laptop-direct test-laptop-integration test-slow-report test-local-wide-no-docker test-ci-default test-integration-no-docker test-release test-docker test-optional test-docker-explicit test-optional-cost test-fast test-unit test-integration test-e2e test-chaos test-all test-changed typecheck-pyrefly smoke audit clean ci-deps check-docs-convention test-no-docker test-no-docker-shard-a test-no-docker-shard-b test-skip-report cos-test install-test
 
 PY := uv run python3
 PYTEST := uv run pytest
@@ -18,7 +18,8 @@ COS_TEST_PYTHON ?= python3
 
 # Build the cos-test binary on demand. All deprecated test-* targets depend on it.
 cos-test:
-	@cd cmd/cos-test && go build -o ../../cos-test .
+	@cd cmd/cos-test && go build -o ../../cos-test.build .
+	@rm -f cos-test && mv cos-test.build cos-test && chmod +x cos-test
 
 provenance-scan:
 	@python3 scripts/provenance_scan.py --root .
@@ -27,8 +28,12 @@ help:
 	@echo "Targets:"
 	@echo "  test-agentic-mastery  Agentic mastery MVP: ACI, skill efficacy, runtime benchmark schema, adversarial suite, lethal trifecta."
 	@echo "  test-local-fast   Official local quick lane: cos-test focused."
+	@echo "  test-targeted     Diff-driven focused lane: runs only tests affected by git changes."
+	@echo "  test-targeted-plan  Show the diff-driven focused plan without running tests."
 	@echo "  test-laptop       Laptop-friendly broad lane: max 1 worker by default, nice=15, no Docker/cost."
+	@echo "  test-laptop-bg    Start test-laptop with nohup in the background and print log path."
 	@echo "  test-laptop-integration  Laptop-friendly explicit integration lane: serial + nice, still slow/stateful."
+	@echo "  test-slow-report  Aggregate persisted pytest JUnit timings into a slow-test report."
 	@echo "  test-local-wide-no-docker  Official local broad lane without Docker/cost."
 	@echo "  test-ci-default   Official CI/pre-merge default: broad non-Docker gate; do not run constantly on laptops."
 	@echo "  test-release      Release gate: CI default + integration + Docker/e2e explicit."
@@ -77,6 +82,12 @@ test: test-fast
 test-local-fast: cos-test
 	@./cos-test focused
 
+test-targeted: cos-test
+	@./cos-test focused --ci --no-color $(COS_TEST_TARGETED_ARGS)
+
+test-targeted-plan: cos-test
+	@./cos-test focused --ci --no-color --dry-run $(COS_TEST_TARGETED_ARGS)
+
 test-laptop: cos-test
 	@echo "[test-laptop] Laptop-friendly broad validation in an isolated validation capsule." >&2
 	@scripts/cos-validation-capsule.sh -- $(MAKE) test-laptop-direct
@@ -84,6 +95,12 @@ test-laptop: cos-test
 test-laptop-direct: cos-test
 	@echo "[test-laptop-direct] Laptop-friendly broad validation: max 1 worker by default, nice=15, no Docker/cost." >&2
 	@scripts/cos-test-laptop-friendly --no-capsule -- ./cos-test broad --no-docker --ci
+
+test-laptop-bg: cos-test
+	@scripts/cos-test-laptop-bg
+
+test-slow-report:
+	@scripts/cos-test-slow-report
 
 test-laptop-integration: cos-test
 	@echo "[test-laptop-integration] Explicit SO integration validation via F1 stable shards. Override COS_INTEGRATION_SHARDS=4." >&2

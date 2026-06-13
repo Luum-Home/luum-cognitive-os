@@ -1290,8 +1290,8 @@
     "by_kind": {
       "python-function-repeat": 83
     },
-    "files_scanned": 723,
+    "files_scanned": 724,
     "findings": 83
   },
-  "timestamp": "2026-06-13T00:28:22.394819+00:00"
+  "timestamp": "2026-06-13T01:14:18.948087+00:00"
 }

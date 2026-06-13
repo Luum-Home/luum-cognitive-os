@@ -23494,6 +23494,55 @@ primitives:
   metrics_file: "none"
   consumer_access_next_action: Keep as SO-maintainer helper unless consumer validation profiles require it.
 
+- id: scripts/cos-test-laptop-bg
+  kind: script
+  owner_adr: ADR-311
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-test-laptop-bg
+  runtime_projection: false
+  behavior_evidence: Starts laptop-friendly validation in the background with nohup, persisted logs, latest pid, and dry-run evidence so broad local lanes no longer monopolize the terminal.
+  evidence_commands:
+  - python3 -m pytest tests/unit/test_laptop_bg_runner.py tests/red_team/portability/test_cos-test-laptop-bg.py -q
+  rollback_or_repair_command: Remove scripts/cos-test-laptop-bg and run make test-laptop directly when background execution is undesirable.
+  sunset_criteria: Archive if cos-test gains a native portable background runner with equivalent log and pid artifacts.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_nonzero
+  metrics_file: .cognitive-os/reports/background-tests/*
+  consumer_access_next_action: Keep as SO-maintainer helper unless consumer validation profiles require projected background lanes.
+
+- id: scripts/cos-test-slow-report
+  kind: script
+  owner_adr: ADR-311
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-test-slow-report
+  - scripts/cos_test_slow_report.py
+  runtime_projection: false
+  behavior_evidence: Aggregates persisted pytest JUnit timings into local JSON and Markdown slow-test reports for release-blocking, nightly, integration, and optional lane review.
+  evidence_commands:
+  - python3 -m pytest tests/unit/test_cos_test_slow_report.py tests/red_team/portability/test_cos-test-slow-report.py tests/red_team/portability/test_cos_test_slow_report.py -q
+  rollback_or_repair_command: Remove scripts/cos-test-slow-report and inspect .cognitive-os/reports/test-runs/*/junit.xml manually.
+  sunset_criteria: Promote after cos-test emits stable timing ledgers directly for every lane; archive if provider-level reporting replaces local aggregation.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_nonzero
+  metrics_file: .cognitive-os/reports/slow-tests/*
+  consumer_access_next_action: Keep as SO-maintainer helper unless consumer projects need projected slow-test reporting.
+
 - id: scripts/cos-primitive-closure-check
   kind: script
   owner_adr: ADR-311

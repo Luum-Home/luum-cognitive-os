@@ -1,17 +1,17 @@
 # Agent Capability Coverage — Latest
 
-Generated: 2026-06-13T00:29:13Z
+Generated: 2026-06-13T01:15:09Z
 Phase: reconstruction
 Gate: pass
 
 ## Summary
 
-- ACC: 0.9144
-- ACC effective: 0.9148
-- Total weight: 7607
-- Capabilities: 3505
+- ACC: 0.9147
+- ACC effective: 0.9150
+- Total weight: 7628
+- Capabilities: 3514
 - Findings: 288
-- Mapping weights: {'aligned': 6956, 'missing': 0, 'overexposed': 0, 'partial': 434, 'stale': 214, 'unverified': 3}
+- Mapping weights: {'aligned': 6977, 'missing': 0, 'overexposed': 0, 'partial': 434, 'stale': 214, 'unverified': 3}
 - Primitive fitness reports: 0
 - New debt gate: not_evaluated (0)
 
@@ -19,11 +19,11 @@ Gate: pass
 
 | Adapter | Status | Source | Summary |
 |---|---|---|---|
-| authority_write_effects | ok | `docs/06-Daily/reports/primitive-authority-latest.json` | `{"block_count": 0, "by_mode": {"observe-only": 133, "os-maintainer-write": 500, "profile-projection-write": 37, "propose-only": 3}, "by_status": {"pass": 663, "warn": 10}, "dynamic_blocks": 0, "dynamic_smokes": 4, "total_scripts": 673}` |
+| authority_write_effects | ok | `docs/06-Daily/reports/primitive-authority-latest.json` | `{"block_count": 0, "by_mode": {"observe-only": 133, "os-maintainer-write": 503, "profile-projection-write": 37, "propose-only": 3}, "by_status": {"pass": 666, "warn": 10}, "dynamic_blocks": 0, "dynamic_smokes": 4, "total_scripts": 676}` |
 | codebase_itinerary | ok | `.cognitive-os/metrics/codebase-itinerary.jsonl` | `{"categories": {"read": 54}, "rows": 54, "sessions": 54, "tools": {"Read": 54}}` |
 | consumer_availability | ok | `manifests/primitive-consumer-availability.yaml` | `{"items": 908, "patterns": 6, "statuses": {"lifecycle-declared-maintainer": 1, "maintainer-only": 322, "pattern:so-local-only": 6, "projected-consumer-surface": 52, "shared-surface": 508, "shell-ci-candidate": 15, "so-local-only": 8, "unkno` |
 | consumer_projection | ok | `consumer_projection` | `{"by_harness_profile": {"agents-md/default": 82, "agents-md/full": 397, "aider/default": 82, "aider/full": 397, "amp-code/default": 82, "amp-code/full": 397, "augment-code/default": 82, "augment-code/full": 397, "claude/default": 82, "claud` |
-| cos_coverage | ok | `cos_coverage` | `{"aspirational": 0, "coverage_pct": 0.0, "dormant": 0, "generated_at": "2026-06-13T00:26:59Z", "mapped": 268, "metadata": 0, "on_demand": 0, "project": "<repo-root>", "real": 0, "tiers": {"A": 8, "B": 2, "C": 55, "D": 181}, "trend": {"cover` |
+| cos_coverage | ok | `cos_coverage` | `{"aspirational": 0, "coverage_pct": 0.0, "dormant": 0, "generated_at": "2026-06-13T01:12:56Z", "mapped": 268, "metadata": 0, "on_demand": 0, "project": "<repo-root>", "real": 0, "tiers": {"A": 8, "B": 2, "C": 55, "D": 181}, "trend": {"cover` |
 | docs_execution | ok | `docs_execution` | `{"items": 5792, "json": "<repo-root>/docs/06-Daily/reports/docs-execution-latest.json", "markdown": "<repo-root>/docs/06-Daily/reports/docs-execution-latest.md"}` |
 | docs_execution_report | ok | `docs/06-Daily/reports/docs-execution-latest.json` | `{"documents": {"AGENTS.md": {"done_weak_proof": 1, "planned": 1}, "README.md": {"done_weak_proof": 2}, "docs/00-MOCs/architecture.md": {"proposed": 2}, "docs/00-MOCs/decisions.md": {"stale": 1}, "docs/00-MOCs/entrypoints/HOW-TO-USE-COS.md":` |
 | documentation_truth | ok | `docs/06-Daily/reports/documentation-truth-latest.json` | `{"block_count": 0, "by_claim": {"consumer_projection_harnesses": {"pass": 17}, "documentation_truth_control": {"pass": 8}, "primitive_authority_write_effects": {"pass": 16}, "session_pending_protocol": {"pass": 75}, "subprocess_timeout_disc` |
@@ -32,11 +32,11 @@ Gate: pass
 | family_readiness_rules | ok | `family_readiness_rules` | `{"confidence": {"high": 104, "medium": 25}, "consumer_accessibility": {"lifecycle-declared-maintainer": 117, "projected-consumer-surface": 5, "so-local-only": 7}, "json": "<repo-root>/docs/06-Daily/reports/primitive-readiness-ledger-rules-l` |
 | family_readiness_skills | ok | `family_readiness_skills` | `{"confidence": {"high": 107, "medium": 12}, "consumer_accessibility": {"lifecycle-declared-maintainer": 99, "projected-consumer-surface": 7, "repo-skill-not-projectable": 7, "so-local-only": 6}, "json": "<repo-root>/docs/06-Daily/reports/pr` |
 | family_readiness_templates | ok | `family_readiness_templates` | `{"confidence": {"high": 10, "medium": 14}, "consumer_accessibility": {"lifecycle-declared-maintainer": 19, "projected-consumer-surface": 1, "so-local-only": 4}, "json": "<repo-root>/docs/06-Daily/reports/primitive-readiness-ledger-templates` |
-| harness_coverage | ok | `docs/06-Daily/reports/primitive-harness-coverage-latest.json` | `{"by_family": {"hooks": 286, "rules": 129, "scripts": 674, "skills": 119, "templates": 24}, "by_scope": {"both": 498, "os-only": 706, "project": 28}, "gap_policies": {"acceptable-claude-only": 4, "acceptable-codex-limited-tool-events": 6, "` |
-| harness_coverage_refresh | ok | `harness_coverage_refresh` | `{"by_family": {"hooks": 286, "rules": 129, "scripts": 674, "skills": 119, "templates": 24}, "by_scope": {"both": 498, "os-only": 706, "project": 28}, "gaps": 344, "gaps_by_policy": {"acceptable-claude-only": 4, "acceptable-codex-limited-too` |
+| harness_coverage | ok | `docs/06-Daily/reports/primitive-harness-coverage-latest.json` | `{"by_family": {"hooks": 286, "rules": 129, "scripts": 677, "skills": 119, "templates": 24}, "by_scope": {"both": 498, "os-only": 709, "project": 28}, "gap_policies": {"acceptable-claude-only": 4, "acceptable-codex-limited-tool-events": 6, "` |
+| harness_coverage_refresh | ok | `harness_coverage_refresh` | `{"by_family": {"hooks": 286, "rules": 129, "scripts": 677, "skills": 119, "templates": 24}, "by_scope": {"both": 498, "os-only": 709, "project": 28}, "gaps": 344, "gaps_by_policy": {"acceptable-claude-only": 4, "acceptable-codex-limited-too` |
 | harness_projection | ok | `manifests/harness-projection.yaml` | `{"implemented": 22, "planned": 5, "total": 27, "unsupported": 0}` |
-| primitive_authority_audit | ok | `primitive_authority_audit` | `{"block_count": 0, "by_mode": {"observe-only": 133, "os-maintainer-write": 500, "profile-projection-write": 37, "propose-only": 3}, "by_status": {"pass": 663, "warn": 10}, "dynamic_blocks": 0, "dynamic_smokes": 4, "total_scripts": 673}` |
-| primitive_duplication | ok | `primitive_duplication` | `{"by_common_home": {"lib/": 1}, "by_consumer_relevance": {"so-local-first": 1}, "by_kind": {"python-function-repeat": 1}, "files_scanned": 1029, "findings": 1}` |
+| primitive_authority_audit | ok | `primitive_authority_audit` | `{"block_count": 0, "by_mode": {"observe-only": 133, "os-maintainer-write": 503, "profile-projection-write": 37, "propose-only": 3}, "by_status": {"pass": 666, "warn": 10}, "dynamic_blocks": 0, "dynamic_smokes": 4, "total_scripts": 676}` |
+| primitive_duplication | ok | `primitive_duplication` | `{"by_common_home": {"lib/": 1}, "by_consumer_relevance": {"so-local-first": 1}, "by_kind": {"python-function-repeat": 1}, "files_scanned": 1030, "findings": 1}` |
 | primitive_fitness_ledger | ok | `docs/06-Daily/reports/primitive-fitness-ledger-latest.json` | `{"families": {}, "mapping_statuses": {}, "reports": 0, "verdicts": {}}` |
 | primitive_gap_snapshot | ok | `primitive_gap_snapshot` | `{"families": [{"aspirational_signal": 4, "evidence": "row-audit proven=113 partial_nonblocking=180 actionable_gaps=4", "family": "hooks", "next_action": "close actionable rows", "partial_signal": 180, "proven_signal": 113, "severity": "high` |
 | primitive_interventions | ok | `.cognitive-os/metrics/primitive-interventions.jsonl` | `{"actions": {"advise": 3, "allow": 19, "block": 139, "warn": 238}, "primitive_count": 9}` |
@@ -47,7 +47,7 @@ Gate: pass
 | python_helper_duplication | failed | `python_helper_duplication` | `{}` |
 | readiness:hooks | ok | `docs/06-Daily/reports/primitive-readiness-ledger-hooks-latest.json` | `{"confidence": {"high": 272, "medium": 14}, "consumer_accessibility": {"lifecycle-declared-consumer-candidate": 23, "lifecycle-declared-maintainer": 173, "projected-consumer-surface": 76, "so-local-only": 14}, "roles": {"driver-specific": 3` |
 | readiness:rules | ok | `docs/06-Daily/reports/primitive-readiness-ledger-rules-latest.json` | `{"confidence": {"high": 104, "medium": 25}, "consumer_accessibility": {"lifecycle-declared-maintainer": 117, "projected-consumer-surface": 5, "so-local-only": 7}, "roles": {"context-only": 2, "driver-specific": 16, "hook-enforced": 7, "lab"` |
-| readiness:scripts | ok | `docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json` | `{"agentic_primitives_without_lifecycle": 0, "confidence": {"high": 359, "low": 1, "medium": 314}, "consumer_accessibility": {"install-profile-managed": 19, "lifecycle-declared-consumer-candidate": 167, "lifecycle-declared-maintainer": 147, ` |
+| readiness:scripts | ok | `docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json` | `{"agentic_primitives_without_lifecycle": 0, "confidence": {"high": 361, "low": 1, "medium": 315}, "consumer_accessibility": {"install-profile-managed": 19, "lifecycle-declared-consumer-candidate": 167, "lifecycle-declared-maintainer": 149, ` |
 | readiness:skills | ok | `docs/06-Daily/reports/primitive-readiness-ledger-skills-latest.json` | `{"confidence": {"high": 107, "medium": 12}, "consumer_accessibility": {"lifecycle-declared-maintainer": 99, "projected-consumer-surface": 7, "repo-skill-not-projectable": 7, "so-local-only": 6}, "roles": {"compatibility-wrapper": 53, "lab":` |
 | readiness:templates | ok | `docs/06-Daily/reports/primitive-readiness-ledger-templates-latest.json` | `{"confidence": {"high": 10, "medium": 14}, "consumer_accessibility": {"lifecycle-declared-maintainer": 19, "projected-consumer-surface": 1, "so-local-only": 4}, "roles": {"agent-preamble": 2, "lab": 10, "prompt-composition": 7, "quality-gat` |
 | script_readiness_refresh | failed | `script_readiness_refresh` | `{}` |
@@ -148,14 +148,14 @@ Gate: pass
 
 - install-profile-managed: 19
 - lifecycle-declared-consumer-candidate: 294
-- lifecycle-declared-maintainer: 169
+- lifecycle-declared-maintainer: 171
 - maintainer-only: 315
 - profile-driver: 19
-- projected-consumer-surface: 1879
+- projected-consumer-surface: 1882
 - runtime-evidence: 10
 - shell-ci-candidate: 15
 - skill-referenced-not-projectable: 3
-- so-local-only: 782
+- so-local-only: 786
 
 ## Persistence
 
