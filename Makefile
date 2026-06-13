@@ -14,7 +14,7 @@
 
 PY := uv run python3
 PYTEST := uv run pytest
-COS_TEST_PYTHON ?= python3
+COS_TEST_PYTHON ?= uv run python3
 
 # Build the cos-test binary on demand. All deprecated test-* targets depend on it.
 cos-test:
