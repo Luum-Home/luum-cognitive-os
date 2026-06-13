@@ -4595,7 +4595,7 @@
         "doc": 177,
         "hook": 25,
         "rule": 3,
-        "script": 55,
+        "script": 56,
         "skill": 10,
         "test": 144
       },
@@ -5578,6 +5578,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_init.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_primitive_closure_check.py"
         },
         {
@@ -6335,7 +6339,7 @@
         "skill_consumers:10",
         "hook_consumers:25",
         "rule_consumers:3",
-        "script_consumers:55",
+        "script_consumers:56",
         "test_consumers:144",
         "doc_consumers:177",
         "config_consumers:18"
@@ -6352,7 +6356,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 432
+      "total_consumers": 433
     },
     {
       "confidence": "high",

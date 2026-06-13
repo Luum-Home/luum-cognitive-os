@@ -1,6 +1,6 @@
 # Primitive Authority Audit — Latest
 
-Generated: 2026-06-13T04:34:36+00:00
+Generated: 2026-06-13T05:26:30+00:00
 Status: `pass`
 
 ## Summary
@@ -25,4 +25,4 @@ Status: `pass`
 | `consumer-improvement-export` | `pass` | 0 | `` |
 | `consumer-improvement-import` | `pass` | 1 | `` |
 | `project-shell-ci` | `pass` | 36 | `` |
-| `cos-init-codex` | `pass` | 138 | `` |
+| `cos-init-codex` | `pass` | 141 | `` |

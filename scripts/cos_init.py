@@ -1434,9 +1434,11 @@ def _install_provenance_scan_guardrail(project_dir: Path, cos_source: Path) -> b
 
 
 def _install_quality_duplicates_primitive(project_dir: Path, cos_source: Path) -> bool:
-    """Install the project-local duplicate-code scanner wrapper and engine."""
+    """Install the project-local duplicate-code scanner wrapper, engine, and portable libs."""
     bin_dir = project_dir / ".cognitive-os" / "bin"
+    lib_dir = project_dir / ".cognitive-os" / "lib"
     bin_dir.mkdir(parents=True, exist_ok=True)
+    lib_dir.mkdir(parents=True, exist_ok=True)
     copied = False
     for name in ("cos-quality-duplicates", "cos_quality_duplicates.py"):
         src = cos_source / "scripts" / name
@@ -1446,6 +1448,16 @@ def _install_quality_duplicates_primitive(project_dir: Path, cos_source: Path) -
         shutil.copy2(str(src), str(dest))
         if name == "cos-quality-duplicates":
             dest.chmod(dest.stat().st_mode | 0o111)
+        copied = True
+    for name in ("duplicate_scanner.py", "project_paths.py"):
+        src = cos_source / "lib" / name
+        if not src.is_file() or not scope_allows(str(src), os.environ.get("COS_INSTALL_SCOPE", "both")):
+            continue
+        shutil.copy2(str(src), str(lib_dir / name))
+        copied = True
+    init_file = lib_dir / "__init__.py"
+    if not init_file.exists():
+        init_file.write_text("# Project-local Cognitive OS portable libs.\n", encoding="utf-8")
         copied = True
     return copied
 
