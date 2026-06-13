@@ -28,6 +28,7 @@ PROCESS_SCHEMA = "cos.process-contract.v1"
 STATE_SCHEMA = "cos.process-state.v1"
 TRACE_SCHEMA = "cos.process-trace.v1"
 VERIFY_SCHEMA = "cos.verify-report.v1"
+SKILL_SELECTION_SCHEMA = "cos.skill-selection-report.v1"
 DEFAULT_PROCESS_ID = "default-process"
 BLOCKING_FINDING_SEVERITIES = {"blocker", "critical"}
 DONE_STATUSES = {"done", "complete", "completed", "passed", "verified"}
@@ -118,6 +119,8 @@ def process_paths(project_dir: Path, process_id: str) -> dict[str, Path]:
         "apply": root / "apply-progress.jsonl",
         "review": root / "review-findings.jsonl",
         "verify": root / "verify-report.json",
+        "skill_selection": root / "skill-selection-report.json",
+        "review_runs": root / "review-runs.jsonl",
         "verdict": root / "final-verdict.json",
     }
 
@@ -130,6 +133,9 @@ def initial_state(contract: dict[str, Any], process_id: str) -> dict[str, Any]:
         "source": contract.get("source"),
         "goal": contract.get("goal"),
         "selected_skills": contract.get("selectedSkills") or [],
+        "source_gate": {"required": False, "passed": True, "required_status": None, "actual_status": None},
+        "skill_selection": {"ran": False, "recommended": [], "selected": contract.get("selectedSkills") or []},
+        "next_recommended": {"action": "apply", "reason": "process-initialized"},
         "started_at": utc_now(),
         "updated_at": utc_now(),
         "apply_progress": {"total": 0, "done": 0, "blocked": 0, "latest": None},
@@ -176,11 +182,80 @@ def summarize_review(rows: list[dict[str, Any]], contract: dict[str, Any]) -> di
     return {"total": len(latest_by_id), "open": len(open_rows), "blocking_open": len(blocking_open)}
 
 
+def source_gate(contract: dict[str, Any]) -> dict[str, Any]:
+    source = contract.get("source") or {}
+    required_status = source.get("requiredStatus") or source.get("required_status") or (contract.get("sourcePolicy") or {}).get("requiredStatus")
+    actual_status = source.get("status")
+    required = bool(required_status)
+    passed = not required or str(actual_status or "").lower() == str(required_status).lower()
+    return {
+        "required": required,
+        "passed": passed,
+        "required_status": required_status,
+        "actual_status": actual_status,
+    }
+
+
+def load_skill_selection(paths: dict[str, Path], state: dict[str, Any], contract: dict[str, Any]) -> dict[str, Any]:
+    default = {"ran": False, "recommended": [], "selected": contract.get("selectedSkills") or []}
+    report = load_json(paths["skill_selection"], {})
+    if report:
+        return {
+            "ran": True,
+            "recommended": report.get("recommended_skills") or [],
+            "selected": report.get("selected_skills") or [],
+            "stack_signals": report.get("stack_signals") or [],
+            "change_signals": report.get("change_signals") or [],
+            "report_path": str(paths["skill_selection"]),
+        }
+    return state.get("skill_selection") or default
+
+
+def next_recommended_action(state: dict[str, Any], contract: dict[str, Any]) -> dict[str, str]:
+    source = state.get("source_gate") or {}
+    if source.get("required") and not source.get("passed"):
+        return {"action": "source-approval", "reason": "source status has not reached the required approval state"}
+    skill_policy = contract.get("skillSelection") or {}
+    skill_state = state.get("skill_selection") or {}
+    if skill_policy.get("required") and not skill_state.get("ran"):
+        return {"action": "skill-selection", "reason": "skill selection report is required before apply"}
+    review_policy = contract.get("freshReview") or {}
+    review_state = state.get("review_findings") or {}
+    if int(review_state.get("blocking_open", 0)) > 0:
+        return {"action": "fix-review-findings", "reason": "blocking review findings remain open"}
+    apply_policy = contract.get("applyProgress") or {}
+    apply_state = state.get("apply_progress") or {}
+    if apply_policy.get("required", True):
+        if int(apply_state.get("blocked", 0)) > 0:
+            return {"action": "fix-apply-blocker", "reason": "apply progress contains blocked tasks"}
+        if int(apply_state.get("total", 0)) == 0:
+            return {"action": "apply", "reason": "no apply progress has been recorded"}
+    if review_policy.get("required", True):
+        if int(review_state.get("total", 0)) == 0:
+            return {"action": "fresh-review", "reason": "fresh review evidence is required"}
+    verify_policy = contract.get("verifyReport") or {}
+    verification = state.get("verification") or {}
+    if verify_policy.get("required", True):
+        if not verification.get("ran"):
+            return {"action": "verify", "reason": "verification has not run"}
+        if not verification.get("all_required_passed"):
+            return {"action": "fix-verification", "reason": "required verification did not pass"}
+    verdict = state.get("final_verdict")
+    if not verdict:
+        return {"action": "final-verdict", "reason": "all gates are satisfied; record final verdict"}
+    if verdict == "blocked":
+        return {"action": "blocked", "reason": "final verdict is blocked"}
+    return {"action": "done", "reason": "final verdict recorded"}
+
+
 def refresh_state(paths: dict[str, Path], contract: dict[str, Any], state: dict[str, Any]) -> dict[str, Any]:
+    state["source_gate"] = source_gate(contract)
+    state["skill_selection"] = load_skill_selection(paths, state, contract)
     state["apply_progress"] = summarize_apply(load_jsonl(paths["apply"]))
     state["review_findings"] = summarize_review(load_jsonl(paths["review"]), contract)
     state["verification"] = load_json(paths["verify"], state.get("verification") or {"ran": False, "all_required_passed": False, "commands": []})
     state["final_verdict"] = load_json(paths["verdict"], {}).get("verdict") if paths["verdict"].exists() else state.get("final_verdict")
+    state["next_recommended"] = next_recommended_action(state, contract)
     state["updated_at"] = utc_now()
     write_json(paths["state"], state)
     return state
@@ -240,6 +315,10 @@ def command_process_verdict(args: argparse.Namespace) -> int:
     final_policy = contract.get("finalVerdict") or {}
     blockers: list[str] = []
     if requested in PASS_VERDICTS:
+        if (state.get("source_gate") or {}).get("required") and not (state.get("source_gate") or {}).get("passed"):
+            blockers.append("source-status-not-approved")
+        if (contract.get("skillSelection") or {}).get("required") and not (state.get("skill_selection") or {}).get("ran"):
+            blockers.append("skill-selection-not-recorded")
         if final_policy.get("requireVerificationPass", True) and not bool((state.get("verification") or {}).get("all_required_passed")):
             blockers.append("verification-not-passed")
         if final_policy.get("requireNoOpenBlockingFindings", True) and int((state.get("review_findings") or {}).get("blocking_open", 0)) > 0:
@@ -252,6 +331,7 @@ def command_process_verdict(args: argparse.Namespace) -> int:
     trace(paths, "process.verdict", payload)
     state["status"] = verdict
     state["final_verdict"] = verdict
+    state["next_recommended"] = next_recommended_action(state, contract)
     write_json(paths["state"], state)
     output(payload, args.json)
     return 2 if blockers else 0
@@ -278,9 +358,57 @@ def command_apply_record(args: argparse.Namespace) -> int:
 
 
 def command_review_finding(args: argparse.Namespace) -> int:
+    project_dir = Path(args.project_dir).resolve()
     process_id = sanitize_id(args.process_id)
-    contract, paths = contract_from_args(Path(args.project_dir).resolve(), process_id, args.contract)
+    contract, paths = contract_from_args(project_dir, process_id, args.contract)
     state = load_state(paths, contract, process_id)
+    timeout = int(args.timeout_seconds or (contract.get("freshReview") or {}).get("timeoutSeconds") or 120)
+    if args.command:
+        results: list[dict[str, Any]] = []
+        all_passed = True
+        for index, command in enumerate(args.command, 1):
+            started = time.time()
+            proc = subprocess.run(command, cwd=project_dir, shell=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout, check=False)
+            elapsed = round(time.time() - started, 3)
+            passed = proc.returncode == 0
+            all_passed = all_passed and passed
+            finding_id = args.finding_id or f"{args.adapter_id}-{index}"
+            result = {
+                "ts": utc_now(),
+                "process_id": process_id,
+                "adapter_id": args.adapter_id,
+                "finding_id": finding_id,
+                "severity": args.severity,
+                "status": "resolved" if passed else args.status,
+                "summary": args.summary or f"fresh review command {'passed' if passed else 'failed'}: {command}",
+                "file": args.file,
+                "line": args.line,
+                "recommendation": args.recommendation,
+                "command": command,
+                "returncode": proc.returncode,
+                "passed": passed,
+                "elapsed_seconds": elapsed,
+                "stdout_tail": proc.stdout[-2000:],
+                "stderr_tail": proc.stderr[-2000:],
+            }
+            append_jsonl(paths["review"], result)
+            append_jsonl(paths["review_runs"], result)
+            trace(paths, "fresh_review.command", result)
+            results.append(result)
+        state = refresh_state(paths, contract, state)
+        payload = {
+            "status": "passed" if all_passed else "blocked",
+            "process_id": process_id,
+            "all_passed": all_passed,
+            "commands": results,
+            "review_findings": state["review_findings"],
+        }
+        output(payload, args.json)
+        return 0 if all_passed else 2
+    if not args.finding_id:
+        raise SystemExit("--finding-id is required when --command is not provided")
+    if not args.summary:
+        raise SystemExit("--summary is required when --command is not provided")
     row = {
         "ts": utc_now(),
         "process_id": process_id,
@@ -296,6 +424,150 @@ def command_review_finding(args: argparse.Namespace) -> int:
     trace(paths, "fresh_review.finding", row)
     state = refresh_state(paths, contract, state)
     output({"status": "recorded", "process_id": process_id, "review_findings": state["review_findings"], "message": f"finding={args.finding_id} status={args.status}"}, args.json)
+    return 0
+
+
+def existing_skill_names(project_dir: Path) -> set[str]:
+    names: set[str] = set()
+    for base in (
+        project_dir / "skills",
+        project_dir / ".cognitive-os" / "skills",
+        project_dir / ".cognitive-os" / "skills" / "cos",
+        project_dir / ".claude" / "skills",
+    ):
+        if not base.exists():
+            continue
+        for child in base.iterdir():
+            if child.is_dir() and (child / "SKILL.md").exists():
+                names.add(child.name)
+    return names
+
+
+def detect_stack_signals(project_dir: Path) -> list[str]:
+    checks = {
+        "node": ["package.json", "pnpm-lock.yaml", "yarn.lock", "package-lock.json"],
+        "python": ["pyproject.toml", "requirements.txt", "setup.py", "tox.ini"],
+        "go": ["go.mod"],
+        "rust": ["Cargo.toml"],
+        "java": ["pom.xml", "build.gradle", "build.gradle.kts"],
+        "storybook": [".storybook/main.js", ".storybook/main.ts", ".storybook/main.cjs"],
+        "docker": ["Dockerfile", "docker-compose.yml", "compose.yaml"],
+    }
+    signals = [name for name, rels in checks.items() if any((project_dir / rel).exists() for rel in rels)]
+    package_json = project_dir / "package.json"
+    if package_json.exists():
+        text = package_json.read_text(encoding="utf-8", errors="ignore")
+        if any(token in text for token in ('"react"', '"next"', '"vue"', '"svelte"', '"vite"')):
+            signals.append("frontend")
+        if any(token in text for token in ('"express"', '"fastify"', '"nestjs"', '"hono"')):
+            signals.append("backend")
+    suffixes = bounded_suffix_scan(project_dir, {".tsx", ".jsx", ".stories.ts", ".stories.tsx", ".stories.js", ".stories.jsx"})
+    if suffixes & {".tsx", ".jsx"}:
+        signals.append("frontend")
+        signals.append("component")
+    if any(suffix.startswith(".stories.") for suffix in suffixes):
+        signals.append("storybook")
+    return sorted(set(signals))
+
+
+def bounded_suffix_scan(project_dir: Path, suffixes: set[str], *, max_files: int = 2000) -> set[str]:
+    ignored = {".git", ".hg", ".svn", ".venv", "venv", "node_modules", "dist", "build", ".next", "target", "__pycache__"}
+    found: set[str] = set()
+    visited = 0
+    for root, dirnames, filenames in os.walk(project_dir):
+        dirnames[:] = [name for name in dirnames if name not in ignored and not name.startswith(".pytest")]
+        for filename in filenames:
+            visited += 1
+            lower = filename.lower()
+            for suffix in suffixes:
+                if lower.endswith(suffix):
+                    found.add(suffix)
+            if visited >= max_files:
+                return found
+    return found
+
+
+def detect_change_signals(changed_files: list[str]) -> list[str]:
+    signals: set[str] = set()
+    for raw in changed_files:
+        path = raw.lower()
+        if path.endswith((".tsx", ".jsx", ".vue", ".svelte", ".css", ".scss")):
+            signals.update({"frontend", "component"})
+        if ".stories." in path or "/storybook" in path or path.startswith(".storybook/"):
+            signals.add("storybook")
+        if path.endswith((".py", ".go", ".rs", ".java", ".kt", ".ts", ".js")) and not path.endswith((".tsx", ".jsx")):
+            signals.add("backend")
+        if "/test" in path or path.endswith(("_test.go", "_test.py", ".test.ts", ".spec.ts", ".test.js", ".spec.js")):
+            signals.add("tests")
+        if path.endswith((".md", ".mdx", ".rst")):
+            signals.add("docs")
+    return sorted(signals)
+
+
+def recommend_skills(stack_signals: list[str], change_signals: list[str], available: set[str]) -> list[dict[str, Any]]:
+    wanted: list[tuple[str, str]] = [
+        ("plan-feature", "default planning contract for non-trivial implementation"),
+        ("run-tests", "verification runner for changed surfaces"),
+        ("code-review", "fresh review policy after implementation"),
+    ]
+    combined = set(stack_signals) | set(change_signals)
+    if "frontend" in combined:
+        wanted.append(("frontend-dod", "frontend stack or UI files detected"))
+    if "backend" in combined or {"python", "go", "rust", "java"} & combined:
+        wanted.append(("backend-dod", "backend or service files detected"))
+    if "component" in combined:
+        wanted.append(("component-dod", "component files detected"))
+    if "storybook" in combined:
+        wanted.append(("storybook-dod", "storybook files or configuration detected"))
+    if "docs" in combined:
+        wanted.append(("doc-review-personas", "documentation files detected"))
+    results: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for name, reason in wanted:
+        if name in seen:
+            continue
+        seen.add(name)
+        results.append({"name": name, "reason": reason, "available": name in available})
+    return results
+
+
+def git_changed_files(project_dir: Path) -> list[str]:
+    proc = subprocess.run(["git", "diff", "--name-only", "HEAD"], cwd=project_dir, text=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=False)
+    if proc.returncode != 0:
+        return []
+    return [line.strip() for line in proc.stdout.splitlines() if line.strip()]
+
+
+def command_skill_selection_report(args: argparse.Namespace) -> int:
+    project_dir = Path(args.project_dir).resolve()
+    process_id = sanitize_id(args.process_id)
+    contract, paths = contract_from_args(project_dir, process_id, args.contract)
+    changed_files = list(args.changed_file or [])
+    if args.from_git_diff:
+        changed_files.extend(git_changed_files(project_dir))
+    stack_signals = detect_stack_signals(project_dir)
+    change_signals = detect_change_signals(changed_files)
+    available = existing_skill_names(project_dir)
+    recommendations = recommend_skills(stack_signals, change_signals, available)
+    selected = [item["name"] for item in recommendations if item["available"]]
+    if not selected:
+        selected = contract.get("selectedSkills") or [item["name"] for item in recommendations[:3]]
+    report = {
+        "schema_version": SKILL_SELECTION_SCHEMA,
+        "process_id": process_id,
+        "stack_signals": stack_signals,
+        "change_signals": change_signals,
+        "changed_files": sorted(set(changed_files)),
+        "available_skills": sorted(available),
+        "recommended_skills": recommendations,
+        "selected_skills": selected,
+        "updated_at": utc_now(),
+    }
+    write_json(paths["skill_selection"], report)
+    trace(paths, "skill_selection.report", {"process_id": process_id, "selected_skills": selected, "stack_signals": stack_signals, "change_signals": change_signals})
+    state = refresh_state(paths, contract, load_state(paths, contract, process_id))
+    payload = {**report, "next_recommended": state["next_recommended"]}
+    output(payload, args.json)
     return 0
 
 
@@ -398,15 +670,27 @@ def build_parser() -> argparse.ArgumentParser:
     review.add_argument("--project-dir", default=os.getcwd())
     review.add_argument("--process-id", required=True)
     review.add_argument("--contract")
-    review.add_argument("--finding-id", required=True)
+    review.add_argument("--finding-id")
     review.add_argument("--severity", default="major")
     review.add_argument("--status", default="open")
-    review.add_argument("--summary", required=True)
+    review.add_argument("--summary", default="")
     review.add_argument("--file", default="")
     review.add_argument("--line", type=int)
     review.add_argument("--recommendation", default="")
+    review.add_argument("--command", action="append")
+    review.add_argument("--adapter-id", default="command-review")
+    review.add_argument("--timeout-seconds", type=int)
     review.add_argument("--json", action="store_true")
     review.set_defaults(func=command_review_finding)
+
+    skill_selection = sub.add_parser("skill-selection-report")
+    skill_selection.add_argument("--project-dir", default=os.getcwd())
+    skill_selection.add_argument("--process-id", required=True)
+    skill_selection.add_argument("--contract")
+    skill_selection.add_argument("--changed-file", action="append")
+    skill_selection.add_argument("--from-git-diff", action="store_true")
+    skill_selection.add_argument("--json", action="store_true")
+    skill_selection.set_defaults(func=command_skill_selection_report)
 
     verify = sub.add_parser("verify-report")
     verify.add_argument("--project-dir", default=os.getcwd())

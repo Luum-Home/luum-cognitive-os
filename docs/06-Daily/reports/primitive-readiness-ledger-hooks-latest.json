@@ -437,7 +437,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 24,
-        "doc": 157,
+        "doc": 156,
         "hook": 42,
         "rule": 6,
         "script": 68,
@@ -916,10 +916,6 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/FROZEN-BACKLOG.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/architecture/agent-loop-engineering-runtime.md"
         },
         {
           "family": "doc",
@@ -2050,7 +2046,7 @@
         "rule_consumers:6",
         "script_consumers:68",
         "test_consumers:91",
-        "doc_consumers:157",
+        "doc_consumers:156",
         "config_consumers:24"
       ],
       "family": "hooks",
@@ -2065,7 +2061,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 399
+      "total_consumers": 398
     },
     {
       "confidence": "high",

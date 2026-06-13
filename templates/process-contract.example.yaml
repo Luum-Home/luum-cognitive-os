@@ -4,11 +4,15 @@ id: example-process-loop
 source:
   type: issue
   ref: ISSUE-123
+  status: approved
+  requiredStatus: approved
 goal:
   statement: Complete the requested implementation with review and verification evidence.
 selectedSkills:
   - plan-feature
   - dod-check
+skillSelection:
+  required: true
 applyProgress:
   required: true
 freshReview:
@@ -16,6 +20,8 @@ freshReview:
   blockOnSeverities:
     - blocker
     - critical
+  timeoutSeconds: 120
+  commands: []
 verifyReport:
   required: true
   timeoutSeconds: 120

@@ -70,20 +70,23 @@ This is not a universal harness-enforced interceptor yet. It is an evidence-prod
 The reusable process-loop layer should encode workflow evidence without tying the implementation to a single upstream project, CLI, IDE, or persistence backend. The portable requirements are:
 
 - Detect project capabilities before requiring strict TDD, verification, lint, typecheck, or coverage behavior.
+- Gate issue/spec workflows on an explicit source status when a process contract requires approval before implementation.
+- Record a skill-selection report from stack and changed-file signals so selected skills are justified as data.
 - Treat TDD evidence as a process trail: baseline safety net, RED, GREEN, TRIANGULATE, and REFACTOR.
 - Persist phase state in project-local artifacts so another CLI, IDE, or shell-only workflow can resume.
-- Keep status computation native and structured rather than prompt-only.
+- Keep status computation native and structured rather than prompt-only, including a `next_recommended` action.
 - Track blockers, dependencies, retries, tool repetition, review findings, and verification results as data.
+- Allow fresh review to be recorded manually or produced by executable review commands/adapters.
 - Require verification evidence before final completion claims.
 - Prevent no-progress loops with repeated-tool, repeated-observation, ping-pong, and false-completion guards.
 
 | Loop concept | Generic process-loop mechanism |
 | --- | --- |
-| Trigger | Explicit command, skill invocation, issue/spec start, CI event, or scheduled maintenance. |
+| Trigger | Explicit command, skill invocation, approved issue/spec start, CI event, or scheduled maintenance. |
 | Goal | Process contract goal plus acceptance evidence. |
-| State | Project-local loop state, process state, apply progress, review findings, and verify report. |
-| Action policy | Selected skills, allowed tools, review/fix rules, TDD mode, and verification policy. |
-| Observation parser | Structured report over state files, trace rows, dependencies, blockers, and next recommended action. |
+| State | Project-local loop state, process state, source gate, skill-selection report, apply progress, review findings, and verify report. |
+| Action policy | Selected skills, allowed tools, review/fix rules, TDD mode, executable review policy, and verification policy. |
+| Observation parser | Structured report over state files, trace rows, dependencies, blockers, and `next_recommended`. |
 | Termination | Final verdict gate, stop conditions, verification pass/fail, blocker state, or archive readiness. |
 | State update | Append-only traces and project-local process artifacts. |
 | Failure handling | Blockers, failed verification, review findings, rollback metadata, and blocked verdicts. |

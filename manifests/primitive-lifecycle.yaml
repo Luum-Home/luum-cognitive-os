@@ -23822,9 +23822,9 @@ primitives:
   - scripts/cos-process-loop
   - scripts/cos_process_loop.py
   runtime_projection: false
-  behavior_evidence: Agent Process Loop Contract advisory wrapper with project-local process state; portable invocation covered by unit and red-team portability tests. This primitive initializes, reports, and records final verdicts for issue/spec-driven agent processes.
+  behavior_evidence: Agent Process Loop Contract advisory wrapper with project-local process state and next-recommended status; portable invocation covered by unit and red-team portability tests. This primitive initializes, reports, and records final verdicts for issue/spec-driven agent processes.
   evidence_commands:
-  - python3 -m pytest tests/unit/test_cos_process_loop.py tests/red_team/portability/test_cos_process_loop_primitives.py -q
+  - .venv/bin/python -m pytest tests/unit/test_cos_process_loop.py tests/red_team/portability/test_cos_process_loop_primitives.py -q
   rollback_or_repair_command: Remove the process-loop wrapper lifecycle row, regenerate portable overlays/registry locks, and keep ADR-337 as historical design context.
   sunset_criteria: Promote or replace when harness-level process orchestration provides equivalent source/spec, progress, review, verification, and verdict coverage.
   docs_claim_level: advisory
@@ -23849,7 +23849,7 @@ primitives:
   runtime_projection: false
   behavior_evidence: Agent Process Loop Contract advisory wrapper with project-local apply-progress JSONL; portable invocation covered by unit and red-team portability tests. This primitive records implementation task progress and evidence.
   evidence_commands:
-  - python3 -m pytest tests/unit/test_cos_process_loop.py tests/red_team/portability/test_cos_process_loop_primitives.py -q
+  - .venv/bin/python -m pytest tests/unit/test_cos_process_loop.py tests/red_team/portability/test_cos_process_loop_primitives.py -q
   rollback_or_repair_command: Remove the apply-progress wrapper lifecycle row, regenerate portable overlays/registry locks, and keep ADR-337 as historical design context.
   sunset_criteria: Promote or replace when harness-level process orchestration provides equivalent progress evidence.
   docs_claim_level: advisory
@@ -23872,9 +23872,9 @@ primitives:
   - scripts/cos-fresh-review
   - scripts/cos_process_loop.py
   runtime_projection: false
-  behavior_evidence: Agent Process Loop Contract advisory wrapper with project-local fresh-review findings; portable invocation covered by unit and red-team portability tests. This primitive records review findings and resolution state for fix-review loops.
+  behavior_evidence: Agent Process Loop Contract advisory wrapper with project-local fresh-review findings and optional executable review commands; portable invocation covered by unit and red-team portability tests. This primitive records review findings and resolution state for fix-review loops.
   evidence_commands:
-  - python3 -m pytest tests/unit/test_cos_process_loop.py tests/red_team/portability/test_cos_process_loop_primitives.py -q
+  - .venv/bin/python -m pytest tests/unit/test_cos_process_loop.py tests/red_team/portability/test_cos_process_loop_primitives.py -q
   rollback_or_repair_command: Remove the fresh-review wrapper lifecycle row, regenerate portable overlays/registry locks, and keep ADR-337 as historical design context.
   sunset_criteria: Promote or replace when harness-level process orchestration provides equivalent review finding evidence.
   docs_claim_level: advisory
@@ -23899,12 +23899,37 @@ primitives:
   runtime_projection: false
   behavior_evidence: Agent Process Loop Contract advisory wrapper with project-local verify-report JSON; portable invocation covered by unit and red-team portability tests. This primitive runs verification commands and records pass/fail evidence used by final verdict gating.
   evidence_commands:
-  - python3 -m pytest tests/unit/test_cos_process_loop.py tests/red_team/portability/test_cos_process_loop_primitives.py -q
+  - .venv/bin/python -m pytest tests/unit/test_cos_process_loop.py tests/red_team/portability/test_cos_process_loop_primitives.py -q
   rollback_or_repair_command: Remove the verify-report wrapper lifecycle row, regenerate portable overlays/registry locks, and keep ADR-337 as historical design context.
   sunset_criteria: Promote or replace when harness-level process orchestration provides equivalent verification report evidence.
   docs_claim_level: advisory
   exit_behavior: exit_0_or_2
   metrics_file: .cognitive-os/process-loops/{process-id}/verify-report.json
+- id: scripts/cos-skill-selection-report
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos-skill-selection-report
+  - scripts/cos_process_loop.py
+  runtime_projection: false
+  behavior_evidence: Agent Process Loop Contract advisory wrapper with project-local skill-selection report; portable invocation covered by unit and red-team portability tests. This primitive detects stack and changed-file signals to justify selected skills before apply work.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_process_loop.py tests/red_team/portability/test_cos_process_loop_primitives.py -q
+  rollback_or_repair_command: Remove the skill-selection wrapper lifecycle row, regenerate portable overlays/registry locks, and keep ADR-337 as historical design context.
+  sunset_criteria: Promote or replace when harness-level process orchestration provides equivalent skill-selection evidence.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/process-loops/{process-id}/skill-selection-report.json
 - id: scripts/cos_process_loop.py
   kind: script
   owner_adr: ADR-337
@@ -23923,7 +23948,7 @@ primitives:
   runtime_projection: false
   behavior_evidence: Agent Process Loop Contract shared Python implementation for process-loop wrappers; portable invocation covered by unit and red-team portability tests.
   evidence_commands:
-  - python3 -m pytest tests/unit/test_cos_process_loop.py tests/red_team/portability/test_cos_process_loop_primitives.py -q
+  - .venv/bin/python -m pytest tests/unit/test_cos_process_loop.py tests/red_team/portability/test_cos_process_loop_primitives.py -q
   rollback_or_repair_command: Remove the implementation lifecycle row, regenerate portable overlays/registry locks, and keep ADR-337 as historical design context.
   sunset_criteria: Promote or replace when harness-level process orchestration provides equivalent process contract coverage.
   docs_claim_level: advisory
@@ -23947,7 +23972,7 @@ primitives:
   runtime_projection: false
   behavior_evidence: Agent Process Loop Contract example template; copied into temp consumer projects by red-team portability tests that run all process-loop wrappers.
   evidence_commands:
-  - python3 -m pytest tests/unit/test_cos_process_loop.py tests/red_team/portability/test_cos_process_loop_primitives.py -q
+  - .venv/bin/python -m pytest tests/unit/test_cos_process_loop.py tests/red_team/portability/test_cos_process_loop_primitives.py -q
   rollback_or_repair_command: Remove the template lifecycle row, regenerate portable overlays/registry locks, and keep ADR-337 as historical design context.
   sunset_criteria: Replace when process-contract schema evolves beyond v1.
   docs_claim_level: advisory

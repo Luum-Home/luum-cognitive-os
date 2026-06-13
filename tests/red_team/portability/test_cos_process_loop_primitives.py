@@ -6,7 +6,7 @@ import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-WRAPPERS = ["cos-process-loop", "cos-apply-progress", "cos-fresh-review", "cos-verify-report"]
+WRAPPERS = ["cos-process-loop", "cos-apply-progress", "cos-fresh-review", "cos-verify-report", "cos-skill-selection-report"]
 
 
 def write_contract(tmp_path: Path) -> Path:
@@ -18,9 +18,13 @@ id: portable-process
 source:
   type: spec
   ref: specs/demo.md
+  status: approved
+  requiredStatus: approved
 goal:
   statement: Prove process-loop portability.
 selectedSkills: [plan-feature]
+skillSelection:
+  required: true
 verifyReport:
   required: true
   commands:
@@ -60,10 +64,17 @@ def test_process_wrappers_run_from_arbitrary_consumer_cwd(tmp_path: Path) -> Non
     assert init.returncode == 0, init.stderr + init.stdout
     assert json.loads(init.stdout)["process_id"] == "portable-process"
 
+    (project / "package.json").write_text('{"dependencies":{"react":"latest"}}\n', encoding="utf-8")
+    selection = run_wrapper("cos-skill-selection-report", outside, "--project-dir", str(project), "--process-id", "portable-process", "--changed-file", "src/App.tsx", "--json")
+    assert selection.returncode == 0, selection.stderr + selection.stdout
+    selection_payload = json.loads(selection.stdout)
+    assert "frontend" in selection_payload["stack_signals"]
+    assert any(item["name"] == "frontend-dod" for item in selection_payload["recommended_skills"])
+
     apply = run_wrapper("cos-apply-progress", outside, "--project-dir", str(project), "--process-id", "portable-process", "--task-id", "T1", "--title", "implement", "--status", "done", "--json")
     assert apply.returncode == 0, apply.stderr + apply.stdout
 
-    review = run_wrapper("cos-fresh-review", outside, "--project-dir", str(project), "--process-id", "portable-process", "--finding-id", "R1", "--severity", "major", "--status", "resolved", "--summary", "reviewed", "--json")
+    review = run_wrapper("cos-fresh-review", outside, "--project-dir", str(project), "--process-id", "portable-process", "--severity", "major", "--command", "python3 -c 'raise SystemExit(0)'", "--json")
     assert review.returncode == 0, review.stderr + review.stdout
 
     verify = run_wrapper("cos-verify-report", outside, "--project-dir", str(project), "--process-id", "portable-process", "--json")
@@ -80,3 +91,4 @@ def test_process_wrappers_run_from_arbitrary_consumer_cwd(tmp_path: Path) -> Non
     assert payload["source"]["ref"] == "specs/demo.md"
     assert payload["apply_progress"]["done"] == 1
     assert payload["verification"]["all_required_passed"] is True
+    assert payload["next_recommended"]["action"] == "done"

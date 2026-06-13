@@ -42783,7 +42783,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Accepted \u2014 implemented on 2026-06-13.",
       "kind": "prose",
-      "line": 27,
+      "line": 28,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/02-Decisions/adrs/ADR-337-agent-process-loop-contract-layer.md"
     },
@@ -42796,7 +42796,7 @@
       "inferred_status": "proposed",
       "item": "Initial maturity is advisory/candidate. It does not forcibly intercept every IDE/CLI action.",
       "kind": "bullet",
-      "line": 69,
+      "line": 74,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/02-Decisions/adrs/ADR-337-agent-process-loop-contract-layer.md"
     },

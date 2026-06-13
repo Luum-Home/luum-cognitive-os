@@ -12,12 +12,13 @@ implementation_files:
   - scripts/cos-apply-progress
   - scripts/cos-fresh-review
   - scripts/cos-verify-report
+  - scripts/cos-skill-selection-report
   - scripts/cos_process_loop.py
   - tests/unit/test_cos_process_loop.py
   - tests/red_team/portability/test_cos_process_loop_primitives.py
 tier: consumer
 tags: [agent-loop, process-contract, review, verification, portability]
-classification_basis: portable CLI wrappers, project-local process-loop state, apply progress, fresh review findings, verification report, final verdict gating, and consumer-project portability tests
+classification_basis: portable CLI wrappers, project-local process-loop state, source approval gating, stack/change-based skill selection report, apply progress, executable fresh review, verification report, final verdict gating, and consumer-project portability tests
 ---
 
 # ADR-337: Agent Process Loop Contract Layer
@@ -36,10 +37,11 @@ Without this process contract, agents can still record loop ticks while losing t
 
 Add a portable process-loop layer above the loop runtime:
 
-- `templates/process-contract.example.yaml` defines `cos.process-contract.v1` with source, goal, selected skills, apply progress policy, fresh review policy, verify report policy, fix-review loop policy, and final verdict requirements.
-- `scripts/cos-process-loop` initializes, reports, and records final verdict for a process loop.
+- `templates/process-contract.example.yaml` defines `cos.process-contract.v1` with source, source approval policy, goal, selected skills, skill-selection policy, apply progress policy, fresh review policy, verify report policy, fix-review loop policy, and final verdict requirements.
+- `scripts/cos-process-loop` initializes, reports status including `next_recommended`, and records final verdict for a process loop.
+- `scripts/cos-skill-selection-report` inspects stack/change signals and records why skills were selected.
 - `scripts/cos-apply-progress` records task/application progress events.
-- `scripts/cos-fresh-review` records independent review findings and resolution state.
+- `scripts/cos-fresh-review` records independent review findings and can execute review commands/adapters that create findings.
 - `scripts/cos-verify-report` runs or records verification commands into a project-local verify report.
 - `scripts/cos_process_loop.py` is the shared dependency-light engine for those wrappers.
 
@@ -48,12 +50,14 @@ State is project-local under `.cognitive-os/process-loops/{process-id}/`:
 - `contract.json`
 - `state.json`
 - `trace.jsonl`
+- `skill-selection-report.json`
 - `apply-progress.jsonl`
 - `review-findings.jsonl`
+- `review-runs.jsonl`
 - `verify-report.json`
 - `final-verdict.json`
 
-A passing final verdict is blocked when required verification has not passed, when open blocking review findings remain, or when apply progress contains blocked tasks.
+A passing final verdict is blocked when the source has not reached its required status, when required skill selection has not been recorded, when required verification has not passed, when open blocking review findings remain, or when apply progress contains blocked tasks.
 
 ## Consequences
 
@@ -61,6 +65,7 @@ Positive:
 
 - Agent work can be audited as a process, not only as individual loop iterations.
 - Review findings and fix-review closure become durable artifacts instead of chat-only context.
+- The report surface computes `next_recommended` so a harness can decide whether to request source approval, select skills, apply, review, fix findings, verify, or record verdict.
 - Verification evidence and final verdict are mechanically linked.
 - The layer is harness-neutral and works from arbitrary consumer project roots.
 
@@ -83,7 +88,7 @@ The decision is verified by unit behavior, wrapper portability, syntax, and clos
 ```bash
 python3 -m py_compile scripts/cos_process_loop.py tests/unit/test_cos_process_loop.py tests/red_team/portability/test_cos_process_loop_primitives.py
 python3 -m pytest tests/unit/test_cos_process_loop.py tests/red_team/portability/test_cos_process_loop_primitives.py -q
-bash -n scripts/cos-process-loop scripts/cos-apply-progress scripts/cos-fresh-review scripts/cos-verify-report
+bash -n scripts/cos-process-loop scripts/cos-apply-progress scripts/cos-fresh-review scripts/cos-verify-report scripts/cos-skill-selection-report
 scripts/cos-primitive-closure-check --strict
 ```
 
@@ -93,8 +98,9 @@ Manual smoke proof for consumer-project portability:
 tmp=$(mktemp -d)
 cp templates/process-contract.example.yaml "$tmp/process-contract.yaml"
 scripts/cos-process-loop init --project-dir "$tmp" --contract "$tmp/process-contract.yaml" --json
+scripts/cos-skill-selection-report --project-dir "$tmp" --process-id example-process-loop --changed-file src/app.py --json
 scripts/cos-apply-progress --project-dir "$tmp" --process-id example-process-loop --task-id T1 --title implement --status done --json
-scripts/cos-fresh-review --project-dir "$tmp" --process-id example-process-loop --finding-id R1 --severity major --status resolved --summary reviewed --json
+scripts/cos-fresh-review --project-dir "$tmp" --process-id example-process-loop --severity major --command "python3 -c 'raise SystemExit(0)'" --json
 scripts/cos-verify-report --project-dir "$tmp" --process-id example-process-loop --command "python3 -c 'raise SystemExit(0)'" --json
 scripts/cos-process-loop verdict --project-dir "$tmp" --process-id example-process-loop --status passed --summary done --json
 scripts/cos-process-loop report --project-dir "$tmp" --process-id example-process-loop --json

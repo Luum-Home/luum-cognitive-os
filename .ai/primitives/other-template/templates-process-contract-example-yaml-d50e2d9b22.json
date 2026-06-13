@@ -14,7 +14,7 @@
   "evidence": {
     "behavior_evidence": "Agent Process Loop Contract example template; copied into temp consumer projects by red-team portability tests that run all process-loop wrappers.",
     "evidence_commands": [
-      "python3 -m pytest tests/unit/test_cos_process_loop.py tests/red_team/portability/test_cos_process_loop_primitives.py -q"
+      ".venv/bin/python -m pytest tests/unit/test_cos_process_loop.py tests/red_team/portability/test_cos_process_loop_primitives.py -q"
     ],
     "metrics_file": "none"
   },
@@ -44,7 +44,7 @@
     "evidence": {
       "behavior_evidence": "Agent Process Loop Contract example template; copied into temp consumer projects by red-team portability tests that run all process-loop wrappers.",
       "evidence_commands": [
-        "python3 -m pytest tests/unit/test_cos_process_loop.py tests/red_team/portability/test_cos_process_loop_primitives.py -q"
+        ".venv/bin/python -m pytest tests/unit/test_cos_process_loop.py tests/red_team/portability/test_cos_process_loop_primitives.py -q"
       ],
       "metrics": []
     },
