@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-06-13T21:02:38+00:00'
+generated_at: '2026-06-13T21:27:06+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
@@ -9679,6 +9679,19 @@ primitives:
   projection_targets:
   - skills/skill-creator/SKILL.md
   sha256: 71831f2228582145aed0e428e4bca6c5f242230cf3bd013c06d017a2a6becc9e
+- id: skills/so-impact-eval/SKILL.md
+  kind: skill
+  owner_adr: ADR-338
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - skills/so-impact-eval/SKILL.md
+  - .cognitive-os/skills/so-impact-eval/SKILL.md
+  - .cognitive-os/skills/cos/so-impact-eval/SKILL.md
+  - .claude/skills/so-impact-eval/SKILL.md
+  sha256: 28c50cf3c311d0b2149d42551ff084180b6def1f2b690a16e92908d82656bbec
 - id: skills/so-vs-vanilla/SKILL.md
   kind: skill
   owner_adr: ADR-314

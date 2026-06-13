@@ -1,0 +1,108 @@
+{
+  "canonical_source": "skills/so-impact-eval/SKILL.md",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "SO Impact Eval conversational skill routes /so-impact-eval, /so-impact-smoke, run SO-wide impact eval, and compar\u00e1 vanilla vs full SO to the cos-so-impact-eval primitive; unit tests prove SkillRouter matching, materialized projections, and Makefile smoke invocation.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "SO Impact Eval conversational skill routes /so-impact-eval, /so-impact-smoke, run SO-wide impact eval, and compar\u00e1 vanilla vs full SO to the cos-so-impact-eval primitive; unit tests prove SkillRouter matching, materialized projections, and Makefile smoke invocation.",
+    "evidence_commands": [
+      ".venv/bin/python -m pytest tests/unit/test_so_impact_eval_skill.py tests/unit/test_skill_router.py -q",
+      "make test-so-impact-smoke"
+    ],
+    "metrics_file": "docs/09-Quality/evals/so-impact/{task-id}/{run-id}/report.json"
+  },
+  "family": "skill",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "skill-procedure",
+    "governance_class": "os-skill",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-338",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "document",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "SO Impact Eval conversational skill routes /so-impact-eval, /so-impact-smoke, run SO-wide impact eval, and compar\u00e1 vanilla vs full SO to the cos-so-impact-eval primitive; unit tests prove SkillRouter matching, materialized projections, and Makefile smoke invocation.",
+      "evidence_commands": [
+        ".venv/bin/python -m pytest tests/unit/test_so_impact_eval_skill.py tests/unit/test_skill_router.py -q",
+        "make test-so-impact-smoke"
+      ],
+      "metrics": [
+        "docs/09-Quality/evals/so-impact/{task-id}/{run-id}/report.json"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "unsupported"
+    },
+    "intent": "SO Impact Eval conversational skill routes /so-impact-eval, /so-impact-smoke, run SO-wide impact eval, and compar\u00e1 vanilla vs full SO to the cos-so-impact-eval primitive; unit tests prove SkillRouter matching, materialized projections, and Makefile smoke invocation.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "shell": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "skills/so-impact-eval/SKILL.md",
+        ".cognitive-os/skills/so-impact-eval/SKILL.md",
+        ".cognitive-os/skills/cos/so-impact-eval/SKILL.md",
+        ".claude/skills/so-impact-eval/SKILL.md"
+      ],
+      "runtime_projection": false
+    }
+  },
+  "portable_id": "skills/so-impact-eval/SKILL.md",
+  "projection_targets": [
+    "skills/so-impact-eval/SKILL.md",
+    ".cognitive-os/skills/so-impact-eval/SKILL.md",
+    ".cognitive-os/skills/cos/so-impact-eval/SKILL.md",
+    ".claude/skills/so-impact-eval/SKILL.md"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "skills/so-impact-eval/SKILL.md",
+  "supported_harnesses": [
+    "claude",
+    "codex",
+    "shell"
+  ]
+}

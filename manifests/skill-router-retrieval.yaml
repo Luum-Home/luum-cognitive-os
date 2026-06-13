@@ -151,6 +151,18 @@ benchmark:
       required: true
       rationale: Code review wording should route to code-review.
 
+    - id: so-impact-eval-positive
+      prompt: "run SO-wide impact eval"
+      expected_command: /so-impact-eval
+      required: true
+      rationale: SO-wide impact evaluation requests should route to the dedicated impact eval skill.
+
+    - id: so-impact-eval-spanish-positive
+      prompt: "compará vanilla vs full SO"
+      expected_command: /so-impact-eval
+      required: true
+      rationale: Spanish vanilla-vs-full-SO requests should route to the dedicated impact eval skill.
+
     - id: add-skill-known-gap
       prompt: "I need to create a new audit skill"
       expected_command: /add-skill

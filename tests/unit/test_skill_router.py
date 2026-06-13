@@ -183,6 +183,39 @@ class TestSecurityDetection:
         assert match.invoke_command == "/red-team"
 
 
+
+
+# ---------------------------------------------------------------------------
+# SO-wide impact eval detection
+# ---------------------------------------------------------------------------
+
+
+class TestSoImpactEvalDetection:
+    """SO-wide impact eval requests should match /so-impact-eval."""
+
+    @pytest.mark.parametrize(
+        "message",
+        [
+            "/so-impact-eval",
+            "/so-impact-smoke",
+            "run SO-wide impact eval",
+            "compará vanilla vs full SO",
+            "compara vanilla vs full SO",
+            "compare vanilla vs full SO",
+        ],
+    )
+    def test_so_impact_eval_routes_from_conversation(self, router: SkillRouter, message: str):
+        match = router.best_match(message)
+        assert match is not None
+        assert match.invoke_command == "/so-impact-eval"
+        assert match.skill_name == "so-impact-eval"
+        assert match.confidence >= 0.90
+
+    def test_so_impact_eval_appears_in_match_list(self, router: SkillRouter):
+        matches = router.match("run SO-wide impact eval")
+        assert any(m.invoke_command == "/so-impact-eval" for m in matches)
+
+
 # ---------------------------------------------------------------------------
 # No match for greetings
 # ---------------------------------------------------------------------------

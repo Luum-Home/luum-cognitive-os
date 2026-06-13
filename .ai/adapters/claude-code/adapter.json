@@ -6,7 +6,7 @@
   "harness": "claude",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 801,
+  "projected_primitive_count": 802,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": true,
@@ -4073,6 +4073,13 @@
       "fidelity": "documented-only",
       "portable_id": "skills/skill-creator/SKILL.md",
       "primitive_file": "primitives/skills/skills-skill-creator-skill-md-be30425771.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/so-impact-eval/SKILL.md",
+      "primitive_file": "primitives/skills/skills-so-impact-eval-skill-md-f044c74489.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
