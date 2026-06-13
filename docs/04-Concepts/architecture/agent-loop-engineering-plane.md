@@ -67,22 +67,62 @@ This is not a universal harness-enforced interceptor yet. It is an evidence-prod
 
 ## Analysis of Gentleman-Programming/gentle-ai
 
-The repository `/tmp/gentle-ai-analysis` was cloned from `https://github.com/Gentleman-Programming/gentle-ai` for analysis.
+The repository was inspected from both a fresh temporary clone and the local vendor clone at `external/gentle-ai`. The first pass looked at the public Go tests, CLI, CI, README, and high-level orchestration. A later pass inspected the SDD assets and dispatcher files that carry the strongest TDD and loop-engineering behavior.
+
+Important source files in Gentle-AI:
+
+- `internal/assets/skills/sdd-init/SKILL.md`
+- `internal/assets/skills/sdd-apply/SKILL.md`
+- `internal/assets/skills/sdd-apply/strict-tdd.md`
+- `internal/assets/skills/sdd-verify/SKILL.md`
+- `internal/assets/skills/sdd-verify/strict-tdd-verify.md`
+- `internal/components/sdd/inject.go`
+- `internal/assets/claude/sdd-orchestrator.md`
+- `internal/sddstatus/status.go`
+- `internal/cli/sync.go`
+- `internal/tui/model.go`
+- `internal/model/selection.go`
 
 ### How TDD is done there
 
-Gentle AI is a Go project with `go test ./...` as the local unit gate. Its CI adds Docker-backed end-to-end coverage across Linux distributions. Pull requests run a lighter Tier 1 E2E lane; `main` and nightly runs expand into broader Tier 1, Tier 2, and Tier 3 lanes controlled by environment flags such as `RUN_FULL_E2E` and `RUN_BACKUP_TESTS`.
+Gentle-AI has two TDD layers.
 
-The tests are mostly behavior/contract oriented. The inspected pipeline orchestrator tests validate prepare/apply/rollback/progress behavior and failure semantics. The agent builder tests use mocks to validate the generated ecosystem behavior and unknown-agent handling. The TDD posture is therefore practical: define behavior around public orchestration contracts, run fast Go unit tests locally, and rely on CI for heavier environment matrices.
+The first layer is conventional project testing. It is a Go project with `go test ./...` as the local unit gate. CI adds Docker-backed end-to-end coverage across Linux distributions. Pull requests run a lighter Tier 1 E2E lane; `main` and nightly runs expand into broader Tier 1, Tier 2, and Tier 3 lanes controlled by environment flags such as `RUN_FULL_E2E` and `RUN_BACKUP_TESTS`. The inspected Go tests are behavior/contract oriented around orchestration, pipeline rollback/progress behavior, and agent builder output.
 
-### How agent loop engineering appears there
+The second layer is agent-enforced Strict TDD inside SDD:
 
-Gentle AI does not expose a generic `loop-contract.yaml` runtime like this ADR adds. Instead, loop engineering appears through its SDD workflow and delegation rules:
+1. `sdd-init` detects real testing capability instead of assuming it. It inspects stack files, test runners, layers, coverage, linters, typecheckers, and formatters. If a test runner exists and no override is present, it defaults `strict_tdd: true`; if no runner exists, it records `strict_tdd: false` and explains why.
+2. `sdd-apply` resolves Strict TDD from cached testing capabilities, OpenSpec config, or fallback project inspection. When Strict TDD is active, it explicitly loads `sdd-apply/strict-tdd.md`; when it is inactive, that module is not loaded and does not consume context.
+3. The required cycle is stronger than “write tests”: baseline safety net, RED, GREEN, TRIANGULATE, REFACTOR, and task-level evidence. The apply phase must produce a TDD evidence table.
+4. `sdd-verify` audits the TDD process, not only the final build. Its Strict TDD verifier checks for RED evidence, a real test file, current GREEN evidence, triangulation, baseline/safety-net evidence, assertion quality, coverage when available, and whether tests are tautological or smoke-only.
 
-- `/sdd-init` detects stack and test capabilities, then activates strict TDD mode when the target project supports it.
-- SDD phases are handled as an agent loop: explore, propose, spec, design, implement, verify.
-- For harnesses with subagents, it delegates phases to fresh-context agents. For solo-agent harnesses, it keeps phase continuity with Engram memory.
-- Its README includes operational loop guards: delegate when reading four or more files, touching multiple non-trivial files, preparing commit/push/PR, recovering from cwd/worktree/git accidents, or after a long monolithic session.
-- Fresh review before commit/push/PR acts as an anti-false-completion guard.
+### How Gentle-AI involves the agent runtime
 
-The useful lesson for Cognitive OS is to keep the orchestrator thin, make stop/delegation conditions explicit, preserve memory between phases, and promote loop traces into tests. The gap this implementation closes is a reusable, project-local, cross-CLI/IDE loop trace contract.
+Gentle-AI wires TDD into the agent environment at four levels:
+
+1. **Installation/configuration**: CLI/TUI paths include Strict TDD selection, such as `gentle-ai sync --strict-tdd`, TUI strict-TDD screen state, and model selection flags.
+2. **Prompt/system injection**: `internal/components/sdd/inject.go` injects a `gentle-ai:strict-tdd-mode` section when Strict TDD is enabled, so the agent receives the TDD policy as runtime context.
+3. **SDD skills**: phases such as `sdd-init`, `sdd-explore`, `sdd-propose`, `sdd-spec`, `sdd-design`, `sdd-tasks`, `sdd-apply`, `sdd-verify`, `sdd-archive`, and `sdd-onboard` make TDD part of a formal workflow rather than a loose prompt instruction.
+4. **Native dispatcher**: `gentle-ai sdd-status` and `gentle-ai sdd-continue` compute artifact presence, dependency state, task progress, blockers, `nextRecommended`, and phase instructions. `internal/sddstatus/status.go` explicitly states that native status is authoritative over prompt inference.
+
+### Agent Loop Engineering mapping
+
+Gentle-AI is a strong example of Agent Loop Engineering, although it does not use that label as its main vocabulary.
+
+| Loop concept | Gentle-AI mechanism |
+| --- | --- |
+| Trigger | `/sdd-*` skills, `gentle-ai sdd-continue`, sync/TUI configuration |
+| Goal | SDD change proposal/spec/design/tasks and phase-specific acceptance |
+| State | Engram topics, OpenSpec artifacts, `state.yaml`, `apply-progress`, `verify-report` |
+| Action policy | SDD orchestrator, delegation rules, workload/review guard, Strict TDD rules |
+| Observation parser | `sddstatus.Status`, dependency states, blockers, `nextRecommended` |
+| Termination | `all_done`, blockers, verify pass/fail, archive readiness |
+| Memory update | Engram topic keys, OpenSpec files, apply-progress, verify-report |
+| Failure handling | blockers, verification severity, pipeline rollback, dispatcher recovery |
+| Anti-loop controls | sub-agent launch deduplication, fresh-context delegation, native dispatcher authority, long-session rule |
+
+The representative file is `internal/assets/claude/sdd-orchestrator.md`: it describes an orchestrator that coordinates rather than executes, delegates mandatory work to fresh-context sub-agents, uses artifact stores and dependency graphs, forwards Strict TDD state, preserves apply-progress continuity, deduplicates sub-agent launches, and recovers through Engram/OpenSpec.
+
+### Lesson for Cognitive OS
+
+Gentle-AI already demonstrates a mature, workflow-specific loop system. Cognitive OS still benefits from ADR-336 because `loop-contract.yaml` and `cos-loop-*` provide a reusable, project-local loop trace/runtime contract that is not tied to SDD or to a single agent ecosystem. The right integration path is to treat Gentle-AI as a specialized SDD loop implementation and Cognitive OS `cos-loop-*` as the generic loop evidence substrate.
