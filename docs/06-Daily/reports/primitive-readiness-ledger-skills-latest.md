@@ -7,7 +7,7 @@ Consumer accessibility: lifecycle-declared-maintainer:99, projected-consumer-sur
 | Path | Role | Source | Confidence | Consumer Access | Lifecycle | Consumers | Next action |
 |---|---|---|---|---|---|---:|---|
 | `.codex/skills/docs-to-artifact/SKILL.md` | so-maintainer | heuristic:text | medium | so-local-only |  | 7 | add lifecycle/package/projection metadata or keep SO-local |
-| `.codex/skills/dod-check/SKILL.md` | compatibility-wrapper | usage:script-hook | high | so-local-only |  | 27 | add lifecycle/package/projection metadata or keep SO-local |
+| `.codex/skills/dod-check/SKILL.md` | compatibility-wrapper | usage:script-hook | high | so-local-only |  | 28 | add lifecycle/package/projection metadata or keep SO-local |
 | `.codex/skills/portability-work/SKILL.md` | compatibility-wrapper | usage:script-hook | high | so-local-only |  | 0 | add lifecycle/package/projection metadata or keep SO-local |
 | `.codex/skills/repo-map/SKILL.md` | compatibility-wrapper | usage:script-hook | high | so-local-only |  | 19 | add lifecycle/package/projection metadata or keep SO-local |
 | `.codex/skills/test-efficiency/SKILL.md` | compatibility-wrapper | usage:script-hook | high | so-local-only |  | 9 | add lifecycle/package/projection metadata or keep SO-local |

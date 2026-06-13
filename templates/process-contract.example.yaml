@@ -1,0 +1,30 @@
+# SCOPE: both
+schemaVersion: cos.process-contract.v1
+id: example-process-loop
+source:
+  type: issue
+  ref: ISSUE-123
+goal:
+  statement: Complete the requested implementation with review and verification evidence.
+selectedSkills:
+  - plan-feature
+  - dod-check
+applyProgress:
+  required: true
+freshReview:
+  required: true
+  blockOnSeverities:
+    - blocker
+    - critical
+verifyReport:
+  required: true
+  timeoutSeconds: 120
+  commands:
+    - id: unit
+      command: python3 -m pytest tests/unit -q
+      required: true
+fixReviewLoop:
+  requiredForBlockingFindings: true
+finalVerdict:
+  requireVerificationPass: true
+  requireNoOpenBlockingFindings: true

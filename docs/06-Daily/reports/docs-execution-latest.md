@@ -2,12 +2,12 @@
 
 ## Summary
 
-Total items: 5796
+Total items: 5800
 - claimed_done_no_proof: 1
-- done_weak_proof: 2732
+- done_weak_proof: 2735
 - done_with_proof: 295
 - planned: 2027
-- proposed: 634
+- proposed: 635
 - stale: 107
 
 ## Items Needing Attention
@@ -1834,6 +1834,9 @@ Total items: 5796
 | docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-runtime.md | 4 | done | done_weak_proof | 0.62 | status: accepted | weak_terms:accepted | add explicit test/workflow/proof link |
 | docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-runtime.md | 5 | done | done_weak_proof | 0.62 | implementation_status: implemented | weak_terms:implementation_status,implemented | add explicit test/workflow/proof link |
 | docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-runtime.md | 28 | done | done_weak_proof | 0.62 | Accepted | weak_terms:accepted | add explicit test/workflow/proof link |
+| docs/02-Decisions/adrs/ADR-337-agent-process-loop-contract-layer.md | 4 | done | done_weak_proof | 0.62 | status: accepted | weak_terms:accepted | add explicit test/workflow/proof link |
+| docs/02-Decisions/adrs/ADR-337-agent-process-loop-contract-layer.md | 5 | done | done_weak_proof | 0.62 | implementation_status: implemented | weak_terms:implementation_status,implemented | add explicit test/workflow/proof link |
+| docs/02-Decisions/adrs/ADR-337-agent-process-loop-contract-layer.md | 27 | done | done_weak_proof | 0.62 | Accepted — implemented on 2026-06-13. | weak_terms:accepted,implemented | add explicit test/workflow/proof link |
 | docs/02-Decisions/adrs/STATUS-TAXONOMY.md | 13 | done | done_weak_proof | 0.62 | accepted, exploratory, closed, replaced, deprecated, or a reserved tombstone. | terms:accepted,closed,deprecated,exploratory,replaced,reserved,tombstone | add explicit test/workflow/proof link |
 | docs/02-Decisions/adrs/STATUS-TAXONOMY.md | 14 | done | done_weak_proof | 0.62 | 2. **Implementation status** — whether the accepted work is implemented, | terms:accepted,implementation,implemented,whether,work | add explicit test/workflow/proof link |
 | docs/02-Decisions/adrs/STATUS-TAXONOMY.md | 19 | done | done_weak_proof | 0.62 | When these concepts are mixed, ADRs acquire labels such as `Phase`, `Resolved`, | terms:acquire,adrs,concepts,labels,mixed,phase,resolved,such | add explicit test/workflow/proof link |

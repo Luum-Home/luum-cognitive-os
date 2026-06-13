@@ -8,7 +8,7 @@
     },
     {
       "changed_paths": [
-        ".cognitive-os/improvements/proposals/consumer-improvement-proposals-demo-20260613T052630Z.json"
+        ".cognitive-os/improvements/proposals/consumer-improvement-proposals-demo-20260613T055010Z.json"
       ],
       "id": "consumer-improvement-import",
       "returncode": 0,
@@ -149,7 +149,7 @@
       "unexpected_paths": []
     }
   ],
-  "generated_at": "2026-06-13T05:26:30+00:00",
+  "generated_at": "2026-06-13T05:50:10+00:00",
   "items": [
     {
       "authority_mode": "os-maintainer-write",
@@ -1296,6 +1296,18 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "detected_write_surfaces": [],
       "findings": [],
+      "path": "scripts/cos-apply-progress",
+      "role": "agentic-primitive",
+      "scope": "os-only",
+      "status": "pass",
+      "writes": []
+    },
+    {
+      "authority_mode": "os-maintainer-write",
+      "authority_source": "derived:os-only-default",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "detected_write_surfaces": [],
+      "findings": [],
       "path": "scripts/cos-architecture-readiness",
       "role": "agentic-primitive",
       "scope": "os-only",
@@ -2233,6 +2245,18 @@
       "detected_write_surfaces": [],
       "findings": [],
       "path": "scripts/cos-flow-register.sh",
+      "role": "agentic-primitive",
+      "scope": "os-only",
+      "status": "pass",
+      "writes": []
+    },
+    {
+      "authority_mode": "os-maintainer-write",
+      "authority_source": "derived:os-only-default",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "detected_write_surfaces": [],
+      "findings": [],
+      "path": "scripts/cos-fresh-review",
       "role": "agentic-primitive",
       "scope": "os-only",
       "status": "pass",
@@ -3391,6 +3415,18 @@
     {
       "authority_mode": "os-maintainer-write",
       "authority_source": "derived:os-only-default",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "detected_write_surfaces": [],
+      "findings": [],
+      "path": "scripts/cos-process-loop",
+      "role": "agentic-primitive",
+      "scope": "os-only",
+      "status": "pass",
+      "writes": []
+    },
+    {
+      "authority_mode": "os-maintainer-write",
+      "authority_source": "derived:os-only-default",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "detected_write_surfaces": [],
       "findings": [],
@@ -4476,6 +4512,18 @@
     {
       "authority_mode": "os-maintainer-write",
       "authority_source": "derived:os-only-default",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "detected_write_surfaces": [],
+      "findings": [],
+      "path": "scripts/cos-verify-report",
+      "role": "agentic-primitive",
+      "scope": "os-only",
+      "status": "pass",
+      "writes": []
+    },
+    {
+      "authority_mode": "os-maintainer-write",
+      "authority_source": "derived:os-only-default",
       "consumer_accessibility": "so-local-only",
       "detected_write_surfaces": [],
       "findings": [],
@@ -5360,6 +5408,18 @@
       "path": "scripts/cos_primitive_harvester.py",
       "role": "agentic-primitive",
       "scope": "os-only",
+      "status": "pass",
+      "writes": []
+    },
+    {
+      "authority_mode": "observe-only",
+      "authority_source": "derived:shared-default",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "detected_write_surfaces": [],
+      "findings": [],
+      "path": "scripts/cos_process_loop.py",
+      "role": "agentic-primitive",
+      "scope": "both",
       "status": "pass",
       "writes": []
     },
@@ -8626,17 +8686,17 @@
   "summary": {
     "block_count": 0,
     "by_mode": {
-      "observe-only": 133,
-      "os-maintainer-write": 509,
+      "observe-only": 134,
+      "os-maintainer-write": 513,
       "profile-projection-write": 37,
       "propose-only": 3
     },
     "by_status": {
-      "pass": 672,
+      "pass": 677,
       "warn": 10
     },
     "dynamic_blocks": 0,
     "dynamic_smokes": 4,
-    "total_scripts": 682
+    "total_scripts": 687
   }
 }

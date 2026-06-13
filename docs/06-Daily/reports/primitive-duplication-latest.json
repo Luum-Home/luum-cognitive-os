@@ -14,6 +14,66 @@
       "right": "scripts/cos_instance_init.py::utc_now",
       "severity": "medium",
       "similarity": 1.0
+    },
+    {
+      "classification": "candidate",
+      "common_home": "lib/",
+      "confidence": 0.86,
+      "consumer_relevance": "so-local-first",
+      "finding_id": "python-function-repeat:9b3d37d2e6b1",
+      "kind": "python-function-repeat",
+      "left": "scripts/cos_loop.py::load_json",
+      "pair_key": "scripts/cos_loop.py::load_json :: scripts/cos_process_loop.py::load_json",
+      "rationale": "Python functions have identical normalized AST bodies",
+      "recommendation": "extract-common-python-helper",
+      "right": "scripts/cos_process_loop.py::load_json",
+      "severity": "medium",
+      "similarity": 1.0
+    },
+    {
+      "classification": "candidate",
+      "common_home": "lib/",
+      "confidence": 0.86,
+      "consumer_relevance": "so-local-first",
+      "finding_id": "python-function-repeat:4c2d62980299",
+      "kind": "python-function-repeat",
+      "left": "scripts/cos_loop.py::load_jsonl",
+      "pair_key": "scripts/cos_loop.py::load_jsonl :: scripts/cos_process_loop.py::load_jsonl",
+      "rationale": "Python functions have identical normalized AST bodies",
+      "recommendation": "extract-common-python-helper",
+      "right": "scripts/cos_process_loop.py::load_jsonl",
+      "severity": "medium",
+      "similarity": 1.0
+    },
+    {
+      "classification": "candidate",
+      "common_home": "lib/",
+      "confidence": 0.86,
+      "consumer_relevance": "so-local-first",
+      "finding_id": "python-function-repeat:bd9c1d200afb",
+      "kind": "python-function-repeat",
+      "left": "scripts/cos_loop.py::main",
+      "pair_key": "scripts/cos_loop.py::main :: scripts/cos_process_loop.py::main",
+      "rationale": "Python functions have identical normalized AST bodies",
+      "recommendation": "extract-common-python-helper",
+      "right": "scripts/cos_process_loop.py::main",
+      "severity": "medium",
+      "similarity": 1.0
+    },
+    {
+      "classification": "candidate",
+      "common_home": "lib/",
+      "confidence": 0.86,
+      "consumer_relevance": "so-local-first",
+      "finding_id": "python-function-repeat:3cd8a92e8357",
+      "kind": "python-function-repeat",
+      "left": "scripts/cos_loop.py::utc_now",
+      "pair_key": "scripts/cos_loop.py::utc_now :: scripts/cos_process_loop.py::utc_now",
+      "rationale": "Python functions have identical normalized AST bodies",
+      "recommendation": "extract-common-python-helper",
+      "right": "scripts/cos_process_loop.py::utc_now",
+      "severity": "medium",
+      "similarity": 1.0
     }
   ],
   "parameters": {
@@ -37,16 +97,16 @@
   "schema_version": "primitive-duplication-audit.v1",
   "summary": {
     "by_common_home": {
-      "lib/": 1
+      "lib/": 5
     },
     "by_consumer_relevance": {
-      "so-local-first": 1
+      "so-local-first": 5
     },
     "by_kind": {
-      "python-function-repeat": 1
+      "python-function-repeat": 5
     },
-    "files_scanned": 1031,
-    "findings": 1
+    "files_scanned": 1032,
+    "findings": 5
   },
-  "timestamp": "2026-06-13T05:25:51.047043+00:00"
+  "timestamp": "2026-06-13T05:49:31.411856+00:00"
 }
