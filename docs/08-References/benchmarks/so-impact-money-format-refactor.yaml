@@ -1,0 +1,35 @@
+schema: cos.so-impact-eval.v1
+task:
+  id: money-format-refactor
+  repo_fixture: ../../../fixtures/so-impact/money-format-refactor
+  goal: Consolidate duplicated money formatting into one shared module while preserving tests.
+  verification:
+    - >-
+      python3 -c 'from src.catalog import format_catalog_price; from src.checkout import format_checkout_price; assert format_catalog_price(1234) == "$12.34"; assert format_checkout_price(500) == "$5.00"'
+workflow:
+  commands:
+    - python3 tools/simulated_agent_workflow.py
+modes:
+  - vanilla
+  - full-so
+  - graphify-only
+  - process-loop-only
+  - skill-selection-only
+  - context-token-optimization-only
+  - governance-hooks-only
+  - full-so-minus-graphify
+  - full-so-minus-process-loop
+metrics:
+  - total_tokens
+  - input_tokens
+  - output_tokens
+  - context_lines_read
+  - tool_calls
+  - discovery_calls
+  - files_touched
+  - relevant_files_found
+  - tests_passed
+  - wall_clock
+  - retries
+  - false_claims
+  - final_diff_quality
