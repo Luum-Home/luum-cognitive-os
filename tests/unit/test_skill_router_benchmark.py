@@ -24,3 +24,14 @@ def test_benchmark_exposes_known_add_skill_gap_without_blocking() -> None:
     assert gap["known_gap"] is True
     assert gap["expected"] == "/add-skill"
     assert payload["summary"]["required_failures"] == 0
+
+
+def test_benchmark_covers_so_impact_eval_route() -> None:
+    proc = subprocess.run(["python3", str(SCRIPT), "--json"], text=True, capture_output=True, check=False)
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    payload = json.loads(proc.stdout)
+    fixtures = {item["id"]: item for item in payload["results"]}
+    assert fixtures["so-impact-eval-positive"]["actual"] == "/so-impact-eval"
+    assert fixtures["so-impact-eval-positive"]["passed"] is True
+    assert fixtures["so-impact-eval-spanish-positive"]["actual"] == "/so-impact-eval"
+    assert fixtures["so-impact-eval-spanish-positive"]["passed"] is True

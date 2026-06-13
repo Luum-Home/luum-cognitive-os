@@ -22416,6 +22416,36 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: skill-procedure
   metrics_file: "none"
+
+- id: skills/so-impact-eval/SKILL.md
+  kind: skill
+  owner_adr: ADR-338
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/so-impact-eval/SKILL.md
+  - .cognitive-os/skills/so-impact-eval/SKILL.md
+  - .cognitive-os/skills/cos/so-impact-eval/SKILL.md
+  - .claude/skills/so-impact-eval/SKILL.md
+  runtime_projection: false
+  behavior_evidence: SO Impact Eval conversational skill routes /so-impact-eval, /so-impact-smoke, run SO-wide impact eval, and compará vanilla vs full SO to the cos-so-impact-eval primitive; unit tests prove SkillRouter matching, materialized projections, and Makefile smoke invocation.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_so_impact_eval_skill.py tests/unit/test_skill_router.py -q
+  - make test-so-impact-smoke
+  rollback_or_repair_command: Remove the skill lifecycle row, generated portable overlay entry, projected skill copies, and tests; keep scripts/cos-so-impact-eval directly invocable.
+  sunset_criteria: Replace when SO-wide impact eval is promoted into a first-class runtime dispatcher command with equivalent conversational routing coverage.
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: docs/09-Quality/evals/so-impact/{task-id}/{run-id}/report.json
+
 - id: skills/so-vs-vanilla/SKILL.md
   kind: skill
   owner_adr: ADR-314
