@@ -8,7 +8,7 @@
     },
     {
       "changed_paths": [
-        ".cognitive-os/improvements/proposals/consumer-improvement-proposals-demo-20260613T031118Z.json"
+        ".cognitive-os/improvements/proposals/consumer-improvement-proposals-demo-20260613T043436Z.json"
       ],
       "id": "consumer-improvement-import",
       "returncode": 0,
@@ -149,7 +149,7 @@
       "unexpected_paths": []
     }
   ],
-  "generated_at": "2026-06-13T03:11:19+00:00",
+  "generated_at": "2026-06-13T04:34:36+00:00",
   "items": [
     {
       "authority_mode": "os-maintainer-write",

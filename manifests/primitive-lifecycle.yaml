@@ -23672,7 +23672,7 @@ primitives:
   - scripts/cos-loop-run
   - scripts/cos_loop.py
   runtime_projection: false
-  behavior_evidence: Agent Loop Engineering Plane advisory wrapper with project-local state/traces/evals; portable invocation covered by unit and red-team portability tests. This primitive executes a loop iteration with persistent state, observations, verification, and stop conditions.
+  behavior_evidence: Agent Loop Engineering Runtime advisory wrapper with project-local state/traces/evals; portable invocation covered by unit and red-team portability tests. This primitive executes a loop iteration with persistent state, observations, verification, and stop conditions.
   evidence_commands:
   - python3 -m pytest tests/unit/test_cos_loop.py tests/red_team/portability/test_cos_loop_primitives.py -q
   rollback_or_repair_command: Remove the wrapper lifecycle row, regenerate portable overlays/registry locks, and keep ADR-336 as historical design context.
@@ -23697,7 +23697,7 @@ primitives:
   - scripts/cos-loop-report
   - scripts/cos_loop.py
   runtime_projection: false
-  behavior_evidence: Agent Loop Engineering Plane advisory wrapper with project-local state/traces/evals; portable invocation covered by unit and red-team portability tests. This primitive reports loop progress, retries, tool repetition, budget, and verification state.
+  behavior_evidence: Agent Loop Engineering Runtime advisory wrapper with project-local state/traces/evals; portable invocation covered by unit and red-team portability tests. This primitive reports loop progress, retries, tool repetition, budget, and verification state.
   evidence_commands:
   - python3 -m pytest tests/unit/test_cos_loop.py tests/red_team/portability/test_cos_loop_primitives.py -q
   rollback_or_repair_command: Remove the wrapper lifecycle row, regenerate portable overlays/registry locks, and keep ADR-336 as historical design context.
@@ -23722,7 +23722,7 @@ primitives:
   - scripts/cos-loop-replay
   - scripts/cos_loop.py
   runtime_projection: false
-  behavior_evidence: Agent Loop Engineering Plane advisory wrapper with project-local state/traces/evals; portable invocation covered by unit and red-team portability tests. This primitive replays decisions from loop traces.
+  behavior_evidence: Agent Loop Engineering Runtime advisory wrapper with project-local state/traces/evals; portable invocation covered by unit and red-team portability tests. This primitive replays decisions from loop traces.
   evidence_commands:
   - python3 -m pytest tests/unit/test_cos_loop.py tests/red_team/portability/test_cos_loop_primitives.py -q
   rollback_or_repair_command: Remove the wrapper lifecycle row, regenerate portable overlays/registry locks, and keep ADR-336 as historical design context.
@@ -23747,7 +23747,7 @@ primitives:
   - scripts/cos-loop-guard
   - scripts/cos_loop.py
   runtime_projection: false
-  behavior_evidence: Agent Loop Engineering Plane advisory wrapper with project-local state/traces/evals; portable invocation covered by unit and red-team portability tests. This primitive detects ping-pong, no-progress, and false completion from loop traces.
+  behavior_evidence: Agent Loop Engineering Runtime advisory wrapper with project-local state/traces/evals; portable invocation covered by unit and red-team portability tests. This primitive detects ping-pong, no-progress, and false completion from loop traces.
   evidence_commands:
   - python3 -m pytest tests/unit/test_cos_loop.py tests/red_team/portability/test_cos_loop_primitives.py -q
   rollback_or_repair_command: Remove the wrapper lifecycle row, regenerate portable overlays/registry locks, and keep ADR-336 as historical design context.
@@ -23772,7 +23772,7 @@ primitives:
   - scripts/cos-loop-eval
   - scripts/cos_loop.py
   runtime_projection: false
-  behavior_evidence: Agent Loop Engineering Plane advisory wrapper with project-local state/traces/evals; portable invocation covered by unit and red-team portability tests. This primitive converts loop traces into regression eval fixtures.
+  behavior_evidence: Agent Loop Engineering Runtime advisory wrapper with project-local state/traces/evals; portable invocation covered by unit and red-team portability tests. This primitive converts loop traces into regression eval fixtures.
   evidence_commands:
   - python3 -m pytest tests/unit/test_cos_loop.py tests/red_team/portability/test_cos_loop_primitives.py -q
   rollback_or_repair_command: Remove the wrapper lifecycle row, regenerate portable overlays/registry locks, and keep ADR-336 as historical design context.
@@ -23796,7 +23796,7 @@ primitives:
   projection_targets:
   - scripts/cos_loop.py
   runtime_projection: false
-  behavior_evidence: Agent Loop Engineering Plane shared Python implementation for the cos-loop-* wrapper family; portable invocation covered by unit and red-team portability tests.
+  behavior_evidence: Agent Loop Engineering Runtime shared Python implementation for the cos-loop-* wrapper family; portable invocation covered by unit and red-team portability tests.
   evidence_commands:
   - python3 -m pytest tests/unit/test_cos_loop.py tests/red_team/portability/test_cos_loop_primitives.py -q
   rollback_or_repair_command: Remove the implementation lifecycle row, regenerate portable overlays/registry locks, and keep ADR-336 as historical design context.

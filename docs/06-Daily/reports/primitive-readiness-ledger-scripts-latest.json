@@ -5759,7 +5759,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 86,
-        "doc": 769,
+        "doc": 770,
         "hook": 123,
         "rule": 51,
         "script": 413,
@@ -7410,7 +7410,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-plane.md"
+          "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-runtime.md"
         },
         {
           "family": "doc",
@@ -7770,7 +7770,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/04-Concepts/architecture/agent-loop-engineering-plane.md"
+          "path": "docs/04-Concepts/architecture/agent-loop-engineering-runtime.md"
         },
         {
           "family": "doc",
@@ -8947,6 +8947,10 @@
         {
           "family": "doc",
           "path": "docs/09-Quality/manual-tests/acc-fail-new-gate.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/agent-loop-engineering-validation-2026-06-13.md"
         },
         {
           "family": "doc",
@@ -14873,7 +14877,7 @@
         "test_consumers:744",
         "hook_consumers:123",
         "workflow_consumers:2",
-        "doc_consumers:769",
+        "doc_consumers:770",
         "rule_consumers:51",
         "config_consumers:86",
         "script_consumers:413"
@@ -14892,7 +14896,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 2274,
+      "total_consumers": 2275,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -26501,8 +26505,8 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 2,
-        "doc": 2,
+        "config": 3,
+        "doc": 3,
         "test": 1
       },
       "consumers": [
@@ -26512,15 +26516,23 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
           "family": "doc",
-          "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-plane.md"
+          "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-runtime.md"
         },
         {
           "family": "doc",
-          "path": "docs/04-Concepts/architecture/agent-loop-engineering-plane.md"
+          "path": "docs/04-Concepts/architecture/agent-loop-engineering-runtime.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/agent-loop-engineering-validation-2026-06-13.md"
         },
         {
           "family": "test",
@@ -26532,8 +26544,8 @@
         "lifecycle",
         "wrapper_for:scripts/cos_loop.py",
         "test_consumers:1",
-        "doc_consumers:2",
-        "config_consumers:2"
+        "doc_consumers:3",
+        "config_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -26551,7 +26563,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 7,
       "wrapper_for": "scripts/cos_loop.py"
     },
     {
@@ -26559,8 +26571,8 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 2,
-        "doc": 2,
+        "config": 3,
+        "doc": 3,
         "test": 1
       },
       "consumers": [
@@ -26570,15 +26582,23 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
           "family": "doc",
-          "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-plane.md"
+          "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-runtime.md"
         },
         {
           "family": "doc",
-          "path": "docs/04-Concepts/architecture/agent-loop-engineering-plane.md"
+          "path": "docs/04-Concepts/architecture/agent-loop-engineering-runtime.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/agent-loop-engineering-validation-2026-06-13.md"
         },
         {
           "family": "test",
@@ -26590,8 +26610,8 @@
         "lifecycle",
         "wrapper_for:scripts/cos_loop.py",
         "test_consumers:1",
-        "doc_consumers:2",
-        "config_consumers:2"
+        "doc_consumers:3",
+        "config_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -26609,7 +26629,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 7,
       "wrapper_for": "scripts/cos_loop.py"
     },
     {
@@ -26617,8 +26637,8 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 2,
-        "doc": 2,
+        "config": 3,
+        "doc": 3,
         "test": 1
       },
       "consumers": [
@@ -26628,15 +26648,23 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
           "family": "doc",
-          "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-plane.md"
+          "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-runtime.md"
         },
         {
           "family": "doc",
-          "path": "docs/04-Concepts/architecture/agent-loop-engineering-plane.md"
+          "path": "docs/04-Concepts/architecture/agent-loop-engineering-runtime.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/agent-loop-engineering-validation-2026-06-13.md"
         },
         {
           "family": "test",
@@ -26648,8 +26676,8 @@
         "lifecycle",
         "wrapper_for:scripts/cos_loop.py",
         "test_consumers:1",
-        "doc_consumers:2",
-        "config_consumers:2"
+        "doc_consumers:3",
+        "config_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -26667,7 +26695,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 7,
       "wrapper_for": "scripts/cos_loop.py"
     },
     {
@@ -26675,8 +26703,8 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 2,
-        "doc": 2,
+        "config": 3,
+        "doc": 3,
         "test": 1
       },
       "consumers": [
@@ -26686,15 +26714,23 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
           "family": "doc",
-          "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-plane.md"
+          "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-runtime.md"
         },
         {
           "family": "doc",
-          "path": "docs/04-Concepts/architecture/agent-loop-engineering-plane.md"
+          "path": "docs/04-Concepts/architecture/agent-loop-engineering-runtime.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/agent-loop-engineering-validation-2026-06-13.md"
         },
         {
           "family": "test",
@@ -26706,8 +26742,8 @@
         "lifecycle",
         "wrapper_for:scripts/cos_loop.py",
         "test_consumers:1",
-        "doc_consumers:2",
-        "config_consumers:2"
+        "doc_consumers:3",
+        "config_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -26725,7 +26761,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 7,
       "wrapper_for": "scripts/cos_loop.py"
     },
     {
@@ -26733,8 +26769,8 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 2,
-        "doc": 2,
+        "config": 3,
+        "doc": 3,
         "test": 1
       },
       "consumers": [
@@ -26744,15 +26780,23 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
           "family": "doc",
-          "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-plane.md"
+          "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-runtime.md"
         },
         {
           "family": "doc",
-          "path": "docs/04-Concepts/architecture/agent-loop-engineering-plane.md"
+          "path": "docs/04-Concepts/architecture/agent-loop-engineering-runtime.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/agent-loop-engineering-validation-2026-06-13.md"
         },
         {
           "family": "test",
@@ -26764,8 +26808,8 @@
         "lifecycle",
         "wrapper_for:scripts/cos_loop.py",
         "test_consumers:1",
-        "doc_consumers:2",
-        "config_consumers:2"
+        "doc_consumers:3",
+        "config_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -26783,7 +26827,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 7,
       "wrapper_for": "scripts/cos_loop.py"
     },
     {
@@ -29344,7 +29388,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 2,
-        "doc": 1,
+        "doc": 2,
         "test": 1
       },
       "consumers": [
@@ -29355,6 +29399,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-runtime.md"
         },
         {
           "family": "doc",
@@ -29370,7 +29418,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos_primitive_closure_check.py",
         "test_consumers:1",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:2"
       ],
       "install_surface": null,
@@ -29387,7 +29435,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 4,
+      "total_consumers": 5,
       "wrapper_for": "scripts/cos_primitive_closure_check.py"
     },
     {
@@ -41518,7 +41566,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 1,
         "script": 5,
         "test": 1
@@ -41530,11 +41578,15 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
           "family": "doc",
-          "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-plane.md"
+          "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-runtime.md"
         },
         {
           "family": "script",
@@ -41566,7 +41618,7 @@
         "lifecycle",
         "test_consumers:1",
         "doc_consumers:1",
-        "config_consumers:2",
+        "config_consumers:3",
         "script_consumers:5"
       ],
       "install_surface": null,
@@ -41585,7 +41637,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 9,
+      "total_consumers": 10,
       "wrapper_for": null
     },
     {
@@ -46637,6 +46689,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 2,
+        "doc": 1,
         "skill": 2,
         "test": 2
       },
@@ -46648,6 +46701,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-runtime.md"
         },
         {
           "family": "skill",
@@ -46671,6 +46728,7 @@
         "lifecycle",
         "skill_consumers:2",
         "test_consumers:2",
+        "doc_consumers:1",
         "config_consumers:2"
       ],
       "install_surface": null,
@@ -46689,7 +46747,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {

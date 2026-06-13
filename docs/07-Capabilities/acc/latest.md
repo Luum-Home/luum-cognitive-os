@@ -1,6 +1,6 @@
 # Agent Capability Coverage — Latest
 
-Generated: 2026-06-13T03:11:34Z
+Generated: 2026-06-13T04:34:49Z
 Phase: reconstruction
 Gate: pass
 
@@ -23,8 +23,8 @@ Gate: pass
 | codebase_itinerary | ok | `.cognitive-os/metrics/codebase-itinerary.jsonl` | `{"categories": {"read": 54}, "rows": 54, "sessions": 54, "tools": {"Read": 54}}` |
 | consumer_availability | ok | `manifests/primitive-consumer-availability.yaml` | `{"items": 908, "patterns": 6, "statuses": {"lifecycle-declared-maintainer": 1, "maintainer-only": 322, "pattern:so-local-only": 6, "projected-consumer-surface": 52, "shared-surface": 508, "shell-ci-candidate": 15, "so-local-only": 8, "unkno` |
 | consumer_projection | ok | `consumer_projection` | `{"by_harness_profile": {"agents-md/default": 82, "agents-md/full": 397, "aider/default": 82, "aider/full": 397, "amp-code/default": 82, "amp-code/full": 397, "augment-code/default": 82, "augment-code/full": 397, "claude/default": 82, "claud` |
-| cos_coverage | ok | `cos_coverage` | `{"aspirational": 0, "coverage_pct": 0.0, "dormant": 0, "generated_at": "2026-06-13T03:09:19Z", "mapped": 268, "metadata": 0, "on_demand": 0, "project": "<repo-root>", "real": 0, "tiers": {"A": 8, "B": 2, "C": 55, "D": 181}, "trend": {"cover` |
-| docs_execution | ok | `docs_execution` | `{"items": 5795, "json": "<repo-root>/docs/06-Daily/reports/docs-execution-latest.json", "markdown": "<repo-root>/docs/06-Daily/reports/docs-execution-latest.md"}` |
+| cos_coverage | ok | `cos_coverage` | `{"aspirational": 0, "coverage_pct": 0.0, "dormant": 0, "generated_at": "2026-06-13T04:32:44Z", "mapped": 268, "metadata": 0, "on_demand": 0, "project": "<repo-root>", "real": 0, "tiers": {"A": 8, "B": 2, "C": 55, "D": 181}, "trend": {"cover` |
+| docs_execution | ok | `docs_execution` | `{"items": 5796, "json": "<repo-root>/docs/06-Daily/reports/docs-execution-latest.json", "markdown": "<repo-root>/docs/06-Daily/reports/docs-execution-latest.md"}` |
 | docs_execution_report | ok | `docs/06-Daily/reports/docs-execution-latest.json` | `{"documents": {"AGENTS.md": {"done_weak_proof": 1, "planned": 1}, "README.md": {"done_weak_proof": 2}, "docs/00-MOCs/architecture.md": {"proposed": 2}, "docs/00-MOCs/decisions.md": {"stale": 1}, "docs/00-MOCs/entrypoints/HOW-TO-USE-COS.md":` |
 | documentation_truth | ok | `docs/06-Daily/reports/documentation-truth-latest.json` | `{"block_count": 0, "by_claim": {"consumer_projection_harnesses": {"pass": 17}, "documentation_truth_control": {"pass": 8}, "primitive_authority_write_effects": {"pass": 16}, "session_pending_protocol": {"pass": 75}, "subprocess_timeout_disc` |
 | documentation_truth_audit | ok | `documentation_truth_audit` | `{"block_count": 0, "by_claim": {"consumer_projection_harnesses": {"pass": 17}, "documentation_truth_control": {"pass": 8}, "primitive_authority_write_effects": {"pass": 16}, "session_pending_protocol": {"pass": 75}, "subprocess_timeout_disc` |
@@ -33,13 +33,13 @@ Gate: pass
 | family_readiness_skills | ok | `family_readiness_skills` | `{"confidence": {"high": 107, "medium": 12}, "consumer_accessibility": {"lifecycle-declared-maintainer": 99, "projected-consumer-surface": 7, "repo-skill-not-projectable": 7, "so-local-only": 6}, "json": "<repo-root>/docs/06-Daily/reports/pr` |
 | family_readiness_templates | ok | `family_readiness_templates` | `{"confidence": {"high": 10, "medium": 14}, "consumer_accessibility": {"lifecycle-declared-maintainer": 19, "projected-consumer-surface": 1, "so-local-only": 4}, "json": "<repo-root>/docs/06-Daily/reports/primitive-readiness-ledger-templates` |
 | harness_coverage | ok | `docs/06-Daily/reports/primitive-harness-coverage-latest.json` | `{"by_family": {"hooks": 286, "rules": 129, "scripts": 683, "skills": 119, "templates": 24}, "by_scope": {"both": 498, "os-only": 715, "project": 28}, "gap_policies": {"acceptable-claude-only": 4, "acceptable-codex-limited-tool-events": 6, "` |
-| harness_coverage_refresh | ok | `harness_coverage_refresh` | `{"by_family": {"hooks": 286, "rules": 129, "scripts": 683, "skills": 119, "templates": 24}, "by_scope": {"both": 498, "os-only": 715, "project": 28}, "gaps": 349, "gaps_by_policy": {"acceptable-claude-only": 4, "acceptable-codex-limited-too` |
+| harness_coverage_refresh | ok | `harness_coverage_refresh` | `{"by_family": {"hooks": 286, "rules": 129, "scripts": 683, "skills": 119, "templates": 24}, "by_scope": {"both": 498, "os-only": 715, "project": 28}, "gaps": 344, "gaps_by_policy": {"acceptable-claude-only": 4, "acceptable-codex-limited-too` |
 | harness_projection | ok | `manifests/harness-projection.yaml` | `{"implemented": 22, "planned": 5, "total": 27, "unsupported": 0}` |
 | primitive_authority_audit | ok | `primitive_authority_audit` | `{"block_count": 0, "by_mode": {"observe-only": 133, "os-maintainer-write": 509, "profile-projection-write": 37, "propose-only": 3}, "by_status": {"pass": 672, "warn": 10}, "dynamic_blocks": 0, "dynamic_smokes": 4, "total_scripts": 682}` |
 | primitive_duplication | ok | `primitive_duplication` | `{"by_common_home": {"lib/": 1}, "by_consumer_relevance": {"so-local-first": 1}, "by_kind": {"python-function-repeat": 1}, "files_scanned": 1031, "findings": 1}` |
 | primitive_fitness_ledger | ok | `docs/06-Daily/reports/primitive-fitness-ledger-latest.json` | `{"families": {}, "mapping_statuses": {}, "reports": 0, "verdicts": {}}` |
 | primitive_gap_snapshot | ok | `primitive_gap_snapshot` | `{"families": [{"aspirational_signal": 4, "evidence": "row-audit proven=113 partial_nonblocking=180 actionable_gaps=4", "family": "hooks", "next_action": "close actionable rows", "partial_signal": 180, "proven_signal": 113, "severity": "high` |
-| primitive_interventions | ok | `.cognitive-os/metrics/primitive-interventions.jsonl` | `{"actions": {"advise": 3, "allow": 19, "block": 140, "warn": 238}, "primitive_count": 9}` |
+| primitive_interventions | ok | `.cognitive-os/metrics/primitive-interventions.jsonl` | `{"actions": {"advise": 3, "allow": 19, "block": 141, "warn": 238}, "primitive_count": 9}` |
 | primitive_projection_fidelity | unverified | `primitive_projection_fidelity` | `{}` |
 | projection_fidelity | ok | `docs/06-Daily/reports/primitive-projection-fidelity-latest.json` | `{"contracts": 340, "statuses": {"aligned": 340}}` |
 | projection_profiles | ok | `manifests/primitive-projection-profiles.yaml` | `{"profile_driver_scripts": 19, "profiles": ["default", "full"], "projection_classes": ["default", "full", "maintainer-only", "profile-driver", "shared"]}` |

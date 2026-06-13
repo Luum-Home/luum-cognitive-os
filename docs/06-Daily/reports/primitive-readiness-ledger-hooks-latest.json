@@ -437,7 +437,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 24,
-        "doc": 156,
+        "doc": 157,
         "hook": 42,
         "rule": 6,
         "script": 68,
@@ -916,6 +916,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/FROZEN-BACKLOG.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-loop-engineering-runtime.md"
         },
         {
           "family": "doc",
@@ -2046,7 +2050,7 @@
         "rule_consumers:6",
         "script_consumers:68",
         "test_consumers:91",
-        "doc_consumers:156",
+        "doc_consumers:157",
         "config_consumers:24"
       ],
       "family": "hooks",
@@ -2061,7 +2065,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 398
+      "total_consumers": 399
     },
     {
       "confidence": "high",
@@ -4588,7 +4592,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 18,
-        "doc": 176,
+        "doc": 177,
         "hook": 25,
         "rule": 3,
         "script": 55,
@@ -4942,7 +4946,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-plane.md"
+          "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-runtime.md"
         },
         {
           "family": "doc",
@@ -5034,7 +5038,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/04-Concepts/architecture/agent-loop-engineering-plane.md"
+          "path": "docs/04-Concepts/architecture/agent-loop-engineering-runtime.md"
         },
         {
           "family": "doc",
@@ -5359,6 +5363,10 @@
         {
           "family": "doc",
           "path": "docs/08-References/root/competitive-landscape.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/agent-loop-engineering-validation-2026-06-13.md"
         },
         {
           "family": "doc",
@@ -6329,7 +6337,7 @@
         "rule_consumers:3",
         "script_consumers:55",
         "test_consumers:144",
-        "doc_consumers:176",
+        "doc_consumers:177",
         "config_consumers:18"
       ],
       "family": "hooks",
@@ -6344,7 +6352,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 431
+      "total_consumers": 432
     },
     {
       "confidence": "high",

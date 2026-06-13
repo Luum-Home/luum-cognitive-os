@@ -122,7 +122,7 @@
         "aspirational": 0,
         "coverage_pct": 0.0,
         "dormant": 0,
-        "generated_at": "2026-06-13T03:09:19Z",
+        "generated_at": "2026-06-13T04:32:44Z",
         "mapped": 268,
         "metadata": 0,
         "on_demand": 0,
@@ -149,7 +149,7 @@
       "source": "docs_execution",
       "status": "ok",
       "summary": {
-        "items": 5795,
+        "items": 5796,
         "json": "<repo-root>/docs/06-Daily/reports/docs-execution-latest.json",
         "markdown": "<repo-root>/docs/06-Daily/reports/docs-execution-latest.md"
       }
@@ -1791,8 +1791,8 @@
             "done_weak_proof": 9,
             "planned": 2
           },
-          "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-plane.md": {
-            "done_weak_proof": 1,
+          "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-runtime.md": {
+            "done_weak_proof": 3,
             "planned": 1
           },
           "docs/02-Decisions/adrs/README.md": {
@@ -2339,9 +2339,6 @@
           "docs/04-Concepts/architecture/agent-flicker-control.md": {
             "done_weak_proof": 1,
             "planned": 1
-          },
-          "docs/04-Concepts/architecture/agent-loop-engineering-plane.md": {
-            "proposed": 1
           },
           "docs/04-Concepts/architecture/agent-message-bus.md": {
             "done_weak_proof": 1,
@@ -3535,13 +3532,13 @@
             "done_weak_proof": 1
           }
         },
-        "items": 5795,
+        "items": 5796,
         "statuses": {
           "claimed_done_no_proof": 1,
-          "done_weak_proof": 2730,
+          "done_weak_proof": 2732,
           "done_with_proof": 295,
           "planned": 2027,
-          "proposed": 635,
+          "proposed": 634,
           "stale": 107
         }
       }
@@ -3748,14 +3745,14 @@
           "claude-posttool-agent-only": 1,
           "codex-adapter-needed": 53,
           "hook-helper-library": 30,
-          "on-demand-command-only": 142,
+          "on-demand-command-only": 137,
           "optional-env-gated-surface": 1,
           "optional-governance-observer": 2,
           "profile-scoped-hook": 3,
           "shell-command-only": 13,
           "structural-only-ok": 72
         },
-        "gaps": 349,
+        "gaps": 344,
         "gaps_by_policy": {
           "acceptable-claude-only": 4,
           "acceptable-codex-limited-tool-events": 6,
@@ -3763,7 +3760,7 @@
           "claude-posttool-agent-only": 1,
           "codex-adapter-needed": 53,
           "hook-helper-library": 30,
-          "on-demand-command-only": 142,
+          "on-demand-command-only": 137,
           "optional-env-gated-surface": 1,
           "optional-governance-observer": 2,
           "profile-scoped-hook": 3,
@@ -3771,7 +3768,7 @@
           "structural-only-ok": 72
         },
         "gaps_by_status": {
-          "aligned": 296,
+          "aligned": 291,
           "partial": 53
         },
         "harness_projected_or_wired": {
@@ -3887,7 +3884,7 @@
           "os-only": 715,
           "project": 28
         },
-        "gaps": 349,
+        "gaps": 344,
         "gaps_by_policy": {
           "acceptable-claude-only": 4,
           "acceptable-codex-limited-tool-events": 6,
@@ -3895,7 +3892,7 @@
           "claude-posttool-agent-only": 1,
           "codex-adapter-needed": 53,
           "hook-helper-library": 30,
-          "on-demand-command-only": 142,
+          "on-demand-command-only": 137,
           "optional-env-gated-surface": 1,
           "optional-governance-observer": 2,
           "profile-scoped-hook": 3,
@@ -3903,7 +3900,7 @@
           "structural-only-ok": 72
         },
         "gaps_by_status": {
-          "aligned": 296,
+          "aligned": 291,
           "partial": 53
         },
         "harness_projected_or_wired": {
@@ -4160,10 +4157,10 @@
             "evidence": "docs_hard_gaps=108 unmapped_claims=0 done_with_proof=295 mapped_claims=538",
             "family": "docs_adrs",
             "next_action": "fix stale/unproved docs claims",
-            "partial_signal": 5393,
+            "partial_signal": 5394,
             "proven_signal": 833,
             "severity": "high",
-            "total": 6334
+            "total": 6335
           }
         ],
         "hook_latency": {
@@ -4173,7 +4170,7 @@
           "p95_ms": 854
         },
         "overall_risk": "high",
-        "timestamp": "2026-06-13T03:11:17.907299+00:00"
+        "timestamp": "2026-06-13T04:34:35.585271+00:00"
       }
     },
     "primitive_interventions": {
@@ -4185,7 +4182,7 @@
         "actions": {
           "advise": 3,
           "allow": 19,
-          "block": 140,
+          "block": 141,
           "warn": 238
         },
         "primitive_count": 9
@@ -7243,7 +7240,7 @@
         "test_consumers:744",
         "hook_consumers:123",
         "workflow_consumers:2",
-        "doc_consumers:769",
+        "doc_consumers:770",
         "rule_consumers:51",
         "config_consumers:86",
         "script_consumers:413",
@@ -13418,8 +13415,8 @@
         "lifecycle",
         "wrapper_for:scripts/cos_loop.py",
         "test_consumers:1",
-        "doc_consumers:2",
-        "config_consumers:2",
+        "doc_consumers:3",
+        "config_consumers:3",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
         "consumer_accessibility:lifecycle-declared-maintainer",
@@ -13464,8 +13461,8 @@
         "lifecycle",
         "wrapper_for:scripts/cos_loop.py",
         "test_consumers:1",
-        "doc_consumers:2",
-        "config_consumers:2",
+        "doc_consumers:3",
+        "config_consumers:3",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
         "consumer_accessibility:lifecycle-declared-maintainer",
@@ -13510,8 +13507,8 @@
         "lifecycle",
         "wrapper_for:scripts/cos_loop.py",
         "test_consumers:1",
-        "doc_consumers:2",
-        "config_consumers:2",
+        "doc_consumers:3",
+        "config_consumers:3",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
         "consumer_accessibility:lifecycle-declared-maintainer",
@@ -13556,8 +13553,8 @@
         "lifecycle",
         "wrapper_for:scripts/cos_loop.py",
         "test_consumers:1",
-        "doc_consumers:2",
-        "config_consumers:2",
+        "doc_consumers:3",
+        "config_consumers:3",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
         "consumer_accessibility:lifecycle-declared-maintainer",
@@ -13602,8 +13599,8 @@
         "lifecycle",
         "wrapper_for:scripts/cos_loop.py",
         "test_consumers:1",
-        "doc_consumers:2",
-        "config_consumers:2",
+        "doc_consumers:3",
+        "config_consumers:3",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
         "consumer_accessibility:lifecycle-declared-maintainer",
@@ -15103,7 +15100,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos_primitive_closure_check.py",
         "test_consumers:1",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:2",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -21712,7 +21709,7 @@
         "lifecycle",
         "test_consumers:1",
         "doc_consumers:1",
-        "config_consumers:2",
+        "config_consumers:3",
         "script_consumers:5",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -24235,6 +24232,7 @@
         "lifecycle",
         "skill_consumers:2",
         "test_consumers:2",
+        "doc_consumers:1",
         "config_consumers:2",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -33153,7 +33151,7 @@
         "rule_consumers:6",
         "script_consumers:68",
         "test_consumers:91",
-        "doc_consumers:156",
+        "doc_consumers:157",
         "config_consumers:24",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -33600,7 +33598,7 @@
         "rule_consumers:3",
         "script_consumers:55",
         "test_consumers:144",
-        "doc_consumers:176",
+        "doc_consumers:177",
         "config_consumers:18",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -49199,7 +49197,7 @@
         "rule_consumers:3",
         "script_consumers:11",
         "test_consumers:11",
-        "doc_consumers:39",
+        "doc_consumers:40",
         "config_consumers:9",
         "role_source:lifecycle",
         "lifecycle_state:active",
@@ -49745,7 +49743,7 @@
         "hook_consumers:6",
         "rule_consumers:14",
         "test_consumers:37",
-        "doc_consumers:39",
+        "doc_consumers:40",
         "config_consumers:4",
         "role_source:usage:script-hook",
         "lifecycle_state:advisory",
@@ -49789,7 +49787,7 @@
         "lifecycle",
         "rule_consumers:1",
         "test_consumers:3",
-        "doc_consumers:8",
+        "doc_consumers:9",
         "config_consumers:3",
         "role_source:lifecycle",
         "lifecycle_state:active",
@@ -49837,7 +49835,7 @@
         "hook_consumers:3",
         "rule_consumers:5",
         "test_consumers:10",
-        "doc_consumers:14",
+        "doc_consumers:15",
         "config_consumers:3",
         "role_source:lifecycle",
         "lifecycle_state:advisory",
@@ -49929,7 +49927,7 @@
         "hook_consumers:2",
         "rule_consumers:3",
         "test_consumers:6",
-        "doc_consumers:12",
+        "doc_consumers:13",
         "config_consumers:3",
         "role_source:lifecycle",
         "lifecycle_state:advisory",
@@ -49975,7 +49973,7 @@
         "hook_consumers:1",
         "rule_consumers:2",
         "test_consumers:8",
-        "doc_consumers:12",
+        "doc_consumers:13",
         "config_consumers:3",
         "role_source:usage:script-hook",
         "lifecycle_state:advisory",
@@ -50022,7 +50020,7 @@
         "rule_consumers:11",
         "script_consumers:1",
         "test_consumers:27",
-        "doc_consumers:32",
+        "doc_consumers:33",
         "config_consumers:4",
         "role_source:usage:script-hook",
         "lifecycle_state:advisory",
@@ -78837,9 +78835,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:acc-report+dashboard+tui",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:on-demand-command-only"
+        "scope:os-only"
       ],
       "id": "harness_coverage:scripts/cos-loop-eval",
       "kind": "harness_coverage",
@@ -78856,7 +78852,7 @@
       "risk": "low",
       "signature": {
         "coverage": "acc-report+dashboard+tui",
-        "gap_policy": "on-demand-command-only",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -78871,9 +78867,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:acc-report+dashboard+tui",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:on-demand-command-only"
+        "scope:os-only"
       ],
       "id": "harness_coverage:scripts/cos-loop-guard",
       "kind": "harness_coverage",
@@ -78890,7 +78884,7 @@
       "risk": "low",
       "signature": {
         "coverage": "acc-report+dashboard+tui",
-        "gap_policy": "on-demand-command-only",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -78905,9 +78899,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:acc-report+dashboard+tui",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:on-demand-command-only"
+        "scope:os-only"
       ],
       "id": "harness_coverage:scripts/cos-loop-replay",
       "kind": "harness_coverage",
@@ -78924,7 +78916,7 @@
       "risk": "low",
       "signature": {
         "coverage": "acc-report+dashboard+tui",
-        "gap_policy": "on-demand-command-only",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -78939,9 +78931,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:acc-report+dashboard+tui",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:on-demand-command-only"
+        "scope:os-only"
       ],
       "id": "harness_coverage:scripts/cos-loop-report",
       "kind": "harness_coverage",
@@ -78958,7 +78948,7 @@
       "risk": "low",
       "signature": {
         "coverage": "acc-report+dashboard+tui",
-        "gap_policy": "on-demand-command-only",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -78973,9 +78963,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:acc-report+dashboard+tui",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:on-demand-command-only"
+        "scope:os-only"
       ],
       "id": "harness_coverage:scripts/cos-loop-run",
       "kind": "harness_coverage",
@@ -78992,7 +78980,7 @@
       "risk": "low",
       "signature": {
         "coverage": "acc-report+dashboard+tui",
-        "gap_policy": "on-demand-command-only",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -130376,7 +130364,7 @@
       "confidence": 0.82,
       "consumer_accessibility": "runtime-evidence",
       "evidence": [
-        "intervention_rows:63"
+        "intervention_rows:64"
       ],
       "id": "primitive_intervention:direct-main-guard",
       "kind": "primitive_intervention",
@@ -130391,7 +130379,7 @@
       ],
       "risk": "medium",
       "signature": {
-        "rows": 63
+        "rows": 64
       },
       "source": {
         "path": ".cognitive-os/metrics/primitive-interventions.jsonl",
@@ -146525,7 +146513,7 @@
         "rule_consumers:6",
         "script_consumers:68",
         "test_consumers:91",
-        "doc_consumers:156",
+        "doc_consumers:157",
         "config_consumers:24",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -146686,7 +146674,7 @@
         "rule_consumers:3",
         "script_consumers:55",
         "test_consumers:144",
-        "doc_consumers:176",
+        "doc_consumers:177",
         "config_consumers:18",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -148894,7 +148882,7 @@
       "coverage_debt:181"
     ]
   },
-  "generated_at": "2026-06-13T03:11:34Z",
+  "generated_at": "2026-06-13T04:34:49Z",
   "harness_projection": {
     "agents-md": {
       "display_name": "AGENTS.md",

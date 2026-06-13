@@ -5,14 +5,14 @@
     "actions": null,
     "contract_id": null,
     "impact": null,
-    "intent": "Agent Loop Engineering Plane shared Python implementation for the cos-loop-* wrapper family; portable invocation covered by unit and red-team portability tests.",
+    "intent": "Agent Loop Engineering Runtime shared Python implementation for the cos-loop-* wrapper family; portable invocation covered by unit and red-team portability tests.",
     "present": false,
     "projection_fidelity": {},
     "requires": [],
     "trigger": null
   },
   "evidence": {
-    "behavior_evidence": "Agent Loop Engineering Plane shared Python implementation for the cos-loop-* wrapper family; portable invocation covered by unit and red-team portability tests.",
+    "behavior_evidence": "Agent Loop Engineering Runtime shared Python implementation for the cos-loop-* wrapper family; portable invocation covered by unit and red-team portability tests.",
     "evidence_commands": [
       "python3 -m pytest tests/unit/test_cos_loop.py tests/red_team/portability/test_cos_loop_primitives.py -q"
     ],
@@ -42,7 +42,7 @@
     "contract_id": null,
     "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
     "evidence": {
-      "behavior_evidence": "Agent Loop Engineering Plane shared Python implementation for the cos-loop-* wrapper family; portable invocation covered by unit and red-team portability tests.",
+      "behavior_evidence": "Agent Loop Engineering Runtime shared Python implementation for the cos-loop-* wrapper family; portable invocation covered by unit and red-team portability tests.",
       "evidence_commands": [
         "python3 -m pytest tests/unit/test_cos_loop.py tests/red_team/portability/test_cos_loop_primitives.py -q"
       ],
@@ -54,7 +54,7 @@
       "consumer_fleet": "unknown",
       "service_mode": "unsupported"
     },
-    "intent": "Agent Loop Engineering Plane shared Python implementation for the cos-loop-* wrapper family; portable invocation covered by unit and red-team portability tests.",
+    "intent": "Agent Loop Engineering Runtime shared Python implementation for the cos-loop-* wrapper family; portable invocation covered by unit and red-team portability tests.",
     "is_full_contract": true,
     "projection_fidelity": {
       "claude": {

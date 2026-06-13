@@ -2,12 +2,12 @@
 
 ## Summary
 
-Total items: 5795
+Total items: 5796
 - claimed_done_no_proof: 1
-- done_weak_proof: 2730
+- done_weak_proof: 2732
 - done_with_proof: 295
 - planned: 2027
-- proposed: 635
+- proposed: 634
 - stale: 107
 
 ## Items Needing Attention
@@ -1831,7 +1831,9 @@ Total items: 5795
 | docs/02-Decisions/adrs/ADR-335-generic-task-closure-ledger-gate.md | 60 | done | done_weak_proof | 0.62 | 9. `--require-gates-passed` requires closed fronts to record gate evidence. | terms:closed,evidence,fronts,gate,record,require-gates-passed,requires | add explicit test/workflow/proof link |
 | docs/02-Decisions/adrs/ADR-335-generic-task-closure-ledger-gate.md | 61 | done | done_weak_proof | 0.62 | 10. `--run-closure-gates` can execute `closureGate` commands for closed/claimable fronts; `--run-all-gates` is explicit for all fronts. | terms:claimable,closed,closuregate,commands,execute,explicit,fronts,run-all-gates | add explicit test/workflow/proof link |
 | docs/02-Decisions/adrs/ADR-335-generic-task-closure-ledger-gate.md | 66 | done | done_weak_proof | 0.62 | Reuse the Definition of Done checker as the ledger validator. Rejected because DoD verifies completion criteria for a slice, while the closure ledger tracks multi-front claimability and remaining work over time. | terms:because,checker,claimability,closure,completion,criteria,definition,done | add explicit test/workflow/proof link |
-| docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-plane.md | 5 | done | done_weak_proof | 0.62 | Accepted | weak_terms:accepted | add explicit test/workflow/proof link |
+| docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-runtime.md | 4 | done | done_weak_proof | 0.62 | status: accepted | weak_terms:accepted | add explicit test/workflow/proof link |
+| docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-runtime.md | 5 | done | done_weak_proof | 0.62 | implementation_status: implemented | weak_terms:implementation_status,implemented | add explicit test/workflow/proof link |
+| docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-runtime.md | 28 | done | done_weak_proof | 0.62 | Accepted | weak_terms:accepted | add explicit test/workflow/proof link |
 | docs/02-Decisions/adrs/STATUS-TAXONOMY.md | 13 | done | done_weak_proof | 0.62 | accepted, exploratory, closed, replaced, deprecated, or a reserved tombstone. | terms:accepted,closed,deprecated,exploratory,replaced,reserved,tombstone | add explicit test/workflow/proof link |
 | docs/02-Decisions/adrs/STATUS-TAXONOMY.md | 14 | done | done_weak_proof | 0.62 | 2. **Implementation status** — whether the accepted work is implemented, | terms:accepted,implementation,implemented,whether,work | add explicit test/workflow/proof link |
 | docs/02-Decisions/adrs/STATUS-TAXONOMY.md | 19 | done | done_weak_proof | 0.62 | When these concepts are mixed, ADRs acquire labels such as `Phase`, `Resolved`, | terms:acquire,adrs,concepts,labels,mixed,phase,resolved,such | add explicit test/workflow/proof link |

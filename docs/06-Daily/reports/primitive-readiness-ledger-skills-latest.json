@@ -8551,7 +8551,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 9,
-        "doc": 39,
+        "doc": 40,
         "hook": 1,
         "rule": 3,
         "script": 11,
@@ -8630,6 +8630,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-319-detractor-review-modes.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-runtime.md"
         },
         {
           "family": "doc",
@@ -8888,7 +8892,7 @@
         "rule_consumers:3",
         "script_consumers:11",
         "test_consumers:11",
-        "doc_consumers:39",
+        "doc_consumers:40",
         "config_consumers:9"
       ],
       "family": "skills",
@@ -8903,7 +8907,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 80
+      "total_consumers": 81
     },
     {
       "confidence": "high",
@@ -10723,7 +10727,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 4,
-        "doc": 39,
+        "doc": 40,
         "hook": 6,
         "rule": 14,
         "skill": 2,
@@ -10809,6 +10813,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-loop-engineering-runtime.md"
         },
         {
           "family": "doc",
@@ -11146,7 +11154,7 @@
         "hook_consumers:6",
         "rule_consumers:14",
         "test_consumers:37",
-        "doc_consumers:39",
+        "doc_consumers:40",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -11161,7 +11169,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 102
+      "total_consumers": 103
     },
     {
       "confidence": "high",
@@ -11169,7 +11177,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 3,
-        "doc": 8,
+        "doc": 9,
         "rule": 1,
         "test": 3
       },
@@ -11201,6 +11209,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-loop-engineering-runtime.md"
         },
         {
           "family": "doc",
@@ -11240,7 +11252,7 @@
         "lifecycle",
         "rule_consumers:1",
         "test_consumers:3",
-        "doc_consumers:8",
+        "doc_consumers:9",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -11255,7 +11267,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 15
+      "total_consumers": 16
     },
     {
       "confidence": "high",
@@ -11263,7 +11275,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 3,
-        "doc": 14,
+        "doc": 15,
         "hook": 3,
         "rule": 5,
         "skill": 2,
@@ -11305,6 +11317,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-262-evolve-loop-spike.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-loop-engineering-runtime.md"
         },
         {
           "family": "doc",
@@ -11426,7 +11442,7 @@
         "hook_consumers:3",
         "rule_consumers:5",
         "test_consumers:10",
-        "doc_consumers:14",
+        "doc_consumers:15",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -11441,7 +11457,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 37
+      "total_consumers": 38
     },
     {
       "confidence": "high",
@@ -11531,7 +11547,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 3,
-        "doc": 12,
+        "doc": 13,
         "hook": 2,
         "rule": 3,
         "skill": 1,
@@ -11565,6 +11581,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-324-executable-acceptance-specification-eas.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-loop-engineering-runtime.md"
         },
         {
           "family": "doc",
@@ -11654,7 +11674,7 @@
         "hook_consumers:2",
         "rule_consumers:3",
         "test_consumers:6",
-        "doc_consumers:12",
+        "doc_consumers:13",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -11669,7 +11689,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 27
+      "total_consumers": 28
     },
     {
       "confidence": "high",
@@ -11677,7 +11697,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 3,
-        "doc": 12,
+        "doc": 13,
         "hook": 1,
         "rule": 2,
         "skill": 3,
@@ -11707,6 +11727,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-324-executable-acceptance-specification-eas.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-loop-engineering-runtime.md"
         },
         {
           "family": "doc",
@@ -11808,7 +11832,7 @@
         "hook_consumers:1",
         "rule_consumers:2",
         "test_consumers:8",
-        "doc_consumers:12",
+        "doc_consumers:13",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -11823,7 +11847,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 29
+      "total_consumers": 30
     },
     {
       "confidence": "high",
@@ -11831,7 +11855,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 4,
-        "doc": 32,
+        "doc": 33,
         "hook": 4,
         "rule": 11,
         "script": 1,
@@ -11910,6 +11934,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/agent-loop-engineering-runtime.md"
         },
         {
           "family": "doc",
@@ -12184,7 +12212,7 @@
         "rule_consumers:11",
         "script_consumers:1",
         "test_consumers:27",
-        "doc_consumers:32",
+        "doc_consumers:33",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -12199,7 +12227,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 84
+      "total_consumers": 85
     },
     {
       "confidence": "high",
