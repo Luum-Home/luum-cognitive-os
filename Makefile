@@ -10,7 +10,7 @@
 #   cos-test cluster --lane <name>      — validate one lane
 #   cos-test broad                      — full pre-push sweep
 
-.PHONY: help provenance-scan test-agentic-mastery test test-local-fast test-targeted test-targeted-plan test-laptop test-laptop-bg test-laptop-direct test-laptop-integration test-slow-report test-local-wide-no-docker test-ci-default test-integration-no-docker test-release test-docker test-optional test-docker-explicit test-optional-cost test-fast test-unit test-integration test-e2e test-chaos test-all test-changed typecheck-pyrefly smoke audit clean ci-deps check-docs-convention test-no-docker test-no-docker-shard-a test-no-docker-shard-b test-skip-report cos-test install-test
+.PHONY: help provenance-scan test-agentic-mastery test-so-impact-smoke test test-local-fast test-targeted test-targeted-plan test-laptop test-laptop-bg test-laptop-direct test-laptop-integration test-slow-report test-local-wide-no-docker test-ci-default test-integration-no-docker test-release test-docker test-optional test-docker-explicit test-optional-cost test-fast test-unit test-integration test-e2e test-chaos test-all test-changed typecheck-pyrefly smoke audit clean ci-deps check-docs-convention test-no-docker test-no-docker-shard-a test-no-docker-shard-b test-skip-report cos-test install-test
 
 PY := uv run python3
 PYTEST := uv run pytest
@@ -27,6 +27,7 @@ provenance-scan:
 help:
 	@echo "Targets:"
 	@echo "  test-agentic-mastery  Agentic mastery MVP: ACI, skill efficacy, runtime benchmark schema, adversarial suite, lethal trifecta."
+	@echo "  test-so-impact-smoke  No-cost SO-wide impact smoke: vanilla vs full SO receipts."
 	@echo "  test-local-fast   Official local quick lane: cos-test focused."
 	@echo "  test-targeted     Diff-driven focused lane: runs only tests affected by git changes."
 	@echo "  test-targeted-plan  Show the diff-driven focused plan without running tests."
@@ -64,6 +65,16 @@ help:
 	@echo "  cos-test broad                      — full pre-push sweep"
 	@echo ""
 	@echo "All python commands run via 'uv run' — plain 'python3' or 'pytest' will miss UV-managed deps."
+
+
+test-so-impact-smoke:
+	@scripts/cos-so-impact-eval run \
+		--contract docs/08-References/benchmarks/so-impact-money-format-refactor.yaml \
+		--mode vanilla \
+		--mode full-so \
+		--run-id "$${RUN_ID:-make-smoke}" \
+		--output-root "$${OUTPUT_ROOT:-/tmp/cos-so-impact-eval}" \
+		--json | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d["verdict"], "-", d["rationale"]); print("report:", d["output_dir"] + "/report.md")'
 
 test-agentic-mastery:
 	@echo "[test-agentic-mastery] Validating agentic mastery MVP slices." >&2
