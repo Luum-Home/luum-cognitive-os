@@ -1,4 +1,27 @@
-# ADR-336: Agent Loop Engineering Plane
+---
+adr: 336
+title: Agent Loop Engineering Runtime
+status: accepted
+implementation_status: implemented
+date: '2026-06-13'
+supersedes: []
+superseded_by: null
+implementation_files:
+  - templates/loop-contract.example.yaml
+  - scripts/cos-loop-run
+  - scripts/cos-loop-report
+  - scripts/cos-loop-replay
+  - scripts/cos-loop-guard
+  - scripts/cos-loop-eval
+  - scripts/cos_loop.py
+  - tests/unit/test_cos_loop.py
+  - tests/red_team/portability/test_cos_loop_primitives.py
+tier: consumer
+tags: [agent-loop, loop-contract, portability, evals, guardrails]
+classification_basis: portable CLI wrappers, project-local loop state, replayable traces, guard checks, eval export, and consumer-project portability tests
+---
+
+# ADR-336: Agent Loop Engineering Runtime
 
 ## Status
 
@@ -12,7 +35,7 @@ The same loop contract must be useful in Claude, Codex, OpenCode, IDE adapters, 
 
 ## Decision
 
-Add the Agent Loop Engineering Plane as a harness-neutral advisory primitive family:
+Add the Agent Loop Engineering Runtime as a harness-neutral advisory primitive family:
 
 - `templates/loop-contract.example.yaml` defines the portable `cos.loop-contract.v1` shape.
 - `scripts/cos-loop-run` executes one bounded loop iteration, persists state, records observations, optionally runs verification commands, and applies stop conditions.
@@ -40,11 +63,31 @@ Tradeoffs:
 - Provider token accounting is not part of the first contract version; budget policy currently covers iterations, retries, observation bytes, wall-clock intent, and verification timeout.
 - Contracts remain project-authored. Cognitive OS supplies the schema and tooling, not a universal goal oracle.
 
+## Alternatives rejected
+
+- **Rely only on informal agent instructions** — rejected because it leaves no project-local state, trace, replay, or regression artifact for later agents or CI to inspect.
+- **Make the first version a harness interceptor** — rejected because Claude, Codex, OpenCode, and IDE adapters expose different hook capabilities; a harness-neutral contract and wrappers can be validated portably before any stricter interception claim.
+- **Store loop evidence only in chat/session memory** — rejected because loop progress must survive compaction, CLI/IDE changes, and consumer-project handoff. Project-local `.cognitive-os/loops/` evidence is the durable source.
+
 ## Verification
 
-- `python3 -m pytest tests/unit/test_cos_loop.py tests/red_team/portability/test_cos_loop_primitives.py -q`
-- `scripts/cos-loop-run --project-dir <project> --contract <contract> --observation <text>`
-- `scripts/cos-loop-report --project-dir <project> --loop-id <id> --json`
-- `scripts/cos-loop-guard --project-dir <project> --loop-id <id> --strict --json`
-- `scripts/cos-loop-replay --project-dir <project> --loop-id <id> --json`
-- `scripts/cos-loop-eval --project-dir <project> --loop-id <id> --json`
+The decision is verified by executable unit, red-team portability, closure, smoke, and DoD commands:
+
+```bash
+python3 -m pytest tests/unit/test_cos_loop.py tests/red_team/portability/test_cos_loop_primitives.py -q
+scripts/cos-primitive-closure-check --strict
+python3 -m py_compile scripts/cos_loop.py tests/red_team/portability/test_cos_loop_primitives.py tests/unit/test_cos_loop.py
+python3 scripts/dod_check.py --format markdown
+```
+
+Manual smoke proof for the portable wrappers:
+
+```bash
+tmp=$(mktemp -d)
+cp templates/loop-contract.example.yaml "$tmp/loop-contract.yaml"
+scripts/cos-loop-run --project-dir "$tmp" --contract "$tmp/loop-contract.yaml" --observation "smoke iteration" --decision "report" --tool shell --json
+scripts/cos-loop-report --project-dir "$tmp" --loop-id example-agent-loop --json
+scripts/cos-loop-guard --project-dir "$tmp" --contract "$tmp/loop-contract.yaml" --loop-id example-agent-loop --strict --json
+scripts/cos-loop-replay --project-dir "$tmp" --loop-id example-agent-loop --json
+scripts/cos-loop-eval --project-dir "$tmp" --loop-id example-agent-loop --json
+```

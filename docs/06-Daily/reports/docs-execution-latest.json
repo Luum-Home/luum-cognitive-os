@@ -42703,11 +42703,37 @@
         "weak_terms:accepted"
       ],
       "inferred_status": "done_weak_proof",
-      "item": "Accepted",
+      "item": "status: accepted",
+      "kind": "prose",
+      "line": 4,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-runtime.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:implementation_status,implemented"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "implementation_status: implemented",
       "kind": "prose",
       "line": 5,
       "next_action": "add explicit test/workflow/proof link",
-      "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-plane.md"
+      "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-runtime.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:accepted"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Accepted",
+      "kind": "prose",
+      "line": 28,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-runtime.md"
     },
     {
       "confidence": 0.9,
@@ -42718,9 +42744,9 @@
       "inferred_status": "planned",
       "item": "Initial maturity is advisory/candidate. The runtime can gate its own command results, but it does not yet forcibly intercept every tool call in every IDE/CLI harness.",
       "kind": "bullet",
-      "line": 39,
+      "line": 62,
       "next_action": "keep planned or add implementation proof when complete",
-      "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-plane.md"
+      "path": "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-runtime.md"
     },
     {
       "confidence": 0.9,
@@ -49526,19 +49552,6 @@
       "line": 10,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/04-Concepts/architecture/agent-flicker-control.md"
-    },
-    {
-      "confidence": 0.86,
-      "declared_status": "proposed",
-      "evidence": [
-        "terms:design,explore,handled,implement,loop,phases,propose,spec"
-      ],
-      "inferred_status": "proposed",
-      "item": "SDD phases are handled as an agent loop: explore, propose, spec, design, implement, verify.",
-      "kind": "bullet",
-      "line": 83,
-      "next_action": "keep as proposal until accepted/implemented",
-      "path": "docs/04-Concepts/architecture/agent-loop-engineering-plane.md"
     },
     {
       "confidence": 0.62,
@@ -77684,8 +77697,8 @@
         "done_weak_proof": 9,
         "planned": 2
       },
-      "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-plane.md": {
-        "done_weak_proof": 1,
+      "docs/02-Decisions/adrs/ADR-336-agent-loop-engineering-runtime.md": {
+        "done_weak_proof": 3,
         "planned": 1
       },
       "docs/02-Decisions/adrs/README.md": {
@@ -78232,9 +78245,6 @@
       "docs/04-Concepts/architecture/agent-flicker-control.md": {
         "done_weak_proof": 1,
         "planned": 1
-      },
-      "docs/04-Concepts/architecture/agent-loop-engineering-plane.md": {
-        "proposed": 1
       },
       "docs/04-Concepts/architecture/agent-message-bus.md": {
         "done_weak_proof": 1,
@@ -79428,13 +79438,13 @@
         "done_weak_proof": 1
       }
     },
-    "items": 5795,
+    "items": 5796,
     "statuses": {
       "claimed_done_no_proof": 1,
-      "done_weak_proof": 2730,
+      "done_weak_proof": 2732,
       "done_with_proof": 295,
       "planned": 2027,
-      "proposed": 635,
+      "proposed": 634,
       "stale": 107
     }
   }

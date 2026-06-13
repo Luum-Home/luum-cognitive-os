@@ -1,4 +1,4 @@
-# Agent Loop Engineering Plane
+# Agent Loop Engineering Runtime
 
 Agent Loop Engineering is the Cognitive OS layer that makes long-running agent behavior explicit, bounded, replayable, and testable. It complements existing goal-state, flicker-control, and task-closure primitives by adding a portable loop contract and trace runtime.
 

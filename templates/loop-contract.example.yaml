@@ -1,3 +1,4 @@
+# SCOPE: os-only
 schemaVersion: cos.loop-contract.v1
 id: example-agent-loop
 trigger:
