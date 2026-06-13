@@ -270,6 +270,12 @@ scripts/cos-so-impact-eval run \
   --json
 ```
 
+## Lifecycle advisory trigger
+
+`hooks/so-impact-eval-trigger.sh` connects the deterministic smoke to the Stop/shutdown lifecycle for hook-capable harnesses. It watches dirty changes in SO impact evaluation, Graphify, and process-loop surfaces, then runs `vanilla` vs `full-so` into `.cognitive-os/reports/so-impact-auto/` and records `.cognitive-os/metrics/so-impact-eval-trigger.jsonl`.
+
+This trigger is advisory by design: it never blocks session close, dedupes the same dirty state, and can be disabled with `COS_SO_IMPACT_EVAL_TRIGGER_DISABLE=1`.
+
 ## Implementation slices
 
 Completed first slice:

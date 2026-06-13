@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-06-13T21:27:06+00:00'
+generated_at: '2026-06-13T21:47:06+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
@@ -2713,6 +2713,19 @@ primitives:
   - .claude/settings.json
   - hooks/skill-usage-tracker.sh
   sha256: d07d9b1ec832dfac218c74acda362e309eaacbee0d3bd015fd7bc022d4fdb7c3
+- id: hooks/so-impact-eval-trigger.sh
+  kind: hook
+  owner_adr: ADR-338
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: team
+  runtime_projection: true
+  projection_targets:
+  - .claude/settings.json
+  - .codex/hooks.json
+  - .opencode/cos-hooks.json
+  - .cognitive-os/hooks/cos/so-impact-eval-trigger.sh
+  sha256: 5b0f47f86c47642f1c67dd2511914f93ddc0d3322e11506ce31d89b5b4a265a8
 - id: hooks/spdx-header-required.sh
   kind: hook
   owner_adr: ADR-267

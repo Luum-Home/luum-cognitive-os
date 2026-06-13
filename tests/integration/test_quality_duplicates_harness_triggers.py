@@ -37,9 +37,14 @@ def test_claude_projects_get_quality_duplicate_stop_hook(tmp_path: Path) -> None
     run_init(project, "claude")
 
     settings = json.loads((project / ".claude" / "settings.json").read_text())
-    assert any("quality-duplicates.sh" in command for command in hook_commands(settings))
+    commands = hook_commands(settings)
+    assert any("quality-duplicates.sh" in command for command in commands)
+    assert any("so-impact-eval-trigger.sh" in command for command in commands)
     assert (project / ".cognitive-os" / "hooks" / "cos" / "quality-duplicates.sh").exists()
+    assert (project / ".cognitive-os" / "hooks" / "cos" / "so-impact-eval-trigger.sh").exists()
     assert (project / ".cognitive-os" / "bin" / "cos-quality-duplicates").exists()
+    assert (project / ".cognitive-os" / "bin" / "cos-so-impact-eval").exists()
+    assert (project / ".cognitive-os" / "benchmarks" / "so-impact-money-format-refactor.yaml").exists()
 
 
 def test_codex_projects_get_quality_duplicate_shutdown_hook(tmp_path: Path) -> None:
@@ -50,7 +55,10 @@ def test_codex_projects_get_quality_duplicate_shutdown_hook(tmp_path: Path) -> N
     shutdown = hooks.get("Stop") or hooks.get("shutdown") or hooks.get("SessionEnd") or []
     encoded = json.dumps(shutdown)
     assert "quality-duplicates.sh" in encoded
+    assert "so-impact-eval-trigger.sh" in encoded
     assert (project / ".cognitive-os" / "hooks" / "cos" / "quality-duplicates.sh").exists()
+    assert (project / ".cognitive-os" / "hooks" / "cos" / "so-impact-eval-trigger.sh").exists()
+    assert (project / ".cognitive-os" / "bin" / "cos-so-impact-eval").exists()
 
 
 def test_opencode_projects_get_quality_duplicate_idle_projection(tmp_path: Path) -> None:
@@ -60,7 +68,10 @@ def test_opencode_projects_get_quality_duplicate_idle_projection(tmp_path: Path)
     hooks = json.loads((project / ".opencode" / "cos-hooks.json").read_text())
     idle = hooks["events"].get("session.idle", [])
     assert any(item.get("script") == "hooks/quality-duplicates.sh" for item in idle)
+    assert any(item.get("script") == "hooks/so-impact-eval-trigger.sh" for item in idle)
     assert (project / ".cognitive-os" / "hooks" / "cos" / "quality-duplicates.sh").exists()
+    assert (project / ".cognitive-os" / "hooks" / "cos" / "so-impact-eval-trigger.sh").exists()
+    assert (project / ".cognitive-os" / "bin" / "cos-so-impact-eval").exists()
 
 
 def test_shell_ci_projects_get_quality_duplicate_command_and_workflow(tmp_path: Path) -> None:

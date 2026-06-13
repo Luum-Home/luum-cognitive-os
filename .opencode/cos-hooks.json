@@ -404,6 +404,14 @@
         "scope": "both"
       },
       {
+        "id": "so-impact-eval-trigger",
+        "script": "hooks/so-impact-eval-trigger.sh",
+        "event": "Stop",
+        "matcher": "",
+        "async": true,
+        "scope": "both"
+      },
+      {
         "id": "skill-synthesis-scanner",
         "script": "hooks/skill-synthesis-scanner.sh",
         "event": "Stop",

@@ -1848,6 +1848,12 @@ harness:
       async: true
       scope: both
 
+    so-impact-eval-trigger:
+      script: hooks/so-impact-eval-trigger.sh
+      event: Stop
+      async: true
+      scope: both
+
     skill-synthesis-scanner:
       script: hooks/skill-synthesis-scanner.sh
       event: Stop

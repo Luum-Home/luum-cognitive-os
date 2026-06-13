@@ -1,6 +1,6 @@
 {
   "_profile": "paranoid",
-  "_description": "Paranoid security profile — maximum defense. For pre-production validation and security audits.",
+  "_description": "Paranoid security profile \u2014 maximum defense. For pre-production validation and security audits.",
   "_hook_count": 170,
   "_events_used": [
     "SessionStart",
@@ -816,6 +816,11 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/quality-duplicates.sh\"",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/so-impact-eval-trigger.sh\"",
             "async": true
           },
           {
