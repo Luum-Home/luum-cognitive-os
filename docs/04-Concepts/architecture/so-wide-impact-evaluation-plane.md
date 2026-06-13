@@ -223,6 +223,35 @@ The right claim shape is therefore:
 - invalid: "A structural savings estimate proves live runtime savings."
 
 
+
+## Conversational quick smoke
+
+Use the skill `/so-impact-smoke` or run the short maintainer target:
+
+```bash
+make test-so-impact-smoke
+```
+
+Equivalent explicit command:
+
+```bash
+scripts/cos-so-impact-eval run \
+  --contract docs/08-References/benchmarks/so-impact-money-format-refactor.yaml \
+  --mode vanilla \
+  --mode full-so \
+  --run-id chat-smoke \
+  --output-root /tmp/cos-so-impact-eval \
+  --json | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d["verdict"], "-", d["rationale"])'
+```
+
+Expected deterministic smoke verdict:
+
+```text
+win - fewer false completion events; less discovery context
+```
+
+The detailed report is written to `/tmp/cos-so-impact-eval/money-format-refactor/chat-smoke/report.md`.
+
 ## Implemented primitive
 
 The first maintainer implementation is `scripts/cos-so-impact-eval`, backed by `scripts/cos_so_impact_eval.py` and ADR-338. It accepts a `cos.so-impact-eval.v1` contract, creates isolated capsules for each selected mode, runs declared workflow and verification commands, and writes `trace.jsonl`, `usage.json`, `diff.patch`, `verify.json`, `process.json`, `report.json`, and `report.md` receipts.
