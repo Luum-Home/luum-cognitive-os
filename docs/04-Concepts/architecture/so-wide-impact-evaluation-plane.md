@@ -222,15 +222,41 @@ The right claim shape is therefore:
 - invalid: "Graphify proves the whole SO saves tokens everywhere."
 - invalid: "A structural savings estimate proves live runtime savings."
 
+
+## Implemented primitive
+
+The first maintainer implementation is `scripts/cos-so-impact-eval`, backed by `scripts/cos_so_impact_eval.py` and ADR-338. It accepts a `cos.so-impact-eval.v1` contract, creates isolated capsules for each selected mode, runs declared workflow and verification commands, and writes `trace.jsonl`, `usage.json`, `diff.patch`, `verify.json`, `process.json`, `report.json`, and `report.md` receipts.
+
+The bundled smoke contract is `docs/08-References/benchmarks/so-impact-money-format-refactor.yaml`; it uses the deterministic fixture at `fixtures/so-impact/money-format-refactor` so the full receipt path can be tested without provider cost.
+
+```bash
+scripts/cos-so-impact-eval plan \
+  --contract docs/08-References/benchmarks/so-impact-money-format-refactor.yaml \
+  --json
+
+scripts/cos-so-impact-eval run \
+  --contract docs/08-References/benchmarks/so-impact-money-format-refactor.yaml \
+  --mode vanilla \
+  --mode full-so \
+  --json
+```
+
 ## Implementation slices
 
-1. Extend `scripts/so_vs_vanilla_benchmark.py` to emit contract-shaped receipts and a machine-readable `report.json`.
-2. Add a workflow capsule runner that creates a clean temporary checkout per mode and captures `trace.jsonl`, `diff.patch`, `usage.json`, and `verify.json`.
-3. Add provider/harness usage normalization so token and cost receipts use one schema.
-4. Add ablation switches for Graphify, process-loop, skill-selection, token-optimization, and governance-hook families.
-5. Add report rendering under `docs/09-Quality/evals/so-impact/`.
-6. Add contract tests that reject positive claims when verification, usage, diff, or trace receipts are missing.
-7. Promote slow or expensive replicated task-class runs to CI/nightly while keeping local smoke runs targeted.
+Completed first slice:
+
+1. `scripts/cos-so-impact-eval` emits contract-shaped workflow receipts and a machine-readable `report.json`.
+2. The runner creates a clean temporary capsule per mode and captures `trace.jsonl`, `diff.patch`, `usage.json`, `verify.json`, and `process.json`.
+3. The initial mode matrix includes Graphify, process-loop, skill-selection, context/token optimization, governance-hook, and minus-ablation switches as environment-controlled workflow modes.
+4. Reports render under `docs/09-Quality/evals/so-impact/` by default.
+5. Unit and red-team tests reject missing receipts and prove arbitrary-cwd wrapper portability.
+
+Remaining slices:
+
+1. Add provider/harness usage normalization so token and cost receipts use one schema when real providers emit usage.
+2. Connect live CLI/IDE harness runners so workflow commands can invoke actual agent sessions, not only deterministic smoke workflows.
+3. Add richer quality oracles for real diffs beyond the current receipt and trace contract.
+4. Promote slow or expensive replicated task-class runs to CI/nightly while keeping local smoke runs targeted.
 
 ## Validation checklist
 

@@ -23978,3 +23978,53 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: template
   metrics_file: none
+
+- id: scripts/cos-so-impact-eval
+  kind: script
+  owner_adr: ADR-338
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos-so-impact-eval
+  - scripts/cos_so_impact_eval.py
+  runtime_projection: false
+  behavior_evidence: SO-Wide Impact Evaluation Plane advisory wrapper that runs vanilla/full-SO/ablation workflow capsules and emits trace, usage, diff, verification, process, and report receipts; portable invocation covered by unit and red-team portability tests.
+  evidence_commands:
+  - python3 -m pytest tests/unit/test_cos_so_impact_eval.py tests/red_team/portability/test_cos_so_impact_eval_primitive.py -q
+  rollback_or_repair_command: Remove the SO impact eval wrapper lifecycle row, generated portable overlay entries, example contract, fixture, and tests; keep ADR-338 as historical design context.
+  sunset_criteria: Promote or replace when the dispatcher/harness can execute equivalent workflow-level SO-wide A/B and ablation comparisons with provider-normalized usage receipts.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_2
+  metrics_file: docs/09-Quality/evals/so-impact/{task-id}/{run-id}/report.json
+- id: scripts/cos_so_impact_eval.py
+  kind: script
+  owner_adr: ADR-338
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos_so_impact_eval.py
+  runtime_projection: false
+  behavior_evidence: SO-Wide Impact Evaluation Plane Python implementation for isolated workflow capsules, mode flagging, receipt capture, scoring, and report rendering; portable invocation covered by unit and red-team portability tests.
+  evidence_commands:
+  - python3 -m pytest tests/unit/test_cos_so_impact_eval.py tests/red_team/portability/test_cos_so_impact_eval_primitive.py -q
+  rollback_or_repair_command: Remove the implementation lifecycle row, generated portable overlay entries, example contract, fixture, and tests; keep ADR-338 as historical design context.
+  sunset_criteria: Promote or replace when the dispatcher/harness can execute equivalent workflow-level SO-wide A/B and ablation comparisons with provider-normalized usage receipts.
+  docs_claim_level: advisory
+  exit_behavior: library-cli
+  metrics_file: docs/09-Quality/evals/so-impact/{task-id}/{run-id}/report.json

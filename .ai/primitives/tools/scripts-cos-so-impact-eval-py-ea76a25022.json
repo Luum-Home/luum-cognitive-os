@@ -1,0 +1,100 @@
+{
+  "canonical_source": "scripts/cos_so_impact_eval.py",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "SO-Wide Impact Evaluation Plane Python implementation for isolated workflow capsules, mode flagging, receipt capture, scoring, and report rendering; portable invocation covered by unit and red-team portability tests.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "SO-Wide Impact Evaluation Plane Python implementation for isolated workflow capsules, mode flagging, receipt capture, scoring, and report rendering; portable invocation covered by unit and red-team portability tests.",
+    "evidence_commands": [
+      "python3 -m pytest tests/unit/test_cos_so_impact_eval.py tests/red_team/portability/test_cos_so_impact_eval_primitive.py -q"
+    ],
+    "metrics_file": "docs/09-Quality/evals/so-impact/{task-id}/{run-id}/report.json"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "library-cli",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "candidate",
+    "maturity": "advisory",
+    "owner_adr": "ADR-338",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "document",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "SO-Wide Impact Evaluation Plane Python implementation for isolated workflow capsules, mode flagging, receipt capture, scoring, and report rendering; portable invocation covered by unit and red-team portability tests.",
+      "evidence_commands": [
+        "python3 -m pytest tests/unit/test_cos_so_impact_eval.py tests/red_team/portability/test_cos_so_impact_eval_primitive.py -q"
+      ],
+      "metrics": [
+        "docs/09-Quality/evals/so-impact/{task-id}/{run-id}/report.json"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "unsupported"
+    },
+    "intent": "SO-Wide Impact Evaluation Plane Python implementation for isolated workflow capsules, mode flagging, receipt capture, scoring, and report rendering; portable invocation covered by unit and red-team portability tests.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "shell": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "scripts/cos_so_impact_eval.py"
+      ],
+      "runtime_projection": false
+    }
+  },
+  "portable_id": "scripts/cos_so_impact_eval.py",
+  "projection_targets": [
+    "scripts/cos_so_impact_eval.py"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/cos_so_impact_eval.py",
+  "supported_harnesses": [
+    "codex",
+    "claude",
+    "shell"
+  ]
+}

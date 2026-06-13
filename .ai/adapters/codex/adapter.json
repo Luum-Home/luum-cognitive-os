@@ -6,7 +6,7 @@
   "harness": "codex",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 763,
+  "projected_primitive_count": 765,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": false,
@@ -5263,6 +5263,20 @@
       "fidelity": "documented-only",
       "portable_id": "scripts/cos-skill-selection-report",
       "primitive_file": "primitives/tools/scripts-cos-skill-selection-report-be2383a884.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-so-impact-eval",
+      "primitive_file": "primitives/tools/scripts-cos-so-impact-eval-bc8fe925ce.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos_so_impact_eval.py",
+      "primitive_file": "primitives/tools/scripts-cos-so-impact-eval-py-ea76a25022.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
