@@ -16,7 +16,6 @@ from pathlib import Path
 from typing import Iterable
 
 from lib.project_paths import relpath
-from lib.script_helpers import shingles as token_shingles
 
 WORD_RE = re.compile(r"[A-Za-z0-9_./:-]+")
 PY_FUNC_RE = re.compile(r"^\s*(?:async\s+def|def)\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(")
@@ -47,6 +46,12 @@ def stable_id(kind: str, left: str, right: str, extra: str = "") -> str:
 
 def read_text(path: Path) -> str:
     return path.read_text(encoding="utf-8", errors="ignore")
+
+
+def token_shingles(tokens: list[str], n: int) -> set[str]:
+    if len(tokens) < n:
+        return set(tokens)
+    return {" ".join(tokens[i:i+n]) for i in range(len(tokens) - n + 1)}
 
 
 def normalize_line(line: str) -> str:

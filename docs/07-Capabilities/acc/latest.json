@@ -122,7 +122,7 @@
         "aspirational": 0,
         "coverage_pct": 0.0,
         "dormant": 0,
-        "generated_at": "2026-06-13T04:32:44Z",
+        "generated_at": "2026-06-13T05:24:41Z",
         "mapped": 268,
         "metadata": 0,
         "on_demand": 0,
@@ -4170,7 +4170,7 @@
           "p95_ms": 854
         },
         "overall_risk": "high",
-        "timestamp": "2026-06-13T04:34:35.585271+00:00"
+        "timestamp": "2026-06-13T05:26:29.370959+00:00"
       }
     },
     "primitive_interventions": {
@@ -4247,7 +4247,7 @@
     },
     "python_helper_duplication": {
       "command": "python3 scripts/primitive_duplication_audit.py --project-root . --include scripts --include lib --min-tokens 60 --threshold 0.86 --primitive-threshold 0.75 --json-out docs/06-Daily/reports/python-helper-duplication-latest.json --markdown docs/06-Daily/reports/python-helper-duplication-latest.md --baseline manifests/python-helper-duplication-baseline.json --fail-on-new",
-      "error": "{\"json\": \"<repo-root>/docs/06-Daily/reports/python-helper-duplication-latest.json\", \"markdown\": \"<repo-root>/docs/06-Daily/reports/python-helper-duplication-latest.md\", \"summary\": {\"by_common_home\": {\"lib/\": 84}, \"by_consumer_relevance\": {\"so-local-first\": 84}, \"by_kind\": {\"python-function-repeat\": 84}, \"files_scanned\": 725, \"findings\": 84}}\n",
+      "error": "{\"json\": \"<repo-root>/docs/06-Daily/reports/python-helper-duplication-latest.json\", \"markdown\": \"<repo-root>/docs/06-Daily/reports/python-helper-duplication-latest.md\", \"summary\": {\"by_common_home\": {\"lib/\": 85}, \"by_consumer_relevance\": {\"so-local-first\": 85}, \"by_kind\": {\"python-function-repeat\": 85}, \"files_scanned\": 725, \"findings\": 85}}\n",
       "source": "python_helper_duplication",
       "status": "failed",
       "summary": {}
@@ -33596,7 +33596,7 @@
         "skill_consumers:10",
         "hook_consumers:25",
         "rule_consumers:3",
-        "script_consumers:55",
+        "script_consumers:56",
         "test_consumers:144",
         "doc_consumers:177",
         "config_consumers:18",
@@ -146672,7 +146672,7 @@
         "skill_consumers:10",
         "hook_consumers:25",
         "rule_consumers:3",
-        "script_consumers:55",
+        "script_consumers:56",
         "test_consumers:144",
         "doc_consumers:177",
         "config_consumers:18",
@@ -148882,7 +148882,7 @@
       "coverage_debt:181"
     ]
   },
-  "generated_at": "2026-06-13T04:34:49Z",
+  "generated_at": "2026-06-13T05:26:44Z",
   "harness_projection": {
     "agents-md": {
       "display_name": "AGENTS.md",

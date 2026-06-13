@@ -815,6 +815,36 @@
       "common_home": "lib/",
       "confidence": 0.86,
       "consumer_relevance": "so-local-first",
+      "finding_id": "python-function-repeat:5c617ca987ff",
+      "kind": "python-function-repeat",
+      "left": "lib/duplicate_scanner.py::token_shingles",
+      "pair_key": "lib/duplicate_scanner.py::token_shingles :: lib/script_helpers.py::shingles",
+      "rationale": "Python functions have identical normalized AST bodies",
+      "recommendation": "extract-common-python-helper",
+      "right": "lib/script_helpers.py::shingles",
+      "severity": "medium",
+      "similarity": 1.0
+    },
+    {
+      "classification": "candidate",
+      "common_home": "lib/",
+      "confidence": 0.86,
+      "consumer_relevance": "so-local-first",
+      "finding_id": "python-function-repeat:c2a86e0d4042",
+      "kind": "python-function-repeat",
+      "left": "lib/duplicate_scanner.py::token_shingles",
+      "pair_key": "lib/duplicate_scanner.py::token_shingles :: scripts/docs_duplicate_audit.py::shingles",
+      "rationale": "Python functions have identical normalized AST bodies",
+      "recommendation": "extract-common-python-helper",
+      "right": "scripts/docs_duplicate_audit.py::shingles",
+      "severity": "medium",
+      "similarity": 1.0
+    },
+    {
+      "classification": "candidate",
+      "common_home": "lib/",
+      "confidence": 0.86,
+      "consumer_relevance": "so-local-first",
       "finding_id": "python-function-repeat:750cddda4ffa",
       "kind": "python-function-repeat",
       "left": "lib/engram_bundle_exporter.py::_bundle_sha256",
@@ -1220,21 +1250,6 @@
       "common_home": "lib/",
       "confidence": 0.86,
       "consumer_relevance": "so-local-first",
-      "finding_id": "python-function-repeat:9e2aefc953ee",
-      "kind": "python-function-repeat",
-      "left": "lib/script_helpers.py::shingles",
-      "pair_key": "lib/script_helpers.py::shingles :: scripts/docs_duplicate_audit.py::shingles",
-      "rationale": "Python functions have identical normalized AST bodies",
-      "recommendation": "extract-common-python-helper",
-      "right": "scripts/docs_duplicate_audit.py::shingles",
-      "severity": "medium",
-      "similarity": 1.0
-    },
-    {
-      "classification": "candidate",
-      "common_home": "lib/",
-      "confidence": 0.86,
-      "consumer_relevance": "so-local-first",
       "finding_id": "python-function-repeat:388b975608f8",
       "kind": "python-function-repeat",
       "left": "lib/skill_description_enricher.py::_read_text",
@@ -1278,36 +1293,37 @@
   "ratchet": {
     "baseline": "manifests/python-helper-duplication-baseline.json",
     "baseline_findings": 134,
-    "current_findings": 84,
+    "current_findings": 85,
     "new_finding_ids": [
       "python-function-repeat:9247f359f197",
       "python-function-repeat:509d9c5d269f",
       "python-function-repeat:ed54d35e38a1",
       "python-function-repeat:9da85dd79b73",
+      "python-function-repeat:5c617ca987ff",
+      "python-function-repeat:c2a86e0d4042",
       "python-function-repeat:c4b1378c9129",
       "python-function-repeat:c30423c0bdd6",
       "python-function-repeat:d7df92bc0135",
       "python-function-repeat:8da987ccf3f3",
       "python-function-repeat:3c5d41f9382a",
-      "python-function-repeat:5f9b2361a7e8",
-      "python-function-repeat:9e2aefc953ee"
+      "python-function-repeat:5f9b2361a7e8"
     ],
-    "new_findings": 11,
+    "new_findings": 12,
     "status": "fail"
   },
   "schema_version": "primitive-duplication-audit.v1",
   "summary": {
     "by_common_home": {
-      "lib/": 84
+      "lib/": 85
     },
     "by_consumer_relevance": {
-      "so-local-first": 84
+      "so-local-first": 85
     },
     "by_kind": {
-      "python-function-repeat": 84
+      "python-function-repeat": 85
     },
     "files_scanned": 725,
-    "findings": 84
+    "findings": 85
   },
-  "timestamp": "2026-06-13T04:34:03.644013+00:00"
+  "timestamp": "2026-06-13T05:25:56.988045+00:00"
 }

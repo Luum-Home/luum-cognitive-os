@@ -1,6 +1,6 @@
 # Agent Capability Coverage — Latest
 
-Generated: 2026-06-13T04:34:49Z
+Generated: 2026-06-13T05:26:44Z
 Phase: reconstruction
 Gate: pass
 
@@ -23,7 +23,7 @@ Gate: pass
 | codebase_itinerary | ok | `.cognitive-os/metrics/codebase-itinerary.jsonl` | `{"categories": {"read": 54}, "rows": 54, "sessions": 54, "tools": {"Read": 54}}` |
 | consumer_availability | ok | `manifests/primitive-consumer-availability.yaml` | `{"items": 908, "patterns": 6, "statuses": {"lifecycle-declared-maintainer": 1, "maintainer-only": 322, "pattern:so-local-only": 6, "projected-consumer-surface": 52, "shared-surface": 508, "shell-ci-candidate": 15, "so-local-only": 8, "unkno` |
 | consumer_projection | ok | `consumer_projection` | `{"by_harness_profile": {"agents-md/default": 82, "agents-md/full": 397, "aider/default": 82, "aider/full": 397, "amp-code/default": 82, "amp-code/full": 397, "augment-code/default": 82, "augment-code/full": 397, "claude/default": 82, "claud` |
-| cos_coverage | ok | `cos_coverage` | `{"aspirational": 0, "coverage_pct": 0.0, "dormant": 0, "generated_at": "2026-06-13T04:32:44Z", "mapped": 268, "metadata": 0, "on_demand": 0, "project": "<repo-root>", "real": 0, "tiers": {"A": 8, "B": 2, "C": 55, "D": 181}, "trend": {"cover` |
+| cos_coverage | ok | `cos_coverage` | `{"aspirational": 0, "coverage_pct": 0.0, "dormant": 0, "generated_at": "2026-06-13T05:24:41Z", "mapped": 268, "metadata": 0, "on_demand": 0, "project": "<repo-root>", "real": 0, "tiers": {"A": 8, "B": 2, "C": 55, "D": 181}, "trend": {"cover` |
 | docs_execution | ok | `docs_execution` | `{"items": 5796, "json": "<repo-root>/docs/06-Daily/reports/docs-execution-latest.json", "markdown": "<repo-root>/docs/06-Daily/reports/docs-execution-latest.md"}` |
 | docs_execution_report | ok | `docs/06-Daily/reports/docs-execution-latest.json` | `{"documents": {"AGENTS.md": {"done_weak_proof": 1, "planned": 1}, "README.md": {"done_weak_proof": 2}, "docs/00-MOCs/architecture.md": {"proposed": 2}, "docs/00-MOCs/decisions.md": {"stale": 1}, "docs/00-MOCs/entrypoints/HOW-TO-USE-COS.md":` |
 | documentation_truth | ok | `docs/06-Daily/reports/documentation-truth-latest.json` | `{"block_count": 0, "by_claim": {"consumer_projection_harnesses": {"pass": 17}, "documentation_truth_control": {"pass": 8}, "primitive_authority_write_effects": {"pass": 16}, "session_pending_protocol": {"pass": 75}, "subprocess_timeout_disc` |

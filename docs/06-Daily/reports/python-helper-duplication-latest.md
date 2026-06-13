@@ -1,17 +1,17 @@
 # Primitive Duplication Audit — Latest
 
-Generated: `2026-06-13T04:34:03.644013+00:00`
+Generated: `2026-06-13T05:25:56.988045+00:00`
 
 ## Summary
 
 - Files scanned: 725
-- Findings: 84
-- By kind: `{"python-function-repeat": 84}`
-- By common home: `{"lib/": 84}`
-- By consumer relevance: `{"so-local-first": 84}`
+- Findings: 85
+- By kind: `{"python-function-repeat": 85}`
+- By common home: `{"lib/": 85}`
+- By consumer relevance: `{"so-local-first": 85}`
 - Ratchet status: `fail`
 - Baseline findings: 134
-- New findings: 11
+- New findings: 12
 
 ## Top Candidates
 
@@ -71,6 +71,8 @@ Generated: `2026-06-13T04:34:03.644013+00:00`
 | python-function-repeat | candidate | 1.0 | `lib/dependency_tool_intake.py::load_coverage` | `lib/session_lifecycle.py::_read_json` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/dependency_tool_intake.py::load_coverage` | `lib/task_reconciliation.py::_read_json` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/dependency_tool_intake.py::load_coverage` | `scripts/primitive_harness_partials.py::_load_json` | extract-common-python-helper | `lib/` | so-local-first |
+| python-function-repeat | candidate | 1.0 | `lib/duplicate_scanner.py::token_shingles` | `lib/script_helpers.py::shingles` | extract-common-python-helper | `lib/` | so-local-first |
+| python-function-repeat | candidate | 1.0 | `lib/duplicate_scanner.py::token_shingles` | `scripts/docs_duplicate_audit.py::shingles` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/engram_bundle_exporter.py::_bundle_sha256` | `lib/engram_bundle_importer.py::_bundle_sha256` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/engram_bundle_exporter.py::_columns` | `lib/engram_bundle_importer.py::_existing_columns` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/engram_bundle_exporter.py::_sha256_file` | `lib/engram_bundle_importer.py::_sha256_file` | extract-common-python-helper | `lib/` | so-local-first |
@@ -98,7 +100,6 @@ Generated: `2026-06-13T04:34:03.644013+00:00`
 | python-function-repeat | candidate | 1.0 | `lib/release_freeze.py::to_dict` | `scripts/claim_enforcer.py::to_dict` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/script_helpers.py::object_map` | `scripts/private_content_audit.py::_payload_map` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/script_helpers.py::object_maps` | `scripts/private_content_audit.py::_payload_list` | extract-common-python-helper | `lib/` | so-local-first |
-| python-function-repeat | candidate | 1.0 | `lib/script_helpers.py::shingles` | `scripts/docs_duplicate_audit.py::shingles` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/skill_description_enricher.py::_read_text` | `scripts/primitive-behavior-audit.py::read_text` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/skill_failure_repair.py::_default_metrics_dir` | `lib/skill_synthesizer.py::_default_metrics_dir` | extract-common-python-helper | `lib/` | so-local-first |
 

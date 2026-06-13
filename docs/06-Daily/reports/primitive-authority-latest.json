@@ -8,7 +8,7 @@
     },
     {
       "changed_paths": [
-        ".cognitive-os/improvements/proposals/consumer-improvement-proposals-demo-20260613T043436Z.json"
+        ".cognitive-os/improvements/proposals/consumer-improvement-proposals-demo-20260613T052630Z.json"
       ],
       "id": "consumer-improvement-import",
       "returncode": 0,
@@ -60,7 +60,7 @@
       "unexpected_paths": []
     },
     {
-      "changed_count": 138,
+      "changed_count": 141,
       "changed_paths": [
         ".agents/skills/CATALOG.md",
         ".agents/skills/auto-refine",
@@ -149,7 +149,7 @@
       "unexpected_paths": []
     }
   ],
-  "generated_at": "2026-06-13T04:34:36+00:00",
+  "generated_at": "2026-06-13T05:26:30+00:00",
   "items": [
     {
       "authority_mode": "os-maintainer-write",
@@ -5199,7 +5199,7 @@
           "surface": "unknown"
         },
         {
-          "line": 1858,
+          "line": 1870,
           "operation": "symlink_to",
           "path": "../../.cognitive-os/skills/cos/CATALOG.md",
           "raw": "catalog_driver.symlink_to(\"../../.cognitive-os/skills/cos/CATALOG.md\")",
