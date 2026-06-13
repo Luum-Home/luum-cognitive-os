@@ -5,6 +5,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.29.30] - 2026-06-12 — "Test execution DX and token optimization hardening"
+
+### Added
+- Added the `cos-patch-release` primitive for repeatable patch release preparation, validation, publishing, and diagnostics.
+
+### Validation
+- `scripts/cos-patch-release validate` is the required patch-release validation lane.
+
 ## [0.29.29] - 2026-06-12 — "v0.29.29"
 
 ### Added
