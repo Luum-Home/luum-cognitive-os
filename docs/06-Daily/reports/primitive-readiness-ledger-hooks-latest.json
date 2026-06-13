@@ -442,7 +442,7 @@
         "rule": 6,
         "script": 68,
         "skill": 11,
-        "test": 90
+        "test": 91
       },
       "consumers": [
         {
@@ -1851,6 +1851,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cos_pytest_lastfailed_health.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_os_only_scope_family.py"
         },
         {
@@ -2041,7 +2045,7 @@
         "hook_consumers:42",
         "rule_consumers:6",
         "script_consumers:68",
-        "test_consumers:90",
+        "test_consumers:91",
         "doc_consumers:156",
         "config_consumers:24"
       ],
@@ -2057,7 +2061,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 397
+      "total_consumers": 398
     },
     {
       "confidence": "high",
@@ -6719,7 +6723,7 @@
         "rule": 4,
         "script": 6,
         "skill": 3,
-        "test": 17
+        "test": 18
       },
       "consumers": [
         {
@@ -7092,6 +7096,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cos_primitive_closure_check.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_os_only_scope_family.py"
         },
         {
@@ -7146,7 +7154,7 @@
         "hook_consumers:5",
         "rule_consumers:4",
         "script_consumers:6",
-        "test_consumers:17",
+        "test_consumers:18",
         "doc_consumers:55",
         "config_consumers:14"
       ],
@@ -7162,7 +7170,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 104
+      "total_consumers": 105
     },
     {
       "confidence": "high",

@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-06-12T23:53:43+00:00'
+generated_at: '2026-06-13T00:29:16+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
