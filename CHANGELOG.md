@@ -5,6 +5,21 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.29.31] - 2026-06-13 — "Process Loop Orchestration"
+
+### Added
+- Added the agent loop engineering runtime primitives: `loop-contract.yaml` plus `cos-loop-run`, `cos-loop-report`, `cos-loop-replay`, `cos-loop-guard`, and `cos-loop-eval`.
+- Added the process-loop contract layer with `cos-process-loop`, `cos-apply-progress`, `cos-fresh-review`, `cos-verify-report`, and `cos-skill-selection-report`.
+- Added source approval gating, stack/change-based skill-selection reports, executable fresh-review command mode, and `next_recommended` process status.
+
+### Fixed
+- Routed integration shard execution through the UV-managed Python environment so pytest is available consistently.
+- Stabilized RAM ceiling checks and quality duplicate scanner dependencies surfaced during release-prep validation.
+
+### Validation
+- `make test-laptop` passed across unit, audit, contract, architecture, system, red-team, behavior, hooks, and chaos lanes with 0 release-blocking failures.
+- `scripts/cos-patch-release validate` and release doctor passed for `v0.29.31`.
+
 ## [0.29.30] - 2026-06-12 — "Test execution DX and token optimization hardening"
 
 ### Added
