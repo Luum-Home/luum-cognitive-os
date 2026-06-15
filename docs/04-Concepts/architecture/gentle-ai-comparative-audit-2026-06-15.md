@@ -85,7 +85,52 @@ Observed scale from the external snapshot:
 | Cross-harness projection | `.ai` overlay, `.claude`, `.codex`, `.opencode`, harness drivers, lifecycle manifest. | Stronger governance/ACC than Gentle-AI; runtime fidelity varies by harness. |
 | Fresh review and adversarial review | `scripts/cos-fresh-review`, `hooks/adversarial-review-gate.sh`, code/pr review skills. | Present, but not yet tied as tightly to SDD dispatcher state. |
 
-## Main gaps for Cognitive OS
+## Whole-system functionality comparison
+
+The previous sections call out SDD because that is where the external snapshot is most distinctive, but the adoption question is broader: Cognitive OS should compare the full operating-system surface, not only one workflow. The table below maps complete functional domains.
+
+| Functional domain | Gentle-AI implementation evidence | Cognitive OS implementation evidence | Assessment | Adoption action for COS |
+|---|---|---|---|---|
+| Installer and sync runtime | `internal/app/app.go`, `internal/cli`, `internal/pipeline`, `internal/installcmd`, `internal/components/*`, `internal/state` | `scripts/cos_init.py`, `scripts/install-cos.sh`, `cmd/cos`, `scripts/cos-install-projection-audit`, install-boundary/lifecycle manifests | Gentle-AI is more cohesive and transactional; COS is broader and consumer-project aware. | Add a reusable transactional install/sync pipeline abstraction with rollback receipts for COS projection writes. |
+| Update and self-upgrade | `internal/update`, `internal/update/upgrade`, backup scope by installed agents, checksum/download strategy | release scripts, dependency maintenance hooks, package/version/release gates | Gentle-AI has stronger product-style self-update mechanics; COS has stronger release governance but less end-user self-upgrade UX. | Add an explicit `cos-upgrade-plan` / `cos-upgrade-apply` design with backup scope, checksum verification, and rollback. |
+| Cross-agent adapters | `internal/agents/*` for Claude, Codex, OpenCode, Cursor, Kiro, Gemini, Kimi, Qwen, Windsurf, etc. | `.ai/adapters`, `.claude`, `.codex`, `.opencode`, settings drivers, lifecycle support matrices | Both are cross-agent; Gentle-AI is adapter-interface cohesive, COS is manifest/projection cohesive. | Introduce a single typed adapter capability registry for COS so lifecycle claims, settings drivers, and install projection share one source. |
+| Asset projection | Embedded `internal/assets/*`, `internal/components/*/inject.go`, post-checks | `.ai/primitives`, `.cognitive-os/skills`, `.claude/skills`, generated settings, primitive lifecycle, projection audits | COS has more surfaces and stronger governance; Gentle-AI has stricter post-injection runtime checks. | Add `cos-projection-postcheck` and require it in primitive closure checklist. |
+| Permissions and safety defaults | `internal/components/permissions`, persona/theme injection, agent-specific settings | many hooks: secret, license, protected config, network egress, direct-main, symlink, conflict marker, branch ownership, release guard | COS is substantially stronger as a governance/safety OS. | Keep COS governance mesh; add per-adapter permission summary reports for operator clarity. |
+| MCP and persistent memory setup | `internal/components/engram`, `internal/components/mcp`, Engram/context7 injection and verification | memory lifecycle docs/hooks, MCP portability docs, provider/session telemetry, memory governance lib | Gentle-AI gives smoother install/setup for specific MCPs; COS is more policy-oriented and harness-neutral. | Add a `cos-mcp-doctor`/`cos-memory-doctor` user-facing aggregate if current diagnostics stay scattered. |
+| Skill delivery | Embedded skills under `internal/assets/skills`, skill presets, `internal/components/skills` | `skills/`, `.cognitive-os/skills`, `.claude/skills`, skill lifecycle, skill router, drift detector, efficacy telemetry | COS has more skill breadth and governance; Gentle-AI has stronger curated workflow bundle. | Keep broad skill set but add curated bundles/presets and a compact path registry. |
+| Skill discovery/routing | `.atl/skill-registry.md` path index via `internal/skillregistry` | `lib/skill_router.py`, semantic matcher, router benchmarks, prompt suggestion hooks | COS routing is smarter; Gentle-AI registry is cheaper and simpler. | Add registry as a complement to router, not as replacement. |
+| Process and loop engineering | SDD dispatcher, orchestrator assets, pipeline rollback, apply/verify/archive artifacts | `cos-loop-*`, `cos-process-loop`, process contract, fresh review, verify report, loop guard/eval/replay | COS has broader generic loop primitives; Gentle-AI has tighter SDD operationalization. | Extend process-loop to feature-specific dispatchers: SDD, release, bugfix, review, migration, refactor. |
+| Testing and TDD | Strict TDD skills, capability detection, verify-phase TDD audit, many Go tests | DoD profiles, stack detection, pytest/behavior/integration suites, consumer smokes, test efficiency targets | COS has broader testing infrastructure; Gentle-AI has clearer TDD workflow enforcement. | Add stack-detected strict TDD primitive and evidence verifier. |
+| Review and quality agents | Review personas/assets, Judgment Day agents, fresh-review workflow | adversarial review gate, code review hooks, doc review personas, fresh review script, governance gates | Both strong; Gentle-AI is persona/role polished, COS is gate/policy heavy. | Add review workload forecast and make fresh-review findings first-class process-loop entities. |
+| Token/context efficiency | Skill registry, phase prompts, delegation, cached state, model/effort routing | Graphify, context budget, context diet, preamble budget, telemetry, token reports, SO impact eval | COS is stronger on measurement; Gentle-AI is strong on workflow-induced savings. | Measure every adopted workflow pattern with `cos-so-impact-eval`; do not claim unmeasured savings. |
+| Product DX / TUI | `internal/tui`, install/sync screens, strict-TDD selection, model/profile controls | CLI/scripts/Make targets, docs, skills, hooks; no equivalent integrated TUI | Gentle-AI has stronger operator UX. | Consider `cos doctor/status` consolidation before a TUI; a TUI is optional after primitives stabilize. |
+| Backup/rollback | `internal/backup`, `internal/pipeline/rollback.go`, update backup paths | merge rollback, branch guards, git/stash protection, release freeze | Gentle-AI has install/update rollback shape; COS has git/process safety. | Add rollback receipts for generated projection writes and installer mutations. |
+| Release and dependency maintenance | Self-update strategy, version checks, advisory cooldown | release guard, release check, dependency adoption gate, package/dependency maintenance hooks | COS is stronger for repo release governance; Gentle-AI is stronger for installed binary lifecycle. | Add installed-version health report to `cos-doctor` family. |
+| Telemetry and impact evaluation | Update/advisory state and workflow state; no controlled SO-wide A/B benchmark found | telemetry libs, token aggregators, SO-impact eval, Graphify benchmarks, skill efficacy reports | COS is ahead for measurement and benchmarks. | Keep COS measurement plane as proof layer for all future adoption. |
+| Documentation and decision governance | OpenSpec/skills/docs assets | ADRs, ACC, lifecycle manifests, MOCs, business master plan, projection fidelity | COS is much stronger on durable governance. | Use this advantage to prevent external-pattern adoption from becoming undocumented prompt drift. |
+
+## System-wide adoption backlog
+
+Priority should not be “copy SDD”. It should be “adopt the missing operating-system mechanics across every COS domain”. Ordered backlog:
+
+1. **Typed adapter capability registry**: one COS-owned table for lifecycle events, config paths, subagent support, MCP support, native hooks, projection level, proof level, and postcheck expectations per harness.
+2. **Transactional projection pipeline**: prepare/apply/verify/rollback receipts for install/sync/projection operations; use for `.claude`, `.codex`, `.opencode`, `.cognitive-os`, and `.ai` writes.
+3. **Projection postcheck primitive**: verify generated assets exist, contain expected keys/commands/hooks, are non-empty, and match lifecycle claims.
+4. **Unified `cos status` dispatcher family**: not only SDD. Add status dispatchers for SDD, process-loop, release, dependency maintenance, token budget, Graphify readiness, skill registry freshness, and projection health.
+5. **Compact skill registry path index**: cached registry for all projected/user/project skills, integrated with the existing router.
+6. **Stack-detected strict TDD plane**: generic testing capabilities detector plus evidence verifier.
+7. **Operator UX consolidation**: a single `cos doctor/status` surface before any TUI, summarizing install state, adapters, hooks, MCP/memory, skills, tokens, Graphify, process loops, and release readiness.
+8. **Self-upgrade/install health**: backup scope, checksum verification, update advisories, rollback plan, and installed-version report.
+9. **Review workload forecast**: line/file/risk estimates before apply/review/release, tied into process-loop and fresh-review.
+10. **SO-wide measured adoption loop**: every major adopted pattern gets a `cos-so-impact-eval` ablation before product claims.
+
+## Revised conclusion
+
+The external snapshot is not only a useful SDD reference. It is a compact example of an agent-OS product loop: install/sync, adapter detection, asset injection, memory/MCP setup, skill distribution, workflow dispatch, strict verification, update/rollback, and operator UX live close together. Cognitive OS is broader and more governance-heavy, but the next maturity jump is to make its many primitives feel like one coherent installed operating system. That means transactional projection, typed adapter capabilities, unified status, postchecks, compact registries, and measured adoption across all major features.
+
+## Workflow-specific gaps for Cognitive OS
+
+The system-wide backlog above is the broader adoption plan. The following table keeps the SDD/workflow-specific gaps that originally motivated this audit.
 
 | Gap | Why Gentle-AI is ahead | Recommended COS adoption |
 |---|---|---|
@@ -109,7 +154,9 @@ Observed scale from the external snapshot:
 | Hook safety mesh | COS has many deterministic guards: git safety, secret/content/license policy, context budget, duplicate quality, SO impact trigger. |
 | External adoption doctrine | COS already has explicit external-tool adoption boundaries and license hygiene. |
 
-## Adoption roadmap
+## Workflow-specific adoption roadmap
+
+This roadmap covers the SDD/process slice only; system-wide operating-system improvements are tracked in the backlog above.
 
 ### Slice 1 — SDD status dispatcher parity
 
