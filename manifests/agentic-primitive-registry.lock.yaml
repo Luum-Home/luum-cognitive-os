@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-06-13T21:47:06+00:00'
+generated_at: '2026-06-15T14:56:35+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
@@ -5265,6 +5265,17 @@ primitives:
   - scripts/active_primitive_index.py
   - docs/02-Decisions/adrs/ADR-127-active-primitive-index.md
   sha256: 8ee1bc81b17ae0a2149e2ddbbb8b923100a9a7e0e2ba7ec0c45a89e2623b4583
+- id: scripts/cos-adapter-capabilities
+  kind: script
+  owner_adr: ADR-339
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-adapter-capabilities
+  - scripts/cos_efficiency_primitives.py
+  sha256: 6e955ffde73806f449f066786c52d55bd8e6bb4b15450b16eb616df7747eb4dc
 - id: scripts/cos-adapter-compile
   kind: script
   owner_adr: ADR-258
@@ -5491,6 +5502,17 @@ primitives:
   - lib/consumer_fleet_audit.py
   - docs/04-Concepts/architecture/consumer-fleet-audit.md
   sha256: 23e351a9c27a8160bf100f610ebf36483b404f0fb0fc8b8f161701ffd2ef9aab
+- id: scripts/cos-context-plan
+  kind: script
+  owner_adr: ADR-339
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-context-plan
+  - scripts/cos_efficiency_primitives.py
+  sha256: f80c6cfa671361c17561854d98d74baf64c72384c9ec93d2fa2b803347a14364
 - id: scripts/cos-coordination-status.sh
   kind: script
   owner_adr: ADR-146
@@ -6494,6 +6516,17 @@ primitives:
   projection_targets:
   - scripts/cos-product-answer-refresh
   sha256: 06fd3076801302b11de4e4deb1ee08f7e509801568c82bbf969ec8a11ec8622d
+- id: scripts/cos-projection-transaction
+  kind: script
+  owner_adr: ADR-339
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-projection-transaction
+  - scripts/cos_efficiency_primitives.py
+  sha256: bf205e90ec9b823641fbd3e60b5e3168a100e0975edfa83674482992db2c2e31
 - id: scripts/cos-provider-call
   kind: script
   owner_adr: ADR-146
@@ -6620,6 +6653,28 @@ primitives:
   projection_targets:
   - scripts/cos-repo-map
   sha256: df8c048aa7f84d5d581e37f32963308ac31af2f22b257e1d2f1e4b2a1ebc6e19
+- id: scripts/cos-review-workload-forecast
+  kind: script
+  owner_adr: ADR-339
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-review-workload-forecast
+  - scripts/cos_efficiency_primitives.py
+  sha256: af09d12f830d7b05329abce648432e800ec7a4cd3127f11b1ad183282caf4ae5
+- id: scripts/cos-role-selection-report
+  kind: script
+  owner_adr: ADR-339
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-role-selection-report
+  - scripts/cos_efficiency_primitives.py
+  sha256: 4d87c9c911834581617f5ef039bd72092a824e404c344b580d4df7f978517c2b
 - id: scripts/cos-run-task
   kind: script
   owner_adr: ADR-146
@@ -6774,6 +6829,17 @@ primitives:
   projection_targets:
   - scripts/cos-skill-description-enrich
   sha256: 8461b4529997dad900bda6e48d777dd25aeab86697c26630b4d6f944e4b045b1
+- id: scripts/cos-skill-registry-refresh
+  kind: script
+  owner_adr: ADR-339
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-skill-registry-refresh
+  - scripts/cos_efficiency_primitives.py
+  sha256: c5eada02c3879779c641c56878e0bb19e2f5145183324479e902857c1a135e08
 - id: scripts/cos-skill-selection-report
   kind: script
   owner_adr: ADR-337
@@ -6806,6 +6872,17 @@ primitives:
   - scripts/cos-so-impact-eval
   - scripts/cos_so_impact_eval.py
   sha256: eefcedd31f8fd179a022058ae72837f31d98662a379639c299b688363caf0695
+- id: scripts/cos-status
+  kind: script
+  owner_adr: ADR-339
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-status
+  - scripts/cos_efficiency_primitives.py
+  sha256: f353fa2e680d4d9ea9bfd0f847a4570d4da1b36714cd626833ca6e1578548342
 - id: scripts/cos-status.sh
   kind: script
   owner_adr: ADR-146
@@ -6839,6 +6916,17 @@ primitives:
   - scripts/cos-task-submit
   - scripts/cos_service_control_plane.py
   sha256: 98b9a2badfc809159f61fa7167e7207384ef466001c03bf49983b5aa0c8b8f6c
+- id: scripts/cos-tdd-evidence-verify
+  kind: script
+  owner_adr: ADR-339
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-tdd-evidence-verify
+  - scripts/cos_efficiency_primitives.py
+  sha256: d5a00a7e7efedf634f3b23237827d88de5cf114bc5b5d6499024ed10a0804887
 - id: scripts/cos-team
   kind: script
   owner_adr: ADR-146
@@ -6902,6 +6990,17 @@ primitives:
   - scripts/cos-test-slow-report
   - scripts/cos_test_slow_report.py
   sha256: 11507928a18139d25f7bedde05117d83a2dc05263ced0625f86410c2d75d2cd3
+- id: scripts/cos-testing-capabilities
+  kind: script
+  owner_adr: ADR-339
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-testing-capabilities
+  - scripts/cos_efficiency_primitives.py
+  sha256: f33fe3d88fab6c395f7bae19a7648cda983e390a4a60e8eaa5ef9d20bc8c4d40
 - id: scripts/cos-tier-claim-audit
   kind: script
   owner_adr: ADR-133
@@ -7230,6 +7329,16 @@ primitives:
   projection_targets:
   - scripts/cos_dispatch_smoke.py
   sha256: 4452735c8559811b0ea6bb7748b422f9e0b2d207f2b013f80cdf92233088a9a1
+- id: scripts/cos_efficiency_primitives.py
+  kind: script-lib
+  owner_adr: ADR-339
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos_efficiency_primitives.py
+  sha256: 25a31fb0a5b4f6ac9850f3f1dabd4766e9d992b7944f696744cee00ad0306855
 - id: scripts/cos_false_positive_ledger.py
   kind: script
   owner_adr: ADR-146

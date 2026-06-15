@@ -6,7 +6,7 @@
   "harness": "codex",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 767,
+  "projected_primitive_count": 777,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": false,
@@ -1714,6 +1714,13 @@
       "fidelity": "documented-only",
       "portable_id": "hooks/_lib/tuning.sh",
       "primitive_file": "primitives/other-script/hooks-lib-tuning-sh-6d8f681c90.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos_efficiency_primitives.py",
+      "primitive_file": "primitives/other-script/scripts-cos-efficiency-primitives-py-1f8f5e6574.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
@@ -5044,6 +5051,13 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": "scripts/cos-adapter-capabilities",
+      "primitive_file": "primitives/tools/scripts-cos-adapter-capabilities-d9fdb71147.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": "scripts/cos-agent-daemon",
       "primitive_file": "primitives/tools/scripts-cos-agent-daemon-12ede02661.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
@@ -5067,6 +5081,13 @@
       "fidelity": "documented-only",
       "portable_id": "scripts/cos-conflict-marker-guard",
       "primitive_file": "primitives/tools/scripts-cos-conflict-marker-guard-498acf8f29.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-context-plan",
+      "primitive_file": "primitives/tools/scripts-cos-context-plan-fab43eb549.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
@@ -5275,6 +5296,34 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": "scripts/cos-projection-transaction",
+      "primitive_file": "primitives/tools/scripts-cos-projection-transaction-c3f8bd57ac.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-review-workload-forecast",
+      "primitive_file": "primitives/tools/scripts-cos-review-workload-forecast-d466858497.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-role-selection-report",
+      "primitive_file": "primitives/tools/scripts-cos-role-selection-report-751d275800.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-skill-registry-refresh",
+      "primitive_file": "primitives/tools/scripts-cos-skill-registry-refresh-f10164c8c0.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": "scripts/cos-skill-selection-report",
       "primitive_file": "primitives/tools/scripts-cos-skill-selection-report-be2383a884.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
@@ -5291,6 +5340,27 @@
       "fidelity": "documented-only",
       "portable_id": "scripts/cos_so_impact_eval.py",
       "primitive_file": "primitives/tools/scripts-cos-so-impact-eval-py-ea76a25022.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-status",
+      "primitive_file": "primitives/tools/scripts-cos-status-97737f2a65.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-tdd-evidence-verify",
+      "primitive_file": "primitives/tools/scripts-cos-tdd-evidence-verify-e4444ebdb9.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-testing-capabilities",
+      "primitive_file": "primitives/tools/scripts-cos-testing-capabilities-ca3d611ba2.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
