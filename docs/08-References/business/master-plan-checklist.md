@@ -385,3 +385,4 @@ Pendings remaining (called out per ADR by [`IMPLEMENTATION-CHECKLIST-2026-05-07.
 - [x] **Pyrefly TRIAL gate** — `scripts/cos-pyrefly-pilot`, `make typecheck-pyrefly`, `[tool.pyrefly]`, and radar addendum added as an advisory Python type-check lane; promotion blocked on baseline triage.
 
 - [x] Add atomic primitive-closure gate to prevent lifecycle/overlay/ACC/registry/projection drift from surfacing as cascading test failures. See `docs/04-Concepts/architecture/primitive-closure-atomic-check.md`.
+- [ ] Port the efficiency operating model into COS primitives: `cos status`, typed adapter capability registry, transactional projection, compact skill registry, context plan, role-selection report, strict TDD evidence, and SO-wide measured adoption. See [`cognitive-os-efficiency-operating-model.md`](cognitive-os-efficiency-operating-model.md).
