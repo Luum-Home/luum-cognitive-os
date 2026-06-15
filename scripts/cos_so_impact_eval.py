@@ -44,6 +44,32 @@ DEFAULT_MODES = [
     "full-so-minus-process-loop",
 ]
 
+TASK_FAMILIES = [
+    "bugfix",
+    "refactor",
+    "feature",
+    "backend-endpoint",
+    "frontend-component",
+    "docs-release",
+    "test-repair",
+]
+
+METRIC_CATALOG = [
+    "total_tokens",
+    "input_tokens",
+    "output_tokens",
+    "context_lines_read",
+    "tool_calls",
+    "discovery_calls",
+    "files_touched",
+    "relevant_files_found",
+    "tests_passed",
+    "wall_clock",
+    "retries",
+    "false_claims",
+    "final_diff_quality",
+]
+
 MODE_FLAGS: dict[str, dict[str, str]] = {
     "vanilla": {
         "COS_DISABLE_ALL_GOVERNANCE": "1",
@@ -599,6 +625,16 @@ def eval_to_dict(receipt: EvalReceipt) -> dict[str, Any]:
     }
 
 
+def catalog() -> dict[str, Any]:
+    return {
+        "schema": f"{SCHEMA}.catalog",
+        "task_families": TASK_FAMILIES,
+        "modes": DEFAULT_MODES,
+        "metrics": METRIC_CATALOG,
+        "claim_boundary": "Product claims require paired run receipts with verification passing before token/cost comparisons are interpreted.",
+    }
+
+
 def plan(contract_path: Path, modes_filter: list[str] | None) -> dict[str, Any]:
     contract = load_contract(contract_path)
     modes = modes_filter or contract["modes"]
@@ -616,6 +652,8 @@ def plan(contract_path: Path, modes_filter: list[str] | None) -> dict[str, Any]:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Run SO-wide vanilla/full-SO/ablation workflow impact evals.")
     sub = parser.add_subparsers(dest="command", required=True)
+    catalog_p = sub.add_parser("catalog", help="print supported task families, modes, metrics, and claim boundary")
+    catalog_p.add_argument("--json", action="store_true", help="Emit JSON")
     plan_p = sub.add_parser("plan", help="validate a contract and print the planned matrix")
     run_p = sub.add_parser("run", help="execute the controlled workflow matrix")
     for p in (plan_p, run_p):
@@ -627,8 +665,21 @@ def main(argv: list[str] | None = None) -> int:
     run_p.add_argument("--keep-capsules", action="store_true", help="Keep copied working directories for inspection")
 
     args = parser.parse_args(argv)
-    contract_path = Path(args.contract).resolve()
     try:
+        if args.command == "catalog":
+            payload = catalog()
+            if args.json:
+                print(json.dumps(payload, indent=2, sort_keys=True))
+            else:
+                print("SO-wide impact eval catalog")
+                print("Task families:")
+                for family in payload["task_families"]:
+                    print(f"  - {family}")
+                print("Modes:")
+                for mode in payload["modes"]:
+                    print(f"  - {mode}")
+            return 0
+        contract_path = Path(args.contract).resolve()
         if args.command == "plan":
             payload = plan(contract_path, args.modes)
             if args.json:

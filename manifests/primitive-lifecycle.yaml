@@ -24041,6 +24041,256 @@ primitives:
   exit_behavior: template
   metrics_file: none
 
+
+- id: scripts/cos_efficiency_primitives.py
+  kind: script-lib
+  owner_adr: ADR-339
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos_efficiency_primitives.py
+  runtime_projection: false
+  behavior_evidence: Efficiency operating-model shared Python implementation for status, adapter capability, projection transaction, skill registry, context plan, role selection, testing capability, TDD evidence, and review workload advisory receipts.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_efficiency_primitives.py -q
+  rollback_or_repair_command: Remove the efficiency primitive wrappers and lifecycle rows, then rerun registry lock generation and keep ADR-339 as historical design context.
+  sunset_criteria: Promote or replace when native harness dispatchers provide equivalent status, context, role, testing, projection, and review workload receipts.
+  docs_claim_level: advisory
+  exit_behavior: library-cli
+  metrics_file: none
+- id: scripts/cos-status
+  kind: script
+  owner_adr: ADR-339
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos-status
+  - scripts/cos_efficiency_primitives.py
+  runtime_projection: false
+  behavior_evidence: Advisory aggregate status wrapper that reports detected adapters, skill count, testing capability, review risk, selected context count, roles, blockers, and nextRecommended.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_efficiency_primitives.py -q
+  rollback_or_repair_command: Remove scripts/cos-status and the lifecycle row if status aggregation becomes misleading.
+  sunset_criteria: Replace when a native cos CLI status command owns the same JSON schema.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: scripts/cos-adapter-capabilities
+  kind: script
+  owner_adr: ADR-339
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos-adapter-capabilities
+  - scripts/cos_efficiency_primitives.py
+  runtime_projection: false
+  behavior_evidence: Advisory adapter capability registry wrapper that reports config paths, lifecycle events, subagent/MCP support, projection level, proof level, and detected evidence.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_efficiency_primitives.py -q
+  rollback_or_repair_command: Remove scripts/cos-adapter-capabilities and the lifecycle row if adapter capability reporting drifts from harness support.
+  sunset_criteria: Replace when the typed adapter capability registry becomes the source for all settings drivers.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: scripts/cos-projection-transaction
+  kind: script
+  owner_adr: ADR-339
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos-projection-transaction
+  - scripts/cos_efficiency_primitives.py
+  runtime_projection: false
+  behavior_evidence: Advisory projection transaction wrapper that plans or backs up target files before projection writes and emits rollback hints.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_efficiency_primitives.py -q
+  rollback_or_repair_command: Remove scripts/cos-projection-transaction and restore files from recorded backup roots if a transaction plan is wrong.
+  sunset_criteria: Replace when install/sync projection writes are fully transactional with built-in rollback receipts.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/projection-transactions/{timestamp}/
+- id: scripts/cos-skill-registry-refresh
+  kind: script
+  owner_adr: ADR-339
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos-skill-registry-refresh
+  - scripts/cos_efficiency_primitives.py
+  runtime_projection: false
+  behavior_evidence: Advisory compact skill registry wrapper that emits project/user skill path and description index plus a fingerprint cache without copying full skill bodies.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_efficiency_primitives.py -q
+  rollback_or_repair_command: Delete .cognitive-os/skill-registry.md and .cognitive-os/.skill-registry.cache.json, then rerun the wrapper after repairing skill metadata.
+  sunset_criteria: Promote when startup automation and projection checks keep the registry fresh across supported harnesses.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/.skill-registry.cache.json
+- id: scripts/cos-context-plan
+  kind: script
+  owner_adr: ADR-339
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos-context-plan
+  - scripts/cos_efficiency_primitives.py
+  runtime_projection: false
+  behavior_evidence: Advisory context planning wrapper that combines git changed files, goal term overlap, and line estimates to suggest bounded files to inspect before broad reads.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_efficiency_primitives.py -q
+  rollback_or_repair_command: Demote scripts/cos-context-plan and fall back to Graphify/query-tailored context primitives if selection quality regresses.
+  sunset_criteria: Replace when Graphify and query-tailored context produce a unified measured context plan.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: scripts/cos-role-selection-report
+  kind: script
+  owner_adr: ADR-339
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos-role-selection-report
+  - scripts/cos_efficiency_primitives.py
+  runtime_projection: false
+  behavior_evidence: Advisory role selection wrapper that emits planner, implementer, tester, reviewer, and release-checker role recommendations with budgets and stop conditions from task shape.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_efficiency_primitives.py -q
+  rollback_or_repair_command: Remove scripts/cos-role-selection-report if role recommendations create misleading delegation pressure.
+  sunset_criteria: Promote when process-loop or harness dispatch consumes role budgets directly.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: scripts/cos-testing-capabilities
+  kind: script
+  owner_adr: ADR-339
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos-testing-capabilities
+  - scripts/cos_efficiency_primitives.py
+  runtime_projection: false
+  behavior_evidence: Advisory stack detector for Node, Python, Go, Rust, Maven, and Gradle test/quality commands; used to gate strict TDD expectations.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_efficiency_primitives.py -q
+  rollback_or_repair_command: Remove scripts/cos-testing-capabilities or demote strict TDD evidence when stack detection is inaccurate.
+  sunset_criteria: Replace when stack detection is centralized in a broader COS project capability registry.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: scripts/cos-tdd-evidence-verify
+  kind: script
+  owner_adr: ADR-339
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos-tdd-evidence-verify
+  - scripts/cos_efficiency_primitives.py
+  runtime_projection: false
+  behavior_evidence: Advisory strict-TDD evidence verifier that checks RED, GREEN, TRIANGULATE, REFACTOR, safety-net markers, test files, and detected runner support.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_efficiency_primitives.py -q
+  rollback_or_repair_command: Demote scripts/cos-tdd-evidence-verify if it blocks valid non-TDD workflows or misses common evidence formats.
+  sunset_criteria: Promote when verify phases consume this report and false-positive fixtures are stable across stacks.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_2
+  metrics_file: none
+- id: scripts/cos-review-workload-forecast
+  kind: script
+  owner_adr: ADR-339
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos-review-workload-forecast
+  - scripts/cos_efficiency_primitives.py
+  runtime_projection: false
+  behavior_evidence: Advisory review workload forecast wrapper that reports changed files, line deltas, risk, and split/review recommendations before apply or review.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_efficiency_primitives.py -q
+  rollback_or_repair_command: Remove scripts/cos-review-workload-forecast if workload risk classification proves misleading.
+  sunset_criteria: Promote when process-loop/fresh-review uses workload forecasts for split decisions.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
 - id: scripts/cos-so-impact-eval
   kind: script
   owner_adr: ADR-338

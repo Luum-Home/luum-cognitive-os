@@ -212,6 +212,25 @@ These phrases should route to the efficiency workflow once implemented:
 - “cuánto contexto/tokens ahorramos”
 - “qué hago después para terminar esto”
 
+## Implemented advisory slice — 2026-06-15
+
+ADR-339 introduced the first JSON-first, advisory implementation slice:
+
+| Roadmap item | Command | Current status |
+|---|---|---|
+| `cos status` | `scripts/cos-status --json` | Aggregates adapter detection, skill count, testing capability, review risk, selected context count, roles, blockers, and `next_recommended`. |
+| typed adapter capability registry | `scripts/cos-adapter-capabilities --json` | Reports config paths, lifecycle events, native hook support, subagent/MCP support, projection level, proof level, and detected evidence. |
+| transactional projection pipeline | `scripts/cos-projection-transaction --path <file> [--apply] --json` | Plans projection targets and can back up existing files before projection writes; full apply/verify/rollback integration remains a later slice. |
+| compact skill registry | `scripts/cos-skill-registry-refresh --json` | Writes `.cognitive-os/skill-registry.md` plus `.cognitive-os/.skill-registry.cache.json`; stores paths/descriptions only, not full skill bodies. |
+| context plan | `scripts/cos-context-plan --goal "..." --json` | Suggests bounded files from git diff and goal-term overlap; Graphify/query-tailored unification remains a later slice. |
+| role selection | `scripts/cos-role-selection-report --goal "..." --json` | Emits role recommendations, tool classes, budgets, and stop conditions from task shape. |
+| testing capabilities | `scripts/cos-testing-capabilities --json` | Detects Node, Python, Go, Rust, Maven, and Gradle test/quality commands. |
+| TDD evidence verify | `scripts/cos-tdd-evidence-verify --evidence evidence.md --json` | Checks RED/GREEN/TRIANGULATE/REFACTOR/safety-net markers and test files when runners exist. |
+| review workload forecast | `scripts/cos-review-workload-forecast --json` | Reports changed files, line deltas, risk level, and split/review recommendations. |
+| SO impact eval expansion | `scripts/cos-so-impact-eval catalog --json` | Lists supported task families, modes, metrics, and claim boundary for measured adoption. |
+
+These commands are `candidate/advisory` lifecycle primitives. They are receipts and planning aids, not universal runtime enforcement yet.
+
 ## Public messaging boundary
 
 Safe message:
