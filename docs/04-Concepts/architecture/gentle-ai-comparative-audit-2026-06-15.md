@@ -26,7 +26,24 @@ From the external snapshot:
 go test ./internal/sddstatus ./internal/skillregistry ./internal/pipeline ./internal/components/sdd ./internal/components/filemerge ./internal/app ./internal/model ./internal/catalog -count=1
 ```
 
-Result: all selected packages passed.
+Result: all selected packages passed. Re-ran the same focused package set during the deep-code addendum pass; all selected packages passed again.
+
+From Cognitive OS after the addendum update:
+
+```bash
+COS_TEST_PYTHON=.venv/bin/python .venv/bin/python -m pytest \
+  tests/unit/test_cos_process_loop.py \
+  tests/unit/test_cos_loop.py \
+  tests/unit/test_sdd_resume.py \
+  tests/behavior/test_sdd_transitions.py \
+  tests/behavior/test_sdd_governance.py \
+  tests/unit/test_skill_router.py \
+  tests/unit/test_so_impact_eval_trigger_hook.py \
+  tests/unit/test_cos_so_impact_eval.py \
+  -q
+```
+
+Result: `187 passed in 52.36s`.
 
 Observed scale from the external snapshot:
 
@@ -144,6 +161,75 @@ Deliverables:
 - Map COS execution profiles to phase assignments.
 - Project into supported harness adapters with proof-level caveats.
 - Measure token/cost impact using `cos-so-impact-eval` rather than claiming savings from configuration alone.
+
+## Deep source-code comparison addendum
+
+This addendum compares implementation shape, not only feature labels. The external snapshot was refreshed with `git fetch origin main --depth 1` on 2026-06-15; local `HEAD` and `origin/main` both resolved to `7f3c8103aed1f60651102a35018b9ccd30653e90`.
+
+### Codebase shape
+
+| Dimension | Gentle-AI snapshot | Cognitive OS snapshot | Interpretation |
+|---|---:|---:|---|
+| Primary implementation style | Go CLI plus embedded assets | Python/Bash/Go/TS primitives plus generated projections | Gentle-AI is more cohesive as one binary; COS is broader and more portable, but closure across projections is inherently harder. |
+| Files counted for audit | 804 | 21,419 | COS count includes generated/projection-heavy surfaces such as `.cognitive-os`, `.claude`, `.ai`, tests, manifests, and adapters; this explains why primitive changes require more contract closure. |
+| Test artifacts | 173 Go test files | 2,074 Python test files plus Go/Bash/TS tests | Gentle-AI has tight Go unit coverage around its core; COS has much broader regression coverage and projection/governance tests. |
+| Skills | 29 `SKILL.md` assets | 409 `SKILL.md` surfaces | Gentle-AI keeps fewer phase-focused skills; COS carries generic, projected, and consumer-facing skills. |
+| Orchestrator assets | 12 embedded orchestrator assets | 23 orchestrator/process-loop surfaces counted in scripts/docs/assets | Gentle-AI's orchestration is concentrated in SDD; COS has SDD plus loop, process, token, Graphify, and SO-impact planes. |
+
+### Runtime command surface
+
+Gentle-AI exposes a compact native command surface in `internal/app/app.go`: `install`, `sync`, `uninstall`, `doctor`, `skill-registry refresh`, `sdd-status`, and `sdd-continue`. The key design choice is that SDD status and continuation are native CLI commands, not only prompt text.
+
+Cognitive OS exposes many more individual primitives, including `scripts/cos-loop-run`, `scripts/cos-loop-report`, `scripts/cos-loop-guard`, `scripts/cos-loop-replay`, `scripts/cos-loop-eval`, `scripts/cos-process-loop`, `scripts/cos-apply-progress`, `scripts/cos-fresh-review`, `scripts/cos-verify-report`, `scripts/cos-skill-selection-report`, and `scripts/cos-so-impact-eval`. The COS advantage is composability; the gap is that SDD still lacks one native authoritative dispatcher equivalent to Gentle-AI's `sdd-status`.
+
+### SDD state and dispatcher
+
+`internal/sddstatus/status.go` is the strongest transferable design. Its `Status` schema includes `schemaName`, `schemaVersion`, `changeName`, `artifactStore`, `planningHome`, `changeRoot`, `artifactPaths`, `contextFiles`, `artifacts`, `taskProgress`, `dependencies`, `applyState`, `actionContext`, `relationships`, optional `phaseInstructions`, `nextRecommended`, and `blockedReasons`. `resolveNextRecommended` prefers apply over verify while implementation remains, routes to verify when implementation is complete, routes to archive when verification is done, then falls back through missing planning artifacts in dependency order before returning `resolve-blockers`.
+
+COS `scripts/cos_process_loop.py` already computes a generic `next_recommended_action` across source approval, skill selection, apply progress, fresh review, verification, and final verdict. That is broader than SDD, but it is process-contract oriented rather than SDD-artifact authoritative. The adoption should not replace `cos-process-loop`; it should add `cos-sdd-status` or an SDD schema mode that maps SDD artifacts into the same computable process vocabulary.
+
+### Skill registry versus skill router
+
+Gentle-AI's `internal/skillregistry/registry.go` emits `.atl/skill-registry.md`, computes a fingerprint cache at `.atl/.skill-registry.cache.json`, orders project skill directories before user/global directories, and avoids dumping full skill bodies into runtime context. `internal/components/sdd/inject.go` installs Codex/Claude startup automation to refresh that registry quietly.
+
+COS `lib/skill_router.py` is more ambitious: regex triggers, semantic fallback, optional LLM fallback for ambiguous semantic ties, project/profile-aware router cache, prompt suggestions, benchmark fixtures, and tests. The missing piece is the lightweight path-index artifact. A COS skill registry should complement the router: router selects candidate skill; registry gives a compact, current path index; agent still reads the actual `SKILL.md` before acting.
+
+### Projection and post-checks
+
+Gentle-AI's `internal/components/sdd/inject.go` contains dense per-agent projection logic. It injects SDD prompt assets, Strict TDD markers, OpenCode/Kilocode orchestrator prompts, profile orchestrators, phase model/effort assignments, startup skill-registry hooks, plugin files, migration cleanup, and post-checks that fail when required generated keys or SDD skill files are missing. This is narrower than COS but notably strict after generation.
+
+COS projection is stronger in lifecycle metadata and portability accounting: `scripts/cos_init.py`, `scripts/_lib/settings-driver-claude-code.sh`, `scripts/_lib/settings-driver-codex.sh`, `scripts/_lib/settings-driver-opencode.sh`, `.ai/primitives`, `manifests/primitive-lifecycle.yaml`, registry locks, ACC/report artifacts, and consumer projection smokes. The recurring COS risk is partial projection: a primitive can exist as a script while lifecycle, ACC, projection, tests, and generated surfaces lag. The Gentle-AI pattern to adopt is post-projection self-checks for SDD/process primitives, not its exact projection code.
+
+### Strict TDD and verification discipline
+
+Gentle-AI's TDD discipline is capability-gated and evidence-driven: `sdd-init` detects real test runners and test layers; `sdd-apply` loads Strict TDD only when active; `strict-tdd.md` requires RED, GREEN, TRIANGULATE, REFACTOR, and safety-net evidence; `sdd-verify/strict-tdd-verify.md` audits that evidence, changed-file coverage, current GREEN status, and weak or tautological assertions.
+
+COS has stronger stack breadth and DoD culture, but strict TDD is not yet a standalone portable primitive. The correct COS version is stack-detected: `cos-testing-capabilities` should detect runners, lint/typecheck/coverage, and test layers; `skills/strict-tdd/SKILL.md` should be generic across stacks; `cos-tdd-evidence-verify` should audit evidence and avoid requiring TDD when no runner exists.
+
+### Token/context efficiency mechanisms
+
+Gentle-AI optimizes context structurally: smaller orchestrator, skill registry as index, subagent delegation, phase-specific prompts, status dispatcher, cached testing capabilities, and model/effort assignment per phase. The inspected snapshot did not include a controlled A/B token benchmark equivalent to COS SO-impact evaluation.
+
+COS optimizes tokens through explicit measurement and context tooling: Graphify, context budget/preamble budget/context diet, token-savings audit, provider telemetry normalization work, process-loop traces, skill routing, and `cos-so-impact-eval`. COS should measure adoption of each Gentle-AI-inspired pattern with `cos-so-impact-eval` instead of claiming efficiency from architecture alone.
+
+### What to adopt, in COS-owned terms
+
+1. **`cos-sdd-status`**: authoritative SDD artifact/status dispatcher with `nextRecommended`, dependencies, blockers, task progress, verify state, archive readiness, and optional phase instructions.
+2. **`cos-skill-registry-refresh`**: path/description registry with fingerprint cache and project-first ordering; never copies full skill bodies.
+3. **`cos-testing-capabilities` + `cos-tdd-evidence-verify` + `skills/strict-tdd/`**: stack-detected strict TDD plane with RED/GREEN/TRIANGULATE/REFACTOR evidence.
+4. **`cos-projection-postcheck`**: reusable post-projection validator for `.claude`, `.codex`, `.opencode`, `.cognitive-os`, and `.ai` SDD/process assets.
+5. **`cos-review-workload-forecast`**: review-size forecast that can split work or require chained PR/process-loop slices before apply.
+6. **Per-phase execution profile projection**: map COS execution profiles into SDD/process phases with explicit harness support caveats.
+
+### What not to copy
+
+- Do not vendor prompt text or Go implementation directly in this repo without a separate license/attribution decision.
+- Do not collapse COS's lifecycle/ACC/projection governance into a single binary-only mental model; COS's value is portability and consumer-project installability.
+- Do not claim token savings from these patterns until `cos-so-impact-eval` or provider telemetry receipts measure them in controlled runs.
+
+### Updated priority
+
+The first implementation slice remains `cos-sdd-status`, but the source audit sharpens its acceptance criteria: it must be able to replace prompt inference with a single machine-readable recommendation for SDD continuation, and it must interoperate with `cos-process-loop` rather than duplicating it.
 
 ## Recommended immediate next step
 
