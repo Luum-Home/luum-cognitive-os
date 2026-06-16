@@ -9,6 +9,100 @@
   ],
   "items": [
     {
+      "confidence": "high",
+      "consumer_access_next_action": "keep install/profile/harness proof current",
+      "consumer_accessibility": "projected-consumer-surface",
+      "consumer_families": {
+        "config": 3,
+        "doc": 5,
+        "script": 2,
+        "skill": 1,
+        "test": 4
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "AGENTS.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-121-foundation-hardening-program.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-123-operational-stability-friction-reduction.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-329-skill-platform-support-levels.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/root/adoption-tiers.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_branch_worktree_closure.py"
+        },
+        {
+          "family": "skill",
+          "path": "skills/branch-worktree-closure/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_cos_cleanup_preserved_wip.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_branch_worktree_closure.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_branch_worktree_closure.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_branch_worktree_closure.py"
+        }
+      ],
+      "distribution": "team",
+      "evidence": [
+        "lifecycle",
+        "skill_consumers:1",
+        "script_consumers:2",
+        "test_consumers:4",
+        "doc_consumers:5",
+        "config_consumers:3"
+      ],
+      "family": "skills",
+      "lifecycle_id": ".codex/skills/branch-worktree-closure/SKILL.md",
+      "lifecycle_state": "active",
+      "next_action": "keep lifecycle, tests, and harness proof current",
+      "path": ".codex/skills/branch-worktree-closure/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [
+        "codex"
+      ],
+      "total_consumers": 15
+    },
+    {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
@@ -1907,12 +2001,14 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_access_next_action": "keep install/profile/harness proof current",
+      "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 3,
-        "doc": 4,
-        "test": 2
+        "doc": 5,
+        "script": 2,
+        "skill": 1,
+        "test": 4
       },
       "consumers": [
         {
@@ -1926,6 +2022,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "AGENTS.md"
         },
         {
           "family": "doc",
@@ -1944,34 +2044,80 @@
           "path": "docs/08-References/root/adoption-tiers.md"
         },
         {
+          "family": "script",
+          "path": "scripts/cos"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_branch_worktree_closure.py"
+        },
+        {
+          "family": "skill",
+          "path": ".codex/skills/branch-worktree-closure/SKILL.md"
+        },
+        {
           "family": "test",
           "path": "tests/behavior/test_cos_cleanup_preserved_wip.py"
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cos_branch_worktree_closure.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_skill_branch_worktree_closure.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_branch_worktree_closure.py"
         }
       ],
-      "distribution": "lab",
+      "distribution": "team",
       "evidence": [
         "lifecycle",
-        "test_consumers:2",
-        "doc_consumers:4",
+        "skill_consumers:1",
+        "script_consumers:2",
+        "test_consumers:4",
+        "doc_consumers:5",
         "config_consumers:3"
       ],
       "family": "skills",
       "lifecycle_id": "skills/branch-worktree-closure/SKILL.md",
       "lifecycle_state": "active",
-      "next_action": "keep maintainer-only or add explicit export path",
+      "next_action": "keep lifecycle, tests, and harness proof current",
       "path": "skills/branch-worktree-closure/SKILL.md",
-      "role": "lab",
-      "role_source": "lifecycle",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
       "supported_harnesses": [
         "claude",
         "codex",
-        "generic-cli"
+        "cursor",
+        "devin",
+        "vscode-copilot",
+        "agents-md",
+        "opencode",
+        "google-antigravity",
+        "qwen-code",
+        "kimi-code",
+        "minimax-maxclaw",
+        "deepseek-provider",
+        "shell-ci",
+        "gemini-cli",
+        "warp",
+        "amp-code",
+        "jetbrains-junie",
+        "qoder",
+        "factory-droid",
+        "kiro",
+        "cline",
+        "continue-dev",
+        "kilo-code",
+        "zed-ai",
+        "augment-code",
+        "goose",
+        "aider"
       ],
-      "total_consumers": 9
+      "total_consumers": 15
     },
     {
       "confidence": "high",
@@ -7096,7 +7242,7 @@
         "config": 3,
         "doc": 1,
         "script": 1,
-        "skill": 2,
+        "skill": 3,
         "test": 2
       },
       "consumers": [
@@ -7122,6 +7268,10 @@
         },
         {
           "family": "skill",
+          "path": ".codex/skills/branch-worktree-closure/SKILL.md"
+        },
+        {
+          "family": "skill",
           "path": "skills/branch-worktree-closure/SKILL.md"
         },
         {
@@ -7140,7 +7290,7 @@
       "distribution": "lab",
       "evidence": [
         "lifecycle",
-        "skill_consumers:2",
+        "skill_consumers:3",
         "script_consumers:1",
         "test_consumers:2",
         "doc_consumers:1",
@@ -7158,7 +7308,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "high",
@@ -14774,23 +14924,23 @@
   "schema_version": 1,
   "summary": {
     "confidence": {
-      "high": 111,
+      "high": 112,
       "medium": 12
     },
     "consumer_accessibility": {
-      "lifecycle-declared-maintainer": 103,
-      "projected-consumer-surface": 7,
+      "lifecycle-declared-maintainer": 102,
+      "projected-consumer-surface": 9,
       "repo-skill-not-projectable": 7,
       "so-local-only": 6
     },
     "roles": {
-      "compatibility-wrapper": 57,
-      "lab": 52,
+      "compatibility-wrapper": 59,
+      "lab": 51,
       "project-extension": 4,
       "shared-agent-tool": 2,
       "so-maintainer": 8
     },
-    "total": 123,
+    "total": 124,
     "without_consumers": 1,
     "without_lifecycle": 13
   },

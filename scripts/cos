@@ -38,6 +38,8 @@
 #   cos profile explain                 -> scripts/cos-profile-explain
 #   cos work ownership                  -> scripts/cos_work_inventory.py --paths
 #   cos worktree audit                   -> scripts/cos-worktree-audit
+#   cos worktree closure                 -> scripts/cos-branch-worktree-closure
+#   cos branch closure                   -> scripts/cos-branch-worktree-closure
 #   cos state retention [flags]         -> scripts/state_retention_audit.py
 #   cos stash cleanup [flags]           -> scripts/state_retention_audit.py --surface auto-pre-agent-stashes --reap
 #   cos *                              -> bin/cognitive-os.sh (init, doctor, list, install, ...)
@@ -100,6 +102,14 @@ case "$SUBCMD" in
   land)
     shift
     exec bash "$SCRIPT_DIR/merge-to-main.sh" "$@"
+    ;;
+  branch)
+    if [ "${2:-}" = "closure" ]; then
+      shift 2
+      exec bash "$SCRIPT_DIR/cos-branch-worktree-closure" --project-dir "$PROJECT_ROOT" "$@"
+    fi
+    echo "cos: unknown branch subcommand '${2:-}'. Try: cos branch closure [--json|--land-current|--cleanup-merged --apply]" >&2
+    exit 1
     ;;
   merge)
     if [ "${2:-}" = "queue" ]; then
@@ -375,7 +385,11 @@ case "$SUBCMD" in
       shift 2
       exec "$SCRIPT_DIR/cos-worktree-audit" --project-dir "$PROJECT_ROOT" "$@"
     fi
-    echo "cos: unknown worktree subcommand '${2:-}'. Try: cos worktree audit [--json|--strict] [--against REF]" >&2
+    if [ "${2:-}" = "closure" ]; then
+      shift 2
+      exec bash "$SCRIPT_DIR/cos-branch-worktree-closure" --project-dir "$PROJECT_ROOT" "$@"
+    fi
+    echo "cos: unknown worktree subcommand '${2:-}'. Try: cos worktree {audit|closure} [--json|--strict]" >&2
     exit 1
     ;;
   work)
@@ -422,6 +436,8 @@ Usage:
   cos governance roi [--json]            Estimate governance friction vs benefit
   cos governance readiness [--json]      Report architecture readiness and remaining gaps
   cos land [--dry-run]                   Land current branch through protected merge-to-main path
+  cos branch closure [--json]            Inventory/classify/land/cleanup agent branches safely
+  cos worktree closure [--json]          Alias for governed branch/worktree closure
   cos merge queue ...                    Operate the local merge queue
   cos sprint <cmd>                       Run sprint orchestration commands
   cos subagent preflight --type TYPE --prompt TEXT

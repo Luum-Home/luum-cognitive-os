@@ -8,18 +8,18 @@
       "summary": {
         "block_count": 0,
         "by_mode": {
-          "observe-only": 148,
+          "observe-only": 150,
           "os-maintainer-write": 530,
           "profile-projection-write": 37,
           "propose-only": 3
         },
         "by_status": {
-          "pass": 708,
+          "pass": 710,
           "warn": 10
         },
         "dynamic_blocks": 0,
         "dynamic_smokes": 4,
-        "total_scripts": 718
+        "total_scripts": 720
       }
     },
     "codebase_itinerary": {
@@ -122,7 +122,7 @@
         "aspirational": 0,
         "coverage_pct": 0.0,
         "dormant": 0,
-        "generated_at": "2026-06-16T13:53:10Z",
+        "generated_at": "2026-06-16T14:48:02Z",
         "mapped": 268,
         "metadata": 0,
         "on_demand": 0,
@@ -3699,25 +3699,25 @@
       "status": "ok",
       "summary": {
         "confidence": {
-          "high": 111,
+          "high": 112,
           "medium": 12
         },
         "consumer_accessibility": {
-          "lifecycle-declared-maintainer": 103,
-          "projected-consumer-surface": 7,
+          "lifecycle-declared-maintainer": 102,
+          "projected-consumer-surface": 9,
           "repo-skill-not-projectable": 7,
           "so-local-only": 6
         },
         "json": "<repo-root>/docs/06-Daily/reports/primitive-readiness-ledger-skills-latest.json",
         "markdown": "<repo-root>/docs/06-Daily/reports/primitive-readiness-ledger-skills-latest.md",
         "roles": {
-          "compatibility-wrapper": 57,
-          "lab": 52,
+          "compatibility-wrapper": 59,
+          "lab": 51,
           "project-extension": 4,
           "shared-agent-tool": 2,
           "so-maintainer": 8
         },
-        "total": 123,
+        "total": 124,
         "without_consumers": 1,
         "without_lifecycle": 13
       }
@@ -3760,13 +3760,13 @@
         "by_family": {
           "hooks": 287,
           "rules": 129,
-          "scripts": 719,
-          "skills": 123,
+          "scripts": 721,
+          "skills": 124,
           "templates": 24
         },
         "by_scope": {
           "None": 3,
-          "both": 514,
+          "both": 517,
           "os-only": 737,
           "project": 28
         },
@@ -3777,15 +3777,15 @@
           "claude-posttool-agent-only": 1,
           "codex-adapter-needed": 53,
           "hook-helper-library": 30,
-          "on-demand-command-only": 169,
+          "on-demand-command-only": 171,
           "optional-env-gated-surface": 1,
           "optional-governance-observer": 2,
           "profile-scoped-hook": 3,
           "shell-command-only": 13,
-          "structural-only-ok": 72,
+          "structural-only-ok": 73,
           "unclassified": 3
         },
-        "gaps": 379,
+        "gaps": 382,
         "gaps_by_policy": {
           "acceptable-claude-only": 4,
           "acceptable-codex-limited-tool-events": 6,
@@ -3793,45 +3793,45 @@
           "claude-posttool-agent-only": 1,
           "codex-adapter-needed": 53,
           "hook-helper-library": 30,
-          "on-demand-command-only": 169,
+          "on-demand-command-only": 171,
           "optional-env-gated-surface": 1,
           "optional-governance-observer": 2,
           "profile-scoped-hook": 3,
           "shell-command-only": 13,
-          "structural-only-ok": 72,
+          "structural-only-ok": 73,
           "unclassified": 3
         },
         "gaps_by_status": {
-          "aligned": 323,
+          "aligned": 326,
           "partial": 56
         },
         "harness_projected_or_wired": {
-          "acc-report": 1282,
+          "acc-report": 1285,
           "agents-md": 0,
-          "aider": 190,
-          "amp-code": 190,
-          "augment-code": 190,
-          "claude": 358,
-          "cline": 190,
-          "codex": 276,
-          "continue-dev": 190,
+          "aider": 191,
+          "amp-code": 191,
+          "augment-code": 191,
+          "claude": 359,
+          "cline": 191,
+          "codex": 277,
+          "continue-dev": 191,
           "cos-cli": 5,
-          "cursor": 190,
-          "dashboard": 1282,
-          "factory-droid": 190,
-          "gemini-cli": 190,
-          "goose": 190,
-          "jetbrains-junie": 190,
-          "kilo-code": 190,
-          "kimi-code": 190,
-          "opencode": 190,
-          "qoder": 190,
-          "qwen-code": 190,
+          "cursor": 191,
+          "dashboard": 1285,
+          "factory-droid": 191,
+          "gemini-cli": 191,
+          "goose": 191,
+          "jetbrains-junie": 191,
+          "kilo-code": 191,
+          "kimi-code": 191,
+          "opencode": 191,
+          "qoder": 191,
+          "qwen-code": 191,
           "shell-ci": 17,
-          "tui": 1282,
-          "vscode-copilot": 190,
-          "warp": 190,
-          "zed-ai": 190
+          "tui": 1285,
+          "vscode-copilot": 191,
+          "warp": 191,
+          "zed-ai": 191
         },
         "harness_wired_hooks": {
           "acc-report": 0,
@@ -3862,32 +3862,32 @@
           "zed-ai": 0
         },
         "surface_projected_or_wired": {
-          "acc-report": 1282,
+          "acc-report": 1285,
           "agents-md": 0,
-          "aider": 190,
-          "amp-code": 190,
-          "augment-code": 190,
-          "claude": 358,
-          "cline": 190,
-          "codex": 276,
-          "continue-dev": 190,
+          "aider": 191,
+          "amp-code": 191,
+          "augment-code": 191,
+          "claude": 359,
+          "cline": 191,
+          "codex": 277,
+          "continue-dev": 191,
           "cos-cli": 5,
-          "cursor": 190,
-          "dashboard": 1282,
-          "factory-droid": 190,
-          "gemini-cli": 190,
-          "goose": 190,
-          "jetbrains-junie": 190,
-          "kilo-code": 190,
-          "kimi-code": 190,
-          "opencode": 190,
-          "qoder": 190,
-          "qwen-code": 190,
+          "cursor": 191,
+          "dashboard": 1285,
+          "factory-droid": 191,
+          "gemini-cli": 191,
+          "goose": 191,
+          "jetbrains-junie": 191,
+          "kilo-code": 191,
+          "kimi-code": 191,
+          "opencode": 191,
+          "qoder": 191,
+          "qwen-code": 191,
           "shell-ci": 17,
-          "tui": 1282,
-          "vscode-copilot": 190,
-          "warp": 190,
-          "zed-ai": 190
+          "tui": 1285,
+          "vscode-copilot": 191,
+          "warp": 191,
+          "zed-ai": 191
         },
         "surfaces_by_kind": {
           "cli": 1,
@@ -3896,7 +3896,7 @@
           "shell-ci": 1,
           "ui": 2
         },
-        "total_primitives": 1282,
+        "total_primitives": 1285,
         "unclassified_gaps": 3
       }
     },
@@ -3909,17 +3909,17 @@
         "by_family": {
           "hooks": 287,
           "rules": 129,
-          "scripts": 719,
-          "skills": 123,
+          "scripts": 721,
+          "skills": 124,
           "templates": 24
         },
         "by_scope": {
           "None": 3,
-          "both": 514,
+          "both": 517,
           "os-only": 737,
           "project": 28
         },
-        "gaps": 379,
+        "gaps": 382,
         "gaps_by_policy": {
           "acceptable-claude-only": 4,
           "acceptable-codex-limited-tool-events": 6,
@@ -3927,45 +3927,45 @@
           "claude-posttool-agent-only": 1,
           "codex-adapter-needed": 53,
           "hook-helper-library": 30,
-          "on-demand-command-only": 169,
+          "on-demand-command-only": 171,
           "optional-env-gated-surface": 1,
           "optional-governance-observer": 2,
           "profile-scoped-hook": 3,
           "shell-command-only": 13,
-          "structural-only-ok": 72,
+          "structural-only-ok": 73,
           "unclassified": 3
         },
         "gaps_by_status": {
-          "aligned": 323,
+          "aligned": 326,
           "partial": 56
         },
         "harness_projected_or_wired": {
-          "acc-report": 1282,
+          "acc-report": 1285,
           "agents-md": 0,
-          "aider": 190,
-          "amp-code": 190,
-          "augment-code": 190,
-          "claude": 358,
-          "cline": 190,
-          "codex": 276,
-          "continue-dev": 190,
+          "aider": 191,
+          "amp-code": 191,
+          "augment-code": 191,
+          "claude": 359,
+          "cline": 191,
+          "codex": 277,
+          "continue-dev": 191,
           "cos-cli": 5,
-          "cursor": 190,
-          "dashboard": 1282,
-          "factory-droid": 190,
-          "gemini-cli": 190,
-          "goose": 190,
-          "jetbrains-junie": 190,
-          "kilo-code": 190,
-          "kimi-code": 190,
-          "opencode": 190,
-          "qoder": 190,
-          "qwen-code": 190,
+          "cursor": 191,
+          "dashboard": 1285,
+          "factory-droid": 191,
+          "gemini-cli": 191,
+          "goose": 191,
+          "jetbrains-junie": 191,
+          "kilo-code": 191,
+          "kimi-code": 191,
+          "opencode": 191,
+          "qoder": 191,
+          "qwen-code": 191,
           "shell-ci": 17,
-          "tui": 1282,
-          "vscode-copilot": 190,
-          "warp": 190,
-          "zed-ai": 190
+          "tui": 1285,
+          "vscode-copilot": 191,
+          "warp": 191,
+          "zed-ai": 191
         },
         "harness_wired_hooks": {
           "acc-report": 0,
@@ -3998,32 +3998,32 @@
         "json": "<repo-root>/docs/06-Daily/reports/primitive-harness-coverage-latest.json",
         "markdown": "<repo-root>/docs/06-Daily/reports/primitive-harness-coverage-latest.md",
         "surface_projected_or_wired": {
-          "acc-report": 1282,
+          "acc-report": 1285,
           "agents-md": 0,
-          "aider": 190,
-          "amp-code": 190,
-          "augment-code": 190,
-          "claude": 358,
-          "cline": 190,
-          "codex": 276,
-          "continue-dev": 190,
+          "aider": 191,
+          "amp-code": 191,
+          "augment-code": 191,
+          "claude": 359,
+          "cline": 191,
+          "codex": 277,
+          "continue-dev": 191,
           "cos-cli": 5,
-          "cursor": 190,
-          "dashboard": 1282,
-          "factory-droid": 190,
-          "gemini-cli": 190,
-          "goose": 190,
-          "jetbrains-junie": 190,
-          "kilo-code": 190,
-          "kimi-code": 190,
-          "opencode": 190,
-          "qoder": 190,
-          "qwen-code": 190,
+          "cursor": 191,
+          "dashboard": 1285,
+          "factory-droid": 191,
+          "gemini-cli": 191,
+          "goose": 191,
+          "jetbrains-junie": 191,
+          "kilo-code": 191,
+          "kimi-code": 191,
+          "opencode": 191,
+          "qoder": 191,
+          "qwen-code": 191,
           "shell-ci": 17,
-          "tui": 1282,
-          "vscode-copilot": 190,
-          "warp": 190,
-          "zed-ai": 190
+          "tui": 1285,
+          "vscode-copilot": 191,
+          "warp": 191,
+          "zed-ai": 191
         },
         "surfaces_by_kind": {
           "cli": 1,
@@ -4032,7 +4032,7 @@
           "shell-ci": 1,
           "ui": 2
         },
-        "total_primitives": 1282,
+        "total_primitives": 1285,
         "unclassified_gaps": 3
       }
     },
@@ -4056,18 +4056,18 @@
       "summary": {
         "block_count": 0,
         "by_mode": {
-          "observe-only": 148,
+          "observe-only": 150,
           "os-maintainer-write": 530,
           "profile-projection-write": 37,
           "propose-only": 3
         },
         "by_status": {
-          "pass": 708,
+          "pass": 710,
           "warn": 10
         },
         "dynamic_blocks": 0,
         "dynamic_smokes": 4,
-        "total_scripts": 718
+        "total_scripts": 720
       }
     },
     "primitive_duplication": {
@@ -4085,7 +4085,7 @@
         "by_kind": {
           "python-function-repeat": 21
         },
-        "files_scanned": 1041,
+        "files_scanned": 1042,
         "findings": 21
       }
     },
@@ -4103,111 +4103,10 @@
     },
     "primitive_gap_snapshot": {
       "command": "python3 scripts/primitive_gap_snapshot.py --project-root . --json",
-      "error": null,
+      "error": "Traceback (most recent call last):\n  File \"<repo-root>/scripts/primitive_gap_snapshot.py\", line 472, in <module>\n    raise SystemExit(main())\n  File \"<repo-root>/scripts/primitive_gap_snapshot.py\", line 439, in main\n    snapshot = collect(root)\n  File \"<repo-root>/scripts/primitive_gap_snapshot.py\", line 264, in collect\n    hook_latency=hook_latency(root),\n  File \"<repo-root>/scripts/primitive_gap_snapshot.py\", line 112, in hook_latency\n    if isinstance(duration, int | float):\nTypeError: unsupported operand type(s) for |: 'type' and 'type'\n",
       "source": "primitive_gap_snapshot",
-      "status": "ok",
-      "summary": {
-        "families": [
-          {
-            "aspirational_signal": 4,
-            "evidence": "row-audit proven=114 partial_nonblocking=180 actionable_gaps=4",
-            "family": "hooks",
-            "next_action": "close actionable rows",
-            "partial_signal": 180,
-            "proven_signal": 114,
-            "severity": "high",
-            "total": 298
-          },
-          {
-            "aspirational_signal": 2,
-            "evidence": "row-audit proven=215 partial_nonblocking=54 actionable_gaps=2",
-            "family": "skills",
-            "next_action": "close actionable rows",
-            "partial_signal": 54,
-            "proven_signal": 215,
-            "severity": "high",
-            "total": 271
-          },
-          {
-            "aspirational_signal": 0,
-            "evidence": "row-audit proven=129 partial_nonblocking=0 actionable_gaps=0",
-            "family": "rules",
-            "next_action": "no actionable gaps; harden weak proof opportunistically",
-            "partial_signal": 0,
-            "proven_signal": 129,
-            "severity": "low",
-            "total": 129
-          },
-          {
-            "aspirational_signal": 0,
-            "evidence": "memory-named=12 runtime-or-test-referenced=12; actionable_gaps=0",
-            "family": "memory",
-            "next_action": "row-audit memory primitives when Engram APIs change",
-            "partial_signal": 0,
-            "proven_signal": 12,
-            "severity": "low",
-            "total": 12
-          },
-          {
-            "aspirational_signal": 0,
-            "evidence": "mcp-mentioned-files=435 test-mentioned-files=161; actionable_gaps=0",
-            "family": "mcp_tools",
-            "next_action": "separate installed/optional/reference-only integrations before promotion",
-            "partial_signal": 274,
-            "proven_signal": 161,
-            "severity": "low",
-            "total": 435
-          },
-          {
-            "aspirational_signal": 0,
-            "evidence": "projection-files=15 test-mentioned=11; actionable_gaps=0",
-            "family": "config_projection",
-            "next_action": "map config keys to readers and projected driver outputs",
-            "partial_signal": 4,
-            "proven_signal": 11,
-            "severity": "low",
-            "total": 15
-          },
-          {
-            "aspirational_signal": 24,
-            "evidence": "row-audit proven=83 partial_nonblocking=1 actionable_gaps=24",
-            "family": "metrics",
-            "next_action": "close actionable rows",
-            "partial_signal": 1,
-            "proven_signal": 83,
-            "severity": "high",
-            "total": 108
-          },
-          {
-            "aspirational_signal": 0,
-            "evidence": "test_py=2090 audit-contract-quality=78; actionable_gaps=0",
-            "family": "tests_quality_gates",
-            "next_action": "keep test-quality audit coverage growing; no actionable primitive gap in this snapshot",
-            "partial_signal": 2012,
-            "proven_signal": 78,
-            "severity": "low",
-            "total": 2090
-          },
-          {
-            "aspirational_signal": 108,
-            "evidence": "docs_hard_gaps=108 unmapped_claims=0 done_with_proof=297 mapped_claims=541",
-            "family": "docs_adrs",
-            "next_action": "fix stale/unproved docs claims",
-            "partial_signal": 5428,
-            "proven_signal": 838,
-            "severity": "high",
-            "total": 6374
-          }
-        ],
-        "hook_latency": {
-          "events": 3022,
-          "max_ms": 131068,
-          "p50_ms": 145,
-          "p95_ms": 837
-        },
-        "overall_risk": "high",
-        "timestamp": "2026-06-16T13:55:16.549792+00:00"
-      }
+      "status": "failed",
+      "summary": {}
     },
     "primitive_interventions": {
       "command": null,
@@ -4218,7 +4117,7 @@
         "actions": {
           "advise": 3,
           "allow": 19,
-          "block": 142,
+          "block": 143,
           "warn": 238
         },
         "primitive_count": 9
@@ -4283,7 +4182,7 @@
     },
     "python_helper_duplication": {
       "command": "python3 scripts/primitive_duplication_audit.py --project-root . --include scripts --include lib --min-tokens 60 --threshold 0.86 --primitive-threshold 0.75 --json-out docs/06-Daily/reports/python-helper-duplication-latest.json --markdown docs/06-Daily/reports/python-helper-duplication-latest.md --baseline manifests/python-helper-duplication-baseline.json --fail-on-new",
-      "error": "{\"json\": \"<repo-root>/docs/06-Daily/reports/python-helper-duplication-latest.json\", \"markdown\": \"<repo-root>/docs/06-Daily/reports/python-helper-duplication-latest.md\", \"summary\": {\"by_common_home\": {\"lib/\": 107}, \"by_consumer_relevance\": {\"so-local-first\": 107}, \"by_kind\": {\"python-function-repeat\": 107}, \"files_scanned\": 730, \"findings\": 107}}\n",
+      "error": "{\"json\": \"<repo-root>/docs/06-Daily/reports/python-helper-duplication-latest.json\", \"markdown\": \"<repo-root>/docs/06-Daily/reports/python-helper-duplication-latest.md\", \"summary\": {\"by_common_home\": {\"lib/\": 108}, \"by_consumer_relevance\": {\"so-local-first\": 108}, \"by_kind\": {\"python-function-repeat\": 108}, \"files_scanned\": 731, \"findings\": 108}}\n",
       "source": "python_helper_duplication",
       "status": "failed",
       "summary": {}
@@ -4350,27 +4249,27 @@
       "summary": {
         "agentic_primitives_without_lifecycle": 0,
         "confidence": {
-          "high": 400,
+          "high": 401,
           "low": 1,
-          "medium": 318
+          "medium": 319
         },
         "consumer_accessibility": {
           "install-profile-managed": 19,
-          "lifecycle-declared-consumer-candidate": 167,
+          "lifecycle-declared-consumer-candidate": 169,
           "lifecycle-declared-maintainer": 191,
           "skill-referenced-not-projectable": 3,
           "so-local-only": 339
         },
         "low_confidence_rows": 1,
         "roles": {
-          "agentic-primitive": 262,
+          "agentic-primitive": 263,
           "archive": 12,
           "driver-specific": 14,
           "lab": 97,
-          "maintainer-tool": 319,
+          "maintainer-tool": 320,
           "migration-only": 15
         },
-        "total_scripts": 719,
+        "total_scripts": 721,
         "without_consumers": 0
       }
     },
@@ -4381,23 +4280,23 @@
       "status": "ok",
       "summary": {
         "confidence": {
-          "high": 111,
+          "high": 112,
           "medium": 12
         },
         "consumer_accessibility": {
-          "lifecycle-declared-maintainer": 103,
-          "projected-consumer-surface": 7,
+          "lifecycle-declared-maintainer": 102,
+          "projected-consumer-surface": 9,
           "repo-skill-not-projectable": 7,
           "so-local-only": 6
         },
         "roles": {
-          "compatibility-wrapper": 57,
-          "lab": 52,
+          "compatibility-wrapper": 59,
+          "lab": 51,
           "project-extension": 4,
           "shared-agent-tool": 2,
           "so-maintainer": 8
         },
-        "total": 123,
+        "total": 124,
         "without_consumers": 1,
         "without_lifecycle": 13
       }
@@ -4431,7 +4330,7 @@
     },
     "script_readiness_refresh": {
       "command": "python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence",
-      "error": "y\": {\"install-profile-managed\": 19, \"lifecycle-declared-consumer-candidate\": 167, \"lifecycle-declared-maintainer\": 191, \"skill-referenced-not-projectable\": 3, \"so-local-only\": 339}, \"json\": \"<repo-root>/docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json\", \"lifecycle_backlog_json\": \"<repo-root>/docs/06-Daily/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json\", \"lifecycle_backlog_markdown\": \"<repo-root>/docs/06-Daily/reports/primitive-readiness-lifecycle-backlog-scripts-latest.md\", \"low_confidence_rows\": 1, \"markdown\": \"<repo-root>/docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.md\", \"roles\": {\"agentic-primitive\": 262, \"archive\": 12, \"driver-specific\": 14, \"lab\": 97, \"maintainer-tool\": 319, \"migration-only\": 15}, \"total_scripts\": 719, \"without_consumers\": 0}\n",
+      "error": "y\": {\"install-profile-managed\": 19, \"lifecycle-declared-consumer-candidate\": 169, \"lifecycle-declared-maintainer\": 191, \"skill-referenced-not-projectable\": 3, \"so-local-only\": 339}, \"json\": \"<repo-root>/docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json\", \"lifecycle_backlog_json\": \"<repo-root>/docs/06-Daily/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json\", \"lifecycle_backlog_markdown\": \"<repo-root>/docs/06-Daily/reports/primitive-readiness-lifecycle-backlog-scripts-latest.md\", \"low_confidence_rows\": 1, \"markdown\": \"<repo-root>/docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.md\", \"roles\": {\"agentic-primitive\": 263, \"archive\": 12, \"driver-specific\": 14, \"lab\": 97, \"maintainer-tool\": 320, \"migration-only\": 15}, \"total_scripts\": 721, \"without_consumers\": 0}\n",
       "source": "script_readiness_refresh",
       "status": "failed",
       "summary": {}
@@ -7272,14 +7171,14 @@
       "evidence": [
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
-        "skill_consumers:90",
-        "test_consumers:769",
+        "skill_consumers:91",
+        "test_consumers:771",
         "hook_consumers:124",
         "workflow_consumers:2",
         "doc_consumers:778",
         "rule_consumers:51",
         "config_consumers:86",
-        "script_consumers:449",
+        "script_consumers:451",
         "role_source:lifecycle",
         "lifecycle_state:sandbox"
       ],
@@ -8623,6 +8522,76 @@
       "source": {
         "family": "scripts",
         "path": "scripts/cos-branch-task-check"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_branch_worktree_closure.py",
+        "skill_consumers:2",
+        "test_consumers:2",
+        "doc_consumers:1",
+        "config_consumers:2",
+        "script_consumers:1",
+        "role_source:lifecycle",
+        "lifecycle_state:candidate",
+        "consumer_accessibility:lifecycle-declared-consumer-candidate",
+        "availability_override:so-local-only",
+        "availability_match:pattern"
+      ],
+      "id": "script:scripts/cos-branch-worktree-closure",
+      "kind": "script",
+      "lifecycle_status": "dormant",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/cos-branch-worktree-closure",
+          "kind": "script",
+          "role": "agentic-primitive",
+          "source": "scripts/cos-branch-worktree-closure"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": "team",
+        "role": "agentic-primitive",
+        "supported_harnesses": [
+          "claude",
+          "codex",
+          "cursor",
+          "devin",
+          "vscode-copilot",
+          "agents-md",
+          "opencode",
+          "google-antigravity",
+          "qwen-code",
+          "kimi-code",
+          "minimax-maxclaw",
+          "deepseek-provider",
+          "shell-ci",
+          "gemini-cli",
+          "warp",
+          "amp-code",
+          "jetbrains-junie",
+          "qoder",
+          "factory-droid",
+          "kiro",
+          "cline",
+          "continue-dev",
+          "kilo-code",
+          "zed-ai",
+          "augment-code",
+          "goose",
+          "aider"
+        ]
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos-branch-worktree-closure"
       },
       "weight": 3
     },
@@ -15598,13 +15567,13 @@
         "test_consumers:1",
         "doc_consumers:3",
         "config_consumers:2",
+        "script_consumers:1",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
         "consumer_accessibility:lifecycle-declared-maintainer",
         "availability_override:so-local-only",
         "availability_match:pattern",
-        "availability_pattern:scripts/**",
-        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+        "availability_pattern:scripts/**"
       ],
       "id": "script:scripts/cos-primitive-closure-check",
       "kind": "script",
@@ -18492,7 +18461,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos_lean_skillopt.py",
         "skill_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:1",
         "config_consumers:2",
         "role_source:lifecycle",
@@ -21370,6 +21339,76 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/merge-to-main.sh",
+        "test_consumers:1",
+        "config_consumers:2",
+        "script_consumers:1",
+        "role_source:heuristic:self-evolution",
+        "lifecycle_state:candidate",
+        "consumer_accessibility:lifecycle-declared-consumer-candidate",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:scripts/**",
+        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+      ],
+      "id": "script:scripts/cos_branch_worktree_closure.py",
+      "kind": "script",
+      "lifecycle_status": "dormant",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/cos_branch_worktree_closure.py",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/cos_branch_worktree_closure.py"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": "team",
+        "role": "maintainer-tool",
+        "supported_harnesses": [
+          "claude",
+          "codex",
+          "cursor",
+          "devin",
+          "vscode-copilot",
+          "agents-md",
+          "opencode",
+          "google-antigravity",
+          "qwen-code",
+          "kimi-code",
+          "minimax-maxclaw",
+          "deepseek-provider",
+          "shell-ci",
+          "gemini-cli",
+          "warp",
+          "amp-code",
+          "jetbrains-junie",
+          "qoder",
+          "factory-droid",
+          "kiro",
+          "cline",
+          "continue-dev",
+          "kilo-code",
+          "zed-ai",
+          "augment-code",
+          "goose",
+          "aider"
+        ]
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos_branch_worktree_closure.py"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
         "test_consumers:5",
         "hook_consumers:1",
         "doc_consumers:3",
@@ -21573,7 +21612,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "evidence": [
         "lifecycle",
-        "skill_consumers:2",
+        "skill_consumers:3",
         "test_consumers:3",
         "doc_consumers:3",
         "config_consumers:5",
@@ -24853,7 +24892,7 @@
       "evidence": [
         "lifecycle",
         "wrapper_for:scripts/edit-coop.sh",
-        "skill_consumers:4",
+        "skill_consumers:5",
         "test_consumers:6",
         "hook_consumers:2",
         "doc_consumers:14",
@@ -28062,13 +28101,13 @@
       "evidence": [
         "lifecycle",
         "wrapper_for:scripts/derived_artifact_gate.py",
-        "skill_consumers:2",
+        "skill_consumers:3",
         "test_consumers:7",
         "hook_consumers:2",
-        "doc_consumers:7",
+        "doc_consumers:8",
         "rule_consumers:1",
         "config_consumers:4",
-        "script_consumers:2",
+        "script_consumers:3",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
         "consumer_accessibility:lifecycle-declared-consumer-candidate"
@@ -35283,11 +35322,11 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "evidence": [
         "lifecycle",
-        "skill_consumers:11",
+        "skill_consumers:13",
         "hook_consumers:25",
         "rule_consumers:3",
         "script_consumers:57",
-        "test_consumers:148",
+        "test_consumers:149",
         "doc_consumers:183",
         "config_consumers:18",
         "role_source:lifecycle",
@@ -47331,6 +47370,50 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
+        "lifecycle",
+        "skill_consumers:1",
+        "script_consumers:2",
+        "test_consumers:4",
+        "doc_consumers:5",
+        "config_consumers:3",
+        "role_source:usage:script-hook",
+        "lifecycle_state:active",
+        "consumer_accessibility:projected-consumer-surface",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:.codex/skills/**/SKILL.md"
+      ],
+      "id": "skill:.codex/skills/branch-worktree-closure/SKILL.md",
+      "kind": "skill",
+      "lifecycle_status": "dormant",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": ".codex/skills/branch-worktree-closure/SKILL.md",
+          "kind": "skill",
+          "role": "compatibility-wrapper",
+          "source": ".codex/skills/branch-worktree-closure/SKILL.md"
+        }
+      ],
+      "risk": "high",
+      "signature": {
+        "distribution": "team",
+        "role": "compatibility-wrapper",
+        "supported_harnesses": [
+          "codex"
+        ]
+      },
+      "source": {
+        "family": "skills",
+        "path": ".codex/skills/branch-worktree-closure/SKILL.md"
+      },
+      "weight": 2
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
         "test_consumers:7",
         "role_source:heuristic:text",
         "consumer_accessibility:so-local-only",
@@ -48245,17 +48328,17 @@
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
-        "test_consumers:2",
-        "doc_consumers:4",
+        "skill_consumers:1",
+        "script_consumers:2",
+        "test_consumers:4",
+        "doc_consumers:5",
         "config_consumers:3",
-        "role_source:lifecycle",
+        "role_source:usage:script-hook",
         "lifecycle_state:active",
-        "consumer_accessibility:lifecycle-declared-maintainer",
+        "consumer_accessibility:projected-consumer-surface",
         "availability_override:shared-surface",
         "availability_match:exact",
-        "availability_rationale:Manual scope calibration iteration 016: git branch/worktree closure protocol is repository-agnostic for COS and adopter ",
-        "projected_harnesses:agents-md,aider,amp-code,augment-code,claude,cline,codex,continue-dev,cursor,factory-droid,gemini-cli,goose,jetbrains-junie,kilo-code,kimi-code,opencode,qoder,qwen-code,shell-ci,vscode-copilot,warp,zed-ai",
-        "projected_profiles:full"
+        "availability_rationale:Manual scope calibration iteration 016: git branch/worktree closure protocol is repository-agnostic for COS and adopter "
       ],
       "id": "skill:skills/branch-worktree-closure/SKILL.md",
       "kind": "skill",
@@ -48266,18 +48349,42 @@
           "consumer_accessibility": "projected-consumer-surface",
           "id": "skills/branch-worktree-closure/SKILL.md",
           "kind": "skill",
-          "role": "lab",
+          "role": "compatibility-wrapper",
           "source": "skills/branch-worktree-closure/SKILL.md"
         }
       ],
-      "risk": "medium",
+      "risk": "high",
       "signature": {
-        "distribution": "lab",
-        "role": "lab",
+        "distribution": "team",
+        "role": "compatibility-wrapper",
         "supported_harnesses": [
           "claude",
           "codex",
-          "generic-cli"
+          "cursor",
+          "devin",
+          "vscode-copilot",
+          "agents-md",
+          "opencode",
+          "google-antigravity",
+          "qwen-code",
+          "kimi-code",
+          "minimax-maxclaw",
+          "deepseek-provider",
+          "shell-ci",
+          "gemini-cli",
+          "warp",
+          "amp-code",
+          "jetbrains-junie",
+          "qoder",
+          "factory-droid",
+          "kiro",
+          "cline",
+          "continue-dev",
+          "kilo-code",
+          "zed-ai",
+          "augment-code",
+          "goose",
+          "aider"
         ]
       },
       "source": {
@@ -50435,7 +50542,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
-        "skill_consumers:2",
+        "skill_consumers:3",
         "script_consumers:1",
         "test_consumers:2",
         "doc_consumers:1",
@@ -55111,8 +55218,8 @@
         "skill_consumers:17",
         "hook_consumers:8",
         "rule_consumers:3",
-        "script_consumers:80",
-        "test_consumers:70",
+        "script_consumers:81",
+        "test_consumers:71",
         "doc_consumers:102",
         "config_consumers:15",
         "role_source:lifecycle",
@@ -60152,6 +60259,40 @@
         "proof_drill_id": "qwen-fallback-live-smoke"
       },
       "weight": 2
+    },
+    {
+      "confidence": 0.86,
+      "consumer_accessibility": "projected-consumer-surface",
+      "evidence": [
+        "harness_coverage:acc-report+aider+amp-code+augment-code+claude+cline+codex+continue-dev+cursor+dashboard+factory-droid+gemini-cli+goose+jetbrains-junie+kilo-code+kimi-code+opencode+qoder+qwen-code+tui+vscode-copilot+warp+zed-ai",
+        "scope:both",
+        "gap:projected/wired but no direct behavior proof reference detected",
+        "gap_policy:structural-only-ok"
+      ],
+      "id": "harness_coverage:.codex/skills/branch-worktree-closure/SKILL.md",
+      "kind": "harness_coverage",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": ".codex/skills/branch-worktree-closure/SKILL.md",
+          "kind": "harness_coverage",
+          "role": "harness-implementation",
+          "source": ".codex/skills/branch-worktree-closure/SKILL.md"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "coverage": "acc-report+aider+amp-code+augment-code+claude+cline+codex+continue-dev+cursor+dashboard+factory-droid+gemini-cli+goose+jetbrains-junie+kilo-code+kimi-code+opencode+qoder+qwen-code+tui+vscode-copilot+warp+zed-ai",
+        "gap_policy": "structural-only-ok",
+        "scope": "both"
+      },
+      "source": {
+        "family": "skills",
+        "path": "docs/06-Daily/reports/primitive-harness-coverage-latest.json",
+        "primitive": ".codex/skills/branch-worktree-closure/SKILL.md"
+      },
+      "weight": 1
     },
     {
       "confidence": 0.86,
@@ -77208,6 +77349,40 @@
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:acc-report+dashboard+tui",
+        "scope:both",
+        "gap:scope=both but missing projected/wired support for: claude, codex",
+        "gap_policy:on-demand-command-only"
+      ],
+      "id": "harness_coverage:scripts/cos-branch-worktree-closure",
+      "kind": "harness_coverage",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "scripts/cos-branch-worktree-closure",
+          "kind": "harness_coverage",
+          "role": "harness-implementation",
+          "source": "scripts/cos-branch-worktree-closure"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "coverage": "acc-report+dashboard+tui",
+        "gap_policy": "on-demand-command-only",
+        "scope": "both"
+      },
+      "source": {
+        "family": "scripts",
+        "path": "docs/06-Daily/reports/primitive-harness-coverage-latest.json",
+        "primitive": "scripts/cos-branch-worktree-closure"
+      },
+      "weight": 1
+    },
+    {
+      "confidence": 0.86,
+      "consumer_accessibility": "projected-consumer-surface",
+      "evidence": [
+        "harness_coverage:acc-report+dashboard+tui",
         "scope:os-only"
       ],
       "id": "harness_coverage:scripts/cos-capability-matrix",
@@ -86854,6 +87029,40 @@
         "family": "scripts",
         "path": "docs/06-Daily/reports/primitive-harness-coverage-latest.json",
         "primitive": "scripts/cos_branch_lock.py"
+      },
+      "weight": 1
+    },
+    {
+      "confidence": 0.86,
+      "consumer_accessibility": "projected-consumer-surface",
+      "evidence": [
+        "harness_coverage:acc-report+dashboard+tui",
+        "scope:both",
+        "gap:scope=both but missing projected/wired support for: claude, codex",
+        "gap_policy:on-demand-command-only"
+      ],
+      "id": "harness_coverage:scripts/cos_branch_worktree_closure.py",
+      "kind": "harness_coverage",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "scripts/cos_branch_worktree_closure.py",
+          "kind": "harness_coverage",
+          "role": "harness-implementation",
+          "source": "scripts/cos_branch_worktree_closure.py"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "coverage": "acc-report+dashboard+tui",
+        "gap_policy": "on-demand-command-only",
+        "scope": "both"
+      },
+      "source": {
+        "family": "scripts",
+        "path": "docs/06-Daily/reports/primitive-harness-coverage-latest.json",
+        "primitive": "scripts/cos_branch_worktree_closure.py"
       },
       "weight": 1
     },
@@ -115267,6 +115476,37 @@
     },
     {
       "confidence": 0.9,
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "evidence": [
+        "authority_mode:observe-only",
+        "authority_source:derived:shared-default",
+        "scope:both"
+      ],
+      "id": "authority_write_effects:scripts/cos-branch-worktree-closure",
+      "kind": "authority_write_effects",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "scripts/cos-branch-worktree-closure",
+          "kind": "authority_contract",
+          "role": "write-effects-boundary"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "mode": "observe-only",
+        "scope": "both",
+        "status": "pass"
+      },
+      "source": {
+        "path": "docs/06-Daily/reports/primitive-authority-latest.json",
+        "primitive": "scripts/cos-branch-worktree-closure"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "authority_mode:os-maintainer-write",
@@ -124472,6 +124712,37 @@
       "source": {
         "path": "docs/06-Daily/reports/primitive-authority-latest.json",
         "primitive": "scripts/cos_branch_lock.py"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "evidence": [
+        "authority_mode:observe-only",
+        "authority_source:derived:shared-default",
+        "scope:both"
+      ],
+      "id": "authority_write_effects:scripts/cos_branch_worktree_closure.py",
+      "kind": "authority_write_effects",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "scripts/cos_branch_worktree_closure.py",
+          "kind": "authority_contract",
+          "role": "write-effects-boundary"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "mode": "observe-only",
+        "scope": "both",
+        "status": "pass"
+      },
+      "source": {
+        "path": "docs/06-Daily/reports/primitive-authority-latest.json",
+        "primitive": "scripts/cos_branch_worktree_closure.py"
       },
       "weight": 3
     },
@@ -134780,7 +135051,7 @@
       "confidence": 0.82,
       "consumer_accessibility": "runtime-evidence",
       "evidence": [
-        "intervention_rows:65"
+        "intervention_rows:66"
       ],
       "id": "primitive_intervention:direct-main-guard",
       "kind": "primitive_intervention",
@@ -134795,7 +135066,7 @@
       ],
       "risk": "medium",
       "signature": {
-        "rows": 65
+        "rows": 66
       },
       "source": {
         "path": ".cognitive-os/metrics/primitive-interventions.jsonl",
@@ -149910,7 +150181,7 @@
       "capability_id": "script:scripts/cos_cleanup_preserved_wip.py",
       "evidence": [
         "lifecycle",
-        "skill_consumers:2",
+        "skill_consumers:3",
         "test_consumers:3",
         "doc_consumers:3",
         "config_consumers:5",
@@ -150174,7 +150445,7 @@
       "evidence": [
         "lifecycle",
         "wrapper_for:scripts/edit-coop.sh",
-        "skill_consumers:4",
+        "skill_consumers:5",
         "test_consumers:6",
         "hook_consumers:2",
         "doc_consumers:14",
@@ -150668,13 +150939,13 @@
       "evidence": [
         "lifecycle",
         "wrapper_for:scripts/derived_artifact_gate.py",
-        "skill_consumers:2",
+        "skill_consumers:3",
         "test_consumers:7",
         "hook_consumers:2",
-        "doc_consumers:7",
+        "doc_consumers:8",
         "rule_consumers:1",
         "config_consumers:4",
-        "script_consumers:2",
+        "script_consumers:3",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
         "consumer_accessibility:lifecycle-declared-consumer-candidate"
@@ -151251,11 +151522,11 @@
       "capability_id": "hook:hooks/_lib/portable.sh",
       "evidence": [
         "lifecycle",
-        "skill_consumers:11",
+        "skill_consumers:13",
         "hook_consumers:25",
         "rule_consumers:3",
         "script_consumers:57",
-        "test_consumers:148",
+        "test_consumers:149",
         "doc_consumers:183",
         "config_consumers:18",
         "role_source:lifecycle",
@@ -153500,7 +153771,7 @@
       "coverage_debt:184"
     ]
   },
-  "generated_at": "2026-06-16T13:55:41Z",
+  "generated_at": "2026-06-16T14:50:27Z",
   "harness_projection": {
     "agents-md": {
       "display_name": "AGENTS.md",
@@ -154248,11 +154519,11 @@
   },
   "schema_version": "acc.report.v1",
   "summary": {
-    "acc": 0.9176,
-    "acc_effective": 0.9182,
-    "aligned_weight": 7284,
+    "acc": 0.9178,
+    "acc_effective": 0.9184,
+    "aligned_weight": 7301,
     "mapping_weight_by_status": {
-      "aligned": 7284,
+      "aligned": 7301,
       "missing": 0,
       "overexposed": 0,
       "partial": 437,
@@ -154263,7 +154534,7 @@
     "overexposed_weight": 0,
     "partial_weight": 437,
     "stale_weight": 214,
-    "total_weight": 7938,
+    "total_weight": 7955,
     "unverified_weight": 3
   },
   "weights": {

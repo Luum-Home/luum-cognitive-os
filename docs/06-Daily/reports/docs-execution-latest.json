@@ -9,7 +9,7 @@
       "inferred_status": "done_weak_proof",
       "item": "In **reconstruction**: even small tasks can be done directly without ceremony. Rewrite over patch.",
       "kind": "prose",
-      "line": 141,
+      "line": 170,
       "next_action": "add explicit test/workflow/proof link",
       "path": "AGENTS.md"
     },
@@ -22,7 +22,7 @@
       "inferred_status": "planned",
       "item": "2. **No incomplete code** \u2014 no TODO/FIXME comments, no stub implementations, no commented-out code blocks",
       "kind": "prose",
-      "line": 174,
+      "line": 203,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "AGENTS.md"
     },
@@ -62247,7 +62247,7 @@
         "weak_terms:lifecycle-declared-consumer-candidate"
       ],
       "inferred_status": "proposed",
-      "item": "lifecycle-declared-consumer-candidate: 294",
+      "item": "lifecycle-declared-consumer-candidate: 296",
       "kind": "bullet",
       "line": 30,
       "next_action": "keep as proposal until accepted/implemented",
@@ -62390,7 +62390,7 @@
         "weak_terms:lifecycle-declared-consumer-candidate"
       ],
       "inferred_status": "proposed",
-      "item": "lifecycle-declared-consumer-candidate: 294",
+      "item": "lifecycle-declared-consumer-candidate: 296",
       "kind": "bullet",
       "line": 150,
       "next_action": "keep as proposal until accepted/implemented",

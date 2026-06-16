@@ -6,7 +6,7 @@
   "harness": "codex",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 804,
+  "projected_primitive_count": 808,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": false,
@@ -1726,6 +1726,13 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": "scripts/cos_branch_worktree_closure.py",
+      "primitive_file": "primitives/other-script/scripts-cos-branch-worktree-closure-py-68b8c3bfbf.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": "scripts/cos_efficiency_primitives.py",
       "primitive_file": "primitives/other-script/scripts-cos-efficiency-primitives-py-1f8f5e6574.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
@@ -2762,8 +2769,22 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": ".codex/skills/branch-worktree-closure/SKILL.md",
+      "primitive_file": "primitives/skills/codex-skills-branch-worktree-closure-skill-md-0f218d8ff4.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": ".cognitive-os/skills/artifact-workflow/SKILL.md",
       "primitive_file": "primitives/skills/cognitive-os-skills-artifact-workflow-skill-md-7823defca4.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": ".cognitive-os/skills/branch-worktree-closure/SKILL.md",
+      "primitive_file": "primitives/skills/cognitive-os-skills-branch-worktree-closure-skill-md-ffa37c7808.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
@@ -5172,6 +5193,13 @@
       "fidelity": "documented-only",
       "portable_id": "scripts/cos-artifact-watch",
       "primitive_file": "primitives/tools/scripts-cos-artifact-watch-8185f6fde4.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-branch-worktree-closure",
+      "primitive_file": "primitives/tools/scripts-cos-branch-worktree-closure-b9762e9b9b.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {

@@ -6,7 +6,7 @@
   "harness": "shell-ci",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 359,
+  "projected_primitive_count": 362,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": false,
@@ -1292,6 +1292,13 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": "scripts/cos_branch_worktree_closure.py",
+      "primitive_file": "primitives/other-script/scripts-cos-branch-worktree-closure-py-68b8c3bfbf.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": "rule-self-improvement-protocol",
       "primitive_file": "primitives/rules/rule-self-improvement-protocol-dfcc3f0e51.json",
       "surface": "evidence commands documented; no generic CI enforcement claimed"
@@ -1344,6 +1351,13 @@
       "portable_id": "skill-self-improve",
       "primitive_file": "primitives/skills/skill-self-improve-8c955b1c36.json",
       "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/branch-worktree-closure/SKILL.md",
+      "primitive_file": "primitives/skills/skills-branch-worktree-closure-skill-md-c3132ec6e5.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
       "claims_runtime_enforcement": false,
@@ -2436,6 +2450,13 @@
       "portable_id": "script-weekly-aspirational-audit",
       "primitive_file": "primitives/tools/script-weekly-aspirational-audit-70a8646427.json",
       "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-branch-worktree-closure",
+      "primitive_file": "primitives/tools/scripts-cos-branch-worktree-closure-b9762e9b9b.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
       "claims_runtime_enforcement": false,

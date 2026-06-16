@@ -20510,29 +20510,54 @@ primitives:
   metrics_file: "none"
 - id: skills/branch-worktree-closure/SKILL.md
   kind: skill
-  owner_adr: ADR-314
+  owner_adr: ADR-116
   lifecycle_state: active
   maturity: advisory
-  distribution: lab
-  demotion_evidence:
-    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
-    audit_command: scripts/cos-manifest-tier-claim-audit --json
+  distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
-  governance_class: skill-shared-surface
+  governance_class: delivery-structure
   risk_class: advisory
   supported_harnesses:
   - claude
   - codex
-  - generic-cli
+  - cursor
+  - devin
+  - vscode-copilot
+  - agents-md
+  - opencode
+  - google-antigravity
+  - qwen-code
+  - kimi-code
+  - minimax-maxclaw
+  - deepseek-provider
+  - shell-ci
+  - gemini-cli
+  - warp
+  - amp-code
+  - jetbrains-junie
+  - qoder
+  - factory-droid
+  - kiro
+  - cline
+  - continue-dev
+  - kilo-code
+  - zed-ai
+  - augment-code
+  - goose
+  - aider
   projection_targets:
   - skills/branch-worktree-closure/SKILL.md
+  - .codex/skills/branch-worktree-closure/SKILL.md
+  - .cognitive-os/skills/branch-worktree-closure/SKILL.md
+  - .claude/skills/branch-worktree-closure/SKILL.md
+  - scripts/cos-branch-worktree-closure
   runtime_projection: false
-  behavior_evidence: 'Manual scope calibration iteration 016: git branch/worktree closure protocol is repository-agnostic for COS and adopter project agent worktrees.'
+  behavior_evidence: Branch/worktree closure protocol is repository-agnostic and now has executable helper coverage for inventory, protected landing guidance, and batch cleanup dry-runs.
   evidence_commands:
-  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/branch-worktree-closure/SKILL.md
+  - .venv/bin/python -m pytest tests/unit/test_cos_branch_worktree_closure.py tests/red_team/portability/test_cos_branch_worktree_closure.py -q
   docs_claim_level: advisory
   exit_behavior: skill-procedure
-  metrics_file: "none"
+  metrics_file: .cognitive-os/branch-worktree-closure/latest.json
 - id: skills/browser-task/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -25024,3 +25049,165 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: instructional
   metrics_file: none
+
+- id: .codex/skills/branch-worktree-closure/SKILL.md
+  kind: skill
+  owner_adr: ADR-116
+  lifecycle_state: active
+  maturity: advisory
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: delivery-structure
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  projection_targets:
+  - .codex/skills/branch-worktree-closure/SKILL.md
+  runtime_projection: true
+  behavior_evidence: Codex-visible projection of the branch/worktree closure skill so Codex sessions can activate the protected landing protocol directly.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/red_team/portability/test_cos_branch_worktree_closure.py -q
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+- id: .cognitive-os/skills/branch-worktree-closure/SKILL.md
+  kind: skill
+  owner_adr: ADR-116
+  lifecycle_state: active
+  maturity: advisory
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: delivery-structure
+  risk_class: advisory
+  supported_harnesses:
+  - generic-cli
+  - codex
+  - claude
+  projection_targets:
+  - .cognitive-os/skills/branch-worktree-closure/SKILL.md
+  runtime_projection: true
+  behavior_evidence: Generic Cognitive OS projection of the branch/worktree closure skill for consumer project surfaces.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/red_team/portability/test_cos_branch_worktree_closure.py -q
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+- id: .claude/skills/branch-worktree-closure/SKILL.md
+  kind: skill
+  owner_adr: ADR-116
+  lifecycle_state: active
+  maturity: advisory
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: delivery-structure
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/skills/branch-worktree-closure/SKILL.md
+  runtime_projection: true
+  behavior_evidence: Claude-visible projection of the branch/worktree closure skill so Claude Code sessions can activate the protected landing protocol directly.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/red_team/portability/test_cos_branch_worktree_closure.py -q
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+- id: scripts/cos_branch_worktree_closure.py
+  kind: script-lib
+  owner_adr: ADR-116
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: delivery-structure
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - cursor
+  - devin
+  - vscode-copilot
+  - agents-md
+  - opencode
+  - google-antigravity
+  - qwen-code
+  - kimi-code
+  - minimax-maxclaw
+  - deepseek-provider
+  - shell-ci
+  - gemini-cli
+  - warp
+  - amp-code
+  - jetbrains-junie
+  - qoder
+  - factory-droid
+  - kiro
+  - cline
+  - continue-dev
+  - kilo-code
+  - zed-ai
+  - augment-code
+  - goose
+  - aider
+  projection_targets:
+  - scripts/cos_branch_worktree_closure.py
+  runtime_projection: false
+  behavior_evidence: Shared implementation for governed branch/worktree inventory, classification, protected landing dispatch, and batched merged-branch cleanup.
+  evidence_commands:
+  - python3 -m py_compile scripts/cos_branch_worktree_closure.py
+  - .venv/bin/python -m pytest tests/unit/test_cos_branch_worktree_closure.py tests/red_team/portability/test_cos_branch_worktree_closure.py -q
+  rollback_or_repair_command: Remove scripts/cos-branch-worktree-closure, projections, lifecycle rows, and refresh registry/overlay reports.
+  sunset_criteria: Promote when closure helper is wired as default in all harness handoff flows; downgrade if it remains maintainer-only.
+  docs_claim_level: advisory
+  exit_behavior: library-cli
+  metrics_file: .cognitive-os/branch-worktree-closure/latest.json
+- id: scripts/cos-branch-worktree-closure
+  kind: script
+  owner_adr: ADR-116
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: delivery-structure
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - cursor
+  - devin
+  - vscode-copilot
+  - agents-md
+  - opencode
+  - google-antigravity
+  - qwen-code
+  - kimi-code
+  - minimax-maxclaw
+  - deepseek-provider
+  - shell-ci
+  - gemini-cli
+  - warp
+  - amp-code
+  - jetbrains-junie
+  - qoder
+  - factory-droid
+  - kiro
+  - cline
+  - continue-dev
+  - kilo-code
+  - zed-ai
+  - augment-code
+  - goose
+  - aider
+  projection_targets:
+  - scripts/cos-branch-worktree-closure
+  - scripts/cos_branch_worktree_closure.py
+  runtime_projection: false
+  behavior_evidence: Portable wrapper that makes the protected branch/worktree closure protocol invocable before agents attempt generic Git pushes.
+  evidence_commands:
+  - bash -n scripts/cos-branch-worktree-closure
+  - .venv/bin/python -m pytest tests/unit/test_cos_branch_worktree_closure.py tests/red_team/portability/test_cos_branch_worktree_closure.py -q
+  rollback_or_repair_command: Remove the wrapper and direct users to scripts/cos_work_inventory.py plus scripts/merge-to-main.sh.
+  sunset_criteria: Replace when native harnesses expose equivalent protected landing closure UI.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_2
+  metrics_file: .cognitive-os/branch-worktree-closure/latest.json

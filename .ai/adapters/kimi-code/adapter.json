@@ -6,8 +6,15 @@
   "harness": "kimi-code",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 15,
+  "projected_primitive_count": 18,
   "projected_primitives": [
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos_branch_worktree_closure.py",
+      "primitive_file": "primitives/other-script/scripts-cos-branch-worktree-closure-py-68b8c3bfbf.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
@@ -32,6 +39,13 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": "skills/branch-worktree-closure/SKILL.md",
+      "primitive_file": "primitives/skills/skills-branch-worktree-closure-skill-md-c3132ec6e5.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": "skills/graphify-query/SKILL.md",
       "primitive_file": "primitives/skills/skills-graphify-query-skill-md-dec9ff2bac.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
@@ -41,6 +55,13 @@
       "fidelity": "documented-only",
       "portable_id": "skills/skill-creator/SKILL.md",
       "primitive_file": "primitives/skills/skills-skill-creator-skill-md-be30425771.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-branch-worktree-closure",
+      "primitive_file": "primitives/tools/scripts-cos-branch-worktree-closure-b9762e9b9b.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {

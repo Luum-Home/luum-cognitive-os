@@ -6,7 +6,7 @@
   "display_name": "Continue.dev",
   "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
   "harness": "continue-dev",
-  "lifecycle_primitives_supporting_harness": 15,
+  "lifecycle_primitives_supporting_harness": 18,
   "limitations": [
     "Structural Continue rules/MCP placeholder proof only; no account-backed IDE runtime invocation in automated tests.",
     "No native COS lifecycle hook parity is claimed.",

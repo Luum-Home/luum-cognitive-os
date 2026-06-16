@@ -10003,9 +10003,9 @@
         "doc": 102,
         "hook": 8,
         "rule": 3,
-        "script": 80,
+        "script": 81,
         "skill": 17,
-        "test": 70
+        "test": 71
       },
       "consumers": [
         {
@@ -10718,6 +10718,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_branch_worktree_closure.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_cleanup_preserved_wip.py"
         },
         {
@@ -11110,6 +11114,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_cos_branch_worktree_closure.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_cos_engram_cloud_enroll_and_audit_archive.py"
         },
         {
@@ -11195,8 +11203,8 @@
         "skill_consumers:17",
         "hook_consumers:8",
         "rule_consumers:3",
-        "script_consumers:80",
-        "test_consumers:70",
+        "script_consumers:81",
+        "test_consumers:71",
         "doc_consumers:102",
         "config_consumers:15"
       ],
@@ -11212,7 +11220,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 295
+      "total_consumers": 297
     },
     {
       "confidence": "high",

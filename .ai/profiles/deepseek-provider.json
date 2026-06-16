@@ -6,7 +6,7 @@
   "display_name": "DeepSeek provider integrations",
   "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
   "harness": "deepseek-provider",
-  "lifecycle_primitives_supporting_harness": 15,
+  "lifecycle_primitives_supporting_harness": 18,
   "limitations": [
     "No first-party DeepSeek coding IDE/agent projection contract is signed here; DeepSeek should initially be modeled as provider support through Claude Code/OpenCode/OpenClaw-compatible harnesses."
   ],

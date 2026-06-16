@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-06-16T13:53:06+00:00'
+generated_at: '2026-06-16T14:35:01+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: .claude/skills/artifact-workflow/SKILL.md
@@ -14,6 +14,16 @@ primitives:
   - .cognitive-os/skills/artifact-workflow/SKILL.md
   - .claude/skills/artifact-workflow/SKILL.md
   sha256: 0cf1cf3b665560ad292ecd4521535532f8752ffde3f5424bba7fec9e442b7136
+- id: .claude/skills/branch-worktree-closure/SKILL.md
+  kind: skill
+  owner_adr: ADR-116
+  lifecycle_state: active
+  maturity: advisory
+  distribution: team
+  runtime_projection: true
+  projection_targets:
+  - .claude/skills/branch-worktree-closure/SKILL.md
+  sha256: 884136974b6abb9ced0e3baf98e254344037fe045d19565b4997aef99e751fd0
 - id: .claude/skills/lean-code/SKILL.md
   kind: skill
   owner_adr: ADR-337
@@ -38,6 +48,16 @@ primitives:
   - .cognitive-os/skills/skill-optimization/SKILL.md
   - .claude/skills/skill-optimization/SKILL.md
   sha256: 79fa0a90805a6b8d363223e7c944138514a6aedcdade424ec94e0fa489d1fa7d
+- id: .codex/skills/branch-worktree-closure/SKILL.md
+  kind: skill
+  owner_adr: ADR-116
+  lifecycle_state: active
+  maturity: advisory
+  distribution: team
+  runtime_projection: true
+  projection_targets:
+  - .codex/skills/branch-worktree-closure/SKILL.md
+  sha256: a063432834080b5c1f7243ffb4a61f78e8e071f835c1aa957c7ba6b7835dc012
 - id: .cognitive-os/skills/artifact-workflow/SKILL.md
   kind: skill
   owner_adr: ADR-337
@@ -50,6 +70,16 @@ primitives:
   - .cognitive-os/skills/artifact-workflow/SKILL.md
   - .claude/skills/artifact-workflow/SKILL.md
   sha256: 02807e8d20bbaca224fe0392e7d27f5f06e2805997559507660114f8bdc8a391
+- id: .cognitive-os/skills/branch-worktree-closure/SKILL.md
+  kind: skill
+  owner_adr: ADR-116
+  lifecycle_state: active
+  maturity: advisory
+  distribution: team
+  runtime_projection: true
+  projection_targets:
+  - .cognitive-os/skills/branch-worktree-closure/SKILL.md
+  sha256: d55a36fee5116e8136ee69ba4bf6f35894e31771cd42750e3a3e7ba532d20609
 - id: .cognitive-os/skills/lean-code/SKILL.md
   kind: skill
   owner_adr: ADR-337
@@ -5537,6 +5567,17 @@ primitives:
   - scripts/cos_boring_reliability.py
   - docs/04-Concepts/architecture/boring-reliability-control-plane.md
   sha256: a120f54bffdc2db6e77df67d57f41b9085c2541113f5f80d94e27e8b3c244168
+- id: scripts/cos-branch-worktree-closure
+  kind: script
+  owner_adr: ADR-116
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-branch-worktree-closure
+  - scripts/cos_branch_worktree_closure.py
+  sha256: 67f5984946c91e43600f281c55470dec561eda880032b36d86ff586537aa07c2
 - id: scripts/cos-ci-local.sh
   kind: script
   owner_adr: ADR-131
@@ -7487,6 +7528,16 @@ primitives:
   projection_targets:
   - scripts/cos_branch_lock.py
   sha256: 3864cb66820220d73ac8ef3b8da9c4e2cc66f224ac29c042baced1f44e29d3a6
+- id: scripts/cos_branch_worktree_closure.py
+  kind: script-lib
+  owner_adr: ADR-116
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos_branch_worktree_closure.py
+  sha256: 8d06b5c2ba1e3b8ff16e9c205615c8c32a6943e99ae6cd89431ad62268856968
 - id: scripts/cos_cleanup_preserved_wip.py
   kind: script
   owner_adr: ADR-146
@@ -9259,14 +9310,18 @@ primitives:
   sha256: fdfc81d4f7dd2a103abb06b7551d945490c404c9924984435cfa1274f0f84d27
 - id: skills/branch-worktree-closure/SKILL.md
   kind: skill
-  owner_adr: ADR-314
+  owner_adr: ADR-116
   lifecycle_state: active
   maturity: advisory
-  distribution: lab
+  distribution: team
   runtime_projection: false
   projection_targets:
   - skills/branch-worktree-closure/SKILL.md
-  sha256: 1158cabe3e235067c82e9f5c44862e4a55828a375432421b37734324cd2735e1
+  - .codex/skills/branch-worktree-closure/SKILL.md
+  - .cognitive-os/skills/branch-worktree-closure/SKILL.md
+  - .claude/skills/branch-worktree-closure/SKILL.md
+  - scripts/cos-branch-worktree-closure
+  sha256: 57cba49813c65d5d97d73f2e47e1b25c87119622af17a2482e5655e1924a5699
 - id: skills/browser-task/SKILL.md
   kind: skill
   owner_adr: ADR-314

@@ -1,17 +1,17 @@
 # Primitive Duplication Audit — Latest
 
-Generated: `2026-06-16T13:54:38.181939+00:00`
+Generated: `2026-06-16T14:49:39.082476+00:00`
 
 ## Summary
 
-- Files scanned: 730
-- Findings: 107
-- By kind: `{"python-function-repeat": 107}`
-- By common home: `{"lib/": 107}`
-- By consumer relevance: `{"so-local-first": 107}`
+- Files scanned: 731
+- Findings: 108
+- By kind: `{"python-function-repeat": 108}`
+- By common home: `{"lib/": 108}`
+- By consumer relevance: `{"so-local-first": 108}`
 - Ratchet status: `fail`
 - Baseline findings: 134
-- New findings: 34
+- New findings: 108
 
 ## Top Candidates
 
@@ -104,6 +104,7 @@ Generated: `2026-06-16T13:54:38.181939+00:00`
 | python-function-repeat | candidate | 1.0 | `lib/intent_arbiter.py::append_jsonl` | `scripts/cos_service_control_plane.py::append_jsonl` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/promote_from_telemetry.py::utc_day` | `scripts/cos_promotion_proposer.py::_today_dir` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/release_freeze.py::to_dict` | `scripts/claim_enforcer.py::to_dict` | extract-common-python-helper | `lib/` | so-local-first |
+| python-function-repeat | candidate | 1.0 | `lib/script_helpers.py::iso_utc_z` | `scripts/cos_branch_worktree_closure.py::utc_now` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/script_helpers.py::object_map` | `scripts/private_content_audit.py::_payload_map` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/script_helpers.py::object_maps` | `scripts/private_content_audit.py::_payload_list` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/skill_description_enricher.py::_read_text` | `scripts/primitive-behavior-audit.py::read_text` | extract-common-python-helper | `lib/` | so-local-first |
@@ -116,7 +117,6 @@ Generated: `2026-06-16T13:54:38.181939+00:00`
 | python-function-repeat | candidate | 1.0 | `scripts/cos_artifact_workflow.py::rel` | `scripts/cos_efficiency_primitives.py::rel` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `scripts/cos_artifact_workflow.py::rel` | `scripts/cos_lean_skillopt.py::rel` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `scripts/cos_artifact_workflow.py::sanitize_id` | `scripts/cos_lean_skillopt.py::sanitize_id` | extract-common-python-helper | `lib/` | so-local-first |
-| python-function-repeat | candidate | 1.0 | `scripts/cos_artifact_workflow.py::sanitize_id` | `scripts/cos_process_loop.py::sanitize_id` | extract-common-python-helper | `lib/` | so-local-first |
 
 ## Interpretation
 

@@ -55,6 +55,21 @@ triggers:
 Use this skill whenever a repo has an unexpected `codex/*`, `claude/*`, or
 other agent branch/worktree left open. Do not delete first. Classify first.
 
+## Executable preflight
+
+Before manual Git commands, run the portable helper from any CLI/IDE:
+
+```bash
+scripts/cos-branch-worktree-closure --json
+# aliases:
+scripts/cos branch closure --json
+scripts/cos worktree closure --json
+```
+
+Use `--land-current --apply` only from a non-main source branch after choosing a
+targeted validation command. Use `--cleanup-merged --apply` to delete merged
+local branches and matching remote branches in one batch push.
+
 ## Closure protocol
 
 ### 1. Inventory the current state
@@ -64,6 +79,7 @@ git status --short --branch
 git branch --list 'codex/*' 'claude/*' -vv
 git worktree list --porcelain
 python3 scripts/cos_work_inventory.py --all --strict --json
+scripts/cos-branch-worktree-closure --json
 ```
 
 Record for each extra branch/worktree:
@@ -114,7 +130,8 @@ do not silently treat that as success.
 Never push directly from `main`. From the session branch/worktree:
 
 ```bash
-bash scripts/merge-to-main.sh --validate '<targeted validation command>'
+scripts/cos land --validate '<targeted validation command>'
+# equivalent: bash scripts/merge-to-main.sh --validate '<targeted validation command>'
 ```
 
 This fast-forwards `main`, pushes, and records the queue event.
@@ -125,6 +142,8 @@ This fast-forwards `main`, pushes, and records the queue event.
 git merge-base --is-ancestor "$BRANCH" main
 git worktree remove "$WORKTREE"
 git branch -d "$BRANCH"
+# Prefer helper batch cleanup for merged remotes:
+scripts/cos-branch-worktree-closure --cleanup-merged --apply --json
 git status --short --branch
 python3 scripts/cos_work_inventory.py --all --strict --json
 ```
