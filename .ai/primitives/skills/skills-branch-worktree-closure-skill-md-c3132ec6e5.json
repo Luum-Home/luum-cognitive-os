@@ -14,7 +14,7 @@
   "evidence": {
     "behavior_evidence": "Branch/worktree closure protocol is repository-agnostic and now has executable helper coverage for inventory, protected landing guidance, and batch cleanup dry-runs.",
     "evidence_commands": [
-      ".venv/bin/python -m pytest tests/unit/test_cos_branch_worktree_closure.py tests/red_team/portability/test_cos_branch_worktree_closure.py -q"
+      "python3 -m pytest tests/unit/test_cos_branch_worktree_closure.py tests/red_team/portability/test_cos_branch_worktree_closure.py -q"
     ],
     "metrics_file": ".cognitive-os/branch-worktree-closure/latest.json"
   },
@@ -44,7 +44,7 @@
     "evidence": {
       "behavior_evidence": "Branch/worktree closure protocol is repository-agnostic and now has executable helper coverage for inventory, protected landing guidance, and batch cleanup dry-runs.",
       "evidence_commands": [
-        ".venv/bin/python -m pytest tests/unit/test_cos_branch_worktree_closure.py tests/red_team/portability/test_cos_branch_worktree_closure.py -q"
+        "python3 -m pytest tests/unit/test_cos_branch_worktree_closure.py tests/red_team/portability/test_cos_branch_worktree_closure.py -q"
       ],
       "metrics": [
         ".cognitive-os/branch-worktree-closure/latest.json"

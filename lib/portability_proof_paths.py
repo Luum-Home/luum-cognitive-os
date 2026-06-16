@@ -36,6 +36,47 @@ def package_skill_proof_slug(rel: str) -> str | None:
     return None
 
 
+def family_proof_candidates(rel: str) -> list[str]:
+    """Return accepted family-level portability proofs for coherent primitive groups."""
+    path = Path(rel)
+    candidates: list[str] = []
+    artifact_members = {
+        "scripts/cos-artifact-ingest",
+        "scripts/cos-artifact-watch",
+        "scripts/cos-artifact-report",
+        "scripts/cos-work-graph",
+        "scripts/cos-refutation-review",
+        "scripts/cos-second-pass-advisor",
+        "skills/artifact-workflow/SKILL.md",
+    }
+    lean_skillopt_members = {
+        "scripts/cos-lean-review",
+        "scripts/cos-lean-audit",
+        "scripts/cos-lean-debt",
+        "scripts/cos-skill-opt-run",
+        "scripts/cos-skill-edit-gate",
+        "scripts/cos-skill-proposal-stage",
+        "scripts/cos-skill-adopt",
+        "scripts/cos-skill-rejected-buffer",
+        "scripts/cos-skill-slow-update",
+        "scripts/cos-skill-sleep",
+        "skills/lean-code/SKILL.md",
+        "skills/skill-optimization/SKILL.md",
+    }
+    so_impact_members = {
+        "scripts/cos-so-impact-eval",
+        "skills/so-impact-eval/SKILL.md",
+        "templates/so-impact-eval.example.yaml",
+    }
+    if rel in artifact_members:
+        candidates.append(f"{PORTABILITY_DIR}/test_cos_artifact_workflow_primitives.py")
+    if rel in lean_skillopt_members:
+        candidates.append(f"{PORTABILITY_DIR}/test_cos_lean_skillopt_primitives.py")
+    if rel in so_impact_members:
+        candidates.append(f"{PORTABILITY_DIR}/test_cos_so_impact_eval_primitive.py")
+    return candidates
+
+
 def paired_candidates(rel: str) -> list[str]:
     """Return accepted portability proof paths for an artifact.
 
@@ -48,6 +89,7 @@ def paired_candidates(rel: str) -> list[str]:
     candidates: list[str] = []
     skill_slug = skill_proof_slug(rel)
     package_skill_slug = package_skill_proof_slug(rel)
+    candidates.extend(family_proof_candidates(rel))
     if skill_slug:
         candidates.append(f"{PORTABILITY_DIR}/test_skill_{skill_slug}.py")
     if package_skill_slug:

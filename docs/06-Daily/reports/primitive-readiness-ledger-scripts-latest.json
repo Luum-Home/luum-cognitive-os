@@ -16844,7 +16844,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 1,
         "skill": 1,
         "test": 1
@@ -16853,6 +16853,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -16878,7 +16882,7 @@
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:1",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -16896,7 +16900,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": "scripts/cos_artifact_workflow.py"
     },
     {
@@ -16904,7 +16908,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 1,
         "skill": 1,
         "test": 1
@@ -16913,6 +16917,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -16938,7 +16946,7 @@
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:1",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -16956,7 +16964,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": "scripts/cos_artifact_workflow.py"
     },
     {
@@ -16964,7 +16972,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 1,
         "test": 1
       },
@@ -16972,6 +16980,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -16992,7 +17004,7 @@
         "wrapper_for:scripts/cos_artifact_workflow.py",
         "test_consumers:1",
         "doc_consumers:1",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -17010,7 +17022,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 4,
+      "total_consumers": 5,
       "wrapper_for": "scripts/cos_artifact_workflow.py"
     },
     {
@@ -27222,7 +27234,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 1,
         "skill": 1,
         "test": 1
@@ -27231,6 +27243,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -27256,7 +27272,7 @@
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:1",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -27274,7 +27290,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": "scripts/cos_lean_skillopt.py"
     },
     {
@@ -27328,7 +27344,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 1,
         "skill": 1,
         "test": 1
@@ -27337,6 +27353,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -27362,7 +27382,7 @@
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:1",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -27380,7 +27400,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": "scripts/cos_lean_skillopt.py"
     },
     {
@@ -27388,7 +27408,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 1,
         "skill": 1,
         "test": 1
@@ -27397,6 +27417,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -27422,7 +27446,7 @@
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:1",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -27440,7 +27464,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": "scripts/cos_lean_skillopt.py"
     },
     {
@@ -32310,7 +32334,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 1,
         "script": 1,
         "skill": 1,
@@ -32320,6 +32344,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -32349,7 +32377,7 @@
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:1",
-        "config_consumers:2",
+        "config_consumers:3",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -32368,7 +32396,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": "scripts/cos_artifact_workflow.py"
     },
     {
@@ -34359,7 +34387,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 1,
         "skill": 1,
         "test": 1
@@ -34368,6 +34396,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -34393,7 +34425,7 @@
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:1",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -34411,7 +34443,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": "scripts/cos_artifact_workflow.py"
     },
     {
@@ -35431,7 +35463,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 1,
         "skill": 1,
         "test": 1
@@ -35440,6 +35472,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -35465,7 +35501,7 @@
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:1",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -35483,7 +35519,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": "scripts/cos_lean_skillopt.py"
     },
     {
@@ -35564,7 +35600,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 1,
         "skill": 1,
         "test": 1
@@ -35573,6 +35609,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -35598,7 +35638,7 @@
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:1",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -35616,7 +35656,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": "scripts/cos_lean_skillopt.py"
     },
     {
@@ -35624,7 +35664,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 1,
         "skill": 1,
         "test": 2
@@ -35633,6 +35673,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -35662,7 +35706,7 @@
         "skill_consumers:1",
         "test_consumers:2",
         "doc_consumers:1",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -35680,7 +35724,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": "scripts/cos_lean_skillopt.py"
     },
     {
@@ -35750,7 +35794,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 1,
         "skill": 1,
         "test": 1
@@ -35759,6 +35803,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -35784,7 +35832,7 @@
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:1",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -35802,7 +35850,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": "scripts/cos_lean_skillopt.py"
     },
     {
@@ -35872,7 +35920,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 1,
         "skill": 1,
         "test": 1
@@ -35881,6 +35929,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -35906,7 +35958,7 @@
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:1",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -35924,7 +35976,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": "scripts/cos_lean_skillopt.py"
     },
     {
@@ -36000,7 +36052,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 1,
         "skill": 1,
         "test": 1
@@ -36009,6 +36061,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -36034,7 +36090,7 @@
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:1",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -36052,7 +36108,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": "scripts/cos_lean_skillopt.py"
     },
     {
@@ -36060,7 +36116,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 1,
         "skill": 1,
         "test": 1
@@ -36069,6 +36125,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -36094,7 +36154,7 @@
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:1",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -36112,7 +36172,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": "scripts/cos_lean_skillopt.py"
     },
     {
@@ -36211,7 +36271,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 6,
         "hook": 1,
         "script": 1,
@@ -36222,6 +36282,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -36296,7 +36360,7 @@
         "test_consumers:6",
         "hook_consumers:1",
         "doc_consumers:6",
-        "config_consumers:2",
+        "config_consumers:3",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -36315,7 +36379,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 17,
+      "total_consumers": 18,
       "wrapper_for": "scripts/cos_so_impact_eval.py"
     },
     {
@@ -39885,7 +39949,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 1,
         "skill": 1,
         "test": 1
@@ -39894,6 +39958,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -39919,7 +39987,7 @@
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:1",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -39937,7 +40005,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": "scripts/cos_artifact_workflow.py"
     },
     {
@@ -40576,7 +40644,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "script": 6,
         "test": 1
       },
@@ -40584,6 +40652,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -40622,7 +40694,7 @@
       "evidence": [
         "lifecycle",
         "test_consumers:1",
-        "config_consumers:2",
+        "config_consumers:3",
         "script_consumers:6"
       ],
       "install_surface": null,
@@ -40641,7 +40713,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 9,
+      "total_consumers": 10,
       "wrapper_for": null
     },
     {
@@ -42835,6 +42907,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 2,
+        "doc": 1,
         "script": 9,
         "test": 2
       },
@@ -42846,6 +42919,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-339-efficiency-operating-model-primitives.md"
         },
         {
           "family": "script",
@@ -42896,6 +42973,7 @@
       "evidence": [
         "lifecycle",
         "test_consumers:2",
+        "doc_consumers:1",
         "config_consumers:2",
         "script_consumers:9"
       ],
@@ -42915,7 +42993,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 13,
+      "total_consumers": 14,
       "wrapper_for": null
     },
     {
@@ -44510,7 +44588,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "script": 10,
         "test": 1
       },
@@ -44518,6 +44596,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -44572,7 +44654,7 @@
       "evidence": [
         "lifecycle",
         "test_consumers:1",
-        "config_consumers:2",
+        "config_consumers:3",
         "script_consumers:10"
       ],
       "install_surface": null,
@@ -44591,7 +44673,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 13,
+      "total_consumers": 14,
       "wrapper_for": null
     },
     {
@@ -46277,7 +46359,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 3,
         "hook": 1,
         "script": 2,
@@ -46287,6 +46369,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -46339,7 +46425,7 @@
         "test_consumers:4",
         "hook_consumers:1",
         "doc_consumers:3",
-        "config_consumers:2",
+        "config_consumers:3",
         "script_consumers:2"
       ],
       "install_surface": null,
@@ -46358,7 +46444,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 12,
+      "total_consumers": 13,
       "wrapper_for": null
     },
     {

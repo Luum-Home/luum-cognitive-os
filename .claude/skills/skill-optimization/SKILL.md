@@ -1,7 +1,28 @@
 ---
 name: skill-optimization
 version: 1.0.0
-description: Optimize Cognitive OS skills as staged, validation-gated text artifacts without changing model weights or mutating live skills before explicit adoption.
+description: Use when improving Cognitive OS skills as staged, validation-gated text artifacts without mutating live skills before explicit adoption.
+audience: os-dev
+platforms:
+  - codex
+  - claude-code
+  - opencode
+  - generic-cli
+platform_support:
+  generic-cli:
+    support_level: executable
+    evidence:
+      - scripts/cos-skill-opt-run
+      - scripts/cos-skill-edit-gate
+      - scripts/cos-skill-adopt
+      - tests/red_team/portability/test_cos_lean_skillopt_primitives.py
+routing_patterns:
+  - pattern: \b(skill[- ]opt|skill[- ]sleep|optimi[sz]e skill|validation-gated skill update|self-evolving skill)\b
+    confidence: 0.9
+routing_intents:
+  - intent: skill_optimization_request
+    description: User asks to optimize, stage, validate, adopt, reject, or sleep-update a Cognitive OS skill.
+    confidence: 0.9
 triggers:
   - /skill-opt
   - /skill-sleep
@@ -10,7 +31,7 @@ triggers:
   - validation-gated skill update
   - self-evolving skill
 ---
-
+<!-- SCOPE: os-only -->
 # Skill Optimization
 
 Use this skill when improving a `SKILL.md` based on traces, evals, or recurring

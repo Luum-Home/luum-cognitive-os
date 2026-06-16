@@ -2,7 +2,7 @@
 
 ## How to Use This Index
 
-This generated table is the status inventory for all 347 Architecture Decision Record files (ADRs).
+This generated table is the status inventory for all 349 Architecture Decision Record files (ADRs).
 Status semantics are defined in [STATUS-TAXONOMY.md](STATUS-TAXONOMY.md): decision status, implementation status, and index bucket are separate fields.
 Rows link to the canonical ADR file and group by index bucket for human and agent navigation.
 
@@ -184,7 +184,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [336](ADR-336-agent-loop-engineering-runtime.md) | Agent Loop Engineering Runtime | accepted | implemented | 2026-06-13 | Cognitive OS already had bounded reflection, goal-state gates, flicker reports, and task closure checks, but agent loops were not represented as a first-class p |
 | [337](ADR-337-agent-process-loop-contract-layer.md) | Agent Process Loop Contract Layer | accepted | implemented | 2026-06-13 | Accepted — implemented on 2026-06-13. |
 
-### Active / Partial (120)
+### Active / Partial (122)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
@@ -308,6 +308,8 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [330](ADR-330-typed-capability-ceiling-signals.md) | Typed capability-ceiling signals | accepted | partial | 2026-05-20 | Accepted — first slice implemented as read-only detection. |
 | [331](ADR-331-graphify-portable-context-optimization-primitive.md) | Graphify Portable Context Optimization Primitive | accepted | partial | 2026-05-22 | Accepted with partial implementation. |
 | [332](ADR-332-sia-inspired-self-improvement-benchmark-loop.md) | SIA-inspired self-improvement benchmark loop | accepted | partial | 2026-05-29 | Accepted — partially implemented on 2026-05-29. |
+| [338](ADR-338-so-wide-impact-evaluation-plane.md) | SO-Wide Impact Evaluation Plane | accepted | partial | 2026-06-13 | Accepted. Implementation remains advisory until workflow capsules include replicated cross-harness measured usage receipts. |
+| [339](ADR-339-efficiency-operating-model-primitives.md) | Cognitive OS Efficiency Operating Model Primitives | accepted | partial | 2026-06-15 | Accepted. Initial primitives are advisory and receipt-oriented; runtime enforcement requires separate lifecycle promotion. |
 
 ### Active / Partial / Blocked (1)
 

@@ -1,8 +1,27 @@
+---
+adr: 338
+title: SO-Wide Impact Evaluation Plane
+status: accepted
+implementation_status: partial
+date: '2026-06-13'
+supersedes: []
+superseded_by: null
+implementation_files:
+  - scripts/cos-so-impact-eval
+  - scripts/cos_so_impact_eval.py
+  - docs/08-References/benchmarks/so-impact-money-format-refactor.yaml
+  - tests/unit/test_cos_so_impact_eval.py
+  - tests/red_team/portability/test_cos_so_impact_eval_primitive.py
+tier: maintainer
+tags: [evaluation, benchmarks, impact, ablation, governance]
+classification_basis: advisory impact-evaluation primitive with deterministic workflow capsules and portability tests; cross-harness measured token receipts remain partial
+---
+
 # ADR-338: SO-Wide Impact Evaluation Plane
 
-- Status: accepted
-- Date: 2026-06-13
-- Implementation: candidate
+## Status
+
+Accepted. Implementation remains advisory until workflow capsules include replicated cross-harness measured usage receipts.
 
 ## Context
 
@@ -32,8 +51,24 @@ The primitive is correctness-first. It must capture workflow traces, usage recei
 - Graphify becomes one ablation in a broader evaluation plane, not a proof for the whole SO.
 - Broad token/productivity claims require at least replicated task-class evidence, and portability claims require cross-harness/cross-provider receipts.
 
-## Evidence
+## Alternatives rejected
 
-- `scripts/cos-so-impact-eval plan --contract docs/08-References/benchmarks/so-impact-money-format-refactor.yaml --json`
-- `scripts/cos-so-impact-eval run --contract docs/08-References/benchmarks/so-impact-money-format-refactor.yaml --mode vanilla --mode full-so --json`
-- `python3 -m pytest tests/unit/test_cos_so_impact_eval.py tests/red_team/portability/test_cos_so_impact_eval_primitive.py -q`
+- Treat Graphify-specific savings as proof for the whole OS. Rejected because Graphify only covers discovery/context optimization and does not prove governance, process-loop, skill-routing, or hook effects.
+- Keep only dispatch-level synthetic benchmarks. Rejected because they do not produce file diffs, verification receipts, tool traces, or quality-oracle evidence.
+- Publish broad claims from anecdotal sessions. Rejected because claims must be grounded in repeatable contracts and artifacts.
+
+## Verification
+
+```bash
+scripts/cos-so-impact-eval plan --contract docs/08-References/benchmarks/so-impact-money-format-refactor.yaml --json
+scripts/cos-so-impact-eval run --contract docs/08-References/benchmarks/so-impact-money-format-refactor.yaml --mode vanilla --mode full-so --json
+python3 -m pytest tests/unit/test_cos_so_impact_eval.py tests/red_team/portability/test_cos_so_impact_eval_primitive.py -q
+```
+
+Implementation files:
+
+- `scripts/cos-so-impact-eval`
+- `scripts/cos_so_impact_eval.py`
+- `docs/08-References/benchmarks/so-impact-money-format-refactor.yaml`
+- `tests/unit/test_cos_so_impact_eval.py`
+- `tests/red_team/portability/test_cos_so_impact_eval_primitive.py`

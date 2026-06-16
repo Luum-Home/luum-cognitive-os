@@ -233,7 +233,7 @@ def proof_level(row: Any) -> str:
     name = Path(paired).name
     if BATCH_PROOF_RE.search(name):
         return "batch"
-    if any(token in name for token in ("shared_", "package_skills", "family", "surfaces", "scripts")):
+    if any(token in name for token in ("shared_", "package_skills", "family", "surfaces", "scripts", "workflow_primitives", "skillopt_primitives", "impact_eval_primitive")):
         return "family"
     return "primitive-specific"
 

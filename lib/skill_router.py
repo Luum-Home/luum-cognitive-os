@@ -23,9 +23,18 @@ import hashlib
 import os
 import re
 import sys
+import unicodedata
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Tuple
+
+
+def _ascii_fold(text: str) -> str:
+    """Return a diacritic-folded copy for ASCII-only routing patterns."""
+    return "".join(
+        ch for ch in unicodedata.normalize("NFKD", text)
+        if not unicodedata.combining(ch)
+    )
 
 
 @dataclass(frozen=True)
@@ -1653,9 +1662,10 @@ class SkillRouter:
             ):
                 continue
 
+            match_text = _ascii_fold(text)
             best_conf = 0.0
             for pattern, base_conf in entry.patterns:
-                if pattern.search(text):
+                if pattern.search(text) or (match_text != text and pattern.search(match_text)):
                     best_conf = max(best_conf, base_conf)
 
             if best_conf > 0:

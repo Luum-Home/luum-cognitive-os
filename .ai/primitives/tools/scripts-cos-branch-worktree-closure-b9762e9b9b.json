@@ -15,7 +15,7 @@
     "behavior_evidence": "Portable wrapper that makes the protected branch/worktree closure protocol invocable before agents attempt generic Git pushes.",
     "evidence_commands": [
       "bash -n scripts/cos-branch-worktree-closure",
-      ".venv/bin/python -m pytest tests/unit/test_cos_branch_worktree_closure.py tests/red_team/portability/test_cos_branch_worktree_closure.py -q"
+      "python3 -m pytest tests/unit/test_cos_branch_worktree_closure.py tests/red_team/portability/test_cos_branch_worktree_closure.py -q"
     ],
     "metrics_file": ".cognitive-os/branch-worktree-closure/latest.json"
   },
@@ -46,7 +46,7 @@
       "behavior_evidence": "Portable wrapper that makes the protected branch/worktree closure protocol invocable before agents attempt generic Git pushes.",
       "evidence_commands": [
         "bash -n scripts/cos-branch-worktree-closure",
-        ".venv/bin/python -m pytest tests/unit/test_cos_branch_worktree_closure.py tests/red_team/portability/test_cos_branch_worktree_closure.py -q"
+        "python3 -m pytest tests/unit/test_cos_branch_worktree_closure.py tests/red_team/portability/test_cos_branch_worktree_closure.py -q"
       ],
       "metrics": [
         ".cognitive-os/branch-worktree-closure/latest.json"
