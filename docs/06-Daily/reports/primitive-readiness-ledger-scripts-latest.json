@@ -5775,12 +5775,12 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 86,
-        "doc": 777,
+        "doc": 778,
         "hook": 124,
         "rule": 51,
-        "script": 438,
-        "skill": 88,
-        "test": 766,
+        "script": 449,
+        "skill": 90,
+        "test": 769,
         "workflow": 2
       },
       "consumers": [
@@ -8206,6 +8206,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/lean-skill-optimization.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/memory-layer-evolution-sdd.md"
         },
         {
@@ -10518,7 +10522,19 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-lean-audit"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-lean-core-5min-proof"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-lean-debt"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-lean-review"
         },
         {
           "family": "script",
@@ -10798,7 +10814,23 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-skill-adopt"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-skill-description-enrich"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-skill-edit-gate"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-skill-opt-run"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-skill-proposal-stage"
         },
         {
           "family": "script",
@@ -10806,7 +10838,19 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-skill-rejected-buffer"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-skill-selection-report"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-skill-sleep"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-skill-slow-update"
         },
         {
           "family": "script",
@@ -11115,6 +11159,10 @@
         {
           "family": "script",
           "path": "scripts/cos_instance_init.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_lean_skillopt.py"
         },
         {
           "family": "script",
@@ -11918,6 +11966,10 @@
         },
         {
           "family": "skill",
+          "path": "skills/lean-code/SKILL.md"
+        },
+        {
+          "family": "skill",
           "path": "skills/llm-status/SKILL.md"
         },
         {
@@ -12015,6 +12067,10 @@
         {
           "family": "skill",
           "path": "skills/skill-creator/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/skill-optimization/SKILL.md"
         },
         {
           "family": "skill",
@@ -13746,6 +13802,14 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cos_lean_skillopt.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_lean_skillopt_primitives.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_cos_loop_primitives.py"
         },
         {
@@ -14271,6 +14335,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_cos_init_py.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_lean_skillopt.py"
         },
         {
           "family": "test",
@@ -15117,14 +15185,14 @@
       "evidence": [
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
-        "skill_consumers:88",
-        "test_consumers:766",
+        "skill_consumers:90",
+        "test_consumers:769",
         "hook_consumers:124",
         "workflow_consumers:2",
-        "doc_consumers:777",
+        "doc_consumers:778",
         "rule_consumers:51",
         "config_consumers:86",
-        "script_consumers:438"
+        "script_consumers:449"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -15136,11 +15204,11 @@
       "protected_install_surface": false,
       "role": "lab",
       "role_source": "lifecycle",
-      "skill_consumers": 88,
+      "skill_consumers": 90,
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 2332,
+      "total_consumers": 2349,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -27024,6 +27092,66 @@
       "wrapper_for": null
     },
     {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "doc": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/lean-skill-optimization.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/lean-code/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_lean_skillopt_primitives.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_lean_skillopt.py",
+        "skill_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-lean-audit",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-lean-audit",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 1,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 5,
+      "wrapper_for": "scripts/cos_lean_skillopt.py"
+    },
+    {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
@@ -27068,6 +27196,126 @@
       "supported_harnesses": [],
       "total_consumers": 4,
       "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "doc": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/lean-skill-optimization.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/lean-code/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_lean_skillopt_primitives.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_lean_skillopt.py",
+        "skill_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-lean-debt",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-lean-debt",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 1,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 5,
+      "wrapper_for": "scripts/cos_lean_skillopt.py"
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "doc": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/lean-skill-optimization.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/lean-code/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_lean_skillopt_primitives.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_lean_skillopt.py",
+        "skill_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-lean-review",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-lean-review",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 1,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 5,
+      "wrapper_for": "scripts/cos_lean_skillopt.py"
     },
     {
       "confidence": "medium",
@@ -35048,6 +35296,66 @@
     },
     {
       "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "doc": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/lean-skill-optimization.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/skill-optimization/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_lean_skillopt_primitives.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_lean_skillopt.py",
+        "skill_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-skill-adopt",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-skill-adopt",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 1,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 5,
+      "wrapper_for": "scripts/cos_lean_skillopt.py"
+    },
+    {
+      "confidence": "high",
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
@@ -35120,6 +35428,130 @@
       "wrapper_for": null
     },
     {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "doc": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/lean-skill-optimization.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/skill-optimization/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_lean_skillopt_primitives.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_lean_skillopt.py",
+        "skill_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-skill-edit-gate",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-skill-edit-gate",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 1,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 5,
+      "wrapper_for": "scripts/cos_lean_skillopt.py"
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "doc": 1,
+        "skill": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/lean-skill-optimization.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/skill-optimization/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_lean_skillopt_primitives.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_lean_skillopt.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_lean_skillopt.py",
+        "skill_consumers:1",
+        "test_consumers:2",
+        "doc_consumers:1",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-skill-opt-run",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-skill-opt-run",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 1,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 6,
+      "wrapper_for": "scripts/cos_lean_skillopt.py"
+    },
+    {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
@@ -35180,6 +35612,66 @@
       "supported_harnesses": [],
       "total_consumers": 7,
       "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "doc": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/lean-skill-optimization.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/skill-optimization/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_lean_skillopt_primitives.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_lean_skillopt.py",
+        "skill_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-skill-proposal-stage",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-skill-proposal-stage",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 1,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 5,
+      "wrapper_for": "scripts/cos_lean_skillopt.py"
     },
     {
       "confidence": "high",
@@ -35249,6 +35741,66 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 2,
+        "doc": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/lean-skill-optimization.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/skill-optimization/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_lean_skillopt_primitives.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_lean_skillopt.py",
+        "skill_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-skill-rejected-buffer",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-skill-rejected-buffer",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 1,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 5,
+      "wrapper_for": "scripts/cos_lean_skillopt.py"
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
         "doc": 2,
         "hook": 1,
         "test": 2
@@ -35310,6 +35862,126 @@
       ],
       "total_consumers": 7,
       "wrapper_for": "scripts/cos_process_loop.py"
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "doc": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/lean-skill-optimization.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/skill-optimization/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_lean_skillopt_primitives.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_lean_skillopt.py",
+        "skill_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-skill-sleep",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-skill-sleep",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 1,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 5,
+      "wrapper_for": "scripts/cos_lean_skillopt.py"
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "doc": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/lean-skill-optimization.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/skill-optimization/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_lean_skillopt_primitives.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_lean_skillopt.py",
+        "skill_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-skill-slow-update",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-skill-slow-update",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 1,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 5,
+      "wrapper_for": "scripts/cos_lean_skillopt.py"
     },
     {
       "confidence": "high",
@@ -43617,6 +44289,95 @@
         "shell"
       ],
       "total_consumers": 8,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "script": 10,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-lean-audit"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-lean-debt"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-lean-review"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-skill-adopt"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-skill-edit-gate"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-skill-opt-run"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-skill-proposal-stage"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-skill-rejected-buffer"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-skill-sleep"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-skill-slow-update"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_lean_skillopt.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "test_consumers:1",
+        "config_consumers:2",
+        "script_consumers:10"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos_lean_skillopt.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/cos_lean_skillopt.py",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "heuristic:self-evolution",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 13,
       "wrapper_for": null
     },
     {
@@ -65694,27 +66455,27 @@
   "summary": {
     "agentic_primitives_without_lifecycle": 0,
     "confidence": {
-      "high": 390,
+      "high": 400,
       "low": 1,
-      "medium": 317
+      "medium": 318
     },
     "consumer_accessibility": {
       "install-profile-managed": 19,
       "lifecycle-declared-consumer-candidate": 167,
-      "lifecycle-declared-maintainer": 180,
+      "lifecycle-declared-maintainer": 191,
       "skill-referenced-not-projectable": 3,
       "so-local-only": 339
     },
     "low_confidence_rows": 1,
     "roles": {
-      "agentic-primitive": 252,
+      "agentic-primitive": 262,
       "archive": 12,
       "driver-specific": 14,
       "lab": 97,
-      "maintainer-tool": 318,
+      "maintainer-tool": 319,
       "migration-only": 15
     },
-    "total_scripts": 708,
+    "total_scripts": 719,
     "without_consumers": 0
   },
   "target_family": "scripts"

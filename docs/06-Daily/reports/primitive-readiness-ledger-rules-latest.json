@@ -10003,7 +10003,7 @@
         "doc": 102,
         "hook": 8,
         "rule": 3,
-        "script": 79,
+        "script": 80,
         "skill": 17,
         "test": 70
       },
@@ -10738,6 +10738,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_lean_skillopt.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_new_adr.py"
         },
         {
@@ -11191,7 +11195,7 @@
         "skill_consumers:17",
         "hook_consumers:8",
         "rule_consumers:3",
-        "script_consumers:79",
+        "script_consumers:80",
         "test_consumers:70",
         "doc_consumers:102",
         "config_consumers:15"
@@ -11208,7 +11212,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 294
+      "total_consumers": 295
     },
     {
       "confidence": "high",

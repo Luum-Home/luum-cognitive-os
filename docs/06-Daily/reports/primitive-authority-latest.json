@@ -8,7 +8,7 @@
     },
     {
       "changed_paths": [
-        ".cognitive-os/improvements/proposals/consumer-improvement-proposals-demo-20260616T132828Z.json"
+        ".cognitive-os/improvements/proposals/consumer-improvement-proposals-demo-20260616T135518Z.json"
       ],
       "id": "consumer-improvement-import",
       "returncode": 0,
@@ -149,7 +149,7 @@
       "unexpected_paths": []
     }
   ],
-  "generated_at": "2026-06-16T13:28:29+00:00",
+  "generated_at": "2026-06-16T13:55:19+00:00",
   "items": [
     {
       "authority_mode": "os-maintainer-write",
@@ -2875,11 +2875,47 @@
     {
       "authority_mode": "os-maintainer-write",
       "authority_source": "derived:os-only-default",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "detected_write_surfaces": [],
+      "findings": [],
+      "path": "scripts/cos-lean-audit",
+      "role": "agentic-primitive",
+      "scope": "os-only",
+      "status": "pass",
+      "writes": []
+    },
+    {
+      "authority_mode": "os-maintainer-write",
+      "authority_source": "derived:os-only-default",
       "consumer_accessibility": "so-local-only",
       "detected_write_surfaces": [],
       "findings": [],
       "path": "scripts/cos-lean-core-5min-proof",
       "role": "maintainer-tool",
+      "scope": "os-only",
+      "status": "pass",
+      "writes": []
+    },
+    {
+      "authority_mode": "os-maintainer-write",
+      "authority_source": "derived:os-only-default",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "detected_write_surfaces": [],
+      "findings": [],
+      "path": "scripts/cos-lean-debt",
+      "role": "agentic-primitive",
+      "scope": "os-only",
+      "status": "pass",
+      "writes": []
+    },
+    {
+      "authority_mode": "os-maintainer-write",
+      "authority_source": "derived:os-only-default",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "detected_write_surfaces": [],
+      "findings": [],
+      "path": "scripts/cos-lean-review",
+      "role": "agentic-primitive",
       "scope": "os-only",
       "status": "pass",
       "writes": []
@@ -4183,10 +4219,46 @@
     {
       "authority_mode": "os-maintainer-write",
       "authority_source": "derived:os-only-default",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "detected_write_surfaces": [],
+      "findings": [],
+      "path": "scripts/cos-skill-adopt",
+      "role": "agentic-primitive",
+      "scope": "os-only",
+      "status": "pass",
+      "writes": []
+    },
+    {
+      "authority_mode": "os-maintainer-write",
+      "authority_source": "derived:os-only-default",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "detected_write_surfaces": [],
       "findings": [],
       "path": "scripts/cos-skill-description-enrich",
+      "role": "agentic-primitive",
+      "scope": "os-only",
+      "status": "pass",
+      "writes": []
+    },
+    {
+      "authority_mode": "os-maintainer-write",
+      "authority_source": "derived:os-only-default",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "detected_write_surfaces": [],
+      "findings": [],
+      "path": "scripts/cos-skill-edit-gate",
+      "role": "agentic-primitive",
+      "scope": "os-only",
+      "status": "pass",
+      "writes": []
+    },
+    {
+      "authority_mode": "os-maintainer-write",
+      "authority_source": "derived:os-only-default",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "detected_write_surfaces": [],
+      "findings": [],
+      "path": "scripts/cos-skill-opt-run",
       "role": "agentic-primitive",
       "scope": "os-only",
       "status": "pass",
@@ -4205,6 +4277,18 @@
       "writes": []
     },
     {
+      "authority_mode": "os-maintainer-write",
+      "authority_source": "derived:os-only-default",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "detected_write_surfaces": [],
+      "findings": [],
+      "path": "scripts/cos-skill-proposal-stage",
+      "role": "agentic-primitive",
+      "scope": "os-only",
+      "status": "pass",
+      "writes": []
+    },
+    {
       "authority_mode": "observe-only",
       "authority_source": "derived:shared-default",
       "consumer_accessibility": "lifecycle-declared-maintainer",
@@ -4217,6 +4301,18 @@
       "writes": []
     },
     {
+      "authority_mode": "os-maintainer-write",
+      "authority_source": "derived:os-only-default",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "detected_write_surfaces": [],
+      "findings": [],
+      "path": "scripts/cos-skill-rejected-buffer",
+      "role": "agentic-primitive",
+      "scope": "os-only",
+      "status": "pass",
+      "writes": []
+    },
+    {
       "authority_mode": "observe-only",
       "authority_source": "derived:shared-default",
       "consumer_accessibility": "lifecycle-declared-maintainer",
@@ -4225,6 +4321,30 @@
       "path": "scripts/cos-skill-selection-report",
       "role": "agentic-primitive",
       "scope": "both",
+      "status": "pass",
+      "writes": []
+    },
+    {
+      "authority_mode": "os-maintainer-write",
+      "authority_source": "derived:os-only-default",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "detected_write_surfaces": [],
+      "findings": [],
+      "path": "scripts/cos-skill-sleep",
+      "role": "agentic-primitive",
+      "scope": "os-only",
+      "status": "pass",
+      "writes": []
+    },
+    {
+      "authority_mode": "os-maintainer-write",
+      "authority_source": "derived:os-only-default",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "detected_write_surfaces": [],
+      "findings": [],
+      "path": "scripts/cos-skill-slow-update",
+      "role": "agentic-primitive",
+      "scope": "os-only",
       "status": "pass",
       "writes": []
     },
@@ -5527,6 +5647,18 @@
       "findings": [],
       "path": "scripts/cos_key_learnings_capture.py",
       "role": "lab",
+      "scope": "both",
+      "status": "pass",
+      "writes": []
+    },
+    {
+      "authority_mode": "observe-only",
+      "authority_source": "derived:shared-default",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "detected_write_surfaces": [],
+      "findings": [],
+      "path": "scripts/cos_lean_skillopt.py",
+      "role": "maintainer-tool",
       "scope": "both",
       "status": "pass",
       "writes": []
@@ -8926,17 +9058,17 @@
   "summary": {
     "block_count": 0,
     "by_mode": {
-      "observe-only": 147,
-      "os-maintainer-write": 520,
+      "observe-only": 148,
+      "os-maintainer-write": 530,
       "profile-projection-write": 37,
       "propose-only": 3
     },
     "by_status": {
-      "pass": 697,
+      "pass": 708,
       "warn": 10
     },
     "dynamic_blocks": 0,
     "dynamic_smokes": 4,
-    "total_scripts": 707
+    "total_scripts": 718
   }
 }

@@ -6225,6 +6225,48 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
+        "config": 2,
+        "doc": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/lean-skill-optimization.md"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "doc_consumers:1",
+        "config_consumers:2"
+      ],
+      "family": "skills",
+      "lifecycle_id": "skills/lean-code/SKILL.md",
+      "lifecycle_state": "candidate",
+      "next_action": "keep maintainer-only or add explicit export path",
+      "path": "skills/lean-code/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 3
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
         "config": 4,
         "doc": 4,
         "rule": 2,
@@ -13543,6 +13585,66 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
+        "config": 2,
+        "doc": 4,
+        "script": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/03-PoCs/research/repo-scout/deep/gepa-ai__gepa-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/03-PoCs/research/repo-scout/deep/sentient-agi__EvoSkill-2026-05-09.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/lean-skill-optimization.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/patterns/ecosystem-tools.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_lean_skillopt.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "script_consumers:1",
+        "doc_consumers:4",
+        "config_consumers:2"
+      ],
+      "family": "skills",
+      "lifecycle_id": "skills/skill-optimization/SKILL.md",
+      "lifecycle_state": "candidate",
+      "next_action": "keep maintainer-only or add explicit export path",
+      "path": "skills/skill-optimization/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 7
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
         "config": 8,
         "doc": 6,
         "hook": 1,
@@ -14672,23 +14774,23 @@
   "schema_version": 1,
   "summary": {
     "confidence": {
-      "high": 109,
+      "high": 111,
       "medium": 12
     },
     "consumer_accessibility": {
-      "lifecycle-declared-maintainer": 101,
+      "lifecycle-declared-maintainer": 103,
       "projected-consumer-surface": 7,
       "repo-skill-not-projectable": 7,
       "so-local-only": 6
     },
     "roles": {
-      "compatibility-wrapper": 55,
+      "compatibility-wrapper": 57,
       "lab": 52,
       "project-extension": 4,
       "shared-agent-tool": 2,
       "so-maintainer": 8
     },
-    "total": 121,
+    "total": 123,
     "without_consumers": 1,
     "without_lifecycle": 13
   },

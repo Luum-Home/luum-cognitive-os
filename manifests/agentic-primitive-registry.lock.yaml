@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-06-16T13:26:14+00:00'
+generated_at: '2026-06-16T13:53:06+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: .claude/skills/artifact-workflow/SKILL.md
@@ -14,6 +14,30 @@ primitives:
   - .cognitive-os/skills/artifact-workflow/SKILL.md
   - .claude/skills/artifact-workflow/SKILL.md
   sha256: 0cf1cf3b665560ad292ecd4521535532f8752ffde3f5424bba7fec9e442b7136
+- id: .claude/skills/lean-code/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - skills/lean-code/SKILL.md
+  - .cognitive-os/skills/lean-code/SKILL.md
+  - .claude/skills/lean-code/SKILL.md
+  sha256: 2655411682c3d998517f9bccadd1d806d9aaa11452f45d819f0349a09b4b6c69
+- id: .claude/skills/skill-optimization/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - skills/skill-optimization/SKILL.md
+  - .cognitive-os/skills/skill-optimization/SKILL.md
+  - .claude/skills/skill-optimization/SKILL.md
+  sha256: 79fa0a90805a6b8d363223e7c944138514a6aedcdade424ec94e0fa489d1fa7d
 - id: .cognitive-os/skills/artifact-workflow/SKILL.md
   kind: skill
   owner_adr: ADR-337
@@ -26,6 +50,30 @@ primitives:
   - .cognitive-os/skills/artifact-workflow/SKILL.md
   - .claude/skills/artifact-workflow/SKILL.md
   sha256: 02807e8d20bbaca224fe0392e7d27f5f06e2805997559507660114f8bdc8a391
+- id: .cognitive-os/skills/lean-code/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - skills/lean-code/SKILL.md
+  - .cognitive-os/skills/lean-code/SKILL.md
+  - .claude/skills/lean-code/SKILL.md
+  sha256: d1af164f4702a5a7be0ccfbad3ba71dfd7774be3fe7610f75a49474736913ecc
+- id: .cognitive-os/skills/skill-optimization/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - skills/skill-optimization/SKILL.md
+  - .cognitive-os/skills/skill-optimization/SKILL.md
+  - .claude/skills/skill-optimization/SKILL.md
+  sha256: 3f118f99e26708b9fd3b980f36dd7f2193d1a1deec3b0f5bb90b39a6acdfb6c7
 - id: hooks/_lib/agent-context.sh
   kind: hook
   owner_adr: ADR-149
@@ -6231,6 +6279,39 @@ primitives:
   projection_targets:
   - scripts/cos-language-dependence-audit
   sha256: a5a81094d661d9cd3b64eaa1fc6822e8684df6a6921e1a56a879595a78b6d42e
+- id: scripts/cos-lean-audit
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-lean-audit
+  - scripts/cos_lean_skillopt.py
+  sha256: e850cda1917eed051cbff5abbb94a6b330cf69d314e0148d72cfa39b35f6e571
+- id: scripts/cos-lean-debt
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-lean-debt
+  - scripts/cos_lean_skillopt.py
+  sha256: a95865afd28e2b74e6640fa2229b81f96fd452cb04024fa274b149480ad75cc6
+- id: scripts/cos-lean-review
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-lean-review
+  - scripts/cos_lean_skillopt.py
+  sha256: 012b06663b8169eedf0c836ca8d02ad1cb3b53f19e758da7dd82bf42fa510f28
 - id: scripts/cos-loop-eval
   kind: script
   owner_adr: ADR-336
@@ -6898,6 +6979,17 @@ primitives:
   - scripts/silent_failure_audit.py
   - manifests/silent-failure-allowlist.yaml
   sha256: 61e27e6a1fb236a7e474be38fbdd6fe06d56bcc60bdd473b8fc1c6e12f38a674
+- id: scripts/cos-skill-adopt
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-skill-adopt
+  - scripts/cos_lean_skillopt.py
+  sha256: eab2fac9c9a3908d34d9ad07c41d2ecfac9a20cd1a49bc9980c2e286226204cd
 - id: scripts/cos-skill-description-enrich
   kind: script
   owner_adr: ADR-299
@@ -6908,6 +7000,39 @@ primitives:
   projection_targets:
   - scripts/cos-skill-description-enrich
   sha256: 8461b4529997dad900bda6e48d777dd25aeab86697c26630b4d6f944e4b045b1
+- id: scripts/cos-skill-edit-gate
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-skill-edit-gate
+  - scripts/cos_lean_skillopt.py
+  sha256: f383d00d2dab22703ec7dd36136543cfb36f6cfe00cd161214db87499bb9a54a
+- id: scripts/cos-skill-opt-run
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-skill-opt-run
+  - scripts/cos_lean_skillopt.py
+  sha256: 29ba8e840c919cf9e58fc3b5c9ec29b577816b632a9e5521350c1305f9eb228a
+- id: scripts/cos-skill-proposal-stage
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-skill-proposal-stage
+  - scripts/cos_lean_skillopt.py
+  sha256: 88c24e426db142d59fbcec2475542c5b378755c3f4b3665279e2b497b7f9f64b
 - id: scripts/cos-skill-registry-refresh
   kind: script
   owner_adr: ADR-339
@@ -6919,6 +7044,17 @@ primitives:
   - scripts/cos-skill-registry-refresh
   - scripts/cos_efficiency_primitives.py
   sha256: c5eada02c3879779c641c56878e0bb19e2f5145183324479e902857c1a135e08
+- id: scripts/cos-skill-rejected-buffer
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-skill-rejected-buffer
+  - scripts/cos_lean_skillopt.py
+  sha256: 39e07349a28d9852fb071faa9034e4f870027de3175bda9f9d53c8d84615ec87
 - id: scripts/cos-skill-selection-report
   kind: script
   owner_adr: ADR-337
@@ -6930,6 +7066,28 @@ primitives:
   - scripts/cos-skill-selection-report
   - scripts/cos_process_loop.py
   sha256: e4d140748140afd8ce285918756ec3600391de1a7655b9a5eba9a74079d9af4e
+- id: scripts/cos-skill-sleep
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-skill-sleep
+  - scripts/cos_lean_skillopt.py
+  sha256: 1b2c4eab6b9f94ee82184c53f1868cab6b8f6c72be0bdbfa279f8f39bce138e4
+- id: scripts/cos-skill-slow-update
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-skill-slow-update
+  - scripts/cos_lean_skillopt.py
+  sha256: 7743fb6072cf173862c3568ed15e875bc15c009a3e60f114d2c32d327bceb31c
 - id: scripts/cos-smoke.sh
   kind: script
   owner_adr: ADR-146
@@ -7502,6 +7660,16 @@ primitives:
   projection_targets:
   - scripts/cos_key_learnings_capture.py
   sha256: dbe76cf23b375486b392a087cf2b46fb14b40e1f30ef041f92ccbd5fc6a1134b
+- id: scripts/cos_lean_skillopt.py
+  kind: script-lib
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos_lean_skillopt.py
+  sha256: 80c899f0e84280d8003d46ca590f064a519d1420c146a1043a400fe9e7b2f2c7
 - id: scripts/cos_loop.py
   kind: script
   owner_adr: ADR-336
@@ -9451,6 +9619,18 @@ primitives:
   projection_targets:
   - skills/invariant-check/SKILL.md
   sha256: 68d8d83ccdc49b053a88216e08f78212e4b3f5f19f40985ff599767bf1704762
+- id: skills/lean-code/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - skills/lean-code/SKILL.md
+  - .cognitive-os/skills/lean-code/SKILL.md
+  - .claude/skills/lean-code/SKILL.md
+  sha256: cc465de2fdfb2fa785ac8249e1c594600cd4e9f3ba83e2c02604d68b44948887
 - id: skills/llm-status/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -9913,6 +10093,18 @@ primitives:
   projection_targets:
   - skills/skill-creator/SKILL.md
   sha256: 71831f2228582145aed0e428e4bca6c5f242230cf3bd013c06d017a2a6becc9e
+- id: skills/skill-optimization/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - skills/skill-optimization/SKILL.md
+  - .cognitive-os/skills/skill-optimization/SKILL.md
+  - .claude/skills/skill-optimization/SKILL.md
+  sha256: 0eafa429627a3187dffbcf67539d9aa3dece4176eb8c49c058d32c7edc35ac1a
 - id: skills/so-impact-eval/SKILL.md
   kind: skill
   owner_adr: ADR-338
