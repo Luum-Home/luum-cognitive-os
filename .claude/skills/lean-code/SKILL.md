@@ -2,6 +2,27 @@
 name: lean-code
 version: 1.0.0
 description: Use when work should minimize unnecessary code, dependencies, abstractions, or boilerplate while preserving correctness, security, accessibility, and explicit requirements.
+audience: both
+platforms:
+  - codex
+  - claude-code
+  - opencode
+  - generic-cli
+platform_support:
+  generic-cli:
+    support_level: executable
+    evidence:
+      - scripts/cos-lean-review
+      - scripts/cos-lean-audit
+      - scripts/cos-lean-debt
+      - tests/red_team/portability/test_cos_lean_skillopt_primitives.py
+routing_patterns:
+  - pattern: \b(lean[- ]code|lean[- ]review|lean[- ]audit|reduce overengineering|no unnecessary dependencies|fewer lines)\b
+    confidence: 0.9
+routing_intents:
+  - intent: lean_code_request
+    description: User asks to minimize code, dependencies, abstractions, or overengineering while preserving correctness.
+    confidence: 0.9
 triggers:
   - /lean-code
   - /lean-review
@@ -10,7 +31,7 @@ triggers:
   - fewer lines
   - no unnecessary dependencies
 ---
-
+<!-- SCOPE: both -->
 # Lean Code
 
 Use this skill to bias implementation and review toward the smallest correct
@@ -57,7 +78,7 @@ If a simplification has a known ceiling, record it with an upgrade trigger:
 
 - Review overengineering separately from correctness.
 - Keep tests and verification proportional to risk.
-- Do not add dependencies unless stdlib/native/installed options are insufficient.
+- Do not add dependencies unless standard-library, native-platform, or already-installed options are insufficient.
 - Do not compress away security, data-loss prevention, accessibility, or explicit user requirements.
 
 ## Contextual Trigger

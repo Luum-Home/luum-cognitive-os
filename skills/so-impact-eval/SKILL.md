@@ -1,8 +1,8 @@
 ---
 name: so-impact-eval
-description: Run SO-wide impact evaluation for Cognitive OS. Use when the user asks for /so-impact-eval, /so-impact-smoke, run SO-wide impact eval, compare vanilla vs full SO, compará vanilla vs full SO, validate Cognitive OS impact, or produce vanilla/full-SO/ablation receipts with cos-so-impact-eval.
+description: Use when the user asks for SO-wide impact evaluation, /so-impact-eval, /so-impact-smoke, vanilla vs full SO comparisons, ablations, or cos-so-impact-eval receipts.
 version: 1.0.0
-audience: cognitive-os-maintainers
+audience: os-dev
 tags:
 - benchmark
 - evaluation
@@ -28,7 +28,7 @@ routing_patterns:
   confidence: 0.98
 - pattern: \brun\s+SO-wide\s+impact\s+eval\b
   confidence: 0.95
-- pattern: \bcompar[aá]\s+vanilla\s+vs\s+full\s+SO\b
+- pattern: \bcompara\s+vanilla\s+vs\s+full\s+SO\b
   confidence: 0.95
 - pattern: \bcompare\s+vanilla\s+vs\s+full\s+SO\b
   confidence: 0.95

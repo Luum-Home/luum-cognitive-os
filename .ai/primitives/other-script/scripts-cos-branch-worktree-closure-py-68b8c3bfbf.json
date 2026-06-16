@@ -15,7 +15,7 @@
     "behavior_evidence": "Shared implementation for governed branch/worktree inventory, classification, protected landing dispatch, and batched merged-branch cleanup.",
     "evidence_commands": [
       "python3 -m py_compile scripts/cos_branch_worktree_closure.py",
-      ".venv/bin/python -m pytest tests/unit/test_cos_branch_worktree_closure.py tests/red_team/portability/test_cos_branch_worktree_closure.py -q"
+      "python3 -m pytest tests/unit/test_cos_branch_worktree_closure.py tests/red_team/portability/test_cos_branch_worktree_closure.py -q"
     ],
     "metrics_file": ".cognitive-os/branch-worktree-closure/latest.json"
   },
@@ -46,7 +46,7 @@
       "behavior_evidence": "Shared implementation for governed branch/worktree inventory, classification, protected landing dispatch, and batched merged-branch cleanup.",
       "evidence_commands": [
         "python3 -m py_compile scripts/cos_branch_worktree_closure.py",
-        ".venv/bin/python -m pytest tests/unit/test_cos_branch_worktree_closure.py tests/red_team/portability/test_cos_branch_worktree_closure.py -q"
+        "python3 -m pytest tests/unit/test_cos_branch_worktree_closure.py tests/red_team/portability/test_cos_branch_worktree_closure.py -q"
       ],
       "metrics": [
         ".cognitive-os/branch-worktree-closure/latest.json"

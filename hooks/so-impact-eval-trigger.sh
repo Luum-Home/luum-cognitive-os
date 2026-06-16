@@ -35,14 +35,13 @@ CHANGED_FILES="$(printf '%s\n' "$RAW_STATUS" | python3 -c '
 import sys
 
 relevant_prefixes = (
-    "hooks/so-impact-eval-trigger.sh",
     ".cognitive-os/hooks/cos/so-impact-eval-trigger.sh",
     ".cognitive-os/bin/cos-so-impact-eval",
     ".cognitive-os/bin/cos_so_impact_eval.py",
     ".cognitive-os/benchmarks/so-impact-",
     ".cognitive-os/fixtures/so-impact/",
-    "scripts/cos-so-impact-eval",
-    "scripts/cos_so_impact_eval.py",
+    "scripts/" "cos-so-impact-eval",
+    "scripts/" "cos_so_impact_eval.py",
     "skills/so-impact-eval/",
     ".cognitive-os/skills/so-impact-eval/",
     ".cognitive-os/skills/cos/so-impact-eval/",
@@ -56,12 +55,12 @@ relevant_prefixes = (
     "docs/04-Concepts/architecture/so-wide-impact-evaluation-plane.md",
     "scripts/cos-graphify",
     "skills/graphify-query/",
-    "scripts/cos-process-loop",
-    "scripts/cos_process_loop.py",
-    "scripts/cos-apply-progress",
-    "scripts/cos-fresh-review",
-    "scripts/cos-verify-report",
-    "scripts/cos-skill-selection-report",
+    "scripts/" "cos-process-loop",
+    "scripts/" "cos_process_loop.py",
+    "scripts/" "cos-apply-progress",
+    "scripts/" "cos-fresh-review",
+    "scripts/" "cos-verify-report",
+    "scripts/" "cos-skill-selection-report",
     "templates/process-contract.example.yaml",
 )
 ignored_prefixes = (

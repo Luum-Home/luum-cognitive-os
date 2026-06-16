@@ -2295,7 +2295,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 8,
-        "doc": 85,
+        "doc": 84,
         "hook": 83,
         "rule": 7,
         "script": 36,
@@ -2626,10 +2626,6 @@
         {
           "family": "doc",
           "path": "docs/06-Daily/measurements/stage2-expansion-baseline.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/07-Capabilities/acc/latest.md"
         },
         {
           "family": "doc",
@@ -3336,7 +3332,7 @@
         "rule_consumers:7",
         "script_consumers:36",
         "test_consumers:34",
-        "doc_consumers:85",
+        "doc_consumers:84",
         "config_consumers:8"
       ],
       "family": "hooks",
@@ -3351,7 +3347,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 256
+      "total_consumers": 255
     },
     {
       "confidence": "high",
@@ -4645,7 +4641,7 @@
         "rule": 3,
         "script": 57,
         "skill": 13,
-        "test": 149
+        "test": 150
       },
       "consumers": [
         {
@@ -6050,6 +6046,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cos-branch-worktree-closure.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_cos-merge-queue-bench.py"
         },
         {
@@ -6448,7 +6448,7 @@
         "hook_consumers:25",
         "rule_consumers:3",
         "script_consumers:57",
-        "test_consumers:149",
+        "test_consumers:150",
         "doc_consumers:183",
         "config_consumers:18"
       ],
@@ -6464,7 +6464,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 448
+      "total_consumers": 449
     },
     {
       "confidence": "high",

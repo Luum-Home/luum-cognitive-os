@@ -3,7 +3,7 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | scope | audience | 1-line description`. `scope` is `[core]` for top-level skills and `[ext:pack]` for packaged extension skills. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 184
+Total skills: 188
 
 ## os (23)
 
@@ -33,7 +33,7 @@ Total skills: 184
 | validate-release | [core] | Pre-release readiness check — validates working tree, branch, changelog, |
 | vuln-remediation-flow | [core] | 'Use when you need this Cognitive OS skill: Lab-stage propose-only cloud |
 
-## os-dev (44)
+## os-dev (46)
 
 | Skill | Scope | Description |
 |-------|-------|-------------|
@@ -76,19 +76,22 @@ Total skills: 184
 | security-audit | [core] | Comprehensive security audit of Cognitive OS configuration, secrets, |
 | security-red-team | [core] | 'Unified Cognitive OS security red-team: inventory, threat model, abuse |
 | simulation-arena | [core] | End-to-end agent workflow simulation for safety-mesh regression. |
+| skill-optimization | [core] | Use when improving Cognitive OS skills as staged, validation-gated text artifacts without mutating… |
 | smoke-test | [core] | Run end-to-end smoke tests that validate the real Cognitive OS system |
+| so-impact-eval | [core] | Run cos-so-impact-eval smoke or full SO-wide vanilla/full-SO/ablation impact comparisons. |
 | strands-evals-integration | [core] | Configure Strands Evals for trace-based agent trajectory evaluation |
 | test-contract-repair | [core] | Repair failing or misleading tests without greenwashing. Classify the |
 | tool-discovery | [core] | Discover new open-source tools that could enhance Cognitive OS capabilities |
 | vulnerability-scan | [core] | Run LLM vulnerability probes using Garak against configured endpoints. |
 
-## both (39)
+## both (41)
 
 | Skill | Scope | Description |
 |-------|-------|-------------|
 | agent-kpis | [core] | Calculate and report Cognitive OS KPIs and OKRs. |
 | analyze-improvements | [core] | Analyze KPIs, error patterns, and skill metrics to identify improvement… |
 | apply-improvements | [core] | Apply approved self-improvement changes from an analyze-improvements |
+| artifact-workflow | [core] | Use when a project needs portable artifact intelligence, work graph tracking, claim refutation, or… |
 | branch-worktree-closure | [core] | Close leftover agent branches/worktrees without losing work or bypassing |
 | browser-task | [core] | Use when an agent or operator needs to drive a real web browser - navigate |
 | catalog-full | [core] | Load and display the full skills catalog (skills/CATALOG.md) with invocations… |
@@ -101,6 +104,7 @@ Total skills: 184
 | doc-review-personas | [core] | N-persona parallel doc review with severity-tiered consolidation. |
 | eval-repo | [core] | DEPRECATED alias for /repo-scout |
 | generate-config | [core] | Read detected-stack.json and generate or update cognitive-os.yaml with |
+| lean-code | [core] | Use when work should minimize unnecessary code, dependencies, abstractions, or boilerplate while pr… |
 | llm-status | [core] | Inspect LLM dispatch state — provider inventory, kill-switches, cascade |
 | model-optimizer | [core] | Analyze skill execution metrics and recommend optimal model routing |
 | pattern-audit | [core] | Grep/regex audit with mandatory sampling — forbids unverified severity |

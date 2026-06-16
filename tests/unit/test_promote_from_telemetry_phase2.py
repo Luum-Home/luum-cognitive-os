@@ -12,7 +12,7 @@ Each detection has:
 """
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 from lib.promote_from_telemetry import (
@@ -247,11 +247,11 @@ class TestProviderFallbackDrift:
 class TestDormantNoEvidence:
     def _recent_ts(self) -> str:
         """Timestamp within the last 10 days (well within window_days=30)."""
-        return "2026-05-15T10:00:00Z"
+        return (datetime.now(timezone.utc) - timedelta(days=10)).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     def _old_ts(self) -> str:
-        """Timestamp older than 30 days from 2026-05-18."""
-        return "2026-04-01T10:00:00Z"
+        """Timestamp older than 30 days from the current test runtime."""
+        return (datetime.now(timezone.utc) - timedelta(days=60)).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     def test_primitive_with_no_events_flagged(self, tmp_path):
         """A primitive in lifecycle with zero recent events → finding."""

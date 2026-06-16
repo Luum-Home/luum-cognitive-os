@@ -2279,16 +2279,68 @@
       "remaining": "The first implementation is a local spike with deterministic benchmark execution and proposal generation; it does not yet spawn live target/meta/feedback agents.",
       "remaining_in_scope": true,
       "title": "SIA-inspired self-improvement benchmark loop"
+    },
+    {
+      "adr": "ADR-338",
+      "classification_basis": "advisory impact-evaluation primitive with deterministic workflow capsules and portability tests; cross-harness measured token receipts remain partial",
+      "date": "2026-06-13",
+      "decision_status": "accepted",
+      "follow_up_adr": "",
+      "implementation_files": [
+        "scripts/cos-so-impact-eval",
+        "scripts/cos_so_impact_eval.py",
+        "docs/08-References/benchmarks/so-impact-money-format-refactor.yaml",
+        "tests/unit/test_cos_so_impact_eval.py",
+        "tests/red_team/portability/test_cos_so_impact_eval_primitive.py"
+      ],
+      "implementation_status": "partial",
+      "number": "338",
+      "owner": "",
+      "partial_remaining": "",
+      "partial_remaining_basis": "",
+      "path": "docs/02-Decisions/adrs/ADR-338-so-wide-impact-evaluation-plane.md",
+      "remaining": "advisory impact-evaluation primitive with deterministic workflow capsules and portability tests; cross-harness measured token receipts remain partial",
+      "remaining_in_scope": null,
+      "title": "SO-Wide Impact Evaluation Plane"
+    },
+    {
+      "adr": "ADR-339",
+      "classification_basis": "advisory JSON-first receipt primitives for status, adapters, context planning, role selection, testing capability detection, TDD evidence, and review workload forecasting",
+      "date": "2026-06-15",
+      "decision_status": "accepted",
+      "follow_up_adr": "",
+      "implementation_files": [
+        "scripts/cos-status",
+        "scripts/cos-adapter-capabilities",
+        "scripts/cos-projection-transaction",
+        "scripts/cos-skill-registry-refresh",
+        "scripts/cos-context-plan",
+        "scripts/cos-role-selection-report",
+        "scripts/cos-testing-capabilities",
+        "scripts/cos-tdd-evidence-verify",
+        "scripts/cos-review-workload-forecast",
+        "tests/unit/test_cos_efficiency_primitives.py",
+        "tests/red_team/portability/test_cos_efficiency_primitives.py"
+      ],
+      "implementation_status": "partial",
+      "number": "339",
+      "owner": "",
+      "partial_remaining": "",
+      "partial_remaining_basis": "",
+      "path": "docs/02-Decisions/adrs/ADR-339-efficiency-operating-model-primitives.md",
+      "remaining": "advisory JSON-first receipt primitives for status, adapters, context planning, role selection, testing capability detection, TDD evidence, and review workload forecasting",
+      "remaining_in_scope": null,
+      "title": "Cognitive OS Efficiency Operating Model Primitives"
     }
   ],
   "schema_version": "adr-partial-backlog/v1",
   "summary": {
     "by_implementation_status": {
       "deferred": 1,
-      "partial": 120,
+      "partial": 122,
       "partial-blocked": 1
     },
-    "missing_partial_remaining": 4,
-    "total": 122
+    "missing_partial_remaining": 6,
+    "total": 124
   }
 }

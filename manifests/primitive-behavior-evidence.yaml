@@ -5186,6 +5186,133 @@ evidence:
   - shell-ci
   tests: *process_loop_tests
   rationale: Example process contract is copied into temp consumer projects and exercised through all process-loop wrappers.
+- primitive: scripts/cos-artifact-ingest
+  harnesses:
+  - shell-ci
+  tests: &artifact_workflow_tests
+  - tests/unit/test_cos_artifact_workflow.py
+  - tests/red_team/portability/test_cos_artifact_workflow_primitives.py
+  rationale: Artifact workflow wrappers are executed from arbitrary consumer working directories with project-local receipts.
+- primitive: scripts/cos-artifact-watch
+  harnesses:
+  - shell-ci
+  tests: *artifact_workflow_tests
+  rationale: Artifact watcher wrapper shares the artifact workflow smoke and wrapper syntax proof.
+- primitive: scripts/cos-artifact-report
+  harnesses:
+  - shell-ci
+  tests: *artifact_workflow_tests
+  rationale: Artifact reporting is verified after ingest in the artifact workflow portability proof.
+- primitive: scripts/cos-work-graph
+  harnesses:
+  - shell-ci
+  tests: *artifact_workflow_tests
+  rationale: Work graph add/report behavior is exercised in the artifact workflow portability proof.
+- primitive: scripts/cos-refutation-review
+  harnesses:
+  - shell-ci
+  tests: *artifact_workflow_tests
+  rationale: Refutation review records supported claims and verification receipts in the artifact workflow proof.
+- primitive: scripts/cos-second-pass-advisor
+  harnesses:
+  - shell-ci
+  tests: *artifact_workflow_tests
+  rationale: Second-pass advisor timeout-bounded command execution is covered by the artifact workflow proof.
+- primitive: skills/artifact-workflow/SKILL.md
+  harnesses:
+  - codex
+  - claude-code
+  - shell-ci
+  tests: *artifact_workflow_tests
+  rationale: The conversation skill routes to the artifact workflow wrappers verified by the family proof.
+- primitive: scripts/cos-lean-review
+  harnesses:
+  - shell-ci
+  tests: &lean_skillopt_tests
+  - tests/unit/test_cos_lean_skillopt.py
+  - tests/red_team/portability/test_cos_lean_skillopt.py
+  - tests/red_team/portability/test_cos_lean_skillopt_primitives.py
+  rationale: Lean and skill optimization wrappers are run from arbitrary consumer directories with JSON receipts.
+- primitive: scripts/cos-lean-audit
+  harnesses:
+  - shell-ci
+  tests: *lean_skillopt_tests
+  rationale: Lean audit behavior is exercised by repo-wide simplification findings in the family proof.
+- primitive: scripts/cos-lean-debt
+  harnesses:
+  - shell-ci
+  tests: *lean_skillopt_tests
+  rationale: Lean debt marker harvesting is verified in the family proof.
+- primitive: scripts/cos-skill-opt-run
+  harnesses:
+  - shell-ci
+  tests: *lean_skillopt_tests
+  rationale: Skill optimization proposal staging and score gate flow is verified in the family proof.
+- primitive: scripts/cos-skill-edit-gate
+  harnesses:
+  - shell-ci
+  tests: *lean_skillopt_tests
+  rationale: Skill edit gate behavior is verified through accepted candidate score improvement.
+- primitive: scripts/cos-skill-proposal-stage
+  harnesses:
+  - shell-ci
+  tests: *lean_skillopt_tests
+  rationale: Proposal staging is covered through the skill optimization run wrapper.
+- primitive: scripts/cos-skill-adopt
+  harnesses:
+  - shell-ci
+  tests: *lean_skillopt_tests
+  rationale: Explicit adoption with live skill mutation is covered in a temp project fixture.
+- primitive: scripts/cos-skill-rejected-buffer
+  harnesses:
+  - shell-ci
+  tests: *lean_skillopt_tests
+  rationale: Rejected edit buffer CLI is part of the lean/skillopt wrapper family proof.
+- primitive: scripts/cos-skill-slow-update
+  harnesses:
+  - shell-ci
+  tests: *lean_skillopt_tests
+  rationale: Slow update staging is covered by the skill optimization wrapper family proof.
+- primitive: scripts/cos-skill-sleep
+  harnesses:
+  - shell-ci
+  tests: *lean_skillopt_tests
+  rationale: Offline skill sleep produces a deterministic run receipt in the family proof.
+- primitive: skills/lean-code/SKILL.md
+  harnesses:
+  - codex
+  - claude-code
+  - shell-ci
+  tests: *lean_skillopt_tests
+  rationale: The lean conversation skill routes to wrappers covered by the lean/skillopt proof.
+- primitive: skills/skill-optimization/SKILL.md
+  harnesses:
+  - codex
+  - claude-code
+  - shell-ci
+  tests: *lean_skillopt_tests
+  rationale: The skill optimization conversation skill routes to staged/gated wrappers covered by the family proof.
+- primitive: scripts/cos-so-impact-eval
+  harnesses:
+  - shell-ci
+  tests: &so_impact_tests
+  - tests/unit/test_cos_so_impact_eval.py
+  - tests/unit/test_so_impact_eval_skill.py
+  - tests/red_team/portability/test_cos_so_impact_eval_primitive.py
+  rationale: SO impact eval wrapper runs deterministic vanilla/full-SO capsules and writes reports in a temp output root.
+- primitive: skills/so-impact-eval/SKILL.md
+  harnesses:
+  - codex
+  - claude-code
+  - shell-ci
+  tests: *so_impact_tests
+  rationale: The conversation skill routes impact-eval requests to the wrapper and make smoke covered by unit and portability tests.
+- primitive: templates/so-impact-eval.example.yaml
+  harnesses:
+  - shell-ci
+  tests: *so_impact_tests
+  rationale: The example contract shape is exercised by the SO impact eval plan/run tests.
+
 patterns:
 - pattern: tests/**
   behavior_proven: true

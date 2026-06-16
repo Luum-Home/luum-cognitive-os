@@ -1,7 +1,28 @@
 ---
 name: artifact-workflow
 version: 1.0.0
-description: Run the portable Cognitive OS artifact intelligence, work graph, refutation review, and second-pass advisor lane for any project or stack.
+description: Use when a project needs portable artifact intelligence, work graph tracking, claim refutation, or a bounded second-pass advisor lane.
+audience: both
+platforms:
+  - codex
+  - claude-code
+  - opencode
+  - generic-cli
+platform_support:
+  generic-cli:
+    support_level: executable
+    evidence:
+      - scripts/cos-artifact-ingest
+      - scripts/cos-work-graph
+      - scripts/cos-refutation-review
+      - tests/red_team/portability/test_cos_artifact_workflow_primitives.py
+routing_patterns:
+  - pattern: \b(artifact[- ]workflow|artifact intelligence|work graph|second-pass advisor|claim refutation)\b
+    confidence: 0.9
+routing_intents:
+  - intent: artifact_workflow_request
+    description: User asks for artifact evidence intake, work graph tracking, refutation review, or second-pass advisor receipts.
+    confidence: 0.9
 triggers:
   - /artifact-workflow
   - /artifact-intelligence
@@ -10,7 +31,7 @@ triggers:
   - challenge final claim
   - second-pass advisor
 ---
-
+<!-- SCOPE: os-only -->
 # Artifact Workflow
 
 Use this skill when a task needs durable evidence intake, duplicate-aware work

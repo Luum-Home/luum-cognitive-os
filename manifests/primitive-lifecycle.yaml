@@ -20554,7 +20554,7 @@ primitives:
   runtime_projection: false
   behavior_evidence: Branch/worktree closure protocol is repository-agnostic and now has executable helper coverage for inventory, protected landing guidance, and batch cleanup dry-runs.
   evidence_commands:
-  - .venv/bin/python -m pytest tests/unit/test_cos_branch_worktree_closure.py tests/red_team/portability/test_cos_branch_worktree_closure.py -q
+  - python3 -m pytest tests/unit/test_cos_branch_worktree_closure.py tests/red_team/portability/test_cos_branch_worktree_closure.py -q
   docs_claim_level: advisory
   exit_behavior: skill-procedure
   metrics_file: .cognitive-os/branch-worktree-closure/latest.json
@@ -25066,7 +25066,7 @@ primitives:
   runtime_projection: true
   behavior_evidence: Codex-visible projection of the branch/worktree closure skill so Codex sessions can activate the protected landing protocol directly.
   evidence_commands:
-  - .venv/bin/python -m pytest tests/red_team/portability/test_cos_branch_worktree_closure.py -q
+  - python3 -m pytest tests/red_team/portability/test_cos_branch_worktree_closure.py -q
   docs_claim_level: advisory
   exit_behavior: skill-procedure
   metrics_file: none
@@ -25088,7 +25088,7 @@ primitives:
   runtime_projection: true
   behavior_evidence: Generic Cognitive OS projection of the branch/worktree closure skill for consumer project surfaces.
   evidence_commands:
-  - .venv/bin/python -m pytest tests/red_team/portability/test_cos_branch_worktree_closure.py -q
+  - python3 -m pytest tests/red_team/portability/test_cos_branch_worktree_closure.py -q
   docs_claim_level: advisory
   exit_behavior: skill-procedure
   metrics_file: none
@@ -25108,7 +25108,7 @@ primitives:
   runtime_projection: true
   behavior_evidence: Claude-visible projection of the branch/worktree closure skill so Claude Code sessions can activate the protected landing protocol directly.
   evidence_commands:
-  - .venv/bin/python -m pytest tests/red_team/portability/test_cos_branch_worktree_closure.py -q
+  - python3 -m pytest tests/red_team/portability/test_cos_branch_worktree_closure.py -q
   docs_claim_level: advisory
   exit_behavior: skill-procedure
   metrics_file: none
@@ -25155,7 +25155,7 @@ primitives:
   behavior_evidence: Shared implementation for governed branch/worktree inventory, classification, protected landing dispatch, and batched merged-branch cleanup.
   evidence_commands:
   - python3 -m py_compile scripts/cos_branch_worktree_closure.py
-  - .venv/bin/python -m pytest tests/unit/test_cos_branch_worktree_closure.py tests/red_team/portability/test_cos_branch_worktree_closure.py -q
+  - python3 -m pytest tests/unit/test_cos_branch_worktree_closure.py tests/red_team/portability/test_cos_branch_worktree_closure.py -q
   rollback_or_repair_command: Remove scripts/cos-branch-worktree-closure, projections, lifecycle rows, and refresh registry/overlay reports.
   sunset_criteria: Promote when closure helper is wired as default in all harness handoff flows; downgrade if it remains maintainer-only.
   docs_claim_level: advisory
@@ -25205,7 +25205,7 @@ primitives:
   behavior_evidence: Portable wrapper that makes the protected branch/worktree closure protocol invocable before agents attempt generic Git pushes.
   evidence_commands:
   - bash -n scripts/cos-branch-worktree-closure
-  - .venv/bin/python -m pytest tests/unit/test_cos_branch_worktree_closure.py tests/red_team/portability/test_cos_branch_worktree_closure.py -q
+  - python3 -m pytest tests/unit/test_cos_branch_worktree_closure.py tests/red_team/portability/test_cos_branch_worktree_closure.py -q
   rollback_or_repair_command: Remove the wrapper and direct users to scripts/cos_work_inventory.py plus scripts/merge-to-main.sh.
   sunset_criteria: Replace when native harnesses expose equivalent protected landing closure UI.
   docs_claim_level: advisory

@@ -3,11 +3,12 @@
 
 > Level-1 always-load routing hints. Load `skills/CATALOG-COMPACT.md` for broader discovery; load full `SKILL.md` only on invocation.
 
-Total skills: 184
+Total skills: 188
 
 - agent-kpis [b]: Calculate and report Cognit…; k=agent-kpis,calculate
 - analyze-improvements [b]: Analyze KPIs, error pattern…; k=analyze-improvements,analyze
 - apply-improvements [b]: Apply approved self-improve…; k=apply-improvements,apply
+- artifact-workflow [b]: Use when a project needs po…; k=artifact-workflow,project
 - branch-worktree-closure [b]: Close leftover agent branch…; k=branch-worktree-closure,close
 - browser-task [b]: Use when an agent or operat…; k=browser-task,operator
 - catalog-full [b]: Load and display the full s…; k=catalog-full,load
@@ -20,6 +21,7 @@ Total skills: 184
 - doc-review-personas [b]: N-persona parallel doc revi…; k=doc-review-personas,n-persona
 - eval-repo [b]: DEPRECATED alias for /repo-…; k=eval-repo,deprecated
 - generate-config [b]: Read detected-stack.json an…; k=generate-config,read
+- lean-code [b]: Use when work should minimi…; k=lean-code,work
 - llm-status [b]: Inspect LLM dispatch state…; k=llm-status,inspect
 - model-optimizer [b]: Analyze skill execution met…; k=model-optimizer,analyze
 - pattern-audit [b]: Grep/regex audit with manda…; k=pattern-audit,grep
@@ -107,7 +109,9 @@ Total skills: 184
 - security-audit [d]: Comprehensive security audi…; k=security-audit,comprehensive
 - security-red-team [d]: 'Unified Cognitive OS secur…; k=security-red-team,unified
 - simulation-arena [d]: End-to-end agent workflow s…; k=simulation-arena,end-to-end
+- skill-optimization [d]: Use when improving Cognitiv…; k=skill-optimization,improving
 - smoke-test [d]: Run end-to-end smoke tests…; k=smoke-test,run
+- so-impact-eval [d]: Run cos-so-impact-eval smok…; k=so-impact-eval,run
 - strands-evals-integration [d]: Configure Strands Evals for…; k=strands-evals-integration,configure
 - test-contract-repair [d]: Repair failing or misleadin…; k=test-contract-repair,repair
 - tool-discovery [d]: Discover new open-source to…; k=tool-discovery,discover

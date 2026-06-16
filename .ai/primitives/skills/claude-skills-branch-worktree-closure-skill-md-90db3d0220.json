@@ -14,7 +14,7 @@
   "evidence": {
     "behavior_evidence": "Claude-visible projection of the branch/worktree closure skill so Claude Code sessions can activate the protected landing protocol directly.",
     "evidence_commands": [
-      ".venv/bin/python -m pytest tests/red_team/portability/test_cos_branch_worktree_closure.py -q"
+      "python3 -m pytest tests/red_team/portability/test_cos_branch_worktree_closure.py -q"
     ],
     "metrics_file": "none"
   },
@@ -44,7 +44,7 @@
     "evidence": {
       "behavior_evidence": "Claude-visible projection of the branch/worktree closure skill so Claude Code sessions can activate the protected landing protocol directly.",
       "evidence_commands": [
-        ".venv/bin/python -m pytest tests/red_team/portability/test_cos_branch_worktree_closure.py -q"
+        "python3 -m pytest tests/red_team/portability/test_cos_branch_worktree_closure.py -q"
       ],
       "metrics": []
     },

@@ -432,6 +432,13 @@ def build_overlay(root: Path) -> dict[str, str]:
 
     skill_sources = set((root / "skills").glob("**/SKILL.md"))
     skill_sources.update((root / "packages").glob("*/skills/*/SKILL.md"))
+    lifecycle_for_counts = _load_yaml(root / "manifests" / "primitive-lifecycle.yaml")
+    lifecycle_skill_sources = {
+        root / str(row.get("id"))
+        for row in (lifecycle_for_counts.get("primitives") or [])
+        if isinstance(row, dict) and str(row.get("kind") or "") == "skill"
+    }
+    skill_sources.update(lifecycle_skill_sources)
     skill_source_count = len(skill_sources)
     skill_overlay_count = summary_by_family.get("skill", 0)
     skill_overlay_excluded_count = max(skill_source_count - skill_overlay_count, 0)
