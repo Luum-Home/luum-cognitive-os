@@ -14,7 +14,7 @@ Total items: 5832
 
 | File | Line | Declared | Inferred | Confidence | Item | Evidence | Next action |
 |---|---:|---|---|---:|---|---|---|
-| AGENTS.md | 141 | done | done_weak_proof | 0.62 | In **reconstruction**: even small tasks can be done directly without ceremony. Rewrite over patch. | terms:directly,done,even,over,patch,reconstruction,rewrite,small | add explicit test/workflow/proof link |
+| AGENTS.md | 170 | done | done_weak_proof | 0.62 | In **reconstruction**: even small tasks can be done directly without ceremony. Rewrite over patch. | terms:directly,done,even,over,patch,reconstruction,rewrite,small | add explicit test/workflow/proof link |
 | README.md | 24 | done | done_weak_proof | 0.62 | result, overwrite a working file with a broken one, claim "done" without | terms:broken,claim,done,file,overwrite,result,without,working | add explicit test/workflow/proof link |
 | README.md | 181 | done | done_weak_proof | 0.62 | yet closed). The reconciliation lives in | terms:closed,lives,reconciliation | add explicit test/workflow/proof link |
 | docs/00-MOCs/decisions.md | 7 | done | stale | 0.82 | 1. [`docs/02-Decisions/adrs/INDEX.md`](../adrs/INDEX.md) — full status table for 280 ADRs (sorted: Active, Proposed, Exploration, Resolved, Superseded, Tombstone) | path:docs/02-Decisions/adrs/INDEX.md, terms:active,adrs,decisions,exploration,full,index,proposed,resolved, missing_path:docs/adrs/INDEX.md | update stale path or demote completion claim |

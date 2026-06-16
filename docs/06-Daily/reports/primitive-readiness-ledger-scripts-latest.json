@@ -5778,9 +5778,9 @@
         "doc": 778,
         "hook": 124,
         "rule": 51,
-        "script": 449,
-        "skill": 90,
-        "test": 769,
+        "script": 451,
+        "skill": 91,
+        "test": 772,
         "workflow": 2
       },
       "consumers": [
@@ -10154,6 +10154,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-branch-worktree-closure"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-capability-matrix"
         },
         {
@@ -11038,6 +11042,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_branch_worktree_closure.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_build_self_knowledge.py"
         },
         {
@@ -11735,6 +11743,10 @@
         {
           "family": "script",
           "path": "scripts/write_context_marker.py"
+        },
+        {
+          "family": "skill",
+          "path": ".codex/skills/branch-worktree-closure/SKILL.md"
         },
         {
           "family": "skill",
@@ -13246,6 +13258,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cos-branch-worktree-closure.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_cos-claims.py"
         },
         {
@@ -13719,6 +13735,10 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_cos_branch_lock.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_branch_worktree_closure.py"
         },
         {
           "family": "test",
@@ -14263,6 +14283,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_cos_auth_probe.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_branch_worktree_closure.py"
         },
         {
           "family": "test",
@@ -15185,14 +15209,14 @@
       "evidence": [
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
-        "skill_consumers:90",
-        "test_consumers:769",
+        "skill_consumers:91",
+        "test_consumers:772",
         "hook_consumers:124",
         "workflow_consumers:2",
         "doc_consumers:778",
         "rule_consumers:51",
         "config_consumers:86",
-        "script_consumers:449"
+        "script_consumers:451"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -15204,11 +15228,11 @@
       "protected_install_surface": false,
       "role": "lab",
       "role_source": "lifecycle",
-      "skill_consumers": 90,
+      "skill_consumers": 91,
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 2349,
+      "total_consumers": 2355,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -17757,6 +17781,108 @@
       "supported_harnesses": [],
       "total_consumers": 9,
       "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "consumer_families": {
+        "config": 2,
+        "doc": 1,
+        "script": 1,
+        "skill": 2,
+        "test": 3
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "AGENTS.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos"
+        },
+        {
+          "family": "skill",
+          "path": ".codex/skills/branch-worktree-closure/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/branch-worktree-closure/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos-branch-worktree-closure.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_branch_worktree_closure.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_branch_worktree_closure.py"
+        }
+      ],
+      "distribution": "team",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_branch_worktree_closure.py",
+        "skill_consumers:2",
+        "test_consumers:3",
+        "doc_consumers:1",
+        "config_consumers:2",
+        "script_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-branch-worktree-closure",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-branch-worktree-closure",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 2,
+      "supported_harnesses": [
+        "claude",
+        "codex",
+        "cursor",
+        "devin",
+        "vscode-copilot",
+        "agents-md",
+        "opencode",
+        "google-antigravity",
+        "qwen-code",
+        "kimi-code",
+        "minimax-maxclaw",
+        "deepseek-provider",
+        "shell-ci",
+        "gemini-cli",
+        "warp",
+        "amp-code",
+        "jetbrains-junie",
+        "qoder",
+        "factory-droid",
+        "kiro",
+        "cline",
+        "continue-dev",
+        "kilo-code",
+        "zed-ai",
+        "augment-code",
+        "goose",
+        "aider"
+      ],
+      "total_consumers": 9,
+      "wrapper_for": "scripts/cos_branch_worktree_closure.py"
     },
     {
       "confidence": "medium",
@@ -30351,6 +30477,7 @@
       "consumer_families": {
         "config": 2,
         "doc": 3,
+        "script": 1,
         "test": 1
       },
       "consumers": [
@@ -30375,6 +30502,10 @@
           "path": "docs/04-Concepts/architecture/primitive-closure-atomic-check.md"
         },
         {
+          "family": "script",
+          "path": "scripts/cos_branch_worktree_closure.py"
+        },
+        {
           "family": "test",
           "path": "tests/red_team/portability/test_cos-primitive-closure-check.py"
         }
@@ -30385,7 +30516,8 @@
         "wrapper_for:scripts/cos_primitive_closure_check.py",
         "test_consumers:1",
         "doc_consumers:3",
-        "config_consumers:2"
+        "config_consumers:2",
+        "script_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -30401,7 +30533,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": "scripts/cos_primitive_closure_check.py"
     },
     {
@@ -40817,6 +40949,84 @@
     },
     {
       "confidence": "medium",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "consumer_families": {
+        "config": 2,
+        "script": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-branch-worktree-closure"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_branch_worktree_closure.py"
+        }
+      ],
+      "distribution": "team",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/merge-to-main.sh",
+        "test_consumers:1",
+        "config_consumers:2",
+        "script_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos_branch_worktree_closure.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/cos_branch_worktree_closure.py",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "heuristic:self-evolution",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "claude",
+        "codex",
+        "cursor",
+        "devin",
+        "vscode-copilot",
+        "agents-md",
+        "opencode",
+        "google-antigravity",
+        "qwen-code",
+        "kimi-code",
+        "minimax-maxclaw",
+        "deepseek-provider",
+        "shell-ci",
+        "gemini-cli",
+        "warp",
+        "amp-code",
+        "jetbrains-junie",
+        "qoder",
+        "factory-droid",
+        "kiro",
+        "cline",
+        "continue-dev",
+        "kilo-code",
+        "zed-ai",
+        "augment-code",
+        "goose",
+        "aider"
+      ],
+      "total_consumers": 4,
+      "wrapper_for": "scripts/merge-to-main.sh"
+    },
+    {
+      "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
@@ -41165,7 +41375,7 @@
         "config": 5,
         "doc": 3,
         "script": 1,
-        "skill": 2,
+        "skill": 3,
         "test": 3
       },
       "consumers": [
@@ -41207,6 +41417,10 @@
         },
         {
           "family": "skill",
+          "path": ".codex/skills/branch-worktree-closure/SKILL.md"
+        },
+        {
+          "family": "skill",
           "path": "skills/branch-worktree-closure/SKILL.md"
         },
         {
@@ -41229,7 +41443,7 @@
       "distribution": "team",
       "evidence": [
         "lifecycle",
-        "skill_consumers:2",
+        "skill_consumers:3",
         "test_consumers:3",
         "doc_consumers:3",
         "config_consumers:5",
@@ -41245,11 +41459,11 @@
       "protected_install_surface": false,
       "role": "lab",
       "role_source": "lifecycle",
-      "skill_consumers": 2,
+      "skill_consumers": 3,
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 14,
+      "total_consumers": 15,
       "wrapper_for": null
     },
     {
@@ -47087,7 +47301,7 @@
         "doc": 14,
         "hook": 2,
         "script": 9,
-        "skill": 4,
+        "skill": 5,
         "test": 6
       },
       "consumers": [
@@ -47217,6 +47431,10 @@
         },
         {
           "family": "skill",
+          "path": ".codex/skills/branch-worktree-closure/SKILL.md"
+        },
+        {
+          "family": "skill",
           "path": "skills/branch-worktree-closure/SKILL.md"
         },
         {
@@ -47260,7 +47478,7 @@
       "evidence": [
         "lifecycle",
         "wrapper_for:scripts/edit-coop.sh",
-        "skill_consumers:4",
+        "skill_consumers:5",
         "test_consumers:6",
         "hook_consumers:2",
         "doc_consumers:14",
@@ -47277,11 +47495,11 @@
       "protected_install_surface": false,
       "role": "agentic-primitive",
       "role_source": "lifecycle",
-      "skill_consumers": 4,
+      "skill_consumers": 5,
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 41,
+      "total_consumers": 42,
       "wrapper_for": "scripts/edit-coop.sh"
     },
     {
@@ -53978,11 +54196,11 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 4,
-        "doc": 7,
+        "doc": 8,
         "hook": 2,
         "rule": 1,
-        "script": 2,
-        "skill": 2,
+        "script": 3,
+        "skill": 3,
         "test": 7
       },
       "consumers": [
@@ -54001,6 +54219,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "AGENTS.md"
         },
         {
           "family": "doc",
@@ -54051,6 +54273,14 @@
           "path": "scripts/cos-patch-release"
         },
         {
+          "family": "script",
+          "path": "scripts/cos_branch_worktree_closure.py"
+        },
+        {
+          "family": "skill",
+          "path": ".codex/skills/branch-worktree-closure/SKILL.md"
+        },
+        {
           "family": "skill",
           "path": "skills/branch-worktree-closure/SKILL.md"
         },
@@ -54091,13 +54321,13 @@
       "evidence": [
         "lifecycle",
         "wrapper_for:scripts/derived_artifact_gate.py",
-        "skill_consumers:2",
+        "skill_consumers:3",
         "test_consumers:7",
         "hook_consumers:2",
-        "doc_consumers:7",
+        "doc_consumers:8",
         "rule_consumers:1",
         "config_consumers:4",
-        "script_consumers:2"
+        "script_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -54109,11 +54339,11 @@
       "protected_install_surface": false,
       "role": "agentic-primitive",
       "role_source": "lifecycle",
-      "skill_consumers": 2,
+      "skill_consumers": 3,
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 25,
+      "total_consumers": 28,
       "wrapper_for": "scripts/derived_artifact_gate.py"
     },
     {
@@ -66455,27 +66685,27 @@
   "summary": {
     "agentic_primitives_without_lifecycle": 0,
     "confidence": {
-      "high": 400,
+      "high": 401,
       "low": 1,
-      "medium": 318
+      "medium": 319
     },
     "consumer_accessibility": {
       "install-profile-managed": 19,
-      "lifecycle-declared-consumer-candidate": 167,
+      "lifecycle-declared-consumer-candidate": 169,
       "lifecycle-declared-maintainer": 191,
       "skill-referenced-not-projectable": 3,
       "so-local-only": 339
     },
     "low_confidence_rows": 1,
     "roles": {
-      "agentic-primitive": 262,
+      "agentic-primitive": 263,
       "archive": 12,
       "driver-specific": 14,
       "lab": 97,
-      "maintainer-tool": 319,
+      "maintainer-tool": 320,
       "migration-only": 15
     },
-    "total_scripts": 719,
+    "total_scripts": 721,
     "without_consumers": 0
   },
   "target_family": "scripts"

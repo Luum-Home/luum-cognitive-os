@@ -8,7 +8,7 @@
     },
     {
       "changed_paths": [
-        ".cognitive-os/improvements/proposals/consumer-improvement-proposals-demo-20260616T135518Z.json"
+        ".cognitive-os/improvements/proposals/consumer-improvement-proposals-demo-20260616T145013Z.json"
       ],
       "id": "consumer-improvement-import",
       "returncode": 0,
@@ -149,7 +149,7 @@
       "unexpected_paths": []
     }
   ],
-  "generated_at": "2026-06-16T13:55:19+00:00",
+  "generated_at": "2026-06-16T14:50:13+00:00",
   "items": [
     {
       "authority_mode": "os-maintainer-write",
@@ -1455,6 +1455,18 @@
       "path": "scripts/cos-branch-task-check",
       "role": "maintainer-tool",
       "scope": "os-only",
+      "status": "pass",
+      "writes": []
+    },
+    {
+      "authority_mode": "observe-only",
+      "authority_source": "derived:shared-default",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "detected_write_surfaces": [],
+      "findings": [],
+      "path": "scripts/cos-branch-worktree-closure",
+      "role": "agentic-primitive",
+      "scope": "both",
       "status": "pass",
       "writes": []
     },
@@ -5069,6 +5081,18 @@
       "findings": [],
       "path": "scripts/cos_branch_lock.py",
       "role": "lab",
+      "scope": "both",
+      "status": "pass",
+      "writes": []
+    },
+    {
+      "authority_mode": "observe-only",
+      "authority_source": "derived:shared-default",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "detected_write_surfaces": [],
+      "findings": [],
+      "path": "scripts/cos_branch_worktree_closure.py",
+      "role": "maintainer-tool",
       "scope": "both",
       "status": "pass",
       "writes": []
@@ -9058,17 +9082,17 @@
   "summary": {
     "block_count": 0,
     "by_mode": {
-      "observe-only": 148,
+      "observe-only": 150,
       "os-maintainer-write": 530,
       "profile-projection-write": 37,
       "propose-only": 3
     },
     "by_status": {
-      "pass": 708,
+      "pass": 710,
       "warn": 10
     },
     "dynamic_blocks": 0,
     "dynamic_smokes": 4,
-    "total_scripts": 718
+    "total_scripts": 720
   }
 }

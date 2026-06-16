@@ -4644,8 +4644,8 @@
         "hook": 25,
         "rule": 3,
         "script": 57,
-        "skill": 11,
-        "test": 148
+        "skill": 13,
+        "test": 149
       },
       "consumers": [
         {
@@ -5794,6 +5794,10 @@
         },
         {
           "family": "skill",
+          "path": ".codex/skills/branch-worktree-closure/SKILL.md"
+        },
+        {
+          "family": "skill",
           "path": ".codex/skills/portability-work/SKILL.md"
         },
         {
@@ -5815,6 +5819,10 @@
         {
           "family": "skill",
           "path": "skills/artifact-workflow/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/branch-worktree-closure/SKILL.md"
         },
         {
           "family": "skill",
@@ -6071,6 +6079,10 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_cos-test-laptop-bg.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_branch_worktree_closure.py"
         },
         {
           "family": "test",
@@ -6432,11 +6444,11 @@
       "distribution": "core",
       "evidence": [
         "lifecycle",
-        "skill_consumers:11",
+        "skill_consumers:13",
         "hook_consumers:25",
         "rule_consumers:3",
         "script_consumers:57",
-        "test_consumers:148",
+        "test_consumers:149",
         "doc_consumers:183",
         "config_consumers:18"
       ],
@@ -6452,7 +6464,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 445
+      "total_consumers": 448
     },
     {
       "confidence": "high",

@@ -72,6 +72,35 @@ Cross-reference: ADR-072 (`docs/02-Decisions/adrs/ADR-072-test-lane-taxonomy.md`
 
 ---
 
+## Protected Main Landing and Branch / Worktree Closure
+
+`main` is a governed branch. Do **not** run `git push origin main` directly.
+All useful branch work must land through the single-writer path from the source
+branch/worktree:
+
+```bash
+scripts/cos land --validate '<targeted validation command>'
+# equivalent: bash scripts/merge-to-main.sh --validate '<targeted validation command>'
+```
+
+When asked to merge, close, clean up, or reconcile branches/worktrees, first run
+the governed closure inventory instead of treating the task as generic Git:
+
+```bash
+scripts/cos-branch-worktree-closure --json
+# or: scripts/cos branch closure --json
+# or: scripts/cos worktree closure --json
+```
+
+If cleanup is safe and explicitly intended, batch-delete merged remote branches
+through the helper (`--cleanup-merged --apply`) rather than issuing one
+`git push origin --delete ...` per branch; each push runs hooks and creates
+unnecessary latency.
+
+Closure order: inventory → classify → land through `scripts/cos land` → verify
+ancestry → batch cleanup → final clean status. Preserve dirty worktrees or
+stashes; never force-delete uncertain work.
+
 ## Build & Test
 
 ```bash
