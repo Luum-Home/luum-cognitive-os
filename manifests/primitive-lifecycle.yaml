@@ -24340,3 +24340,256 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: library-cli
   metrics_file: docs/09-Quality/evals/so-impact/{task-id}/{run-id}/report.json
+
+- id: scripts/cos-artifact-ingest
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos-artifact-ingest
+  - scripts/cos_artifact_workflow.py
+  runtime_projection: false
+  behavior_evidence: Artifact ingest wrapper for project-local artifact ledger and fingerprint dedupe.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_artifact_workflow.py tests/red_team/portability/test_cos_artifact_workflow_primitives.py -q
+  rollback_or_repair_command: Remove artifact/workgraph/refutation/advisor wrapper lifecycle rows, refresh primitive overlays, and keep the architecture doc as historical context.
+  sunset_criteria: Promote or replace when harness-level process orchestration provides equivalent artifact intake, work graph, refutation, and advisor receipt coverage.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_2
+  metrics_file: .cognitive-os/artifacts/ledger.json
+- id: scripts/cos-artifact-watch
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos-artifact-watch
+  - scripts/cos_artifact_workflow.py
+  runtime_projection: false
+  behavior_evidence: Bounded artifact watcher that ingests changed files into the project-local artifact ledger.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_artifact_workflow.py tests/red_team/portability/test_cos_artifact_workflow_primitives.py -q
+  rollback_or_repair_command: Remove artifact/workgraph/refutation/advisor wrapper lifecycle rows, refresh primitive overlays, and keep the architecture doc as historical context.
+  sunset_criteria: Promote or replace when harness-level process orchestration provides equivalent artifact intake, work graph, refutation, and advisor receipt coverage.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_2
+  metrics_file: .cognitive-os/artifacts/events.jsonl
+- id: scripts/cos-artifact-report
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos-artifact-report
+  - scripts/cos_artifact_workflow.py
+  runtime_projection: false
+  behavior_evidence: Artifact ledger report for parse states, signals, and duplicate fingerprints.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_artifact_workflow.py tests/red_team/portability/test_cos_artifact_workflow_primitives.py -q
+  rollback_or_repair_command: Remove artifact/workgraph/refutation/advisor wrapper lifecycle rows, refresh primitive overlays, and keep the architecture doc as historical context.
+  sunset_criteria: Promote or replace when harness-level process orchestration provides equivalent artifact intake, work graph, refutation, and advisor receipt coverage.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_2
+  metrics_file: .cognitive-os/artifacts/ledger.json
+- id: scripts/cos-work-graph
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos-work-graph
+  - scripts/cos_artifact_workflow.py
+  runtime_projection: false
+  behavior_evidence: Persistent work graph ledger with task status, priority, evidence, and fingerprint dedupe.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_artifact_workflow.py tests/red_team/portability/test_cos_artifact_workflow_primitives.py -q
+  rollback_or_repair_command: Remove artifact/workgraph/refutation/advisor wrapper lifecycle rows, refresh primitive overlays, and keep the architecture doc as historical context.
+  sunset_criteria: Promote or replace when harness-level process orchestration provides equivalent artifact intake, work graph, refutation, and advisor receipt coverage.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_2
+  metrics_file: .cognitive-os/work-graphs/{graph-id}/state.json
+- id: scripts/cos-refutation-review
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos-refutation-review
+  - scripts/cos_artifact_workflow.py
+  runtime_projection: false
+  behavior_evidence: Claim refutation review loop that records confidence and fresh-review findings.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_artifact_workflow.py tests/red_team/portability/test_cos_artifact_workflow_primitives.py -q
+  rollback_or_repair_command: Remove artifact/workgraph/refutation/advisor wrapper lifecycle rows, refresh primitive overlays, and keep the architecture doc as historical context.
+  sunset_criteria: Promote or replace when harness-level process orchestration provides equivalent artifact intake, work graph, refutation, and advisor receipt coverage.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_2
+  metrics_file: .cognitive-os/process-loops/{process-id}/refutation-review.jsonl
+- id: scripts/cos-second-pass-advisor
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos-second-pass-advisor
+  - scripts/cos_artifact_workflow.py
+  runtime_projection: false
+  behavior_evidence: Second-pass advisor lane with signal trigger, timeout, and receipt recording.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_artifact_workflow.py tests/red_team/portability/test_cos_artifact_workflow_primitives.py -q
+  rollback_or_repair_command: Remove artifact/workgraph/refutation/advisor wrapper lifecycle rows, refresh primitive overlays, and keep the architecture doc as historical context.
+  sunset_criteria: Promote or replace when harness-level process orchestration provides equivalent artifact intake, work graph, refutation, and advisor receipt coverage.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_2
+  metrics_file: .cognitive-os/process-loops/{process-id}/advisor-receipts.jsonl
+- id: scripts/cos_artifact_workflow.py
+  kind: script-lib
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos_artifact_workflow.py
+  runtime_projection: false
+  behavior_evidence: Shared Python implementation for artifact, work-graph, refutation, and advisor wrappers.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_artifact_workflow.py tests/red_team/portability/test_cos_artifact_workflow_primitives.py -q
+  rollback_or_repair_command: Remove artifact/workgraph/refutation/advisor wrapper lifecycle rows, refresh primitive overlays, and keep the architecture doc as historical context.
+  sunset_criteria: Promote or replace when harness-level process orchestration provides equivalent artifact intake, work graph, refutation, and advisor receipt coverage.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_2
+  metrics_file: multiple .cognitive-os receipts
+- id: skills/artifact-workflow/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - skills/artifact-workflow/SKILL.md
+  - .cognitive-os/skills/artifact-workflow/SKILL.md
+  - .claude/skills/artifact-workflow/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Conversation-facing skill for artifact intelligence, work graph, refutation review, and second-pass advisor primitives.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_artifact_workflow.py tests/red_team/portability/test_cos_artifact_workflow_primitives.py -q
+  rollback_or_repair_command: Remove artifact/workgraph/refutation/advisor wrapper lifecycle rows, refresh primitive overlays, and keep the architecture doc as historical context.
+  sunset_criteria: Promote or replace when harness-level process orchestration provides equivalent artifact intake, work graph, refutation, and advisor receipt coverage.
+  docs_claim_level: advisory
+  exit_behavior: instructional
+  metrics_file: none
+- id: .cognitive-os/skills/artifact-workflow/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - skills/artifact-workflow/SKILL.md
+  - .cognitive-os/skills/artifact-workflow/SKILL.md
+  - .claude/skills/artifact-workflow/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Conversation-facing skill projection for artifact workflow in .cognitive-os.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_artifact_workflow.py tests/red_team/portability/test_cos_artifact_workflow_primitives.py -q
+  rollback_or_repair_command: Remove artifact/workgraph/refutation/advisor wrapper lifecycle rows, refresh primitive overlays, and keep the architecture doc as historical context.
+  sunset_criteria: Promote or replace when harness-level process orchestration provides equivalent artifact intake, work graph, refutation, and advisor receipt coverage.
+  docs_claim_level: advisory
+  exit_behavior: instructional
+  metrics_file: none
+- id: .claude/skills/artifact-workflow/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - skills/artifact-workflow/SKILL.md
+  - .cognitive-os/skills/artifact-workflow/SKILL.md
+  - .claude/skills/artifact-workflow/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Conversation-facing skill projection for artifact workflow in .claude.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_artifact_workflow.py tests/red_team/portability/test_cos_artifact_workflow_primitives.py -q
+  rollback_or_repair_command: Remove artifact/workgraph/refutation/advisor wrapper lifecycle rows, refresh primitive overlays, and keep the architecture doc as historical context.
+  sunset_criteria: Promote or replace when harness-level process orchestration provides equivalent artifact intake, work graph, refutation, and advisor receipt coverage.
+  docs_claim_level: advisory
+  exit_behavior: instructional
+  metrics_file: none

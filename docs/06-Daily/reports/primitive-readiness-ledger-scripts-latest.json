@@ -5775,12 +5775,12 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 86,
-        "doc": 776,
+        "doc": 777,
         "hook": 124,
         "rule": 51,
-        "script": 431,
-        "skill": 87,
-        "test": 763,
+        "script": 438,
+        "skill": 88,
+        "test": 766,
         "workflow": 2
       },
       "consumers": [
@@ -7819,6 +7819,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/agentic-mastery-operations.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/artifact-workgraph-review-advisor.md"
         },
         {
           "family": "doc",
@@ -10106,6 +10110,18 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-artifact-ingest"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-artifact-report"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-artifact-watch"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-audit-archive"
         },
         {
@@ -10690,6 +10706,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-refutation-review"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-registry-lock"
         },
         {
@@ -10743,6 +10763,10 @@
         {
           "family": "script",
           "path": "scripts/cos-scope-projection-audit"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-second-pass-advisor"
         },
         {
           "family": "script",
@@ -10930,6 +10954,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-work-graph"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-worker-run-once"
         },
         {
@@ -10951,6 +10979,10 @@
         {
           "family": "script",
           "path": "scripts/cos_architecture_readiness.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_artifact_workflow.py"
         },
         {
           "family": "script",
@@ -11795,6 +11827,10 @@
         {
           "family": "skill",
           "path": "skills/architecture-map-answer/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/artifact-workflow/SKILL.md"
         },
         {
           "family": "skill",
@@ -13614,6 +13650,14 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cos_artifact_workflow.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_artifact_workflow_primitives.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_cos_boring_reliability.py"
         },
         {
@@ -14147,6 +14191,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_cos_architecture_readiness.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_artifact_workflow.py"
         },
         {
           "family": "test",
@@ -15069,14 +15117,14 @@
       "evidence": [
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
-        "skill_consumers:87",
-        "test_consumers:763",
+        "skill_consumers:88",
+        "test_consumers:766",
         "hook_consumers:124",
         "workflow_consumers:2",
-        "doc_consumers:776",
+        "doc_consumers:777",
         "rule_consumers:51",
         "config_consumers:86",
-        "script_consumers:431"
+        "script_consumers:438"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -15088,11 +15136,11 @@
       "protected_install_surface": false,
       "role": "lab",
       "role_source": "lifecycle",
-      "skill_consumers": 87,
+      "skill_consumers": 88,
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 2320,
+      "total_consumers": 2332,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -16698,6 +16746,180 @@
       ],
       "total_consumers": 9,
       "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "doc": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/artifact-workgraph-review-advisor.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/artifact-workflow/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_artifact_workflow_primitives.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_artifact_workflow.py",
+        "skill_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-artifact-ingest",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-artifact-ingest",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 1,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 5,
+      "wrapper_for": "scripts/cos_artifact_workflow.py"
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "doc": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/artifact-workgraph-review-advisor.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/artifact-workflow/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_artifact_workflow_primitives.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_artifact_workflow.py",
+        "skill_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-artifact-report",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-artifact-report",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 1,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 5,
+      "wrapper_for": "scripts/cos_artifact_workflow.py"
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "doc": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/artifact-workgraph-review-advisor.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_artifact_workflow_primitives.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_artifact_workflow.py",
+        "test_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-artifact-watch",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-artifact-watch",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 4,
+      "wrapper_for": "scripts/cos_artifact_workflow.py"
     },
     {
       "confidence": "medium",
@@ -22911,7 +23133,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 3,
-        "doc": 2,
+        "doc": 3,
         "hook": 1,
         "test": 1
       },
@@ -22934,6 +23156,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/artifact-workgraph-review-advisor.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/gentle-ai-comparative-audit-2026-06-15.md"
         },
         {
@@ -22951,7 +23177,7 @@
         "wrapper_for:scripts/cos_process_loop.py",
         "test_consumers:1",
         "hook_consumers:1",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:3"
       ],
       "install_surface": null,
@@ -22970,7 +23196,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": "scripts/cos_process_loop.py"
     },
     {
@@ -30308,7 +30534,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 3,
-        "doc": 3,
+        "doc": 4,
         "hook": 1,
         "test": 1
       },
@@ -30328,6 +30554,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-337-agent-process-loop-contract-layer.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/artifact-workgraph-review-advisor.md"
         },
         {
           "family": "doc",
@@ -30352,7 +30582,7 @@
         "wrapper_for:scripts/cos_process_loop.py",
         "test_consumers:1",
         "hook_consumers:1",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:3"
       ],
       "install_surface": null,
@@ -30371,7 +30601,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 8,
+      "total_consumers": 9,
       "wrapper_for": "scripts/cos_process_loop.py"
     },
     {
@@ -31694,6 +31924,72 @@
       "supported_harnesses": [],
       "total_consumers": 9,
       "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "doc": 1,
+        "script": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/artifact-workgraph-review-advisor.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_artifact_workflow.py"
+        },
+        {
+          "family": "skill",
+          "path": "skills/artifact-workflow/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_artifact_workflow_primitives.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_artifact_workflow.py",
+        "skill_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:2",
+        "script_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-refutation-review",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-refutation-review",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 1,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 6,
+      "wrapper_for": "scripts/cos_artifact_workflow.py"
     },
     {
       "confidence": "high",
@@ -33677,6 +33973,66 @@
       "supported_harnesses": [],
       "total_consumers": 8,
       "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "doc": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/artifact-workgraph-review-advisor.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/artifact-workflow/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_artifact_workflow_primitives.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_artifact_workflow.py",
+        "skill_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-second-pass-advisor",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-second-pass-advisor",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 1,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 5,
+      "wrapper_for": "scripts/cos_artifact_workflow.py"
     },
     {
       "confidence": "high",
@@ -38279,7 +38635,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 3,
-        "doc": 2,
+        "doc": 3,
         "hook": 1,
         "test": 1
       },
@@ -38302,6 +38658,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/artifact-workgraph-review-advisor.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/gentle-ai-comparative-audit-2026-06-15.md"
         },
         {
@@ -38319,7 +38679,7 @@
         "wrapper_for:scripts/cos_process_loop.py",
         "test_consumers:1",
         "hook_consumers:1",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:3"
       ],
       "install_surface": null,
@@ -38338,7 +38698,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": "scripts/cos_process_loop.py"
     },
     {
@@ -38715,6 +39075,66 @@
       ],
       "total_consumers": 11,
       "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "doc": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/artifact-workgraph-review-advisor.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/artifact-workflow/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_artifact_workflow_primitives.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_artifact_workflow.py",
+        "skill_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-work-graph",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-work-graph",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 1,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 5,
+      "wrapper_for": "scripts/cos_artifact_workflow.py"
     },
     {
       "confidence": "high",
@@ -39346,6 +39766,79 @@
       ],
       "total_consumers": 15,
       "wrapper_for": "scripts/cos_branch_lease.py"
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "script": 6,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-artifact-ingest"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-artifact-report"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-artifact-watch"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-refutation-review"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-second-pass-advisor"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-work-graph"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_artifact_workflow.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "test_consumers:1",
+        "config_consumers:2",
+        "script_consumers:6"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos_artifact_workflow.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/cos_artifact_workflow.py",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "heuristic:self-evolution",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 9,
+      "wrapper_for": null
     },
     {
       "confidence": "high",
@@ -65201,27 +65694,27 @@
   "summary": {
     "agentic_primitives_without_lifecycle": 0,
     "confidence": {
-      "high": 384,
+      "high": 390,
       "low": 1,
-      "medium": 316
+      "medium": 317
     },
     "consumer_accessibility": {
       "install-profile-managed": 19,
       "lifecycle-declared-consumer-candidate": 167,
-      "lifecycle-declared-maintainer": 173,
+      "lifecycle-declared-maintainer": 180,
       "skill-referenced-not-projectable": 3,
       "so-local-only": 339
     },
     "low_confidence_rows": 1,
     "roles": {
-      "agentic-primitive": 246,
+      "agentic-primitive": 252,
       "archive": 12,
       "driver-specific": 14,
       "lab": 97,
-      "maintainer-tool": 317,
+      "maintainer-tool": 318,
       "migration-only": 15
     },
-    "total_scripts": 701,
+    "total_scripts": 708,
     "without_consumers": 0
   },
   "target_family": "scripts"

@@ -437,12 +437,12 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 24,
-        "doc": 156,
+        "doc": 159,
         "hook": 42,
         "rule": 6,
-        "script": 68,
+        "script": 73,
         "skill": 11,
-        "test": 91
+        "test": 93
       },
       "consumers": [
         {
@@ -951,6 +951,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/gentle-ai-comparative-audit-2026-06-15.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/graphify-integration-assessment-2026-05-22.md"
         },
         {
@@ -1012,6 +1016,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/service-control-plane-research-2026-05-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/so-wide-impact-evaluation-plane.md"
         },
         {
           "family": "doc",
@@ -1116,6 +1124,10 @@
         {
           "family": "doc",
           "path": "docs/07-Capabilities/root/cos-package-manager.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/business/cognitive-os-efficiency-operating-model.md"
         },
         {
           "family": "doc",
@@ -1483,6 +1495,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_artifact_workflow.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_build_self_knowledge.py"
         },
         {
@@ -1499,7 +1515,15 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_efficiency_primitives.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_engram_command_audit.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_init.py"
         },
         {
           "family": "script",
@@ -1515,11 +1539,19 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_process_loop.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_pytest_lastfailed_health.py"
         },
         {
           "family": "script",
           "path": "scripts/cos_quality_duplicates.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_so_impact_eval.py"
         },
         {
           "family": "script",
@@ -1895,6 +1927,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_cos_efficiency_primitives.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_cos_graphify_run_telemetry.py"
         },
         {
@@ -2027,6 +2063,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_so_impact_eval_trigger_hook.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_sprint_orchestrator.py"
         },
         {
@@ -2044,9 +2084,9 @@
         "skill_consumers:11",
         "hook_consumers:42",
         "rule_consumers:6",
-        "script_consumers:68",
-        "test_consumers:91",
-        "doc_consumers:156",
+        "script_consumers:73",
+        "test_consumers:93",
+        "doc_consumers:159",
         "config_consumers:24"
       ],
       "family": "hooks",
@@ -2061,7 +2101,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 398
+      "total_consumers": 408
     },
     {
       "confidence": "high",
@@ -2250,7 +2290,7 @@
         "doc": 85,
         "hook": 83,
         "rule": 7,
-        "script": 35,
+        "script": 36,
         "skill": 3,
         "test": 34
       },
@@ -3033,6 +3073,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_efficiency_primitives.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_false_positive_ledger.py"
         },
         {
@@ -3282,7 +3326,7 @@
         "skill_consumers:3",
         "hook_consumers:83",
         "rule_consumers:7",
-        "script_consumers:35",
+        "script_consumers:36",
         "test_consumers:34",
         "doc_consumers:85",
         "config_consumers:8"
@@ -3299,7 +3343,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 255
+      "total_consumers": 256
     },
     {
       "confidence": "high",
@@ -4588,12 +4632,12 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 18,
-        "doc": 178,
+        "doc": 183,
         "hook": 25,
         "rule": 3,
-        "script": 56,
-        "skill": 10,
-        "test": 145
+        "script": 57,
+        "skill": 11,
+        "test": 148
       },
       "consumers": [
         {
@@ -4950,6 +4994,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-339-efficiency-operating-model-primitives.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/INDEX.md"
         },
         {
@@ -5046,6 +5094,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/artifact-workgraph-review-advisor.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/bootstrap-portability.md"
         },
         {
@@ -5111,6 +5163,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/functional-audit/sprint-5-observability.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/gentle-ai-comparative-audit-2026-06-15.md"
         },
         {
           "family": "doc",
@@ -5230,6 +5286,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/so-wide-impact-evaluation-plane.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/standalone-agent-runtime-adapter-options.md"
         },
         {
@@ -5303,6 +5363,10 @@
         {
           "family": "doc",
           "path": "docs/07-Capabilities/root/cos-package-manager.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/business/cognitive-os-efficiency-operating-model.md"
         },
         {
           "family": "doc",
@@ -5578,6 +5642,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_efficiency_primitives.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_init.py"
         },
         {
@@ -5735,6 +5803,10 @@
         {
           "family": "skill",
           "path": "skills/agent-stress-test/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/artifact-workflow/SKILL.md"
         },
         {
           "family": "skill",
@@ -5986,6 +6058,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cos-skill-selection-report.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_cos-test-laptop-bg.py"
         },
         {
@@ -6003,6 +6079,14 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_cos_process_loop_primitives.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_so_impact_eval.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_so_impact_eval_primitive.py"
         },
         {
           "family": "test",
@@ -6340,12 +6424,12 @@
       "distribution": "core",
       "evidence": [
         "lifecycle",
-        "skill_consumers:10",
+        "skill_consumers:11",
         "hook_consumers:25",
         "rule_consumers:3",
-        "script_consumers:56",
-        "test_consumers:145",
-        "doc_consumers:178",
+        "script_consumers:57",
+        "test_consumers:148",
+        "doc_consumers:183",
         "config_consumers:18"
       ],
       "family": "hooks",
@@ -6360,7 +6444,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 435
+      "total_consumers": 445
     },
     {
       "confidence": "high",
@@ -10101,7 +10185,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 8,
-        "doc": 1,
+        "doc": 2,
         "script": 2,
         "test": 1
       },
@@ -10143,6 +10227,10 @@
           "path": "docs/02-Decisions/adrs/ADR-319-detractor-review-modes.md"
         },
         {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/gentle-ai-comparative-audit-2026-06-15.md"
+        },
+        {
           "family": "script",
           "path": "scripts/_lib/settings-driver-claude-code.sh"
         },
@@ -10160,7 +10248,7 @@
         "lifecycle",
         "script_consumers:2",
         "test_consumers:1",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:8"
       ],
       "family": "hooks",
@@ -10173,7 +10261,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 12
+      "total_consumers": 13
     },
     {
       "confidence": "high",
@@ -44886,7 +44974,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 9,
-        "doc": 4,
+        "doc": 5,
         "rule": 1,
         "script": 3,
         "test": 5
@@ -44945,6 +45033,10 @@
           "path": "docs/02-Decisions/adrs/ADR-188-mandatory-skill-invocation-at-high-confidence.md"
         },
         {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/gentle-ai-comparative-audit-2026-06-15.md"
+        },
+        {
           "family": "rule",
           "path": "rules/skill-invocation-mandatory.md"
         },
@@ -44987,7 +45079,7 @@
         "rule_consumers:1",
         "script_consumers:3",
         "test_consumers:5",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "config_consumers:9"
       ],
       "family": "hooks",
@@ -45001,7 +45093,7 @@
         "claude",
         "codex"
       ],
-      "total_consumers": 22
+      "total_consumers": 23
     },
     {
       "confidence": "high",
@@ -45324,6 +45416,110 @@
       "role_source": "lifecycle",
       "supported_harnesses": [
         "claude"
+      ],
+      "total_consumers": 17
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep install/profile/harness proof current",
+      "consumer_accessibility": "projected-consumer-surface",
+      "consumer_families": {
+        "config": 7,
+        "doc": 2,
+        "script": 4,
+        "skill": 1,
+        "test": 3
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.json"
+        },
+        {
+          "family": "config",
+          "path": ".codex/hooks.json"
+        },
+        {
+          "family": "config",
+          "path": "cognitive-os.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-install-boundary.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/gentle-ai-comparative-audit-2026-06-15.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/so-wide-impact-evaluation-plane.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/_lib/settings-driver-claude-code.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/apply-efficiency-profile.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_init.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/generate-project-settings.sh"
+        },
+        {
+          "family": "skill",
+          "path": "skills/so-impact-eval/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_quality_duplicates_harness_triggers.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_so-impact-eval-trigger.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_so_impact_eval_trigger_hook.py"
+        }
+      ],
+      "distribution": "team",
+      "evidence": [
+        "lifecycle",
+        "skill_consumers:1",
+        "script_consumers:4",
+        "test_consumers:3",
+        "doc_consumers:2",
+        "config_consumers:7"
+      ],
+      "family": "hooks",
+      "lifecycle_id": "hooks/so-impact-eval-trigger.sh",
+      "lifecycle_state": "advisory",
+      "next_action": "keep lifecycle, tests, and harness proof current",
+      "path": "hooks/so-impact-eval-trigger.sh",
+      "role": "observability",
+      "role_source": "lifecycle",
+      "supported_harnesses": [
+        "claude",
+        "codex",
+        "opencode"
       ],
       "total_consumers": 17
     },
@@ -49146,23 +49342,23 @@
   "schema_version": 1,
   "summary": {
     "confidence": {
-      "high": 272,
+      "high": 273,
       "medium": 14
     },
     "consumer_accessibility": {
       "lifecycle-declared-consumer-candidate": 23,
       "lifecycle-declared-maintainer": 173,
-      "projected-consumer-surface": 76,
+      "projected-consumer-surface": 77,
       "so-local-only": 14
     },
     "roles": {
       "driver-specific": 30,
       "lab": 102,
       "memory-lifecycle": 103,
-      "observability": 37,
+      "observability": 38,
       "runtime-safety": 14
     },
-    "total": 286,
+    "total": 287,
     "without_consumers": 0,
     "without_lifecycle": 14
   },

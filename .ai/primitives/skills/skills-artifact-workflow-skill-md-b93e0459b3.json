@@ -1,0 +1,102 @@
+{
+  "canonical_source": "skills/artifact-workflow/SKILL.md",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Conversation-facing skill for artifact intelligence, work graph, refutation review, and second-pass advisor primitives.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Conversation-facing skill for artifact intelligence, work graph, refutation review, and second-pass advisor primitives.",
+    "evidence_commands": [
+      ".venv/bin/python -m pytest tests/unit/test_cos_artifact_workflow.py tests/red_team/portability/test_cos_artifact_workflow_primitives.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "skill",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "instructional",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "candidate",
+    "maturity": "advisory",
+    "owner_adr": "ADR-337",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "document",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "Conversation-facing skill for artifact intelligence, work graph, refutation review, and second-pass advisor primitives.",
+      "evidence_commands": [
+        ".venv/bin/python -m pytest tests/unit/test_cos_artifact_workflow.py tests/red_team/portability/test_cos_artifact_workflow_primitives.py -q"
+      ],
+      "metrics": []
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "unsupported"
+    },
+    "intent": "Conversation-facing skill for artifact intelligence, work graph, refutation review, and second-pass advisor primitives.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "shell": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "skills/artifact-workflow/SKILL.md",
+        ".cognitive-os/skills/artifact-workflow/SKILL.md",
+        ".claude/skills/artifact-workflow/SKILL.md"
+      ],
+      "runtime_projection": false
+    }
+  },
+  "portable_id": "skills/artifact-workflow/SKILL.md",
+  "projection_targets": [
+    "skills/artifact-workflow/SKILL.md",
+    ".cognitive-os/skills/artifact-workflow/SKILL.md",
+    ".claude/skills/artifact-workflow/SKILL.md"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "skills/artifact-workflow/SKILL.md",
+  "supported_harnesses": [
+    "codex",
+    "claude",
+    "shell"
+  ]
+}

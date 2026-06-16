@@ -6,7 +6,7 @@
   "harness": "codex",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 777,
+  "projected_primitive_count": 787,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": false,
@@ -1719,6 +1719,13 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": "scripts/cos_artifact_workflow.py",
+      "primitive_file": "primitives/other-script/scripts-cos-artifact-workflow-py-d9f5725f80.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": "scripts/cos_efficiency_primitives.py",
       "primitive_file": "primitives/other-script/scripts-cos-efficiency-primitives-py-1f8f5e6574.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
@@ -2727,6 +2734,20 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": ".claude/skills/artifact-workflow/SKILL.md",
+      "primitive_file": "primitives/skills/claude-skills-artifact-workflow-skill-md-a226553503.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": ".cognitive-os/skills/artifact-workflow/SKILL.md",
+      "primitive_file": "primitives/skills/cognitive-os-skills-artifact-workflow-skill-md-7823defca4.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": "packages/adaptive-workflow/skills/self-review/SKILL.md",
       "primitive_file": "primitives/skills/packages-adaptive-workflow-skills-self-review-skill-md-954d5beed6.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
@@ -3324,6 +3345,13 @@
       "fidelity": "documented-only",
       "portable_id": "skills/architecture-map-answer/SKILL.md",
       "primitive_file": "primitives/skills/skills-architecture-map-answer-skill-md-70f04a4b3d.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/artifact-workflow/SKILL.md",
+      "primitive_file": "primitives/skills/skills-artifact-workflow-skill-md-b93e0459b3.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
@@ -5079,6 +5107,27 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": "scripts/cos-artifact-ingest",
+      "primitive_file": "primitives/tools/scripts-cos-artifact-ingest-028ddc5a24.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-artifact-report",
+      "primitive_file": "primitives/tools/scripts-cos-artifact-report-8ff6ff58a2.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-artifact-watch",
+      "primitive_file": "primitives/tools/scripts-cos-artifact-watch-8185f6fde4.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": "scripts/cos-conflict-marker-guard",
       "primitive_file": "primitives/tools/scripts-cos-conflict-marker-guard-498acf8f29.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
@@ -5303,6 +5352,13 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": "scripts/cos-refutation-review",
+      "primitive_file": "primitives/tools/scripts-cos-refutation-review-d4f2d5d383.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": "scripts/cos-review-workload-forecast",
       "primitive_file": "primitives/tools/scripts-cos-review-workload-forecast-d466858497.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
@@ -5312,6 +5368,13 @@
       "fidelity": "documented-only",
       "portable_id": "scripts/cos-role-selection-report",
       "primitive_file": "primitives/tools/scripts-cos-role-selection-report-751d275800.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-second-pass-advisor",
+      "primitive_file": "primitives/tools/scripts-cos-second-pass-advisor-0eb253449f.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
@@ -5375,6 +5438,13 @@
       "fidelity": "documented-only",
       "portable_id": "scripts/cos-verify-report",
       "primitive_file": "primitives/tools/scripts-cos-verify-report-3ec920f888.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-work-graph",
+      "primitive_file": "primitives/tools/scripts-cos-work-graph-65b2f4c5a3.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {

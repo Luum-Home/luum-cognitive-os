@@ -176,6 +176,34 @@
     },
     {
       "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:docs/02-Decisions/adrs/ADR-339-efficiency-operating-model-primitives.md",
+        "terms:accepted,adapter,adrs,advisory,capabilities,catalog,context,decisions"
+      ],
+      "inferred_status": "done_with_proof",
+      "item": "[ADR-339 \u2014 Cognitive OS Efficiency Operating Model Primitives](../../02-Decisions/adrs/ADR-339-efficiency-operating-model-primitives.md) \u2014 accepted advisory slice for `cos status`, adapter capabilities, projection transactions, skill registry, context plan, ro",
+      "kind": "bullet",
+      "line": 34,
+      "next_action": "keep marked done; maintain proof links",
+      "path": "docs/00-MOCs/entrypoints/README.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:docs/02-Decisions/adrs/ADR-338-so-wide-impact-evaluation-plane.md",
+        "terms:accepted,adrs,capsules,claims,cos-so-impact-eval,decision,decisions,evaluation"
+      ],
+      "inferred_status": "done_with_proof",
+      "item": "[ADR-338 \u2014 SO-Wide Impact Evaluation Plane](../../02-Decisions/adrs/ADR-338-so-wide-impact-evaluation-plane.md) \u2014 accepted decision for `cos-so-impact-eval`, isolated workflow capsules, mode ablations, and receipt-backed SO-wide claims.",
+      "kind": "bullet",
+      "line": 35,
+      "next_action": "keep marked done; maintain proof links",
+      "path": "docs/00-MOCs/entrypoints/README.md"
+    },
+    {
+      "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
         "path:docs/06-Daily/reports/graphify-phase-c-hotspot-report-2026-05-22.md",
@@ -184,7 +212,7 @@
       "inferred_status": "proposed",
       "item": "[Graphify Phase C Hotspot Report \u2014 2026-05-22](../../06-Daily/reports/graphify-phase-c-hotspot-report-2026-05-22.md) \u2014 generated hotspot, cross-file dependency, optimization-candidate, and recommended Graphify command report from Phase B slice graphs.",
       "kind": "bullet",
-      "line": 38,
+      "line": 43,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -198,7 +226,7 @@
       "inferred_status": "done_with_proof",
       "item": "[Graphify Real Token Telemetry Tooling Audit \u2014 2026-05-22](../../04-Concepts/architecture/graphify-real-token-telemetry-tooling-audit-2026-05-22.md) \u2014 audit of existing session-parser, usage-monitor, cost ledger, context-budget, harness-token tooling, and the ",
       "kind": "bullet",
-      "line": 41,
+      "line": 46,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -211,7 +239,7 @@
       "inferred_status": "proposed",
       "item": "[External Tool Adoption Doctrine](architecture/external-tool-adoption-doctrine.md) \u2014 doctrine for when COS should adopt, integrate, build, defer, or reject third-party tools.",
       "kind": "bullet",
-      "line": 56,
+      "line": 61,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -224,7 +252,7 @@
       "inferred_status": "proposed",
       "item": "[Memory Layer Evolution SDD](architecture/memory-layer-evolution-sdd.md) \u2014 design-first boundary for Graphiti, LightRAG, HippoRAG, MIRIX, and DSPy memory-related work.",
       "kind": "bullet",
-      "line": 61,
+      "line": 66,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -238,7 +266,7 @@
       "inferred_status": "planned",
       "item": "[Primitive Scope Unknown Triage](../../06-Daily/reports/primitive-scope-unknown-triage-latest.md) \u2014 latest grouped backlog of unclassified primitives by missing metadata and semantic hints.",
       "kind": "bullet",
-      "line": 77,
+      "line": 82,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -251,7 +279,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-308: Dependency Maintenance Across Install, Update, and Git Hooks](adrs/ADR-308-dependency-maintenance-install-update-git-hooks.md) \u2014 read-only maintenance primitive wired into setup, update, auto-update, and git pull/push hooks so dependency drift is vis",
       "kind": "bullet",
-      "line": 80,
+      "line": 85,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -264,7 +292,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-279: Orphan Repo-Scan Process Audit](adrs/ADR-279-orphan-repo-scan-process-audit.md) \u2014 accepted dry-run-first primitive for detecting and optionally killing stale PPID=1 Claude/zsh/grep-style repo scans with metrics and behavior tests.",
       "kind": "bullet",
-      "line": 96,
+      "line": 101,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -279,7 +307,7 @@
       "inferred_status": "done_with_proof",
       "item": "[ADR-276: Primitive Authority and Write-Effects Audit](adrs/ADR-276-primitive-authority-write-effects.md) \u2014 accepted contract for `manifests/primitive-authority.yaml`, `scripts/primitive_authority_audit.py`, dynamic filesystem-delta smokes, and ACC `authority_",
       "kind": "bullet",
-      "line": 97,
+      "line": 102,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -294,7 +322,7 @@
       "inferred_status": "done_with_proof",
       "item": "[ADR-277: Documentation Truth Control](adrs/ADR-277-documentation-truth-control.md) \u2014 accepted contract for `manifests/documentation-truth-claims.yaml`, `scripts/documentation_truth_audit.py`, generated truth blocks, and ACC `documentation_truth`.",
       "kind": "bullet",
-      "line": 98,
+      "line": 103,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -307,7 +335,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-256: Primitive Contract Registry and Runtime Evidence Ledger](adrs/ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md) \u2014 implemented root contract connecting primitive definitions, projection fidelity, consumer/service impact, intervention",
       "kind": "bullet",
-      "line": 99,
+      "line": 104,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -321,7 +349,7 @@
       "inferred_status": "done_with_proof",
       "item": "[ADR-257: Primitive Contract Registry Phase 1](adrs/ADR-257-primitive-contract-registry-phase-1.md) \u2014 implemented first `manifests/primitive-contracts.yaml` slice for five high-value primitives and structural-enforcement guard tests.",
       "kind": "bullet",
-      "line": 100,
+      "line": 105,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -334,7 +362,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-258: Portable `.ai` Overlay for Agentic Primitives](adrs/ADR-258-portable-ai-overlay-for-agentic-primitives.md) \u2014 accepted generated `.ai` overlay/export surface grounded in a 40+ source external due-diligence sweep.",
       "kind": "bullet",
-      "line": 101,
+      "line": 106,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -347,7 +375,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-272: Structural Rule Backend Boundary](adrs/ADR-272-structural-rule-backend-boundary.md) \u2014 accepted boundary keeping the COS compiler authoritative while limiting any future `rulesync`-style backend to structural advisory file emission.",
       "kind": "bullet",
-      "line": 102,
+      "line": 107,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -360,7 +388,7 @@
       "inferred_status": "planned",
       "item": "[ADR Implementation Status Backfill \u2014 2026-05-12](reports/adr-implementation-status-backfill-2026-05-12.md) \u2014 first conservative frontmatter backfill and remaining Active/Unclassified scope.",
       "kind": "bullet",
-      "line": 104,
+      "line": 109,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -373,7 +401,7 @@
       "inferred_status": "proposed",
       "item": "[Standalone Agent Runtime Adapter Options](architecture/standalone-agent-runtime-adapter-options.md) \u2014 boundary and candidate matrix for turning `cosd` + `agent-service` into a standalone runtime through native, Pi, Goose, OpenCode, or other adapters without o",
       "kind": "bullet",
-      "line": 106,
+      "line": 111,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -386,7 +414,7 @@
       "inferred_status": "proposed",
       "item": "[COS Native Runtime Harness Design](architecture/cos-native-runtime-harness-design.md) \u2014 COS-owned runtime/harness architecture that combines Pi lifecycle clarity, Gollem/Fugue embedded execution, Goose safety/interoperability, and Hermes product UX without ma",
       "kind": "bullet",
-      "line": 108,
+      "line": 113,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -399,7 +427,7 @@
       "inferred_status": "proposed",
       "item": "[OpenCode Native Primitive Adapter Design](architecture/opencode-native-primitive-adapter-design.md) \u2014 native permissions/plugins design and smoke criteria before OpenCode runtime enforcement claims.",
       "kind": "bullet",
-      "line": 112,
+      "line": 117,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -412,7 +440,7 @@
       "inferred_status": "proposed",
       "item": "[Portable AI Primitive Standards Due Diligence \u2014 2026-05-09](reports/portable-ai-primitive-standards-due-diligence-2026-05-09.md) \u2014 40+ source external sweep covering `.ai`/VERSA, AGENTS.md, SKILL.md, rules/hooks/tools protocols, and why `.ai` should start as ",
       "kind": "bullet",
-      "line": 117,
+      "line": 122,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -425,7 +453,7 @@
       "inferred_status": "proposed",
       "item": "[Portable `.ai` Overlay vs Consumer `.ai` Model Impact \u2014 2026-05-12](reports/portable-ai-overlay-consumer-model-impact-2026-05-12.md) \u2014 local and external analysis of why maintainer `.ai/` is generated/proof-oriented while consumer `.ai/` should be human-reada",
       "kind": "bullet",
-      "line": 119,
+      "line": 124,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -438,7 +466,7 @@
       "inferred_status": "planned",
       "item": "[State Retention Reaper Protocol Plan](../.cognitive-os/plans/architecture/state-retention-reaper-protocol.md) \u2014 implementation plan for audit, cleanup, and future reaper expansion.",
       "kind": "bullet",
-      "line": 147,
+      "line": 152,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -451,7 +479,7 @@
       "inferred_status": "planned",
       "item": "[ADR-195: Surface 5 Operable TUI Contract](adrs/ADR-195-surface-5-operable-tui-contract.md) \u2014 read-only Bubble Tea operator console contract and future confirmation/receipt gate for actions.",
       "kind": "bullet",
-      "line": 154,
+      "line": 159,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -464,7 +492,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-168: Cross-Device Dependency Installation Contract](adrs/ADR-168-cross-device-dependency-installation.md) \u2014 accepted contract for manifest-driven dependency install metadata, dry-run-first installer behavior, and no-credential-copy boundaries.",
       "kind": "bullet",
-      "line": 174,
+      "line": 179,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -477,7 +505,7 @@
       "inferred_status": "planned",
       "item": "[ADR Implementation Reconciliation \u2014 2026-05-05](reports/adr-implementation-reconciliation-2026-05-05.md) \u2014 reconciles ADR implementation status, fixes ACC fail-new classification debt, and documents the remaining non-implementation ADR buckets.",
       "kind": "bullet",
-      "line": 181,
+      "line": 186,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -490,7 +518,7 @@
       "inferred_status": "planned",
       "item": "[Headless Docker Service Runtime Manual Test](manual-tests/headless-docker-service-runtime.md) \u2014 non-IDE Docker worker proof for queue, leases, artifacts, provider auth boundaries, and future service runtime flows.",
       "kind": "bullet",
-      "line": 182,
+      "line": 187,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -503,7 +531,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-146: Primitive Readiness Ledger](adrs/ADR-146-primitive-readiness-ledger.md) \u2014 accepted contract for the machine-readable script role ledger and future ratchet gates.",
       "kind": "bullet",
-      "line": 192,
+      "line": 197,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -516,7 +544,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[Consumer Project Primitive Accessibility](architecture/consumer-project-primitive-accessibility.md) \u2014 downstream-project projection contract for implemented native and structural harnesses, with runtime-enforcement limits kept explicit.",
       "kind": "bullet",
-      "line": 194,
+      "line": 199,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -529,7 +557,7 @@
       "inferred_status": "planned",
       "item": "[Harness Action Receipts](architecture/harness-action-receipts.md) \u2014 vendor-neutral receipt and trust model for Codex `::git-*` directives, Git operations, merge queues, and future harness action telemetry.",
       "kind": "bullet",
-      "line": 200,
+      "line": 205,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -542,7 +570,7 @@
       "inferred_status": "planned",
       "item": "[Session Close: Lethal Trifecta and Harness Action Receipts \u2014 2026-05-06](reports/session-close-lethal-receipts-2026-05-06.md) \u2014 closure report for the lethal-trifecta false-positive fix, harness action receipts runtime/docs, dashboard `fnm` validation, and re",
       "kind": "bullet",
-      "line": 201,
+      "line": 206,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -555,7 +583,7 @@
       "inferred_status": "planned",
       "item": "[ACC Fail-New Gate Manual Test](manual-tests/acc-fail-new-gate.md) \u2014 manual proof that ACC blocks new debt and keeps planned harnesses roadmap-only.",
       "kind": "bullet",
-      "line": 208,
+      "line": 213,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -568,7 +596,7 @@
       "inferred_status": "planned",
       "item": "[ADR-153: ACC Fail-New Gate and Harness Proof Boundary](adrs/ADR-153-acc-fail-new-and-harness-proof-boundary.md) \u2014 ratchet decision for strict new-debt blocking and planned-harness non-promotion.",
       "kind": "bullet",
-      "line": 209,
+      "line": 214,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -581,7 +609,7 @@
       "inferred_status": "planned",
       "item": "[Harness Proof Levels](architecture/harness-proof-levels.md) \u2014 explicit boundary between structural projection, optional runtime smoke, native lifecycle proof, and planned-only support.",
       "kind": "bullet",
-      "line": 211,
+      "line": 216,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -594,7 +622,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-154: Multi-IDE Structural Harness Projection](adrs/ADR-154-multi-ide-structural-harness-projection.md) \u2014 decision to promote OpenCode, VS Code Copilot, and Cursor to implemented structural projection harnesses.",
       "kind": "bullet",
-      "line": 213,
+      "line": 218,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -607,7 +635,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-155: Shell CI Formal Harness Projection](adrs/ADR-155-shell-ci-formal-harness.md) \u2014 decision to promote Shell/CI to an implemented structural command/workflow harness.",
       "kind": "bullet",
-      "line": 215,
+      "line": 220,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -620,7 +648,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-156: Qwen Code Structural Harness Projection](adrs/ADR-156-qwen-code-structural-harness-projection.md) \u2014 decision to promote Qwen Code to implemented structural projection.",
       "kind": "bullet",
-      "line": 217,
+      "line": 222,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -633,7 +661,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-157: Kimi Code CLI Structural Harness Projection](adrs/ADR-157-kimi-code-cli-structural-harness-projection.md) \u2014 decision to promote Kimi Code CLI to implemented structural projection.",
       "kind": "bullet",
-      "line": 219,
+      "line": 224,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -646,7 +674,7 @@
       "inferred_status": "planned",
       "item": "[ADR-158: AI Agent Harness Landscape and Proof Backlog](adrs/ADR-158-ai-agent-harness-landscape-and-proof-backlog.md) \u2014 decision to track broad ecosystem coverage in a separate machine-readable backlog without overclaiming runtime support.",
       "kind": "bullet",
-      "line": 221,
+      "line": 226,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -659,7 +687,7 @@
       "inferred_status": "proposed",
       "item": "[ADR-160: Rules/MCP Structural Harness Batch and Kiro Adapter Design](adrs/ADR-160-rules-mcp-structural-harness-batch-and-kiro-adapter-design.md) \u2014 decision to promote Cline, Continue, Kilo, Zed, Augment, Goose, and Aider to structural projection while preserv",
       "kind": "bullet",
-      "line": 223,
+      "line": 228,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -672,7 +700,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[Harness Docs Currentness Audit \u2014 2026-05-05](reports/harness-docs-currentness-audit-2026-05-05.md) \u2014 official-doc contrast for all implemented/planned harness projection claims, including Kilo, Goose, and Augment corrections.",
       "kind": "bullet",
-      "line": 224,
+      "line": 229,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -685,7 +713,7 @@
       "inferred_status": "proposed",
       "item": "[Kiro Lifecycle Adapter Design](architecture/kiro-lifecycle-adapter-design.md) \u2014 staged adapter design and gates before Kiro can be considered for native lifecycle proof.",
       "kind": "bullet",
-      "line": 226,
+      "line": 231,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -698,7 +726,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[Multi-Session Orchestration Audit \u2014 2026-05-02](architecture/multi-session-orchestration-audit-2026-05-02.md) \u2014 documented-vs-implemented matrix for multi-IDE/session/agent orchestration primitives and the next reconciler gap.",
       "kind": "bullet",
-      "line": 230,
+      "line": 235,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -711,7 +739,7 @@
       "inferred_status": "planned",
       "item": "[SSR Developer Primitive Enablement Gap Backlog](architecture/ssr-agentic-primitive-enablement-gaps.md) \u2014 developer-facing gap backlog for turning repeated chat/work into governed skills, hooks, rules, scripts, docs, and tests without overclaiming autonomous m",
       "kind": "bullet",
-      "line": 243,
+      "line": 248,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -724,7 +752,7 @@
       "inferred_status": "planned",
       "item": "[Headless Runtime Proof Drills](manual-tests/headless-runtime-proof-drills.md) \u2014 manual proof ladder for Docker worker, Engram Cloud sync, future headless task execution, crash/resume, VM, Kubernetes, and provider overlays.",
       "kind": "bullet",
-      "line": 268,
+      "line": 273,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -737,7 +765,7 @@
       "inferred_status": "planned",
       "item": "[COS Service Runtime Boundary](architecture/cos-service-runtime-boundary.md) \u2014 explicit boundary between today's IDE-embedded runtime, Docker worker surface, Engram Cloud service, and the future `cosd`/scheduler control plane.",
       "kind": "bullet",
-      "line": 269,
+      "line": 274,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -750,7 +778,7 @@
       "inferred_status": "planned",
       "item": "[COS Service Control Plane Research \u2014 2026-05-04](architecture/service-control-plane-research-2026-05-04.md) \u2014 reference-system and credential-mode analysis for a future `cosd` scheduler/queue/worker service without credential scraping.",
       "kind": "bullet",
-      "line": 270,
+      "line": 275,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -763,7 +791,7 @@
       "inferred_status": "proposed",
       "item": "[Self-Evolving Doctrine Proposals](architecture/self-evolving-doctrine-proposals.md) \u2014 control-plane evidence can generate proposed doctrine amendments without mutating runtime rules.",
       "kind": "bullet",
-      "line": 274,
+      "line": 279,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -776,7 +804,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[Lifecycle Demotion Proof \u2014 task-completed hook](reports/lifecycle-demotion-task-completed-2026-05-03.md) \u2014 first semantic `demoted` lifecycle transition proving shrink-without-delete behavior.",
       "kind": "bullet",
-      "line": 278,
+      "line": 283,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -789,7 +817,7 @@
       "inferred_status": "proposed",
       "item": "[ADR-135: Self-Evolving Doctrine Proposals](adrs/ADR-135-self-evolving-doctrine-proposals.md) \u2014 control-plane evidence generates proposed doctrine amendments without mutating runtime rules.",
       "kind": "bullet",
-      "line": 281,
+      "line": 286,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -802,7 +830,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-137: Operational Trajectory \u2014 Governance Layer \u2192 Embedded Runtime](adrs/ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md) \u2014 accepted directional commitment from Framing B (governance over agents) to Framing A (runtime that travels wi",
       "kind": "bullet",
-      "line": 283,
+      "line": 288,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -815,7 +843,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[Closure Discipline Manual Test](manual-tests/closure-discipline.md) \u2014 manual proof path for closing validation-system drift before claiming a multi-file maintainer batch is done.",
       "kind": "bullet",
-      "line": 293,
+      "line": 298,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -828,7 +856,7 @@
       "inferred_status": "planned",
       "item": "[Hook Registration Classification \u2014 2026-05-04](reports/hook-registration-classification-2026-05-04.md) \u2014 classifies the remaining unregistered hook surface into future, conditional, manual, deprecated, demoted, and promotion-candidate buckets.",
       "kind": "bullet",
-      "line": 296,
+      "line": 301,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -841,7 +869,7 @@
       "inferred_status": "planned",
       "item": "[Python Major Follow-up \u2014 2026-05-04](reports/python-major-followup-2026-05-04.md) \u2014 second-pass resolver evidence for wrapt, setuptools, and the remaining blocked major clusters.",
       "kind": "bullet",
-      "line": 298,
+      "line": 303,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -854,7 +882,7 @@
       "inferred_status": "proposed",
       "item": "[Agentic Mastery License, Weight, and DX Matrix](architecture/agentic-mastery-license-weight-dx-matrix.md) \u2014 licensing confidence, dependency weight, default-install impact, and DX value for candidate external tools.",
       "kind": "bullet",
-      "line": 311,
+      "line": 316,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -867,7 +895,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[Credential-Safe Runner Red-Team Review \u2014 2026-05-05](security/credential-safe-runner-red-team-2026-05-05.md) \u2014 malicious-agent attack review for the `.env`-backed Qwen smoke primitive and the mitigations added.",
       "kind": "bullet",
-      "line": 313,
+      "line": 318,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -880,7 +908,7 @@
       "inferred_status": "planned",
       "item": "[Security Red-Team Primitive](security/security-red-team.md) \u2014 unified `/security-red-team` runner for surface inventory, threat model, abuse probes, primitive scoring, and mitigation backlog.",
       "kind": "bullet",
-      "line": 314,
+      "line": 319,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -893,7 +921,7 @@
       "inferred_status": "planned",
       "item": "[Cognitive OS Agent Security Research \u2014 2026-05-05](security/cognitive-os-agent-security-research-2026-05-05.md) \u2014 external-source-backed red-team assessment of COS security posture, MCP/tool risks, sandboxing, exfiltration, and mitigation backlog.",
       "kind": "bullet",
-      "line": 316,
+      "line": 321,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -906,7 +934,7 @@
       "inferred_status": "proposed",
       "item": "[Primitive Fitness Evaluation Contract](architecture/primitive-fitness-evaluation-contract.md) \u2014 baseline-vs-candidate KPI/OKR fitness gate plus family ledger/ACC visibility for governed primitive self-improvement.",
       "kind": "bullet",
-      "line": 319,
+      "line": 324,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -919,7 +947,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-109: Validation Capsule Worktree Isolation](adrs/ADR-109-validation-capsule-worktree-isolation.md) \u2014 accepted decision separating validation isolation from the global hook killswitch.",
       "kind": "bullet",
-      "line": 333,
+      "line": 338,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -932,7 +960,7 @@
       "inferred_status": "proposed",
       "item": "[Design Philosophy](design-philosophy.md) \u2014 biological-system framing for the OS",
       "kind": "bullet",
-      "line": 338,
+      "line": 343,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -945,7 +973,7 @@
       "inferred_status": "planned",
       "item": "[Cross-Tool Task Recovery Research \u2014 2026-05](architecture/cross-tool-task-recovery-research-2026-05.md) \u2014 investigation of solved/pending task recovery across Codex, Claude Code, Engram, local ledgers, transcripts, and git.",
       "kind": "bullet",
-      "line": 350,
+      "line": 355,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -958,7 +986,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-081: Codex Harness Adapter](adrs/ADR-081-codex-harness-adapter.md) \u2014 accepted Codex adapter backed by sanitized live Codex Desktop payload fixtures, making Codex a first-class canonical harness surface",
       "kind": "bullet",
-      "line": 353,
+      "line": 358,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -971,7 +999,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[Auto-Rollback Router Trigger Forensics](reports/auto-rollback-router-trigger-forensics-2026-05-06.md) \u2014 why `/auto-rollback` was suggested in a meta-discussion and the narrow router guard added",
       "kind": "bullet",
-      "line": 365,
+      "line": 370,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -984,7 +1012,7 @@
       "inferred_status": "planned",
       "item": "[Harness Driver Parity](architecture/harness-driver-parity.md) \u2014 how Claude, Codex, and future harness settings projections are compared without pretending every driver has the same capabilities",
       "kind": "bullet",
-      "line": 371,
+      "line": 376,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -997,7 +1025,7 @@
       "inferred_status": "planned",
       "item": "[Merge Readiness Report](reports/merge-readiness-master-plan-2026-04-23.md) \u2014 validation snapshot and remaining work before merging the master-plan portability branch",
       "kind": "bullet",
-      "line": 390,
+      "line": 395,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -1010,7 +1038,7 @@
       "inferred_status": "planned",
       "item": "[Full Suite Validation Report](reports/full-suite-validation-2026-04-23.md) \u2014 current full-suite evidence, passing proof paths, and remaining failure families",
       "kind": "bullet",
-      "line": 391,
+      "line": 396,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -1023,7 +1051,7 @@
       "inferred_status": "planned",
       "item": "`experimental`: squads, organization specs, future control-plane designs, and high-variance systems that should not dominate the README.",
       "kind": "bullet",
-      "line": 400,
+      "line": 405,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -1036,7 +1064,7 @@
       "inferred_status": "planned",
       "item": "The following model describes the long-range architecture. Treat it as future architecture unless a layer has a linked proof path, test, or operator workflow.",
       "kind": "prose",
-      "line": 406,
+      "line": 411,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -1049,7 +1077,7 @@
       "inferred_status": "done_weak_proof",
       "item": "The self-improvement loop is a closed feedback cycle where every agent execution produces data that improves future executions:",
       "kind": "prose",
-      "line": 681,
+      "line": 686,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -1062,7 +1090,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Extending from dev-time to production-capable (partially done):",
       "kind": "prose",
-      "line": 853,
+      "line": 858,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -1075,7 +1103,7 @@
       "inferred_status": "proposed",
       "item": "[ADR-201: Maintainer Agent and Telemetry Promotion Loop](adrs/ADR-201-maintainer-agent-telemetry-promotion-loop.md) \u2014 proposed owner-backed loop for converting COS telemetry into governed improvement proposals",
       "kind": "bullet",
-      "line": 918,
+      "line": 923,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -1088,7 +1116,7 @@
       "inferred_status": "proposed",
       "item": "[ADR-202: Private Content Cross-Harness Portability Boundary](adrs/ADR-202-private-content-cross-harness-portability-boundary.md) \u2014 proposed policy for private content classes, projection, redaction, and service/cloud retention",
       "kind": "bullet",
-      "line": 919,
+      "line": 924,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -1101,7 +1129,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-203: Subagent Capability Contract and Launch Preflight](adrs/ADR-203-subagent-capability-contract-and-launch-preflight.md) \u2014 accepted manifest/preflight contract preventing read-only subagents from being launched for file-artifact tasks",
       "kind": "bullet",
-      "line": 920,
+      "line": 925,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -1114,7 +1142,7 @@
       "inferred_status": "proposed",
       "item": "[ADR-204: Signal Quality and Reward Integrity Boundary](adrs/ADR-204-signal-quality-and-reward-integrity-boundary.md) \u2014 proposed contract preventing dirty reward signals from driving self-improvement",
       "kind": "bullet",
-      "line": 921,
+      "line": 926,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -1127,7 +1155,7 @@
       "inferred_status": "proposed",
       "item": "[ADR-205: Cross-Stream Trace Joiner and Flight Recorder](adrs/ADR-205-cross-stream-trace-joiner-and-flight-recorder.md) \u2014 proposed run trace substrate for service-mode observability and the performance ledger",
       "kind": "bullet",
-      "line": 922,
+      "line": 927,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -1140,7 +1168,7 @@
       "inferred_status": "proposed",
       "item": "[ADR-206: Aspirational Claim Decommission Gate](adrs/ADR-206-aspirational-claim-decommission-gate.md) \u2014 proposed release gate for removing or demoting unbacked autonomous/self-improvement claims",
       "kind": "bullet",
-      "line": 923,
+      "line": 928,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -1153,7 +1181,7 @@
       "inferred_status": "proposed",
       "item": "[ADR-207: Skill Ecosystem Performance and Lifecycle Closure](adrs/ADR-207-skill-ecosystem-performance-and-lifecycle-closure.md) \u2014 proposed skill-specific ledger and lifecycle closure contract",
       "kind": "bullet",
-      "line": 924,
+      "line": 929,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -1166,7 +1194,7 @@
       "inferred_status": "proposed",
       "item": "[ADR-208: Imported Pattern Closure Contract](adrs/ADR-208-imported-pattern-closure-contract.md) \u2014 proposed rule that imported patterns need producer, consumer, scheduler, evaluator, and tests before promotion",
       "kind": "bullet",
-      "line": 925,
+      "line": 930,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -1179,7 +1207,7 @@
       "inferred_status": "proposed",
       "item": "[ADR-209: Maintainer Reconciler Experiment Contract](adrs/ADR-209-maintainer-reconciler-experiment-contract.md) \u2014 proposed experiment/canary contract for maintainer-generated changes",
       "kind": "bullet",
-      "line": 926,
+      "line": 931,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -1192,7 +1220,7 @@
       "inferred_status": "planned",
       "item": "[ADR-210: Fleet-Aggregated Confidence Boundary](adrs/ADR-210-fleet-aggregated-confidence-boundary.md) \u2014 proposed privacy-preserving aggregate confidence boundary for future cloud learning",
       "kind": "bullet",
-      "line": 927,
+      "line": 932,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -1205,7 +1233,7 @@
       "inferred_status": "proposed",
       "item": "[ADR-211: Service-Mode Readiness Gate](adrs/ADR-211-service-mode-readiness-gate.md) \u2014 proposed launch gate for headless/cloud service claims",
       "kind": "bullet",
-      "line": 928,
+      "line": 933,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -1218,7 +1246,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-311: Primitive Closure Ratchets and Subagent Budget Enforcement](adrs/ADR-311-primitive-closure-ratchets-and-subagent-budget-enforcement.md) \u2014 accepted closure layer for projection/runtime proof ratchets and subagent 50-call enforcement",
       "kind": "bullet",
-      "line": 946,
+      "line": 951,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/00-MOCs/entrypoints/README.md"
     },
@@ -11593,7 +11621,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:contributors,evidence,extend,future,reason,safely"
+        "terms:challenge,contributors,evidence,extend,future,reason,safely"
       ],
       "inferred_status": "planned",
       "item": "reason. Future contributors can extend safely or challenge a row with evidence.",
@@ -34259,7 +34287,7 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:adr-259,holaos,prohibited,reading"
+        "terms:adr-259,holaos,implementer,prohibited,reading"
       ],
       "inferred_status": "done_weak_proof",
       "item": "Implementer agent prohibited from reading `/tmp/holaOS*` (ADR-259 \u00a74)",
@@ -42801,6 +42829,58 @@
       "path": "docs/02-Decisions/adrs/ADR-337-agent-process-loop-contract-layer.md"
     },
     {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:accepted"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Status: accepted",
+      "kind": "bullet",
+      "line": 3,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/02-Decisions/adrs/ADR-338-so-wide-impact-evaluation-plane.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "weak_terms:candidate,implementation"
+      ],
+      "inferred_status": "proposed",
+      "item": "Implementation: candidate",
+      "kind": "bullet",
+      "line": 5,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/02-Decisions/adrs/ADR-338-so-wide-impact-evaluation-plane.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:accepted"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Status: Accepted",
+      "kind": "bullet",
+      "line": 3,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/02-Decisions/adrs/ADR-339-efficiency-operating-model-primitives.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "terms:advisory,candidate,cross-harness,enforcement,lifecycle,projection,proven,remain"
+      ],
+      "inferred_status": "proposed",
+      "item": "Lifecycle rows remain `candidate/advisory` until runtime projection and cross-harness enforcement are proven.",
+      "kind": "bullet",
+      "line": 39,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/02-Decisions/adrs/ADR-339-efficiency-operating-model-primitives.md"
+    },
+    {
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
@@ -49754,6 +49834,19 @@
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
+        "terms:callers,harness,marks,read_only_required,receipt,true"
+      ],
+      "inferred_status": "proposed",
+      "item": "The receipt marks `read_only_required: true`; callers should use a harness",
+      "kind": "bullet",
+      "line": 78,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/04-Concepts/architecture/artifact-workgraph-review-advisor.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
         "terms:core-default,default,fail,lane,product,required"
       ],
       "inferred_status": "proposed",
@@ -53322,6 +53415,58 @@
       "line": 175,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/04-Concepts/architecture/functional-audit/ux6-idempotent-update.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:across,adopt,backlog,copy,domain,every,mechanics,missing"
+      ],
+      "inferred_status": "planned",
+      "item": "Priority should not be \u201ccopy SDD\u201d. It should be \u201cadopt the missing operating-system mechanics across every COS domain\u201d. Ordered backlog:",
+      "kind": "prose",
+      "line": 114,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/04-Concepts/architecture/gentle-ai-comparative-audit-2026-06-15.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:above,adoption,audit,backlog,broader,following,gaps,keeps"
+      ],
+      "inferred_status": "planned",
+      "item": "The system-wide backlog above is the broader adoption plan. The following table keeps the SDD/workflow-specific gaps that originally motivated this audit.",
+      "kind": "prose",
+      "line": 133,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/04-Concepts/architecture/gentle-ai-comparative-audit-2026-06-15.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:above,backlog,covers,improvements,only,process,roadmap,slice"
+      ],
+      "inferred_status": "planned",
+      "item": "This roadmap covers the SDD/process slice only; system-wide operating-system improvements are tracked in the backlog above.",
+      "kind": "prose",
+      "line": 159,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/04-Concepts/architecture/gentle-ai-comparative-audit-2026-06-15.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:all-done,cases,tests"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Tests with no-change, ambiguous-change, missing-change, ready-apply, all-done, verify-ready, archive-ready cases.",
+      "kind": "bullet",
+      "line": 167,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/04-Concepts/architecture/gentle-ai-comparative-audit-2026-06-15.md"
     },
     {
       "confidence": 0.9,
@@ -57473,6 +57618,175 @@
       "line": 149,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/04-Concepts/architecture/skills-rules-portability-gap.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:comparisons,complete,controlled,enough,evaluation,plane,start,these"
+      ],
+      "inferred_status": "planned",
+      "item": "These are enough to start controlled comparisons, but they are not yet a complete workflow-level A/B evaluation plane.",
+      "kind": "prose",
+      "line": 20,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/04-Concepts/architecture/so-wide-impact-evaluation-plane.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:bundle,completed,durable,reviewable,writes"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "A completed run writes a durable, reviewable bundle:",
+      "kind": "prose",
+      "line": 141,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/04-Concepts/architecture/so-wide-impact-evaluation-plane.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:completed,first,slice"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Completed first slice:",
+      "kind": "prose",
+      "line": 281,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/04-Concepts/architecture/so-wide-impact-evaluation-plane.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "weak_terms:remaining,slices"
+      ],
+      "inferred_status": "planned",
+      "item": "Remaining slices:",
+      "kind": "prose",
+      "line": 289,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/04-Concepts/architecture/so-wide-impact-evaluation-plane.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:archived,bundle,committed,contract,task"
+      ],
+      "inferred_status": "planned",
+      "item": "The task contract is committed or archived with the run bundle.",
+      "kind": "checkbox",
+      "line": 300,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/04-Concepts/architecture/so-wide-impact-evaluation-plane.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:capsule,clean,compared,every,isolated,mode"
+      ],
+      "inferred_status": "planned",
+      "item": "Every compared mode ran from a clean isolated capsule.",
+      "kind": "checkbox",
+      "line": 301,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/04-Concepts/architecture/so-wide-impact-evaluation-plane.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:budget,commands,controls,model,objective,policy,same,tool"
+      ],
+      "inferred_status": "planned",
+      "item": "The same objective, controls, model policy, tool budget, and verification commands were used.",
+      "kind": "checkbox",
+      "line": 302,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/04-Concepts/architecture/so-wide-impact-evaluation-plane.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:every,exist,mode,receipts,verification"
+      ],
+      "inferred_status": "planned",
+      "item": "Verification receipts exist for every mode.",
+      "kind": "checkbox",
+      "line": 303,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/04-Concepts/architecture/so-wide-impact-evaluation-plane.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:exist,explicitly,marks,receipts,unavailable,usage"
+      ],
+      "inferred_status": "planned",
+      "item": "Usage receipts exist or the report explicitly marks usage as unavailable.",
+      "kind": "checkbox",
+      "line": 304,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/04-Concepts/architecture/so-wide-impact-evaluation-plane.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:diff,every,exist,mode,receipts"
+      ],
+      "inferred_status": "planned",
+      "item": "Diff receipts exist for every file-changing mode.",
+      "kind": "checkbox",
+      "line": 305,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/04-Concepts/architecture/so-wide-impact-evaluation-plane.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:comparison,coverage,exists,human,list"
+      ],
+      "inferred_status": "planned",
+      "item": "A human or oracle-reviewed relevant-file list exists for coverage comparison.",
+      "kind": "checkbox",
+      "line": 306,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/04-Concepts/architecture/so-wide-impact-evaluation-plane.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:achieved,claim,claims,positive,scoped,tier"
+      ],
+      "inferred_status": "planned",
+      "item": "Positive claims are scoped to the achieved claim tier.",
+      "kind": "checkbox",
+      "line": 307,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/04-Concepts/architecture/so-wide-impact-evaluation-plane.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:capabilities,harness,ignored,provider,reported,unsupported"
+      ],
+      "inferred_status": "planned",
+      "item": "Unsupported harness/provider capabilities are reported as unsupported, not ignored.",
+      "kind": "checkbox",
+      "line": 308,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/04-Concepts/architecture/so-wide-impact-evaluation-plane.md"
     },
     {
       "confidence": 0.9,
@@ -62424,6 +62738,71 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
+        "terms:aspiration,capacity,claim,controlled,measurement,receipts,reductions,remaining"
+      ],
+      "inferred_status": "planned",
+      "item": "Do not claim subscription savings, 50% remaining capacity, or universal token reductions without controlled COS receipts. Treat those as aspiration and measurement targets.",
+      "kind": "prose",
+      "line": 48,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/08-References/business/cognitive-os-efficiency-operating-model.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "terms:lane,recommendation,test"
+      ],
+      "inferred_status": "proposed",
+      "item": "test lane recommendation",
+      "kind": "bullet",
+      "line": 63,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/08-References/business/cognitive-os-efficiency-operating-model.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "terms:action,blockers,evidence,next,paths,user,what"
+      ],
+      "inferred_status": "proposed",
+      "item": "A user can ask \u201cwhat should I do next?\u201d and get one machine-derived next action with blockers and evidence paths.",
+      "kind": "bullet",
+      "line": 75,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/08-References/business/cognitive-os-efficiency-operating-model.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:accepted,apply,before,explicitly,oversized,review,split,work"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Oversized review work is split or explicitly accepted before apply.",
+      "kind": "bullet",
+      "line": 134,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/08-References/business/cognitive-os-efficiency-operating-model.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:efficiency,implemented,once,phrases,route,these,workflow"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "These phrases should route to the efficiency workflow once implemented:",
+      "kind": "prose",
+      "line": 202,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/08-References/business/cognitive-os-efficiency-operating-model.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
         "terms:across,claude,codex,drivers,future,harness,portability"
       ],
       "inferred_status": "planned",
@@ -65867,12 +66246,27 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:before,benchmark,broad,claim,classes,falsification,full-mesh,least"
+        "path:docs/04-Concepts/architecture/so-wide-impact-evaluation-plane.md",
+        "terms:architecture,before,benchmark,broad,claim,classes,concepts,evaluation"
       ],
       "inferred_status": "planned",
-      "item": "Run the A/B/C falsification benchmark on at least three task classes before promoting any broad full-mesh product claim.",
+      "item": "Run the A/B/C falsification benchmark on at least three task classes, following the [SO-Wide Impact Evaluation Plane](../../04-Concepts/architecture/so-wide-impact-evaluation-plane.md), before promoting any broad full-mesh product claim.",
       "kind": "checkbox",
       "line": 44,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/08-References/business/master-plan-checklist.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "path:docs/04-Concepts/architecture/gentle-ai-comparative-audit-2026-06-15.md",
+        "terms:adoption,architecture,audit,comparative,concepts,dispatcher,evidence,forecast"
+      ],
+      "inferred_status": "planned",
+      "item": "Implement the top adoption slices from [Gentle-AI Comparative Audit \u2014 2026-06-15](../../04-Concepts/architecture/gentle-ai-comparative-audit-2026-06-15.md): COS SDD status dispatcher, SDD preflight, strict TDD evidence verification, skill-registry path index, ",
+      "kind": "checkbox",
+      "line": 45,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -65885,7 +66279,7 @@
       "inferred_status": "planned",
       "item": "Close the SSR developer primitive-enablement gaps in [SSR Developer Primitive Enablement Gap Backlog](../architecture/ssr-agentic-primitive-enablement-gaps.md): add a question-to-primitive router, developer guide, task-centric skill index, harvester/session tr",
       "kind": "checkbox",
-      "line": 45,
+      "line": 46,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -65900,7 +66294,7 @@
       "inferred_status": "stale",
       "item": "Repeated product and commercial answers are token-efficient through [ADR-282](../adrs/ADR-282-product-answer-card-cache-and-freshness-ledger.md), local `.cognitive-os/product-answers/` answer cards, source-hash freshness checks, compact routing index, and `scr",
       "kind": "checkbox",
-      "line": 46,
+      "line": 47,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -65914,7 +66308,7 @@
       "inferred_status": "stale",
       "item": "A machine-readable kernel contract exists in [manifests/kernel-contract.yaml](../../manifests/kernel-contract.yaml).",
       "kind": "checkbox",
-      "line": 50,
+      "line": 51,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -65928,7 +66322,7 @@
       "inferred_status": "stale",
       "item": "Kernel scope is documented in [Kernel Contract](../kernel-contract.md).",
       "kind": "checkbox",
-      "line": 51,
+      "line": 52,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -65941,7 +66335,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Kernel contract tests exist.",
       "kind": "checkbox",
-      "line": 52,
+      "line": 53,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -65955,7 +66349,7 @@
       "inferred_status": "stale",
       "item": "The skills/rules portability gap is documented in [Skills and Rules Portability Gap](../architecture/skills-rules-portability-gap.md).",
       "kind": "checkbox",
-      "line": 53,
+      "line": 54,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -65969,7 +66363,7 @@
       "inferred_status": "stale",
       "item": "The canonicalization risk of moving skills/rules out of `.claude/` is documented in [Skills and Rules Canonicalization Risk Analysis](../architecture/skills-rules-canonicalization-risk-analysis.md).",
       "kind": "checkbox",
-      "line": 54,
+      "line": 55,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -65983,7 +66377,7 @@
       "inferred_status": "stale",
       "item": "A step-by-step migration plan exists in [Skills and Rules Canonicalization Workplan](../../.cognitive-os/plans/architecture/skills-rules-canonicalization-workplan.md).",
       "kind": "checkbox",
-      "line": 55,
+      "line": 56,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -65996,7 +66390,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Status and diagnostic tooling can read canonical-first artifact surfaces without changing install destinations.",
       "kind": "checkbox",
-      "line": 56,
+      "line": 57,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66010,7 +66404,7 @@
       "inferred_status": "stale",
       "item": "Core versus compatibility versus extension versus experimental taxonomy is documented in [Product Zones](../product-zones.md).",
       "kind": "checkbox",
-      "line": 57,
+      "line": 58,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66024,7 +66418,7 @@
       "inferred_status": "stale",
       "item": "New runtime additions are consistently classified by zone through root guardrails in [Product Zones Manifest](../../manifests/product-zones.yaml).",
       "kind": "checkbox",
-      "line": 58,
+      "line": 59,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66039,7 +66433,7 @@
       "inferred_status": "stale",
       "item": "Central runtime paths avoid hardcoding non-core subsystems by default through [Runtime Hardcoding Discipline](../architecture/runtime-hardcoding-discipline.md) and `tests/contracts/test_runtime_hardcoding.py`.",
       "kind": "checkbox",
-      "line": 59,
+      "line": 60,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66052,7 +66446,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Capability profiles exist in the runtime.",
       "kind": "checkbox",
-      "line": 63,
+      "line": 64,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66065,7 +66459,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Model routing uses capability-centric execution profiles before model choice.",
       "kind": "checkbox",
-      "line": 64,
+      "line": 65,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66078,7 +66472,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Compatibility inventory explicitly distinguishes implemented and documented surfaces.",
       "kind": "checkbox",
-      "line": 65,
+      "line": 66,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66091,7 +66485,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Dispatch uses capability-centric execution paths.",
       "kind": "checkbox",
-      "line": 66,
+      "line": 67,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66104,7 +66498,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Gateway selection is capability-centric before vendor-centric.",
       "kind": "checkbox",
-      "line": 67,
+      "line": 68,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66117,7 +66511,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Skill routing is capability-centric before vendor-centric.",
       "kind": "checkbox",
-      "line": 68,
+      "line": 69,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66130,7 +66524,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Execution records and metrics include execution-profile data, not only model branding.",
       "kind": "checkbox",
-      "line": 69,
+      "line": 70,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66144,7 +66538,7 @@
       "inferred_status": "stale",
       "item": "Direct Anthropic API usage is separated from Claude Code native account execution through [Direct Anthropic API Policy](../architecture/direct-anthropic-api-policy.md) and centralized runtime tests.",
       "kind": "checkbox",
-      "line": 70,
+      "line": 71,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66158,7 +66552,7 @@
       "inferred_status": "stale",
       "item": "Advisor MCP is classified as optional external-advisor transport, not the canonical native advisor primitive, through [Advisor MCP Architecture Review](../architecture/advisor-mcp-architecture-review.md).",
       "kind": "checkbox",
-      "line": 71,
+      "line": 72,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66173,7 +66567,7 @@
       "inferred_status": "stale",
       "item": "Silent branch switches are covered by [Post-Mortem \u2014 Silent Agent Branch Switch and Unexpected Commit Destination \u2014 2026-05-08](../reports/silent-agent-branch-switch-postmortem-2026-05-08.md), `hooks/destructive-git-blocker.sh`, and unit tests that block unaud",
       "kind": "checkbox",
-      "line": 75,
+      "line": 76,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66186,7 +66580,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Default CI covers representative Python product tests.",
       "kind": "checkbox",
-      "line": 76,
+      "line": 77,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66199,7 +66593,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Default CI covers Go kernel and provider tests.",
       "kind": "checkbox",
-      "line": 77,
+      "line": 78,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66212,7 +66606,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Default CI covers representative contract tests.",
       "kind": "checkbox",
-      "line": 78,
+      "line": 79,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66225,7 +66619,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Default CI covers key behavior tests.",
       "kind": "checkbox",
-      "line": 79,
+      "line": 80,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66238,7 +66632,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Default CI includes documentation integrity checks.",
       "kind": "checkbox",
-      "line": 80,
+      "line": 81,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66251,7 +66645,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Release-plumbing checks can reason about canonical-first skill surfaces without changing install destinations.",
       "kind": "checkbox",
-      "line": 81,
+      "line": 82,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66264,7 +66658,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Release-plumbing checks can validate the active settings driver instead of assuming `.claude/settings.json` is the only settings surface.",
       "kind": "checkbox",
-      "line": 82,
+      "line": 83,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66277,7 +66671,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Audit and wiring validation can read the active settings driver instead of assuming `.claude/settings.json` is the only runtime surface.",
       "kind": "checkbox",
-      "line": 83,
+      "line": 84,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66290,7 +66684,7 @@
       "inferred_status": "done_weak_proof",
       "item": "CLI health and hook reporting can read the active settings driver instead of assuming `.claude/settings.json` is the only user-facing runtime surface.",
       "kind": "checkbox",
-      "line": 84,
+      "line": 85,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66303,7 +66697,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Transparency/status reporting can read the active settings driver instead of assuming `.claude/settings.json` is the only hook-wiring surface.",
       "kind": "checkbox",
-      "line": 85,
+      "line": 86,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66316,7 +66710,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Uninstall paths clean the active settings driver instead of assuming `.claude/settings.json` is the only hook-registration surface.",
       "kind": "checkbox",
-      "line": 86,
+      "line": 87,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66329,7 +66723,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Secondary user-facing scripts use canonical project-root precedence when reading runtime state.",
       "kind": "checkbox",
-      "line": 87,
+      "line": 88,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66342,7 +66736,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Update and auto-update paths preserve the active harness/settings driver instead of silently assuming Claude.",
       "kind": "checkbox",
-      "line": 88,
+      "line": 89,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66355,7 +66749,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Git-triggered `post-merge` and `pre-push` auto-update paths preserve Codex-first installations through install metadata, even when `.claude/` compatibility markers are present.",
       "kind": "checkbox",
-      "line": 89,
+      "line": 90,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66368,7 +66762,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Driver-specific user-facing scripts are explicitly classified so Claude-only registration/profile flows do not masquerade as Codex support.",
       "kind": "checkbox",
-      "line": 90,
+      "line": 91,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66381,7 +66775,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Broken product-facing links fail visibly in automation.",
       "kind": "checkbox",
-      "line": 91,
+      "line": 92,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66395,7 +66789,7 @@
       "inferred_status": "stale",
       "item": "Product claims in README and pitch map to explicit verification paths through [Product Proof Paths](../manual-tests/proof-paths.md).",
       "kind": "checkbox",
-      "line": 92,
+      "line": 93,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66410,7 +66804,7 @@
       "inferred_status": "stale",
       "item": "Structural tests that support product claims are being converted into behavioral contracts through [Behavioral Test Contracts](../architecture/behavioral-test-contracts.md) and `tests/contracts/test_canonical_projection_behavior.py`.",
       "kind": "checkbox",
-      "line": 93,
+      "line": 94,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66426,7 +66820,7 @@
       "inferred_status": "stale",
       "item": "Slow full-suite repair runs leave persistent summaries and actionable inventories through `scripts/pytest-with-summary.sh`, `scripts/test_run_inventory.py`, and [Testing Guide](../testing.md).",
       "kind": "checkbox",
-      "line": 94,
+      "line": 95,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66440,7 +66834,7 @@
       "inferred_status": "done_with_proof",
       "item": "Test resource policy has a first manifest in `.cognitive-os/test-resource-policy.yaml`, with dry-run visibility and audit coverage for lane/resource alignment.",
       "kind": "checkbox",
-      "line": 95,
+      "line": 96,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66453,7 +66847,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Test resource policy enforces timeout and explicit opt-in gates for cost-bearing and docker-required lanes in `cos-test`.",
       "kind": "checkbox",
-      "line": 96,
+      "line": 97,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66466,7 +66860,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Test runs persist resource-policy metadata and outcome classification in",
       "kind": "checkbox",
-      "line": 97,
+      "line": 98,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66479,7 +66873,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Local and CI test defaults are explicit: fast focused, broad non-Docker,",
       "kind": "checkbox",
-      "line": 100,
+      "line": 101,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66492,7 +66886,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Slow live integration is explicit rather than part of the default",
       "kind": "checkbox",
-      "line": 102,
+      "line": 103,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66506,7 +66900,7 @@
       "inferred_status": "done_with_proof",
       "item": "SessionStart performs a cached host-tool doctor check through `hooks/host-tool-doctor.sh`, while keeping broad pytest inventory explicit to avoid startup overload.",
       "kind": "checkbox",
-      "line": 104,
+      "line": 105,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66520,7 +66914,7 @@
       "inferred_status": "stale",
       "item": "Primitive-coverage backend candidates have a documented local benchmark and unit-tested harness in [Primitive Coverage Backend Benchmark Research](../architecture/primitive-coverage-backend-benchmark-2026-05.md), so future graph/index integrations must prove l",
       "kind": "checkbox",
-      "line": 105,
+      "line": 106,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66534,7 +66928,7 @@
       "inferred_status": "done_with_proof",
       "item": "Hook-enforced rule exclusions are contract-tested through [ADR-144](../adrs/ADR-144-hook-enforced-rule-projection-contract.md), `tests/audit/test_hook_enforced_exclusions.py`, and the projection drivers, so startup context diet cannot silently remove enforceme",
       "kind": "checkbox",
-      "line": 106,
+      "line": 107,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66548,7 +66942,7 @@
       "inferred_status": "stale",
       "item": "ADR-137 through ADR-144 have an implementation-status review in [ADR-137+ Implementation Review \u2014 2026-05-04](../reports/adr-137-plus-implementation-review-2026-05-04.md), separating accepted cloud-flow premises from executable gates and naming the remaining l",
       "kind": "checkbox",
-      "line": 107,
+      "line": 108,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66562,7 +66956,7 @@
       "inferred_status": "stale",
       "item": "Standalone ship-readiness status is captured in [Standalone Ship Readiness \u2014 2026-05-06](../architecture/standalone-ship-readiness-2026-05-06.md), including release, Surface 5, `cosd` API, and install-root portability evidence.",
       "kind": "checkbox",
-      "line": 111,
+      "line": 112,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66576,7 +66970,7 @@
       "inferred_status": "stale",
       "item": "Standalone runtime adapter options are documented in [Standalone Agent Runtime Adapter Options](../architecture/standalone-agent-runtime-adapter-options.md), clarifying that `cosd` and ADR-291 provide control-plane/service surfaces while the autonomous model/t",
       "kind": "checkbox",
-      "line": 112,
+      "line": 113,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66590,7 +66984,7 @@
       "inferred_status": "stale",
       "item": "Evaluate and implement the first BYO Harness runtime-lab slices from [BYO Harness Comparison \u2014 2026-05-23](../architecture/byoharness-comparison-2026-05-23.md) before wiring a production COS-native agent loop into ADR-291 or Surface 5.",
       "kind": "checkbox",
-      "line": 113,
+      "line": 114,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66604,7 +66998,7 @@
       "inferred_status": "stale",
       "item": "Pi, Gollem/Fugue, Hermes Agent, and Goose were cloned and compared at code level in [Runtime Candidates Deep Code Audit \u2014 2026-05-14](../architecture/runtime-candidates-deep-code-audit-2026-05-14.md), splitting their COS roles into lifecycle harness, embedded ",
       "kind": "checkbox",
-      "line": 114,
+      "line": 115,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66618,7 +67012,7 @@
       "inferred_status": "stale",
       "item": "COS-owned native runtime harness design is captured in [COS Native Runtime Harness Design](../architecture/cos-native-runtime-harness-design.md), combining Pi lifecycle clarity, Gollem/Fugue embedded execution, Goose safety/interoperability, and Hermes product",
       "kind": "checkbox",
-      "line": 115,
+      "line": 116,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66632,7 +67026,7 @@
       "inferred_status": "stale",
       "item": "Surface 5 and secure `cosd` next-slice scope is grounded in existing SO features through [Surface 5 TUI and Secure cosd Roadmap](../architecture/surface-5-and-secure-cosd-roadmap.md).",
       "kind": "checkbox",
-      "line": 116,
+      "line": 117,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66646,7 +67040,7 @@
       "inferred_status": "stale",
       "item": "`cosd` remote exposure is guarded by [ADR-194](../adrs/ADR-194-cosd-secure-remote-api.md): non-local binds require `--allow-remote` plus bearer-token auth, and protected writes emit audit rows.",
       "kind": "checkbox",
-      "line": 117,
+      "line": 118,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66660,7 +67054,7 @@
       "inferred_status": "stale",
       "item": "Surface 5 has a read-only operator MVP through [ADR-195](../adrs/ADR-195-surface-5-operable-tui-contract.md), `cos tui`, and `cos tui --snapshot`.",
       "kind": "checkbox",
-      "line": 118,
+      "line": 119,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66675,7 +67069,7 @@
       "inferred_status": "stale",
       "item": "Standalone release plumbing is represented by [ADR-191](../adrs/ADR-191-cos-binary-release-pipeline.md), `.goreleaser.yaml`, `.github/workflows/cos-binary-release.yml`, and a non-placeholder HEAD Homebrew formula.",
       "kind": "checkbox",
-      "line": 119,
+      "line": 120,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66689,7 +67083,7 @@
       "inferred_status": "stale",
       "item": "Surface 5 has a sourced TUI substrate decision through [ADR-192](../adrs/ADR-192-surface-5-adopt-bubbletea.md) and a compile-tested Bubble Tea proof package.",
       "kind": "checkbox",
-      "line": 120,
+      "line": 121,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66704,7 +67098,7 @@
       "inferred_status": "stale",
       "item": "`cosd` has a local network API decision and implementation through [ADR-193](../adrs/ADR-193-cosd-local-network-api.md), `scripts/cos_daemon.py serve`, and API tests.",
       "kind": "checkbox",
-      "line": 121,
+      "line": 122,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66717,7 +67111,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Headless standalone validation has an install-path-safe wrapper through `scripts/cos-headless-pipeline` and root resolution through `scripts/cos-root`.",
       "kind": "checkbox",
-      "line": 122,
+      "line": 123,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66731,7 +67125,7 @@
       "inferred_status": "stale",
       "item": "First-run installation is one-pass and low-friction through [First-Run Onboarding Proof](../manual-tests/first-run-onboarding.md).",
       "kind": "checkbox",
-      "line": 123,
+      "line": 124,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66745,7 +67139,7 @@
       "inferred_status": "done_with_proof",
       "item": "Autodetection reduces required configuration for new users through shared harness detection and Codex-driver bootstrap coverage in `tests/integration/test_project_settings_generation.py`.",
       "kind": "checkbox",
-      "line": 124,
+      "line": 125,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66758,7 +67152,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Settings projection supports more than one harness target in bootstrap paths.",
       "kind": "checkbox",
-      "line": 125,
+      "line": 126,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66771,7 +67165,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Codex settings projection uses native `.codex/hooks.json` lifecycle keys",
       "kind": "checkbox",
-      "line": 126,
+      "line": 127,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66784,7 +67178,7 @@
       "inferred_status": "done_weak_proof",
       "item": "CLI runtime reads canonical skill/rule artifacts when the Claude projection is absent.",
       "kind": "checkbox",
-      "line": 128,
+      "line": 129,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66797,7 +67191,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Upgrade paths preserve the active harness instead of silently falling back to Claude-first settings projection.",
       "kind": "checkbox",
-      "line": 129,
+      "line": 130,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66810,7 +67204,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Emergency-stop keeps the core safety path cross-harness while marking Claude-only profile projection honestly.",
       "kind": "checkbox",
-      "line": 130,
+      "line": 131,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66823,7 +67217,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Skills and rules use canonical-first discovery instead of depending on `.claude/` as the primary surface.",
       "kind": "checkbox",
-      "line": 131,
+      "line": 132,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66836,7 +67230,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Codex-first projects get automatic advisory detection for active driver, dependency manifest, and Engram/MCP host wiring without requiring users to know the deep verification command.",
       "kind": "checkbox",
-      "line": 132,
+      "line": 133,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66851,7 +67245,7 @@
       "inferred_status": "done_with_proof",
       "item": "Harness driver parity is now audited through `manifests/harness-driver-capabilities.yaml` and `scripts/harness_parity_audit.py`, so supported Codex gaps fail while limited/unsupported hook surfaces remain visible roadmap work.",
       "kind": "checkbox",
-      "line": 133,
+      "line": 134,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66864,7 +67258,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Codex and Claude sessions now auto-load the portable memory lifecycle on",
       "kind": "checkbox",
-      "line": 134,
+      "line": 135,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66877,7 +67271,7 @@
       "inferred_status": "done_weak_proof",
       "item": "The host doctor now includes a synthetic memory lifecycle check, proving",
       "kind": "checkbox",
-      "line": 137,
+      "line": 138,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66890,7 +67284,7 @@
       "inferred_status": "planned",
       "item": "that a new Codex session can start Engram, recover pending work, capture",
       "kind": "prose",
-      "line": 138,
+      "line": 139,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66904,7 +67298,7 @@
       "inferred_status": "done_with_proof",
       "item": "A portable session backlog reconciler (`scripts/cos_session_backlog.py`) now",
       "kind": "checkbox",
-      "line": 141,
+      "line": 142,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66917,7 +67311,7 @@
       "inferred_status": "planned",
       "item": "`.cognitive-os/sessions/{session_id}/backlog.md`,",
       "kind": "prose",
-      "line": 144,
+      "line": 145,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66931,7 +67325,7 @@
       "inferred_status": "planned",
       "item": "`.cognitive-os/metrics/backlog-reconciliation.jsonl`,",
       "kind": "prose",
-      "line": 145,
+      "line": 146,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66945,7 +67339,7 @@
       "inferred_status": "planned",
       "item": "`.cognitive-os/metrics/adr-implementation-latest.json`, and `session/backlog/latest`.",
       "kind": "prose",
-      "line": 146,
+      "line": 147,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66958,7 +67352,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Agentic primitive classification is now contract-enforced through",
       "kind": "checkbox",
-      "line": 147,
+      "line": 148,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66973,7 +67367,7 @@
       "inferred_status": "done_with_proof",
       "item": "Conversation-to-primitive promotion is now advisory and tested through `scripts/cos_primitive_harvester.py`, `skills/primitive-harvester/SKILL.md`, and ADR-120: repeatable recipes can become primitive proposals, existing primitives are reused/improved, docs-on",
       "kind": "checkbox",
-      "line": 151,
+      "line": 152,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66986,7 +67380,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Developer-confidence positioning is documented as a lightweight adoption",
       "kind": "checkbox",
-      "line": 152,
+      "line": 153,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -66999,7 +67393,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Harness transparency status is documented honestly: memory protection and fallback persistence work today across Claude Code and Codex, while ADR-064 Surfaces 2\u20134 remain the path to full cross-harness transparency.",
       "kind": "checkbox",
-      "line": 155,
+      "line": 156,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67015,7 +67409,7 @@
       "inferred_status": "stale",
       "item": "AI agent IDE/CLI/hosted-agent landscape is tracked without overclaiming runtime support through [AI Agent Harness Landscape \u2014 2026-05-04](../reports/ai-agent-harness-landscape-2026-05-04.md), [ADR-158](../adrs/ADR-158-ai-agent-harness-landscape-and-proof-backl",
       "kind": "checkbox",
-      "line": 156,
+      "line": 157,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67029,7 +67423,7 @@
       "inferred_status": "stale",
       "item": "Multi-provider agent delegation research is refreshed in [Multi-Provider Agent Delegation Research \u2014 2026-05-05](../reports/multi-provider-agent-delegation-research-2026-05-05.md), covering Qwen, Kimi, DeepSeek, MiniMax, OpenClaw/Lucy, and router/coworker patt",
       "kind": "checkbox",
-      "line": 157,
+      "line": 158,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67042,7 +67436,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Gemini CLI plus AGENTS.md-native Warp, Amp, Junie, Qoder, and Factory Droid have structural temp-project projection, while Kiro lifecycle hooks remain investigation-only until adapter/runtime proof exists.",
       "kind": "checkbox",
-      "line": 158,
+      "line": 159,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67055,7 +67449,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Cline, Continue.dev, Kilo Code, Zed AI, Augment/Auggie, Goose, and Aider have structural temp-project projection, with Kiro native-lifecycle promotion gated behind adapter design, event mapping, and runtime smoke.",
       "kind": "checkbox",
-      "line": 159,
+      "line": 160,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67069,7 +67463,7 @@
       "inferred_status": "stale",
       "item": "Harness projection claims were contrasted against current official docs in [Harness Docs Currentness Audit \u2014 2026-05-05](../reports/harness-docs-currentness-audit-2026-05-05.md), correcting Kilo, Goose, and Augment file-shape drift.",
       "kind": "checkbox",
-      "line": 160,
+      "line": 161,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67084,7 +67478,7 @@
       "inferred_status": "done_with_proof",
       "item": "Codex has a governed fallback layer for non-native Agent and Edit/Write hook chains through `scripts/cos_governed_runner.py` plus the Codex wrapper `scripts/cos_codex_guard.py`, so portability gaps are explicit rather than silently accepted.",
       "kind": "checkbox",
-      "line": 161,
+      "line": 162,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67099,7 +67493,7 @@
       "inferred_status": "stale",
       "item": "Harness engineering is now documented and protected through [Harness Engineering](../architecture/harness-engineering.md), `manifests/harness-profiles.yaml`, `cos init-check`, `cos doctor harness`, `cos measure harness-profiles`, and `cos sprint run --dispatch",
       "kind": "checkbox",
-      "line": 162,
+      "line": 163,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67113,7 +67507,7 @@
       "inferred_status": "stale",
       "item": "IDE-agnostic primitive projection is documented in [IDE-Agnostic Primitive Projection](../architecture/ide-agnostic-primitive-projection.md), clarifying canonical primitive \u2192 portable contract \u2192 harness adapter \u2192 runtime evidence and the fidelity gap between n",
       "kind": "checkbox",
-      "line": 163,
+      "line": 164,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67129,7 +67523,7 @@
       "inferred_status": "stale",
       "item": "Implement ADR-256 Primitive Contract Registry and Runtime Evidence Ledger in phases: contract freeze, minimal contract registry, intervention ledger, codebase itinerary, projection-fidelity report, trace-joiner integration, and consumer UX. Plan-first docs exi",
       "kind": "checkbox",
-      "line": 164,
+      "line": 165,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67144,7 +67538,7 @@
       "inferred_status": "stale",
       "item": "Deep premise review completed in [Primitive Contract / Cross-IDE Premise Investigation \u2014 2026-05-09](../reports/primitive-contract-cross-ide-premise-investigation-2026-05-09.md): existing ADRs contemplate the direction, but `manifests/primitive-contracts.yaml`",
       "kind": "checkbox",
-      "line": 165,
+      "line": 166,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67160,7 +67554,7 @@
       "inferred_status": "stale",
       "item": "ADR-256 Phase 1 implemented through [ADR-257](../adrs/ADR-257-primitive-contract-registry-phase-1.md), `manifests/primitive-contracts.yaml`, and `tests/contracts/test_primitive_contract_registry.py` for the first five portable primitive contracts.",
       "kind": "checkbox",
-      "line": 166,
+      "line": 167,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67175,7 +67569,7 @@
       "inferred_status": "done_with_proof",
       "item": "ADR-256 operationalization closed: `scripts/primitive_projection_fidelity.py` is part of the ACC refresh lane, `primitive-interventions.jsonl` and `codebase-itinerary.jsonl` have writers/tests, `lib/trace_joiner.py` consumes both streams, and pytest no longer ",
       "kind": "checkbox",
-      "line": 167,
+      "line": 168,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67190,7 +67584,7 @@
       "inferred_status": "stale",
       "item": "Implement [ADR-258](../adrs/ADR-258-portable-ai-overlay-for-agentic-primitives.md): generated `.ai` overlay/export surface covering all lifecycle primitives as reference rows and enriching the five ADR-257 contracts, with round-trip conformance tests before ca",
       "kind": "checkbox",
-      "line": 168,
+      "line": 169,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67205,7 +67599,7 @@
       "inferred_status": "stale",
       "item": "Implement the native OpenCode starter slice: `packages/opencode-adapter/plugins/cos-primitive-guard.js`, `scripts/cos-opencode-primitive-adapter-smoke`, and [OpenCode Primitive Adapter Smoke \u2014 Latest](../reports/opencode-primitive-adapter-smoke-latest.md) prom",
       "kind": "checkbox",
-      "line": 169,
+      "line": 170,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67219,7 +67613,7 @@
       "inferred_status": "done_with_proof",
       "item": "Primitive authoring is guarded by `/primitive-authoring` (`skills/primitive-authoring/SKILL.md`), so new SO or consumer-project primitives must pass reuse, ownership, portable-contract, projection-fidelity, runtime-evidence, and downstream-impact checks before",
       "kind": "checkbox",
-      "line": 170,
+      "line": 171,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67233,7 +67627,7 @@
       "inferred_status": "stale",
       "item": "Primitive portability test impact is mapped in [Primitive Portability Test Impact Review \u2014 2026-05-09](../reports/primitive-portability-test-impact-review-2026-05-09.md), including P0/P1/P2/P3 validation bundles for contract registry, `.ai` overlay, adapters, ",
       "kind": "checkbox",
-      "line": 171,
+      "line": 172,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67248,7 +67642,7 @@
       "inferred_status": "stale",
       "item": "Consumer and service/headless proof is strengthened by [Portable `.ai` Consumer Smoke \u2014 Latest](../reports/portable-ai-consumer-smoke-latest.md) and [Primitive Service/Headless Smoke \u2014 Latest](../reports/primitive-service-headless-smoke-latest.md).",
       "kind": "checkbox",
-      "line": 172,
+      "line": 173,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67262,7 +67656,7 @@
       "inferred_status": "stale",
       "item": "Maintainer-vs-consumer `.ai` semantics are documented in [Portable `.ai` Overlay vs Consumer `.ai` Model Impact \u2014 2026-05-12](../reports/portable-ai-overlay-consumer-model-impact-2026-05-12.md): maintainer `.ai/` remains generated/proof-oriented while consumer",
       "kind": "checkbox",
-      "line": 173,
+      "line": 174,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67276,7 +67670,7 @@
       "inferred_status": "stale",
       "item": "Human-readable consumer `.ai` package spec and smoke are implemented in [Portable `.ai` Consumer Package Spec](../architecture/portable-ai-consumer-package-spec.md) and `scripts/cos-portable-ai-consumer-package-smoke`; the package is Markdown-only and generate",
       "kind": "checkbox",
-      "line": 174,
+      "line": 175,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67290,7 +67684,7 @@
       "inferred_status": "done_with_proof",
       "item": "Add the first adapter compiler entry point for consumer-facing IDE files: `lib/adapter_compile.py`, `scripts/cos-adapter-compile`, and `cos adapters compile` preserve fidelity claims while delegating native writes to governed harness projection drivers.",
       "kind": "checkbox",
-      "line": 175,
+      "line": 176,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67304,7 +67698,7 @@
       "inferred_status": "stale",
       "item": "Decide whether future structural rule-file backends stay first-party or use a governed `rulesync`-style backend: [ADR-272](../adrs/ADR-272-structural-rule-backend-boundary.md) keeps the first-party compiler as the authority and limits external backends to opti",
       "kind": "checkbox",
-      "line": 176,
+      "line": 177,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67317,7 +67711,7 @@
       "inferred_status": "done_weak_proof",
       "item": "User-facing setup messages are clear and product-grade.",
       "kind": "checkbox",
-      "line": 177,
+      "line": 178,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67331,7 +67725,7 @@
       "inferred_status": "done_with_proof",
       "item": "`hooks/self-install.sh` meets its performance expectations.",
       "kind": "checkbox",
-      "line": 178,
+      "line": 179,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67346,7 +67740,7 @@
       "inferred_status": "done_with_proof",
       "item": "Setup and onboarding flows have visible performance budgets and regression tests through `scripts/demo-first-run-onboarding.sh` and `tests/integration/test_first_run_onboarding.py`.",
       "kind": "checkbox",
-      "line": 179,
+      "line": 180,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67360,7 +67754,7 @@
       "inferred_status": "stale",
       "item": "A non-expert can reach a working baseline without reading deep architecture docs through [First-Run Onboarding Proof](../manual-tests/first-run-onboarding.md).",
       "kind": "checkbox",
-      "line": 180,
+      "line": 181,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67374,7 +67768,7 @@
       "inferred_status": "stale",
       "item": "The repo is explicitly classified into core, compatibility, extensions, and experimental zones through [manifests/product-zones.yaml](../../manifests/product-zones.yaml).",
       "kind": "checkbox",
-      "line": 184,
+      "line": 185,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67390,7 +67784,7 @@
       "inferred_status": "stale",
       "item": "Major docs present non-core systems as optional or secondary through [README](../../README.md), [Docs Index](../README.md), and [Product Zones](../product-zones.md).",
       "kind": "checkbox",
-      "line": 185,
+      "line": 186,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67403,7 +67797,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Dashboard-heavy messaging is de-emphasized in top-level product docs.",
       "kind": "checkbox",
-      "line": 186,
+      "line": 187,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67416,7 +67810,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Squad and organization-heavy messaging is de-emphasized in top-level product docs.",
       "kind": "checkbox",
-      "line": 187,
+      "line": 188,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67429,7 +67823,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Experimental subsystems that compete with the wedge are archived, frozen, or clearly demoted through the product-zone taxonomy and top-level docs.",
       "kind": "checkbox",
-      "line": 188,
+      "line": 189,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67442,7 +67836,7 @@
       "inferred_status": "done_weak_proof",
       "item": "A feature reality audit exists to classify core, optional, and overextended surfaces.",
       "kind": "checkbox",
-      "line": 189,
+      "line": 190,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67456,7 +67850,7 @@
       "inferred_status": "stale",
       "item": "External infrastructure is evaluated through a lightweight/default versus optional/reference decision frame in [Tooling Stack Rationalization](../architecture/tooling-stack-rationalization.md).",
       "kind": "checkbox",
-      "line": 190,
+      "line": 191,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67470,7 +67864,7 @@
       "inferred_status": "stale",
       "item": "Docker, Python, cloud, and reference services are cataloged in [Infrastructure Service Catalog](../architecture/infrastructure-service-catalog.md).",
       "kind": "checkbox",
-      "line": 191,
+      "line": 192,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67484,7 +67878,7 @@
       "inferred_status": "stale",
       "item": "Local connected-system validation is documented in [Local Connected Systems Validation](../manual-tests/local-connected-systems-validation.md), including dependency manifest checks, setup profiles, MCP wiring, optional-service boundaries, and persistent test s",
       "kind": "checkbox",
-      "line": 192,
+      "line": 193,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67498,7 +67892,7 @@
       "inferred_status": "stale",
       "item": "Observability backends are evaluated through a backend-neutral event-contract decision in [Observability Backend Evaluation](../architecture/observability-backend-evaluation-2026-04-24.md).",
       "kind": "checkbox",
-      "line": 193,
+      "line": 194,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67513,7 +67907,7 @@
       "inferred_status": "stale",
       "item": "The maintainer-agent gap is documented in [Self-Improvement Maintainer Agent Gap](../reports/self-improvement-maintainer-agent-gap-2026-05-06.md) and proposed as [ADR-201](../adrs/ADR-201-maintainer-agent-telemetry-promotion-loop.md): telemetry alone does not ",
       "kind": "checkbox",
-      "line": 194,
+      "line": 195,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67528,7 +67922,7 @@
       "inferred_status": "stale",
       "item": "The private-content portability gap is documented in [Private Content Cross-Harness Portability Gap](../reports/private-content-portability-gap-2026-05-06.md) and proposed as [ADR-202](../adrs/ADR-202-private-content-cross-harness-portability-boundary.md), sep",
       "kind": "checkbox",
-      "line": 195,
+      "line": 196,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67542,7 +67936,7 @@
       "inferred_status": "stale",
       "item": "The `/auto-rollback` router false positive is documented in [Auto-Rollback Router Trigger Forensics](../reports/auto-rollback-router-trigger-forensics-2026-05-06.md), with a narrow negative-context guard and unit coverage added.",
       "kind": "checkbox",
-      "line": 196,
+      "line": 197,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67556,7 +67950,7 @@
       "inferred_status": "stale",
       "item": "The broader skill-router false-positive cluster (`/systematic-debugging`, `/deep-research`, `/auto-rollback`, `/auto-refine`, `/self-improve`, `/phoenix-trace-ui`) is documented in [Skill Router False-Positive Cluster](../reports/skill-router-false-positive-cl",
       "kind": "checkbox",
-      "line": 197,
+      "line": 198,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67570,7 +67964,7 @@
       "inferred_status": "stale",
       "item": "The confidentiality-enforcer gitignored-destination false positive is resolved in [Confidentiality Enforcer Gitignored-Destination Downgrade](../reports/confidentiality-enforcer-gitignored-downgrade-2026-05-06.md): operator absolute paths in gitignored Write/E",
       "kind": "checkbox",
-      "line": 198,
+      "line": 199,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67586,7 +67980,7 @@
       "inferred_status": "stale",
       "item": "Subagent capability mismatch is documented in [Subagent Capability Contract Gap](../reports/subagent-capability-contract-gap-2026-05-06.md) and resolved by [ADR-203](../adrs/ADR-203-subagent-capability-contract-and-launch-preflight.md), `manifests/subagent-cap",
       "kind": "checkbox",
-      "line": 199,
+      "line": 200,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67599,7 +67993,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Provider compatibility is explicitly inventoried.",
       "kind": "checkbox",
-      "line": 203,
+      "line": 204,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67612,7 +68006,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Provider-agnostic outcome metrics exist.",
       "kind": "checkbox",
-      "line": 204,
+      "line": 205,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67627,7 +68021,7 @@
       "inferred_status": "stale",
       "item": "A canonical demo shows provider and harness switching without system rewrites through [Five-Minute Demo](../manual-tests/five-minute-demo.md) and `scripts/demo-portability-proof.sh`.",
       "kind": "checkbox",
-      "line": 205,
+      "line": 206,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67641,7 +68035,7 @@
       "inferred_status": "stale",
       "item": "A canonical demo shows real quality gates in action through [Five-Minute Demo](../manual-tests/five-minute-demo.md).",
       "kind": "checkbox",
-      "line": 206,
+      "line": 207,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67655,7 +68049,7 @@
       "inferred_status": "stale",
       "item": "A canonical demo shows the core becoming usable in minutes through [Five-Minute Demo](../manual-tests/five-minute-demo.md).",
       "kind": "checkbox",
-      "line": 207,
+      "line": 208,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67669,7 +68063,7 @@
       "inferred_status": "stale",
       "item": "The repo contains a short proof path for \u201ceasy to adopt, serious to trust\u201d through [Product Proof Paths](../manual-tests/proof-paths.md).",
       "kind": "checkbox",
-      "line": 208,
+      "line": 209,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67683,7 +68077,7 @@
       "inferred_status": "stale",
       "item": "The repo contains a short proof path for resilience under ecosystem churn through [Product Proof Paths](../manual-tests/proof-paths.md).",
       "kind": "checkbox",
-      "line": 209,
+      "line": 210,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67696,7 +68090,7 @@
       "inferred_status": "done_weak_proof",
       "item": "State retention automatic repair is bounded by ADR-200 through observe/repair-safe/repair-before-block modes, with smoke coverage for auto-pre-agent repair and manual-stash blocking.",
       "kind": "checkbox",
-      "line": 213,
+      "line": 214,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67712,7 +68106,7 @@
       "inferred_status": "stale",
       "item": "State retention self-bite risk is documented and given a manifest-backed reaper protocol through [Session Diagnosis \u2014 State Retention Self-Bite Pattern](../reports/session-self-bite-pattern-2026-05-06.md), [ADR-199](../adrs/ADR-199-state-retention-policy-and-r",
       "kind": "checkbox",
-      "line": 214,
+      "line": 215,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67725,7 +68119,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Fix `README.md` reference to missing `docs/benchmark-results.md`.",
       "kind": "checkbox",
-      "line": 215,
+      "line": 216,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67739,7 +68133,7 @@
       "inferred_status": "done_with_proof",
       "item": "Fix `CONTRIBUTING.md` references from `tests/run-all-tests.sh` to `scripts/run-all-tests.sh`.",
       "kind": "checkbox",
-      "line": 216,
+      "line": 217,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67753,7 +68147,7 @@
       "inferred_status": "planned",
       "item": "Redesign and re-enable `.github/workflows/ci.yml`; current repository evidence is `.github/workflows/ci.yml.disabled`, so the product-core CI claim is not complete yet.",
       "kind": "checkbox",
-      "line": 217,
+      "line": 218,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67767,7 +68161,7 @@
       "inferred_status": "done_with_proof",
       "item": "Triage and improve `hooks/self-install.sh` performance against behavior-test expectations.",
       "kind": "checkbox",
-      "line": 218,
+      "line": 219,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67780,7 +68174,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Publish a simple \u201ccore vs extension\u201d taxonomy document or section.",
       "kind": "checkbox",
-      "line": 219,
+      "line": 220,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67794,7 +68188,7 @@
       "inferred_status": "stale",
       "item": "Prepare a canonical five-minute product demo path through [Five-Minute Demo](../manual-tests/five-minute-demo.md).",
       "kind": "checkbox",
-      "line": 220,
+      "line": 221,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67807,7 +68201,7 @@
       "inferred_status": "planned",
       "item": "Reduce the full Python suite from 195 failures to zero; current evidence is tracked in [Full Suite Validation Report](../reports/full-suite-validation-2026-04-23.md).",
       "kind": "checkbox",
-      "line": 221,
+      "line": 222,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67821,7 +68215,7 @@
       "inferred_status": "stale",
       "item": "Preserve branch diagnostic report is documented in [Preserve Branch Governance Report \u2014 2026-05-02](../reports/preserve-branch-governance-2026-05-02.md).",
       "kind": "checkbox",
-      "line": 225,
+      "line": 226,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67835,7 +68229,7 @@
       "inferred_status": "stale",
       "item": "ADR-110 defines preserve branch governance in [ADR-110](../adrs/ADR-110-preserve-branch-governance.md).",
       "kind": "checkbox",
-      "line": 226,
+      "line": 227,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67849,7 +68243,7 @@
       "inferred_status": "stale",
       "item": "Preserve branch lifecycle and consumer projection are documented in [Preserve Branch Lifecycle](../architecture/preserve-branch-lifecycle.md).",
       "kind": "checkbox",
-      "line": 227,
+      "line": 228,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67863,7 +68257,7 @@
       "inferred_status": "done_with_proof",
       "item": "`scripts/cos-doctor-preserve.sh --json` detects missing manifests, mixed scope, integrated branches, non-ancestor tips, and delete candidates.",
       "kind": "checkbox",
-      "line": 228,
+      "line": 229,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67877,7 +68271,7 @@
       "inferred_status": "done_with_proof",
       "item": "Preserve governance behavior tests cover the required scenarios in `tests/behavior/test_cos_doctor_preserve.py`.",
       "kind": "checkbox",
-      "line": 229,
+      "line": 230,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67890,7 +68284,7 @@
       "inferred_status": "planned",
       "item": "Existing local `codex/preserve-*` branches have manifests or are explicitly reconciled/deleted.",
       "kind": "checkbox",
-      "line": 230,
+      "line": 231,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67903,7 +68297,7 @@
       "inferred_status": "done_weak_proof",
       "item": "A new user can understand the product quickly.",
       "kind": "checkbox",
-      "line": 234,
+      "line": 235,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67917,7 +68311,7 @@
       "inferred_status": "stale",
       "item": "Install-scope surface debt is documented in [ADR-320](../adrs/ADR-320-install-scope-surface-debt.md): `project` and `both` are aliases today, `all` is maintainer/self-hosting, and protected-config policy does not cover `.env` writes.",
       "kind": "checkbox",
-      "line": 235,
+      "line": 236,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67930,7 +68324,7 @@
       "inferred_status": "done_weak_proof",
       "item": "A new user can install it without pain.",
       "kind": "checkbox",
-      "line": 236,
+      "line": 237,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67943,7 +68337,7 @@
       "inferred_status": "done_weak_proof",
       "item": "A new user can see real evidence of value quickly.",
       "kind": "checkbox",
-      "line": 237,
+      "line": 238,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67956,7 +68350,7 @@
       "inferred_status": "done_weak_proof",
       "item": "A new user can grow into deeper capabilities without needing agent-infrastructure expertise first.",
       "kind": "checkbox",
-      "line": 238,
+      "line": 239,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67971,7 +68365,7 @@
       "inferred_status": "stale",
       "item": "Headless/clustered runtime direction is documented without overclaiming cluster readiness in [ADR-091](../adrs/ADR-091-headless-clustered-runtime-direction.md) and [Headless and Clustered Runtime Plan](../../.cognitive-os/plans/architecture/headless-clustered-",
       "kind": "checkbox",
-      "line": 240,
+      "line": 241,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67985,7 +68379,7 @@
       "inferred_status": "stale",
       "item": "Cloud/headless worker tooling research is documented in [Cloud Worker Runtime Tooling Research \u2014 2026-05](../architecture/cloud-worker-runtime-tooling-research-2026-05.md), with lightweight queue and durable-execution options staged behind `cos run-task`.",
       "kind": "checkbox",
-      "line": 241,
+      "line": 242,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -67999,7 +68393,7 @@
       "inferred_status": "stale",
       "item": "Competitive/runtime benchmark direction is documented in [Runtime Comparison Benchmark Plan](../../.cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md), covering vanilla Claude/Codex, COS-enabled harnesses, and prior-art tools across workstat",
       "kind": "checkbox",
-      "line": 242,
+      "line": 243,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68012,7 +68406,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Competitive reassessment against OpenClaw and Hermes Agent is documented in [Competitive Reassessment: OpenClaw and Hermes Agent](competitive-reassessment-openclaw-hermes-2026-04.md), including native self-improvement, skill lifecycle, memory/profile bootstrap",
       "kind": "checkbox",
-      "line": 243,
+      "line": 244,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68026,7 +68420,7 @@
       "inferred_status": "stale",
       "item": "Governed self-improvement execution plan is documented in [Governed Self-Improvement Roadmap](../../.cognitive-os/plans/architecture/governed-self-improvement-roadmap.md), and the first detect/draft/promote slice is covered by unit and behavior tests.",
       "kind": "checkbox",
-      "line": 245,
+      "line": 246,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68041,7 +68435,7 @@
       "inferred_status": "stale",
       "item": "Primitive self-improvement promotion is now gated by baseline-vs-candidate fitness evidence through [Primitive Fitness Evaluation Contract](../architecture/primitive-fitness-evaluation-contract.md), `lib/primitive_fitness.py`, and `scripts/cos-primitive-fitnes",
       "kind": "checkbox",
-      "line": 246,
+      "line": 247,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68054,7 +68448,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Primitive fitness now reconciles consumer/downstream proposal bundles and ADR-168 dependency readiness as supporting evidence, while preventing supporting-only evidence from promoting a primitive without core runtime metrics.",
       "kind": "checkbox",
-      "line": 247,
+      "line": 248,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68067,7 +68461,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Primitive fitness reports now roll up by family through `scripts/cos-primitive-fitness-ledger` and feed ACC as visibility-only capability evidence.",
       "kind": "checkbox",
-      "line": 248,
+      "line": 249,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68080,7 +68474,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Memory/Profile Bootstrap now creates a local source-linked, sanitized project profile draft during the first three sessions, with manual and Go CLI generate/inspect/promote/wipe commands, doctor coverage, and Codex SessionStart tests.",
       "kind": "checkbox",
-      "line": 249,
+      "line": 250,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68093,7 +68487,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Action-count rate limiting uses token buckets with soft warnings, operator reserve, and diversity penalty (ADR-101).",
       "kind": "checkbox",
-      "line": 251,
+      "line": 252,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68109,7 +68503,7 @@
       "inferred_status": "stale",
       "item": "AI resource economy Phase 1 is documented and executable via [ADR-325](../adrs/ADR-325-ai-resource-economy-and-degradation.md), `manifests/ai-resource-economy.yaml`, `scripts/ai-resource-economy-audit`, `scripts/ai-budget-preflight`, and `rules/language-token-",
       "kind": "checkbox",
-      "line": 252,
+      "line": 253,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68124,7 +68518,7 @@
       "inferred_status": "stale",
       "item": "Audit/contract lane recovery is documented in [ADR-103](../adrs/ADR-103-audit-contract-lane-recovery.md) and [Audit and Contract Lane Recovery Plan](../../.cognitive-os/plans/archive/audit-contract-lane-recovery-plan.md), with deterministic docs debt fixed bef",
       "kind": "checkbox",
-      "line": 253,
+      "line": 254,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68140,7 +68534,7 @@
       "inferred_status": "stale",
       "item": "Validation capsules are documented and implemented in [ADR-109](../adrs/ADR-109-validation-capsule-worktree-isolation.md), [Validation Capsule](../architecture/validation-capsule.md), and `scripts/cos-validation-capsule.sh`, separating release validation from ",
       "kind": "checkbox",
-      "line": 254,
+      "line": 255,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68154,7 +68548,7 @@
       "inferred_status": "planned",
       "item": "Adopt ADR-111 concurrency safety core/consumer boundary and keep primitive tests green (`docs/02-Decisions/adrs/ADR-111-core-consumer-concurrency-safety-boundary.md`).",
       "kind": "checkbox",
-      "line": 255,
+      "line": 256,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68167,7 +68561,7 @@
       "inferred_status": "planned",
       "item": "Execute the remaining ADR implementation backlog through [ADR Implementation Closure Session \u2014 2026-05-04](../SESSION-ADR-CLOSURE-2026-05-04.md) and [Session Handoff \u2014 2026-05-04](../SESSION-HANDOFF-2026-05-04.md): reconcile all ADRs up to ADR-138 before imple",
       "kind": "checkbox",
-      "line": 256,
+      "line": 257,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68180,7 +68574,7 @@
       "inferred_status": "done_weak_proof",
       "item": "ADR-119 session filesystem reaper archives stale clean session directories, preserves pending content, and emits aggregate session-volume alarms.",
       "kind": "checkbox",
-      "line": 258,
+      "line": 259,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68194,7 +68588,7 @@
       "inferred_status": "stale",
       "item": "Boring Reliability Control Plane is documented in [Boring Reliability Control Plane](../architecture/boring-reliability-control-plane.md), with profile, preamble, default-visible, false-positive, WIP safety, recovery drill, runtime reality, and dashboard CLIs ",
       "kind": "checkbox",
-      "line": 259,
+      "line": 260,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68208,7 +68602,7 @@
       "inferred_status": "stale",
       "item": "Agentic kernel philosophy is documented in [Agentic Kernel Philosophy](../architecture/agentic-kernel-philosophy.md), establishing small-core, driver, boot-path, and evidence-backed primitive doctrine.",
       "kind": "checkbox",
-      "line": 260,
+      "line": 261,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68223,7 +68617,7 @@
       "inferred_status": "stale",
       "item": "Expansion hardening is documented in [Expansion Hardening Plan](../architecture/expansion-hardening-plan.md) and [ADR-133](../adrs/ADR-133-expansion-without-monsterization.md), with `scripts/cos-lab-first-gate` preventing unevidenced core/team/blocking/default",
       "kind": "checkbox",
-      "line": 261,
+      "line": 262,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68239,7 +68633,7 @@
       "inferred_status": "stale",
       "item": "Headless self-improvement proposing is documented in [Headless Self-Improvement Proposer](../architecture/headless-self-improvement-proposer.md), [ADR-134](../adrs/ADR-134-headless-self-improvement-proposer.md), and [Headless Self-Improvement Proposer Plan](..",
       "kind": "checkbox",
-      "line": 262,
+      "line": 263,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68252,7 +68646,7 @@
       "inferred_status": "planned",
       "item": "Implement the ADR-201 maintainer-agent loop: BLOCKER SQLite-backed performance ledger with signal-quality quarantine, deterministic proposal dedup, full proposal schema, ADR-164 service-mode mutation boundary, outcome-failure protocol, model-cost policy, `Prom",
       "kind": "checkbox",
-      "line": 263,
+      "line": 264,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68266,7 +68660,7 @@
       "inferred_status": "done_with_proof",
       "item": "SQLite Performance Ledger substrate: `lib/performance_ledger.py`, `scripts/cos-performance-ledger`, `cos performance-ledger compile`, SQLite store, JSONL export, latest report, retention declaration, and tests proving corrupt/suspect rows do not enter eligible",
       "kind": "checkbox",
-      "line": 264,
+      "line": 265,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68279,7 +68673,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Add corrupt-ratio consumption gate and deterministic proposal id helper: blocked streams cannot feed `PromoteFromTelemetry`, and proposal identity is stable across surface + degradation pattern + day window.",
       "kind": "checkbox",
-      "line": 265,
+      "line": 266,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68293,7 +68687,7 @@
       "inferred_status": "done_with_proof",
       "item": "Add `lib/promote_from_telemetry.py`, `scripts/cos-promote-from-telemetry`, `scripts/cos-maintainer-agent --once --dry-run --json`, full proposal schema, propose-only ADR-164 boundary, sonnet-first model policy, and smoke tests proving one bounded human-approve",
       "kind": "checkbox",
-      "line": 266,
+      "line": 267,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68306,7 +68700,7 @@
       "inferred_status": "planned",
       "item": "Implement ADR-202 private-content portability: skeleton surface manifest with conservative `local-only` defaults plus `secret-never-touch`, justified elevations, class transition receipts, private-content access audit log, unknown-surface scheduled audit, proj",
       "kind": "checkbox",
-      "line": 267,
+      "line": 268,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68321,7 +68715,7 @@
       "inferred_status": "done_with_proof",
       "item": "Slice 2a skeleton manifest and audit CLI: `manifests/private-content.yaml`, `scripts/private_content_audit.py`, `scripts/cos-private-content-audit`, `cos private-content audit`, unit tests, and CLI smoke classify known private roots as `local-only` and secret ",
       "kind": "checkbox",
-      "line": 268,
+      "line": 269,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68334,7 +68728,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Slice 2b projection/export guard: `cos private-content check-projection PATH`, secret-never-touch hard block, local-only cloud export block, provenance/redaction policy checks, and private-content access audit metric.",
       "kind": "checkbox",
-      "line": 269,
+      "line": 270,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68347,7 +68741,7 @@
       "inferred_status": "planned",
       "item": "Slice 2c justified elevations, transition receipts, scheduled unknown-surface audit, and service/headless projection smoke.",
       "kind": "checkbox",
-      "line": 270,
+      "line": 271,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68361,7 +68755,7 @@
       "inferred_status": "done_with_proof",
       "item": "Wire ADR-203 subagent preflight into harness-native/Agent launch paths through `hooks/subagent-capability-preflight.sh`, active Claude settings, standard/paranoid profiles, registration allowlist, telemetry, compact block output, and behavior tests.",
       "kind": "checkbox",
-      "line": 271,
+      "line": 272,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68374,7 +68768,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Implement ADR-204 reward-signal quality boundary for maintainer consumption so dirty trust scores and corrupt skill-feedback rows cannot drive Performance Ledger or Maintainer proposal decisions. Router/skill lifecycle consumption remains covered by future ADR",
       "kind": "checkbox",
-      "line": 272,
+      "line": 273,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68387,7 +68781,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Add reward-signal contract, validator, audit CLI, route smoke, and tests proving `skill: matias` and default trust score 75 without evidence are quarantined from rollups.",
       "kind": "checkbox",
-      "line": 273,
+      "line": 274,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68400,7 +68794,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Feed ADR-204 quality counts into ADR-201 Performance Ledger so corrupt/suspect rows are excluded from rollups.",
       "kind": "checkbox",
-      "line": 274,
+      "line": 275,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68413,7 +68807,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Block `PromoteFromTelemetry` consumption above corrupt-ratio policy via Performance Ledger `consumption_policy` and `--require-consumable` CLI gate.",
       "kind": "checkbox",
-      "line": 275,
+      "line": 276,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68427,7 +68821,7 @@
       "inferred_status": "done_with_proof",
       "item": "Implement ADR-205 run flight recorder substrate before treating service-mode observability as complete: `lib/trace_joiner.py`, `scripts/cos-run-trace`, `cos observe run`, run-id/event-id normalization, latest run report, JSONL index, state-retention declaratio",
       "kind": "checkbox",
-      "line": 276,
+      "line": 277,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68440,7 +68834,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Implement ADR-206 public claim gate and purge/demote unbacked autonomous/MAPE-K/self-improvement claims before public launch.",
       "kind": "checkbox",
-      "line": 277,
+      "line": 278,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68453,7 +68847,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Implement ADR-207 skill performance ledger substrate before claiming skill self-improvement; router override events and rewrite proposals remain follow-up slices.",
       "kind": "checkbox",
-      "line": 278,
+      "line": 279,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68466,7 +68860,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Adopt ADR-212 cross-stack license audit toolchain: Syft+Grype primary, Trivy guarded secondary, workflow safety gate, install/run wrappers, and tests.",
       "kind": "checkbox",
-      "line": 279,
+      "line": 280,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68479,7 +68873,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Fix ADR-213 Agent hook ordering so blocking preflight runs before stash snapshot, preventing hidden WIP after blocked launches.",
       "kind": "checkbox",
-      "line": 280,
+      "line": 281,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68492,7 +68886,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Implement ADR-216 Tool Discovery Pre-Use Gate so ad-hoc license/repo tool choices are blocked or warned when COS primitives exist.",
       "kind": "checkbox",
-      "line": 281,
+      "line": 282,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68505,7 +68899,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Implement ADR-219 work ownership liveness preflight so preserved branches, stashes, linked worktrees, claims, and process activity are joined before cleanup/closure claims.",
       "kind": "checkbox",
-      "line": 282,
+      "line": 283,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68518,7 +68912,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Implement ADR-208 imported-pattern closure audit so producer-only imports cannot be promoted as active loops.",
       "kind": "checkbox",
-      "line": 283,
+      "line": 284,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68531,7 +68925,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Wire the first consumer loop: dependency manifest additions now hit a pre-commit dependency-adoption gate and require staged `/repo-scout`, `/repo-forensics`, or equivalent evidence before adoption.",
       "kind": "checkbox",
-      "line": 284,
+      "line": 285,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68544,7 +68938,7 @@
       "inferred_status": "planned",
       "item": "Add the full imported-pattern closure manifest/audit that proves producer, consumer, scheduler, evaluator, owner, demotion path, and contract tests before promotion claims.",
       "kind": "checkbox",
-      "line": 285,
+      "line": 286,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68557,7 +68951,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Implement ADR-209 maintainer experiment contract before executable maintainer changes.",
       "kind": "checkbox",
-      "line": 286,
+      "line": 287,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68570,7 +68964,7 @@
       "inferred_status": "planned",
       "item": "Keep ADR-210 fleet confidence as future/cloud-only until ADR-202 sanitized-export and provenance are enforced.",
       "kind": "checkbox",
-      "line": 287,
+      "line": 288,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68584,7 +68978,7 @@
       "inferred_status": "done_with_proof",
       "item": "Implement ADR-211 initial service-mode readiness gate before any standalone/cloud autonomy launch claim: `lib/service_mode_readiness.py`, `scripts/cos-service-readiness-gate`, `cos service readiness`, JSON/compact output, and tests proving missing private-cont",
       "kind": "checkbox",
-      "line": 288,
+      "line": 289,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68599,7 +68993,7 @@
       "inferred_status": "stale",
       "item": "Self-evolving doctrine proposals are documented in [Self-Evolving Doctrine Proposals](../architecture/self-evolving-doctrine-proposals.md) and [ADR-135](../adrs/ADR-135-self-evolving-doctrine-proposals.md), with `scripts/cos-doctrine-proposer` generating propo",
       "kind": "checkbox",
-      "line": 289,
+      "line": 290,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68614,7 +69008,7 @@
       "inferred_status": "stale",
       "item": "Cross-instance learning runway is documented in [Cross-Instance Learning Runway](../architecture/cross-instance-learning-runway.md) and [ADR-136](../adrs/ADR-136-cross-instance-learning-runway.md), with consumer evidence exchange, deterministic registry locks,",
       "kind": "checkbox",
-      "line": 290,
+      "line": 291,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68628,7 +69022,7 @@
       "inferred_status": "stale",
       "item": "Consumer fleet audit is documented in [Consumer Fleet Audit](../architecture/consumer-fleet-audit.md) and exposed through `scripts/cos-consumer-fleet-audit`, joining registry/install metadata, registry-lock drift, claim-signature status, and targeted validatio",
       "kind": "checkbox",
-      "line": 291,
+      "line": 292,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68642,7 +69036,7 @@
       "inferred_status": "stale",
       "item": "Cross-instance local consumer E2E is documented in [Cross-Instance Consumer E2E Drill \u2014 2026-05-03](../reports/cross-instance-consumer-e2e-2026-05-03.md), proving install, provenance export/import, drills, and that self-owned evidence does not sign external-he",
       "kind": "checkbox",
-      "line": 292,
+      "line": 293,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68656,7 +69050,7 @@
       "inferred_status": "done_with_proof",
       "item": "Expected test skips are classified and enforced through ADR-166, `manifests/test-skip-registry.yaml`, and the pytest summary wrapper so new unclassified skips fail instead of silently growing.",
       "kind": "checkbox",
-      "line": 294,
+      "line": 295,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68669,7 +69063,7 @@
       "inferred_status": "done_weak_proof",
       "item": "ADR-218 history sanitization dry-run substrate exists (`cos history sanitize --dry-run --json`); execute rewrite remains operator-gated.",
       "kind": "checkbox",
-      "line": 296,
+      "line": 297,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68682,7 +69076,7 @@
       "inferred_status": "done_weak_proof",
       "item": "ADR-217 adoption-truth substrate exists (`cos adoption audit --json`); readiness/downstream consumption and baseline remediation remain pending.",
       "kind": "checkbox",
-      "line": 298,
+      "line": 299,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68697,7 +69091,7 @@
       "inferred_status": "stale",
       "item": "C1\u2013C4 evaluation contract promoted from chat directives to canonical manifest at [`manifests/orchestration-research-evaluation.yaml`](../../manifests/orchestration-research-evaluation.yaml) \u2014 `schema_version: orchestration-research-evaluation/v1`. License allo",
       "kind": "checkbox",
-      "line": 306,
+      "line": 307,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68712,7 +69106,7 @@
       "inferred_status": "stale",
       "item": "Substrate-consumer guardrail validator at [`scripts/validate_substrate_consumers.py`](../../scripts/validate_substrate_consumers.py) \u2014 14 checks across 6 dimensions (schema-version invariant, projection robustness, strict-durability required-for, seq type, per",
       "kind": "checkbox",
-      "line": 307,
+      "line": 308,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68726,7 +69120,7 @@
       "inferred_status": "done_with_proof",
       "item": "**ADR-220** Worktree Divergence Audit \u2014 `lib/worktree_audit.py` + `cos worktree audit --json [--strict]` + manifest. Accepted, preflight/readiness gate active.",
       "kind": "checkbox",
-      "line": 311,
+      "line": 312,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68740,7 +69134,7 @@
       "inferred_status": "done_with_proof",
       "item": "**ADR-221** Stash Refs by SHA, Not by Position \u2014 `lib/stash_sha.py` + marker schema v2 + CI audit tests. Accepted, slice 1 active.",
       "kind": "checkbox",
-      "line": 312,
+      "line": 313,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68753,7 +69147,7 @@
       "inferred_status": "done_weak_proof",
       "item": "**ADR-222** Pre-Agent Stash Two-Phase Capture \u2014 `agent-launch-confirmed.sh` + plan-only PreToolUse + cleanup. Slices 1\u20138 implemented (tactical mitigation until ADR-223 fully replaces).",
       "kind": "checkbox",
-      "line": 313,
+      "line": 314,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68767,7 +69161,7 @@
       "inferred_status": "done_with_proof",
       "item": "**ADR-223** Agent Lifecycle Reconstruction (kill auto-pre-agent-stash, worktree-per-write-agent + mutex on `git worktree add`) \u2014 `lib/agent_lifecycle.py` + default-on worktree lifecycle + manifest-scoped cleanup/reaper + cross-harness projection + branch-prefi",
       "kind": "checkbox",
-      "line": 314,
+      "line": 315,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68782,7 +69176,7 @@
       "inferred_status": "done_with_proof",
       "item": "**ADR-226** Event-Sourced Session Bus (load-bearing) \u2014 `lib/session_bus.py` (extends ADR-205 Flight Recorder) + `lib/event_wrap.py` + `lib/event_projections/{cost_ledger,handoff_chain,retry_classifier,timeline}.py` + per-session JSONL streams + manifest with m",
       "kind": "checkbox",
-      "line": 315,
+      "line": 316,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68796,7 +69190,7 @@
       "inferred_status": "done_with_proof",
       "item": "**ADR-227** Shadow-Git Checkpoint Substrate \u2014 `lib/shadow_git.py` + `cos rollback` CLI + off-repo snapshots + preview-gated files restore + conversation truncation + atomic files+conversation restore + event-envelope `file_tree_sha` wiring. Slices A\u2013F implemen",
       "kind": "checkbox",
-      "line": 316,
+      "line": 317,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68812,7 +69206,7 @@
       "inferred_status": "done_with_proof",
       "item": "**ADR-228** Retry Contract + Cost Session Budget (consolidated G8+G10) \u2014 `lib/dispatch_gate.py` + `lib/retry_classifier.py` + `lib/session_budget.py` + idempotency mixin + circuit breaker + provider-aware cost predictor + T6 perf baseline + T7 circuit recovery",
       "kind": "checkbox",
-      "line": 317,
+      "line": 318,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68827,7 +69221,7 @@
       "inferred_status": "done_with_proof",
       "item": "**ADR-230** Handoff Envelope + Cycle Deduplication \u2014 `lib/handoff_envelope.py` + `lib/handoff_dispatcher.py` + permission intersection + ADR-233 inbox transport + explicit receiver execution + external hook runner via `--hook-command` + timeout/failure receipt",
       "kind": "checkbox",
-      "line": 318,
+      "line": 319,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68840,7 +69234,7 @@
       "inferred_status": "planned",
       "item": "Pendings remaining (called out per ADR by [`IMPLEMENTATION-CHECKLIST-2026-05-07.md`](../research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md)):",
       "kind": "prose",
-      "line": 320,
+      "line": 321,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68853,7 +69247,7 @@
       "inferred_status": "planned",
       "item": "T6 perf budget hardening across substrate (Linux/Docker baselines pending; macOS+APFS baseline at p95 25 ms locked in manifest; ADR-228 T6 done)",
       "kind": "checkbox",
-      "line": 322,
+      "line": 323,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68866,7 +69260,7 @@
       "inferred_status": "planned",
       "item": "T7/T10 chaos and audit invariants partial (event-bus chaos covered; ADR-227 T7/T10 partial; ADR-228 chaos done; some downstream consumers pending)",
       "kind": "checkbox",
-      "line": 323,
+      "line": 324,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68880,7 +69274,7 @@
       "inferred_status": "planned",
       "item": "T8 cross-harness end-to-end for some consumers (event bus covered via `tests/red_team/portability/test_event_bus.py`; ADR-230 T8 done; ADR-231 T8 done)",
       "kind": "checkbox",
-      "line": 324,
+      "line": 325,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68894,7 +69288,7 @@
       "inferred_status": "done_with_proof",
       "item": "**ADR-225** Branch-Per-Task Mode \u2014 `lib/branch_task_policy.py` + conditional prelaunch enforcement + ADR-235 auto-branching via `--prepare-worktree` default `codex/task/*` prefix. Slices A\u2013C implemented.",
       "kind": "checkbox",
-      "line": 328,
+      "line": 329,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68907,7 +69301,7 @@
       "inferred_status": "done_weak_proof",
       "item": "**ADR-231** MCP Server Surface \u2014 FastMCP-based 8-tool server + optional OTel spans + stdio + Streamable HTTP registration plans + trust-pin-required URL consumption fingerprints. Slices A\u2013C implemented.",
       "kind": "checkbox",
-      "line": 329,
+      "line": 330,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68921,7 +69315,7 @@
       "inferred_status": "done_with_proof",
       "item": "**ADR-233** Cross-Session Agent-Team File-IPC \u2014 `lib/agent_team.py` + `cos team ...` CLI + TaskCreated/TaskCompleted/TeammateIdle hooks + ADR-230 receiver flow + chaos claim race + cross-harness inbox + opt-in NATS publish adapter + A2A HTTP JSON adapter + `tr",
       "kind": "checkbox",
-      "line": 330,
+      "line": 331,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68934,7 +69328,7 @@
       "inferred_status": "done_weak_proof",
       "item": "**ADR-224** Shadow-State Snapshots Off-Repo \u2014 off-repo shadow-git safety net + operator rollback runbook + manual retention/reaper via `cos rollback --prune`. Slices A\u2013C implemented.",
       "kind": "checkbox",
-      "line": 334,
+      "line": 335,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68948,7 +69342,7 @@
       "inferred_status": "done_with_proof",
       "item": "**ADR-232** Sandbox Adapter Tiers (Bubblewrap Linux / Seatbelt macOS, OS-native default) \u2014 `lib/sandbox_adapter.py` + dispatch `require_sandbox` preflight + Claude CLI/provider subprocess wrapping + microVM/ConTree adapter contracts + opt-in runner-backed CLI ",
       "kind": "checkbox",
-      "line": 335,
+      "line": 336,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68962,7 +69356,7 @@
       "inferred_status": "done_with_proof",
       "item": "**ADR-234** Approval Policies as Code \u2014 `lib/policy_eval.py` + YAML evaluator + CLI + destructive/protected-config policies + two real hook migrations + plan-only Claude/Codex settings projection. External engines deferred. Slices A\u2013C implemented.",
       "kind": "checkbox",
-      "line": 336,
+      "line": 337,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68976,7 +69370,7 @@
       "inferred_status": "done_with_proof",
       "item": "**ADR-235** Detached Agent Daemon \u2014 `lib/agent_daemon.py` + queue/state + tmux launcher + sentinels + watchdog + budget gate + TeamTask enqueue + service-plan/install + activation helper + tmux/process-tree kill escalation. Slices A\u2013F implemented.",
       "kind": "checkbox",
-      "line": 337,
+      "line": 338,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -68990,7 +69384,7 @@
       "inferred_status": "done_with_proof",
       "item": "**ADR-236** Deferred Tool Loading + ToolSearch \u2014 `lib/deferred_tool_loading.py` + manifest-backed planning + ToolSearch index + dispatch insertion/metrics + local `list_changed` state + truthful provider-native payloads with operator-enabled native API switch.",
       "kind": "checkbox",
-      "line": 338,
+      "line": 339,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -69003,7 +69397,7 @@
       "inferred_status": "planned",
       "item": "Pendings remaining (called out per ADR by [`IMPLEMENTATION-CHECKLIST-2026-05-07.md`](../research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md)):",
       "kind": "prose",
-      "line": 340,
+      "line": 341,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -69016,7 +69410,7 @@
       "inferred_status": "planned",
       "item": "ADR-232 T7/T8/T10 hardening (chaos + cross-harness + audit invariants extension)",
       "kind": "checkbox",
-      "line": 342,
+      "line": 343,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -69029,7 +69423,7 @@
       "inferred_status": "planned",
       "item": "ADR-234 T5/T8 hardening (adversarial + cross-harness)",
       "kind": "checkbox",
-      "line": 343,
+      "line": 344,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -69042,7 +69436,7 @@
       "inferred_status": "planned",
       "item": "ADR-235 T10 audit invariants partial",
       "kind": "checkbox",
-      "line": 344,
+      "line": 345,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -69055,7 +69449,7 @@
       "inferred_status": "planned",
       "item": "ADR-236 T9 adoption-truth re-run with FastMCP / OTel MCP semconv",
       "kind": "checkbox",
-      "line": 345,
+      "line": 346,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -69069,7 +69463,7 @@
       "inferred_status": "done_with_proof",
       "item": "**ADR status taxonomy** \u2014 `docs/02-Decisions/adrs/STATUS-TAXONOMY.md` separates decision status, implementation status, and index bucket; ADR-044/132/174b/174c/238/253 are canonical fixtures.",
       "kind": "checkbox",
-      "line": 349,
+      "line": 350,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -69082,7 +69476,7 @@
       "inferred_status": "done_weak_proof",
       "item": "**ADR-229** consolidated into ADR-228 (cost-budget + retry-contract on the same code path).",
       "kind": "checkbox",
-      "line": 350,
+      "line": 351,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -69095,7 +69489,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Multi-machine cloud orchestration documented as positioning, not a gap.",
       "kind": "checkbox",
-      "line": 354,
+      "line": 355,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -69108,7 +69502,7 @@
       "inferred_status": "done_weak_proof",
       "item": "CRDT-based merging documented as anti-recommendation (code is non-commutative).",
       "kind": "checkbox",
-      "line": 355,
+      "line": 356,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -69121,7 +69515,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Hypervisor sandboxes (Firecracker) as primary documented as opt-in tier only (E2BAdapter via ADR-232).",
       "kind": "checkbox",
-      "line": 356,
+      "line": 357,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -69134,7 +69528,7 @@
       "inferred_status": "done_weak_proof",
       "item": "OPA/Rego policy engine documented as deferred until multi-tenant deployment.",
       "kind": "checkbox",
-      "line": 357,
+      "line": 358,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -69147,7 +69541,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Mid-session MCP server injection documented as upstream \"not planned\"; deferred-loading covers ~85%.",
       "kind": "checkbox",
-      "line": 358,
+      "line": 359,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -69160,7 +69554,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Temporal/Cadence durable workflows documented as heavy-dep violation of C2; `@event_wrap` covers MVP determinism.",
       "kind": "checkbox",
-      "line": 359,
+      "line": 360,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -69173,7 +69567,7 @@
       "inferred_status": "done_weak_proof",
       "item": "NATS JetStream cross-session bus documented as Tier-3 future, not default.",
       "kind": "checkbox",
-      "line": 360,
+      "line": 361,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -69187,7 +69581,7 @@
       "inferred_status": "stale",
       "item": "Strategy private log [`04-license-repo-and-corrections-log.md`](../../.cognitive-os/strategy/04-license-repo-and-corrections-log.md) \u2014 Anexo with full orchestration-line narrative + 5 new commercial-grade cu\u00f1as.",
       "kind": "checkbox",
-      "line": 364,
+      "line": 365,
       "next_action": "update stale path or demote completion claim",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -69200,7 +69594,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Strategy research/09 dogfood metrics \u2014 \u00a77 added with 8 reproducible orchestration-line metrics.",
       "kind": "checkbox",
-      "line": 365,
+      "line": 366,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -69213,7 +69607,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Strategy 03-self-bite-pattern \u2014 marked CLOSED 2026-05-07 with chain of resolving ADRs.",
       "kind": "checkbox",
-      "line": 366,
+      "line": 367,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -69226,7 +69620,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Strategy 01-commercial-brief-v2 \u2014 patched \u00a72/\u00a75/\u00a77/\u00a79/\u00a712 + new \u00a716 with 5 cu\u00f1as + post-landing fold rotation.",
       "kind": "checkbox",
-      "line": 367,
+      "line": 368,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -69239,7 +69633,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Public docs/08-References/business/value-proposition \u2014 added 4 new \"What It Does\" entries + \"upstream gaps\" table linking each ADR to its issue/limitation.",
       "kind": "checkbox",
-      "line": 368,
+      "line": 369,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -69252,7 +69646,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Public docs/08-References/business/features \u2014 Feature Overview 13\u219219 + new sections \u00a76/\u00a77/\u00a78 (replay, cost+retry, handoff).",
       "kind": "checkbox",
-      "line": 369,
+      "line": 370,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -69265,7 +69659,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Public docs/08-References/business/roadmap \u2014 Current State counts refreshed; \"What works end-to-end\" expanded with 5 new shippables.",
       "kind": "checkbox",
-      "line": 370,
+      "line": 371,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -69278,7 +69672,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Public docs/08-References/business/executive-summary \u2014 Problem section expanded with replay-Devin-framing and $47K-incident framing.",
       "kind": "checkbox",
-      "line": 371,
+      "line": 372,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -69293,7 +69687,7 @@
       "inferred_status": "done_with_proof",
       "item": "**ADR-279** Orphan Repo-Scan Process Audit \u2014 `scripts/cos-orphan-process-audit.py` + `lib/orphan_process_audit.py` detect stale PPID=1 Claude/zsh/grep-style repo scans, stay dry-run by default, require explicit `--kill`, and carry behavior tests.",
       "kind": "checkbox",
-      "line": 373,
+      "line": 374,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -69309,7 +69703,7 @@
       "inferred_status": "planned",
       "item": "Add primitive parser contracts as a prerequisite for scope-taxonomy automation: `docs/02-Decisions/adrs/ADR-315-primitive-parser-contracts.md`, `docs/04-Concepts/architecture/primitive-parser-contracts.md`, and `lib/primitive_parser.py`.",
       "kind": "checkbox",
-      "line": 376,
+      "line": 377,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -69322,7 +69716,7 @@
       "inferred_status": "done_weak_proof",
       "item": "ADR-318 copy-only checkpoints and stash quarantine primitives added; stash positional refs are not durable SO identity.",
       "kind": "checkbox",
-      "line": 380,
+      "line": 381,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -69335,7 +69729,7 @@
       "inferred_status": "done_weak_proof",
       "item": "**Pyrefly TRIAL gate** \u2014 `scripts/cos-pyrefly-pilot`, `make typecheck-pyrefly`, `[tool.pyrefly]`, and radar addendum added as an advisory Python type-check lane; promotion blocked on baseline triage.",
       "kind": "checkbox",
-      "line": 384,
+      "line": 385,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
@@ -69349,8 +69743,21 @@
       "inferred_status": "done_with_proof",
       "item": "Add atomic primitive-closure gate to prevent lifecycle/overlay/ACC/registry/projection drift from surfacing as cascading test failures. See `docs/04-Concepts/architecture/primitive-closure-atomic-check.md`.",
       "kind": "checkbox",
-      "line": 386,
+      "line": 387,
       "next_action": "keep marked done; maintain proof links",
+      "path": "docs/08-References/business/master-plan-checklist.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:adapter,adoption,capability,compact,context,efficiency,evidence,measured"
+      ],
+      "inferred_status": "planned",
+      "item": "Port the efficiency operating model into COS primitives: `cos status`, typed adapter capability registry, transactional projection, compact skill registry, context plan, role-selection report, strict TDD evidence, and SO-wide measured adoption. See [`cognitive",
+      "kind": "checkbox",
+      "line": 388,
+      "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/08-References/business/master-plan-checklist.md"
     },
     {
@@ -76142,7 +76549,7 @@
       },
       "docs/00-MOCs/entrypoints/README.md": {
         "done_weak_proof": 25,
-        "done_with_proof": 5,
+        "done_with_proof": 7,
         "planned": 27,
         "proposed": 24
       },
@@ -77757,6 +78164,14 @@
         "done_weak_proof": 3,
         "proposed": 1
       },
+      "docs/02-Decisions/adrs/ADR-338-so-wide-impact-evaluation-plane.md": {
+        "done_weak_proof": 1,
+        "proposed": 1
+      },
+      "docs/02-Decisions/adrs/ADR-339-efficiency-operating-model-primitives.md": {
+        "done_weak_proof": 1,
+        "proposed": 1
+      },
       "docs/02-Decisions/adrs/README.md": {
         "planned": 1
       },
@@ -78318,6 +78733,9 @@
         "done_weak_proof": 3,
         "planned": 1
       },
+      "docs/04-Concepts/architecture/artifact-workgraph-review-advisor.md": {
+        "proposed": 1
+      },
       "docs/04-Concepts/architecture/behavioral-test-contracts.md": {
         "planned": 1,
         "proposed": 1
@@ -78545,6 +78963,10 @@
         "done_weak_proof": 6,
         "done_with_proof": 1,
         "planned": 2
+      },
+      "docs/04-Concepts/architecture/gentle-ai-comparative-audit-2026-06-15.md": {
+        "done_weak_proof": 1,
+        "planned": 3
       },
       "docs/04-Concepts/architecture/graphify-next-step-decision-2026-05-22.md": {
         "planned": 1,
@@ -78807,6 +79229,10 @@
       },
       "docs/04-Concepts/architecture/skills-rules-portability-gap.md": {
         "planned": 2
+      },
+      "docs/04-Concepts/architecture/so-wide-impact-evaluation-plane.md": {
+        "done_weak_proof": 2,
+        "planned": 11
       },
       "docs/04-Concepts/architecture/ssr-agentic-primitive-enablement-gaps.md": {
         "done_weak_proof": 2,
@@ -79175,6 +79601,11 @@
       "docs/08-References/business/case-study.md": {
         "done_weak_proof": 1
       },
+      "docs/08-References/business/cognitive-os-efficiency-operating-model.md": {
+        "done_weak_proof": 2,
+        "planned": 1,
+        "proposed": 2
+      },
       "docs/08-References/business/competitive-reassessment-openclaw-hermes-2026-04.md": {
         "planned": 2
       },
@@ -79226,7 +79657,7 @@
       "docs/08-References/business/master-plan-checklist.md": {
         "done_weak_proof": 111,
         "done_with_proof": 47,
-        "planned": 29,
+        "planned": 31,
         "stale": 99
       },
       "docs/08-References/business/master-plan-execution-requirements.md": {
@@ -79494,13 +79925,13 @@
         "done_weak_proof": 1
       }
     },
-    "items": 5800,
+    "items": 5831,
     "statuses": {
       "claimed_done_no_proof": 1,
-      "done_weak_proof": 2735,
-      "done_with_proof": 295,
-      "planned": 2027,
-      "proposed": 635,
+      "done_weak_proof": 2742,
+      "done_with_proof": 297,
+      "planned": 2044,
+      "proposed": 640,
       "stale": 107
     }
   }
