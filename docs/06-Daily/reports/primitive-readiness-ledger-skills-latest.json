@@ -1742,6 +1742,42 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
+        "config": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "config_consumers:2"
+      ],
+      "family": "skills",
+      "lifecycle_id": "skills/artifact-workflow/SKILL.md",
+      "lifecycle_state": "candidate",
+      "next_action": "keep maintainer-only or add explicit export path",
+      "path": "skills/artifact-workflow/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 2
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
         "config": 5,
         "doc": 11,
         "hook": 1,
@@ -3675,7 +3711,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 10,
-        "doc": 31,
+        "doc": 33,
         "hook": 1,
         "script": 12,
         "test": 17,
@@ -3768,6 +3804,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-339-efficiency-operating-model-primitives.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/bootstrap-portability.md"
         },
         {
@@ -3793,6 +3833,10 @@
         {
           "family": "doc",
           "path": "docs/05-Methodology/usage/cos-status.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/business/cognitive-os-efficiency-operating-model.md"
         },
         {
           "family": "doc",
@@ -3977,7 +4021,7 @@
         "hook_consumers:1",
         "script_consumers:12",
         "test_consumers:17",
-        "doc_consumers:31",
+        "doc_consumers:33",
         "config_consumers:10",
         "workflow_consumers:1"
       ],
@@ -3993,7 +4037,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 72
+      "total_consumers": 74
     },
     {
       "confidence": "high",
@@ -5510,7 +5554,8 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 4,
-        "doc": 4,
+        "doc": 5,
+        "hook": 1,
         "test": 3
       },
       "consumers": [
@@ -5536,6 +5581,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/gentle-ai-comparative-audit-2026-06-15.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/graphify-integration-assessment-2026-05-22.md"
         },
         {
@@ -5545,6 +5594,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/graphify-portable-optimization-plan-2026-05-22.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/so-impact-eval-trigger.sh"
         },
         {
           "family": "test",
@@ -5562,8 +5615,9 @@
       "distribution": "maintainer",
       "evidence": [
         "lifecycle",
+        "hook_consumers:1",
         "test_consumers:3",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -5602,7 +5656,7 @@
         "goose",
         "aider"
       ],
-      "total_consumers": 11
+      "total_consumers": 13
     },
     {
       "confidence": "high",
@@ -8565,7 +8619,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 9,
-        "doc": 40,
+        "doc": 41,
         "hook": 1,
         "rule": 3,
         "script": 11,
@@ -8720,6 +8774,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/red-team-harness-proposal.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/so-wide-impact-evaluation-plane.md"
         },
         {
           "family": "doc",
@@ -8906,7 +8964,7 @@
         "rule_consumers:3",
         "script_consumers:11",
         "test_consumers:11",
-        "doc_consumers:40",
+        "doc_consumers:41",
         "config_consumers:9"
       ],
       "family": "skills",
@@ -8921,7 +8979,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 81
+      "total_consumers": 82
     },
     {
       "confidence": "high",
@@ -10745,7 +10803,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 4,
-        "doc": 39,
+        "doc": 40,
         "hook": 6,
         "rule": 14,
         "skill": 2,
@@ -10835,6 +10893,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/cos-vs-project-overlap-analysis.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/gentle-ai-comparative-audit-2026-06-15.md"
         },
         {
           "family": "doc",
@@ -11168,7 +11230,7 @@
         "hook_consumers:6",
         "rule_consumers:14",
         "test_consumers:37",
-        "doc_consumers:39",
+        "doc_consumers:40",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -11183,7 +11245,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 102
+      "total_consumers": 103
     },
     {
       "confidence": "high",
@@ -11191,7 +11253,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 3,
-        "doc": 8,
+        "doc": 9,
         "rule": 1,
         "test": 3
       },
@@ -11230,6 +11292,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/gentle-ai-comparative-audit-2026-06-15.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/06-Daily/root/component-audit.md"
         },
         {
@@ -11262,7 +11328,7 @@
         "lifecycle",
         "rule_consumers:1",
         "test_consumers:3",
-        "doc_consumers:8",
+        "doc_consumers:9",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -11277,7 +11343,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 15
+      "total_consumers": 16
     },
     {
       "confidence": "high",
@@ -11285,7 +11351,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 3,
-        "doc": 14,
+        "doc": 15,
         "hook": 3,
         "rule": 5,
         "skill": 2,
@@ -11335,6 +11401,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/gentle-ai-comparative-audit-2026-06-15.md"
         },
         {
           "family": "doc",
@@ -11448,7 +11518,7 @@
         "hook_consumers:3",
         "rule_consumers:5",
         "test_consumers:10",
-        "doc_consumers:14",
+        "doc_consumers:15",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -11463,7 +11533,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 37
+      "total_consumers": 38
     },
     {
       "confidence": "high",
@@ -11471,7 +11541,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 3,
-        "doc": 6,
+        "doc": 7,
         "rule": 1,
         "test": 2
       },
@@ -11510,6 +11580,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/gentle-ai-comparative-audit-2026-06-15.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/06-Daily/root/component-audit.md"
         },
         {
@@ -11530,7 +11604,7 @@
         "lifecycle",
         "rule_consumers:1",
         "test_consumers:2",
-        "doc_consumers:6",
+        "doc_consumers:7",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -11545,7 +11619,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 12
+      "total_consumers": 13
     },
     {
       "confidence": "high",
@@ -11553,7 +11627,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 3,
-        "doc": 12,
+        "doc": 13,
         "hook": 2,
         "rule": 3,
         "skill": 1,
@@ -11587,6 +11661,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-324-executable-acceptance-specification-eas.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/gentle-ai-comparative-audit-2026-06-15.md"
         },
         {
           "family": "doc",
@@ -11676,7 +11754,7 @@
         "hook_consumers:2",
         "rule_consumers:3",
         "test_consumers:6",
-        "doc_consumers:12",
+        "doc_consumers:13",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -11691,7 +11769,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 27
+      "total_consumers": 28
     },
     {
       "confidence": "high",
@@ -11699,7 +11777,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 3,
-        "doc": 12,
+        "doc": 13,
         "hook": 1,
         "rule": 2,
         "skill": 3,
@@ -11729,6 +11807,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-324-executable-acceptance-specification-eas.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/gentle-ai-comparative-audit-2026-06-15.md"
         },
         {
           "family": "doc",
@@ -11830,7 +11912,7 @@
         "hook_consumers:1",
         "rule_consumers:2",
         "test_consumers:8",
-        "doc_consumers:12",
+        "doc_consumers:13",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -11845,7 +11927,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 29
+      "total_consumers": 30
     },
     {
       "confidence": "high",
@@ -11853,7 +11935,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 4,
-        "doc": 32,
+        "doc": 33,
         "hook": 4,
         "rule": 11,
         "script": 1,
@@ -11932,6 +12014,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/gentle-ai-comparative-audit-2026-06-15.md"
         },
         {
           "family": "doc",
@@ -12206,7 +12292,7 @@
         "rule_consumers:11",
         "script_consumers:1",
         "test_consumers:27",
-        "doc_consumers:32",
+        "doc_consumers:33",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -12221,7 +12307,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 84
+      "total_consumers": 85
     },
     {
       "confidence": "high",
@@ -13457,8 +13543,160 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
+        "config": 8,
+        "doc": 6,
+        "hook": 1,
+        "script": 5,
+        "test": 9
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.json"
+        },
+        {
+          "family": "config",
+          "path": ".codex/hooks.json"
+        },
+        {
+          "family": "config",
+          "path": "cognitive-os.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-install-boundary.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/skill-router-retrieval.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/00-MOCs/entrypoints/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-338-so-wide-impact-evaluation-plane.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-339-efficiency-operating-model-primitives.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/gentle-ai-comparative-audit-2026-06-15.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/so-wide-impact-evaluation-plane.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/business/cognitive-os-efficiency-operating-model.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/so-impact-eval-trigger.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/_lib/settings-driver-claude-code.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/apply-efficiency-profile.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_init.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_so_impact_eval.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/generate-project-settings.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_quality_duplicates_harness_triggers.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_so_impact_eval.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_so_impact_eval_primitive.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_so-impact-eval-trigger.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_so_impact_eval.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_router.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_router_benchmark.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_so_impact_eval_skill.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_so_impact_eval_trigger_hook.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "hook_consumers:1",
+        "script_consumers:5",
+        "test_consumers:9",
+        "doc_consumers:6",
+        "config_consumers:8"
+      ],
+      "family": "skills",
+      "lifecycle_id": "skills/so-impact-eval/SKILL.md",
+      "lifecycle_state": "advisory",
+      "next_action": "keep maintainer-only or add explicit export path",
+      "path": "skills/so-impact-eval/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [
+        "claude",
+        "codex",
+        "shell"
+      ],
+      "total_consumers": 29
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
         "config": 4,
-        "doc": 2,
+        "doc": 3,
         "hook": 1,
         "rule": 1,
         "script": 2,
@@ -13488,6 +13726,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/direct-anthropic-api-policy.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/so-wide-impact-evaluation-plane.md"
         },
         {
           "family": "hook",
@@ -13525,7 +13767,7 @@
         "rule_consumers:1",
         "script_consumers:2",
         "test_consumers:3",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -13540,7 +13782,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 13
+      "total_consumers": 14
     },
     {
       "confidence": "high",
@@ -14430,23 +14672,23 @@
   "schema_version": 1,
   "summary": {
     "confidence": {
-      "high": 107,
+      "high": 109,
       "medium": 12
     },
     "consumer_accessibility": {
-      "lifecycle-declared-maintainer": 99,
+      "lifecycle-declared-maintainer": 101,
       "projected-consumer-surface": 7,
       "repo-skill-not-projectable": 7,
       "so-local-only": 6
     },
     "roles": {
-      "compatibility-wrapper": 53,
+      "compatibility-wrapper": 55,
       "lab": 52,
       "project-extension": 4,
       "shared-agent-tool": 2,
       "so-maintainer": 8
     },
-    "total": 119,
+    "total": 121,
     "without_consumers": 1,
     "without_lifecycle": 13
   },

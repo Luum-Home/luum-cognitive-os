@@ -1,7 +1,31 @@
 schema_version: 1
-generated_at: '2026-06-15T14:56:35+00:00'
+generated_at: '2026-06-16T13:26:14+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
+- id: .claude/skills/artifact-workflow/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - skills/artifact-workflow/SKILL.md
+  - .cognitive-os/skills/artifact-workflow/SKILL.md
+  - .claude/skills/artifact-workflow/SKILL.md
+  sha256: 0cf1cf3b665560ad292ecd4521535532f8752ffde3f5424bba7fec9e442b7136
+- id: .cognitive-os/skills/artifact-workflow/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - skills/artifact-workflow/SKILL.md
+  - .cognitive-os/skills/artifact-workflow/SKILL.md
+  - .claude/skills/artifact-workflow/SKILL.md
+  sha256: 02807e8d20bbaca224fe0392e7d27f5f06e2805997559507660114f8bdc8a391
 - id: hooks/_lib/agent-context.sh
   kind: hook
   owner_adr: ADR-149
@@ -5398,6 +5422,39 @@ primitives:
   - docs/02-Decisions/adrs/ADR-127-active-primitive-index.md
   - docs/02-Decisions/adrs/ADR-128-data-layer-integrity-fixes.md
   sha256: 611207f8277a2ef06912673179a303eae061ded60faea98af0b35b9343452c67
+- id: scripts/cos-artifact-ingest
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-artifact-ingest
+  - scripts/cos_artifact_workflow.py
+  sha256: a4ef6d9b139fac1ba7e1d944a6d0b970595febf5d33998728e6d580d8d2518eb
+- id: scripts/cos-artifact-report
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-artifact-report
+  - scripts/cos_artifact_workflow.py
+  sha256: 92779f35f1aec7792705b522252ef23eac96a0fe343ff837b215779e69aa7621
+- id: scripts/cos-artifact-watch
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-artifact-watch
+  - scripts/cos_artifact_workflow.py
+  sha256: e383acdcd26b7021790a7fe74bc1ef264809ad45e01a0baaffb647c931af581c
 - id: scripts/cos-auth-probe
   kind: script
   owner_adr: ADR-091
@@ -6599,6 +6656,17 @@ primitives:
   projection_targets:
   - scripts/cos-record-onboarding.sh
   sha256: e0df6dcb5a7a615aaf3ca8a02ea8a9ea8d1dc96164347e9a170e7962c50a3f99
+- id: scripts/cos-refutation-review
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-refutation-review
+  - scripts/cos_artifact_workflow.py
+  sha256: e8adebe7be48146d8e5ac95437f4939b93214228c82d2550fdc99afe3a2f4ab2
 - id: scripts/cos-registry-lock
   kind: script
   owner_adr: ADR-136
@@ -6727,6 +6795,17 @@ primitives:
   projection_targets:
   - scripts/cos-scope-projection-audit
   sha256: b91fdf9c3b520ca7d45c19232f77c9fbc68419ddebfb4800f3c80320d3489236
+- id: scripts/cos-second-pass-advisor
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-second-pass-advisor
+  - scripts/cos_artifact_workflow.py
+  sha256: 59cb060682e033ba06cf54c5f7ca3737452e1786e5799689b10f2d0efdae442b
 - id: scripts/cos-self-improvement-discipline-gate
   kind: script
   owner_adr: ADR-134
@@ -7137,6 +7216,17 @@ primitives:
   - scripts/cos_wip_safety_score.py
   - docs/04-Concepts/architecture/boring-reliability-control-plane.md
   sha256: cd0ec88cd95a9b8a97c05ad57e3bfb35c76373036a13d56572bad6fdc719ddab
+- id: scripts/cos-work-graph
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-work-graph
+  - scripts/cos_artifact_workflow.py
+  sha256: fa388cd9b18490dd73d99c6d52957d3821549231aa27312e172ae31ffa2149ca
 - id: scripts/cos-worker-run-once
   kind: script
   owner_adr: ADR-091
@@ -7199,6 +7289,16 @@ primitives:
   projection_targets:
   - scripts/cos_architecture_readiness.py
   sha256: 36c22e20be7e3cee9b8bc7f5022b9526c07b769bc4a99384a221b593b7279cd5
+- id: scripts/cos_artifact_workflow.py
+  kind: script-lib
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos_artifact_workflow.py
+  sha256: 3e10fa52c87205cc47d96003b155b5dcab2943af1613448c7bf13714308f5b86
 - id: scripts/cos_auth_probe.py
   kind: script
   owner_adr: ADR-091
@@ -8967,6 +9067,18 @@ primitives:
   projection_targets:
   - skills/architecture-map-answer/SKILL.md
   sha256: 636266bd2a4820cbc3ffd7d434cc6246213b21e626333fa18d1654936dfcc6d0
+- id: skills/artifact-workflow/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - skills/artifact-workflow/SKILL.md
+  - .cognitive-os/skills/artifact-workflow/SKILL.md
+  - .claude/skills/artifact-workflow/SKILL.md
+  sha256: a4103fabddb2b348f035272ab0751899b46491b3cb310b34f03b6970f3de2ad8
 - id: skills/audit-integrity/SKILL.md
   kind: skill
   owner_adr: ADR-314

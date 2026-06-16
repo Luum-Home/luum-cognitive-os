@@ -1560,7 +1560,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 9,
-        "doc": 27,
+        "doc": 28,
         "hook": 2,
         "rule": 2,
         "script": 3,
@@ -1655,6 +1655,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/functional-audit/sprint-2a-orphan-fate.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/gentle-ai-comparative-audit-2026-06-15.md"
         },
         {
           "family": "doc",
@@ -1797,7 +1801,7 @@
         "rule_consumers:2",
         "script_consumers:3",
         "test_consumers:7",
-        "doc_consumers:27",
+        "doc_consumers:28",
         "config_consumers:9"
       ],
       "family": "rules",
@@ -1812,7 +1816,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 55
+      "total_consumers": 56
     },
     {
       "confidence": "high",
@@ -8010,7 +8014,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 5,
-        "doc": 23,
+        "doc": 24,
         "hook": 1,
         "rule": 3,
         "script": 1,
@@ -8077,6 +8081,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/graphify-portable-optimization-plan-2026-05-22.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/so-wide-impact-evaluation-plane.md"
         },
         {
           "family": "doc",
@@ -8183,7 +8191,7 @@
         "rule_consumers:3",
         "script_consumers:1",
         "test_consumers:5",
-        "doc_consumers:23",
+        "doc_consumers:24",
         "config_consumers:5"
       ],
       "family": "rules",
@@ -8198,7 +8206,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 39
+      "total_consumers": 40
     },
     {
       "confidence": "high",
