@@ -440,9 +440,9 @@
         "doc": 159,
         "hook": 42,
         "rule": 6,
-        "script": 73,
+        "script": 74,
         "skill": 11,
-        "test": 93
+        "test": 94
       },
       "consumers": [
         {
@@ -1531,6 +1531,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_lean_skillopt.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_lib_symlink_invariant_audit.py"
         },
         {
@@ -1935,6 +1939,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_cos_lean_skillopt.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_cos_operational_status.py"
         },
         {
@@ -2084,8 +2092,8 @@
         "skill_consumers:11",
         "hook_consumers:42",
         "rule_consumers:6",
-        "script_consumers:73",
-        "test_consumers:93",
+        "script_consumers:74",
+        "test_consumers:94",
         "doc_consumers:159",
         "config_consumers:24"
       ],
@@ -2101,7 +2109,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 408
+      "total_consumers": 410
     },
     {
       "confidence": "high",

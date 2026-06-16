@@ -2,12 +2,12 @@
 
 ## Summary
 
-Total items: 5831
+Total items: 5832
 - claimed_done_no_proof: 1
 - done_weak_proof: 2742
 - done_with_proof: 297
 - planned: 2044
-- proposed: 640
+- proposed: 641
 - stale: 107
 
 ## Items Needing Attention

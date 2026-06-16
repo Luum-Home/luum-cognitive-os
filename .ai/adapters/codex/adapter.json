@@ -6,7 +6,7 @@
   "harness": "codex",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 787,
+  "projected_primitive_count": 804,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": false,
@@ -1733,6 +1733,13 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": "scripts/cos_lean_skillopt.py",
+      "primitive_file": "primitives/other-script/scripts-cos-lean-skillopt-py-9b8d97f134.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": "templates/adr-template.md",
       "primitive_file": "primitives/other-template/templates-adr-template-md-a6c5e7f862.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
@@ -2741,8 +2748,36 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": ".claude/skills/lean-code/SKILL.md",
+      "primitive_file": "primitives/skills/claude-skills-lean-code-skill-md-3490bd2a29.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": ".claude/skills/skill-optimization/SKILL.md",
+      "primitive_file": "primitives/skills/claude-skills-skill-optimization-skill-md-e39a2a7697.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": ".cognitive-os/skills/artifact-workflow/SKILL.md",
       "primitive_file": "primitives/skills/cognitive-os-skills-artifact-workflow-skill-md-7823defca4.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": ".cognitive-os/skills/lean-code/SKILL.md",
+      "primitive_file": "primitives/skills/cognitive-os-skills-lean-code-skill-md-ebe8a7b314.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": ".cognitive-os/skills/skill-optimization/SKILL.md",
+      "primitive_file": "primitives/skills/cognitive-os-skills-skill-optimization-skill-md-178fdadf8f.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
@@ -3609,6 +3644,13 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": "skills/lean-code/SKILL.md",
+      "primitive_file": "primitives/skills/skills-lean-code-skill-md-c7005b6022.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": "skills/llm-status/SKILL.md",
       "primitive_file": "primitives/skills/skills-llm-status-skill-md-ca2bb23c58.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
@@ -3877,6 +3919,13 @@
       "fidelity": "documented-only",
       "portable_id": "skills/skill-creator/SKILL.md",
       "primitive_file": "primitives/skills/skills-skill-creator-skill-md-be30425771.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/skill-optimization/SKILL.md",
+      "primitive_file": "primitives/skills/skills-skill-optimization-skill-md-94b87700aa.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
@@ -5289,6 +5338,27 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": "scripts/cos-lean-audit",
+      "primitive_file": "primitives/tools/scripts-cos-lean-audit-fbc8f4b6ae.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-lean-debt",
+      "primitive_file": "primitives/tools/scripts-cos-lean-debt-ed4555dae3.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-lean-review",
+      "primitive_file": "primitives/tools/scripts-cos-lean-review-c211bf2a29.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": "scripts/cos-loop-eval",
       "primitive_file": "primitives/tools/scripts-cos-loop-eval-496573a3d7.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
@@ -5380,6 +5450,34 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": "scripts/cos-skill-adopt",
+      "primitive_file": "primitives/tools/scripts-cos-skill-adopt-8b83325630.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-skill-edit-gate",
+      "primitive_file": "primitives/tools/scripts-cos-skill-edit-gate-143c7508c8.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-skill-opt-run",
+      "primitive_file": "primitives/tools/scripts-cos-skill-opt-run-8d5d993ddc.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-skill-proposal-stage",
+      "primitive_file": "primitives/tools/scripts-cos-skill-proposal-stage-2a137261c0.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": "scripts/cos-skill-registry-refresh",
       "primitive_file": "primitives/tools/scripts-cos-skill-registry-refresh-f10164c8c0.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
@@ -5387,8 +5485,29 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": "scripts/cos-skill-rejected-buffer",
+      "primitive_file": "primitives/tools/scripts-cos-skill-rejected-buffer-2e97c681e3.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": "scripts/cos-skill-selection-report",
       "primitive_file": "primitives/tools/scripts-cos-skill-selection-report-be2383a884.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-skill-sleep",
+      "primitive_file": "primitives/tools/scripts-cos-skill-sleep-f380d539c4.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-skill-slow-update",
+      "primitive_file": "primitives/tools/scripts-cos-skill-slow-update-e4054fe672.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {

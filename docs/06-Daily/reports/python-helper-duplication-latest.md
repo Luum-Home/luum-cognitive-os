@@ -1,17 +1,17 @@
 # Primitive Duplication Audit — Latest
 
-Generated: `2026-06-16T13:27:53.585752+00:00`
+Generated: `2026-06-16T13:54:38.181939+00:00`
 
 ## Summary
 
-- Files scanned: 729
-- Findings: 98
-- By kind: `{"python-function-repeat": 98}`
-- By common home: `{"lib/": 98}`
-- By consumer relevance: `{"so-local-first": 98}`
+- Files scanned: 730
+- Findings: 107
+- By kind: `{"python-function-repeat": 107}`
+- By common home: `{"lib/": 107}`
+- By consumer relevance: `{"so-local-first": 107}`
 - Ratchet status: `fail`
 - Baseline findings: 134
-- New findings: 25
+- New findings: 34
 
 ## Top Candidates
 
@@ -72,6 +72,7 @@ Generated: `2026-06-16T13:27:53.585752+00:00`
 | python-function-repeat | candidate | 1.0 | `lib/dependency_tool_intake.py::load_coverage` | `lib/session_lifecycle.py::_read_json` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/dependency_tool_intake.py::load_coverage` | `lib/task_reconciliation.py::_read_json` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/dependency_tool_intake.py::load_coverage` | `scripts/primitive_harness_partials.py::_load_json` | extract-common-python-helper | `lib/` | so-local-first |
+| python-function-repeat | candidate | 1.0 | `lib/duplicate_scanner.py::read_text` | `scripts/cos_lean_skillopt.py::read_text` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/duplicate_scanner.py::token_shingles` | `lib/script_helpers.py::shingles` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/duplicate_scanner.py::token_shingles` | `scripts/docs_duplicate_audit.py::shingles` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/engram_bundle_exporter.py::_bundle_sha256` | `lib/engram_bundle_importer.py::_bundle_sha256` | extract-common-python-helper | `lib/` | so-local-first |
@@ -89,6 +90,7 @@ Generated: `2026-06-16T13:27:53.585752+00:00`
 | python-function-repeat | candidate | 1.0 | `lib/fleet_confidence.py::load_yaml` | `lib/memory_retrieval_benchmark.py::load_yaml` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/fleet_confidence.py::load_yaml` | `lib/script_helpers.py::read_yaml_required` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/goal_state.py::_now_iso` | `scripts/cos_artifact_workflow.py::utc_now` | extract-common-python-helper | `lib/` | so-local-first |
+| python-function-repeat | candidate | 1.0 | `lib/goal_state.py::_now_iso` | `scripts/cos_lean_skillopt.py::utc_now` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/goal_state.py::_now_iso` | `scripts/cos_loop.py::utc_now` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/goal_state.py::_now_iso` | `scripts/cos_process_loop.py::utc_now` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/history_rewrite_ledger.py::__init__` | `lib/history_sanitization.py::__init__` | extract-common-python-helper | `lib/` | so-local-first |
@@ -106,15 +108,15 @@ Generated: `2026-06-16T13:27:53.585752+00:00`
 | python-function-repeat | candidate | 1.0 | `lib/script_helpers.py::object_maps` | `scripts/private_content_audit.py::_payload_list` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/skill_description_enricher.py::_read_text` | `scripts/primitive-behavior-audit.py::read_text` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `lib/skill_failure_repair.py::_default_metrics_dir` | `lib/skill_synthesizer.py::_default_metrics_dir` | extract-common-python-helper | `lib/` | so-local-first |
+| python-function-repeat | candidate | 1.0 | `scripts/cos_artifact_workflow.py::append_jsonl` | `scripts/cos_lean_skillopt.py::append_jsonl` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `scripts/cos_artifact_workflow.py::append_jsonl` | `scripts/cos_process_loop.py::append_jsonl` | extract-common-python-helper | `lib/` | so-local-first |
+| python-function-repeat | candidate | 1.0 | `scripts/cos_artifact_workflow.py::read_json` | `scripts/cos_lean_skillopt.py::read_json` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `scripts/cos_artifact_workflow.py::read_json` | `scripts/cos_loop.py::load_json` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `scripts/cos_artifact_workflow.py::read_json` | `scripts/cos_process_loop.py::load_json` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `scripts/cos_artifact_workflow.py::rel` | `scripts/cos_efficiency_primitives.py::rel` | extract-common-python-helper | `lib/` | so-local-first |
+| python-function-repeat | candidate | 1.0 | `scripts/cos_artifact_workflow.py::rel` | `scripts/cos_lean_skillopt.py::rel` | extract-common-python-helper | `lib/` | so-local-first |
+| python-function-repeat | candidate | 1.0 | `scripts/cos_artifact_workflow.py::sanitize_id` | `scripts/cos_lean_skillopt.py::sanitize_id` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `scripts/cos_artifact_workflow.py::sanitize_id` | `scripts/cos_process_loop.py::sanitize_id` | extract-common-python-helper | `lib/` | so-local-first |
-| python-function-repeat | candidate | 1.0 | `scripts/cos_artifact_workflow.py::sha256_bytes` | `scripts/cos_lib_symlink_invariant_audit.py::_sha256` | extract-common-python-helper | `lib/` | so-local-first |
-| python-function-repeat | candidate | 1.0 | `scripts/cos_artifact_workflow.py::write_json` | `scripts/cos_process_loop.py::write_json` | extract-common-python-helper | `lib/` | so-local-first |
-| python-function-repeat | candidate | 1.0 | `scripts/cos_loop.py::load_jsonl` | `scripts/cos_process_loop.py::load_jsonl` | extract-common-python-helper | `lib/` | so-local-first |
-| python-function-repeat | candidate | 1.0 | `scripts/cos_loop.py::main` | `scripts/cos_process_loop.py::main` | extract-common-python-helper | `lib/` | so-local-first |
 
 ## Interpretation
 

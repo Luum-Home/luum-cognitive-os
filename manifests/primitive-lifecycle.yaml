@@ -24593,3 +24593,434 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: instructional
   metrics_file: none
+
+- id: scripts/cos-lean-review
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos-lean-review
+  - scripts/cos_lean_skillopt.py
+  runtime_projection: false
+  behavior_evidence: Diff-focused lean governance review for avoidable code/dependencies/abstractions.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt_primitives.py -q
+  rollback_or_repair_command: Remove lean/skillopt wrapper lifecycle rows, refresh primitive overlays, and keep architecture docs as historical context.
+  sunset_criteria: Promote or replace when harness-level lean governance and skill optimization provide equivalent gates.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_2
+  metrics_file: .cognitive-os/lean/audit-latest.json
+- id: scripts/cos-lean-audit
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos-lean-audit
+  - scripts/cos_lean_skillopt.py
+  runtime_projection: false
+  behavior_evidence: Repo-wide lean governance audit for avoidable code/dependencies/abstractions.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt_primitives.py -q
+  rollback_or_repair_command: Remove lean/skillopt wrapper lifecycle rows, refresh primitive overlays, and keep architecture docs as historical context.
+  sunset_criteria: Promote or replace when harness-level lean governance and skill optimization provide equivalent gates.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_2
+  metrics_file: .cognitive-os/lean/audit-latest.json
+- id: scripts/cos-lean-debt
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos-lean-debt
+  - scripts/cos_lean_skillopt.py
+  runtime_projection: false
+  behavior_evidence: Simplification debt ledger for cos-lean markers with upgrade triggers.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt_primitives.py -q
+  rollback_or_repair_command: Remove lean/skillopt wrapper lifecycle rows, refresh primitive overlays, and keep architecture docs as historical context.
+  sunset_criteria: Promote or replace when harness-level lean governance and skill optimization provide equivalent gates.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_2
+  metrics_file: .cognitive-os/lean/debt-ledger.json
+- id: scripts/cos-skill-opt-run
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos-skill-opt-run
+  - scripts/cos_lean_skillopt.py
+  runtime_projection: false
+  behavior_evidence: Stage and optionally validation-gate a skill optimization proposal.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt_primitives.py -q
+  rollback_or_repair_command: Remove lean/skillopt wrapper lifecycle rows, refresh primitive overlays, and keep architecture docs as historical context.
+  sunset_criteria: Promote or replace when harness-level lean governance and skill optimization provide equivalent gates.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_2
+  metrics_file: .cognitive-os/skill-opt/{run-id}/staging/manifest.json
+- id: scripts/cos-skill-edit-gate
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos-skill-edit-gate
+  - scripts/cos_lean_skillopt.py
+  runtime_projection: false
+  behavior_evidence: Validation gate that accepts candidate skill edits only on strict score improvement.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt_primitives.py -q
+  rollback_or_repair_command: Remove lean/skillopt wrapper lifecycle rows, refresh primitive overlays, and keep architecture docs as historical context.
+  sunset_criteria: Promote or replace when harness-level lean governance and skill optimization provide equivalent gates.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_2
+  metrics_file: .cognitive-os/skill-opt/{run-id}/gate.json
+- id: scripts/cos-skill-proposal-stage
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos-skill-proposal-stage
+  - scripts/cos_lean_skillopt.py
+  runtime_projection: false
+  behavior_evidence: Stage proposed SKILL.md edits without mutating the live skill.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt_primitives.py -q
+  rollback_or_repair_command: Remove lean/skillopt wrapper lifecycle rows, refresh primitive overlays, and keep architecture docs as historical context.
+  sunset_criteria: Promote or replace when harness-level lean governance and skill optimization provide equivalent gates.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_2
+  metrics_file: .cognitive-os/skill-opt/{run-id}/staging/manifest.json
+- id: scripts/cos-skill-adopt
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos-skill-adopt
+  - scripts/cos_lean_skillopt.py
+  runtime_projection: false
+  behavior_evidence: Explicit skill proposal adoption with backup after accepted gate.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt_primitives.py -q
+  rollback_or_repair_command: Remove lean/skillopt wrapper lifecycle rows, refresh primitive overlays, and keep architecture docs as historical context.
+  sunset_criteria: Promote or replace when harness-level lean governance and skill optimization provide equivalent gates.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_2
+  metrics_file: .cognitive-os/skill-opt/{run-id}/adopt.json
+- id: scripts/cos-skill-rejected-buffer
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos-skill-rejected-buffer
+  - scripts/cos_lean_skillopt.py
+  runtime_projection: false
+  behavior_evidence: Rejected skill edit buffer used as negative feedback for future optimization.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt_primitives.py -q
+  rollback_or_repair_command: Remove lean/skillopt wrapper lifecycle rows, refresh primitive overlays, and keep architecture docs as historical context.
+  sunset_criteria: Promote or replace when harness-level lean governance and skill optimization provide equivalent gates.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_2
+  metrics_file: .cognitive-os/skill-opt/{run-id}/rejected-edits.jsonl
+- id: scripts/cos-skill-slow-update
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos-skill-slow-update
+  - scripts/cos_lean_skillopt.py
+  runtime_projection: false
+  behavior_evidence: Stage protected longitudinal skill guidance block.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt_primitives.py -q
+  rollback_or_repair_command: Remove lean/skillopt wrapper lifecycle rows, refresh primitive overlays, and keep architecture docs as historical context.
+  sunset_criteria: Promote or replace when harness-level lean governance and skill optimization provide equivalent gates.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_2
+  metrics_file: .cognitive-os/skill-opt/{run-id}/staging/manifest.json
+- id: scripts/cos-skill-sleep
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos-skill-sleep
+  - scripts/cos_lean_skillopt.py
+  runtime_projection: false
+  behavior_evidence: Offline trace-mining skill sleep cycle that stages a slow update proposal.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt_primitives.py -q
+  rollback_or_repair_command: Remove lean/skillopt wrapper lifecycle rows, refresh primitive overlays, and keep architecture docs as historical context.
+  sunset_criteria: Promote or replace when harness-level lean governance and skill optimization provide equivalent gates.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_2
+  metrics_file: .cognitive-os/skill-opt/{run-id}/sleep-report.json
+- id: scripts/cos_lean_skillopt.py
+  kind: script-lib
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - scripts/cos_lean_skillopt.py
+  runtime_projection: false
+  behavior_evidence: Shared implementation for lean governance and skill optimization wrappers.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt_primitives.py -q
+  rollback_or_repair_command: Remove lean/skillopt wrapper lifecycle rows, refresh primitive overlays, and keep architecture docs as historical context.
+  sunset_criteria: Promote or replace when harness-level lean governance and skill optimization provide equivalent gates.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_2
+  metrics_file: multiple .cognitive-os receipts
+- id: skills/lean-code/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - skills/lean-code/SKILL.md
+  - .cognitive-os/skills/lean-code/SKILL.md
+  - .claude/skills/lean-code/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Conversation-facing lean implementation and overengineering review skill.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt_primitives.py -q
+  rollback_or_repair_command: Remove lean/skillopt wrapper lifecycle rows, refresh primitive overlays, and keep architecture docs as historical context.
+  sunset_criteria: Promote or replace when harness-level lean governance and skill optimization provide equivalent gates.
+  docs_claim_level: advisory
+  exit_behavior: instructional
+  metrics_file: none
+- id: .cognitive-os/skills/lean-code/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - skills/lean-code/SKILL.md
+  - .cognitive-os/skills/lean-code/SKILL.md
+  - .claude/skills/lean-code/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Projected lean-code skill for Cognitive OS surface.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt_primitives.py -q
+  rollback_or_repair_command: Remove lean/skillopt wrapper lifecycle rows, refresh primitive overlays, and keep architecture docs as historical context.
+  sunset_criteria: Promote or replace when harness-level lean governance and skill optimization provide equivalent gates.
+  docs_claim_level: advisory
+  exit_behavior: instructional
+  metrics_file: none
+- id: .claude/skills/lean-code/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - skills/lean-code/SKILL.md
+  - .cognitive-os/skills/lean-code/SKILL.md
+  - .claude/skills/lean-code/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Projected lean-code skill for Claude surface.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt_primitives.py -q
+  rollback_or_repair_command: Remove lean/skillopt wrapper lifecycle rows, refresh primitive overlays, and keep architecture docs as historical context.
+  sunset_criteria: Promote or replace when harness-level lean governance and skill optimization provide equivalent gates.
+  docs_claim_level: advisory
+  exit_behavior: instructional
+  metrics_file: none
+- id: skills/skill-optimization/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - skills/skill-optimization/SKILL.md
+  - .cognitive-os/skills/skill-optimization/SKILL.md
+  - .claude/skills/skill-optimization/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Conversation-facing staged validation-gated skill optimization skill.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt_primitives.py -q
+  rollback_or_repair_command: Remove lean/skillopt wrapper lifecycle rows, refresh primitive overlays, and keep architecture docs as historical context.
+  sunset_criteria: Promote or replace when harness-level lean governance and skill optimization provide equivalent gates.
+  docs_claim_level: advisory
+  exit_behavior: instructional
+  metrics_file: none
+- id: .cognitive-os/skills/skill-optimization/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - skills/skill-optimization/SKILL.md
+  - .cognitive-os/skills/skill-optimization/SKILL.md
+  - .claude/skills/skill-optimization/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Projected skill-optimization skill for Cognitive OS surface.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt_primitives.py -q
+  rollback_or_repair_command: Remove lean/skillopt wrapper lifecycle rows, refresh primitive overlays, and keep architecture docs as historical context.
+  sunset_criteria: Promote or replace when harness-level lean governance and skill optimization provide equivalent gates.
+  docs_claim_level: advisory
+  exit_behavior: instructional
+  metrics_file: none
+- id: .claude/skills/skill-optimization/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - skills/skill-optimization/SKILL.md
+  - .cognitive-os/skills/skill-optimization/SKILL.md
+  - .claude/skills/skill-optimization/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Projected skill-optimization skill for Claude surface.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt.py tests/red_team/portability/test_cos_lean_skillopt_primitives.py -q
+  rollback_or_repair_command: Remove lean/skillopt wrapper lifecycle rows, refresh primitive overlays, and keep architecture docs as historical context.
+  sunset_criteria: Promote or replace when harness-level lean governance and skill optimization provide equivalent gates.
+  docs_claim_level: advisory
+  exit_behavior: instructional
+  metrics_file: none

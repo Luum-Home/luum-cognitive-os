@@ -45,7 +45,7 @@
   ],
   "overlay_schema_version": "portable-ai-overlay.v1",
   "policy": "The `.ai` tree is a generated maintainer overlay until ADR-258 Phase 5 decides otherwise; it is not the editable consumer primitive source.",
-  "primitive_count": 993,
+  "primitive_count": 1010,
   "primitive_count_by_family": {
     "doctor": 1,
     "hook": 254,
@@ -53,9 +53,9 @@
     "manifest": 4,
     "rule": 121,
     "rule-index": 1,
-    "script": 369,
-    "script-lib": 23,
-    "skill": 187,
+    "script": 379,
+    "script-lib": 24,
+    "skill": 193,
     "template": 30
   },
   "runtime_evidence_streams": [
@@ -63,10 +63,10 @@
     ".cognitive-os/metrics/codebase-itinerary.jsonl"
   ],
   "schema_version": "portable-ai-context.v1",
-  "skill_overlay_count": 187,
+  "skill_overlay_count": 193,
   "skill_overlay_coverage_policy": "Only lifecycle/contract-promoted skills are emitted as .ai primitive rows; other skills/*/SKILL.md files remain package/source content until promoted through primitive lifecycle and contract manifests.",
-  "skill_overlay_excluded_count": 3,
-  "skill_source_count": 190,
+  "skill_overlay_excluded_count": 0,
+  "skill_source_count": 192,
   "source_manifests": [
     "manifests/primitive-contracts.yaml",
     "manifests/primitive-lifecycle.yaml",

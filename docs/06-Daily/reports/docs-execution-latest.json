@@ -55243,6 +55243,19 @@
       "path": "docs/04-Concepts/architecture/language-agnostic-duplication-tooling-audit-2026-06-05.md"
     },
     {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "terms:advisory,candidate,enforce,harnesses,maturity,primitives,these,until"
+      ],
+      "inferred_status": "proposed",
+      "item": "These primitives are advisory/candidate maturity until harnesses enforce the",
+      "kind": "bullet",
+      "line": 68,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/04-Concepts/architecture/lean-skill-optimization.md"
+    },
+    {
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
@@ -64339,7 +64352,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "weak_terms:candidate,pick"
+        "terms:candidate,pick,simplification"
       ],
       "inferred_status": "planned",
       "item": "Pick one skill-catalog simplification candidate.",
@@ -70639,7 +70652,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:alerts,configs,create,financial,info,longer,short,window"
+        "terms:alerts,configs,create,debounce,financial,info,longer,short"
       ],
       "inferred_status": "planned",
       "item": "Create per-channel debounce configs (financial alerts: short window; info: longer window)",
@@ -79073,6 +79086,9 @@
         "done_weak_proof": 1,
         "proposed": 1
       },
+      "docs/04-Concepts/architecture/lean-skill-optimization.md": {
+        "proposed": 1
+      },
       "docs/04-Concepts/architecture/memory-layer-evolution-sdd.md": {
         "done_weak_proof": 4
       },
@@ -79925,13 +79941,13 @@
         "done_weak_proof": 1
       }
     },
-    "items": 5831,
+    "items": 5832,
     "statuses": {
       "claimed_done_no_proof": 1,
       "done_weak_proof": 2742,
       "done_with_proof": 297,
       "planned": 2044,
-      "proposed": 640,
+      "proposed": 641,
       "stale": 107
     }
   }
