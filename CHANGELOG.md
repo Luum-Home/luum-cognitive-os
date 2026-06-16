@@ -5,6 +5,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.29.32] - 2026-06-16 — "Release gate hardening"
+
+### Added
+- Added the `cos-patch-release` primitive for repeatable patch release preparation, validation, publishing, and diagnostics.
+
+### Validation
+- `scripts/cos-patch-release validate` is the required patch-release validation lane.
+
 ## [0.29.31] - 2026-06-13 — "Process Loop Orchestration"
 
 ### Added
