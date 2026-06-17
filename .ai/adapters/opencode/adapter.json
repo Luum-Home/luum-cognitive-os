@@ -6,7 +6,7 @@
   "harness": "opencode",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 369,
+  "projected_primitive_count": 375,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": true,
@@ -1292,6 +1292,13 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": "scripts/cos_agent_supervision.py",
+      "primitive_file": "primitives/other-script/scripts-cos-agent-supervision-py-3588b2f007.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": "scripts/cos_branch_worktree_closure.py",
       "primitive_file": "primitives/other-script/scripts-cos-branch-worktree-closure-py-68b8c3bfbf.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
@@ -1386,6 +1393,13 @@
       "portable_id": "skill-self-improve",
       "primitive_file": "primitives/skills/skill-self-improve-8c955b1c36.json",
       "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/agent-run-supervision/SKILL.md",
+      "primitive_file": "primitives/skills/skills-agent-run-supervision-skill-md-2b4511c5a2.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
       "claims_runtime_enforcement": false,
@@ -2496,6 +2510,20 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": "scripts/cos-agent-run-status",
+      "primitive_file": "primitives/tools/scripts-cos-agent-run-status-c79ed2a298.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-agent-watch",
+      "primitive_file": "primitives/tools/scripts-cos-agent-watch-673fc19d1d.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": "scripts/cos-benchmark-gaming-audit",
       "primitive_file": "primitives/tools/scripts-cos-benchmark-gaming-audit-53d19e78d9.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
@@ -2582,6 +2610,20 @@
       "fidelity": "documented-only",
       "portable_id": "scripts/cos-graphify-token-reduction-smoke",
       "primitive_file": "primitives/tools/scripts-cos-graphify-token-reduction-smoke-96140ed14d.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-handoff-if-dead",
+      "primitive_file": "primitives/tools/scripts-cos-handoff-if-dead-fcebf438c0.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-progress-metric",
+      "primitive_file": "primitives/tools/scripts-cos-progress-metric-172fd05155.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {

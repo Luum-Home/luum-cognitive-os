@@ -25459,3 +25459,161 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: instructional
   metrics_file: none
+- id: scripts/cos-agent-run-status
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - opencode
+  - shell
+  projection_targets:
+  - scripts/cos-agent-run-status
+  - scripts/cos_agent_supervision.py
+  runtime_projection: false
+  behavior_evidence: Background agent status wrapper that reports branch, commit, ahead/behind, dirty files, WIP age, process liveness, latest validation, progress metric, and state classification.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_agent_supervision.py tests/red_team/portability/test_cos_agent_supervision_primitives.py -q
+  rollback_or_repair_command: Remove agent supervision wrappers, skill projections, lifecycle rows, behavior evidence rows, and generated portable overlay entries.
+  sunset_criteria: Promote when harnesses can automatically call status for background agent runs and final status claims.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_2
+  metrics_file: .cognitive-os/agent-runs/{process-id}/latest-status.json
+- id: scripts/cos-agent-watch
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - opencode
+  - shell
+  projection_targets:
+  - scripts/cos-agent-watch
+  - scripts/cos_agent_supervision.py
+  runtime_projection: false
+  behavior_evidence: Background agent watcher that samples status, tracks repeated signatures, and writes watch JSONL receipts.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_agent_supervision.py tests/red_team/portability/test_cos_agent_supervision_primitives.py -q
+  rollback_or_repair_command: Remove agent supervision wrappers, skill projections, lifecycle rows, behavior evidence rows, and generated portable overlay entries.
+  sunset_criteria: Promote when long-running harnesses can register process IDs and use watch receipts as standard loop state.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_2
+  metrics_file: .cognitive-os/agent-runs/{process-id}/watch.jsonl
+- id: scripts/cos-progress-metric
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - opencode
+  - shell
+  projection_targets:
+  - scripts/cos-progress-metric
+  - scripts/cos_agent_supervision.py
+  runtime_projection: false
+  behavior_evidence: Generic residual/progress metric wrapper for task-specific commands with improves_when and stuck_after contract fields.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_agent_supervision.py tests/red_team/portability/test_cos_agent_supervision_primitives.py -q
+  rollback_or_repair_command: Remove agent supervision wrappers, skill projections, lifecycle rows, behavior evidence rows, and generated portable overlay entries.
+  sunset_criteria: Promote when process-loop can consume progress-metric contracts automatically for no-progress decisions.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_2
+  metrics_file: .cognitive-os/agent-runs/{process-id}/progress.jsonl
+- id: scripts/cos-handoff-if-dead
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - opencode
+  - shell
+  projection_targets:
+  - scripts/cos-handoff-if-dead
+  - scripts/cos_agent_supervision.py
+  runtime_projection: false
+  behavior_evidence: Dead-agent handoff wrapper that writes markdown and JSON summaries of commits, dirty diff, watch tail, validation, and next recommended action.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_agent_supervision.py tests/red_team/portability/test_cos_agent_supervision_primitives.py -q
+  rollback_or_repair_command: Remove agent supervision wrappers, skill projections, lifecycle rows, behavior evidence rows, and generated portable overlay entries.
+  sunset_criteria: Promote when fresh-review/process-loop can invoke handoff automatically on dead-with-WIP state.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/agent-runs/{process-id}/handoff.json
+- id: scripts/cos_agent_supervision.py
+  kind: script-lib
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - opencode
+  - shell
+  projection_targets:
+  - scripts/cos_agent_supervision.py
+  runtime_projection: false
+  behavior_evidence: Shared Python implementation for background agent run status, watch, progress metric, and handoff wrappers.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_agent_supervision.py tests/red_team/portability/test_cos_agent_supervision_primitives.py -q
+  rollback_or_repair_command: Remove agent supervision wrappers, skill projections, lifecycle rows, behavior evidence rows, and generated portable overlay entries.
+  sunset_criteria: Promote or merge into process-loop runtime when equivalent background-agent supervision is enforced by harnesses.
+  docs_claim_level: advisory
+  exit_behavior: library-cli
+  metrics_file: multiple .cognitive-os/agent-runs receipts
+- id: skills/agent-run-supervision/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - opencode
+  - shell
+  projection_targets:
+  - skills/agent-run-supervision/SKILL.md
+  - .codex/skills/agent-run-supervision/SKILL.md
+  - .cognitive-os/skills/agent-run-supervision/SKILL.md
+  - .cognitive-os/skills/cos/agent-run-supervision/SKILL.md
+  - .claude/skills/agent-run-supervision/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Multilingual conversation-facing skill for background agent status, watch, stuck/dead detection, progress metric, and handoff requests.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_agent_supervision.py tests/unit/test_skill_router.py tests/red_team/portability/test_cos_agent_supervision_primitives.py -q
+  rollback_or_repair_command: Remove the skill lifecycle row, generated portable overlay entries, and projected skill copies; keep direct wrappers invocable if still useful.
+  sunset_criteria: Promote when common agent status phrases automatically invoke the skill in supported harnesses.
+  docs_claim_level: advisory
+  exit_behavior: instructional
+  metrics_file: none

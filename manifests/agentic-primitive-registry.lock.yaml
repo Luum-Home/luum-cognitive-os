@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-06-17T20:44:35+00:00'
+generated_at: '2026-06-17T21:18:00+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: .claude/skills/artifact-workflow/SKILL.md
@@ -5532,6 +5532,28 @@ primitives:
   - docs/04-Concepts/architecture/agent-message-bus.md
   - scripts/cos-agent-message
   sha256: 039e90c4fc8cd02c95e9282c1f59d4dce006fa1bde1ae29ea8c7698eba414bcc
+- id: scripts/cos-agent-run-status
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-agent-run-status
+  - scripts/cos_agent_supervision.py
+  sha256: 733898687789a7e79a34fbc6f6bf599dede1791220c7c8773c67264d2b993780
+- id: scripts/cos-agent-watch
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-agent-watch
+  - scripts/cos_agent_supervision.py
+  sha256: cd5984fbaaa7e5dd2f02ce226efed5c46085fc3a5c7b227a3c2c6abadd83a5e7
 - id: scripts/cos-apply-progress
   kind: script
   owner_adr: ADR-337
@@ -6194,6 +6216,17 @@ primitives:
   projection_targets:
   - scripts/cos-graphify-token-reduction-smoke
   sha256: d612cc311760f2456aec8277c54b9f67248ec74be2f82bcaedab1e57fab78636
+- id: scripts/cos-handoff-if-dead
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-handoff-if-dead
+  - scripts/cos_agent_supervision.py
+  sha256: 61f7bce100a8e4db355a7d86f7f9474d17c726c3da0335a08571f89b3c420259
 - id: scripts/cos-headless-pipeline
   kind: script
   owner_adr: ADR-146
@@ -6784,6 +6817,17 @@ primitives:
   projection_targets:
   - scripts/cos-product-answer-refresh
   sha256: 06fd3076801302b11de4e4deb1ee08f7e509801568c82bbf969ec8a11ec8622d
+- id: scripts/cos-progress-metric
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-progress-metric
+  - scripts/cos_agent_supervision.py
+  sha256: fcc1d9413175b6d2f556299b4ac15967f1afdca684e57eeedc8be0c11fc86ee6
 - id: scripts/cos-projection-transaction
   kind: script
   owner_adr: ADR-339
@@ -7567,6 +7611,16 @@ primitives:
   - scripts/cos_agent_message.py
   - lib/agent_message_bus.py
   sha256: abb27ab61e46c814b693b6c8823595746b9275e8a27baaafac863adf76c2f61f
+- id: scripts/cos_agent_supervision.py
+  kind: script-lib
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos_agent_supervision.py
+  sha256: b5a0f7d5b6d2858e7bce8b563aa4fb49d8825791b57b823ccc054884c0217735
 - id: scripts/cos_architecture_readiness.py
   kind: script
   owner_adr: ADR-146
@@ -9345,6 +9399,20 @@ primitives:
   projection_targets:
   - skills/agent-kpis/SKILL.md
   sha256: b9c4577867ea3d9bbe877f4fd81c2a6d31a524067205754de7a4938d1956ead1
+- id: skills/agent-run-supervision/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - skills/agent-run-supervision/SKILL.md
+  - .codex/skills/agent-run-supervision/SKILL.md
+  - .cognitive-os/skills/agent-run-supervision/SKILL.md
+  - .cognitive-os/skills/cos/agent-run-supervision/SKILL.md
+  - .claude/skills/agent-run-supervision/SKILL.md
+  sha256: 4962791a0200aaaf9721a6e4f8e682444502c4906ef633966f76ccb5d5d2c0e3
 - id: skills/agent-stress-test/SKILL.md
   kind: skill
   owner_adr: ADR-314
