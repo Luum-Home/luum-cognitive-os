@@ -5774,13 +5774,13 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 86,
-        "doc": 778,
+        "config": 87,
+        "doc": 779,
         "hook": 124,
         "rule": 51,
         "script": 460,
         "skill": 95,
-        "test": 777,
+        "test": 778,
         "workflow": 2
       },
       "consumers": [
@@ -5939,6 +5939,10 @@
         {
           "family": "config",
           "path": "manifests/kernel-contract.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/language-policy.yaml"
         },
         {
           "family": "config",
@@ -7439,6 +7443,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-339-efficiency-operating-model-primitives.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-340-english-native-artifacts-multilingual-user-routing.md"
         },
         {
           "family": "doc",
@@ -12238,6 +12246,10 @@
         },
         {
           "family": "test",
+          "path": "tests/audit/test_language_policy.py"
+        },
+        {
+          "family": "test",
           "path": "tests/audit/test_lib_symlink_invariant.py"
         },
         {
@@ -15282,12 +15294,12 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:95",
-        "test_consumers:777",
+        "test_consumers:778",
         "hook_consumers:124",
         "workflow_consumers:2",
-        "doc_consumers:778",
+        "doc_consumers:779",
         "rule_consumers:51",
-        "config_consumers:86",
+        "config_consumers:87",
         "script_consumers:460"
       ],
       "install_surface": null,
@@ -15304,7 +15316,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 2373,
+      "total_consumers": 2376,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -30980,7 +30992,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 2,
-        "doc": 3,
+        "doc": 4,
         "script": 1,
         "test": 1
       },
@@ -31003,6 +31015,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-340-english-native-artifacts-multilingual-user-routing.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/primitive-closure-atomic-check.md"
         },
         {
@@ -31019,7 +31035,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos_primitive_closure_check.py",
         "test_consumers:1",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:2",
         "script_consumers:1"
       ],
@@ -31037,7 +31053,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": "scripts/cos_primitive_closure_check.py"
     },
     {

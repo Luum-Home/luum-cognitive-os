@@ -1,0 +1,93 @@
+schema_version: cos.language-policy.v1
+status: active
+policy:
+  native_artifact_language: en
+  internal_artifacts_must_remain_english:
+    - docs
+    - schemas
+    - commands
+    - json_keys
+    - tests
+    - procedures
+  conversational_entrypoint_languages:
+    - en
+    - es
+    - pt
+  output_language_surface: optional --language for human-facing command output
+  forbidden:
+    - full translated duplicate documentation
+    - localized command names
+    - localized JSON keys
+    - localized schema fields
+allowed_multilingual_surfaces:
+  - triggers
+  - routing_patterns
+  - routing_intents
+  - explicit conversational entrypoint examples
+notes:
+  - Cognitive OS source artifacts stay English-native.
+  - User-facing skills may carry multilingual aliases only in allowed conversational surfaces.
+  - Routing regex patterns remain ASCII-only; accented user text is handled through normalization or semantic fallback.
+user_facing_skills:
+  agent-run-supervision:
+    es:
+      - como venimos
+      - está trabado
+    pt:
+      - como estamos
+      - agente travado
+  artifact-workflow:
+    es:
+      - flujo de artefactos
+      - grafo de trabajo
+    pt:
+      - fluxo de artefatos
+      - grafo de trabalho
+  branch-worktree-closure:
+    es:
+      - mergea todas las branches
+      - revisa los stashes
+    pt:
+      - levar branches
+      - revisar stashes
+  epistemic-review:
+    es:
+      - audita honestamente
+      - testigo interesado
+    pt:
+      - auditoria cética
+      - verificar afirmação
+  graphify-query:
+    es:
+      - grafo de conocimiento
+      - consulta graphify
+    pt:
+      - grafo do repositorio
+      - consulta de grafo
+  lean-code:
+    es:
+      - código liviano
+      - sin dependencias innecesarias
+    pt:
+      - código enxuto
+      - sem dependências desnecessárias
+  skill-creator:
+    es:
+      - crear skill
+      - habilidad de agente
+    pt:
+      - criar skill
+      - criar habilidade
+  skill-optimization:
+    es:
+      - optimizar skill
+      - mejorar skill
+    pt:
+      - otimizar skill
+      - melhorar skill
+  so-impact-eval:
+    es:
+      - evaluar impacto del SO
+      - comparar vanilla vs SO completo
+    pt:
+      - avaliar impacto do SO
