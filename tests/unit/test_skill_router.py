@@ -216,6 +216,33 @@ class TestSoImpactEvalDetection:
         assert any(m.invoke_command == "/so-impact-eval" for m in matches)
 
 
+
+
+class TestEpistemicReviewDetection:
+    """Epistemic review requests should match /epistemic-review."""
+
+    @pytest.mark.parametrize(
+        "message",
+        [
+            "/epistemic-review",
+            "/claim-audit",
+            "audit honestly whether this benchmark is humo",
+            "verify claim from an interested witness",
+            "refute claim about benchmark gaming",
+        ],
+    )
+    def test_epistemic_review_routes_from_conversation(self, router: SkillRouter, message: str):
+        match = router.best_match(message)
+        assert match is not None
+        assert match.invoke_command == "/epistemic-review"
+        assert match.skill_name == "epistemic-review"
+        assert match.confidence >= 0.90
+
+    def test_epistemic_review_appears_in_match_list(self, router: SkillRouter):
+        matches = router.match("verify claim from an interested witness")
+        assert any(m.invoke_command == "/epistemic-review" for m in matches)
+
+
 # ---------------------------------------------------------------------------
 # No match for greetings
 # ---------------------------------------------------------------------------

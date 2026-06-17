@@ -25211,3 +25211,251 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0_or_2
   metrics_file: .cognitive-os/branch-worktree-closure/latest.json
+- id: scripts/cos-claim-audit
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - opencode
+  - shell
+  projection_targets:
+  - scripts/cos-claim-audit
+  - scripts/cos_epistemic_review.py
+  runtime_projection: false
+  behavior_evidence: Model-agnostic claim audit wrapper that downgrades interested witnesses, ranks evidence, runs bounded verification commands, and writes project-local receipts.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_epistemic_review.py tests/red_team/portability/test_cos_epistemic_review_primitives.py -q
+  rollback_or_repair_command: Remove epistemic review wrappers, skill projections, lifecycle rows, behavior evidence rows, and generated portable overlay entries.
+  sunset_criteria: Promote when harnesses can automatically invoke claim-audit before final high-stakes or self-interested claims.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_2
+  metrics_file: .cognitive-os/epistemic-review/claim-audit.jsonl
+- id: scripts/cos-evidence-rank
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - opencode
+  - shell
+  projection_targets:
+  - scripts/cos-evidence-rank
+  - scripts/cos_epistemic_review.py
+  runtime_projection: false
+  behavior_evidence: Evidence hierarchy wrapper that ranks current tests and reproducible command receipts above self-reported benchmarks and aspirational docs.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_epistemic_review.py tests/red_team/portability/test_cos_epistemic_review_primitives.py -q
+  rollback_or_repair_command: Remove epistemic review wrappers, skill projections, lifecycle rows, behavior evidence rows, and generated portable overlay entries.
+  sunset_criteria: Promote when claim audit and fresh-review can consume evidence-rank receipts as a default preflight.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: scripts/cos-benchmark-gaming-audit
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - opencode
+  - shell
+  projection_targets:
+  - scripts/cos-benchmark-gaming-audit
+  - scripts/cos_epistemic_review.py
+  runtime_projection: false
+  behavior_evidence: Benchmark-gaming audit wrapper that scans text for benchmark special-casing and requires refutation before trusting performance claims.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_epistemic_review.py tests/red_team/portability/test_cos_epistemic_review_primitives.py -q
+  rollback_or_repair_command: Remove epistemic review wrappers, skill projections, lifecycle rows, behavior evidence rows, and generated portable overlay entries.
+  sunset_criteria: Promote when SO impact eval and benchmark lanes automatically call the audit for performance claims.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_2
+  metrics_file: .cognitive-os/epistemic-review/benchmark-gaming-audit.jsonl
+- id: scripts/cos_epistemic_review.py
+  kind: script-lib
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - opencode
+  - shell
+  projection_targets:
+  - scripts/cos_epistemic_review.py
+  runtime_projection: false
+  behavior_evidence: Shared Python implementation for claim audit, evidence rank, and benchmark-gaming audit wrappers.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_epistemic_review.py tests/red_team/portability/test_cos_epistemic_review_primitives.py -q
+  rollback_or_repair_command: Remove epistemic review wrappers, skill projections, lifecycle rows, behavior evidence rows, and generated portable overlay entries.
+  sunset_criteria: Promote or merge into a broader process-loop review engine when runtime harnesses enforce equivalent claim skepticism automatically.
+  docs_claim_level: advisory
+  exit_behavior: library-cli
+  metrics_file: multiple .cognitive-os/epistemic-review receipts
+- id: skills/epistemic-review/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - opencode
+  - shell
+  projection_targets:
+  - skills/epistemic-review/SKILL.md
+  - .cognitive-os/skills/epistemic-review/SKILL.md
+  - .cognitive-os/skills/cos/epistemic-review/SKILL.md
+  - .claude/skills/epistemic-review/SKILL.md
+  - .codex/skills/epistemic-review/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Conversation-facing epistemic review skill for honest audits, interested-witness detection, claim verification, and benchmark-gaming checks across CLI/IDE surfaces.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_epistemic_review.py tests/unit/test_skill_router.py tests/red_team/portability/test_cos_epistemic_review_primitives.py -q
+  rollback_or_repair_command: Remove the skill lifecycle row, generated portable overlay entries, and projected skill copies; keep direct wrappers invocable if still useful.
+  sunset_criteria: Promote when skill router and harness triggers automatically invoke it for high-risk claims and benchmark/productivity assertions.
+  docs_claim_level: advisory
+  exit_behavior: instructional
+  metrics_file: none
+- id: .cognitive-os/skills/epistemic-review/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - opencode
+  - shell
+  projection_targets:
+  - skills/epistemic-review/SKILL.md
+  - .cognitive-os/skills/epistemic-review/SKILL.md
+  - .cognitive-os/skills/cos/epistemic-review/SKILL.md
+  - .claude/skills/epistemic-review/SKILL.md
+  - .codex/skills/epistemic-review/SKILL.md
+  runtime_projection: false
+  behavior_evidence: .cognitive-os projection of the epistemic review skill.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/red_team/portability/test_cos_epistemic_review_primitives.py -q
+  rollback_or_repair_command: Regenerate skill projections or remove stale projected copies.
+  sunset_criteria: Remove when .cognitive-os projection is generated dynamically at install time with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: instructional
+  metrics_file: none
+- id: .cognitive-os/skills/cos/epistemic-review/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - opencode
+  - shell
+  projection_targets:
+  - skills/epistemic-review/SKILL.md
+  - .cognitive-os/skills/epistemic-review/SKILL.md
+  - .cognitive-os/skills/cos/epistemic-review/SKILL.md
+  - .claude/skills/epistemic-review/SKILL.md
+  - .codex/skills/epistemic-review/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Namespaced .cognitive-os/cos projection of the epistemic review skill.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/red_team/portability/test_cos_epistemic_review_primitives.py -q
+  rollback_or_repair_command: Regenerate skill projections or remove stale projected copies.
+  sunset_criteria: Remove when namespaced projection is generated dynamically at install time with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: instructional
+  metrics_file: none
+- id: .claude/skills/epistemic-review/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - opencode
+  - shell
+  projection_targets:
+  - skills/epistemic-review/SKILL.md
+  - .cognitive-os/skills/epistemic-review/SKILL.md
+  - .cognitive-os/skills/cos/epistemic-review/SKILL.md
+  - .claude/skills/epistemic-review/SKILL.md
+  - .codex/skills/epistemic-review/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Claude skill projection of the epistemic review skill.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/red_team/portability/test_cos_epistemic_review_primitives.py -q
+  rollback_or_repair_command: Regenerate skill projections or remove stale projected copies.
+  sunset_criteria: Remove when Claude projection is generated dynamically at install time with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: instructional
+  metrics_file: none
+- id: .codex/skills/epistemic-review/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - opencode
+  - shell
+  projection_targets:
+  - skills/epistemic-review/SKILL.md
+  - .cognitive-os/skills/epistemic-review/SKILL.md
+  - .cognitive-os/skills/cos/epistemic-review/SKILL.md
+  - .claude/skills/epistemic-review/SKILL.md
+  - .codex/skills/epistemic-review/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Codex skill projection of the epistemic review skill.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/red_team/portability/test_cos_epistemic_review_primitives.py -q
+  rollback_or_repair_command: Regenerate skill projections or remove stale projected copies.
+  sunset_criteria: Remove when Codex projection is generated dynamically at install time with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: instructional
+  metrics_file: none

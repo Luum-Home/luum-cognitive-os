@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-06-16T14:35:01+00:00'
+generated_at: '2026-06-17T20:05:21+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 skills:
 - path: skills/__contracts__/SKILL.md
@@ -31,7 +31,7 @@ skills:
 - path: skills/arena/SKILL.md
   sha256: 64bbc64abc472c9dfc71e9f8af388396c6a6ccf2cf6ccddb7205ded48e1af459
 - path: skills/artifact-workflow/SKILL.md
-  sha256: 6b0ce3c3c1bdb74121dc2ba03cdb1241ada7185cb8606a671271bd7332300728
+  sha256: 083df1aef42f713a7f2a97338619cadd14a51021d8cd6fae2f2dd93cd62df7e9
 - path: skills/audit-integrity/SKILL.md
   sha256: 674509eb39050c5114565b1c263ce08d6e6121cdf776000fc72bab94a0fb2f04
 - path: skills/audit-website/SKILL.md
@@ -128,6 +128,8 @@ skills:
   sha256: ff1733c6d423344c41ffba8cce8e34c61549e012a0418ea2da0856c980b05c8d
 - path: skills/domain-model/SKILL.md
   sha256: 0bb316a2963e9205563604cecfade3ac541467f64a406e846e400bf1106f515c
+- path: skills/epistemic-review/SKILL.md
+  sha256: 66c30c3380d9a326e2ed00bb5bb2b7e9e0a73ea6472cd55f8d8cbb0621f55d69
 - path: skills/error-analyzer/SKILL.md
   sha256: f235c6328f798dfa4d28f856db0dc983a6fdf1a3c591dca1165d038bab1e7438
 - path: skills/eval-repo/SKILL.md
@@ -165,7 +167,7 @@ skills:
 - path: skills/jupyter-execute/SKILL.md
   sha256: 93cbcc41d8b0a4766493f1110544dcd3803aeabc4ee2d440556540ad720bfc59
 - path: skills/lean-code/SKILL.md
-  sha256: 116004422ab6b28e3a48140f3c8b223a846f6c000785f9a8495ad5bd73270526
+  sha256: 083d0657f44b1d0adc90866328d95c77d2b60ef8927ef3392f6382dda08829b1
 - path: skills/llm-status/SKILL.md
   sha256: cb688b5bbba8de376828b1be54b1b52ecc5e6f1d852d0c2e7aa23eb3017c3250
 - path: skills/memory-scan/SKILL.md
@@ -333,11 +335,11 @@ skills:
 - path: skills/skill-creator/SKILL.md
   sha256: be3c603983b1dda453b29d8efbf26ba0348002045fdac8f945fed41a2a214756
 - path: skills/skill-optimization/SKILL.md
-  sha256: f9e521eeaccf05229ecad58c4abc942e7c4a0e78e208b9e918a4ffb03557a4da
+  sha256: 0feac25122f0a8f0416d654ea710b315a5d5ba212cbb4ef5108a70cb58ead743
 - path: skills/smoke-test/SKILL.md
   sha256: fb418cdb0f744dfe8fbbacb77dd98b34f08435fdd5a5cd3fc6513df4a4e7bcd6
 - path: skills/so-impact-eval/SKILL.md
-  sha256: 3f8852d3a347b87f165a0a4a86d1892fa4262f5a0e030636a4c7be92faabb7b2
+  sha256: fce95f15a002aa6d4bea6ec62b23de654a936b5b85f35b3e09325742f95404e8
 - path: skills/so-vs-vanilla/SKILL.md
   sha256: 5c7624804c1e6698f0fc1747c92c7dec8249f72c35790a265750f4b4105b500e
 - path: skills/sprint/SKILL.md

@@ -1,0 +1,112 @@
+{
+  "canonical_source": ".cognitive-os/skills/epistemic-review/SKILL.md",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": ".cognitive-os projection of the epistemic review skill.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": ".cognitive-os projection of the epistemic review skill.",
+    "evidence_commands": [
+      ".venv/bin/python -m pytest tests/red_team/portability/test_cos_epistemic_review_primitives.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "skill",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "instructional",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "candidate",
+    "maturity": "advisory",
+    "owner_adr": "ADR-337",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "document",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": ".cognitive-os projection of the epistemic review skill.",
+      "evidence_commands": [
+        ".venv/bin/python -m pytest tests/red_team/portability/test_cos_epistemic_review_primitives.py -q"
+      ],
+      "metrics": []
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "unsupported"
+    },
+    "intent": ".cognitive-os projection of the epistemic review skill.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "shell": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "skills/epistemic-review/SKILL.md",
+        ".cognitive-os/skills/epistemic-review/SKILL.md",
+        ".cognitive-os/skills/cos/epistemic-review/SKILL.md",
+        ".claude/skills/epistemic-review/SKILL.md",
+        ".codex/skills/epistemic-review/SKILL.md"
+      ],
+      "runtime_projection": false
+    }
+  },
+  "portable_id": ".cognitive-os/skills/epistemic-review/SKILL.md",
+  "projection_targets": [
+    "skills/epistemic-review/SKILL.md",
+    ".cognitive-os/skills/epistemic-review/SKILL.md",
+    ".cognitive-os/skills/cos/epistemic-review/SKILL.md",
+    ".claude/skills/epistemic-review/SKILL.md",
+    ".codex/skills/epistemic-review/SKILL.md"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": ".cognitive-os/skills/epistemic-review/SKILL.md",
+  "supported_harnesses": [
+    "codex",
+    "claude",
+    "opencode",
+    "shell"
+  ]
+}
