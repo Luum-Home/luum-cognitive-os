@@ -3,7 +3,7 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | scope | audience | 1-line description`. `scope` is `[core]` for top-level skills and `[ext:pack]` for packaged extension skills. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 188
+Total skills: 190
 
 ## os (23)
 
@@ -84,11 +84,12 @@ Total skills: 188
 | tool-discovery | [core] | Discover new open-source tools that could enhance Cognitive OS capabilities |
 | vulnerability-scan | [core] | Run LLM vulnerability probes using Garak against configured endpoints. |
 
-## both (41)
+## both (43)
 
 | Skill | Scope | Description |
 |-------|-------|-------------|
 | agent-kpis | [core] | Calculate and report Cognitive OS KPIs and OKRs. |
+| agent-run-supervision | [core] | Use when the user asks how a background agent is doing, whether it is stuck/dead, to keep monitorin… |
 | analyze-improvements | [core] | Analyze KPIs, error patterns, and skill metrics to identify improvement… |
 | apply-improvements | [core] | Apply approved self-improvement changes from an analyze-improvements |
 | artifact-workflow | [core] | Use when a project needs portable artifact intelligence, work graph tracking, claim refutation, or… |
@@ -102,6 +103,7 @@ Total skills: 188
 | cos-status | [core] | Display current Cognitive OS state — active profile, skills exposed, |
 | detect-stack | [core] | Scan a project root and produce detected-stack.json with detected languages… |
 | doc-review-personas | [core] | N-persona parallel doc review with severity-tiered consolidation. |
+| epistemic-review | [core] | Use when a task needs model-agnostic skeptical review, claim verification, interested-witness detec… |
 | eval-repo | [core] | DEPRECATED alias for /repo-scout |
 | generate-config | [core] | Read detected-stack.json and generate or update cognitive-os.yaml with |
 | lean-code | [core] | Use when work should minimize unnecessary code, dependencies, abstractions, or boilerplate while pr… |

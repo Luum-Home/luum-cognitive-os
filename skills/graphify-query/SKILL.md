@@ -29,6 +29,8 @@ routing_patterns:
   confidence: 0.85
 - pattern: \bgraph\s+(query|path|affected|explain|benchmark)\b
   confidence: 0.85
+- pattern: \b(grafo de conocimiento|grafo del repo|grafo de repositorio|consulta graphify|grafo do repositorio|grafo de conhecimento|consulta de grafo)\b
+  confidence: 0.85
 routing_intents:
 - intent: graphify_repository_graph_query
   description: User asks to query, build, inspect, benchmark, or use Graphify repository knowledge graphs for Cognitive OS maintainer context.
@@ -41,6 +43,11 @@ triggers:
 - graph query
 - graph affected
 - graph explain
+- grafo de conocimiento
+- grafo del repo
+- consulta graphify
+- grafo do repositorio
+- consulta de grafo
 ---
 <!-- SCOPE: os-only -->
 # Graphify Query

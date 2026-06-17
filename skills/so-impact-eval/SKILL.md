@@ -21,6 +21,11 @@ triggers:
 - compará vanilla vs full SO
 - compara vanilla vs full SO
 - compare vanilla vs full SO
+- comparar vanilla vs SO completo
+- evaluar impacto del SO
+- smoke de impacto SO
+- comparar vanilla vs SO completo
+- avaliar impacto do SO
 routing_patterns:
 - pattern: /so-impact-eval\b
   confidence: 0.98
@@ -34,6 +39,8 @@ routing_patterns:
   confidence: 0.95
 - pattern: \bSO-wide\s+impact\s+eval\b
   confidence: 0.9
+- pattern: \b(comparar vanilla vs SO completo|evaluar impacto del SO|smoke de impacto SO|avaliar impacto do SO|comparar vanilla vs SO completo)\b
+  confidence: 0.95
 summary_line: Run cos-so-impact-eval smoke or full SO-wide vanilla/full-SO/ablation impact comparisons.
 routing_intents:
 - intent: so_impact_eval_request

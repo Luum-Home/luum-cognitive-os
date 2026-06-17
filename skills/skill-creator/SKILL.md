@@ -18,12 +18,22 @@ metadata:
     confidence: 0.9
   - pattern: \bagent\s+skills?\s+spec\b
     confidence: 0.82
+  - pattern: \b(crea|crear|adapta|adaptar|converti|convierte)\b.{0,80}\b(skill|habilidad|prompt|comando)\b
+    confidence: 0.9
+  - pattern: \b(criar|adaptar|converter)\b.{0,80}\b(skill|habilidade|prompt|comando)\b
+    confidence: 0.88
   triggers:
   - skill-creator
   - /skill-creator
   - create skill
   - create prompt
   - metaprompt-workflow
+  - crear skill
+  - crea una skill
+  - adaptar prompt a skill
+  - habilidad de agente
+  - criar skill
+  - criar habilidade
   routing_intents:
   - Design a new AI agent skill from user requirements and usage examples.
   - Turn a reusable agent workflow into a portable SKILL.md.

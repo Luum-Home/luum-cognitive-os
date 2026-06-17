@@ -19,6 +19,8 @@ platform_support:
 routing_patterns:
   - pattern: \b(lean[- ]code|lean[- ]review|lean[- ]audit|reduce overengineering|no unnecessary dependencies|fewer lines)\b
     confidence: 0.9
+  - pattern: \b(codigo liviano|codigo lean|menos codigo|sin dependencias innecesarias|reducir sobreingenieria|codigo enxuto|menos codigo|sem dependencias desnecessarias)\b
+    confidence: 0.9
 routing_intents:
   - intent: lean_code_request
     description: User asks to minimize code, dependencies, abstractions, or overengineering while preserving correctness.
@@ -30,6 +32,12 @@ triggers:
   - reduce overengineering
   - fewer lines
   - no unnecessary dependencies
+  - código liviano
+  - menos código
+  - sin dependencias innecesarias
+  - reducir sobreingeniería
+  - código enxuto
+  - sem dependências desnecessárias
 ---
 <!-- SCOPE: both -->
 # Lean Code
