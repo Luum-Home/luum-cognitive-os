@@ -6,7 +6,7 @@
   "harness": "opencode",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 360,
+  "projected_primitive_count": 369,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": true,
@@ -1298,6 +1298,13 @@
     },
     {
       "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos_epistemic_review.py",
+      "primitive_file": "primitives/other-script/scripts-cos-epistemic-review-py-5b270e76cf.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
       "fidelity": "structural-advisory",
       "portable_id": "rule-self-improvement-protocol",
       "primitive_file": "primitives/rules/rule-self-improvement-protocol-dfcc3f0e51.json",
@@ -1309,6 +1316,34 @@
       "portable_id": "agent-control-skill",
       "primitive_file": "primitives/skills/agent-control-skill-c237b68918.json",
       "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": ".claude/skills/epistemic-review/SKILL.md",
+      "primitive_file": "primitives/skills/claude-skills-epistemic-review-skill-md-f56c69af58.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": ".codex/skills/epistemic-review/SKILL.md",
+      "primitive_file": "primitives/skills/codex-skills-epistemic-review-skill-md-2e1586faa9.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": ".cognitive-os/skills/cos/epistemic-review/SKILL.md",
+      "primitive_file": "primitives/skills/cognitive-os-skills-cos-epistemic-review-skill-md-b95eb5ee7d.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": ".cognitive-os/skills/epistemic-review/SKILL.md",
+      "primitive_file": "primitives/skills/cognitive-os-skills-epistemic-review-skill-md-c5a187c0b6.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
       "claims_runtime_enforcement": false,
@@ -1357,6 +1392,13 @@
       "fidelity": "documented-only",
       "portable_id": "skills/branch-worktree-closure/SKILL.md",
       "primitive_file": "primitives/skills/skills-branch-worktree-closure-skill-md-c3132ec6e5.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/epistemic-review/SKILL.md",
+      "primitive_file": "primitives/skills/skills-epistemic-review-skill-md-06052e0969.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
@@ -2454,6 +2496,13 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": "scripts/cos-benchmark-gaming-audit",
+      "primitive_file": "primitives/tools/scripts-cos-benchmark-gaming-audit-53d19e78d9.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": "scripts/cos-branch-worktree-closure",
       "primitive_file": "primitives/tools/scripts-cos-branch-worktree-closure-b9762e9b9b.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
@@ -2461,8 +2510,22 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": "scripts/cos-claim-audit",
+      "primitive_file": "primitives/tools/scripts-cos-claim-audit-11ceac38e0.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": "scripts/cos-conflict-marker-guard",
       "primitive_file": "primitives/tools/scripts-cos-conflict-marker-guard-498acf8f29.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-evidence-rank",
+      "primitive_file": "primitives/tools/scripts-cos-evidence-rank-c243f5e195.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {

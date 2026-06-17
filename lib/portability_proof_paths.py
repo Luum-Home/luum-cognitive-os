@@ -68,12 +68,21 @@ def family_proof_candidates(rel: str) -> list[str]:
         "skills/so-impact-eval/SKILL.md",
         "templates/so-impact-eval.example.yaml",
     }
+    epistemic_review_members = {
+        "scripts/cos-claim-audit",
+        "scripts/cos-evidence-rank",
+        "scripts/cos-benchmark-gaming-audit",
+        "scripts/cos_epistemic_review.py",
+        "skills/epistemic-review/SKILL.md",
+    }
     if rel in artifact_members:
         candidates.append(f"{PORTABILITY_DIR}/test_cos_artifact_workflow_primitives.py")
     if rel in lean_skillopt_members:
         candidates.append(f"{PORTABILITY_DIR}/test_cos_lean_skillopt_primitives.py")
     if rel in so_impact_members:
         candidates.append(f"{PORTABILITY_DIR}/test_cos_so_impact_eval_primitive.py")
+    if rel in epistemic_review_members:
+        candidates.append(f"{PORTABILITY_DIR}/test_cos_epistemic_review_primitives.py")
     return candidates
 
 

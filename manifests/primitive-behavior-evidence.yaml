@@ -5312,6 +5312,33 @@ evidence:
   - shell-ci
   tests: *so_impact_tests
   rationale: The example contract shape is exercised by the SO impact eval plan/run tests.
+- primitive: scripts/cos-claim-audit
+  harnesses:
+  - shell-ci
+  tests: &epistemic_review_tests
+  - tests/unit/test_cos_epistemic_review.py
+  - tests/unit/test_skill_router.py
+  - tests/red_team/portability/test_cos_epistemic_review_primitives.py
+  rationale: Claim audit validates interested-witness downgrades, bounded verification receipts, and consumer-cwd portability.
+- primitive: scripts/cos-evidence-rank
+  harnesses:
+  - shell-ci
+  tests: *epistemic_review_tests
+  rationale: Evidence rank orders current tests and reproducible command receipts above self-reported benchmark claims.
+- primitive: scripts/cos-benchmark-gaming-audit
+  harnesses:
+  - shell-ci
+  tests: *epistemic_review_tests
+  rationale: Benchmark-gaming audit flags benchmark special-casing and records project-local receipts.
+- primitive: skills/epistemic-review/SKILL.md
+  harnesses:
+  - codex
+  - claude-code
+  - opencode
+  - shell-ci
+  tests: *epistemic_review_tests
+  rationale: The conversation skill routes honest audits, claim verification, interested-witness checks, and benchmark-gaming requests to the portable wrappers.
+
 
 patterns:
 - pattern: tests/**

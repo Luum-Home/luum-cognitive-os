@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-06-16T14:35:01+00:00'
+generated_at: '2026-06-17T20:05:21+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: .claude/skills/artifact-workflow/SKILL.md
@@ -24,6 +24,20 @@ primitives:
   projection_targets:
   - .claude/skills/branch-worktree-closure/SKILL.md
   sha256: 884136974b6abb9ced0e3baf98e254344037fe045d19565b4997aef99e751fd0
+- id: .claude/skills/epistemic-review/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - skills/epistemic-review/SKILL.md
+  - .cognitive-os/skills/epistemic-review/SKILL.md
+  - .cognitive-os/skills/cos/epistemic-review/SKILL.md
+  - .claude/skills/epistemic-review/SKILL.md
+  - .codex/skills/epistemic-review/SKILL.md
+  sha256: 5f8a3c112fdf61450f335ebea3e59ddf1a3c501d80531dd6c78d29e7eb3858eb
 - id: .claude/skills/lean-code/SKILL.md
   kind: skill
   owner_adr: ADR-337
@@ -58,6 +72,20 @@ primitives:
   projection_targets:
   - .codex/skills/branch-worktree-closure/SKILL.md
   sha256: a063432834080b5c1f7243ffb4a61f78e8e071f835c1aa957c7ba6b7835dc012
+- id: .codex/skills/epistemic-review/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - skills/epistemic-review/SKILL.md
+  - .cognitive-os/skills/epistemic-review/SKILL.md
+  - .cognitive-os/skills/cos/epistemic-review/SKILL.md
+  - .claude/skills/epistemic-review/SKILL.md
+  - .codex/skills/epistemic-review/SKILL.md
+  sha256: 3e1caed2ab666b42e53874d8d76ecd116a86c71b689ad703082969d37f9f2eaa
 - id: .cognitive-os/skills/artifact-workflow/SKILL.md
   kind: skill
   owner_adr: ADR-337
@@ -80,6 +108,34 @@ primitives:
   projection_targets:
   - .cognitive-os/skills/branch-worktree-closure/SKILL.md
   sha256: d55a36fee5116e8136ee69ba4bf6f35894e31771cd42750e3a3e7ba532d20609
+- id: .cognitive-os/skills/cos/epistemic-review/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - skills/epistemic-review/SKILL.md
+  - .cognitive-os/skills/epistemic-review/SKILL.md
+  - .cognitive-os/skills/cos/epistemic-review/SKILL.md
+  - .claude/skills/epistemic-review/SKILL.md
+  - .codex/skills/epistemic-review/SKILL.md
+  sha256: d1984859a428ad44d6d1ed89e053c1eee48bcfd266601c1c828d23253ac845ae
+- id: .cognitive-os/skills/epistemic-review/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - skills/epistemic-review/SKILL.md
+  - .cognitive-os/skills/epistemic-review/SKILL.md
+  - .cognitive-os/skills/cos/epistemic-review/SKILL.md
+  - .claude/skills/epistemic-review/SKILL.md
+  - .codex/skills/epistemic-review/SKILL.md
+  sha256: 00ca7a75c0e33cdd04eaa54e44245ee11a00268253f869b65799ad2a864d7d51
 - id: .cognitive-os/skills/lean-code/SKILL.md
   kind: skill
   owner_adr: ADR-337
@@ -5544,6 +5600,17 @@ primitives:
   - scripts/cos-auth-probe
   - scripts/cos_auth_probe.py
   sha256: a1cd590c0ab7bb331cab897f73835494670c0216c06f8f272adaa6d84e9037f1
+- id: scripts/cos-benchmark-gaming-audit
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-benchmark-gaming-audit
+  - scripts/cos_epistemic_review.py
+  sha256: b6d69258930ac995feb63dbe84c9fe3fa53e2bccf9034c3c4861369bc7922ee3
 - id: scripts/cos-bootstrap.sh
   kind: script
   owner_adr: ADR-146
@@ -5590,6 +5657,17 @@ primitives:
   - git-hooks/pre-push
   - docs/02-Decisions/adrs/ADR-131-local-ci-migration.md
   sha256: 7b2f405446d9fd3e59a3488dc6ae6ce1f97d45fb00373823d59ce441276372be
+- id: scripts/cos-claim-audit
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-claim-audit
+  - scripts/cos_epistemic_review.py
+  sha256: 1fef3781ab38135ba620048d689f5d2c6a8fe00761b2787a4e5d2f2b8e6b8686
 - id: scripts/cos-closure-discipline-audit
   kind: script
   owner_adr: ADR-143
@@ -5893,6 +5971,17 @@ primitives:
   - scripts/cos_cross_instance_learning.py
   - lib/cross_instance_learning.py
   sha256: f70d8c2911609c030e00a637b35bd60a0058f918a5e26f89902a06adcf972fe1
+- id: scripts/cos-evidence-rank
+  kind: script
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-evidence-rank
+  - scripts/cos_epistemic_review.py
+  sha256: 160e21f390b881fd266caf26a9bb143acfd1ed9f89dc6e1110c813754dd2f5cf
 - id: scripts/cos-export-consumer-evidence
   kind: script
   owner_adr: ADR-136
@@ -7648,6 +7737,16 @@ primitives:
   projection_targets:
   - scripts/cos_efficiency_primitives.py
   sha256: 25a31fb0a5b4f6ac9850f3f1dabd4766e9d992b7944f696744cee00ad0306855
+- id: scripts/cos_epistemic_review.py
+  kind: script-lib
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos_epistemic_review.py
+  sha256: 5191117c070ae3fdfe1e6be8b3d4578af9ae1f55a82b11fe7a59337f1d1ed77f
 - id: scripts/cos_false_positive_ledger.py
   kind: script
   owner_adr: ADR-146
@@ -9582,6 +9681,20 @@ primitives:
   projection_targets:
   - docs/03-domain-risk/domain-model.md
   sha256: 607e7692a8128f107a3c5a3664838fd2cd401d6c3d99be9e36633be9edcd9530
+- id: skills/epistemic-review/SKILL.md
+  kind: skill
+  owner_adr: ADR-337
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - skills/epistemic-review/SKILL.md
+  - .cognitive-os/skills/epistemic-review/SKILL.md
+  - .cognitive-os/skills/cos/epistemic-review/SKILL.md
+  - .claude/skills/epistemic-review/SKILL.md
+  - .codex/skills/epistemic-review/SKILL.md
+  sha256: aef61ed8d5935fd6db43ff3fcdd3c2a107eaf42bbd22bb932df1217e64a9e8df
 - id: skills/eval-repo/SKILL.md
   kind: skill
   owner_adr: ADR-314
