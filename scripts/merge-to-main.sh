@@ -8,6 +8,7 @@ REMOTE="${COS_MERGE_REMOTE:-origin}"
 MAIN_BRANCH="${COS_MAIN_BRANCH:-main}"
 VALIDATE_CMD="${COS_MERGE_VALIDATE_CMD:-python3 scripts/derived_artifact_gate.py}"
 DRY_RUN=false
+INTEGRATION_MODE="${COS_MERGE_INTEGRATION_MODE:-rebase-ff}"
 RECOMMENDED_LANE=""
 EXECUTED_LANE="${COS_MERGE_EXECUTED_LANE:-landing}"
 VALIDATION_RATIONALE_JSON="[]"
@@ -15,11 +16,13 @@ CHANGED_FILES_JSON="[]"
 
 usage() {
   cat <<'EOF'
-Usage: scripts/merge_to_main.sh [--repo PATH] [--remote origin] [--main main] [--validate CMD] [--recommended-lane LANE] [--executed-lane LANE] [--dry-run]
+Usage: scripts/merge_to_main.sh [--repo PATH] [--remote origin] [--main main] [--validate CMD] [--recommended-lane LANE] [--executed-lane LANE] [--integration-mode rebase-ff|merge-no-rebase] [--dry-run]
 
-Acquires .cognitive-os/runtime/main-merge.lock, rebases the current branch on
-REMOTE/MAIN, runs validation, fast-forwards main, and pushes. This is the
-single-writer path for agent landings to main.
+Acquires .cognitive-os/runtime/main-merge.lock, integrates the current branch
+with REMOTE/MAIN, runs validation, fast-forwards main, and pushes. Default
+integration mode is rebase-ff; merge-no-rebase preserves branch history by
+merging REMOTE/MAIN into the source branch instead of rebasing it. This remains
+the single-writer path guarded by main-merge.lock.
 EOF
 }
 
@@ -33,11 +36,19 @@ while [ "$#" -gt 0 ]; do
     --recommended-lane=*) RECOMMENDED_LANE="${1#--recommended-lane=}"; shift ;;
     --executed-lane) EXECUTED_LANE="${2:-}"; shift 2 ;;
     --executed-lane=*) EXECUTED_LANE="${1#--executed-lane=}"; shift ;;
+    --integration-mode) INTEGRATION_MODE="${2:-}"; shift 2 ;;
+    --integration-mode=*) INTEGRATION_MODE="${1#--integration-mode=}"; shift ;;
     --dry-run) DRY_RUN=true; shift ;;
     --help|-h) usage; exit 0 ;;
     *) echo "Unknown option: $1" >&2; usage >&2; exit 2 ;;
   esac
 done
+
+case "$INTEGRATION_MODE" in
+  rebase-ff|merge-no-rebase) ;;
+  *) echo "Unknown --integration-mode: $INTEGRATION_MODE (expected rebase-ff or merge-no-rebase)" >&2; exit 2 ;;
+esac
+export COS_MERGE_INTEGRATION_MODE="$INTEGRATION_MODE"
 
 REPO="$(cd "$REPO" && pwd -P)"
 LOCK_DIR="$REPO/.cognitive-os/runtime/main-merge.lock"
@@ -151,6 +162,7 @@ print(json.dumps({
     "outcome": os.environ.get("COS_RECEIPT_OUTCOME", ""),
     "remote": os.environ.get("COS_RECEIPT_REMOTE", ""),
     "main_branch": os.environ.get("COS_RECEIPT_MAIN", ""),
+    "integration_mode": os.environ.get("COS_MERGE_INTEGRATION_MODE", "rebase-ff"),
 }))
 PY
   )
@@ -198,7 +210,13 @@ compute_validation_lane "$REMOTE/$MAIN_BRANCH" "HEAD"
 append_queue_event "started"
 emit_merge_receipt "vcs.merge.enqueue" "verified" "merge-to-main-started"
 
-git -C "$REPO" rebase "$REMOTE/$MAIN_BRANCH"
+if [ "$INTEGRATION_MODE" = "rebase-ff" ]; then
+  git -C "$REPO" rebase "$REMOTE/$MAIN_BRANCH"
+else
+  if ! git -C "$REPO" merge-base --is-ancestor "$REMOTE/$MAIN_BRANCH" HEAD; then
+    COS_MERGE_INTEGRATION_MODE="$INTEGRATION_MODE" git -C "$REPO" merge --no-ff "$REMOTE/$MAIN_BRANCH" -m "merge $REMOTE/$MAIN_BRANCH into $branch"
+  fi
+fi
 (
   cd "$REPO"
   eval "$VALIDATE_CMD"

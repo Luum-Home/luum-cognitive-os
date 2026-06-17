@@ -67,8 +67,11 @@ scripts/cos worktree closure --json
 ```
 
 Use `--land-current --apply` only from a non-main source branch after choosing a
-targeted validation command. Use `--cleanup-merged --apply` to delete merged
-local branches and matching remote branches in one batch push.
+targeted validation command. When the operator says **no rebase**, pass
+`--integration-mode merge-no-rebase`; this keeps branch history by merging
+`origin/main` into the source branch before protected fast-forward landing. Use
+`--cleanup-merged --apply` to delete merged local branches and matching remote
+branches in one batch push.
 
 ## Closure protocol
 
@@ -94,6 +97,16 @@ Record for each extra branch/worktree:
 
 ### 2. Classify
 
+If the operator says "merge, no rebase", keep that as an explicit integration
+constraint in the report and landing command. Do not silently fall back to
+rebasing.
+
+
+If the operator says "merge, no rebase", keep that as an explicit integration
+constraint in the report and landing command. Do not silently fall back to
+rebasing.
+
+
 | State | Action |
 |---|---|
 | Dirty worktree or stash exists | Stop and preserve first. Use `preserved-wip-cleanup` only after operator confirmation. |
@@ -102,11 +115,15 @@ Record for each extra branch/worktree:
 | Branch is obsolete/duplicate and clean | Confirm duplicate evidence (`git diff main..branch` empty or patch already in main), then delete. |
 | Unsure | Produce a short closure report and ask the operator; never force-delete. |
 
-### 3. Rebase useful work
+### 3. Integrate useful work without violating operator constraints
+
+Default COS landing still supports the historical `rebase-ff` mode. If the
+operator asks for no rebase, use:
 
 ```bash
-git -C "$WORKTREE" fetch origin main
-git -C "$WORKTREE" rebase origin/main
+scripts/cos land --integration-mode merge-no-rebase --validate '<targeted validation command>'
+# or dry-run/survey first:
+scripts/cos-branch-worktree-closure --integration-mode merge-no-rebase --create-backup-tag --json
 ```
 
 If conflicts appear, stop. Do not resolve by discarding work unless the operator
@@ -164,6 +181,8 @@ BRANCH_WORKTREE_CLOSURE
 branch: <name>
 worktree: <path>
 classification: merged | useful-landed | preserved | duplicate | blocked
+integration_mode: rebase-ff | merge-no-rebase
+integration_mode: rebase-ff | merge-no-rebase
 validation: <commands + result>
 landing: <commit/push result or why not>
 cleanup: <worktree/branch removal result>
