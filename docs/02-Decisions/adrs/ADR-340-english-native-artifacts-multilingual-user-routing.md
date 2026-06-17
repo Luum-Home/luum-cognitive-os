@@ -14,7 +14,7 @@ implementation_files:
   - tests/audit/test_language_policy.py
   - tests/unit/test_skill_router.py
   - tests/audit/test_weekly_multilingual_skill_coverage.py
-tier: core
+tier: maintainer
 tags:
   - documentation
   - multilingual
