@@ -5778,9 +5778,9 @@
         "doc": 778,
         "hook": 124,
         "rule": 51,
-        "script": 455,
-        "skill": 93,
-        "test": 774,
+        "script": 460,
+        "skill": 95,
+        "test": 776,
         "workflow": 2
       },
       "consumers": [
@@ -10098,7 +10098,15 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-agent-run-status"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-agent-spawn-benchmark"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-agent-watch"
         },
         {
           "family": "script",
@@ -10450,6 +10458,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-handoff-if-dead"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-headless-pipeline"
         },
         {
@@ -10691,6 +10703,10 @@
         {
           "family": "script",
           "path": "scripts/cos-profile-explain"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-progress-metric"
         },
         {
           "family": "script",
@@ -11035,6 +11051,10 @@
         {
           "family": "script",
           "path": "scripts/cos_agent_message.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_agent_supervision.py"
         },
         {
           "family": "script",
@@ -11762,6 +11782,10 @@
         },
         {
           "family": "skill",
+          "path": ".codex/skills/agent-run-supervision/SKILL.md"
+        },
+        {
+          "family": "skill",
           "path": ".codex/skills/branch-worktree-closure/SKILL.md"
         },
         {
@@ -11899,6 +11923,10 @@
         {
           "family": "skill",
           "path": "skills/agent-control/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/agent-run-supervision/SKILL.md"
         },
         {
           "family": "skill",
@@ -13742,6 +13770,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cos_agent_supervision_primitives.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_cos_architecture_readiness.py"
         },
         {
@@ -14299,6 +14331,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_cos_adoption_profile.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_agent_supervision.py"
         },
         {
           "family": "test",
@@ -15241,14 +15277,14 @@
       "evidence": [
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
-        "skill_consumers:93",
-        "test_consumers:774",
+        "skill_consumers:95",
+        "test_consumers:776",
         "hook_consumers:124",
         "workflow_consumers:2",
         "doc_consumers:778",
         "rule_consumers:51",
         "config_consumers:86",
-        "script_consumers:455"
+        "script_consumers:460"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -15260,11 +15296,11 @@
       "protected_install_surface": false,
       "role": "lab",
       "role_source": "lifecycle",
-      "skill_consumers": 93,
+      "skill_consumers": 95,
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 2363,
+      "total_consumers": 2372,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -16581,6 +16617,79 @@
       "wrapper_for": "scripts/cos_agent_message.py"
     },
     {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 3,
+        "script": 1,
+        "skill": 2,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_agent_supervision.py"
+        },
+        {
+          "family": "skill",
+          "path": ".codex/skills/agent-run-supervision/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/agent-run-supervision/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_agent_supervision_primitives.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_agent_supervision.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_agent_supervision.py",
+        "skill_consumers:2",
+        "test_consumers:2",
+        "config_consumers:3",
+        "script_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-agent-run-status",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-agent-run-status",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 2,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "opencode",
+        "shell"
+      ],
+      "total_consumers": 8,
+      "wrapper_for": "scripts/cos_agent_supervision.py"
+    },
+    {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
@@ -16641,6 +16750,79 @@
       "supported_harnesses": [],
       "total_consumers": 7,
       "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 3,
+        "script": 1,
+        "skill": 2,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_agent_supervision.py"
+        },
+        {
+          "family": "skill",
+          "path": ".codex/skills/agent-run-supervision/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/agent-run-supervision/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_agent_supervision_primitives.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_agent_supervision.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_agent_supervision.py",
+        "skill_consumers:2",
+        "test_consumers:2",
+        "config_consumers:3",
+        "script_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-agent-watch",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-agent-watch",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 2,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "opencode",
+        "shell"
+      ],
+      "total_consumers": 8,
+      "wrapper_for": "scripts/cos_agent_supervision.py"
     },
     {
       "confidence": "medium",
@@ -25115,6 +25297,79 @@
       "wrapper_for": null
     },
     {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 3,
+        "script": 1,
+        "skill": 2,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_agent_supervision.py"
+        },
+        {
+          "family": "skill",
+          "path": ".codex/skills/agent-run-supervision/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/agent-run-supervision/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_agent_supervision_primitives.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_agent_supervision.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_agent_supervision.py",
+        "skill_consumers:2",
+        "test_consumers:2",
+        "config_consumers:3",
+        "script_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-handoff-if-dead",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-handoff-if-dead",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 2,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "opencode",
+        "shell"
+      ],
+      "total_consumers": 8,
+      "wrapper_for": "scripts/cos_agent_supervision.py"
+    },
+    {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
@@ -31478,6 +31733,79 @@
       "supported_harnesses": [],
       "total_consumers": 6,
       "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 3,
+        "script": 1,
+        "skill": 2,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_agent_supervision.py"
+        },
+        {
+          "family": "skill",
+          "path": ".codex/skills/agent-run-supervision/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/agent-run-supervision/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_agent_supervision_primitives.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_agent_supervision.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_agent_supervision.py",
+        "skill_consumers:2",
+        "test_consumers:2",
+        "config_consumers:3",
+        "script_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-progress-metric",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-progress-metric",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 2,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "opencode",
+        "shell"
+      ],
+      "total_consumers": 8,
+      "wrapper_for": "scripts/cos_agent_supervision.py"
     },
     {
       "confidence": "high",
@@ -40759,6 +41087,80 @@
         "shell"
       ],
       "total_consumers": 14,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 3,
+        "script": 4,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-agent-run-status"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-agent-watch"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-handoff-if-dead"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-progress-metric"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_agent_supervision_primitives.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_agent_supervision.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "test_consumers:2",
+        "config_consumers:3",
+        "script_consumers:4"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos_agent_supervision.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/cos_agent_supervision.py",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "heuristic:self-evolution",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "opencode",
+        "shell"
+      ],
+      "total_consumers": 9,
       "wrapper_for": null
     },
     {
@@ -67058,27 +67460,27 @@
   "summary": {
     "agentic_primitives_without_lifecycle": 0,
     "confidence": {
-      "high": 404,
+      "high": 408,
       "low": 1,
-      "medium": 320
+      "medium": 321
     },
     "consumer_accessibility": {
       "install-profile-managed": 19,
       "lifecycle-declared-consumer-candidate": 169,
-      "lifecycle-declared-maintainer": 195,
+      "lifecycle-declared-maintainer": 200,
       "skill-referenced-not-projectable": 3,
       "so-local-only": 339
     },
     "low_confidence_rows": 1,
     "roles": {
-      "agentic-primitive": 266,
+      "agentic-primitive": 270,
       "archive": 12,
       "driver-specific": 14,
       "lab": 97,
-      "maintainer-tool": 321,
+      "maintainer-tool": 322,
       "migration-only": 15
     },
-    "total_scripts": 725,
+    "total_scripts": 730,
     "without_consumers": 0
   },
   "target_family": "scripts"

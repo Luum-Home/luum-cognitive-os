@@ -243,6 +243,43 @@ class TestEpistemicReviewDetection:
         assert any(m.invoke_command == "/epistemic-review" for m in matches)
 
 
+
+
+class TestAgentRunSupervisionDetection:
+    """Multilingual agent-run supervision requests should match /agent-run-status."""
+
+    @pytest.mark.parametrize(
+        "message",
+        [
+            "/agent-run-status",
+            "como venimos?",
+            "cómo venimos con el agente?",
+            "status del agente",
+            "seguí monitoreando",
+            "murió el agente?",
+            "está trabado?",
+            "dejalo correr",
+            "how are we doing?",
+            "agent status",
+            "keep monitoring",
+            "is it stuck?",
+            "did the agent die?",
+            "como estamos?",
+            "agente travado",
+        ],
+    )
+    def test_agent_run_supervision_routes_from_conversation(self, router: SkillRouter, message: str):
+        match = router.best_match(message)
+        assert match is not None
+        assert match.invoke_command == "/agent-run-supervision"
+        assert match.skill_name == "agent-run-supervision"
+        assert match.confidence >= 0.90
+
+    def test_agent_run_supervision_appears_in_match_list(self, router: SkillRouter):
+        matches = router.match("como venimos con el agente?")
+        assert any(m.invoke_command == "/agent-run-supervision" for m in matches)
+
+
 # ---------------------------------------------------------------------------
 # No match for greetings
 # ---------------------------------------------------------------------------

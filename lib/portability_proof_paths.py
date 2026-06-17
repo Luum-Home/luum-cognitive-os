@@ -75,6 +75,14 @@ def family_proof_candidates(rel: str) -> list[str]:
         "scripts/cos_epistemic_review.py",
         "skills/epistemic-review/SKILL.md",
     }
+    agent_supervision_members = {
+        "scripts/cos-agent-run-status",
+        "scripts/cos-agent-watch",
+        "scripts/cos-progress-metric",
+        "scripts/cos-handoff-if-dead",
+        "scripts/cos_agent_supervision.py",
+        "skills/agent-run-supervision/SKILL.md",
+    }
     if rel in artifact_members:
         candidates.append(f"{PORTABILITY_DIR}/test_cos_artifact_workflow_primitives.py")
     if rel in lean_skillopt_members:
@@ -83,6 +91,8 @@ def family_proof_candidates(rel: str) -> list[str]:
         candidates.append(f"{PORTABILITY_DIR}/test_cos_so_impact_eval_primitive.py")
     if rel in epistemic_review_members:
         candidates.append(f"{PORTABILITY_DIR}/test_cos_epistemic_review_primitives.py")
+    if rel in agent_supervision_members:
+        candidates.append(f"{PORTABILITY_DIR}/test_cos_agent_supervision_primitives.py")
     return candidates
 
 

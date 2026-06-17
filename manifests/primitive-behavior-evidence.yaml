@@ -5340,6 +5340,38 @@ evidence:
   rationale: The conversation skill routes honest audits, claim verification, interested-witness checks, and benchmark-gaming requests to the portable wrappers.
 
 
+- primitive: scripts/cos-agent-run-status
+  harnesses:
+  - shell-ci
+  tests: &agent_supervision_tests
+  - tests/unit/test_cos_agent_supervision.py
+  - tests/unit/test_skill_router.py
+  - tests/red_team/portability/test_cos_agent_supervision_primitives.py
+  rationale: Agent run status reports git, process, WIP freshness, validation, and multilingual state labels from consumer cwd fixtures.
+- primitive: scripts/cos-agent-watch
+  harnesses:
+  - shell-ci
+  tests: *agent_supervision_tests
+  rationale: Agent watch records repeated status samples and no-progress state in project-local JSONL receipts.
+- primitive: scripts/cos-progress-metric
+  harnesses:
+  - shell-ci
+  tests: *agent_supervision_tests
+  rationale: Progress metric executes a generic residual contract and extracts metric values from command output.
+- primitive: scripts/cos-handoff-if-dead
+  harnesses:
+  - shell-ci
+  tests: *agent_supervision_tests
+  rationale: Handoff produces markdown and JSON summaries for dead-with-WIP agent runs.
+- primitive: skills/agent-run-supervision/SKILL.md
+  harnesses:
+  - codex
+  - claude-code
+  - opencode
+  - shell-ci
+  tests: *agent_supervision_tests
+  rationale: Multilingual conversation skill routes Spanish, English, and Portuguese agent status/monitoring/stuck/dead requests to portable wrappers.
+
 patterns:
 - pattern: tests/**
   behavior_proven: true
