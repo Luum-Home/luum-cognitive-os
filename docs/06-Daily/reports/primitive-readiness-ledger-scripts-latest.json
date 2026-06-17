@@ -5780,7 +5780,7 @@
         "rule": 51,
         "script": 460,
         "skill": 95,
-        "test": 776,
+        "test": 777,
         "workflow": 2
       },
       "consumers": [
@@ -12298,6 +12298,10 @@
         },
         {
           "family": "test",
+          "path": "tests/audit/test_weekly_multilingual_skill_coverage.py"
+        },
+        {
+          "family": "test",
           "path": "tests/behavior/conftest.py"
         },
         {
@@ -15278,7 +15282,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:95",
-        "test_consumers:776",
+        "test_consumers:777",
         "hook_consumers:124",
         "workflow_consumers:2",
         "doc_consumers:778",
@@ -15300,7 +15304,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 2372,
+      "total_consumers": 2373,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {

@@ -19,6 +19,8 @@ platform_support:
 routing_patterns:
   - pattern: \b(artifact[- ]workflow|artifact intelligence|work graph|second-pass advisor|claim refutation)\b
     confidence: 0.9
+  - pattern: \b(flujo de artefactos|inteligencia de artefactos|grafo de trabajo|segunda revision|refutacion de claims?|fluxo de artefatos|grafo de trabalho|segunda revisao)\b
+    confidence: 0.9
 routing_intents:
   - intent: artifact_workflow_request
     description: User asks for artifact evidence intake, work graph tracking, refutation review, or second-pass advisor receipts.
@@ -30,6 +32,13 @@ triggers:
   - run artifact intelligence
   - challenge final claim
   - second-pass advisor
+  - flujo de artefactos
+  - inteligencia de artefactos
+  - grafo de trabajo
+  - segunda revisión
+  - refutar claim
+  - fluxo de artefatos
+  - grafo de trabalho
 ---
 <!-- SCOPE: os-only -->
 # Artifact Workflow

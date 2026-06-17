@@ -36,6 +36,10 @@ routing_patterns:
   confidence: 0.8
 - pattern: \b(merge|preserve|remove)\s+worktrees?\b
   confidence: 0.75
+- pattern: \b(mergea|fusiona|cerrar|limpia|depura|revisa)\b.{0,80}\b(branches|ramas|worktrees|stashes|main)\b
+  confidence: 0.9
+- pattern: \b(leva|levar|fechar|limpar|revisar)\b.{0,80}\b(branches|ramos|worktrees|stashes|main)\b
+  confidence: 0.86
 routing_intents:
 - intent: branch_worktree_closure_request
   description: User asks to use when an agent finds leftover codex/* or claude/* branches,
@@ -48,6 +52,12 @@ triggers:
 - Branch / Worktree Closure
 - Close leftover agent branches/worktrees without losing work or bypassing main landing
   gates
+- mergea todas las branches y worktrees a main
+- revisa los stashes
+- cerrar ramas y worktrees
+- limpiar branches mergeadas
+- levar branches e worktrees para main
+- revisar stashes
 ---
 <!-- SCOPE: both -->
 # Branch / Worktree Closure

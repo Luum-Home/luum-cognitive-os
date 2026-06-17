@@ -278,7 +278,8 @@ def _parse_routing_patterns_block(skill_md_path: Path) -> Optional[List[Tuple[st
             return None
         yaml_block = "\n".join(lines[start + 1:end])
         data = yaml.safe_load(yaml_block) or {}
-        raw = data.get("routing_patterns")
+        metadata = data.get("metadata") if isinstance(data.get("metadata"), dict) else {}
+        raw = data.get("routing_patterns") or metadata.get("routing_patterns")
         if not raw or not isinstance(raw, list):
             return None
         result = []

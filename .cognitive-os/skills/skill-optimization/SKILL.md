@@ -19,6 +19,8 @@ platform_support:
 routing_patterns:
   - pattern: \b(skill[- ]opt|skill[- ]sleep|optimi[sz]e skill|validation-gated skill update|self-evolving skill)\b
     confidence: 0.9
+  - pattern: \b(optimizar skill|mejorar skill|actualizacion validada de skill|aprendizaje offline de skill|otimizar skill|melhorar skill|atualizacao validada de skill)\b
+    confidence: 0.9
 routing_intents:
   - intent: skill_optimization_request
     description: User asks to optimize, stage, validate, adopt, reject, or sleep-update a Cognitive OS skill.
@@ -30,6 +32,12 @@ triggers:
   - train skill
   - validation-gated skill update
   - self-evolving skill
+  - optimizar skill
+  - mejorar skill
+  - actualización validada de skill
+  - aprendizaje offline de skill
+  - otimizar skill
+  - melhorar skill
 ---
 <!-- SCOPE: os-only -->
 # Skill Optimization

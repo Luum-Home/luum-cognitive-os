@@ -280,6 +280,40 @@ class TestAgentRunSupervisionDetection:
         assert any(m.invoke_command == "/agent-run-supervision" for m in matches)
 
 
+class TestWeeklyMultilingualSkillRouting:
+    """This week's conversational primitives route from EN/ES/PT prompts."""
+
+    @pytest.mark.parametrize(
+        ("message", "skill_name", "invoke_command"),
+        [
+            ("flujo de artefactos", "artifact-workflow", "/artifact-workflow"),
+            ("grafo de trabalho", "artifact-workflow", "/artifact-workflow"),
+            ("mergea todas las branches y worktrees a main", "branch-worktree-closure", "/branch-worktree-closure"),
+            ("levar branches e worktrees para main", "branch-worktree-closure", "/branch-worktree-closure"),
+            ("audita honestamente este benchmark", "epistemic-review", "/epistemic-review"),
+            ("verificar afirmacao interesada", "epistemic-review", "/epistemic-review"),
+            ("grafo de conocimiento del repo", "graphify-query", "/graphify-query"),
+            ("consulta de grafo do repositorio", "graphify-query", "/graphify-query"),
+            ("reducir sobreingenieria y menos codigo", "lean-code", "/lean-code"),
+            ("codigo enxuto sem dependencias desnecessarias", "lean-code", "/lean-code"),
+            ("crear una skill para revisar releases", "skill-creator", "/skill-creator"),
+            ("criar habilidade para revisar releases", "skill-creator", "/skill-creator"),
+            ("optimizar skill con validacion", "skill-optimization", "/skill-optimization"),
+            ("otimizar skill com validacao", "skill-optimization", "/skill-optimization"),
+            ("evaluar impacto del SO", "so-impact-eval", "/so-impact-eval"),
+            ("avaliar impacto do SO", "so-impact-eval", "/so-impact-eval"),
+            ("como venimos con el agente", "agent-run-supervision", "/agent-run-supervision"),
+            ("agente travado", "agent-run-supervision", "/agent-run-supervision"),
+        ],
+    )
+    def test_weekly_multilingual_routes(self, router: SkillRouter, message: str, skill_name: str, invoke_command: str):
+        match = router.best_match(message)
+        assert match is not None, message
+        assert match.skill_name == skill_name
+        assert match.invoke_command == invoke_command
+        assert match.confidence >= 0.85
+
+
 # ---------------------------------------------------------------------------
 # No match for greetings
 # ---------------------------------------------------------------------------

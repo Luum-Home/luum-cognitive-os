@@ -3,9 +3,10 @@
 
 > Level-1 always-load routing hints. Load `skills/CATALOG-COMPACT.md` for broader discovery; load full `SKILL.md` only on invocation.
 
-Total skills: 188
+Total skills: 190
 
 - agent-kpis [b]: Calculate and report Cognit…; k=agent-kpis,calculate
+- agent-run-supervision [b]: Use when the user asks how…; k=agent-run-supervision,user
 - analyze-improvements [b]: Analyze KPIs, error pattern…; k=analyze-improvements,analyze
 - apply-improvements [b]: Apply approved self-improve…; k=apply-improvements,apply
 - artifact-workflow [b]: Use when a project needs po…; k=artifact-workflow,project
@@ -19,6 +20,7 @@ Total skills: 188
 - cos-status [b]: Display current Cognitive O…; k=cos-status,display
 - detect-stack [b]: Scan a project root and pro…; k=detect-stack,scan
 - doc-review-personas [b]: N-persona parallel doc revi…; k=doc-review-personas,n-persona
+- epistemic-review [b]: Use when a task needs model…; k=epistemic-review,task
 - eval-repo [b]: DEPRECATED alias for /repo-…; k=eval-repo,deprecated
 - generate-config [b]: Read detected-stack.json an…; k=generate-config,read
 - lean-code [b]: Use when work should minimi…; k=lean-code,work

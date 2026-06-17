@@ -19,6 +19,8 @@ platform_support:
 routing_patterns:
   - pattern: (/epistemic-review|/claim-audit|/benchmark-gaming-audit|\b(epistemic review|claim audit|interested witness|self[- ]authored benchmark|benchmark gaming|verify claim|refute claim|skeptical audit|humo)\b)
     confidence: 0.93
+  - pattern: \b(audita honestamente|verifica claims?|refuta claims?|testigo interesado|afirmacion interesada|auditoria esceptica|auditoria cetica|verificar afirmacao|refutar afirmacao)\b
+    confidence: 0.92
 routing_intents:
   - intent: epistemic_review_request
     description: User asks the agent to audit a claim honestly, distrust self-interested sources, refute a conclusion, or verify benchmark/productivity claims.
@@ -32,6 +34,13 @@ triggers:
   - refute claim
   - interested witness
   - benchmark gaming
+  - audita honestamente
+  - verifica claim
+  - refuta claim
+  - testigo interesado
+  - auditoría escéptica
+  - auditoria cética
+  - verificar afirmação
 ---
 <!-- SCOPE: both -->
 # Epistemic Review
