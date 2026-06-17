@@ -13,6 +13,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 ## Prompt and context engineering
 
 - [Prompt Modernization Doctrine](../../04-Concepts/architecture/prompt-modernization.md) — guidance for updating prompts, rules, skills, and hook-injected context for modern Claude/Codex behavior without weakening deterministic safety gates.
+- [ADR-340 — English-Native Artifacts with Multilingual User-Facing Routing](../../02-Decisions/adrs/ADR-340-english-native-artifacts-multilingual-user-routing.md) — canonical artifacts stay English-native while user-facing skill triggers, routing aliases, and bounded human output options support English, Spanish, and Portuguese without duplicated translated docs.
 
 
 ## Goal-loop and completion-contract research
