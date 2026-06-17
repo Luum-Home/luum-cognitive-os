@@ -65,6 +65,45 @@ def test_cleanup_merged_is_dry_run_without_apply(tmp_path: Path) -> None:
     assert run(["git", "branch", "--list", "codex/done"], repo).stdout.strip() == "codex/done"
 
 
+def test_closure_report_supports_merge_no_rebase_and_backup_tag(tmp_path: Path) -> None:
+    repo = init_repo(tmp_path)
+    result = run([
+        str(REPO / "scripts" / "cos-branch-worktree-closure"),
+        "--project-dir",
+        str(repo),
+        "--integration-mode",
+        "merge-no-rebase",
+        "--create-backup-tag",
+        "--json",
+    ], repo)
+    payload = json.loads(result.stdout)
+
+    assert payload["integration_mode"] == "merge-no-rebase"
+    assert "--integration-mode merge-no-rebase" in payload["landing_command"]
+    assert payload["actions"]["backup_tag"]["status"] == "dry-run"
+    assert payload["root_dirty_status"]["dirty"] is False
+    assert payload["worktrees"]
+
+
+def test_create_backup_tag_apply_is_reversible_safety_net(tmp_path: Path) -> None:
+    repo = init_repo(tmp_path)
+    tag = "backup/main-before-test"
+    result = run([
+        str(REPO / "scripts" / "cos-branch-worktree-closure"),
+        "--project-dir",
+        str(repo),
+        "--create-backup-tag",
+        "--backup-tag",
+        tag,
+        "--apply",
+        "--json",
+    ], repo)
+    payload = json.loads(result.stdout)
+
+    assert payload["actions"]["backup_tag"]["status"] == "created"
+    assert run(["git", "rev-parse", "--verify", tag], repo).returncode == 0
+
+
 def test_cos_router_exposes_branch_and_worktree_closure() -> None:
     help_text = run(["bash", str(REPO / "scripts" / "cos"), "--help"], REPO).stdout
     assert "cos branch closure" in help_text

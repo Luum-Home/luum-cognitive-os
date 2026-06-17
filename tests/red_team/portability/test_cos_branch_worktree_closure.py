@@ -23,6 +23,7 @@ def test_branch_worktree_skill_projected_to_cli_ide_surfaces() -> None:
         text = (REPO / rel).read_text(encoding="utf-8")
         assert "scripts/cos-branch-worktree-closure --json" in text
         assert "scripts/cos land" in text
+        assert "--integration-mode merge-no-rebase" in text
 
 
 def test_agents_md_foregrounds_protected_main_landing() -> None:

@@ -107,6 +107,31 @@ def parse_worktrees(project: Path) -> dict[str, str]:
     return worktrees
 
 
+def parse_all_worktrees(project: Path) -> list[dict[str, Any]]:
+    result = run_git(project, ["worktree", "list", "--porcelain"])
+    rows: list[dict[str, Any]] = []
+    current: dict[str, Any] = {}
+    for raw in result.stdout.splitlines():
+        if raw.startswith("worktree "):
+            if current:
+                rows.append(current)
+            current = {"path": raw.removeprefix("worktree ")}
+        elif raw.startswith("HEAD "):
+            current["head"] = raw.removeprefix("HEAD ")
+        elif raw.startswith("branch refs/heads/"):
+            current["branch"] = raw.removeprefix("branch refs/heads/")
+        elif raw == "bare":
+            current["bare"] = True
+        elif raw == "detached":
+            current["detached"] = True
+    if current:
+        rows.append(current)
+    for row in rows:
+        path = Path(str(row.get("path", "")))
+        row["dirty_status"] = dirty_status(path) if path.exists() else {"dirty": None, "entries": [], "reason": "missing-worktree"}
+    return rows
+
+
 def dirty_status(path: Path) -> dict[str, Any]:
     if not path.exists():
         return {"dirty": None, "entries": [], "reason": "missing-worktree"}
@@ -168,12 +193,14 @@ def classify_branch(project: Path, branch: str, main_ref: str, worktrees: dict[s
     }
 
 
-def inventory(project: Path, remote: str, main: str) -> dict[str, Any]:
+def inventory(project: Path, remote: str, main: str, integration_mode: str = "rebase-ff") -> dict[str, Any]:
     main_ref = f"{remote}/{main}"
     run_git(project, ["fetch", remote, main], timeout=120)
     current = current_branch(project)
     worktrees = parse_worktrees(project)
+    all_worktrees = parse_all_worktrees(project)
     stashes = stash_count(project)
+    root_status = dirty_status(project)
     locals_ = local_agent_branches(project)
     remotes = remote_agent_branches(project, remote)
     branches = [classify_branch(project, b, main_ref, worktrees, stashes, current) for b in locals_]
@@ -190,14 +217,23 @@ def inventory(project: Path, remote: str, main: str) -> dict[str, Any]:
         "main_ref": main_ref,
         "current_branch": current,
         "stash_count": stashes,
+        "root_dirty_status": root_status,
+        "worktrees": all_worktrees,
         "branches": branches,
         "remote_merged_branches": remote_merged,
         "local_merged_branches": local_merged,
         "blocker_count": len(blockers),
         "useful_unmerged_count": len(useful),
-        "landing_command": "scripts/cos land --validate '<targeted validation command>'",
+        "integration_mode": integration_mode,
+        "landing_command": landing_command(integration_mode),
+        "backup_tag_command": f"git tag backup/{main}-before-branch-worktree-closure-{utc_now().replace(':', '').replace('-', '').replace('Z', 'Z')} {main_ref}",
         "batch_remote_delete_command": batch_delete_command(remote, remote_merged),
     }
+
+
+def landing_command(integration_mode: str) -> str:
+    suffix = "" if integration_mode == "rebase-ff" else " --integration-mode merge-no-rebase"
+    return f"scripts/cos land{suffix} --validate '<targeted validation command>'"
 
 
 def batch_delete_command(remote: str, branches: list[str]) -> str | None:
@@ -225,7 +261,7 @@ def land_current_branch(project: Path, args: argparse.Namespace, report: dict[st
         return {"attempted": False, "status": "blocked", "reason": "current-branch-not-agent-branch", "branch": current}
     if row["classification"].startswith("blocked-"):
         return {"attempted": False, "status": "blocked", "reason": row["classification"], "branch": current}
-    command = f"scripts/cos land --repo {sh_quote(str(project))} --remote {sh_quote(args.remote)} --main {sh_quote(args.main)} --validate {sh_quote(args.validate)} --executed-lane {sh_quote(args.executed_lane)}"
+    command = f"scripts/cos land --repo {sh_quote(str(project))} --remote {sh_quote(args.remote)} --main {sh_quote(args.main)} --validate {sh_quote(args.validate)} --executed-lane {sh_quote(args.executed_lane)} --integration-mode {sh_quote(args.integration_mode)}"
     if not args.apply:
         return {"attempted": False, "status": "dry-run", "branch": current, "command": command}
     result = run_shell(project, command, timeout=args.timeout)
@@ -270,23 +306,39 @@ def cleanup_merged(project: Path, args: argparse.Namespace, report: dict[str, An
     return {"status": "ok", "local_deleted": local_deleted, "remote_deleted": remote_deleted}
 
 
+def create_backup_tag(project: Path, args: argparse.Namespace, report: dict[str, Any]) -> dict[str, Any]:
+    tag = args.backup_tag or f"backup/{args.main}-before-branch-worktree-closure-{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')}"
+    command = ["tag", tag, report["main_ref"]]
+    if not args.apply:
+        return {"attempted": False, "status": "dry-run", "tag": tag, "command": "git " + " ".join(command)}
+    exists = run_git(project, ["rev-parse", "--verify", tag])
+    if exists.returncode == 0:
+        return {"attempted": False, "status": "exists", "tag": tag}
+    result = run_git(project, command)
+    return {"attempted": True, "status": "created" if result.returncode == 0 else "failed", "tag": tag, "returncode": result.returncode, "stderr_tail": result.stderr[-1000:]}
+
+
 def command_run(args: argparse.Namespace) -> int:
     project = Path(args.project_dir).resolve()
-    report = inventory(project, args.remote, args.main)
+    report = inventory(project, args.remote, args.main, args.integration_mode)
     actions: dict[str, Any] = {}
+    if args.create_backup_tag:
+        actions["backup_tag"] = create_backup_tag(project, args, report)
     if args.land_current:
         actions["land_current"] = land_current_branch(project, args, report)
     if args.cleanup_merged:
-        refreshed = inventory(project, args.remote, args.main)
+        refreshed = inventory(project, args.remote, args.main, args.integration_mode)
         actions["cleanup_merged"] = cleanup_merged(project, args, refreshed)
-        report = inventory(project, args.remote, args.main) if args.apply else refreshed
+        report = inventory(project, args.remote, args.main, args.integration_mode) if args.apply else refreshed
     payload = {**report, "mode": "apply" if args.apply else "dry-run", "actions": actions}
     payload["receipt_path"] = str(write_receipt(project, payload))
     if args.json:
         print(json.dumps(payload, indent=2, sort_keys=True))
     else:
         print(f"branch-worktree-closure: current={payload['current_branch']} blockers={payload['blocker_count']} useful={payload['useful_unmerged_count']}")
+        print(f"integration: {payload['integration_mode']}")
         print(f"landing: {payload['landing_command']}")
+        print(f"backup: {payload['backup_tag_command']}")
         if payload.get("batch_remote_delete_command"):
             print(f"remote cleanup: {payload['batch_remote_delete_command']}")
         print(f"receipt: {payload['receipt_path']}")
@@ -304,7 +356,10 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--remote", default="origin")
     parser.add_argument("--main", default="main")
     parser.add_argument("--validate", default="scripts/cos-primitive-closure-check --json --strict")
+    parser.add_argument("--integration-mode", default="rebase-ff", choices=["rebase-ff", "merge-no-rebase"], help="how scripts/cos land should integrate useful branches")
     parser.add_argument("--executed-lane", default="branch-worktree-closure")
+    parser.add_argument("--create-backup-tag", action="store_true", help="create backup/<main>-before-branch-worktree-closure-* before apply operations")
+    parser.add_argument("--backup-tag", help="explicit backup tag name for --create-backup-tag")
     parser.add_argument("--land-current", action="store_true", help="land the current non-main agent branch through scripts/cos land")
     parser.add_argument("--cleanup-merged", action="store_true", help="delete merged local branches and matching remote branches in one batch push")
     parser.add_argument("--apply", action="store_true", help="perform landing/deletion; omitted means dry-run report only")
