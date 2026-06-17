@@ -440,7 +440,7 @@
         "doc": 159,
         "hook": 42,
         "rule": 6,
-        "script": 74,
+        "script": 75,
         "skill": 11,
         "test": 94
       },
@@ -1523,6 +1523,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_epistemic_review.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_init.py"
         },
         {
@@ -2092,7 +2096,7 @@
         "skill_consumers:11",
         "hook_consumers:42",
         "rule_consumers:6",
-        "script_consumers:74",
+        "script_consumers:75",
         "test_consumers:94",
         "doc_consumers:159",
         "config_consumers:24"
@@ -2109,7 +2113,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 410
+      "total_consumers": 411
     },
     {
       "confidence": "high",
@@ -2298,7 +2302,7 @@
         "doc": 84,
         "hook": 83,
         "rule": 7,
-        "script": 36,
+        "script": 37,
         "skill": 3,
         "test": 34
       },
@@ -3065,6 +3069,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_agent_supervision.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_build_self_knowledge.py"
         },
         {
@@ -3330,7 +3338,7 @@
         "skill_consumers:3",
         "hook_consumers:83",
         "rule_consumers:7",
-        "script_consumers:36",
+        "script_consumers:37",
         "test_consumers:34",
         "doc_consumers:84",
         "config_consumers:8"
@@ -3347,7 +3355,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 255
+      "total_consumers": 256
     },
     {
       "confidence": "high",
@@ -4636,12 +4644,12 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 18,
-        "doc": 183,
+        "doc": 184,
         "hook": 25,
         "rule": 3,
         "script": 57,
         "skill": 13,
-        "test": 150
+        "test": 151
       },
       "consumers": [
         {
@@ -4999,6 +5007,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-339-efficiency-operating-model-primitives.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-340-english-native-artifacts-multilingual-user-routing.md"
         },
         {
           "family": "doc",
@@ -6082,6 +6094,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cos_agent_supervision_primitives.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_cos_branch_worktree_closure.py"
         },
         {
@@ -6448,8 +6464,8 @@
         "hook_consumers:25",
         "rule_consumers:3",
         "script_consumers:57",
-        "test_consumers:150",
-        "doc_consumers:183",
+        "test_consumers:151",
+        "doc_consumers:184",
         "config_consumers:18"
       ],
       "family": "hooks",
@@ -6464,7 +6480,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 449
+      "total_consumers": 451
     },
     {
       "confidence": "high",

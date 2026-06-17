@@ -10004,7 +10004,7 @@
         "hook": 8,
         "rule": 3,
         "script": 81,
-        "skill": 17,
+        "skill": 19,
         "test": 71
       },
       "consumers": [
@@ -10846,11 +10846,19 @@
         },
         {
           "family": "skill",
+          "path": ".codex/skills/branch-worktree-closure/SKILL.md"
+        },
+        {
+          "family": "skill",
           "path": "skills/add-skill/SKILL.md"
         },
         {
           "family": "skill",
           "path": "skills/apply-improvements/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/branch-worktree-closure/SKILL.md"
         },
         {
           "family": "skill",
@@ -11200,7 +11208,7 @@
       "distribution": "lab",
       "evidence": [
         "lifecycle",
-        "skill_consumers:17",
+        "skill_consumers:19",
         "hook_consumers:8",
         "rule_consumers:3",
         "script_consumers:81",
@@ -11220,7 +11228,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 297
+      "total_consumers": 299
     },
     {
       "confidence": "high",

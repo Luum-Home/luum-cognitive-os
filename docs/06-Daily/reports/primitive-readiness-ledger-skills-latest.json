@@ -10,19 +10,82 @@
   "items": [
     {
       "confidence": "high",
-      "consumer_access_next_action": "keep install/profile/harness proof current",
-      "consumer_accessibility": "projected-consumer-surface",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 3,
-        "doc": 5,
-        "script": 2,
+        "config": 4,
         "skill": 1,
-        "test": 5
+        "test": 3
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/language-policy.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "skill",
+          "path": "skills/agent-run-supervision/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_weekly_multilingual_skill_coverage.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_agent_supervision_primitives.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_router.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:1",
+        "test_consumers:3",
+        "config_consumers:4"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": ".codex/skills/agent-run-supervision/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 8
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep install/profile/harness proof current",
+      "consumer_accessibility": "projected-consumer-surface",
+      "consumer_families": {
+        "config": 4,
+        "doc": 5,
+        "script": 2,
+        "skill": 1,
+        "test": 7
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/language-policy.yaml"
         },
         {
           "family": "config",
@@ -66,6 +129,10 @@
         },
         {
           "family": "test",
+          "path": "tests/audit/test_weekly_multilingual_skill_coverage.py"
+        },
+        {
+          "family": "test",
           "path": "tests/behavior/test_cos_cleanup_preserved_wip.py"
         },
         {
@@ -83,6 +150,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_cos_branch_worktree_closure.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_router.py"
         }
       ],
       "distribution": "team",
@@ -90,9 +161,9 @@
         "lifecycle",
         "skill_consumers:1",
         "script_consumers:2",
-        "test_consumers:5",
+        "test_consumers:7",
         "doc_consumers:5",
-        "config_consumers:3"
+        "config_consumers:4"
       ],
       "family": "skills",
       "lifecycle_id": ".codex/skills/branch-worktree-closure/SKILL.md",
@@ -104,7 +175,7 @@
       "supported_harnesses": [
         "codex"
       ],
-      "total_consumers": 16
+      "total_consumers": 19
     },
     {
       "confidence": "medium",
@@ -301,6 +372,81 @@
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
       "total_consumers": 28
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 4,
+        "script": 1,
+        "skill": 1,
+        "test": 4
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/language-policy.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_epistemic_review.py"
+        },
+        {
+          "family": "skill",
+          "path": "skills/epistemic-review/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_weekly_multilingual_skill_coverage.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_epistemic_review_primitives.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_epistemic_review.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_router.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "skill_consumers:1",
+        "script_consumers:1",
+        "test_consumers:4",
+        "config_consumers:4"
+      ],
+      "family": "skills",
+      "lifecycle_id": ".codex/skills/epistemic-review/SKILL.md",
+      "lifecycle_state": "candidate",
+      "next_action": "keep maintainer-only or add explicit export path",
+      "path": ".codex/skills/epistemic-review/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "opencode",
+        "shell"
+      ],
+      "total_consumers": 10
     },
     {
       "confidence": "high",
@@ -1514,6 +1660,71 @@
       "total_consumers": 20
     },
     {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 4,
+        "skill": 1,
+        "test": 3
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/language-policy.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "skill",
+          "path": ".codex/skills/agent-run-supervision/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_weekly_multilingual_skill_coverage.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_agent_supervision_primitives.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_router.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "skill_consumers:1",
+        "test_consumers:3",
+        "config_consumers:4"
+      ],
+      "family": "skills",
+      "lifecycle_id": "skills/agent-run-supervision/SKILL.md",
+      "lifecycle_state": "candidate",
+      "next_action": "keep maintainer-only or add explicit export path",
+      "path": "skills/agent-run-supervision/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "opencode",
+        "shell"
+      ],
+      "total_consumers": 8
+    },
+    {
       "confidence": "medium",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
@@ -1840,7 +2051,8 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 3
+        "config": 4,
+        "test": 2
       },
       "consumers": [
         {
@@ -1849,17 +2061,30 @@
         },
         {
           "family": "config",
+          "path": "manifests/language-policy.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_weekly_multilingual_skill_coverage.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_router.py"
         }
       ],
       "distribution": "maintainer",
       "evidence": [
         "lifecycle",
-        "config_consumers:3"
+        "test_consumers:2",
+        "config_consumers:4"
       ],
       "family": "skills",
       "lifecycle_id": "skills/artifact-workflow/SKILL.md",
@@ -1873,7 +2098,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 3
+      "total_consumers": 6
     },
     {
       "confidence": "high",
@@ -2012,16 +2237,20 @@
       "consumer_access_next_action": "keep install/profile/harness proof current",
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
-        "config": 3,
+        "config": 4,
         "doc": 5,
         "script": 2,
         "skill": 1,
-        "test": 5
+        "test": 7
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/language-policy.yaml"
         },
         {
           "family": "config",
@@ -2065,6 +2294,10 @@
         },
         {
           "family": "test",
+          "path": "tests/audit/test_weekly_multilingual_skill_coverage.py"
+        },
+        {
+          "family": "test",
           "path": "tests/behavior/test_cos_cleanup_preserved_wip.py"
         },
         {
@@ -2082,6 +2315,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_cos_branch_worktree_closure.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_router.py"
         }
       ],
       "distribution": "team",
@@ -2089,9 +2326,9 @@
         "lifecycle",
         "skill_consumers:1",
         "script_consumers:2",
-        "test_consumers:5",
+        "test_consumers:7",
         "doc_consumers:5",
-        "config_consumers:3"
+        "config_consumers:4"
       ],
       "family": "skills",
       "lifecycle_id": "skills/branch-worktree-closure/SKILL.md",
@@ -2129,7 +2366,7 @@
         "goose",
         "aider"
       ],
-      "total_consumers": 16
+      "total_consumers": 19
     },
     {
       "confidence": "high",
@@ -5122,6 +5359,81 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 4,
+        "script": 1,
+        "skill": 1,
+        "test": 4
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/language-policy.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_epistemic_review.py"
+        },
+        {
+          "family": "skill",
+          "path": ".codex/skills/epistemic-review/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_weekly_multilingual_skill_coverage.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos_epistemic_review_primitives.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_epistemic_review.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_router.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "skill_consumers:1",
+        "script_consumers:1",
+        "test_consumers:4",
+        "config_consumers:4"
+      ],
+      "family": "skills",
+      "lifecycle_id": "skills/epistemic-review/SKILL.md",
+      "lifecycle_state": "candidate",
+      "next_action": "keep maintainer-only or add explicit export path",
+      "path": "skills/epistemic-review/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "opencode",
+        "shell"
+      ],
+      "total_consumers": 10
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 4,
         "doc": 2,
         "test": 3
       },
@@ -5711,15 +6023,19 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 4,
+        "config": 5,
         "doc": 5,
         "hook": 1,
-        "test": 3
+        "test": 5
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/language-policy.yaml"
         },
         {
           "family": "config",
@@ -5759,6 +6075,10 @@
         },
         {
           "family": "test",
+          "path": "tests/audit/test_weekly_multilingual_skill_coverage.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_os_only_missing_proof_smoke.py"
         },
         {
@@ -5768,15 +6088,19 @@
         {
           "family": "test",
           "path": "tests/unit/test_cross_cli_ide_projection.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_router.py"
         }
       ],
       "distribution": "maintainer",
       "evidence": [
         "lifecycle",
         "hook_consumers:1",
-        "test_consumers:3",
+        "test_consumers:5",
         "doc_consumers:5",
-        "config_consumers:4"
+        "config_consumers:5"
       ],
       "family": "skills",
       "lifecycle_id": "skills/graphify-query/SKILL.md",
@@ -5814,7 +6138,7 @@
         "goose",
         "aider"
       ],
-      "total_consumers": 13
+      "total_consumers": 16
     },
     {
       "confidence": "high",
@@ -6383,13 +6707,18 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 3,
-        "doc": 1
+        "config": 4,
+        "doc": 1,
+        "test": 2
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/language-policy.yaml"
         },
         {
           "family": "config",
@@ -6402,13 +6731,22 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/lean-skill-optimization.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_weekly_multilingual_skill_coverage.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_router.py"
         }
       ],
       "distribution": "maintainer",
       "evidence": [
         "lifecycle",
+        "test_consumers:2",
         "doc_consumers:1",
-        "config_consumers:3"
+        "config_consumers:4"
       ],
       "family": "skills",
       "lifecycle_id": "skills/lean-code/SKILL.md",
@@ -6422,7 +6760,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 4
+      "total_consumers": 7
     },
     {
       "confidence": "high",
@@ -13521,17 +13859,21 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 3,
+        "config": 4,
         "doc": 27,
         "rule": 5,
         "script": 1,
         "skill": 1,
-        "test": 5
+        "test": 6
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/language-policy.yaml"
         },
         {
           "family": "config",
@@ -13679,6 +14021,10 @@
         },
         {
           "family": "test",
+          "path": "tests/audit/test_weekly_multilingual_skill_coverage.py"
+        },
+        {
+          "family": "test",
           "path": "tests/behavior/test_singularity.py"
         },
         {
@@ -13704,9 +14050,9 @@
         "skill_consumers:1",
         "rule_consumers:5",
         "script_consumers:1",
-        "test_consumers:5",
+        "test_consumers:6",
         "doc_consumers:27",
-        "config_consumers:3"
+        "config_consumers:4"
       ],
       "family": "skills",
       "lifecycle_id": "skills/skill-creator/SKILL.md",
@@ -13744,21 +14090,26 @@
         "goose",
         "aider"
       ],
-      "total_consumers": 42
+      "total_consumers": 44
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 3,
+        "config": 4,
         "doc": 4,
-        "script": 1
+        "script": 1,
+        "test": 2
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/language-policy.yaml"
         },
         {
           "family": "config",
@@ -13787,14 +14138,23 @@
         {
           "family": "script",
           "path": "scripts/cos_lean_skillopt.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_weekly_multilingual_skill_coverage.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_router.py"
         }
       ],
       "distribution": "maintainer",
       "evidence": [
         "lifecycle",
         "script_consumers:1",
+        "test_consumers:2",
         "doc_consumers:4",
-        "config_consumers:3"
+        "config_consumers:4"
       ],
       "family": "skills",
       "lifecycle_id": "skills/skill-optimization/SKILL.md",
@@ -13808,18 +14168,18 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 8
+      "total_consumers": 11
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 9,
+        "config": 10,
         "doc": 6,
         "hook": 1,
         "script": 5,
-        "test": 9
+        "test": 10
       },
       "consumers": [
         {
@@ -13841,6 +14201,10 @@
         {
           "family": "config",
           "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/language-policy.yaml"
         },
         {
           "family": "config",
@@ -13908,6 +14272,10 @@
         },
         {
           "family": "test",
+          "path": "tests/audit/test_weekly_multilingual_skill_coverage.py"
+        },
+        {
+          "family": "test",
           "path": "tests/integration/test_quality_duplicates_harness_triggers.py"
         },
         {
@@ -13948,9 +14316,9 @@
         "lifecycle",
         "hook_consumers:1",
         "script_consumers:5",
-        "test_consumers:9",
+        "test_consumers:10",
         "doc_consumers:6",
-        "config_consumers:9"
+        "config_consumers:10"
       ],
       "family": "skills",
       "lifecycle_id": "skills/so-impact-eval/SKILL.md",
@@ -13964,7 +14332,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 30
+      "total_consumers": 32
     },
     {
       "confidence": "high",
@@ -14948,25 +15316,25 @@
   "schema_version": 1,
   "summary": {
     "confidence": {
-      "high": 112,
+      "high": 116,
       "medium": 12
     },
     "consumer_accessibility": {
-      "lifecycle-declared-maintainer": 102,
+      "lifecycle-declared-maintainer": 105,
       "projected-consumer-surface": 9,
       "repo-skill-not-projectable": 7,
-      "so-local-only": 6
+      "so-local-only": 7
     },
     "roles": {
-      "compatibility-wrapper": 59,
+      "compatibility-wrapper": 63,
       "lab": 51,
       "project-extension": 4,
       "shared-agent-tool": 2,
       "so-maintainer": 8
     },
-    "total": 124,
+    "total": 128,
     "without_consumers": 1,
-    "without_lifecycle": 13
+    "without_lifecycle": 14
   },
   "target_family": "skills"
 }
