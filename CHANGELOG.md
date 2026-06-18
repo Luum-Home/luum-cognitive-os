@@ -5,6 +5,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.29.35] - 2026-06-18 — "Iroh Optional Transport Adapter"
+
+### Added
+- Added ADR-341 and the optional Iroh transport adapter surface: `cos-iroh-doctor`, `cos-iroh-ping`, and `cos-agent-bus-iroh-adapter`.
+- Added the explicit `iroh` dependency-install profile while keeping peer-to-peer transport tooling out of the default profile.
+
+### Security
+- Kept Iroh support disabled by default and limited the current agent-bus bridge to heartbeat, status, and message receipts with peer-key allowlists and no remote execution.
+
+### Validation
+- Added unit, opt-in integration, and red-team coverage for key parsing, config defaults, local endpoint contract smokes, allowlist enforcement, and destructive-action rejection.
+- Assigned the Iroh integration smoke to the `integration-runtime` shard so release lane coverage remains complete.
+
 ## [0.29.34] - 2026-06-18 — "Auto Update Version Guard"
 
 ### Added
