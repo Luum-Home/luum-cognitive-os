@@ -108,6 +108,7 @@ lanes:
     - tests/integration/test_opencode_harness_adapter_dispatch.py
     - tests/integration/test_agent_team_cross_harness_contract.py
     - tests/integration/test_cos_test_workers.py
+    - tests/integration/test_cos_iroh_local_endpoints.py
     parallel: false
     stateful_reason: Runtime/provider/harness shard; exercises daemons, dispatch,
       harness adapters, and worker policy.
