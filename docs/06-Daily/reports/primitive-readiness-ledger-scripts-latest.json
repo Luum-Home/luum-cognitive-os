@@ -16401,7 +16401,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 3,
+        "config": 4,
         "doc": 1,
         "script": 1
       },
@@ -16409,6 +16409,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/dependencies.yaml"
         },
         {
           "family": "config",
@@ -16432,7 +16436,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos_iroh.py",
         "doc_consumers:1",
-        "config_consumers:3",
+        "config_consumers:4",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -16452,7 +16456,7 @@
         "opencode",
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": "scripts/cos_iroh.py"
     },
     {
@@ -20835,7 +20839,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 3,
-        "doc": 9,
+        "doc": 10,
         "script": 2,
         "test": 3
       },
@@ -20878,6 +20882,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-341-iroh-optional-transport-adapter.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/primitive-fitness-evaluation-contract.md"
         },
         {
@@ -20912,7 +20920,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:3",
-        "doc_consumers:9",
+        "doc_consumers:10",
         "config_consumers:3",
         "script_consumers:2"
       ],
@@ -20928,7 +20936,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 17,
+      "total_consumers": 18,
       "wrapper_for": null
     },
     {
@@ -27567,7 +27575,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 3,
+        "config": 4,
         "doc": 1,
         "script": 1,
         "test": 1
@@ -27576,6 +27584,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/dependencies.yaml"
         },
         {
           "family": "config",
@@ -27604,7 +27616,7 @@
         "wrapper_for:scripts/cos_iroh.py",
         "test_consumers:1",
         "doc_consumers:1",
-        "config_consumers:3",
+        "config_consumers:4",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -27624,7 +27636,7 @@
         "opencode",
         "shell"
       ],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": "scripts/cos_iroh.py"
     },
     {
@@ -27632,7 +27644,7 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 3,
+        "config": 4,
         "doc": 1,
         "script": 1,
         "test": 2
@@ -27641,6 +27653,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/dependencies.yaml"
         },
         {
           "family": "config",
@@ -27673,7 +27689,7 @@
         "wrapper_for:scripts/cos_iroh.py",
         "test_consumers:2",
         "doc_consumers:1",
-        "config_consumers:3",
+        "config_consumers:4",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -27693,7 +27709,7 @@
         "opencode",
         "shell"
       ],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": "scripts/cos_iroh.py"
     },
     {

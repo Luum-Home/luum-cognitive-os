@@ -30,6 +30,7 @@ PROFILE_ALIASES = {
     "headless": "headless-instance",
     "headless-instance": "headless-instance",
     "rust-transpiler-lab": "rust-transpiler-lab",
+    "iroh": "iroh",
 }
 AUTH_BOUND_TOOLS = {"gh", "codex", "claude", "gemini", "opencode"}
 MANUAL_MANAGERS = {"manual", "unsupported"}
