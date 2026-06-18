@@ -14,7 +14,7 @@ usage() {
 Usage: scripts/cos-test-laptop-bg [--json] [--dry-run] [--log-dir DIR] [-- COMMAND...]
 
 Starts a validation command with nohup in the repository root and returns
-immediately. Defaults to: make test-laptop
+immediately. Defaults to: bash -lc 'make test-laptop'
 
 Environment:
   COS_TEST_BG_LOG_DIR   Override log directory.
@@ -61,7 +61,7 @@ if [[ ${#CMD[@]} -eq 0 ]]; then
   if [[ -n "${COS_TEST_BG_COMMAND:-}" ]]; then
     CMD=(bash -lc "$COS_TEST_BG_COMMAND")
   else
-    CMD=(make test-laptop)
+    CMD=(bash -lc "make test-laptop")
   fi
 fi
 
