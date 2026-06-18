@@ -110,6 +110,47 @@ def parse_now(value: str | None) -> datetime:
     return parsed.astimezone(timezone.utc)
 
 
+def _read_install_source(project_dir: Path) -> Path | None:
+    """Return Cognitive OS source path recorded in a consumer install, if any."""
+    meta = project_dir / ".cognitive-os" / "install-meta.json"
+    try:
+        data = json.loads(meta.read_text())
+    except (FileNotFoundError, json.JSONDecodeError, OSError):
+        return None
+    source = data.get("source") if isinstance(data, dict) else None
+    if not isinstance(source, str) or not source.strip():
+        return None
+    return Path(source).expanduser().resolve()
+
+
+def _candidate_lib_roots(project_dir: Path) -> list[Path]:
+    """Return possible repository roots that can provide the local ``lib`` package."""
+    script_root = Path(__file__).resolve().parents[1]
+    roots = [project_dir.resolve(), script_root]
+    install_source = _read_install_source(project_dir)
+    if install_source is not None:
+        roots.append(install_source)
+
+    unique: list[Path] = []
+    seen: set[str] = set()
+    for root in roots:
+        key = str(root)
+        if key not in seen:
+            unique.append(root)
+            seen.add(key)
+    return unique
+
+
+def ensure_local_lib_importable(project_dir: Path) -> None:
+    """Put the repo that owns ``lib`` on sys.path for source and consumer runs."""
+    for root in reversed(_candidate_lib_roots(project_dir)):
+        if (root / "lib" / "engram_client.py").exists():
+            root_text = str(root)
+            if root_text in sys.path:
+                sys.path.remove(root_text)
+            sys.path.insert(0, root_text)
+
+
 def read_json(path: Path, warnings: list[str]) -> Any | None:
     """Best-effort JSON reader."""
     try:
@@ -528,7 +569,7 @@ def collect_engram_items(project_dir: Path, warnings: list[str], enabled: bool) 
         warnings.append("Engram search skipped by --no-engram")
         return []
     try:
-        sys.path.insert(0, str(project_dir))
+        ensure_local_lib_importable(project_dir)
         from lib.engram_client import search_observations  # type: ignore[import]
     except Exception as exc:  # pragma: no cover - import environment dependent
         warnings.append(f"Engram search unavailable: {exc}")
@@ -720,7 +761,7 @@ def write_outputs(project_dir: Path, session_id: str, markdown: str, result: Bac
 def sync_engram(project_dir: Path, markdown: str, date: str, result: BacklogResult) -> bool:
     """Best-effort Engram upsert via local CLI wrapper when available."""
     try:
-        sys.path.insert(0, str(project_dir))
+        ensure_local_lib_importable(project_dir)
         from lib.engram_client import save_observation  # type: ignore[import]
     except Exception:
         return False

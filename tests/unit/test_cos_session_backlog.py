@@ -220,3 +220,42 @@ def test_session_backlog_skill_points_to_portable_reconciler() -> None:
     assert '--project-dir "$PROJECT_DIR" --session-id "$SESSION_ID"' in skill
     assert "COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR" in skill
     assert 'platforms: ["codex", "claude-code", "generic-cli"]' in skill
+
+
+def test_local_lib_resolution_uses_install_meta_source_for_consumer_script(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Consumer-installed scripts can import the OS source lib via install metadata."""
+    consumer = tmp_path / "consumer"
+    source = tmp_path / "source-os"
+    (consumer / "scripts").mkdir(parents=True)
+    (consumer / ".cognitive-os").mkdir(parents=True)
+    (source / "lib").mkdir(parents=True)
+    (consumer / ".cognitive-os" / "install-meta.json").write_text(json.dumps({"source": str(source)}))
+    (source / "lib" / "engram_client.py").write_text("def search_observations(*args, **kwargs): return []\n")
+
+    monkeypatch.setattr(cos_session_backlog, "__file__", str(consumer / "scripts" / "cos_session_backlog.py"))
+    monkeypatch.setattr(sys, "path", [])
+
+    cos_session_backlog.ensure_local_lib_importable(consumer)
+
+    assert sys.path == [str(source.resolve())]
+
+
+def test_local_lib_resolution_preserves_source_repo_usage(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Source-repo execution still imports lib from the source repo itself."""
+    source = tmp_path / "source-os"
+    (source / "scripts").mkdir(parents=True)
+    (source / "lib").mkdir(parents=True)
+    (source / "lib" / "engram_client.py").write_text("def search_observations(*args, **kwargs): return []\n")
+
+    monkeypatch.setattr(cos_session_backlog, "__file__", str(source / "scripts" / "cos_session_backlog.py"))
+    monkeypatch.setattr(sys, "path", [])
+
+    cos_session_backlog.ensure_local_lib_importable(source)
+
+    assert sys.path == [str(source.resolve())]
