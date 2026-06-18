@@ -98,7 +98,7 @@ fi
 # Prefer git tag (most accurate), then VERSION file, then short SHA
 cos_version="unknown"
 if git -C "$COS_SOURCE_DIR" rev-parse --git-dir >/dev/null 2>&1; then
-  cos_version=$(cd "$COS_SOURCE_DIR" && git describe --tags --abbrev=0 2>/dev/null | sed 's/^v//' || true)
+  cos_version=$(cd "$COS_SOURCE_DIR" && git describe --tags --abbrev=0 --match 'v[0-9]*.[0-9]*.[0-9]*' 2>/dev/null | sed 's/^v//' || true)
 fi
 if [ -z "$cos_version" ] || [ "$cos_version" = "unknown" ]; then
   if [ -f "$COS_SOURCE_DIR/VERSION" ]; then
