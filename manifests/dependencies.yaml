@@ -646,6 +646,36 @@ tools:
   scope: system
   syncable: 'no'
   auth_bound: false
+- name: iroh
+  criticality: optional
+  check: iroh --version
+  install:
+    macos:
+      manager: cargo
+      command: cargo install iroh
+    linux:
+      manager: cargo
+      command: cargo install iroh
+    windows_wsl:
+      manager: cargo
+      command: cargo install iroh
+    windows:
+      manager: cargo
+      command: cargo install iroh
+  enabled_when: COS_IROH_ENABLED=1 or .cognitive-os/iroh/config.json enabled=true
+  degraded_behavior: Optional Iroh transport primitives stay disabled or use local-loopback contract self-tests; no real Iroh wire transport is claimed.
+  consumed_by:
+  - scripts/cos-iroh-doctor
+  - scripts/cos-iroh-ping
+  - scripts/cos-agent-bus-iroh-adapter
+  category: cli
+  profiles:
+  - iroh
+  - full
+  scope: user
+  syncable: 'no'
+  auth_bound: false
+  manual_url: https://www.iroh.computer/
 - name: node
   criticality: recommended
   check: node --version
