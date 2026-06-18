@@ -183,6 +183,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [335](ADR-335-generic-task-closure-ledger-gate.md) | Generic Task Closure Ledger Gate | accepted | implemented | 2026-06-06 | Accepted — implemented on 2026-06-06. |
 | [336](ADR-336-agent-loop-engineering-runtime.md) | Agent Loop Engineering Runtime | accepted | implemented | 2026-06-13 | Cognitive OS already had bounded reflection, goal-state gates, flicker reports, and task closure checks, but agent loops were not represented as a first-class p |
 | [337](ADR-337-agent-process-loop-contract-layer.md) | Agent Process Loop Contract Layer | accepted | implemented | 2026-06-13 | Accepted — implemented on 2026-06-13. |
+| [341](ADR-341-iroh-optional-transport-adapter.md) | Iroh Optional Transport Adapter | accepted | partial | 2026-06-18 | Accepted. Initial adapter is optional, disabled by default, and limited to safe local contract smokes until a real Iroh backend is promoted. |
 | [340](ADR-340-english-native-artifacts-multilingual-user-routing.md) | English-Native Artifacts with Multilingual User-Facing Routing | accepted | implemented | 2026-06-17 | Accepted — 2026-06-17. Implemented by the language policy manifest and audit ratchets listed in this ADR. |
 
 ### Active / Partial (122)

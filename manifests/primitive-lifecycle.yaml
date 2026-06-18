@@ -25617,3 +25617,107 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: instructional
   metrics_file: none
+- id: scripts/cos-iroh-doctor
+  kind: script
+  owner_adr: ADR-341
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: runtime-transport
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - opencode
+  - shell
+  projection_targets:
+  - scripts/cos-iroh-doctor
+  - scripts/cos_iroh.py
+  runtime_projection: false
+  behavior_evidence: Optional Iroh readiness doctor that detects dependency availability, relay policy, local keypair status, and local loopback contract connectivity without requiring Iroh.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_iroh.py tests/red_team/portability/test_cos_iroh_security.py -q
+  - COS_IROH_INTEGRATION=1 .venv/bin/python -m pytest tests/integration/test_cos_iroh_local_endpoints.py -q
+  rollback_or_repair_command: Remove Iroh scripts, ADR-341, lifecycle rows, behavior evidence rows, and generated overlays.
+  sunset_criteria: Promote only after real Iroh backend evidence covers two local endpoints, relay policy, and peer allowlist enforcement.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_on_pass_exit_2_on_blocked
+  metrics_file: .cognitive-os/iroh/*.json
+- id: scripts/cos-iroh-ping
+  kind: script
+  owner_adr: ADR-341
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: runtime-transport
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - opencode
+  - shell
+  projection_targets:
+  - scripts/cos-iroh-ping
+  - scripts/cos_iroh.py
+  runtime_projection: false
+  behavior_evidence: Peer-key ping contract with deterministic local-loopback self-test; real Iroh wire transport remains future work.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_iroh.py tests/integration/test_cos_iroh_local_endpoints.py -q
+  rollback_or_repair_command: Remove Iroh scripts, ADR-341, lifecycle rows, behavior evidence rows, and generated overlays.
+  sunset_criteria: Promote only after real Iroh endpoint ping is implemented behind explicit opt-in.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_on_pass_exit_2_on_blocked
+  metrics_file: none
+- id: scripts/cos-agent-bus-iroh-adapter
+  kind: script
+  owner_adr: ADR-341
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: runtime-transport
+  risk_class: medium
+  supported_harnesses:
+  - codex
+  - claude
+  - opencode
+  - shell
+  projection_targets:
+  - scripts/cos-agent-bus-iroh-adapter
+  - scripts/cos_iroh.py
+  runtime_projection: false
+  behavior_evidence: Minimal append-only agent bus bridge for heartbeat, status, and message receipts with peer allowlist and destructive action rejection.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_iroh.py tests/red_team/portability/test_cos_iroh_security.py -q
+  rollback_or_repair_command: Remove Iroh scripts, ADR-341, lifecycle rows, behavior evidence rows, and generated overlays.
+  sunset_criteria: Promote only after real Iroh transport preserves no-remote-execution and allowlist guarantees.
+  docs_claim_level: advisory
+  exit_behavior: exit_0_on_pass_exit_2_on_blocked
+  metrics_file: .cognitive-os/iroh/agent-bus.jsonl
+- id: scripts/cos_iroh.py
+  kind: script-lib
+  owner_adr: ADR-341
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: runtime-transport
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - opencode
+  - shell
+  projection_targets:
+  - scripts/cos_iroh.py
+  runtime_projection: false
+  behavior_evidence: Shared optional-Iroh contract implementation for config parsing, key parsing, doctor, ping, and safe agent-bus receipts.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_cos_iroh.py tests/red_team/portability/test_cos_iroh_security.py -q
+  rollback_or_repair_command: Remove wrappers and shared library after replacing optional Iroh transport contract.
+  sunset_criteria: Merge into a typed transport adapter package if multiple optional transports share a common bus interface.
+  docs_claim_level: advisory
+  exit_behavior: library-cli
+  metrics_file: multiple .cognitive-os/iroh receipts

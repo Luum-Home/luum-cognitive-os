@@ -5372,6 +5372,30 @@ evidence:
   tests: *agent_supervision_tests
   rationale: Multilingual conversation skill routes Spanish, English, and Portuguese agent status/monitoring/stuck/dead requests to portable wrappers.
 
+- primitive: scripts/cos-iroh-doctor
+  harnesses:
+  - shell-ci
+  tests: &cos_iroh_tests
+  - tests/unit/test_cos_iroh.py
+  - tests/red_team/portability/test_cos_iroh_security.py
+  - tests/integration/test_cos_iroh_local_endpoints.py
+  rationale: The doctor reports dependency availability, disabled-by-default config, local keypair state, relay policy, and local contract connectivity without requiring real Iroh.
+- primitive: scripts/cos-iroh-ping
+  harnesses:
+  - shell-ci
+  tests: *cos_iroh_tests
+  rationale: The ping wrapper exercises a two-endpoint local contract and keeps real Iroh wire transport out of the claim boundary.
+- primitive: scripts/cos-agent-bus-iroh-adapter
+  harnesses:
+  - shell-ci
+  tests: *cos_iroh_tests
+  rationale: The bus adapter only accepts heartbeat, status, and message events, rejects destructive actions, and enforces peer allowlists before ledger writes.
+- primitive: scripts/cos_iroh.py
+  harnesses:
+  - shell-ci
+  tests: *cos_iroh_tests
+  rationale: Shared implementation is covered for key parsing, config defaults, self-test connectivity, allowlists, and safe writes.
+
 patterns:
 - pattern: tests/**
   behavior_proven: true
