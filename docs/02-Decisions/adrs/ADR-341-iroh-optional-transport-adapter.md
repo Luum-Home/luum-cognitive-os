@@ -40,6 +40,20 @@ The adapter is disabled by default. Operators must explicitly enable it with
 configuration or `COS_IROH_ENABLED=1`. Public relay use is not enabled by
 default.
 
+## Installation profile
+
+`scripts/cos-deps-install.sh --profile iroh --dry-run` reports the optional
+Iroh transport prerequisites. The profile includes `python3`, `cargo`, and an
+`iroh` manifest entry. The `iroh` entry is intentionally manual/advisory until
+COS promotes a concrete real-Iroh backend and supported install target.
+
+`--profile full` also includes the `iroh` manifest entry so complete SO
+dependency planning surfaces the optional transport, while the default profile
+does not install or prompt for peer-to-peer transport tooling.
+
+This preserves the claim boundary: local-loopback contract tests prove the COS
+adapter safety envelope, not real Iroh wire connectivity.
+
 ## Non-goals
 
 - No remote shell, command execution, file mutation, deployment, release, or git

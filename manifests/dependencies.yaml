@@ -651,17 +651,21 @@ tools:
   check: iroh --version
   install:
     macos:
-      manager: cargo
-      command: cargo install iroh
+      manager: manual
+      url: https://www.iroh.computer/docs
+      notes: Iroh 1.0 is consumed by COS through an optional adapter contract. Install a supported Iroh CLI or language binding only when promoting a real backend; the current COS slice uses local-loopback contract tests.
     linux:
-      manager: cargo
-      command: cargo install iroh
+      manager: manual
+      url: https://www.iroh.computer/docs
+      notes: Iroh 1.0 is consumed by COS through an optional adapter contract. Install a supported Iroh CLI or language binding only when promoting a real backend; the current COS slice uses local-loopback contract tests.
     windows_wsl:
-      manager: cargo
-      command: cargo install iroh
+      manager: manual
+      url: https://www.iroh.computer/docs
+      notes: Iroh 1.0 is consumed by COS through an optional adapter contract. Install a supported Iroh CLI or language binding only when promoting a real backend; the current COS slice uses local-loopback contract tests.
     windows:
-      manager: cargo
-      command: cargo install iroh
+      manager: manual
+      url: https://www.iroh.computer/docs
+      notes: Iroh 1.0 is consumed by COS through an optional adapter contract. Install a supported Iroh CLI or language binding only when promoting a real backend; the current COS slice uses local-loopback contract tests.
   enabled_when: COS_IROH_ENABLED=1 or .cognitive-os/iroh/config.json enabled=true
   degraded_behavior: Optional Iroh transport primitives stay disabled or use local-loopback contract self-tests; no real Iroh wire transport is claimed.
   consumed_by:
@@ -675,7 +679,7 @@ tools:
   scope: user
   syncable: 'no'
   auth_bound: false
-  manual_url: https://www.iroh.computer/
+  manual_url: https://www.iroh.computer/docs
 - name: node
   criticality: recommended
   check: node --version
@@ -2255,6 +2259,7 @@ profiles:
     - git-filter-repo
     - go
     - cargo
+    - iroh
     - node
     - npm
     - npx
@@ -2310,6 +2315,14 @@ profiles:
     - py2many
     - tnk
     - depyler
+    mcp_servers_recommended: []
+  iroh:
+    python_groups: []
+    tools_required:
+    - python3
+    - cargo
+    tools_recommended:
+    - iroh
     mcp_servers_recommended: []
   dev:
     python_groups:

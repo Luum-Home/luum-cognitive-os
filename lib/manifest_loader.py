@@ -24,7 +24,7 @@ except Exception:  # pragma: no cover - stdlib-only consumer doctor fallback
 
 SCHEMA_VERSION = 1
 VALID_CRITICALITIES = {"required", "recommended", "optional"}
-VALID_PROFILES = {"default", "dev", "ci", "full", "services", "security", "headless-instance", "rust-transpiler-lab"}
+VALID_PROFILES = {"default", "dev", "ci", "full", "services", "security", "headless-instance", "rust-transpiler-lab", "iroh"}
 VALID_TOOL_CATEGORIES = {"runtime", "package-manager", "cli", "ai-cli", "desktop-app", "container", "security", "mcp", "service", "os-primitive"}
 VALID_SCOPES = {"project", "user", "system"}
 VALID_SYNCABLE = {"yes", "no", "state-only", "config-only"}

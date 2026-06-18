@@ -112,3 +112,21 @@ def test_windows_platform_is_reportable_without_credential_copy() -> None:
     assert payload["platform"] == "windows"
     assert payload["credential_policy"] == "never-copy-or-read-credential-stores"
     assert not payload["failed"]
+
+
+def test_iroh_profile_reports_optional_transport_prerequisites_without_claiming_real_backend() -> None:
+    payload = run_install("--profile", "iroh", "--platform", "macos", "--dry-run", "--json")
+    rows = {row["name"]: row for bucket in ("already_present", "installable", "manual") for row in payload[bucket]}
+
+    assert payload["manifest_profile"] == "iroh"
+    assert {"python3", "cargo", "iroh"}.issubset(rows)
+    assert rows["iroh"]["install_manager"] == "manual"
+    assert rows["iroh"]["action"] == "manual"
+    assert "local-loopback contract tests" in rows["iroh"]["notes"]
+
+
+def test_full_profile_includes_optional_iroh_transport_tooling() -> None:
+    payload = run_install("--profile", "full", "--platform", "macos", "--dry-run", "--json")
+    names = {row["name"] for bucket in ("already_present", "installable", "manual", "auth_bound", "platform_builtin") for row in payload[bucket]}
+
+    assert "iroh" in names
