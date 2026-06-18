@@ -354,7 +354,7 @@ class TestAutoUpdate:
         project_dir.mkdir()
         (project_dir / ".cognitive-os").mkdir()
         current_version = subprocess.run(
-            ["git", "describe", "--tags", "--abbrev=0"],
+            ["git", "describe", "--tags", "--abbrev=0", "--match", "v[0-9]*.[0-9]*.[0-9]*"],
             cwd=PROJECT_ROOT,
             text=True,
             capture_output=True,
@@ -382,6 +382,13 @@ class TestAutoUpdate:
         assert result.returncode == 0
         assert "OK   my-project" in result.stdout
         assert "WOULD UPDATE my-project" not in result.stdout
+
+
+    def test_auto_update_version_detection_ignores_backup_tags(self):
+        """Auto-update must not treat backup/* safety tags as release versions."""
+        content = AUTO_UPDATE_SCRIPT.read_text(encoding="utf-8")
+        assert "--match 'v[0-9]*.[0-9]*.[0-9]*'" in content
+        assert "git describe --tags --abbrev=0 --match" in content
 
     def test_skips_nonexistent_project(self, tmp_path):
         registry_file = _create_registry(tmp_path, [{
