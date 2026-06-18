@@ -116,7 +116,13 @@ fi
     printf "[cos-test-laptop-bg] command:"
     printf " %q" "$@"
     echo
-    exec "$@"
+    set +e
+    "$@"
+    rc=$?
+    set -e
+    echo "[cos-test-laptop-bg] completed_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+    echo "[cos-test-laptop-bg] exit_code=$rc"
+    exit "$rc"
   ' bash "$ROOT" "${CMD[@]}" > "$LOG_FILE" 2>&1 &
   echo $! > "$PID_FILE"
 )
