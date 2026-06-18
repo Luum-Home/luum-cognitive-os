@@ -6,7 +6,7 @@
   "harness": "opencode",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 375,
+  "projected_primitive_count": 379,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": true,
@@ -1312,6 +1312,13 @@
     },
     {
       "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos_iroh.py",
+      "primitive_file": "primitives/other-script/scripts-cos-iroh-py-8ea0953a1b.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
       "fidelity": "structural-advisory",
       "portable_id": "rule-self-improvement-protocol",
       "primitive_file": "primitives/rules/rule-self-improvement-protocol-dfcc3f0e51.json",
@@ -2510,6 +2517,13 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": "scripts/cos-agent-bus-iroh-adapter",
+      "primitive_file": "primitives/tools/scripts-cos-agent-bus-iroh-adapter-64014e9763.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": "scripts/cos-agent-run-status",
       "primitive_file": "primitives/tools/scripts-cos-agent-run-status-c79ed2a298.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
@@ -2617,6 +2631,20 @@
       "fidelity": "documented-only",
       "portable_id": "scripts/cos-handoff-if-dead",
       "primitive_file": "primitives/tools/scripts-cos-handoff-if-dead-fcebf438c0.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-iroh-doctor",
+      "primitive_file": "primitives/tools/scripts-cos-iroh-doctor-19021b7228.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-iroh-ping",
+      "primitive_file": "primitives/tools/scripts-cos-iroh-ping-a35cfee9e0.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {

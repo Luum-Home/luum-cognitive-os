@@ -5775,12 +5775,12 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 87,
-        "doc": 779,
+        "doc": 780,
         "hook": 124,
         "rule": 51,
-        "script": 460,
+        "script": 464,
         "skill": 95,
-        "test": 778,
+        "test": 781,
         "workflow": 2
       },
       "consumers": [
@@ -7447,6 +7447,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-340-english-native-artifacts-multilingual-user-routing.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-341-iroh-optional-transport-adapter.md"
         },
         {
           "family": "doc",
@@ -10094,6 +10098,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-agent-bus-iroh-adapter"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-agent-daemon"
         },
         {
@@ -10551,6 +10559,14 @@
         {
           "family": "script",
           "path": "scripts/cos-instance-init"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-iroh-doctor"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-iroh-ping"
         },
         {
           "family": "script",
@@ -11211,6 +11227,10 @@
         {
           "family": "script",
           "path": "scripts/cos_instance_init.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_iroh.py"
         },
         {
           "family": "script",
@@ -13086,6 +13106,10 @@
         },
         {
           "family": "test",
+          "path": "tests/integration/test_cos_iroh_local_endpoints.py"
+        },
+        {
+          "family": "test",
           "path": "tests/integration/test_cos_skill_cli.py"
         },
         {
@@ -13894,6 +13918,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cos_iroh_security.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_cos_key_learnings_capture.py"
         },
         {
@@ -14443,6 +14471,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_cos_init_py.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_iroh.py"
         },
         {
           "family": "test",
@@ -15294,13 +15326,13 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:95",
-        "test_consumers:778",
+        "test_consumers:781",
         "hook_consumers:124",
         "workflow_consumers:2",
-        "doc_consumers:779",
+        "doc_consumers:780",
         "rule_consumers:51",
         "config_consumers:87",
-        "script_consumers:460"
+        "script_consumers:464"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -15316,7 +15348,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 2376,
+      "total_consumers": 2384,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -16363,6 +16395,65 @@
       ],
       "total_consumers": 7,
       "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 3,
+        "doc": 1,
+        "script": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-341-iroh-optional-transport-adapter.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_iroh.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_iroh.py",
+        "doc_consumers:1",
+        "config_consumers:3",
+        "script_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-agent-bus-iroh-adapter",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-agent-bus-iroh-adapter",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "opencode",
+        "shell"
+      ],
+      "total_consumers": 5,
+      "wrapper_for": "scripts/cos_iroh.py"
     },
     {
       "confidence": "high",
@@ -27470,6 +27561,140 @@
       ],
       "total_consumers": 5,
       "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 3,
+        "doc": 1,
+        "script": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-341-iroh-optional-transport-adapter.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_iroh.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_iroh.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_iroh.py",
+        "test_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:3",
+        "script_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-iroh-doctor",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-iroh-doctor",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "opencode",
+        "shell"
+      ],
+      "total_consumers": 6,
+      "wrapper_for": "scripts/cos_iroh.py"
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 3,
+        "doc": 1,
+        "script": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-341-iroh-optional-transport-adapter.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_iroh.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_cos_iroh_local_endpoints.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_iroh.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_iroh.py",
+        "test_consumers:2",
+        "doc_consumers:1",
+        "config_consumers:3",
+        "script_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-iroh-ping",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-iroh-ping",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "opencode",
+        "shell"
+      ],
+      "total_consumers": 7,
+      "wrapper_for": "scripts/cos_iroh.py"
     },
     {
       "confidence": "high",
@@ -45222,6 +45447,72 @@
       ],
       "total_consumers": 12,
       "wrapper_for": "scripts/cos_init.py"
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 3,
+        "doc": 1,
+        "script": 3
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-341-iroh-optional-transport-adapter.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-agent-bus-iroh-adapter"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-iroh-doctor"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-iroh-ping"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "doc_consumers:1",
+        "config_consumers:3",
+        "script_consumers:3"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos_iroh.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/cos_iroh.py",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "heuristic:self-evolution",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "codex",
+        "claude",
+        "opencode",
+        "shell"
+      ],
+      "total_consumers": 7,
+      "wrapper_for": null
     },
     {
       "confidence": "high",
@@ -67480,27 +67771,27 @@
   "summary": {
     "agentic_primitives_without_lifecycle": 0,
     "confidence": {
-      "high": 408,
+      "high": 411,
       "low": 1,
-      "medium": 321
+      "medium": 322
     },
     "consumer_accessibility": {
       "install-profile-managed": 19,
       "lifecycle-declared-consumer-candidate": 169,
-      "lifecycle-declared-maintainer": 200,
+      "lifecycle-declared-maintainer": 204,
       "skill-referenced-not-projectable": 3,
       "so-local-only": 339
     },
     "low_confidence_rows": 1,
     "roles": {
-      "agentic-primitive": 270,
+      "agentic-primitive": 273,
       "archive": 12,
       "driver-specific": 14,
       "lab": 97,
-      "maintainer-tool": 322,
+      "maintainer-tool": 323,
       "migration-only": 15
     },
-    "total_scripts": 730,
+    "total_scripts": 734,
     "without_consumers": 0
   },
   "target_family": "scripts"

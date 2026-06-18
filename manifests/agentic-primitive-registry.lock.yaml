@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-06-17T21:35:15+00:00'
+generated_at: '2026-06-18T23:01:46+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: .claude/skills/artifact-workflow/SKILL.md
@@ -5498,6 +5498,17 @@ primitives:
   - skills/adr-tombstone/SKILL.md
   - scripts/cos-adr-tombstone
   sha256: e9ad2cc95252936202214bde229b75189132210034b78b0fb244159d00e0b4e9
+- id: scripts/cos-agent-bus-iroh-adapter
+  kind: script
+  owner_adr: ADR-341
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-agent-bus-iroh-adapter
+  - scripts/cos_iroh.py
+  sha256: 1e66f50bd15c168f19d015cc1a544713a04c7f7ca43e2f97d75fa1e80cf3b6b8
 - id: scripts/cos-agent-daemon
   kind: script
   owner_adr: ADR-235
@@ -6409,6 +6420,28 @@ primitives:
   projection_targets:
   - scripts/cos-integration-shard-plan
   sha256: 70624c09784244419e2f43e8ec38a29ec02d9494788fd04cedb95e8a201d5aff
+- id: scripts/cos-iroh-doctor
+  kind: script
+  owner_adr: ADR-341
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-iroh-doctor
+  - scripts/cos_iroh.py
+  sha256: da9d0ce0d76c923ebcd9c61fb5cf6be25b94d8e34c2b55e63828d1877fd84bf6
+- id: scripts/cos-iroh-ping
+  kind: script
+  owner_adr: ADR-341
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-iroh-ping
+  - scripts/cos_iroh.py
+  sha256: 946d4a674c16b3c9e999f1bf934e5a6b8be869b44dbdb982f32235c8fa8e358a
 - id: scripts/cos-key-learnings-capture
   kind: script
   owner_adr: ADR-071
@@ -7854,6 +7887,16 @@ primitives:
   - manifests/cos-instance-profiles.yaml
   - .cognitive-os/plans/architecture/cos-instance-installer-implementation-plan.md
   sha256: 2a7e39e2c1b1b98e8f7aea7132785cbc6a3e1704531cb4edbb85e69aca8df6a5
+- id: scripts/cos_iroh.py
+  kind: script-lib
+  owner_adr: ADR-341
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos_iroh.py
+  sha256: 5f259bbc0a0ef72bb733b9aed7986f763b1fa5887c03e2724446d34ca9eb6bc1
 - id: scripts/cos_key_learnings_capture.py
   kind: script
   owner_adr: ADR-146
