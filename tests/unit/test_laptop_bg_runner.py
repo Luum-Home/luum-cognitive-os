@@ -28,7 +28,7 @@ def run_script(*args: str, env: dict[str, str] | None = None) -> subprocess.Comp
 def test_help_documents_background_contract() -> None:
     result = run_script("--help")
     assert result.returncode == 0
-    assert "Defaults to: make test-laptop" in result.stdout
+    assert "Defaults to: bash -lc 'make test-laptop'" in result.stdout
     assert "COS_TEST_BG_LOG_DIR" in result.stdout
 
 
@@ -54,6 +54,8 @@ def test_background_command_writes_log_and_pid(tmp_path: Path) -> None:
         if log.exists() and "bg-ok" in log.read_text(errors="replace"):
             break
         time.sleep(0.1)
-    assert "bg-ok" in log.read_text(errors="replace")
+    log_text = log.read_text(errors="replace")
+    assert "bg-ok" in log_text
+    assert "exit_code=0" in log_text
     assert (tmp_path / "latest.pid").read_text().strip().isdigit()
     assert (tmp_path / "latest.log").exists()
