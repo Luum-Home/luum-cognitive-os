@@ -90,12 +90,15 @@ class TestInjectPhaseContextNative:
 
     def test_truncates_at_10k_chars(self):
         """If composed context would exceed 10K chars, it must be truncated and
-        marked. This guards against blowing through Claude Code's hard cap."""
-        # Build a prompt that triggers many gotchas + engram lookups so the
-        # output buffer grows. We can't easily force >10K from the gotchas
-        # alone, so we exercise the limit via a forced-large preamble.
-        # Strategy: monkey-patch templates/agent-preamble.md to be huge for
-        # this test by writing a temp version into a sandbox PROJECT dir.
+        marked. This guards against blowing through Claude Code's hard cap.
+
+        Note (sdd/session-floor-diet dedupe): the hook no longer embeds
+        templates/agent-preamble.md — that is now owned exclusively by
+        hooks/subagent-context-injector.sh (SubagentStart). Truncation is
+        instead forced via a huge templates/project-gotchas.md, which this
+        hook still owns and injects when the prompt matches a COS-internals
+        keyword (e.g. "hooks/").
+        """
         import shutil
         import tempfile
 
@@ -107,18 +110,22 @@ class TestInjectPhaseContextNative:
             (tmp_root / ".cognitive-os" / "cognitive-os.yaml").write_text(
                 "project:\n  name: test\n  type: webapp\n  phase: reconstruction\n"
             )
-            # Huge preamble — guaranteed to exceed 10K
+            # Huge gotchas file — guaranteed to exceed 10K once injected.
             big = "X" * 15000
-            (tmp_root / "templates" / "agent-preamble.md").write_text(big)
+            (tmp_root / "templates" / "project-gotchas.md").write_text(big)
             # Copy hook lib so common.sh resolves
             shutil.copytree(REPO_ROOT / "hooks" / "_lib", tmp_root / "hooks_lib")
 
             payload = json.dumps(
-                {"tool_name": "Agent", "tool_input": {"prompt": "anything"}}
+                {
+                    "tool_name": "Agent",
+                    "tool_input": {"prompt": "refactor hooks/ internals"},
+                }
             )
             env = os.environ.copy()
             env["CLAUDE_PROJECT_DIR"] = str(tmp_root)
             env["PRIVATE_MODE"] = "false"
+            env["COGNITIVE_OS_SESSION_ID"] = "test-truncate-session"
 
             result = subprocess.run(
                 ["bash", str(HOOK_PATH)],
