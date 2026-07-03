@@ -1,9 +1,4 @@
-<!-- SCOPE: os-only -->
-<!-- CANONICAL SOURCE: templates/agent-preamble.md (git-tracked).
-     .cognitive-os/templates/agent-preamble.md is a symlink → ../../templates/agent-preamble.md.
-     All renderers (subagent-context-injector.sh, inject-phase-context.sh,
-     lib/prompt_builder.py, lib/qwen_context_injector.py) reference the
-     templates/ path directly. Editing here is sufficient — no sync needed. -->
+<!-- SCOPE: os-only — canonical source; all renderers read this path, edit here (no sync). -->
 
 # Agent Preamble (compact)
 
@@ -50,47 +45,6 @@ HUMAN SHOULD CHECK: <bullets>
 STATUS bands: HIGH 90+, MEDIUM 70-89, LOW 50-69, CRITICAL <50.
 
 **Optional:** `PROGRESS: [step N/M] description` after each major step.
-
-**INPUT SCHEMA** (ADR-038 Wave 2 — Gap #1):
-When the orchestrator declares an `INPUT SCHEMA:` block in this prompt, validate your inputs at task start:
-```
-INPUT SCHEMA:
-  task_description: str (required) — natural language description of the task
-  acceptance_criteria: list[str] (optional) — verifiable expected outcomes
-  blast_radius: int (optional) — estimated number of files affected
-  working_dir: path (optional) — absolute path to operate in
-  ... custom fields per launch ...
-```
-At task start, sub-agents MUST run the following validation and stop if it fails:
-```python
-import sys, json
-sys.path.insert(0, 'lib')
-from agent_input_validator import validate_input, format_escalation
-
-# schema_block: the full INPUT SCHEMA: ... text from this prompt
-# payload: dict of the inputs you received (task_description, etc.)
-ok, errors = validate_input(schema_block, payload)
-if not ok:
-    print(format_escalation(errors))
-    sys.exit(1)
-```
-Fields not declared in the schema should be treated as informational context.
-
-**TRUST REPORT schema** (ADR-038 Wave 3):
-The `TRUST_REPORT:` header you emit is validated by `lib/trust_report_schema.py` (Pydantic v2).
-Rules enforced at parse time: SCORE 0-100, STATUS must match band (HIGH 90-100, MEDIUM 70-89,
-LOW 50-69, CRITICAL 0-49), UNCERTAINTIES ≥ 1 (100% confident = red flag per rules/trust-score.md).
-Parser: `lib/trust_report_parser.py` — raises `TrustReportParseError` with a helpful hint on malformed output.
-
-**CONTEXT BUDGET** (ADR-038 Wave 2 — Gap #2):
-Token budget layers (from `cognitive-os.yaml context_budget`). Informational — enforcement arrives in Wave 3:
-```
-static_max_tokens:  4000   # preamble + keyword traps + working dir (always loaded)
-turn_max_tokens:    8000   # per tool-use round
-user_max_tokens:   12000   # accumulated user-facing content per task
-cache_max_tokens:  32000   # MCP/engram retrievals
-```
-If you observe context growing large, summarise intermediate results and save to Engram before continuing.
 
 **Context:** `SEARCH PERMISSION: no` → don't use mem_search. `yes` → allowed. Replaced by `MEMORY SCOPE:` when present (see below).
 
