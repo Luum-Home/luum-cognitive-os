@@ -233,9 +233,11 @@ def find_session_jsonl(project_dir: str, session_id: Optional[str] = None) -> Op
     if not projects_root.exists():
         return None
 
-    # Convert project_dir path to the Claude hash-directory name
+    # Convert project_dir path to the Claude hash-directory name.
+    # Claude Code replaces every non-alphanumeric character (slashes, dots,
+    # underscores) with "-", not just path separators.
     norm = os.path.realpath(project_dir)
-    encoded = norm.replace("/", "-").replace("\\", "-")
+    encoded = re.sub(r"[^A-Za-z0-9]", "-", norm)
     # Claude Code uses leading hyphen for absolute paths: <absolute-path> -> -path-components-...
     project_hash_dir = projects_root / encoded
 

@@ -326,6 +326,30 @@ class TestPortableUsageAggregation:
 
         assert find_portable_session_jsonl(str(tmp_path)) == str(transcript)
 
+    def test_newer_claude_transcript_beats_stale_codex_rollout(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """A stale codex rollout must not shadow the Claude session that just stopped."""
+        import os
+        import time
+
+        import scripts.aggregate_session_tokens as agg
+
+        home = tmp_path / "home"
+        codex_rollout = home / ".codex" / "sessions" / "rollout-old.jsonl"
+        _write_transcript(codex_rollout, [{"usage": {"totalTokens": 0}}])
+        old = time.time() - 3600
+        os.utime(codex_rollout, (old, old))
+
+        claude_transcript = tmp_path / "claude-session.jsonl"
+        _write_transcript(claude_transcript, [_make_assistant_event(100, 50)])
+
+        monkeypatch.delenv("COGNITIVE_OS_SESSION_JSONL", raising=False)
+        monkeypatch.setattr(Path, "home", classmethod(lambda cls: home))
+        monkeypatch.setattr(agg, "find_session_jsonl", lambda project_dir, session_id=None: str(claude_transcript))
+
+        assert find_portable_session_jsonl(str(tmp_path)) == str(claude_transcript)
+
 
 # ---------------------------------------------------------------------------
 # token_report tests (read path)

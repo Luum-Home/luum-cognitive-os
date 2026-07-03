@@ -84,10 +84,16 @@ def find_portable_session_jsonl(project_dir: str) -> str | None:
         latest = _latest_jsonl_under(root)
         if latest:
             discovered.append(latest)
+    # The Claude Code transcript competes on mtime with the other harnesses;
+    # short-circuiting on codex/opencode would pick a stale foreign-project
+    # rollout over the session that actually just stopped.
+    claude_latest = find_session_jsonl(project_dir)
+    if claude_latest:
+        discovered.append(claude_latest)
     if discovered:
         return max(discovered, key=lambda item: Path(item).stat().st_mtime)
 
-    return find_session_jsonl(project_dir)
+    return None
 
 
 # ---------------------------------------------------------------------------
