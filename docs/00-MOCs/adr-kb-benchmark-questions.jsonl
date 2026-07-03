@@ -1,0 +1,26 @@
+{"id": "q01", "question": "Does an ADR exist that governs how context-injection token budgets are enforced?", "gold_adr": ["ADR-186"], "category": "existence"}
+{"id": "q02", "question": "What did the project decide about activating the ADR-038 Wave 3 context budget limits?", "gold_adr": ["ADR-186"], "category": "decision"}
+{"id": "q03", "question": "What incident or pressure led to writing the Engram Lifecycle Evolution ADR?", "gold_adr": ["ADR-071"], "category": "why-incident"}
+{"id": "q04", "question": "What is the consequence of consolidating the ADR namespace under docs/02-Decisions/adrs?", "gold_adr": ["ADR-087"], "category": "consequence"}
+{"id": "q05", "question": "Is there a capability coverage matrix ADR, and what reality-level enum does it define?", "gold_adr": ["ADR-252"], "category": "existence"}
+{"id": "q06", "question": "What decision governs which LLM providers are used for overflow when Claude is rate-limited?", "gold_adr": ["ADR-049"], "category": "decision"}
+{"id": "q07", "question": "What typed-memory verification and staleness policies does Memory Governance v2 introduce?", "gold_adr": ["ADR-261"], "category": "decision"}
+{"id": "q08", "question": "What primitives were designed to coordinate multiple concurrent agent sessions?", "gold_adr": ["ADR-116"], "category": "decision"}
+{"id": "q09", "question": "How does session lifecycle management interact with multi-session coordination primitives?", "gold_adr": ["ADR-047", "ADR-116"], "category": "cross-adr"}
+{"id": "q10", "question": "What problem prompted the Multi-Session Git Coordination ADR — what incident showed git operations colliding across sessions?", "gold_adr": ["ADR-089"], "category": "why-incident"}
+{"id": "q11", "question": "What is the event-sourced session bus, and what consequence does it have for session state recovery?", "gold_adr": ["ADR-226"], "category": "consequence"}
+{"id": "q12", "question": "Does the cosd remote API require authentication, and what mechanism (HMAC/nonce/TTL/scope) does it use?", "gold_adr": ["ADR-260"], "category": "decision"}
+{"id": "q13", "question": "What per-session cap and preview/reference-only modes does the tool-replay budget ledger define?", "gold_adr": ["ADR-263"], "category": "decision"}
+{"id": "q14", "question": "What is the Evolve Loop Spike, and what consequence follows from LLM-driven skill candidates being queued for review?", "gold_adr": ["ADR-262"], "category": "consequence"}
+{"id": "q15", "question": "Is there an umbrella ADR for cross-harness adoption of Hermes, and what does it cover?", "gold_adr": ["ADR-080"], "category": "existence"}
+{"id": "q16", "question": "How does the Codex Harness Adapter relate to the Hermes Cross-Harness Adoption umbrella ADR?", "gold_adr": ["ADR-081", "ADR-080"], "category": "cross-adr"}
+{"id": "q17", "question": "What decision defines the multi-surface UI architecture spanning CLI, Phoenix, Engram Cloud, and Obsidian?", "gold_adr": ["ADR-172"], "category": "decision"}
+{"id": "q18", "question": "What compliance frameworks (SOC 2 / ISO 27001 / GDPR) does the air-gapped surface ADR address, and what consequence does air-gapping have for audit evidence collection?", "gold_adr": ["ADR-142"], "category": "consequence"}
+{"id": "q19", "question": "What retry taxonomy and attempt limits does the consolidated Retry Contract + Cost Session Budget ADR define?", "gold_adr": ["ADR-228"], "category": "decision"}
+{"id": "q20", "question": "What is the harness-agnostic event capture layer, and why was a canonical schema needed instead of per-harness formats?", "gold_adr": ["ADR-033"], "category": "why-incident"}
+{"id": "q21", "question": "What design makes git stash mutation reversible-by-design, and what consequence does that have for quarantine operations?", "gold_adr": ["ADR-117"], "category": "consequence"}
+{"id": "q22", "question": "What is Tier 2 of clean-room detection, and what are the boundaries of AST-normalized similarity as an infringement signal?", "gold_adr": ["ADR-271"], "category": "decision"}
+{"id": "q23", "question": "Does an ADR exist for auditing script exposure and ratcheting invocation surfaces, and what does the ratchet mechanism do?", "gold_adr": ["ADR-283"], "category": "existence"}
+{"id": "q24", "question": "What layered prevention does the Concurrent Agent Safety Layer ADR put in place, and what incident motivated it?", "gold_adr": ["ADR-108"], "category": "why-incident"}
+{"id": "q25", "question": "What destructive git operations does the Agent Git Operations Safety ADR prevent, and how does it relate to concurrent agent safety?", "gold_adr": ["ADR-094", "ADR-108"], "category": "cross-adr"}
+{"id": "q26", "question": "What decision established the SO Reliability & Observability Framework, and what consequence did it have for how failures are tracked?", "gold_adr": ["ADR-028"], "category": "consequence"}
