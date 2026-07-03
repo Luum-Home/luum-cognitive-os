@@ -4,7 +4,7 @@ source: docs/02-Decisions/adrs/ADR-226-event-sourced-session-bus.md
 adr: ADR-226
 status: accepted
 reality_level: REAL
-provenance: session_bus.py (ADR-027 baseline) was an append-only event log, not an event store — it lacked per-session monotonic sequence numbers, per-session streams (all writes contended for one global file under concurrent agents), and memoized non-deterministic step recording, blocking replay, gap-detection, and idempotent processing that five separate orchestration-gap research reports independently identified as the same missing prerequisite.
+provenance: session_bus.py (ADR-027 baseline) was an append-only event log, not an event store — it lacked per-session monotonic sequence numbers, per-session streams (all writes contended for one global file under concurrent agents), and memoized non-deterministic step recording, blocking replay, gap-detection, and idempotent processing that 5 of the 11 orchestration-gap research reports synthesized into this ADR independently identified as the same missing prerequisite.
 ---
 
 ## Decision
