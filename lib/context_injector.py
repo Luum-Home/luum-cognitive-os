@@ -215,6 +215,11 @@ def _search_adrs(
 
     scored = []
     for md_file in adrs_dir.glob("ADR-*.md"):
+        # ADR-knowledge-pilot: Tier-1 synthesis pages live alongside the raw
+        # ADRs as ADR-NNN.synthesis.md. They are the *target* of the remap
+        # below, not separate documents to score — skip them here.
+        if md_file.name.endswith(".synthesis.md"):
+            continue
         # Tokenise from filename stem + first 600 chars of file.
         content = ""
         try:
@@ -227,9 +232,28 @@ def _search_adrs(
             # Extract first meaningful line (the title) after the heading.
             title_match = re.search(r"^# (.+)$", content, re.MULTILINE)
             title = title_match.group(1) if title_match else md_file.stem
+            # ADR-knowledge-pilot remap: score by the raw ADR (richer text) but
+            # SERVE the curated Tier-1 synthesis page when one exists for this
+            # ADR number, falling back to the raw ADR otherwise. See
+            # sdd/adr-knowledge-pilot/design (verified GO, ~61% token reduction).
+            served = md_file
+            adr_num = re.match(r"(ADR-\d+[a-z]?)", md_file.stem)
+            if adr_num:
+                num = adr_num.group(1)
+                # Synthesis pages are named either ADR-NNN.synthesis.md
+                # (canonical) or ADR-NNN-<slug>.synthesis.md; prefer the exact
+                # canonical name, else the slugged variant (hyphen boundary so
+                # ADR-026 does not match ADR-026a).
+                exact = adrs_dir / f"{num}.synthesis.md"
+                if exact.exists():
+                    served = exact
+                else:
+                    slugged = sorted(adrs_dir.glob(f"{num}-*.synthesis.md"))
+                    if slugged:
+                        served = slugged[0]
             scored.append({
                 "source": "adr",
-                "path": str(md_file.relative_to(project_root)),
+                "path": str(served.relative_to(project_root)),
                 "score": round(score, 4),
                 "excerpt": title,
             })
