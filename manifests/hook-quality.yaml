@@ -3518,6 +3518,7 @@ hooks:
     behavior_tests:
     - tests/contracts/test_context_budget_hook_wiring.py
     - tests/unit/test_agent_spawn_benchmark.py
+    - tests/unit/test_inject_phase_context_native.py
     - tests/unit/test_telemetry_aggregator.py
     - tests/unit/test_telemetry_self_tuning_proposer.py
     bypass_policy: not_required_warning_only
