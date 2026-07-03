@@ -1,12 +1,16 @@
-"""Integration tests for ADR-038 Wave 2 preamble additions.
+"""Integration tests for the agent preamble context budget.
 
-Verifies that templates/agent-preamble.md contains the two new literals
-required by ADR-038 Wave 2:
-  1. INPUT SCHEMA: (Gap #1 — typed input variable contract)
-  2. CONTEXT BUDGET: (Gap #2 — 4-layer context budget, Google ADK pattern)
+C4 governance-noop-prune (Pocock-pass, 2026-07-02): the ADR-038 Wave-2/3
+agent-facing blocks (INPUT SCHEMA, CONTEXT BUDGET, TRUST-report schema detail)
+were injected into every sub-agent before their enforcement was ever wired —
+no registered hook consumed them (evidence: engram
+sdd/governance-noop-prune/explore). They were pruned as injected-and-hoped
+no-ops. These tests now guard the lean state (the sediment must not creep back)
+and confirm the load-bearing contract survives.
 
-Also verifies that cognitive-os.yaml declares the four context_budget keys
-with valid integer values.
+The real context budget still lives in cognitive-os.yaml and is enforced
+hook-side by lib/context_budget.py, independent of any agent-facing prose —
+so the TestContextBudgetYaml checks below remain meaningful and unchanged.
 """
 
 from __future__ import annotations
@@ -34,34 +38,27 @@ def cogos_config():
         return yaml.safe_load(fh)
 
 
-class TestPreambleV2Wave2:
-    def test_input_schema_literal_present(self, preamble_text):
-        """Preamble must contain 'INPUT SCHEMA' (Gap #1 — typed input contract)."""
-        assert "INPUT SCHEMA" in preamble_text, (
-            "Expected 'INPUT SCHEMA' in agent-preamble.md. "
-            "ADR-038 Gap #1 requires a machine-readable field schema block."
-        )
+class TestPreambleLeanAfterC4:
+    """Guards the C4 prune: dormant ADR-038 no-op prose must not return, and the
+    load-bearing contract the orchestrator actually consumes must stay."""
 
-    def test_input_schema_has_task_description_field(self, preamble_text):
-        """Preamble INPUT SCHEMA must document the canonical task_description field."""
-        assert "task_description" in preamble_text, (
-            "Expected 'task_description' in agent-preamble.md INPUT SCHEMA block. "
-            "This is the canonical required field for all sub-agent launches."
-        )
+    def test_dormant_wave2_blocks_not_reinjected(self, preamble_text):
+        """The pruned injected-and-hoped blocks must not creep back in."""
+        for literal in ("INPUT SCHEMA", "CONTEXT BUDGET", "agent_input_validator"):
+            assert literal not in preamble_text, (
+                f"'{literal}' reappeared in agent-preamble.md. It was pruned in C4 as an "
+                "injected-and-hoped no-op (no registered hook enforces it). If the feature "
+                "is wanted, wire the enforcer — do not re-inject unenforced prose."
+            )
 
-    def test_input_schema_has_required_marker(self, preamble_text):
-        """Preamble INPUT SCHEMA must use 'required' markers for mandatory fields."""
-        assert "required" in preamble_text, (
-            "Expected 'required' marker in agent-preamble.md INPUT SCHEMA block. "
-            "Required fields must be distinguished from optional ones."
-        )
+    def test_load_bearing_result_contract_present(self, preamble_text):
+        """The RESULT/TRUST_REPORT contract (consumed out-of-band by the orchestrator) stays."""
+        assert "RESULT:" in preamble_text
+        assert "TRUST_REPORT: SCORE=" in preamble_text
 
-    def test_context_budget_literal_present(self, preamble_text):
-        """Preamble must contain 'CONTEXT BUDGET' (Gap #2 — 4-layer budget)."""
-        assert "CONTEXT BUDGET" in preamble_text, (
-            "Expected 'CONTEXT BUDGET' in agent-preamble.md. "
-            "ADR-038 Gap #2 requires a 4-layer context budget block (Google ADK pattern)."
-        )
+    def test_auto_trigger_receiver_contract_present(self, preamble_text):
+        """AUTO-TRIGGER receiver contract is load-bearing — hooks emit these lines."""
+        assert "AUTO-TRIGGER" in preamble_text
 
 
 class TestContextBudgetYaml:
