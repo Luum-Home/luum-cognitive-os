@@ -8,6 +8,7 @@
 # Falls back to stderr when invoked outside Claude Code (no valid stdin JSON).
 
 set -euo pipefail
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/context_budget_lib.sh"
 # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/portable.sh"
@@ -258,30 +259,12 @@ except Exception:
   fi
 fi
 
-# --- Guard: skip preamble injection if already present in prompt ---
-# This prevents double-injection if multiple hooks fire or if the orchestrator
-# manually included the preamble in the task description.
-ALREADY_HAS_PREAMBLE=0
-if echo "$AGENT_PROMPT" | grep -q "TRUST_REPORT: SCORE="; then
-  ALREADY_HAS_PREAMBLE=1
-fi
-
 # --- Compose context buffer (single string) ---
 # Build everything into CONTEXT_BUF, then emit via the chosen transport.
+# NOTE: agent-preamble.md is intentionally NOT embedded here. It is emitted
+# exactly once, by hooks/subagent-context-injector.sh (SubagentStart), which
+# is the sole owner of preamble delivery (sdd/session-floor-diet dedupe).
 CONTEXT_BUF=""
-
-# Inject agent-preamble.md (the core quality contract)
-PREAMBLE_FILE="$PROJECT_DIR/templates/agent-preamble.md"
-if [[ "$ALREADY_HAS_PREAMBLE" -eq 0 ]] && [[ -f "$PREAMBLE_FILE" ]]; then
-  PREAMBLE_CONTENT=$(cat "$PREAMBLE_FILE")
-  # Interpolate {{phase}} placeholder
-  PREAMBLE_CONTENT="${PREAMBLE_CONTENT//\{\{phase\}\}/$PHASE}"
-  CONTEXT_BUF+="--- AGENT PREAMBLE (REQUIRED — read before starting) ---
-${PREAMBLE_CONTENT}
---- END AGENT PREAMBLE ---
-
-"
-fi
 
 CONTEXT_BUF+="
 PROJECT: ${PROJECT_NAME} (${PROJECT_TYPE})
@@ -441,6 +424,7 @@ out = {
 }
 sys.stdout.write(json.dumps(out))
 ")
+    _JSON_OUTPUT="$(context_budget_filter_json "inject-phase-context" "$_JSON_OUTPUT" "static")"
     # Store the serialized JSON in the TTL cache so subsequent calls skip all
     # the expensive Python subprocess work.
     _cache_store "$_CACHE_KEY" "$_JSON_OUTPUT" 2>/dev/null || true
@@ -450,6 +434,7 @@ sys.stdout.write(json.dumps(out))
     _JSON_OUTPUT=$(jq -n \
       --arg ctx "$CONTEXT_BUF" \
       '{hookSpecificOutput: {hookEventName: "PreToolUse", additionalContext: $ctx, permissionDecision: "allow"}}')
+    _JSON_OUTPUT="$(context_budget_filter_json "inject-phase-context" "$_JSON_OUTPUT" "static")"
     _cache_store "$_CACHE_KEY" "$_JSON_OUTPUT" 2>/dev/null || true
     printf '%s' "$_JSON_OUTPUT"
   fi
