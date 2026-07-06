@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://luum/cognitive-os/okf-schema.json",
+  "title": "Open Knowledge Format (OKF) frontmatter — Cognitive OS knowledge pages",
+  "description": "Validates the YAML frontmatter of OKF knowledge pages (docs/**/*.synthesis.md). OKF requires only `type`; the Cognitive OS `adr-synthesis` profile requires the Tier-1 synthesis fields. Reality-level enum follows the ADR-252 capability-matrix vocabulary.",
+  "type": "object",
+  "required": ["type"],
+  "properties": {
+    "type": { "type": "string", "minLength": 1 }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "type": { "const": "adr-synthesis" } }, "required": ["type"] },
+      "then": {
+        "required": ["type", "source", "adr", "status", "reality_level", "provenance"],
+        "properties": {
+          "source": { "type": "string", "pattern": "^docs/.+\\.md$" },
+          "adr": { "type": "string", "pattern": "^ADR-[0-9]+[a-z]?$" },
+          "status": { "type": "string", "minLength": 1 },
+          "reality_level": {
+            "type": "string",
+            "enum": ["REAL", "PARTIAL", "ROADMAP", "LAB", "DORMANT", "DEPRECATED", "RESOLVED"]
+          },
+          "provenance": { "type": "string", "minLength": 10 }
+        }
+      }
+    }
+  ]
+}
