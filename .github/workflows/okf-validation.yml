@@ -1,0 +1,35 @@
+name: OKF Validation
+
+# Deterministic gate for Open Knowledge Format (OKF) pages (ADR knowledge-base
+# pilot + rollout). Enforces scripts/okf-schema.json on every *.synthesis.md so
+# frontmatter drift is caught in PRs instead of at retrieval time. LLM-free.
+
+on:
+  pull_request:
+    paths:
+      - "docs/**/*.synthesis.md"
+      - "scripts/okf-schema.json"
+      - "scripts/validate_okf.py"
+      - ".github/workflows/okf-validation.yml"
+  push:
+    branches: [main]
+    paths:
+      - "docs/**/*.synthesis.md"
+      - "scripts/okf-schema.json"
+      - "scripts/validate_okf.py"
+
+permissions:
+  contents: read
+
+jobs:
+  validate-okf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install validator dependencies
+        run: python -m pip install --quiet pyyaml jsonschema
+      - name: Validate OKF frontmatter
+        run: python scripts/validate_okf.py --path docs
