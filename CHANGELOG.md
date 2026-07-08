@@ -5,6 +5,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.29.36] - 2026-07-08 — "token efficiency + ADR knowledge-base pilot + OKF validator"
+
+### Added
+- Added the `cos-patch-release` primitive for repeatable patch release preparation, validation, publishing, and diagnostics.
+
+### Validation
+- `scripts/cos-patch-release validate` is the required patch-release validation lane.
+
 ## [0.29.35] - 2026-06-18 — "Iroh Optional Transport Adapter"
 
 ### Added
