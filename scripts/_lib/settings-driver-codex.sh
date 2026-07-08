@@ -70,7 +70,12 @@ _codex_entry() {
   # exit code is the hook decision, and exit 2 must remain able to block.
   # NOTE: the JSON "command" string must use escaped double quotes for $PWD paths,
   # matching the format in the original hand-maintained .codex/hooks.json.
-  printf '        {\n          "type": "command",\n          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\\"; if [ -x \\"$PWD/%s\\" ]; then bash \\"$PWD/%s\\"; fi"\n        }' \
+  # ADR: hook-lib-projection-contract — source the shared PYTHONPATH bootstrap
+  # before running the hook so Codex hooks that `import lib.<mod>` resolve
+  # against the projected .cognitive-os/lib/ package, same as the Claude
+  # timing-wrapper path. Best-effort (`|| true`): missing bootstrap file
+  # during first-install must not block the hook from running.
+  printf '        {\n          "type": "command",\n          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\\"; source \\"$PWD/.cognitive-os/hooks/cos/_lib/hook-python-env.sh\\" 2>/dev/null || true; if [ -x \\"$PWD/%s\\" ]; then bash \\"$PWD/%s\\"; fi"\n        }' \
     "$script" "$script"
 }
 
