@@ -1,0 +1,21 @@
+---
+type: concept-synthesis
+source: docs/04-Concepts/root/security-stack.md
+---
+
+## What it is
+The single source of truth for the Cognitive OS security posture: 8 defense layers spanning input validation through red-teaming, cataloguing every tool/hook's status (active/optional/planned).
+
+## Key mechanics
+- Posture summary: 8 active defense layers, 20 always-on tools/hooks, 8 optional, 5 planned, 3 MCP-specific defenses (1 optional/2 planned), 4 supply-chain protections, 4 red-team tools (1 active/1 optional/2 planned).
+- 8 layers: (1) Input Validation — Clarification Gate, Blast Radius, Dry-Run Preview, Prompt Quality Scoring, Aguara Scan (189 rules/14 categories, Apache-2.0), Lethal Trifecta Gate, Parry Guard (optional, DeBERTa transformer); (2) Permission & Identity — Agent Permissions (6 levels NONE-ADMIN, 5 profiles, TTL max 120min), Agent Identity (WHO/WHAT/WHEN/WHERE/WHY audit), Always-Blocked Paths (`.env`, `.env.*`, `*.key`, `*.pem`, `*.p12`, `secrets/*`, `**/credentials*`, `**/password*`, `.git/config` — no permission level overrides these), Monotonic Attenuation, Credential Management; (3) Code Security — Content Policy, Secret Detector, Memory Scanner (12 patterns), License Guard (AGPL/SSPL/BSL/ELv2/Commons Clause), Semgrep SAST (optional), Semgrep AI Rules (58 rules, optional), Trail of Bits Skills (62 skills, CC-BY-SA-4.0, optional); (4) MCP Security — mcp-aguara (optional, MIT), MCP-Scan/mcp-context-protector/Semgrep MCP Server (all planned); (5) Supply Chain Defense — SHA256 Docker digest pinning, git commit hash pinning (`cos-lock.yaml`), per-file integrity hashes, prompt-injection scanner in `cos audit` Gate 3; (6) Output Validation — Scope Proportionality, Claim Validator, Assumption Tracker, Trust Score Validator, Confidence Gate (<50 blocks in prod), Clarification Interceptor, Cross Verifier, Scope Creep Detector; (7) Runtime Protection — Rate Limiter (30 calls/min, $5/hr cap), Rate Limit Protection (blocks at 95% API usage), Auto-Rollback, Circuit Breaker (2 consecutive failures = OPEN, 10/hr cap), Resource Governance (80/95/100% downgrade chain), NeMo Guardrails (optional); (8) Testing & Red Team — Pentest Self (7 categories, active), Garak (179 probes, optional, Apache-2.0), Promptfoo/AgentFence (planned).
+- Phase-aware enforcement: reconstruction (Clarification Gate + Rate Limiter block, rest warns) -> stabilization (+Content Policy blocks) -> production (+Confidence Gate <50 blocks, Scope Proportionality blocks) -> maintenance (maximum enforcement, all gates block).
+- Gap analysis: no MCP-specific runtime defense (HIGH severity, fix=MCP-Scan+mcp-context-protector next sprint), no egress filtering (MEDIUM, Pipelock backlog), no AIBOM (LOW, OWASP standard emerging), no container vuln scanning (MEDIUM, Trivy backlog), no runtime agent network monitoring (LOW, Aegis/Leash backlog).
+- Every optional tool degrades gracefully (`if ! command -v tool-name; then exit 0; fi`) — COS functions with zero optional tools installed.
+- 10-step process for adding a new security tool: classify layer, add table row, set status, create integration, add graceful degradation, document in ecosystem-tools.md, write behavior tests, update summary counts, update safety-mesh.md, run `/pentest-self`.
+
+## Relations & where used
+Cross-references `docs/04-Concepts/root/safety-mesh.md` (described here as "the detailed hook behavior for the 12-layer pre/post pipeline mesh"), `.cognitive-os/plans/research/security-tools-landscape.md`, `packages/ecosystem-tools/rules/ecosystem-tools.md`, `packages/aguara-security/rules/aguara-integration.md`, `rules/pentesting-readiness.md`, `rules/agent-security.md`, `rules/supply-chain-defense.md`, `rules/credential-management.md`, `rules/content-policy.md`, `rules/security-scanning.md`, `rules/license-policy.md`.
+
+## Status / caveats
+Last updated 2026-04-08. FLAG (internal inconsistency in the source, not resolved here): the "Tool Counts by Status" table labels the ACTIVE row count as 20, but the comma-separated list of ACTIVE tool names in that same row enumerates 32 items. Also note: this doc's References table calls `safety-mesh.md` a "12-layer" mesh, while `safety-mesh.md` itself documents 14 layers — a naming mismatch between the two documents.
