@@ -48,7 +48,15 @@ COS_SOURCE_DIR = Path(__file__).parent.parent.resolve()
 if str(COS_SOURCE_DIR) not in sys.path:
     sys.path.insert(0, str(COS_SOURCE_DIR))
 
+# scripts/ itself must be importable directly (not only as the `scripts.`
+# package) so `import lib_closure` resolves whether cos_init.py is invoked
+# directly (`python3 scripts/cos_init.py`) or imported as `scripts.cos_init`.
+SCRIPTS_DIR = Path(__file__).parent.resolve()
+if str(SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_DIR))
+
 from lib.script_io import write_json as _write_json_if_changed
+import lib_closure
 
 
 def _load_harness_projection_registry() -> dict[str, object]:
@@ -1818,6 +1826,10 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
     hooks_source = str(cos_source / "hooks")
     hooks_dest = str(project_dir / ".cognitive-os" / "hooks" / "cos")
     Path(hooks_dest).mkdir(parents=True, exist_ok=True)
+    # Seed set for the lib.* dependency closure (§2.2 step 1): exactly the
+    # hooks actually projected for this profile — populated below in both
+    # the --full and default branches.
+    projected_hook_paths: list[Path] = []
 
     if mode == "--full":
         for hook_path in sorted(Path(hooks_source).glob("*.sh")):
@@ -1827,6 +1839,7 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
             shutil.copy2(str(hook_path), str(dest_path))
             dest_path.chmod(dest_path.stat().st_mode | 0o111)
             hooks_installed += 1
+            projected_hook_paths.append(dest_path)
         # Copy hook libs if they exist
         hooks_lib = Path(hooks_source) / "_lib"
         if hooks_lib.is_dir():
@@ -1848,6 +1861,7 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
             status = install_hook(name, hooks_source, hooks_dest)
             if status == "installed":
                 hooks_installed += 1
+                projected_hook_paths.append(Path(hooks_dest) / f"{name}.sh")
         # Always copy _lib if it exists
         hooks_lib = Path(hooks_source) / "_lib"
         if hooks_lib.is_dir():
@@ -1862,6 +1876,35 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
             wrapper_dest = dest_lib / "hook-timing-wrapper.sh"
             shutil.copy2(str(wrapper_src), str(wrapper_dest))
             wrapper_dest.chmod(wrapper_dest.stat().st_mode | 0o111)
+
+    # ── 5b. Project the lib.* dependency closure for the installed hooks ──
+    # (docs/02-Decisions/designs/hook-lib-projection-contract.md §2.2). This
+    # extends — does not replace — the existing 2-module duplicates subset
+    # installed by _install_quality_duplicates_primitive(); closure members
+    # simply coexist in the same .cognitive-os/lib/ package.
+    lib_closure_dest = project_dir / ".cognitive-os" / "lib"
+    lib_closure_dest.mkdir(parents=True, exist_ok=True)
+    lib_init_file = lib_closure_dest / "__init__.py"
+    if not lib_init_file.exists():
+        source_init = cos_source / "lib" / "__init__.py"
+        if source_init.is_file():
+            shutil.copy2(str(source_init), str(lib_init_file))
+        else:
+            lib_init_file.write_text("", encoding="utf-8")
+
+    closure = lib_closure.compute_closure(projected_hook_paths, cos_source)
+    closure_manifest: dict[str, dict] = {}
+    for mod_name, entry in closure.items():
+        dest_mod_path = lib_closure_dest / f"{mod_name}.py"
+        source_mod_path = cos_source / entry.source_real_path
+        shutil.copy2(str(source_mod_path), str(dest_mod_path))
+        closure_manifest[mod_name] = entry.to_manifest_dict()
+
+    manifest_path = lib_closure_dest / ".closure-manifest.json"
+    manifest_path.write_text(
+        json.dumps(closure_manifest, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
 
     # ── 6. Install skills ─────────────────────────────────────────────
     skills_installed = 0
