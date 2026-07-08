@@ -1,0 +1,41 @@
+schema_version: lib-projection-contract.v1
+contract_id: hook-lib-projection-contract
+purpose: >-
+  Records the closure-projection + PYTHONPATH bootstrap + fail-open backstop
+  contract that lets consumer-installed hooks resolve `import lib.<mod>`
+  against the projected .cognitive-os/lib/ package, and the regression test
+  that gates it for ACC. See harness-projection.yaml for the parallel
+  harness/IDE projection contract this complements.
+source_docs:
+  - docs/02-Decisions/designs/hook-lib-projection-contract.md
+  - docs/02-Decisions/proposals/hook-lib-projection-contract.md
+implementation_files:
+  - scripts/lib_closure.py
+  - scripts/cos_init.py
+  - hooks/_lib/hook-python-env.sh
+  - hooks/_lib/hook-python-guard.sh
+  - hooks/confidentiality-enforcer.sh
+  - scripts/hook-timing-wrapper.sh
+  - scripts/_lib/settings-driver-codex.sh
+regression_test: tests/audit/test_hook_lib_projection.py
+projected_artifacts:
+  - .cognitive-os/lib/*.py
+  - .cognitive-os/lib/__init__.py
+  - .cognitive-os/lib/.closure-manifest.json
+  - .cognitive-os/hooks/cos/_lib/hook-python-env.sh
+  - .cognitive-os/hooks/cos/_lib/hook-python-guard.sh
+acceptance_command: python3 -m pytest tests/audit/test_hook_lib_projection.py -q
+notes:
+  - >-
+    Regression test uses a foreign-cwd temp consumer (cos_init.py derives
+    project_dir from Path.cwd(), not argv) for both --default and --full
+    profiles, so it exercises the real profile-scoped closure rather than a
+    synthetic fixture.
+  - >-
+    Known test-environment caveat: this repo's own .venv ships an editable
+    install (.venv/lib/python3.12/site-packages/_editable_impl_luum_cognitive_os.pth)
+    that unconditionally prepends the SOURCE repo root to sys.path for every
+    interpreter invocation. The regression test's import-resolution probe
+    explicitly filters that entry out of sys.path before `import lib.<mod>`
+    so it verifies the projected closure and not a silent fallback to the
+    SOURCE repo's own lib/.
