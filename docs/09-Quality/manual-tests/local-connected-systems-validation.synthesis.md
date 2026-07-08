@@ -1,0 +1,23 @@
+---
+type: quality-synthesis
+source: docs/09-Quality/manual-tests/local-connected-systems-validation.md
+provenance: "Proof path validating Cognitive OS on a real local machine connected to declared CLIs, Python dependencies, MCP servers, memory, Docker/reference services, and harness projections, to prevent the headless runtime plan from becoming aspirational."
+---
+
+## What it is
+A local-machine validation proof (broader than a single drill) establishing that Cognitive OS can discover its active harness, verify dependencies, install/report missing components by profile, wire MCP, start only profile-scoped services, run real quality checks, and fail safely when optional systems are unavailable — anchored to `manifests/dependencies.yaml` as the single source of dependency truth.
+
+## Key mechanics
+- Source-of-truth contract table: `manifests/dependencies.yaml` declares required/recommended/optional CLIs, Python groups, MCP servers; `scripts/manifest-check.sh` reports readiness; `scripts/setup.sh` installs; `scripts/register-mcps.sh` registers MCP servers; `scripts/cos-doctor-tools.sh` and `scripts/cos-doctor-memory-lifecycle.sh` verify; `scripts/cos-bootstrap.sh` starts optional/reference infra only when explicitly requested; `docs/04-Concepts/architecture/infrastructure-service-catalog.md` explains service purpose/tier. If a tool/service isn't declared or cataloged there, it is not part of the supported runtime claim.
+- Three profiles: `minimal` (required CLIs + Python package only), `default`/`standard` (adds dev/test tooling + recommended memory/MCP checks), `full` (adds optional tools and explicitly starts optional/reference services when Docker is available). Optional services must never become mandatory for default use.
+- Isolated Product-System Mode: when COS connects to real product-shaped systems, an explicit isolation contract governs 7 surfaces (repository, runtime state, service state, data, secrets, registry, outputs) — e.g. disposable git worktree/temp clone, `.cognitive-os/`-scoped runtime writes, non-colliding Docker Compose namespaces, synthetic fixtures only, env-var/secret-manager-only secrets, no temp/canary installs entering the default registry, deletable artifacts.
+- Product-System Connection Contract requires a declared adapter/profile specifying: required tools/Python groups, required optional services, the local start command, readiness/teardown behavior, success-proving artifacts, and degraded behavior when unavailable.
+- Automatic Install Boundary: `scripts/setup.sh` may install dev deps for a profile; `scripts/manifest-check.sh` is a verifier only (not an installer); `scripts/cos-doctor-tools.sh` is advisory by default; `scripts/register-mcps.sh` may automate MCP registration but the host app may still need a restart; heavy services must be explicit via `scripts/cos-bootstrap.sh`; secrets must never come from generated repo files.
+- Manual proof path (6 numbered steps with acceptance criteria each): (1) verify declared dependencies via `manifest-check.sh` for `default` and `full` profiles; (2) install profile deps via `setup.sh --standard`/`--full`, idempotently; (3) verify harness/MCP wiring via `cos-doctor-tools.sh` for Codex and Claude; (4) verify memory lifecycle via `cos-doctor-memory-lifecycle.sh`; (5) start optional connected services only when requested via `cos-bootstrap.sh --profile full`; (6) run a persistent test summary via `pytest-with-summary.sh` writing a timestamped dir under `.cognitive-os/reports/test-runs/`.
+- Future automation target: a single `cos doctor --profile <default|full> [--connected-systems] --harness <h>` wrapper composing this flow — explicitly required to remain "a wrapper over the declared contracts above, not a second source of dependency truth."
+
+## Relations & where used
+Central hub referencing `manifests/dependencies.yaml`, `scripts/manifest-check.sh`, `scripts/setup.sh`, `scripts/register-mcps.sh`, `scripts/cos-doctor-tools.sh`, `scripts/cos-doctor-memory-lifecycle.sh`, `scripts/cos-bootstrap.sh`, `scripts/pytest-with-summary.sh`, and `docs/04-Concepts/architecture/infrastructure-service-catalog.md`. Complements the more narrowly-scoped `headless-docker-service-runtime.md` and `headless-runtime-proof-drills.md` drills — this doc validates the local dependency/harness substrate those drills assume is present.
+
+## Status / caveats
+The "Future Automation" section describes a `cos doctor --connected-systems` command that does not yet exist — forward-looking, not a current capability. No internal inconsistency found; the doc is careful to keep optional services non-mandatory throughout.
