@@ -1,0 +1,21 @@
+---
+type: concept-synthesis
+source: docs/04-Concepts/architecture/pending-truth-architecture.md
+status: canonical (2026-05-12)
+provenance: "Three adversarial-review iterations on 2026-05-12 surfaced read/write/projection/drift gaps in sequence (single-instance fix -> audit-but-not-projected -> projected-but-not-closed); this doc names the finished shape."
+---
+
+## What it is
+Single architectural map of how Cognitive OS obtains, projects, closes, and protects task state across 5 historically fragmented source surfaces, via 4 invariants: OBTAIN (normalize into 1 ledger), PROJECT (surface at session-start across 3 harnesses), CLOSE (bilateral-proof closure into `.cognitive-os/audit/closure-trail.jsonl`), PREVENT DRIFT (3 anti-drift hooks).
+
+## Key mechanics
+- Layer 1 OBTAIN: 5 source surfaces (`plans/*.md` checkboxes, ADR status, ADR-frontmatter follow-ups, `user-requests/queue.jsonl`, `.cognitive-os/tasks/active-tasks`) -> `scripts/cos-pending-truth-aggregator` (ADR-273 Slice A) -> `docs/06-Daily/reports/pending-truth-latest.json` (~279 items, schema `pending-truth/v1`). `scripts/cos-pending-truth-verify` (ADR-273 Slice B) classifies each item `verified-pending|verified-done|obsolete|ambiguous` via deterministic checks (path-exists, ADR status, CHANGELOG match) — catches ~2.5% of mismarks vs ~25% Opus-driven, but never lies. Also: `scripts/cos-operational-guide-audit.py` (ADR-274), `scripts/cos-control-plane-audit` (ADR-248, orchestrates hook-fast/hourly/pre-public lanes -> `.cognitive-os/tasks/control-plane-remediation.jsonl`), `scripts/cos-adr-partial-ledger`/`cos-adr-partial-audit` (ADR lifecycle bridge -> `adr-partial-backlog-latest.{json,md}`).
+- Layer 2 PROJECT: `scripts/cos-session-start-projector` (ADR-275) reads Layer 1 + git state + staged deploy dirs, emits top-N (default 5, `COS_PROJECTOR_LIMIT`) bounded summary with 60s cache TTL (`.cognitive-os/runtime/session-start-projection.cache.json`, bypass `COS_PROJECTOR_NOCACHE=1`). Wired into `.claude/settings.json`, `.codex/hooks.json`, `.cognitive-os/cos-runner-hooks.json` at SessionStart (ADR-008).
+- Layer 3 CLOSE: canonical status vocabulary in `STATUS-TAXONOMY.md` (`accepted|implemented|partial|partial-blocked|blocked|deferred|superseded|tombstone|not-applicable|resolved`). `scripts/cos-pending-truth-close` (ADR-275, atomic/audited): `--id`, `--proof` (path:line | ADR-NNN | test-id | commit-sha), `--reason`, `--dry-run`; verifies proof bilaterally (ADR-105, exit 3 on rejection), applies canonical closure edit per source type, appends to `closure-trail.jsonl` (schema `closure-trail/v1`), re-runs aggregator, exits 0 with receipt. `scripts/cos-adr-close` is the parallel ADR-lifecycle closer. `scripts/cos-closure-trust-signal.py` quantifies audited-vs-manual closure asymmetry as HIGH|MEDIUM|LOW|ZERO, feeding the trust-report (ADR-244). Manual source edits still work but produce LOW trust (no closure-trail entry) — 25% of plan checkboxes were found unverified in an Opus batch sweep 2026-05-12, motivating bilateral-proof enforcement.
+- Layer 4 PREVENT DRIFT: `pending-truth-drift-detector.sh` (PostToolUse Edit|Write, non-blocking nudge), `pending-truth-verify-weekly.sh` (Stop, async, re-runs verify if ledger >7d stale or >50% items unverified >7d), `pending-truth-staleness-gate.sh` (PreToolUse Bash on `git commit*`, warns if ledger >30d old). All 3 are `conditional_opt_in` per `manifests/hook-registration-classification.yaml` — do not fire by default.
+
+## Relations & where used
+ADR-105 (bilateral proof), ADR-244 (trust-report), ADR-248 (control-plane loop), ADR-273 (ledger/aggregator/verifier/hooks), ADR-274 (Operational Guide contract), ADR-275 (closure/projection primitives), ADR-008 (multi-harness), ADR-117 (stash reversibility pattern precedent).
+
+## Status / caveats
+Known follow-ups (Phase 2+ of ADR-275, not implemented): semantic verifier beyond deterministic checks; multi-source atomic close (one action closing checkbox+ADR+follow-up together — currently only ranked together, executed separately); trust-report should explicitly penalize unaudited manual closures; projector ranking heuristic is currently age-desc, target is recency x blast-radius x unblocking-count.
