@@ -103,7 +103,17 @@ def _run_node_smoke(tmp: Path) -> dict[str, Any]:
     node_script = tmp / "smoke.mjs"
     node_script.write_text(
         """
-import { CosPrimitiveGuard, SIGNED_PRIMITIVES } from './consumer/.opencode/plugins/cos-primitive-guard.js';
+import * as pluginModule from './consumer/.opencode/plugins/cos-primitive-guard.js';
+// OpenCode's loader iterates Object.values(module) and rejects the WHOLE plugin
+// if any export is not a function ("Plugin export is not a function"). Reproduce
+// that contract so a non-function export can never regress plugin loading again.
+for (const [name, value] of Object.entries(pluginModule)) {
+  if (typeof value !== 'function') {
+    throw new Error(`OpenCode loader would reject plugin: export '${name}' is not a function`);
+  }
+}
+const { CosPrimitiveGuard } = pluginModule;
+const SIGNED_PRIMITIVES = CosPrimitiveGuard.SIGNED_PRIMITIVES;
 const root = process.env.COGNITIVE_OS_PROJECT_DIR;
 const plugin = await CosPrimitiveGuard({ directory: root, worktree: root });
 await plugin['session.created']({ sessionID: 'opencode-smoke-session' });

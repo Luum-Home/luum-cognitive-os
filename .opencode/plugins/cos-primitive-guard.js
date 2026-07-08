@@ -362,4 +362,9 @@ export const CosPrimitiveGuard = async (ctx) => {
   }
 }
 
-export { SIGNED_PRIMITIVES }
+// OpenCode's plugin loader iterates Object.values(module) and requires EVERY
+// export to be a plugin function (throws "Plugin export is not a function"
+// otherwise, discarding the whole plugin). So the module must export only the
+// factory. SIGNED_PRIMITIVES is exposed as a static property for test/tooling
+// access instead of a second export.
+CosPrimitiveGuard.SIGNED_PRIMITIVES = SIGNED_PRIMITIVES
