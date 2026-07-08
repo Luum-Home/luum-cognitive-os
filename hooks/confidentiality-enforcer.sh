@@ -84,9 +84,15 @@ if cache_hit "$FILE_PATH" "$_CONF_RULES_HASH"; then
 fi
 
 # Run the Python scanner
-PYTHON_OUTPUT=$(python3 - "$FILE_PATH" "$PROJECT_DIR" "$CONFIG_FILE" <<'PYEOF' 2>&1
+PYERR=$(mktemp)
+trap 'rm -f "$PYERR"' EXIT
+PYTHON_OUTPUT=$(python3 - "$FILE_PATH" "$PROJECT_DIR" "$CONFIG_FILE" <<'PYEOF' 2>"$PYERR"
 import json, sys
-from lib.confidentiality_scanner import scan_file, load_protected_terms, is_scannable_path
+try:
+    from lib.confidentiality_scanner import scan_file, load_protected_terms, is_scannable_path
+except Exception as e:
+    print(f"SCANNER_INFRA_ERROR: {e}", file=sys.stderr)
+    sys.exit(3)
 
 file_path = sys.argv[1]
 project_dir = sys.argv[2]
@@ -107,7 +113,36 @@ PYEOF
 )
 PYTHON_EXIT=$?
 
-if [ $PYTHON_EXIT -eq 1 ]; then
+METRICS_DIR="${COGNITIVE_OS_METRICS_DIR:-$PROJECT_DIR/.cognitive-os/metrics}"
+
+if [ "$PYTHON_EXIT" -eq 3 ] || { [ "$PYTHON_EXIT" -ne 0 ] && [ "$PYTHON_EXIT" -ne 1 ]; }; then
+    echo "CONFIDENTIALITY SCAN SKIPPED (infra error) for $FILE_PATH" >&2
+    mkdir -p "$METRICS_DIR"
+    echo "{\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"file\":\"$FILE_PATH\",\"action\":\"scan_error_fail_open\",\"exit\":$PYTHON_EXIT}" >> "$METRICS_DIR/confidentiality-enforcer.jsonl"
+    exit 0
+fi
+
+if [ "$PYTHON_EXIT" -eq 1 ]; then
+    if ! printf '%s\n' "$PYTHON_OUTPUT" | python3 -c '
+import json, sys
+had_line = False
+for line in sys.stdin:
+    line = line.strip()
+    if not line:
+        continue
+    had_line = True
+    try:
+        json.loads(line)
+    except Exception:
+        sys.exit(1)
+sys.exit(0 if had_line else 1)
+' ; then
+        echo "CONFIDENTIALITY SCAN SKIPPED (unparseable output) for $FILE_PATH" >&2
+        mkdir -p "$METRICS_DIR"
+        echo "{\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"file\":\"$FILE_PATH\",\"action\":\"scan_error_fail_open\",\"exit\":$PYTHON_EXIT}" >> "$METRICS_DIR/confidentiality-enforcer.jsonl"
+        exit 0
+    fi
+
     ONLY_OPERATOR_ABSOLUTE_PATHS=$(echo "$PYTHON_OUTPUT" | python3 -c '
 import json
 import sys
