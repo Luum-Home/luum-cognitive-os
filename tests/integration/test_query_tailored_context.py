@@ -21,7 +21,12 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from lib.context_injector import build_context, _task_hash, _cache_path  # noqa: E402
+from lib.context_injector import (  # noqa: E402
+    build_context,
+    _task_hash,
+    _cache_path,
+    _prefer_synthesis,
+)
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -211,3 +216,106 @@ def test_jaccard_fallback_when_embeddings_unavailable(
     assert any(kw in ctx_lower for kw in ("rate_limiter", "rate-limiter", "adr-028", "rate limiter")), (
         f"Expected rate-limiter reference via Jaccard fallback, got:\n{ctx}"
     )
+
+
+# ---------------------------------------------------------------------------
+# Non-ADR synthesis remap (2026 KB rollout — Concepts/Methodology/…)
+# ---------------------------------------------------------------------------
+
+@pytest.fixture()
+def kb_root(tmp_path: Path) -> Path:
+    """Project root with a 04-Concepts doc that has a synthesis sibling and
+    a 05-Methodology doc that does NOT (raw fallback)."""
+    concepts = tmp_path / "docs" / "04-Concepts" / "architecture"
+    concepts.mkdir(parents=True)
+    # Raw source doc (scored) — distinctive topic tokens.
+    (concepts / "harness-action-receipts.md").write_text(
+        "# Harness Action Receipts\n\n"
+        "Cryptographic receipt ledger recording every harness tool invocation "
+        "for tamper-evident audit provenance and replay verification.\n"
+    )
+    # Curated Tier-1 synthesis sibling (the served target).
+    (concepts / "harness-action-receipts.synthesis.md").write_text(
+        "# Harness Action Receipts (synthesis)\n\n"
+        "Synthesis: receipt ledger for harness tool invocation provenance.\n"
+    )
+
+    # Methodology doc with NO synthesis sibling → raw fallback.
+    method = tmp_path / "docs" / "05-Methodology"
+    method.mkdir(parents=True)
+    (method / "planning-poker-cadence.md").write_text(
+        "# Planning Poker Cadence\n\n"
+        "Estimation calibration ritual using planning-poker fibonacci story "
+        "point voting across the squad each sprint iteration.\n"
+    )
+
+    (tmp_path / ".cognitive-os").mkdir()
+    return tmp_path
+
+
+def test_non_adr_doc_serves_synthesis_sibling(kb_root: Path) -> None:
+    """A query matching a 04-Concepts source doc must serve its
+    .synthesis.md sibling, not the raw .md."""
+    ctx = build_context(
+        "cryptographic receipt ledger for harness tool invocation provenance",
+        project_root=kb_root,
+        use_cache=False,
+    )
+    assert ctx, f"Expected non-empty context, got: {ctx!r}"
+    assert "harness-action-receipts.synthesis.md" in ctx, (
+        f"Expected synthesis sibling to be served, got:\n{ctx}"
+    )
+    # The raw doc must NOT be surfaced directly when a synthesis page exists.
+    assert "harness-action-receipts.md`" not in ctx.replace(".synthesis.md`", ""), (
+        f"Raw doc surfaced instead of synthesis page:\n{ctx}"
+    )
+
+
+def test_non_adr_doc_raw_fallback_when_no_synthesis(kb_root: Path) -> None:
+    """A query matching a 05-Methodology doc with no synthesis sibling must
+    serve the raw .md (fallback)."""
+    ctx = build_context(
+        "estimation calibration planning-poker fibonacci story point voting squad",
+        project_root=kb_root,
+        use_cache=False,
+    )
+    assert ctx, f"Expected non-empty context, got: {ctx!r}"
+    assert "planning-poker-cadence.md" in ctx, (
+        f"Expected raw doc served as fallback, got:\n{ctx}"
+    )
+
+
+def test_adr_synthesis_behavior_unchanged(isolated_root: Path) -> None:
+    """ADR remap must still serve ADR-NNN.synthesis.md when present and fall
+    back to the raw ADR otherwise (no regression from the shared helper)."""
+    adrs = isolated_root / "docs" / "02-Decisions" / "adrs"
+    # Add a canonical synthesis page for ADR-028.
+    (adrs / "ADR-028.synthesis.md").write_text(
+        "# ADR-028 — Rate Limiter (synthesis)\n\nCurated per-minute quota summary.\n"
+    )
+    ctx = build_context("refactor rate limiter", project_root=isolated_root, use_cache=False)
+    assert "ADR-028.synthesis.md" in ctx, (
+        f"Expected ADR-028 synthesis to be served, got:\n{ctx}"
+    )
+    # ADR-040 has no synthesis page → raw ADR path must still be reachable via helper.
+    served = _prefer_synthesis(adrs / "ADR-040-query-tailored-context-injection.md")
+    assert served.name == "ADR-040-query-tailored-context-injection.md", (
+        f"Expected raw ADR fallback, got: {served}"
+    )
+
+
+def test_prefer_synthesis_helper(kb_root: Path) -> None:
+    """Direct unit coverage of the shared _prefer_synthesis remap helper."""
+    concepts = kb_root / "docs" / "04-Concepts" / "architecture"
+    method = kb_root / "docs" / "05-Methodology"
+    # (a) general doc with synthesis sibling → synthesis served.
+    assert _prefer_synthesis(concepts / "harness-action-receipts.md").name == (
+        "harness-action-receipts.synthesis.md"
+    )
+    # (b) general doc without sibling → raw returned.
+    assert _prefer_synthesis(method / "planning-poker-cadence.md").name == (
+        "planning-poker-cadence.md"
+    )
+    # (c) a synthesis page is idempotent (returns itself, never double-mapped).
+    syn = concepts / "harness-action-receipts.synthesis.md"
+    assert _prefer_synthesis(syn) == syn
