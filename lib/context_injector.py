@@ -201,6 +201,47 @@ def _search_code_embeddings(
         return None
 
 
+# ─── Synthesis-page remap (shared by ADR + general-docs search) ──────────────
+
+def _prefer_synthesis(raw: Path) -> Path:
+    """Return the curated Tier-1 synthesis page for a raw source doc, else *raw*.
+
+    Synthesis pages (ADR-knowledge-pilot + the 2026 KB rollout across
+    docs/02-Decisions, 04-Concepts, 05-Methodology, 07-Capabilities,
+    08-References, 09-Quality) live beside their source doc. The remap scores
+    the richer raw doc but SERVES the synthesis page when one exists — callers
+    exclude ``*.synthesis.md`` from scoring so pages are never double-counted.
+
+    Naming::
+
+        <stem>.md            -> <stem>.synthesis.md            (all buckets)
+        ADR-NNN-<slug>.md    -> ADR-NNN.synthesis.md           (canonical), else
+                                ADR-NNN-<slug>.synthesis.md     (slugged variant)
+
+    For ADRs the canonical name (slug dropped) is preferred, matching the
+    original ADR-knowledge-pilot behavior. The hyphen boundary in the slugged
+    glob keeps ADR-026 from matching ADR-026a.
+    """
+    if raw.name.endswith(".synthesis.md"):
+        return raw
+    # ADR canonical remap (preserves ADR-knowledge-pilot behavior exactly).
+    adr_num = re.match(r"(ADR-\d+[a-z]?)", raw.stem)
+    if adr_num:
+        num = adr_num.group(1)
+        exact = raw.parent / f"{num}.synthesis.md"
+        if exact.exists():
+            return exact
+        slugged = sorted(raw.parent.glob(f"{num}-*.synthesis.md"))
+        if slugged:
+            return slugged[0]
+        return raw
+    # General buckets: direct sibling X.md -> X.synthesis.md.
+    sibling = raw.parent / f"{raw.stem}.synthesis.md"
+    if sibling.exists():
+        return sibling
+    return raw
+
+
 # ─── ADR search ──────────────────────────────────────────────────────────────
 
 def _search_adrs(
@@ -236,27 +277,72 @@ def _search_adrs(
             # SERVE the curated Tier-1 synthesis page when one exists for this
             # ADR number, falling back to the raw ADR otherwise. See
             # sdd/adr-knowledge-pilot/design (verified GO, ~61% token reduction).
-            served = md_file
-            adr_num = re.match(r"(ADR-\d+[a-z]?)", md_file.stem)
-            if adr_num:
-                num = adr_num.group(1)
-                # Synthesis pages are named either ADR-NNN.synthesis.md
-                # (canonical) or ADR-NNN-<slug>.synthesis.md; prefer the exact
-                # canonical name, else the slugged variant (hyphen boundary so
-                # ADR-026 does not match ADR-026a).
-                exact = adrs_dir / f"{num}.synthesis.md"
-                if exact.exists():
-                    served = exact
-                else:
-                    slugged = sorted(adrs_dir.glob(f"{num}-*.synthesis.md"))
-                    if slugged:
-                        served = slugged[0]
+            served = _prefer_synthesis(md_file)
             scored.append({
                 "source": "adr",
                 "path": str(served.relative_to(project_root)),
                 "score": round(score, 4),
                 "excerpt": title,
             })
+
+    scored.sort(key=lambda x: x["score"], reverse=True)
+    return scored[:top_k]
+
+
+# ─── Knowledge-base doc search (non-ADR buckets) ─────────────────────────────
+
+# Buckets carrying Tier-1 *.synthesis.md pages from the 2026 KB rollout. ADRs
+# (docs/02-Decisions) are handled separately by _search_adrs to preserve the
+# ADR "source": "adr" label and canonical-name remap.
+_DOC_BUCKETS: tuple[tuple[str, ...], ...] = (
+    ("docs", "04-Concepts"),
+    ("docs", "05-Methodology"),
+    ("docs", "07-Capabilities"),
+    ("docs", "08-References"),
+    ("docs", "09-Quality"),
+)
+
+# Jaccard threshold for KB docs (same tuning as ADRs — first-paragraph excerpts).
+_DOCS_MIN_SCORE = 0.04
+
+
+def _search_docs(
+    query_tokens: set[str],
+    project_root: Path,
+    top_k: int = TOP_K,
+) -> list[dict]:
+    """Search non-ADR knowledge-base buckets, serving Tier-1 synthesis pages.
+
+    Mirrors :func:`_search_adrs`: scores the raw source doc (richer text) but
+    SERVES the sibling ``*.synthesis.md`` page via :func:`_prefer_synthesis`
+    when one exists. ``*.synthesis.md`` files are skipped during scoring so we
+    never double-count a page against its own synthesis.
+    """
+    scored = []
+    for parts in _DOC_BUCKETS:
+        bucket = project_root.joinpath(*parts)
+        if not bucket.is_dir():
+            continue
+        for md_file in bucket.rglob("*.md"):
+            if md_file.name.endswith(".synthesis.md"):
+                continue
+            content = ""
+            try:
+                content = md_file.read_text(errors="ignore")[:600]
+            except OSError:
+                pass
+            doc_tokens = _tokenise(md_file.stem + " " + content)
+            score = _jaccard(query_tokens, doc_tokens)
+            if score >= _DOCS_MIN_SCORE:
+                title_match = re.search(r"^# (.+)$", content, re.MULTILINE)
+                title = title_match.group(1) if title_match else md_file.stem
+                served = _prefer_synthesis(md_file)
+                scored.append({
+                    "source": "docs",
+                    "path": str(served.relative_to(project_root)),
+                    "score": round(score, 4),
+                    "excerpt": title,
+                })
 
     scored.sort(key=lambda x: x["score"], reverse=True)
     return scored[:top_k]
@@ -428,7 +514,11 @@ def build_context(
     # 3. ADR search (always Jaccard — ADRs not in embeddings corpus).
     all_matches.extend(_search_adrs(query_tokens, root, top_k=top_k))
 
-    # 4. Debt register.
+    # 4. Non-ADR knowledge-base docs (Concepts/Methodology/Capabilities/
+    #    References/Quality) — same synthesis-page remap as ADRs.
+    all_matches.extend(_search_docs(query_tokens, root, top_k=top_k))
+
+    # 5. Debt register.
     all_matches.extend(_search_debt(query_tokens, root, top_k=top_k))
 
     # De-duplicate by path, keep highest score.
