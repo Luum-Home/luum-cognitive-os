@@ -1,0 +1,28 @@
+---
+type: reference-synthesis
+source: docs/08-References/case-studies/external-review-cycle-2026-05-02.md
+provenance: "Worked, traceable example (2026-05-02 to 2026-05-03) documenting whether the boring-reliability doctrine really converts external critique into ADRs and CI gates instead of defensiveness, for external adopters evaluating the claim."
+---
+
+## What it is
+
+A detailed case study tracing one full cycle in which an external senior-review critique of Cognitive OS's surface area and lifecycle discipline was absorbed into concrete ADRs, CI-enforced gates, and a real primitive demotion — then traces how the same absorption mechanism went on to trigger self-triggered friction fixes and self-generated doctrine-amendment proposals. Written as evidence for (or against) the "boring-reliability" doctrine, not as marketing.
+
+## Key mechanics
+
+- **The cycle, 5 steps**: (1) external SR review flags surface area (162 skills/188 hooks/112 rules/1.6K-line yaml), token tax, and no demonstrated ADR retirement discipline; (2) reframed as a distribution + lifecycle problem via ADR-124 (distribution tiers), ADR-125 (governance value boundary), ADR-126 (8 lifecycle states: candidate→sandbox→advisory→blocking→default-on→demoted→archived→deleted); (3) structural enforcement added — `active_primitive_index.py` (visible-surface thresholds wired into CI), `lab_first_promotion_gate.py` (new primitives start in lab/sandbox), `session_start_budget.py` (session-preamble token budget); (4) first real demotion performed against `hooks/task-completed.sh` with a machine-readable evidence block and sunset criteria; (5) doctrine updated (`cognitive-prosthesis.md`, ADR-132) naming the open single-maintainer-vs-multi-maintainer question.
+- **Bilateral pressure property**: the cycle closed in ~8 hours (five ADRs, three gate refactors with tests, an audit, and the case study itself) specifically *because* of single-maintainer velocity (no socialization, no code-owners, tests land with code) — explicitly named as the same property ADR-132 flags as a durability SPOF risk. The doc predicts multi-maintainer absorption of the same review would take 5–10x longer.
+- **Self-triggered absorption**: a `direct-main-guard.sh` bypass friction that occurred *during the documentation pass itself* was hardened (commit `95239a50`, ~80 lines, new tests, new policy doc) within ~40 minutes, without external prompting — offered as a falsifiable claim (recurring friction without a hardening commit + policy doc means the doctrine is not working).
+- **Self-evolving doctrine**: two new ADRs (ADR-134 `cos-self-improvement-loop`, propose-only operational fixes; ADR-135 `cos-doctrine-proposer`, propose-only doctrine amendments, `runtime_effect: none`) let the audit subsystem propose rule changes about itself. On first run it generated 5 amendments from live audit data; one of them ("prefer semantic over substring matching in gates") independently reproduced a finding ("Risk B") from the original external review, derived purely from internal `cos-false-positive-ledger` data with no access to the review document.
+- **Four architectural refusals** stacked as ceilings against runaway autonomy: ADR-134 `auto_merge: false`; ADR-135 `runtime_effect: none`; ADR-136 "runway not federation" (builds Shape B infra — registry locks, portable Engram bundles, federation-trigger counters in `manifests/federation-triggers.yaml` — without operating Shape B); and commit `d4535df0`'s anti-self-validation rule (`manifests/external-adoption-evidence.yaml` rejects any evidence where `independence.maintainer_owned`/`same_machine`/`same_repo`/`self_reported` is true).
+- **Explicit non-proof section**: the doc states what the cycle does *not* prove — one demotion is not a discipline (need 3+), the ROI dashboard hasn't signed a decision yet, single-maintainer absorption ≠ multi-maintainer absorption.
+- **Maturity self-assessment**: "post-adolescent operational" — has internal discipline/instruments/doctrine, lacks tenure (production time under uncontrolled pressure) and bilateral external validation (third-party measurable feedback), both bounded by calendar, not commits. Names 3 falsifiable re-read triggers (3+ demoted entries, an ROI-signed demotion, a non-maintainer 30+ day adoption report).
+- **Replication template** for other projects: persistent decision log, mechanical self-report falsifier, a demotion lifecycle state, a CI gate on default-surface growth, and doctrine that names retirement as dominant — with an explicit dependency order (items 1-3 are paper without item 4; item 4 is performative without item 5).
+
+## Relations & where used
+
+Companion docs: `boring-reliability-control-plane.md`, `cognitive-prosthesis.md`, ADR-126, ADR-132, ADR-133. References ADR-105 (claim verification), `aspirational_audit.py`, `cos-ci-local.sh`, `cos-claim-signature-audit`, `claim-signature-audit.md`, and the drill report `cross-instance-consumer-e2e-2026-05-03.md`.
+
+## Status / caveats
+
+This is an explicitly **dated, point-in-time snapshot** ("2026-05-02 → 2026-05-03"; filename carries the date deliberately so readers calibrate for drift) — the document itself warns that "any audit of this system [will be] partially obsolete by the time you read it" and that its artifact value is the **structural frame**, not the present-tense findings. Self-reported maturity ("post-adolescent operational") and the "healthy convergence zone" framing are the authors' own interpretive claims, not independently verified; the doc is transparent about this and frames its own falsifiability criteria for future readers to check. No inconsistency was found requiring a flag beyond the doc's own acknowledged snapshot-staleness caveat.
