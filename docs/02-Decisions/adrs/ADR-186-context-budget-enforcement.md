@@ -103,8 +103,9 @@ prior `additionalContext` injections. Sums the lengths and writes:
 Verdict thresholds:
 
 - `PASS` — used ≤ 1.0 × budget.
-- `WARN` — used > 1.0 × budget AND ≤ 1.2 × budget. Stderr warning;
-  no blocking.
+- `WARN` — used > 1.0 × budget AND ≤ 1.5 × budget. Stderr warning;
+  no blocking. (`lib/context_budget.py` uses 1.2× as an internal sub-boundary,
+  but both the 1.0–1.2 and 1.2–1.5 sub-bands emit `WARN`.)
 - `BLOCK` — used > 1.5 × budget. Returns non-zero unless
   `COS_ALLOW_CONTEXT_BUDGET_OVERRUN=1` is set.
 
