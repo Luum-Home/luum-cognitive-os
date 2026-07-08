@@ -1,0 +1,25 @@
+---
+type: concept-synthesis
+source: docs/04-Concepts/architecture/concurrent-agent-safety-master.md
+status: "Research master document, updated 2026-05-02; unifying layer not yet implemented, 3 mandatory scenarios still to be built"
+provenance: "Concurrent agents/sessions can silently corrupt shared state (file overwrites, false-done plan claims, invisible stash leaks) because existing primitives (ADR-089, ADR-098, ADR-105, ADR-106) are not yet composed into one model with automated proof"
+---
+
+## What it is
+Master design for a "Concurrent Agent Safety Layer" that composes existing multi-session primitives into one model and defines an automated scenario testbed proving that concurrent agents cannot cause silent damage.
+
+## Key mechanics
+- Design principle: allow concurrency, but make silent damage structurally impossible; every failure mode needs (1) a preventing/detecting/reconciling primitive, (2) a durable runtime artifact, (3) an automated scenario test.
+- Existing building blocks: ADR-089 (git-index coordination across sessions), ADR-098 (file-level edit locks + conflict metadata), ADR-105 (bilateral claim verification for archived/removed/wired/done), ADR-106 (stash-leak alarm, plan-file lock, commit provenance, orchestrator bilateral gate), ADR-104 (startup circuit breaker), ADR-088 (provenance markers).
+- Composed flow: agent intent -> declared scope -> resource/primitive lease -> file/git/plan locks -> execution -> claim verification -> provenance -> reconciliation -> automated scenario proof.
+- 5 candidate primitives: (1) **Agent Work Ledger** — append-only record (session id, agent id, harness, declared task/scope, permission profile, touched files, tests run, claims made/verified, commit hashes, status) at `.cognitive-os/runtime/agent-work-ledger.jsonl`; (2) **Resource Lease** — logical-resource locks beyond files (e.g. `runtime/settings-projection`, `primitive/hooks/session-start`, `domain/auth`) at `.cognitive-os/runtime/resource-leases/<resource>.lock/`; (3) **Cross-Session Reconciler** — read-only process detecting stale locks, stash leaks, divergent plan checkboxes, unprovenanced commits, unverified "done" claims, and colliding active sessions, exposed via `cos doctor concurrency` (fallback `scripts/cos-doctor-concurrency.sh`); (4) **Claim Verification Registry** — maps claim verbs to proof commands (archived = archive present AND original absent AND config refs absent; removed = path absent AND config refs absent; wired = registration exists AND target resolves; done = every acceptance criterion command passed); (5) **Approval and Override Ledger** — durable audit for lock/gate bypasses at `.cognitive-os/runtime/approvals/*.json` and `overrides.jsonl`.
+- 3 mandatory scenarios (in build order) with candidate tests: (1) two agents edit same file -> second writer blocked/parked, first edit survives -> `tests/integration/test_concurrent_agent_same_file.py`; (2) false-done in plan -> checkbox transition without bilateral `(verified: ...)` proof rejected -> `tests/behavior/test_plan_false_done_gate.py`; (3) stash leak -> hidden `auto-pre-agent-*` stash triggers `.cognitive-os/runtime/stash-leak-alarm.json` and blocks in strict mode with TTL forced to zero -> `tests/behavior/test_stash_leak_alarm.py`. Future scenarios listed: concurrent commits (missing `X-COS-Session` provenance fails), same logical primitive/different files (resource-lease conflict), out-of-scope edit (post-agent verifier rejects), approval bypass (override ledger records actor/reason/scope/timestamp), cross-worktree divergence, delete/recreate repair (destructive-gate blocks).
+- Test lane placement: unit tests (`tests/unit/`) for lock/ledger parsers; behavior tests (`tests/behavior/`) for gates; integration tests (`tests/integration/`) for real git/filesystem concurrent subprocesses; chaos tests (`tests/chaos/`) for fault injection (stale PIDs, corrupt locks, clock skew).
+- Recommended implementation sequence: scenario matrix (this doc) -> ADR for the layer (ADR-108) -> implement Scenario 1 -> Scenario 2 -> Scenario 3 -> add `cos doctor concurrency` once all three automated.
+- Definition of done: 3 mandatory scenarios run automatically in pytest, each failing against an unsafe fixture and passing against the protected primitive; runtime artifacts produced in `.cognitive-os/runtime/` or scratch equivalents; no manual-judgment dependency; ADR references this doc + testbed plan; master plan tracks this as product safety, not optional research.
+
+## Relations & where used
+References ADR-089, ADR-098, ADR-104, ADR-105, ADR-106, ADR-108 (Concurrent Agent Safety Layer decision record); `.cognitive-os/plans/architecture/concurrent-agent-safety-testbed-plan.md`; `docs/04-Concepts/architecture/concurrent-agent-scenario-test-matrix.md`.
+
+## Status / caveats
+Explicitly a research master document — the unifying layer and scenario tests are proposed, not confirmed implemented in this doc's text ("do not start with the broadest primitive... let the primitive surface emerge from the test").

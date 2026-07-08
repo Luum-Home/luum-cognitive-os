@@ -1,0 +1,28 @@
+---
+type: concept-synthesis
+source: docs/04-Concepts/architecture/FROZEN-BACKLOG.md
+status: "OS ~93-95% stable (2026-04-16); backlog items frozen until stabilization reaches 100%"
+provenance: "Items deferred during the stabilization freeze (ADR-017) and April 2026 stabilization sessions because the user chose stabilization over new features"
+---
+
+## What it is
+Consolidated inventory of all plans/decisions/queued work pulled from engram that was frozen during the ADR-017 stabilization freeze; single source of truth for "what to work on once the OS is stable enough."
+
+## Key mechanics
+- **P0 Cross-Device Memory Sync — DONE (2026-04-16):** `scripts/engram-sync.sh` filters by project; Stop hook exports, SessionStart hook imports; `.engram/exports/luum-cognitive-os.jsonl` (1.5MB, 544/2,348 observations, 23%) committed to git; pre-commit gate exempts `.engram/exports/`.
+- **P1 Core vs Extensions Audit — MVP DONE (2026-04-20), waves pending:** audit at `docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md` (581 primitives: 126 CORE, 453 EXTENSION, 2 REMOVE); migration plan at `.cognitive-os/plans/architecture/core-vs-extensions-migration-plan.md` (21 waves); POC `packages/cos-advisory-llm/` extracted 3 LLM hooks with backward-compat symlinks. Candidates to move: `packages/advisory-llm/` (prompt-quality-llm.sh, completeness-check-llm.sh, confidence-gate-llm.sh — need Haiku API), `packages/claude-code-integration/` (recap-sync.sh + recap_adapter.py — Claude-specific). Deprecate: `hooks/task-panel-sync.sh` (superseded by task-bridge-notify.sh, ADR-024). ~4 hours remaining.
+- **Mega plans:** (1) Stabilization Mega Plan (engram #5889, decision #5319): 10 sessions/6 phases, wiring 43%->90%, sessions 1-2 done, 4 phases remain. (2) Self-Optimizing Pipeline/WS13 (#3441): MAPE-K loop, blocked on cos-dispatch Phase 5. (3) Token Optimization Mega Plan (#3663): 2-tier CATALOG-COMPACT done; prompt cache tuning/anchored summarization/rule loader remain. (4) Intelligent Context Compaction (#3085): proposal only, 4 workstreams, 5-7 sessions, $12-18 budget.
+- **Queued feature work:** Session Queue 14 workstreams (#3660, WS1-WS16, most DONE/partial — notably WS12 smart-commit classifier lib exists but not wired); Token Optimization TO1-TO8 (backlog, several partial); Pending Plans Inventory (#3661, superseded by this doc); Queued next tasks (#1825: COS MCP server, ShellSpec testing, PR review automation, TurboQuant research); GGA Engram integration (#1827, push pending); 5 remaining queued tasks (#1836, undetailed, check engram).
+- **Evaluations pending decision:** autoskills/midudev (#1959, WATCH-NC license), opencli-rs-skill/nashsu (#1958, WATCH-Apache-2.0), GGA (#1823, evaluate), OpenClaw+Agent Zero (#1805), E2B sandbox (evaluated, package created), Archon (#1822, research), Garagon tools aguara/mantis/tero (#1774/#1772, tero EVALUATE, mantis WATCH). Package migration (#1684): 4 of 10 migrated (POC).
+- **Architecture decisions pending:** Plugin Marketplace (#1675, roadmap only, blocked on cos-dispatch Phase 3+); Onboarding Wizard TUI (#1819, design complete at `docs/04-Concepts/root/onboarding-wizard-design.md`, `cos setup` partial); Security Stack Master (#1781, 5/8 layers wired); Agnix Integration (#1664, package exists, integration pending); Plans directory consolidation (#1788, recommend consolidating into `.cognitive-os/plans/`); Rules consolidation (#1820, 73->14 done, Context7 auto-trigger tuning remains).
+- **Decisions made but not fully implemented:** Rules-to-hooks refactor (#2946/#2968/#2973, 22 EXCLUDED_RULES/17 hook-enforced, 5 rules without hook equivalent pending); Agent Orchestration Real (#2753, TeammateIdle/TaskCreated/TaskCompleted hooks registered, real Valkey dispatch pending); Docker->pip migration (#4819, Phase 1+2 done, 9 services); Project-audit/Pre-dev completeness (#2927, predev-completeness-check.sh registered, gap coverage pending).
+- **Waiting for activation:** Security tools gap (#3155: Semgrep/MCP-Scan/Promptfoo/Garak/Aguara/Parry hooks exist, partially wired into default profile); Audience-awareness (#1771, field filtering done ADR-021, deeper per-audience logic pending); Rate-limit status tool (#1763, blocked on WorkloadScheduler); Non-blocking retry (#1764, CronCreate+WorkloadScheduler, partial).
+- **Reference/cleanup:** Smart-commit skill (#3508, low priority); Broken window policy for test errors (#3404, medium priority); Docs-to-Skills Audit (#3153, 115 docs, mostly processed); Skill Atomicity Audit (#3151, 103 skills, applied this session).
+- **Resumption priority order:** (1) Stabilization Mega Plan phases 3-6, (2) pending architecture decisions #11-18, (3) queued features #4-10, (4) evaluations #11-12, (5) nice-to-haves #27-30.
+- Engram sourced via SQLite (`~/.engram/engram.db`, `SELECT content FROM observations WHERE id=?`); topic key prefixes: `planning/*`, `sdd/*`, `architecture/*`, `implementation/*`.
+
+## Relations & where used
+`docs/04-Concepts/architecture/harness-adoption-gap/ADR-001-harness-skills-sync-path.md` (Harness Adoption Gap item — RESOLVED same session: root cause was `hooks/self-install.sh` syncing to wrong destination `.cognitive-os/skills/` instead of `.claude/skills/`; one-line fix; 126/126 skills exposed post-fix, was 40/126). References ADR-017, `.cognitive-os/plans/roadmaps/stabilization-roadmap.md`.
+
+## Status / caveats
+Explicitly a living/frozen document: "DO NOT start items from this backlog until stabilization hits 100%." Last updated 2026-04-16. Items #10 and several evaluations require live engram lookup to act on (not fully detailed in the file).
