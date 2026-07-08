@@ -377,3 +377,28 @@ Installer-only surface + one guarded hook edit → cheap revert:
   only when they wire a lib-importing hook (none today) — tracked, not blocking.
 - **Guarded apply**: T3/T6/T7 need `COS_ALLOW_PROTECTED_CONFIG_WRITE=1`; forgetting it blocks
   the apply.
+
+---
+
+## 8. U1 resolution: `cos_lib` rename (chosen)
+
+**Update 2026-07-08.** The operator chose the **durable fix** flagged as "out of scope" in §7
+above: a full `lib` -> `cos_lib` package rename, eliminating the namespace-collision risk (U1)
+at the root rather than relying only on the §3 fail-open backstop. This supersedes the
+"deferred" disposition in §7's first bullet.
+
+- **Codemod:** `scripts/cos_lib_rename_codemod.py` — deterministic, dry-run by default,
+  AST-aware for `.py`, boundary-anchored regex for `.sh`/embedded, module-allowlist guarded
+  (373 real top-level `lib/` modules), protected-config-aware (refuses `hooks/ rules/ skills/
+  .claude/` writes without `COS_ALLOW_PROTECTED_CONFIG_WRITE=1`), idempotent, reversible.
+- **Dry-run manifest:** `docs/06-Daily/reports/cos-lib-rename-dryrun-2026-07-08.md` — measured
+  blast radius (902 files / 1854 import lines; 94 guarded hook files; 47 workflow edge cases
+  that are correctly *left alone* because they resolve to the separate `workflows/lib/` package;
+  125 string/path refs for human review; 73 symlinks needing no target rewrite).
+- **This projection/bootstrap design still applies**, unchanged in shape — it now projects
+  `cos_lib/` instead of `lib/`. The corrected `sys.path` entry
+  `PYTHONPATH="$PROJECT_DIR/.cognitive-os"` (parent-of-package, §1) is **unchanged**: it is the
+  parent directory regardless of whether the package is named `lib` or `cos_lib`. The closure
+  algorithm (§2), fail-open backstop (§3), and regression test (§4) carry over verbatim with
+  `cos_lib` substituted for `lib`. After the rename a consumer's own `lib/` can no longer shadow
+  `cos_lib`, so §3 becomes defense-in-depth rather than the primary mitigation for U1.
