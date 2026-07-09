@@ -116,10 +116,13 @@ const { CosPrimitiveGuard } = pluginModule;
 const SIGNED_PRIMITIVES = CosPrimitiveGuard.SIGNED_PRIMITIVES;
 const root = process.env.COGNITIVE_OS_PROJECT_DIR;
 const plugin = await CosPrimitiveGuard({ directory: root, worktree: root });
-await plugin['session.created']({ sessionID: 'opencode-smoke-session' });
-await plugin['tui.prompt.append']({ sessionID: 'opencode-smoke-session', prompt: 'private prompt omitted' });
-await plugin['session.idle']({ sessionID: 'opencode-smoke-session' });
-await plugin['session.compacted']({ sessionID: 'opencode-smoke-session' });
+// Lifecycle now arrives through OpenCode's generic `event` Hook (switch on
+// event.type); chat.message is the advisory prompt-time Hook. These replace the
+// former phantom top-level keys OpenCode never invoked.
+await plugin['event']({ event: { type: 'session.created', properties: { info: { id: 'opencode-smoke-session' } } } });
+await plugin['chat.message']({ sessionID: 'opencode-smoke-session', prompt: 'private prompt omitted' });
+await plugin['event']({ event: { type: 'session.idle', properties: { sessionID: 'opencode-smoke-session' } } });
+await plugin['event']({ event: { type: 'session.compacted', properties: { sessionID: 'opencode-smoke-session' } } });
 const beforeCases = [
   ['destructive-git-blocker', 'bash', { command: 'git reset --hard private-branch-name' }, true],
   ['destructive-rm-blocker', 'bash', { command: 'rm -rf private-target-dir' }, true],

@@ -195,7 +195,7 @@ function runProjectedHook(root, hook, nativeEvent, input) {
   }
 }
 
-function emitProjectedHookRows(root, projection, nativeEvent, input) {
+function emitProjectedHookRows(root, projection, nativeEvent, input, opts = {}) {
   const hooks = projectedHooksFor(projection, nativeEvent)
   // Total wall-clock budget for the synchronous hooks of one native event.
   // Async hooks are exempt (they cost one detached spawn each).
@@ -204,17 +204,26 @@ function emitProjectedHookRows(root, projection, nativeEvent, input) {
   for (const hook of hooks) {
     const overBudget = !hook.async && Date.now() - startedAt > budgetMs
     const result = overBudget ? null : runProjectedHook(root, hook, nativeEvent, input)
+    let actionKind = overBudget ? "warn" : result?.status === 2 ? "block" : result?.timedOut ? "warn" : "observe"
+    // Advisory deliveries (e.g. the chat.message / UserPromptSubmit-equivalent
+    // path) can never block: OpenCode exposes no block contract on the `event`
+    // or `chat.message` Hooks, so a hook exit-2 is downgraded to a warning and
+    // is never surfaced as a block. Without opts.advisory the behavior below is
+    // byte-identical to the pre-existing session.*/PreCompact/tool.* paths.
+    if (opts.advisory && actionKind === "block") actionKind = "warn"
     emitIntervention(root, {
       primitive_id: hook.id || sanitize(hook.script),
       primitive_source: hook.script || "unknown",
-      action_kind: overBudget ? "warn" : result?.status === 2 ? "block" : result?.timedOut ? "warn" : "observe",
+      action_kind: actionKind,
       reason_code: overBudget
         ? "opencode_hook_budget_exhausted"
         : result?.detached
           ? "opencode_projected_hook_async"
           : result?.timedOut
             ? "opencode_projected_hook_timeout"
-            : "opencode_projected_hook",
+            : opts.advisory && result?.status === 2
+              ? "opencode_projected_hook_advisory"
+              : "opencode_projected_hook",
       target_ref: nativeEvent,
       native_event: nativeEvent,
       hook_event: hook.event,
@@ -327,17 +336,27 @@ export const CosPrimitiveGuard = async (ctx) => {
   const root = projectRoot(ctx)
   const projection = loadHookProjection(root)
   return {
-    "session.created": async (input) => {
-      emitProjectedHookRows(root, projection, "session.created", input)
+    // OpenCode delivers session lifecycle through the single generic `event`
+    // Hook (interface Hooks has no session.created/idle/compacted keys — those
+    // were phantom handlers OpenCode never invoked). We switch on event.type,
+    // which is already the exact key .opencode/cos-hooks.json.events is bucketed
+    // by, so it doubles as the projection selector and the native_event value.
+    event: async (input) => {
+      const type = input?.event?.type
+      const props = input?.event?.properties || {}
+      if (type === "session.created") {
+        emitProjectedHookRows(root, projection, "session.created", { sessionID: props.info?.id })
+      } else if (type === "session.idle") {
+        emitProjectedHookRows(root, projection, "session.idle", { sessionID: props.sessionID })
+      } else if (type === "session.compacted") {
+        emitProjectedHookRows(root, projection, "session.compacted", { sessionID: props.sessionID })
+      }
     },
-    "session.idle": async (input) => {
-      emitProjectedHookRows(root, projection, "session.idle", input)
-    },
-    "tui.prompt.append": async (input) => {
-      emitProjectedHookRows(root, projection, "tui.prompt.append", input)
-    },
-    "session.compacted": async (input) => {
-      emitProjectedHookRows(root, projection, "session.compacted", input)
+    // UserPromptSubmit-equivalent governance. OpenCode has no prompt-submit
+    // event.type; chat.message is the closest real Hook (fires on message
+    // receipt) and is advisory-only — no block contract exists here.
+    "chat.message": async (input) => {
+      emitProjectedHookRows(root, projection, "tui.prompt.append", { sessionID: input?.sessionID }, { advisory: true })
     },
     "experimental.session.compacting": async (input) => {
       emitProjectedHookRows(root, projection, "experimental.session.compacting", input)
