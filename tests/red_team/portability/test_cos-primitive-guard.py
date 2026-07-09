@@ -72,3 +72,65 @@ def test_plugin_copies_are_identical() -> None:
     """The two harness copies must not drift — they share one contract."""
     bodies = {p.read_text(encoding="utf-8") for p in PLUGIN_COPIES if p.is_file()}
     assert len(bodies) == 1, "cos-primitive-guard.js copies have drifted apart"
+
+
+# The real hook keys OpenCode's `interface Hooks` accepts (from
+# @opencode-ai/plugin/dist/index.d.ts on v1.16.2). A handler keyed by anything
+# outside this set is a phantom — OpenCode never invokes it.
+REAL_OPENCODE_HOOKS = frozenset({
+    "dispose", "event", "config", "tool", "auth", "provider",
+    "chat.message", "chat.params", "chat.headers", "permission.ask",
+    "command.execute.before", "shell.env", "tool.execute.before",
+    "tool.execute.after", "tool.definition", "experimental.session.compacting",
+    "experimental.chat.messages.transform", "experimental.chat.system.transform",
+    "experimental.compaction.autocontinue", "experimental.text.complete",
+})
+# Keys the plugin used to register that OpenCode NEVER delivers (regression guard).
+PHANTOM_KEYS = frozenset({
+    "session.created", "session.idle", "session.compacted", "tui.prompt.append",
+})
+
+_HANDLER_KEYS = """
+import { CosPrimitiveGuard } from %s
+const handlers = await CosPrimitiveGuard({ directory: %s, worktree: %s })
+console.log(JSON.stringify(Object.keys(handlers)))
+"""
+
+
+def _factory_handler_keys(plugin_path: Path, tmp: Path) -> list[str]:
+    node = shutil.which("node")
+    if node is None:
+        pytest.skip("node runtime unavailable")
+    script = _HANDLER_KEYS % (json.dumps(str(plugin_path)), json.dumps(str(tmp)), json.dumps(str(tmp)))
+    result = subprocess.run(
+        [node, "--input-type=module", "-e", script],
+        text=True,
+        capture_output=True,
+        timeout=20,
+        check=False,
+    )
+    lines = [ln for ln in result.stdout.splitlines() if ln.strip().startswith("[")]
+    assert lines, f"no handler payload from {plugin_path}: {result.stdout}{result.stderr}"
+    return json.loads(lines[-1])
+
+
+@pytest.mark.parametrize("plugin_path", PLUGIN_COPIES, ids=lambda p: str(p.relative_to(REPO_ROOT)))
+def test_factory_registers_only_real_opencode_hooks(plugin_path: Path, tmp_path: Path) -> None:
+    """Behavioral contract-drift probe: invoke the real factory and check its keys.
+
+    Every handler the plugin returns must be a hook OpenCode's `interface Hooks`
+    actually delivers; none may be a phantom key. A phantom handler silently
+    disables that slice of COS governance in OpenCode (the exact defect this
+    change fixes for session lifecycle).
+    """
+    keys = _factory_handler_keys(plugin_path, tmp_path)
+    assert keys, f"factory returned no handlers: {plugin_path}"
+    phantom = sorted(set(keys) & PHANTOM_KEYS)
+    assert not phantom, f"{plugin_path.relative_to(REPO_ROOT)} still registers phantom hook(s): {phantom}"
+    unknown = sorted(k for k in keys if k not in REAL_OPENCODE_HOOKS)
+    assert not unknown, (
+        f"{plugin_path.relative_to(REPO_ROOT)} registers handler(s) absent from "
+        f"OpenCode interface Hooks: {unknown}"
+    )
+    # Lifecycle governance must be reachable via the generic `event` Hook.
+    assert "event" in keys, "plugin no longer registers the `event` lifecycle Hook"
