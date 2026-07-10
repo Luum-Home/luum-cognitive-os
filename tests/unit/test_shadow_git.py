@@ -9,7 +9,7 @@ import pytest
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(_REPO_ROOT))
 
-from lib.shadow_git import RestorePreviewRequired, preview, restore, shadow_repo_path, snapshot  # noqa: E402
+from cos_lib.shadow_git import RestorePreviewRequired, preview, restore, shadow_repo_path, snapshot  # noqa: E402
 
 
 def _init_repo(path: Path) -> None:
@@ -72,7 +72,7 @@ def test_prune_path_is_session_scoped(tmp_path: Path, monkeypatch: pytest.Monkey
 
 
 def test_restore_conversation_only_truncates_session_stream(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    from lib.session_bus import append_session_event, read_session_events
+    from cos_lib.session_bus import append_session_event, read_session_events
 
     repo = tmp_path / "repo"
     repo.mkdir()
@@ -92,7 +92,7 @@ def test_restore_conversation_only_truncates_session_stream(tmp_path: Path, monk
 
 
 def test_restore_files_and_conversation_is_single_operation(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    from lib.session_bus import append_session_event, read_session_events
+    from cos_lib.session_bus import append_session_event, read_session_events
 
     repo = tmp_path / "repo"
     repo.mkdir()
@@ -127,8 +127,8 @@ def test_restore_files_and_conversation_is_single_operation(tmp_path: Path, monk
 
 
 def test_snapshot_event_wires_file_tree_sha_into_event_envelope(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    from lib.session_bus import read_session_events
-    from lib.shadow_git import snapshot_event
+    from cos_lib.session_bus import read_session_events
+    from cos_lib.shadow_git import snapshot_event
 
     repo = tmp_path / "repo"
     repo.mkdir()
@@ -143,7 +143,7 @@ def test_snapshot_event_wires_file_tree_sha_into_event_envelope(tmp_path: Path, 
 
 
 def test_prune_expired_snapshots_dry_run_and_execute(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    from lib.shadow_git import prune_expired_snapshots
+    from cos_lib.shadow_git import prune_expired_snapshots
 
     repo = tmp_path / "repo"
     repo.mkdir()

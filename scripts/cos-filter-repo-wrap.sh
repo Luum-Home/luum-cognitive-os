@@ -245,7 +245,7 @@ from pathlib import Path
 project, adr, reason, operator, backup, pre, post = sys.argv[1:8]
 sys.path.insert(0, project)
 try:
-    from lib.history_rewrite_ledger import LedgerEntry, append_entry
+    from cos_lib.history_rewrite_ledger import LedgerEntry, append_entry
     bundle_rel = backup
     pr = Path(project)
     bp = Path(backup)

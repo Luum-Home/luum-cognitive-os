@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.primitive_fitness import build_report, collect_fitness_snapshot, compare_primitive_fitness
+from cos_lib.primitive_fitness import build_report, collect_fitness_snapshot, compare_primitive_fitness
 
 pytestmark = pytest.mark.unit
 

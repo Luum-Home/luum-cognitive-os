@@ -4,7 +4,7 @@ from __future__ import annotations
 import subprocess
 from pathlib import Path
 
-from lib.dependency_adoption_gate import evaluate_staged, is_adoption_evidence, is_dependency_manifest
+from cos_lib.dependency_adoption_gate import evaluate_staged, is_adoption_evidence, is_dependency_manifest
 
 
 def _git(repo: Path, *args: str) -> subprocess.CompletedProcess[str]:
@@ -104,7 +104,7 @@ def test_inventory_uses_tracked_files_not_local_dependency_caches(tmp_path: Path
     _git(repo, "add", "pyproject.toml")
     _git(repo, "commit", "-m", "init")
 
-    from lib.dependency_adoption_gate import current_dependency_inventory
+    from cos_lib.dependency_adoption_gate import current_dependency_inventory
 
     inventory = current_dependency_inventory(repo)
 

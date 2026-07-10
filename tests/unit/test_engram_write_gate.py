@@ -1,17 +1,17 @@
-"""Unit tests for lib.engram_write_gate (ADR-287 capability 2)."""
+"""Unit tests for cos_lib.engram_write_gate (ADR-287 capability 2)."""
 from __future__ import annotations
 
 import json
 
 import pytest
 
-from lib.engram_write_gate import (
+from cos_lib.engram_write_gate import (
     ApprovalRequiredError,
     WriteGatePreview,
     gated_save,
     is_claim_type,
 )
-from lib.engram_wave3_schema import EvidenceRequiredError
+from cos_lib.engram_wave3_schema import EvidenceRequiredError
 
 
 class _RecordingSave:

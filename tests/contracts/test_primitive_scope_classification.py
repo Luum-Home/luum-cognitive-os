@@ -8,7 +8,7 @@ from pathlib import Path
 import pytest
 import yaml
 
-from lib.primitive_parser import parse_primitive_file
+from cos_lib.primitive_parser import parse_primitive_file
 
 pytestmark = pytest.mark.unit
 

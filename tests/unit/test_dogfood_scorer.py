@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.dogfood_scorer import (
+from cos_lib.dogfood_scorer import (
     DIMENSION_WEIGHTS,
     DogfoodScorer,
     append_trend_record,

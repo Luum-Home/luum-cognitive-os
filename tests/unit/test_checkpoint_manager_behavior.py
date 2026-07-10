@@ -16,7 +16,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.checkpoint_manager import CheckpointManager
+from cos_lib.checkpoint_manager import CheckpointManager
 
 pytestmark = pytest.mark.unit
 

@@ -25,7 +25,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.primitive_parser import detect_primitive_kind
+from cos_lib.primitive_parser import detect_primitive_kind
 
 LEADING_HTML_COMMENT_RE = re.compile(r"^\s*<!--.*?-->\s*\n", re.DOTALL)
 SCOPE_COMMENT_RE = re.compile(r"<!--\s*SCOPE:\s*([A-Za-z0-9_-]+)\s*-->", re.IGNORECASE)

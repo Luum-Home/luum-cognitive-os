@@ -1,11 +1,11 @@
-"""Behavioral tests for lib.ref_key_loader."""
+"""Behavioral tests for cos_lib.ref_key_loader."""
 from __future__ import annotations
 
 import json
 
 import pytest
 
-from lib.ref_key_loader import _read_tier, expand, find_ref_keys, resolve
+from cos_lib.ref_key_loader import _read_tier, expand, find_ref_keys, resolve
 
 
 @pytest.fixture
@@ -206,7 +206,7 @@ def test_expand_tier_2_explicit(tiered_project):
 
 def test_read_tier_returns_correct_values(tiered_project):
     """_read_tier() reads only line 1 and returns the tier integer."""
-    from lib.ref_key_loader import _read_tier
+    from cos_lib.ref_key_loader import _read_tier
     rules = tiered_project / "rules"
     assert _read_tier(rules / "trust-score.md") == 0
     assert _read_tier(rules / "adaptive-bypass.md") == 1

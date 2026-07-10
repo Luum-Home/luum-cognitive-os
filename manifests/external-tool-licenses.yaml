@@ -25,11 +25,11 @@ entries:
     copyright: "Copyright (c) NousResearch"
     attribution: "Original work © NousResearch, ported and adapted by Cognitive OS contributors"
     cos_files:
-      - "lib/memory_manager.py"
-      - "lib/context_compressor.py"
-      - "lib/prompt_cache.py"
-      - "lib/error_insights.py"
-      - "lib/review_agent.py"
+      - "cos_lib/memory_manager.py"
+      - "cos_lib/context_compressor.py"
+      - "cos_lib/prompt_cache.py"
+      - "cos_lib/error_insights.py"
+      - "cos_lib/review_agent.py"
       - "packages/agent-lifecycle/lib/review_agent.py"
       - "packages/verification-audit/lib/error_classifier.py"
     annex_f: "docs/03-PoCs/research/hermes-annex-f-compliance-cleanroom-2026-05-11.md"
@@ -48,7 +48,7 @@ entries:
     copyright: "Copyright (c) 2025 OpenHarness Contributors"
     attribution: "Ports HttpHookDefinition and PromptHookDefinition from HKUDS/OpenHarness (MIT), adapted to COS conventions."
     cos_files:
-      - "lib/hook_types.py"
+      - "cos_lib/hook_types.py"
     annex_f: "docs/03-PoCs/research/openharness-annex-f-compliance-cleanroom-2026-05-11.md"
     notes: >
       Commit hash recorded at source: 7873f0d109174a57b3b1af7aa5397a6b3b0bd551.
@@ -62,7 +62,7 @@ entries:
     copyright: "MISSING — upstream not identifiable"
     attribution: "PENDING — upstream URL and copyright holder must be supplied before attribution can be authored"
     cos_files:
-      - "lib/file_mutation_queue.py"
+      - "cos_lib/file_mutation_queue.py"
     annex_f: "docs/03-PoCs/research/pi-coding-agent-annex-f-compliance-cleanroom-2026-05-11.md"
     notes: >
       BLOCKED pending upstream identification. MIT claimed inline only.

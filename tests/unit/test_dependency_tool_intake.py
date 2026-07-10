@@ -6,8 +6,8 @@ from pathlib import Path
 
 import yaml
 
-from lib.dependency_profile_ratchet import evaluate, load_baseline
-from lib.dependency_tool_intake import build_triage_report
+from cos_lib.dependency_profile_ratchet import evaluate, load_baseline
+from cos_lib.dependency_tool_intake import build_triage_report
 
 
 def coverage_payload() -> dict:

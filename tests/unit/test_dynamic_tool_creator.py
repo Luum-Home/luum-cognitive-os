@@ -8,7 +8,7 @@ from pathlib import Path
 import pytest
 
 # Ensure lib/ is importable
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "lib"))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "cos_lib"))
 
 from dynamic_tool_creator import DynamicToolCreator, _slugify
 

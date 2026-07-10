@@ -7,11 +7,11 @@ date: '2026-05-13'
 supersedes: []
 superseded_by: null
 implementation_files:
-  - lib/engram_wave3_schema.py
-  - lib/engram_write_gate.py
-  - lib/engram_fts5_search.py
-  - lib/engram_bundle_exporter.py
-  - lib/engram_bundle_importer.py
+  - cos_lib/engram_wave3_schema.py
+  - cos_lib/engram_write_gate.py
+  - cos_lib/engram_fts5_search.py
+  - cos_lib/engram_bundle_exporter.py
+  - cos_lib/engram_bundle_importer.py
 tier: maintainer
 tags:
   - engram
@@ -78,7 +78,7 @@ the conflict-surfacing protocol (`mem_judge`).
    that requires explicit approval before commit. For high-blast-radius writes
    (e.g. architecture decisions) this asymmetry matters.
 3. **Retrieval ranking is opaque to callers.** `observations_fts` exists and
-   supports BM25, but `lib.engram_client.search_observations` and the HTTP
+   supports BM25, but `cos_lib.engram_client.search_observations` and the HTTP
    daemon's `/observations/search` endpoint do not surface the BM25 score nor a
    snippet. Callers cannot reason about *why* a hit ranked above another, and
    cannot ask for ordered top-K by BM25 directly from Python without bypassing

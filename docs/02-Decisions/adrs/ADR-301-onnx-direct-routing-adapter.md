@@ -10,7 +10,7 @@ extends:
 - ADR-298
 - ADR-300
 implementation_files:
-- lib/routing_benchmark.py
+- cos_lib/routing_benchmark.py
 - manifests/routing-benchmark-models.yaml
 - tests/unit/test_routing_benchmark_onnx_adapter.py
 - docs/06-Daily/reports/routing-benchmark-2026-05-13.md

@@ -38,7 +38,7 @@ drivers:
     version_baseline: "0.126.0-alpha.8"
     evidence:
       - tests/fixtures/codex-live-session/
-      - lib/harness_adapter/codex.py
+      - cos_lib/harness_adapter/codex.py
       - internal/provider/codex.go
     supported_events:
       SessionStart:
@@ -103,7 +103,7 @@ drivers:
       - https://opencode.ai/docs/agents/
       - https://open-code.ai/en/docs/rules
       - scripts/_lib/settings-driver-opencode.sh
-      - lib/harness_adapter/opencode.py
+      - cos_lib/harness_adapter/opencode.py
       - packages/opencode-adapter/plugins/cos-primitive-guard.js
       - scripts/opencode_primitive_adapter_smoke.py
     supported_events:
@@ -158,11 +158,11 @@ drivers:
     description: >
       Bare-CLI / CI harness: cos-agent and cos-skill run in plain shell with
       no surrounding harness.  Events are emitted as canonical JSON to stdin
-      of the BareCliAdapter.  Adapter file: lib/harness_adapter/bare_cli.py.
+      of the BareCliAdapter.  Adapter file: cos_lib/harness_adapter/bare_cli.py.
     version_baseline: "adr-064-p0"
     evidence:
-      - lib/harness_adapter/bare_cli.py
-      - lib/agent_runner.py
+      - cos_lib/harness_adapter/bare_cli.py
+      - cos_lib/agent_runner.py
       - bin/cos-agent
       - tests/unit/test_harness_adapter_bare_cli.py
     supported_events:

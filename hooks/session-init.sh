@@ -339,7 +339,7 @@ _TELEMETRY_SNAPSHOT="$PROJECT_DIR/.cognitive-os/metrics/telemetry-snapshot.yaml"
 if [ -f "$_TELEMETRY_SNAPSHOT" ]; then
     _PY_BIN="$PROJECT_DIR/.venv/bin/python"
     [ -x "$_PY_BIN" ] || _PY_BIN="python3"
-    "$_PY_BIN" -m lib.telemetry_banner --snapshot "$_TELEMETRY_SNAPSHOT" 2>&1 1>/dev/null || true
+    "$_PY_BIN" -m cos_lib.telemetry_banner --snapshot "$_TELEMETRY_SNAPSHOT" 2>&1 1>/dev/null || true
 fi
 
 exit 0

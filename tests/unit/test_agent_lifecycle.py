@@ -7,7 +7,7 @@ from pathlib import Path
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(_REPO_ROOT))
 
-from lib.agent_lifecycle import prepare_agent_worktree, slugify  # noqa: E402
+from cos_lib.agent_lifecycle import prepare_agent_worktree, slugify  # noqa: E402
 
 
 def _init_repo(path: Path) -> None:
@@ -40,7 +40,7 @@ def test_prepare_agent_worktree_creates_branch_manifest_and_worktree(tmp_path: P
     manifest = repo / ".cognitive-os" / "runtime" / "agent-worktrees" / "toolu_123-write-readme.json"
     assert manifest.is_file()
 
-from lib.agent_lifecycle import cleanup_agent_worktrees, lifecycle_mode, lifecycle_projection
+from cos_lib.agent_lifecycle import cleanup_agent_worktrees, lifecycle_mode, lifecycle_projection
 
 
 def test_lifecycle_mode_defaults_to_worktree() -> None:

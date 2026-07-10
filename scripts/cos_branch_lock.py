@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.branch_lock import acquire, holder, release, release_all_for_session, renew  # noqa: E402
+from cos_lib.branch_lock import acquire, holder, release, release_all_for_session, renew  # noqa: E402
 
 
 def project_dir(args: argparse.Namespace) -> Path:

@@ -22,9 +22,9 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.project_paths import relpath
-from lib.primitive_parser import parse_primitive_file
-from lib.script_io import read_text
+from cos_lib.project_paths import relpath
+from cos_lib.primitive_parser import parse_primitive_file
+from cos_lib.script_io import read_text
 
 VALID_SCOPES = {"os-only", "project", "both"}
 FAMILIES = {"hooks", "skills", "rules", "scripts", "templates"}

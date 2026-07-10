@@ -1,7 +1,7 @@
 """Contract tests for orchestrator_verify.py (W1).
 
 Tests:
-  1. Both import paths work (lib.orchestrator_verify and package path)
+  1. Both import paths work (cos_lib.orchestrator_verify and package path)
   2. extract_high_stakes_claims detects ADR-105 verbs
   3. HIGH_STAKES_VERBS frozenset contract
   4. verify_claim returns VerificationOutcome with correct fields
@@ -17,7 +17,7 @@ _REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")
 if _REPO_ROOT not in sys.path:
     sys.path.insert(0, _REPO_ROOT)
 
-from lib.orchestrator_verify import (  # noqa: E402
+from cos_lib.orchestrator_verify import (  # noqa: E402
     HIGH_STAKES_VERBS,
     HighStakesClaim,
     VerificationOutcome,
@@ -30,7 +30,7 @@ from lib.orchestrator_verify import (  # noqa: E402
 
 # ── Case 1: both import paths resolve ────────────────────────────────────────
 def test_symlink_import_path_works():
-    """lib.orchestrator_verify import must succeed (symlink is live)."""
+    """cos_lib.orchestrator_verify import must succeed (symlink is live)."""
     # Already imported above — if we got here, it works
     assert HIGH_STAKES_VERBS is not None
 
@@ -190,8 +190,8 @@ def test_format_report_empty():
 # ── Case 8: composes ground_truth (does not fork) ────────────────────────────
 def test_composes_ground_truth_not_forked():
     """Verify orchestrator_verify imports from ground_truth, not a fork."""
-    from lib import ground_truth  # noqa: F401 — import must succeed
-    from lib.ground_truth import extract_claims  # noqa: F401
+    from cos_lib import ground_truth  # noqa: F401 — import must succeed
+    from cos_lib.ground_truth import extract_claims  # noqa: F401
     assert callable(extract_claims)
 
 

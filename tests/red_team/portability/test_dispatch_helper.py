@@ -17,7 +17,7 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 def test_wrap_dispatch_helper_present():
     code = (
         "import sys; sys.path.insert(0, %r);\n"
-        "from lib.dispatch_helper import wrap_dispatch_tool_result\n"
+        "from cos_lib.dispatch_helper import wrap_dispatch_tool_result\n"
         "out = wrap_dispatch_tool_result('x' * 100, 'Bash', 'ls')\n"
         "assert out == 'x' * 100, 'small output should pass through'\n"
         "print('ok')\n"
@@ -35,7 +35,7 @@ def test_wrap_dispatch_helper_present():
 def test_envelope_idempotent_large_payload():
     code = (
         "import sys; sys.path.insert(0, %r);\n"
-        "from lib.dispatch_helper import wrap_dispatch_tool_result\n"
+        "from cos_lib.dispatch_helper import wrap_dispatch_tool_result\n"
         "big = 'a' * 60000\n"
         "first = wrap_dispatch_tool_result(big, 'Bash', 'ls')\n"
         "second = wrap_dispatch_tool_result(first, 'Bash', 'ls')\n"

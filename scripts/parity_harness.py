@@ -257,9 +257,9 @@ def run_via_qwen(
     project_root: Path,
     verbose: bool = False,
 ) -> ParityResult:
-    """Dispatch the task through lib.qwen_agent_loop.run_agent."""
+    """Dispatch the task through cos_lib.qwen_agent_loop.run_agent."""
     try:
-        from lib import qwen_agent_loop
+        from cos_lib import qwen_agent_loop
     except ImportError as exc:
         return ParityResult(
             task_id=task.id, provider="qwen",
@@ -580,7 +580,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     claude_executor = None
     if not args.dry_run and only_provider != "qwen":
         try:
-            from lib.claude_executor import ClaudeExecutor
+            from cos_lib.claude_executor import ClaudeExecutor
             claude_executor = ClaudeExecutor(verbose=args.verbose)
         except Exception as exc:  # noqa: BLE001
             print(f"WARNING: ClaudeExecutor unavailable ({exc}); skipping Claude leg",

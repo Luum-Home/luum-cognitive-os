@@ -12,7 +12,7 @@ extends: [ADR-094, ADR-242]
 implementation_files:
   - hooks/_lib/push-collision-check.sh
   - scripts/push_collision_detect.py
-  - lib/history_sanitization.py
+  - cos_lib/history_sanitization.py
   - tests/behavior/test_push_collision_post_rewrite.py
 tier: maintainer
 tags: [history-rewrite, push-gates, dx, postmortem-2026-05-08]

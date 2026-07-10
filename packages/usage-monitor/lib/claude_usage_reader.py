@@ -6,7 +6,7 @@ Reads ~/.claude/projects/*.jsonl to get actual token consumption, costs,
 and session data. Used for cost reconciliation against our own tracking.
 
 Usage:
-    from lib.claude_usage_reader import read_usage, reconcile_costs
+    from cos_lib.claude_usage_reader import read_usage, reconcile_costs
 
     usage = read_usage()  # All sessions
     usage = read_usage(since_hours=24)  # Last 24 hours

@@ -13,7 +13,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from lib.browser_use_adapter import (
+from cos_lib.browser_use_adapter import (
     BrowserUseAdapter,
     WebAutomationResult,
     WebAutomationUnavailable,

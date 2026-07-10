@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import sqlite3
 
-from lib.engram_wave2_schema import ensure_wave2_schema, observation_columns
+from cos_lib.engram_wave2_schema import ensure_wave2_schema, observation_columns
 
 
 def _create_db(path) -> sqlite3.Connection:

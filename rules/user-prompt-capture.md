@@ -41,7 +41,7 @@ The classifier handles Spanish prompts natively:
 ## Format
 
 ```python
-from lib.prompt_classifier import classify_prompt
+from cos_lib.prompt_classifier import classify_prompt
 
 result = classify_prompt(user_message)
 if result.should_capture:

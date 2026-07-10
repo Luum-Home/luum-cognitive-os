@@ -23,7 +23,7 @@ sys.path.insert(
     0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 )
 
-from lib.checkpoint_manager import CheckpointManager
+from cos_lib.checkpoint_manager import CheckpointManager
 
 
 # ---------------------------------------------------------------------------

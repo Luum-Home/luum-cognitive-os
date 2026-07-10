@@ -1,6 +1,6 @@
 """Tests for read-only capability-ceiling signal detection."""
 
-from lib.capability_ceiling import (
+from cos_lib.capability_ceiling import (
     CapabilitySignal,
     detect_capability_ceiling,
 )

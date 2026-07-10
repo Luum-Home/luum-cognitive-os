@@ -839,9 +839,9 @@ def main(argv: list[str] | None = None) -> int:
     # Handle --mark-answered as an early-exit sub-command
     if args.mark_answered:
         try:
-            from lib.decision_tracker import mark_answered_by_slug  # noqa: PLC0415
+            from cos_lib.decision_tracker import mark_answered_by_slug  # noqa: PLC0415
         except ImportError as exc:
-            print(f"ERROR: cannot import lib.decision_tracker: {exc}", file=sys.stderr)
+            print(f"ERROR: cannot import cos_lib.decision_tracker: {exc}", file=sys.stderr)
             return 1
         slug = args.mark_answered
         answer = args.answer_text

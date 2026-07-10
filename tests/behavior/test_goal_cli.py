@@ -26,7 +26,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scripts.cos_goal import main as goal_main
-from lib.goal_state import GoalStateStore
+from cos_lib.goal_state import GoalStateStore
 
 
 # ---------------------------------------------------------------------------
@@ -301,7 +301,7 @@ class TestGoalPauseResume:
         goal = store.load()
         assert goal is not None
         # Manually add evidence history and save
-        from lib.goal_state import EvidencePacket
+        from cos_lib.goal_state import EvidencePacket
         ev = EvidencePacket(
             iteration=1,
             files_changed=["lib/foo.py"],
@@ -385,7 +385,7 @@ class TestGoalArchive:
         # Manually transition to budget_limited via store (simulate terminal)
         store = GoalStateStore(base_dir=tmp_path / "goals", workspace_thread_id="test-wt")
         goal = store.load()
-        from lib.goal_state import apply_transition
+        from cos_lib.goal_state import apply_transition
         bl = apply_transition(goal, "budget_limited")
         store.save(bl)
         rc = run(base_args + ["archive"])
@@ -549,7 +549,7 @@ class TestGoalDoctor:
         (codex_dir / "hooks.json").write_text(json.dumps(codex_hooks))
 
         # Run detect_enforcement_level pointing at tmp_path
-        from lib.harness_adapter.goal_stop import detect_enforcement_level
+        from cos_lib.harness_adapter.goal_stop import detect_enforcement_level
         result = detect_enforcement_level(project_dir=tmp_path)
 
         assert result["codex"] is True, (

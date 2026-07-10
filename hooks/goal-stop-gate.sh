@@ -61,9 +61,9 @@ if str(project_dir) not in sys.path:
     sys.path.insert(0, str(project_dir))
 
 try:
-    from lib.goal_state import GoalStateStore, _ALLOW_STOP_STATUSES, apply_transition, EvaluatorVerdict
-    from lib.goal_evaluator import GoalEvaluator
-    from lib.goal_budget import check_budget
+    from cos_lib.goal_state import GoalStateStore, _ALLOW_STOP_STATUSES, apply_transition, EvaluatorVerdict
+    from cos_lib.goal_evaluator import GoalEvaluator
+    from cos_lib.goal_budget import check_budget
 except ImportError as exc:
     print(f"ERROR:import failed: {exc}", file=sys.stderr)
     sys.exit(0)  # degrade safely

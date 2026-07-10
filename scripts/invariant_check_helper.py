@@ -179,7 +179,7 @@ def adr_id(path: str) -> str:
 
 def module_path(path: str) -> str:
     """Convert a Python file path to a dotted import path, relative to cwd
-    or to the first 'lib/'/'packages/'/'src/' segment found."""
+    or to the first 'cos_lib/'/'packages/'/'src/' segment found."""
     rel = path
     if rel.endswith(".py"):
         rel = rel[:-3]
@@ -189,7 +189,7 @@ def module_path(path: str) -> str:
     if rel.startswith(cwd + "/"):
         rel = rel[len(cwd) + 1:]
     # Anchor on common source roots
-    for anchor in ("lib/", "packages/", "src/", "tests/"):
+    for anchor in ("cos_lib/", "packages/", "src/", "tests/"):
         idx = rel.find("/" + anchor)
         if idx >= 0:
             rel = rel[idx + 1:]

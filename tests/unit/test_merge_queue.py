@@ -23,11 +23,11 @@ from pathlib import Path
 
 import pytest
 
-# Ensure the repo root is on PYTHONPATH so ``lib.merge_queue`` resolves.
+# Ensure the repo root is on PYTHONPATH so ``cos_lib.merge_queue`` resolves.
 REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT))
 
-from lib.merge_queue import (  # noqa: E402
+from cos_lib.merge_queue import (  # noqa: E402
     dequeue,
     enqueue,
     list_pending,
@@ -103,7 +103,7 @@ class TestConcurrentEnqueue:
     @staticmethod
     def _worker(branch: str, sid: str, queue_file: str, result_queue):
         try:
-            from lib.merge_queue import enqueue as _enqueue  # noqa: PLC0415
+            from cos_lib.merge_queue import enqueue as _enqueue  # noqa: PLC0415
             eid = _enqueue(branch, sid, queue_path=Path(queue_file))
             result_queue.put(("ok", eid))
         except Exception as exc:  # noqa: BLE001
@@ -239,7 +239,7 @@ class TestLockContention:
             finally:
                 fcntl.flock(holder_fh, fcntl.LOCK_UN)
 
-from lib.merge_queue import head_drift, record_validation_lane, try_acquire_worker_lock, worker_lock_path  # noqa: E402
+from cos_lib.merge_queue import head_drift, record_validation_lane, try_acquire_worker_lock, worker_lock_path  # noqa: E402
 
 
 def test_worker_lock_is_single_writer(queue_file):

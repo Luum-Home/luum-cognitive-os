@@ -16,8 +16,8 @@ from pathlib import Path
 
 import pytest
 
-from lib.retry_tracker import approach_seen, approaches_tried, record_attempt
-from lib.harness_adapter.base import AgentStart
+from cos_lib.retry_tracker import approach_seen, approaches_tried, record_attempt
+from cos_lib.harness_adapter.base import AgentStart
 
 PREAMBLE = Path(__file__).resolve().parents[2] / "templates" / "agent-preamble.md"
 
@@ -91,7 +91,7 @@ class TestAgentStartBackwardCompat:
 
     def test_roundtrip_preserves_custom_value(self):
         """Custom max_reasoning_cycles survives to_dict/from_dict roundtrip."""
-        from lib.harness_adapter.base import CanonicalEvent
+        from cos_lib.harness_adapter.base import CanonicalEvent
 
         original = AgentStart(agent_id="compat-agent", started_at=1.0, max_reasoning_cycles=10)
         data = original.to_dict()

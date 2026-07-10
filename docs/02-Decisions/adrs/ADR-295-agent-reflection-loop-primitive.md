@@ -8,7 +8,7 @@ supersedes:
 - ADR-290
 superseded_by: null
 implementation_files:
-- lib/agent_reflection.py
+- cos_lib/agent_reflection.py
 tier: maintainer
 tags:
 - agents

@@ -144,7 +144,7 @@ def test_run_via_dispatch_sets_and_restores_env(harness, monkeypatch):
         captured_envs.append(os.environ.get("COS_DISABLE_ALL_GOVERNANCE"))
         return FakeResult()
 
-    import lib.dispatch as dispatch_mod  # noqa: E402
+    import cos_lib.dispatch as dispatch_mod  # noqa: E402
 
     monkeypatch.setattr(dispatch_mod, "dispatch", fake_dispatch)
 

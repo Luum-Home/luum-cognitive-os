@@ -34,7 +34,7 @@ EOF
   shift
 done
 
-ARGS=("-m" "lib.session_lifecycle" "--project-dir" "$PROJECT_DIR" "--grace-seconds" "$GRACE_SECONDS" "--archive-retention-days" "$ARCHIVE_DAYS")
+ARGS=("-m" "cos_lib.session_lifecycle" "--project-dir" "$PROJECT_DIR" "--grace-seconds" "$GRACE_SECONDS" "--archive-retention-days" "$ARCHIVE_DAYS")
 if [ "$DRY_RUN" = true ]; then ARGS+=("--dry-run"); fi
 if [ "$JSON" = true ]; then ARGS+=("--json"); fi
 PYTHONPATH="$PROJECT_DIR${PYTHONPATH:+:$PYTHONPATH}" python3 "${ARGS[@]}"

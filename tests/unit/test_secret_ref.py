@@ -7,7 +7,7 @@ config secret resolution, masking, and edge cases.
 
 import pytest
 
-from lib.secret_ref import mask_secrets, resolve_config_secrets, resolve_secret_ref
+from cos_lib.secret_ref import mask_secrets, resolve_config_secrets, resolve_secret_ref
 
 pytestmark = pytest.mark.unit
 

@@ -75,7 +75,7 @@ fi
 COMMIT_RESULT=$(PYTHONPATH="$OS_ROOT" python3 - "$PROJECT_DIR" "$PLAN_FILE" <<'PYEOF' 2>/dev/null
 import json, sys
 from pathlib import Path
-from lib.snapshot_manager import commit_snapshot_plan
+from cos_lib.snapshot_manager import commit_snapshot_plan
 repo = Path(sys.argv[1])
 plan_path = Path(sys.argv[2])
 plan = json.loads(plan_path.read_text())

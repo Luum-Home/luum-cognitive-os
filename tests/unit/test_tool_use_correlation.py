@@ -14,7 +14,7 @@ import json
 import time
 
 
-from lib.harness_adapter.tool_use_correlation import CorrelationStore
+from cos_lib.harness_adapter.tool_use_correlation import CorrelationStore
 
 
 class TestCorrelationStoreBasic:

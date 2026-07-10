@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.taximeter import (
+from cos_lib.taximeter import (
     cost_by_provider,
     cost_by_session,
     resource_tick,

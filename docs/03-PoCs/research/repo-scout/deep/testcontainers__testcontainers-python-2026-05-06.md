@@ -17,7 +17,7 @@ sister_batch: phase2-deep-tier1 (top-22)
 ### Summary
 Testcontainers is a Python library that providing a friendly API to run Docker container. It is designed to create runtime environment to use during your automatic tests.
 
-**Verdict rationale**: Apache-2.0 Python lib. Useful for integration test infra (sandbox patterns). Pairs with existing [e2b-integration] / could feed [persistent-agent] / cos-test compose. Adopt as conditional dev-time dep, not runtime.
+**Verdict rationale**: Apache-2.0 Python cos_lib. Useful for integration test infra (sandbox patterns). Pairs with existing [e2b-integration] / could feed [persistent-agent] / cos-test compose. Adopt as conditional dev-time dep, not runtime.
 
 ### Scoring Breakdown
 | Criterion | Weight | Score | Rationale |

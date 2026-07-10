@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.dspy_pilot import build_pilot_report
+from cos_lib.dspy_pilot import build_pilot_report
 
 parser = argparse.ArgumentParser(description="Probe the optional DSPy structured-skill pilot")
 parser.add_argument("--target-skill", default="sdd-verify")

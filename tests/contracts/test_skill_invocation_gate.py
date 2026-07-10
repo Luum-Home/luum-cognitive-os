@@ -64,7 +64,7 @@ def workdir(tmp_path: Path):
     (tmp_path / "lib").mkdir()
     real_router = REPO_ROOT / "lib" / "skill_router.py"
     shutil.copy(real_router, tmp_path / "lib" / "skill_router.py")
-    # Empty __init__ so `from lib.skill_router import ...` works
+    # Empty __init__ so `from cos_lib.skill_router import ...` works
     (tmp_path / "lib" / "__init__.py").write_text("")
     return tmp_path
 
@@ -178,10 +178,10 @@ def test_killswitch_disables_hook(workdir: Path):
 
 
 def test_last_suggestion_returns_highest_confidence_for_session():
-    """Unit-style coverage of lib.skill_router.last_suggestion()."""
+    """Unit-style coverage of cos_lib.skill_router.last_suggestion()."""
     import sys
     sys.path.insert(0, str(REPO_ROOT))
-    from lib.skill_router import last_suggestion  # noqa
+    from cos_lib.skill_router import last_suggestion  # noqa
 
     # Use an isolated tmp project to avoid colliding with real metrics.
     import tempfile

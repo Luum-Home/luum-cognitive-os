@@ -12,8 +12,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.reward_signal_quality import audit_stream, load_contract, summarize  # noqa: E402
-from lib.skill_lifecycle_promoter import build_skill_lifecycle_report  # noqa: E402
+from cos_lib.reward_signal_quality import audit_stream, load_contract, summarize  # noqa: E402
+from cos_lib.skill_lifecycle_promoter import build_skill_lifecycle_report  # noqa: E402
 
 
 def main() -> int:

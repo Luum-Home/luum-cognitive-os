@@ -9,8 +9,8 @@ from pathlib import Path
 from unittest.mock import patch
 
 
-from lib.goal_budget import check_budget, _goal_dispatch_totals
-from lib.goal_state import GoalState, GoalStateStore
+from cos_lib.goal_budget import check_budget, _goal_dispatch_totals
+from cos_lib.goal_state import GoalState, GoalStateStore
 
 
 # ---------------------------------------------------------------------------
@@ -160,7 +160,7 @@ class TestMaxTokens:
         ]
         _write_dispatch_records(metrics_path, records)
 
-        with patch("lib.dispatch._metrics_path", return_value=metrics_path):
+        with patch("cos_lib.dispatch._metrics_path", return_value=metrics_path):
             result = check_budget(goal, project_dir=tmp_path)
 
         assert result.exhausted is True
@@ -176,7 +176,7 @@ class TestMaxTokens:
         ]
         _write_dispatch_records(metrics_path, records)
 
-        with patch("lib.dispatch._metrics_path", return_value=metrics_path):
+        with patch("cos_lib.dispatch._metrics_path", return_value=metrics_path):
             result = check_budget(goal, project_dir=tmp_path)
 
         assert result.exhausted is False
@@ -187,7 +187,7 @@ class TestMaxTokens:
         goal = _make_goal(max_tokens=1000)
         nonexistent = tmp_path / "no-such-dir" / "llm-dispatch.jsonl"
 
-        with patch("lib.dispatch._metrics_path", return_value=nonexistent):
+        with patch("cos_lib.dispatch._metrics_path", return_value=nonexistent):
             result = check_budget(goal, project_dir=tmp_path)
 
         # File absent → tokens_used = 0 → not exhausted
@@ -209,7 +209,7 @@ class TestMaxTokens:
         )
         _write_dispatch_records(metrics_path, [old_record, new_record])
 
-        with patch("lib.dispatch._metrics_path", return_value=metrics_path):
+        with patch("cos_lib.dispatch._metrics_path", return_value=metrics_path):
             result = check_budget(goal, project_dir=tmp_path)
 
         assert result.tokens_used == 150
@@ -233,7 +233,7 @@ class TestMaxCostUsd:
         ]
         _write_dispatch_records(metrics_path, records)
 
-        with patch("lib.dispatch._metrics_path", return_value=metrics_path):
+        with patch("cos_lib.dispatch._metrics_path", return_value=metrics_path):
             result = check_budget(goal, project_dir=tmp_path)
 
         assert result.exhausted is True
@@ -249,7 +249,7 @@ class TestMaxCostUsd:
         ]
         _write_dispatch_records(metrics_path, records)
 
-        with patch("lib.dispatch._metrics_path", return_value=metrics_path):
+        with patch("cos_lib.dispatch._metrics_path", return_value=metrics_path):
             result = check_budget(goal, project_dir=tmp_path)
 
         assert result.exhausted is False
@@ -259,7 +259,7 @@ class TestMaxCostUsd:
         goal = _make_goal(max_cost_usd=0.01)
         nonexistent = tmp_path / "no-dir" / "llm-dispatch.jsonl"
 
-        with patch("lib.dispatch._metrics_path", return_value=nonexistent):
+        with patch("cos_lib.dispatch._metrics_path", return_value=nonexistent):
             result = check_budget(goal, project_dir=tmp_path)
 
         assert result.cost_used == 0.0
@@ -275,7 +275,7 @@ class TestGoalDispatchTotals:
     def test_returns_zeros_for_absent_file(self, tmp_path):
         nonexistent = tmp_path / "no-file.jsonl"
         goal = _make_goal()
-        with patch("lib.dispatch._metrics_path", return_value=nonexistent):
+        with patch("cos_lib.dispatch._metrics_path", return_value=nonexistent):
             tokens, cost, cursor = _goal_dispatch_totals(goal, tmp_path)
         assert tokens == 0
         assert cost == 0.0
@@ -294,7 +294,7 @@ class TestGoalDispatchTotals:
         goal_dict["created_at"] = "2026-05-01T09:00:00+00:00"
         goal = GoalState.from_dict(goal_dict)
 
-        with patch("lib.dispatch._metrics_path", return_value=metrics_path):
+        with patch("cos_lib.dispatch._metrics_path", return_value=metrics_path):
             tokens, cost, cursor = _goal_dispatch_totals(goal, tmp_path)
 
         assert tokens == 425  # 100+200+50+75
@@ -312,7 +312,7 @@ class TestGoalDispatchTotals:
         goal_dict["created_at"] = "2026-05-01T09:00:00+00:00"
         goal = GoalState.from_dict(goal_dict)
 
-        with patch("lib.dispatch._metrics_path", return_value=metrics_path):
+        with patch("cos_lib.dispatch._metrics_path", return_value=metrics_path):
             tokens, cost, cursor = _goal_dispatch_totals(goal, tmp_path)
 
         assert tokens == 30  # Only valid record counted
@@ -333,7 +333,7 @@ class TestGoalDispatchTotals:
         ]
         _write_dispatch_records(metrics_path, records_first)
 
-        with patch("lib.dispatch._metrics_path", return_value=metrics_path):
+        with patch("cos_lib.dispatch._metrics_path", return_value=metrics_path):
             tokens1, cost1, cursor1 = _goal_dispatch_totals(goal, tmp_path)
 
         assert tokens1 == 500  # 5 * 100
@@ -351,7 +351,7 @@ class TestGoalDispatchTotals:
             for rec in records_second:
                 fh.write(json.dumps(rec) + "\n")
 
-        with patch("lib.dispatch._metrics_path", return_value=metrics_path):
+        with patch("cos_lib.dispatch._metrics_path", return_value=metrics_path):
             tokens2, cost2, cursor2 = _goal_dispatch_totals(goal, tmp_path)
 
         # Only the 3 new records should be counted — no double-counting of first 5
@@ -383,7 +383,7 @@ class TestGoalDispatchTotals:
         ]
         _write_dispatch_records(metrics_path, records_new)  # overwrites (truncate+rewrite)
 
-        with patch("lib.dispatch._metrics_path", return_value=metrics_path):
+        with patch("cos_lib.dispatch._metrics_path", return_value=metrics_path):
             tokens, cost, new_cursor = _goal_dispatch_totals(goal, tmp_path)
 
         # After rotation reset: both new records are read
@@ -406,7 +406,7 @@ class TestCumulativeDispatchBudget:
         first = [_make_dispatch_record(goal.created_at, 300, 300, 0.01)]
         _write_dispatch_records(metrics_path, first)
 
-        with patch("lib.dispatch._metrics_path", return_value=metrics_path):
+        with patch("cos_lib.dispatch._metrics_path", return_value=metrics_path):
             first_result = check_budget(store.load(), project_dir=tmp_path, store=store)
 
         assert first_result.exhausted is False
@@ -419,7 +419,7 @@ class TestCumulativeDispatchBudget:
         with metrics_path.open("a", encoding="utf-8") as fh:
             fh.write(json.dumps(_make_dispatch_record(goal.created_at, 300, 300, 0.01)) + "\n")
 
-        with patch("lib.dispatch._metrics_path", return_value=metrics_path):
+        with patch("cos_lib.dispatch._metrics_path", return_value=metrics_path):
             second_result = check_budget(store.load(), project_dir=tmp_path, store=store)
 
         assert second_result.exhausted is True
@@ -444,7 +444,7 @@ class TestCumulativeDispatchBudget:
             [_make_dispatch_record(goal.created_at, 10, 10, 0.03)],
         )
 
-        with patch("lib.dispatch._metrics_path", return_value=metrics_path):
+        with patch("cos_lib.dispatch._metrics_path", return_value=metrics_path):
             first_result = check_budget(store.load(), project_dir=tmp_path, store=store)
 
         assert first_result.exhausted is False
@@ -453,7 +453,7 @@ class TestCumulativeDispatchBudget:
         with metrics_path.open("a", encoding="utf-8") as fh:
             fh.write(json.dumps(_make_dispatch_record(goal.created_at, 10, 10, 0.03)) + "\n")
 
-        with patch("lib.dispatch._metrics_path", return_value=metrics_path):
+        with patch("cos_lib.dispatch._metrics_path", return_value=metrics_path):
             second_result = check_budget(store.load(), project_dir=tmp_path, store=store)
 
         assert second_result.exhausted is True

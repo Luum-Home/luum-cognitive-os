@@ -44,7 +44,7 @@ try:
     if _repo_root not in sys.path:
         sys.path.insert(0, _repo_root)
 
-    from lib.record_completion import (
+    from cos_lib.record_completion import (
         extract_skill_name,
         extract_trust_score,
         estimate_tokens,
@@ -52,15 +52,15 @@ try:
         detect_success,
         append_cost_event,
     )
-    from lib.learning_pipeline import LearningPipeline
-    from lib.consequence_engine import (
+    from cos_lib.learning_pipeline import LearningPipeline
+    from cos_lib.consequence_engine import (
         ConsequenceEngine,
         ConsequenceAction,
         Consequence,
         PerformanceRecord,
     )
-    from lib.skill_archive import SkillArchiveManager
-    from lib.dispatch_helper import check_slot_availability
+    from cos_lib.skill_archive import SkillArchiveManager
+    from cos_lib.dispatch_helper import check_slot_availability
 except Exception as exc:
     lib_available = False
     _import_error = str(exc)

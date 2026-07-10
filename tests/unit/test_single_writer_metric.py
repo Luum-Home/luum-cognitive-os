@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.single_writer_metric import record_push_attempt
+from cos_lib.single_writer_metric import record_push_attempt
 
 
 @pytest.fixture()

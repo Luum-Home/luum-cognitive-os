@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.improve_loop import build_context, build_feedback, load_task, run_improvement_loop
+from cos_lib.improve_loop import build_context, build_feedback, load_task, run_improvement_loop
 
 REPO = Path(__file__).resolve().parents[2]
 TASK = REPO / "benchmarks" / "improvement" / "skip-classification-mini"

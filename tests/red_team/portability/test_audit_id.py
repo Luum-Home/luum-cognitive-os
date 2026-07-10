@@ -9,7 +9,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO))
 
-from lib.audit_id import get_current_audit_context  # noqa: E402
+from cos_lib.audit_id import get_current_audit_context  # noqa: E402
 
 
 def test_audit_context_reads_optional_state_from_arbitrary_project(tmp_path: Path, monkeypatch) -> None:

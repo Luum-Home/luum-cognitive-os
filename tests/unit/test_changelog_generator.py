@@ -9,7 +9,7 @@ import pytest
 
 pytestmark = pytest.mark.unit
 
-from lib.changelog_generator import (
+from cos_lib.changelog_generator import (
     SessionChangelog,
     SprintChangelog,
     format_changelog_md,

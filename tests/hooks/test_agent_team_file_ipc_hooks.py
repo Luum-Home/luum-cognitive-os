@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from lib.agent_team import AgentTeam
+from cos_lib.agent_team import AgentTeam
 
 
 @pytest.mark.behavior

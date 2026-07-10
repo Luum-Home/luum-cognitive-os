@@ -140,7 +140,7 @@ project_dir, skill_name = sys.argv[1], sys.argv[2]
 sys.path.insert(0, project_dir)
 
 try:
-    from lib.skill_routing import load_skill_requirements_by_name
+    from cos_lib.skill_routing import load_skill_requirements_by_name
 except Exception:
     print("error")
     sys.exit(0)
@@ -184,7 +184,7 @@ case "$ROUTING_INFO" in
 esac
 
 # ── Quota pressure probe ───────────────────────────────────────────────────
-# Prefer lib.quota_pressure if Agent A has landed it; fall back to a local
+# Prefer cos_lib.quota_pressure if Agent A has landed it; fall back to a local
 # heuristic (rate-limit-events count over last 15min).
 PRESSURE=$(python3 - "$PROJECT_DIR" <<'PYEOF' 2>/dev/null
 import sys, json, os, time
@@ -193,9 +193,9 @@ from pathlib import Path
 project_dir = Path(sys.argv[1])
 sys.path.insert(0, str(project_dir))
 
-# 1. Prefer lib.quota_pressure (ADR-056 L1/L2 shared probe — Agent A's work)
+# 1. Prefer cos_lib.quota_pressure (ADR-056 L1/L2 shared probe — Agent A's work)
 try:
-    from lib.quota_pressure import compute_quota_pressure  # type: ignore
+    from cos_lib.quota_pressure import compute_quota_pressure  # type: ignore
     p = float(compute_quota_pressure())
     print(f"{p:.4f}")
     sys.exit(0)

@@ -221,7 +221,7 @@ class TestBannerFlip:
     def test_banner_executor_checkmark_while_daemon_alive(self, running_daemon, project_dir):
         _pid, pdir = running_daemon
 
-        from lib.orchestrator_capabilities import OrchestratorCapabilities  # noqa: PLC0415
+        from cos_lib.orchestrator_capabilities import OrchestratorCapabilities  # noqa: PLC0415
 
         # Point capabilities at the isolated project dir.
         orig = os.environ.get("COGNITIVE_OS_PROJECT_DIR")
@@ -247,7 +247,7 @@ class TestBannerFlip:
         _run_executor("--stop", project_dir=pdir, timeout=10)
         _wait_process_dead(pid, timeout=5.0)
 
-        from lib.orchestrator_capabilities import OrchestratorCapabilities  # noqa: PLC0415
+        from cos_lib.orchestrator_capabilities import OrchestratorCapabilities  # noqa: PLC0415
 
         orig = os.environ.get("COGNITIVE_OS_PROJECT_DIR")
         os.environ["COGNITIVE_OS_PROJECT_DIR"] = str(pdir)

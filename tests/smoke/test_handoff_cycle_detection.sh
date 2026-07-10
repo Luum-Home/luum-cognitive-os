@@ -6,8 +6,8 @@ trap 'rm -rf "$TMPDIR"' EXIT
 PYTHONPATH="$ROOT" python3 - "$TMPDIR" <<'PY'
 from pathlib import Path
 import sys
-from lib.handoff_envelope import HandoffEnvelope
-from lib.handoff_dispatcher import HandoffCycleDetected, HandoffDispatcher
+from cos_lib.handoff_envelope import HandoffEnvelope
+from cos_lib.handoff_dispatcher import HandoffCycleDetected, HandoffDispatcher
 
 project = Path(sys.argv[1])
 dispatcher = HandoffDispatcher(project_dir=project, session_id="smoke")

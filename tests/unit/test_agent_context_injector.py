@@ -3,7 +3,7 @@
 import pytest
 from unittest.mock import patch
 
-from lib.agent_context_injector import AgentContextInjector
+from cos_lib.agent_context_injector import AgentContextInjector
 
 
 @pytest.fixture

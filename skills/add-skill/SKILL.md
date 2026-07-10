@@ -157,7 +157,7 @@ with hyphens normalized to underscores, matching the audit and scope gate.
 
 After adding the proof, record it in `manifests/primitive-behavior-evidence.yaml`
 if the proof path is not the canonical path returned by
-`lib.portability_proof_paths.suggested_test_path`.
+`cos_lib.portability_proof_paths.suggested_test_path`.
 
 ### 2c. Add language-agnostic routing metadata
 

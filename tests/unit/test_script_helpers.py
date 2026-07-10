@@ -3,8 +3,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from lib.primitive_file_inventory import primitive_files
-from lib.script_helpers import object_map, object_maps, read_json_or, read_yaml_dict, sha256_file, shingles
+from cos_lib.primitive_file_inventory import primitive_files
+from cos_lib.script_helpers import object_map, object_maps, read_json_or, read_yaml_dict, sha256_file, shingles
 
 
 def test_script_helpers_parse_files_and_shape_values(tmp_path: Path) -> None:

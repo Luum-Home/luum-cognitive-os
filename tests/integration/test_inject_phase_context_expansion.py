@@ -76,7 +76,7 @@ class TestRefKeyExpansion:
         monkeypatch.delenv("CODEX_PROJECT_DIR", raising=False)
         monkeypatch.delenv("CLAUDE_PROJECT_DIR", raising=False)
         sys.path.insert(0, str(PROJECT_DIR))
-        from lib.ref_key_loader import expand  # noqa: PLC0415
+        from cos_lib.ref_key_loader import expand  # noqa: PLC0415
 
         marker_text = "Some preamble text with [`adaptive-bypass`] reference."
         expanded = expand(marker_text, max_depth=1)
@@ -139,14 +139,14 @@ class TestRefKeyExpansion:
         """CONTEXT_BUF stays unchanged if ref_key_loader import fails.
 
         Simulate by setting PYTHONPATH to an empty temp dir so `lib` is not importable.
-        The hook has: try: from lib.ref_key_loader import expand; except Exception: sys.stdout.write(buf)
+        The hook has: try: from cos_lib.ref_key_loader import expand; except Exception: sys.stdout.write(buf)
         So on import failure, the unexpanded text is preserved.
         """
         monkeypatch.setenv("COGNITIVE_OS_PROJECT_DIR", str(PROJECT_DIR))
         monkeypatch.delenv("CODEX_PROJECT_DIR", raising=False)
         monkeypatch.delenv("CLAUDE_PROJECT_DIR", raising=False)
         sys.path.insert(0, str(PROJECT_DIR))
-        from lib.ref_key_loader import expand  # noqa: PLC0415
+        from cos_lib.ref_key_loader import expand  # noqa: PLC0415
 
         # Simulate import failure by providing a broken module via overrides=None
         # and checking that the original marker is preserved when content is None.
@@ -161,7 +161,7 @@ class TestRefKeyExpansion:
     def test_fallback_preserves_buf_on_pythonpath_failure(self, tmp_path):
         """Hook-level fallback: CONTEXT_BUF unchanged when python3 expansion crashes.
 
-        We override PYTHONPATH to an empty dir so `lib.ref_key_loader` cannot
+        We override PYTHONPATH to an empty dir so `cos_lib.ref_key_loader` cannot
         be imported, then confirm the hook still exits 0 and emits a non-empty
         additionalContext (the unexpanded buffer).
         """

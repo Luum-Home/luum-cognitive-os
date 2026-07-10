@@ -10,7 +10,7 @@ import time
 
 import pytest
 
-from lib.homeostasis import (
+from cos_lib.homeostasis import (
     Adjustment,
     HealthMetrics,
     Homeostasis,

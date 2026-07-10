@@ -7,8 +7,8 @@ from pathlib import Path
 
 import pytest
 
-from lib.release_freeze import begin, end, prepare, status
-from lib.history_sanitization import SanitizationError, execute
+from cos_lib.release_freeze import begin, end, prepare, status
+from cos_lib.history_sanitization import SanitizationError, execute
 
 ROOT = Path(__file__).resolve().parents[2]
 

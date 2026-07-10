@@ -11,7 +11,7 @@ extends: [ADR-120, ADR-201, ADR-206, ADR-252, ADR-256, ADR-277]
 implementation_files:
   - manifests/product-question-bank.yaml
   - manifests/product-claim-evidence.yaml
-  - lib/product_answer.py
+  - cos_lib/product_answer.py
   - scripts/cos-product-answer
   - docs/08-References/business/product-answer-playbook.md
   - tests/unit/test_product_answer.py

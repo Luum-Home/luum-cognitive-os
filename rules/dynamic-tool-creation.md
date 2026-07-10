@@ -85,7 +85,7 @@ When an agent detects a repetitive pattern (3+ occurrences) or a capability gap:
 ### Using a Dynamic Tool
 
 ```python
-from lib.dynamic_tool_creator import DynamicToolCreator
+from cos_lib.dynamic_tool_creator import DynamicToolCreator
 
 creator = DynamicToolCreator(project_root=".")
 

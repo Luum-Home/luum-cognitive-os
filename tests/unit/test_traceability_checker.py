@@ -9,7 +9,7 @@ import pytest
 
 pytestmark = pytest.mark.unit
 
-from lib.traceability_checker import (
+from cos_lib.traceability_checker import (
     check_traceability,
     discover_requirements,
     find_gaps,

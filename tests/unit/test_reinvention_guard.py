@@ -18,7 +18,7 @@ sys.path.insert(
     0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 )
 
-from lib.reinvention_guard import ReinventionGuard
+from cos_lib.reinvention_guard import ReinventionGuard
 
 
 # ---------------------------------------------------------------------------
@@ -52,7 +52,7 @@ def _make_fake_project(base: Path) -> Path:
 
     # Fake lib/
     lib = base / "lib"
-    lib.mkdir(exist_ok=True)
+    cos_lib.mkdir(exist_ok=True)
     (lib / "cost_dashboard.py").write_text("# cost dashboard — unrelated\n")
 
     # Fake adoption registry

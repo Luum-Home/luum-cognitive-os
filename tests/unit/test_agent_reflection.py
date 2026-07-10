@@ -1,9 +1,9 @@
-"""Unit tests for lib.agent_reflection (ADR-290 Pattern 5)."""
+"""Unit tests for cos_lib.agent_reflection (ADR-290 Pattern 5)."""
 from __future__ import annotations
 
 import pytest
 
-from lib.agent_reflection import AgentReflector, ReflectionConfig, ReflectionResult
+from cos_lib.agent_reflection import AgentReflector, ReflectionConfig, ReflectionResult
 
 
 def test_reflection_exits_after_minimum_when_satisfactory() -> None:

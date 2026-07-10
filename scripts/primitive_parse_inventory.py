@@ -20,8 +20,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.primitive_file_inventory import primitive_files
-from lib.primitive_parser import parse_primitive_file
+from cos_lib.primitive_file_inventory import primitive_files
+from cos_lib.primitive_parser import parse_primitive_file
 
 
 def summarize(contracts: list[dict[str, Any]]) -> dict[str, Any]:

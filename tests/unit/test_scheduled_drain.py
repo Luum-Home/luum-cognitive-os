@@ -57,7 +57,7 @@ class TestDrainAndReport:
 
     def test_drain_and_report_with_empty_queue(self, tmp_path):
         """When the queue is empty the drain line says so and no error raised."""
-        from lib.scheduled_drain import drain_and_report
+        from cos_lib.scheduled_drain import drain_and_report
 
         queue_path = str(tmp_path / "tasks" / "dispatch-queue.json")
         tasks_path = str(tmp_path / "tasks" / "active-tasks.json")
@@ -75,7 +75,7 @@ class TestDrainAndReport:
 
     def test_drain_and_report_with_queued_agents(self, tmp_path):
         """When agents are queued the drain line reports ready count."""
-        from lib.scheduled_drain import drain_and_report
+        from cos_lib.scheduled_drain import drain_and_report
 
         # Create a queue with one item
         tmp_dir = str(tmp_path)
@@ -95,7 +95,7 @@ class TestDrainAndReport:
 
     def test_drain_and_report_no_slots_available(self, tmp_path):
         """When all slots are full the drain reports no slots available."""
-        from lib.scheduled_drain import drain_and_report
+        from cos_lib.scheduled_drain import drain_and_report
 
         tmp_dir = str(tmp_path)
         queue_path = _make_queue_file(tmp_dir, [_make_queued_item("id-002")])
@@ -116,7 +116,7 @@ class TestDrainAndReport:
 
     def test_drain_and_report_returns_string(self, tmp_path):
         """drain_and_report always returns a plain string."""
-        from lib.scheduled_drain import drain_and_report
+        from cos_lib.scheduled_drain import drain_and_report
 
         result = drain_and_report(
             queue_path=str(tmp_path / "tasks" / "q.json"),
@@ -129,7 +129,7 @@ class TestDrainAndReport:
 
     def test_drain_and_report_includes_health_section(self, tmp_path):
         """Output has two sections (queue drain + health) separated by blank line."""
-        from lib.scheduled_drain import drain_and_report
+        from cos_lib.scheduled_drain import drain_and_report
 
         result = drain_and_report(
             queue_path=str(tmp_path / "q.json"),
@@ -150,7 +150,7 @@ class TestCronSpec:
 
     def test_cron_spec_format(self):
         """Spec has the required keys for CronCreate."""
-        from lib.scheduled_drain import get_cron_create_spec
+        from cos_lib.scheduled_drain import get_cron_create_spec
 
         spec = get_cron_create_spec()
 
@@ -162,7 +162,7 @@ class TestCronSpec:
 
     def test_cron_spec_every_five_minutes(self):
         """Default cron expression runs every 5 minutes."""
-        from lib.scheduled_drain import get_cron_create_spec
+        from cos_lib.scheduled_drain import get_cron_create_spec
 
         spec = get_cron_create_spec()
 
@@ -170,7 +170,7 @@ class TestCronSpec:
 
     def test_cron_spec_prompt_contains_drain_call(self):
         """Prompt instructs the scheduled session to call drain_and_report."""
-        from lib.scheduled_drain import get_cron_create_spec
+        from cos_lib.scheduled_drain import get_cron_create_spec
 
         spec = get_cron_create_spec()
 
@@ -179,7 +179,7 @@ class TestCronSpec:
 
     def test_cron_spec_prompt_handles_empty_queue(self):
         """Prompt explicitly tells the session to stop if queue is empty."""
-        from lib.scheduled_drain import get_cron_create_spec
+        from cos_lib.scheduled_drain import get_cron_create_spec
 
         spec = get_cron_create_spec()
 
@@ -188,7 +188,7 @@ class TestCronSpec:
 
     def test_cron_spec_recurring_is_true(self):
         """Spec marks the task as recurring (runs on the interval)."""
-        from lib.scheduled_drain import get_cron_create_spec
+        from cos_lib.scheduled_drain import get_cron_create_spec
 
         spec = get_cron_create_spec()
 
@@ -200,7 +200,7 @@ class TestShouldScheduleDrain:
 
     def test_should_schedule_when_queue_has_items(self, tmp_path):
         """Returns True when there are queued items."""
-        from lib.scheduled_drain import should_schedule_drain
+        from cos_lib.scheduled_drain import should_schedule_drain
 
         tmp_dir = str(tmp_path)
         queue_path = _make_queue_file(tmp_dir, [_make_queued_item("id-x")])
@@ -210,7 +210,7 @@ class TestShouldScheduleDrain:
 
     def test_should_not_schedule_when_queue_empty(self, tmp_path):
         """Returns False when queue is empty."""
-        from lib.scheduled_drain import should_schedule_drain
+        from cos_lib.scheduled_drain import should_schedule_drain
 
         queue_path = str(tmp_path / "tasks" / "dispatch-queue.json")
         tasks_path = str(tmp_path / "tasks" / "active-tasks.json")
@@ -220,7 +220,7 @@ class TestShouldScheduleDrain:
     def test_should_schedule_when_item_is_dispatching(self, tmp_path):
         """Returns True for items with 'dispatching' status (launch in progress)."""
         import time
-        from lib.scheduled_drain import should_schedule_drain
+        from cos_lib.scheduled_drain import should_schedule_drain
 
         dispatching_item = {
             "id": "disp-001",
@@ -241,7 +241,7 @@ class TestShouldScheduleDrain:
 
     def test_should_not_schedule_when_queue_file_missing(self, tmp_path):
         """Returns False gracefully when queue file doesn't exist yet."""
-        from lib.scheduled_drain import should_schedule_drain
+        from cos_lib.scheduled_drain import should_schedule_drain
 
         queue_path = str(tmp_path / "nonexistent" / "q.json")
         tasks_path = str(tmp_path / "nonexistent" / "t.json")
@@ -253,7 +253,7 @@ class TestShouldScheduleDrain:
     def test_should_not_schedule_with_only_completed_items(self, tmp_path):
         """Returns False when all items have been removed (completed)."""
         # Empty list = all items removed
-        from lib.scheduled_drain import should_schedule_drain
+        from cos_lib.scheduled_drain import should_schedule_drain
 
         tmp_dir = str(tmp_path)
         queue_path = _make_queue_file(tmp_dir, [])

@@ -37,7 +37,7 @@ SESSION_ID="${COGNITIVE_OS_SESSION_ID:-}"
 python3 -c "
 import json, sys
 sys.path.insert(0, '$PROJECT_DIR')
-from lib.audit_id import get_current_audit_context, enrich_jsonl_entry
+from cos_lib.audit_id import get_current_audit_context, enrich_jsonl_entry
 
 project_dir = '$PROJECT_DIR'
 session_id = '$SESSION_ID'

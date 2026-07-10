@@ -24,7 +24,7 @@ def _make_mock_client(text: str = "done", tool_calls: list | None = None):
 
 
 def test_run_agent_success_no_tools():
-    from lib.openai_compatible_agent_loop import run_agent
+    from cos_lib.openai_compatible_agent_loop import run_agent
     client = _make_mock_client(text="hello world")
     result = run_agent(task="say hi", provider="qwen", client=client)
     assert result.success is True
@@ -34,7 +34,7 @@ def test_run_agent_success_no_tools():
 
 
 def test_run_agent_provider_stored_in_result():
-    from lib.openai_compatible_agent_loop import run_agent
+    from cos_lib.openai_compatible_agent_loop import run_agent
     client = _make_mock_client(text="hi")
     result = run_agent(task="hi", provider="openrouter", client=client)
     assert result.provider == "openrouter"
@@ -42,7 +42,7 @@ def test_run_agent_provider_stored_in_result():
 
 def test_run_agent_different_provider_clients():
     """Verify loop is client-agnostic: same logic works with different provider mocks."""
-    from lib.openai_compatible_agent_loop import run_agent
+    from cos_lib.openai_compatible_agent_loop import run_agent
 
     for provider in ("qwen", "openrouter", "gemini", "ollama"):
         client = _make_mock_client(text=f"response from {provider}")
@@ -52,7 +52,7 @@ def test_run_agent_different_provider_clients():
 
 
 def test_run_agent_unknown_tool_in_allowed_list():
-    from lib.openai_compatible_agent_loop import run_agent
+    from cos_lib.openai_compatible_agent_loop import run_agent
     client = _make_mock_client(text="hi")
     result = run_agent(task="hi", provider="qwen", client=client, tools_allowed=["nonexistent_tool"])
     assert result.success is False
@@ -60,17 +60,17 @@ def test_run_agent_unknown_tool_in_allowed_list():
 
 
 def test_run_agent_no_client_returns_error():
-    from lib.openai_compatible_agent_loop import run_agent
+    from cos_lib.openai_compatible_agent_loop import run_agent
     from unittest.mock import patch
     # Make sure the provider registry returns None client
-    with patch("lib.openai_compatible_agent_loop._resolve_client", return_value=None):
+    with patch("cos_lib.openai_compatible_agent_loop._resolve_client", return_value=None):
         result = run_agent(task="hi", provider="qwen")
     assert result.success is False
     assert "unavailable" in result.error.lower() or "not configured" in result.error.lower()
 
 
 def test_run_agent_token_budget_enforced():
-    from lib.openai_compatible_agent_loop import run_agent
+    from cos_lib.openai_compatible_agent_loop import run_agent
     # Mock a client that always returns tokens but no tool calls (will finish iter 1)
     mock_msg = MagicMock()
     mock_msg.content = "done"
@@ -93,7 +93,7 @@ def test_run_agent_token_budget_enforced():
 
 
 def test_run_agent_max_iterations_enforced():
-    from lib.openai_compatible_agent_loop import run_agent
+    from cos_lib.openai_compatible_agent_loop import run_agent
 
     # Tool call that keeps looping: mock always returns a read_file tool call
     call_count = [0]

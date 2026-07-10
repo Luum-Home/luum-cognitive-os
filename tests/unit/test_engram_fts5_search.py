@@ -1,4 +1,4 @@
-"""Unit tests for lib.engram_fts5_search (ADR-287 capability 3).
+"""Unit tests for cos_lib.engram_fts5_search (ADR-287 capability 3).
 
 These tests build a self-contained SQLite DB with the same FTS5 mirror shape
 used by the live engram store (observations + observations_fts contentless
@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.engram_fts5_search import BM25Hit, fts5_available, search_bm25
+from cos_lib.engram_fts5_search import BM25Hit, fts5_available, search_bm25
 
 
 @pytest.fixture

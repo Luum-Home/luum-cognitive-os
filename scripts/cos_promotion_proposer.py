@@ -2,7 +2,7 @@
 # SCOPE: os-only
 """cos-promotion-proposer — propose-only sandbox->advisory lifecycle promoter.
 
-ADR-180. Reads lib.skill_store.SkillStore + manifests/primitive-lifecycle.yaml.
+ADR-180. Reads cos_lib.skill_store.SkillStore + manifests/primitive-lifecycle.yaml.
 For sandbox primitives meeting evidence thresholds, emits a proposal artifact
 under docs/06-Daily/reports/promotion-proposals/<date>/<name>.md.
 
@@ -21,7 +21,7 @@ import sqlite3
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from lib.script_helpers import naive_utc_iso as _now_iso
+from cos_lib.script_helpers import naive_utc_iso as _now_iso
 from typing import Any, Dict, Iterable, List, Optional
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]

@@ -12,7 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from lib.key_learning_capture import append_records, build_records  # noqa: E402
+from cos_lib.key_learning_capture import append_records, build_records  # noqa: E402
 
 
 def main(argv: list[str] | None = None) -> int:

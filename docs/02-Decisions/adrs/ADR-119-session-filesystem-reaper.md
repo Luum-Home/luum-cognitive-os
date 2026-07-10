@@ -9,7 +9,7 @@ supersedes: []
 superseded_by: null
 implementation_files:
   - scripts/cos_work_inventory.py
-  - lib/session_lifecycle.py
+  - cos_lib/session_lifecycle.py
   - hooks/_lib/session-fs-reap.sh
   - scripts/so-reaper.sh
 tier: standard

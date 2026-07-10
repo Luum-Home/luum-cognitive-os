@@ -20,7 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.history_rewrite_ledger import (  # noqa: E402
+from cos_lib.history_rewrite_ledger import (  # noqa: E402
     LedgerEntry,
     LedgerError,
     append_entry,

@@ -19,7 +19,7 @@ from unittest.mock import patch
 
 import pytest
 
-from lib.tool_replay_ledger import (
+from cos_lib.tool_replay_ledger import (
     Mode,
     ToolReplayLedger,
     compute_target_hash,
@@ -97,7 +97,7 @@ class TestTTLExpiration:
 
         # Mock time to be 5 hours in the future
         future = time.time() + 5 * 3600
-        with patch("lib.tool_replay_ledger.time") as mock_time:
+        with patch("cos_lib.tool_replay_ledger.time") as mock_time:
             mock_time.time.return_value = future
             decision = ledger.record("Bash", "ttlhash", 100)
 
@@ -106,7 +106,7 @@ class TestTTLExpiration:
     def test_get_mode_expired_returns_fresh(self, ledger: ToolReplayLedger) -> None:
         ledger.record("Read", "expirehash", 200)
         future = time.time() + 5 * 3600
-        with patch("lib.tool_replay_ledger.time") as mock_time:
+        with patch("cos_lib.tool_replay_ledger.time") as mock_time:
             mock_time.time.return_value = future
             mode = ledger.get_mode("Read", "expirehash")
         assert mode == Mode.FRESH

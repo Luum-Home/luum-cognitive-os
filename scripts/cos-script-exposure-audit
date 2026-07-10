@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.script_exposure_audit import (  # noqa: E402
+from cos_lib.script_exposure_audit import (  # noqa: E402
     ScriptExposureAuditError,
     build_audit,
     render_markdown,

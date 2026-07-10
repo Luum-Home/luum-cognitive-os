@@ -54,7 +54,7 @@ end_timer() {
     python3 -c "
 import sys
 sys.path.insert(0, '$project_dir')
-from lib.performance_monitor import PerformanceMonitor
+from cos_lib.performance_monitor import PerformanceMonitor
 monitor = PerformanceMonitor('$project_dir/.cognitive-os/metrics/performance.jsonl')
 monitor.record('hook:$hook_name', 'execute', $duration, $py_success)
 " 2>/dev/null || true

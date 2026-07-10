@@ -12,7 +12,7 @@ import pytest
 # Make sure lib/ is importable even when running from repo root
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from lib.metric_event import (
+from cos_lib.metric_event import (
     SCHEMA_VERSION,
     MetricEvent,
     MetricEventError,

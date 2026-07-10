@@ -5,7 +5,7 @@ import argparse, sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path: sys.path.insert(0,str(ROOT))
-from lib.feature_tool_due_diligence import repo_root, scan_due_diligence, write_json
+from cos_lib.feature_tool_due_diligence import repo_root, scan_due_diligence, write_json
 
 def main() -> int:
     p=argparse.ArgumentParser(description="Audit feature-to-external-tool due diligence records.")

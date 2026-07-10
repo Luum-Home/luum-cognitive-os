@@ -233,7 +233,7 @@ Format findings using the structured format:
 The review logic is implemented in `lib/code_reviewer.py`:
 
 ```python
-from lib.code_reviewer import CodeReviewer, ReviewReport
+from cos_lib.code_reviewer import CodeReviewer, ReviewReport
 
 reviewer = CodeReviewer(project_root=".")
 report = reviewer.review_files(files, context="...")

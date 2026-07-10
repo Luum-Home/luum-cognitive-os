@@ -7,7 +7,7 @@ date: '2026-05-20'
 supersedes: []
 superseded_by: null
 implementation_files:
-  - lib/capability_ceiling.py
+  - cos_lib/capability_ceiling.py
   - tests/unit/test_capability_ceiling.py
 tier: maintainer
 tags: [agent-escalation, capability-ceiling, handoff]

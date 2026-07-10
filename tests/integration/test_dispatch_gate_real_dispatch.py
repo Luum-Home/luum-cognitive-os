@@ -7,8 +7,8 @@ from unittest.mock import patch
 
 import pytest
 
-from lib import dispatch as dispatch_module
-from lib.dispatch_gate import ProviderCircuitBreaker
+from cos_lib import dispatch as dispatch_module
+from cos_lib.dispatch_gate import ProviderCircuitBreaker
 
 
 def _success(provider_label: str = "alibaba_qwen", cost: float = 0.25) -> dict:
@@ -311,6 +311,6 @@ def test_dispatch_uses_cost_predictor_when_token_estimate_is_present(tmp_path: P
         )
     assert result.success is True
     prediction = records[0]["dispatch_gate"]["cost_prediction"]
-    assert prediction["source"] == "lib.qwen_provider"
+    assert prediction["source"] == "cos_lib.qwen_provider"
     assert prediction["estimated_cost_usd"] > 0
     assert records[0]["dispatch_gate"]["estimated_cost_usd"] == prediction["estimated_cost_usd"]

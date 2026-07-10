@@ -18,7 +18,7 @@ import uuid
 
 import pytest
 
-from lib.orchestrator_capabilities import OrchestratorCapabilities
+from cos_lib.orchestrator_capabilities import OrchestratorCapabilities
 
 # Detect once at import time so skip decisions are made before collection.
 _caps = OrchestratorCapabilities().detect()
@@ -60,7 +60,7 @@ class TestExecutorModeE2E:
 
     def test_agent_bus_publish(self):
         """Can publish a progress event to the agent bus without raising."""
-        from lib.agent_bus import AgentPublisher
+        from cos_lib.agent_bus import AgentPublisher
         pub = AgentPublisher(agent_id=_make_agent_id())
         # publish() must return without raising; the publisher object stays intact
         pub.progress(tool="Bash", action="integration test")
@@ -68,7 +68,7 @@ class TestExecutorModeE2E:
 
     def test_agent_bus_subscribe(self):
         """Can publish progress and the call completes without error."""
-        from lib.agent_bus import AgentPublisher
+        from cos_lib.agent_bus import AgentPublisher
 
         publisher = AgentPublisher(agent_id=_make_agent_id())
         publisher.progress(tool="Read", action="subscribe_test")
@@ -77,7 +77,7 @@ class TestExecutorModeE2E:
 
     def test_heartbeat_publish(self):
         """Can publish a heartbeat event without error."""
-        from lib.agent_bus import AgentPublisher
+        from cos_lib.agent_bus import AgentPublisher
         pub = AgentPublisher(agent_id=_make_agent_id())
         pub.heartbeat(phase="test", step="heartbeat_check", tokens_used=0)
         assert pub is not None, "publisher must remain alive after heartbeat()"
@@ -112,7 +112,7 @@ class TestHeartbeatE2E:
             if "ORCHESTRATOR_MODE" in os.environ:
                 del os.environ["ORCHESTRATOR_MODE"]
 
-            from lib.orchestrator_mode_activator import AutoExecutor
+            from cos_lib.orchestrator_mode_activator import AutoExecutor
             result = AutoExecutor.check_and_activate()
 
             assert result["valkey_available"] is True, (
@@ -140,7 +140,7 @@ class TestHeartbeatE2E:
 
     def test_step3_heartbeat_thread_starts(self):
         """Step 3: start_heartbeat_thread() starts a live thread and publishes at least one beat."""
-        from lib.agent_bus import AgentPublisher
+        from cos_lib.agent_bus import AgentPublisher
 
         agent_id = _make_agent_id()
         pub = AgentPublisher(agent_id=agent_id)
@@ -204,7 +204,7 @@ class TestHeartbeatE2E:
         time.sleep(0.3)  # let subscriber register
 
         # Start publisher with heartbeat thread
-        from lib.agent_bus import AgentPublisher
+        from cos_lib.agent_bus import AgentPublisher
         pub = AgentPublisher(agent_id=agent_id)
         pub.start_heartbeat_thread()
 
@@ -238,7 +238,7 @@ class TestHeartbeatE2E:
         if importlib.util.find_spec("redis") is None:
             pytest.skip("redis package not installed")
 
-        from lib.agent_bus import AgentPublisher, OrchestratorSubscriber
+        from cos_lib.agent_bus import AgentPublisher, OrchestratorSubscriber
 
         agent_id = _make_agent_id()
         lifecycle_events: list = []
@@ -303,7 +303,7 @@ class TestHeartbeatE2E:
         AgentPublisher.start_heartbeat_thread() is correct — without actually
         running a full claude CLI subprocess.
         """
-        from lib.claude_executor import ClaudeExecutor
+        from cos_lib.claude_executor import ClaudeExecutor
 
         agent_id = _make_agent_id()
         executor = ClaudeExecutor(
@@ -357,8 +357,8 @@ class TestExecutorModeFallback:
         from unittest.mock import patch
 
         # Remove ClaudeExecutor from modules to simulate unavailability
-        with patch.dict("sys.modules", {"lib.claude_executor": None}):
-            from lib.orchestrator_mode import delegate_task
+        with patch.dict("sys.modules", {"cos_lib.claude_executor": None}):
+            from cos_lib.orchestrator_mode import delegate_task
             result = delegate_task("test task")
 
         # Must return a dict with success=False (or True if executor IS available)
@@ -367,7 +367,7 @@ class TestExecutorModeFallback:
 
     def test_agent_bus_file_fallback(self):
         """Agent bus falls back gracefully when Valkey is unreachable."""
-        from lib.agent_bus import AgentPublisher
+        from cos_lib.agent_bus import AgentPublisher
 
         # Pass an unreachable URL directly so the publisher falls back to file I/O
         pub = AgentPublisher(
@@ -380,7 +380,7 @@ class TestExecutorModeFallback:
 
     def test_auto_executor_no_crash(self):
         """AutoExecutor.check_and_activate() never raises."""
-        from lib.orchestrator_mode_activator import AutoExecutor
+        from cos_lib.orchestrator_mode_activator import AutoExecutor
         result = AutoExecutor.check_and_activate()
         assert "mode" in result
         assert "valkey_available" in result

@@ -7,7 +7,7 @@ Every agent gets ONLY the access needed for its specific task, with automatic
 expiration and always-blocked paths for sensitive files.
 
 Usage:
-    from lib.agent_permissions import AgentPermissionManager, PermissionLevel
+    from cos_lib.agent_permissions import AgentPermissionManager, PermissionLevel
 
     mgr = AgentPermissionManager()
     grant = mgr.grant("agent-123", "fix docs", paths=["docs/*.md"],

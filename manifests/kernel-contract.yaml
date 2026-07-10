@@ -16,7 +16,7 @@ kernel:
       role: "Installable package/manifest contract for reusable OS agentic primitives."
 
 compatibility_layer:
-  module: lib/compatibility_layer.py
+  module: cos_lib/compatibility_layer.py
   providers:
     - name: claude
       adapter_path: internal/provider/claude.go
@@ -30,14 +30,14 @@ compatibility_layer:
       adapter_path: internal/provider/devin.go
   gateways:
     - name: bifrost
-      adapter_path: lib/gateway_selector.py
+      adapter_path: cos_lib/gateway_selector.py
     - name: litellm
-      adapter_path: lib/gateway_selector.py
+      adapter_path: cos_lib/gateway_selector.py
     - name: claude_direct
-      adapter_path: lib/gateway_selector.py
+      adapter_path: cos_lib/gateway_selector.py
 
 execution_profiles:
-  module: lib/execution_profile.py
+  module: cos_lib/execution_profile.py
   profiles:
     - frontier_reasoning
     - high_code_generation
@@ -48,7 +48,7 @@ execution_profiles:
     - local_private_execution
 
 outcome_metrics:
-  module: lib/outcome_metrics.py
+  module: cos_lib/outcome_metrics.py
   metrics:
     - success_rate
     - average_latency_ms

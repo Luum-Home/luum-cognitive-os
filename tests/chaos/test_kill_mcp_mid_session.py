@@ -27,7 +27,7 @@ def isolated_registry(tmp_path, monkeypatch):
     monkeypatch.setenv("COGNITIVE_OS_PROJECT_DIR", str(tmp_path))
     # Force the module to re-resolve its runtime dir on next call.
     import importlib
-    import lib.process_registry as _reg
+    import cos_lib.process_registry as _reg
     importlib.reload(_reg)
     yield _reg
     importlib.reload(_reg)  # restore module-level state after the test

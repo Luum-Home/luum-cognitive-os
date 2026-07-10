@@ -25,7 +25,7 @@ parallelism detection, and state persistence across session crashes.
 ## Core API
 
 ```python
-from lib.task_dag import TaskDAG
+from cos_lib.task_dag import TaskDAG
 
 dag = TaskDAG(name="my-feature")
 dag.add_task(id="research", description="...", prompt="...", model="sonnet")

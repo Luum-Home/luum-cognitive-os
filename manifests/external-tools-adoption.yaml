@@ -75,7 +75,7 @@ tools:
     package_names: [openai]
     source_of_truth: {adr: docs/02-Decisions/adrs/ADR-049-provider-routing-and-fallback.md}
     allowed_surfaces: {os_repo: true, consumer_projects: optional, service_mode: optional, docker_runtime: optional}
-    evidence: {consumers: [lib/qwen_provider.py, pyproject.toml], tests: []}
+    evidence: {consumers: [cos_lib/qwen_provider.py, pyproject.toml], tests: []}
     status: active
   - id: claude-agent-sdk
     name: Claude Agent SDK

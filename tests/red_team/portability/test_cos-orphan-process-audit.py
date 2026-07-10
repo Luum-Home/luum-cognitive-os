@@ -2,7 +2,7 @@
 """Portability probe for scripts/cos-orphan-process-audit.py (ADR-279).
 
 Bilateral: CLI is a thin wrapper; --help works; unknown flag errors.
-Falsification: missing lib import would break the CLI.
+Falsification: missing cos_lib import would break the CLI.
 """
 from __future__ import annotations
 

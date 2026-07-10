@@ -9,7 +9,7 @@ supersedes: []
 superseded_by: null
 extends: [ADR-120, ADR-206, ADR-252, ADR-277, ADR-280]
 implementation_files:
-  - lib/product_answer.py
+  - cos_lib/product_answer.py
   - scripts/cos-product-answer
   - scripts/cos-product-answer-refresh
   - docs/08-References/business/product-answer-playbook.md

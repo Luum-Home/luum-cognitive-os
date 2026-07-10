@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.agent_message_bus import ack_message, blocker_findings, inbox, send_message, unacked_blockers
+from cos_lib.agent_message_bus import ack_message, blocker_findings, inbox, send_message, unacked_blockers
 
 
 pytestmark = pytest.mark.unit

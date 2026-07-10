@@ -1,5 +1,5 @@
 """
-Unit tests for lib.feedback_consumer — read_recent_feedback, group_by_classification,
+Unit tests for cos_lib.feedback_consumer — read_recent_feedback, group_by_classification,
 surface_actionable, and summarise_for_skill_improvement.
 
 Tests execute actual behaviour (grouping logic, filtering, ranking) against synthetic
@@ -11,7 +11,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, List
 
-from lib.feedback_consumer import (
+from cos_lib.feedback_consumer import (
     ACTIONABLE_CATEGORIES,
     group_by_classification,
     read_recent_feedback,

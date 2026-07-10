@@ -2,13 +2,13 @@ from __future__ import annotations
 
 import pytest
 
-from lib.dispatch_cost_predictor import predict_call_cost
+from cos_lib.dispatch_cost_predictor import predict_call_cost
 
 
 @pytest.mark.unit
 def test_predict_qwen_cost_uses_provider_estimator() -> None:
     prediction = predict_call_cost("qwen", input_tokens=100_000, output_tokens=10_000)
-    assert prediction.source == "lib.qwen_provider"
+    assert prediction.source == "cos_lib.qwen_provider"
     assert prediction.estimated_cost_usd > 0
 
 

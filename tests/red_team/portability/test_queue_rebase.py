@@ -51,7 +51,7 @@ class TestArbitraryRepoPath:
 
     def test_is_ff_possible_arbitrary_path(self, tmp_path):
         """is_ff_possible works with a totally arbitrary tmp git repo."""
-        from lib.queue_rebase import is_ff_possible  # noqa: PLC0415
+        from cos_lib.queue_rebase import is_ff_possible  # noqa: PLC0415
 
         _setup_minimal_repo(tmp_path)
         # Branch is at same tip as main — ff IS possible.
@@ -66,7 +66,7 @@ class TestArbitraryRepoPath:
 
     def test_rebase_onto_arbitrary_path(self, tmp_path):
         """rebase_onto works with an arbitrary tmp git repo."""
-        from lib.queue_rebase import rebase_onto  # noqa: PLC0415
+        from cos_lib.queue_rebase import rebase_onto  # noqa: PLC0415
 
         _setup_minimal_repo(tmp_path)
 
@@ -95,7 +95,7 @@ class TestRebaseResultPortability:
     def test_rebase_result_is_pickleable(self, tmp_path):
         """RebaseResult can round-trip through pickle (cross-process safe)."""
         import pickle  # noqa: PLC0415
-        from lib.queue_rebase import RebaseResult  # noqa: PLC0415
+        from cos_lib.queue_rebase import RebaseResult  # noqa: PLC0415
 
         r = RebaseResult(
             success=True,
@@ -114,7 +114,7 @@ class TestRebaseResultPortability:
 
     def test_rebase_result_bool_semantics(self):
         """bool(RebaseResult) reflects the success field."""
-        from lib.queue_rebase import RebaseResult  # noqa: PLC0415
+        from cos_lib.queue_rebase import RebaseResult  # noqa: PLC0415
 
         assert bool(RebaseResult(success=True)) is True
         assert bool(RebaseResult(success=False)) is False
@@ -146,7 +146,7 @@ class TestImportNoSideEffects:
         if mod_key:
             del sys.modules[mod_key]
 
-        importlib.import_module("lib.queue_rebase")
+        importlib.import_module("cos_lib.queue_rebase")
 
         assert len(calls) == 0, (
             f"Import should not call subprocess.run, but got: {calls}"

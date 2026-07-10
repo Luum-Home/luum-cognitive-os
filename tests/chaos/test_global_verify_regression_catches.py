@@ -66,7 +66,7 @@ class _FakeResolver:
 
     def _write(self, test_ids: list[str]) -> None:
         self._lib_dir.mkdir(parents=True, exist_ok=True)
-        # Make ``lib`` a package so ``from lib.targeted_test_resolver import ...``
+        # Make ``lib`` a package so ``from cos_lib.targeted_test_resolver import ...``
         # resolves through this directory before the real source tree.
         init_py = self._lib_dir / "__init__.py"
         if not init_py.exists():
@@ -98,7 +98,7 @@ def _run_hook(mode: str, agent_id: str, project_dir: Path, resolver_dir: Path | 
     env["VERIFY_FILES_OVERRIDE"] = "lib/synthetic_changed_for_chaos.py"
     if resolver_dir is not None:
         # ADR-238 Bug 5: inject a per-test resolver directory; the hook prepends
-        # this to sys.path before importing lib.targeted_test_resolver so we do
+        # this to sys.path before importing cos_lib.targeted_test_resolver so we do
         # not have to mutate the real source file on disk.
         env["VERIFY_RESOLVER_DIR"] = str(resolver_dir)
     # Ensure killswitch is NOT set (we want the hook to run fully)

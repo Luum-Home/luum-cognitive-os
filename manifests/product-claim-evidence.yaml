@@ -67,7 +67,7 @@ claims:
     evidence:
     - docs/02-Decisions/adrs/ADR-201-maintainer-agent-telemetry-promotion-loop.md
     - docs/04-Concepts/architecture/primitive-fitness-evaluation-contract.md
-    - lib/performance_ledger.py
+    - cos_lib/performance_ledger.py
     - scripts/cos-performance-ledger
     boundaries:
     - Do not publish savings percentages or dollar claims without a current metrics
@@ -82,7 +82,7 @@ claims:
       and restore-oriented checkpoints where the substrate is enabled.
     evidence:
     - docs/02-Decisions/adrs/ADR-227-shadow-git-checkpoint-substrate.md
-    - lib/shadow_git.py
+    - cos_lib/shadow_git.py
     - docs/08-References/business/product-messaging.md
     - docs/08-References/business/value-proposition.md
     boundaries:
@@ -127,7 +127,7 @@ claims:
     - docs/02-Decisions/adrs/ADR-280-product-question-to-evidence-primitive.md
     - manifests/product-question-bank.yaml
     - manifests/product-claim-evidence.yaml
-    - lib/product_answer.py
+    - cos_lib/product_answer.py
     - scripts/cos-product-answer
     boundaries:
     - Generated answers are not publication approval for volatile competitive claims.

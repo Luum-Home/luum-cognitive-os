@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.dispatch_model_advisor import (
+from cos_lib.dispatch_model_advisor import (
     classify_task_type,
     format_model_advice,
     get_budget_status,
@@ -435,7 +435,7 @@ class TestRecommendModelOutputIntegrity:
 
     def test_full_pipeline_importable(self):
         """Acceptance criteria: basic import + call works."""
-        from lib.dispatch_model_advisor import recommend_model as rm
+        from cos_lib.dispatch_model_advisor import recommend_model as rm
         result = rm("Implement endpoint")
         assert "model" in result
         assert result["model"] in self.VALID_MODELS

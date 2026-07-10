@@ -5,8 +5,8 @@ import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
 
-from lib.skill_lifecycle_promoter import build_skill_lifecycle_report
-from lib.skill_store import SkillStore
+from cos_lib.skill_lifecycle_promoter import build_skill_lifecycle_report
+from cos_lib.skill_store import SkillStore
 
 
 def _write(path: Path, text: str) -> None:

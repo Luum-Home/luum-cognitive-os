@@ -25,17 +25,17 @@ _REPO = Path(__file__).resolve().parent.parent
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from lib.doc_review_personas import (  # noqa: E402
+from cos_lib.doc_review_personas import (  # noqa: E402
     render_json,
     render_markdown,
     run_review,
 )
-from lib.persona_library import get_persona, list_personas  # noqa: E402
+from cos_lib.persona_library import get_persona, list_personas  # noqa: E402
 
 
 def _parse_personas(raw: str | None) -> list:
     if not raw:
-        from lib.persona_library import default_persona_set
+        from cos_lib.persona_library import default_persona_set
         return default_persona_set()
     names = [n.strip() for n in raw.split(",") if n.strip()]
     resolved = []

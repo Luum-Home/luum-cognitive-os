@@ -55,7 +55,7 @@ class TestCheckSlotAvailability:
 
     def test_available_when_no_active_tasks(self, tmp_path):
         """Returns available=True when no tasks are in progress."""
-        from lib.dispatch_helper import check_slot_availability
+        from cos_lib.dispatch_helper import check_slot_availability
 
         tasks_path = str(tmp_path / "tasks" / "active-tasks.json")
         _write_tasks(tasks_path, [])
@@ -71,7 +71,7 @@ class TestCheckSlotAvailability:
 
     def test_not_available_when_full(self, tmp_path):
         """Returns available=False when active == max."""
-        from lib.dispatch_helper import check_slot_availability
+        from cos_lib.dispatch_helper import check_slot_availability
 
         tasks_path = str(tmp_path / "tasks" / "active-tasks.json")
         cfg_path = str(tmp_path / "cognitive-os.yaml")
@@ -91,7 +91,7 @@ class TestCheckSlotAvailability:
 
     def test_counts_only_in_progress_tasks(self, tmp_path):
         """Only dispatch-active in_progress tasks count toward the active slot total."""
-        from lib.dispatch_helper import check_slot_availability
+        from cos_lib.dispatch_helper import check_slot_availability
 
         tasks_path = str(tmp_path / "tasks" / "active-tasks.json")
         cfg_path = str(tmp_path / "cognitive-os.yaml")
@@ -112,7 +112,7 @@ class TestCheckSlotAvailability:
 
     def test_excludes_dead_pid_and_stale_pidless_in_progress(self, tmp_path):
         """Zombie and stale-starting in_progress records must not saturate slots."""
-        from lib.dispatch_helper import check_slot_availability
+        from cos_lib.dispatch_helper import check_slot_availability
 
         tasks_path = str(tmp_path / "tasks" / "active-tasks.json")
         cfg_path = str(tmp_path / "cognitive-os.yaml")
@@ -144,7 +144,7 @@ class TestCheckSlotAvailability:
 
     def test_defaults_when_config_missing(self, tmp_path):
         """Falls back to DEFAULT_MAX_PARALLEL when config file is absent."""
-        from lib.dispatch_helper import _DEFAULT_MAX_PARALLEL, check_slot_availability
+        from cos_lib.dispatch_helper import _DEFAULT_MAX_PARALLEL, check_slot_availability
 
         tasks_path = str(tmp_path / "tasks" / "active-tasks.json")
         _write_tasks(tasks_path, [])
@@ -159,7 +159,7 @@ class TestCheckSlotAvailability:
 
     def test_defaults_when_tasks_file_missing(self, tmp_path):
         """Returns active=0 when active-tasks.json does not exist."""
-        from lib.dispatch_helper import check_slot_availability
+        from cos_lib.dispatch_helper import check_slot_availability
 
         cfg_path = str(tmp_path / "cognitive-os.yaml")
         _write_config(cfg_path, max_parallel=4)
@@ -174,7 +174,7 @@ class TestCheckSlotAvailability:
 
     def test_defaults_when_tasks_file_bad_json(self, tmp_path):
         """Returns active=0 on malformed JSON rather than raising."""
-        from lib.dispatch_helper import check_slot_availability
+        from cos_lib.dispatch_helper import check_slot_availability
 
         tasks_path = str(tmp_path / "tasks" / "active-tasks.json")
         os.makedirs(os.path.dirname(tasks_path), exist_ok=True)
@@ -191,7 +191,7 @@ class TestCheckSlotAvailability:
 
     def test_result_contains_all_keys(self, tmp_path):
         """Result dict always contains the four required keys."""
-        from lib.dispatch_helper import check_slot_availability
+        from cos_lib.dispatch_helper import check_slot_availability
 
         result = check_slot_availability(
             config_path="/nonexistent.yaml",
@@ -211,13 +211,13 @@ class TestEnqueueDequeue:
 
     def test_enqueue_returns_string_id(self, tmp_path):
         """enqueue_agent() returns a non-empty string queue_id."""
-        from lib.dispatch_helper import enqueue_agent
-        from lib.rate_limiter import RateLimitQueue
+        from cos_lib.dispatch_helper import enqueue_agent
+        from cos_lib.rate_limiter import RateLimitQueue
 
         queue_path = str(tmp_path / "queue.json")
         mock_queue = RateLimitQueue(state_path=queue_path, cooldown_seconds=0)
 
-        with patch("lib.dispatch_helper._get_queue", return_value=mock_queue):
+        with patch("cos_lib.dispatch_helper._get_queue", return_value=mock_queue):
             queue_id = enqueue_agent("Run the test suite", priority=3)
 
         assert isinstance(queue_id, str)
@@ -226,17 +226,17 @@ class TestEnqueueDequeue:
 
     def test_enqueue_dequeue_round_trip(self, tmp_path):
         """An enqueued agent is returned by dequeue_ready_agents()."""
-        from lib.dispatch_helper import dequeue_ready_agents, enqueue_agent
-        from lib.rate_limiter import RateLimitQueue
+        from cos_lib.dispatch_helper import dequeue_ready_agents, enqueue_agent
+        from cos_lib.rate_limiter import RateLimitQueue
 
         queue_path = str(tmp_path / "queue.json")
         # cooldown_seconds=0 so items are immediately eligible
         mock_queue = RateLimitQueue(state_path=queue_path, cooldown_seconds=0)
 
-        with patch("lib.dispatch_helper._get_queue", return_value=mock_queue):
+        with patch("cos_lib.dispatch_helper._get_queue", return_value=mock_queue):
             queue_id = enqueue_agent("Deploy staging", priority=2)
 
-        with patch("lib.dispatch_helper._get_queue", return_value=mock_queue):
+        with patch("cos_lib.dispatch_helper._get_queue", return_value=mock_queue):
             ready = dequeue_ready_agents()
 
         assert len(ready) == 1
@@ -248,8 +248,8 @@ class TestEnqueueDequeue:
 
     def test_dequeue_filters_non_agent_launch_items(self, tmp_path):
         """dequeue_ready_agents() only returns agent_launch items."""
-        from lib.dispatch_helper import dequeue_ready_agents
-        from lib.rate_limiter import RateLimitQueue
+        from cos_lib.dispatch_helper import dequeue_ready_agents
+        from cos_lib.rate_limiter import RateLimitQueue
 
         queue_path = str(tmp_path / "queue.json")
         mock_queue = RateLimitQueue(state_path=queue_path, cooldown_seconds=0)
@@ -257,7 +257,7 @@ class TestEnqueueDequeue:
         mock_queue.enqueue("tool_call", {"description": "some tool"}, priority=5)
         mock_queue.enqueue("agent_launch", {"description": "real agent"}, priority=5)
 
-        with patch("lib.dispatch_helper._get_queue", return_value=mock_queue):
+        with patch("cos_lib.dispatch_helper._get_queue", return_value=mock_queue):
             ready = dequeue_ready_agents()
 
         assert all(item.get("description") != "some tool" for item in ready)
@@ -265,28 +265,28 @@ class TestEnqueueDequeue:
 
     def test_dequeue_returns_empty_when_nothing_ready(self, tmp_path):
         """Returns empty list when queue is empty or nothing eligible yet."""
-        from lib.dispatch_helper import dequeue_ready_agents
-        from lib.rate_limiter import RateLimitQueue
+        from cos_lib.dispatch_helper import dequeue_ready_agents
+        from cos_lib.rate_limiter import RateLimitQueue
 
         queue_path = str(tmp_path / "queue.json")
         # cooldown_seconds=3600 means nothing is ready yet
         mock_queue = RateLimitQueue(state_path=queue_path, cooldown_seconds=3600)
         mock_queue.enqueue("agent_launch", {"description": "later"}, priority=5)
 
-        with patch("lib.dispatch_helper._get_queue", return_value=mock_queue):
+        with patch("cos_lib.dispatch_helper._get_queue", return_value=mock_queue):
             ready = dequeue_ready_agents()
 
         assert ready == []
 
     def test_priority_clamped_to_valid_range(self, tmp_path):
         """Priority outside 1–10 is silently clamped."""
-        from lib.dispatch_helper import enqueue_agent
-        from lib.rate_limiter import RateLimitQueue
+        from cos_lib.dispatch_helper import enqueue_agent
+        from cos_lib.rate_limiter import RateLimitQueue
 
         queue_path = str(tmp_path / "queue.json")
         mock_queue = RateLimitQueue(state_path=queue_path, cooldown_seconds=0)
 
-        with patch("lib.dispatch_helper._get_queue", return_value=mock_queue):
+        with patch("cos_lib.dispatch_helper._get_queue", return_value=mock_queue):
             enqueue_agent("too high", priority=99)
             enqueue_agent("too low", priority=-5)
 
@@ -296,18 +296,18 @@ class TestEnqueueDequeue:
 
     def test_enqueue_returns_fallback_when_queue_unavailable(self):
         """Returns 'queue-unavailable' gracefully when import fails."""
-        from lib.dispatch_helper import enqueue_agent
+        from cos_lib.dispatch_helper import enqueue_agent
 
-        with patch("lib.dispatch_helper._get_queue", return_value=None):
+        with patch("cos_lib.dispatch_helper._get_queue", return_value=None):
             result = enqueue_agent("anything")
 
         assert result == "queue-unavailable"
 
     def test_dequeue_returns_empty_when_queue_unavailable(self):
         """Returns [] gracefully when queue cannot be reached."""
-        from lib.dispatch_helper import dequeue_ready_agents
+        from cos_lib.dispatch_helper import dequeue_ready_agents
 
-        with patch("lib.dispatch_helper._get_queue", return_value=None):
+        with patch("cos_lib.dispatch_helper._get_queue", return_value=None):
             result = dequeue_ready_agents()
 
         assert result == []
@@ -323,7 +323,7 @@ class TestFormatDispatchStatus:
 
     def test_contains_slot_counts(self, tmp_path):
         """Output includes active/max slot ratio."""
-        from lib.dispatch_helper import format_dispatch_status
+        from cos_lib.dispatch_helper import format_dispatch_status
 
         tasks_path = str(tmp_path / "tasks" / "active-tasks.json")
         cfg_path = str(tmp_path / "cognitive-os.yaml")
@@ -339,7 +339,7 @@ class TestFormatDispatchStatus:
 
     def test_shows_available_when_slots_open(self, tmp_path):
         """Shows AVAILABLE when active < max."""
-        from lib.dispatch_helper import format_dispatch_status
+        from cos_lib.dispatch_helper import format_dispatch_status
 
         tasks_path = str(tmp_path / "tasks" / "active-tasks.json")
         cfg_path = str(tmp_path / "cognitive-os.yaml")
@@ -352,7 +352,7 @@ class TestFormatDispatchStatus:
 
     def test_shows_full_when_no_slots(self, tmp_path):
         """Shows FULL when active == max."""
-        from lib.dispatch_helper import format_dispatch_status
+        from cos_lib.dispatch_helper import format_dispatch_status
 
         tasks_path = str(tmp_path / "tasks" / "active-tasks.json")
         cfg_path = str(tmp_path / "cognitive-os.yaml")
@@ -371,7 +371,7 @@ class TestFormatDispatchStatus:
 
     def test_returns_string(self, tmp_path):
         """Always returns a string, even with missing files."""
-        from lib.dispatch_helper import format_dispatch_status
+        from cos_lib.dispatch_helper import format_dispatch_status
 
         status = format_dispatch_status(
             config_path="/nonexistent.yaml",
@@ -383,8 +383,8 @@ class TestFormatDispatchStatus:
 
     def test_shows_queued_count(self, tmp_path):
         """Queued count is mentioned in the output string."""
-        from lib.dispatch_helper import format_dispatch_status
-        from lib.rate_limiter import RateLimitQueue
+        from cos_lib.dispatch_helper import format_dispatch_status
+        from cos_lib.rate_limiter import RateLimitQueue
 
         tasks_path = str(tmp_path / "tasks" / "active-tasks.json")
         cfg_path = str(tmp_path / "cognitive-os.yaml")
@@ -395,7 +395,7 @@ class TestFormatDispatchStatus:
         mock_queue = RateLimitQueue(state_path=queue_path, cooldown_seconds=3600)
         mock_queue.enqueue("agent_launch", {"description": "waiting"}, priority=5)
 
-        with patch("lib.dispatch_helper._get_queue", return_value=mock_queue):
+        with patch("cos_lib.dispatch_helper._get_queue", return_value=mock_queue):
             status = format_dispatch_status(
                 config_path=cfg_path, tasks_path=tasks_path
             )
@@ -416,7 +416,7 @@ class TestModuleImport:
         """Module can be imported without triggering file I/O on import."""
         import importlib
         import time
-        import lib.dispatch_helper as mod
+        import cos_lib.dispatch_helper as mod
 
         start = time.monotonic()
         importlib.reload(mod)  # Re-import to confirm no side effects
@@ -425,24 +425,24 @@ class TestModuleImport:
 
     def test_check_slot_availability_is_callable(self):
         """check_slot_availability exists and is callable."""
-        from lib.dispatch_helper import check_slot_availability
+        from cos_lib.dispatch_helper import check_slot_availability
 
         assert callable(check_slot_availability)
 
     def test_enqueue_agent_is_callable(self):
         """enqueue_agent exists and is callable."""
-        from lib.dispatch_helper import enqueue_agent
+        from cos_lib.dispatch_helper import enqueue_agent
 
         assert callable(enqueue_agent)
 
     def test_dequeue_ready_agents_is_callable(self):
         """dequeue_ready_agents exists and is callable."""
-        from lib.dispatch_helper import dequeue_ready_agents
+        from cos_lib.dispatch_helper import dequeue_ready_agents
 
         assert callable(dequeue_ready_agents)
 
     def test_format_dispatch_status_is_callable(self):
         """format_dispatch_status exists and is callable."""
-        from lib.dispatch_helper import format_dispatch_status
+        from cos_lib.dispatch_helper import format_dispatch_status
 
         assert callable(format_dispatch_status)

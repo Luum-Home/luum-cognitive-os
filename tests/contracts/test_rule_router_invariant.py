@@ -15,7 +15,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.rule_router import RuleRouter, _enumerate_rule_paths, _parse_frontmatter
+from cos_lib.rule_router import RuleRouter, _enumerate_rule_paths, _parse_frontmatter
 
 pytestmark = pytest.mark.contract
 

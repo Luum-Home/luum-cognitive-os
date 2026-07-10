@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # CONCERNS: rate-limiting, retry, sidecar-lookup, non-blocking
 # Rate Limit Pre-Check (D45 gap B) — PreToolUse:Bash, NEVER blocks.
 #
@@ -52,7 +52,7 @@ RESULT=$(python3 -c "
 import json, sys, os
 sys.path.insert(0, os.environ['COGNITIVE_OS_HOOK_ROOT'])
 
-from lib.rate_limiter import RateLimitQueue
+from cos_lib.rate_limiter import RateLimitQueue
 
 queue_file = sys.argv[1]
 cmd_hash = sys.argv[2]

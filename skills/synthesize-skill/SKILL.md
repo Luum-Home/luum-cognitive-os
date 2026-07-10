@@ -154,7 +154,7 @@ python3 - <<'EOF'
 import sys, json
 from pathlib import Path
 sys.path.insert(0, "${CLAUDE_PROJECT_DIR}")
-from lib.skill_synthesizer import find_recurring_sequences, propose_skill_draft
+from cos_lib.skill_synthesizer import find_recurring_sequences, propose_skill_draft
 
 seq = find_recurring_sequences(
     Path(".cognitive-os/metrics/tool-sequences.jsonl"),

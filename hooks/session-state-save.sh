@@ -30,7 +30,7 @@ fi
 $PYTHON -c "
 import sys, os
 sys.path.insert(0, os.path.join('$PROJECT_DIR'))
-from lib.session_state import checkpoint
+from cos_lib.session_state import checkpoint
 checkpoint('Session ended — checkpoint before shutdown', project_dir='$PROJECT_DIR')
 " 2>/dev/null
 

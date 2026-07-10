@@ -8,7 +8,7 @@ from __future__ import annotations
 
 
 
-from lib.provider_profile import ProviderProfile, get_profile, load_profiles
+from cos_lib.provider_profile import ProviderProfile, get_profile, load_profiles
 
 
 # ---------------------------------------------------------------------------
@@ -211,14 +211,14 @@ provider_profiles:
 
 class TestProvidersInitShim:
     def test_get_provider_profiles_returns_dict(self):
-        from lib.providers import get_provider_profiles
+        from cos_lib.providers import get_provider_profiles
         profiles = get_provider_profiles()
         assert isinstance(profiles, dict)
         # should return the same profiles as load_profiles()
         assert "qwen" in profiles
 
     def test_existing_registry_unchanged(self):
-        from lib.providers import REGISTRY, ADVANCE_ON_ANY_FAILURE
+        from cos_lib.providers import REGISTRY, ADVANCE_ON_ANY_FAILURE
         # existing module-level interface must be unaffected by ADR-178 additions
         assert "qwen" in REGISTRY
         assert "openai" in REGISTRY

@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.script_io import read_text as read_text
+from cos_lib.script_io import read_text as read_text
 
 CLAIM_PATTERNS = re.compile(
     r"(automatic|automated|auto-|self-|always|never|guarantee|enforce|block|prevent|"
@@ -47,7 +47,7 @@ def candidate_docs(root: Path) -> list[Path]:
 
 def proof_corpus(root: Path) -> str:
     chunks: list[str] = []
-    for pattern in ("hooks/**/*.sh", "scripts/**/*.py", "lib/**/*.py", "tests/**/*.py", ".github/workflows/*.yml", ".claude/settings.json"):
+    for pattern in ("hooks/**/*.sh", "scripts/**/*.py", "cos_lib/**/*.py", "tests/**/*.py", ".github/workflows/*.yml", ".claude/settings.json"):
         for path in root.glob(pattern):
             if path.is_file():
                 chunks.append(path.as_posix())

@@ -81,11 +81,11 @@ if [ "$PATTERN_COUNT" -gt 0 ] 2>/dev/null; then
     COMPACT=$(echo "$PATTERNS" | python3 -c "
 import sys, json
 try:
-    from lib.format_converter import FormatConverter
+    from cos_lib.format_converter import FormatConverter
 except ImportError:
     import os, sys
     sys.path.insert(0, os.environ.get('CLAUDE_PROJECT_DIR', '.'))
-    from lib.format_converter import FormatConverter
+    from cos_lib.format_converter import FormatConverter
 
 patterns = json.load(sys.stdin)
 records = []

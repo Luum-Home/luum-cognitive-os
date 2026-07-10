@@ -1,6 +1,6 @@
 # Provider Profiles — ADR-178
 # Credential-slot pattern ported from HKUDS/OpenHarness (MIT).
-# Loaded by lib/provider_profile.py. Backward-compatible: if absent, lib/providers/
+# Loaded by lib/provider_profile.py. Backward-compatible: if absent, cos_lib/providers/
 # module-level REGISTRY continues to work unchanged.
 #
 # auth_slots format:

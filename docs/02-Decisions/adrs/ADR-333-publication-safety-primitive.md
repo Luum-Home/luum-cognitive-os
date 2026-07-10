@@ -7,7 +7,7 @@ date: '2026-05-31'
 supersedes: []
 superseded_by: null
 implementation_files:
-  - lib/publication_safety.py
+  - cos_lib/publication_safety.py
   - scripts/cos-publication-safety
   - hooks/publication-safety.sh
   - manifests/publication-safety.yaml

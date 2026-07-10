@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.reverse_engineer import (
+from cos_lib.reverse_engineer import (
     AnalysisReport,
     ReverseEngineer,
     _analyze_dockerfile,

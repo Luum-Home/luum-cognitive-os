@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.session_budget import SessionBudget, SessionBudgetExceeded
+from cos_lib.session_budget import SessionBudget, SessionBudgetExceeded
 
 
 def test_session_budget_pre_call_and_record_actual(tmp_path: Path) -> None:

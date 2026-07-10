@@ -6,7 +6,7 @@ import tempfile
 
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
-from lib.auto_repair import (
+from cos_lib.auto_repair import (
     Remediation,
     REMEDIATION_REGISTRY,
     classify_error,

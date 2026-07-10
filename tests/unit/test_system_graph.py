@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.system_graph import (
+from cos_lib.system_graph import (
     Component,
     Edge,
     Layer,
@@ -94,7 +94,7 @@ def minimal_project(tmp_path):
     (lib_dir / "__init__.py").write_text("")
     (lib_dir / "agent_bus.py").write_text("# Agent bus module\nclass AgentBus:\n    pass\n")
     (lib_dir / "agent_dashboard.py").write_text(
-        "# Dashboard\nfrom lib.agent_bus import AgentBus\n"
+        "# Dashboard\nfrom cos_lib.agent_bus import AgentBus\n"
     )
     (lib_dir / "estimation_calibrator.py").write_text(
         "# Reads metrics/trust-scores.jsonl\ndef calibrate(): pass\n"

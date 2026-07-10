@@ -30,7 +30,7 @@ Use `scripts/primitive_scope_classifier.py` when creating or changing primitives
 2. `manifests/primitive-readiness-protected-install-surfaces.yaml`
 3. `manifests/primitive-consumer-availability.yaml`
 4. `manifests/primitive-lifecycle.yaml`
-5. paired portability/falsification tests from `lib.portability_proof_paths`
+5. paired portability/falsification tests from `cos_lib.portability_proof_paths`
 
 The classifier is intentionally conservative. A new primitive with no export/projection evidence is reported as `unknown` with safe `effective_scope=os-only` and low confidence and a next action to add lifecycle/projection/consumer-availability metadata before relying on the classification.
 

@@ -17,7 +17,7 @@ from __future__ import annotations
 
 import pytest
 
-from lib.memory_governance import (
+from cos_lib.memory_governance import (
     MemoryTypePolicy,
     assess_freshness,
     boosted_score,

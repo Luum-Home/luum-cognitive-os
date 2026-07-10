@@ -394,7 +394,7 @@ callable tool — this ADR ports that primitive.
 | File | LOC | Source |
 |------|-----|--------|
 | `lib/memory_manager.py` | ~420 | Hermes `agent/memory_manager.py:83-374` (verbatim) + thin local `MemoryProvider` ABC (~50 LOC) + `EngramMemoryProvider` concrete impl (~90 LOC) |
-| `skills/memory-scan/SKILL.md` | ~100 | New — exposes `lib.memory_scanner` as agent-callable skill |
+| `skills/memory-scan/SKILL.md` | ~100 | New — exposes `cos_lib.memory_scanner` as agent-callable skill |
 | `hooks/memory-prefetch.sh` | ~50 | New — async UserPromptSubmit hook |
 | `tests/unit/test_memory_manager.py` | ~230 | 30 unit tests covering MemoryManager + context fencing |
 | `tests/unit/test_engram_memory_provider.py` | ~170 | 23 unit tests covering EngramMemoryProvider + scanner smoke |

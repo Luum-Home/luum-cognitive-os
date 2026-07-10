@@ -6,7 +6,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 timeout 30 python3 -c "
 import sys
 sys.path.insert(0, '$(dirname "$(dirname "$0")")')
-from lib.session_hygiene import run_full_hygiene
+from cos_lib.session_hygiene import run_full_hygiene
 report = run_full_hygiene('.')
 if report.strip():
     print(report, file=sys.stderr)
@@ -18,7 +18,7 @@ import sys, os
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, PROJECT_ROOT)
 try:
-    from lib.work_queue import WorkQueue
+    from cos_lib.work_queue import WorkQueue
     q = WorkQueue(queue_path=os.path.join(PROJECT_ROOT, '.cognitive-os', 'work-queue.json'))
     pending = q.get_pending()
     if pending:

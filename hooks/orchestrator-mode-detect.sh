@@ -12,7 +12,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 timeout 30 python3 -c "
 import sys
 try:
-    from lib.orchestrator_capabilities import OrchestratorCapabilities
+    from cos_lib.orchestrator_capabilities import OrchestratorCapabilities
     caps = OrchestratorCapabilities().detect()
     print(caps.format_status(), file=sys.stderr)
     if caps.mode == 'connected':

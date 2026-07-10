@@ -1,5 +1,5 @@
 # SCOPE: os-only
-"""Behavior tests for lib.project_scaffolder (ADR-054).
+"""Behavior tests for cos_lib.project_scaffolder (ADR-054).
 
 Real behavior — uses pytest's tmp_path (isolated per test, cleaned up).
 No mocks. Tests verify the 10-category docs/ skeleton is created
@@ -15,7 +15,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.project_scaffolder import (
+from cos_lib.project_scaffolder import (
     CATEGORIES,
     ProjectScaffolder,
     expected_category_paths,

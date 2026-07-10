@@ -80,7 +80,7 @@ Three uncertainties justify time-boxing exploration before committing to an Acce
 
 - **Task volume**: unclear how many proposals a 7-day production run would generate — could be
   5 or could be 500. Queue saturation behavior and operator UX at high volume are unknown.
-- **LLM extraction cost**: running `lib.dispatch` on every N turns adds compute cost. Daily
+- **LLM extraction cost**: running `cos_lib.dispatch` on every N turns adds compute cost. Daily
   cost at realistic cadence is not characterized.
 - **False positive rate**: the confidence threshold (0.72 proposed below) is derived from the
   patterns-only reference; its calibration for luum's specific task profile is unvalidated.
@@ -129,7 +129,7 @@ The review job runs every N turns (default: 3, configurable via `cognitive-os.ya
 `evolve.review_interval_turns`). It:
 
 1. Reads the last N turns of session log from `.cognitive-os/sessions/<session_id>/`.
-2. Calls the LLM via `lib.dispatch` (Qwen primary, Claude fallback — per ADR-049,
+2. Calls the LLM via `cos_lib.dispatch` (Qwen primary, Claude fallback — per ADR-049,
    `--providers qwen,claude`). The prompt is written clean-room from functional criteria
    defined in this ADR; it is not derived from any holaOS prompt text.
 3. Expects a JSON response conforming to:
@@ -299,7 +299,7 @@ Spike window: 3-4 days, time-boxed.
 - `scripts/cos_evolve_tick.py`: `list` and `approve`/`reject` commands only (no `run` yet)
 
 **Day 2 — LLM extraction**
-- `lib/evolve_skill_review.py`: session log reader, `lib.dispatch` call, JSON response parser,
+- `lib/evolve_skill_review.py`: session log reader, `cos_lib.dispatch` call, JSON response parser,
   confidence filter, fingerprint computation, `enqueue()` delegation
 - Clean-room LLM prompt authored from the functional criteria in Decision §1 (no holaOS
   source material)

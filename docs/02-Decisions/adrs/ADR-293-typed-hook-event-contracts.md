@@ -8,7 +8,7 @@ supersedes:
 - ADR-290
 superseded_by: null
 implementation_files:
-- lib/hook_event_types.py
+- cos_lib/hook_event_types.py
 tier: maintainer
 tags:
 - hooks

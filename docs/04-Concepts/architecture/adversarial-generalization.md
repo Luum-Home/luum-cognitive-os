@@ -22,8 +22,8 @@ This lane tests whether Cognitive OS survives messy, novel, adversarial tasks ra
 ## How it works
 
 1. `scripts/run-adversarial-generalization.sh` loads `.cognitive-os/tests/adversarial-generalization/scenarios.yaml`.
-2. Each scenario is materialized by `lib.adversarial_rubric.generate_fixture` into `.cognitive-os/generated/adversarial-scenarios/{scenario_id}`.
-3. `lib.adversarial_rubric.evaluate_fixture` evaluates local artifacts. Security families exercise the real lethal-trifecta classifier; other families verify concrete repo/memory/distractor/scope/acceptance fixtures.
+2. Each scenario is materialized by `cos_lib.adversarial_rubric.generate_fixture` into `.cognitive-os/generated/adversarial-scenarios/{scenario_id}`.
+3. `cos_lib.adversarial_rubric.evaluate_fixture` evaluates local artifacts. Security families exercise the real lethal-trifecta classifier; other families verify concrete repo/memory/distractor/scope/acceptance fixtures.
 4. A Markdown report is written to `.cognitive-os/reports/adversarial-generalization-report.md` and the runner exits non-zero on any failed fixture.
 
 ## Runtime surface

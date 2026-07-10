@@ -23,14 +23,14 @@ import json
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
-from lib.script_helpers import naive_utc_iso as _now_iso
+from cos_lib.script_helpers import naive_utc_iso as _now_iso
 from typing import Any, Dict, List, Tuple
 
 # Ensure lib/ is importable when run from repo root
 _REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(_REPO_ROOT))
 
-from lib.skill_store import SkillStore  # noqa: E402  (after sys.path patch)
+from cos_lib.skill_store import SkillStore  # noqa: E402  (after sys.path patch)
 
 DEFAULT_SRC = _REPO_ROOT / ".cognitive-os" / "metrics" / "skill-archive.jsonl"
 DEFAULT_DB = _REPO_ROOT / ".cognitive-os" / "skill_store.db"

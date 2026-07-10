@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from lib.cosd_auth_guard import inspect_command, inspect_payload
+from cos_lib.cosd_auth_guard import inspect_command, inspect_payload
 
 
 def test_remote_cosd_serve_requires_allow_remote() -> None:

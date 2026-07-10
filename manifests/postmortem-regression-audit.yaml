@@ -64,7 +64,7 @@ checks:
     pattern: "\\bgit\\s+filter-repo\\b|\\[\\s*['\"]git['\"]\\s*,\\s*['\"]filter-repo['\"]"
     allow_paths:
       - scripts/cos-filter-repo-wrap.sh
-      - lib/prelaunch_audit.py
+      - cos_lib/prelaunch_audit.py
 
   - id: post-rewrite-push-exception-missing
     adr: ADR-243
@@ -140,7 +140,7 @@ checks:
     message: Release transaction freeze artifact is missing; destructive/public operations still lack a stable transaction boundary.
     paths:
       - scripts/cos-release-freeze
-      - lib/release_freeze.py
+      - cos_lib/release_freeze.py
       - manifests/release-freeze.yaml
       - tests/behavior/test_release_freeze.py
 
@@ -150,7 +150,7 @@ external_tools:
     license_spdx: MIT
     adapter: scripts/cos-filter-repo-wrap.sh
     allowed_callers:
-      - lib/history_sanitization.py
+      - cos_lib/history_sanitization.py
     failure_policy: backup-or-refuse
     recursion_boundary: no COS hook invocation from filter-repo subprocess
     input_sensitivity: repository history and replacement rules

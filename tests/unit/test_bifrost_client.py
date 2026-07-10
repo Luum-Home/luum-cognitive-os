@@ -10,7 +10,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from lib.bifrost_client import (
+from cos_lib.bifrost_client import (
     BIFROST_EXCLUDED_MODELS,
     BIFROST_PROVIDERS,
     MODEL_TO_BIFROST,
@@ -151,7 +151,7 @@ class TestGetBifrostModelName:
 class TestIsBifrostAvailable:
     """Tests for is_bifrost_available() with mocked HTTP."""
 
-    @patch("lib.bifrost_client.urlopen")
+    @patch("cos_lib.bifrost_client.urlopen")
     def test_available_on_200(self, mock_urlopen):
         mock_resp = MagicMock()
         mock_resp.status = 200
@@ -160,13 +160,13 @@ class TestIsBifrostAvailable:
         mock_urlopen.return_value = mock_resp
         assert is_bifrost_available(url="http://fake:8081") is True
 
-    @patch("lib.bifrost_client.urlopen")
+    @patch("cos_lib.bifrost_client.urlopen")
     def test_unavailable_on_connection_error(self, mock_urlopen):
         from urllib.error import URLError
         mock_urlopen.side_effect = URLError("Connection refused")
         assert is_bifrost_available(url="http://fake:8081") is False
 
-    @patch("lib.bifrost_client.urlopen")
+    @patch("cos_lib.bifrost_client.urlopen")
     def test_unavailable_on_timeout(self, mock_urlopen):
         mock_urlopen.side_effect = OSError("timed out")
         assert is_bifrost_available(url="http://fake:8081") is False
@@ -196,7 +196,7 @@ class TestBifrostClient:
             client = BifrostClient()
             assert client.base_url == "http://env-host:7777"
 
-    @patch("lib.bifrost_client.urlopen")
+    @patch("cos_lib.bifrost_client.urlopen")
     def test_chat_completion_success(self, mock_urlopen):
         response_data = {
             "choices": [{"message": {"content": "Hello from Bifrost"}}],
@@ -216,7 +216,7 @@ class TestBifrostClient:
         assert result["choices"][0]["message"]["content"] == "Hello from Bifrost"
         assert result["usage"]["prompt_tokens"] == 10
 
-    @patch("lib.bifrost_client.urlopen")
+    @patch("cos_lib.bifrost_client.urlopen")
     def test_chat_completion_connection_error(self, mock_urlopen):
         from urllib.error import URLError
         mock_urlopen.side_effect = URLError("Connection refused")
@@ -228,7 +228,7 @@ class TestBifrostClient:
                 [{"role": "user", "content": "Hi"}],
             )
 
-    @patch("lib.bifrost_client.urlopen")
+    @patch("cos_lib.bifrost_client.urlopen")
     def test_health_check_success(self, mock_urlopen):
         mock_resp = MagicMock()
         mock_resp.read.return_value = b"{}"
@@ -239,7 +239,7 @@ class TestBifrostClient:
         client = BifrostClient(base_url="http://fake:8081")
         assert client.health_check() is True
 
-    @patch("lib.bifrost_client.urlopen")
+    @patch("cos_lib.bifrost_client.urlopen")
     def test_health_check_failure(self, mock_urlopen):
         from urllib.error import URLError
         mock_urlopen.side_effect = URLError("Connection refused")

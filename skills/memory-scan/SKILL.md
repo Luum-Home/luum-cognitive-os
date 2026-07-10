@@ -36,7 +36,7 @@ triggers:
 
 Scan text content for prompt injection, credential exfiltration attempts, role-hijacking, and invisible Unicode characters that could poison future sessions.
 
-This skill exposes `lib.memory_scanner.MemoryScanner` as an agent-callable mid-task tool, enabling in-session reflection and content vetting before any memory persist operation.
+This skill exposes `cos_lib.memory_scanner.MemoryScanner` as an agent-callable mid-task tool, enabling in-session reflection and content vetting before any memory persist operation.
 
 ## When to Use
 
@@ -63,7 +63,7 @@ import os
 project_dir = os.environ.get("CLAUDE_PROJECT_DIR", os.getcwd())
 sys.path.insert(0, project_dir)
 
-from lib.memory_scanner import MemoryScanner
+from cos_lib.memory_scanner import MemoryScanner
 
 scanner = MemoryScanner()
 ```
@@ -104,7 +104,7 @@ Exit with code `1` if blocked, `0` if clean. This lets callers use shell `&&` ch
 ```bash
 python3 -c "
 import sys, os; sys.path.insert(0, os.environ.get('CLAUDE_PROJECT_DIR', '.'))
-from lib.memory_scanner import MemoryScanner
+from cos_lib.memory_scanner import MemoryScanner
 result = MemoryScanner().scan(sys.stdin.read())
 if result.blocked:
     print('BLOCKED:', ','.join(result.reasons)); sys.exit(1)
@@ -135,8 +135,8 @@ print('CLEAN')
 To use mid-task recall alongside threat scanning:
 
 ```python
-from lib.memory_manager import MemoryManager, EngramMemoryProvider
-from lib.memory_scanner import MemoryScanner
+from cos_lib.memory_manager import MemoryManager, EngramMemoryProvider
+from cos_lib.memory_scanner import MemoryScanner
 
 mm = MemoryManager()
 mm.add_provider(EngramMemoryProvider())

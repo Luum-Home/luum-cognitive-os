@@ -8,8 +8,8 @@ import json as _cos_json
 _cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
 import sys
 try:
-    from lib.script_helpers import read_json_or as read_json
-    from lib.script_helpers import read_yaml_required as load_manifest
+    from cos_lib.script_helpers import read_json_or as read_json
+    from cos_lib.script_helpers import read_yaml_required as load_manifest
 except Exception:
     def read_json(path, default):
         try:

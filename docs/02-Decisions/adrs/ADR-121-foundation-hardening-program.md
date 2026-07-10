@@ -12,8 +12,8 @@ implementation_files:
   - tests/unit/test_validation_capsule.py
   - tests/behavior/test_cos_cleanup_preserved_wip.py
   - scripts/derived_artifact_gate.py
-  - lib/merge_queue.py
-  - lib/validation_lanes.py
+  - cos_lib/merge_queue.py
+  - cos_lib/validation_lanes.py
 tier: strict
 tags: [hardening, foundation, validation, invariants]
 partial_remaining: 'program ADR is partial: Phase 1/2/4/5 acceptance is closed; residuals are Phase 6 ADR-118 swarm scenarios; Phase 3 domain/registry ownership inventory has an initial executable slice'

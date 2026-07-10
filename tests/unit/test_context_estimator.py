@@ -1,7 +1,7 @@
 """Unit tests for lib/context_estimator.py"""
 
 import pytest
-from lib.context_estimator import ContextEstimator
+from cos_lib.context_estimator import ContextEstimator
 
 
 def test_initial_zero():

@@ -79,7 +79,7 @@ The `lib/model_router.py` module extends static routing with dynamic, multi-prov
 ### Python API
 
 ```python
-from lib.model_router import select_model, estimate_cost, format_routing_table
+from cos_lib.model_router import select_model, estimate_cost, format_routing_table
 
 # Pick best model for a task
 model = select_model("sdd-propose")  # -> "claude-opus-4-6"

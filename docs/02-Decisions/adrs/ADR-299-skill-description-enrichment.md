@@ -11,7 +11,7 @@ extends:
   - ADR-297
   - ADR-298
 implementation_files:
-  - lib/skill_description_enricher.py
+  - cos_lib/skill_description_enricher.py
   - scripts/cos-skill-description-enrich
   - tests/unit/test_skill_description_enricher.py
 tier: core
@@ -60,7 +60,7 @@ underlying corpus quality. This ADR closes that gap.
 
 Build an offline enricher that, per skill, generates ~2 short natural-
 language utterances per target language (default: en/es/pt/de/fr/it) via
-`lib.dispatch.dispatch(...)` and merges them into SKILL.md frontmatter as
+`cos_lib.dispatch.dispatch(...)` and merges them into SKILL.md frontmatter as
 `routing_intents` entries tagged `auto_generated: true`.
 
 ### Contract

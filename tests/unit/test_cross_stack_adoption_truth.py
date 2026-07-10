@@ -4,7 +4,7 @@ from pathlib import Path
 
 import yaml
 
-from lib.cross_stack_adoption_truth import build_report, normalize_name
+from cos_lib.cross_stack_adoption_truth import build_report, normalize_name
 
 
 def _write_fixture(project: Path) -> None:

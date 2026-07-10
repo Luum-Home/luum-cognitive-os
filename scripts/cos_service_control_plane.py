@@ -26,7 +26,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from lib.script_io import atomic_write_json
+from cos_lib.script_io import atomic_write_json
 
 import cos_auth_probe
 

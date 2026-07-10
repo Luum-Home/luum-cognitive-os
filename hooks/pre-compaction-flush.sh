@@ -25,7 +25,7 @@ fi
 
 python3 -c "
 import sys; sys.path.insert(0, '$PROJECT_DIR')
-from lib.anchored_summarizer import AnchoredSummarizer
+from cos_lib.anchored_summarizer import AnchoredSummarizer
 AnchoredSummarizer.auto_save(session_dir='$SESSION_DIR')
 " 2>/dev/null || true
 

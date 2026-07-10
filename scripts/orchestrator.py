@@ -2,9 +2,9 @@
 # SCOPE: os-only
 """Cognitive OS Orchestrator — dogfood entry point.
 
-Launches sub-Claude agents via `lib.claude_executor.ClaudeExecutor`, which
+Launches sub-Claude agents via `cos_lib.claude_executor.ClaudeExecutor`, which
 publishes heartbeats on the agent_bus and is monitored by
-`lib.agent_bus_metrics.AgentBusMetrics`. Every launch from this script:
+`cos_lib.agent_bus_metrics.AgentBusMetrics`. Every launch from this script:
 
   - registers on agent_bus (heartbeats visible to so-vitals, so-agent-status)
   - emits agent_launched / agent_completed MetricEvents to
@@ -94,7 +94,7 @@ def _try_qwen_primary(prompt: str, claude_model: str | None = None, verbose: boo
 
     Returns None (Qwen skipped) if any of the following is true:
       * COS_DISABLE_QWEN=1 in env (per-provider kill-switch)
-      * lib.qwen_provider import fails (module missing)
+      * cos_lib.qwen_provider import fails (module missing)
       * qwen_provider.is_configured() returns False (API key unset)
     """
     if os.environ.get("COS_DISABLE_QWEN", "").strip() == "1":
@@ -106,7 +106,7 @@ def _try_qwen_primary(prompt: str, claude_model: str | None = None, verbose: boo
     # COS_DISABLE_QWEN handled in cmd_run and at top of this function.)
 
     try:
-        from lib.qwen_provider import call as qwen_call, is_configured, select_model
+        from cos_lib.qwen_provider import call as qwen_call, is_configured, select_model
     except ImportError as e:
         if verbose:
             print(f"[orchestrator] qwen_provider import failed: {e}", file=sys.stderr)
@@ -154,7 +154,7 @@ def _try_qwen_primary(prompt: str, claude_model: str | None = None, verbose: boo
 def _activate_executor_mode() -> dict:
     """Attempt to activate executor mode; return mode descriptor."""
     try:
-        from lib.orchestrator_mode_activator import AutoExecutor
+        from cos_lib.orchestrator_mode_activator import AutoExecutor
 
         return AutoExecutor.check_and_activate()
     except Exception as e:
@@ -173,7 +173,7 @@ def _read_prompt_from_args_or_stdin(args: argparse.Namespace) -> str:
 
 
 def cmd_list_live(args: argparse.Namespace) -> int:
-    from lib.agent_bus_metrics import AgentBusMetrics
+    from cos_lib.agent_bus_metrics import AgentBusMetrics
 
     abm = AgentBusMetrics()
     live = abm.list_live(max_age_seconds=args.max_age)
@@ -187,7 +187,7 @@ def cmd_list_live(args: argparse.Namespace) -> int:
 
 
 def cmd_scan_stale(args: argparse.Namespace) -> int:
-    from lib.agent_bus_metrics import AgentBusMetrics
+    from cos_lib.agent_bus_metrics import AgentBusMetrics
 
     abm = AgentBusMetrics()
     stale = abm.scan_stale(max_age_seconds=args.max_age)
@@ -201,7 +201,7 @@ def cmd_scan_stale(args: argparse.Namespace) -> int:
 
 
 def cmd_kill_hung(args: argparse.Namespace) -> int:
-    from lib.agent_bus_metrics import AgentBusMetrics
+    from cos_lib.agent_bus_metrics import AgentBusMetrics
 
     abm = AgentBusMetrics()
     result = abm.mark_hung_and_publish(args.agent_id)
@@ -222,7 +222,7 @@ def _agent_bus_fallback_dir() -> Path:
 
 
 def cmd_control(args: argparse.Namespace) -> int:
-    from lib.agent_bus import OrchestratorSubscriber
+    from cos_lib.agent_bus import OrchestratorSubscriber
 
     fallback_dir = _agent_bus_fallback_dir()
     sub = OrchestratorSubscriber(fallback_dir=str(fallback_dir))
@@ -232,7 +232,7 @@ def cmd_control(args: argparse.Namespace) -> int:
 
 
 def cmd_answer(args: argparse.Namespace) -> int:
-    from lib.agent_bus import OrchestratorSubscriber
+    from cos_lib.agent_bus import OrchestratorSubscriber
 
     fallback_dir = _agent_bus_fallback_dir()
     sub = OrchestratorSubscriber(fallback_dir=str(fallback_dir))
@@ -259,9 +259,9 @@ def cmd_run(args: argparse.Namespace) -> int:
     os.environ.setdefault("COGNITIVE_OS_SESSION_ID", f"orchestrator-{agent_id}")
 
     try:
-        from lib.agent_bus import OrchestratorSubscriber
-        from lib.agent_bus_metrics import AgentBusMetrics
-        from lib.claude_executor import ClaudeExecutor
+        from cos_lib.agent_bus import OrchestratorSubscriber
+        from cos_lib.agent_bus_metrics import AgentBusMetrics
+        from cos_lib.claude_executor import ClaudeExecutor
     except ImportError as e:
         print(f"ERROR: executor/adapter import failed: {e}", file=sys.stderr)
         return 2
@@ -306,7 +306,7 @@ def cmd_run(args: argparse.Namespace) -> int:
     # ClaudeExecutor and forwards the task to the abstract dispatcher.
     # Benefits: uniform metrics logging, testable in isolation, reusable
     # from skills/hooks/future auto-router.
-    from lib.dispatch import dispatch as _dispatch
+    from cos_lib.dispatch import dispatch as _dispatch
 
     providers_raw = getattr(args, "providers", None) or "qwen,claude"
     providers_list = [p.strip() for p in providers_raw.split(",") if p.strip()]

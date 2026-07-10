@@ -7,7 +7,7 @@ for the Context Diet feature (Level 2 of the Agent Efficiency Strategy).
 import pytest
 from pathlib import Path
 
-from lib.context_diet import (
+from cos_lib.context_diet import (
     ALWAYS_INCLUDED,
     CHARS_PER_TOKEN,
     ContextDiet,

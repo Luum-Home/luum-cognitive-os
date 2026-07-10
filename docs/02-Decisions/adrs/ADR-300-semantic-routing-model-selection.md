@@ -11,7 +11,7 @@ extends:
 - ADR-297
 - ADR-298
 implementation_files:
-- lib/semantic_skill_matcher.py
+- cos_lib/semantic_skill_matcher.py
 - manifests/routing-benchmark-models.yaml
 - docs/06-Daily/reports/routing-benchmark-2026-05-13.md
 tier: core
@@ -184,11 +184,11 @@ scripts/cos-routing-benchmark --models baseline-minilm,multilingual-mpnet-base,m
 
 # Verify swap mechanism without changing the default
 COS_SEMANTIC_ROUTING_MODEL=intfloat/multilingual-e5-large \
-    python3 -c "from lib.semantic_skill_matcher import DEFAULT_MODEL_NAME; print(DEFAULT_MODEL_NAME)"
+    python3 -c "from cos_lib.semantic_skill_matcher import DEFAULT_MODEL_NAME; print(DEFAULT_MODEL_NAME)"
 # Expected: intfloat/multilingual-e5-large
 
 # Confirm default is unchanged at import time
-python3 -c "from lib.semantic_skill_matcher import DEFAULT_MODEL_NAME; print(DEFAULT_MODEL_NAME)"
+python3 -c "from cos_lib.semantic_skill_matcher import DEFAULT_MODEL_NAME; print(DEFAULT_MODEL_NAME)"
 # Expected: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
 ```
 

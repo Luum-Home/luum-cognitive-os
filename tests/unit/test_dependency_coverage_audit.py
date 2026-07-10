@@ -6,7 +6,7 @@ from pathlib import Path
 
 import yaml
 
-from lib.dependency_coverage_audit import build_report, collect_command_probes
+from cos_lib.dependency_coverage_audit import build_report, collect_command_probes
 
 
 def write(path: Path, text: str) -> None:

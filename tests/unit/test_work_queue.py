@@ -2,7 +2,7 @@
 
 import json
 import pytest
-from lib.work_queue import WorkQueue
+from cos_lib.work_queue import WorkQueue
 
 
 @pytest.fixture

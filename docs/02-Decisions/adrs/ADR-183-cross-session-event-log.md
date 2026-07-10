@@ -8,10 +8,10 @@ supersedes: []
 superseded_by: null
 extends: []
 implementation_files:
-- lib/session_bus.py
+- cos_lib/session_bus.py
 - scripts/session_event_bus.py
-- lib/session_coordination.py
-- lib/agent_message_bus.py
+- cos_lib/session_coordination.py
+- cos_lib/agent_message_bus.py
 - scripts/cos-session-coordination
 - scripts/cos-agent-message
 - hooks/cross-session-event-emit.sh

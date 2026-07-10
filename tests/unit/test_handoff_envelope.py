@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from lib.handoff_envelope import HandoffEnvelope, HandoffEnvelopeError, SCHEMA_VERSION
+from cos_lib.handoff_envelope import HandoffEnvelope, HandoffEnvelopeError, SCHEMA_VERSION
 
 
 @pytest.mark.unit

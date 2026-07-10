@@ -24,11 +24,11 @@ from scripts.cos_task_claims import (  # noqa: E402
     project_dir as _project_dir,
     release_task,
 )
-from lib.project_paths import project_dir_from_args as _project_dir_from_args  # noqa: E402
+from cos_lib.project_paths import project_dir_from_args as _project_dir_from_args  # noqa: E402
 
 
 def _project(args: argparse.Namespace) -> Path:
-    # Support both lib.project_paths and cos_task_claims resolution for compat.
+    # Support both cos_lib.project_paths and cos_task_claims resolution for compat.
     try:
         return _project_dir_from_args(args)
     except Exception:

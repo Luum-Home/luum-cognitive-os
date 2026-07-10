@@ -9,7 +9,7 @@ supersedes: []
 superseded_by: null
 extends: [ADR-008, ADR-029b]
 implementation_files:
-  - lib/skill_router.py
+  - cos_lib/skill_router.py
   - hooks/skill-router-prompt-suggest.sh
   - hooks/orchestrator-skill-invocation-gate.sh
   - rules/skill-invocation-mandatory.md

@@ -172,7 +172,7 @@ transcript file. This is a POC approach with two limitations:
 ```bash
 # AC 1: CorrelationStore CLI smoke-test
 python3 -c "
-from lib.harness_adapter.tool_use_correlation import CorrelationStore
+from cos_lib.harness_adapter.tool_use_correlation import CorrelationStore
 import time
 s = CorrelationStore()
 s.record('abc', time.monotonic())

@@ -4,8 +4,8 @@ from pathlib import Path
 
 import pytest
 
-import lib.product_answer as product_answer_module
-from lib.product_answer import (
+import cos_lib.product_answer as product_answer_module
+from cos_lib.product_answer import (
     ProductAnswerError,
     build_answer,
     card_freshness,

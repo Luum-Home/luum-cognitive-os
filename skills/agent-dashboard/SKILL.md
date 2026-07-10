@@ -36,7 +36,7 @@ Show status of all background agents launched in this session.
 When the user asks about agent status, progress, or says "/agent-dashboard":
 
 ```python
-from lib.agent_output_monitor import AgentOutputMonitor
+from cos_lib.agent_output_monitor import AgentOutputMonitor
 import os
 
 # Auto-detect the tasks directory from the session

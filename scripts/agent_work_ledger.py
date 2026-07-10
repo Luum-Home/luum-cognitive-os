@@ -8,9 +8,9 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
-from lib.concurrency_safety import project_runtime_dir
-from lib.project_paths import project_dir_from_args as project_dir
-from lib.script_io import read_jsonl as read_events
+from cos_lib.concurrency_safety import project_runtime_dir
+from cos_lib.project_paths import project_dir_from_args as project_dir
+from cos_lib.script_io import read_jsonl as read_events
 
 def ledger_path(project: Path) -> Path:
     path = project_runtime_dir(project) / "agent-work-ledger.jsonl"; path.parent.mkdir(parents=True, exist_ok=True); return path

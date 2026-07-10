@@ -7,7 +7,7 @@ and toxic content detection. Provides graceful degradation when the
 guardrails-ai package is not installed.
 
 Usage:
-    from lib.guardrails_validators import check_pii, check_jailbreak, check_toxic
+    from cos_lib.guardrails_validators import check_pii, check_jailbreak, check_toxic
 
     findings = check_pii("My SSN is 123-45-6789")
     for f in findings:

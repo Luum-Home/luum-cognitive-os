@@ -16,7 +16,7 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT))
 
-from lib.skill_runner import (  # noqa: E402
+from cos_lib.skill_runner import (  # noqa: E402
     RunResult,
     SkillRecord,
     _parse_frontmatter,

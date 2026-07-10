@@ -41,7 +41,7 @@ shared one root cause:
    then could not see ANSWERED status and re-flagged decisions that had
    already been resolved.
 
-3. **`from lib.engram import search` import bug.** `scripts/decision_triage.py`
+3. **`from cos_lib.engram import search` import bug.** `scripts/decision_triage.py`
    imported a module that does not exist (`lib/engram` vs the real
    `lib/engram_client`). Unit tests passed because they mocked the engram
    surface. The bug shipped silently — every cross-reference returned
@@ -68,7 +68,7 @@ chosen depends on what kind of drift the convention is trying to prevent.
 | Pattern | What it catches | Mechanism | Example today |
 |---|---|---|---|
 | **A) Audit test scanning artifacts** | Documentation, rule, or ADR drift away from a canonical convention (paths, naming, frontmatter, required sections) | `tests/audit/test_X.py` decorated `@pytest.mark.audit`, walks all relevant files read-only, asserts pattern compliance. CI runs it on every PR. Includes a meta-test proving the detector would catch the regression if reintroduced. | `tests/audit/test_doc_paths_tracked.py` would catch `.cognitive-os/...` cited as canonical storage in any tracked doc |
-| **B) Pre-commit linter for code-level invariants** | Bad code patterns at commit time — bad imports, unused vars, undefined names, ghost references | `.git/hooks/pre-commit` symlinked to a tracked `.githooks/pre-commit` running `ruff`/`eslint`/`gofmt -l` with **explicit** rule selection (e.g. `F401, F811, F821, F841` for Python). No magic defaults. | A pre-commit `ruff F821` would have caught `from lib.engram import search` before it landed |
+| **B) Pre-commit linter for code-level invariants** | Bad code patterns at commit time — bad imports, unused vars, undefined names, ghost references | `.git/hooks/pre-commit` symlinked to a tracked `.githooks/pre-commit` running `ruff`/`eslint`/`gofmt -l` with **explicit** rule selection (e.g. `F401, F811, F821, F841` for Python). No magic defaults. | A pre-commit `ruff F821` would have caught `from cos_lib.engram import search` before it landed |
 | **C) Auto-execute the convention** | Convention "OR ambiguity" — when a rule offers two branches, humans default to the easier one and the harder branch is silently skipped | When the operator/orchestrator does action X, the convention's other branch happens **automatically**. Replace "do A OR B" with "always do A; B is optional and additional". | `scripts/backfill_session_decisions.py` + `--mark-answered` flag in `decision_triage.py` auto-create the `decision/<topic>` observation |
 | **D) Live integration test, not mocks** | Silent fallbacks where the mocked path differs from the real path — degraded mode looks like success | `tests/integration/test_X_live.py` with `@pytest.mark.requires_X`. Skips when the dependency is unavailable, runs otherwise. CI runs the lane on schedule (nightly) or behind a flag. | A `test_decision_triage_engram_live.py` that imports the real `engram_client` and queries a real engram daemon would have caught Cause 3 immediately |
 

@@ -59,7 +59,7 @@ def test_similarity_pairs_by_stem() -> None:
 
 
 def test_pair_constants_respects_min_similarity(tmp_path: Path) -> None:
-    py_file = tmp_path / "lib.py"
+    py_file = tmp_path / "cos_lib.py"
     py_file.write_text("_CPU_IDLE_THRESHOLD_PCT = 5.0\n_FOO_BAR = 42\n")
     adr_file = tmp_path / "adr.md"
     adr_file.write_text(
@@ -96,7 +96,7 @@ def test_emit_test_produces_valid_python_and_cites_adr() -> None:
     text = _mod.emit_test(py_c, adr_c, adr_c.file)
     assert text.startswith("def test_"), text
     assert "ADR-047" in text
-    assert "from lib.watchdog import _CPU_THRESHOLD_PCT" in text
+    assert "from cos_lib.watchdog import _CPU_THRESHOLD_PCT" in text
     assert "ADR_VALUE = 5.0" in text
     assert "assert _CPU_THRESHOLD_PCT == ADR_VALUE" in text
     # Compiles as valid Python (function body). Wrap in exec context.
@@ -112,7 +112,7 @@ def test_module_path_trims_absolute_prefix(tmp_path: Path) -> None:
     # Absolute path should resolve to a plausible dotted module based on anchor
     abs_path = str(Path("/") / "Users" / "x" / "project" / "lib" / "session_watchdog_lib.py")
     mp = _mod.module_path(abs_path)
-    assert mp == "lib.session_watchdog_lib"
+    assert mp == "cos_lib.session_watchdog_lib"
 
 
 # --------------------------------------------------------------------------- #
@@ -181,7 +181,7 @@ def test_cli_real_adr_047_pair_produces_non_empty_output() -> None:
     pair produces at least one proposed invariant."""
     adr = REPO_ROOT / "docs" / "02-Decisions" / "adrs" / "ADR-047-session-lifecycle-management.md"
     lib = REPO_ROOT / "lib" / "session_watchdog_lib.py"
-    if not adr.exists() or not lib.exists():
+    if not adr.exists() or not cos_lib.exists():
         pytest.skip("ADR-047 or session_watchdog_lib.py not present")
     result = subprocess.run(
         ["python3", str(HELPER), str(adr), str(lib)],

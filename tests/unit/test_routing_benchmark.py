@@ -9,8 +9,8 @@ from typing import Any, Dict, List, Tuple
 
 import pytest
 
-from lib import routing_benchmark as rb
-from lib.routing_benchmark import (
+from cos_lib import routing_benchmark as rb
+from cos_lib.routing_benchmark import (
     BenchmarkHarness,
     LicenseViolation,
     RoutingAdapter,

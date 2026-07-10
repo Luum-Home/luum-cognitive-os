@@ -59,7 +59,7 @@ Implementation note: the first draft used `serde_json`, which introduced `ryu` w
 |---|---|
 | Imported source and license posture | Rust crates listed above; local metadata license check passed. |
 | COS target primitive | ADR-283 script exposure diagnostic. |
-| Producer | `crates/cos-script-exposure-audit-rs/src/lib.rs` and `src/main.rs`. |
+| Producer | `crates/cos-script-exposure-audit-rs/src/cos_lib.rs` and `src/main.rs`. |
 | Consumer | Rust parity tests plus optional operator invocation via `cargo run -p cos-script-exposure-audit-rs -- ...`. |
 | Scheduler or trigger | Manual/CI candidate only; Python CLI remains production default. |
 | Evaluator/reward signal | Fixture parity against existing Python report shape and existing Python unit/behavior test preservation. |

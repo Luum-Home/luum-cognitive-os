@@ -18,15 +18,15 @@ pytestmark = pytest.mark.behavior
 
 
 class TestImportability:
-    """SkillRouter must be importable from lib."""
+    """SkillRouter must be importable from cos_lib."""
 
     def test_skill_router_importable(self):
-        from lib.skill_router import SkillRouter
+        from cos_lib.skill_router import SkillRouter
         router = SkillRouter()
         assert router is not None
 
     def test_skill_match_importable(self):
-        from lib.skill_router import SkillMatch
+        from cos_lib.skill_router import SkillMatch
         match = SkillMatch(
             skill_name="test",
             confidence=0.9,
@@ -45,7 +45,7 @@ class TestRoutingTableCoverage:
     """Routing table must have sufficient entries."""
 
     def test_routing_table_has_more_than_15_entries(self):
-        from lib.skill_router import SkillRouter
+        from cos_lib.skill_router import SkillRouter
         router = SkillRouter()
         assert router.routing_entry_count > 15, (
             f"Routing table has only {router.routing_entry_count} entries, "
@@ -53,7 +53,7 @@ class TestRoutingTableCoverage:
         )
 
     def test_routing_skills_cover_major_categories(self):
-        from lib.skill_router import SkillRouter
+        from cos_lib.skill_router import SkillRouter
         router = SkillRouter()
         skills = router.get_routing_skills()
 
@@ -89,7 +89,7 @@ class TestSkillsExistOnFilesystem:
     def test_every_routing_skill_is_known(self):
         """Every skill in the routing table must exist either as a
         directory in skills/ or be listed in CATALOG.md."""
-        from lib.skill_router import SkillRouter
+        from cos_lib.skill_router import SkillRouter
 
         project_root = Path(__file__).resolve().parent.parent.parent
         skills_dir = project_root / "skills"
@@ -150,7 +150,7 @@ class TestRoutingAliasesAndSemanticMetadata:
     """Explicit aliases work; multilingual natural language moves to routing_intents."""
 
     def test_english_patterns_work(self):
-        from lib.skill_router import SkillRouter
+        from cos_lib.skill_router import SkillRouter
         router = SkillRouter()
 
         english_messages = [
@@ -169,7 +169,7 @@ class TestRoutingAliasesAndSemanticMetadata:
             )
 
     def test_migrated_skills_expose_routing_intents(self):
-        from lib.skill_router import SkillRouter
+        from cos_lib.skill_router import SkillRouter
 
         router = SkillRouter()
         migrated = {
@@ -186,7 +186,7 @@ class TestRoutingAliasesAndSemanticMetadata:
         assert missing == []
 
     def test_explicit_aliases_still_work_after_intent_migration(self):
-        from lib.skill_router import SkillRouter
+        from cos_lib.skill_router import SkillRouter
         router = SkillRouter()
 
         messages = [
@@ -210,7 +210,7 @@ class TestGitHubUrlDetectionBehavior:
     """GitHub URL detection must work across formats."""
 
     def test_github_url_detection_works(self):
-        from lib.skill_router import SkillRouter
+        from cos_lib.skill_router import SkillRouter
         router = SkillRouter()
 
         match = router.best_match("https://github.com/user/repo")
@@ -218,7 +218,7 @@ class TestGitHubUrlDetectionBehavior:
         assert match.skill_name == "repo-forensics"
 
     def test_github_url_in_sentence(self):
-        from lib.skill_router import SkillRouter
+        from cos_lib.skill_router import SkillRouter
         router = SkillRouter()
 
         match = router.best_match(
@@ -237,7 +237,7 @@ class TestFormatSuggestionBehavior:
     """format_suggestion must produce human-readable output."""
 
     def test_format_suggestion_produces_readable_output(self):
-        from lib.skill_router import SkillRouter
+        from cos_lib.skill_router import SkillRouter
         router = SkillRouter()
 
         matches = router.match("/run-tests")
@@ -249,7 +249,7 @@ class TestFormatSuggestionBehavior:
         assert "confidence:" in suggestion
 
     def test_format_suggestion_empty_for_no_matches(self):
-        from lib.skill_router import SkillRouter
+        from cos_lib.skill_router import SkillRouter
         router = SkillRouter()
 
         suggestion = router.format_suggestion([])

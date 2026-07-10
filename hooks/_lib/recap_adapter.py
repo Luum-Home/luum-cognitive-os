@@ -30,7 +30,7 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.harness_environment import is_claude_code as _is_claude_code
+from cos_lib.harness_environment import is_claude_code as _is_claude_code
 
 
 def _resolve_session_id(project_dir: Path) -> str | None:

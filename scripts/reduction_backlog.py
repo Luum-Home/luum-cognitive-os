@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.script_io import load_json_or_empty as load_json
+from cos_lib.script_io import load_json_or_empty as load_json
 
 
 @dataclass(frozen=True)

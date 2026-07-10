@@ -97,7 +97,7 @@ Evidence that every part of the chain fired:
 
 | # | File | Bug | Fix |
 |---|---|---|---|
-| 1 | `lib/agent_bus_metrics.py` | `from packages.agent_coordination...` fails — hyphens in dir name | Import via `lib.agent_bus` symlink |
+| 1 | `lib/agent_bus_metrics.py` | `from packages.agent_coordination...` fails — hyphens in dir name | Import via `cos_lib.agent_bus` symlink |
 | 2 | `lib/claude_executor.py:46` | `haiku` mapped to stale model ID `claude-haiku-3-5-20241022` | Deferred (out of scope) |
 | 3 | `lib/agent_bus_metrics.py` `subscribe()` | Registered callback but never called `subscribe_all()` — listener never ran | Added `self._subscriber.subscribe_all()` after `on_heartbeat()` |
 | 4 | `scripts/orchestrator.py` | Called non-existent `subscriber.start()` method | Simplified to just `abm.subscribe()` (which now subscribes internally) |

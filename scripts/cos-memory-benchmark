@@ -13,7 +13,7 @@ ROOT_FOR_IMPORTS = Path(__file__).resolve().parents[1]
 if str(ROOT_FOR_IMPORTS) not in sys.path:
     sys.path.insert(0, str(ROOT_FOR_IMPORTS))
 
-from lib.memory_retrieval_benchmark import run_benchmark  # noqa: E402
+from cos_lib.memory_retrieval_benchmark import run_benchmark  # noqa: E402
 
 DEFAULT_MANIFEST = Path("manifests/memory-retrieval-benchmark.yaml")
 

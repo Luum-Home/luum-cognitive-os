@@ -14,8 +14,8 @@ PYTHONPATH="$ROOT${PYTHONPATH:+:$PYTHONPATH}" python3 - "$ROOT" "$RESULTS" "$TAS
 import sys
 from pathlib import Path
 
-from lib.adversarial_rubric import load_scenarios
-from lib.runtime_benchmark import RuntimeBenchmarkResult, append_result, run_local_smoke
+from cos_lib.adversarial_rubric import load_scenarios
+from cos_lib.runtime_benchmark import RuntimeBenchmarkResult, append_result, run_local_smoke
 
 root = Path(sys.argv[1])
 results_path = sys.argv[2]

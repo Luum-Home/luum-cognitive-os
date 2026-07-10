@@ -24,9 +24,9 @@ PAYLOAD_JSON="$_STDIN_JSON" PYTHONPATH="$ROOT${PYTHONPATH:+:$PYTHONPATH}" python
 import json
 import os
 import sys
-from lib.aci_observation import normalize_observation
-from lib.agent_trajectory import append_trajectory, event_from_aci
-from lib.metric_event import MetricEvent, append_event
+from cos_lib.aci_observation import normalize_observation
+from cos_lib.agent_trajectory import append_trajectory, event_from_aci
+from cos_lib.metric_event import MetricEvent, append_event
 
 aci_file, trajectory_file, artifact_dir, session_id, task_id = sys.argv[1:6]
 payload = json.loads(os.environ.get("PAYLOAD_JSON") or "{}")

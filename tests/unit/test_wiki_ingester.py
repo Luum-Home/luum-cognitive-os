@@ -1,4 +1,4 @@
-"""Unit tests for lib.wiki_ingester.
+"""Unit tests for cos_lib.wiki_ingester.
 
 All tests run real code against a temporary vault directory.
 No network calls — ingest_url is tested with a local HTTP server thread.
@@ -15,7 +15,7 @@ from unittest.mock import patch
 
 import pytest
 
-from lib.wiki_ingester import (
+from cos_lib.wiki_ingester import (
     IngestResult,
     WikiIngester,
     _redact_secrets,
@@ -334,7 +334,7 @@ class TestIngestUrl:
 class TestEngramIntegration:
     """Tests for engram integration inside _emit_engram_claim.
 
-    The method does a lazy ``from lib import engram_client`` inside the function
+    The method does a lazy ``from cos_lib import engram_client`` inside the function
     body, so we patch ``WikiIngester._emit_engram_claim`` directly to control its
     return value without depending on the real engram daemon.
     """
@@ -373,7 +373,7 @@ class TestEngramIntegration:
 
         # Simulate engram_client.save_observation raising inside _emit_engram_claim
         # by patching it at the source the lazy import will resolve to.
-        with patch("lib.engram_client.save_observation", side_effect=RuntimeError("crash")):
+        with patch("cos_lib.engram_client.save_observation", side_effect=RuntimeError("crash")):
             result = ingester.ingest_text("boom", "Crash Test", locator="crash")
 
         # claim_id may be None or a real ID depending on whether engram is running;

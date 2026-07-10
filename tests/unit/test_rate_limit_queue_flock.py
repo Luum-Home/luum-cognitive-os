@@ -19,7 +19,7 @@ _PROJ_ROOT = Path(__file__).resolve().parent.parent.parent
 if str(_PROJ_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJ_ROOT))
 
-from lib.rate_limiter import (  # noqa: E402
+from cos_lib.rate_limiter import (  # noqa: E402
     RateLimitQueue,
     _queue_file_lock,
 )
@@ -120,7 +120,7 @@ def test_lock_timeout_logged_and_no_deadlock(tmp_path: Path, monkeypatch: pytest
     log_path = str(tmp_path / "queue-lock-timeout.jsonl")
     monkeypatch.setenv("_QUEUE_LOCK_TIMEOUT_LOG", log_path)
     # Patch the module-level constant so _log_lock_timeout writes to our log
-    import lib.rate_limiter as rl_mod
+    import cos_lib.rate_limiter as rl_mod
     monkeypatch.setattr(rl_mod, "_QUEUE_LOCK_TIMEOUT_LOG", log_path)
 
     queue_path = str(tmp_path / "queue.json")

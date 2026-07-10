@@ -12,7 +12,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from lib.web_automation_router import (
+from cos_lib.web_automation_router import (
     WebAutomationUnavailable,
     is_web_automation_intent,
     route,
@@ -62,7 +62,7 @@ def test_route_rejects_non_intent_without_force(monkeypatch):
 
 def test_route_unavailable_when_package_missing(monkeypatch):
     monkeypatch.delenv("COS_DISABLE_WEB_AUTOMATION", raising=False)
-    with patch("lib.web_automation_router.is_browser_use_available", return_value=False):
+    with patch("cos_lib.web_automation_router.is_browser_use_available", return_value=False):
         with pytest.raises(WebAutomationUnavailable, match="not installed"):
             route("Navigate to https://example.com and click login", force=False)
 
@@ -71,31 +71,31 @@ def test_route_returns_adapter_when_available(monkeypatch):
     monkeypatch.delenv("COS_DISABLE_WEB_AUTOMATION", raising=False)
     # Pretend browser_use is importable AND patch the adapter's availability
     # gate so __init__ doesn't actually try to import.
-    with patch("lib.web_automation_router.is_browser_use_available", return_value=True), \
-         patch("lib.browser_use_adapter.is_browser_use_available", return_value=True):
+    with patch("cos_lib.web_automation_router.is_browser_use_available", return_value=True), \
+         patch("cos_lib.browser_use_adapter.is_browser_use_available", return_value=True):
         adapter = route(
             "Navigate to https://example.com and extract the title",
             cost_predictor=MagicMock(),
             agent_bus=MagicMock(),
         )
-    from lib.browser_use_adapter import BrowserUseAdapter
+    from cos_lib.browser_use_adapter import BrowserUseAdapter
     assert isinstance(adapter, BrowserUseAdapter)
 
 
 def test_route_kill_switch_blocks(monkeypatch):
     monkeypatch.setenv("COS_DISABLE_WEB_AUTOMATION", "1")
-    with patch("lib.web_automation_router.is_browser_use_available", return_value=True), \
-         patch("lib.browser_use_adapter.is_browser_use_available", return_value=True):
+    with patch("cos_lib.web_automation_router.is_browser_use_available", return_value=True), \
+         patch("cos_lib.browser_use_adapter.is_browser_use_available", return_value=True):
         with pytest.raises(WebAutomationUnavailable):
             route("Navigate to https://example.com", force=True)
 
 
 def test_route_force_overrides_intent(monkeypatch):
     monkeypatch.delenv("COS_DISABLE_WEB_AUTOMATION", raising=False)
-    with patch("lib.web_automation_router.is_browser_use_available", return_value=True), \
-         patch("lib.browser_use_adapter.is_browser_use_available", return_value=True):
+    with patch("cos_lib.web_automation_router.is_browser_use_available", return_value=True), \
+         patch("cos_lib.browser_use_adapter.is_browser_use_available", return_value=True):
         adapter = route("not obviously web", force=True)
-    from lib.browser_use_adapter import BrowserUseAdapter
+    from cos_lib.browser_use_adapter import BrowserUseAdapter
     assert isinstance(adapter, BrowserUseAdapter)
 
 
@@ -107,7 +107,7 @@ def test_smoke_end_to_end(monkeypatch):
     """Mocked end-to-end: router -> adapter -> fake agent -> result."""
     monkeypatch.delenv("COS_DISABLE_WEB_AUTOMATION", raising=False)
 
-    from lib.browser_use_adapter import BrowserUseAdapter
+    from cos_lib.browser_use_adapter import BrowserUseAdapter
 
     class _History:
         urls = ["https://example.com/done"]

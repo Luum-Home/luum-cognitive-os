@@ -21,7 +21,7 @@ fi
 # Run the lightweight startup check.
 # The full usage report is intentionally too heavy for a SessionStart hook.
 timeout 10 python3 -c "
-from lib.component_usage_tracker import ComponentUsageTracker
+from cos_lib.component_usage_tracker import ComponentUsageTracker
 t = ComponentUsageTracker('.')
 r = t.generate_quick_health_report()
 health = r.get('dead_weight', {}).get('health_pct', 100)

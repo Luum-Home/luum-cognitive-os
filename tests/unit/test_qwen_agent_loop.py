@@ -15,7 +15,7 @@ from typing import Any, Dict, Iterable, List
 
 import pytest
 
-from lib import qwen_agent_loop as qal
+from cos_lib import qwen_agent_loop as qal
 
 
 # ---------------------------------------------------------------------------
@@ -383,7 +383,7 @@ def test_read_file_uses_smart_reader(tmp_path, monkeypatch):
             called["count"] += 1
             return SimpleNamespace(content=f"STUB:{path}")
 
-    import lib.smart_reader as sr
+    import cos_lib.smart_reader as sr
     monkeypatch.setattr(sr, "SmartReader", _StubReader)
 
     out = qal._tool_read_file({"path": str(target)})
@@ -400,7 +400,7 @@ def test_read_file_fallback_when_smart_reader_raises(tmp_path, monkeypatch):
         def read_file(self, path):
             raise RuntimeError("smart reader broken")
 
-    import lib.smart_reader as sr
+    import cos_lib.smart_reader as sr
     monkeypatch.setattr(sr, "SmartReader", _BrokenReader)
 
     out = qal._tool_read_file({"path": str(target)})
@@ -428,7 +428,7 @@ def test_run_bash_blocklist_rm_rf():
 
 
 def test_web_fetch_delegates_to_crawler(monkeypatch):
-    """web_fetch must call lib.web_crawler.fetch_markdown_sync."""
+    """web_fetch must call cos_lib.web_crawler.fetch_markdown_sync."""
     calls = {"url": None, "timeout": None}
 
     def _fake_fetch(url, timeout=30):
@@ -436,7 +436,7 @@ def test_web_fetch_delegates_to_crawler(monkeypatch):
         calls["timeout"] = timeout
         return "# Markdown\ncontent here"
 
-    import lib.web_crawler as wc
+    import cos_lib.web_crawler as wc
     monkeypatch.setattr(wc, "fetch_markdown_sync", _fake_fetch)
 
     out = qal._tool_web_fetch({"url": "https://example.com", "timeout_s": 15})
@@ -455,7 +455,7 @@ def test_web_fetch_surfaces_crawler_error(monkeypatch):
     def _fake_fetch(url, timeout=30):
         raise ValueError("invalid URL scheme")
 
-    import lib.web_crawler as wc
+    import cos_lib.web_crawler as wc
     monkeypatch.setattr(wc, "fetch_markdown_sync", _fake_fetch)
 
     out = qal._tool_web_fetch({"url": "ftp://nope"})
@@ -633,7 +633,7 @@ def test_context_level_unknown_falls_back_to_none():
 
 def test_context_injector_build_prefix_levels():
     """Unit-level check on qwen_context_injector.build_context_prefix()."""
-    from lib.qwen_context_injector import build_context_prefix
+    from cos_lib.qwen_context_injector import build_context_prefix
 
     assert build_context_prefix("none") == ""
     minimal = build_context_prefix("minimal")

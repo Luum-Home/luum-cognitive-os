@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from lib.integration_shard_plan import plan_shards
+from cos_lib.integration_shard_plan import plan_shards
 
 
 def test_integration_shard_plan_covers_each_file_once(project_root) -> None:

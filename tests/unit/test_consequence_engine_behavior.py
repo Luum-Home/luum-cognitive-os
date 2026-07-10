@@ -15,7 +15,7 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-from lib.consequence_engine import (
+from cos_lib.consequence_engine import (
     ConsequenceEngine,
     Consequence,
     PerformanceRecord,

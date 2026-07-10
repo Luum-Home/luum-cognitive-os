@@ -1,4 +1,4 @@
-"""Unit tests for lib.telemetry_banner (ADR-304 Slice 2)."""
+"""Unit tests for cos_lib.telemetry_banner (ADR-304 Slice 2)."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT))
 
-from lib.telemetry_banner import render_banner  # noqa: E402
+from cos_lib.telemetry_banner import render_banner  # noqa: E402
 
 
 def _write_snapshot(path: Path, generated_at: str, findings: list[dict]) -> None:

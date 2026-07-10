@@ -34,7 +34,7 @@ fi
 RESULT=$(python3 - <<'PYEOF' 2>/dev/null
 import sys, os
 sys.path.insert(0, os.environ.get("CLAUDE_PROJECT_DIR", os.getcwd()))
-from lib.component_registry import detect_all_unregistered, format_registration_report
+from cos_lib.component_registry import detect_all_unregistered, format_registration_report
 report = detect_all_unregistered(os.environ.get("CLAUDE_PROJECT_DIR", os.getcwd()))
 if report.total_unregistered > 0:
     print(format_registration_report(report))

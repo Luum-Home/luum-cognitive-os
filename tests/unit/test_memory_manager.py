@@ -1,5 +1,5 @@
 """
-Unit tests for lib.memory_manager — MemoryManager, MemoryProvider, context fencing.
+Unit tests for cos_lib.memory_manager — MemoryManager, MemoryProvider, context fencing.
 
 Covers:
 - Provider registration (builtin always accepted, single external limit)
@@ -22,7 +22,7 @@ from __future__ import annotations
 import json
 import pytest
 
-from lib.memory_manager import (
+from cos_lib.memory_manager import (
     MemoryManager,
     MemoryProvider,
     sanitize_context,

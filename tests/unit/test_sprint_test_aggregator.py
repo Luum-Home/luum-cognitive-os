@@ -1,4 +1,4 @@
-"""Unit tests for lib.sprint_test_aggregator (ADR-036 Wave 1)."""
+"""Unit tests for cos_lib.sprint_test_aggregator (ADR-036 Wave 1)."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 
 
-from lib.sprint_test_aggregator import (
+from cos_lib.sprint_test_aggregator import (
     aggregate,
     detect_recent_sessions,
     detect_regressions,

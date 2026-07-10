@@ -77,7 +77,7 @@ The helper writes stdout in this form:
 ```python
 def test_cpu_idle_threshold_matches_adr_047():
     """Invariant (ADR-047 §Phase A/B): Phase A and Phase B share the CPU idle threshold."""
-    from lib.session_watchdog_lib import _CPU_IDLE_THRESHOLD_PCT
+    from cos_lib.session_watchdog_lib import _CPU_IDLE_THRESHOLD_PCT
     ADR_047_PHASE_A_CPU_PCT = 5.0
     ADR_047_PHASE_B_CPU_PCT = 5.0
     assert _CPU_IDLE_THRESHOLD_PCT == ADR_047_PHASE_A_CPU_PCT

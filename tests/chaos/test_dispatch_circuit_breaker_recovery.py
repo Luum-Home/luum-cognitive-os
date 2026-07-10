@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.dispatch_gate import ProviderCircuitBreaker
+from cos_lib.dispatch_gate import ProviderCircuitBreaker
 
 
 @pytest.mark.chaos

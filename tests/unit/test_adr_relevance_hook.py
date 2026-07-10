@@ -37,7 +37,7 @@ def _run_hook(
     payload = json.dumps({"prompt": prompt})
     env = os.environ.copy()
     env["COGNITIVE_OS_PROJECT_DIR"] = str(PROJECT_ROOT)
-    # Ensure the hook can import lib.adr_router
+    # Ensure the hook can import cos_lib.adr_router
     env["PYTHONPATH"] = str(PROJECT_ROOT)
     if adrs_dir is not None:
         # Override via env so the Python inline can pick it up
@@ -150,7 +150,7 @@ class TestSyntheticAdrMatch:
         payload = json.dumps({"prompt": "how does rejected-surface rejection work across surfaces"})
         env = os.environ.copy()
         env["COGNITIVE_OS_PROJECT_DIR"] = str(fake_project)
-        env["PYTHONPATH"] = str(PROJECT_ROOT)  # import lib.adr_router from real project
+        env["PYTHONPATH"] = str(PROJECT_ROOT)  # import cos_lib.adr_router from real project
 
         result = subprocess.run(
             ["bash", str(HOOK_PATH)],

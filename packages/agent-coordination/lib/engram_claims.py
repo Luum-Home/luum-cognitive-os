@@ -83,7 +83,7 @@ def _default_search_fn(
 ) -> list[dict[str, Any]]:
     """Structured search via the Engram HTTP API when the daemon is available."""
     try:
-        from lib import engram_http_client
+        from cos_lib import engram_http_client
 
         return engram_http_client.search_observations(query, limit=limit, project=project)[:limit]
     except Exception:

@@ -141,7 +141,7 @@ from pathlib import Path
 
 skill_name, session_id, tool_count, duration_ms, status, repo_root, source_root = sys.argv[1:8]
 sys.path.insert(0, source_root)
-from lib.skill_store import SkillStore
+from cos_lib.skill_store import SkillStore
 
 store = SkillStore(Path(repo_root) / '.cognitive-os' / 'skill_store.db')
 store.record_execution(

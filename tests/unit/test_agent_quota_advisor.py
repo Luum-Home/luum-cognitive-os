@@ -1,7 +1,7 @@
-"""Unit tests for ADR-056 L1 — agent-quota-advisor hook + quota_pressure lib.
+"""Unit tests for ADR-056 L1 — agent-quota-advisor hook + quota_pressure cos_lib.
 
 Covers:
-  * lib.quota_pressure.compute_quota_pressure heuristic math
+  * cos_lib.quota_pressure.compute_quota_pressure heuristic math
   * hooks/agent-quota-advisor.sh threshold behavior and kill-switch
 
 All tests use tmp_path; no real API, no network, no real JSONL in repo touched.
@@ -23,7 +23,7 @@ HOOK = REPO_ROOT / "hooks" / "agent-quota-advisor.sh"
 
 import sys
 sys.path.insert(0, str(REPO_ROOT))
-from lib.quota_pressure import compute_quota_pressure, pressure_band  # noqa: E402
+from cos_lib.quota_pressure import compute_quota_pressure, pressure_band  # noqa: E402
 
 
 # ─── Helpers ────────────────────────────────────────────────────────────────
@@ -79,7 +79,7 @@ def _cost_record(cost_usd: float, offset_sec: float = 0.0) -> dict:
     }
 
 
-# ─── lib.quota_pressure tests ───────────────────────────────────────────────
+# ─── cos_lib.quota_pressure tests ───────────────────────────────────────────────
 
 
 def test_compute_returns_zero_for_empty_dir(tmp_path: Path) -> None:

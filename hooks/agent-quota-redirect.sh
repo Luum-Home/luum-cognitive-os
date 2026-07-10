@@ -8,7 +8,7 @@
 #
 # The hook emits a 2-line structured AGENT_REDIRECT block on stderr and
 # exits 2 (blocking exit code). The parent orchestrator parses the block
-# via lib.agent_redirect_protocol.parse_redirect_message() and re-issues
+# via cos_lib.agent_redirect_protocol.parse_redirect_message() and re-issues
 # the call through the orchestrator CLI.
 #
 # Gating (ALL must be true to block):
@@ -115,7 +115,7 @@ window = int(os.environ.get('COS_RATE_LIMIT_WINDOW_SEC', '300'))
 
 # Preferred path: Agent A's lib/quota_pressure.py
 try:
-    from lib.quota_pressure import compute_quota_pressure  # type: ignore
+    from cos_lib.quota_pressure import compute_quota_pressure  # type: ignore
     pressure = float(compute_quota_pressure())
 except Exception:
     # Stub fallback: pressure based on recent rate-limit density.
@@ -182,7 +182,7 @@ BLOCK_MSG=$(PROMPT_ENV="$PROMPT" REASON_ENV="$REASON" PRESSURE_ENV="$CURRENT_PRE
 import os, sys
 sys.path.insert(0, os.environ['CLAUDE_PROJECT_DIR'] if os.environ.get('CLAUDE_PROJECT_DIR') else os.getcwd())
 try:
-    from lib.agent_redirect_protocol import build_redirect_message
+    from cos_lib.agent_redirect_protocol import build_redirect_message
     sys.stdout.write(build_redirect_message(
         reason=os.environ['REASON_ENV'],
         pressure=float(os.environ['PRESSURE_ENV']),

@@ -21,4 +21,4 @@ Vendor-neutral contract, "harness action receipt", for recording Git/workflow ac
 ADR-190 (decision record), Protected Landing Contract, ADR-116 (multi-session coordination), Harness Driver Parity, Codex Governed Tool Layer, ADR-064, ADR-189.
 
 ## Status / caveats
-Phase 1 baseline implemented; enforcement behavior unchanged (receipts are telemetry only). Remaining hardening: redaction modes for public reports, first-class provider adapters, mirroring `lib.merge_queue` events, post-commit/post-push hook adapters.
+Phase 1 baseline implemented; enforcement behavior unchanged (receipts are telemetry only). Remaining hardening: redaction modes for public reports, first-class provider adapters, mirroring `cos_lib.merge_queue` events, post-commit/post-push hook adapters.

@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from lib.exercised_coverage import classify_primitive, compute_tiers, distribution, scan_primitives
+from cos_lib.exercised_coverage import classify_primitive, compute_tiers, distribution, scan_primitives
 
 
 def test_scan_primitives_includes_extensionless_shebang_scripts(tmp_path: Path) -> None:

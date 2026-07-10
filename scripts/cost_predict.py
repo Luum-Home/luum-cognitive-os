@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SCOPE: both
-"""CLI wrapper for lib.cost_predictor.
+"""CLI wrapper for cos_lib.cost_predictor.
 
 Turns the existing cost prediction engine into a real user-facing tool so
 `/cost-predict` is backed by executable behavior, not just documentation.
@@ -18,7 +18,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from lib.cost_predictor import CostPredictor
+from cos_lib.cost_predictor import CostPredictor
 
 
 def build_parser() -> argparse.ArgumentParser:

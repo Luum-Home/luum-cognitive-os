@@ -14,7 +14,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from lib.project_profile_bootstrap import (  # noqa: E402
+from cos_lib.project_profile_bootstrap import (  # noqa: E402
     build_project_profile_draft,
     promote_project_profile,
     wipe_project_profile,

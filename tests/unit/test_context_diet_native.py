@@ -82,7 +82,7 @@ class TestContextDietNative:
 
         We force a >10K rules output by stubbing the underlying rule selector
         to return a huge comma-separated list. Easiest path: override
-        PYTHONPATH to a sandbox where lib.prompt_builder yields many fake rules.
+        PYTHONPATH to a sandbox where cos_lib.prompt_builder yields many fake rules.
         """
         import tempfile
 

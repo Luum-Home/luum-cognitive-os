@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.adapter_compile import compile_adapter
+from cos_lib.adapter_compile import compile_adapter
 
 
 def _load_json(path: Path) -> dict[str, Any]:

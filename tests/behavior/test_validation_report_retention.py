@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.validation_lanes import can_cleanup_report
+from cos_lib.validation_lanes import can_cleanup_report
 
 pytestmark = pytest.mark.behavior
 

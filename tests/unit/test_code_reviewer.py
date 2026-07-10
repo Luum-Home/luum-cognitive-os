@@ -8,7 +8,7 @@ import textwrap
 
 import pytest
 
-from lib.code_reviewer import (
+from cos_lib.code_reviewer import (
     CodeReviewer,
     ReviewFinding,
     ReviewReport,

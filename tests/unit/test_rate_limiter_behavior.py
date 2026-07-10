@@ -22,7 +22,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.rate_limiter import RateLimitConfig, RateLimiter, RateLimitQueue
+from cos_lib.rate_limiter import RateLimitConfig, RateLimiter, RateLimitQueue
 
 pytestmark = pytest.mark.unit
 

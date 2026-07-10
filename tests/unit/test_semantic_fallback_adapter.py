@@ -11,7 +11,7 @@ from unittest.mock import patch
 
 import pytest
 
-from lib.semantic_skill_matcher import SemanticMatch
+from cos_lib.semantic_skill_matcher import SemanticMatch
 
 
 def _match(skill_name: str, confidence: float) -> SemanticMatch:
@@ -24,13 +24,13 @@ def _match(skill_name: str, confidence: float) -> SemanticMatch:
 
 
 def test_predict_returns_ranked_tuples() -> None:
-    from lib.routing_benchmark import SemanticFallbackAdapter
+    from cos_lib.routing_benchmark import SemanticFallbackAdapter
 
     adapter = SemanticFallbackAdapter(
         "semantic-fallback", "adr-296-runtime-fallback", "fallback"
     )
     candidates = [("add-hook", "Add hook")]
-    with patch("lib.routing_benchmark.SemanticSkillMatcher") as MockMatcher:
+    with patch("cos_lib.routing_benchmark.SemanticSkillMatcher") as MockMatcher:
         instance = MockMatcher.return_value
         instance.match.return_value = [_match("add-hook", 0.72)]
         result = adapter.predict("add a new hook", candidates)
@@ -38,14 +38,14 @@ def test_predict_returns_ranked_tuples() -> None:
 
 
 def test_adapter_reraises_matcher_build_failure() -> None:
-    from lib.routing_benchmark import SemanticFallbackAdapter
+    from cos_lib.routing_benchmark import SemanticFallbackAdapter
 
     adapter = SemanticFallbackAdapter(
         "semantic-fallback", "adr-296-runtime-fallback", "fallback"
     )
     candidates = [("x", "x")]
     with patch(
-        "lib.routing_benchmark.SemanticSkillMatcher",
+        "cos_lib.routing_benchmark.SemanticSkillMatcher",
         side_effect=RuntimeError("boom"),
     ):
         with pytest.raises(RuntimeError, match="failed to build matcher"):
@@ -53,14 +53,14 @@ def test_adapter_reraises_matcher_build_failure() -> None:
 
 
 def test_rebuilds_matcher_when_candidates_change() -> None:
-    from lib.routing_benchmark import SemanticFallbackAdapter
+    from cos_lib.routing_benchmark import SemanticFallbackAdapter
 
     adapter = SemanticFallbackAdapter(
         "semantic-fallback", "adr-296-runtime-fallback", "fallback"
     )
     first_candidates = [("add-hook", "Add hook")]
     second_candidates = [("run-tests", "Run tests")]
-    with patch("lib.routing_benchmark.SemanticSkillMatcher") as MockMatcher:
+    with patch("cos_lib.routing_benchmark.SemanticSkillMatcher") as MockMatcher:
         MockMatcher.side_effect = [
             type(
                 "FirstMatcher",
@@ -79,6 +79,6 @@ def test_rebuilds_matcher_when_candidates_change() -> None:
 
 
 def test_registry_has_semantic_fallback() -> None:
-    from lib.routing_benchmark import _ADAPTER_REGISTRY
+    from cos_lib.routing_benchmark import _ADAPTER_REGISTRY
 
     assert "semantic-fallback" in _ADAPTER_REGISTRY

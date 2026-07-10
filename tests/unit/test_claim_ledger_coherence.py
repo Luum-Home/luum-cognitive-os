@@ -1,4 +1,4 @@
-"""Coherence test: claims written via lib.task_claim_ledger shim must be
+"""Coherence test: claims written via cos_lib.task_claim_ledger shim must be
 readable/listable by scripts.cos_task_claims, proving both APIs write to the
 same canonical store (.cognitive-os/tasks/active-claims.json).
 
@@ -10,7 +10,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.task_claim_ledger import acquire_claim, list_claims, release_claim
+from cos_lib.task_claim_ledger import acquire_claim, list_claims, release_claim
 from scripts.cos_task_claims import (
     claim_task as ctc_claim_task,
     claim_is_stale,

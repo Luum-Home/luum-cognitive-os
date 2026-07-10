@@ -11,7 +11,7 @@ implementation_files:
   - scripts/cos_quality_duplicates.py
   - scripts/cos_init.py
   - hooks/quality-duplicates.sh
-  - lib/duplicate_scanner.py
+  - cos_lib/duplicate_scanner.py
   - manifests/dependencies.yaml
   - docs/04-Concepts/architecture/language-agnostic-duplication-tooling-audit-2026-06-05.md
 tier: consumer

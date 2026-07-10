@@ -6,7 +6,7 @@ from pathlib import Path
 
 import yaml
 
-from lib.cosd_auth_guard import inspect_command
+from cos_lib.cosd_auth_guard import inspect_command
 
 ROOT = Path(__file__).resolve().parents[2]
 

@@ -5,7 +5,7 @@ import time
 from unittest.mock import MagicMock, patch
 import pytest
 
-from lib.smart_infra import (
+from cos_lib.smart_infra import (
     SmartInfra,
     SKILL_SERVICE_MAP,
     SERVICE_COMPOSE_MAP,
@@ -425,7 +425,7 @@ class TestRequiresServiceDecorator:
     """Tests for the @requires_service decorator."""
 
     def test_calls_ensure_service(self):
-        with patch("lib.smart_infra.ensure_service") as mock_ensure:
+        with patch("cos_lib.smart_infra.ensure_service") as mock_ensure:
 
             @requires_service("valkey")
             def my_func():
@@ -436,7 +436,7 @@ class TestRequiresServiceDecorator:
             mock_ensure.assert_called_once_with("valkey")
 
     def test_function_runs_on_ensure_failure(self):
-        with patch("lib.smart_infra.ensure_service", side_effect=Exception("boom")):
+        with patch("cos_lib.smart_infra.ensure_service", side_effect=Exception("boom")):
 
             @requires_service("valkey")
             def my_func():
@@ -446,7 +446,7 @@ class TestRequiresServiceDecorator:
             assert result == "still ok"
 
     def test_multiple_services(self):
-        with patch("lib.smart_infra.ensure_service") as mock_ensure:
+        with patch("cos_lib.smart_infra.ensure_service") as mock_ensure:
 
             @requires_service("valkey", "litellm")
             def my_func():

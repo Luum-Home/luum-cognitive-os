@@ -81,7 +81,7 @@ fi
 RESULT=$(timeout 30 python3 -c "
 import json, sys
 sys.path.insert(0, '$(dirname "$LIB_DIR")')
-from lib.adr_detector import analyze_commit, generate_adr_draft, log_detection
+from cos_lib.adr_detector import analyze_commit, generate_adr_draft, log_detection
 
 result = analyze_commit('$COMMIT_HASH', '$PROJECT_DIR')
 adr_path = None

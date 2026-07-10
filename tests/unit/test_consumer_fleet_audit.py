@@ -5,8 +5,8 @@ from pathlib import Path
 
 import yaml
 
-from lib.consumer_fleet_audit import build_report
-from lib.cross_instance_learning import write_registry_locks
+from cos_lib.consumer_fleet_audit import build_report
+from cos_lib.cross_instance_learning import write_registry_locks
 
 
 def _write_minimal_source(source: Path) -> None:

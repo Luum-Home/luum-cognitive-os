@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.product_answer import ProductAnswerError, refresh_answer_cards  # noqa: E402
+from cos_lib.product_answer import ProductAnswerError, refresh_answer_cards  # noqa: E402
 
 
 def main() -> int:

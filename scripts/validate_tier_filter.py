@@ -30,7 +30,7 @@ from typing import Any, Optional
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(_PROJECT_ROOT))
 
-from lib.ref_key_loader import expand, find_ref_keys  # noqa: E402
+from cos_lib.ref_key_loader import expand, find_ref_keys  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # Constants

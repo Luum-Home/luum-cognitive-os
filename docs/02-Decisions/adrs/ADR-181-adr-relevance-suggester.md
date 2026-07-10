@@ -13,7 +13,7 @@ cross_references:
   - ADR-179  # rule routing pattern; AdrRouter is analogous
   - rules/RULES-COMPACT.md  # existing manual [ref-key] ADR reference system being augmented
 implementation_files:
-  - lib/adr_router.py
+  - cos_lib/adr_router.py
   - hooks/adr-relevance-suggest.sh
   - manifests/adr-routing-coverage.yaml
   - tests/unit/test_adr_router.py
@@ -130,7 +130,7 @@ After this ADR:
 
 1. Normal operation: the hook fires automatically — no action needed.
 2. When writing a new ADR: add `tags:` to the frontmatter. This is the highest-leverage improvement to suggestion quality (weight ×3 in scoring).
-3. To calibrate: `python3 -c "from lib.adr_router import AdrRouter; print(AdrRouter().coverage_stats())"` shows current tag coverage.
+3. To calibrate: `python3 -c "from cos_lib.adr_router import AdrRouter; print(AdrRouter().coverage_stats())"` shows current tag coverage.
 4. To disable: set `DISABLE_HOOK_ADR_RELEVANCE_SUGGEST=1`.
 
 The hook is async — it adds zero latency to the user prompt round-trip.
@@ -154,7 +154,7 @@ The hook is async — it adds zero latency to the user prompt round-trip.
 ```bash
 # Router smoke test
 python3 -c "
-from lib.adr_router import AdrRouter
+from cos_lib.adr_router import AdrRouter
 r = AdrRouter()
 print(r.top_matches('research first protocol for high risk changes', n=3, min_confidence=0.0)[:2])
 "
@@ -164,7 +164,7 @@ python3 -m pytest tests/unit/test_adr_router.py tests/unit/test_adr_relevance_ho
 
 # Coverage baseline
 python3 -c "
-from lib.adr_router import AdrRouter
+from cos_lib.adr_router import AdrRouter
 print(AdrRouter().coverage_stats())
 "
 

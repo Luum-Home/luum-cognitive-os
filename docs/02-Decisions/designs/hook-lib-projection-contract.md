@@ -22,8 +22,8 @@ the regression test (§4), the apply DAG (§5), and acceptance/migration/rollbac
 
 **Load-bearing correction to the proposal's sketch.** The proposal wrote
 `PYTHONPATH=.cognitive-os/lib`. That is **wrong** for the imports in question. Every broken
-hook does `from lib.<mod> import …` / `import lib.<mod>` — i.e. it imports the **package**
-`lib`. Python resolves `lib.<mod>` by finding a directory named `lib/` (with `__init__.py`)
+hook does `from cos_lib.<mod> import …` / `import cos_lib.<mod>` — i.e. it imports the **package**
+`lib`. Python resolves `cos_lib.<mod>` by finding a directory named `lib/` (with `__init__.py`)
 on a `sys.path` entry, so the path entry must be the **parent** of that directory. The
 installer already ships the closure into `.cognitive-os/lib/<mod>.py` with an
 `.cognitive-os/lib/__init__.py`, so the package root is `.cognitive-os/lib` and the correct
@@ -35,7 +35,7 @@ PYTHONPATH="$PROJECT_DIR/.cognitive-os"      # NOT .cognitive-os/lib
 
 This is corroborated by the one lib-consumer that already works in a projected install —
 `scripts/cos_quality_duplicates.py:12` does `sys.path.insert(0, dirname(dirname(__file__)))`
-(= `.cognitive-os/`) before `from lib.duplicate_scanner import …` (`:13`). The bootstrap must
+(= `.cognitive-os/`) before `from cos_lib.duplicate_scanner import …` (`:13`). The bootstrap must
 export the parent, not the package dir.
 
 ---
@@ -123,7 +123,7 @@ they gain lib-importing hooks (currently none wired).
 ### 2.1 Structure facts
 
 - `lib/` is a **flat** package: 369 `*.py`, `lib/__init__.py` present, no sub-packages
-  (only `__pycache__`). Package name is `lib`; import form is always `lib.<flat_module>`.
+  (only `__pycache__`). Package name is `lib`; import form is always `cos_lib.<flat_module>`.
 - `lib/` contains **73 symlinks** into `packages/*` (e.g.
   `lib/cost_predictor.py -> ../packages/scope-governance/lib/cost_predictor.py`). `shutil.copy2`
   **dereferences** symlinks, so a projected copy is a real file — but the closure must follow
@@ -137,20 +137,20 @@ New module `scripts/lib_closure.py` (helper, unguarded), invoked from the hook-i
    `hooks/*.sh` that passes `scope_allows`; for `--default`, exactly the `default_hooks`
    list. (Same iteration already present at `cos_init.py:1822-1850`.) This scopes the closure
    to the profile's real hook set — the whole point of option (b) vs (a).
-2. **Extract embedded Python from each seed hook** and pull `lib.<mod>` references from all
+2. **Extract embedded Python from each seed hook** and pull `cos_lib.<mod>` references from all
    three embedding forms:
    - heredocs (`python3 - <<'PYEOF' … PYEOF`, `python3 -c '…'`),
    - inline `-c` strings,
-   - `python3 -m lib.<mod>`.
+   - `python3 -m cos_lib.<mod>`.
    Regex-seed exactly as the validated probe does
    (`…/scratchpad/hook-lib-probe.py::lib_modules`,
    `r"(?:from lib\.|import lib\.|-m lib\.|python3 -m lib\.)([A-Za-z0-9_]+)"`), then **upgrade
    to AST** for the heredoc bodies: `ast.parse` each heredoc, walk `Import`/`ImportFrom`
    nodes, collect names whose root is `lib`. AST removes false positives from comments/strings
    that regex alone would include.
-3. **Transitive resolution over `lib/` itself.** Maintain a worklist of `lib.<mod>` names.
+3. **Transitive resolution over `lib/` itself.** Maintain a worklist of `cos_lib.<mod>` names.
    For each, resolve the on-disk file `lib/<mod>.py` **through its symlink** (`Path.resolve()`);
-   `ast.parse` the **real target**; add any `lib.<other>` it imports to the worklist. Repeat to
+   `ast.parse` the **real target**; add any `cos_lib.<other>` it imports to the worklist. Repeat to
    fixpoint. (confidentiality_scanner is a clean example: it imports only stdlib —
    `lib/confidentiality_scanner.py:19-22` — so its closure is `{confidentiality_scanner}`.)
 4. **Project the closure**, preserving the flat package layout:
@@ -168,8 +168,8 @@ New module `scripts/lib_closure.py` (helper, unguarded), invoked from the hook-i
 ### 2.3 Staying correct as hooks change
 
 Closure is recomputed on **every** `cos init` (installer-time, not cached), so adding a
-`lib.*` import to any hook re-projects its closure on the next install. The regression test
-(§4) is the enforcement: it fails in CI if a projected hook imports a `lib.*` module the
+`cos_lib.*` import to any hook re-projects its closure on the next install. The regression test
+(§4) is the enforcement: it fails in CI if a projected hook imports a `cos_lib.*` module the
 closure did not ship. **Static-closure blind spot** (dynamic `importlib` / string-built
 module names) is real; it is covered by the fail-open backstop (§3) degrading a miss to a
 silent no-op, never a false block — see §7 risk.
@@ -201,7 +201,7 @@ meanings). Fix by giving the scanner an unambiguous contract and the shell a tri
    never 1:
    ```python
    try:
-       from lib.confidentiality_scanner import scan_file, load_protected_terms, is_scannable_path
+       from cos_lib.confidentiality_scanner import scan_file, load_protected_terms, is_scannable_path
    except Exception as e:
        import sys; print(f"SCANNER_INFRA_ERROR: {e}", file=sys.stderr); sys.exit(3)
    ```
@@ -255,10 +255,10 @@ validated against the real breakage).
    a second case `--default <tmp2>`) into a temp consumer whose cwd is **not** the repo root
    (foreign-cwd, to defeat the in-repo `lib/` shadow).
 2. **Closure presence.** For every projected lib-importing hook under
-   `<tmp>/.cognitive-os/hooks/cos/`, extract its `lib.<mod>` set (same extractor as §2.2) and
+   `<tmp>/.cognitive-os/hooks/cos/`, extract its `cos_lib.<mod>` set (same extractor as §2.2) and
    assert each `<tmp>/.cognitive-os/lib/<mod>.py` exists (transitive closure shipped).
 3. **Import-resolution probe (no false ModuleNotFound).** With `cwd=<tmp>` and the bootstrap
-   sourced (`PYTHONPATH=<tmp>/.cognitive-os`), run `python3 -c "import lib.<mod>"` for each
+   sourced (`PYTHONPATH=<tmp>/.cognitive-os`), run `python3 -c "import cos_lib.<mod>"` for each
    imported module; assert **zero** `ModuleNotFoundError`. (Mirrors the seed probe's scenario
    (ii), which today reports 55/55 fail in `--full`, 16/16 in `--default`.)
 4. **No false `exit 2` (Tier-1 + Tier-2 real run).** Execute each projected lib-importing
@@ -321,7 +321,7 @@ batches: **Batch A** {T1,T2} (closure lands, verify §6.1/§6.5), **Batch B (gua
    `python3 scripts/cos_init.py --full /tmp/cos_c && test -f /tmp/cos_c/.cognitive-os/lib/confidentiality_scanner.py` → exit 0.
 2. **Bootstrap present + exports the CORRECT path.**
    `test -f /tmp/cos_c/.cognitive-os/hooks/cos/_lib/hook-python-env.sh` → 0, and
-   `cd /tmp/cos_c && source .cognitive-os/hooks/cos/_lib/hook-python-env.sh && python3 -c "import lib.confidentiality_scanner"` → 0
+   `cd /tmp/cos_c && source .cognitive-os/hooks/cos/_lib/hook-python-env.sh && python3 -c "import cos_lib.confidentiality_scanner"` → 0
    (confirms `PYTHONPATH=$PROJECT_DIR/.cognitive-os`, §0 correction).
 3. **No false block (Tier-1).** Projected `confidentiality-enforcer.sh` in the sandbox
    (`cwd`/`CLAUDE_PROJECT_DIR` = `/tmp/cos_c`, benign 2-line write on stdin) → **exit 0**.

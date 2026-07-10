@@ -126,7 +126,7 @@ M  skills/CATALOG.md                   (122 new lines — uncommitted skill cata
 
 | Audit | Action Needed | Priority |
 |---|---|---|
-| dead-weight-audit.md | Fix lib/component_usage_tracker.py to add 4 search patterns (cross-lib imports, packages/*/lib/, `from lib import X`, `from X import`); add EXCLUDED_RULES scan to scan_rule_references() | MEDIUM |
+| dead-weight-audit.md | Fix lib/component_usage_tracker.py to add 4 search patterns (cross-lib imports, packages/*/lib/, `from cos_lib import X`, `from X import`); add EXCLUDED_RULES scan to scan_rule_references() | MEDIUM |
 | docs-to-skills-audit.md | Convert 9 SKILL-CANDIDATE docs to atomic skills (/cos-setup, /cos-install, /cos-quickstart, /switch-security-profile, /cos-docker-setup, /run-benchmark, /configure-quality-gates, /dogfood-check, /test-agent-teams) | MEDIUM |
 | skill-atomicity-audit.md | WS4 Phases 2-4 (21 remaining splits) | LOW-MEDIUM |
 

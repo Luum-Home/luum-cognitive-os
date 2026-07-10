@@ -1,7 +1,7 @@
 """Tests for lib/token_budget_monitor.py — Token Budget Monitor.
 
-Imports via lib.token_budget_monitor (canonical).  The old module name
-lib.rate_limit_protection remains as a deprecation shim.
+Imports via cos_lib.token_budget_monitor (canonical).  The old module name
+cos_lib.rate_limit_protection remains as a deprecation shim.
 
 Author: luum
 """
@@ -16,7 +16,7 @@ from unittest.mock import patch
 
 import pytest
 
-from lib.token_budget_monitor import RateLimitProtection, RateLimitStatus
+from cos_lib.token_budget_monitor import RateLimitProtection, RateLimitStatus
 
 pytestmark = [pytest.mark.xdist_group("perf_budget"), pytest.mark.benchmark]
 

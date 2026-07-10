@@ -31,7 +31,7 @@ from typing import Optional
 _REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(_REPO_ROOT))
 
-from lib.paths import runtime_project_root_or_cwd
+from cos_lib.paths import runtime_project_root_or_cwd
 
 
 # ---------------------------------------------------------------------------

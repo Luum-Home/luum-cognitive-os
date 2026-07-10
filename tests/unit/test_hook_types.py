@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import pytest
 
-from lib.hook_types import (
+from cos_lib.hook_types import (
     HttpHookDefinition,
     PromptHookDefinition,
     ShellHookDefinition,

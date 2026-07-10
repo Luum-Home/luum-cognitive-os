@@ -37,8 +37,8 @@ if str(REPO_ROOT) not in sys.path:
 
 import yaml
 
-from lib.evolve_skill_review import EvolveSkillReview
-from lib.evolve_task_queue import EvolveTaskQueue
+from cos_lib.evolve_skill_review import EvolveSkillReview
+from cos_lib.evolve_task_queue import EvolveTaskQueue
 
 logging.basicConfig(
     level=logging.INFO,

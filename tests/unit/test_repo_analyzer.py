@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.repo_analyzer import RepoAnalyzer, RepoAnalysis
+from cos_lib.repo_analyzer import RepoAnalyzer, RepoAnalysis
 
 pytestmark = pytest.mark.unit
 
@@ -495,7 +495,7 @@ class TestLanguageCounting:
     def test_counts_lines_per_language(self, analyzer, make_repo):
         repo = make_repo({
             "main.py": "line1\nline2\nline3\n",
-            "lib.go": "package main\nfunc main() {}\n",
+            "cos_lib.go": "package main\nfunc main() {}\n",
             "app.ts": "const x = 1;\n",
         })
         counts = analyzer._count_languages(repo)

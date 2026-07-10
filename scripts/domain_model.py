@@ -21,7 +21,7 @@ _HERE = Path(__file__).resolve().parent.parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 
-from lib.domain_model import DomainModelScaffolder  # noqa: E402
+from cos_lib.domain_model import DomainModelScaffolder  # noqa: E402
 
 
 def main() -> int:

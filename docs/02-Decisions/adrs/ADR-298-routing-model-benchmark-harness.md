@@ -11,7 +11,7 @@ extends:
   - ADR-296
   - ADR-297
 implementation_files:
-  - lib/routing_benchmark.py
+  - cos_lib/routing_benchmark.py
   - manifests/routing-benchmark-models.yaml
   - manifests/routing-benchmark-corpus.yaml
   - scripts/cos-routing-benchmark

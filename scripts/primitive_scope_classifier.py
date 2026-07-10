@@ -26,11 +26,11 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.portability_proof_paths import paired_candidates, suggested_test_path
-from lib.primitive_file_inventory import primitive_files
-from lib.primitive_parser import parse_primitive_file
-from lib.project_paths import relpath
-from lib.primitive_readiness_common import load_lifecycle
+from cos_lib.portability_proof_paths import paired_candidates, suggested_test_path
+from cos_lib.primitive_file_inventory import primitive_files
+from cos_lib.primitive_parser import parse_primitive_file
+from cos_lib.project_paths import relpath
+from cos_lib.primitive_readiness_common import load_lifecycle
 
 VALID_SCOPES = {"os-only", "project", "both"}
 SOURCE_ROOTS = ("hooks", "skills", "rules", "scripts", "templates", "packages")

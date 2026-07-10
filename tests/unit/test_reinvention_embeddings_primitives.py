@@ -21,7 +21,7 @@ import pytest
 # Ensure project root is on path regardless of how pytest is invoked.
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-from lib.reinvention_embeddings import (
+from cos_lib.reinvention_embeddings import (
     EMBED_DIM,
     DEFAULT_COSINE_THRESHOLD,
     IMPL_TYPE,

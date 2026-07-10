@@ -6,7 +6,7 @@ Public surface:
     - HarnessName (enum)
     - HarnessAdapter (ABC)
 
-Default dispatch entry point: ``lib.harness_adapter.dispatch.handle_event``.
+Default dispatch entry point: ``cos_lib.harness_adapter.dispatch.handle_event``.
 """
 
 from .base import (

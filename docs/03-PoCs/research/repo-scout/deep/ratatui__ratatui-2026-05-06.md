@@ -49,8 +49,8 @@ A Rust crate for cooking up terminal user interfaces (TUIs) 👨‍🍳🐀 http
 Files cited (read directly via `gh api .../contents/<path>`):
 
 - ARCHITECTURE.md:13–54 — Crate organization: ratatui (apps), ratatui-core (widget authors), ratatui-widgets, ratatui-{crossterm,termion,termwiz} backends
-- ratatui-core/src/lib.rs:1 — `#![no_std]` (embedded-target compatible)
-- ratatui-core/src/lib.rs:8–18 — split from main crate for API stability (widget libraries depend on -core)
+- ratatui-core/src/cos_lib.rs:1 — `#![no_std]` (embedded-target compatible)
+- ratatui-core/src/cos_lib.rs:8–18 — split from main crate for API stability (widget libraries depend on -core)
 
 **What still missing for an adoption ADR**: COS-fit matrix vs ADR-172 surfaces (lifecycle / doctrine / audit / hook / agent rendering); reversibility plan; integration boundary (read-only vs read-write into COS artifacts); 30/60/90-day falsifiable success criteria. These belong in a separate `ADR-XXX-surface-5-adopt-ratatui.md` per ADR-187 §Decision.
 

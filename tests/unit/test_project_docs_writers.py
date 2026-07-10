@@ -2,13 +2,13 @@
 """Behavior tests for ADR-054/055 docs writers.
 
 Covers:
-    - lib.docs_writer primitives (slugify, resolve_category_dir, write_doc)
+    - cos_lib.docs_writer primitives (slugify, resolve_category_dir, write_doc)
     - scripts/security_audit_writer.py (CLI, via subprocess)
     - scripts/rules_export.py (CLI, via subprocess)
     - hooks/project-docs-convention.sh (soft-warn + strict modes)
 
 Real filesystem (tmp_path). No mocks. UV runs the subprocesses so
-package imports (`lib.docs_writer`) resolve the same way agents do.
+package imports (`cos_lib.docs_writer`) resolve the same way agents do.
 """
 
 from __future__ import annotations
@@ -22,7 +22,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.docs_writer import (
+from cos_lib.docs_writer import (
     CATEGORY_DIR_NAMES,
     resolve_category_dir,
     slugify,
@@ -33,12 +33,12 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 
 
 # ---------------------------------------------------------------------------
-# 1. lib.docs_writer primitives
+# 1. cos_lib.docs_writer primitives
 # ---------------------------------------------------------------------------
 
 
 def test_category_names_match_scaffolder_contract():
-    from lib.project_scaffolder import CATEGORIES
+    from cos_lib.project_scaffolder import CATEGORIES
 
     scaffolder_names = tuple(name for name, _, _ in CATEGORIES)
     assert CATEGORY_DIR_NAMES == scaffolder_names, (
@@ -375,7 +375,7 @@ def test_hook_json_output_shape(tmp_path):
 
 def test_scaffold_then_write_audit_composes(tmp_path):
     """Full chain: scaffold a project, then write an audit report into it."""
-    from lib.project_scaffolder import ProjectScaffolder
+    from cos_lib.project_scaffolder import ProjectScaffolder
 
     proj = tmp_path / "composed"
     ProjectScaffolder(project_name="Composed", project_dir=proj).scaffold_all()

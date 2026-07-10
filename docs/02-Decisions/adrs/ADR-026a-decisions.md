@@ -65,7 +65,7 @@ A maintainer who values "one way to do it" over perf cold-start may prefer Optio
 > **D2.2** — If yes: should the env-var precedence divergence (row 2) be reconciled in the same PR (site 3 gains `COGNITIVE_OS_PROJECT_DIR` support)? `yes / no`
 
 ### Evidence
-- Site 1 reads `project_root()` from `lib.paths` (see `lib/dispatch_helper.py:49`), which honors both env vars (assumption: `lib.paths.project_root()` is the canonical resolver — R1 work).
+- Site 1 reads `project_root()` from `cos_lib.paths` (see `lib/dispatch_helper.py:49`), which honors both env vars (assumption: `cos_lib.paths.project_root()` is the canonical resolver — R1 work).
 - Site 2 reads via `project_root()` (see `lib/agent_health_monitor.py:98`) — same path.
 - Site 3 reads only `CLAUDE_PROJECT_DIR` directly at module import (see `hooks/_lib/dispatch_gate_check.py:22`: `PROJECT_DIR = os.environ.get("CLAUDE_PROJECT_DIR", ".")`). No `COGNITIVE_OS_PROJECT_DIR` fallback.
 - Parent ADR line 64 explicitly classifies this as *"likely a miss, not a choice"*.
@@ -152,7 +152,7 @@ If the team has a pending `cognitive-os validate` CLI on its roadmap for the nex
 - `lib/safe_engram.py` and `lib/engram_client.py` have **zero-overlap caller sets**:
   - safe_engram callers: `mcp-server/cos_mcp.py:204`, `lib/anchored_summarizer.py:274` (string reference only), test files only.
   - engram_client callers: `lib/memory.py:19`, hooks only (parent ADR line 137-148).
-  - Reproduced via `grep -rn "from lib.safe_engram\|from lib.engram_client"` — no production file imports both (see spot-check below).
+  - Reproduced via `grep -rn "from cos_lib.safe_engram\|from cos_lib.engram_client"` — no production file imports both (see spot-check below).
 - Contract diff in parent ADR lines 152–162 shows 5 of 7 dimensions are NON-equivalent (CLI shape, return type, error surface, scanning, auth override). Merging would force one side to lie to its consumers.
 - Characterization: 79 tests (`test_safe_engram_contract.py` = 33, `test_engram_client.py` = 46) lock the current two-contract behavior.
 - The cos_mcp consumer at `mcp-server/cos_mcp.py:213-219` genuinely depends on the three-way branch (`blocked`, `returncode==127`, `returncode!=0 and !=127`) that only `safe_save`'s `SafeEngramResult` exposes.
@@ -235,17 +235,17 @@ A process-minded auditor may prefer to keep the row with an explicit `Status: RE
 ## Spot-checks of parent ADR claims
 
 ### Claim 1 — "Zero overlapping callers"
-**Command run:** `grep -rn "from lib.safe_engram\|from lib.engram_client" --include="*.py"`
+**Command run:** `grep -rn "from cos_lib.safe_engram\|from cos_lib.engram_client" --include="*.py"`
 
 **Result:**
 ```
-mcp-server/cos_mcp.py:204:        from lib.safe_engram import safe_save, SafeEngramResult
-tests/unit/test_safe_engram.py:24:from lib.safe_engram import ...
-tests/unit/test_engram_client.py:27:from lib import engram_client
-tests/unit/test_safe_engram_contract.py:42:from lib.safe_engram import ...
-lib/memory.py:19:    from lib.engram_client import search_observations, get_observation, save_observation
+mcp-server/cos_mcp.py:204:        from cos_lib.safe_engram import safe_save, SafeEngramResult
+tests/unit/test_safe_engram.py:24:from cos_lib.safe_engram import ...
+tests/unit/test_engram_client.py:27:from cos_lib import engram_client
+tests/unit/test_safe_engram_contract.py:42:from cos_lib.safe_engram import ...
+lib/memory.py:19:    from cos_lib.engram_client import search_observations, get_observation, save_observation
 lib/safe_engram.py:10,22,82:  (self-references in docstrings)
-lib/anchored_summarizer.py:274:   "from lib.safe_engram import safe_mem_save; ..."  (string literal in prompt)
+lib/anchored_summarizer.py:274:   "from cos_lib.safe_engram import safe_mem_save; ..."  (string literal in prompt)
 ```
 
 **Verdict: CONFIRMED.** No production file imports both. `lib/memory.py` docstring mentions `safe_engram` at line 11 but only imports `engram_client` at line 19. `lib/anchored_summarizer.py:274` is a string literal embedded in a prompt template — not a real import. Parent ADR line 149 is accurate.

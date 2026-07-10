@@ -99,7 +99,7 @@ cmd_claim() {
   run_python "
 import sys, json
 sys.path.insert(0, '${REPO_ROOT}')
-import lib.engram_claims as engram_claims
+import cos_lib.engram_claims as engram_claims
 
 files = [f.strip() for f in '${files}'.split(',') if f.strip()] or None
 fp = '${fingerprint}' or None
@@ -124,7 +124,7 @@ cmd_find() {
   run_python "
 import sys, json
 sys.path.insert(0, '${REPO_ROOT}')
-import lib.engram_claims as engram_claims
+import cos_lib.engram_claims as engram_claims
 
 record = engram_claims.find_claim('${task_id}')
 if record is None:
@@ -145,7 +145,7 @@ cmd_complete() {
   run_python "
 import sys, json
 sys.path.insert(0, '${REPO_ROOT}')
-import lib.engram_claims as engram_claims
+import cos_lib.engram_claims as engram_claims
 
 evidence_raw = '''${evidence}'''
 try:
@@ -169,7 +169,7 @@ cmd_release() {
   run_python "
 import sys
 sys.path.insert(0, '${REPO_ROOT}')
-import lib.engram_claims as engram_claims
+import cos_lib.engram_claims as engram_claims
 
 engram_claims.release_claim('${task_id}', '${session_id}')
 print('released')

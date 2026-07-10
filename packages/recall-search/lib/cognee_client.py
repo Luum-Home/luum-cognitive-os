@@ -6,7 +6,7 @@ Provides a client for Cognee's REST API to complement Engram's FTS5 search
 with relationship-aware semantic retrieval via knowledge graphs.
 
 Usage:
-    from lib.cognee_client import CogneeClient, is_cognee_available
+    from cos_lib.cognee_client import CogneeClient, is_cognee_available
 
     if is_cognee_available():
         client = CogneeClient()

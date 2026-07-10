@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.script_io import read_text as _read
+from cos_lib.script_io import read_text as _read
 
 HIGH_STAKES = re.compile(
     r"\b(archiv(?:e|ed|ado|ar)|deleted?|removed?|wired|integrated|registered|done|closed|migrated)\b",

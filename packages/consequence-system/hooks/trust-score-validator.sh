@@ -48,7 +48,7 @@ import json
 import os
 import sys
 
-from lib.trust_report_parser import TrustReportParseError, TrustReportParser
+from cos_lib.trust_report_parser import TrustReportParseError, TrustReportParser
 
 text = os.environ.get("AGENT_OUTPUT", "")
 has_structured_marker = "TRUST_REPORT:" in text.upper()

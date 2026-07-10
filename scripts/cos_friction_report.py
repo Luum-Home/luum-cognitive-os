@@ -10,7 +10,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from lib.friction_telemetry import load_jsonl, summarize
+from cos_lib.friction_telemetry import load_jsonl, summarize
 
 
 def render_text(report: dict) -> str:

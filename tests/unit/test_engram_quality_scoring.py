@@ -6,8 +6,8 @@ from pathlib import Path
 
 import pytest
 
-from lib.engram_fts5_search import search_bm25
-from lib.engram_wave3_schema import (
+from cos_lib.engram_fts5_search import search_bm25
+from cos_lib.engram_wave3_schema import (
     Claim,
     DEFAULT_QUALITY_WEIGHTS,
     compute_quality_score,

@@ -159,7 +159,7 @@ TASK_DESC_ESCAPED=$(echo "$TASK_DESCRIPTION" | head -c 200 | tr '\n' ' ' | sed '
 ROUTING_PATTERNS_YAML=""
 if command -v python3 &>/dev/null; then
   ROUTING_PATTERNS_YAML=$(
-    python3 -m lib.routing_pattern_deriver \
+    python3 -m cos_lib.routing_pattern_deriver \
       --skill-name "$SKILL_SLUG" \
       --description "$TASK_DESC_ESCAPED" \
       --format yaml 2>/dev/null

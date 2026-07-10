@@ -4,7 +4,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from lib.dependency_maintenance import build_maintenance_report, format_human
+from cos_lib.dependency_maintenance import build_maintenance_report, format_human
 
 
 def _coverage(path: Path) -> Path:

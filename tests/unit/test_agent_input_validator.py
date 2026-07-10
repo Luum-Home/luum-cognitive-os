@@ -15,7 +15,7 @@ Coverage targets:
 """
 
 
-from lib.agent_input_validator import (
+from cos_lib.agent_input_validator import (
     format_escalation,
     parse_schema,
     validate_input,

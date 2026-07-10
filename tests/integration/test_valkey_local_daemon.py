@@ -244,7 +244,7 @@ class TestAgentBusIntegration:
         sys.path.insert(0, str(REPO_ROOT))
         try:
             import importlib
-            import lib.agent_bus as ab
+            import cos_lib.agent_bus as ab
             importlib.reload(ab)
 
             # Point primary URL directly at the daemon's port
@@ -261,7 +261,7 @@ class TestAgentBusIntegration:
         sys.path.insert(0, str(REPO_ROOT))
         try:
             import importlib
-            import lib.agent_bus as ab
+            import cos_lib.agent_bus as ab
             importlib.reload(ab)
             # Use a port that should definitely not be listening
             dead_url = "redis://localhost:19379"

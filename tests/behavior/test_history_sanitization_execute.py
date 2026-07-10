@@ -21,7 +21,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.history_sanitization import SanitizationError, execute
+from cos_lib.history_sanitization import SanitizationError, execute
 
 
 pytestmark = pytest.mark.skipif(

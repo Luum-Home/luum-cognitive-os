@@ -2,14 +2,14 @@
 to an actual module on disk OR a known third-party package.
 
 ROOT CAUSE: scripts/decision_triage.py._engram_search() originally used
-    `python3 -c "from lib.engram import search; ..."`
+    `python3 -c "from cos_lib.engram import search; ..."`
 but lib/engram.py does not exist (correct module is lib/engram_client.py).
 This silently failed: subprocess returned non-zero, engram_available was set to False,
 and ALL decisions stayed PENDING indefinitely — causing 33 false-critical alerts.
 
-This test would have caught the bug at the moment `from lib.engram import search`
+This test would have caught the bug at the moment `from cos_lib.engram import search`
 was committed. It parses every .py file in scripts/ and lib/ with ast, extracts
-all import statements, and verifies that local module references (lib.X, scripts.X)
+all import statements, and verifies that local module references (cos_lib.X, scripts.X)
 resolve to an actual file on disk.
 
 FIX (2026-04-27): _engram_search() now uses `engram` CLI subprocess instead. This
@@ -123,18 +123,18 @@ def _resolve_local_module(mod: str) -> bool:
 
 @pytest.mark.audit
 def test_no_undefined_local_imports() -> None:
-    """Anti-pattern: `from lib.engram import search` where lib/engram.py doesn't exist.
+    """Anti-pattern: `from cos_lib.engram import search` where lib/engram.py doesn't exist.
 
     This test parses all .py files in scripts/ and lib/ and verifies that every
-    `import lib.X` or `from lib.X import Y` resolves to an actual file on disk.
+    `import cos_lib.X` or `from cos_lib.X import Y` resolves to an actual file on disk.
 
     Pass criteria:
-    - Every local module reference (lib.*, scripts.*, tests.*) resolves to a file
+    - Every local module reference (cos_lib.*, scripts.*, tests.*) resolves to a file
     - Third-party and stdlib modules are exempted via allowlists
 
     Failure example (the original bug):
-        from lib.engram import search   # lib/engram.py doesn't exist!
-        # Should be: from lib.engram_client import search  (or use engram CLI)
+        from cos_lib.engram import search   # lib/engram.py doesn't exist!
+        # Should be: from cos_lib.engram_client import search  (or use engram CLI)
     """
     violations: list[tuple[str, int, str, str]] = []  # (file, line, module, expected_path)
 
@@ -187,7 +187,7 @@ def test_no_undefined_local_imports() -> None:
     assert not violations, (
         f"Found {len(violations)} import statement(s) referencing local modules that "
         f"do not exist on disk. This is the same anti-pattern as "
-        f"`from lib.engram import search` (lib/engram.py doesn't exist — caused "
+        f"`from cos_lib.engram import search` (lib/engram.py doesn't exist — caused "
         f"silent engram_available=False and 33 fake-critical decisions in /decision-triage). "
         f"Fix: verify the module path or use the CLI/subprocess interface instead. "
         f"Violations (file, line, module, expected_path) — first 10: {violations[:10]}"
@@ -205,7 +205,7 @@ def test_undefined_import_detection_works() -> None:
     import tempfile  # noqa: PLC0415
 
     # Create a temp .py file with a bad import
-    bad_source = "from lib.nonexistent_ghost_module_xyz import something\n"
+    bad_source = "from cos_lib.nonexistent_ghost_module_xyz import something\n"
 
     with tempfile.NamedTemporaryFile(suffix=".py", delete=True, mode="w") as tmp:
         tmp.write(bad_source)
@@ -226,6 +226,6 @@ def test_undefined_import_detection_works() -> None:
 
         assert found_violation, (
             "The test_no_undefined_local_imports detection logic failed to catch "
-            "`from lib.nonexistent_ghost_module_xyz import something`. "
+            "`from cos_lib.nonexistent_ghost_module_xyz import something`. "
             "The anti-pattern test is broken and must be fixed."
         )

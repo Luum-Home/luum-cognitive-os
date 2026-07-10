@@ -3,7 +3,7 @@
 import json
 import os
 
-from lib.agent_output_extractor import (
+from cos_lib.agent_output_extractor import (
     extract_assistant_text,
     extract_last_response,
     extract_tool_results,

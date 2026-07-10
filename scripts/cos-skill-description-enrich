@@ -20,4 +20,4 @@ else
 fi
 
 cd "$REPO_ROOT"
-exec "$PYTHON" -m lib.skill_description_enricher "$@"
+exec "$PYTHON" -m cos_lib.skill_description_enricher "$@"

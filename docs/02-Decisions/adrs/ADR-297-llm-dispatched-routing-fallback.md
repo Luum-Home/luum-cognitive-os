@@ -10,8 +10,8 @@ extends:
   - ADR-049
   - ADR-296
 implementation_files:
-  - lib/llm_routing_fallback.py
-  - lib/skill_router.py
+  - cos_lib/llm_routing_fallback.py
+  - cos_lib/skill_router.py
   - pytest.ini
   - tests/unit/test_llm_routing_fallback.py
 tier: core
@@ -70,7 +70,7 @@ answer (or correctly report no match) and the LLM adds latency and
 cost without precision gain.
 
 **Dispatch path** — all LLM calls flow through
-:func:`lib.dispatch.dispatch` (ADR-049). The module MUST NOT import a
+:func:`cos_lib.dispatch.dispatch` (ADR-049). The module MUST NOT import a
 vendor SDK directly and MUST NOT hardcode a provider name. The
 dispatch primary is Qwen, preserving Claude Max quota.
 

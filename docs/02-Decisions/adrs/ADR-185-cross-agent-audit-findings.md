@@ -9,7 +9,7 @@ supersedes: []
 superseded_by: null
 extends: []
 implementation_files:
-  - lib/agent_message_bus.py                 # v1 directed message queue
+  - cos_lib/agent_message_bus.py                 # v1 directed message queue
   - scripts/cos_agent_message.py             # v1 CLI
   - scripts/cos-agent-message                # v1 wrapper
   - hooks/agent-message-inbox-guard.sh       # v1 severity gate
@@ -18,7 +18,7 @@ implementation_files:
   - tests/unit/test_agent_message_hooks.py    # v1 hook tests
   - packages/agent-lifecycle/lib/harness_adapter/base.py # companion inbound_signal event
   - packages/agent-lifecycle/lib/harness_adapter/dispatch.py # companion inbound signal dispatch
-  - lib/agent_control_policy.py              # portable stop/pause/resume policy
+  - cos_lib/agent_control_policy.py              # portable stop/pause/resume policy
   - hooks/agent-control-inbound-guard.sh     # hook-boundary enforcement for non-owned processes
 tier: maintainer
 runtime_artifacts:
@@ -116,7 +116,7 @@ Severity semantics:
 ### Emission API
 
 ```python
-from lib.agent_message_bus import send_message
+from cos_lib.agent_message_bus import send_message
 
 send_message(
     project_dir,
@@ -147,7 +147,7 @@ availability.
 
 3. **Acknowledgement API**:
    ```python
-   from lib.agent_message_bus import ack_message
+   from cos_lib.agent_message_bus import ack_message
    ack_message(project_dir, message_id_value="<id>", session_id="operator", status="applied")
    ```
    The append-only log gets a follow-up ack entry. Readers stitch state by
@@ -215,7 +215,7 @@ The companion event is `event_type: "inbound_signal"` and is emitted by `package
 - `agent_id` / `session_id` when the adapter can infer the target;
 - `source_path` for the fallback artifact that produced the signal.
 
-This keeps ADR-185's store-and-forward directive queue separate from mid-flight control, while giving both paths a shared canonical-event surface. Runtimes with a child process handle can enforce controls directly. Hook-capable runtimes without a process handle use `agent-control-inbound-guard.sh`, which blocks on latest `stop` or unresolved `pause` and allows execution again after a newer `resume`. Runtimes without hooks should call `lib.agent_control_policy.evaluate_control()` before each action.
+This keeps ADR-185's store-and-forward directive queue separate from mid-flight control, while giving both paths a shared canonical-event surface. Runtimes with a child process handle can enforce controls directly. Hook-capable runtimes without a process handle use `agent-control-inbound-guard.sh`, which blocks on latest `stop` or unresolved `pause` and allows execution again after a newer `resume`. Runtimes without hooks should call `cos_lib.agent_control_policy.evaluate_control()` before each action.
 
 ## Consequences
 

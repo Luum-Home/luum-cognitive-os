@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.primitive_contracts import load_contracts
+from cos_lib.primitive_contracts import load_contracts
 
 SCHEMA_VERSION = "primitive-projection-fidelity.v1"
 DEFAULT_COVERAGE = Path("docs/06-Daily/reports/primitive-harness-coverage-latest.json")

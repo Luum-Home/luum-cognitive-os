@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from lib.cross_stack_secret_audit import (
+from cos_lib.cross_stack_secret_audit import (
     audit,
     audit_workflows,
     classify_external_finding,
@@ -86,7 +86,7 @@ def test_discovers_secret_never_touch_files_without_reading_contents(tmp_path: P
 def test_release_scope_excludes_local_secret_never_touch_surfaces(tmp_path: Path, monkeypatch) -> None:
     _write_policy(tmp_path)
     (tmp_path / ".env").write_text("REAL_VALUE_SHOULD_NOT_BE_IN_REPORT=secret\n", encoding="utf-8")
-    monkeypatch.setattr("lib.cross_stack_secret_audit.installed_tool_versions", lambda policy: {
+    monkeypatch.setattr("cos_lib.cross_stack_secret_audit.installed_tool_versions", lambda policy: {
         "gitleaks": {"installed": True, "path": "/usr/bin/gitleaks", "version": "fixture"},
         "trufflehog": {"installed": True, "path": "/usr/bin/trufflehog", "version": "fixture"},
     })

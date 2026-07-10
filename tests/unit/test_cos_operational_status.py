@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.operational_status import build_status
+from cos_lib.operational_status import build_status
 
 pytestmark = pytest.mark.unit
 

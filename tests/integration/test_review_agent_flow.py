@@ -27,7 +27,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from lib.review_agent import (
+from cos_lib.review_agent import (
     build_review_prompt,
     parse_review_response,
     persist_finding,
@@ -117,8 +117,8 @@ class TestEndToEndFlow:
         mock_dispatch_result.success = True
         mock_dispatch_result.text = MOCK_REVIEWER_RESPONSE
 
-        with patch("lib.dispatch.dispatch", return_value=mock_dispatch_result):
-            from lib.dispatch import dispatch
+        with patch("cos_lib.dispatch.dispatch", return_value=mock_dispatch_result):
+            from cos_lib.dispatch import dispatch
             result = dispatch(
                 prompt=prompt,
                 providers=["claude"],
@@ -146,7 +146,7 @@ class TestEndToEndFlow:
 
         findings_path = tmp_dirs["findings"]
 
-        with patch("lib.review_agent._engram_save") as mock_engram:
+        with patch("cos_lib.review_agent._engram_save") as mock_engram:
             persist_finding(finding, jsonl_path=findings_path, engram_topic="review-finding")
 
         # Verify JSONL
@@ -206,8 +206,8 @@ class TestEndToEndFlow:
         mock_dispatch_result.error = "rate_limit"
 
         # Simulate hook behavior: if dispatch fails, don't persist
-        with patch("lib.dispatch.dispatch", return_value=mock_dispatch_result):
-            from lib.dispatch import dispatch
+        with patch("cos_lib.dispatch.dispatch", return_value=mock_dispatch_result):
+            from cos_lib.dispatch import dispatch
             result = dispatch(prompt="test", providers=["claude"], claude_model="sonnet")
 
         if not result.success:
@@ -239,7 +239,7 @@ class TestEndToEndFlow:
                 "reviewer_id": f"reviewer-{i}",
                 "reviewer_model": "sonnet",
             }
-            with patch("lib.review_agent._engram_save"):
+            with patch("cos_lib.review_agent._engram_save"):
                 persist_finding(finding, jsonl_path=findings_path)
 
         rows = [json.loads(l) for l in findings_path.read_text().splitlines() if l.strip()]

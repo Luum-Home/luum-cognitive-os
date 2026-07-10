@@ -91,7 +91,7 @@ export GITHUB_TOKEN="ghp_..."
 python lib/webhook_trigger.py
 
 # Or with uvicorn
-uvicorn lib.webhook_trigger:app --host 0.0.0.0 --port 8001
+uvicorn cos_lib.webhook_trigger:app --host 0.0.0.0 --port 8001
 ```
 
 ## Running with Docker

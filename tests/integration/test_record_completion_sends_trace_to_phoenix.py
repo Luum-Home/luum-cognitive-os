@@ -193,7 +193,7 @@ def test_record_completion_sends_trace_to_phoenix(
     # Reload record_completion so its module-level phoenix.otel.register() picks
     # up the new PHOENIX_COLLECTOR_ENDPOINT from otel_env_for_phoenix.
     import importlib
-    import lib.record_completion as rc_mod
+    import cos_lib.record_completion as rc_mod
     importlib.reload(rc_mod)
 
     assert rc_mod._otel_tracer is not None, (

@@ -169,7 +169,7 @@ class AgentBusMetrics:
 | `session_id` | value from `data["session_id"]` if present, else `""` |
 | `details` | `{"phase": str, "alive": bool, "tokens_used": int}` |
 
-All events written via `lib.metric_event.append_event()`.
+All events written via `cos_lib.metric_event.append_event()`.
 
 #### 2. `scripts/so-agent-status.sh` — CLI listing live agents
 
@@ -183,7 +183,7 @@ abc123-apply      apply          12    live
 def456-verify     verify        312    STALE
 ```
 
-Uses `python3 -c "from lib.agent_bus_metrics import AgentBusMetrics; ..."`.
+Uses `python3 -c "from cos_lib.agent_bus_metrics import AgentBusMetrics; ..."`.
 Exits 0 when any live agents exist, exits 1 when none.
 
 #### 3. `scripts/so-vitals.sh` — agent-count integration (minor change)
@@ -261,7 +261,7 @@ Unchanged. WS11 disable and its global-verify.sh replacement (ADR-028a
 
 ### ADR-028 D1.A — MetricEvent schema
 
-`lib/agent_bus_metrics.py` uses `lib.metric_event.append_event()` — the
+`lib/agent_bus_metrics.py` uses `cos_lib.metric_event.append_event()` — the
 same write path defined in D1.A.1. D1.A.0 (fix missing-file write path,
 ADR-028a §5.3 / F-4) is a prerequisite: if `SESSION_ID` propagation is
 broken, `agent-heartbeat.jsonl` may also fail to land on disk. Execute

@@ -79,7 +79,7 @@ info "Step 4: Restore snapshot"
 RESTORE_OUT=$(python3 - <<PYEOF 2>&1
 import sys
 sys.path.insert(0, '$PROJECT_DIR')
-from lib.snapshot_manager import restore_snapshot
+from cos_lib.snapshot_manager import restore_snapshot
 from pathlib import Path
 result = restore_snapshot(Path('$REPO'), '$SNAP_ID')
 print(result)

@@ -21,8 +21,8 @@ def tmp_project(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
     """Redirect the registry to a temporary project directory."""
     monkeypatch.setenv("COGNITIVE_OS_PROJECT_DIR", str(tmp_path))
     # Reload the module so cached _project_root() picks up the new env var
-    if "lib.process_registry" in sys.modules:
-        del sys.modules["lib.process_registry"]
+    if "cos_lib.process_registry" in sys.modules:
+        del sys.modules["cos_lib.process_registry"]
     # Also evict metric_event if it was cached (it picks up paths at import)
     # metric_event itself uses open() paths passed in, so no reload needed.
     return tmp_path
@@ -31,9 +31,9 @@ def tmp_project(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
 def _import_registry(tmp_project: Path):
     """Import process_registry fresh after the env var has been set."""
 
-    if "lib.process_registry" in sys.modules:
-        del sys.modules["lib.process_registry"]
-    import lib.process_registry as reg
+    if "cos_lib.process_registry" in sys.modules:
+        del sys.modules["cos_lib.process_registry"]
+    import cos_lib.process_registry as reg
 
     return reg
 

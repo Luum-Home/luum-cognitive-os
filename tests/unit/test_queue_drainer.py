@@ -7,7 +7,7 @@ import time
 
 import pytest
 
-from lib.queue_drainer import QueueDrainer
+from cos_lib.queue_drainer import QueueDrainer
 
 
 # ---------------------------------------------------------------------------

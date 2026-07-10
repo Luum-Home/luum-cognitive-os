@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.harness_action_receipts import (
+from cos_lib.harness_action_receipts import (
     ReceiptError,
     append_receipt,
     make_receipt,

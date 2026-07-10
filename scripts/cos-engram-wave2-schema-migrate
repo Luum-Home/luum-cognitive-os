@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.engram_wave2_schema import ensure_wave2_schema
+from cos_lib.engram_wave2_schema import ensure_wave2_schema
 
 
 def default_db_path() -> Path:

@@ -1,4 +1,4 @@
-"""Unit tests for lib.engram_http_client — HTTP wrapper for the engram REST API.
+"""Unit tests for cos_lib.engram_http_client — HTTP wrapper for the engram REST API.
 
 All tests mock the HTTP transport layer so no real daemon is required.
 Covers both the requests-backed and urllib-backed code paths.
@@ -34,19 +34,19 @@ def _json_bytes(obj) -> bytes:
 
 class TestIsAvailable:
     def test_returns_true_on_200(self):
-        from lib import engram_http_client
+        from cos_lib import engram_http_client
 
         with patch.object(engram_http_client, "_http_get", return_value=(200, b"{}")):
             assert engram_http_client.is_available(_BASE) is True
 
     def test_returns_false_on_500(self):
-        from lib import engram_http_client
+        from cos_lib import engram_http_client
 
         with patch.object(engram_http_client, "_http_get", return_value=(500, b"error")):
             assert engram_http_client.is_available(_BASE) is False
 
     def test_returns_false_on_connection_refused(self):
-        from lib import engram_http_client
+        from cos_lib import engram_http_client
 
         with patch.object(engram_http_client, "_http_get", return_value=(0, b"")):
             assert engram_http_client.is_available(_BASE) is False
@@ -59,7 +59,7 @@ class TestIsAvailable:
 
 class TestGetObservation:
     def test_returns_dict_on_200(self):
-        from lib import engram_http_client
+        from cos_lib import engram_http_client
 
         obs = {"id": 42, "title": "Test", "content": "body"}
         with patch.object(engram_http_client, "_http_get", return_value=(200, _json_bytes(obs))):
@@ -67,21 +67,21 @@ class TestGetObservation:
         assert result == obs
 
     def test_returns_none_on_404(self):
-        from lib import engram_http_client
+        from cos_lib import engram_http_client
 
         with patch.object(engram_http_client, "_http_get", return_value=(404, b"not found")):
             result = engram_http_client.get_observation(999, base_url=_BASE)
         assert result is None
 
     def test_returns_none_on_connection_error(self):
-        from lib import engram_http_client
+        from cos_lib import engram_http_client
 
         with patch.object(engram_http_client, "_http_get", return_value=(0, b"")):
             result = engram_http_client.get_observation(1, base_url=_BASE)
         assert result is None
 
     def test_calls_correct_url(self):
-        from lib import engram_http_client
+        from cos_lib import engram_http_client
 
         obs = {"id": 7, "title": "t", "content": "c"}
         calls = []
@@ -114,7 +114,7 @@ class TestSearchObservations:
         )
 
     def test_returns_list_on_200(self):
-        from lib import engram_http_client
+        from cos_lib import engram_http_client
 
         observations = [{"id": 1}, {"id": 2}]
         mock_resp = MagicMock()
@@ -126,7 +126,7 @@ class TestSearchObservations:
         assert result == observations
 
     def test_returns_empty_list_on_error(self):
-        from lib import engram_http_client
+        from cos_lib import engram_http_client
 
         mock_resp = MagicMock()
         mock_resp.status_code = 500
@@ -137,7 +137,7 @@ class TestSearchObservations:
         assert result == []
 
     def test_returns_empty_list_on_requests_exception(self):
-        from lib import engram_http_client
+        from cos_lib import engram_http_client
         import requests
 
         with patch("requests.get", side_effect=requests.exceptions.ConnectionError("refused")):
@@ -145,7 +145,7 @@ class TestSearchObservations:
         assert result == []
 
     def test_encodes_query_params(self):
-        from lib import engram_http_client
+        from cos_lib import engram_http_client
 
         calls = []
         mock_resp = MagicMock()
@@ -173,7 +173,7 @@ class TestSearchObservations:
         assert params["project"] == "luum"
 
     def test_omits_empty_type_and_project(self):
-        from lib import engram_http_client
+        from cos_lib import engram_http_client
 
         calls = []
         mock_resp = MagicMock()
@@ -199,13 +199,13 @@ class TestSearchObservations:
 
 class TestUpdateObservation:
     def test_raises_value_error_when_no_fields(self):
-        from lib import engram_http_client
+        from cos_lib import engram_http_client
 
         with pytest.raises(ValueError, match="at least one field"):
             engram_http_client.update_observation(1, base_url=_BASE)
 
     def test_sends_only_non_none_fields(self):
-        from lib import engram_http_client
+        from cos_lib import engram_http_client
 
         calls = []
 
@@ -222,7 +222,7 @@ class TestUpdateObservation:
         assert "type" not in calls[0]
 
     def test_returns_dict_on_success(self):
-        from lib import engram_http_client
+        from cos_lib import engram_http_client
 
         updated = {"id": 5, "content": "updated body", "title": "T"}
         with patch.object(engram_http_client, "_http_patch", return_value=(200, _json_bytes(updated))):
@@ -230,14 +230,14 @@ class TestUpdateObservation:
         assert result == updated
 
     def test_returns_none_on_http_error(self):
-        from lib import engram_http_client
+        from cos_lib import engram_http_client
 
         with patch.object(engram_http_client, "_http_patch", return_value=(404, b"not found")):
             result = engram_http_client.update_observation(99, content="x", base_url=_BASE)
         assert result is None
 
     def test_sends_all_provided_fields(self):
-        from lib import engram_http_client
+        from cos_lib import engram_http_client
 
         calls = []
 
@@ -272,7 +272,7 @@ class TestUrllibFallback:
 
     def test_urllib_fallback_is_available(self):
         """When requests is unavailable, _http_get uses urllib and works correctly."""
-        from lib import engram_http_client
+        from cos_lib import engram_http_client
 
         # Simulate requests being absent by patching _REQUESTS_AVAILABLE
         with patch.object(engram_http_client, "_REQUESTS_AVAILABLE", False):
@@ -291,7 +291,7 @@ class TestUrllibFallback:
 
     def test_urllib_fallback_get_observation(self):
         """get_observation works when requests is unavailable."""
-        from lib import engram_http_client
+        from cos_lib import engram_http_client
 
         obs = {"id": 55, "title": "fallback obs", "content": "body"}
 

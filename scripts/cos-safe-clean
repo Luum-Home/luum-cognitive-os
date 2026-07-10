@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.delete_intent import ALLOWED_CLASSIFICATIONS, emit, repo_root, safe_clean_plan
+from cos_lib.delete_intent import ALLOWED_CLASSIFICATIONS, emit, repo_root, safe_clean_plan
 
 
 def _delete(root: Path, rel: str) -> None:

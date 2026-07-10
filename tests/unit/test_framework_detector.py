@@ -10,7 +10,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.test_framework_detector import DetectedFramework, TestFrameworkDetector
+from cos_lib.test_framework_detector import DetectedFramework, TestFrameworkDetector
 
 pytestmark = pytest.mark.unit
 

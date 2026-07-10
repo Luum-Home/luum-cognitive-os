@@ -5,7 +5,7 @@ Unit tests for lib/user_model.py
 import json
 from unittest.mock import MagicMock, patch
 
-from lib.user_model import UserModel, UserPreference
+from cos_lib.user_model import UserModel, UserPreference
 
 
 class TestRecordPreference:
@@ -329,7 +329,7 @@ class TestEngramPersistence:
         mock_proc.stdout = "Saved."
         mock_proc.stderr = ""
 
-        with patch("lib.user_model.subprocess.run", return_value=mock_proc) as mock_run:
+        with patch("cos_lib.user_model.subprocess.run", return_value=mock_proc) as mock_run:
             model.save_to_engram(project="test-project")
 
         mock_run.assert_called_once()
@@ -345,7 +345,7 @@ class TestEngramPersistence:
         mock_proc.stdout = ""  # no output from engram
         mock_proc.stderr = ""
 
-        with patch("lib.user_model.subprocess.run", return_value=mock_proc):
+        with patch("cos_lib.user_model.subprocess.run", return_value=mock_proc):
             result = UserModel.load_from_engram(project="test-project")
 
         assert isinstance(result, UserModel), (
@@ -365,7 +365,7 @@ class TestEngramPersistence:
         mock_proc.stdout = "{this is not valid json\n"
         mock_proc.stderr = ""
 
-        with patch("lib.user_model.subprocess.run", return_value=mock_proc):
+        with patch("cos_lib.user_model.subprocess.run", return_value=mock_proc):
             result = UserModel.load_from_engram(project="test-project")
 
         assert isinstance(result, UserModel), (
@@ -395,10 +395,10 @@ class TestEngramPersistence:
         load_proc.stdout = saved_json + "\n"
         load_proc.stderr = ""
 
-        with patch("lib.user_model.subprocess.run", return_value=save_proc):
+        with patch("cos_lib.user_model.subprocess.run", return_value=save_proc):
             original.save_to_engram(project="test-project")
 
-        with patch("lib.user_model.subprocess.run", return_value=load_proc):
+        with patch("cos_lib.user_model.subprocess.run", return_value=load_proc):
             restored = UserModel.load_from_engram(project="test-project")
 
         assert isinstance(restored, UserModel)

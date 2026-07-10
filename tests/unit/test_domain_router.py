@@ -6,7 +6,7 @@ and verify context formatting.
 
 import pytest
 
-from lib.domain_router import (
+from cos_lib.domain_router import (
     detect_domain,
     format_verify_context,
     get_evaluator_config,

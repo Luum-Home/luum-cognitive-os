@@ -6,7 +6,7 @@ import json
 import subprocess
 from pathlib import Path
 
-from lib.trace_joiner import build_run_trace
+from cos_lib.trace_joiner import build_run_trace
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 

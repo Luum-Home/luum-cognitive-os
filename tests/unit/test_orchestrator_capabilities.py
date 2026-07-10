@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 import pytest
 
-from lib.orchestrator_capabilities import OrchestratorCapabilities
+from cos_lib.orchestrator_capabilities import OrchestratorCapabilities
 
 CommMode = OrchestratorCapabilities.CommMode
 

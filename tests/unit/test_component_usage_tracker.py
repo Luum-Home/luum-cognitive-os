@@ -14,7 +14,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from lib.component_usage_tracker import ComponentUsageTracker
+from cos_lib.component_usage_tracker import ComponentUsageTracker
 
 
 # ---------------------------------------------------------------------------
@@ -114,7 +114,7 @@ def test_scan_hooks_coverage_pct(repo: Path) -> None:
 def test_scan_libs_finds_imports(repo: Path) -> None:
     (repo / "lib" / "my_util.py").write_text("def foo(): pass")
     consumer = repo / "hooks" / "consumer.py"
-    consumer.write_text("from lib.my_util import foo\nfoo()")
+    consumer.write_text("from cos_lib.my_util import foo\nfoo()")
 
     t = ComponentUsageTracker(str(repo))
     result = t.scan_lib_imports()
@@ -135,7 +135,7 @@ def test_scan_libs_never_imported(repo: Path) -> None:
 def test_scan_libs_usage_pct(repo: Path) -> None:
     (repo / "lib" / "used.py").write_text("x=1")
     (repo / "lib" / "unused.py").write_text("y=2")
-    (repo / "hooks" / "importer.py").write_text("from lib.used import x")
+    (repo / "hooks" / "importer.py").write_text("from cos_lib.used import x")
 
     t = ComponentUsageTracker(str(repo))
     result = t.scan_lib_imports()
@@ -269,7 +269,7 @@ def test_health_score_calculation(repo: Path) -> None:
     # 2 libs, 1 imported
     (repo / "lib" / "used.py").write_text("x=1")
     (repo / "lib" / "unused.py").write_text("y=2")
-    (repo / "hooks" / "importer.py").write_text("from lib.used import x")
+    (repo / "hooks" / "importer.py").write_text("from cos_lib.used import x")
 
     t = ComponentUsageTracker(str(repo))
     report = t.generate_usage_report()

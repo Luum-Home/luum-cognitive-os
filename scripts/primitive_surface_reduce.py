@@ -22,12 +22,12 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.script_io import load_json_or_empty as load_json
+from cos_lib.script_io import load_json_or_empty as load_json
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.script_io import read_text as read_text
+from cos_lib.script_io import read_text as read_text
 
 
 @dataclass(frozen=True)

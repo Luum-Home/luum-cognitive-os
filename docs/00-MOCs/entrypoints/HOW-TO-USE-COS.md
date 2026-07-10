@@ -172,7 +172,7 @@ Run these periodically:
 
 # Detect drift (aspirational metadata, broken chains, etc.)
 source .venv/bin/activate
-python -c "from lib.pattern_detector import PatternDetector; \
+python -c "from cos_lib.pattern_detector import PatternDetector; \
   p = PatternDetector(); \
   patterns = p.run_all('.'); \
   [print(f'{x.severity}: {x.description}') for x in patterns]"

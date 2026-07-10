@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.maintainer_experiment import evaluate_outcome, load_schema, validate_experiment
+from cos_lib.maintainer_experiment import evaluate_outcome, load_schema, validate_experiment
 
 
 ROOT = Path(__file__).resolve().parents[2]

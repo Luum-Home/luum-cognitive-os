@@ -8,7 +8,7 @@ import pytest
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(_REPO_ROOT))
 
-from lib.session_bus import append_session_event, read_session_events, recover_session_counter  # noqa: E402
+from cos_lib.session_bus import append_session_event, read_session_events, recover_session_counter  # noqa: E402
 
 
 @pytest.mark.behavior

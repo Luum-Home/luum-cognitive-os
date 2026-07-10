@@ -40,7 +40,7 @@ rationale. Due-diligence justification lives under the
 
 ## Integration boundaries
 
-- The web service does **not** import `lib.agent_runner` or `lib.dispatch`
+- The web service does **not** import `cos_lib.agent_runner` or `cos_lib.dispatch`
   in Phase 1. All 22 non-functional endpoints return typed `501
   NotImplementedResponse`; integration with the actual runtime is
   deferred to Phase 2/3 of ADR-291.

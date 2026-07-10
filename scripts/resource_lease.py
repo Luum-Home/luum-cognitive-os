@@ -8,8 +8,8 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
-from lib.concurrency_safety import load_concurrency_safety_config, project_runtime_dir
-from lib.project_paths import project_dir_from_args as project_dir
+from cos_lib.concurrency_safety import load_concurrency_safety_config, project_runtime_dir
+from cos_lib.project_paths import project_dir_from_args as project_dir
 
 def safe_name(resource: str) -> str:
     cleaned = "".join(ch if ch.isalnum() or ch in {"-", "_", "."} else "-" for ch in resource.strip())

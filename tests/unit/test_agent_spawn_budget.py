@@ -13,7 +13,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.telemetry_aggregator import aggregate_streams
+from cos_lib.telemetry_aggregator import aggregate_streams
 
 _THIS_FILE = Path(__file__).resolve()
 _PROJECT_ROOT = _THIS_FILE.parent.parent.parent

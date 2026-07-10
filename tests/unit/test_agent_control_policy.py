@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 
-from lib.agent_control_policy import evaluate_control, target_ids_from_payload
+from cos_lib.agent_control_policy import evaluate_control, target_ids_from_payload
 
 
 def _write_control(root, target, command, ts):

@@ -54,17 +54,17 @@ class TestQwenFallbackHelper(unittest.TestCase):
         """If ALIBABA_QWEN_API_KEY is unset, fallback helper returns None."""
         mock_module = MagicMock()
         mock_module.is_configured.return_value = False
-        with patch.dict(sys.modules, {"lib.qwen_provider": mock_module}):
+        with patch.dict(sys.modules, {"cos_lib.qwen_provider": mock_module}):
             result = _orch._try_qwen_primary("hello", verbose=False)
         self.assertIsNone(result)
 
     def test_returns_none_when_qwen_import_fails(self):
-        """If lib.qwen_provider is not installed, returns None gracefully."""
+        """If cos_lib.qwen_provider is not installed, returns None gracefully."""
         import builtins
         real_import = builtins.__import__
 
         def fake_import(name, *args, **kwargs):
-            if name == "lib.qwen_provider":
+            if name == "cos_lib.qwen_provider":
                 raise ImportError("qwen_provider missing (simulated)")
             return real_import(name, *args, **kwargs)
 
@@ -86,7 +86,7 @@ class TestQwenFallbackHelper(unittest.TestCase):
         mock_module.is_configured.return_value = True
         mock_module.call.return_value = qwen_result
 
-        with patch.dict(sys.modules, {"lib.qwen_provider": mock_module}):
+        with patch.dict(sys.modules, {"cos_lib.qwen_provider": mock_module}):
             result = _orch._try_qwen_primary("hello", verbose=False)
 
         self.assertIsNotNone(result)
@@ -105,7 +105,7 @@ class TestQwenFallbackHelper(unittest.TestCase):
             cost_usd=0.0, error="",
         )
 
-        with patch.dict(sys.modules, {"lib.qwen_provider": mock_module}):
+        with patch.dict(sys.modules, {"cos_lib.qwen_provider": mock_module}):
             _orch._try_qwen_primary("what is 2+2?", verbose=False)
 
         called_messages = mock_module.call.call_args.kwargs.get("messages")
@@ -127,7 +127,7 @@ class TestQwenFallbackHelper(unittest.TestCase):
             cost_usd=0.0, error="401 invalid_api_key",
         )
 
-        with patch.dict(sys.modules, {"lib.qwen_provider": mock_module}):
+        with patch.dict(sys.modules, {"cos_lib.qwen_provider": mock_module}):
             result = _orch._try_qwen_primary("hi")
 
         self.assertIsNotNone(result)
@@ -170,32 +170,32 @@ class TestClaudeModelHintPropagation(unittest.TestCase):
 
     def test_opus_hint_routes_to_qwen36plus(self):
         mock = self._make_mock_module("qwen3.6-plus")
-        with patch.dict(sys.modules, {"lib.qwen_provider": mock}):
+        with patch.dict(sys.modules, {"cos_lib.qwen_provider": mock}):
             result = _orch._try_qwen_primary("task", claude_model="opus")
         self.assertTrue(result.success)
         self.assertEqual(mock._call_history[0]["model"], "qwen3.6-plus")
 
     def test_sonnet_hint_routes_to_coder_plus(self):
         mock = self._make_mock_module("qwen3-coder-plus")
-        with patch.dict(sys.modules, {"lib.qwen_provider": mock}):
+        with patch.dict(sys.modules, {"cos_lib.qwen_provider": mock}):
             _orch._try_qwen_primary("task", claude_model="sonnet")
         self.assertEqual(mock._call_history[0]["model"], "qwen3-coder-plus")
 
     def test_haiku_hint_routes_to_minimax(self):
         mock = self._make_mock_module("minimax-m2.5")
-        with patch.dict(sys.modules, {"lib.qwen_provider": mock}):
+        with patch.dict(sys.modules, {"cos_lib.qwen_provider": mock}):
             _orch._try_qwen_primary("task", claude_model="haiku")
         self.assertEqual(mock._call_history[0]["model"], "minimax-m2.5")
 
     def test_none_hint_uses_default(self):
         mock = self._make_mock_module("qwen3.6-plus")
-        with patch.dict(sys.modules, {"lib.qwen_provider": mock}):
+        with patch.dict(sys.modules, {"cos_lib.qwen_provider": mock}):
             _orch._try_qwen_primary("task", claude_model=None)
         self.assertEqual(mock._call_history[0]["model"], "qwen3.6-plus")
 
     def test_full_claude_model_name_mapped(self):
         mock = self._make_mock_module("minimax-m2.5")
-        with patch.dict(sys.modules, {"lib.qwen_provider": mock}):
+        with patch.dict(sys.modules, {"cos_lib.qwen_provider": mock}):
             _orch._try_qwen_primary("task", claude_model="claude-haiku-4-5")
         self.assertEqual(mock._call_history[0]["model"], "minimax-m2.5")
 
@@ -213,7 +213,7 @@ class TestPerProviderKillSwitch(unittest.TestCase):
             cost_usd=0.0, error="",
         )
         import os
-        with patch.dict(sys.modules, {"lib.qwen_provider": mock_module}):
+        with patch.dict(sys.modules, {"cos_lib.qwen_provider": mock_module}):
             with patch.dict(os.environ, {"COS_DISABLE_QWEN": "1"}):
                 os.environ.pop("COS_DISABLE_LLM_FALLBACK", None)
                 result = _orch._try_qwen_primary("anything")
@@ -231,7 +231,7 @@ class TestPerProviderKillSwitch(unittest.TestCase):
         mock_module.select_model.return_value = "qwen3.6-plus"
 
         import os
-        with patch.dict(sys.modules, {"lib.qwen_provider": mock_module}):
+        with patch.dict(sys.modules, {"cos_lib.qwen_provider": mock_module}):
             with patch.dict(os.environ, {}, clear=False):
                 os.environ.pop("COS_DISABLE_QWEN", None)
                 os.environ.pop("COS_DISABLE_LLM_FALLBACK", None)
@@ -279,7 +279,7 @@ class TestKillSwitch(unittest.TestCase):
         mock_module.call.return_value = qwen_result
 
         import os
-        with patch.dict(sys.modules, {"lib.qwen_provider": mock_module}):
+        with patch.dict(sys.modules, {"cos_lib.qwen_provider": mock_module}):
             with patch.dict(os.environ, {}, clear=False):
                 os.environ.pop("COS_DISABLE_LLM_FALLBACK", None)
                 result = _orch._try_qwen_primary("anything")
@@ -297,7 +297,7 @@ class TestKillSwitch(unittest.TestCase):
         mock_module.call.return_value = qwen_result
 
         import os
-        with patch.dict(sys.modules, {"lib.qwen_provider": mock_module}):
+        with patch.dict(sys.modules, {"cos_lib.qwen_provider": mock_module}):
             with patch.dict(os.environ, {"COS_DISABLE_LLM_FALLBACK": ""}):
                 result = _orch._try_qwen_primary("anything")
         self.assertIsNotNone(result)

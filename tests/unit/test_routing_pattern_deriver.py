@@ -1,4 +1,4 @@
-"""Tests for lib.routing_pattern_deriver.RoutingPatternDeriver."""
+"""Tests for cos_lib.routing_pattern_deriver.RoutingPatternDeriver."""
 from __future__ import annotations
 
 import sys
@@ -8,7 +8,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 import pytest
-from lib.routing_pattern_deriver import RoutingPatternDeriver, _build_yaml_block
+from cos_lib.routing_pattern_deriver import RoutingPatternDeriver, _build_yaml_block
 
 
 @pytest.fixture()

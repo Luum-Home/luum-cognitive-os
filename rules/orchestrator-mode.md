@@ -35,7 +35,7 @@ export ORCHESTRATOR_MODE=executor
 In Python:
 
 ```python
-from lib.orchestrator_mode import is_executor_mode, delegate_task
+from cos_lib.orchestrator_mode import is_executor_mode, delegate_task
 
 if is_executor_mode():
     result = delegate_task("Implement the new endpoint", model="sonnet")

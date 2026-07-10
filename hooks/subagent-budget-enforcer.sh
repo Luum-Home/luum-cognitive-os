@@ -141,7 +141,7 @@ with open(path, "a", encoding="utf-8") as fh:
     fh.write(json.dumps(entry, sort_keys=True) + "\n")
 
 sys.path.insert(0, cos_root)
-from lib.taximeter import resource_tick
+from cos_lib.taximeter import resource_tick
 
 resource_tick(
     session_id=session_id,

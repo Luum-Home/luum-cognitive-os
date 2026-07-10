@@ -96,7 +96,7 @@ if [ -n "$PYTHON_BIN" ]; then
     $PYTHON_BIN -c \"
 import sys
 sys.path.insert(0, '.')
-from lib.context_injector import build_context
+from cos_lib.context_injector import build_context
 print(build_context(sys.argv[1], project_root='.'), end='')
 \" '$TASK_TEXT'
 " 2>/dev/null || true)

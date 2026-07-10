@@ -99,7 +99,7 @@ def _default_search_fn(
     project: str = _PROJECT,
 ) -> list[dict[str, Any]]:
     try:
-        from lib import engram_http_client
+        from cos_lib import engram_http_client
 
         return engram_http_client.search_observations(query, limit=limit, project=project)[:limit]
     except Exception:

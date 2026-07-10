@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from lib.language_dependence_audit import audit, extract_regex_literals, structural_risk_score
+from cos_lib.language_dependence_audit import audit, extract_regex_literals, structural_risk_score
 
 
 def _write_skill(

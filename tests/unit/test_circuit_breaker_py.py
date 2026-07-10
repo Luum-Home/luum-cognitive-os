@@ -21,7 +21,7 @@ pytestmark = pytest.mark.unit
 
 def _make_cb(tmp_path: Path, failure_threshold: int = 3, cooldown_seconds: int = 3600):
     """Create a CircuitBreaker backed by a temp file."""
-    from lib.circuit_breaker import CircuitBreaker
+    from cos_lib.circuit_breaker import CircuitBreaker
 
     state_file = tmp_path / "circuit-breaker-state.json"
     return CircuitBreaker(
@@ -111,7 +111,7 @@ class TestCooldown:
         assert cb.can_launch("slow-task") is False  # just opened, cooldown not elapsed
 
         # Manually backdate opened_at to simulate elapsed cooldown
-        from lib.circuit_breaker import _now_epoch
+        from cos_lib.circuit_breaker import _now_epoch
         circuit = cb._circuits["slow-task"]
         from datetime import datetime, timezone
         past = datetime.fromtimestamp(_now_epoch() - 10, tz=timezone.utc)
@@ -127,7 +127,7 @@ class TestCooldown:
         cb.record_failure("slow-task")
         cb.record_failure("slow-task")
 
-        from lib.circuit_breaker import _now_epoch
+        from cos_lib.circuit_breaker import _now_epoch
         from datetime import datetime, timezone
         circuit = cb._circuits["slow-task"]
         past = datetime.fromtimestamp(_now_epoch() - 10, tz=timezone.utc)
@@ -173,7 +173,7 @@ class TestSuccessReset:
         cb.record_failure("t")
         cb.record_failure("t")
         # Simulate cooldown expiry
-        from lib.circuit_breaker import _now_epoch
+        from cos_lib.circuit_breaker import _now_epoch
         from datetime import datetime, timezone
         circuit = cb._circuits["t"]
         past = datetime.fromtimestamp(_now_epoch() - 10, tz=timezone.utc)
@@ -202,7 +202,7 @@ class TestSuccessReset:
 class TestPersistence:
     def test_state_persists_across_instances(self, tmp_path):
         state_file = tmp_path / "cb.json"
-        from lib.circuit_breaker import CircuitBreaker
+        from cos_lib.circuit_breaker import CircuitBreaker
 
         cb1 = CircuitBreaker(state_file=state_file, failure_threshold=2)
         cb1.record_failure("pipeline")
@@ -223,7 +223,7 @@ class TestPersistence:
     def test_corrupt_state_file_starts_fresh(self, tmp_path):
         state_file = tmp_path / "cb.json"
         state_file.write_text("NOT JSON {{{{")
-        from lib.circuit_breaker import CircuitBreaker
+        from cos_lib.circuit_breaker import CircuitBreaker
         cb = CircuitBreaker(state_file=state_file)
         assert cb.get_status() == {}
         assert cb.can_launch("any-task") is True

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # @on-demand: wired conditionally by apply-efficiency-profile.sh; not a global default
 # global-verify.sh — ADR-027 Phase 1 / ADR-028a §1 replacement for WS11
 # PostToolUse:Agent hook. Runs targeted tests before/after agent work and
@@ -79,7 +79,7 @@ sys.path.insert(0 if not verify_resolver_dir else 1, str(project_dir))
 
 # Try to import the targeted test resolver (if it exists)
 try:
-    from lib.targeted_test_resolver import resolve_tests_for_changes
+    from cos_lib.targeted_test_resolver import resolve_tests_for_changes
     resolver_available = True
 except ImportError:
     resolve_tests_for_changes = None
@@ -217,10 +217,10 @@ def get_changed_files():
         return []
 
 def emit_event(event_type, payload, severity="info"):
-    """Emit a MetricEvent to verify-events.jsonl if lib.metric_event is available."""
+    """Emit a MetricEvent to verify-events.jsonl if cos_lib.metric_event is available."""
     try:
         try:
-            from lib.metric_event import MetricEvent, append_event
+            from cos_lib.metric_event import MetricEvent, append_event
         except Exception:
             # VERIFY_RESOLVER_DIR may inject a fake ``lib`` package for
             # targeted_test_resolver. Load metric_event from the real project

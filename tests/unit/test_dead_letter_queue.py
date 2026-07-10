@@ -21,7 +21,7 @@ pytestmark = pytest.mark.unit
 
 
 def _make_dlq(tmp_path: Path):
-    from lib.dead_letter_queue import DeadLetterQueue
+    from cos_lib.dead_letter_queue import DeadLetterQueue
 
     dlq_file = tmp_path / "dead-letter-queue.jsonl"
     return DeadLetterQueue(dlq_file=dlq_file), dlq_file
@@ -257,7 +257,7 @@ class TestFormatReport:
 
 class TestEdgeCases:
     def test_non_existent_dlq_file_list_returns_empty(self, tmp_path):
-        from lib.dead_letter_queue import DeadLetterQueue
+        from cos_lib.dead_letter_queue import DeadLetterQueue
 
         dlq = DeadLetterQueue(dlq_file=tmp_path / "nonexistent.jsonl")
         assert dlq.list_dead_letters() == []
@@ -274,7 +274,7 @@ class TestEdgeCases:
         assert entry["retry_history"] == []
 
     def test_dlq_creates_parent_directories(self, tmp_path):
-        from lib.dead_letter_queue import DeadLetterQueue
+        from cos_lib.dead_letter_queue import DeadLetterQueue
 
         deep_file = tmp_path / "a" / "b" / "c" / "dlq.jsonl"
         dlq = DeadLetterQueue(dlq_file=deep_file)

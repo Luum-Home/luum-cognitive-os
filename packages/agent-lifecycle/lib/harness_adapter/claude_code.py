@@ -7,7 +7,7 @@ Mirrors the legacy logic in ``hooks/native-agent-heartbeat.sh`` so behaviour is
 preserved while capture is decoupled from the harness.
 
 ADR-033b: ``duration_ms`` is now computed from Pre/Post correlation via
-:class:`~lib.harness_adapter.tool_use_correlation.CorrelationStore` instead of
+:class:`~cos_lib.harness_adapter.tool_use_correlation.CorrelationStore` instead of
 relying on a non-existent ``started_at`` field in the Post payload. On
 ``PreToolUse:Agent`` the adapter records the start time; on
 ``PostToolUse:Agent`` it pops it and computes the real elapsed milliseconds.
@@ -289,7 +289,7 @@ class ClaudeCodeAdapter(HarnessAdapter):
         blocks a hook.
         """
         try:
-            from lib.agent_bus_metrics import AgentBusMetrics  # type: ignore
+            from cos_lib.agent_bus_metrics import AgentBusMetrics  # type: ignore
         except Exception:
             return
         try:

@@ -1,4 +1,4 @@
-"""Unit tests for lib.engram_wave3_schema (ADR-287 capability 1)."""
+"""Unit tests for cos_lib.engram_wave3_schema (ADR-287 capability 1)."""
 from __future__ import annotations
 
 import hashlib
@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.engram_wave3_schema import (
+from cos_lib.engram_wave3_schema import (
     CLAIM_TYPES_REQUIRING_EVIDENCE,
     Claim,
     EvidenceRequiredError,

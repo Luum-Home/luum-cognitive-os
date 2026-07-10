@@ -2,13 +2,13 @@ from __future__ import annotations
 
 import pytest
 
-from lib.handoff_dispatcher import (
+from cos_lib.handoff_dispatcher import (
     HandoffBlockedByOperator,
     HandoffCycleDetected,
     HandoffDepthExceeded,
     HandoffDispatcher,
 )
-from lib.handoff_envelope import HandoffEnvelope
+from cos_lib.handoff_envelope import HandoffEnvelope
 
 
 def _envelope(**overrides):

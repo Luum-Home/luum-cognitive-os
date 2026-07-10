@@ -16,7 +16,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from lib.tool_adoption_evaluator import (
+from cos_lib.tool_adoption_evaluator import (
     ToolAdoptionEvaluator,
     _classify_deployment,
     _classify_ui,
@@ -48,7 +48,7 @@ def evaluator(tmp_path: Path) -> ToolAdoptionEvaluator:
 
 def test_check_license_mit(evaluator: ToolAdoptionEvaluator) -> None:
     """MIT license → APPROVED, can_copy_code=True."""
-    with patch("lib.tool_adoption_evaluator._run_gh", return_value='{"licenseInfo":{"spdxId":"MIT","name":"MIT License"}}'):
+    with patch("cos_lib.tool_adoption_evaluator._run_gh", return_value='{"licenseInfo":{"spdxId":"MIT","name":"MIT License"}}'):
         result = evaluator.check_license("https://github.com/owner/repo")
     assert result["license"] == "MIT"
     assert result["verdict"] == "APPROVED"
@@ -58,7 +58,7 @@ def test_check_license_mit(evaluator: ToolAdoptionEvaluator) -> None:
 
 def test_check_license_agpl(evaluator: ToolAdoptionEvaluator) -> None:
     """AGPL-3.0 → BLOCKED, can_copy_code=False."""
-    with patch("lib.tool_adoption_evaluator._run_gh", return_value='{"licenseInfo":{"spdxId":"AGPL-3.0","name":"GNU Affero General Public License v3.0"}}'):
+    with patch("cos_lib.tool_adoption_evaluator._run_gh", return_value='{"licenseInfo":{"spdxId":"AGPL-3.0","name":"GNU Affero General Public License v3.0"}}'):
         result = evaluator.check_license("https://github.com/owner/repo")
     assert result["license"] == "AGPL-3.0"
     assert result["verdict"] == "BLOCKED"
@@ -68,7 +68,7 @@ def test_check_license_agpl(evaluator: ToolAdoptionEvaluator) -> None:
 
 def test_check_license_apache(evaluator: ToolAdoptionEvaluator) -> None:
     """Apache-2.0 → APPROVED."""
-    with patch("lib.tool_adoption_evaluator._run_gh", return_value='{"licenseInfo":{"spdxId":"Apache-2.0","name":"Apache License 2.0"}}'):
+    with patch("cos_lib.tool_adoption_evaluator._run_gh", return_value='{"licenseInfo":{"spdxId":"Apache-2.0","name":"Apache License 2.0"}}'):
         result = evaluator.check_license("https://github.com/owner/repo")
     assert result["license"] == "Apache-2.0"
     assert result["verdict"] == "APPROVED"
@@ -77,7 +77,7 @@ def test_check_license_apache(evaluator: ToolAdoptionEvaluator) -> None:
 
 def test_check_license_unknown_is_blocked(evaluator: ToolAdoptionEvaluator) -> None:
     """Unknown license (gh CLI unavailable) → BLOCKED."""
-    with patch("lib.tool_adoption_evaluator._run_gh", return_value=None):
+    with patch("cos_lib.tool_adoption_evaluator._run_gh", return_value=None):
         result = evaluator.check_license("https://github.com/owner/repo")
     assert result["verdict"] == "BLOCKED"
     assert result["can_copy_code"] is False
@@ -330,7 +330,7 @@ def test_batch_evaluate(evaluator: ToolAdoptionEvaluator) -> None:
 
 def test_graceful_no_gh_cli(evaluator: ToolAdoptionEvaluator) -> None:
     """Works without gh CLI: returns a result (may have limited info)."""
-    with patch("lib.tool_adoption_evaluator._run_gh", return_value=None):
+    with patch("cos_lib.tool_adoption_evaluator._run_gh", return_value=None):
         result = evaluator.evaluate_url("https://github.com/owner/some-repo")
     # Must not raise; recommendation must be present
     assert "recommendation" in result

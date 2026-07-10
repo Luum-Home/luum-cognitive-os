@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.skill_synthesizer import (
+from cos_lib.skill_synthesizer import (
     find_recurring_sequences,
     propose_skill_draft,
     auto_promote_eligible,

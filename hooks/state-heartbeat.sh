@@ -36,7 +36,7 @@ if [ $(( COUNT % 10 )) -eq 0 ] || [ "$TIME_ELAPSED" -gt 120 ]; then
     python3 -c "
 import sys
 sys.path.insert(0, '${CLAUDE_PROJECT_DIR:-.}')
-from lib.state_heartbeat import StateHeartbeat
+from cos_lib.state_heartbeat import StateHeartbeat
 h = StateHeartbeat('${SESSION_DIR}')
 h.save()
 " 2>/dev/null || true

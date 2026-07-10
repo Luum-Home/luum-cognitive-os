@@ -39,7 +39,7 @@ from datetime import datetime, timezone
 
 sys.path.insert(0, '.')
 try:
-    from lib.stack_skill_recommender import StackSkillRecommender
+    from cos_lib.stack_skill_recommender import StackSkillRecommender
 except ImportError as e:
     print(f'[stack-recommend] import error: {e}', file=sys.stderr)
     sys.exit(0)

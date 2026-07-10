@@ -8,8 +8,8 @@ supersedes: [ADR-290]
 extends: [ADR-287]
 superseded_by: null
 implementation_files:
-  - lib/engram_wave3_schema.py
-  - lib/engram_fts5_search.py
+  - cos_lib/engram_wave3_schema.py
+  - cos_lib/engram_fts5_search.py
 tier: maintainer
 tags:
   - memory

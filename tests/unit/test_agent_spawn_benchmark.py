@@ -1,4 +1,4 @@
-"""Unit tests for lib.agent_spawn_benchmark (ADR-303).
+"""Unit tests for cos_lib.agent_spawn_benchmark (ADR-303).
 
 These tests exercise the harness building blocks. The few that run live hooks
 are marked `benchmark` so they can be skipped in flaky-environment CI.
@@ -17,7 +17,7 @@ import pytest
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(_PROJECT_ROOT))
 
-from lib.agent_spawn_benchmark import (  # noqa: E402
+from cos_lib.agent_spawn_benchmark import (  # noqa: E402
     DEFAULT_PAYLOAD_TOKEN_BUDGET,
     DEFAULT_WALL_BUDGET_MS,
     PER_HOOK_TIMEOUT_SEC,

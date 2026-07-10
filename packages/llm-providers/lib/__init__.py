@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Provider registry for the multi-provider agent loop (ADR-062).
 
 Each provider module exposes the canonical interface:
@@ -25,7 +25,7 @@ Advance rules (per ADR-062):
   claude (ClaudeExecutor) → advance ONLY on rate-limit (handled in dispatch.py)
 """
 
-from lib.providers import (
+from cos_lib.providers import (
     claude_sdk,
     deepseek,
     gemini,
@@ -75,7 +75,7 @@ def get_provider_profiles() -> "dict":
     Added in ADR-178 (OpenHarness primitive adoption).
     """
     try:
-        from lib.provider_profile import load_profiles  # type: ignore[import]
+        from cos_lib.provider_profile import load_profiles  # type: ignore[import]
         return load_profiles()
     except Exception:  # noqa: BLE001
         return {}

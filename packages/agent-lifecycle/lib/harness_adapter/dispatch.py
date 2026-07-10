@@ -2,12 +2,12 @@
 
 Usage from a shell hook:
 
-    python3 -c "import sys; from lib.harness_adapter.dispatch import handle_event; \
+    python3 -c "import sys; from cos_lib.harness_adapter.dispatch import handle_event; \
         handle_event(sys.stdin.read())"
 
 or as a module import::
 
-    from lib.harness_adapter.dispatch import handle_event
+    from cos_lib.harness_adapter.dispatch import handle_event
     handle_event(raw_payload)
 
 The dispatcher:

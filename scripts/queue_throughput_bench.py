@@ -126,8 +126,8 @@ def _worker_drain(
 ) -> None:
     """Drain the queue until *stop_event* is set and the queue is empty."""
     sys.path.insert(0, str(REPO_ROOT))
-    from lib.merge_queue import peek, dequeue, list_pending  # noqa: PLC0415
-    from lib.queue_rebase import is_ff_possible, rebase_onto  # noqa: PLC0415
+    from cos_lib.merge_queue import peek, dequeue, list_pending  # noqa: PLC0415
+    from cos_lib.queue_rebase import is_ff_possible, rebase_onto  # noqa: PLC0415
 
     auto_rebase = os.environ.get("COS_QUEUE_AUTO_REBASE", "1") == "1"
     target_branch = "main"
@@ -220,7 +220,7 @@ def _enqueue_session(
 ) -> None:
     """Enqueue a single session branch and record latency."""
     sys.path.insert(0, str(REPO_ROOT))
-    from lib.merge_queue import enqueue  # noqa: PLC0415
+    from cos_lib.merge_queue import enqueue  # noqa: PLC0415
 
     t0 = time.monotonic()
     eid = enqueue(branch, session_id, queue_path=queue_path)

@@ -42,7 +42,7 @@ import os, sys, json
 project = os.environ.get("PROJECT_DIR", ".")
 sys.path.insert(0, project)
 try:
-    from lib.skill_router import last_suggestion
+    from cos_lib.skill_router import last_suggestion
 except Exception:
     print("")
     sys.exit(0)

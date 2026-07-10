@@ -1,5 +1,5 @@
 """
-Unit tests for lib.learning_pipeline — LearningPipeline.
+Unit tests for cos_lib.learning_pipeline — LearningPipeline.
 
 Covers:
   - record_agent_completion feeds skill_archive
@@ -18,8 +18,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import pytest
-from lib.learning_pipeline import LearningPipeline, LearningTrigger
-from lib.consequence_engine import ConsequenceAction
+from cos_lib.learning_pipeline import LearningPipeline, LearningTrigger
+from cos_lib.consequence_engine import ConsequenceAction
 
 
 # ---------------------------------------------------------------------------
@@ -99,7 +99,7 @@ class TestRecordCompletion:
 class TestRecordError:
     def test_returns_error_correlation(self, isolated_pipeline):
         pipeline, _, _, _ = isolated_pipeline
-        from lib.learning_pipeline import ErrorCorrelation
+        from cos_lib.learning_pipeline import ErrorCorrelation
         correlation = pipeline.record_error(
             error_type="TEST_FAILURE",
             service="service-a",
@@ -154,7 +154,7 @@ class TestRecordError:
 class TestRecordFeedback:
     def test_returns_classification_result(self, isolated_pipeline):
         pipeline, _, _, _ = isolated_pipeline
-        from lib.prompt_classifier import ClassificationResult
+        from cos_lib.prompt_classifier import ClassificationResult
         result = pipeline.record_user_feedback("perfect, that's exactly what I needed")
         assert isinstance(result, ClassificationResult)
 

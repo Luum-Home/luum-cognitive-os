@@ -6,7 +6,7 @@ import json
 import subprocess
 from pathlib import Path
 
-from lib.self_improvement_loop import build_self_improvement_plan, write_plan
+from cos_lib.self_improvement_loop import build_self_improvement_plan, write_plan
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]

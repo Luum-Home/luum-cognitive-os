@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 import pytest
 
-from lib.session_lifecycle import inspect_pending, reap_decision, reap_sessions
+from cos_lib.session_lifecycle import inspect_pending, reap_decision, reap_sessions
 
 pytestmark = pytest.mark.behavior
 
@@ -44,7 +44,7 @@ def test_unresolved_task_keeps_session(tmp_path: Path) -> None:
 def test_pid_alive_keeps_any_age(tmp_path: Path) -> None:
     session = make_session(tmp_path, "sess-live", age_seconds=999999, pid=12345)
 
-    with patch("lib.session_lifecycle.pid_alive", return_value=True):
+    with patch("cos_lib.session_lifecycle.pid_alive", return_value=True):
         decision = reap_decision(session, grace_seconds=0)
 
     assert decision.decision == "KEEP_ACTIVE"
@@ -100,7 +100,7 @@ def test_live_current_session_marker_is_kept(tmp_path: Path) -> None:
     marker = sessions / ".current-session-12345"
     marker.write_text("live-session-id\n")
 
-    with patch("lib.session_lifecycle.pid_alive", return_value=True):
+    with patch("cos_lib.session_lifecycle.pid_alive", return_value=True):
         result = reap_sessions(tmp_path, grace_seconds=0)
 
     assert any(decision.path == str(marker) and decision.decision == "KEEP_ACTIVE" for decision in result.decisions)

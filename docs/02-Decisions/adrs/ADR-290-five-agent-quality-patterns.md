@@ -12,11 +12,11 @@ superseded_by:
 - ADR-294
 - ADR-295
 implementation_files:
-- lib/lazy_imports.py
-- lib/hook_event_types.py
-- lib/mcp_thread_bridge.py
-- lib/engram_wave3_schema.py
-- lib/agent_reflection.py
+- cos_lib/lazy_imports.py
+- cos_lib/hook_event_types.py
+- cos_lib/mcp_thread_bridge.py
+- cos_lib/engram_wave3_schema.py
+- cos_lib/agent_reflection.py
 tier: maintainer
 tags:
 - agents
@@ -184,7 +184,7 @@ Adopt five small, independent patterns. Each is delivered as one module plus one
 
 All five patterns are opt-in and additive.
 
-- **Pattern 1:** New code can `from lib.lazy_imports import LazyImport` immediately. Two existing sites are converted as the reference implementation.
+- **Pattern 1:** New code can `from cos_lib.lazy_imports import LazyImport` immediately. Two existing sites are converted as the reference implementation.
 - **Pattern 2:** Existing hooks continue to parse dicts manually. New hooks may import `parse_event` to obtain a typed event object. A future ADR may sweep the 237 existing hooks.
 - **Pattern 3:** Callers that today juggle an event loop manually can replace that code with one `MCPThreadBridge` per long-lived process.
 - **Pattern 4:** Writers may supply quality scores via the existing engram write path (the schema columns are nullable). Readers may pass `min_quality` to `search_bm25` to filter; the default is no filtering.

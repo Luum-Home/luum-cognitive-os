@@ -26,7 +26,7 @@ import json
 import sys
 from pathlib import Path
 
-from lib.cosd_auth_guard import append_audit, inspect_payload
+from cos_lib.cosd_auth_guard import append_audit, inspect_payload
 
 project = Path(sys.argv[1])
 try:

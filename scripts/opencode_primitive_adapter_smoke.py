@@ -22,7 +22,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from lib.smoke_report_cli import run_smoke_report_cli
+from cos_lib.smoke_report_cli import run_smoke_report_cli
 
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = ROOT / "packages" / "opencode-adapter" / "plugins" / "cos-primitive-guard.js"

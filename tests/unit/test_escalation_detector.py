@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.escalation_detector import (
+from cos_lib.escalation_detector import (
     DEFAULT_MAX_CALLS_BEFORE_CHECK,
     DEFAULT_MAX_SAME_ERROR,
     SAME_COMMAND_THRESHOLD,

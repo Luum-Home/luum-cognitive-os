@@ -1,8 +1,8 @@
-"""Unit tests for lib.format_converter token-efficient renderings."""
+"""Unit tests for cos_lib.format_converter token-efficient renderings."""
 
 import json
 
-from lib.format_converter import FormatConverter
+from cos_lib.format_converter import FormatConverter
 
 
 def test_markdown_table_escapes_pipes_and_truncates_cells():

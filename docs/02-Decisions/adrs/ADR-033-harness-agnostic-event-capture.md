@@ -136,7 +136,7 @@ class HarnessAdapter(ABC):
         # for most adapters; override only if destination depends on event type.
 ```
 
-Dispatch flow (`lib.harness_adapter.dispatch.handle_event`):
+Dispatch flow (`cos_lib.harness_adapter.dispatch.handle_event`):
 
 1. Decode raw string/bytes → dict.
 2. Iterate `ADAPTERS` (ordered, most specific first), pick first where `detect_harness` returns non-None.
@@ -196,7 +196,7 @@ Phased rollout (`v0.13.x` → `v0.15.0`):
 
 ## Acceptance summary
 
-- `from lib.harness_adapter.base import HarnessAdapter, CanonicalEvent` — OK
+- `from cos_lib.harness_adapter.base import HarnessAdapter, CanonicalEvent` — OK
 - `ClaudeCodeAdapter().name` → `HarnessName.CLAUDE_CODE` — OK
 - `AiderAdapter` importable — OK
 - `hooks/native-agent-heartbeat.sh` refactored — grep confirms `harness_adapter.dispatch`

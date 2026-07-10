@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from lib.cross_stack_license_audit import audit_workflows, classify_trivy_version, load_policy
+from cos_lib.cross_stack_license_audit import audit_workflows, classify_trivy_version, load_policy
 
 
 def _write_policy(repo: Path) -> None:

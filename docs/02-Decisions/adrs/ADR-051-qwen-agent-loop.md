@@ -138,8 +138,8 @@ Shipped in commit `feat(parity): ADR-051 Phase 4 — Agent() vs Qwen loop parity
 Deliverables:
 
 - `scripts/parity_harness.py` — CLI that takes a YAML task-set and runs every
-  task through BOTH `lib.qwen_agent_loop.run_agent(...)` and
-  `lib.claude_executor.ClaudeExecutor.run(...)`. Emits CSV (stable columns) +
+  task through BOTH `cos_lib.qwen_agent_loop.run_agent(...)` and
+  `cos_lib.claude_executor.ClaudeExecutor.run(...)`. Emits CSV (stable columns) +
   Markdown report (per-task winner on cost/latency) + one JSONL record per
   `(task, provider)` pair to `.cognitive-os/metrics/parity-results.jsonl`.
 - `docs/08-References/benchmarks/parity-smoke.yaml` — 4-task smoke set (read-file, grep,
@@ -256,7 +256,7 @@ Requires `ALIBABA_QWEN_API_KEY` in env:
 
 ```bash
 uv run python -c "
-from lib.qwen_agent_loop import run_agent
+from cos_lib.qwen_agent_loop import run_agent
 r = run_agent(
   'Read /tmp/hello.txt and tell me what word appears most often.',
   tools_allowed=['read_file'],

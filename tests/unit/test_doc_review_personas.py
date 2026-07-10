@@ -24,8 +24,8 @@ _REPO = Path(__file__).resolve().parent.parent.parent
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from lib import doc_review_personas as drp  # noqa: E402
-from lib import persona_library as pl  # noqa: E402
+from cos_lib import doc_review_personas as drp  # noqa: E402
+from cos_lib import persona_library as pl  # noqa: E402
 
 
 # ---------------------------------------------------------------------------

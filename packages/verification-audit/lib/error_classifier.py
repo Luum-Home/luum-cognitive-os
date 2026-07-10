@@ -528,7 +528,7 @@ def _deep_classify_record(record: Dict[str, Any]) -> Optional[RecordCategory]:
     if not os.environ.get("COS_ERROR_DEEP_CLASSIFY"):
         return None
     try:
-        from lib.dispatch import dispatch_prompt  # type: ignore
+        from cos_lib.dispatch import dispatch_prompt  # type: ignore
     except ImportError:
         return None
     prompt = (

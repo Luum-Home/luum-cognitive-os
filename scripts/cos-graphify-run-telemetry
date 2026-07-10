@@ -15,8 +15,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.session_parser import get_session_metrics  # noqa: E402
-from lib.token_usage import summarize_usage_jsonl  # noqa: E402
+from cos_lib.session_parser import get_session_metrics  # noqa: E402
+from cos_lib.token_usage import summarize_usage_jsonl  # noqa: E402
 
 
 def _read_json(path: Path) -> dict[str, Any]:
@@ -133,7 +133,7 @@ def _normalize_metrics(session_path: str) -> dict[str, Any]:
         "duration_minutes": structural_metrics.get("duration_minutes", 0.0),
         "message_count": int(structural_metrics.get("message_count", 0)),
         "thinking_count": int(structural_metrics.get("thinking_count", 0)),
-        "source": "lib.token_usage.summarize_usage_jsonl + lib.session_parser.get_session_metrics",
+        "source": "cos_lib.token_usage.summarize_usage_jsonl + cos_lib.session_parser.get_session_metrics",
         "telemetry_schema": "token-usage-normalized.v1",
     }
     metrics["total_tokens"] = _real_token_total(metrics)
@@ -241,7 +241,7 @@ def _render_markdown(payload: dict[str, Any]) -> str:
     lines = [
         "# Graphify Run Telemetry Report",
         "",
-        "This report joins Graphify preload selection with normalized real session telemetry. Preload token counts are deterministic local estimates; session token counts come from supported provider JSONL usage parsed by `lib.token_usage.py`; structural tool metrics are parsed by `lib.session_parser.py` when available.",
+        "This report joins Graphify preload selection with normalized real session telemetry. Preload token counts are deterministic local estimates; session token counts come from supported provider JSONL usage parsed by `cos_lib.token_usage.py`; structural tool metrics are parsed by `cos_lib.session_parser.py` when available.",
         "",
         "## Summary",
         "",

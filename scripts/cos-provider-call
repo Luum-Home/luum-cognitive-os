@@ -27,10 +27,10 @@ def main(argv: list[str] | None = None) -> int:
     if args.provider == "echo":
         return _emit({"success": True, "text": prompt, "tokens_in": len(prompt.split()), "tokens_out": 0, "cost_usd": 0.0, "error": "", "model": "echo", "provider_label": "echo"})
     if args.provider == "qwen":
-        from lib.dispatch import _try_qwen
+        from cos_lib.dispatch import _try_qwen
         result = _try_qwen(prompt, claude_model=args.claude_model)
     else:
-        from lib.dispatch import _try_registry_provider
+        from cos_lib.dispatch import _try_registry_provider
         result = _try_registry_provider(args.provider, prompt, claude_model=args.claude_model)
     if result is None:
         return _emit({"success": False, "text": "", "tokens_in": 0, "tokens_out": 0, "cost_usd": 0.0, "error": "provider unavailable", "model": "", "provider_label": args.provider})

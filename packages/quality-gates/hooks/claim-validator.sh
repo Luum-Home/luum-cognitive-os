@@ -107,7 +107,7 @@ response_path = sys.argv[2]
 sys.path.insert(0, project)
 try:
     text = open(response_path, encoding="utf-8", errors="replace").read()
-    from lib.orchestrator_verify import extract_high_stakes_claims
+    from cos_lib.orchestrator_verify import extract_high_stakes_claims
     for claim in extract_high_stakes_claims(text):
         print(json.dumps({"verb": claim.verb, "target": claim.target, "raw_text": claim.raw_text}, sort_keys=True))
 except Exception:

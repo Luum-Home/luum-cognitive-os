@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from lib.tool_discovery_preuse import evaluate_command
+from cos_lib.tool_discovery_preuse import evaluate_command
 
 
 def test_blocks_ad_hoc_license_audit_command(project_root: Path) -> None:

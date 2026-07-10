@@ -1,4 +1,4 @@
-"""Unit tests for lib.history_rewrite_ledger (ADR-269 Primitive 1)."""
+"""Unit tests for cos_lib.history_rewrite_ledger (ADR-269 Primitive 1)."""
 from __future__ import annotations
 
 from pathlib import Path
@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 import yaml
 
-from lib.history_rewrite_ledger import (
+from cos_lib.history_rewrite_ledger import (
     LedgerEntry,
     LedgerError,
     SCHEMA_VERSION,

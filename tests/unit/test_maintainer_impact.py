@@ -2,7 +2,7 @@ import json
 import subprocess
 from pathlib import Path
 
-from lib.maintainer_impact import build_decision_event, impact_report
+from cos_lib.maintainer_impact import build_decision_event, impact_report
 
 REPO = Path(__file__).resolve().parents[2]
 
@@ -105,7 +105,7 @@ def test_maintainer_impact_cli_records_and_reports(tmp_path: Path) -> None:
 
 
 def test_post_change_impact_record_captures_metrics_work_id_and_failure_protocol(tmp_path: Path) -> None:
-    from lib.maintainer_impact import (
+    from cos_lib.maintainer_impact import (
         append_post_change_impact_event,
         build_post_change_impact_event,
         post_change_impact_report,

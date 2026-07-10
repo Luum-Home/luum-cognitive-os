@@ -17,7 +17,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 # Ensure lib/ is importable when running tests directly
-_LIB_DIR = str(Path(__file__).resolve().parent.parent.parent / "lib")
+_LIB_DIR = str(Path(__file__).resolve().parent.parent.parent / "cos_lib")
 if _LIB_DIR not in sys.path:
     sys.path.insert(0, _LIB_DIR)
 
@@ -144,12 +144,12 @@ class TestIsAdvisorAvailable:
 
     def test_returns_true_when_executor_and_config_enabled(self, monkeypatch):
         monkeypatch.setenv("ORCHESTRATOR_MODE", "executor")
-        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+        with patch("cos_lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
             assert is_advisor_available() is True
 
     def test_case_insensitive(self, monkeypatch):
         monkeypatch.setenv("ORCHESTRATOR_MODE", "EXECUTOR")
-        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+        with patch("cos_lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
             assert is_advisor_available() is True
 
     def test_returns_false_for_other_values(self, monkeypatch):
@@ -165,7 +165,7 @@ class TestIsAdvisorAvailable:
 class TestSelectModelAdvisor:
     def test_advisor_task_in_executor_mode_returns_sentinel(self, monkeypatch):
         monkeypatch.setenv("ORCHESTRATOR_MODE", "executor")
-        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+        with patch("cos_lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
             result = select_model("sdd-apply")
         assert result == SONNET_ADVISOR_TIER
 
@@ -176,7 +176,7 @@ class TestSelectModelAdvisor:
 
     def test_non_advisor_task_in_executor_mode_returns_normal_model(self, monkeypatch):
         monkeypatch.setenv("ORCHESTRATOR_MODE", "executor")
-        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+        with patch("cos_lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
             result = select_model("sdd-propose")
         assert result != SONNET_ADVISOR_TIER
 
@@ -187,26 +187,26 @@ class TestSelectModelAdvisor:
 
     def test_advisor_preference_true_returns_sentinel_when_available(self, monkeypatch):
         monkeypatch.setenv("ORCHESTRATOR_MODE", "executor")
-        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+        with patch("cos_lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
             result = select_model("sdd-verify", use_advisor=True)
         assert result == SONNET_ADVISOR_TIER
 
     def test_advisor_override_false_suppresses_sentinel(self, monkeypatch):
         monkeypatch.setenv("ORCHESTRATOR_MODE", "executor")
-        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+        with patch("cos_lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
             result = select_model("sdd-verify", use_advisor=False)
         assert result != SONNET_ADVISOR_TIER
 
     def test_prefer_local_suppresses_advisor(self, monkeypatch):
         monkeypatch.setenv("ORCHESTRATOR_MODE", "executor")
-        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+        with patch("cos_lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
             result = select_model("sdd-apply", prefer_local=True)
         # When prefer_local=True, advisor is skipped
         assert result != SONNET_ADVISOR_TIER
 
     def test_all_advisor_tasks_return_sentinel_in_executor_mode(self, monkeypatch):
         monkeypatch.setenv("ORCHESTRATOR_MODE", "executor")
-        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+        with patch("cos_lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
             for task in ADVISOR_TASKS:
                 result = select_model(task)
                 assert result == SONNET_ADVISOR_TIER, (
@@ -293,7 +293,7 @@ class TestRunWithAdvisor:
         mock_anthropic_module = MagicMock()
         mock_anthropic_module.Anthropic.return_value = mock_client
 
-        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+        with patch("cos_lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
             with patch.dict("sys.modules", {"anthropic": mock_anthropic_module}):
                 executor = ClaudeExecutor()
                 result = executor.run_with_advisor("test prompt")
@@ -315,7 +315,7 @@ class TestRunWithAdvisor:
         mock_anthropic_module = MagicMock()
         mock_anthropic_module.Anthropic.return_value = mock_client
 
-        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+        with patch("cos_lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
             with patch.dict("sys.modules", {"anthropic": mock_anthropic_module}):
                 executor = ClaudeExecutor()
                 executor.run_with_advisor("test prompt", max_advisor_uses=2)
@@ -349,7 +349,7 @@ class TestRunWithAdvisor:
         mock_anthropic_module = MagicMock()
         mock_anthropic_module.Anthropic.return_value = mock_client
 
-        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+        with patch("cos_lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
             with patch.dict("sys.modules", {"anthropic": mock_anthropic_module}):
                 executor = ClaudeExecutor()
                 result = executor.run_with_advisor("test prompt")
@@ -362,7 +362,7 @@ class TestRunWithAdvisor:
         monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
 
         executor = ClaudeExecutor()
-        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+        with patch("cos_lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
             with patch.object(executor, "run", return_value=ClaudeResult(success=True, result_text="fallback")) as mock_run:
                 result = executor.run_with_advisor("test prompt")
 
@@ -383,7 +383,7 @@ class TestRunWithAdvisor:
         monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-test-key")
 
         # Remove anthropic from sys.modules and block import
-        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+        with patch("cos_lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
             with patch.dict("sys.modules", {"anthropic": None}):
                 executor = ClaudeExecutor()
                 with patch.object(executor, "run", return_value=ClaudeResult(success=True, result_text="cli-fallback")) as mock_run:
@@ -401,7 +401,7 @@ class TestRunWithAdvisor:
         mock_anthropic_module = MagicMock()
         mock_anthropic_module.Anthropic.return_value = mock_client
 
-        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+        with patch("cos_lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
             with patch.dict("sys.modules", {"anthropic": mock_anthropic_module}):
                 executor = ClaudeExecutor()
                 result = executor.run_with_advisor("test prompt")
@@ -420,7 +420,7 @@ class TestRunWithAdvisor:
         mock_anthropic_module = MagicMock()
         mock_anthropic_module.Anthropic.return_value = mock_client
 
-        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+        with patch("cos_lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
             with patch.dict("sys.modules", {"anthropic": mock_anthropic_module}):
                 executor = ClaudeExecutor()
                 executor.run_with_advisor("test prompt", system_prompt="You are an expert.")
@@ -441,7 +441,7 @@ class TestRunAuto:
         mock_anthropic_module = MagicMock()
         executor = ClaudeExecutor()
 
-        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+        with patch("cos_lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
             with patch.dict("sys.modules", {"anthropic": mock_anthropic_module}):
                 with patch.object(
                     executor,
@@ -457,7 +457,7 @@ class TestRunAuto:
         monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
 
         executor = ClaudeExecutor()
-        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+        with patch("cos_lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
             with patch.object(
                 executor, "run", return_value=ClaudeResult(success=True, result_text="sonnet-cli")
             ) as mock_run:
@@ -487,7 +487,7 @@ class TestRunAuto:
         monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-test-key")
 
         executor = ClaudeExecutor()
-        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+        with patch("cos_lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
             with patch.dict("sys.modules", {"anthropic": None}):
                 with patch.object(
                     executor, "run", return_value=ClaudeResult(success=True, result_text="sonnet-cli")
@@ -538,7 +538,7 @@ class TestRunAuto:
         mock_anthropic_module = MagicMock()
         mock_anthropic_module.Anthropic.return_value = mock_client
 
-        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+        with patch("cos_lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
             with patch.dict("sys.modules", {"anthropic": mock_anthropic_module}):
                 executor = ClaudeExecutor()
                 result = executor.run_auto("prompt", model=SONNET_ADVISOR_TIER)

@@ -16,7 +16,7 @@ from typing import Any
 
 import yaml
 
-from lib.routing_benchmark import LANGUAGES, load_corpus, load_skill_catalog
+from cos_lib.routing_benchmark import LANGUAGES, load_corpus, load_skill_catalog
 
 
 @dataclass(frozen=True)

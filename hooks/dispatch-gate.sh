@@ -37,7 +37,7 @@ _enqueue_blocked_agent() {
     queue_result=$(PYTHONPATH="$_PROJECT_DIR${PYTHONPATH:+:$PYTHONPATH}" COGNITIVE_OS_PROJECT_DIR="$_PROJECT_DIR" COS_DISPATCH_STDIN="$stdin_json" python3 - <<'PYQUEUE' 2>/dev/null
 import json, os, re
 try:
-    from lib.queue_drainer import QueueDrainer
+    from cos_lib.queue_drainer import QueueDrainer
     stdin_raw = os.environ.get("COS_DISPATCH_STDIN", "{}")
     try:
         d = json.loads(stdin_raw) if stdin_raw.strip() else {}

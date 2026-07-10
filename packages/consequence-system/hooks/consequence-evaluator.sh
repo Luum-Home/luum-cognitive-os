@@ -47,7 +47,7 @@ fi
 python3 -c "
 import sys
 sys.path.insert(0, '.')
-from lib.consequence_engine import ConsequenceEngine, PerformanceRecord
+from cos_lib.consequence_engine import ConsequenceEngine, PerformanceRecord
 from datetime import datetime, timezone
 
 engine = ConsequenceEngine()

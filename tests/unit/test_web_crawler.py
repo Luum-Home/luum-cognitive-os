@@ -27,10 +27,10 @@ if str(PROJECT_ROOT) not in sys.path:
 
 
 def _reload_module():
-    """Force-reimport lib.web_crawler so availability flags refresh."""
-    if "lib.web_crawler" in sys.modules:
-        del sys.modules["lib.web_crawler"]
-    import lib.web_crawler as wc
+    """Force-reimport cos_lib.web_crawler so availability flags refresh."""
+    if "cos_lib.web_crawler" in sys.modules:
+        del sys.modules["cos_lib.web_crawler"]
+    import cos_lib.web_crawler as wc
     return wc
 
 

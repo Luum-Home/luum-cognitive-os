@@ -31,7 +31,7 @@ remote-tracking refs. This report's implementation closes that gap.
 | `scripts/cos-pre-public-risk-audit` | No | No | Could warn on missing remote only | Already extended in `9742e28c` to warn on missing upstream |
 | `lib/history_sanitization.py` | Yes (`execute`) | Restored remotes only | **Gap**: upstream config/ref could be lost | Added snapshot/restore/ref-refresh |
 | `scripts/cos-filter-repo-wrap.sh` | Yes (`git filter-repo` wrapper) | Restored remotes only | **Gap**: direct wrapper calls could lose upstream | Added snapshot/restore/ref-refresh |
-| `scripts/cos-history-sanitization` | Delegates to `lib.history_sanitization.execute` | Delegated | Inherits library gap | Covered by library fix |
+| `scripts/cos-history-sanitization` | Delegates to `cos_lib.history_sanitization.execute` | Delegated | Inherits library gap | Covered by library fix |
 | `scripts/install-git-filter-repo.sh` | No | No | None | No action |
 | `hooks/control-plane-audit.sh` | No | No | Mentions `filter-repo` as audit text only | No action |
 | `hooks/destructive-git-blocker.sh` | No direct rewrite | No | Blocks/warns around destructive git; false-positive grep hits only | No action |
@@ -60,7 +60,7 @@ Added:
 ### `scripts/cos-filter-repo-wrap.sh`
 
 Added the same protection for direct wrapper use, because operators/tests can
-call the wrapper without going through `lib.history_sanitization.execute`:
+call the wrapper without going through `cos_lib.history_sanitization.execute`:
 
 - snapshot upstream tracking before `git-filter-repo`;
 - restore branch config after remotes are restored;

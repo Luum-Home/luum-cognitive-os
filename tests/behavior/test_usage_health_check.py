@@ -135,7 +135,7 @@ def test_tracker_import_works():
         [
             "python3",
             "-c",
-            "from lib.component_usage_tracker import ComponentUsageTracker; "
+            "from cos_lib.component_usage_tracker import ComponentUsageTracker; "
             "t = ComponentUsageTracker(); print('ok')",
         ],
         capture_output=True,

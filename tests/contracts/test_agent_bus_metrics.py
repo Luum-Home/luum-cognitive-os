@@ -1,4 +1,4 @@
-"""Contract tests for lib.agent_bus_metrics.
+"""Contract tests for cos_lib.agent_bus_metrics.
 
 Runnable without a live Valkey instance: every test exercises the
 FallbackBus path. Behavioral only — no "file exists" checks.
@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.agent_bus_metrics import AgentBusMetrics
+from cos_lib.agent_bus_metrics import AgentBusMetrics
 
 
 @pytest.fixture

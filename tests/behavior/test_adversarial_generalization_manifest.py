@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from lib.adversarial_rubric import evaluate_fixture, evaluate_scenario, generate_fixture, load_scenarios
+from cos_lib.adversarial_rubric import evaluate_fixture, evaluate_scenario, generate_fixture, load_scenarios
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 SCENARIOS = PROJECT_ROOT / ".cognitive-os" / "tests" / "adversarial-generalization" / "scenarios.yaml"

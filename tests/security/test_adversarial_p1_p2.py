@@ -5,7 +5,7 @@ import json, subprocess
 from pathlib import Path
 import yaml
 
-from lib.memory_scanner import MemoryScanner
+from cos_lib.memory_scanner import MemoryScanner
 from scripts.dangerous_env_flag_detector import detect as detect_flags
 from scripts.metrics_tamper_audit import audit_file
 from scripts.mcp_tofu_audit import audit as mcp_audit

@@ -32,7 +32,7 @@ _HERE = Path(__file__).resolve()
 _REPO_ROOT = _HERE.parents[2]
 sys.path.insert(0, str(_REPO_ROOT))
 
-from lib.event_bus import (  # noqa: E402
+from cos_lib.event_bus import (  # noqa: E402
     emit,
     tail,
     stats,
@@ -81,7 +81,7 @@ def test_emit_tail_roundtrip(tmp_path: Path) -> None:
 
 def _worker_emit(bus_path_str: str, event_type: str, n: int, session_id: str) -> None:
     """Subprocess worker: emit n events."""
-    from lib.event_bus import emit as _emit  # noqa: PLC0415
+    from cos_lib.event_bus import emit as _emit  # noqa: PLC0415
     for i in range(n):
         _emit(event_type, {"idx": i}, session_id=session_id, bus_path=bus_path_str)
 

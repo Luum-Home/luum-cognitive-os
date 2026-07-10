@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from lib.reward_signal_quality import audit_stream, known_skill_ids, load_contract, repair_streams, summarize, validate_row
+from cos_lib.reward_signal_quality import audit_stream, known_skill_ids, load_contract, repair_streams, summarize, validate_row
 
 
 REPO = Path(__file__).resolve().parents[2]

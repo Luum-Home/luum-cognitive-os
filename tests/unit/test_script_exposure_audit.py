@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from lib.script_exposure_audit import build_audit, classify_script, render_markdown
+from cos_lib.script_exposure_audit import build_audit, classify_script, render_markdown
 
 
 def _row(path: str, role: str, *, skill: int = 0, total: int = 0, families: dict[str, int] | None = None) -> dict:

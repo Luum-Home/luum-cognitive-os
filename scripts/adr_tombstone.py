@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Iterable, Sequence
 
 try:
-    from lib.session_coordination import adr_tombstone_findings
+    from cos_lib.session_coordination import adr_tombstone_findings
 except Exception:  # pragma: no cover - script must remain importable in minimal copies
     adr_tombstone_findings = None
 

@@ -10,8 +10,8 @@ import time
 from dataclasses import dataclass
 from pathlib import Path
 
-from lib.retry_classifier import FailureClass, RetryPolicy, classify_failure, retry_policy_for
-from lib.session_budget import SessionBudget, SessionBudgetExceeded
+from cos_lib.retry_classifier import FailureClass, RetryPolicy, classify_failure, retry_policy_for
+from cos_lib.session_budget import SessionBudget, SessionBudgetExceeded
 
 
 def _as_float(value: object, default: float = 0.0) -> float:

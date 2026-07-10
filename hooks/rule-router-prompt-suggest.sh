@@ -62,7 +62,7 @@ session_id  = os.environ.get("_RRPS_SESSION", "unknown")
 prompt_text = os.environ.get("_RRPS_PROMPT", "")
 
 try:
-    from lib.rule_router import RuleRouter
+    from cos_lib.rule_router import RuleRouter
 except Exception:
     sys.exit(0)
 

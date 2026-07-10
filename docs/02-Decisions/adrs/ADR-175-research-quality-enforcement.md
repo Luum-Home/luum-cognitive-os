@@ -8,10 +8,10 @@ date: 2026-05-05
 supersedes: []
 superseded_by: null
 implementation_files:
-  - lib/research_quality_advisor.py
+  - cos_lib/research_quality_advisor.py
   - hooks/research-quality-validator.sh
   - packages/consequence-system/hooks/consequence-evaluator.sh
-  - lib/dispatch_model_advisor.py
+  - cos_lib/dispatch_model_advisor.py
   - tests/unit/test_research_quality_advisor.py
   - tests/unit/test_research_quality_validator_hook.py
   - tests/unit/test_dispatch_model_advisor_adr069.py

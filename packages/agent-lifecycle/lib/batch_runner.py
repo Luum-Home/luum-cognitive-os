@@ -53,7 +53,7 @@ _LIB_DIR = str(Path(__file__).resolve().parent)
 if _LIB_DIR not in sys.path:
     sys.path.insert(0, _LIB_DIR)
 
-from lib.claude_executor import ClaudeExecutor, ClaudeResult
+from cos_lib.claude_executor import ClaudeExecutor, ClaudeResult
 
 # ---------------------------------------------------------------------------
 # SDD phase constants

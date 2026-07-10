@@ -3,7 +3,7 @@
 import json
 import pytest
 
-from lib.smart_access import SmartAccess
+from cos_lib.smart_access import SmartAccess
 
 
 # ---------------------------------------------------------------------------

@@ -6,7 +6,7 @@
 Markers live in .cognitive-os/runtime/review-pending-*.json and are created by
 hooks/review-spawner.sh when review.async=true.  The sweeper is intentionally
 small and idempotent: each marker is rewritten as completed/failed by
-lib.review_agent.process_review_request().
+cos_lib.review_agent.process_review_request().
 """
 from __future__ import annotations
 
@@ -37,7 +37,7 @@ def main() -> int:
     project = _project_dir(args.project_dir)
     sys.path.insert(0, str(project))
 
-    from lib.review_agent import process_review_request  # noqa: PLC0415
+    from cos_lib.review_agent import process_review_request  # noqa: PLC0415
 
     runtime = project / ".cognitive-os" / "runtime"
     findings = project / ".cognitive-os" / "metrics" / "review-findings.jsonl"

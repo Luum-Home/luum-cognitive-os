@@ -16,8 +16,8 @@ RESULT_JSON=$(PAYLOAD_JSON="$_STDIN_JSON" PYTHONPATH="$HOOK_DIR${PYTHONPATH:+:$P
 import json
 import os
 import sys
-from lib.lethal_trifecta import classify_json
-from lib.metric_event import MetricEvent, append_event
+from cos_lib.lethal_trifecta import classify_json
+from cos_lib.metric_event import MetricEvent, append_event
 
 result = classify_json(os.environ.get("PAYLOAD_JSON", "{}"))
 append_event(

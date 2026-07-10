@@ -179,7 +179,7 @@ class TestCheckpointDirectory:
 
     def test_checkpoint_dir_created_on_use(self, tmp_path):
         """CheckpointManager creates checkpoint dir when needed."""
-        from lib.checkpoint_manager import CheckpointManager
+        from cos_lib.checkpoint_manager import CheckpointManager
 
         mgr = CheckpointManager(
             checkpoint_dir=".cognitive-os/checkpoints",

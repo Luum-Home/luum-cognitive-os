@@ -49,7 +49,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(".").resolve()))
 
-from lib.providers import REGISTRY
+from cos_lib.providers import REGISTRY
 
 def _timeout_handler(signum, frame):
     raise TimeoutError("timed out after 30s")

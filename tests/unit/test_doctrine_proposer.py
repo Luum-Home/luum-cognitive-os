@@ -6,8 +6,8 @@ import json
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-from lib.doctrine_proposer import build_doctrine_proposals, render_markdown, write_markdown
-from lib.skill_store import SkillStore
+from cos_lib.doctrine_proposer import build_doctrine_proposals, render_markdown, write_markdown
+from cos_lib.skill_store import SkillStore
 from scripts.cos_doctrine_proposer import _skillstore_signal
 
 

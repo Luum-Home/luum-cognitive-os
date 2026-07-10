@@ -11,7 +11,7 @@ extends: [ADR-163]
 implementation_files:
   - scripts/cosd                            # existing minimal control-plane wrapper; extend for daemon mode
   - scripts/cos_daemon.py
-  - lib/intent_arbiter.py
+  - cos_lib/intent_arbiter.py
   - hooks/cosd-intent-submit.sh
   - tests/integration/test_cosd_daemon.py
 tier: maintainer

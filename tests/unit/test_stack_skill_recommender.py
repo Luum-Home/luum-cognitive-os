@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.stack_skill_recommender import (
+from cos_lib.stack_skill_recommender import (
     StackSkillRecommender,
 )
 

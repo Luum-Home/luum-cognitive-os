@@ -1,4 +1,4 @@
-"""Unit tests for lib.cosd_grant (ADR-260)."""
+"""Unit tests for cos_lib.cosd_grant (ADR-260)."""
 from __future__ import annotations
 
 import secrets
@@ -7,8 +7,8 @@ from pathlib import Path
 
 import pytest
 
-from lib.cosd_grant import GrantClaims, issue_token, verify_token
-from lib.cosd_grant_store import GrantNonceStore
+from cos_lib.cosd_grant import GrantClaims, issue_token, verify_token
+from cos_lib.cosd_grant_store import GrantNonceStore
 
 
 @pytest.fixture

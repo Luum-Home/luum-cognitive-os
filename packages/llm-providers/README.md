@@ -18,7 +18,7 @@ Multi-provider OpenAI-compatible wrappers for the Cognitive OS agent loop (ADR-0
 ## Symlink
 
 `lib/providers` in the repo root is a symlink to this package's `lib/` directory,
-allowing code to import as `from lib.providers.qwen import QwenProvider`.
+allowing code to import as `from cos_lib.providers.qwen import QwenProvider`.
 
 ## Design
 

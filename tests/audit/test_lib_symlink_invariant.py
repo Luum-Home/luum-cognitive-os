@@ -63,8 +63,8 @@ def test_clean_state_no_errors(tmp_path):
     pkg_file = tmp_path / "packages" / "mypkg" / "lib" / "shared.py"
     _write(pkg_file, "# canonical\nVERSION = 1\n")
 
-    # lib/shared.py — proper symlink pointing at the package file
-    lib_dir = tmp_path / "lib"
+    # cos_lib/shared.py — proper symlink pointing at the package file
+    lib_dir = tmp_path / "cos_lib"
     lib_dir.mkdir(parents=True, exist_ok=True)
     lib_link = lib_dir / "shared.py"
     os.symlink(pkg_file, lib_link)
@@ -88,7 +88,7 @@ def test_silent_drift_detected(tmp_path):
     pkg_file = tmp_path / "packages" / "mypkg" / "lib" / "worker.py"
     _write(pkg_file, "# package version\nVERSION = 2\n")
 
-    lib_file = tmp_path / "lib" / "worker.py"
+    lib_file = tmp_path / "cos_lib" / "worker.py"
     _write(lib_file, "# root version — drifted\nVERSION = 99\n")
 
     result = run_audit(tmp_path, scope="both")
@@ -116,7 +116,7 @@ def test_real_file_dupe_is_warn_not_error(tmp_path):
     pkg_file = tmp_path / "packages" / "mypkg" / "lib" / "utils.py"
     _write(pkg_file, shared_content)
 
-    lib_file = tmp_path / "lib" / "utils.py"
+    lib_file = tmp_path / "cos_lib" / "utils.py"
     _write(lib_file, shared_content)
 
     result = run_audit(tmp_path, scope="both")
@@ -140,8 +140,8 @@ def test_real_file_dupe_is_warn_not_error(tmp_path):
 
 @pytest.mark.audit
 def test_dangling_symlink_is_error(tmp_path):
-    """lib/X.py is a symlink to a non-existent path → ERROR."""
-    lib_dir = tmp_path / "lib"
+    """cos_lib/X.py is a symlink to a non-existent path → ERROR."""
+    lib_dir = tmp_path / "cos_lib"
     lib_dir.mkdir(parents=True, exist_ok=True)
 
     # Symlink pointing at a path that does not exist

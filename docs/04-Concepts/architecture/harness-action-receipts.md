@@ -235,7 +235,7 @@ Initial VCS events:
 | `vcs.push` | Refs were pushed to a remote. | `observed` from remote-ref verification, `verified` from pre-push refs, `authoritative` from provider/protected landing acceptance. |
 | `vcs.push.blocked` | A governed guard blocked a push. | `verified` from `direct-main-guard` or pre-push guard. |
 | `vcs.pr.create` | Pull/merge request was opened. | `observed` or `verified` from provider API/CLI. |
-| `vcs.merge.enqueue` | Branch was queued for landing. | `verified` from `lib.merge_queue.enqueue`. |
+| `vcs.merge.enqueue` | Branch was queued for landing. | `verified` from `cos_lib.merge_queue.enqueue`. |
 | `vcs.merge.land` | Protected branch advanced through governed landing. | `authoritative` from merge queue, server hook, or provider-native merge queue. |
 | `vcs.bypass` | Emergency direct-main or safety bypass occurred. | `verified` when written by a guard; must include reason and actor. |
 | `vcs.conflict.detected` | Collision or stale work was detected. | `verified` from content-hash dedupe, push collision check, or merge queue rebase conflict. |
@@ -296,7 +296,7 @@ still requires remote evidence.
 
 The merge queue is an authoritative source for local protected landing. It
 already emits `merge_queued`, `merge_completed`, and `merge_failed` through
-`lib.event_bus`. A future adapter can mirror those into:
+`cos_lib.event_bus`. A future adapter can mirror those into:
 
 ```text
 vcs.merge.enqueue
@@ -371,7 +371,7 @@ Existing governed Git surfaces now emit receipts best-effort:
 
 Remaining Phase 2 hardening:
 
-- mirror `lib.merge_queue` API events directly into receipts;
+- mirror `cos_lib.merge_queue` API events directly into receipts;
 - add post-commit/post-push hook adapters where installed by Git rather than agent harnesses.
 
 ### Phase 3 — Harness directive adapters

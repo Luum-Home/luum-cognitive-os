@@ -4,7 +4,7 @@ Unit tests for lib/memory_retriever.py
 
 import pytest
 import sqlite3
-from lib.memory_retriever import MemoryRetriever, RetrievalResult
+from cos_lib.memory_retriever import MemoryRetriever, RetrievalResult
 
 
 class TestJaccardSimilarity:

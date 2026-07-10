@@ -13,7 +13,7 @@ import json
 
 import pytest
 
-from lib.retry_tracker import approach_seen, approaches_tried, record_attempt
+from cos_lib.retry_tracker import approach_seen, approaches_tried, record_attempt
 
 
 @pytest.fixture()

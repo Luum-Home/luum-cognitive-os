@@ -92,7 +92,7 @@ class EvaluatorVerdict:
 
 ## 4. CLI Surface
 
-Initial script: `scripts/cos-goal` wrapping `python -m lib.goal_cli` or `scripts/cos_goal.py`.
+Initial script: `scripts/cos-goal` wrapping `python -m cos_lib.goal_cli` or `scripts/cos_goal.py`.
 
 Commands:
 
@@ -180,12 +180,12 @@ Budget checks run before rule evaluation in this order:
 
 1. `max_turns`: incremented once per Stop-hook cycle with new evidence. Stored in `GoalState.turns_used`.
 2. `wall_clock_minutes`: `time.time() - GoalState.started_at_epoch` / 60. Stored as a derived check; no extra field needed.
-3. `max_tokens`: cumulative `tokens_in + tokens_out` across all dispatches that occurred while this goal was active. Read by filtering `.cognitive-os/metrics/llm-dispatch.jsonl` for records with `ts >= GoalState.created_at`. The file path is resolved via `lib.dispatch._metrics_path()` (returns `<project_root>/.cognitive-os/metrics/llm-dispatch.jsonl`). Each JSONL line has the fields `tokens_in` (int), `tokens_out` (int), `ts` (ISO-8601 string), `dispatch_id` (str).
+3. `max_tokens`: cumulative `tokens_in + tokens_out` across all dispatches that occurred while this goal was active. Read by filtering `.cognitive-os/metrics/llm-dispatch.jsonl` for records with `ts >= GoalState.created_at`. The file path is resolved via `cos_lib.dispatch._metrics_path()` (returns `<project_root>/.cognitive-os/metrics/llm-dispatch.jsonl`). Each JSONL line has the fields `tokens_in` (int), `tokens_out` (int), `ts` (ISO-8601 string), `dispatch_id` (str).
 4. `max_cost_usd`: cumulative `cost_usd` across the same filtered dispatch records.
 
 **How to read dispatch metrics in `lib/goal_budget.py`**:
 ```python
-from lib.dispatch import _metrics_path
+from cos_lib.dispatch import _metrics_path
 import json, datetime
 
 def _goal_dispatch_totals(goal_created_at: str, project_dir=None) -> tuple[int, float]:
@@ -251,7 +251,7 @@ Invalid transitions should fail with a machine-readable reason.
 3. Resolved: `goal-stop-gate.sh` belongs to standard/paranoid profiles, with minimal status-only unless opted in.
 4. Resolved (OD-001, 2026-05-18, operator): MVP uses deterministic self-evaluation with declarative rule types (`file_exists`, `test_command_passes`, `regex_match`, `command_exit_zero`). Model-evaluator seam noted in §6 but not wired.
 5. Resolved for MVP: evidence packet extraction is explicit (`scripts/cos-goal evaluate --evidence-file <path>`); transcript scraping is post-MVP.
-6. Resolved (OD-002, 2026-05-18, operator): All four budget dimensions enforced in MVP. Token/cost read from `.cognitive-os/metrics/llm-dispatch.jsonl` via `lib.dispatch._metrics_path()`. See §8 for implementation details.
+6. Resolved (OD-002, 2026-05-18, operator): All four budget dimensions enforced in MVP. Token/cost read from `.cognitive-os/metrics/llm-dispatch.jsonl` via `cos_lib.dispatch._metrics_path()`. See §8 for implementation details.
 
 ## 14. Recommended MVP Cut
 

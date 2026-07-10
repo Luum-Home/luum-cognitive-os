@@ -9,7 +9,7 @@ from pathlib import Path
 from unittest.mock import MagicMock
 
 
-from lib.agent_output_monitor import (
+from cos_lib.agent_output_monitor import (
     AgentOutputMonitor,
     AgentStatus,
     _parse_lines,
@@ -365,7 +365,7 @@ class TestAgentOutputBridgeSync:
         for name in ("agent1", "agent2"):
             _write_jsonl(tmp_path, "%s.jsonl" % name, [_assistant_msg("working")])
 
-        from lib.agent_output_to_bus import AgentOutputBridge
+        from cos_lib.agent_output_to_bus import AgentOutputBridge
 
         bridge = AgentOutputBridge(
             output_dir=str(tmp_path),
@@ -391,7 +391,7 @@ class TestAgentOutputBridgeSync:
         lines = [_assistant_msg("PROGRESS: [step 1/2] starting")]
         _write_jsonl(tmp_path, "worker.jsonl", lines)
 
-        from lib.agent_output_to_bus import AgentOutputBridge
+        from cos_lib.agent_output_to_bus import AgentOutputBridge
 
         mock_publisher = MagicMock()
 
@@ -412,7 +412,7 @@ class TestAgentOutputBridgeSync:
 
     def test_bridge_sync_empty_dir(self, tmp_path):
         """Bridge.sync_once() on empty dir returns empty list without error."""
-        from lib.agent_output_to_bus import AgentOutputBridge
+        from cos_lib.agent_output_to_bus import AgentOutputBridge
 
         bridge = AgentOutputBridge(output_dir=str(tmp_path))
         result = bridge.sync_once()
@@ -426,7 +426,7 @@ class TestAgentOutputBridgeSync:
         old_time = time.time() - 600
         os.utime(path, (old_time, old_time))
 
-        from lib.agent_output_to_bus import AgentOutputBridge
+        from cos_lib.agent_output_to_bus import AgentOutputBridge
 
         mock_publisher = MagicMock()
         bridge = AgentOutputBridge(output_dir=str(tmp_path))

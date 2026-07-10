@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from lib.harness_adapter.base import (
+from cos_lib.harness_adapter.base import (
     AgentEnd,
     AgentStart,
     CanonicalEvent,
@@ -52,8 +52,8 @@ class TestCanonicalEvents:
 
     def test_detect_harness_returns_none_for_unknown(self):
         """An adapter must return None when the payload is foreign to it."""
-        from lib.harness_adapter.claude_code import ClaudeCodeAdapter
-        from lib.harness_adapter.aider import AiderAdapter
+        from cos_lib.harness_adapter.claude_code import ClaudeCodeAdapter
+        from cos_lib.harness_adapter.aider import AiderAdapter
 
         assert ClaudeCodeAdapter.detect_harness({"random": "payload"}) is None
         assert AiderAdapter.detect_harness({"random": "payload"}) is None
@@ -66,7 +66,7 @@ class TestCanonicalEvents:
 
 def test_read_inbound_signals_reads_control_answer_and_interrupt(tmp_path):
     import json
-    from lib.harness_adapter.base import InboundSignal, read_inbound_signals
+    from cos_lib.harness_adapter.base import InboundSignal, read_inbound_signals
 
     agent_dir = tmp_path / ".cognitive-os" / "agent-bus" / "agent-1"
     agent_dir.mkdir(parents=True)

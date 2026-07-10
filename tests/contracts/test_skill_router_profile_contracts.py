@@ -13,7 +13,7 @@ from pathlib import Path
 import pytest
 import yaml
 
-from lib.skill_router import (
+from cos_lib.skill_router import (
     SkillRouter,
     SkillRoutingIndexCache,
     _detect_skill_md_paths,

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from lib.portability_proof_paths import paired_candidates, suggested_test_path
+from cos_lib.portability_proof_paths import paired_candidates, suggested_test_path
 
 
 def test_root_skill_uses_skill_specific_proof_path() -> None:

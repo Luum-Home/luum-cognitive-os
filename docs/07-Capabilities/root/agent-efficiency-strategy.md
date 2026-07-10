@@ -231,7 +231,7 @@ efficiency:
 
 Run anytime to measure current state:
 ```python
-from lib.context_diet import format_diet_report
+from cos_lib.context_diet import format_diet_report
 print(format_diet_report(".claude/rules/cos"))
 ```
 

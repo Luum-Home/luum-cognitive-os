@@ -80,7 +80,7 @@ Each estimate uses a different reasoning approach. All three are generated indep
 Use `lib/planning_poker.py`:
 
 ```python
-from lib.planning_poker import create_estimate, run_poker_round, format_poker_table
+from cos_lib.planning_poker import create_estimate, run_poker_round, format_poker_table
 
 estimates = [
     create_estimate("fast", complexity, files, h_min, h_max, risk, reasoning, confidence),
@@ -116,7 +116,7 @@ Include:
 ### Step 6: Save to Metrics
 
 ```python
-from lib.planning_poker import save_poker_round
+from cos_lib.planning_poker import save_poker_round
 save_poker_round(result, ".cognitive-os/metrics/planning-poker.jsonl")
 ```
 
@@ -143,7 +143,7 @@ Based on consensus complexity:
 After the task is complete, run accuracy tracking:
 
 ```python
-from lib.planning_poker import calculate_accuracy
+from cos_lib.planning_poker import calculate_accuracy
 
 actual = {"files": actual_files, "hours": actual_hours, "complexity": "medium"}
 accuracy = calculate_accuracy(consensus_estimate, actual)

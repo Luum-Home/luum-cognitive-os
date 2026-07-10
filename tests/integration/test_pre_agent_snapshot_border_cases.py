@@ -175,7 +175,7 @@ def test_agent_crash_rollback_restores_both(tmp_path: Path):
     """Snapshot → corrupt files → restore via snapshot_manager → both halves recovered."""
     import sys
     sys.path.insert(0, str(PROJECT_ROOT))
-    from lib.snapshot_manager import create_snapshot, restore_snapshot
+    from cos_lib.snapshot_manager import create_snapshot, restore_snapshot
 
     repo = make_repo(tmp_path / "repo")
 
@@ -264,7 +264,7 @@ def test_prune_expired_drops_old(tmp_path: Path):
     """prune_expired removes snapshots older than TTL."""
     import sys
     sys.path.insert(0, str(PROJECT_ROOT))
-    from lib.snapshot_manager import create_snapshot, prune_expired
+    from cos_lib.snapshot_manager import create_snapshot, prune_expired
 
     repo = make_repo(tmp_path / "repo")
 
@@ -291,7 +291,7 @@ def test_recovery_after_partial_restore(tmp_path: Path):
     """Partial restore → second restore on remaining files succeeds."""
     import sys
     sys.path.insert(0, str(PROJECT_ROOT))
-    from lib.snapshot_manager import create_snapshot, restore_snapshot
+    from cos_lib.snapshot_manager import create_snapshot, restore_snapshot
 
     repo = make_repo(tmp_path / "repo")
 

@@ -84,7 +84,7 @@ proc = subprocess.run(
 )
 files = [line for line in proc.stdout.splitlines() if line.strip()]
 try:
-    from lib.validation_lanes import recommend_lane
+    from cos_lib.validation_lanes import recommend_lane
 
     rec = recommend_lane(files)
     recommended = forced_recommended or rec.recommended_lane

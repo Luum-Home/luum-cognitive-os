@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from lib.component_registry import (
+from cos_lib.component_registry import (
     RegistrationReport,
     detect_all_unregistered,
     detect_unregistered_hooks,

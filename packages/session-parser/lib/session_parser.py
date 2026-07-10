@@ -8,7 +8,7 @@ information from Claude Code's native session storage.
 Inspired by claude-esp (phiat/claude-esp) session parsing approach.
 
 Usage:
-    from lib.session_parser import parse_session, list_sessions, get_session_metrics
+    from cos_lib.session_parser import parse_session, list_sessions, get_session_metrics
 
     sessions = list_sessions()  # All recent sessions
     metrics = get_session_metrics(session_id)  # Detailed metrics for one session

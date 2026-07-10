@@ -5,10 +5,10 @@ protected_runtime_paths:
   - hooks/self-install.sh
   - hooks/session-init.sh
   - install.sh
-  - lib/config_loader.py
-  - lib/dispatch.py
-  - lib/paths.py
-  - lib/record_completion.py
+  - cos_lib/config_loader.py
+  - cos_lib/dispatch.py
+  - cos_lib/paths.py
+  - cos_lib/record_completion.py
   - scripts/_lib/settings-driver.sh
   - scripts/cos-init.sh
   - scripts/generate-project-settings.sh

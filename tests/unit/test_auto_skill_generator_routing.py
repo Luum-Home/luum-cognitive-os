@@ -19,7 +19,7 @@ import pytest
 # Ensure lib/ is importable
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from lib.routing_pattern_deriver import RoutingPatternDeriver, _build_yaml_block
+from cos_lib.routing_pattern_deriver import RoutingPatternDeriver, _build_yaml_block
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 HOOK_PATH = REPO_ROOT / "packages" / "consequence-system" / "hooks" / "auto-skill-generator.sh"

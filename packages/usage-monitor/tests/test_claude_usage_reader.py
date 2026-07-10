@@ -1,10 +1,10 @@
-# SCOPE: both
+# SCOPE: os-only
 """Unit tests for Claude usage reader."""
 import json
 
 import pytest
 
-from lib.claude_usage_reader import (
+from cos_lib.claude_usage_reader import (
     calculate_cost,
     format_reconciliation_report,
     read_session_file,

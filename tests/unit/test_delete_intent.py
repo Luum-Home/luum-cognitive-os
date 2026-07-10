@@ -5,7 +5,7 @@ import os
 import subprocess
 from pathlib import Path
 
-from lib.delete_intent import evaluate_command, extract_delete_operations
+from cos_lib.delete_intent import evaluate_command, extract_delete_operations
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 HOOK = PROJECT_ROOT / "hooks" / "untracked-work-preservation-guard.sh"

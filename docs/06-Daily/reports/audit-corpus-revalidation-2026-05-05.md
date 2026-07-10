@@ -21,7 +21,7 @@
 
 **Files included**: all `docs/06-Daily/reports/*.md` not containing `2026-05-05` in the filename, not matching `*-tombstone.md` or `ARCHIVED.md`, and not under `docs/06-Daily/reports/auto-generated/` (no such subdirectory exists).
 
-**Scoring tool**: `lib.research_quality_advisor.ResearchQualityAdvisor` (ADR-175). Four dimensions weighted as: `symmetric_citation` 40%, `confidence_levels` 25%, `numerical_specificity` 20%, `falsifiable_claim` 15%.
+**Scoring tool**: `cos_lib.research_quality_advisor.ResearchQualityAdvisor` (ADR-175). Four dimensions weighted as: `symmetric_citation` 40%, `confidence_levels` 25%, `numerical_specificity` 20%, `falsifiable_claim` 15%.
 
 **Topic-family classification**: heuristic from filename keywords — `aspirational-audit`, `tool-comparison`, `forensics`, `readiness`, `smoke`, `case-study`, `one-off`. Edge cases are noted in Limitations.
 
@@ -198,7 +198,7 @@ These four are exemplars. Common pattern: all have both a falsifiable/uncertaint
 - `docs/06-Daily/reports/primitive-fitness-ledger-latest.md` — 40.0
 - `docs/06-Daily/reports/primitive-usage-map-latest.md` — 40.0
 - `docs/06-Daily/reports/punch-list-hooks.md` — 40.0
-- `docs/06-Daily/reports/punch-list-lib.md` — 40.0
+- `docs/06-Daily/reports/punch-list-cos_lib.md` — 40.0
 - `docs/06-Daily/reports/punch-list-skills.md` — 40.0
 - `docs/06-Daily/reports/python-major-followup-2026-05-04.md` — 40.0
 - `docs/06-Daily/reports/test-suite-repair-ledger-2026-04-24.md` — 33.1

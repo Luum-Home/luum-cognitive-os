@@ -41,7 +41,7 @@ FALLBACK_TRAPS = [
         "register in cognitive-os.yaml, then run: bash scripts/apply-efficiency-profile.sh <profile>",
     ),
     (
-        r"lib/[a-zA-Z0-9_]+\.py",
+        r"cos_lib/[a-zA-Z0-9_]+\.py",
         "SOME lib/*.py (~22%) are SYMLINKS to packages/*/lib/*.py — most are real files. Always check with ls -la per file. Run scripts/cos-lib-symlink-invariant-audit.py if a same-named file exists in both. "
         "Verify: ls -la lib/<file>.py",
     ),

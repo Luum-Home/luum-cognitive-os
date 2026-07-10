@@ -7,7 +7,7 @@ purpose: >
   inflating the default hook/runtime footprint.
 
 policy:
-  core_router: lib/skill_router.py
+  core_router: cos_lib/skill_router.py
   default_adapter: regex_frontmatter
   core_must_not_import_optional_retrieval_stacks: true
   cos_owns_policy_guards:
@@ -38,7 +38,7 @@ adapters:
   - id: regex_frontmatter
     status: active
     default: true
-    implementation: lib/skill_router.py
+    implementation: cos_lib/skill_router.py
     license_spdx: project
     footprint: zero-extra-deps
     hot_path_allowed: true

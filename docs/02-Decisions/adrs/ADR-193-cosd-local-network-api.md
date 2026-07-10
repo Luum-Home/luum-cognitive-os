@@ -50,7 +50,7 @@ Both transports expose the same narrow API:
 | `POST` | `/process-once` | Process pending intents once. |
 
 The API does not replace the file queue. It is a transport adapter over
-`lib.intent_arbiter`, so CLI, hook, and API submissions converge on the same
+`cos_lib.intent_arbiter`, so CLI, hook, and API submissions converge on the same
 `.cognitive-os/cosd/{intents,results}` directories.
 
 ## Consequences

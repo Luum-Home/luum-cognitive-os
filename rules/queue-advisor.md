@@ -30,7 +30,7 @@ Each queued item is scored 0–100 by five weighted dimensions:
 `QueueDrainer.get_ready_agents()` accepts an optional `use_advisor` parameter (default `True`):
 
 ```python
-from lib.queue_drainer import QueueDrainer
+from cos_lib.queue_drainer import QueueDrainer
 
 drainer = QueueDrainer()
 
@@ -60,7 +60,7 @@ behaviour is never broken.
 ## Direct Usage
 
 ```python
-from lib.queue_advisor import QueueAdvisor
+from cos_lib.queue_advisor import QueueAdvisor
 
 advisor = QueueAdvisor(project_dir=".")
 

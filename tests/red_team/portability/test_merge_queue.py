@@ -32,7 +32,7 @@ class TestArbitraryQueuePath:
         monkeypatch.setenv("MERGE_QUEUE_PATH", str(custom_path))
 
         # Resolve through MERGE_QUEUE_PATH without requiring a .cognitive-os anchor.
-        import lib.merge_queue as mq  # noqa: PLC0415
+        import cos_lib.merge_queue as mq  # noqa: PLC0415
 
         eid = mq.enqueue("session/env", "test-env")
         assert custom_path.exists(), "queue file should be created automatically"
@@ -44,7 +44,7 @@ class TestArbitraryQueuePath:
         monkeypatch.setenv("MERGE_QUEUE_PATH", str(tmp_path / "env-q.jsonl"))
         explicit = tmp_path / "explicit-q.jsonl"
 
-        from lib.merge_queue import enqueue  # noqa: PLC0415
+        from cos_lib.merge_queue import enqueue  # noqa: PLC0415
 
         enqueue("session/explicit", "test-explicit", queue_path=explicit)
         assert explicit.exists()
@@ -62,7 +62,7 @@ class TestJsonlIntegrity:
 
     def test_each_line_is_valid_json(self, tmp_path):
         queue_file = tmp_path / "q.jsonl"
-        from lib.merge_queue import enqueue  # noqa: PLC0415
+        from cos_lib.merge_queue import enqueue  # noqa: PLC0415
 
         branches = [f"session/branch-{i}" for i in range(5)]
         for b in branches:
@@ -78,7 +78,7 @@ class TestJsonlIntegrity:
 
     def test_schema_fields_present(self, tmp_path):
         queue_file = tmp_path / "q.jsonl"
-        from lib.merge_queue import enqueue  # noqa: PLC0415
+        from cos_lib.merge_queue import enqueue  # noqa: PLC0415
 
         required_fields = {
             "id", "session_branch", "session_id", "expected_files",
@@ -103,7 +103,7 @@ class TestCrossProcessReadability:
     def _child_enqueue(queue_file: str, result_q):
         """Run in a subprocess: enqueue one entry and return its id."""
         sys.path.insert(0, str(REPO_ROOT))
-        from lib.merge_queue import enqueue  # noqa: PLC0415
+        from cos_lib.merge_queue import enqueue  # noqa: PLC0415
 
         eid = enqueue("session/cross-proc", "child-session", queue_path=Path(queue_file))
         result_q.put(eid)
@@ -123,7 +123,7 @@ class TestCrossProcessReadability:
         child_id = result_q.get_nowait()
 
         # Parent reads the entry using its own import (no shared state).
-        from lib.merge_queue import status  # noqa: PLC0415
+        from cos_lib.merge_queue import status  # noqa: PLC0415
 
         entry = status(child_id, queue_path=queue_file)
         assert entry is not None, "Parent could not read entry written by child"

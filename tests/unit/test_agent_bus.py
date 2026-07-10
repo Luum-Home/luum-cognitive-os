@@ -21,7 +21,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-from lib.agent_bus import (
+from cos_lib.agent_bus import (
     AgentPublisher,
     OrchestratorSubscriber,
     _FileFallback,
@@ -1016,7 +1016,7 @@ class TestSmartInfraIntegration:
         mock_redis_cls.from_url.return_value = mock_client
 
         with patch.dict("sys.modules", {"redis": MagicMock(Redis=mock_redis_cls)}), \
-             patch("lib.agent_bus._ensure_valkey_via_smart_infra", return_value=True) as mock_ensure:
+             patch("cos_lib.agent_bus._ensure_valkey_via_smart_infra", return_value=True) as mock_ensure:
             pub = AgentPublisher("test-agent", fallback_dir=tmp_fallback_dir)
             mock_ensure.assert_called_once()
             assert pub._use_valkey is True
@@ -1029,7 +1029,7 @@ class TestSmartInfraIntegration:
         mock_redis_cls.from_url.return_value = mock_client
 
         with patch.dict("sys.modules", {"redis": MagicMock(Redis=mock_redis_cls)}), \
-             patch("lib.agent_bus._ensure_valkey_via_smart_infra") as mock_ensure:
+             patch("cos_lib.agent_bus._ensure_valkey_via_smart_infra") as mock_ensure:
             pub = AgentPublisher("test-agent", fallback_dir=tmp_fallback_dir)
             mock_ensure.assert_not_called()
             assert pub._use_valkey is True
@@ -1042,7 +1042,7 @@ class TestSmartInfraIntegration:
         mock_redis_cls.from_url.return_value = mock_client
 
         with patch.dict("sys.modules", {"redis": MagicMock(Redis=mock_redis_cls)}), \
-             patch("lib.agent_bus._ensure_valkey_via_smart_infra", return_value=False):
+             patch("cos_lib.agent_bus._ensure_valkey_via_smart_infra", return_value=False):
             pub = AgentPublisher("test-agent", fallback_dir=tmp_fallback_dir)
             assert pub._use_valkey is False
 
@@ -1060,7 +1060,7 @@ class TestSmartInfraIntegration:
         mock_redis_cls.from_url.return_value = mock_client
 
         with patch.dict("sys.modules", {"redis": MagicMock(Redis=mock_redis_cls)}), \
-             patch("lib.agent_bus._ensure_valkey_via_smart_infra", return_value=True) as mock_ensure:
+             patch("cos_lib.agent_bus._ensure_valkey_via_smart_infra", return_value=True) as mock_ensure:
             sub = OrchestratorSubscriber(fallback_dir=tmp_fallback_dir)
             mock_ensure.assert_called_once()
             assert sub._use_valkey is True
@@ -1078,23 +1078,23 @@ class TestSmartInfraIntegration:
         mock_redis_mod.Redis.from_url.return_value = mock_client
 
         with patch.dict("sys.modules", {"redis": mock_redis_mod}), \
-             patch("lib.agent_bus._ensure_valkey_via_smart_infra", return_value=True) as mock_ensure:
+             patch("cos_lib.agent_bus._ensure_valkey_via_smart_infra", return_value=True) as mock_ensure:
             result = is_valkey_available()
             mock_ensure.assert_called_once()
             assert result is True
 
     def test_ensure_valkey_via_smart_infra_graceful_on_import_error(self):
         """_ensure_valkey_via_smart_infra returns False on import error."""
-        from lib.agent_bus import _ensure_valkey_via_smart_infra
+        from cos_lib.agent_bus import _ensure_valkey_via_smart_infra
 
         # Simulate smart_infra not being importable
-        with patch.dict("sys.modules", {"lib.smart_infra": None}):
+        with patch.dict("sys.modules", {"cos_lib.smart_infra": None}):
             result = _ensure_valkey_via_smart_infra()
             assert result is False
 
 
 def test_send_control_fallback_writes_interrupt_sentinel(tmp_path):
-    from lib.agent_bus import OrchestratorSubscriber
+    from cos_lib.agent_bus import OrchestratorSubscriber
 
     sub = OrchestratorSubscriber(fallback_dir=str(tmp_path))
     sub._use_valkey = False
@@ -1110,7 +1110,7 @@ def test_send_control_fallback_writes_interrupt_sentinel(tmp_path):
 
 
 def test_agent_publisher_poll_control_reads_interrupt(tmp_path):
-    from lib.agent_bus import AgentPublisher, _FileFallback
+    from cos_lib.agent_bus import AgentPublisher, _FileFallback
 
     pub = AgentPublisher.__new__(AgentPublisher)
     pub.agent_id = "agent-poll-1"
@@ -1122,7 +1122,7 @@ def test_agent_publisher_poll_control_reads_interrupt(tmp_path):
 
 
 def test_agent_publisher_poll_control_drains_valkey_pending_before_files(tmp_path):
-    from lib.agent_bus import AgentPublisher, _FileFallback
+    from cos_lib.agent_bus import AgentPublisher, _FileFallback
 
     pub = AgentPublisher.__new__(AgentPublisher)
     pub.agent_id = "agent-poll-2"

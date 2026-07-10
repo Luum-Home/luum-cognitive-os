@@ -59,7 +59,7 @@ fi
 if ! PARSED=$(printf '%s' "$OUTPUT" | uv run python3 -c "
 import sys
 sys.path.insert(0, '$REPO')
-from lib.agent_redirect_protocol import parse_redirect_message
+from cos_lib.agent_redirect_protocol import parse_redirect_message
 parsed = parse_redirect_message(sys.stdin.read())
 if not parsed:
     sys.exit(1)

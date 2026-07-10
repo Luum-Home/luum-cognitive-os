@@ -113,7 +113,7 @@ When multiple technologies are detected together, more specific skills are recom
 
 ```bash
 python3 -c "
-from lib.stack_skill_recommender import StackSkillRecommender
+from cos_lib.stack_skill_recommender import StackSkillRecommender
 r = StackSkillRecommender()
 recs = r.recommend('.')
 print(r.format_recommendations(recs))

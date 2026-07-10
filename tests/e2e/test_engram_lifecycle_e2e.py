@@ -1,4 +1,4 @@
-"""End-to-end tests for lib.engram_lifecycle — requires the engram binary.
+"""End-to-end tests for cos_lib.engram_lifecycle — requires the engram binary.
 
 These tests spawn a real engram daemon on a free port with a temporary
 data directory. All operations target the temporary daemon; the production
@@ -153,7 +153,7 @@ def engram_daemon() -> Iterator[tuple[str, str]]:
 def test_e2e_health_check_responds(engram_daemon):
     """The sandboxed daemon starts and responds to GET /health."""
     base_url, _ = engram_daemon
-    from lib.engram_http_client import is_available
+    from cos_lib.engram_http_client import is_available
 
     assert is_available(base_url=base_url, timeout=2.0) is True
 
@@ -162,7 +162,7 @@ def test_e2e_health_check_responds(engram_daemon):
 def test_e2e_save_then_get_via_http(engram_daemon):
     """Save an observation via CLI, then fetch it via GET /observations/<id>."""
     base_url, tmpdir = engram_daemon
-    from lib.engram_http_client import get_observation, search_observations
+    from cos_lib.engram_http_client import get_observation, search_observations
 
     title = "e2e-get-test-obs"
     content = "E2E test content for get_observation round-trip"
@@ -182,7 +182,7 @@ def test_e2e_save_then_get_via_http(engram_daemon):
 def test_e2e_search_via_http(engram_daemon):
     """Save 3 observations, then search for a unique keyword that returns at least 1 hit."""
     base_url, tmpdir = engram_daemon
-    from lib.engram_http_client import search_observations
+    from cos_lib.engram_http_client import search_observations
 
     unique_keyword = "xyzzy-e2e-search-unique-7439"
     for i in range(3):
@@ -213,10 +213,10 @@ def test_e2e_lifecycle_save_search_reinforce_round_trip(engram_daemon):
 
     try:
         import importlib
-        import lib.engram_http_client as http_mod
+        import cos_lib.engram_http_client as http_mod
         importlib.reload(http_mod)
 
-        from lib.engram_lifecycle import EngramLifecycle
+        from cos_lib.engram_lifecycle import EngramLifecycle
 
         unique_tag = "e2e-lifecycle-round-trip-9821"
 
@@ -265,7 +265,7 @@ def test_e2e_lifecycle_save_search_reinforce_round_trip(engram_daemon):
             os.environ["ENGRAM_DATA_DIR"] = original_data_dir
 
         # Reload to restore original base URL
-        import lib.engram_http_client as http_mod
+        import cos_lib.engram_http_client as http_mod
         importlib.reload(http_mod)
 
 
@@ -281,10 +281,10 @@ def test_e2e_reinforce_increases_confidence(engram_daemon):
 
     try:
         import importlib
-        import lib.engram_http_client as http_mod
+        import cos_lib.engram_http_client as http_mod
         importlib.reload(http_mod)
 
-        from lib.engram_lifecycle import EngramLifecycle
+        from cos_lib.engram_lifecycle import EngramLifecycle
 
         unique_tag = "e2e-confidence-delta-8847"
 
@@ -337,7 +337,7 @@ def test_e2e_reinforce_increases_confidence(engram_daemon):
         else:
             os.environ["ENGRAM_DATA_DIR"] = original_data_dir
 
-        import lib.engram_http_client as http_mod
+        import cos_lib.engram_http_client as http_mod
         importlib.reload(http_mod)
 
 
@@ -354,7 +354,7 @@ def _with_sandbox(engram_daemon, fn):
     original_data_dir = os.environ.get("ENGRAM_DATA_DIR")
     os.environ["ENGRAM_HTTP_URL"] = base_url
     os.environ["ENGRAM_DATA_DIR"] = tmpdir
-    import lib.engram_http_client as http_mod
+    import cos_lib.engram_http_client as http_mod
     importlib.reload(http_mod)
     try:
         fn(base_url, tmpdir, http_mod)
@@ -382,7 +382,7 @@ def test_e2e_crystallization_below_threshold_no_op(engram_daemon):
     os.environ["ENGRAM_DATA_DIR"] = tmpdir
 
     try:
-        import lib.engram_http_client as http_mod
+        import cos_lib.engram_http_client as http_mod
         importlib.reload(http_mod)
 
         unique_tk = f"e2e/crystallize-below-thresh-{os.getpid()}"
@@ -394,7 +394,7 @@ def test_e2e_crystallization_below_threshold_no_op(engram_daemon):
                 topic_key=unique_tk,
             )
 
-        from lib.engram_crystallizer import EngramCrystallizer
+        from cos_lib.engram_crystallizer import EngramCrystallizer
         crystallizer = EngramCrystallizer(http_client_module=http_mod)
         digests = crystallizer.crystallize_all()
         matching_digests = [
@@ -429,7 +429,7 @@ def test_e2e_crystallization_above_threshold_creates_digest(engram_daemon):
     os.environ["ENGRAM_DATA_DIR"] = tmpdir
 
     try:
-        import lib.engram_http_client as http_mod
+        import cos_lib.engram_http_client as http_mod
         importlib.reload(http_mod)
 
         unique_tk = f"e2e/crystallize-above-thresh-{os.getpid()}"
@@ -442,7 +442,7 @@ def test_e2e_crystallization_above_threshold_creates_digest(engram_daemon):
                 type_="decision",
             )
 
-        from lib.engram_crystallizer import EngramCrystallizer
+        from cos_lib.engram_crystallizer import EngramCrystallizer
         crystallizer = EngramCrystallizer(http_client_module=http_mod)
         digests = crystallizer.crystallize_all()
 
@@ -483,7 +483,7 @@ def test_e2e_crystallization_idempotent(engram_daemon):
     os.environ["ENGRAM_DATA_DIR"] = tmpdir
 
     try:
-        import lib.engram_http_client as http_mod
+        import cos_lib.engram_http_client as http_mod
         importlib.reload(http_mod)
 
         unique_tk = f"e2e/crystallize-idempotent-{os.getpid()}"
@@ -496,7 +496,7 @@ def test_e2e_crystallization_idempotent(engram_daemon):
                 type_="decision",
             )
 
-        from lib.engram_crystallizer import EngramCrystallizer
+        from cos_lib.engram_crystallizer import EngramCrystallizer
 
         crystallizer = EngramCrystallizer(http_client_module=http_mod)
         crystallizer.crystallize(unique_tk)
@@ -530,7 +530,7 @@ def test_e2e_crystallization_force_recreates(engram_daemon):
     os.environ["ENGRAM_DATA_DIR"] = tmpdir
 
     try:
-        import lib.engram_http_client as http_mod
+        import cos_lib.engram_http_client as http_mod
         importlib.reload(http_mod)
 
         unique_tk = f"e2e/crystallize-force-{os.getpid()}"
@@ -543,7 +543,7 @@ def test_e2e_crystallization_force_recreates(engram_daemon):
                 type_="decision",
             )
 
-        from lib.engram_crystallizer import EngramCrystallizer
+        from cos_lib.engram_crystallizer import EngramCrystallizer
         crystallizer = EngramCrystallizer(http_client_module=http_mod)
 
         crystallizer.crystallize(unique_tk)
@@ -576,7 +576,7 @@ def test_e2e_graph_walker_empty_when_no_relations(engram_daemon):
     base_url, tmpdir = engram_daemon
     db_path = os.path.join(tmpdir, "engram.db")
 
-    from lib.engram_graph_walker import EngramGraphWalker
+    from cos_lib.engram_graph_walker import EngramGraphWalker
     walker = EngramGraphWalker(db_path=db_path)
     result = walker.walk(["obs-nonexistent"])
     assert isinstance(result, dict)
@@ -621,7 +621,7 @@ def test_e2e_graph_walker_returns_neighbors_via_relations_table(engram_daemon):
     finally:
         conn.close()
 
-    from lib.engram_graph_walker import EngramGraphWalker
+    from cos_lib.engram_graph_walker import EngramGraphWalker
     walker = EngramGraphWalker(db_path=db_path)
     result = walker.walk(["obs-start-e2e"], max_depth=1)
     assert "obs-neighbor-A" in result
@@ -671,7 +671,7 @@ def test_e2e_graph_walker_respects_depth_limit(engram_daemon):
     finally:
         conn.close()
 
-    from lib.engram_graph_walker import EngramGraphWalker
+    from cos_lib.engram_graph_walker import EngramGraphWalker
     walker = EngramGraphWalker(db_path=db_path)
     result = walker.walk(["obs-chain-A"], max_depth=2)
     assert "obs-chain-B" in result
@@ -713,7 +713,7 @@ def test_e2e_graph_walker_skips_rejected_relations(engram_daemon):
     finally:
         conn.close()
 
-    from lib.engram_graph_walker import EngramGraphWalker
+    from cos_lib.engram_graph_walker import EngramGraphWalker
     walker = EngramGraphWalker(db_path=db_path)
     result = walker.walk(["obs-rej-start"])
     assert "obs-rej-neighbor" not in result
@@ -738,7 +738,7 @@ def test_e2e_lifecycle_search_with_graph_walk_finds_disconnected_obs(engram_daem
     os.environ["ENGRAM_DATA_DIR"] = tmpdir
 
     try:
-        import lib.engram_http_client as http_mod
+        import cos_lib.engram_http_client as http_mod
         importlib.reload(http_mod)
 
         unique_tag_a = f"e2e-graphwalk-A-{os.getpid()}"
@@ -800,7 +800,7 @@ def test_e2e_lifecycle_search_with_graph_walk_finds_disconnected_obs(engram_daem
         finally:
             conn.close()
 
-        from lib.engram_graph_walker import EngramGraphWalker
+        from cos_lib.engram_graph_walker import EngramGraphWalker
         walker = EngramGraphWalker(db_path=db_path, http_client_module=http_mod)
         neighbors = walker.walk([sync_id_a])
         assert sync_id_b in neighbors, (
@@ -824,5 +824,5 @@ def test_e2e_lifecycle_search_with_graph_walk_finds_disconnected_obs(engram_daem
             os.environ.pop("ENGRAM_DATA_DIR", None)
         else:
             os.environ["ENGRAM_DATA_DIR"] = original_data_dir
-        import lib.engram_http_client as http_mod
+        import cos_lib.engram_http_client as http_mod
         importlib.reload(http_mod)

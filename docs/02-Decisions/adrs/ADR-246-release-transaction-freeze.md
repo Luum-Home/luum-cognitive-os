@@ -12,7 +12,7 @@ superseded_by: null
 extends: [ADR-218, ADR-239, ADR-240, ADR-242, ADR-243]
 implementation_files:
   - scripts/cos-release-freeze
-  - lib/release_freeze.py
+  - cos_lib/release_freeze.py
   - manifests/release-freeze.yaml
   - tests/behavior/test_release_freeze.py
 tier: maintainer

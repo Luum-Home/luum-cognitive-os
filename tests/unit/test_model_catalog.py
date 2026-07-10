@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.model_catalog import ModelCatalog, ModelEntry, _ENTRIES
+from cos_lib.model_catalog import ModelCatalog, ModelEntry, _ENTRIES
 
 pytestmark = pytest.mark.unit
 
@@ -268,7 +268,7 @@ class TestPricingMatchesExisting:
     """
 
     def test_matches_cost_dashboard(self) -> None:
-        from lib.cost_dashboard import MODEL_PRICES
+        from cos_lib.cost_dashboard import MODEL_PRICES
 
         for name, prices in MODEL_PRICES.items():
             try:
@@ -288,7 +288,7 @@ class TestPricingMatchesExisting:
             )
 
     def test_matches_model_router(self) -> None:
-        from lib.model_router import MODEL_CAPABILITIES
+        from cos_lib.model_router import MODEL_CAPABILITIES
 
         for model_id, caps in MODEL_CAPABILITIES.items():
             try:
@@ -309,7 +309,7 @@ class TestPricingMatchesExisting:
             )
 
     # NOTE: test_matches_workload_scheduler was deleted on 2026-04-21.
-    # lib.workload_scheduler was removed from the codebase (phantom module).
+    # cos_lib.workload_scheduler was removed from the codebase (phantom module).
     # The test's intent (verify MODEL_COSTS prices match ModelCatalog) is
     # no longer applicable. See Engram: bugfix/tests/workload-scheduler-phantom
 

@@ -82,7 +82,7 @@ until L1 telemetry validates the pressure heuristic.
   | `>= 0.8`  | STRONG   | Advisory upgraded — mentions the `COS_AUTO_REDIRECT_AGENT=1` kill-switch (L2 hint). |
 - **Kill-switch**: `COS_DISABLE_AGENT_ADVISOR=1` silences the hook.
 - **Never blocks.** Always exits 0. Degrades silently when JSONL files
-  are missing, jq is unavailable, or Python can't import `lib.quota_pressure`.
+  are missing, jq is unavailable, or Python can't import `cos_lib.quota_pressure`.
 
 ### L2 — Auto-Redirect with Block (opt-in, deferred)
 

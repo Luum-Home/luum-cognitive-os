@@ -16,8 +16,8 @@ import pytest
 
 # Ensure lib/ is on sys.path so the symlinked module resolves.
 _REPO_ROOT = Path(__file__).resolve().parents[2]
-if str(_REPO_ROOT / "lib") not in sys.path:
-    sys.path.insert(0, str(_REPO_ROOT / "lib"))
+if str(_REPO_ROOT / "cos_lib") not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT / "cos_lib"))
 
 import engram_locks  # noqa: E402 — after path setup
 

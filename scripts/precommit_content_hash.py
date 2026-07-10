@@ -7,7 +7,7 @@ diff and compares it against patch-ids of recent commits on ``origin/main``.
 
 If a match is found the tool either blocks the commit (``block`` mode) or
 emits a warning (``warn`` mode, the default), and appends a
-``conflict_detected`` event to the event bus (``lib.event_bus``).
+``conflict_detected`` event to the event bus (``cos_lib.event_bus``).
 
 Exit codes
 ----------
@@ -125,11 +125,11 @@ def emit_collision_event(
 ) -> None:
     """Append a ``conflict_detected`` event to the event bus."""
     try:
-        # Add project root to sys.path for lib import
+        # Add project root to sys.path for cos_lib import
         _repo_root = Path(__file__).resolve().parent.parent
         if str(_repo_root) not in sys.path:
             sys.path.insert(0, str(_repo_root))
-        from lib.event_bus import emit  # noqa: PLC0415
+        from cos_lib.event_bus import emit  # noqa: PLC0415
 
         payload = {
             "staged_patch_id": staged_patch_id,

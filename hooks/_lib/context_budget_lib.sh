@@ -35,7 +35,7 @@ session_id = sys.argv[4]
 layer = sys.argv[5]
 hook_json = sys.argv[6]
 sys.path.insert(0, str(cos_root))
-from lib.context_budget import filter_hook_output
+from cos_lib.context_budget import filter_hook_output
 sys.stdout.write(filter_hook_output(project, source=source, hook_json=hook_json, session_id=session_id, layer=layer))
 PY
 }
@@ -59,7 +59,7 @@ session_id = sys.argv[4]
 layer = sys.argv[5]
 text = sys.argv[6]
 sys.path.insert(0, str(cos_root))
-from lib.context_budget import record_usage
+from cos_lib.context_budget import record_usage
 record_usage(project, source=source, layer=layer, text=text, session_id=session_id)
 PY
 }

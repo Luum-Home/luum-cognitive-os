@@ -13,7 +13,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.cost_predictor import (
+from cos_lib.cost_predictor import (
     DEFAULT_MODEL_PRICES,
     SDD_PHASES,
     CostPrediction,

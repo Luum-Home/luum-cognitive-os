@@ -33,7 +33,7 @@ class TestImportPaths:
 
         sys.path.insert(0, str(REPO_ROOT))
         import importlib
-        mod = importlib.import_module("lib.gate_runner")
+        mod = importlib.import_module("cos_lib.gate_runner")
         assert hasattr(mod, "run_stack")
         assert hasattr(mod, "STANDARD_STACK")
         assert hasattr(mod, "Gate")
@@ -68,7 +68,7 @@ class TestBypassFalsification:
         import stat as _stat
 
         sys.path.insert(0, str(REPO_ROOT))
-        from lib.gate_runner import Gate
+        from cos_lib.gate_runner import Gate
 
         script = tmp_path / "always_fail.sh"
         script.write_text("#!/usr/bin/env bash\nexit 1\n")
@@ -83,7 +83,7 @@ class TestBypassFalsification:
 
     def test_without_skip_env_gate_fails(self, tmp_path):
         sys.path.insert(0, str(REPO_ROOT))
-        from lib.gate_runner import run_stack
+        from cos_lib.gate_runner import run_stack
 
         gate = self._make_failing_gate(tmp_path)
         env_without_skip = {k: v for k, v in os.environ.items()
@@ -94,7 +94,7 @@ class TestBypassFalsification:
 
     def test_with_skip_env_gate_passes(self, tmp_path):
         sys.path.insert(0, str(REPO_ROOT))
-        from lib.gate_runner import run_stack
+        from cos_lib.gate_runner import run_stack
 
         gate = self._make_failing_gate(tmp_path)
         with patch.dict(os.environ, {"SKIP_ALWAYS_FAIL": "1"}):
@@ -120,7 +120,7 @@ class TestFailFastFalsification:
         import stat as _stat
 
         sys.path.insert(0, str(REPO_ROOT))
-        from lib.gate_runner import Gate
+        from cos_lib.gate_runner import Gate
 
         gates = []
         for i, code in enumerate(exit_codes):
@@ -138,7 +138,7 @@ class TestFailFastFalsification:
 
     def test_fail_fast_true_stops_at_first_failure(self, tmp_path):
         sys.path.insert(0, str(REPO_ROOT))
-        from lib.gate_runner import run_stack
+        from cos_lib.gate_runner import run_stack
 
         stack = self._make_gate_stack(tmp_path, [1, 0, 0])
         result = run_stack("b", tmp_path, stack=stack, fail_fast=True)
@@ -149,7 +149,7 @@ class TestFailFastFalsification:
 
     def test_fail_fast_false_runs_all_gates(self, tmp_path):
         sys.path.insert(0, str(REPO_ROOT))
-        from lib.gate_runner import run_stack
+        from cos_lib.gate_runner import run_stack
 
         stack = self._make_gate_stack(tmp_path, [1, 0, 1])
         result = run_stack("b", tmp_path, stack=stack, fail_fast=False)

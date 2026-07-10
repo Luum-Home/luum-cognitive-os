@@ -18,7 +18,7 @@ Manual verification excluded generated reports, ACC outputs, SPDX grandfather li
 |---|---|---|
 | `scripts/cos-branch-lock` | archive-or-register | Wrapper has no live refs; backend `scripts/cos_branch_lock.py` is used by hooks and sibling wrapper. Keep backend, decide whether this CLI deserves a route. |
 | `scripts/cos-claims.sh` | archive-or-revive | Old ADR-116 claims CLI; no live refs outside self/SPDX. Likely replaced by newer work/claim ledgers unless explicitly revived. |
-| `scripts/cos-fingerprint.sh` | archive-or-revive | Old work-identity CLI; no live refs. Check whether `lib.work_identity` is still used before deleting adjacent support. |
+| `scripts/cos-fingerprint.sh` | archive-or-revive | Old work-identity CLI; no live refs. Check whether `cos_lib.work_identity` is still used before deleting adjacent support. |
 | `scripts/cos-locks.sh` | archive | No live refs; likely superseded by edit/branch/session coordination primitives. |
 | `scripts/cos-primitive-projection-fidelity` | archive-wrapper-or-register | Wrapper has no refs, but backend `scripts/primitive_projection_fidelity.py` is used by ACC/tests/docs. Keep backend; route wrapper only if desired UX. |
 | `scripts/cos-project-registry-prune.sh` | demote-migration-or-archive | No live refs; sounds one-off maintenance. |

@@ -30,7 +30,7 @@ When the orchestrator has multiple tasks to dispatch (e.g., SDD batches, paralle
 ## Integration
 
 ```python
-from lib.workload_scheduler import WorkloadScheduler, TaskRequest
+from cos_lib.workload_scheduler import WorkloadScheduler, TaskRequest
 
 scheduler = WorkloadScheduler()
 

@@ -199,7 +199,7 @@ PATTERN_C_LITERAL = 'os.environ.get("CLAUDE_PROJECT_DIR", ".")'
 
 
 PATTERN_A_MIGRATED_CALL = "project_root()"
-PATTERN_A_MIGRATED_IMPORT = "from lib.paths import project_root"
+PATTERN_A_MIGRATED_IMPORT = "from cos_lib.paths import project_root"
 
 
 @pytest.mark.parametrize(
@@ -217,11 +217,11 @@ def test_pattern_a_literal_present_in_source(relpath):
     """Each Pattern A consumer MUST import and call project_root() (Lote-3, R1 migration).
 
     Previously checked for the inline env-var expression.  After the R1 refactor
-    all 10 Pattern A sites were migrated to ``lib.paths.project_root()``.
+    all 10 Pattern A sites were migrated to ``cos_lib.paths.project_root()``.
     """
     src = (REPO_ROOT / relpath).read_text()
     assert PATTERN_A_MIGRATED_IMPORT in src, (
-        f"{relpath} does not import project_root from lib.paths — "
+        f"{relpath} does not import project_root from cos_lib.paths — "
         "either the R1 migration was reverted or the file was excluded by mistake."
     )
     assert PATTERN_A_MIGRATED_CALL in src, (
@@ -335,7 +335,7 @@ class TestDispatchHelperFindConfigPath:
     """lib/dispatch_helper._find_config_path() — exercises Pattern A at line 47."""
 
     def test_finds_yaml_under_claude_project_dir(self, monkeypatch, tmp_path):
-        from lib import dispatch_helper
+        from cos_lib import dispatch_helper
 
         _clear_env(monkeypatch)
         monkeypatch.chdir(tmp_path / ".." if not tmp_path.exists() else tmp_path)
@@ -346,7 +346,7 @@ class TestDispatchHelperFindConfigPath:
         assert Path(result).resolve() == (tmp_path / "cognitive-os.yaml").resolve()
 
     def test_falls_back_to_cognitive_os_project_dir(self, monkeypatch, tmp_path):
-        from lib import dispatch_helper
+        from cos_lib import dispatch_helper
 
         _clear_env(monkeypatch)
         monkeypatch.chdir(tmp_path)
@@ -356,7 +356,7 @@ class TestDispatchHelperFindConfigPath:
         assert result is not None
 
     def test_no_env_returns_None_when_no_files_exist(self, monkeypatch, tmp_path):
-        from lib import dispatch_helper
+        from cos_lib import dispatch_helper
 
         _clear_env(monkeypatch)
         monkeypatch.chdir(tmp_path)
@@ -368,7 +368,7 @@ class TestModelRouterMetricsDirResolution:
     """lib/model_router.get_consequence_override: line 321 builds metrics_dir from env."""
 
     def test_no_env_uses_dot_relative_metrics_dir(self, monkeypatch):
-        from lib import model_router
+        from cos_lib import model_router
 
         _clear_env(monkeypatch)
         observed: list[Path] = []
@@ -396,7 +396,7 @@ class TestModelRouterMetricsDirResolution:
         )
 
     def test_claude_env_overrides_dot_default(self, monkeypatch, tmp_path):
-        from lib import model_router
+        from cos_lib import model_router
 
         _clear_env(monkeypatch)
         monkeypatch.setenv("CLAUDE_PROJECT_DIR", str(tmp_path))
@@ -421,7 +421,7 @@ class TestQueueDrainerReadMaxParallelAgents:
     """lib/queue_drainer._read_max_parallel_agents — Pattern A at line 66."""
 
     def test_finds_value_via_claude_project_dir(self, monkeypatch, tmp_path):
-        from lib import queue_drainer
+        from cos_lib import queue_drainer
 
         _clear_env(monkeypatch)
         (tmp_path / "cognitive-os.yaml").write_text("max_parallel_agents: 7\n")
@@ -430,7 +430,7 @@ class TestQueueDrainerReadMaxParallelAgents:
         assert queue_drainer._read_max_parallel_agents() == 7
 
     def test_no_env_uses_default(self, monkeypatch, tmp_path):
-        from lib import queue_drainer
+        from cos_lib import queue_drainer
 
         _clear_env(monkeypatch)
         monkeypatch.chdir(tmp_path)  # ensure default path doesn't accidentally exist
@@ -444,7 +444,7 @@ class TestTelemetryProjectRoot:
     """lib/telemetry._project_root — Pattern D (reverse precedence)."""
 
     def test_cognitive_os_wins_when_both_set(self, monkeypatch, tmp_path):
-        from lib import telemetry
+        from cos_lib import telemetry
 
         cog_dir = tmp_path / "cog"
         cog_dir.mkdir()
@@ -455,14 +455,14 @@ class TestTelemetryProjectRoot:
         assert telemetry._project_root() == Path(str(cog_dir))
 
     def test_falls_back_to_claude_when_cognitive_os_unset(self, monkeypatch, tmp_path):
-        from lib import telemetry
+        from cos_lib import telemetry
 
         _clear_env(monkeypatch)
         monkeypatch.setenv("CLAUDE_PROJECT_DIR", str(tmp_path))
         assert telemetry._project_root() == Path(str(tmp_path))
 
     def test_falls_back_to_cwd_when_both_unset(self, monkeypatch, tmp_path):
-        from lib import telemetry
+        from cos_lib import telemetry
 
         _clear_env(monkeypatch)
         monkeypatch.chdir(tmp_path)
@@ -563,7 +563,7 @@ def test_audit_count_of_sites_per_pattern():
     # (only queue_drainer:316 remains as Pattern C).
     assert counts == {"A": 0, "A_prime": 1, "C": 1, "D": 1}, (
         f"Audit count drift: {counts}. Expected 0+1+1+1 after R1 migration + Lote-4 D2.2. "
-        "Pattern A sites (10) now use project_root() from lib.paths — "
+        "Pattern A sites (10) now use project_root() from cos_lib.paths — "
         "the inline expression count should be 0. "
         "Pattern C is now 1: only queue_drainer:316 (dispatch_gate_check was C, now A via D2.2). "
         "If a site reverted to inline or a new site was added, update this assertion explicitly."
@@ -571,12 +571,12 @@ def test_audit_count_of_sites_per_pattern():
 
 
 # ─────────────────────────────────────────────────────────────────────────
-# Section 5 — lib.paths.project_root() matches Pattern A semantics exactly
+# Section 5 — cos_lib.paths.project_root() matches Pattern A semantics exactly
 # ─────────────────────────────────────────────────────────────────────────
 
 
 class TestLibPathsProjectRoot:
-    """``lib.paths.project_root()`` must match Pattern A semantics exactly.
+    """``cos_lib.paths.project_root()`` must match Pattern A semantics exactly.
 
     These assertions mirror ``TestPatternA`` (Section 1) but call
     ``project_root()`` instead of the inline ``_pattern_a()`` helper.
@@ -585,13 +585,13 @@ class TestLibPathsProjectRoot:
 
     def test_both_unset_returns_none(self, monkeypatch):
         """Both env vars absent → None (falsy, matches Pattern A '' default)."""
-        from lib.paths import project_root
+        from cos_lib.paths import project_root
 
         _clear_env(monkeypatch)
         assert project_root() is None
 
     def test_claude_only_returns_path(self, monkeypatch):
-        from lib.paths import project_root
+        from cos_lib.paths import project_root
 
         _clear_env(monkeypatch)
         monkeypatch.setenv("CLAUDE_PROJECT_DIR", "/from-claude")
@@ -600,7 +600,7 @@ class TestLibPathsProjectRoot:
         assert result == Path("/from-claude")
 
     def test_cognitive_os_only_returns_path(self, monkeypatch):
-        from lib.paths import project_root
+        from cos_lib.paths import project_root
 
         _clear_env(monkeypatch)
         monkeypatch.setenv("COGNITIVE_OS_PROJECT_DIR", "/from-cognitive-os")
@@ -609,7 +609,7 @@ class TestLibPathsProjectRoot:
         assert result == Path("/from-cognitive-os")
 
     def test_both_set_claude_wins(self, monkeypatch):
-        from lib.paths import project_root
+        from cos_lib.paths import project_root
 
         monkeypatch.setenv("CLAUDE_PROJECT_DIR", "/claude")
         monkeypatch.setenv("COGNITIVE_OS_PROJECT_DIR", "/cognitive")
@@ -618,7 +618,7 @@ class TestLibPathsProjectRoot:
 
     def test_claude_empty_string_falls_back(self, monkeypatch):
         """``""`` is falsy → ``or`` falls through to COGNITIVE_OS_PROJECT_DIR."""
-        from lib.paths import project_root
+        from cos_lib.paths import project_root
 
         _clear_env(monkeypatch)
         monkeypatch.setenv("CLAUDE_PROJECT_DIR", "")
@@ -627,14 +627,14 @@ class TestLibPathsProjectRoot:
         assert result == Path("/fallback")
 
     def test_both_empty_returns_none(self, monkeypatch):
-        from lib.paths import project_root
+        from cos_lib.paths import project_root
 
         monkeypatch.setenv("CLAUDE_PROJECT_DIR", "")
         monkeypatch.setenv("COGNITIVE_OS_PROJECT_DIR", "")
         assert project_root() is None
 
     def test_returns_pathlib_path_not_str(self, monkeypatch):
-        from lib.paths import project_root
+        from cos_lib.paths import project_root
 
         _clear_env(monkeypatch)
         monkeypatch.setenv("CLAUDE_PROJECT_DIR", "/some/dir")
@@ -643,7 +643,7 @@ class TestLibPathsProjectRoot:
 
     def test_idempotent(self, monkeypatch):
         """Repeated calls with the same env vars return equal paths."""
-        from lib.paths import project_root
+        from cos_lib.paths import project_root
 
         _clear_env(monkeypatch)
         monkeypatch.setenv("CLAUDE_PROJECT_DIR", "/stable")
@@ -651,7 +651,7 @@ class TestLibPathsProjectRoot:
 
     def test_truthy_when_configured(self, monkeypatch):
         """Callers rely on ``if project_dir:`` — must be truthy when set."""
-        from lib.paths import project_root
+        from cos_lib.paths import project_root
 
         _clear_env(monkeypatch)
         monkeypatch.setenv("CLAUDE_PROJECT_DIR", "/some/path")
@@ -659,7 +659,7 @@ class TestLibPathsProjectRoot:
 
     def test_falsy_when_not_configured(self, monkeypatch):
         """Callers rely on ``if project_dir:`` — must be falsy (None) when unset."""
-        from lib.paths import project_root
+        from cos_lib.paths import project_root
 
         _clear_env(monkeypatch)
         result = project_root()

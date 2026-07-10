@@ -83,7 +83,7 @@ _script_dir = os.path.dirname(os.path.abspath(__file__))
 _repo_root = os.path.dirname(_script_dir)
 sys.path.insert(0, _repo_root)
 
-from lib.event_bus import emit, tail, stats, EVENT_TYPES  # noqa: E402
+from cos_lib.event_bus import emit, tail, stats, EVENT_TYPES  # noqa: E402
 
 subcommand = sys.argv[1]
 args_raw = sys.argv[2:]

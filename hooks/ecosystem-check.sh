@@ -27,7 +27,7 @@ fi
 timeout 30 python3 -c "
 import sys
 sys.path.insert(0, '$PROJECT_DIR')
-from lib.ecosystem_evaluator import EcosystemEvaluator
+from cos_lib.ecosystem_evaluator import EcosystemEvaluator
 
 e = EcosystemEvaluator('$PROJECT_DIR')
 r = e.generate_evaluation_report()

@@ -39,7 +39,7 @@ Determine which files to analyze. Sources (in priority order):
 Use the `lib/impact_analysis.py` module:
 
 ```python
-from lib.impact_analysis import analyze_impact, format_impact_report
+from cos_lib.impact_analysis import analyze_impact, format_impact_report
 
 report = analyze_impact(changed_files, project_dir)
 print(format_impact_report(report))

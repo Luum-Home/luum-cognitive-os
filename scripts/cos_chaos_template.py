@@ -355,7 +355,7 @@ def _is_script(component_path: str) -> bool:
     path = component_path.lower()
     return (
         path.startswith("scripts/")
-        or path.startswith("lib/")
+        or path.startswith("cos_lib/")
         or Path(component_path).suffix in (".py",)
         and not path.startswith("hooks/")
     )

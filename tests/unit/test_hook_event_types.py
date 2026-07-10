@@ -1,9 +1,9 @@
-"""Unit tests for lib.hook_event_types (ADR-290 Pattern 2)."""
+"""Unit tests for cos_lib.hook_event_types (ADR-290 Pattern 2)."""
 from __future__ import annotations
 
 import pytest
 
-from lib.hook_event_types import (
+from cos_lib.hook_event_types import (
     HookPayloadError,
     PostToolUseEvent,
     PreToolUseEvent,

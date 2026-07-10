@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from lib.validation_lanes import lane_budgets
+from cos_lib.validation_lanes import lane_budgets
 
 pytestmark = pytest.mark.unit
 

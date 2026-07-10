@@ -3,7 +3,7 @@
 """Orchestrator Mode -- subprocess-based delegation via ClaudeExecutor.
 
 When ``ORCHESTRATOR_MODE=executor`` the orchestrator delegates work to
-sub-agents through :class:`lib.claude_executor.ClaudeExecutor` (subprocess)
+sub-agents through :class:`cos_lib.claude_executor.ClaudeExecutor` (subprocess)
 instead of the built-in Agent tool.  This gives:
 
 * Valkey pub/sub communication (heartbeat, progress, Q&A)
@@ -66,7 +66,7 @@ def _get_model_for_phase(phase: str) -> str:
             except Exception:
                 pass
     try:
-        from lib.model_router import select_model
+        from cos_lib.model_router import select_model
 
         return select_model(phase)
     except Exception:
@@ -107,7 +107,7 @@ def delegate_task(
         ``model_used``, and ``agent_id``.
     """
     try:
-        from lib.claude_executor import ClaudeExecutor
+        from cos_lib.claude_executor import ClaudeExecutor
     except ImportError:
         logger.error("ClaudeExecutor not available -- cannot delegate task")
         return {

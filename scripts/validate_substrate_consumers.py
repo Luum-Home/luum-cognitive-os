@@ -43,7 +43,7 @@ def check(name: str) -> Callable:
 # ─── A. Schema version invariant ───────────────────────────────────────────────
 @check("A1. session_bus EVENT_STORE_SCHEMA_VERSION matches manifest")
 def _():
-    from lib.session_bus import EVENT_STORE_SCHEMA_VERSION
+    from cos_lib.session_bus import EVENT_STORE_SCHEMA_VERSION
     manifest = (ROOT / "manifests/event-sourced-session-bus.yaml").read_text()
     assert "event-sourced-session-bus/v1" in manifest, "manifest missing schema_version"
     assert EVENT_STORE_SCHEMA_VERSION == "event-sourced-session-bus/v1", (
@@ -53,8 +53,8 @@ def _():
 
 @check("A2. handoff_dispatcher writes via canonical append_session_event")
 def _():
-    src = (ROOT / "lib/handoff_dispatcher.py").read_text()
-    assert "from lib.session_bus import append_session_event" in src, \
+    src = (ROOT / "cos_lib/handoff_dispatcher.py").read_text()
+    assert "from cos_lib.session_bus import append_session_event" in src, \
         "handoff_dispatcher must import the v2 substrate API"
     # Negative: should NOT bypass to raw file writes
     assert "open(" not in src or "append_session_event" in src, \
@@ -64,7 +64,7 @@ def _():
 # ─── B. Projection robustness (events with missing fields) ────────────────────
 @check("B1. cost_ledger.fold tolerates events without payload/cost")
 def _():
-    from lib.event_projections.cost_ledger import fold
+    from cos_lib.event_projections.cost_ledger import fold
     state = fold(None, {"event_type": "x", "seq": 1})
     assert state["total_cost_usd"] == 0.0
     assert state["events"] == 1
@@ -72,14 +72,14 @@ def _():
 
 @check("B2. cost_ledger.fold rejects malformed cost gracefully")
 def _():
-    from lib.event_projections.cost_ledger import fold
+    from cos_lib.event_projections.cost_ledger import fold
     state = fold(None, {"event_type": "x", "payload": {"cost_usd": "not-a-number"}})
     assert state["total_cost_usd"] == 0.0  # ignored, no crash
 
 
 @check("B3. handoff_chain.fold detects cycles correctly")
 def _():
-    from lib.event_projections.handoff_chain import fold
+    from cos_lib.event_projections.handoff_chain import fold
     s = None
     s = fold(s, {"event_type": "handoff-requested", "seq": 1,
                  "payload": {"to_agent": "B", "call_chain": ["A"]}})
@@ -90,7 +90,7 @@ def _():
 
 @check("B4. handoff_chain.fold ignores unrelated event types")
 def _():
-    from lib.event_projections.handoff_chain import fold
+    from cos_lib.event_projections.handoff_chain import fold
     s = fold(None, {"event_type": "unrelated", "seq": 99, "payload": {}})
     assert s["cycles_detected"] == 0
     assert s["handoffs"] == []
@@ -98,11 +98,11 @@ def _():
 
 @check("B5. all projections have signature fold(state, event) -> state")
 def _():
-    proj_dir = ROOT / "lib/event_projections"
+    proj_dir = ROOT / "cos_lib/event_projections"
     for f in proj_dir.glob("*.py"):
         if f.name == "__init__.py":
             continue
-        mod = importlib.import_module(f"lib.event_projections.{f.stem}")
+        mod = importlib.import_module(f"cos_lib.event_projections.{f.stem}")
         assert hasattr(mod, "fold"), f"{f.stem} missing fold()"
         # Smoke: fold(None, {}) should not crash (defensive)
         result = mod.fold(None, {"event_type": "noop", "seq": 0})
@@ -112,9 +112,9 @@ def _():
 # ─── C. Strict-durability required-for invariant ──────────────────────────────
 @check("C1. ADR-227 file_restore commit uses strict_durability=True")
 def _():
-    p = ROOT / "lib/shadow_git.py"
+    p = ROOT / "cos_lib/shadow_git.py"
     if not p.exists():
-        raise AssertionError("lib/shadow_git.py missing")
+        raise AssertionError("cos_lib/shadow_git.py missing")
     src = p.read_text()
     # Either the file uses strict_durability when committing restore events,
     # or it doesn't emit such events at all (Slice A may not yet wire them).
@@ -125,9 +125,9 @@ def _():
 
 @check("C2. ADR-228 idempotency claim uses strict_durability=True")
 def _():
-    p = ROOT / "lib/dispatch_gate.py"
+    p = ROOT / "cos_lib/dispatch_gate.py"
     if not p.exists():
-        raise AssertionError("lib/dispatch_gate.py missing")
+        raise AssertionError("cos_lib/dispatch_gate.py missing")
     src = p.read_text()
     if "idempotency_key_claimed" in src or "idempotency.claim" in src:
         assert "strict_durability=True" in src, \
@@ -137,7 +137,7 @@ def _():
 # ─── D. Seq type compatibility ────────────────────────────────────────────────
 @check("D1. handoff envelope parent_event_seq accepts substrate seq type")
 def _():
-    from lib.handoff_envelope import HandoffEnvelope
+    from cos_lib.handoff_envelope import HandoffEnvelope
     # Substrate produces non-negative ints; envelope must accept them.
     env_kwargs = dict(
         handoff_id="abc-123",
@@ -179,7 +179,7 @@ def _():
 
 @check("E2. round-trip append_session_event + read_session_events under append_event budget")
 def _():
-    from lib.session_bus import append_session_event, read_session_events  # noqa: F401
+    from cos_lib.session_bus import append_session_event, read_session_events  # noqa: F401
     import tempfile, uuid
 
     with tempfile.TemporaryDirectory() as tmp:
@@ -216,9 +216,9 @@ def _():
     # Spot-check: any consumer reading a stream must filter by schema_version.
     # Soft check — accept either filter or read_session_events helper usage.
     consumers = [
-        ROOT / "lib/handoff_dispatcher.py",
-        ROOT / "lib/dispatch_gate.py",
-        ROOT / "lib/agent_team.py",
+        ROOT / "cos_lib/handoff_dispatcher.py",
+        ROOT / "cos_lib/dispatch_gate.py",
+        ROOT / "cos_lib/agent_team.py",
     ]
     for c in consumers:
         if not c.exists():

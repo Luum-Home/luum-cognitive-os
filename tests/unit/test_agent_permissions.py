@@ -10,7 +10,7 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 
-from lib.agent_permissions import (
+from cos_lib.agent_permissions import (
     AgentPermissionManager,
     PermissionLevel,
     get_profile_for_task,

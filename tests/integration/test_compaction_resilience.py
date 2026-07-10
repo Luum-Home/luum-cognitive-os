@@ -31,9 +31,9 @@ import pytest
 pytestmark = pytest.mark.docker
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from lib.state_heartbeat import StateHeartbeat
-from lib.session_hygiene import prune_completed_tasks
-from lib.agent_progress_tracker import AgentProgressTracker
+from cos_lib.state_heartbeat import StateHeartbeat
+from cos_lib.session_hygiene import prune_completed_tasks
+from cos_lib.agent_progress_tracker import AgentProgressTracker
 
 
 # ---------------------------------------------------------------------------

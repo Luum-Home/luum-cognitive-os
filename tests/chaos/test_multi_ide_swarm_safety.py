@@ -437,7 +437,7 @@ def test_task_completed_by_other_agent_is_marked_by_watermark(scratch_project: P
 
 
 def test_completed_by_other_agent_reconciliation_fixture(scratch_project: Path) -> None:
-    from lib.task_reconciliation import reconcile_completed_by_other_session
+    from cos_lib.task_reconciliation import reconcile_completed_by_other_session
 
     sessions = scratch_project / ".cognitive-os" / "sessions"
     (sessions / "codex-session").mkdir(parents=True)

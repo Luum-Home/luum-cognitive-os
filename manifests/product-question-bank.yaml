@@ -603,7 +603,7 @@ questions:
     - docs/02-Decisions/adrs/ADR-296-language-agnostic-semantic-routing.md
     - docs/02-Decisions/adrs/ADR-298-routing-model-benchmark-harness.md
     - docs/02-Decisions/adrs/ADR-299-skill-description-enrichment.md
-    - lib/semantic_skill_matcher.py
+    - cos_lib/semantic_skill_matcher.py
     - skills/detect-stack/SKILL.md
     related_claims:
     - cross_harness_behavioral_intelligence

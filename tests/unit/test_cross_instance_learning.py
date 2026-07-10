@@ -7,7 +7,7 @@ from pathlib import Path
 
 import yaml
 
-from lib.cross_instance_learning import (
+from cos_lib.cross_instance_learning import (
     audit_federation_triggers,
     audit_registry_locks,
     build_consumer_evidence,

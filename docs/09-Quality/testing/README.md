@@ -26,7 +26,7 @@ go test ./... -count=1 -timeout 30s
 
 | Directory | Purpose | Count |
 |-----------|---------|-------|
-| `tests/unit/` | Isolated function tests (import lib.*, call functions) | ~180 |
+| `tests/unit/` | Isolated function tests (import cos_lib.*, call functions) | ~180 |
 | `tests/behavior/` | Hook execution tests (subprocess.run with real JSON) | ~60 |
 | `tests/integration/` | Multi-component tests (Docker, external services) | ~30 |
 | `tests/hooks/` | Pure hook behavior (JSON stdin → JSON stdout) | ~5 |
@@ -155,7 +155,7 @@ A test is **structural** (bad) if it only uses:
 
 A test is **behavioral** (good) if it:
 - Calls `subprocess.run` with real input
-- Imports and calls functions from `lib.*`
+- Imports and calls functions from `cos_lib.*`
 - Asserts on execution output, not just structure
 
 ### CI Gate
@@ -215,7 +215,7 @@ def test_hook_behavior():
 ```python
 import sys
 sys.path.insert(0, "<repo-root>")
-from lib.my_module import MyClass
+from cos_lib.my_module import MyClass
 
 def test_function_returns_expected():
     obj = MyClass()

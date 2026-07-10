@@ -6,8 +6,8 @@ from pathlib import Path
 
 import pytest
 
-from lib.dispatch_gate import DispatchGate
-from lib.dispatch_cost_predictor import predict_call_cost
+from cos_lib.dispatch_gate import DispatchGate
+from cos_lib.dispatch_cost_predictor import predict_call_cost
 
 
 @pytest.mark.benchmark

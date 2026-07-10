@@ -6,7 +6,7 @@ import os
 # Ensure lib is importable
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-from lib.error_matching import (
+from cos_lib.error_matching import (
     normalize_signature,
     calculate_similarity,
     find_matching_error,

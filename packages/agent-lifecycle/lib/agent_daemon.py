@@ -18,8 +18,8 @@ from dataclasses import asdict, dataclass, replace
 from pathlib import Path
 from typing import Any
 
-from lib.dispatch_gate import DispatchGate
-from lib.session_budget import SessionBudgetExceeded
+from cos_lib.dispatch_gate import DispatchGate
+from cos_lib.session_budget import SessionBudgetExceeded
 
 SCHEMA_VERSION = "detached-agent-task/v1"
 

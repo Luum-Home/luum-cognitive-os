@@ -113,7 +113,7 @@ if lib_dir not in sys.path:
     sys.path.insert(0, project_root)
 
 try:
-    from lib.engram_lifecycle import EngramLifecycle
+    from cos_lib.engram_lifecycle import EngramLifecycle
     lc = EngramLifecycle()
     for obs_id in ids:
         try:

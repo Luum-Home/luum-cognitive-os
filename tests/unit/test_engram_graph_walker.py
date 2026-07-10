@@ -1,4 +1,4 @@
-"""Unit tests for lib.engram_graph_walker — Phase 3 of ADR-071.
+"""Unit tests for cos_lib.engram_graph_walker — Phase 3 of ADR-071.
 
 All tests use a temporary SQLite database with the memory_relations schema.
 No engram daemon or HTTP calls required.
@@ -12,7 +12,7 @@ import os
 from unittest.mock import MagicMock
 
 
-from lib.engram_graph_walker import EngramGraphWalker
+from cos_lib.engram_graph_walker import EngramGraphWalker
 
 
 # ---------------------------------------------------------------------------

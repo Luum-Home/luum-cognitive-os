@@ -68,8 +68,8 @@ If a plain HTTP fetch (no JS, no auth, no interaction) suffices, prefer
 ### From Python (a skill or sub-agent)
 
 ```python
-from lib.web_automation_router import route, WebAutomationUnavailable
-from lib.dispatch_cost_predictor import predict_call_cost
+from cos_lib.web_automation_router import route, WebAutomationUnavailable
+from cos_lib.dispatch_cost_predictor import predict_call_cost
 
 try:
     adapter = route(
@@ -109,15 +109,15 @@ result = adapter.run_task_sync(task, max_steps=20)
 
 Set the env var `COS_DISABLE_WEB_AUTOMATION=1`.
 
-When set, both `lib.web_automation_router.route()` and
-`lib.browser_use_adapter.BrowserUseAdapter(...)` raise
+When set, both `cos_lib.web_automation_router.route()` and
+`cos_lib.browser_use_adapter.BrowserUseAdapter(...)` raise
 `WebAutomationUnavailable`. This is the operator-level off switch - there is
 no silent fallback.
 
 ## Cost model
 
 - **Owned providers** (`anthropic`, `openai`): cost flows through
-  `lib.dispatch_cost_predictor.predict_call_cost(provider, ...)` exactly like
+  `cos_lib.dispatch_cost_predictor.predict_call_cost(provider, ...)` exactly like
   any other LLM dispatch. The ADR-228 session budget gate sees web automation
   as a normal cost source.
 - **`ChatBrowserUse`** (hosted): $0.20 / $2.00 per million input / output

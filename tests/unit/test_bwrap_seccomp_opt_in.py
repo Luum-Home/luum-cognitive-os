@@ -5,7 +5,7 @@ import shutil
 
 import pytest
 
-from lib.sandbox_adapter import SandboxUnavailable, build_sandbox_command
+from cos_lib.sandbox_adapter import SandboxUnavailable, build_sandbox_command
 
 
 def test_strict_seccomp_requires_compiled_profile_path(tmp_path, monkeypatch) -> None:

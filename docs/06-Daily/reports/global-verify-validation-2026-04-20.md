@@ -41,7 +41,7 @@ grep -n "global-verify" scripts/apply-efficiency-profile.sh  →  lines 171, 225
 
 | Phase | Trigger | Behavior |
 |-------|---------|----------|
-| `before` | PreToolUse Agent | Calls `get_changed_files()` via `git diff --name-only HEAD`; resolves test targets via `lib.targeted_test_resolver` (if available); writes baseline to `.cognitive-os/runtime/verify-baseline/{agent_id}.json` |
+| `before` | PreToolUse Agent | Calls `get_changed_files()` via `git diff --name-only HEAD`; resolves test targets via `cos_lib.targeted_test_resolver` (if available); writes baseline to `.cognitive-os/runtime/verify-baseline/{agent_id}.json` |
 | `after` | PostToolUse Agent | Re-runs the same tests; computes `delta_failed`; emits `MetricEvent` to `verify-events.jsonl`; exits 1 with `BLOCKER` message if regression detected |
 | safe-skip | Both phases | Exits 0 with informational message if: pytest absent, resolver unavailable, 0 tests resolved, baseline timeout/error |
 

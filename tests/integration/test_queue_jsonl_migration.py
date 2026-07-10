@@ -29,14 +29,14 @@ _PROJ_ROOT = Path(__file__).resolve().parent.parent.parent
 if str(_PROJ_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJ_ROOT))
 
-from lib.rate_limiter import (  # noqa: E402
+from cos_lib.rate_limiter import (  # noqa: E402
     JSONL_COMPACTION_THRESHOLD,
     PRIORITY_NORMAL,
     RateLimitQueue,
     _derive_jsonl_path,
     _replay_jsonl,
 )
-from lib.rate_limit_queue_migration import migrate_queue_on_boot, migration_status
+from cos_lib.rate_limit_queue_migration import migrate_queue_on_boot, migration_status
 
 pytestmark = [pytest.mark.integration, pytest.mark.docker]
 
@@ -194,7 +194,7 @@ class TestCompactionShrinksFile:
         # Pump enough events to exceed the compaction threshold by directly
         # appending filler events.  Each filler event must have a valid item
         # structure so _replay_jsonl does not skip it.
-        from lib.rate_limiter import _append_event
+        from cos_lib.rate_limiter import _append_event
 
         filler_id = "filler000"
         filler_item = {

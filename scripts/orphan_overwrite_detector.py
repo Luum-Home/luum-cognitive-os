@@ -8,7 +8,7 @@ import json
 import subprocess
 from pathlib import Path
 
-from lib.session_bus import append_event
+from cos_lib.session_bus import append_event
 
 
 def run(root: Path, args: list[str]) -> subprocess.CompletedProcess[str]:

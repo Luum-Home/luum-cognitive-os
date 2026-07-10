@@ -36,7 +36,7 @@ def test_cli_help_works():
 def test_library_imports_clean():
     """Bilateral: the library imports without side effects."""
     cp = subprocess.run(
-        [sys.executable, "-c", "import lib.orphan_process_audit"],
+        [sys.executable, "-c", "import cos_lib.orphan_process_audit"],
         capture_output=True,
         text=True,
         env={**os.environ, "PYTHONPATH": str(REPO)},

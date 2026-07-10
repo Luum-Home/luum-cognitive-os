@@ -1,5 +1,5 @@
 """
-Unit tests for lib.impact_analysis.
+Unit tests for cos_lib.impact_analysis.
 
 Covers:
   - test_empty_file_list_returns_low_risk
@@ -14,7 +14,7 @@ from __future__ import annotations
 
 import pytest
 
-from lib.impact_analysis import (
+from cos_lib.impact_analysis import (
     analyze_impact,
     classify_risk,
     format_impact_report,

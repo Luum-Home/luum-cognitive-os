@@ -1,4 +1,4 @@
-from lib.lethal_trifecta import classify_action
+from cos_lib.lethal_trifecta import classify_action
 
 
 def test_blocks_private_untrusted_external_command() -> None:

@@ -55,7 +55,7 @@ SCRIPTS_DIR = Path(__file__).parent.resolve()
 if str(SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPTS_DIR))
 
-from lib.script_io import write_json as _write_json_if_changed
+from cos_lib.script_io import write_json as _write_json_if_changed
 import lib_closure
 
 
@@ -1826,7 +1826,7 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
     hooks_source = str(cos_source / "hooks")
     hooks_dest = str(project_dir / ".cognitive-os" / "hooks" / "cos")
     Path(hooks_dest).mkdir(parents=True, exist_ok=True)
-    # Seed set for the lib.* dependency closure (§2.2 step 1): exactly the
+    # Seed set for the cos_lib.* dependency closure (§2.2 step 1): exactly the
     # hooks actually projected for this profile — populated below in both
     # the --full and default branches.
     projected_hook_paths: list[Path] = []
@@ -1877,7 +1877,7 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
             shutil.copy2(str(wrapper_src), str(wrapper_dest))
             wrapper_dest.chmod(wrapper_dest.stat().st_mode | 0o111)
 
-    # ── 5b. Project the lib.* dependency closure for the installed hooks ──
+    # ── 5b. Project the cos_lib.* dependency closure for the installed hooks ──
     # (docs/02-Decisions/designs/hook-lib-projection-contract.md §2.2). This
     # extends — does not replace — the existing 2-module duplicates subset
     # installed by _install_quality_duplicates_primitive(); closure members

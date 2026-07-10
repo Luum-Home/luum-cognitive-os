@@ -5,8 +5,8 @@ from pathlib import Path
 
 import yaml
 
-import lib.history_sanitization as hs
-from lib.history_sanitization import (
+import cos_lib.history_sanitization as hs
+from cos_lib.history_sanitization import (
     build_report,
     commit_message_rewrite_enabled,
     load_manifest,

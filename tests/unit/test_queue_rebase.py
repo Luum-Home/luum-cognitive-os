@@ -72,7 +72,7 @@ class TestIsFfPossible:
         """is_ff_possible returns True: session is ahead of main."""
         import sys
         sys.path.insert(0, str(REPO_ROOT))
-        from lib.queue_rebase import is_ff_possible
+        from cos_lib.queue_rebase import is_ff_possible
 
         _git(["checkout", "-b", "session/ahead"], git_repo)
         _add_commit(git_repo, "feat.txt", "new feature\n", "feat: add feature")
@@ -84,7 +84,7 @@ class TestIsFfPossible:
         """is_ff_possible returns False: main has diverged ahead of session."""
         import sys
         sys.path.insert(0, str(REPO_ROOT))
-        from lib.queue_rebase import is_ff_possible
+        from cos_lib.queue_rebase import is_ff_possible
 
         # Create session branch from current main.
         _git(["checkout", "-b", "session/behind"], git_repo)
@@ -108,7 +108,7 @@ class TestRebaseOntoSuccess:
         """rebase_onto succeeds when session and main touch different files."""
         import sys
         sys.path.insert(0, str(REPO_ROOT))
-        from lib.queue_rebase import rebase_onto, is_ff_possible
+        from cos_lib.queue_rebase import rebase_onto, is_ff_possible
 
         # Create session branch and add a commit.
         _git(["checkout", "-b", "session/clean"], git_repo)
@@ -133,7 +133,7 @@ class TestRebaseOntoSuccess:
         """After rebase, original commit messages appear in the log."""
         import sys
         sys.path.insert(0, str(REPO_ROOT))
-        from lib.queue_rebase import rebase_onto
+        from cos_lib.queue_rebase import rebase_onto
 
         _git(["checkout", "-b", "session/msgs"], git_repo)
         _add_commit(git_repo, "a.txt", "a\n", "feat: unique message alpha")
@@ -162,7 +162,7 @@ class TestRebaseOntoConflict:
         """rebase_onto returns success=False, populates conflicts, aborts cleanly."""
         import sys
         sys.path.insert(0, str(REPO_ROOT))
-        from lib.queue_rebase import rebase_onto
+        from cos_lib.queue_rebase import rebase_onto
 
         shared_file = "shared.txt"
 
@@ -197,7 +197,7 @@ class TestRebaseOntoDryRun:
         """dry_run=True returns RebaseResult(success=True) without touching git."""
         import sys
         sys.path.insert(0, str(REPO_ROOT))
-        from lib.queue_rebase import rebase_onto
+        from cos_lib.queue_rebase import rebase_onto
 
         # Create session branch behind main.
         _git(["checkout", "-b", "session/dryrun"], git_repo)
@@ -229,7 +229,7 @@ class TestRebaseWipGuard:
         """rebase_onto returns failure when there are uncommitted changes."""
         import sys
         sys.path.insert(0, str(REPO_ROOT))
-        from lib.queue_rebase import rebase_onto
+        from cos_lib.queue_rebase import rebase_onto
 
         _git(["checkout", "-b", "session/wip"], git_repo)
         _add_commit(git_repo, "committed.txt", "committed\n", "feat: committed")

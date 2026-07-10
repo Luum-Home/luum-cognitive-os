@@ -11,7 +11,7 @@ import json
 
 import pytest
 
-from lib.dispatch_model_advisor import (
+from cos_lib.dispatch_model_advisor import (
     score_task_risk,
     log_risk_recommendation,
     _ADR069_THRESHOLD,

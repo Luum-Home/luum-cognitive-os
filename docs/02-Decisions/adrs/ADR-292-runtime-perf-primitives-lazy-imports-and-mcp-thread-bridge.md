@@ -8,8 +8,8 @@ supersedes:
 - ADR-290
 superseded_by: null
 implementation_files:
-- lib/lazy_imports.py
-- lib/mcp_thread_bridge.py
+- cos_lib/lazy_imports.py
+- cos_lib/mcp_thread_bridge.py
 tier: maintainer
 tags:
 - performance
@@ -80,7 +80,7 @@ Adopt two runtime-performance primitives. Each is delivered as one module plus o
 
 ## Operational Guide
 
-- New callers `from lib.lazy_imports import LazyImport` and wrap heavy modules: `yaml = LazyImport(lambda: __import__("yaml"))`.
+- New callers `from cos_lib.lazy_imports import LazyImport` and wrap heavy modules: `yaml = LazyImport(lambda: __import__("yaml"))`.
 - Long-lived processes (CLI, agent runtime, daemon) construct one `MCPThreadBridge()` and reuse it across calls. Short-lived hooks should not instantiate the bridge.
 - Both primitives are opt-in; no existing caller is forced to migrate.
 

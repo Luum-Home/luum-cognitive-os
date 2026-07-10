@@ -12,13 +12,13 @@ from unittest.mock import patch
 
 import pytest
 
-_LIB_DIR = str(Path(__file__).resolve().parent.parent.parent / "lib")
+_LIB_DIR = str(Path(__file__).resolve().parent.parent.parent / "cos_lib")
 if _LIB_DIR not in sys.path:
     sys.path.insert(0, _LIB_DIR)
 
-# webhook_trigger imports FastAPI + uvicorn and lib.claude_executor with
+# webhook_trigger imports FastAPI + uvicorn and cos_lib.claude_executor with
 # a different interface (ExecutionResult). We need to mock those before import.
-# The module also uses `from lib.claude_executor import ClaudeExecutor, ExecutionResult`
+# The module also uses `from cos_lib.claude_executor import ClaudeExecutor, ExecutionResult`
 # which will fail. We mock that at import time.
 
 import unittest.mock
@@ -28,7 +28,7 @@ _mock_fastapi = unittest.mock.MagicMock()
 _mock_uvicorn = unittest.mock.MagicMock()
 
 # We need to handle the import carefully since webhook_trigger.py imports
-# from lib.claude_executor using a path that may not work in test context,
+# from cos_lib.claude_executor using a path that may not work in test context,
 # and uses ExecutionResult which doesn't exist in the actual module.
 # We'll mock the specific problematic imports and test the pure functions.
 
@@ -37,14 +37,14 @@ with patch.dict("sys.modules", {
     "uvicorn": _mock_uvicorn,
 }):
     # Also patch the import of ExecutionResult which doesn't exist
-    # We need to make lib.claude_executor available with ExecutionResult
+    # We need to make cos_lib.claude_executor available with ExecutionResult
     _mock_ce_module = unittest.mock.MagicMock()
     _mock_ce_module.ClaudeExecutor = unittest.mock.MagicMock
     _mock_ce_module.ExecutionResult = unittest.mock.MagicMock
 
     with patch.dict("sys.modules", {
         "lib": unittest.mock.MagicMock(),
-        "lib.claude_executor": _mock_ce_module,
+        "cos_lib.claude_executor": _mock_ce_module,
     }):
         import webhook_trigger as _wt_module
         from webhook_trigger import (

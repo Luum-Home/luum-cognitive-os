@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from lib.validation_lanes import recommend_lane
+from cos_lib.validation_lanes import recommend_lane
 
 
 def test_docs_only_diff_recommends_fast_lane() -> None:

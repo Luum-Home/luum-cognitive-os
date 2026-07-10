@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from lib.primitive_parser import parse_primitive_file
+from cos_lib.primitive_parser import parse_primitive_file
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 PACKAGE_SKILLS = sorted((REPO_ROOT / "packages").glob("*/skills/*/SKILL.md"))

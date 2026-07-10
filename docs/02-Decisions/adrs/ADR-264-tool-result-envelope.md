@@ -158,7 +158,7 @@ Intentional differences from the reference pattern (Anexo F §2, Nivel 1):
 Every tool result passes through `wrap_if_large` before being added to conversation history.
 
 ```python
-from lib.tool_result_envelope import wrap_if_large
+from cos_lib.tool_result_envelope import wrap_if_large
 
 # After executing the tool call:
 result_text = wrap_if_large(
@@ -220,7 +220,7 @@ When the ledger says `REFERENCE_ONLY`, the envelope is rendered with `preview_te
 
 ```
 [ ] lib/tool_result_envelope.py exists and is importable via:
-    python3 -c "from lib.tool_result_envelope import wrap_if_large, EnvelopePreview"
+    python3 -c "from cos_lib.tool_result_envelope import wrap_if_large, EnvelopePreview"
     with no external dependencies al stdlib.
 
 [ ] pytest tests/unit/test_tool_result_envelope.py passes with coverage for:

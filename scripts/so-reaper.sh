@@ -49,7 +49,7 @@ fi
 python3 - <<PYEOF 2>&1 | head -40
 import sys
 sys.path.insert(0, "$PROJECT_DIR")
-from lib.process_registry import cleanup_expired, detect_orphans
+from cos_lib.process_registry import cleanup_expired, detect_orphans
 
 expired = cleanup_expired(dry_run=False)
 

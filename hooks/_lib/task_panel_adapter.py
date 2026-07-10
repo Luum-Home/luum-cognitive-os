@@ -20,7 +20,7 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.harness_environment import is_claude_code as _is_claude_code
+from cos_lib.harness_environment import is_claude_code as _is_claude_code
 
 
 def _load_active_tasks(project_dir: Path) -> list[dict]:

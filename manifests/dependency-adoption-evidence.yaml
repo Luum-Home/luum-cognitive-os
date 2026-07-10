@@ -12,7 +12,7 @@ adoptions:
     owner_adr: ADR-288
     due_diligence_id: web-automation-adapter
     license: MIT
-    integration_pattern: adapter (lib/browser_use_adapter.py) + router (lib/web_automation_router.py) + skill (skills/browser-task/)
+    integration_pattern: adapter (cos_lib/browser_use_adapter.py) + router (cos_lib/web_automation_router.py) + skill (skills/browser-task/)
     kill_switch: COS_DISABLE_WEB_AUTOMATION=1
     rationale: Industry-leading LLM-driven web automation (93.7k stars); building Playwright wrapper from scratch would reinvent accessibility-tree + replan-loop primitives.
     audit_link: docs/02-Decisions/adrs/ADR-288-web-automation-adapter-for-dispatch.md
@@ -40,7 +40,7 @@ adoptions:
     owner_adr: trust-report-schema core dependency
     due_diligence_id: trust-report-parser-core
     license: MIT
-    integration_pattern: lib/trust_report_parser.py and trust-score validator hooks import Pydantic models from the core runtime environment.
+    integration_pattern: cos_lib/trust_report_parser.py and trust-score validator hooks import Pydantic models from the core runtime environment.
     rationale: Pydantic is already approved for ADR-291 agent-service schemas; promoting it to the root core dependency keeps self-host hooks and tests deterministic when trust-report parsing runs outside optional package extras.
     audit_link: tests/unit/test_trust_report_parser.py
   - package: pydantic

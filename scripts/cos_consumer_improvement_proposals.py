@@ -11,12 +11,12 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from lib.consumer_improvement_proposals import (  # noqa: E402
+from cos_lib.consumer_improvement_proposals import (  # noqa: E402
     build_consumer_improvement_bundle,
     import_consumer_improvement_bundle,
     write_consumer_improvement_bundle,
 )
-from lib.script_io import print_json_status as _print  # noqa: E402
+from cos_lib.script_io import print_json_status as _print  # noqa: E402
 
 
 def main(argv: list[str] | None = None) -> int:

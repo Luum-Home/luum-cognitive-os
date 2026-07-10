@@ -13,8 +13,8 @@ from pathlib import Path
 
 import pytest
 
-from lib.harness_adapter.aider import AiderAdapter, UnsupportedAiderVersion
-from lib.harness_adapter.base import AgentStart, ParseError, ToolUse
+from cos_lib.harness_adapter.aider import AiderAdapter, UnsupportedAiderVersion
+from cos_lib.harness_adapter.base import AgentStart, ParseError, ToolUse
 
 
 # ---------------------------------------------------------------------------
@@ -234,7 +234,7 @@ class TestAiderFixtureCorpus:
     )
     def test_fixture_version_detected(self, fixture_name, expected_version):
         """Each fixture has a parseable version header."""
-        from lib.harness_adapter.aider import _detect_version
+        from cos_lib.harness_adapter.aider import _detect_version
 
         fixture_path = _FIXTURES / fixture_name
         lines = fixture_path.read_text(encoding="utf-8").splitlines()

@@ -10,7 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from lib.session_bus import append_session_event, read_session_events  # noqa: E402
+from cos_lib.session_bus import append_session_event, read_session_events  # noqa: E402
 
 
 def _legacy_path(project: Path) -> Path:

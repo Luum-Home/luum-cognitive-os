@@ -190,7 +190,7 @@ The `end_timer` function records the duration to `performance.jsonl`. If Python 
 Use the `time_operation` context manager:
 
 ```python
-from lib.performance_monitor import PerformanceMonitor
+from cos_lib.performance_monitor import PerformanceMonitor
 
 monitor = PerformanceMonitor()
 

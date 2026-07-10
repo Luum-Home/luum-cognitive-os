@@ -1,4 +1,4 @@
-"""Unit tests for lib.telemetry_aggregator (ADR-304 Slice 1)."""
+"""Unit tests for cos_lib.telemetry_aggregator (ADR-304 Slice 1)."""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT))
 
-from lib.telemetry_aggregator import (  # noqa: E402
+from cos_lib.telemetry_aggregator import (  # noqa: E402
     aggregate_streams,
     append_findings_idempotent,
     validate_slo_manifest,

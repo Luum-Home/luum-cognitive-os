@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 
-from lib.retry_classifier import FailureClass, classify_failure, retry_policy_for
+from cos_lib.retry_classifier import FailureClass, classify_failure, retry_policy_for
 
 
 class Response:

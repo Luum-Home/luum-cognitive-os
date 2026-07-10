@@ -71,7 +71,7 @@ re-implementing the scanner logic inline.
   structured Engram HTTP search path. Falls back to empty results when the
   daemon is absent (CI-safe).
 
-**`skills/memory-scan/SKILL.md`** — exposes `lib.memory_scanner.MemoryScanner`
+**`skills/memory-scan/SKILL.md`** — exposes `cos_lib.memory_scanner.MemoryScanner`
 as an agent-callable skill. Agents invoke `/memory-scan <text>` or
 `/memory-scan --file <path>` mid-task to vet content before persisting.
 

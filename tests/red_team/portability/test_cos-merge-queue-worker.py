@@ -102,7 +102,7 @@ class TestDryRunMode:
     def test_dry_run_prints_intent(self, tmp_path):
         queue_file = tmp_path / "q.jsonl"
         sys.path.insert(0, str(REPO_ROOT))
-        from lib.merge_queue import enqueue  # noqa: PLC0415
+        from cos_lib.merge_queue import enqueue  # noqa: PLC0415
 
         enqueue("session/dry-test", "dry-session", queue_path=queue_file)
 
@@ -114,7 +114,7 @@ class TestDryRunMode:
             "Expected dry-run output, got:\n" + combined
         )
         # Queue entry should NOT be marked completed (dry-run = no writes).
-        from lib.merge_queue import list_pending  # noqa: PLC0415
+        from cos_lib.merge_queue import list_pending  # noqa: PLC0415
 
         pending = list_pending(queue_path=queue_file)
         assert len(pending) == 1, "Dry-run should not consume queue entries"
@@ -137,7 +137,7 @@ class TestAncestryGateFailure:
     def test_gate_fail_marks_failed(self, tmp_path):
         queue_file = tmp_path / "q.jsonl"
         sys.path.insert(0, str(REPO_ROOT))
-        from lib.merge_queue import enqueue, status  # noqa: PLC0415
+        from cos_lib.merge_queue import enqueue, status  # noqa: PLC0415
 
         eid = enqueue("session/gate-fail", "gate-session", queue_path=queue_file)
 

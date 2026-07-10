@@ -132,7 +132,7 @@ STANDARD_STACK: List[Gate] = [
 def _emit_event(event_type: str, payload: dict, session_id: str) -> None:
     """Emit an event to the bus — best-effort; never raises."""
     try:
-        from lib.event_bus import emit  # type: ignore[import]
+        from cos_lib.event_bus import emit  # type: ignore[import]
 
         emit(event_type, payload, session_id=session_id)
     except Exception as exc:  # noqa: BLE001

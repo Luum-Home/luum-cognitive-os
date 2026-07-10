@@ -13,7 +13,7 @@ sys.path.insert(
     0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 )
 
-from lib.retry_scheduler import (
+from cos_lib.retry_scheduler import (
     RetryScheduler,
     MIN_DEFERRED_WAIT_S,
     MAX_DEFERRED_WAIT_S,

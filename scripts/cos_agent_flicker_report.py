@@ -100,7 +100,7 @@ def _control_definitions() -> list[dict[str, Any]]:
             "title": "Bounded reflection loop",
             "failure_modes": ["single-pass answer drift", "unbounded self-critique loops"],
             "enforcement": "composable primitive; bounded by min_reflect/max_reflect",
-            "artifacts": ["lib/agent_reflection.py"],
+            "artifacts": ["cos_lib/agent_reflection.py"],
             "docs": ["docs/02-Decisions/adrs/ADR-295-agent-reflection-loop-primitive.md"],
             "tests": ["tests/unit/test_agent_reflection.py"],
         },
@@ -113,10 +113,10 @@ def _control_definitions() -> list[dict[str, Any]]:
                 "states allow stop honestly"
             ),
             "artifacts": [
-                "lib/goal_state.py",
-                "lib/goal_evaluator.py",
-                "lib/goal_evidence.py",
-                "lib/goal_budget.py",
+                "cos_lib/goal_state.py",
+                "cos_lib/goal_evaluator.py",
+                "cos_lib/goal_evidence.py",
+                "cos_lib/goal_budget.py",
                 "hooks/goal-stop-gate.sh",
                 "scripts/cos_goal.py",
                 "scripts/cos-goal",
@@ -167,8 +167,8 @@ def _control_definitions() -> list[dict[str, Any]]:
             "failure_modes": ["retry thrashing", "rate-limit bursts", "persistent provider failure loops"],
             "enforcement": "persistent queue, retry caps, exponential backoff, cooldown, half-open probe",
             "artifacts": [
-                "lib/rate_limiter.py",
-                "lib/circuit_breaker.py",
+                "cos_lib/rate_limiter.py",
+                "cos_lib/circuit_breaker.py",
                 "hooks/rate-limiter.sh",
                 "hooks/rate-limit-precheck.sh",
                 "hooks/rate-limit-drain.sh",
@@ -190,7 +190,7 @@ def _control_definitions() -> list[dict[str, Any]]:
             "title": "No-progress and repeated-pattern escalation",
             "failure_modes": ["same command loop", "same file edit loop", "same error loop", "timeout-risk drift"],
             "enforcement": "structured ESCALATION signal with evidence and next action",
-            "artifacts": ["lib/escalation_detector.py"],
+            "artifacts": ["cos_lib/escalation_detector.py"],
             "docs": ["docs/02-Decisions/adrs/ADR-228-retry-contract-and-cost-budget.md"],
             "tests": ["tests/unit/test_escalation_detector.py", "tests/behavior/test_agent_escalation.py"],
         },
@@ -204,8 +204,8 @@ def _control_definitions() -> list[dict[str, Any]]:
             ],
             "enforcement": "claim ledgers, fcntl locks, concurrent write guards, coordination status",
             "artifacts": [
-                "lib/session_coordination.py",
-                "lib/task_claim_ledger.py",
+                "cos_lib/session_coordination.py",
+                "cos_lib/task_claim_ledger.py",
                 "hooks/concurrent-write-guard.sh",
                 "hooks/cross-session-coordination-guard.sh",
             ],
@@ -228,8 +228,8 @@ def _control_definitions() -> list[dict[str, Any]]:
                 "worktree-isolated auto-repair, repair circuit breaker"
             ),
             "artifacts": [
-                "lib/checkpoint_manager.py",
-                "lib/auto_repair.py",
+                "cos_lib/checkpoint_manager.py",
+                "cos_lib/auto_repair.py",
                 "hooks/auto-checkpoint.sh",
                 "hooks/auto-repair-dispatcher.sh",
             ],
@@ -245,7 +245,7 @@ def _control_definitions() -> list[dict[str, Any]]:
             "title": "Skill registry runtime drift detection",
             "failure_modes": ["runtime skill drift", "silent mutation", "federated evidence invalidation"],
             "enforcement": "SessionStart drift detector with warn/block policy",
-            "artifacts": ["lib/skill_drift_detector.py", "hooks/skill-drift-detector.sh"],
+            "artifacts": ["cos_lib/skill_drift_detector.py", "hooks/skill-drift-detector.sh"],
             "docs": ["docs/02-Decisions/adrs/ADR-285-skill-registry-runtime-drift-detection.md"],
             "tests": ["tests/unit/test_skill_drift_detector.py"],
             "hooks": ["skill-drift-detector"],
@@ -258,7 +258,7 @@ def _control_definitions() -> list[dict[str, Any]]:
             "artifacts": [
                 "hooks/context-budget-meter.sh",
                 "hooks/session-quality-close-gate.sh",
-                "lib/context_budget_monitor.py",
+                "cos_lib/context_budget_monitor.py",
             ],
             "docs": [
                 "docs/02-Decisions/adrs/ADR-143-closure-discipline-gate.md",
@@ -360,7 +360,7 @@ def _latest_timestamp(rows: Iterable[dict[str, Any]]) -> datetime | None:
 
 def _current_skill_drift(project_dir: Path) -> list[dict[str, str]]:
     try:
-        from lib.skill_drift_detector import SkillDriftDetector, _sha256_file  # type: ignore
+        from cos_lib.skill_drift_detector import SkillDriftDetector, _sha256_file  # type: ignore
     except Exception:
         return []
     detector = SkillDriftDetector(project_root=project_dir)

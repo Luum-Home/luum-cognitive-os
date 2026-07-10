@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.concurrent_agent_safety_status import collect_status, status_to_json
+from cos_lib.concurrent_agent_safety_status import collect_status, status_to_json
 
 pytestmark = pytest.mark.unit
 

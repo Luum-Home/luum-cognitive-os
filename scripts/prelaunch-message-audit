@@ -3,5 +3,5 @@
 from pathlib import Path
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from lib.prelaunch_audit import main_messages
+from cos_lib.prelaunch_audit import main_messages
 raise SystemExit(main_messages())

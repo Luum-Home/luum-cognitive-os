@@ -222,7 +222,7 @@ Implementation remains incremental.
    only after verification.
 6. Done: expose receipt counts by action/source/trust through CLI stats, a
    Markdown report command, and observe-only dashboard cards.
-7. Next: add first-class provider adapters and direct `lib.merge_queue` API emission.
+7. Next: add first-class provider adapters and direct `cos_lib.merge_queue` API emission.
 
 ## Acceptance Criteria
 

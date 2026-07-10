@@ -2,7 +2,7 @@ from pathlib import Path
 
 import yaml
 
-from lib.imported_pattern_closure import audit
+from cos_lib.imported_pattern_closure import audit
 
 
 def _write(path: Path, closure: dict) -> Path:

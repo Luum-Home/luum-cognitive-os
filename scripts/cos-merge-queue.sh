@@ -85,7 +85,7 @@ cmd_enqueue() {
     PYTHONPATH="${REPO_ROOT}" python3 - \
         "${session_branch}" "${session_id}" "${files_json}" "${recommended_lane}" "${executed_lane}" <<'PYEOF'
 import sys, json
-from lib.merge_queue import enqueue  # noqa: E402
+from cos_lib.merge_queue import enqueue  # noqa: E402
 session_branch = sys.argv[1]
 session_id     = sys.argv[2]
 expected_files = json.loads(sys.argv[3])
@@ -105,7 +105,7 @@ PYEOF
 cmd_peek() {
     run_python <<'PYEOF'
 import sys, json
-from lib.merge_queue import peek  # noqa: E402
+from cos_lib.merge_queue import peek  # noqa: E402
 
 entry = peek()
 if entry is None:
@@ -121,7 +121,7 @@ cmd_status() {
 
     PYTHONPATH="${REPO_ROOT}" python3 - "${entry_id}" <<'PYEOF'
 import sys, json
-from lib.merge_queue import status  # noqa: E402
+from cos_lib.merge_queue import status  # noqa: E402
 
 entry = status(sys.argv[1])
 if entry is None:
@@ -135,7 +135,7 @@ PYEOF
 cmd_list() {
     run_python <<'PYEOF'
 import sys, json
-from lib.merge_queue import list_pending  # noqa: E402
+from cos_lib.merge_queue import list_pending  # noqa: E402
 
 entries = list_pending()
 if not entries:
@@ -156,7 +156,7 @@ cmd_dequeue() {
     PYTHONPATH="${REPO_ROOT}" python3 - \
         "${entry_id}" "${entry_status}" "${notes}" <<'PYEOF'
 import sys
-from lib.merge_queue import dequeue  # noqa: E402
+from cos_lib.merge_queue import dequeue  # noqa: E402
 
 entry_id     = sys.argv[1]
 entry_status = sys.argv[2]

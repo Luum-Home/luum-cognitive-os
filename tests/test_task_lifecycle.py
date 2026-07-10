@@ -44,7 +44,7 @@ PRELAUNCH_HOOK = PROJECT_ROOT / "hooks" / "agent-prelaunch.sh"
 # ---------------------------------------------------------------------------
 
 sys.path.insert(0, str(PROJECT_ROOT))
-from lib.agent_health_monitor import AgentHealthMonitor, _DEFAULT_TIMEOUT_SECONDS  # noqa: E402
+from cos_lib.agent_health_monitor import AgentHealthMonitor, _DEFAULT_TIMEOUT_SECONDS  # noqa: E402
 
 # Grace period constants read from the class/module so tests stay in sync
 # with any future changes to the thresholds.

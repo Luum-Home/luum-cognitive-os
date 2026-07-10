@@ -500,7 +500,7 @@ def maybe_compress_context(
 ) -> tuple[List[Dict[str, Any]], Optional[str]]:
     """Compress messages when context budget is running low.
 
-    Delegates to ``lib.context_compressor`` (portable Hermes port). This method
+    Delegates to ``cos_lib.context_compressor`` (portable Hermes port). This method
     is intentionally a thin adapter shim — it adds the harness adapter boundary
     without imposing any policy of its own.
 
@@ -519,7 +519,7 @@ def maybe_compress_context(
         dispatch unavailable. summary_text is None if no compression occurred.
     """
     try:
-        from lib.context_compressor import should_compress, compress as do_compress
+        from cos_lib.context_compressor import should_compress, compress as do_compress
     except ImportError:
         return messages, previous_summary
 

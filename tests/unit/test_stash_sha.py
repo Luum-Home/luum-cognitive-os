@@ -3,7 +3,7 @@ from __future__ import annotations
 import subprocess
 from pathlib import Path
 
-from lib.stash_sha import list_stashes, resolve_sha_to_ref, resolve_top_stash_sha
+from cos_lib.stash_sha import list_stashes, resolve_sha_to_ref, resolve_top_stash_sha
 
 
 def _git(args: list[str], cwd: Path, check: bool = True) -> subprocess.CompletedProcess[str]:

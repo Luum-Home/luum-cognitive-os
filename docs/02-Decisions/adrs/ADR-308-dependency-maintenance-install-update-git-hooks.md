@@ -12,7 +12,7 @@ adr: 308
 title: Dependency Maintenance in Install, Update, and Git Hooks
 implementation_files:
 - scripts/cos-deps-maintain
-- lib/dependency_maintenance.py
+- cos_lib/dependency_maintenance.py
 - scripts/setup.sh
 - scripts/cos-update.sh
 - scripts/auto-update-projects.sh

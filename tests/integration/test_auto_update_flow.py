@@ -176,7 +176,7 @@ def create_fake_cos_source(
         if src.exists():
             shutil.copy2(src, scripts_dst / script_name)
 
-    # cos_init.py imports lib.script_io; fake release sources must include the
+    # cos_init.py imports cos_lib.script_io; fake release sources must include the
     # minimal support library so integration tests exercise update behavior.
     lib_dst = cos_src / "lib"
     lib_dst.mkdir(exist_ok=True)

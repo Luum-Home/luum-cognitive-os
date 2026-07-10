@@ -10,7 +10,7 @@ REPORT="$ROOT/.cognitive-os/reports/adversarial-generalization-report.md"
 mkdir -p "$(dirname "$REPORT")" "$GENERATED"
 PYTHONPATH="$ROOT${PYTHONPATH:+:$PYTHONPATH}" python3 - "$SCENARIOS" "$GENERATED" "$REPORT" <<'PY'
 import sys
-from lib.adversarial_rubric import evaluate_fixture, format_report, generate_fixture, load_scenarios
+from cos_lib.adversarial_rubric import evaluate_fixture, format_report, generate_fixture, load_scenarios
 
 scenarios = load_scenarios(sys.argv[1])
 output_dir = sys.argv[2]

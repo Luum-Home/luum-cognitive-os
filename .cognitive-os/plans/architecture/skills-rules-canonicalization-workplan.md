@@ -106,7 +106,7 @@ Claude.
   regeneration for Codex-first projects.
 - `auto-update-projects.sh` now preserves each project's detected harness when
   it re-runs `cos-init.sh`.
-- `lib.paths.skill_lookup_candidates` and `lib.skill_routing.find_skill_md`
+- `cos_lib.paths.skill_lookup_candidates` and `cos_lib.skill_routing.find_skill_md`
   now prefer `.cognitive-os/skills/cos` over `.claude/skills` by default.
   Claude remains supported as a driver projection fallback.
 - `cos list skills` and `cos list rules` now prefer canonical artifacts over

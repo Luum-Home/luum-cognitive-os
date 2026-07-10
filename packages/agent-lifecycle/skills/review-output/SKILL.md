@@ -95,8 +95,8 @@ recent last; process oldest-first).
 ### Step 2 — Check daily budget (unless --force)
 
 ```python
-from lib.review_agent import daily_budget_state, DEFAULT_MAX_PER_DAY
-from lib.config_loader import load_structured
+from cos_lib.review_agent import daily_budget_state, DEFAULT_MAX_PER_DAY
+from cos_lib.config_loader import load_structured
 
 cfg = load_structured()
 max_per_day = cfg.get("review", {}).get("max_per_day", DEFAULT_MAX_PER_DAY)
@@ -112,11 +112,11 @@ if remaining <= 0 and not force_flag:
 ### Step 3 — For each target output, dispatch review
 
 ```python
-from lib.review_agent import (
+from cos_lib.review_agent import (
     select_reviewer_model, build_review_prompt,
     parse_review_response, persist_finding,
 )
-from lib.dispatch import dispatch
+from cos_lib.dispatch import dispatch
 
 for output_record in target_outputs:
     reviewer_model = select_reviewer_model(output_record.get("model", "sonnet"))

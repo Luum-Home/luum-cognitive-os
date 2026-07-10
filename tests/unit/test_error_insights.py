@@ -8,14 +8,14 @@ import time
 
 import pytest
 
-from lib.error_classifier import (
+from cos_lib.error_classifier import (
     ClassifiedError,
     ErrorClass,
     RecordCategory,
     RecordSeverity,
     Transience,
 )
-from lib.error_insights import summarize
+from cos_lib.error_insights import summarize
 
 pytestmark = pytest.mark.unit
 
@@ -309,7 +309,7 @@ class TestInsightReportOutput:
 class TestIntegration:
     def test_classify_then_summarize(self, tmp_path):
         import json
-        from lib.error_classifier import classify_jsonl
+        from cos_lib.error_classifier import classify_jsonl
 
         records = (
             [{"type": "TEST_FAILURE", "timestamp_epoch": _NOW - i * 60, "fingerprint": f"tf{i}"} for i in range(8)]

@@ -47,13 +47,13 @@ from typing import Any, Dict, Set
 
 import pytest
 
-from lib.harness_adapter.base import (
+from cos_lib.harness_adapter.base import (
     HarnessName,
     SessionEnd,
     SessionStart,
     UserPromptSubmit,
 )
-from lib.harness_adapter.codex import CodexAdapter
+from cos_lib.harness_adapter.codex import CodexAdapter
 
 FIXTURES = Path(__file__).resolve().parents[1] / "fixtures" / "codex-live-session"
 
@@ -270,7 +270,7 @@ def test_codex_non_bash_tool_event_is_excluded_from_parity_claim(tmp_path):
     asserts that the gap is explicit and not silently swallowed, which is the
     correct behaviour per the ADR.
     """
-    from lib.harness_adapter.base import ParseError
+    from cos_lib.harness_adapter.base import ParseError
 
     adapter = CodexAdapter(project_dir=tmp_path)
     events = adapter.parse_event({

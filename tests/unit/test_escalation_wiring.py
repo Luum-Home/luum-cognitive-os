@@ -25,7 +25,7 @@ PREAMBLE_PATH = Path(__file__).parents[2] / "templates" / "agent-preamble.md"
 
 
 def _make_detector(**kwargs):
-    from lib.escalation_detector import EscalationDetector
+    from cos_lib.escalation_detector import EscalationDetector
 
     return EscalationDetector(**kwargs)
 

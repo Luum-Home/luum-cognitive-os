@@ -75,7 +75,7 @@ Print the current peer card. The agent surfaces a human-readable summary;
 on request, also dumps the raw JSON.
 
 ```python
-from lib.peer_card import read, EngramStore
+from cos_lib.peer_card import read, EngramStore
 card = read(EngramStore())
 ```
 
@@ -83,13 +83,13 @@ card = read(EngramStore())
 
 Translate the user's free-text instruction into a partial JSON patch, **show
 the proposed patch**, and only on confirmation apply it via
-`lib.peer_card.update(...)`. The update preserves unrelated fields,
+`cos_lib.peer_card.update(...)`. The update preserves unrelated fields,
 deduplicates list entries, caps `recent_topics`, and **rejects any patch that
 contains secrets, tokens, private keys, or regulated PII** (the entire patch
 is dropped — no partial writes).
 
 ```python
-from lib.peer_card import update, EngramStore
+from cos_lib.peer_card import update, EngramStore
 result = update(EngramStore(), {"preferences": {"language": "es"}})
 if result.rejected:
     raise SystemExit(f"refused: {result.rejected}")
@@ -99,7 +99,7 @@ if result.rejected:
 
 Clear a schema field, drop a single preference key, or remove a literal
 string from any list field. If ambiguous, the agent asks one concise
-clarification before calling `lib.peer_card.forget(...)`.
+clarification before calling `cos_lib.peer_card.forget(...)`.
 
 ### `explain`
 
@@ -122,6 +122,6 @@ consolidation. The agent must not fabricate justifications.
 
 - Library: `lib/peer_card.py` (see module docstring).
 - Hook integration: `hooks/user-prompt-capture.sh` calls
-  `python3 -m lib.peer_card hook` with the prompt on stdin.
+  `python3 -m cos_lib.peer_card hook` with the prompt on stdin.
 - Tests: `tests/unit/test_peer_card.py`.
 - ADR: `docs/02-Decisions/adrs/ADR-077-peer-card-local-model.md`.

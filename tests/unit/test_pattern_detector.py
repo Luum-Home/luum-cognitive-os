@@ -14,7 +14,7 @@ import pytest
 # Ensure lib/ is importable
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-from lib.pattern_detector import DetectedPattern, PatternDetector, _file_exists, _resolve
+from cos_lib.pattern_detector import DetectedPattern, PatternDetector, _file_exists, _resolve
 
 
 @pytest.fixture
@@ -110,7 +110,7 @@ class TestBrokenChains:
     def test_detects_broken_python_import(self, detector, tmp_project):
         """An import to a missing local module should be flagged."""
         (tmp_project / "lib" / "caller.py").write_text(
-            "from lib.nonexistent_module import something\n"
+            "from cos_lib.nonexistent_module import something\n"
         )
 
         results = detector.detect_broken_chains(str(tmp_project))
@@ -123,7 +123,7 @@ class TestBrokenChains:
         """An import to an existing module should NOT be flagged."""
         (tmp_project / "lib" / "valid_module.py").write_text("x = 1\n")
         (tmp_project / "lib" / "caller.py").write_text(
-            "from lib.valid_module import x\n"
+            "from cos_lib.valid_module import x\n"
         )
 
         results = detector.detect_broken_chains(str(tmp_project))
@@ -227,7 +227,7 @@ class TestSymlinkResolution:
 
         # Import via symlink name
         (tmp_project / "lib" / "user.py").write_text(
-            "from lib.aliased_module import y\n"
+            "from cos_lib.aliased_module import y\n"
         )
 
         results = detector.detect_broken_chains(str(tmp_project))
@@ -369,7 +369,7 @@ class TestRunAll:
 
         # Set up a broken chain
         (tmp_project / "lib" / "broken.py").write_text(
-            "from lib.does_not_exist import foo\n"
+            "from cos_lib.does_not_exist import foo\n"
         )
 
         results = detector.run_all(str(tmp_project))

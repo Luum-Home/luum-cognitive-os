@@ -1,9 +1,9 @@
-# SCOPE: both
+# SCOPE: os-only
 """Unit tests for session parser."""
 import json
 
 import pytest
-from lib.session_parser import (
+from cos_lib.session_parser import (
     parse_session,
     list_sessions,
     get_session_metrics,
@@ -360,7 +360,7 @@ class TestFormatReport:
         assert "Read" in report
 
     def test_format_handles_empty_metrics(self):
-        from lib.session_parser import _empty_metrics
+        from cos_lib.session_parser import _empty_metrics
         metrics = _empty_metrics()
         report = format_session_report(metrics)
         assert "SESSION METRICS REPORT" in report

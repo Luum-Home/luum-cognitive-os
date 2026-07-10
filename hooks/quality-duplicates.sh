@@ -33,7 +33,7 @@ if "$SCANNER" "${MODE_ARGS[@]}" >/dev/null 2>&1; then
   exit 0
 fi
 
-# Consumer projections may carry the scanner without the full COS Python lib.
+# Consumer projections may carry the scanner without the full COS Python cos_lib.
 # Preserve the hook contract by materializing an advisory report instead of
 # silently exiting without the promised artifact.
 mkdir -p .cognitive-os/reports/quality-duplicates

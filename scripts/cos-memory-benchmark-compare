@@ -5,7 +5,7 @@ import argparse, json, sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path: sys.path.insert(0,str(ROOT))
-from lib.memory_retrieval_compare import compare_reports, markdown_table
+from cos_lib.memory_retrieval_compare import compare_reports, markdown_table
 
 def main() -> int:
     p=argparse.ArgumentParser(description="Compare Wave 2 memory retrieval benchmark reports.")

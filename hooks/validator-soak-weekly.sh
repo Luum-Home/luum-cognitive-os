@@ -42,10 +42,10 @@ if ! command -v python3 &>/dev/null; then
 fi
 
 # ── Run evaluator ─────────────────────────────────────────────────────────────
-# cd to project root so `lib.validator_soak_evaluator` is importable as a module
+# cd to project root so `cos_lib.validator_soak_evaluator` is importable as a module
 cd "${PROJECT_DIR}"
 
-RESULT=$(python3 -m lib.validator_soak_evaluator \
+RESULT=$(python3 -m cos_lib.validator_soak_evaluator \
     --soak-days 30 \
     --fp-threshold 0.05 \
     --min-entries 30 \

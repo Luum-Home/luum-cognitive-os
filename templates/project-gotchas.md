@@ -48,5 +48,5 @@ grep "profile:" cognitive-os.yaml  # lean|standard|full
 grep -c '"command":' .claude/settings.json
 
 # Verify lib/ imports
-python3 -c "from lib.<module> import <class>"
+python3 -c "from cos_lib.<module> import <class>"
 ```

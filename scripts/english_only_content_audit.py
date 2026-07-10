@@ -15,8 +15,8 @@ import os as _cos_os
 import sys as _cos_sys
 _cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
 import sys
-from lib.script_helpers import is_probably_text
-from lib.script_helpers import run_git_ls_files
+from cos_lib.script_helpers import is_probably_text
+from cos_lib.script_helpers import run_git_ls_files
 
 import argparse
 import fnmatch

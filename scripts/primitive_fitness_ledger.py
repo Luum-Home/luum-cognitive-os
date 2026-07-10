@@ -20,7 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.script_io import write_json  # noqa: E402
+from cos_lib.script_io import write_json  # noqa: E402
 
 REPORT_GLOBS = (
     "docs/06-Daily/reports/primitive-fitness/*.json",

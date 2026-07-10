@@ -61,7 +61,7 @@ Activate the lifecycle promotion ladder operationally with these artifacts:
 
 ### 1. `scripts/cos-promotion-proposer`
 
-Reads `lib.skill_store.SkillStore` and `manifests/primitive-lifecycle.yaml`.
+Reads `cos_lib.skill_store.SkillStore` and `manifests/primitive-lifecycle.yaml`.
 For each primitive at `lifecycle_state: sandbox`, query SkillStore for
 `record_count`, `success_rate`, and `judge_avg_score`. If thresholds are met:
 
@@ -222,7 +222,7 @@ After this ADR:
 ### Reading guide for cold readers
 
 1. ADR-177 is the doctrinal precondition — read it first for the lifecycle ladder definition and `lifecycle_state` meanings in `manifests/primitive-lifecycle.yaml`.
-2. ADR-176 (SkillStore) is the data substrate — the proposers query `lib.skill_store.SkillStore` directly.
+2. ADR-176 (SkillStore) is the data substrate — the proposers query `cos_lib.skill_store.SkillStore` directly.
 3. The propose-only invariant test at `tests/contracts/test_promotion_propose_only.py` is the safety guarantee: if it passes, no live manifest was modified.
 4. The `docs/06-Daily/reports/lifecycle-promotion-gap-2026-05-05.md` gap analysis documents the three operational symptoms that motivated this ADR — useful context for understanding why the weekly hook and metrics trail were needed.
 

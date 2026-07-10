@@ -713,7 +713,7 @@ def measure_hook(hook_name: str, duration_ms: float, success: bool = True) -> No
 
     Designed to be called from bash hooks via a Python one-liner::
 
-        python3 -c "from lib.performance_monitor import measure_hook; \\
+        python3 -c "from cos_lib.performance_monitor import measure_hook; \\
                      measure_hook('blast-radius', 42, True)"
     """
     monitor = PerformanceMonitor()

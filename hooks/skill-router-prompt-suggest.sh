@@ -70,7 +70,7 @@ session_id  = os.environ.get("_SRPS_SESSION", "unknown")
 prompt_text = os.environ.get("_SRPS_PROMPT", "")
 
 try:
-    from lib.skill_router import SkillRouter
+    from cos_lib.skill_router import SkillRouter
 except Exception:
     sys.exit(0)
 

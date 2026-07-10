@@ -48,7 +48,7 @@ if [[ -n "${MERGE_QUEUE_PATH:-}" ]]; then
 else
     QUEUE_FILE="${REPO_ROOT}/.cognitive-os/sessions/merge-queue.jsonl"
 fi
-# Keep the worker single-writer lock separate from lib.merge_queue's
+# Keep the worker single-writer lock separate from cos_lib.merge_queue's
 # read-modify-write lock.  Reusing the same file self-deadlocks when this
 # process holds the worker lock and a Python subprocess calls dequeue().
 WORKER_LOCK="${QUEUE_FILE%.jsonl}.worker.lock"
@@ -76,7 +76,7 @@ mq_python() {
 step_peek() {
     mq_python <<'PYEOF'
 import json, sys
-from lib.merge_queue import peek
+from cos_lib.merge_queue import peek
 e = peek()
 if e is None:
     print("")
@@ -89,12 +89,12 @@ step_mark_in_progress() {
     local entry_id="$1"
     mq_python <<PYEOF
 import sys
-from lib.merge_queue import dequeue
+from cos_lib.merge_queue import dequeue
 # We can't mark in-progress via the public dequeue (only terminal statuses).
 # Update the JSONL directly under a lock via internal helper.
 import json, fcntl, os
 from pathlib import Path
-from lib.merge_queue import _resolve_queue_path, _read_all, _write_all, _now_iso
+from cos_lib.merge_queue import _resolve_queue_path, _read_all, _write_all, _now_iso
 
 path = _resolve_queue_path()
 lock_file = path.with_suffix(".lock")
@@ -120,8 +120,8 @@ step_record_validation_lane() {
     mq_python "${entry_id}" "${entry_json}" <<'PYEOF'
 import json
 import sys
-from lib.merge_queue import record_validation_lane
-from lib.validation_lanes import recommend_lane
+from cos_lib.merge_queue import record_validation_lane
+from cos_lib.validation_lanes import recommend_lane
 
 entry_id = sys.argv[1]
 entry = json.loads(sys.argv[2])
@@ -139,7 +139,7 @@ step_dequeue() {
     local entry_status="$2"
     local notes="$3"
     mq_python <<PYEOF
-from lib.merge_queue import dequeue
+from cos_lib.merge_queue import dequeue
 dequeue("${entry_id}", status="${entry_status}", notes="""${notes}""" or None)
 PYEOF
 }
@@ -177,7 +177,7 @@ gate_ancestry() {
     rebase_out=$(PYTHONPATH="${REPO_ROOT}" python3 - <<PYEOF
 import json, sys
 from pathlib import Path
-from lib.queue_rebase import rebase_onto
+from cos_lib.queue_rebase import rebase_onto
 result = rebase_onto("${branch}", "${REMOTE}/${TARGET_BRANCH}", Path("${REPO_ROOT}"))
 print(json.dumps({
     "success":   result.success,
@@ -313,7 +313,7 @@ import sys
 merged_sha = sys.argv[1]
 repo_root  = sys.argv[2]
 
-from lib.merge_rollback import verify_post_merge
+from cos_lib.merge_rollback import verify_post_merge
 ok = verify_post_merge(merged_sha, repo_root)
 sys.exit(0 if ok else 1)
 PYEOF
@@ -327,7 +327,7 @@ repo_root     = sys.argv[2]
 remote        = sys.argv[3]
 target_branch = sys.argv[4]
 
-from lib.merge_rollback import auto_revert
+from cos_lib.merge_rollback import auto_revert
 result = auto_revert(
     merged_sha=merged_sha,
     reason="post-merge verify failed",

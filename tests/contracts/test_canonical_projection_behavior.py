@@ -17,8 +17,8 @@ from pathlib import Path
 
 import pytest
 
-from lib.paths import preferred_rules_dirs
-from lib.skill_routing import find_skill_md
+from cos_lib.paths import preferred_rules_dirs
+from cos_lib.skill_routing import find_skill_md
 
 
 pytestmark = [pytest.mark.contract, pytest.mark.timeout(120)]

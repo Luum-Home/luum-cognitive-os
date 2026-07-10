@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from typing import Any, Dict
 
-from lib.peer_card import (
+from cos_lib.peer_card import (
     RECENT_TOPICS_CAP,
     InMemoryStore,
     detect_signals,
@@ -132,7 +132,7 @@ def test_explain_discloses_phase_one_provenance_limit() -> None:
 
 
 def test_cli_hook_outputs_single_line_json_for_non_persistent_signal(capsys) -> None:
-    from lib.peer_card import _cli
+    from cos_lib.peer_card import _cli
 
     exit_code = _cli(["hook"])
     output = capsys.readouterr().out
@@ -146,9 +146,9 @@ def test_retrieval_path_is_fts5_only_no_embedding_imports() -> None:
     import importlib
     import sys as _sys
 
-    if "lib.peer_card" in _sys.modules:
-        del _sys.modules["lib.peer_card"]
-    importlib.import_module("lib.peer_card")
+    if "cos_lib.peer_card" in _sys.modules:
+        del _sys.modules["cos_lib.peer_card"]
+    importlib.import_module("cos_lib.peer_card")
 
     forbidden = ("sentence_transformers", "sqlite_vec", "torch", "faiss")
     leaked = [m for m in forbidden if m in _sys.modules]
@@ -156,7 +156,7 @@ def test_retrieval_path_is_fts5_only_no_embedding_imports() -> None:
 
 
 def test_engram_store_load_handles_missing_binary(monkeypatch) -> None:
-    from lib import peer_card as _pc
+    from cos_lib import peer_card as _pc
 
     def _missing(*_a, **_kw):
         raise FileNotFoundError("engram")
@@ -167,7 +167,7 @@ def test_engram_store_load_handles_missing_binary(monkeypatch) -> None:
 
 def test_update_rejects_multiple_secret_pattern_classes() -> None:
     """Each ADR-077 secret class is rejected as a whole-patch failure."""
-    from lib import peer_card as _pc
+    from cos_lib import peer_card as _pc
 
     # Build literals at runtime — content-policy hooks redact AWS-style
     # constants written verbatim to disk, which would defeat the test.
@@ -195,8 +195,8 @@ def test_save_uses_personal_scope(monkeypatch) -> None:
     Regression guard for adversarial review HIGH#1 — if the scope kwarg is
     dropped from EngramStore.save(), peer-cards leak into the project scope.
     """
-    from lib import peer_card as _pc
-    from lib import safe_engram as _se
+    from cos_lib import peer_card as _pc
+    from cos_lib import safe_engram as _se
 
     captured: Dict[str, Any] = {}
 
@@ -229,8 +229,8 @@ def test_save_uses_personal_scope_falsification(monkeypatch) -> None:
     the captured scope from the original code path equals "personal", and we
     separately demonstrate that a wiring break would cause a different result.
     """
-    from lib import peer_card as _pc
-    from lib import safe_engram as _se
+    from cos_lib import peer_card as _pc
+    from cos_lib import safe_engram as _se
 
     # --- Part 1: nominal path must capture scope="personal" ---
     captured_nominal: Dict[str, Any] = {}
@@ -250,7 +250,7 @@ def test_save_uses_personal_scope_falsification(monkeypatch) -> None:
     # Subclass that deliberately breaks the scope wiring.
     class BrokenEngramStore(_pc.EngramStore):
         def save(self, card: Dict[str, Any]) -> None:
-            from lib.safe_engram import safe_save  # noqa: WPS433
+            from cos_lib.safe_engram import safe_save  # noqa: WPS433
             safe_save(
                 title="peer-card",
                 content=__import__("json").dumps(card, ensure_ascii=False, sort_keys=True),
@@ -281,7 +281,7 @@ def test_credit_card_regex_rejects_phone_numbers() -> None:
     Phone numbers, IBANs, and arbitrary long IDs no longer trip the secret
     blocker. A real Visa PAN that passes Luhn still does.
     """
-    from lib import peer_card as _pc
+    from cos_lib import peer_card as _pc
 
     # Non-PAN sequences must NOT match.
     assert _pc._contains_secret("call me at +1-555-123-4567") is None

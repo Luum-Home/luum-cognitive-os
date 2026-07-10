@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from lib.event_projections.cost_ledger import fold as cost_fold
-from lib.event_projections.handoff_chain import fold as handoff_fold
-from lib.event_projections.retry_classifier import fold as retry_fold
-from lib.event_projections.timeline import fold as timeline_fold
+from cos_lib.event_projections.cost_ledger import fold as cost_fold
+from cos_lib.event_projections.handoff_chain import fold as handoff_fold
+from cos_lib.event_projections.retry_classifier import fold as retry_fold
+from cos_lib.event_projections.timeline import fold as timeline_fold
 
 
 def test_projection_stubs_fold_minimal_state() -> None:

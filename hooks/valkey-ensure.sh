@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # valkey-ensure.sh — SessionStart hook
 #
 # If ORCHESTRATOR_MODE=executor is set, ensure Valkey is reachable before the
@@ -71,7 +71,7 @@ from pathlib import Path
 project_dir, event_type, severity, detail = sys.argv[1:5]
 try:
     sys.path.insert(0, project_dir)
-    from lib.metric_event import MetricEvent, append_event
+    from cos_lib.metric_event import MetricEvent, append_event
     p = Path(project_dir) / ".cognitive-os" / "metrics" / "valkey-health.jsonl"
     p.parent.mkdir(parents=True, exist_ok=True)
     ev = MetricEvent(

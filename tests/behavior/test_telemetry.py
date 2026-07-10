@@ -1,4 +1,4 @@
-"""Behavior tests for lib.telemetry (Capa-4 observability).
+"""Behavior tests for cos_lib.telemetry (Capa-4 observability).
 
 Covers:
     - each public record_* function appends a well-formed JSONL line
@@ -19,7 +19,7 @@ from pathlib import Path
 import pytest
 
 
-# Ensure the project root is on sys.path so `import lib.telemetry` works when
+# Ensure the project root is on sys.path so `import cos_lib.telemetry` works when
 # pytest is invoked from anywhere.
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 if str(PROJECT_ROOT) not in sys.path:
@@ -38,7 +38,7 @@ def telemetry(tmp_path, monkeypatch):
     # Default rotation large so unrelated tests do not trigger it.
     monkeypatch.setenv("COS_TELEMETRY_MAX_BYTES", str(10 * 1024 * 1024))
 
-    import lib.telemetry as telemetry_mod
+    import cos_lib.telemetry as telemetry_mod
     importlib.reload(telemetry_mod)
     return telemetry_mod
 
@@ -151,7 +151,7 @@ def test_rotation_renames_file_when_threshold_exceeded(tmp_path, monkeypatch):
     monkeypatch.delenv("CLAUDE_PROJECT_DIR", raising=False)
     monkeypatch.setenv("COS_TELEMETRY_MAX_BYTES", "512")  # very small
 
-    import lib.telemetry as telemetry
+    import cos_lib.telemetry as telemetry
     importlib.reload(telemetry)
 
     metrics_dir = tmp_path / ".cognitive-os" / "metrics"
@@ -177,7 +177,7 @@ def test_iter_records_merges_rotated_siblings(tmp_path, monkeypatch):
     monkeypatch.delenv("CLAUDE_PROJECT_DIR", raising=False)
     monkeypatch.setenv("COS_TELEMETRY_MAX_BYTES", "256")
 
-    import lib.telemetry as telemetry
+    import cos_lib.telemetry as telemetry
     importlib.reload(telemetry)
 
     for i in range(30):
@@ -210,7 +210,7 @@ def test_record_functions_do_not_raise_on_readonly_dir(tmp_path, monkeypatch):
     monkeypatch.setenv("COGNITIVE_OS_PROJECT_DIR", str(fake))
     monkeypatch.delenv("CLAUDE_PROJECT_DIR", raising=False)
 
-    import lib.telemetry as telemetry
+    import cos_lib.telemetry as telemetry
     importlib.reload(telemetry)
 
     # First call will create the dir successfully (mkdir parents=True). To test
@@ -244,7 +244,7 @@ def test_agent_launch_grouping_by_model(telemetry, tmp_path):
 
 
 def test_public_api_surface():
-    import lib.telemetry as telemetry
+    import cos_lib.telemetry as telemetry
     assert hasattr(telemetry, "record_skill_invocation")
     assert hasattr(telemetry, "record_hook_fired")
     assert hasattr(telemetry, "record_agent_launch")

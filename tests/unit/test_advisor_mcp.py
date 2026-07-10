@@ -284,7 +284,7 @@ class TestAutoProviderRouting:
 
         with patch.object(advisor, "_local_provider_available", new=local_unavailable), \
              patch.object(advisor, "_module_available", side_effect=module_available), \
-             patch("lib.anthropic_direct_policy.direct_anthropic_api_enabled", return_value=False), \
+             patch("cos_lib.anthropic_direct_policy.direct_anthropic_api_enabled", return_value=False), \
              patch.object(advisor, "_call_anthropic", new=AsyncMock()) as call:
             result = _run(advisor.consult_advisor(
                 context="ctx",
@@ -352,7 +352,7 @@ class TestGracefulDegradation:
     def test_anthropic_provider_disabled_by_config(self, advisor):
         """Anthropic direct API cannot run unless the shared policy enables it."""
         with patch(
-            "lib.anthropic_direct_policy.direct_anthropic_api_enabled",
+            "cos_lib.anthropic_direct_policy.direct_anthropic_api_enabled",
             return_value=False,
         ):
             result = _run(advisor._call_anthropic(

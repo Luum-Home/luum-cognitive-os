@@ -9,7 +9,7 @@ from unittest.mock import patch
 
 import pytest
 
-from lib.gateway_selector import (
+from cos_lib.gateway_selector import (
     GatewayConfig,
     format_gateway_status,
     get_gateway_status,
@@ -17,7 +17,7 @@ from lib.gateway_selector import (
     select_gateway,
     select_gateway_for_profile,
 )
-from lib.execution_profile import LOCAL_PRIVATE_EXECUTION
+from cos_lib.execution_profile import LOCAL_PRIVATE_EXECUTION
 
 pytestmark = pytest.mark.unit
 
@@ -63,7 +63,7 @@ class TestSelectGatewayClaude:
 class TestSelectGatewayBifrost:
     """When Bifrost is available and model is supported, use Bifrost."""
 
-    @patch("lib.gateway_selector._check_bifrost_health")
+    @patch("cos_lib.gateway_selector._check_bifrost_health")
     def test_bifrost_when_available(self, mock_health):
         mock_health.return_value = GatewayConfig(
             name="bifrost",
@@ -75,8 +75,8 @@ class TestSelectGatewayBifrost:
         gw = select_gateway("gpt-4o")
         assert gw.name == "bifrost"
 
-    @patch("lib.gateway_selector._check_litellm_health")
-    @patch("lib.gateway_selector._check_bifrost_health")
+    @patch("cos_lib.gateway_selector._check_litellm_health")
+    @patch("cos_lib.gateway_selector._check_bifrost_health")
     def test_litellm_fallback_when_bifrost_down(self, mock_bifrost, mock_litellm):
         mock_bifrost.return_value = GatewayConfig(
             name="bifrost",
@@ -103,7 +103,7 @@ class TestSelectGatewayBifrost:
 class TestSelectGatewayLiteLLM:
     """Models not supported by Bifrost should go to LiteLLM."""
 
-    @patch("lib.gateway_selector._check_litellm_health")
+    @patch("cos_lib.gateway_selector._check_litellm_health")
     def test_openrouter_goes_to_litellm(self, mock_litellm):
         mock_litellm.return_value = GatewayConfig(
             name="litellm",
@@ -117,7 +117,7 @@ class TestSelectGatewayLiteLLM:
         # Since it's also not a Claude model, it should try LiteLLM
         assert gw.name in ("litellm", "claude")
 
-    @patch("lib.gateway_selector._check_litellm_health")
+    @patch("cos_lib.gateway_selector._check_litellm_health")
     def test_local_model_goes_to_litellm(self, mock_litellm):
         mock_litellm.return_value = GatewayConfig(
             name="litellm",
@@ -138,8 +138,8 @@ class TestSelectGatewayLiteLLM:
 class TestSelectGatewayExclusion:
     """Gateway exclusion should skip specified gateways."""
 
-    @patch("lib.gateway_selector._check_litellm_health")
-    @patch("lib.gateway_selector._check_bifrost_health")
+    @patch("cos_lib.gateway_selector._check_litellm_health")
+    @patch("cos_lib.gateway_selector._check_bifrost_health")
     def test_exclude_bifrost(self, mock_bifrost, mock_litellm):
         mock_bifrost.return_value = GatewayConfig(
             name="bifrost",
@@ -156,14 +156,14 @@ class TestSelectGatewayExclusion:
         gw = select_gateway("gpt-4o", exclude=["bifrost"])
         assert gw.name == "litellm"
 
-    @patch("lib.gateway_selector._check_litellm_health")
-    @patch("lib.gateway_selector._check_bifrost_health")
+    @patch("cos_lib.gateway_selector._check_litellm_health")
+    @patch("cos_lib.gateway_selector._check_bifrost_health")
     def test_exclude_both_falls_to_claude(self, mock_bifrost, mock_litellm):
         gw = select_gateway("gpt-4o", exclude=["bifrost", "litellm"])
         assert gw.name == "claude"
 
-    @patch("lib.gateway_selector._check_litellm_health")
-    @patch("lib.gateway_selector._check_bifrost_health")
+    @patch("cos_lib.gateway_selector._check_litellm_health")
+    @patch("cos_lib.gateway_selector._check_bifrost_health")
     def test_exclude_claude_returns_unavailable_instead_of_fallback(self, mock_bifrost, mock_litellm):
         mock_bifrost.return_value = GatewayConfig(
             name="bifrost",
@@ -181,7 +181,7 @@ class TestSelectGatewayExclusion:
         assert gw.name == "unavailable"
         assert gw.is_available is False
 
-    @patch("lib.gateway_selector._check_litellm_health")
+    @patch("cos_lib.gateway_selector._check_litellm_health")
     def test_profile_local_requirement_excludes_claude_fallback(self, mock_litellm):
         mock_litellm.return_value = GatewayConfig(
             name="litellm",
@@ -201,8 +201,8 @@ class TestSelectGatewayExclusion:
 class TestSelectGatewayFallback:
     """When all gateways are down, fall back to Claude."""
 
-    @patch("lib.gateway_selector._check_litellm_health")
-    @patch("lib.gateway_selector._check_bifrost_health")
+    @patch("cos_lib.gateway_selector._check_litellm_health")
+    @patch("cos_lib.gateway_selector._check_bifrost_health")
     def test_all_gateways_down(self, mock_bifrost, mock_litellm):
         mock_bifrost.return_value = GatewayConfig(
             name="bifrost",
@@ -231,7 +231,7 @@ class TestHealthCache:
 
     def test_invalidate_specific(self):
         """Invalidating a specific gateway should clear only that cache."""
-        from lib.gateway_selector import _health_cache
+        from cos_lib.gateway_selector import _health_cache
         _health_cache["bifrost"] = GatewayConfig(
             name="bifrost", base_url="", is_available=True, last_checked=time.time()
         )
@@ -244,7 +244,7 @@ class TestHealthCache:
 
     def test_invalidate_all(self):
         """Invalidating all should clear the entire cache."""
-        from lib.gateway_selector import _health_cache
+        from cos_lib.gateway_selector import _health_cache
         _health_cache["bifrost"] = GatewayConfig(
             name="bifrost", base_url="", is_available=True, last_checked=time.time()
         )
@@ -260,8 +260,8 @@ class TestHealthCache:
 class TestGetGatewayStatus:
     """Tests for get_gateway_status()."""
 
-    @patch("lib.gateway_selector._check_litellm_health")
-    @patch("lib.gateway_selector._check_bifrost_health")
+    @patch("cos_lib.gateway_selector._check_litellm_health")
+    @patch("cos_lib.gateway_selector._check_bifrost_health")
     def test_returns_all_three_gateways(self, mock_bifrost, mock_litellm):
         mock_bifrost.return_value = GatewayConfig(
             name="bifrost", base_url="http://localhost:8081",
@@ -276,8 +276,8 @@ class TestGetGatewayStatus:
         assert "litellm" in status
         assert "claude" in status
 
-    @patch("lib.gateway_selector._check_litellm_health")
-    @patch("lib.gateway_selector._check_bifrost_health")
+    @patch("cos_lib.gateway_selector._check_litellm_health")
+    @patch("cos_lib.gateway_selector._check_bifrost_health")
     def test_claude_always_available(self, mock_bifrost, mock_litellm):
         mock_bifrost.return_value = GatewayConfig(
             name="bifrost", base_url="", is_available=False, last_checked=time.time(),
@@ -297,8 +297,8 @@ class TestGetGatewayStatus:
 class TestFormatGatewayStatus:
     """Tests for format_gateway_status()."""
 
-    @patch("lib.gateway_selector._check_litellm_health")
-    @patch("lib.gateway_selector._check_bifrost_health")
+    @patch("cos_lib.gateway_selector._check_litellm_health")
+    @patch("cos_lib.gateway_selector._check_bifrost_health")
     def test_returns_string(self, mock_bifrost, mock_litellm):
         mock_bifrost.return_value = GatewayConfig(
             name="bifrost", base_url="http://localhost:8081",
@@ -315,8 +315,8 @@ class TestFormatGatewayStatus:
         assert "litellm" in result
         assert "claude" in result
 
-    @patch("lib.gateway_selector._check_litellm_health")
-    @patch("lib.gateway_selector._check_bifrost_health")
+    @patch("cos_lib.gateway_selector._check_litellm_health")
+    @patch("cos_lib.gateway_selector._check_bifrost_health")
     def test_shows_availability(self, mock_bifrost, mock_litellm):
         mock_bifrost.return_value = GatewayConfig(
             name="bifrost", base_url="http://localhost:8081",

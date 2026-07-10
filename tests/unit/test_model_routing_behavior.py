@@ -13,8 +13,8 @@ Key invariants tested:
 
 import pytest
 
-from lib.model_catalog import ModelCatalog
-from lib.model_router import (
+from cos_lib.model_catalog import ModelCatalog
+from cos_lib.model_router import (
     MODEL_CAPABILITIES,
     TASK_REQUIREMENTS,
     estimate_cost,

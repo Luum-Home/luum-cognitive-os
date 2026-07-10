@@ -1,8 +1,8 @@
 """Contract tests locking the SafeEngramResult shape consumed by cos_mcp.
 
 These tests are the SPECIFIC blocker for the proposed R3 refactor that
-would delegate ``lib.safe_engram.safe_save`` to
-``lib.engram_client.save_observation``.  ``save_observation`` returns
+would delegate ``cos_lib.safe_engram.safe_save`` to
+``cos_lib.engram_client.save_observation``.  ``save_observation`` returns
 ``dict | None`` (and adds ``--json`` to the CLI command, producing
 machine-readable output), so any silent swap would break the
 user-facing string consumed by ``mcp-server/cos_mcp.py:217-219``.
@@ -39,7 +39,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from lib.safe_engram import SafeEngramResult, safe_save
+from cos_lib.safe_engram import SafeEngramResult, safe_save
 
 pytestmark = pytest.mark.unit
 
@@ -110,7 +110,7 @@ class TestSuccessPathContract:
 
     def test_success_blocked_false(self):
         with patch(
-            "lib.safe_engram.subprocess.run",
+            "cos_lib.safe_engram.subprocess.run",
             return_value=_make_proc(0, stdout="Saved with id=42."),
         ):
             r = safe_save("Title", _CLEAN, engram_bin="engram")
@@ -118,7 +118,7 @@ class TestSuccessPathContract:
 
     def test_success_returncode_zero(self):
         with patch(
-            "lib.safe_engram.subprocess.run",
+            "cos_lib.safe_engram.subprocess.run",
             return_value=_make_proc(0, stdout="Saved with id=42."),
         ):
             r = safe_save("Title", _CLEAN, engram_bin="engram")
@@ -126,7 +126,7 @@ class TestSuccessPathContract:
 
     def test_success_engram_output_is_string(self):
         with patch(
-            "lib.safe_engram.subprocess.run",
+            "cos_lib.safe_engram.subprocess.run",
             return_value=_make_proc(0, stdout="Saved with id=42."),
         ):
             r = safe_save("Title", _CLEAN, engram_bin="engram")
@@ -142,7 +142,7 @@ class TestSuccessPathContract:
         flag the regression.
         """
         with patch(
-            "lib.safe_engram.subprocess.run",
+            "cos_lib.safe_engram.subprocess.run",
             return_value=_make_proc(0, stdout="Saved with id=42."),
         ):
             r = safe_save("Title", _CLEAN, engram_bin="engram")
@@ -167,7 +167,7 @@ class TestCliCommandShape:
 
     def test_cli_does_not_include_json_flag(self):
         with patch(
-            "lib.safe_engram.subprocess.run",
+            "cos_lib.safe_engram.subprocess.run",
             return_value=_make_proc(0, stdout="ok"),
         ) as mock_run:
             safe_save("T", _CLEAN, engram_bin="engram")
@@ -179,7 +179,7 @@ class TestCliCommandShape:
 
     def test_cli_uses_save_subcommand(self):
         with patch(
-            "lib.safe_engram.subprocess.run",
+            "cos_lib.safe_engram.subprocess.run",
             return_value=_make_proc(0, stdout="ok"),
         ) as mock_run:
             safe_save("T", _CLEAN, engram_bin="engram")
@@ -188,7 +188,7 @@ class TestCliCommandShape:
 
     def test_cli_starts_with_engram_bin(self):
         with patch(
-            "lib.safe_engram.subprocess.run",
+            "cos_lib.safe_engram.subprocess.run",
             return_value=_make_proc(0, stdout="ok"),
         ) as mock_run:
             safe_save("T", _CLEAN, engram_bin="/custom/path/engram")
@@ -206,7 +206,7 @@ class TestBinaryMissingContract:
 
     def test_returncode_is_127_when_binary_missing(self):
         with patch(
-            "lib.safe_engram.subprocess.run", side_effect=FileNotFoundError()
+            "cos_lib.safe_engram.subprocess.run", side_effect=FileNotFoundError()
         ):
             r = safe_save("T", _CLEAN, engram_bin="engram")
         assert r.returncode == 127
@@ -214,14 +214,14 @@ class TestBinaryMissingContract:
     def test_blocked_false_when_binary_missing(self):
         """Binary-missing is NOT a scanner block — the save was never tried."""
         with patch(
-            "lib.safe_engram.subprocess.run", side_effect=FileNotFoundError()
+            "cos_lib.safe_engram.subprocess.run", side_effect=FileNotFoundError()
         ):
             r = safe_save("T", _CLEAN, engram_bin="engram")
         assert r.blocked is False
 
     def test_engram_output_mentions_binary_not_found(self):
         with patch(
-            "lib.safe_engram.subprocess.run", side_effect=FileNotFoundError()
+            "cos_lib.safe_engram.subprocess.run", side_effect=FileNotFoundError()
         ):
             r = safe_save("T", _CLEAN, engram_bin="engram")
         assert isinstance(r.engram_output, str)
@@ -232,7 +232,7 @@ class TestBinaryMissingContract:
         """cos_mcp falls back to ``or "Saved successfully."`` — but the
         consumer pattern still expects a string, never None on this path."""
         with patch(
-            "lib.safe_engram.subprocess.run", side_effect=FileNotFoundError()
+            "cos_lib.safe_engram.subprocess.run", side_effect=FileNotFoundError()
         ):
             r = safe_save("T", _CLEAN, engram_bin="engram")
         assert r.engram_output is not None
@@ -248,7 +248,7 @@ class TestTimeoutContract:
 
     def test_returncode_is_minus_one_on_timeout(self):
         with patch(
-            "lib.safe_engram.subprocess.run",
+            "cos_lib.safe_engram.subprocess.run",
             side_effect=subprocess.TimeoutExpired(cmd="engram", timeout=10),
         ):
             r = safe_save("T", _CLEAN, engram_bin="engram", timeout=10)
@@ -256,7 +256,7 @@ class TestTimeoutContract:
 
     def test_blocked_false_on_timeout(self):
         with patch(
-            "lib.safe_engram.subprocess.run",
+            "cos_lib.safe_engram.subprocess.run",
             side_effect=subprocess.TimeoutExpired(cmd="engram", timeout=10),
         ):
             r = safe_save("T", _CLEAN, engram_bin="engram", timeout=10)
@@ -264,7 +264,7 @@ class TestTimeoutContract:
 
     def test_engram_output_mentions_timed_out(self):
         with patch(
-            "lib.safe_engram.subprocess.run",
+            "cos_lib.safe_engram.subprocess.run",
             side_effect=subprocess.TimeoutExpired(cmd="engram", timeout=10),
         ):
             r = safe_save("T", _CLEAN, engram_bin="engram", timeout=10)
@@ -324,7 +324,7 @@ class TestConsumerClassificationDichotomy:
 
     def test_returncode_zero_is_passthrough(self):
         with patch(
-            "lib.safe_engram.subprocess.run",
+            "cos_lib.safe_engram.subprocess.run",
             return_value=_make_proc(0, stdout="Saved."),
         ):
             r = safe_save("T", _CLEAN, engram_bin="engram")
@@ -337,7 +337,7 @@ class TestConsumerClassificationDichotomy:
         (returns the human-readable engram_output, not an error JSON).
         """
         with patch(
-            "lib.safe_engram.subprocess.run", side_effect=FileNotFoundError()
+            "cos_lib.safe_engram.subprocess.run", side_effect=FileNotFoundError()
         ):
             r = safe_save("T", _CLEAN, engram_bin="engram")
         assert _classify_like_cos_mcp(r) == "passthrough"
@@ -345,7 +345,7 @@ class TestConsumerClassificationDichotomy:
     def test_returncode_one_is_real_error(self):
         """Non-zero, non-127 returncodes are classified as real engram errors."""
         with patch(
-            "lib.safe_engram.subprocess.run",
+            "cos_lib.safe_engram.subprocess.run",
             return_value=_make_proc(1, stderr="connection refused"),
         ):
             r = safe_save("T", _CLEAN, engram_bin="engram")
@@ -354,7 +354,7 @@ class TestConsumerClassificationDichotomy:
     def test_returncode_minus_one_timeout_is_real_error(self):
         """Timeouts (-1) are classified as real errors by cos_mcp."""
         with patch(
-            "lib.safe_engram.subprocess.run",
+            "cos_lib.safe_engram.subprocess.run",
             side_effect=subprocess.TimeoutExpired(cmd="engram", timeout=10),
         ):
             r = safe_save("T", _CLEAN, engram_bin="engram", timeout=10)
@@ -377,7 +377,7 @@ class TestEngramBinOverride:
     def test_explicit_engram_bin_wins_over_env(self):
         with patch.dict(os.environ, {"ENGRAM_BIN": "/from/env/engram"}, clear=False):
             with patch(
-                "lib.safe_engram.subprocess.run",
+                "cos_lib.safe_engram.subprocess.run",
                 return_value=_make_proc(0, stdout="ok"),
             ) as mock_run:
                 safe_save(
@@ -389,7 +389,7 @@ class TestEngramBinOverride:
     def test_env_var_used_when_no_explicit_bin(self):
         with patch.dict(os.environ, {"ENGRAM_BIN": "/from/env/engram"}, clear=False):
             with patch(
-                "lib.safe_engram.subprocess.run",
+                "cos_lib.safe_engram.subprocess.run",
                 return_value=_make_proc(0, stdout="ok"),
             ) as mock_run:
                 safe_save("T", _CLEAN)
@@ -400,7 +400,7 @@ class TestEngramBinOverride:
         env = {k: v for k, v in os.environ.items() if k != "ENGRAM_BIN"}
         with patch.dict(os.environ, env, clear=True):
             with patch(
-                "lib.safe_engram.subprocess.run",
+                "cos_lib.safe_engram.subprocess.run",
                 return_value=_make_proc(0, stdout="ok"),
             ) as mock_run:
                 safe_save("T", _CLEAN)
@@ -472,7 +472,7 @@ class TestCrossModuleConsumerContract:
 
         sentinel = "Saved id=alpha-7 (human readable, no JSON)."
         with patch(
-            "lib.safe_engram.subprocess.run",
+            "cos_lib.safe_engram.subprocess.run",
             return_value=_make_proc(0, stdout=sentinel),
         ):
             out = cos_mcp._engram_save("Title", _CLEAN)
@@ -489,7 +489,7 @@ class TestCrossModuleConsumerContract:
             pytest.skip("cos_mcp not importable in this environment")
 
         with patch(
-            "lib.safe_engram.subprocess.run",
+            "cos_lib.safe_engram.subprocess.run",
             return_value=_make_proc(1, stderr="boom"),
         ):
             out = cos_mcp._engram_save("Title", _CLEAN)
@@ -540,7 +540,7 @@ class TestReturncode127Classification:
             pytest.skip("cos_mcp not importable in this environment")
 
         with patch(
-            "lib.safe_engram.subprocess.run", side_effect=FileNotFoundError()
+            "cos_lib.safe_engram.subprocess.run", side_effect=FileNotFoundError()
         ):
             out = cos_mcp._engram_save("Title", _CLEAN)
 
@@ -588,7 +588,7 @@ class TestReturncode127Classification:
 
         for bad_rc in (1, 2, 42):
             with patch(
-                "lib.safe_engram.subprocess.run",
+                "cos_lib.safe_engram.subprocess.run",
                 return_value=_make_proc(bad_rc, stderr="some engram error"),
             ):
                 out = cos_mcp._engram_save("Title", _CLEAN)

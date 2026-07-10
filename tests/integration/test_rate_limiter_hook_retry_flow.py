@@ -29,7 +29,7 @@ _PROJ_ROOT = Path(__file__).resolve().parent.parent.parent
 if str(_PROJ_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJ_ROOT))
 
-from lib.rate_limiter import (  # noqa: E402
+from cos_lib.rate_limiter import (  # noqa: E402
     MAX_RETRY_COUNT,
     RateLimitConfig,
     RateLimiter,
@@ -112,7 +112,7 @@ def _run_drainer(project_dir: Path) -> subprocess.CompletedProcess:
 
 
 class TestHookWiring:
-    """retry_count must be wired end-to-end: hook → lib → drainer → lib."""
+    """retry_count must be wired end-to-end: hook → lib → drainer → cos_lib."""
 
     def test_rate_limiter_hook_mentions_retry_count(self):
         """The PreToolUse hook must reference retry_count (D45 wiring)."""
@@ -222,7 +222,7 @@ class TestCompoundingRetryLoop:
         """Over N drain cycles the queue must never exceed MAX_QUEUE_SIZE,
         and items must progressively acquire higher retry_count values until
         they get dropped by the retry cap."""
-        from lib.rate_limiter import MAX_QUEUE_SIZE
+        from cos_lib.rate_limiter import MAX_QUEUE_SIZE
 
         _write_config(tmp_path)
         _exhaust_bash_limit(tmp_path, limit=2)

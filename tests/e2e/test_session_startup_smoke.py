@@ -511,7 +511,7 @@ def test_phase_a_ge_phase_b_threshold_invariant(repo_root: Path):
     Observed in TWO ways for the acceptance criterion:
       * `cos-config-audit --json` reports `runtime.session_watchdog` IMPL
         with `coherence: OK` — meaning the audit accepts the config shape.
-      * Numeric comparison sourced from cognitive-os.yaml + lib import.
+      * Numeric comparison sourced from cognitive-os.yaml + cos_lib import.
     """
     # Leg 1 — audit says session_watchdog is coherent.
     audit = subprocess.run(
@@ -543,7 +543,7 @@ def test_phase_a_ge_phase_b_threshold_invariant(repo_root: Path):
     phase_a = _read_yaml_threshold(yaml_path)
     sys.path.insert(0, str(repo_root))
     try:
-        from lib.session_watchdog_lib import _CPU_IDLE_THRESHOLD_PCT  # type: ignore
+        from cos_lib.session_watchdog_lib import _CPU_IDLE_THRESHOLD_PCT  # type: ignore
     finally:
         try:
             sys.path.remove(str(repo_root))

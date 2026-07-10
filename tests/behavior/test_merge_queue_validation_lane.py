@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import pytest
 
-from lib.merge_queue import enqueue, record_validation_lane, status
-from lib.validation_lanes import recommend_lane
+from cos_lib.merge_queue import enqueue, record_validation_lane, status
+from cos_lib.validation_lanes import recommend_lane
 
 pytestmark = pytest.mark.behavior
 

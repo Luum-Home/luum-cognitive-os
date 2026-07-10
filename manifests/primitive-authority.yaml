@@ -50,7 +50,7 @@ surfaces:
   os_live_primitives:
     globs: [hooks/**, rules/**, skills/**, scripts/**, templates/**, manifests/**, .claude/**, .codex/**]
   consumer_source:
-    globs: [src/**, lib/**, app/**, packages/**, internal/**, cmd/**]
+    globs: [src/**, cos_lib/**, app/**, packages/**, internal/**, cmd/**]
   secrets:
     globs: [.env, .env.*, secrets/**, "*.pem", "*.key"]
 derivation:

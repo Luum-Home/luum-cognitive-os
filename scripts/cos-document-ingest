@@ -11,7 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from lib.document_ingest import DocumentIngestError, ingest_document  # noqa: E402
+from cos_lib.document_ingest import DocumentIngestError, ingest_document  # noqa: E402
 
 
 def default_output(project_dir: Path, input_path: Path) -> Path:

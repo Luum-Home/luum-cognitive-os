@@ -19,7 +19,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from lib.dispatch import dispatch
+from cos_lib.dispatch import dispatch
 
 
 def _local_success(prompt: str, **_: Any) -> dict[str, Any]:

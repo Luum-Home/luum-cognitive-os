@@ -14,9 +14,9 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.agent_daemon import AgentDaemon, AgentDaemonError  # noqa: E402
-from lib.agent_lifecycle import AgentLifecycleError, prepare_agent_worktree  # noqa: E402
-from lib.agent_team import AgentTeam  # noqa: E402
+from cos_lib.agent_daemon import AgentDaemon, AgentDaemonError  # noqa: E402
+from cos_lib.agent_lifecycle import AgentLifecycleError, prepare_agent_worktree  # noqa: E402
+from cos_lib.agent_team import AgentTeam  # noqa: E402
 
 
 def _default(value: Any) -> Any:

@@ -22,7 +22,7 @@ Coverage scenarios:
 
 import pytest
 
-from lib.skill_router import SkillRouter
+from cos_lib.skill_router import SkillRouter
 
 pytestmark = pytest.mark.contract
 

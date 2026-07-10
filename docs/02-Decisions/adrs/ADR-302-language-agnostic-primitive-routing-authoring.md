@@ -14,7 +14,7 @@ extends:
   - ADR-300
   - ADR-301
 implementation_files:
-  - lib/language_dependence_audit.py
+  - cos_lib/language_dependence_audit.py
   - scripts/cos-language-dependence-audit
   - skills/primitive-authoring/SKILL.md
   - skills/add-skill/SKILL.md

@@ -77,7 +77,7 @@ if isinstance(ti, dict):
         paths.extend(bash_write_targets(ti.get('command')))
 blocked=[]
 try:
-    from lib.policy_eval import evaluate_action
+    from cos_lib.policy_eval import evaluate_action
 except Exception:
     evaluate_action=None
 for raw in paths:

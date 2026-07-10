@@ -12,7 +12,7 @@
 #   0  — benchmark completed (even on SLO breach; tests gate on breach)
 #   1  — internal error (Python module failure)
 #
-# This script is a thin wrapper around lib.agent_spawn_benchmark.
+# This script is a thin wrapper around cos_lib.agent_spawn_benchmark.
 
 set -uo pipefail
 
@@ -56,7 +56,7 @@ from dataclasses import asdict
 from pathlib import Path
 
 sys.path.insert(0, str(Path(sys.argv[1])))
-from lib.agent_spawn_benchmark import (  # noqa: E402
+from cos_lib.agent_spawn_benchmark import (  # noqa: E402
     build_record,
     append_jsonl,
     render_markdown,

@@ -7,7 +7,7 @@ local preference, cost estimation, and routing table formatting.
 import pytest
 from unittest.mock import patch
 
-from lib.model_router import (
+from cos_lib.model_router import (
     MODEL_CAPABILITIES,
     TASK_REQUIREMENTS,
     estimate_cost,
@@ -236,10 +236,10 @@ class TestSelectModelLocal:
 
 
 class TestRouteAndExecuteCapabilityProfile:
-    @patch("lib.gateway_selector._check_litellm_health")
+    @patch("cos_lib.gateway_selector._check_litellm_health")
     def test_prefer_local_does_not_fall_back_to_claude_when_local_gateway_down(self, mock_litellm):
         """Local/private execution must fail closed instead of using Claude fallback."""
-        from lib.gateway_selector import GatewayConfig
+        from cos_lib.gateway_selector import GatewayConfig
 
         mock_litellm.return_value = GatewayConfig(
             name="litellm",

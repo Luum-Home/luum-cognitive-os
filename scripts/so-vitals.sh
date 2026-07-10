@@ -18,7 +18,7 @@ ROOT = Path("$PROJECT_DIR")
 MODE = "$MODE"
 
 try:
-    from lib.metric_event import MetricEvent, append_event
+    from cos_lib.metric_event import MetricEvent, append_event
 except ImportError:
     # Graceful degradation: emit minimal vitals JSON and exit 0
     # so callers (hooks, tests) don't see a failure when the lib is unavailable.
@@ -28,7 +28,7 @@ except ImportError:
         "event_type": "so.vitals",
         "timestamp": datetime.datetime.now(datetime.UTC).isoformat().replace("+00:00", "Z"),
         "degraded": True,
-        "degraded_reason": "lib.metric_event not importable",
+        "degraded_reason": "cos_lib.metric_event not importable",
         "agents_in_flight": 0,
         "agents_stale": 0,
         "processes_registered": 0,
@@ -40,18 +40,18 @@ except ImportError:
         "valkey_reachable": False,
         "valkey_warning": False,
     }
-    print("so-vitals: lib.metric_event not importable — degraded mode", file=sys.stderr)
+    print("so-vitals: cos_lib.metric_event not importable — degraded mode", file=sys.stderr)
     if "$MODE" == "--json":
         print(json.dumps(minimal))
     else:
-        print("=== SO Vitals (degraded — lib.metric_event unavailable) ===")
+        print("=== SO Vitals (degraded — cos_lib.metric_event unavailable) ===")
     sys.exit(0)
 
 # Agents in flight — reads from agent_bus via AgentBusMetrics adapter
 # (ADR-028b D1.C). Falls through to empty when adapter unavailable.
 agents = []
 try:
-    from lib.agent_bus_metrics import AgentBusMetrics
+    from cos_lib.agent_bus_metrics import AgentBusMetrics
     _abm = AgentBusMetrics()
     for rec in _abm.list_live(max_age_seconds=300):
         agents.append({
@@ -73,7 +73,7 @@ except ImportError:
 # Registered processes + TTL (D1.B)
 processes = []
 try:
-    from lib.process_registry import list_live as reg_live
+    from cos_lib.process_registry import list_live as reg_live
     now = time.time()
     for rec in reg_live():
         processes.append({
@@ -89,7 +89,7 @@ orphans = []
 try:
     registered_pids = set()
     try:
-        from lib.process_registry import list_live as _live
+        from cos_lib.process_registry import list_live as _live
         registered_pids = {r.pid for r in _live()}
     except Exception:
         pass

@@ -28,7 +28,7 @@ _REPO = Path(__file__).resolve().parent.parent.parent
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-import lib.context_compressor as cc
+import cos_lib.context_compressor as cc
 
 
 # ---------------------------------------------------------------------------
@@ -207,7 +207,7 @@ class TestMaybeCompressContext(unittest.TestCase):
 
     def test_noop_without_env_var(self):
         """maybe_compress_context is a no-op when COS_CONTEXT_COMPRESS is not set."""
-        from lib.harness_adapter.base import maybe_compress_context
+        from cos_lib.harness_adapter.base import maybe_compress_context
 
         msgs = _make_messages(30, content_size=500)
         env = {k: v for k, v in os.environ.items() if k != "COS_CONTEXT_COMPRESS"}
@@ -219,7 +219,7 @@ class TestMaybeCompressContext(unittest.TestCase):
 
     def test_compresses_when_env_set_and_budget_low(self):
         """maybe_compress_context compresses when env var is set and budget is low."""
-        from lib.harness_adapter.base import maybe_compress_context
+        from cos_lib.harness_adapter.base import maybe_compress_context
 
         msgs = _make_messages(30, content_size=800)
         estimated = _token_count(msgs)

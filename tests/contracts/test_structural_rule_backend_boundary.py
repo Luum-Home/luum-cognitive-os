@@ -6,7 +6,7 @@ import json
 import sys
 from pathlib import Path
 
-from lib.adapter_compile import compile_adapter
+from cos_lib.adapter_compile import compile_adapter
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:

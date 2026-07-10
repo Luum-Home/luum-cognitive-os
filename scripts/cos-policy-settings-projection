@@ -12,7 +12,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from lib.policy_eval import load_policies  # noqa: E402
+from cos_lib.policy_eval import load_policies  # noqa: E402
 
 
 def _trigger_tools(policy: dict[str, Any]) -> list[str]:

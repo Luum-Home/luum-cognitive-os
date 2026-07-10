@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Claude Agent SDK provider wrapper (ADR-062 opt-in, ADR-063).
 
 Uses the official Python `claude-agent-sdk` package (MIT license) to run
@@ -84,7 +84,7 @@ def is_configured() -> bool:
     the runner. Missing any condition means this provider cannot function.
     """
     try:
-        from lib.anthropic_direct_policy import (
+        from cos_lib.anthropic_direct_policy import (
             direct_anthropic_api_enabled,
             direct_anthropic_api_key_present,
         )

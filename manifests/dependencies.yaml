@@ -176,7 +176,7 @@ tools:
       command: sudo apt-get install -y python3 python3-venv
   consumed_by:
   - hooks/*.py
-  - lib/*.py
+  - cos_lib/*.py
   category: runtime
   profiles:
   - core
@@ -204,7 +204,7 @@ tools:
 
     '
   consumed_by:
-  - lib/engram_client.py
+  - cos_lib/engram_client.py
   - hooks/inject-phase-context.sh
   - hooks/subagent-context-injector.sh
   category: cli
@@ -325,7 +325,7 @@ tools:
       manager: pip
       command: bash scripts/install-git-filter-repo.sh
   consumed_by:
-  - lib/history_sanitization.py
+  - cos_lib/history_sanitization.py
   - scripts/cos-history-sanitization
   category: security
   profiles:
@@ -2199,7 +2199,7 @@ mcp_servers:
   register_to: ~/.claude/settings.json
   requires_tool: engram
   consumed_by:
-  - lib/engram_client.py
+  - cos_lib/engram_client.py
   - hooks/inject-phase-context.sh
 - name: aguara
   criticality: optional

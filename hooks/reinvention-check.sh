@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # PreToolUse hook: Reinvention Check
 # Fires on "Agent" tool use — warns if agent may be recreating existing implementations.
 # Advisory only (exit 0 always).
@@ -90,7 +90,7 @@ if [ "${REINVENTION_PHASE_B:-0}" = "1" ] || [ "${REINVENTION_PHASE_B:-0}" = "2" 
 import json, os, sys
 sys.path.insert(0, os.environ.get("PROJECT_ROOT", "."))
 try:
-    from lib.reinvention_semantic import (
+    from cos_lib.reinvention_semantic import (
         SemanticIndex,
         DEFAULT_INDEX_RELPATH,
         DEFAULT_EMBED_MIN_SCORE,
@@ -106,7 +106,7 @@ q = os.environ.get("REINV_QUERY", "")
 # if sentence-transformers is not installed or the index has not been built.
 if phase == "2":
     try:
-        from lib.reinvention_semantic import EmbeddingsIndex  # noqa: F401
+        from cos_lib.reinvention_semantic import EmbeddingsIndex  # noqa: F401
         eidx = EmbeddingsIndex()
         if eidx.load(root):
             try:

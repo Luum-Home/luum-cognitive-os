@@ -23,8 +23,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.script_io import read_text as read_text
-from lib.duplicate_scanner import (
+from cos_lib.script_io import read_text as read_text
+from cos_lib.duplicate_scanner import (
     collect_text_files,
     lexical_pairs,
     normalized_tokens,
@@ -32,10 +32,10 @@ from lib.duplicate_scanner import (
     shell_function_repeats,
     stable_id,
 )
-from lib.script_helpers import shingles
-from lib.script_io import write_json as write_json
-from lib.similarity import jaccard, pair_key
-from lib.project_paths import relpath as rel
+from cos_lib.script_helpers import shingles
+from cos_lib.script_io import write_json as write_json
+from cos_lib.similarity import jaccard, pair_key
+from cos_lib.project_paths import relpath as rel
 from typing import Any
 
 try:
@@ -82,7 +82,7 @@ def collect_files(root: Path, include: list[str]) -> list[Path]:
 
 def common_home_for_path(path: str, kind: str) -> str:
     if kind == "python-function-repeat":
-        return "lib/"
+        return "cos_lib/"
     if kind == "bash-function-repeat":
         return "hooks/_lib/" if path.startswith("hooks/") else "scripts/_lib/"
     if kind in {"yaml-structural-repeat", "config-pattern-repeat"}:
@@ -149,7 +149,7 @@ def python_function_fingerprints(root: Path, files: list[Path]) -> list[Finding]
                 repeat.right,
                 repeat.similarity,
                 "extract-common-python-helper",
-                "lib/",
+                "cos_lib/",
                 consumer_relevance(left_path, right_path),
                 "Python functions have identical normalized AST bodies",
             )

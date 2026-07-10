@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.fleet_confidence import export_fleet_confidence  # noqa: E402
+from cos_lib.fleet_confidence import export_fleet_confidence  # noqa: E402
 
 
 def repo_root(start: Path) -> Path:

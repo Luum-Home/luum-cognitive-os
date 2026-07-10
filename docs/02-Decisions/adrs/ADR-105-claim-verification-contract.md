@@ -15,7 +15,7 @@ implementation_files:
   - scripts/verify_plan_claims.py
   - scripts/verify-archived.sh
   - scripts/orchestrator_claim_gate.py
-  - lib/orchestrator_verify.py
+  - cos_lib/orchestrator_verify.py
 tier: strict
 tags: [verification, claims, orchestrator, bilateral]
 partial_remaining: Add domain-specific verifiers when new claim verbs need richer bilateral predicates beyond the current generic verification hooks/scripts.

@@ -190,7 +190,7 @@ def test_import_raises_when_sentence_transformers_absent(monkeypatch):
     # Reload the module so the class sees the patched import path.
     import importlib
 
-    import lib.reinvention_semantic as rs
+    import cos_lib.reinvention_semantic as rs
     importlib.reload(rs)
 
     with pytest.raises(ImportError) as exc:
@@ -206,7 +206,7 @@ def test_build_and_persist_creates_artefacts(sample_project, monkeypatch):
     _install_fake_st(monkeypatch)
     import importlib
 
-    import lib.reinvention_semantic as rs
+    import cos_lib.reinvention_semantic as rs
     importlib.reload(rs)
 
     eidx = rs.EmbeddingsIndex()
@@ -228,7 +228,7 @@ def test_load_roundtrip_recovers_items(sample_project, monkeypatch):
     _install_fake_st(monkeypatch)
     import importlib
 
-    import lib.reinvention_semantic as rs
+    import cos_lib.reinvention_semantic as rs
     importlib.reload(rs)
 
     builder = rs.EmbeddingsIndex()
@@ -246,7 +246,7 @@ def test_find_similar_returns_scored_matches(sample_project, monkeypatch):
     _install_fake_st(monkeypatch)
     import importlib
 
-    import lib.reinvention_semantic as rs
+    import cos_lib.reinvention_semantic as rs
     importlib.reload(rs)
 
     eidx = rs.EmbeddingsIndex()
@@ -270,7 +270,7 @@ def test_find_similar_threshold_filters_low_scores(sample_project, monkeypatch):
     _install_fake_st(monkeypatch)
     import importlib
 
-    import lib.reinvention_semantic as rs
+    import cos_lib.reinvention_semantic as rs
     importlib.reload(rs)
 
     eidx = rs.EmbeddingsIndex()
@@ -286,7 +286,7 @@ def test_find_similar_empty_index_returns_empty(monkeypatch, tmp_path):
     _install_fake_st(monkeypatch)
     import importlib
 
-    import lib.reinvention_semantic as rs
+    import cos_lib.reinvention_semantic as rs
     importlib.reload(rs)
 
     eidx = rs.EmbeddingsIndex(
@@ -304,7 +304,7 @@ def test_hook_fallback_path_when_embeddings_module_missing(monkeypatch):
     monkeypatch.setitem(sys.modules, "sentence_transformers", None)
     import importlib
 
-    import lib.reinvention_semantic as rs
+    import cos_lib.reinvention_semantic as rs
     importlib.reload(rs)
 
     # SemanticIndex (Jaccard) is stdlib-only and must remain importable.

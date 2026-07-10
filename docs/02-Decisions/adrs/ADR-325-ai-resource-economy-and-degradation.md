@@ -13,7 +13,7 @@ implementation_files:
 - scripts/ai_budget_preflight.py
 - scripts/ai-budget-preflight
 - rules/language-token-economy.md
-- lib/taximeter.py
+- cos_lib/taximeter.py
 - hooks/context-budget-meter.sh
 - hooks/token-budget-monitor.sh
 - hooks/subagent-budget-enforcer.sh

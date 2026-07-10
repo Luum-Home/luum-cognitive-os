@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.skill_store import SkillStore
+from cos_lib.skill_store import SkillStore
 
 
 # ---------------------------------------------------------------------------

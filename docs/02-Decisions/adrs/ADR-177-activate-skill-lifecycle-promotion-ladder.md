@@ -8,8 +8,8 @@ date: 2026-05-06
 supersedes: []
 superseded_by: null
 implementation_files:
-  - lib/skill_lifecycle_promoter.py
-  - lib/doctrine_proposer.py
+  - cos_lib/skill_lifecycle_promoter.py
+  - cos_lib/doctrine_proposer.py
   - scripts/cos_doctrine_proposer.py
   - scripts/run_skill_lifecycle_promotion_smoke.py
   - tests/unit/test_skill_lifecycle_promoter.py

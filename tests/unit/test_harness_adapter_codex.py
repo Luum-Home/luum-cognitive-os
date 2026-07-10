@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from lib.harness_adapter.base import (
+from cos_lib.harness_adapter.base import (
     HarnessName,
     ParseError,
     SessionEnd,
@@ -15,8 +15,8 @@ from lib.harness_adapter.base import (
     ToolUseStart,
     UserPromptSubmit,
 )
-from lib.harness_adapter.codex import CodexAdapter
-from lib.harness_adapter.dispatch import dispatch_event
+from cos_lib.harness_adapter.codex import CodexAdapter
+from cos_lib.harness_adapter.dispatch import dispatch_event
 
 FIXTURES = Path(__file__).resolve().parents[1] / "fixtures" / "codex-live-session"
 

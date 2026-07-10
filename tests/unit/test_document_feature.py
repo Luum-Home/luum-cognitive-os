@@ -1,5 +1,5 @@
 # SCOPE: os-only
-"""Behavior tests for lib.document_feature_writer (ADR-054 Phase 2 extension).
+"""Behavior tests for cos_lib.document_feature_writer (ADR-054 Phase 2 extension).
 
 Tests ONLY the new --project-dir path (backlog append). The original
 document-feature skill behavior is untouched and not tested here.
@@ -14,7 +14,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.document_feature_writer import BACKLOG_REL, BacklogAppender, render_entry
+from cos_lib.document_feature_writer import BACKLOG_REL, BacklogAppender, render_entry
 
 
 def test_render_entry_has_correct_columns():

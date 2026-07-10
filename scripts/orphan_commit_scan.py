@@ -296,7 +296,7 @@ def save_to_engram(orphans: list[OrphanCommit], project_dir: Path) -> None:
     """
     try:
         sys.path.insert(0, str(project_dir))
-        from lib.engram_client import save_observation
+        from cos_lib.engram_client import save_observation
 
         content_lines = [
             "ADR-116 P3.1 — Orphan-commit notifier finding.",

@@ -7,9 +7,9 @@ from pathlib import Path
 
 import pytest
 
-from lib.agent_message_bus import ack_message, send_message
-from lib.branch_lock import acquire, release
-from lib.session_bus import SESSION_EVENT_TAXONOMY, read_events
+from cos_lib.agent_message_bus import ack_message, send_message
+from cos_lib.branch_lock import acquire, release
+from cos_lib.session_bus import SESSION_EVENT_TAXONOMY, read_events
 
 pytestmark = pytest.mark.contract
 

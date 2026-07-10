@@ -8,7 +8,7 @@ Python 3.9+ compatible.
 
 import pytest
 
-from lib.escalation_detector import EscalationDetector
+from cos_lib.escalation_detector import EscalationDetector
 
 pytestmark = pytest.mark.unit
 

@@ -6,7 +6,7 @@ import os
 
 import pytest
 
-from lib.harness_adapter.base import (
+from cos_lib.harness_adapter.base import (
     HarnessName,
     ParseError,
     SessionEnd,
@@ -15,7 +15,7 @@ from lib.harness_adapter.base import (
     ToolUseStart,
     UserPromptSubmit,
 )
-from lib.harness_adapter.bare_cli import BareCliAdapter, _OTHER_HARNESS_PREFIXES
+from cos_lib.harness_adapter.bare_cli import BareCliAdapter, _OTHER_HARNESS_PREFIXES
 
 
 # ── Fixtures ───────────────────────────────────────────────────────────────────

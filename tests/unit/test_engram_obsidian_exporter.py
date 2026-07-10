@@ -7,8 +7,8 @@ from typing import Any
 
 import pytest
 
-from lib.engram_lifecycle import EngramLifecycle
-from lib.engram_obsidian_exporter import EngramObsidianExporter
+from cos_lib.engram_lifecycle import EngramLifecycle
+from cos_lib.engram_obsidian_exporter import EngramObsidianExporter
 
 pytestmark = pytest.mark.unit
 

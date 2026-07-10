@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.time_utils import parse_ts
+from cos_lib.time_utils import parse_ts
 from typing import Any, Iterable
 
 DEFAULT_WINDOW_HOURS = 24

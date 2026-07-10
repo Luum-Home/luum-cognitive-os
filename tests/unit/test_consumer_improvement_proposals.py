@@ -4,7 +4,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from lib.consumer_improvement_proposals import (
+from cos_lib.consumer_improvement_proposals import (
     SCHEMA_VERSION,
     build_consumer_improvement_bundle,
     import_consumer_improvement_bundle,

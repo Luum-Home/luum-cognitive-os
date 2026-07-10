@@ -25,7 +25,7 @@ import pytest
 # Ensure lib/ is importable (handles both direct and package-root invocation)
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from lib.review_agent import (
+from cos_lib.review_agent import (
     REVIEWER_MODEL_MATRIX,
     build_review_prompt,
     daily_budget_state,
@@ -490,7 +490,7 @@ class TestPersistFinding:
         datetime.fromisoformat(record["timestamp"].replace("Z", "+00:00"))
 
     def test_engram_save_called(self, tmp_findings_jsonl):
-        with patch("lib.review_agent._engram_save") as mock_engram:
+        with patch("cos_lib.review_agent._engram_save") as mock_engram:
             persist_finding(
                 {"score": 60, "gaps": ["gap"], "producer_id": "agent-engram-test"},
                 jsonl_path=tmp_findings_jsonl,

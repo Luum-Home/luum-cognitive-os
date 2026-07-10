@@ -25,7 +25,7 @@ if str(_PROJ_ROOT) not in sys.path:
 @pytest.fixture()
 def isolated_registry(tmp_path, monkeypatch):
     monkeypatch.setenv("COGNITIVE_OS_PROJECT_DIR", str(tmp_path))
-    import lib.process_registry as _reg
+    import cos_lib.process_registry as _reg
     importlib.reload(_reg)
     yield _reg
     importlib.reload(_reg)

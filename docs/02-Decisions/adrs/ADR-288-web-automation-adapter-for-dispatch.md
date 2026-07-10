@@ -8,8 +8,8 @@ supersedes: []
 superseded_by: null
 implementation_files:
 - pyproject.toml
-- lib/browser_use_adapter.py
-- lib/web_automation_router.py
+- cos_lib/browser_use_adapter.py
+- cos_lib/web_automation_router.py
 - skills/browser-task/SKILL.md
 - tests/unit/test_browser_use_adapter.py
 - tests/integration/test_dispatch_web_automation_routing.py
@@ -96,7 +96,7 @@ lives in this ADR and in the adapter docstring.
 5. **Expose `/browser-task` skill** at `skills/browser-task/SKILL.md` for direct
    operator and sub-agent invocation. The skill body documents required env,
    the kill switch, and the cost-tracking model.
-6. **Wire cost tracking through `lib.dispatch_cost_predictor.predict_call_cost`**.
+6. **Wire cost tracking through `cos_lib.dispatch_cost_predictor.predict_call_cost`**.
    Each browser-use step records observed `tokens_in`/`tokens_out` against the
    selected provider so the existing session budget gate (ADR-228) sees web
    automation as a normal cost source.

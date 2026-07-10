@@ -40,7 +40,7 @@ when the queue may have stuck items.
 
 ```bash
 python3 -c "
-from lib.scheduled_drain import drain_and_report
+from cos_lib.scheduled_drain import drain_and_report
 print(drain_and_report())
 "
 ```
@@ -61,7 +61,7 @@ The output contains two sections separated by a blank line:
 For each ready agent, call the Agent tool with the queued prompt and model:
 
 ```python
-from lib.queue_drainer import QueueDrainer
+from cos_lib.queue_drainer import QueueDrainer
 drainer = QueueDrainer()
 ready = drainer.get_ready_agents()
 for agent in ready:
@@ -86,7 +86,7 @@ since polling an empty queue wastes tokens.
 To stop wasting tokens polling an empty queue:
 
 ```python
-from lib.scheduled_drain import should_schedule_drain
+from cos_lib.scheduled_drain import should_schedule_drain
 if not should_schedule_drain():
     # Cancel or skip re-creating the CronCreate task
     print("Queue empty — periodic drain no longer needed")
@@ -99,7 +99,7 @@ The orchestrator should create the scheduled drain task when:
 - The queue has items but no completion is expected soon
 
 ```python
-from lib.scheduled_drain import get_cron_create_spec
+from cos_lib.scheduled_drain import get_cron_create_spec
 spec = get_cron_create_spec()
 # Use CronCreate tool with spec["prompt"], recurring every 5 minutes
 ```

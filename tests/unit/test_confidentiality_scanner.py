@@ -10,7 +10,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.confidentiality_scanner import (
+from cos_lib.confidentiality_scanner import (
     ProtectedTerms,
     is_scannable_path,
     scan_file,

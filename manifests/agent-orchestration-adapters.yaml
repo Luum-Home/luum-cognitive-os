@@ -45,7 +45,7 @@ adapters:
   status: active
   default: false
   implementation:
-  - lib/agent_reflection.py
+  - cos_lib/agent_reflection.py
   license_spdx: project
   footprint: zero-extra-deps-local
   hot_path_allowed: false
@@ -55,8 +55,8 @@ adapters:
   status: active
   default: true
   implementation:
-  - lib/agent_team.py
-  - lib/agent_team_transport.py
+  - cos_lib/agent_team.py
+  - cos_lib/agent_team_transport.py
   license_spdx: project
   footprint: zero-extra-deps-local-file-ipc
   hot_path_allowed: true
@@ -66,8 +66,8 @@ adapters:
   status: active
   default: false
   implementation:
-  - lib/handoff_envelope.py
-  - lib/handoff_dispatcher.py
+  - cos_lib/handoff_envelope.py
+  - cos_lib/handoff_dispatcher.py
   license_spdx: project
   footprint: zero-extra-deps-local
   hot_path_allowed: true
@@ -77,10 +77,10 @@ adapters:
   status: active
   default: false
   implementation:
-  - lib/dispatch_gate.py
-  - lib/dispatch.py
-  - lib/retry_classifier.py
-  - lib/session_budget.py
+  - cos_lib/dispatch_gate.py
+  - cos_lib/dispatch.py
+  - cos_lib/retry_classifier.py
+  - cos_lib/session_budget.py
   license_spdx: project
   footprint: zero-extra-deps-local
   hot_path_allowed: true
@@ -90,7 +90,7 @@ adapters:
   status: opt-in
   default: false
   implementation:
-  - lib/agent_daemon.py
+  - cos_lib/agent_daemon.py
   - scripts/cos-agent-daemon
   license_spdx: project
   footprint: local-opt-in-process
@@ -151,7 +151,7 @@ core_surfaces:
   - hooks/agent-prelaunch.sh
   - scripts/cos-agent-worktree-prepare
   - scripts/cos-worktree-sweeper.sh
-  - lib/agent_lifecycle.py
+  - cos_lib/agent_lifecycle.py
   required_tests:
   - tests/behavior/test_agent_lifecycle_worktree_mode.py
   required_receipts:
@@ -161,7 +161,7 @@ core_surfaces:
   owner_adr: ADR-220
   kind: liveness_audit
   implementations:
-  - lib/worktree_audit.py
+  - cos_lib/worktree_audit.py
   - scripts/cos-worktree-audit
   required_tests:
   - tests/behavior/test_worktree_divergence_audit.py
@@ -171,7 +171,7 @@ core_surfaces:
   owner_adr: ADR-246
   kind: destructive_operation_boundary
   implementations:
-  - lib/release_freeze.py
+  - cos_lib/release_freeze.py
   - scripts/cos-release-freeze
   required_tests:
   - tests/behavior/test_release_freeze.py
@@ -181,10 +181,10 @@ core_surfaces:
   owner_adr: ADR-228
   kind: provider_call_boundary
   implementations:
-  - lib/dispatch_gate.py
-  - lib/dispatch.py
-  - lib/retry_classifier.py
-  - lib/session_budget.py
+  - cos_lib/dispatch_gate.py
+  - cos_lib/dispatch.py
+  - cos_lib/retry_classifier.py
+  - cos_lib/session_budget.py
   required_tests:
   - tests/integration/test_dispatch_gate_real_dispatch.py
   - tests/unit/test_dispatch_gate.py
@@ -197,8 +197,8 @@ core_surfaces:
   owner_adr: ADR-230
   kind: handoff_boundary
   implementations:
-  - lib/handoff_envelope.py
-  - lib/handoff_dispatcher.py
+  - cos_lib/handoff_envelope.py
+  - cos_lib/handoff_dispatcher.py
   required_tests:
   - tests/unit/test_handoff_dispatcher.py
   - tests/behavior/test_handoff_dispatcher_flow.py
@@ -210,8 +210,8 @@ core_surfaces:
   owner_adr: ADR-233
   kind: cross_session_transport
   implementations:
-  - lib/agent_team.py
-  - lib/agent_team_transport.py
+  - cos_lib/agent_team.py
+  - cos_lib/agent_team_transport.py
   required_tests:
   - tests/behavior/test_agent_team_file_ipc_flow.py
   - tests/integration/test_agent_team_cross_harness_contract.py
@@ -223,7 +223,7 @@ core_surfaces:
   owner_adr: ADR-235
   kind: optional_runner
   implementations:
-  - lib/agent_daemon.py
+  - cos_lib/agent_daemon.py
   - scripts/cos-agent-daemon
   required_tests:
   - tests/unit/test_agent_daemon.py
@@ -231,71 +231,71 @@ core_surfaces:
   required_receipts:
   - detached-agent-event
 core_file_allowlist:
-- lib/agent_bus.py
-- lib/agent_input_validator.py  # ADR-038 Wave 1 INPUT SCHEMA validator (commit 817d1133)
-- lib/agent_bus_metrics.py
-- lib/agent_spawn_benchmark.py  # ADR-303 observability tool; reads hook-timing.jsonl
-- lib/agent_context_injector.py
-- lib/agent_control_policy.py
-- lib/agent_daemon.py
-- lib/agent_dashboard.py
-- lib/agent_health_monitor.py
-- lib/agent_lifecycle.py
-- lib/agent_message_bus.py
-- lib/agent_output_extractor.py
-- lib/agent_output_monitor.py
-- lib/agent_output_to_bus.py
-- lib/agent_permissions.py
-- lib/agent_progress_tracker.py
-- lib/agent_redirect_protocol.py
-- lib/agent_runner.py
-- lib/agent_team.py
-- lib/agent_team_transport.py
-- lib/agent_trajectory.py
-- lib/budget_calculator.py
-- lib/concurrent_agent_safety_status.py
-- lib/context_budget.py
-- lib/context_budget_monitor.py
-- lib/dead_letter_queue.py
-- lib/dispatch.py
-- lib/dispatch_cost_predictor.py
-- lib/dispatch_gate.py
-- lib/dispatch_helper.py
-- lib/dispatch_model_advisor.py
-- lib/dispatch_optimizer.py
-- lib/evolve_task_queue.py
-- lib/file_mutation_queue.py
-- lib/goal_budget.py  # ADR-251 manifest: goal-loop budget accountant (cos-native-goal-loop SDD)
-- lib/handoff_dispatcher.py
-- lib/handoff_envelope.py
-- lib/merge_queue.py
-- lib/openai_compatible_agent_loop.py
-- lib/outcome_failure_queue.py  # ADR-200+ Phase 5 outcome failure queue (commit c3bbec84)
-- lib/queue_advisor.py
-- lib/queue_drainer.py
-- lib/queue_rebase.py
-- lib/qwen_agent_loop.py
-- lib/rate_limit_queue_migration.py
-- lib/release_freeze.py
-- lib/request_queue.py
-- lib/retry_classifier.py
-- lib/retry_scheduler.py
-- lib/retry_tracker.py
-- lib/review_agent.py
-- lib/session_budget.py
-- lib/session_bus.py
-- lib/session_coordination.py
-- lib/session_hygiene.py
-- lib/session_lifecycle.py
-- lib/session_parser.py
-- lib/session_state.py
-- lib/session_watchdog_lib.py
-- lib/token_budget_monitor.py
-- lib/tool_budget_catalog.py
-- lib/work_queue.py
-- lib/worktree_audit.py
-- lib/performance_ledger.py  # ADR-201 Phase 1 semantic rollups (commit 1245f32e)
-- lib/promote_from_telemetry.py  # ADR-201 Phase 2 pattern detections (skill/provider/primitive)
+- cos_lib/agent_bus.py
+- cos_lib/agent_input_validator.py  # ADR-038 Wave 1 INPUT SCHEMA validator (commit 817d1133)
+- cos_lib/agent_bus_metrics.py
+- cos_lib/agent_spawn_benchmark.py  # ADR-303 observability tool; reads hook-timing.jsonl
+- cos_lib/agent_context_injector.py
+- cos_lib/agent_control_policy.py
+- cos_lib/agent_daemon.py
+- cos_lib/agent_dashboard.py
+- cos_lib/agent_health_monitor.py
+- cos_lib/agent_lifecycle.py
+- cos_lib/agent_message_bus.py
+- cos_lib/agent_output_extractor.py
+- cos_lib/agent_output_monitor.py
+- cos_lib/agent_output_to_bus.py
+- cos_lib/agent_permissions.py
+- cos_lib/agent_progress_tracker.py
+- cos_lib/agent_redirect_protocol.py
+- cos_lib/agent_runner.py
+- cos_lib/agent_team.py
+- cos_lib/agent_team_transport.py
+- cos_lib/agent_trajectory.py
+- cos_lib/budget_calculator.py
+- cos_lib/concurrent_agent_safety_status.py
+- cos_lib/context_budget.py
+- cos_lib/context_budget_monitor.py
+- cos_lib/dead_letter_queue.py
+- cos_lib/dispatch.py
+- cos_lib/dispatch_cost_predictor.py
+- cos_lib/dispatch_gate.py
+- cos_lib/dispatch_helper.py
+- cos_lib/dispatch_model_advisor.py
+- cos_lib/dispatch_optimizer.py
+- cos_lib/evolve_task_queue.py
+- cos_lib/file_mutation_queue.py
+- cos_lib/goal_budget.py  # ADR-251 manifest: goal-loop budget accountant (cos-native-goal-loop SDD)
+- cos_lib/handoff_dispatcher.py
+- cos_lib/handoff_envelope.py
+- cos_lib/merge_queue.py
+- cos_lib/openai_compatible_agent_loop.py
+- cos_lib/outcome_failure_queue.py  # ADR-200+ Phase 5 outcome failure queue (commit c3bbec84)
+- cos_lib/queue_advisor.py
+- cos_lib/queue_drainer.py
+- cos_lib/queue_rebase.py
+- cos_lib/qwen_agent_loop.py
+- cos_lib/rate_limit_queue_migration.py
+- cos_lib/release_freeze.py
+- cos_lib/request_queue.py
+- cos_lib/retry_classifier.py
+- cos_lib/retry_scheduler.py
+- cos_lib/retry_tracker.py
+- cos_lib/review_agent.py
+- cos_lib/session_budget.py
+- cos_lib/session_bus.py
+- cos_lib/session_coordination.py
+- cos_lib/session_hygiene.py
+- cos_lib/session_lifecycle.py
+- cos_lib/session_parser.py
+- cos_lib/session_state.py
+- cos_lib/session_watchdog_lib.py
+- cos_lib/token_budget_monitor.py
+- cos_lib/tool_budget_catalog.py
+- cos_lib/work_queue.py
+- cos_lib/worktree_audit.py
+- cos_lib/performance_ledger.py  # ADR-201 Phase 1 semantic rollups (commit 1245f32e)
+- cos_lib/promote_from_telemetry.py  # ADR-201 Phase 2 pattern detections (skill/provider/primitive)
 - packages/adaptive-workflow/lib/token_budget_monitor.py
 - packages/agent-coordination/lib/agent_bus.py
 - packages/agent-coordination/lib/agent_dashboard.py

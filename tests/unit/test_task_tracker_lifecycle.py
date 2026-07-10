@@ -590,7 +590,7 @@ class TestZombieReaperSweep:
 
 class TestQueueActivetasksSync:
     def _make_drainer(self, tmp_path: Path):
-        from lib.queue_drainer import QueueDrainer  # noqa: PLC0415
+        from cos_lib.queue_drainer import QueueDrainer  # noqa: PLC0415
 
         tasks_dir = tmp_path / ".cognitive-os" / "tasks"
         tasks_dir.mkdir(parents=True, exist_ok=True)
@@ -682,7 +682,7 @@ class TestQueueActivetasksSync:
         the same status=='in_progress' filter.  We verify via queue_drainer
         (dispatch_gate_check executes at import time and cannot be imported).
         """
-        from lib.queue_drainer import _count_active_tasks  # noqa: PLC0415
+        from cos_lib.queue_drainer import _count_active_tasks  # noqa: PLC0415
 
         tasks_file = _make_tasks_file(tmp_path, [
             {

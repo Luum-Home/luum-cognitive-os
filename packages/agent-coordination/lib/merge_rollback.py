@@ -45,7 +45,7 @@ _MANUAL_FLAG_FILE = ".cognitive-os/sessions/merge-revert-manual-required"
 def _emit_event(event_type: str, payload: dict, session_id: str) -> None:
     """Emit an event to the bus — best-effort; never raises."""
     try:
-        from lib.event_bus import emit  # type: ignore[import]
+        from cos_lib.event_bus import emit  # type: ignore[import]
 
         emit(event_type, payload, session_id=session_id)
     except Exception as exc:  # noqa: BLE001
@@ -123,7 +123,7 @@ def verify_post_merge(
         return True
 
     # Lazy import to allow tests to patch gate_runner.run_stack at the canonical path.
-    import lib.gate_runner as _gate_runner  # type: ignore[import]
+    import cos_lib.gate_runner as _gate_runner  # type: ignore[import]
 
     # Post-merge we run against HEAD on main (branch name doesn't matter much).
     target_branch = os.environ.get("MERGE_TARGET_BRANCH", "main")

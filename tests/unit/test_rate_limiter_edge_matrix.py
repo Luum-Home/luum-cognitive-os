@@ -10,8 +10,8 @@ from pathlib import Path
 
 import pytest
 
-import lib.rate_limiter as rate_limiter_module
-from lib.rate_limiter import RateLimitConfig, RateLimiter, RateLimitQueue
+import cos_lib.rate_limiter as rate_limiter_module
+from cos_lib.rate_limiter import RateLimitConfig, RateLimiter, RateLimitQueue
 
 pytestmark = pytest.mark.unit
 
