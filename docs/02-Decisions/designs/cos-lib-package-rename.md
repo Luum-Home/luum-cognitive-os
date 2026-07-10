@@ -330,9 +330,32 @@ these are sub-steps of ONE session/commit, not separate batches to commit indepe
 
 ---
 
+## 7b. Apply-time addendum — 2-phase codemod (added 2026-07-09)
+
+**Discovered mid-apply (agent a0344a3fc2ec9b606):** the codemod is deliberately
+AST-only. After T5 `--apply`, §6.1's textual grep still finds ~787 residuals in
+~295 files — these are `lib.X` mentions inside comments, docstrings, and data
+strings, not live import positions. The AST-only design is correct for safety
+(prose regex cannot semantically distinguish live code from documentation), but
+§6.1 as written cannot converge to 0 without a second pass.
+
+**Resolution:** codemod extended with `--prose-sweep` flag (function
+`prose_sweep()` at `scripts/cos_lib_rename_codemod.py`). It runs after
+`apply_edits` in the SAME apply invocation, using the SAME boundary-anchored
+regexes (`RE_DOTTED`, `RE_FROM_BARE`, `RE_DASH_M`), and applies them whole-file
+to every tracked `.py`/`.sh`/`.md`. The negative lookbehind `(?<![A-Za-z0-9_.])`
+in `RE_DOTTED` rejects `cos_lib.X` and other `_lib` suffixes, so re-running is
+idempotent. `workflows/` is explicitly excluded (§2 U-Q2 policy).
+
+**Updated task DAG:** T5 (AST apply) → **T5c (prose sweep, same subprocess call
+with `--prose-sweep`)** → T5b (extended string-ref scan verifies both passes
+completed). §6.1 acceptance now measured post-both-phases.
+
+Recipe change: `COS_ALLOW_PROTECTED_CONFIG_WRITE=1 python3 scripts/cos_lib_rename_codemod.py --apply --prose-sweep`.
+
 ## 8. Acceptance criteria
 
-- **§6.1** Grep-verified rename complete:
+- **§6.1** Grep-verified rename complete (post-both-phases: AST + prose sweep):
   `grep -rE '(?<![A-Za-z0-9_.])lib(?=\.)|from lib import' --include='*.py' --include='*.sh' . | grep -v 'workflows/lib' | wc -l` → **0**.
 - **§6.2** Full test suite (`tests/audit`, `tests/unit`, `tests/integration`) exits 0, including
   the re-targeted `hook-lib-projection-contract` regression test and the new/updated
