@@ -5,7 +5,7 @@ The OR ambiguity meant nobody created `decision/<topic>` observations when shipp
 implementations. /decision-triage couldn't see decisions as ANSWERED, so all 33
 decisions stayed PENDING indefinitely — causing false-critical alerts.
 
-FIX (2026-04-27): ADR-069 §5b now REQUIRES calling lib/decision_tracker.record_decision()
+FIX (2026-04-27): ADR-069 §5b now REQUIRES calling cos_lib/decision_tracker.record_decision()
 whenever an operator accepts a recommendation. This test FAILS if:
   - A research report has a Decision Points / Open Questions section, AND
   - The report is > 7 days old (past the active triage window), AND
@@ -102,7 +102,7 @@ def test_old_decision_reports_have_engram_observations() -> None:
     or be explicitly tagged `decision-deferred: <reason>`.
 
     This test FAILS when the ADR-069 §5 OR ambiguity recurs — i.e., someone accepts
-    a decision verbally but doesn't call lib/decision_tracker.record_decision().
+    a decision verbally but doesn't call cos_lib/decision_tracker.record_decision().
     """
     if not _engram_available():
         pytest.skip("engram CLI not available — run with engram running (PID check)")
@@ -146,7 +146,7 @@ def test_old_decision_reports_have_engram_observations() -> None:
         f"that are > {TRIAGE_WINDOW_DAYS} days old but have no corresponding "
         f"`decision/<topic>` engram observation. This is the ADR-069 §5b anti-pattern "
         f"that caused /decision-triage to show 33 false-critical decisions. "
-        f"Fix: call `lib/decision_tracker.record_decision(topic_key, decision_text)` "
+        f"Fix: call `cos_lib/decision_tracker.record_decision(topic_key, decision_text)` "
         f"for each accepted decision. Or tag the decision with "
         f"`<!-- decision-deferred: <reason> -->` to explicitly defer. "
         f"Violations (first 5): {violations[:5]}"
@@ -155,24 +155,24 @@ def test_old_decision_reports_have_engram_observations() -> None:
 
 @pytest.mark.audit
 def test_decision_tracker_module_importable() -> None:
-    """lib/decision_tracker.py must be importable (validates Fix 2 didn't break imports)."""
+    """cos_lib/decision_tracker.py must be importable (validates Fix 2 didn't break imports)."""
     try:
         import importlib.util  # noqa: PLC0415 (test-only import)
         spec = importlib.util.spec_from_file_location(
             "decision_tracker",
-            REPO / "lib" / "decision_tracker.py",
+            REPO / "cos_lib" / "decision_tracker.py",
         )
-        assert spec is not None, "Could not find spec for lib/decision_tracker.py"
+        assert spec is not None, "Could not find spec for cos_lib/decision_tracker.py"
         mod = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(mod)  # type: ignore[union-attr]
         assert hasattr(mod, "record_decision"), (
-            "lib/decision_tracker.py must export record_decision()"
+            "cos_lib/decision_tracker.py must export record_decision()"
         )
         assert hasattr(mod, "mark_answered_by_slug"), (
-            "lib/decision_tracker.py must export mark_answered_by_slug()"
+            "cos_lib/decision_tracker.py must export mark_answered_by_slug()"
         )
     except ImportError as exc:
-        pytest.fail(f"lib/decision_tracker.py import failed: {exc}")
+        pytest.fail(f"cos_lib/decision_tracker.py import failed: {exc}")
 
 
 @pytest.mark.audit

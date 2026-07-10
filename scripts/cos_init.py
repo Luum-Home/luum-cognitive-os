@@ -1444,7 +1444,7 @@ def _install_provenance_scan_guardrail(project_dir: Path, cos_source: Path) -> b
 def _install_quality_duplicates_primitive(project_dir: Path, cos_source: Path) -> bool:
     """Install the project-local duplicate-code scanner wrapper, engine, and portable libs."""
     bin_dir = project_dir / ".cognitive-os" / "bin"
-    lib_dir = project_dir / ".cognitive-os" / "lib"
+    lib_dir = project_dir / ".cognitive-os" / "cos_lib"
     bin_dir.mkdir(parents=True, exist_ok=True)
     lib_dir.mkdir(parents=True, exist_ok=True)
     copied = False
@@ -1458,7 +1458,7 @@ def _install_quality_duplicates_primitive(project_dir: Path, cos_source: Path) -
             dest.chmod(dest.stat().st_mode | 0o111)
         copied = True
     for name in ("duplicate_scanner.py", "project_paths.py"):
-        src = cos_source / "lib" / name
+        src = cos_source / "cos_lib" / name
         if not src.is_file() or not scope_allows(str(src), os.environ.get("COS_INSTALL_SCOPE", "both")):
             continue
         shutil.copy2(str(src), str(lib_dir / name))
@@ -1881,12 +1881,12 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
     # (docs/02-Decisions/designs/hook-lib-projection-contract.md §2.2). This
     # extends — does not replace — the existing 2-module duplicates subset
     # installed by _install_quality_duplicates_primitive(); closure members
-    # simply coexist in the same .cognitive-os/lib/ package.
-    lib_closure_dest = project_dir / ".cognitive-os" / "lib"
+    # simply coexist in the same .cognitive-os/cos_lib/ package.
+    lib_closure_dest = project_dir / ".cognitive-os" / "cos_lib"
     lib_closure_dest.mkdir(parents=True, exist_ok=True)
     lib_init_file = lib_closure_dest / "__init__.py"
     if not lib_init_file.exists():
-        source_init = cos_source / "lib" / "__init__.py"
+        source_init = cos_source / "cos_lib" / "__init__.py"
         if source_init.is_file():
             shutil.copy2(str(source_init), str(lib_init_file))
         else:

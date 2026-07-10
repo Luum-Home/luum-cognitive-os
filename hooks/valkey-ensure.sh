@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # valkey-ensure.sh — SessionStart hook
 #
 # If ORCHESTRATOR_MODE=executor is set, ensure Valkey is reachable before the

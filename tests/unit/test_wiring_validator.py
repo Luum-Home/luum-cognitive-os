@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.wiring_validator import WiringValidator
+from cos_lib.wiring_validator import WiringValidator
 
 
 # ── Fixtures ──────────────────────────────────────────────────────────────────

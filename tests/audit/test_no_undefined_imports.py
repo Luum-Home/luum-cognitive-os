@@ -96,7 +96,7 @@ THIRD_PARTY_ALLOWLIST = {
 }
 
 # Local module prefixes that MUST resolve to files in REPO
-LOCAL_PREFIXES = {"lib", "scripts", "tests", "packages"}
+LOCAL_PREFIXES = {"cos_lib", "scripts", "tests", "packages"}
 
 
 def _is_third_party(top_level: str) -> bool:

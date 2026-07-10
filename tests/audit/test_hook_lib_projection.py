@@ -1,7 +1,7 @@
 """Consumer-sandbox regression for hook-lib-projection-contract.
 
 Design: docs/02-Decisions/designs/hook-lib-projection-contract.md §4.
-Ensures projected hooks that `import cos_lib.*` resolve against .cognitive-os/lib/
+Ensures projected hooks that `import cos_lib.*` resolve against .cognitive-os/cos_lib/
 (closure projection, §2) and that confidentiality-enforcer.sh fails open on
 infra error instead of the historical false `exit 2` (§3).
 
@@ -115,7 +115,7 @@ def test_closure_presence_full(consumer_full: Path) -> None:
     lib_importers = _lib_importing_projected_hooks(consumer_full)
     assert lib_importers, "expected at least one lib-importing hook projected in --full"
 
-    lib_dir = consumer_full / ".cognitive-os" / "lib"
+    lib_dir = consumer_full / ".cognitive-os" / "cos_lib"
     assert lib_dir.is_dir(), f"{lib_dir} was not projected"
     assert (lib_dir / "__init__.py").is_file(), "lib/__init__.py missing from projection"
 
@@ -131,7 +131,7 @@ def test_closure_presence_default(consumer_default: Path) -> None:
     lib_importers = _lib_importing_projected_hooks(consumer_default)
     assert lib_importers, "expected at least one lib-importing hook projected in --default"
 
-    lib_dir = consumer_default / ".cognitive-os" / "lib"
+    lib_dir = consumer_default / ".cognitive-os" / "cos_lib"
     assert lib_dir.is_dir(), f"{lib_dir} was not projected"
 
     missing = []
@@ -262,7 +262,7 @@ def test_no_false_exit_2_benign_write(consumer_full: Path) -> None:
 
 
 def test_fail_open_when_lib_hidden(consumer_full: Path) -> None:
-    lib_dir = consumer_full / ".cognitive-os" / "lib"
+    lib_dir = consumer_full / ".cognitive-os" / "cos_lib"
     backup_dir = consumer_full / ".cognitive-os" / "cos_lib.bak"
     metrics_file = (
         consumer_full / ".cognitive-os" / "metrics" / "confidentiality-enforcer.jsonl"
