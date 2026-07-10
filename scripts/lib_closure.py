@@ -37,7 +37,7 @@ from typing import Dict, Iterable, List, Set
 # Matches `from cos_lib.<mod>`, `import cos_lib.<mod>`, `-m cos_lib.<mod>`, and
 # `python3 -m cos_lib.<mod>` — the three embedding forms named in §2.2 step 2.
 _LIB_IMPORT_RE = re.compile(
-    r"(?:from lib\.|import lib\.|-m lib\.|python3 -m lib\.)([A-Za-z0-9_]+)"
+    r"(?:from cos_lib\.|import cos_lib\.|-m cos_lib\.|python3 -m cos_lib\.)([A-Za-z0-9_]+)"
 )
 
 # Heredoc block: `<<[-]?'MARKER'` or `<<[-]?MARKER` ... body ... `MARKER`
@@ -87,12 +87,12 @@ def _extract_lib_modules_ast(source: str) -> Set[str]:
         if isinstance(node, ast.Import):
             for alias in node.names:
                 parts = alias.name.split(".")
-                if parts[0] == "lib" and len(parts) > 1:
+                if parts[0] == "cos_lib" and len(parts) > 1:
                     modules.add(parts[1])
         elif isinstance(node, ast.ImportFrom):
             if node.module:
                 parts = node.module.split(".")
-                if parts[0] == "lib" and len(parts) > 1:
+                if parts[0] == "cos_lib" and len(parts) > 1:
                     modules.add(parts[1])
     return modules
 
@@ -145,7 +145,7 @@ def compute_closure(
         Mapping of module name -> ClosureEntry (real path, symlink flag,
         sha256 of the dereferenced content).
     """
-    lib_dir = repo_root / "lib"
+    lib_dir = repo_root / "cos_lib"
 
     worklist: List[str] = []
     seen: Set[str] = set()
