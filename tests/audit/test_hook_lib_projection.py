@@ -280,10 +280,24 @@ def test_fail_open_when_lib_hidden(consumer_full: Path) -> None:
             {"tool_name": "Write", "tool_input": {"file_path": str(benign_file)}}
         )
 
+        # This repo's editable-install .pth unconditionally prepends the SOURCE
+        # repo root to sys.path for every venv python (see test_import_resolution_full).
+        # Hiding the consumer's projected lib/ alone would NOT reproduce a real
+        # consumer's ModuleNotFoundError — the hook's python would import the source
+        # lib/ and never reach the §3 fail-open backstop. Neutralize the leak with a
+        # sitecustomize shim (runs after .pth processing) that strips REPO_ROOT,
+        # mirroring the filter test_import_resolution_full applies inside its probe.
+        shim_dir = consumer_full / ".cognitive-os" / "_pth_leak_shim"
+        shim_dir.mkdir(parents=True, exist_ok=True)
+        (shim_dir / "sitecustomize.py").write_text(
+            "import sys\n"
+            f"_REPO = {str(REPO_ROOT)!r}\n"
+            "sys.path[:] = [p for p in sys.path if p != _REPO]\n"
+        )
         env = _hook_env(consumer_full)
-        # PYTHONPATH pointing at .cognitive-os no longer resolves lib.* since
-        # lib/ was renamed away — this is the exact scenario the backstop
-        # (§3) must degrade to a silent no-op, not exit 2.
+        env["PYTHONPATH"] = os.pathsep.join(
+            [str(shim_dir), str(consumer_full / ".cognitive-os")]
+        )
 
         conf_hook = _projected_hooks_dir(consumer_full) / "confidentiality-enforcer.sh"
         metrics_before = (
