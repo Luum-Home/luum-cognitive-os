@@ -16,7 +16,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from lib.manifest_loader import ManifestError, Tool, load_manifest  # noqa: E402
+from cos_lib.manifest_loader import ManifestError, Tool, load_manifest  # noqa: E402
 
 PROFILE_ALIASES = {
     "core": "default",

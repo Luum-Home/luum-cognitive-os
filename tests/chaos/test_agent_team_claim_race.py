@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.agent_team import AgentTeam
+from cos_lib.agent_team import AgentTeam
 
 
 def _claim(project: str, queue: mp.Queue) -> None:

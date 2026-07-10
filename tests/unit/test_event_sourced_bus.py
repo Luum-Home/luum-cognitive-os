@@ -10,7 +10,7 @@ import pytest
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(_REPO_ROOT))
 
-from lib.session_bus import (  # noqa: E402
+from cos_lib.session_bus import (  # noqa: E402
     EVENT_STORE_SCHEMA_VERSION,
     EventStreamGapDetected,
     UnsupportedEventBusPlatform,
@@ -81,7 +81,7 @@ def test_unsupported_filesystem_refusal_path(tmp_path: Path, monkeypatch: pytest
 
 
 def _append_worker(project_dir: str, session_id: str, count: int) -> None:
-    from lib.session_bus import append_session_event as _append_session_event
+    from cos_lib.session_bus import append_session_event as _append_session_event
 
     for i in range(count):
         _append_session_event("agent-message-sent", {"i": i}, project_dir=project_dir, session_id=session_id)
@@ -100,7 +100,7 @@ def test_concurrent_writers_allocate_gap_free_sequence(tmp_path: Path) -> None:
     assert len(events) == count * 2
     assert [event["seq"] for event in events] == list(range(1, count * 2 + 1))
 
-from lib.session_bus import assert_index_consistent, read_event_index  # noqa: E402
+from cos_lib.session_bus import assert_index_consistent, read_event_index  # noqa: E402
 
 
 def test_append_session_event_fans_out_minimal_index(tmp_path: Path) -> None:

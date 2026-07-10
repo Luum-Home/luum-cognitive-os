@@ -16,7 +16,7 @@ Format: `[version] YYYY-MM-DD — summary — wave`.
   `--source-dir`, `--manifest`, `--config-globs`, `--quiet`, `--json` flags.
   Exit codes: 0=pass, 1=source present, 2=archive missing, 3=stale config ref, 4=bad args.
 - `packages/verification-audit/lib/orchestrator_verify.py` + symlink `lib/orchestrator_verify.py` —
-  ADR-105 high-stakes claim extractor and verifier. Composes `lib.ground_truth`.
+  ADR-105 high-stakes claim extractor and verifier. Composes `cos_lib.ground_truth`.
 - `hooks/plan-claim-validator.sh` — PreToolUse hook that enforces `(verified: …)` references
   on markdown checkbox completions. Mode: warn (promote to block via `COS_PLAN_VALIDATOR_MODE=block`).
 

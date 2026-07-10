@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.session_bus import append_event, peers, read_events
+from cos_lib.session_bus import append_event, peers, read_events
 
 pytestmark = pytest.mark.unit
 

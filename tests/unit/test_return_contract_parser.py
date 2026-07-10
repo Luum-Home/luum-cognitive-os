@@ -14,7 +14,7 @@ Covers:
 - format_compact_result produces a compact (~200-token) string
 """
 
-from lib.return_contract_parser import (
+from cos_lib.return_contract_parser import (
     parse_return_contract,
     validate_return_contract,
     format_compact_result,

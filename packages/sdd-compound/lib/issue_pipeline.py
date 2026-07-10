@@ -10,7 +10,7 @@ Uses only subprocess + gh CLI (no PyGithub dependency).
 Python 3.9+ compatible.
 
 Usage:
-    from lib.issue_pipeline import IssuePipeline
+    from cos_lib.issue_pipeline import IssuePipeline
     pipeline = IssuePipeline(project_dir="/path/to/repo")
     pipeline.run(42)
 """
@@ -25,7 +25,7 @@ import time
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple
 
-from lib.claude_executor import ClaudeExecutor, ClaudeResult
+from cos_lib.claude_executor import ClaudeExecutor, ClaudeResult
 
 logger = logging.getLogger(__name__)
 

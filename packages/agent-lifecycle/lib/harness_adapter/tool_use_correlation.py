@@ -16,7 +16,7 @@ TTL: entries older than ``ttl_seconds`` (default 3600 s) are pruned on each
 
 Usage::
 
-    from lib.harness_adapter.tool_use_correlation import CorrelationStore
+    from cos_lib.harness_adapter.tool_use_correlation import CorrelationStore
 
     store = CorrelationStore()            # reads/writes default persistence path
     store.record("abc123", time.monotonic())

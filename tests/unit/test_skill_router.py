@@ -7,7 +7,7 @@ detection, confidence scoring, fallback handling, and routing table integrity.
 
 import pytest
 
-from lib.skill_router import SkillRouter
+from cos_lib.skill_router import SkillRouter
 
 pytestmark = pytest.mark.unit
 
@@ -759,7 +759,7 @@ class TestSemanticMatcherUnit:
         because it collapsed to zero for cross-language prompts against the description corpus. The remaining contract is:
         no embeddings → no semantic matches.
         """
-        from lib import semantic_skill_matcher as ssm
+        from cos_lib import semantic_skill_matcher as ssm
 
         # Force the matcher to behave as if the embedding stack is missing.
         # _load_model is the single chokepoint the public API calls; returning
@@ -791,7 +791,7 @@ class TestSemanticMatcherUnit:
         )
 
     def test_empty_prompt_returns_no_semantic_matches(self):
-        from lib import semantic_skill_matcher as ssm
+        from cos_lib import semantic_skill_matcher as ssm
 
         matcher = ssm.SemanticSkillMatcher.from_routing_table([], {})
         assert matcher.match("") == []

@@ -9,7 +9,7 @@ import json
 
 import pytest
 
-from lib.error_classifier import (
+from cos_lib.error_classifier import (
     # Original text-classifier API
     ErrorCategory,
     classify_error,

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from lib.agent_team_transport import transport_plan
+from cos_lib.agent_team_transport import transport_plan
 
 
 def test_file_transport_is_active_and_losslessly_maps_to_upgrade_targets() -> None:
@@ -29,7 +29,7 @@ import json
 import threading
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
-from lib.agent_team_transport import A2AHttpAgentTeamTransport, NatsAgentTeamTransport
+from cos_lib.agent_team_transport import A2AHttpAgentTeamTransport, NatsAgentTeamTransport
 
 
 class FakeNatsClient:

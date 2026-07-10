@@ -20,7 +20,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from lib.metric_event import SCHEMA_VERSION
+from cos_lib.metric_event import SCHEMA_VERSION
 
 
 # ---------------------------------------------------------------------------
@@ -61,7 +61,7 @@ def _assert_metric_event_shape(row: dict, expected_source: str | None = None) ->
 
 class TestConsequenceEngineEmitsMetricEvent:
     def test_evaluate_emits_metric_event_row(self, tmp_path: Path) -> None:
-        from lib.consequence_engine import ConsequenceEngine, PerformanceRecord
+        from cos_lib.consequence_engine import ConsequenceEngine, PerformanceRecord
 
         history = str(tmp_path / "consequence-history.jsonl")
         engine = ConsequenceEngine(history_path=history)
@@ -80,7 +80,7 @@ class TestConsequenceEngineEmitsMetricEvent:
         _assert_metric_event_shape(rows[0], expected_source="consequence-engine")
 
     def test_row_has_schema_version(self, tmp_path: Path) -> None:
-        from lib.consequence_engine import ConsequenceEngine, PerformanceRecord
+        from cos_lib.consequence_engine import ConsequenceEngine, PerformanceRecord
 
         history = str(tmp_path / "consequence-history.jsonl")
         engine = ConsequenceEngine(history_path=history)
@@ -98,7 +98,7 @@ class TestConsequenceEngineEmitsMetricEvent:
         assert row["schema_version"] == SCHEMA_VERSION
 
     def test_payload_preserves_original_fields(self, tmp_path: Path) -> None:
-        from lib.consequence_engine import ConsequenceEngine, PerformanceRecord
+        from cos_lib.consequence_engine import ConsequenceEngine, PerformanceRecord
 
         history = str(tmp_path / "consequence-history.jsonl")
         engine = ConsequenceEngine(history_path=history)
@@ -119,7 +119,7 @@ class TestConsequenceEngineEmitsMetricEvent:
 
     def test_read_back_via_engine_works(self, tmp_path: Path) -> None:
         """_read_all_raw must normalise MetricEvent rows for internal callers."""
-        from lib.consequence_engine import ConsequenceEngine, PerformanceRecord
+        from cos_lib.consequence_engine import ConsequenceEngine, PerformanceRecord
 
         history = str(tmp_path / "consequence-history.jsonl")
         engine = ConsequenceEngine(history_path=history)
@@ -145,7 +145,7 @@ class TestConsequenceEngineEmitsMetricEvent:
 
 class TestSkillArchiveEmitsMetricEvent:
     def test_record_execution_emits_metric_event_row(self, tmp_path: Path) -> None:
-        from lib.skill_archive import SkillArchiveManager
+        from cos_lib.skill_archive import SkillArchiveManager
 
         archive = str(tmp_path / "skill-archive.jsonl")
         mgr = SkillArchiveManager(archive_path=archive)
@@ -161,7 +161,7 @@ class TestSkillArchiveEmitsMetricEvent:
         _assert_metric_event_shape(rows[0], expected_source="skill-archive")
 
     def test_row_has_schema_version(self, tmp_path: Path) -> None:
-        from lib.skill_archive import SkillArchiveManager
+        from cos_lib.skill_archive import SkillArchiveManager
 
         archive = str(tmp_path / "skill-archive.jsonl")
         mgr = SkillArchiveManager(archive_path=archive)
@@ -170,7 +170,7 @@ class TestSkillArchiveEmitsMetricEvent:
         assert row["schema_version"] == SCHEMA_VERSION
 
     def test_payload_preserves_skill_fields(self, tmp_path: Path) -> None:
-        from lib.skill_archive import SkillArchiveManager
+        from cos_lib.skill_archive import SkillArchiveManager
 
         archive = str(tmp_path / "skill-archive.jsonl")
         mgr = SkillArchiveManager(archive_path=archive)
@@ -184,7 +184,7 @@ class TestSkillArchiveEmitsMetricEvent:
 
     def test_read_back_via_manager_works(self, tmp_path: Path) -> None:
         """_read_all must normalise MetricEvent rows back to SkillSnapshot."""
-        from lib.skill_archive import SkillArchiveManager
+        from cos_lib.skill_archive import SkillArchiveManager
 
         archive = str(tmp_path / "skill-archive.jsonl")
         mgr = SkillArchiveManager(archive_path=archive)
@@ -201,7 +201,7 @@ class TestSkillArchiveEmitsMetricEvent:
 
 class TestTelemetryEmitsMetricEvent:
     def test_record_skill_invocation_emits_metric_event(self, tmp_path: Path, monkeypatch) -> None:
-        import lib.telemetry as telemetry
+        import cos_lib.telemetry as telemetry
         monkeypatch.setattr(telemetry, "_project_root", lambda: tmp_path)
 
         telemetry.record_skill_invocation("sdd-apply", duration_ms=150.0)
@@ -212,7 +212,7 @@ class TestTelemetryEmitsMetricEvent:
         _assert_metric_event_shape(rows[-1], expected_source="skill-usage")
 
     def test_record_hook_fired_has_schema_version(self, tmp_path: Path, monkeypatch) -> None:
-        import lib.telemetry as telemetry
+        import cos_lib.telemetry as telemetry
         monkeypatch.setattr(telemetry, "_project_root", lambda: tmp_path)
 
         telemetry.record_hook_fired("error-learning", "PostToolUse", duration_ms=5.0)
@@ -223,7 +223,7 @@ class TestTelemetryEmitsMetricEvent:
 
     def test_iter_records_unwraps_metric_event_rows(self, tmp_path: Path, monkeypatch) -> None:
         """iter_records must yield flat dicts with 'event' key for backward compat."""
-        import lib.telemetry as telemetry
+        import cos_lib.telemetry as telemetry
         monkeypatch.setattr(telemetry, "_project_root", lambda: tmp_path)
 
         telemetry.record_agent_launch("sdd-apply-agent", "sonnet", tokens_in=1000)
@@ -242,7 +242,7 @@ class TestTelemetryEmitsMetricEvent:
 
 class TestLearningPipelineEmitsMetricEvent:
     def test_record_error_emits_metric_event_row(self, tmp_path: Path) -> None:
-        from lib.learning_pipeline import LearningPipeline
+        from cos_lib.learning_pipeline import LearningPipeline
 
         correlations = str(tmp_path / "correlations.jsonl")
         pipeline = LearningPipeline(correlations_path=correlations)
@@ -256,7 +256,7 @@ class TestLearningPipelineEmitsMetricEvent:
         _assert_metric_event_shape(rows[0], expected_source="learning-pipeline")
 
     def test_error_row_has_schema_version(self, tmp_path: Path) -> None:
-        from lib.learning_pipeline import LearningPipeline
+        from cos_lib.learning_pipeline import LearningPipeline
 
         correlations = str(tmp_path / "correlations.jsonl")
         pipeline = LearningPipeline(correlations_path=correlations)
@@ -265,7 +265,7 @@ class TestLearningPipelineEmitsMetricEvent:
         assert row["schema_version"] == SCHEMA_VERSION
 
     def test_payload_preserves_error_fields(self, tmp_path: Path) -> None:
-        from lib.learning_pipeline import LearningPipeline
+        from cos_lib.learning_pipeline import LearningPipeline
 
         correlations = str(tmp_path / "correlations.jsonl")
         pipeline = LearningPipeline(correlations_path=correlations)
@@ -277,7 +277,7 @@ class TestLearningPipelineEmitsMetricEvent:
 
     def test_read_back_via_check_triggers_works(self, tmp_path: Path) -> None:
         """check_learning_triggers must normalise MetricEvent rows."""
-        from lib.learning_pipeline import LearningPipeline
+        from cos_lib.learning_pipeline import LearningPipeline
 
         correlations = str(tmp_path / "correlations.jsonl")
         pipeline = LearningPipeline(correlations_path=correlations)

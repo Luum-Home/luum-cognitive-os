@@ -242,7 +242,7 @@ harness:
 ### ProviderProfile usage (Python)
 
 ```python
-from lib.provider_profile import get_profile
+from cos_lib.provider_profile import get_profile
 
 p = get_profile("openai")
 auth = p.resolve_auth()   # {"api_key": "sk-...", "org_id": "org-..."}

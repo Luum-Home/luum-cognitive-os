@@ -5,8 +5,8 @@ from __future__ import annotations
 import os as _cos_os
 import sys as _cos_sys
 _cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
-from lib.script_helpers import read_yaml_dict as load_yaml
-from lib.script_helpers import repo_root
+from cos_lib.script_helpers import read_yaml_dict as load_yaml
+from cos_lib.script_helpers import repo_root
 
 import argparse
 import json
@@ -21,7 +21,7 @@ ROOT_FOR_IMPORTS = Path(__file__).resolve().parents[1]
 if str(ROOT_FOR_IMPORTS) not in sys.path:
     sys.path.insert(0, str(ROOT_FOR_IMPORTS))
 
-from lib.skill_router import SkillRouter
+from cos_lib.skill_router import SkillRouter
 
 SCHEMA_VERSION = "skill-router-benchmark/v1"
 DEFAULT_MANIFEST = Path("manifests/skill-router-retrieval.yaml")

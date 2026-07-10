@@ -10,14 +10,14 @@ from __future__ import annotations
 import os as _cos_os
 import sys as _cos_sys
 _cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
-from lib.duplicate_scanner import (
+from cos_lib.duplicate_scanner import (
     collect_text_files,
     generic_function_repeats,
     lexical_pairs,
     read_text,
     stable_id,
 )
-from lib.project_paths import relpath as _rel
+from cos_lib.project_paths import relpath as _rel
 
 import argparse
 import hashlib

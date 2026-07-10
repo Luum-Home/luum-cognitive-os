@@ -4,7 +4,7 @@ import shutil
 
 import pytest
 
-from lib.sandbox_adapter import SandboxUnavailable, build_sandbox_command
+from cos_lib.sandbox_adapter import SandboxUnavailable, build_sandbox_command
 
 
 @pytest.mark.unit
@@ -33,7 +33,7 @@ def test_bubblewrap_command_defaults_network_off(tmp_path, monkeypatch) -> None:
 
 
 def test_microvm_and_contree_adapter_contracts_are_declared() -> None:
-    from lib.sandbox_adapter import adapter_plan
+    from cos_lib.sandbox_adapter import adapter_plan
 
     microvm = adapter_plan("microvm")
     contree = adapter_plan("contree")

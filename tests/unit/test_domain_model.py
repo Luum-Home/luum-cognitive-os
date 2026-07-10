@@ -1,5 +1,5 @@
 # SCOPE: os-only
-"""Behavior tests for lib.domain_model (ADR-054 Phase 2).
+"""Behavior tests for cos_lib.domain_model (ADR-054 Phase 2).
 
 Real filesystem via tmp_path. No mocks.
 """
@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 
-from lib.domain_model import (
+from cos_lib.domain_model import (
     DomainModelScaffolder,
     FOOTER_MARKER,
     HEADER_MARKER,

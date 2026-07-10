@@ -22,11 +22,11 @@ from typing import Any, Dict, List, Optional
 
 import pytest
 
-# Ensure project root is on the path so `lib.*` imports work
+# Ensure project root is on the path so `cos_lib.*` imports work
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from lib.agent_health_monitor import AgentHealthMonitor, _pid_alive, _parse_iso  # noqa: E402
+from cos_lib.agent_health_monitor import AgentHealthMonitor, _pid_alive, _parse_iso  # noqa: E402
 
 pytestmark = pytest.mark.unit
 

@@ -43,7 +43,7 @@ def project_copy(tmp_path: Path) -> Path:
 
 
 def test_promoter_does_not_mutate_manifests(project_copy: Path, tmp_path: Path):
-    from lib.skill_store import SkillStore
+    from cos_lib.skill_store import SkillStore
     from scripts.cos_promotion_proposer import main as promoter_main
     from scripts.cos_demotion_proposer import main as demoter_main
 

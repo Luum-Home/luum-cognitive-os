@@ -13,7 +13,7 @@ This client remains for backward compatibility with existing code that
 expects the HTTP proxy interface.
 
 Usage:
-    from lib.litellm_client import LiteLLMClient, is_litellm_available
+    from cos_lib.litellm_client import LiteLLMClient, is_litellm_available
 
     if is_litellm_available():
         client = LiteLLMClient()

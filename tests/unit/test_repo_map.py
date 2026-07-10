@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from lib.repo_map import build_repo_map
+from cos_lib.repo_map import build_repo_map
 
 
 def test_repo_map_respects_budget_and_includes_changed_file(project_root) -> None:

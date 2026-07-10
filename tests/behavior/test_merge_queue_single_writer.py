@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from lib.merge_queue import head_drift, try_acquire_worker_lock
+from cos_lib.merge_queue import head_drift, try_acquire_worker_lock
 
 pytestmark = pytest.mark.behavior
 

@@ -8,8 +8,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable
 
-from lib.handoff_envelope import HandoffEnvelope
-from lib.session_bus import append_session_event
+from cos_lib.handoff_envelope import HandoffEnvelope
+from cos_lib.session_bus import append_session_event
 
 MAX_HANDOFF_DEPTH = 7
 BLAST_RADIUS_OPERATOR_THRESHOLD = 50

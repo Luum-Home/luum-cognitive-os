@@ -9,7 +9,7 @@ import yaml
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(_REPO_ROOT))
 
-from lib.session_bus import append_session_event  # noqa: E402
+from cos_lib.session_bus import append_session_event  # noqa: E402
 
 
 @pytest.mark.audit

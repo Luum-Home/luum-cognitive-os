@@ -170,7 +170,7 @@ def _extract_python_deps(path: Path) -> list[str]:
     deps = []
     for m in _PY_IMPORT_RE.finditer(src):
         raw = m.group(1)
-        # Convert dotted import to path: lib.foo_bar -> lib/foo_bar.py
+        # Convert dotted import to path: cos_lib.foo_bar -> lib/foo_bar.py
         parts = raw.split(".")
         if len(parts) >= 2:
             dep_path = "/".join(parts) + ".py"

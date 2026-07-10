@@ -4,7 +4,7 @@ import json
 import subprocess
 from pathlib import Path
 
-from lib.dispatch_optimizer import analyze, propose_routing, write_proposal
+from cos_lib.dispatch_optimizer import analyze, propose_routing, write_proposal
 from scripts.benchmark_providers import run_benchmark, summarize
 
 REPO_ROOT = Path(__file__).resolve().parents[2]

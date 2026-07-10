@@ -9,7 +9,7 @@ import time
 
 import pytest
 
-from lib.rate_limiter import (
+from cos_lib.rate_limiter import (
     PRIORITY_HIGH,
     PRIORITY_LOW,
     PRIORITY_NORMAL,

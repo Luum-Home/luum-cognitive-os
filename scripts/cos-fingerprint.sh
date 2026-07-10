@@ -13,7 +13,7 @@
 #   2  not found (find subcommand only)
 #   3  python3 not available
 #
-# Requirements: python3 with repository root on PYTHONPATH so lib.work_identity is importable.
+# Requirements: python3 with repository root on PYTHONPATH so cos_lib.work_identity is importable.
 
 set -euo pipefail
 
@@ -24,7 +24,7 @@ set -euo pipefail
 _SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${_SCRIPT_DIR}/.." && pwd)"
 
-# Make sure lib.work_identity is importable even without installation
+# Make sure cos_lib.work_identity is importable even without installation
 export PYTHONPATH="${REPO_ROOT}:${PYTHONPATH:-}"
 
 # ---------------------------------------------------------------------------
@@ -76,7 +76,7 @@ import sys
 sys.path.insert(0, '')
 
 # Allow import from PYTHONPATH set above
-from lib.work_identity import compute_fingerprint
+from cos_lib.work_identity import compute_fingerprint
 
 description = sys.argv[1]
 outputs = sys.argv[2:]
@@ -100,7 +100,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, '')
-from lib.work_identity import find_existing_work
+from cos_lib.work_identity import find_existing_work
 
 fingerprint = sys.argv[1]
 repo_root = Path(sys.argv[2])
@@ -132,7 +132,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, '')
-from lib.work_identity import embed_in_commit_msg
+from cos_lib.work_identity import embed_in_commit_msg
 
 fingerprint = sys.argv[1]
 msg_file = Path(sys.argv[2])

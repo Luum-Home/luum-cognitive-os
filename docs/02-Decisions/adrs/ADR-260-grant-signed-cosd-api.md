@@ -266,7 +266,7 @@ between issuance and use rows.
 The following criteria must pass before this ADR is considered implemented:
 
 ```
-[ ] lib/cosd_grant.py exists, is importable via `python3 -c "import lib.cosd_grant"`,
+[ ] lib/cosd_grant.py exists, is importable via `python3 -c "import cos_lib.cosd_grant"`,
     and declares no external dependencies beyond Python stdlib.
 
 [ ] pytest tests/unit/test_cosd_grant.py passes with coverage for:

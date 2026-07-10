@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.session_hygiene import (
+from cos_lib.session_hygiene import (
     _fm,
     mark_plan_completed,
     prune_completed_tasks,

@@ -7,7 +7,7 @@ hallucination score calculation, and report formatting.
 
 import pytest
 
-from lib.ground_truth import (
+from cos_lib.ground_truth import (
     Claim,
     extract_claims,
     format_verification_report,

@@ -114,7 +114,7 @@ import sys, os, json
 sys.path.insert(0, os.environ.get("PROJECT_DIR", "."))
 
 try:
-    from lib.notifications import notify_phase_complete, notify_phase_fail
+    from cos_lib.notifications import notify_phase_complete, notify_phase_fail
 except ImportError as e:
     print(f"WARN: Cannot import notifications: {e}", file=sys.stderr)
     sys.exit(0)

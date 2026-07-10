@@ -8,9 +8,9 @@ from typing import Any, cast
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
-from lib.concurrency_safety import load_concurrency_safety_config, project_runtime_dir
-from lib.project_paths import project_dir_from_args as project_dir
-from lib.script_io import read_jsonl
+from cos_lib.concurrency_safety import load_concurrency_safety_config, project_runtime_dir
+from cos_lib.project_paths import project_dir_from_args as project_dir
+from cos_lib.script_io import read_jsonl
 
 def read_json_files(path: Path) -> list[dict[str, Any]]:
     if not path.exists(): return []

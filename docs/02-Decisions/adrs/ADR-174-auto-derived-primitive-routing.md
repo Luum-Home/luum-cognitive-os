@@ -140,7 +140,7 @@ proving that the ADR-174 proof-of-concept skills are actually loaded from
 ls docs/02-Decisions/adrs/ADR-174-auto-derived-primitive-routing.md
 
 # 2. Implementation
-python3 -c "from lib.skill_router import _load_routing_from_frontmatter; print('OK')"
+python3 -c "from cos_lib.skill_router import _load_routing_from_frontmatter; print('OK')"
 
 # 3. Migration proof-of-concept (5 skills)
 grep -l "routing_patterns:" skills/add-skill/SKILL.md \

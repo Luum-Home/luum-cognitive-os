@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from lib.promote_from_telemetry import promote_from_telemetry
+from cos_lib.promote_from_telemetry import promote_from_telemetry
 
 REPO = Path(__file__).resolve().parents[2]
 CONTRACT = REPO / "manifests" / "reward-signal-contract.yaml"
@@ -67,7 +67,7 @@ def test_promote_from_telemetry_generates_deduped_schema_valid_quality_proposal(
 
 
 def test_promote_from_telemetry_quarantines_regressed_post_change_outcome(tmp_path):
-    from lib.maintainer_impact import append_post_change_impact_event, build_post_change_impact_event, default_post_change_ledger_path
+    from cos_lib.maintainer_impact import append_post_change_impact_event, build_post_change_impact_event, default_post_change_ledger_path
 
     event = build_post_change_impact_event(
         proposal_id="proposal-regressed",

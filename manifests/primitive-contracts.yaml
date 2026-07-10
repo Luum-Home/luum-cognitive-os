@@ -260,7 +260,7 @@ contracts:
   source: hooks/skill-router-bash-gate.sh
   lifecycle_ref: hooks/skill-router-bash-gate.sh
   implementation_refs:
-  - lib/skill_router.py
+  - cos_lib/skill_router.py
   intent: Route raw shell/tool activity toward the appropriate COS skill or block
     high-risk bypasses.
   trigger:
@@ -905,7 +905,7 @@ contracts:
   source: hooks/cosd-auth-guard.sh
   lifecycle_ref: hooks/cosd-auth-guard.sh
   implementation_refs:
-  - lib/cosd_auth_guard.py
+  - cos_lib/cosd_auth_guard.py
   intent: Enforce cosd authentication boundaries before service-control-plane access.
   trigger:
     kind: before_tool_call
@@ -9919,7 +9919,7 @@ contracts:
     projection_targets:
     - scripts/cos-consumer-fleet-audit
     - scripts/cos_consumer_fleet_audit.py
-    - lib/consumer_fleet_audit.py
+    - cos_lib/consumer_fleet_audit.py
     - docs/04-Concepts/architecture/consumer-fleet-audit.md
   requires:
   - respect_declared_scope
@@ -10141,7 +10141,7 @@ contracts:
     projection_targets:
     - scripts/cos-cross-instance-drill
     - scripts/cos_cross_instance_drill.py
-    - lib/cross_instance_learning.py
+    - cos_lib/cross_instance_learning.py
     - docs/04-Concepts/architecture/cross-instance-learning-runway.md
   requires:
   - respect_declared_scope
@@ -10474,7 +10474,7 @@ contracts:
     projection_targets:
     - scripts/cos-doctrine-proposer
     - scripts/cos_doctrine_proposer.py
-    - lib/doctrine_proposer.py
+    - cos_lib/doctrine_proposer.py
     - docs/02-Decisions/adrs/ADR-135-self-evolving-doctrine-proposals.md
   requires:
   - respect_declared_scope
@@ -10531,7 +10531,7 @@ contracts:
     - scripts/cos-engram-bundle
     - scripts/cos-engram-import-propose
     - scripts/cos_cross_instance_learning.py
-    - lib/cross_instance_learning.py
+    - cos_lib/cross_instance_learning.py
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -10641,7 +10641,7 @@ contracts:
     projection_targets:
     - scripts/cos-export-consumer-evidence
     - scripts/cos_cross_instance_learning.py
-    - lib/cross_instance_learning.py
+    - cos_lib/cross_instance_learning.py
     - manifests/external-adoption-evidence.yaml
   requires:
   - respect_declared_scope
@@ -10696,7 +10696,7 @@ contracts:
     projection_targets:
     - scripts/cos-federation-trigger-audit
     - scripts/cos_cross_instance_learning.py
-    - lib/cross_instance_learning.py
+    - cos_lib/cross_instance_learning.py
     - manifests/federation-triggers.yaml
   requires:
   - respect_declared_scope
@@ -10867,7 +10867,7 @@ contracts:
     projection_targets:
     - scripts/cos-import-consumer-evidence
     - scripts/cos_cross_instance_learning.py
-    - lib/cross_instance_learning.py
+    - cos_lib/cross_instance_learning.py
     - manifests/external-adoption-evidence.yaml
   requires:
   - respect_declared_scope
@@ -11370,7 +11370,7 @@ contracts:
     projection_targets:
     - scripts/cos-registry-lock
     - scripts/cos_cross_instance_learning.py
-    - lib/cross_instance_learning.py
+    - cos_lib/cross_instance_learning.py
     - manifests/agentic-primitive-registry.lock.yaml
     - skills/REGISTRY.lock
   requires:
@@ -11594,7 +11594,7 @@ contracts:
     projection_targets:
     - scripts/cos-self-improvement-loop
     - scripts/cos_self_improvement_loop.py
-    - lib/self_improvement_loop.py
+    - cos_lib/self_improvement_loop.py
     - docs/02-Decisions/adrs/ADR-134-headless-self-improvement-proposer.md
   requires:
   - respect_declared_scope
@@ -14558,7 +14558,7 @@ contracts:
     projection_targets:
     - scripts/orchestrator.py
     - packages/agent-coordination/lib/agent_bus.py
-    - lib/agent_bus_metrics.py
+    - cos_lib/agent_bus_metrics.py
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -16757,8 +16757,8 @@ contracts:
     service_mode: unsupported
 - id: library-adapter-compile-py
   family: library
-  source: lib/adapter_compile.py
-  lifecycle_ref: lib/adapter_compile.py
+  source: cos_lib/adapter_compile.py
+  lifecycle_ref: cos_lib/adapter_compile.py
   generated_from_lifecycle: true
   intent: Fidelity-preserving adapter compiler API used by scripts/cos-adapter-compile
     and scripts/cos-adapters compile.
@@ -16766,7 +16766,7 @@ contracts:
     kind: documented_or_on_demand
     runtime_projection: false
     projection_targets:
-    - lib/adapter_compile.py
+    - cos_lib/adapter_compile.py
   requires:
   - respect_declared_scope
   - preserve_projection_fidelity
@@ -16822,7 +16822,7 @@ contracts:
     runtime_projection: false
     projection_targets:
     - scripts/cos-adapter-compile
-    - lib/adapter_compile.py
+    - cos_lib/adapter_compile.py
   requires:
   - respect_declared_scope
   - preserve_privacy

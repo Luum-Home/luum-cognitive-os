@@ -27,7 +27,7 @@ import json
 import sys
 from pathlib import Path
 
-from lib.agent_control_policy import append_policy_event, evaluate_control
+from cos_lib.agent_control_policy import append_policy_event, evaluate_control
 
 project = Path(sys.argv[1])
 raw = sys.argv[2] if len(sys.argv) > 2 else ""

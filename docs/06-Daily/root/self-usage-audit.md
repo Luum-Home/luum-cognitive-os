@@ -203,7 +203,7 @@ These hooks exist but are NOT in settings.json. Sorted by criticality.
 
 **Lib usage rate: 0%** (no Python lib is called programmatically by the orchestrator)
 
-Note: The orchestrator (Claude) cannot directly import and execute Python. However, the rules expect the orchestrator to call these via Bash (`python3 -c "from lib.X import Y; ..."`) or delegate to sub-agents that use them. Neither happens.
+Note: The orchestrator (Claude) cannot directly import and execute Python. However, the rules expect the orchestrator to call these via Bash (`python3 -c "from cos_lib.X import Y; ..."`) or delegate to sub-agents that use them. Neither happens.
 
 ---
 

@@ -24,7 +24,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO))
 
-from lib.decision_tracker import record_decision  # noqa: E402
+from cos_lib.decision_tracker import record_decision  # noqa: E402
 
 
 # Decisions that have been answered (decision_text extracted from research report recommendations).

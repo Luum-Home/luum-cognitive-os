@@ -570,7 +570,7 @@ def collect_engram_items(project_dir: Path, warnings: list[str], enabled: bool) 
         return []
     try:
         ensure_local_lib_importable(project_dir)
-        from lib.engram_client import search_observations  # type: ignore[import]
+        from cos_lib.engram_client import search_observations  # type: ignore[import]
     except Exception as exc:  # pragma: no cover - import environment dependent
         warnings.append(f"Engram search unavailable: {exc}")
         return []
@@ -762,7 +762,7 @@ def sync_engram(project_dir: Path, markdown: str, date: str, result: BacklogResu
     """Best-effort Engram upsert via local CLI wrapper when available."""
     try:
         ensure_local_lib_importable(project_dir)
-        from lib.engram_client import save_observation  # type: ignore[import]
+        from cos_lib.engram_client import save_observation  # type: ignore[import]
     except Exception:
         return False
     latest = save_observation(

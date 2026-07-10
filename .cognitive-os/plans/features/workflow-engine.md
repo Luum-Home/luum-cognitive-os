@@ -368,7 +368,7 @@ Parallel execution, conditions, and retry come in Phase 2.
 - `docs/workflows.md` — reference for YAML format and task types
 
 **Acceptance Criteria**:
-- `python3 -c "from lib.workflow_engine import WorkflowEngine; print('OK')"` exits 0
+- `python3 -c "from cos_lib.workflow_engine import WorkflowEngine; print('OK')"` exits 0
 - `python3 -m pytest tests/unit/test_workflow_engine.py -v` — all tests pass
 - `WorkflowEngine.run('ci-check', {})` runs lint→test→build in sequence
 - State file written to `.cognitive-os/sessions/test/workflow-state.json` after run

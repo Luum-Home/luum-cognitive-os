@@ -59,7 +59,7 @@ exported surface:
 ```
 
 ### `dep-graph.json`
-Forward dependency graph. Parses `import lib.X` (Python) and `source hooks/_lib/Y` (Bash):
+Forward dependency graph. Parses `import cos_lib.X` (Python) and `source hooks/_lib/Y` (Bash):
 
 ```json
 {
@@ -102,7 +102,7 @@ of each ADR section. Deduped. Sorted alphabetically. Enables fast "what does X m
 `lib/self_knowledge.py` (symlink → `packages/cos-self-knowledge/lib/self_knowledge.py`):
 
 ```python
-from lib.self_knowledge import query, get_module, get_importers
+from cos_lib.self_knowledge import query, get_module, get_importers
 
 # Substring search across all four artifacts — top 10 ranked by relevance
 results = query("rate limiter")

@@ -54,20 +54,20 @@ def predict_call_cost(provider: str, *, model_hint: str | None = None, input_tok
 
     if provider == "qwen":
         try:
-            from lib.qwen_provider import estimate_cost, DEFAULT_MODEL
+            from cos_lib.qwen_provider import estimate_cost, DEFAULT_MODEL
             resolved = model_hint or DEFAULT_MODEL
-            return CostPrediction(provider, resolved, ti, to, float(estimate_cost(resolved, ti, to)), "lib.qwen_provider")
+            return CostPrediction(provider, resolved, ti, to, float(estimate_cost(resolved, ti, to)), "cos_lib.qwen_provider")
         except Exception:  # noqa: BLE001
             pass
 
     if provider in {"claude", "claude_sdk"}:
         try:
-            from lib.model_catalog import ModelCatalog
-            return CostPrediction(provider, model, ti, to, float(ModelCatalog.estimate_cost(model, ti, to)), "lib.model_catalog")
+            from cos_lib.model_catalog import ModelCatalog
+            return CostPrediction(provider, model, ti, to, float(ModelCatalog.estimate_cost(model, ti, to)), "cos_lib.model_catalog")
         except Exception:  # noqa: BLE001
             pass
 
-    for module_name in (f"lib.providers.{provider}", f"packages.llm-providers.lib.{provider}"):
+    for module_name in (f"cos_lib.providers.{provider}", f"packages.llm-providers.lib.{provider}"):
         try:
             module = importlib.import_module(module_name)
             estimator = getattr(module, "estimate_cost", None)

@@ -23,16 +23,16 @@ import pytest
 
 def _reload_tracker():
     """Reimport the module so module-level _STATE is fresh between tests."""
-    if "lib.rate_limit_tracker" in sys.modules:
-        del sys.modules["lib.rate_limit_tracker"]
-    import lib.rate_limit_tracker as m
+    if "cos_lib.rate_limit_tracker" in sys.modules:
+        del sys.modules["cos_lib.rate_limit_tracker"]
+    import cos_lib.rate_limit_tracker as m
     return m
 
 
 @pytest.fixture(autouse=True)
 def clean_state(monkeypatch):
     """Reset process-local _STATE and env vars before each test."""
-    import lib.rate_limit_tracker as tracker
+    import cos_lib.rate_limit_tracker as tracker
     tracker.clear()
     monkeypatch.delenv("COS_RATE_TRACKER", raising=False)
     monkeypatch.delenv("COS_RATE_THROTTLE_PCT", raising=False)
@@ -107,7 +107,7 @@ IRRELEVANT_HEADERS = {
 
 class TestParseAnthropic:
     def test_50pct_headers_parsed_correctly(self):
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         lowered = {k.lower(): v for k, v in ANTHROPIC_HEADERS_50PCT.items()}
         result = m._parse_anthropic_headers(lowered, time.time())
 
@@ -119,7 +119,7 @@ class TestParseAnthropic:
         assert result.provider == "anthropic"
 
     def test_90pct_headers_parsed_correctly(self):
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         lowered = {k.lower(): v for k, v in ANTHROPIC_HEADERS_90PCT.items()}
         result = m._parse_anthropic_headers(lowered, time.time())
 
@@ -128,13 +128,13 @@ class TestParseAnthropic:
         assert result.tokens_day.limit == 1000000
 
     def test_has_data_true(self):
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         lowered = {k.lower(): v for k, v in ANTHROPIC_HEADERS_50PCT.items()}
         result = m._parse_anthropic_headers(lowered, time.time())
         assert result.has_data is True
 
     def test_provider_label(self):
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         lowered = {k.lower(): v for k, v in ANTHROPIC_HEADERS_50PCT.items()}
         result = m._parse_anthropic_headers(lowered, time.time())
         assert result.provider == "anthropic"
@@ -142,7 +142,7 @@ class TestParseAnthropic:
 
 class TestParseOpenAI:
     def test_50pct_headers_parsed_correctly(self):
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         lowered = {k.lower(): v for k, v in OPENAI_HEADERS_50PCT.items()}
         result = m._parse_openai_headers(lowered, time.time())
 
@@ -153,7 +153,7 @@ class TestParseOpenAI:
         assert result.tokens_day.limit == 5000000
 
     def test_88pct_requests_per_min(self):
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         lowered = {k.lower(): v for k, v in OPENAI_HEADERS_88PCT.items()}
         result = m._parse_openai_headers(lowered, time.time())
 
@@ -161,7 +161,7 @@ class TestParseOpenAI:
         assert result.requests_min.usage_pct == pytest.approx(88.0)
 
     def test_provider_label_passed_through(self):
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         lowered = {k.lower(): v for k, v in OPENAI_HEADERS_50PCT.items()}
         result = m._parse_openai_headers(lowered, time.time(), provider="qwen")
         assert result.provider == "qwen"
@@ -170,7 +170,7 @@ class TestParseOpenAI:
 class TestParseQwen:
     def test_delegates_to_openai_parser(self):
         """Qwen uses the OpenAI header shape."""
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         lowered = {k.lower(): v for k, v in OPENAI_HEADERS_50PCT.items()}
         result = m._parse_qwen_headers(lowered, time.time())
         assert result.provider == "qwen"
@@ -179,7 +179,7 @@ class TestParseQwen:
 
 class TestParseOllama:
     def test_always_empty_state(self):
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         result = m._parse_ollama_headers({}, time.time())
         assert result.has_data is False
         assert result.provider == "ollama"
@@ -191,14 +191,14 @@ class TestParseOllama:
 
 class TestRecordAndState:
     def test_no_op_without_env_var(self, monkeypatch):
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         m.record("anthropic", ANTHROPIC_HEADERS_50PCT)
         s = m.state("anthropic")
         assert s.has_data is False
 
     def test_record_stores_state(self, monkeypatch):
         monkeypatch.setenv("COS_RATE_TRACKER", "1")
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         m.record("anthropic", ANTHROPIC_HEADERS_50PCT)
         s = m.state("anthropic")
         assert s.has_data is True
@@ -206,32 +206,32 @@ class TestRecordAndState:
 
     def test_record_openai_headers(self, monkeypatch):
         monkeypatch.setenv("COS_RATE_TRACKER", "1")
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         m.record("openai", OPENAI_HEADERS_50PCT)
         s = m.state("openai")
         assert s.has_data is True
         assert s.requests_min.limit == 500
 
     def test_state_empty_when_no_data(self):
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         s = m.state("nonexistent_provider")
         assert s.has_data is False
 
     def test_record_empty_headers_no_crash(self, monkeypatch):
         monkeypatch.setenv("COS_RATE_TRACKER", "1")
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         m.record("anthropic", EMPTY_HEADERS)
         assert m.state("anthropic").has_data is False
 
     def test_record_irrelevant_headers_no_crash(self, monkeypatch):
         monkeypatch.setenv("COS_RATE_TRACKER", "1")
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         m.record("openai", IRRELEVANT_HEADERS)
         assert m.state("openai").has_data is False
 
     def test_record_overwrites_previous_state(self, monkeypatch):
         monkeypatch.setenv("COS_RATE_TRACKER", "1")
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         m.record("anthropic", ANTHROPIC_HEADERS_50PCT)
         m.record("anthropic", ANTHROPIC_HEADERS_90PCT)
         s = m.state("anthropic")
@@ -245,21 +245,21 @@ class TestRecordAndState:
 
 class TestShouldThrottle:
     def test_no_op_without_env_var(self):
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         should, reason = m.should_throttle("anthropic")
         assert should is False
         assert reason == ""
 
     def test_false_below_threshold(self, monkeypatch):
         monkeypatch.setenv("COS_RATE_TRACKER", "1")
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         m.record("anthropic", ANTHROPIC_HEADERS_50PCT)
         should, reason = m.should_throttle("anthropic")
         assert should is False
 
     def test_true_above_85pct(self, monkeypatch):
         monkeypatch.setenv("COS_RATE_TRACKER", "1")
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         m.record("anthropic", ANTHROPIC_HEADERS_90PCT)
         should, reason = m.should_throttle("anthropic")
         assert should is True
@@ -268,7 +268,7 @@ class TestShouldThrottle:
 
     def test_true_above_85pct_openai(self, monkeypatch):
         monkeypatch.setenv("COS_RATE_TRACKER", "1")
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         m.record("openai", OPENAI_HEADERS_88PCT)
         should, reason = m.should_throttle("openai")
         assert should is True
@@ -276,7 +276,7 @@ class TestShouldThrottle:
 
     def test_reason_contains_reset_info(self, monkeypatch):
         monkeypatch.setenv("COS_RATE_TRACKER", "1")
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         m.record("anthropic", ANTHROPIC_HEADERS_90PCT)
         _, reason = m.should_throttle("anthropic")
         # Reason must mention the reset window
@@ -284,21 +284,21 @@ class TestShouldThrottle:
 
     def test_ollama_never_throttles(self, monkeypatch):
         monkeypatch.setenv("COS_RATE_TRACKER", "1")
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         # Even with bogus state, ollama must return False
         should, reason = m.should_throttle("ollama")
         assert should is False
 
     def test_unknown_provider_no_data_false(self, monkeypatch):
         monkeypatch.setenv("COS_RATE_TRACKER", "1")
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         should, reason = m.should_throttle("some_new_provider")
         assert should is False
 
     def test_custom_threshold_respected(self, monkeypatch):
         monkeypatch.setenv("COS_RATE_TRACKER", "1")
         monkeypatch.setenv("COS_RATE_THROTTLE_PCT", "96")
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         # ANTHROPIC_HEADERS_90PCT has worst bucket at 95% (tokens/min).
         # Threshold is 96 → 95 < 96, should NOT throttle.
         m.record("anthropic", ANTHROPIC_HEADERS_90PCT)
@@ -308,7 +308,7 @@ class TestShouldThrottle:
     def test_custom_threshold_low_triggers(self, monkeypatch):
         monkeypatch.setenv("COS_RATE_TRACKER", "1")
         monkeypatch.setenv("COS_RATE_THROTTLE_PCT", "40")
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         # 50% consumed, threshold is 40 → should throttle
         m.record("anthropic", ANTHROPIC_HEADERS_50PCT)
         should, _ = m.should_throttle("anthropic")
@@ -321,7 +321,7 @@ class TestShouldThrottle:
 
 class TestMetrics:
     def test_empty_when_no_data(self):
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         result = m.metrics()
         assert result["providers"] == {}
         assert "throttle_threshold_pct" in result
@@ -329,7 +329,7 @@ class TestMetrics:
 
     def test_snapshot_after_record(self, monkeypatch):
         monkeypatch.setenv("COS_RATE_TRACKER", "1")
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         m.record("anthropic", ANTHROPIC_HEADERS_90PCT)
         result = m.metrics()
         assert "anthropic" in result["providers"]
@@ -340,7 +340,7 @@ class TestMetrics:
         assert snap["predicted_exhaustion"] is not None
 
     def test_tracker_enabled_false_without_env(self):
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         result = m.metrics()
         assert result["tracker_enabled"] is False
 
@@ -367,7 +367,7 @@ class TestDispatchCascadeIntegration:
     def test_throttled_provider_is_skipped(self, monkeypatch):
         """When qwen is throttled, dispatch should fall through to claude."""
         monkeypatch.setenv("COS_RATE_TRACKER", "1")
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         # Pre-load qwen state at 90% so it will be throttled
         m.record("qwen", OPENAI_HEADERS_88PCT)
 
@@ -387,7 +387,7 @@ class TestDispatchCascadeIntegration:
 
         mock_executor = MagicMock()
 
-        import lib.dispatch as dispatch_mod
+        import cos_lib.dispatch as dispatch_mod
         result = dispatch_mod.dispatch(
             prompt="test",
             providers=["qwen", "claude"],
@@ -405,7 +405,7 @@ class TestDispatchCascadeIntegration:
     def test_non_throttled_provider_is_tried(self, monkeypatch):
         """When no throttle is active, providers are tried normally."""
         monkeypatch.setenv("COS_RATE_TRACKER", "1")
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         # 50% — below threshold
         m.record("qwen", OPENAI_HEADERS_50PCT)
 
@@ -416,7 +416,7 @@ class TestDispatchCascadeIntegration:
             call_order.append("qwen")
             return qwen_response
 
-        import lib.dispatch as dispatch_mod
+        import cos_lib.dispatch as dispatch_mod
         result = dispatch_mod.dispatch(
             prompt="test",
             providers=["qwen", "claude"],
@@ -435,7 +435,7 @@ class TestDispatchCascadeIntegration:
 class TestFailurePaths:
     def test_malformed_numeric_header_uses_default(self, monkeypatch):
         monkeypatch.setenv("COS_RATE_TRACKER", "1")
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         bad_headers = {
             "anthropic-ratelimit-requests-limit": "not_a_number",
             "anthropic-ratelimit-requests-remaining": "50",
@@ -449,7 +449,7 @@ class TestFailurePaths:
 
     def test_completely_malformed_headers_no_crash(self, monkeypatch):
         monkeypatch.setenv("COS_RATE_TRACKER", "1")
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         bad_headers = {
             "x-ratelimit-limit-requests": None,     # type: ignore
             "x-ratelimit-remaining-requests": object(),  # type: ignore
@@ -462,24 +462,24 @@ class TestFailurePaths:
 
     def test_none_headers_no_crash(self, monkeypatch):
         monkeypatch.setenv("COS_RATE_TRACKER", "1")
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         m.record("openai", None)  # type: ignore
         assert m.state("openai").has_data is False
 
     def test_safe_int_with_none(self):
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         assert m._safe_int(None) == 0
         assert m._safe_int("") == 0
         assert m._safe_int("bad") == 0
 
     def test_safe_float_with_none(self):
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         assert m._safe_float(None) == 0.0
         assert m._safe_float("bad") == 0.0
 
     def test_throttle_returns_safe_when_no_data(self, monkeypatch):
         monkeypatch.setenv("COS_RATE_TRACKER", "1")
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         should, reason = m.should_throttle("nonexistent")
         assert should is False
         assert reason == ""
@@ -497,7 +497,7 @@ class TestJsonlPersistence:
         def mock_jsonl_path():
             return tmp_path / ".cognitive-os" / "runtime" / "rate-limits.jsonl"
 
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         monkeypatch.setattr(m, "_jsonl_path", mock_jsonl_path)
 
         m.record("anthropic", ANTHROPIC_HEADERS_50PCT)
@@ -518,7 +518,7 @@ class TestJsonlPersistence:
         def mock_jsonl_path():
             return tmp_path / ".cognitive-os" / "runtime" / "rate-limits.jsonl"
 
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         monkeypatch.setattr(m, "_jsonl_path", mock_jsonl_path)
 
         m.record("openai", OPENAI_HEADERS_50PCT)
@@ -534,7 +534,7 @@ class TestJsonlPersistence:
         def mock_jsonl_path():
             return tmp_path / ".cognitive-os" / "runtime" / "rate-limits.jsonl"
 
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         monkeypatch.setattr(m, "_jsonl_path", mock_jsonl_path)
 
         m.record("anthropic", ANTHROPIC_HEADERS_50PCT)
@@ -545,7 +545,7 @@ class TestJsonlPersistence:
         monkeypatch.setenv("COS_RATE_TRACKER", "1")
         deep_path = tmp_path / "a" / "b" / "c" / "rate-limits.jsonl"
 
-        import lib.rate_limit_tracker as m
+        import cos_lib.rate_limit_tracker as m
         monkeypatch.setattr(m, "_jsonl_path", lambda: deep_path)
 
         m.record("anthropic", ANTHROPIC_HEADERS_50PCT)

@@ -12,7 +12,7 @@ adr: 309
 title: Current-Window Subagent Spawn SLOs
 implementation_files:
 - manifests/observability-slo.yaml
-- lib/telemetry_aggregator.py
+- cos_lib/telemetry_aggregator.py
 - tests/unit/test_telemetry_aggregator.py
 - tests/unit/test_agent_spawn_budget.py
 - tests/unit/test_startup_budget.py

@@ -11,7 +11,7 @@ superseded_by: null
 extends: [ADR-094, ADR-117]
 implementation_files:
   - scripts/cos-filter-repo-wrap.sh
-  - lib/history_sanitization.py
+  - cos_lib/history_sanitization.py
   - tests/behavior/test_filter_repo_wrap.py
 tier: maintainer
 tags: [history-rewrite, governance, recovery, postmortem-2026-05-08]
@@ -100,7 +100,7 @@ After this ADR: `scripts/cos-filter-repo-wrap.sh` is the only call site for `git
 ```bash
 bash scripts/cos-filter-repo-wrap.sh --adr-ref ADR-NNN --rules /path/to/rules.txt
 # OR via the Python entry point:
-python3 -c "from lib.history_sanitization import execute; execute(rules='/path/to/rules.txt', adr_ref='ADR-NNN')"
+python3 -c "from cos_lib.history_sanitization import execute; execute(rules='/path/to/rules.txt', adr_ref='ADR-NNN')"
 ```
 
 **To verify remotes survived:**

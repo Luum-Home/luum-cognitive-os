@@ -84,7 +84,7 @@ if [ -n "${ALIBABA_QWEN_API_KEY:-}" ] && [ -f "$PROJECT_DIR/lib/qwen_provider.py
   Overflow available: Alibaba Qwen Coding Plan Pro (ADR-049).
   Dispatch via lib/qwen_provider.py.call() instead of the native Agent
   tool for remaining sub-agents this session. Or run:
-    python3 -c "from lib.qwen_provider import call; print(call([{'role':'user','content':'hi'}]).text)"
+    python3 -c "from cos_lib.qwen_provider import call; print(call([{'role':'user','content':'hi'}]).text)"
 ADV
 elif [ -f "$PROJECT_DIR/lib/qwen_provider.py" ]; then
   cat >&2 <<'ADV'

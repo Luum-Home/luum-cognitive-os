@@ -14,7 +14,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from lib.governed_self_improvement import (
+from cos_lib.governed_self_improvement import (
     create_improvement_draft,
     load_improvement_draft,
     promote_improvement_draft,

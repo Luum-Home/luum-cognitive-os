@@ -1,6 +1,6 @@
 """Unit tests for ADR-056 Level 2 — auto-redirect with block.
 
-Covers both the Python protocol library (lib.agent_redirect_protocol)
+Covers both the Python protocol library (cos_lib.agent_redirect_protocol)
 and the shell hook (hooks/agent-quota-redirect.sh). The hook is exercised
 by invoking it as a subprocess with controlled env + stdin + fixture
 metrics dir, so we never touch the live .cognitive-os/metrics tree.
@@ -24,7 +24,7 @@ HOOK = REPO / "hooks" / "agent-quota-redirect.sh"
 
 # Make lib importable for direct library tests.
 sys.path.insert(0, str(REPO))
-from lib.agent_redirect_protocol import (  # noqa: E402
+from cos_lib.agent_redirect_protocol import (  # noqa: E402
     REASON_QUOTA_PRESSURE,
     REASON_RATE_LIMIT,
     build_redirect_message,
@@ -154,7 +154,7 @@ def _run_hook(project_dir: Path, env_extra: dict, stdin_payload: str = "") -> su
 def _mk_project(tmp_path: Path) -> Path:
     """Create a minimal fake project dir with lib/ symlinks to the real repo.
 
-    The hook imports lib.quota_pressure and lib.agent_redirect_protocol
+    The hook imports cos_lib.quota_pressure and cos_lib.agent_redirect_protocol
     relative to CLAUDE_PROJECT_DIR. We symlink just the lib/ dir so the
     hook finds agent_redirect_protocol while quota_pressure remains
     absent (exercising the stub fallback).

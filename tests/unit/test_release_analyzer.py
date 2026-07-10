@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
-from lib.release_analyzer import ReleaseAnalyzer, _bump
+from cos_lib.release_analyzer import ReleaseAnalyzer, _bump
 
 
 # ---------------------------------------------------------------------------
@@ -338,7 +338,7 @@ class TestGenerateChangelog:
             "docs: improve readme",
             "test: add unit tests",
         ])
-        with patch("lib.release_analyzer._run", return_value=fake_log):
+        with patch("cos_lib.release_analyzer._run", return_value=fake_log):
             changelog = a.generate_changelog(tag="v0.8.7")
 
         assert "### Features" in changelog
@@ -351,7 +351,7 @@ class TestGenerateChangelog:
 
     def test_changelog_empty_log(self, tmp_path):
         a = ReleaseAnalyzer(str(tmp_path))
-        with patch("lib.release_analyzer._run", return_value=""):
+        with patch("cos_lib.release_analyzer._run", return_value=""):
             changelog = a.generate_changelog(tag="v0.8.7")
         assert "## Changelog" in changelog
 

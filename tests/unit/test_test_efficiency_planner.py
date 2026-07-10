@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from lib.test_efficiency_planner import extract_failed_nodeids, plan_tests
+from cos_lib.test_efficiency_planner import extract_failed_nodeids, plan_tests
 
 
 @pytest.mark.unit

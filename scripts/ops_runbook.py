@@ -22,7 +22,7 @@ _HERE = Path(__file__).resolve().parent.parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 
-from lib.ops_runbook import OpsRunbookScaffolder  # noqa: E402
+from cos_lib.ops_runbook import OpsRunbookScaffolder  # noqa: E402
 
 
 def main() -> int:

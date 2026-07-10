@@ -10,7 +10,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 # indefinitely (CONCERN — subproc_without_timeout).
 
 timeout 30 python3 -c "
-from lib.mlflow_bridge import MLflowBridge
+from cos_lib.mlflow_bridge import MLflowBridge
 import sys
 
 b = MLflowBridge()

@@ -15,7 +15,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.goal_state import (
+from cos_lib.goal_state import (
     CommandEvidence,
     EvidencePacket,
     EvaluatorVerdict,
@@ -577,7 +577,7 @@ def _worker_save(base_dir_str: str, wt_id: str, owner: str, result_queue, timeou
     import sys
     from pathlib import Path
     sys.path.insert(0, str(Path(base_dir_str).parents[3]))  # project root
-    from lib.goal_state import GoalState, GoalStateStore, GoalConflictError
+    from cos_lib.goal_state import GoalState, GoalStateStore, GoalConflictError
 
     base_dir = Path(base_dir_str)
     store = GoalStateStore(base_dir=base_dir, workspace_thread_id=wt_id)
@@ -677,7 +677,7 @@ class TestConcurrentGoalWritesMultiprocess:
         base_dir = tmp_path / "goals"
         base_dir.mkdir(parents=True, exist_ok=True)
 
-        from lib.goal_state import GoalStateStore
+        from cos_lib.goal_state import GoalStateStore
         store = GoalStateStore(base_dir=base_dir, workspace_thread_id="wt-held")
         store._ensure_dirs()
         lock_fh = store._lock_path.open("w")

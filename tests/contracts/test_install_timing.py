@@ -22,7 +22,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
-from lib.install_timing import (
+from cos_lib.install_timing import (
     BUDGET_ELAPSED_S,
     BUDGET_ERRORS,
     BUDGET_MANUAL_STEPS,

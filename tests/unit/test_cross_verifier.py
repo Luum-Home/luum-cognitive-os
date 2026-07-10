@@ -8,7 +8,7 @@ from unittest.mock import patch
 
 import pytest
 
-from lib.cross_verifier import (
+from cos_lib.cross_verifier import (
     CrossVerification,
     _parse_verifier_response,
     build_verification_prompt,
@@ -184,9 +184,9 @@ class TestCrossVerifyWithoutExecutor:
 
     def test_returns_skipped_without_executor(self):
         """Should return skipped result when executor cannot be imported."""
-        with patch.dict("sys.modules", {"lib.claude_executor": None}):
+        with patch.dict("sys.modules", {"cos_lib.claude_executor": None}):
             # Force ImportError by patching
-            with patch("lib.cross_verifier.CrossVerification") as _:
+            with patch("cos_lib.cross_verifier.CrossVerification") as _:
                 pass
         # Simpler approach: just call it; if claude CLI isn't available it will skip
         cv = cross_verify("task", "output")

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from lib.memory_retrieval_compare import compare_reports
+from cos_lib.memory_retrieval_compare import compare_reports
 
 ROOT = Path(__file__).resolve().parents[2]
 REPORTS = ROOT / "docs" / "06-Daily" / "reports" / "memory-retrieval-wave2"

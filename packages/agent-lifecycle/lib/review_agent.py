@@ -519,7 +519,7 @@ def enqueue_review_request(
 
 def _dispatch_review_prompt(prompt: str, reviewer_model: str) -> str:
     """Default live dispatcher for background review requests."""
-    from lib.dispatch import dispatch  # type: ignore[import]
+    from cos_lib.dispatch import dispatch  # type: ignore[import]
 
     result = dispatch(
         prompt=prompt,
@@ -664,7 +664,7 @@ def _engram_save(finding: dict[str, Any], topic_key: str) -> None:
     """
     try:
         # Try the in-process Engram client first (fastest, no subprocess)
-        from lib.engram_client import mem_save  # type: ignore[import]
+        from cos_lib.engram_client import mem_save  # type: ignore[import]
         score = finding.get("score", -1)
         gaps = finding.get("gaps", [])
         gaps_text = "\n".join(f"- {g}" for g in gaps) if gaps else "- (none recorded)"

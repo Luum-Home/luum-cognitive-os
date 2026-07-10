@@ -20,7 +20,7 @@ from pathlib import Path
 # Bootstrap
 # ---------------------------------------------------------------------------
 
-# NOTE: custom resolution — differs from lib.paths.project_root() (Pattern C).
+# NOTE: custom resolution — differs from cos_lib.paths.project_root() (Pattern C).
 # See tests/unit/test_project_dir_resolution.py for rationale.
 # D2.2 fix (ADR-026a): honour COGNITIVE_OS_PROJECT_DIR as a fallback so that
 # both env vars are treated equally.  CLAUDE_PROJECT_DIR still wins when set.
@@ -31,7 +31,7 @@ PROJECT_DIR = (
 )
 sys.path.insert(0, PROJECT_DIR)
 # Also ensure the OS package root (where lib/ lives) is on sys.path so that
-# lib.config_loader and its siblings are importable even when CLAUDE_PROJECT_DIR
+# cos_lib.config_loader and its siblings are importable even when CLAUDE_PROJECT_DIR
 # points to a consumer project (not the OS root itself).
 _OS_ROOT = str(Path(__file__).resolve().parent.parent.parent)
 if _OS_ROOT not in sys.path:
@@ -65,7 +65,7 @@ result: dict = {
 # 1. Read config (cognitive-os.yaml)
 # ---------------------------------------------------------------------------
 try:
-    from lib.config_loader import load_structured  # type: ignore
+    from cos_lib.config_loader import load_structured  # type: ignore
 
     cfg_path = Path(PROJECT_DIR) / "cognitive-os.yaml"
     if not cfg_path.exists():
@@ -157,7 +157,7 @@ except Exception:
 skill_name = result["skill_name"]
 if skill_name:
     try:
-        from lib.consequence_engine import ConsequenceEngine  # type: ignore
+        from cos_lib.consequence_engine import ConsequenceEngine  # type: ignore
 
         ce = ConsequenceEngine()
         result["disabled"] = ce.is_skill_disabled(skill_name)
@@ -170,8 +170,8 @@ if skill_name:
 # 7. Circuit breaker check
 # ---------------------------------------------------------------------------
 try:
-    from lib.circuit_breaker import CircuitBreaker  # type: ignore
-    from lib.record_completion import classify_task_type  # type: ignore
+    from cos_lib.circuit_breaker import CircuitBreaker  # type: ignore
+    from cos_lib.record_completion import classify_task_type  # type: ignore
 
     task_type = classify_task_type(task_desc or "general")
     cb = CircuitBreaker()
@@ -186,7 +186,7 @@ except Exception as e:
 #    can decide; it's cheap compared to the cold starts we're saving)
 # ---------------------------------------------------------------------------
 try:
-    from lib.dispatch_model_advisor import (  # type: ignore
+    from cos_lib.dispatch_model_advisor import (  # type: ignore
         recommend_model,
         format_model_directive,
         format_model_advice,

@@ -13,8 +13,8 @@ import os as _cos_os
 import sys as _cos_sys
 _cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
 import sys
-from lib.script_helpers import iso_utc_z as _utc
-from lib.script_helpers import sha256_file as _file_sha256
+from cos_lib.script_helpers import iso_utc_z as _utc
+from cos_lib.script_helpers import sha256_file as _file_sha256
 
 import argparse
 import hashlib

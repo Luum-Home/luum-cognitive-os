@@ -31,7 +31,7 @@ def _portable_path(value: Any) -> str | None:
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.consumer_fleet_audit import build_report as build_consumer_report
+from cos_lib.consumer_fleet_audit import build_report as build_consumer_report
 from scripts.portable_ai_overlay import build_overlay
 
 SCHEMA_VERSION = "portable-ai-real-consumer-smoke.v1"

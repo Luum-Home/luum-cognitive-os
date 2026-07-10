@@ -38,7 +38,7 @@ Four systemic bugs were diagnosed in the task tracker lifecycle on 2026-04-30, c
 All records in `active-tasks.json` had `pid: null`, even for successfully-completed tasks. `agent_health_monitor.py::_classify_task()` has dead-PID detection logic that was never reachable because `pid` was always `null`. The liveness check was a dead code path.
 
 **Bug 3 — Zombie reaper skips `pid=null` records:**  
-`scripts/so-reaper.sh` delegates to `lib.process_registry` which only processes PIDs in the registry. Records with `pid=null` are invisible to it. Stale `pending`/`in_progress` records with no PID accumulated without any automatic cleanup.
+`scripts/so-reaper.sh` delegates to `cos_lib.process_registry` which only processes PIDs in the registry. Records with `pid=null` are invisible to it. Stale `pending`/`in_progress` records with no PID accumulated without any automatic cleanup.
 
 **Bug 4 — Queue↔active-tasks split state:**  
 `dispatch-queue.json` and `active-tasks.json` were two independent state files with no synchronization. When a queue item was cancelled or dispatched, the corresponding `active-tasks.json` record was not updated. This broke any consumer that relied on `active-tasks.json` as the authoritative source.

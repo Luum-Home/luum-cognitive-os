@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from lib.duplicate_scanner import collect_text_files, generic_function_repeats, lexical_pairs
+from cos_lib.duplicate_scanner import collect_text_files, generic_function_repeats, lexical_pairs
 
 
 def test_duplicate_scanner_runs_without_repo_cwd_or_external_tools(tmp_path: Path) -> None:

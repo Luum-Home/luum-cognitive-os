@@ -12,8 +12,8 @@ cross_references:
   - ADR-134   # propose-only self-improvement artifacts
   - ADR-174   # auto-derived primitive routing (parent)
 implementation_files:
-  - lib/routing_pattern_deriver.py
-  - lib/validator_soak_evaluator.py
+  - cos_lib/routing_pattern_deriver.py
+  - cos_lib/validator_soak_evaluator.py
   - packages/consequence-system/hooks/auto-skill-generator.sh
   - hooks/validator-soak-weekly.sh
   - tests/unit/test_routing_pattern_deriver.py
@@ -54,7 +54,7 @@ ADR-174b closes both gaps.
 
 When `auto-skill-generator.sh` fires and templates a new SKILL.md, it now:
 
-1. Calls `python3 -m lib.routing_pattern_deriver --skill-name <slug> --description <desc>`
+1. Calls `python3 -m cos_lib.routing_pattern_deriver --skill-name <slug> --description <desc>`
    to derive 2–3 routing patterns from the skill name and task description.
 2. Injects the resulting `routing_patterns:` YAML block into the frontmatter.
 3. Also adds `lifecycle_state: sandbox` and `distribution: lab` to the

@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # SCOPE: both
-"""CLI wrapper for lib.wiki_ingester."""
+"""CLI wrapper for cos_lib.wiki_ingester."""
 from __future__ import annotations
 
 import argparse
 import json
 from pathlib import Path
 
-from lib.wiki_ingester import WikiIngester
+from cos_lib.wiki_ingester import WikiIngester
 
 
 def main() -> int:

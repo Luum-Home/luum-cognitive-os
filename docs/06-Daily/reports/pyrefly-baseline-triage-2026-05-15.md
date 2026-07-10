@@ -168,7 +168,7 @@ Every Pyrefly error from the 2026-05-15 advisory receipt is listed below with it
 | 15 | `lib/agent_daemon.py:377:37` | `bad-argument-type` | A1 dataclass reconstruction from untyped dict | Unpacked keyword argument `float \| str \| Any` is not assignable to parameter `max_runtime_seconds` with type `int` in function `DetachedAgentTask.__init__` |
 | 16 | `lib/agent_daemon.py:377:37` | `bad-argument-type` | A1 dataclass reconstruction from untyped dict | Unpacked keyword argument `float \| str \| Any` is not assignable to parameter `estimated_cost_usd` with type `float` in function `DetachedAgentTask.__init__` |
 | 17 | `lib/agent_daemon.py:377:37` | `bad-argument-type` | A1 dataclass reconstruction from untyped dict | Unpacked keyword argument `float \| str \| Any` is not assignable to parameter `budget_cap_usd` with type `float` in function `DetachedAgentTask.__init__` |
-| 18 | `lib/agent_health_monitor.py:426:24` | `bad-argument-type` | A14 local narrow fix / inspect individually | Argument `Any \| None` is not assignable to parameter `prompt` with type `str` in function `lib.queue_drainer.QueueDrainer.enqueue` |
+| 18 | `lib/agent_health_monitor.py:426:24` | `bad-argument-type` | A14 local narrow fix / inspect individually | Argument `Any \| None` is not assignable to parameter `prompt` with type `str` in function `cos_lib.queue_drainer.QueueDrainer.enqueue` |
 | 19 | `lib/agent_health_monitor.py:427:29` | `unsupported-operation` | A4 container shape not narrowed before indexing | `None` is not subscriptable |
 | 20 | `lib/agent_reflection.py:82:40` | `not-callable` | A7 optional callable invoked without guard | Expected a callable, got `None` |
 | 21 | `lib/agent_team_transport.py:114:28` | `bad-argument-type` | A14 local narrow fix / inspect individually | Argument `Awaitable[Any]` is not assignable to parameter `main` with type `Coroutine[Any, Any, @_]` in function `asyncio.runners.run` |
@@ -197,7 +197,7 @@ Every Pyrefly error from the 2026-05-15 advisory receipt is listed below with it
 | 44 | `lib/dispatch_gate.py:129:24` | `bad-argument-type` | A3 numeric cast from object/None | Argument `float \| object` is not assignable to parameter `x` with type `Buffer \| SupportsFloat \| SupportsIndex \| str` in function `float.__new__` |
 | 45 | `lib/dispatch_gate.py:149:24` | `bad-argument-type` | A3 numeric cast from object/None | Argument `Literal[0] \| object` is not assignable to parameter `x` with type `Buffer \| SupportsIndex \| SupportsInt \| SupportsTrunc \| str` in function `int.__new__` |
 | 46 | `lib/dispatch_model_advisor.py:663:13` | `unsupported-operation` | A14 local narrow fix / inspect individually | `/` is not supported between `None` and `Literal['.cognitive-os']` |
-| 47 | `lib/engram_crystallizer.py:376:63` | `bad-argument-type` | A14 local narrow fix / inspect individually | Argument `str \| None` is not assignable to parameter `project` with type `str` in function `lib.engram_http_client.get_recent` |
+| 47 | `lib/engram_crystallizer.py:376:63` | `bad-argument-type` | A14 local narrow fix / inspect individually | Argument `str \| None` is not assignable to parameter `project` with type `str` in function `cos_lib.engram_http_client.get_recent` |
 | 48 | `lib/engram_graph_walker.py:208:30` | `bad-argument-type` | A3 numeric cast from object/None | Argument `Any \| None` is not assignable to parameter `x` with type `Buffer \| SupportsFloat \| SupportsIndex \| str` in function `float.__new__` |
 | 49 | `lib/engram_lifecycle.py:563:17` | `bad-argument-type` | A3 numeric cast from object/None | Argument `Any \| None` is not assignable to parameter `x` with type `Buffer \| SupportsFloat \| SupportsIndex \| str` in function `float.__new__` |
 | 50 | `lib/engram_locks.py:144:27` | `bad-argument-type` | A14 local narrow fix / inspect individually | Argument `Any \| None` is not assignable to parameter `ts` with type `str` in function `_seconds_since` |
@@ -246,7 +246,7 @@ Every Pyrefly error from the 2026-05-15 advisory receipt is listed below with it
 | 93 | `lib/mlflow_bridge.py:33:28` | `bad-assignment` | A13 annotation too narrow for default/runtime value | `None` is not assignable to attribute `_mlflow` with type `Module[mlflow]` |
 | 94 | `lib/orchestrator_capabilities.py:170:32` | `missing-attribute` | A6 optional/missing attribute or optional dependency fallback | Object of class `NoneType` has no attribute `upper` |
 | 95 | `lib/orchestrator_capabilities.py:178:24` | `missing-attribute` | A6 optional/missing attribute or optional dependency fallback | Object of class `NoneType` has no attribute `upper` |
-| 96 | `lib/orchestrator_verify.py:133:35` | `bad-assignment` | A13 annotation too narrow for default/runtime value | `list[ground_truth.Claim] \| list[lib.ground_truth.Claim]` is not assignable to `list[ground_truth.Claim \| lib.ground_truth.Claim]` |
+| 96 | `lib/orchestrator_verify.py:133:35` | `bad-assignment` | A13 annotation too narrow for default/runtime value | `list[ground_truth.Claim] \| list[cos_lib.ground_truth.Claim]` is not assignable to `list[ground_truth.Claim \| cos_lib.ground_truth.Claim]` |
 | 97 | `lib/outcome_metrics.py:51:24` | `bad-argument-type` | A3 numeric cast from object/None | Argument `Literal[0] \| object` is not assignable to parameter `x` with type `Buffer \| SupportsFloat \| SupportsIndex \| str` in function `float.__new__` |
 | 98 | `lib/outcome_metrics.py:52:20` | `bad-argument-type` | A3 numeric cast from object/None | Argument `Literal[0] \| object` is not assignable to parameter `x` with type `Buffer \| SupportsFloat \| SupportsIndex \| str` in function `float.__new__` |
 | 99 | `lib/performance_monitor.py:587:38` | `bad-typed-dict-key` | A8 TypedDict/schema mismatch | `dict[str, Any]` is not assignable to TypedDict key `metadata` with type `bool \| float \| str` |
@@ -264,7 +264,7 @@ Every Pyrefly error from the 2026-05-15 advisory receipt is listed below with it
 | 111 | `lib/queue_advisor.py:720:24` | `unsupported-operation` | A4 container shape not narrowed before indexing | `None` is not subscriptable |
 | 112 | `lib/reinvention_semantic.py:455:31` | `bad-argument-type` | A14 local narrow fix / inspect individually | Argument `Unknown \| None` is not assignable to parameter `arr` with type `_Buffer \| _NestedSequence[bytes \| complex \| str] \| _NestedSequence[_SupportsArray[dtype]] \| _SupportsArray[dtype] \| bytes \| complex \| str` in function `numpy.lib._npyio_impl.save` |
 | 113 | `lib/research_scoring.py:102:32` | `bad-argument-type` | A14 local narrow fix / inspect individually | Argument `Unknown \| None` is not assignable to parameter `text` with type `str` in function `_tokenize` |
-| 114 | `lib/retry_classifier.py:16:20` | `invalid-inheritance` | A12 optional dependency type alias/fallback issue | Invalid base class: `lib.retry_classifier.StrEnum \| enum.StrEnum` |
+| 114 | `lib/retry_classifier.py:16:20` | `invalid-inheritance` | A12 optional dependency type alias/fallback issue | Invalid base class: `cos_lib.retry_classifier.StrEnum \| enum.StrEnum` |
 | 115 | `lib/routing_benchmark.py:279:22` | `missing-attribute` | A6 optional/missing attribute or optional dependency fallback | Object of class `NoneType` has no attribute `embed` |
 | 116 | `lib/routing_benchmark.py:413:13` | `bad-argument-type` | A14 local narrow fix / inspect individually | Argument `str \| None` is not assignable to parameter `path_or_bytes` with type `PathLike[Unknown] \| bytes \| str` in function `onnxruntime.capi.onnxruntime_inference_collection.InferenceSession.__init__` |
 | 117 | `lib/routing_benchmark.py:415:32` | `bad-argument-type` | A14 local narrow fix / inspect individually | Argument `str \| None` is not assignable to parameter `*args` with type `PathLike[str] \| str` in function `pathlib.Path.__new__` |
@@ -278,14 +278,14 @@ Every Pyrefly error from the 2026-05-15 advisory receipt is listed below with it
 | 125 | `lib/smart_infra.py:217:16` | `bad-return` | A9 return type from dict.get can be None | Returned type `None` is not assignable to declared return type `dict[str, Any]` |
 | 126 | `lib/smart_reader.py:285:20` | `unbound-name` | A14 local narrow fix / inspect individually | `compiled` may be uninitialized |
 | 127 | `lib/smart_reader.py:395:45` | `bad-argument-type` | A14 local narrow fix / inspect individually | Argument `dict[str, int \| str]` is not assignable to parameter `object` with type `dict[str, int]` in function `list.append` |
-| 128 | `lib/sprint_orchestrator.py:141:21` | `invalid-inheritance` | A12 optional dependency type alias/fallback issue | Invalid base class: `harness_adapter.base.CanonicalEvent \| lib.harness_adapter.base.CanonicalEvent` |
-| 129 | `lib/sprint_orchestrator.py:153:26` | `invalid-inheritance` | A12 optional dependency type alias/fallback issue | Invalid base class: `harness_adapter.base.CanonicalEvent \| lib.harness_adapter.base.CanonicalEvent` |
-| 130 | `lib/sprint_orchestrator.py:165:27` | `invalid-inheritance` | A12 optional dependency type alias/fallback issue | Invalid base class: `harness_adapter.base.CanonicalEvent \| lib.harness_adapter.base.CanonicalEvent` |
-| 131 | `lib/sprint_orchestrator.py:178:23` | `invalid-inheritance` | A12 optional dependency type alias/fallback issue | Invalid base class: `harness_adapter.base.CanonicalEvent \| lib.harness_adapter.base.CanonicalEvent` |
-| 132 | `lib/sprint_orchestrator.py:188:23` | `invalid-inheritance` | A12 optional dependency type alias/fallback issue | Invalid base class: `harness_adapter.base.CanonicalEvent \| lib.harness_adapter.base.CanonicalEvent` |
-| 133 | `lib/webhook_trigger.py:248:9` | `unexpected-keyword` | A11 constructor/API signature drift | Unexpected keyword argument `project_dir` in function `lib.claude_executor.ClaudeExecutor.__init__` |
-| 134 | `lib/webhook_trigger.py:249:9` | `unexpected-keyword` | A11 constructor/API signature drift | Unexpected keyword argument `claude_bin` in function `lib.claude_executor.ClaudeExecutor.__init__` |
-| 135 | `lib/webhook_trigger.py:250:9` | `unexpected-keyword` | A11 constructor/API signature drift | Unexpected keyword argument `timeout_seconds` in function `lib.claude_executor.ClaudeExecutor.__init__` |
+| 128 | `lib/sprint_orchestrator.py:141:21` | `invalid-inheritance` | A12 optional dependency type alias/fallback issue | Invalid base class: `harness_adapter.base.CanonicalEvent \| cos_lib.harness_adapter.base.CanonicalEvent` |
+| 129 | `lib/sprint_orchestrator.py:153:26` | `invalid-inheritance` | A12 optional dependency type alias/fallback issue | Invalid base class: `harness_adapter.base.CanonicalEvent \| cos_lib.harness_adapter.base.CanonicalEvent` |
+| 130 | `lib/sprint_orchestrator.py:165:27` | `invalid-inheritance` | A12 optional dependency type alias/fallback issue | Invalid base class: `harness_adapter.base.CanonicalEvent \| cos_lib.harness_adapter.base.CanonicalEvent` |
+| 131 | `lib/sprint_orchestrator.py:178:23` | `invalid-inheritance` | A12 optional dependency type alias/fallback issue | Invalid base class: `harness_adapter.base.CanonicalEvent \| cos_lib.harness_adapter.base.CanonicalEvent` |
+| 132 | `lib/sprint_orchestrator.py:188:23` | `invalid-inheritance` | A12 optional dependency type alias/fallback issue | Invalid base class: `harness_adapter.base.CanonicalEvent \| cos_lib.harness_adapter.base.CanonicalEvent` |
+| 133 | `lib/webhook_trigger.py:248:9` | `unexpected-keyword` | A11 constructor/API signature drift | Unexpected keyword argument `project_dir` in function `cos_lib.claude_executor.ClaudeExecutor.__init__` |
+| 134 | `lib/webhook_trigger.py:249:9` | `unexpected-keyword` | A11 constructor/API signature drift | Unexpected keyword argument `claude_bin` in function `cos_lib.claude_executor.ClaudeExecutor.__init__` |
+| 135 | `lib/webhook_trigger.py:250:9` | `unexpected-keyword` | A11 constructor/API signature drift | Unexpected keyword argument `timeout_seconds` in function `cos_lib.claude_executor.ClaudeExecutor.__init__` |
 | 136 | `lib/webhook_trigger.py:270:18` | `missing-attribute` | A6 optional/missing attribute or optional dependency fallback | Object of class `ClaudeExecutor` has no attribute `run_phase` |
 | 137 | `lib/webhook_trigger.py:319:11` | `not-callable` | A7 optional callable invoked without guard | Expected a callable, got `None` |
 | 138 | `lib/webhook_trigger.py:345:26` | `missing-attribute` | A6 optional/missing attribute or optional dependency fallback | Object of class `NoneType` has no attribute `body` |
@@ -603,7 +603,7 @@ Running baseline after pass 5: **268 → 131** non-import Pyrefly errors.
 
 | Files | Finding class | Change | Pyrefly effect |
 |---|---|---|---:|
-| `lib/sprint_orchestrator.py` | Duplicate relative/absolute `CanonicalEvent` import union made event base invalid | Prefer canonical `lib.harness_adapter.base` import with top-level fallback. | Removed 5 event inheritance findings. |
+| `lib/sprint_orchestrator.py` | Duplicate relative/absolute `CanonicalEvent` import union made event base invalid | Prefer canonical `cos_lib.harness_adapter.base` import with top-level fallback. | Removed 5 event inheritance findings. |
 | `scripts/adr_reserve.py` | Reservation JSON arrays and numbers not narrowed before iteration/cast | Added list/scalar guards around reservation payloads. | Removed 4 ADR reservation findings. |
 | `scripts/cos_test_quality_audit.py` | AST result list inferred too narrowly; summary total object cast | Annotated assertion list as `list[ast.AST]` and narrowed total before `int(...)`. | Removed 4 audit findings. |
 | `scripts/primitive_harness_coverage.py` | UI surface config values not narrowed before list/set operations | Normalized evidence and operable primitive lists before iteration. | Removed 4 UI harness findings. |
@@ -632,7 +632,7 @@ Running baseline after pass 6: **268 → 116** non-import Pyrefly errors.
 
 Follow-up fixes after pass 6:
 
-- `packages/agent-lifecycle/lib/sprint_orchestrator.py`: removed the relative/absolute import union entirely and imports `CanonicalEvent` from the canonical `lib.harness_adapter.base` path.
+- `packages/agent-lifecycle/lib/sprint_orchestrator.py`: removed the relative/absolute import union entirely and imports `CanonicalEvent` from the canonical `cos_lib.harness_adapter.base` path.
 - `scripts/lab_first_promotion_gate.py`: narrowed finding rows before CLI rendering.
 - `scripts/opencode_primitive_adapter_smoke.py`: forced outcome checks through `bool(...)` after payload narrowing.
 

@@ -71,7 +71,7 @@ _codex_entry() {
   # NOTE: the JSON "command" string must use escaped double quotes for $PWD paths,
   # matching the format in the original hand-maintained .codex/hooks.json.
   # ADR: hook-lib-projection-contract — source the shared PYTHONPATH bootstrap
-  # before running the hook so Codex hooks that `import lib.<mod>` resolve
+  # before running the hook so Codex hooks that `import cos_lib.<mod>` resolve
   # against the projected .cognitive-os/lib/ package, same as the Claude
   # timing-wrapper path. Best-effort (`|| true`): missing bootstrap file
   # during first-install must not block the hook from running.

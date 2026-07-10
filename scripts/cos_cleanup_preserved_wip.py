@@ -11,7 +11,7 @@ import os as _cos_os
 import sys as _cos_sys
 _cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
 import sys
-from lib.script_helpers import utc_stamp
+from cos_lib.script_helpers import utc_stamp
 
 import argparse
 import json

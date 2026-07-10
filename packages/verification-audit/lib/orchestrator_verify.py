@@ -1,7 +1,7 @@
 # SCOPE: os-only
 """Orchestrator Verify — ADR-105 high-stakes claim extraction and verification.
 
-Composes lib.ground_truth (does NOT fork it). Filters the general claim set
+Composes cos_lib.ground_truth (does NOT fork it). Filters the general claim set
 produced by ground_truth.extract_claims down to the specific ADR-105 verb set
 that carries high blast-radius consequences ("archived", "deleted", "removed",
 "wired", "integrated", "registered", "done", "closed", "migrated", "tested",
@@ -9,7 +9,7 @@ that carries high blast-radius consequences ("archived", "deleted", "removed",
 check appropriate to the verb.
 
 Usage:
-    from lib.orchestrator_verify import (
+    from cos_lib.orchestrator_verify import (
         extract_high_stakes_claims,
         verify_claim,
         verify_all,
@@ -29,10 +29,10 @@ import re
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 
-# Compose with lib.ground_truth — do NOT fork.
+# Compose with cos_lib.ground_truth — do NOT fork.
 # Import via package path; symlink in lib/ makes both paths work.
 try:
-    from lib.ground_truth import extract_claims, Claim
+    from cos_lib.ground_truth import extract_claims, Claim
 except ImportError:
     # Fallback for direct package invocation without symlink on sys.path
     import sys as _sys
@@ -119,7 +119,7 @@ def extract_high_stakes_claims(agent_output: str) -> List[HighStakesClaim]:
     """Extract ADR-105 high-stakes claims from agent output text.
 
     Strategy (two-pass):
-      Pass 1 — delegate to lib.ground_truth.extract_claims(), then filter
+      Pass 1 — delegate to cos_lib.ground_truth.extract_claims(), then filter
                only claims whose text contains a HIGH_STAKES_VERBS verb.
       Pass 2 — direct regex scan for verbs the general extractor may have
                missed (e.g. "The 3 hooks have been archived to docs/99-Archive/archive/").

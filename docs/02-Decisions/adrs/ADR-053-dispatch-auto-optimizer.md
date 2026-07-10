@@ -5,7 +5,7 @@ title: Dispatch Auto-Optimizer
 status: implemented
 implementation_status: implemented
 implementation_files:
-  - lib/dispatch_optimizer.py
+  - cos_lib/dispatch_optimizer.py
   - scripts/auto-tune-routing
   - tests/unit/test_provider_benchmark_and_optimizer.py
 tier: maintainer
@@ -54,7 +54,7 @@ accumulated metrics and re-tunes routing per skill/task type.
 ### Proposed API
 
 ```python
-from lib.dispatch_optimizer import analyze, propose_routing
+from cos_lib.dispatch_optimizer import analyze, propose_routing
 
 report = analyze(
     metrics_path=".cognitive-os/metrics/llm-dispatch.jsonl",
@@ -131,7 +131,7 @@ Run the optimizer as a proposal generator, never as an autonomous routing mutato
 ### Daily operational pattern
 
 1. Ensure `.cognitive-os/metrics/llm-dispatch.jsonl` has enough recent samples for the skill/task tuple under review.
-2. Run `scripts/auto-tune-routing` or `python3 -m lib.dispatch_optimizer` through the CLI wrapper.
+2. Run `scripts/auto-tune-routing` or `python3 -m cos_lib.dispatch_optimizer` through the CLI wrapper.
 3. Review the generated `.cognitive-os/routing/auto-tuned.yaml` diff for sample size, variance, and quality/cost tradeoff.
 4. Commit reasonable proposals or reject them with a note; do not wire proposals into dispatch without a separate reviewed change.
 

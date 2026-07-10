@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.audit_id import (
+from cos_lib.audit_id import (
     AuditContext,
     enrich_jsonl_entry,
     get_current_audit_context,

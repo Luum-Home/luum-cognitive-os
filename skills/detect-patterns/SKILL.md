@@ -60,7 +60,7 @@ Default: `--type all`
 ### Step 1: Run the pattern detector
 
 ```python
-from lib.pattern_detector import PatternDetector
+from cos_lib.pattern_detector import PatternDetector
 
 detector = PatternDetector()
 

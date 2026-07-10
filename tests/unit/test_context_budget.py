@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.context_budget import count_tokens, evaluate, filter_hook_output, read_budget, record_usage
+from cos_lib.context_budget import count_tokens, evaluate, filter_hook_output, read_budget, record_usage
 
 pytestmark = pytest.mark.unit
 

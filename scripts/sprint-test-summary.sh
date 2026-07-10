@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SCOPE: project
 # @manual-trigger: invoke at sprint end to aggregate test results; ADR-036 Wave 1 CLI tool
-# sprint-test-summary.sh — ADR-036 Wave 1 CLI wrapper for lib.sprint_test_aggregator
+# sprint-test-summary.sh — ADR-036 Wave 1 CLI wrapper for cos_lib.sprint_test_aggregator
 #
 # Usage:
 #   sprint-test-summary.sh                       # auto-detect 5 most-recent sessions
@@ -57,7 +57,7 @@ python3 - "$JSON_MODE" "$LIMIT" "${SESSION_IDS[@]+"${SESSION_IDS[@]}"}" <<'PY'
 import json
 import sys
 
-from lib.sprint_test_aggregator import aggregate, detect_recent_sessions, render_text
+from cos_lib.sprint_test_aggregator import aggregate, detect_recent_sessions, render_text
 
 json_mode = sys.argv[1] == "1"
 limit = int(sys.argv[2])

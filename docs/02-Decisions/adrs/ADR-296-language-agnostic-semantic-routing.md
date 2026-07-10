@@ -11,7 +11,7 @@ extends:
   - ADR-174
   - ADR-285
 implementation_files:
-  - lib/semantic_skill_matcher.py
+  - cos_lib/semantic_skill_matcher.py
   - pyproject.toml
   - manifests/dependency-adoption-evidence.yaml
   - skills/product-answer/SKILL.md
@@ -119,7 +119,7 @@ invalidates the cache and the next call re-indexes.
 ### Inspecting routes
 
 ```python
-from lib.skill_router import SkillRouter
+from cos_lib.skill_router import SkillRouter
 r = SkillRouter()
 print([(m.skill_name, m.confidence, m.reason) for m in r.match("...")])
 ```
@@ -181,8 +181,8 @@ canonical example.
 
 ```bash
 # Acceptance: Spanish capability question routes to /product-answer
-python3 -c "from lib.semantic_skill_matcher import SemanticSkillMatcher; \
-            from lib.skill_router import SkillRouter; \
+python3 -c "from cos_lib.semantic_skill_matcher import SemanticSkillMatcher; \
+            from cos_lib.skill_router import SkillRouter; \
             r=SkillRouter(); m=r.match('Si yo soy un dev que tengo limitaciones...'); \
             print(m[0])"
 

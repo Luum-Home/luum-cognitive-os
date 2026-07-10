@@ -23,10 +23,10 @@ This contract is cross-IDE because the core verifier is a plain Python CLI and t
 
 | Claim verb | Complete predicate | Verifier | Hook / gate | Tests |
 |---|---|---|---|---|
-| `archived` | archive copy present, original absent, no stale config refs | `lib.orchestrator_verify.verify_claim`; `scripts/verify-archived.sh` for explicit archive manifests | `hooks/orchestrator-claim-gate.sh`; `hooks/claim-validator.sh` for Agent reports | `tests/contracts/test_orchestrator_verify.py`; `tests/red_team/portability/verify-archived.bats` |
-| `deleted` / `removed` | target absent and no stale config refs | `lib.orchestrator_verify.verify_claim` | `hooks/orchestrator-claim-gate.sh` | `tests/contracts/test_orchestrator_verify.py`; `tests/contracts/test_orchestrator_claim_gate.py` |
-| `wired` / `integrated` / `registered` | target exists and is referenced from known config or integration surface | `lib.orchestrator_verify.verify_claim` | `hooks/orchestrator-claim-gate.sh` | `tests/contracts/test_orchestrator_verify.py` |
-| `done` / `closed` / `migrated` | claim includes inline executable evidence marker or remains open | `lib.orchestrator_verify.verify_claim`; `scripts/verify_plan_claims.py` | `hooks/plan-claim-validator.sh`; `hooks/orchestrator-claim-gate.sh` | `tests/contracts/test_orchestrator_claim_gate.py`; `tests/red_team/portability/plan-claim-validator.bats` |
+| `archived` | archive copy present, original absent, no stale config refs | `cos_lib.orchestrator_verify.verify_claim`; `scripts/verify-archived.sh` for explicit archive manifests | `hooks/orchestrator-claim-gate.sh`; `hooks/claim-validator.sh` for Agent reports | `tests/contracts/test_orchestrator_verify.py`; `tests/red_team/portability/verify-archived.bats` |
+| `deleted` / `removed` | target absent and no stale config refs | `cos_lib.orchestrator_verify.verify_claim` | `hooks/orchestrator-claim-gate.sh` | `tests/contracts/test_orchestrator_verify.py`; `tests/contracts/test_orchestrator_claim_gate.py` |
+| `wired` / `integrated` / `registered` | target exists and is referenced from known config or integration surface | `cos_lib.orchestrator_verify.verify_claim` | `hooks/orchestrator-claim-gate.sh` | `tests/contracts/test_orchestrator_verify.py` |
+| `done` / `closed` / `migrated` | claim includes inline executable evidence marker or remains open | `cos_lib.orchestrator_verify.verify_claim`; `scripts/verify_plan_claims.py` | `hooks/plan-claim-validator.sh`; `hooks/orchestrator-claim-gate.sh` | `tests/contracts/test_orchestrator_claim_gate.py`; `tests/red_team/portability/plan-claim-validator.bats` |
 | file creation/update claims | claimed artifact exists in the repo | `hooks/claim-validator.sh` | `hooks/claim-validator.sh` on Agent outputs where the harness exposes Agent events | `tests/behavior/test_claim_validator.py` |
 
 ## Enforcement surfaces

@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.repo_map import build_repo_map
+from cos_lib.repo_map import build_repo_map
 
 parser = argparse.ArgumentParser(description="Build a COS repo-map context packet")
 parser.add_argument("query")

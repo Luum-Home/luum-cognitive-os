@@ -28,7 +28,7 @@ This change was auto-detected as architecturally significant based on 4 signal(s
 
 From the commit description:
 docker-pip-phase2: env-var-overridable localhost references.
-- lib/agent_output_to_bus.py, packages/agent-coordination/lib/agent_bus.py,
+- cos_lib/agent_output_to_bus.py, packages/agent-coordination/lib/agent_bus.py,
   packages/agent-coordination/lib/agent_dashboard.py: added
   _DEFAULT_VALKEY_URL = os.environ.get("VALKEY_URL",
       os.environ.get("COS_VALKEY_URL", "redis://localhost:6379")).
@@ -77,7 +77,7 @@ Detected signal types: dependency change, config schema change, hook change, fil
 fix(audit): docker-pip localhost envs + targeted_test_resolver + redis dep
 
 docker-pip-phase2: env-var-overridable localhost references.
-- lib/agent_output_to_bus.py, packages/agent-coordination/lib/agent_bus.py,
+- cos_lib/agent_output_to_bus.py, packages/agent-coordination/lib/agent_bus.py,
   packages/agent-coordination/lib/agent_dashboard.py: added
   _DEFAULT_VALKEY_URL = os.environ.get("VALKEY_URL",
       os.environ.get("COS_VALKEY_URL", "redis://localhost:6379")).

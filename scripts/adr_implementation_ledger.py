@@ -175,7 +175,7 @@ def extract_open_questions(text: str) -> list[str]:
     return list(dict.fromkeys(questions))[:10]
 
 
-PATH_PREFIXES = ("docs/", "hooks/", "scripts/", "skills/", "rules/", "lib/", "tests/", "manifests/", "docker/", "requirements/")
+PATH_PREFIXES = ("docs/", "hooks/", "scripts/", "skills/", "rules/", "cos_lib/", "tests/", "manifests/", "docker/", "requirements/")
 
 
 def normalized_repo_path(token: str) -> str | None:
@@ -246,7 +246,7 @@ def extract_explicit_evidence(text: str, project_dir: Path) -> list[str]:
         if stripped and len(stripped) <= 240 and EVIDENCE_TERMS.search(stripped) and IMPLEMENTED_TERMS.search(stripped):
             evidence.append(stripped)
     for token in re.findall(r"`([^`]+)`", text):
-        if token.startswith(("docs/", "hooks/", "scripts/", "skills/", "rules/", "lib/", "tests/")) and (project_dir / token).exists():
+        if token.startswith(("docs/", "hooks/", "scripts/", "skills/", "rules/", "cos_lib/", "tests/")) and (project_dir / token).exists():
             evidence.append(f"existing path: {token}")
     return list(dict.fromkeys(evidence))[:12]
 

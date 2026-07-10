@@ -493,7 +493,7 @@ def _detect_imports(project_root: str, graph: SystemGraph) -> None:
                     source=name,
                     target=imported,
                     relation=RelationType.IMPORTS,
-                    evidence=f"{comp.path} imports lib.{imported}",
+                    evidence=f"{comp.path} imports cos_lib.{imported}",
                 ))
 
 
@@ -1091,7 +1091,7 @@ def _cli_main() -> None:
     import sys
 
     if len(sys.argv) < 2:
-        print("Usage: python -m lib.system_graph <command> [args]")
+        print("Usage: python -m cos_lib.system_graph <command> [args]")
         print("Commands: tree <component>, affected <file>, summary, orphans, hotspots, json <outfile>")
         sys.exit(1)
 
@@ -1104,14 +1104,14 @@ def _cli_main() -> None:
 
     if command == "tree":
         if len(sys.argv) < 3:
-            print("Usage: python -m lib.system_graph tree <component-name>")
+            print("Usage: python -m cos_lib.system_graph tree <component-name>")
             sys.exit(1)
         component = sys.argv[2]
         print(format_dependency_tree(graph, component))
 
     elif command == "affected":
         if len(sys.argv) < 3:
-            print("Usage: python -m lib.system_graph affected <file-path>")
+            print("Usage: python -m cos_lib.system_graph affected <file-path>")
             sys.exit(1)
         file_path = sys.argv[2]
         affected = get_affected_components(graph, file_path)
@@ -1147,7 +1147,7 @@ def _cli_main() -> None:
 
     elif command == "json":
         if len(sys.argv) < 3:
-            print("Usage: python -m lib.system_graph json <output-file>")
+            print("Usage: python -m cos_lib.system_graph json <output-file>")
             sys.exit(1)
         outfile = sys.argv[2]
         export_graph_json(graph, outfile)

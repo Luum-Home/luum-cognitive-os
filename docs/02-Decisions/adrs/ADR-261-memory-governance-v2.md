@@ -265,7 +265,7 @@ vocabulary; `FreshnessResult.note=None` when `state=="stable"` to reduce noise.
 
 ```
 [ ] lib/memory_governance.py exists; importable via
-    python3 -c "from lib.memory_governance import get_policy, is_stale, boosted_score, assess_freshness"
+    python3 -c "from cos_lib.memory_governance import get_policy, is_stale, boosted_score, assess_freshness"
 
 [ ] pytest tests/unit/test_memory_governance.py passes, covering:
     - get_policy returns correct MemoryTypePolicy for each of the six governed types

@@ -12,10 +12,10 @@ import os as _cos_os
 import sys as _cos_sys
 _cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
 import sys
-from lib.script_helpers import object_maps as _finding_maps
-from lib.script_helpers import object_map as _object_map
-from lib.script_helpers import is_probably_text
-from lib.script_helpers import run_git_ls_files
+from cos_lib.script_helpers import object_maps as _finding_maps
+from cos_lib.script_helpers import object_map as _object_map
+from cos_lib.script_helpers import is_probably_text
+from cos_lib.script_helpers import run_git_ls_files
 
 import argparse
 import json
@@ -61,7 +61,7 @@ PROJECT_TEMPLATE_DOC_PREFIXES = {
 SURFACE_PREFIXES: list[tuple[str, str]] = [
     ("P0", "hooks/"),
     ("P0", "scripts/"),
-    ("P0", "lib/"),
+    ("P0", "cos_lib/"),
     ("P0", "cmd/"),
     ("P0", "crates/"),
     ("P0", "bin/"),

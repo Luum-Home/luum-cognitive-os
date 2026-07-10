@@ -11,7 +11,7 @@ from typing import Optional
 
 import pytest
 
-from lib.symbiosis_monitor import SymbiosisMonitor, SymbiosisReport, _read_jsonl_last_24h
+from cos_lib.symbiosis_monitor import SymbiosisMonitor, SymbiosisReport, _read_jsonl_last_24h
 
 pytestmark = pytest.mark.unit
 

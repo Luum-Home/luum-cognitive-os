@@ -10,7 +10,7 @@ import json
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-from lib.skill_failure_repair import (
+from cos_lib.skill_failure_repair import (
     find_failing_skills,
     propose_repair_action,
     emit_repair_signal,

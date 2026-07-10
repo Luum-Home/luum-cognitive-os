@@ -100,19 +100,19 @@ adrs:
     is evidence/status reconciliation.
 - adr_id: ADR-033-harness-agnostic-event-capture
   closure_class: evidence-only
-  reason: lib/harness_adapter/, lib/event_bus.py, scripts/cos-events.sh, canonical event contract tests, and portability tests
+  reason: cos_lib/harness_adapter/, cos_lib/event_bus.py, scripts/cos-events.sh, canonical event contract tests, and portability tests
     exist. Closure is evidence/status reconciliation.
 - adr_id: ADR-034-harness-agnostic-live-streaming
   closure_class: evidence-only
-  reason: 'The Proposed status is stale: scripts/cos_executor.py, scripts/cos_watch.py, lib/harness_adapter/aider_streaming.py,
+  reason: 'The Proposed status is stale: scripts/cos_executor.py, scripts/cos_watch.py, cos_lib/harness_adapter/aider_streaming.py,
     and the three named tests exist and passed in this session.'
 - adr_id: ADR-037-self-knowledge-base
   closure_class: evidence-only
-  reason: scripts/cos_build_self_knowledge.py, hooks/self-knowledge-refresh.sh, lib/self_knowledge.py, generated .cognitive-os/self-knowledge/
+  reason: scripts/cos_build_self_knowledge.py, hooks/self-knowledge-refresh.sh, cos_lib/self_knowledge.py, generated .cognitive-os/self-knowledge/
     artifacts, and unit/integration tests exist and passed in this session.
 - adr_id: ADR-042-valkey-local-daemon
   closure_class: evidence-only
-  reason: scripts/cos-valkey-local.sh, hooks/valkey-ensure.sh, lib/agent_bus.py local fallback, and tests/integration/test_valkey_local_daemon.py
+  reason: scripts/cos-valkey-local.sh, hooks/valkey-ensure.sh, cos_lib/agent_bus.py local fallback, and tests/integration/test_valkey_local_daemon.py
 - adr_id: ADR-044-context-payload-slimming
   closure_class: evidence-only
   reason: Phase-2 repo surfaces are present (.claude/commands/, compact catalog generator, lazy catalog tests). This session

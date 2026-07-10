@@ -21,7 +21,7 @@ import cos_demotion_loop_audit
 import cos_false_positive_ledger
 import cos_manifest_tier_claim_audit
 import silent_failure_audit
-from lib.self_improvement_loop import build_self_improvement_plan, write_plan
+from cos_lib.self_improvement_loop import build_self_improvement_plan, write_plan
 
 
 def build_self_improvement_inputs(project_root: Path) -> dict:

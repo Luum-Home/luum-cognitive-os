@@ -6,8 +6,8 @@ from pathlib import Path
 
 import pytest
 
-from lib.governed_self_improvement import suggest_improvement_signals
-from lib.key_learning_capture import build_records, extract_key_learnings
+from cos_lib.governed_self_improvement import suggest_improvement_signals
+from cos_lib.key_learning_capture import build_records, extract_key_learnings
 
 pytestmark = pytest.mark.unit
 

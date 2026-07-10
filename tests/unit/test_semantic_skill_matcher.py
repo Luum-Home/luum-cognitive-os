@@ -12,8 +12,8 @@ import time
 
 import pytest
 
-from lib import semantic_skill_matcher as sm
-from lib.semantic_skill_matcher import (
+from cos_lib import semantic_skill_matcher as sm
+from cos_lib.semantic_skill_matcher import (
     SemanticMatch,
     SemanticSkillMatcher,
     load_skill_metadata,
@@ -41,7 +41,7 @@ live = pytest.mark.semantic_routing
 @pytest.fixture(scope="module")
 def real_router():
     """Real SkillRouter against the on-disk catalog (all 196 skills)."""
-    from lib.skill_router import SkillRouter
+    from cos_lib.skill_router import SkillRouter
 
     return SkillRouter()
 
@@ -284,7 +284,7 @@ def test_skill_drift_invalidates_cache(tmp_path):
     the corpus produces a different filename — old cache untouched, new
     one written.
     """
-    from lib.semantic_skill_matcher import _SkillIndex, _catalog_signature
+    from cos_lib.semantic_skill_matcher import _SkillIndex, _catalog_signature
 
     idx_a = _SkillIndex(
         skill_name="demo",

@@ -13,7 +13,7 @@ import threading
 
 import pytest
 
-from lib.prompt_cache import (
+from cos_lib.prompt_cache import (
     _apply_cache_marker,
     apply_cache_to_system_prompt,
     apply_message_cache,
@@ -38,7 +38,7 @@ pytestmark = pytest.mark.unit
 
 def _fresh_metrics():
     """Reset process-local cache metrics between tests to avoid cross-test leakage."""
-    import lib.prompt_cache as pc
+    import cos_lib.prompt_cache as pc
     with pc._metrics_lock:
         for k in list(pc._metrics.keys()):
             pc._metrics[k] = 0
@@ -551,7 +551,7 @@ class TestCacheMetrics:
         assert m["hit_rate_pct"] == 0.0
 
     def test_hit_rate_computed_correctly(self):
-        import lib.prompt_cache as pc
+        import cos_lib.prompt_cache as pc
         with pc._metrics_lock:
             pc._metrics["hits"] = 3
             pc._metrics["misses"] = 1
@@ -562,13 +562,13 @@ class TestCacheMetrics:
         """Mutating the returned dict must not affect internal state."""
         m = cache_metrics()
         m["hits"] = 9999
-        import lib.prompt_cache as pc
+        import cos_lib.prompt_cache as pc
         with pc._metrics_lock:
             assert pc._metrics["hits"] == 0
 
     def test_metrics_thread_safe(self):
         """Concurrent metric increments must not corrupt the counter."""
-        import lib.prompt_cache as pc
+        import cos_lib.prompt_cache as pc
         errors = []
 
         def bump():

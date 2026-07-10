@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from lib.runtime_benchmark import RuntimeBenchmarkResult, append_result, format_leaderboard, load_results, run_local_smoke, validate_result
+from cos_lib.runtime_benchmark import RuntimeBenchmarkResult, append_result, format_leaderboard, load_results, run_local_smoke, validate_result
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 

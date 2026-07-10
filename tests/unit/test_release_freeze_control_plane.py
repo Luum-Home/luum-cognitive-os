@@ -4,7 +4,7 @@ from pathlib import Path
 
 import yaml
 
-from lib.release_freeze import prepare
+from cos_lib.release_freeze import prepare
 
 
 def test_release_freeze_runs_pre_public_control_plane_when_enabled(tmp_path: Path) -> None:

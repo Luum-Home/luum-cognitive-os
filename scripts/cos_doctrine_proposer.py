@@ -26,8 +26,8 @@ if str(SCRIPT_DIR) not in sys.path:
 
 import cos_boring_reliability
 import cos_claim_signature_audit
-from lib.doctrine_proposer import build_doctrine_proposals, build_report, write_markdown
-from lib.self_improvement_loop import build_self_improvement_plan
+from cos_lib.doctrine_proposer import build_doctrine_proposals, build_report, write_markdown
+from cos_lib.self_improvement_loop import build_self_improvement_plan
 
 
 def _safe_boring_dashboard(project_root: Path, profile: str) -> dict:

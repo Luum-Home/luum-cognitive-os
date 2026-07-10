@@ -1,5 +1,5 @@
 """Unit tests for lib/notification_digest.py"""
-from lib.notification_digest import NotificationDigest
+from cos_lib.notification_digest import NotificationDigest
 
 
 # ---------------------------------------------------------------------------

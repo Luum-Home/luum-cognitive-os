@@ -109,7 +109,7 @@ Auto-detects the test framework from project files, runs the test suite, and rep
 Use `lib/test_framework_detector.py` to identify the project's test framework:
 
 ```python
-from lib.test_framework_detector import TestFrameworkDetector
+from cos_lib.test_framework_detector import TestFrameworkDetector
 
 detector = TestFrameworkDetector()
 frameworks = detector.detect(".")

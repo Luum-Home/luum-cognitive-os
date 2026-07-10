@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.consequence_engine import (
+from cos_lib.consequence_engine import (
     Consequence,
     ConsequenceAction,
     ConsequenceEngine,

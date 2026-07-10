@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.surface5_adoption_contract import REQUIRED_PROOF_SECTIONS, check_surface5_adoption_contract
+from cos_lib.surface5_adoption_contract import REQUIRED_PROOF_SECTIONS, check_surface5_adoption_contract
 
 pytestmark = pytest.mark.contract
 

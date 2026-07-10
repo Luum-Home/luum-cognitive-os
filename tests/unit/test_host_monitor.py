@@ -7,7 +7,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from lib.host_monitor import HostMonitor
+from cos_lib.host_monitor import HostMonitor
 
 
 # ---------------------------------------------------------------------------

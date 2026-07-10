@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.context_budget_monitor import build_report
+from cos_lib.context_budget_monitor import build_report
 
 pytestmark = pytest.mark.unit
 

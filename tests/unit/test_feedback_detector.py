@@ -1,5 +1,5 @@
 """
-Unit tests for lib.feedback_detector — FeedbackDetector, FeedbackType, FeedbackSignal.
+Unit tests for cos_lib.feedback_detector — FeedbackDetector, FeedbackType, FeedbackSignal.
 
 Covers:
   - EXPLICIT_POSITIVE: English praise phrases
@@ -14,7 +14,7 @@ Minimum: 20 tests.
 """
 
 import pytest
-from lib.feedback_detector import FeedbackDetector, FeedbackType, FeedbackSignal
+from cos_lib.feedback_detector import FeedbackDetector, FeedbackType, FeedbackSignal
 
 
 @pytest.fixture

@@ -79,7 +79,7 @@ def _provider_configured() -> dict[str, Any]:
     }
     # Live probe for direct Anthropic API policy. A key alone is not enough.
     try:
-        from lib.anthropic_direct_policy import direct_anthropic_api_enabled
+        from cos_lib.anthropic_direct_policy import direct_anthropic_api_enabled
 
         result["anthropic_api_direct"]["configured"] = bool(direct_anthropic_api_enabled())
         result["anthropic_api_direct"]["policy_enabled"] = result["anthropic_api_direct"]["configured"]
@@ -89,7 +89,7 @@ def _provider_configured() -> dict[str, Any]:
 
     # Live probe for qwen
     try:
-        from lib.qwen_provider import is_configured as qwen_is_configured
+        from cos_lib.qwen_provider import is_configured as qwen_is_configured
         result["alibaba_qwen"]["live_probe"] = bool(qwen_is_configured())
     except ImportError:
         result["alibaba_qwen"]["live_probe"] = False

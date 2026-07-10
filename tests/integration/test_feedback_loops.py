@@ -35,15 +35,15 @@ lib_available = True
 _import_error: str = ""
 
 try:
-    from lib.consequence_engine import (
+    from cos_lib.consequence_engine import (
         ConsequenceEngine,
         Consequence,
         ConsequenceAction,
         PerformanceRecord,
     )
-    from lib.skill_archive import SkillArchiveManager
-    from lib.learning_pipeline import LearningPipeline
-    from lib.record_completion import (
+    from cos_lib.skill_archive import SkillArchiveManager
+    from cos_lib.learning_pipeline import LearningPipeline
+    from cos_lib.record_completion import (
         extract_skill_name,
         extract_trust_score,
         estimate_tokens,

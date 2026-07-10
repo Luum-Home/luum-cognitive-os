@@ -10,7 +10,7 @@ superseded_by: null
 implementation_files:
   - scripts/cos_repair.py
   - scripts/cos_validate.py
-  - lib/validation_lanes.py
+  - cos_lib/validation_lanes.py
 tier: standard
 tags: [stability, friction-reduction, guards, maturity]
 ---

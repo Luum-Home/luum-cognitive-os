@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.snapshot_manager import commit_snapshot_plan, plan_snapshot, sweep_snapshot_plans
+from cos_lib.snapshot_manager import commit_snapshot_plan, plan_snapshot, sweep_snapshot_plans
 
 
 def _init_repo(path: Path) -> None:

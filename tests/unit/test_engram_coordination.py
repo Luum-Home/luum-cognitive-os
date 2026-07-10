@@ -5,7 +5,7 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 
-from lib import engram_claims, engram_locks
+from cos_lib import engram_claims, engram_locks
 
 pytestmark = pytest.mark.unit
 

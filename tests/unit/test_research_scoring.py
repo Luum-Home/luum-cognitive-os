@@ -9,7 +9,7 @@ from typing import Dict
 
 import pytest
 
-from lib.research_scoring import (
+from cos_lib.research_scoring import (
     calculate_engagement,
     calculate_recency,
     calculate_relevance,

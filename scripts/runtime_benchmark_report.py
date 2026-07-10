@@ -11,7 +11,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from lib.runtime_benchmark import format_leaderboard, load_results
+from cos_lib.runtime_benchmark import format_leaderboard, load_results
 
 
 DEFAULT_RESULTS = PROJECT_ROOT / ".cognitive-os" / "metrics" / "runtime-benchmark-results.jsonl"

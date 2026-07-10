@@ -1,4 +1,4 @@
-"""Unit tests for lib.engram_lifecycle — Phase 1 of ADR-071.
+"""Unit tests for cos_lib.engram_lifecycle — Phase 1 of ADR-071.
 
 Covers all 18 tests listed in the feature plan:
   .cognitive-os/plans/features/engram-lifecycle-evolution.md
@@ -18,7 +18,7 @@ from unittest.mock import patch
 
 import pytest
 
-from lib.engram_lifecycle import (
+from cos_lib.engram_lifecycle import (
     EngramLifecycle,
     adjusted_score,
     decay_retention,
@@ -235,7 +235,7 @@ class TestSave:
             saved_content.append(content)
             return {"id": 99, "title": title, "content": content}
 
-        with patch("lib.engram_lifecycle.engram_client.save_observation", side_effect=fake_save):
+        with patch("cos_lib.engram_lifecycle.engram_client.save_observation", side_effect=fake_save):
             result = lc.save("My title", "Original body", type_="decision")
 
         assert result is not None
@@ -251,7 +251,7 @@ class TestSave:
 
     def test_save_returns_none_when_engram_unavailable(self):
         lc = _make_lc()
-        with patch("lib.engram_lifecycle.engram_client.save_observation", return_value=None):
+        with patch("cos_lib.engram_lifecycle.engram_client.save_observation", return_value=None):
             result = lc.save("title", "content", type_="manual")
         assert result is None
 
@@ -287,7 +287,7 @@ class TestSearch:
         older = self._make_obs_with_trailer(lc, 2, "decision", days_old=120, confidence=0.8)
 
         with patch(
-            "lib.engram_lifecycle.engram_client.search_observations",
+            "cos_lib.engram_lifecycle.engram_client.search_observations",
             return_value=[older, newer],
         ):
             results = lc.search("test query", lifecycle_weight=True)
@@ -305,7 +305,7 @@ class TestSearch:
         obs_b = _obs(content="No trailer", obs_id=20)
 
         with patch(
-            "lib.engram_lifecycle.engram_client.search_observations",
+            "cos_lib.engram_lifecycle.engram_client.search_observations",
             return_value=[obs_a, obs_b],
         ):
             results = lc.search("query", lifecycle_weight=False)
@@ -320,7 +320,7 @@ class TestSearch:
         obs_no_trailer = _obs(content="Plain content, no trailer", obs_id=5)
 
         with patch(
-            "lib.engram_lifecycle.engram_client.search_observations",
+            "cos_lib.engram_lifecycle.engram_client.search_observations",
             return_value=[obs_no_trailer],
         ):
             results = lc.search("query", lifecycle_weight=True)
@@ -334,7 +334,7 @@ class TestSearch:
         stale = _obs(content="Old policy", obs_id=2, sync_id="obs-stale", valid_to="2026-01-01T00:00:00Z")
 
         with patch(
-            "lib.engram_lifecycle.engram_client.search_observations",
+            "cos_lib.engram_lifecycle.engram_client.search_observations",
             return_value=[stale, current],
         ):
             results = _make_lc().search("policy", lifecycle_weight=True)
@@ -388,7 +388,7 @@ class TestSearch:
         )
 
         with patch(
-            "lib.engram_lifecycle.engram_client.search_observations",
+            "cos_lib.engram_lifecycle.engram_client.search_observations",
             return_value=[stale, current],
         ):
             results = lc.search(
@@ -441,7 +441,7 @@ class TestSearch:
         )
 
         with patch(
-            "lib.engram_lifecycle.engram_client.search_observations",
+            "cos_lib.engram_lifecycle.engram_client.search_observations",
             return_value=[other, procedure],
         ):
             results = lc.search("how run integration tests", retrieval_strategy="hybrid")
@@ -477,9 +477,9 @@ class TestReinforce:
             updated_calls.append({"content": content})
             return {"id": obs_id, "content": content}
 
-        with patch("lib.engram_lifecycle.engram_http_client.is_available", return_value=True):
-            with patch("lib.engram_lifecycle.engram_http_client.get_observation", return_value=obs):
-                with patch("lib.engram_lifecycle.engram_http_client.update_observation", side_effect=fake_update):
+        with patch("cos_lib.engram_lifecycle.engram_http_client.is_available", return_value=True):
+            with patch("cos_lib.engram_lifecycle.engram_http_client.get_observation", return_value=obs):
+                with patch("cos_lib.engram_lifecycle.engram_http_client.update_observation", side_effect=fake_update):
                     result = lc.reinforce(42)
 
         assert result is True
@@ -493,8 +493,8 @@ class TestReinforce:
 
     def test_reinforce_nonexistent_id_returns_false(self):
         lc = _make_lc()
-        with patch("lib.engram_lifecycle.engram_http_client.is_available", return_value=True):
-            with patch("lib.engram_lifecycle.engram_http_client.get_observation", return_value=None):
+        with patch("cos_lib.engram_lifecycle.engram_http_client.is_available", return_value=True):
+            with patch("cos_lib.engram_lifecycle.engram_http_client.get_observation", return_value=None):
                 result = lc.reinforce("nonexistent-999")
         assert result is False
 
@@ -509,9 +509,9 @@ class TestReinforce:
             updated_calls.append({"content": content})
             return {"id": obs_id, "content": content}
 
-        with patch("lib.engram_lifecycle.engram_http_client.is_available", return_value=True):
-            with patch("lib.engram_lifecycle.engram_http_client.get_observation", return_value=obs):
-                with patch("lib.engram_lifecycle.engram_http_client.update_observation", side_effect=fake_update):
+        with patch("cos_lib.engram_lifecycle.engram_http_client.is_available", return_value=True):
+            with patch("cos_lib.engram_lifecycle.engram_http_client.get_observation", return_value=obs):
+                with patch("cos_lib.engram_lifecycle.engram_http_client.update_observation", side_effect=fake_update):
                     result = lc.reinforce(77)
 
         assert result is True
@@ -523,7 +523,7 @@ class TestReinforce:
 
     def test_reinforce_returns_false_when_daemon_down(self):
         lc = _make_lc()
-        with patch("lib.engram_lifecycle.engram_http_client.is_available", return_value=False):
+        with patch("cos_lib.engram_lifecycle.engram_http_client.is_available", return_value=False):
             result = lc.reinforce(42)
         assert result is False
 
@@ -547,9 +547,9 @@ class TestReinforce:
             updated_calls.append({"content": content})
             return {"id": obs_id, "content": content}
 
-        with patch("lib.engram_lifecycle.engram_http_client.is_available", return_value=True):
-            with patch("lib.engram_lifecycle.engram_http_client.get_observation", return_value=obs):
-                with patch("lib.engram_lifecycle.engram_http_client.update_observation", side_effect=fake_update):
+        with patch("cos_lib.engram_lifecycle.engram_http_client.is_available", return_value=True):
+            with patch("cos_lib.engram_lifecycle.engram_http_client.get_observation", return_value=obs):
+                with patch("cos_lib.engram_lifecycle.engram_http_client.update_observation", side_effect=fake_update):
                     lc.reinforce(10)
 
         new_trailer = lc._parse_trailer(updated_calls[0]["content"])
@@ -560,7 +560,7 @@ class TestReinforce:
 def test_search_without_native_scores_uses_rank_fallback() -> None:
     lc = _make_lc()
     observations = [_obs(obs_id=1), _obs(obs_id=2), _obs(obs_id=3)]
-    with patch("lib.engram_lifecycle.engram_client.search_observations", return_value=observations):
+    with patch("cos_lib.engram_lifecycle.engram_client.search_observations", return_value=observations):
         results = lc.search("query", limit=3)
 
     scores = [result["adjusted_score"] for result in results]
@@ -571,7 +571,7 @@ def test_search_without_native_scores_uses_rank_fallback() -> None:
 def test_reinforce_records_daemon_down_metric(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("COGNITIVE_OS_PROJECT_DIR", str(tmp_path))
     lc = _make_lc()
-    with patch("lib.engram_lifecycle.engram_http_client.is_available", return_value=False):
+    with patch("cos_lib.engram_lifecycle.engram_http_client.is_available", return_value=False):
         assert lc.reinforce(123) is False
 
     metric = tmp_path / ".cognitive-os" / "metrics" / "engram-daemon-down.jsonl"

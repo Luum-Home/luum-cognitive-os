@@ -54,7 +54,7 @@ python3 - <<PYEOF
 import sys, os
 sys.path.insert(0, '$_PROJECT_DIR')
 from pathlib import Path
-from lib.skill_failure_repair import (
+from cos_lib.skill_failure_repair import (
     find_failing_skills,
     propose_repair_action,
     emit_repair_signal,

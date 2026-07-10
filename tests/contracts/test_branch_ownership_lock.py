@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.branch_lock import acquire, holder, release, renew
+from cos_lib.branch_lock import acquire, holder, release, renew
 
 pytestmark = pytest.mark.contract
 

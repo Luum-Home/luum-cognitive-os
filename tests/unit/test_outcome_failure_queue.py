@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.outcome_failure_queue import (
+from cos_lib.outcome_failure_queue import (
     drain_queue,
     enqueue_failure,
     mark_processed,

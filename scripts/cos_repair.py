@@ -14,7 +14,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from lib.session_lifecycle import reap_sessions
+from cos_lib.session_lifecycle import reap_sessions
 
 
 def _run_cleanup(repo: Path, backup_root: Path, apply: bool) -> dict[str, Any]:

@@ -1,11 +1,11 @@
-"""Unit tests for lib.lazy_imports (ADR-290 Pattern 1)."""
+"""Unit tests for cos_lib.lazy_imports (ADR-290 Pattern 1)."""
 from __future__ import annotations
 
 import threading
 
 import pytest
 
-from lib.lazy_imports import LazyImport
+from cos_lib.lazy_imports import LazyImport
 
 
 def test_factory_called_exactly_once_under_concurrent_first_access():

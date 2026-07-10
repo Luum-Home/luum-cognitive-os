@@ -69,7 +69,7 @@ or "what patterns are used across the auth layer."
 ### 1. Check Availability
 
 ```python
-from lib.cognee_client import is_cognee_available, is_cognee_enabled
+from cos_lib.cognee_client import is_cognee_available, is_cognee_enabled
 
 if not is_cognee_enabled():
     print("Cognee not enabled. Set COGNEE_ENABLED=true")
@@ -82,7 +82,7 @@ elif not is_cognee_available():
 ### 2. Ingest Knowledge (if needed)
 
 ```python
-from lib.cognee_client import CogneeClient
+from cos_lib.cognee_client import CogneeClient
 
 client = CogneeClient()
 
@@ -107,7 +107,7 @@ for r in results:
 ### 4. Graceful Fallback
 
 ```python
-from lib.cognee_client import search_graceful
+from cos_lib.cognee_client import search_graceful
 
 # Returns empty list if Cognee is unavailable — never raises
 results = search_graceful("JWT token validation", limit=5)

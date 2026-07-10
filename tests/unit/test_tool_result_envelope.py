@@ -1,4 +1,4 @@
-"""Unit tests for lib.tool_result_envelope (ADR-264).
+"""Unit tests for cos_lib.tool_result_envelope (ADR-264).
 
 Coverage:
 - under-threshold passthrough
@@ -40,7 +40,7 @@ def _make_payload(size: int) -> str:
 
 class TestUnderThreshold:
     def test_small_result_passthrough(self):
-        from lib.tool_result_envelope import wrap_if_large
+        from cos_lib.tool_result_envelope import wrap_if_large
 
         raw = _make_payload(SMALL_SIZE)
         result = wrap_if_large(raw, tool_name="read_file", target_hint="/some/path")
@@ -48,7 +48,7 @@ class TestUnderThreshold:
         assert "[TOOL RESULT ENVELOPE]" not in result
 
     def test_exactly_at_threshold_passthrough(self):
-        from lib.tool_result_envelope import wrap_if_large
+        from cos_lib.tool_result_envelope import wrap_if_large
 
         raw = _make_payload(THRESHOLD)
         result = wrap_if_large(raw, tool_name="read_file", target_hint="/some/path")
@@ -57,7 +57,7 @@ class TestUnderThreshold:
 
 class TestOverThreshold:
     def test_envelope_marker_present(self, tmp_path):
-        from lib.tool_result_envelope import wrap_if_large
+        from cos_lib.tool_result_envelope import wrap_if_large
 
         raw = _make_payload(LARGE_SIZE)
         result = wrap_if_large(
@@ -70,7 +70,7 @@ class TestOverThreshold:
         assert "[TOOL RESULT ENVELOPE]" in result
 
     def test_envelope_contains_tool_name(self, tmp_path):
-        from lib.tool_result_envelope import wrap_if_large
+        from cos_lib.tool_result_envelope import wrap_if_large
 
         raw = _make_payload(LARGE_SIZE)
         result = wrap_if_large(
@@ -83,7 +83,7 @@ class TestOverThreshold:
         assert "tool: grep_files" in result
 
     def test_envelope_contains_target_hint(self, tmp_path):
-        from lib.tool_result_envelope import wrap_if_large
+        from cos_lib.tool_result_envelope import wrap_if_large
 
         raw = _make_payload(LARGE_SIZE)
         result = wrap_if_large(
@@ -96,7 +96,7 @@ class TestOverThreshold:
         assert "target: find . -name '*.py'" in result
 
     def test_envelope_contains_full_size(self, tmp_path):
-        from lib.tool_result_envelope import wrap_if_large
+        from cos_lib.tool_result_envelope import wrap_if_large
 
         raw = _make_payload(LARGE_SIZE)
         result = wrap_if_large(
@@ -109,7 +109,7 @@ class TestOverThreshold:
         assert f"full_size: {LARGE_SIZE} chars" in result
 
     def test_preview_truncation(self, tmp_path):
-        from lib.tool_result_envelope import wrap_if_large
+        from cos_lib.tool_result_envelope import wrap_if_large
 
         raw = _make_payload(LARGE_SIZE)
         result = wrap_if_large(
@@ -138,7 +138,7 @@ class TestOverThreshold:
 
 class TestPersistFull:
     def test_persist_false_no_file(self, tmp_path):
-        from lib.tool_result_envelope import wrap_if_large
+        from cos_lib.tool_result_envelope import wrap_if_large
 
         raw = _make_payload(LARGE_SIZE)
         wrap_if_large(
@@ -152,7 +152,7 @@ class TestPersistFull:
         assert len(files) == 0, "persist_full=False must not write any spillover file"
 
     def test_persist_false_pointer_is_none(self, tmp_path):
-        from lib.tool_result_envelope import wrap_if_large
+        from cos_lib.tool_result_envelope import wrap_if_large
 
         raw = _make_payload(LARGE_SIZE)
         result = wrap_if_large(
@@ -165,7 +165,7 @@ class TestPersistFull:
         assert "full_pointer: none" in result
 
     def test_persist_true_file_exists(self, tmp_path):
-        from lib.tool_result_envelope import wrap_if_large
+        from cos_lib.tool_result_envelope import wrap_if_large
 
         raw = _make_payload(LARGE_SIZE)
         wrap_if_large(
@@ -179,7 +179,7 @@ class TestPersistFull:
         assert len(files) == 1, "persist_full=True must write exactly one spillover file"
 
     def test_persist_true_file_contains_raw(self, tmp_path):
-        from lib.tool_result_envelope import wrap_if_large
+        from cos_lib.tool_result_envelope import wrap_if_large
 
         raw = _make_payload(LARGE_SIZE)
         wrap_if_large(
@@ -194,7 +194,7 @@ class TestPersistFull:
         assert content == raw, "Spillover file must contain the full raw result"
 
     def test_persist_true_pointer_in_envelope(self, tmp_path):
-        from lib.tool_result_envelope import wrap_if_large
+        from cos_lib.tool_result_envelope import wrap_if_large
 
         raw = _make_payload(LARGE_SIZE)
         result = wrap_if_large(
@@ -212,7 +212,7 @@ class TestPersistFull:
 
 class TestSha256Stability:
     def test_same_input_same_filename(self, tmp_path):
-        from lib.tool_result_envelope import wrap_if_large
+        from cos_lib.tool_result_envelope import wrap_if_large
 
         raw = _make_payload(LARGE_SIZE)
         wrap_if_large(raw, "t", "h", persist_full=True, spillover_dir=str(tmp_path))
@@ -222,7 +222,7 @@ class TestSha256Stability:
         assert len(files) == 1, "Same content must produce the same spillover filename"
 
     def test_filename_is_sha256(self, tmp_path):
-        from lib.tool_result_envelope import wrap_if_large
+        from cos_lib.tool_result_envelope import wrap_if_large
 
         raw = _make_payload(LARGE_SIZE)
         wrap_if_large(raw, "t", "h", persist_full=True, spillover_dir=str(tmp_path))
@@ -236,7 +236,7 @@ class TestSha256Stability:
 
 class TestIdempotency:
     def test_already_enveloped_not_wrapped_again(self, tmp_path):
-        from lib.tool_result_envelope import wrap_if_large
+        from cos_lib.tool_result_envelope import wrap_if_large
 
         raw = _make_payload(LARGE_SIZE)
         first = wrap_if_large(raw, "t", "h", persist_full=False, spillover_dir=str(tmp_path))
@@ -246,15 +246,15 @@ class TestIdempotency:
 
 
 class TestComposabilityWithADR263:
-    """Verify graceful behavior whether or not lib.tool_replay_ledger exists."""
+    """Verify graceful behavior whether or not cos_lib.tool_replay_ledger exists."""
 
     def test_no_crash_when_ledger_absent(self, tmp_path):
         """wrap_if_large must work normally when ADR-263 ledger is not installed."""
         # Ensure the module is NOT available in this test.
-        ledger_mod = "lib.tool_replay_ledger"
+        ledger_mod = "cos_lib.tool_replay_ledger"
         original = sys.modules.pop(ledger_mod, None)
         try:
-            from lib.tool_result_envelope import wrap_if_large
+            from cos_lib.tool_result_envelope import wrap_if_large
 
             raw = _make_payload(LARGE_SIZE)
             result = wrap_if_large(raw, "t", "h", persist_full=False, spillover_dir=str(tmp_path))
@@ -265,7 +265,7 @@ class TestComposabilityWithADR263:
 
     def test_reference_only_preview_empty(self, tmp_path):
         """When ledger says REFERENCE_ONLY, passing preview_size=0 collapses to pointer-only."""
-        from lib.tool_result_envelope import wrap_if_large
+        from cos_lib.tool_result_envelope import wrap_if_large
 
         raw = _make_payload(LARGE_SIZE)
         result = wrap_if_large(
@@ -285,7 +285,7 @@ class TestRenderEnvelope:
     """Test render_envelope directly."""
 
     def test_render_format(self):
-        from lib.tool_result_envelope import EnvelopePreview, render_envelope
+        from cos_lib.tool_result_envelope import EnvelopePreview, render_envelope
 
         ep = EnvelopePreview(
             preview_text="hello world",
@@ -305,7 +305,7 @@ class TestRenderEnvelope:
         assert "--- end preview ---" in rendered
 
     def test_render_none_pointer(self):
-        from lib.tool_result_envelope import EnvelopePreview, render_envelope
+        from cos_lib.tool_result_envelope import EnvelopePreview, render_envelope
 
         ep = EnvelopePreview(
             preview_text="",

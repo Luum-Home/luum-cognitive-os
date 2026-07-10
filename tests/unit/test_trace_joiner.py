@@ -1,6 +1,6 @@
 import json
 
-from lib.trace_joiner import build_run_trace, normalize_event, stable_event_id
+from cos_lib.trace_joiner import build_run_trace, normalize_event, stable_event_id
 
 
 def test_stable_event_id_is_deterministic():

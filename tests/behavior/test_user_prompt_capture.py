@@ -30,19 +30,19 @@ class TestClassifierModule:
     """Verify the classifier library is importable and has the expected API."""
 
     def test_module_importable(self):
-        from lib.prompt_classifier import classify_prompt, should_capture_prompt
+        from cos_lib.prompt_classifier import classify_prompt, should_capture_prompt
         assert callable(classify_prompt)
         assert callable(should_capture_prompt)
 
     def test_classification_result_has_expected_fields(self):
-        from lib.prompt_classifier import classify_prompt
+        from cos_lib.prompt_classifier import classify_prompt
         result = classify_prompt("Build the auth module")
         assert hasattr(result, "category")
         assert hasattr(result, "should_capture")
         assert hasattr(result, "confidence")
 
     def test_prompt_category_enum_values(self):
-        from lib.prompt_classifier import PromptCategory
+        from cos_lib.prompt_classifier import PromptCategory
         expected = {
             "task_request", "decision", "feedback", "context",
             "status_query", "navigation", "acknowledgment", "unknown",
@@ -51,12 +51,12 @@ class TestClassifierModule:
         assert expected == actual
 
     def test_classifier_returns_bool_for_should_capture(self):
-        from lib.prompt_classifier import classify_prompt
+        from cos_lib.prompt_classifier import classify_prompt
         result = classify_prompt("ok")
         assert isinstance(result.should_capture, bool)
 
     def test_classifier_returns_float_confidence(self):
-        from lib.prompt_classifier import classify_prompt
+        from cos_lib.prompt_classifier import classify_prompt
         result = classify_prompt("Build the feature")
         assert isinstance(result.confidence, float)
         assert 0.0 <= result.confidence <= 1.0
@@ -72,7 +72,7 @@ class TestIntegration:
 
     def test_task_request_triggers_save(self):
         """A task request should trigger mem_save_prompt."""
-        from lib.prompt_classifier import classify_prompt
+        from cos_lib.prompt_classifier import classify_prompt
 
         mock_save = MagicMock()
         message = "Build the authentication module for payments"
@@ -89,7 +89,7 @@ class TestIntegration:
 
     def test_acknowledgment_skips_save(self):
         """An acknowledgment should NOT trigger mem_save_prompt."""
-        from lib.prompt_classifier import classify_prompt
+        from cos_lib.prompt_classifier import classify_prompt
 
         mock_save = MagicMock()
         message = "ok"
@@ -102,7 +102,7 @@ class TestIntegration:
 
     def test_decision_triggers_save(self):
         """A decision prompt should trigger mem_save_prompt."""
-        from lib.prompt_classifier import classify_prompt
+        from cos_lib.prompt_classifier import classify_prompt
 
         mock_save = MagicMock()
         message = "Let's go with PostgreSQL for the new database"
@@ -115,7 +115,7 @@ class TestIntegration:
 
     def test_status_query_skips_save(self):
         """A status query should NOT trigger mem_save_prompt."""
-        from lib.prompt_classifier import classify_prompt
+        from cos_lib.prompt_classifier import classify_prompt
 
         mock_save = MagicMock()
         message = "What's the status?"
@@ -128,7 +128,7 @@ class TestIntegration:
 
     def test_full_flow_multiple_messages(self):
         """Simulate a sequence of user messages in a session."""
-        from lib.prompt_classifier import classify_prompt
+        from cos_lib.prompt_classifier import classify_prompt
 
         mock_save = MagicMock()
         messages = [

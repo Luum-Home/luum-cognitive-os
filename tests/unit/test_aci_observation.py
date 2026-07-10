@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from lib.aci_observation import normalize_observation
+from cos_lib.aci_observation import normalize_observation
 
 
 def test_empty_success_is_explicit() -> None:

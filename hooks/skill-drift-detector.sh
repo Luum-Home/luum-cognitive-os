@@ -43,7 +43,7 @@ fi
 cd "$PROJECT_DIR" && python3 -c "
 import sys
 sys.path.insert(0, '.')
-from lib.skill_drift_detector import main
+from cos_lib.skill_drift_detector import main
 main()
 " 2>&1 || true
 

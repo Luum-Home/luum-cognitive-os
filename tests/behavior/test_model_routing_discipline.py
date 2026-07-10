@@ -2,7 +2,7 @@
 
 from pathlib import Path
 import pytest
-from lib.model_recommender import ModelRecommender
+from cos_lib.model_recommender import ModelRecommender
 
 ROUTING_MD = Path(__file__).parents[2] / "rules" / "model-routing.md"
 

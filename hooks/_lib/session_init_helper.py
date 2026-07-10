@@ -41,7 +41,7 @@ def _load_user_model(project_dir: str, session_dir: str) -> None:
     """Load user model from engram and write profile summary."""
     try:
         sys.path.insert(0, project_dir)
-        from lib.user_model import UserModel
+        from cos_lib.user_model import UserModel
 
         model = UserModel.load_from_engram()
         if getattr(model, "preferences", None):
@@ -56,7 +56,7 @@ def _maybe_generate_project_profile_draft(project_dir: str) -> None:
     """Generate a draft project profile during the early bootstrap window."""
     try:
         sys.path.insert(0, project_dir)
-        from lib.project_profile_bootstrap import write_project_profile_draft
+        from cos_lib.project_profile_bootstrap import write_project_profile_draft
 
         write_project_profile_draft(Path(project_dir))
     except Exception:
@@ -67,7 +67,7 @@ def _check_work_queue(project_dir: str) -> None:
     """Check work queue for pending items from prior sessions."""
     try:
         sys.path.insert(0, project_dir)
-        from lib.work_queue import WorkQueue
+        from cos_lib.work_queue import WorkQueue
 
         queue_path = os.path.join(project_dir, ".cognitive-os", "work-queue.json")
         q = WorkQueue(queue_path=queue_path)

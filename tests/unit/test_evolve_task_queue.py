@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.evolve_task_queue import (
+from cos_lib.evolve_task_queue import (
     QUEUE_CAP,
     EvolveProposal,
     EvolveTaskQueue,
@@ -115,7 +115,7 @@ class TestQueueCap:
         self, queue: EvolveTaskQueue, caplog: pytest.LogCaptureFixture
     ) -> None:
         """Enqueue 50 proposals (fills cap), then 51st must return None."""
-        with caplog.at_level("WARNING", logger="lib.evolve_task_queue"):
+        with caplog.at_level("WARNING", logger="cos_lib.evolve_task_queue"):
             for i in range(QUEUE_CAP):
                 p = _make_proposal(
                     title=f"Skill {i}",

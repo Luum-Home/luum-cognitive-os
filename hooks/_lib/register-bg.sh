@@ -45,7 +45,7 @@ import sys, os
 root = os.environ.get("COGNITIVE_OS_PROJECT_DIR") or os.getcwd()
 sys.path.insert(0, root)
 try:
-    import lib.process_registry as process_registry
+    import cos_lib.process_registry as process_registry
     process_registry.register(int(sys.argv[1]), sys.argv[2], int(sys.argv[3]), sys.argv[4])
 except Exception:
     pass  # Registry must never break the caller

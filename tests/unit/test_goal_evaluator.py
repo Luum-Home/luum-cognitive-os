@@ -5,13 +5,13 @@ from __future__ import annotations
 
 
 
-from lib.goal_evaluator import (
+from cos_lib.goal_evaluator import (
     GoalEvaluator,
     EvaluatorRule,
     _escape_untrusted,
     render_evaluator_prompt,
 )
-from lib.goal_state import EvidencePacket, GoalState
+from cos_lib.goal_state import EvidencePacket, GoalState
 
 
 # ---------------------------------------------------------------------------

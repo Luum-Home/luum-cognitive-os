@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from lib.public_claim_gate import scan
+from cos_lib.public_claim_gate import scan
 
 
 def _manifest(path: Path) -> Path:

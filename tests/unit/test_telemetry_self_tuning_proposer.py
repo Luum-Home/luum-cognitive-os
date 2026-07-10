@@ -13,7 +13,7 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT))
 
-from lib.telemetry_aggregator import aggregate_streams  # noqa: E402
+from cos_lib.telemetry_aggregator import aggregate_streams  # noqa: E402
 
 
 def _write_jsonl(path: Path, records: list[dict]) -> None:

@@ -7,7 +7,7 @@ the primary model's output. The verifier forms an independent opinion
 without seeing the original model's trust score or self-assessment.
 
 Usage:
-    from lib.cross_verifier import cross_verify, should_cross_verify
+    from cos_lib.cross_verifier import cross_verify, should_cross_verify
 
     if should_cross_verify(task, output):
         cv = cross_verify(task, output, verifier_model="haiku")
@@ -145,7 +145,7 @@ def cross_verify(
 
     # Try to import and use ClaudeExecutor
     try:
-        from lib.claude_executor import ClaudeExecutor
+        from cos_lib.claude_executor import ClaudeExecutor
 
         executor = ClaudeExecutor(default_model=verifier_model, default_timeout=120)
         result = executor.run(prompt, model=verifier_model)

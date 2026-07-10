@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.compatibility_layer import compatibility_inventory, compatibility_summary
+from cos_lib.compatibility_layer import compatibility_inventory, compatibility_summary
 
 pytestmark = pytest.mark.unit
 

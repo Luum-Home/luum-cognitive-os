@@ -110,7 +110,7 @@ if command -v python3 >/dev/null 2>&1; then
   python3 - <<PYEOF
 import sys
 sys.path.insert(0, '$PROJECT_DIR')
-from lib.snapshot_manager import prune_expired, list_snapshots
+from cos_lib.snapshot_manager import prune_expired, list_snapshots
 from pathlib import Path
 
 repo = Path('$PROJECT_DIR')

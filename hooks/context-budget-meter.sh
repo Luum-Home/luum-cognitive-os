@@ -39,8 +39,8 @@ cos_root = Path(sys.argv[2]).resolve()
 session_id = sys.argv[3]
 raw = sys.argv[4] if len(sys.argv) > 4 else ""
 sys.path.insert(0, str(cos_root))
-from lib.context_budget import append_metric, count_tokens, evaluate, read_budget
-from lib.taximeter import resource_tick
+from cos_lib.context_budget import append_metric, count_tokens, evaluate, read_budget
+from cos_lib.taximeter import resource_tick
 
 try:
     data = json.loads(raw) if raw.strip() else {}

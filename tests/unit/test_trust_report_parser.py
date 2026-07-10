@@ -13,8 +13,8 @@ Tests cover:
 
 import pytest
 
-from lib.trust_report_parser import TrustReport, TrustReportParser, TrustReportParseError, score_to_status
-from lib.trust_report_schema import build_trust_report
+from cos_lib.trust_report_parser import TrustReport, TrustReportParser, TrustReportParseError, score_to_status
+from cos_lib.trust_report_schema import build_trust_report
 
 
 # ---------------------------------------------------------------------------
@@ -261,7 +261,7 @@ class TestMultiParagraphBullets:
             "WHAT I VERIFIED:\n"
             "  - Ran python3 -m pytest tests/ — 47 passed, 0 failed, 2 warnings\n"
             "  - Ran ruff check . — no issues found in 15 files\n"
-            "  - Verified import structure with python3 -c 'import lib.example'\n"
+            "  - Verified import structure with python3 -c 'import cos_lib.example'\n"
             "UNSURE ABOUT:\n"
             "  - The regex may miss Unicode edge cases that weren't in the test suite\n"
             "  - Behaviour when the input file exceeds 1 GB has not been tested\n"

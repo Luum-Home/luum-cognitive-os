@@ -118,7 +118,7 @@ from pathlib import Path
 project = Path(os.environ.get("PROJECT_DIR", "."))
 sys.path.insert(0, str(project))
 try:
-    from lib.skill_router import SkillRouter
+    from cos_lib.skill_router import SkillRouter
 except Exception:
     raise SystemExit(0)
 

@@ -13,7 +13,7 @@ from typing import Any, Dict, List
 
 import pytest
 
-from lib.kpi_collector import (
+from cos_lib.kpi_collector import (
     _read_jsonl,
     collect_session_kpis,
     format_kpi_dashboard,

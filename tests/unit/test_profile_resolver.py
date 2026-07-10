@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.adaptive_profile import resolve_profile
+from cos_lib.adaptive_profile import resolve_profile
 
 pytestmark = pytest.mark.unit
 

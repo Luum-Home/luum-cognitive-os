@@ -21,7 +21,7 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from lib.integration_shard_plan import plan_shards  # noqa: E402
+from cos_lib.integration_shard_plan import plan_shards  # noqa: E402
 
 
 def test_plan_shards_balances_and_partitions_integration_tests() -> None:

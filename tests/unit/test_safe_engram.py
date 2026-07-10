@@ -1,5 +1,5 @@
 """
-Unit tests for lib.safe_engram.
+Unit tests for cos_lib.safe_engram.
 
 Covers:
   - safe_save blocks injection payloads
@@ -20,7 +20,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from lib.safe_engram import SafeEngramResult, safe_save, scan_only_check
+from cos_lib.safe_engram import SafeEngramResult, safe_save, scan_only_check
 
 
 # ---------------------------------------------------------------------------
@@ -203,7 +203,7 @@ class TestSafeSaveWithMockedEngram:
         mock_proc.stdout = "Saved with id=abc123."
         mock_proc.stderr = ""
 
-        with patch("lib.safe_engram.subprocess.run", return_value=mock_proc):
+        with patch("cos_lib.safe_engram.subprocess.run", return_value=mock_proc):
             result = safe_save("Decision", _CLEAN, engram_bin="engram")
 
         assert result.blocked is False
@@ -216,7 +216,7 @@ class TestSafeSaveWithMockedEngram:
         mock_proc.stdout = "OK"
         mock_proc.stderr = ""
 
-        with patch("lib.safe_engram.subprocess.run", return_value=mock_proc) as mock_run:
+        with patch("cos_lib.safe_engram.subprocess.run", return_value=mock_proc) as mock_run:
             safe_save("My Title", _CLEAN, engram_bin="engram", topic_key="architecture/test")
 
         called_cmd = mock_run.call_args[0][0]
@@ -231,7 +231,7 @@ class TestSafeSaveWithMockedEngram:
         mock_proc.stdout = "OK"
         mock_proc.stderr = ""
 
-        with patch("lib.safe_engram.subprocess.run", return_value=mock_proc) as mock_run:
+        with patch("cos_lib.safe_engram.subprocess.run", return_value=mock_proc) as mock_run:
             safe_save("T", _CLEAN, type_="decision", project="my-proj", engram_bin="engram")
 
         called_cmd = mock_run.call_args[0][0]
@@ -263,7 +263,7 @@ class TestSafeEngramEdgeCases:
         mock_proc.stdout = ""
         mock_proc.stderr = "engram error: connection refused"
 
-        with patch("lib.safe_engram.subprocess.run", return_value=mock_proc):
+        with patch("cos_lib.safe_engram.subprocess.run", return_value=mock_proc):
             result = safe_save("Title", _CLEAN, engram_bin="engram")
 
         assert result.blocked is False

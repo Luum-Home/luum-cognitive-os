@@ -62,7 +62,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, List, Optional
 
-from lib.validation_lanes import recommend_lane
+from cos_lib.validation_lanes import recommend_lane
 
 logger = logging.getLogger(__name__)
 
@@ -136,7 +136,7 @@ def _write_all(path: Path, entries: list[dict]) -> None:
 def _emit_event(event_type: str, payload: dict, session_id: str) -> None:
     """Emit a bus event — best-effort; never raises."""
     try:
-        from lib.event_bus import emit  # type: ignore[import]
+        from cos_lib.event_bus import emit  # type: ignore[import]
 
         emit(event_type, payload, session_id=session_id)
     except Exception as exc:  # noqa: BLE001

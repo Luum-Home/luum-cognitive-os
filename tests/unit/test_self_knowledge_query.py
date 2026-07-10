@@ -36,7 +36,7 @@ def indexed_project(tmp_path: Path) -> Path:
     """Create and index a project with known content."""
     # lib/rate_limiter.py
     lib = tmp_path / "lib"
-    lib.mkdir()
+    cos_lib.mkdir()
     (lib / "rate_limiter.py").write_text(
         textwrap.dedent("""\
             class RateLimiter:
@@ -67,7 +67,7 @@ def indexed_project(tmp_path: Path) -> Path:
         encoding="utf-8",
     )
     (lib / "agent_bus.py").write_text(
-        "from lib.circuit_breaker import is_open\nfrom lib.rate_limiter import check_rate_limit\n",
+        "from cos_lib.circuit_breaker import is_open\nfrom cos_lib.rate_limiter import check_rate_limit\n",
         encoding="utf-8",
     )
 

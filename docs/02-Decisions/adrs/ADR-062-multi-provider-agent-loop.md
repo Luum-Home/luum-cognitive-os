@@ -225,7 +225,7 @@ Total: ~4.5h sonnet, ~$4 in agent costs.
 ## Verification
 
 - `uv run python3 scripts/orchestrator.py run --task "say hi" --providers qwen,openrouter,gemini,ollama,claude --show-text` — runs successfully, first available tier answers.
-- `uv run python3 -c "from lib.providers.qwen import is_configured; print(is_configured())"` — returns True iff ALIBABA_QWEN_API_KEY set. Same pattern for every provider.
+- `uv run python3 -c "from cos_lib.providers.qwen import is_configured; print(is_configured())"` — returns True iff ALIBABA_QWEN_API_KEY set. Same pattern for every provider.
 - `uv run pytest tests/unit/test_providers/ -v` — all pass, each provider has ≥5 tests.
 - `scripts/smoke-multi-provider-fallback.sh` — live verification (skips tiers without API keys).
 

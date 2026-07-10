@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.cognitive_load_monitor import (
+from cos_lib.cognitive_load_monitor import (
     CognitiveLoadMonitor,
     CognitiveSnapshot,
     _BASELINE_WINDOW,

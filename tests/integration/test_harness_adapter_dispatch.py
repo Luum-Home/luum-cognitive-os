@@ -8,7 +8,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from lib.harness_adapter.dispatch import dispatch_event
+from cos_lib.harness_adapter.dispatch import dispatch_event
 
 
 def _read_jsonl(path: Path) -> list[dict]:

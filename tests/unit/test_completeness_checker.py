@@ -1,6 +1,6 @@
 import pytest
 
-from lib.completeness_checker import (
+from cos_lib.completeness_checker import (
     check_artifact,
     check_predev_artifacts,
     format_report,

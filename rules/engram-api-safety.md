@@ -84,7 +84,7 @@ kill %1; rm -rf "$TMPDIR"
 
 ```python
 # Production code uses the typed client, never raw curl
-from lib.engram_http_client import update_observation
+from cos_lib.engram_http_client import update_observation
 result = update_observation(obs_id, content=new_content)
 ```
 

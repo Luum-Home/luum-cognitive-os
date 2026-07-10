@@ -96,7 +96,7 @@ except ImportError:
 def _try_import_skill_router():
     """Lazy import of SkillRouter."""
     try:
-        from lib.skill_router import SkillRouter
+        from cos_lib.skill_router import SkillRouter
         return SkillRouter()
     except Exception:
         return None
@@ -105,7 +105,7 @@ def _try_import_skill_router():
 def _try_import_prompt_classifier():
     """Lazy import of prompt_classifier."""
     try:
-        from lib.prompt_classifier import classify_prompt
+        from cos_lib.prompt_classifier import classify_prompt
         return classify_prompt
     except Exception:
         return None
@@ -173,7 +173,7 @@ def _engram_search(query: str, project: str = "", limit: int = 10) -> str:
     try:
         import sys, os
         sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-        from lib.memory_retriever import MemoryRetriever
+        from cos_lib.memory_retriever import MemoryRetriever
         retriever = MemoryRetriever()
         results = retriever.search(query, limit=limit, project=project or None)
         if results:
@@ -224,7 +224,7 @@ def _engram_save(title: str, content: str, type_: str = "manual",
     """
     # --- Memory scanner gate -------------------------------------------
     try:
-        from lib.safe_engram import safe_save, SafeEngramResult
+        from cos_lib.safe_engram import safe_save, SafeEngramResult
         result: SafeEngramResult = safe_save(
             title=title,
             content=content,

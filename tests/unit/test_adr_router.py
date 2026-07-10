@@ -15,7 +15,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.adr_router import (
+from cos_lib.adr_router import (
     AdrRouter,
     _AdrEntry,
     _extract_context_paragraph,
@@ -186,7 +186,7 @@ class TestScoring:
             title_keywords=set(),
             adr_num=2,
         )
-        from lib.adr_router import AdrRouter
+        from cos_lib.adr_router import AdrRouter
         router = AdrRouter.__new__(AdrRouter)
         conf_tag, _ = router._score(["rejected-surface"], tag_entry)
         conf_ctx, _ = router._score(["rejected-surface"], ctx_entry)

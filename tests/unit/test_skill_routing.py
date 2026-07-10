@@ -29,8 +29,8 @@ _REPO = Path(__file__).resolve().parent.parent.parent
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from lib import dispatch as _d  # noqa: E402
-from lib import skill_routing as _sr  # noqa: E402
+from cos_lib import dispatch as _d  # noqa: E402
+from cos_lib import skill_routing as _sr  # noqa: E402
 
 
 # --------------------------------------------------------------------------- #

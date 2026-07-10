@@ -35,7 +35,7 @@ except json.JSONDecodeError:
     data = {}
 
 sys.path.insert(0, str(cos_root))
-from lib.session_bus import append_event  # noqa: E402
+from cos_lib.session_bus import append_event  # noqa: E402
 
 
 def current_branch() -> str:

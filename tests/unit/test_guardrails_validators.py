@@ -11,7 +11,7 @@ Validates:
 
 import pytest
 
-from lib.guardrails_validators import (
+from cos_lib.guardrails_validators import (
     Finding,
     check_jailbreak,
     check_pii,

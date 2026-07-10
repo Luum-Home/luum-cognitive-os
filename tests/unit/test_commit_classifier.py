@@ -1,6 +1,6 @@
 """Tests for lib/commit_classifier.py"""
 
-from lib.commit_classifier import classify_files, detect_related_files, propose_commits
+from cos_lib.commit_classifier import classify_files, detect_related_files, propose_commits
 
 
 # ---------------------------------------------------------------------------

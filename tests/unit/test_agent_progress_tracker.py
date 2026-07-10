@@ -1,7 +1,7 @@
 """Tests for lib/agent_progress_tracker.py"""
 
 import pytest
-from lib.agent_progress_tracker import AgentProgressTracker
+from cos_lib.agent_progress_tracker import AgentProgressTracker
 
 
 # ---------------------------------------------------------------------------

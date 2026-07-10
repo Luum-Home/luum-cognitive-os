@@ -36,17 +36,17 @@ Changes are classified:
 ## Migration contract
 
 A breaking change requires:
-1. Increment `lib.metric_event.SCHEMA_VERSION`.
+1. Increment `cos_lib.metric_event.SCHEMA_VERSION`.
 2. Ship `scripts/migrate_metric_event_v{old}_to_v{new}.py` — reads old JSONL,
    writes new-shape JSONL, preserves all fields.
-3. Update `lib.metric_event.from_dict` to handle BOTH old and new schema_version
+3. Update `cos_lib.metric_event.from_dict` to handle BOTH old and new schema_version
    values (transitional reader).
 4. Add pytest tests asserting old JSONL rows still parse + migrate cleanly.
 5. After one release cycle (2 weeks min), remove old-schema tolerance.
 
 ## Reader tolerance guarantee
 
-`lib.metric_event.from_dict(d)` MUST NOT raise on any schema_version >= 1.
+`cos_lib.metric_event.from_dict(d)` MUST NOT raise on any schema_version >= 1.
 Unknown schema_version → best-effort parse with sensible defaults (source="unknown",
 event_type="legacy"). This is tested in `tests/unit/test_metric_event.py`.
 

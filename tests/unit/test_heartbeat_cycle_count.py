@@ -9,8 +9,8 @@ from __future__ import annotations
 
 import pytest
 
-from lib.harness_adapter.claude_code import ClaudeCodeAdapter
-from lib.harness_adapter.base import HeartbeatTick
+from cos_lib.harness_adapter.claude_code import ClaudeCodeAdapter
+from cos_lib.harness_adapter.base import HeartbeatTick
 
 
 @pytest.fixture()

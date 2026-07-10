@@ -25,7 +25,7 @@ project = Path(sys.argv[1]).resolve()
 session_id = sys.argv[2]
 cos_root = Path(sys.argv[3]).resolve()
 sys.path.insert(0, str(cos_root))
-from lib.session_bus import peers  # noqa: E402
+from cos_lib.session_bus import peers  # noqa: E402
 
 items = peers(project_dir=project, within_seconds=1800, alive_only=True, current_session_id=session_id, limit=200)[:3]
 if not items:

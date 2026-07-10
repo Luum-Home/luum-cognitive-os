@@ -90,7 +90,7 @@ import sys
 
 sys.path.insert(0, os.getcwd())
 
-from lib.manifest_loader import ManifestError, load_manifest
+from cos_lib.manifest_loader import ManifestError, load_manifest
 
 profile_name = os.environ["PROFILE"]
 output_mode = os.environ["OUTPUT"]

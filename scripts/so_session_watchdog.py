@@ -53,7 +53,7 @@ PROJECT_ROOT = _find_project_root()
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from lib.session_watchdog_lib import (  # noqa: E402
+from cos_lib.session_watchdog_lib import (  # noqa: E402
     WatchdogRecord,
     append_jsonl,
     classify_session,

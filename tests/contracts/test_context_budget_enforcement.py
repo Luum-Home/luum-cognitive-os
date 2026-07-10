@@ -7,8 +7,8 @@ from pathlib import Path
 
 import pytest
 
-from lib.agent_message_bus import send_message
-from lib.session_bus import append_event
+from cos_lib.agent_message_bus import send_message
+from cos_lib.session_bus import append_event
 
 pytestmark = pytest.mark.contract
 

@@ -23,7 +23,7 @@ _HERE = Path(__file__).resolve().parent.parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 
-from lib.project_scaffolder import ProjectScaffolder, expected_file_count  # noqa: E402
+from cos_lib.project_scaffolder import ProjectScaffolder, expected_file_count  # noqa: E402
 
 
 def main() -> int:

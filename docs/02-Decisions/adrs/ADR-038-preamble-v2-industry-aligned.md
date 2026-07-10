@@ -9,10 +9,10 @@ superseded_by: null
 implementation_files:
 - templates/agent-preamble.md
 - templates/agent-planning.md
-- lib/agent_input_validator.py
-- lib/trust_report_schema.py
-- lib/trust_report_parser.py
-- lib/prompt_builder.py
+- cos_lib/agent_input_validator.py
+- cos_lib/trust_report_schema.py
+- cos_lib/trust_report_parser.py
+- cos_lib/prompt_builder.py
 - hooks/subagent-input-schema-validator.sh
 - hooks/trust-score-validator.sh
 - hooks/task-completed.sh
@@ -157,7 +157,7 @@ parser into runtime hooks.
 ### Hook wiring and grading policy
 
 **Solution**:
-- `hooks/trust-score-validator.sh` now calls `lib.trust_report_parser` instead
+- `hooks/trust-score-validator.sh` now calls `cos_lib.trust_report_parser` instead
   of extracting scores with shell regexes. Structured malformed reports block
   with exit 2; missing reports remain advisory to preserve graceful degradation.
 - Legacy reports are accepted with a warning and logged with `format=legacy`. This

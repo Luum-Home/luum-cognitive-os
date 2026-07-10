@@ -6,7 +6,7 @@ confidence scoring and edge cases.
 
 import pytest
 
-from lib.prompt_classifier import (
+from cos_lib.prompt_classifier import (
     ClassificationResult,
     PromptCategory,
     classify_prompt,

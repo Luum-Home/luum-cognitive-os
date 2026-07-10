@@ -10,7 +10,7 @@ from typing import Optional
 
 import pytest
 
-from lib.memory_decay import (
+from cos_lib.memory_decay import (
     DECAY_RATES,
     DEFAULT_DECAY_RATE,
     apply_decay_to_search_results,

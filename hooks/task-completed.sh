@@ -76,7 +76,7 @@ if [ "$phase" = "production" ] || [ "$phase" = "maintenance" ]; then
 import os
 import sys
 
-from lib.trust_report_parser import TrustReportParseError, TrustReportParser
+from cos_lib.trust_report_parser import TrustReportParseError, TrustReportParser
 
 try:
     report = TrustReportParser().extract_from_output(os.environ.get("TASK_OUTPUT", ""))
@@ -128,7 +128,7 @@ from pathlib import Path
 
 os_root, project_dir, team_name, task_id, session_id, output_summary = sys.argv[1:7]
 sys.path.insert(0, os_root)
-from lib.agent_team import AgentTeam
+from cos_lib.agent_team import AgentTeam
 
 team = AgentTeam(team_name, project_dir=Path(project_dir))
 team.complete_task(task_id, session_id=session_id, output_summary=output_summary)

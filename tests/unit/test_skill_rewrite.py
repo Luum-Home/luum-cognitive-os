@@ -14,7 +14,7 @@ from pathlib import Path
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(_REPO_ROOT))
 
-from lib.consequence_engine import ConsequenceEngine
+from cos_lib.consequence_engine import ConsequenceEngine
 
 
 # ---------------------------------------------------------------------------

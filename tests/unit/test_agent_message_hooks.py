@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.agent_message_bus import send_message
+from cos_lib.agent_message_bus import send_message
 
 pytestmark = pytest.mark.unit
 

@@ -5,7 +5,7 @@ These tests verify that:
 2. `--mark-answered` round-trip works end-to-end
 3. A decision marked ANSWERED disappears from /decision-triage output
 
-ROOT CAUSE TEST: These tests would have caught Cause 3 — the `from lib.engram import search`
+ROOT CAUSE TEST: These tests would have caught Cause 3 — the `from cos_lib.engram import search`
 that silently fell back to engram_available=False and left all 33 decisions as PENDING.
 
 All tests are marked `requires_engram` and skip gracefully when engram is not running.
@@ -64,7 +64,7 @@ def skip_if_no_engram() -> None:
 def test_engram_cross_ref_actually_resolves() -> None:
     """Run /decision-triage with engram available, verify it doesn't silently fall back.
 
-    This test catches Cause 3: the broken `from lib.engram import search` caused
+    This test catches Cause 3: the broken `from cos_lib.engram import search` caused
     engram_available=False even when engram was running. After Fix 3 (using CLI),
     JSON output must show `"engram_available": true`.
     """
@@ -87,7 +87,7 @@ def test_engram_cross_ref_actually_resolves() -> None:
         f"engram_available=False even though engram CLI is available. "
         f"This is Cause 3: the engram cross-ref is silently failing. "
         f"Check _engram_search() in scripts/decision_triage.py — it must use "
-        f"CLI subprocess, not `from lib.engram import search`. "
+        f"CLI subprocess, not `from cos_lib.engram import search`. "
         f"stderr: {result.stderr[:500]}"
     )
 

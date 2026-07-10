@@ -74,7 +74,7 @@ def test_full_decision_cycle() -> None:
     Verifies all 5 fixes work together:
     - Fix 1: Report in docs/06-Daily/reports/ (git-tracked path, not gitignored)
     - Fix 2: --mark-answered argument works
-    - Fix 3: engram CLI cross-ref works (not lib.engram import)
+    - Fix 3: engram CLI cross-ref works (not cos_lib.engram import)
     - Fix 5: Live integration test passes
     """
     if not _engram_available():

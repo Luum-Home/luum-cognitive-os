@@ -43,4 +43,4 @@ Layer 1: docs/08-References/raw/index.jsonl   ← immutable source registry
 Layer 2: docs/04-Concepts/ingested/<slug>.md  ← compiled, structured vault pages
 ```
 
-Layer 2 pages are generated from Layer 1 sources by `lib.wiki_ingester.WikiIngester`.
+Layer 2 pages are generated from Layer 1 sources by `cos_lib.wiki_ingester.WikiIngester`.

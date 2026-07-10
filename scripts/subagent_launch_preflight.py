@@ -19,7 +19,7 @@ import re
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from lib.script_helpers import script_repo_root as repo_root
+from cos_lib.script_helpers import script_repo_root as repo_root
 from typing import Any
 
 try:

@@ -14,7 +14,7 @@ Coverage:
 import pytest
 from pydantic import ValidationError
 
-from lib.trust_report_schema import TrustReport, build_trust_report, score_to_status
+from cos_lib.trust_report_schema import TrustReport, build_trust_report, score_to_status
 
 
 # ---------------------------------------------------------------------------

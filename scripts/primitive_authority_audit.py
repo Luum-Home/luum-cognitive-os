@@ -11,9 +11,9 @@ from __future__ import annotations
 import os as _cos_os
 import sys as _cos_sys
 _cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
-from lib.script_helpers import read_yaml_dict as read_yaml
-from lib.script_helpers import read_json_dict as read_json
-from lib.project_paths import relpath as rel
+from cos_lib.script_helpers import read_yaml_dict as read_yaml
+from cos_lib.script_helpers import read_json_dict as read_json
+from cos_lib.project_paths import relpath as rel
 
 import argparse
 import ast
@@ -179,7 +179,7 @@ def classify_surface(path: str) -> str:
         return "secrets"
     if normalized.startswith(("hooks/", "rules/", "skills/", "scripts/", "templates/", "manifests/", ".claude/", ".codex/", ".cursor/")):
         return "os_live_primitives"
-    if normalized.startswith(("src/", "lib/", "app/", "packages/", "internal/", "cmd/")):
+    if normalized.startswith(("src/", "cos_lib/", "app/", "packages/", "internal/", "cmd/")):
         return "consumer_source"
     if normalized.startswith((".cognitive-os/", ".github/workflows/", ".vscode/", ".qwen/", ".kimi/", ".gemini/")):
         return "projection_roots"

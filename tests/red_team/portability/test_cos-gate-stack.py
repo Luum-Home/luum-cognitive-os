@@ -94,7 +94,7 @@ class TestFalsification:
             f"""
 import sys
 sys.path.insert(0, "{REPO_ROOT}")
-from lib.gate_runner import Gate, run_stack
+from cos_lib.gate_runner import Gate, run_stack
 
 g = Gate(
     name="always-fail",

@@ -29,7 +29,7 @@ import pytest
 
 # Import via the symlink path because that is how consumers reach the
 # module. If the symlink target drifts, the probe will surface it.
-self_knowledge = importlib.import_module("lib.self_knowledge")
+self_knowledge = importlib.import_module("cos_lib.self_knowledge")
 
 
 def test_canonical_adr_path_is_scanned(tmp_path: Path) -> None:

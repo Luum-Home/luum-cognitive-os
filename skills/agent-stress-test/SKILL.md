@@ -110,7 +110,7 @@ Compare results with Phase 1 baseline.
 After each task, record a snapshot:
 
 ```python
-from lib.cognitive_load_monitor import CognitiveLoadMonitor
+from cos_lib.cognitive_load_monitor import CognitiveLoadMonitor
 
 monitor = CognitiveLoadMonitor()
 

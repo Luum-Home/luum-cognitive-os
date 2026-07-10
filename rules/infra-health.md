@@ -107,7 +107,7 @@ If Docker is not available or a service fails to start, the system logs a warnin
 ### Usage in Python
 
 ```python
-from lib.smart_infra import ensure_service, requires_service
+from cos_lib.smart_infra import ensure_service, requires_service
 
 # Explicit
 

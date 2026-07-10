@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from lib.external_tool_intelligence import (
+from cos_lib.external_tool_intelligence import (
     audit_adoption,
     direct_dependencies,
     inventory,
@@ -48,7 +48,7 @@ def test_pyproject_self_extras_are_not_external_tools(tmp_path: Path) -> None:
 
 
 def test_pyproject_parser_fallback_reads_multiline_arrays(monkeypatch, tmp_path: Path) -> None:
-    import lib.compat_tomllib as compat_tomllib
+    import cos_lib.compat_tomllib as compat_tomllib
 
     monkeypatch.setattr(compat_tomllib, "_tomllib", None)
     write(

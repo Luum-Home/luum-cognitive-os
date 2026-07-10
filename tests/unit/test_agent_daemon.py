@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.agent_daemon import AgentDaemon, AgentDaemonError
+from cos_lib.agent_daemon import AgentDaemon, AgentDaemonError
 
 
 @pytest.mark.unit
@@ -95,7 +95,7 @@ def test_service_plan_outputs_launchd_and_systemd(tmp_path: Path) -> None:
 
 
 def test_install_service_writes_launchd_file_to_target_dir(tmp_path: Path) -> None:
-    from lib.agent_daemon import AgentDaemon
+    from cos_lib.agent_daemon import AgentDaemon
 
     project = tmp_path / "project"
     project.mkdir()
@@ -107,7 +107,7 @@ def test_install_service_writes_launchd_file_to_target_dir(tmp_path: Path) -> No
 
 
 def test_kill_task_marks_failed_and_writes_done_without_tmux(tmp_path: Path) -> None:
-    from lib.agent_daemon import AgentDaemon
+    from cos_lib.agent_daemon import AgentDaemon
 
     daemon = AgentDaemon(project_dir=tmp_path)
     task = daemon.enqueue(command="sleep 999", task_id="kill-me", session_id="s1")

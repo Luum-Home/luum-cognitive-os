@@ -29,7 +29,7 @@ _REPO = Path(__file__).resolve().parent.parent.parent
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from lib.session_watchdog_lib import (
+from cos_lib.session_watchdog_lib import (
     CLASS_HEALTHY,
     CLASS_IDLE_OVER_TTL,
     CLASS_ORPHANED,
@@ -151,7 +151,7 @@ class TestClassifySession(unittest.TestCase):
     def test_healthy_young_active(self):
         session = _make_session(etime_sec=600, cpu_percent=5.0)
         # ppid=1000 — mock it as alive
-        with patch("lib.session_watchdog_lib._pid_exists", return_value=True):
+        with patch("cos_lib.session_watchdog_lib._pid_exists", return_value=True):
             cls, reason, would_kill = self._classify(session)
         assert cls == CLASS_HEALTHY
         assert would_kill is False
@@ -159,7 +159,7 @@ class TestClassifySession(unittest.TestCase):
     # HEALTHY — old but active CPU
     def test_healthy_old_active_cpu(self):
         session = _make_session(etime_sec=7200, cpu_percent=10.0)
-        with patch("lib.session_watchdog_lib._pid_exists", return_value=True):
+        with patch("cos_lib.session_watchdog_lib._pid_exists", return_value=True):
             cls, reason, would_kill = self._classify(session)
         assert cls == CLASS_HEALTHY
         assert would_kill is False
@@ -167,7 +167,7 @@ class TestClassifySession(unittest.TestCase):
     # IDLE_OVER_TTL — old AND idle
     def test_idle_over_ttl(self):
         session = _make_session(etime_sec=7200, cpu_percent=0.0)
-        with patch("lib.session_watchdog_lib._pid_exists", return_value=True):
+        with patch("cos_lib.session_watchdog_lib._pid_exists", return_value=True):
             cls, reason, would_kill = self._classify(session)
         assert cls == CLASS_IDLE_OVER_TTL
         assert would_kill is True  # in Phase B this would trigger kill
@@ -176,7 +176,7 @@ class TestClassifySession(unittest.TestCase):
     # ORPHANED — parent PID gone
     def test_orphaned_parent_dead(self):
         session = _make_session(etime_sec=7200, cpu_percent=0.0)
-        with patch("lib.session_watchdog_lib._pid_exists", return_value=False):
+        with patch("cos_lib.session_watchdog_lib._pid_exists", return_value=False):
             cls, reason, would_kill = self._classify(session)
         assert cls == CLASS_ORPHANED
         assert would_kill is False  # Phase A: never kill
@@ -191,7 +191,7 @@ class TestClassifySession(unittest.TestCase):
             command=f"claude --resume {rid} --output-format stream-json --input-format stream-json",
             resume_id=rid,
         )
-        with patch("lib.session_watchdog_lib._pid_exists", return_value=True):
+        with patch("cos_lib.session_watchdog_lib._pid_exists", return_value=True):
             cls, reason, would_kill = self._classify(session)
         assert cls == CLASS_HEALTHY  # within 2× TTL grace
         assert would_kill is False
@@ -205,7 +205,7 @@ class TestClassifySession(unittest.TestCase):
             command=f"claude --resume {rid} --output-format stream-json --input-format stream-json",
             resume_id=rid,
         )
-        with patch("lib.session_watchdog_lib._pid_exists", return_value=True):
+        with patch("cos_lib.session_watchdog_lib._pid_exists", return_value=True):
             cls, reason, would_kill = self._classify(session)
         assert cls == CLASS_RESUMED_RECENTLY
         assert would_kill is False  # resumed sessions never get would_kill=True in Phase A
@@ -294,7 +294,7 @@ class TestModeEnforce(unittest.TestCase):
             with patch.object(mod, "WATCHDOG_JSONL", tmp_path), \
                  patch.object(mod, "_enumerate_via_ps", return_value=([fake_proc], [])), \
                  patch.object(mod, "_try_import_psutil", return_value=None), \
-                 patch("lib.session_watchdog_lib._pid_exists", return_value=True), \
+                 patch("cos_lib.session_watchdog_lib._pid_exists", return_value=True), \
                  patch("sys.stderr", buf):
                 exit_code = mod.run_once(config, verbose=False)
 
@@ -358,7 +358,7 @@ class TestPhaseALogOnly(unittest.TestCase):
             with patch.object(mod, "WATCHDOG_JSONL", tmp_path), \
                  patch.object(mod, "_enumerate_via_ps", return_value=([fake_proc], [])), \
                  patch.object(mod, "_try_import_psutil", return_value=None), \
-                 patch("lib.session_watchdog_lib._pid_exists", return_value=True), \
+                 patch("cos_lib.session_watchdog_lib._pid_exists", return_value=True), \
                  patch("os.kill", side_effect=mock_kill):
                 exit_code = mod.run_once(config, verbose=False)
 
@@ -392,7 +392,7 @@ class TestPhaseALogOnly(unittest.TestCase):
             with patch.object(mod, "WATCHDOG_JSONL", tmp_path), \
                  patch.object(mod, "_enumerate_via_ps", return_value=([proc_a, proc_b], [])), \
                  patch.object(mod, "_try_import_psutil", return_value=None), \
-                 patch("lib.session_watchdog_lib._pid_exists", return_value=True):
+                 patch("cos_lib.session_watchdog_lib._pid_exists", return_value=True):
                 mod.run_once(config, verbose=False)
 
             lines = tmp_path.read_text().strip().splitlines()
@@ -437,9 +437,9 @@ class TestCrossPlatformPsutil(unittest.TestCase):
             }
         ])
 
-        with patch("lib.session_watchdog_lib._try_import_psutil", return_value=psutil_mock), \
-             patch("lib.session_watchdog_lib._pid_exists", return_value=True):
-            from lib.session_watchdog_lib import _enumerate_via_psutil
+        with patch("cos_lib.session_watchdog_lib._try_import_psutil", return_value=psutil_mock), \
+             patch("cos_lib.session_watchdog_lib._pid_exists", return_value=True):
+            from cos_lib.session_watchdog_lib import _enumerate_via_psutil
             sessions, engram = _enumerate_via_psutil(psutil_mock)
 
         assert len(sessions) == 1
@@ -459,13 +459,13 @@ class TestCrossPlatformPsutil(unittest.TestCase):
             }
         ])
 
-        with patch("lib.session_watchdog_lib._try_import_psutil", return_value=psutil_mock):
-            from lib.session_watchdog_lib import _enumerate_via_psutil
+        with patch("cos_lib.session_watchdog_lib._try_import_psutil", return_value=psutil_mock):
+            from cos_lib.session_watchdog_lib import _enumerate_via_psutil
             sessions, _ = _enumerate_via_psutil(psutil_mock)
 
         session = enrich_session(sessions[0], [])
         # Patch _pid_exists so ppid=9000 appears alive
-        with patch("lib.session_watchdog_lib._pid_exists", return_value=True):
+        with patch("cos_lib.session_watchdog_lib._pid_exists", return_value=True):
             cls, reason, would_kill = classify_session(session, ttl_sec=3600, idle_cpu_threshold=1.0)
         assert cls == CLASS_IDLE_OVER_TTL
         assert would_kill is True
@@ -491,8 +491,8 @@ class TestCrossPlatformPsFallback(unittest.TestCase):
         mock_result.stdout = self._PS_OUTPUT
 
         with patch("subprocess.run", return_value=mock_result), \
-             patch("lib.session_watchdog_lib._try_import_psutil", return_value=None):
-            from lib.session_watchdog_lib import _enumerate_via_ps
+             patch("cos_lib.session_watchdog_lib._try_import_psutil", return_value=None):
+            from cos_lib.session_watchdog_lib import _enumerate_via_ps
             sessions, engram = _enumerate_via_ps()
 
         pids = {s.pid for s in sessions}
@@ -507,13 +507,13 @@ class TestCrossPlatformPsFallback(unittest.TestCase):
         mock_result.stdout = self._PS_OUTPUT
 
         with patch("subprocess.run", return_value=mock_result):
-            from lib.session_watchdog_lib import _enumerate_via_ps
+            from cos_lib.session_watchdog_lib import _enumerate_via_ps
             sessions, engram = _enumerate_via_ps()
 
         young = next(s for s in sessions if s.pid == 8001)
         session = enrich_session(young, engram)
         # Patch _pid_exists so ppid=8000 appears alive
-        with patch("lib.session_watchdog_lib._pid_exists", return_value=True):
+        with patch("cos_lib.session_watchdog_lib._pid_exists", return_value=True):
             cls, reason, wk = classify_session(session, ttl_sec=3600, idle_cpu_threshold=1.0)
         assert cls == CLASS_HEALTHY
 
@@ -523,13 +523,13 @@ class TestCrossPlatformPsFallback(unittest.TestCase):
         mock_result.stdout = self._PS_OUTPUT
 
         with patch("subprocess.run", return_value=mock_result):
-            from lib.session_watchdog_lib import _enumerate_via_ps
+            from cos_lib.session_watchdog_lib import _enumerate_via_ps
             sessions, engram = _enumerate_via_ps()
 
         old = next(s for s in sessions if s.pid == 8002)
         session = enrich_session(old, engram)
         # Patch _pid_exists so ppid=8000 appears alive
-        with patch("lib.session_watchdog_lib._pid_exists", return_value=True):
+        with patch("cos_lib.session_watchdog_lib._pid_exists", return_value=True):
             cls, reason, wk = classify_session(session, ttl_sec=3600, idle_cpu_threshold=1.0)
         assert cls == CLASS_IDLE_OVER_TTL
 
@@ -539,7 +539,7 @@ class TestCrossPlatformPsFallback(unittest.TestCase):
         mock_result.stdout = ""
 
         with patch("subprocess.run", return_value=mock_result):
-            from lib.session_watchdog_lib import _enumerate_via_ps
+            from cos_lib.session_watchdog_lib import _enumerate_via_ps
             sessions, engram = _enumerate_via_ps()
 
         assert sessions == []
@@ -573,7 +573,7 @@ class TestAppendJsonl(unittest.TestCase):
 # ADR-047 Phase B: should_kill() layered predicate tests
 # ---------------------------------------------------------------------------
 
-from lib.session_watchdog_lib import (  # noqa: E402 (already imported above for others)
+from cos_lib.session_watchdog_lib import (  # noqa: E402 (already imported above for others)
     should_kill,
     _heartbeat_stale,
 )
@@ -616,7 +616,7 @@ class TestShouldKillPredicate(unittest.TestCase):
             # Write fresh heartbeat so only orphan check can trigger kill
             self._write_heartbeat(session_dir, age_seconds=0)
 
-            with patch("lib.session_watchdog_lib._pid_exists", return_value=False):
+            with patch("cos_lib.session_watchdog_lib._pid_exists", return_value=False):
                 verdict, reason = should_kill(
                     session_dir=session_dir,
                     ttl_seconds=999_999,  # very long TTL — not exceeded
@@ -634,7 +634,7 @@ class TestShouldKillPredicate(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmpdir:
             session_dir = self._make_session_dir(tmpdir)
 
-            with patch("lib.session_watchdog_lib._pid_exists", return_value=True):
+            with patch("cos_lib.session_watchdog_lib._pid_exists", return_value=True):
                 verdict, reason = should_kill(
                     session_dir=session_dir,
                     ttl_seconds=999_999,  # very long TTL — never exceeded for a just-created dir
@@ -653,8 +653,8 @@ class TestShouldKillPredicate(unittest.TestCase):
             session_dir = self._make_session_dir(tmpdir)
             self._write_heartbeat(session_dir, age_seconds=30)  # 30s old = fresh
 
-            with patch("lib.session_watchdog_lib._pid_exists", return_value=True), \
-                 patch("lib.session_watchdog_lib.time") as mock_time:
+            with patch("cos_lib.session_watchdog_lib._pid_exists", return_value=True), \
+                 patch("cos_lib.session_watchdog_lib.time") as mock_time:
                 # Make "now" appear as if session_dir is very old (TTL exceeded)
                 # by making time.time() return a large offset from actual mtime
                 real_time = time.time()
@@ -698,10 +698,10 @@ class TestShouldKillPredicate(unittest.TestCase):
             # Make time.time() return a value far in the future so age >> ttl
             fake_now = time.time() + 100_000  # 100k seconds in future → age >> 1s TTL
 
-            with patch("lib.session_watchdog_lib._pid_exists", return_value=True), \
-                 patch("lib.session_watchdog_lib._try_import_psutil", return_value=mock_psutil), \
-                 patch("lib.session_watchdog_lib._metric_writes_stale", return_value=True), \
-                 patch("lib.session_watchdog_lib.time") as mock_time:
+            with patch("cos_lib.session_watchdog_lib._pid_exists", return_value=True), \
+                 patch("cos_lib.session_watchdog_lib._try_import_psutil", return_value=mock_psutil), \
+                 patch("cos_lib.session_watchdog_lib._metric_writes_stale", return_value=True), \
+                 patch("cos_lib.session_watchdog_lib.time") as mock_time:
                 mock_time.time.return_value = fake_now
                 mock_time.gmtime = time.gmtime
                 mock_time.strftime = time.strftime
@@ -737,11 +737,11 @@ class TestShouldKillPredicate(unittest.TestCase):
             # Make time.time() return a value far in the future so age >> ttl
             fake_now = time.time() + 100_000  # 100k seconds in future → age >> 1s TTL
 
-            with patch("lib.session_watchdog_lib._pid_exists", return_value=True), \
-                 patch("lib.session_watchdog_lib._try_import_psutil", return_value=mock_psutil), \
-                 patch("lib.session_watchdog_lib._metric_writes_stale", return_value=True), \
-                 patch("lib.session_watchdog_lib._heartbeat_stale", return_value=True), \
-                 patch("lib.session_watchdog_lib.time") as mock_time:
+            with patch("cos_lib.session_watchdog_lib._pid_exists", return_value=True), \
+                 patch("cos_lib.session_watchdog_lib._try_import_psutil", return_value=mock_psutil), \
+                 patch("cos_lib.session_watchdog_lib._metric_writes_stale", return_value=True), \
+                 patch("cos_lib.session_watchdog_lib._heartbeat_stale", return_value=True), \
+                 patch("cos_lib.session_watchdog_lib.time") as mock_time:
                 mock_time.time.return_value = fake_now
                 mock_time.gmtime = time.gmtime
                 mock_time.strftime = time.strftime
@@ -780,11 +780,11 @@ class TestShouldKillPredicate(unittest.TestCase):
 
             fake_now = time.time() + 100_000  # ensure TTL exceeded
 
-            with patch("lib.session_watchdog_lib._pid_exists", return_value=True), \
-                 patch("lib.session_watchdog_lib._metric_writes_stale", return_value=True), \
-                 patch("lib.session_watchdog_lib._heartbeat_stale", return_value=True), \
-                 patch("lib.session_watchdog_lib._cpu_idle_sustained", return_value=True), \
-                 patch("lib.session_watchdog_lib.time") as mock_time:
+            with patch("cos_lib.session_watchdog_lib._pid_exists", return_value=True), \
+                 patch("cos_lib.session_watchdog_lib._metric_writes_stale", return_value=True), \
+                 patch("cos_lib.session_watchdog_lib._heartbeat_stale", return_value=True), \
+                 patch("cos_lib.session_watchdog_lib._cpu_idle_sustained", return_value=True), \
+                 patch("cos_lib.session_watchdog_lib.time") as mock_time:
                 mock_time.time.return_value = fake_now
                 mock_time.gmtime = time.gmtime
                 mock_time.strftime = time.strftime
@@ -834,7 +834,7 @@ class TestCrossPhaseInvariants(unittest.TestCase):
         If this test fails, the Phase A false-positive rate metric is UNSOUND — you could
         observe 0% false positives in Phase A and still have Phase B kill live sessions.
         """
-        from lib.session_watchdog_lib import _CPU_IDLE_THRESHOLD_PCT, load_watchdog_config
+        from cos_lib.session_watchdog_lib import _CPU_IDLE_THRESHOLD_PCT, load_watchdog_config
 
         # Read the Phase A default via the config loader (the source of truth for
         # daemon invocations) rather than hardcoding, so config drift is caught.
@@ -856,7 +856,7 @@ class TestCrossPhaseInvariants(unittest.TestCase):
 # ADR-047 Phase B gate metric tests
 # ---------------------------------------------------------------------------
 
-from lib.session_watchdog_lib import (  # noqa: E402
+from cos_lib.session_watchdog_lib import (  # noqa: E402
     GATE_FP_RATE_MAX,
     GATE_MIN_OBSERVATION_HOURS,
     GATE_MIN_SAMPLE,
@@ -1026,7 +1026,7 @@ class TestKillModeRefusal(unittest.TestCase):
             with patch.object(mod, "WATCHDOG_JSONL", tmp_path), \
                  patch.object(mod, "_enumerate_via_ps", return_value=([fake_proc], [])), \
                  patch.object(mod, "_try_import_psutil", return_value=None), \
-                 patch("lib.session_watchdog_lib._pid_exists", return_value=True), \
+                 patch("cos_lib.session_watchdog_lib._pid_exists", return_value=True), \
                  patch("os.kill", side_effect=mock_kill), \
                  patch("sys.stderr", buf):
                 exit_code = mod.run_once(config, verbose=False, kill_mode=True)

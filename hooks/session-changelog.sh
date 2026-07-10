@@ -38,7 +38,7 @@ mkdir -p "$CHANGELOGS_DIR"
 CHANGELOG_MD=$(python3 -c "
 import sys
 sys.path.insert(0, '$PROJECT_DIR')
-from lib.changelog_generator import generate_session_changelog, format_changelog_md
+from cos_lib.changelog_generator import generate_session_changelog, format_changelog_md
 
 project_dir = '$PROJECT_DIR'
 session_id = '$SESSION_ID'

@@ -28,7 +28,7 @@ from pathlib import Path
 # Allow running from repo root without installing the package
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from lib.metric_event import normalize_legacy_row
+from cos_lib.metric_event import normalize_legacy_row
 
 
 def _guess_source(row: dict) -> str:

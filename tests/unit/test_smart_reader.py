@@ -12,7 +12,7 @@ import pytest
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, PROJECT_ROOT)
 
-from lib.smart_reader import (
+from cos_lib.smart_reader import (
     SmartReader,
     SmartReaderConfig,
     FileSummary,

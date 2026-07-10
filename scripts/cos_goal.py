@@ -31,16 +31,16 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.goal_state import (
+from cos_lib.goal_state import (
     GoalConflictError,
     GoalState,
     GoalStateStore,
     InvalidTransitionError,
     apply_transition,
 )
-from lib.goal_evidence import parse_evidence
-from lib.goal_evaluator import GoalEvaluator
-from lib.harness_adapter.goal_stop import detect_enforcement_level
+from cos_lib.goal_evidence import parse_evidence
+from cos_lib.goal_evaluator import GoalEvaluator
+from cos_lib.harness_adapter.goal_stop import detect_enforcement_level
 
 
 # ---------------------------------------------------------------------------

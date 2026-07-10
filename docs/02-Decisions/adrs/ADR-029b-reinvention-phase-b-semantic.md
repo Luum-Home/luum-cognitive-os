@@ -155,7 +155,7 @@ survives Python version upgrades and is inspectable with `jq`).
 
 ### Build triggers
 - `SessionStart` hook (future wiring — not this sprint).
-- Manual rebuild: `python3 -c "from lib.reinvention_semantic import SemanticIndex; SemanticIndex().build_index('.')"`.
+- Manual rebuild: `python3 -c "from cos_lib.reinvention_semantic import SemanticIndex; SemanticIndex().build_index('.')"`.
 - Hook path: **lazy build on first miss** — if file is absent, the hook falls
   back to Phase A only and logs `reason=index_missing`. No synchronous
   index-build on the hot path.
@@ -196,7 +196,7 @@ until corpus > 2000 files.
 1. After the existing Phase A block (lines 45–65), if `REINVENTION_PHASE_B=1`,
    invoke:
    ```bash
-   python3 -c "from lib.reinvention_semantic import SemanticIndex, query; query('$PROMPT')"
+   python3 -c "from cos_lib.reinvention_semantic import SemanticIndex, query; query('$PROMPT')"
    ```
    (in practice: a one-liner helper script `scripts/reinvention-query.sh` to
    avoid shell quoting hazards in prompts).
@@ -242,7 +242,7 @@ escalating to embeddings.
 test -f docs/02-Decisions/adrs/ADR-029b-reinvention-phase-b-semantic.md
 grep -c '^## ' docs/02-Decisions/adrs/ADR-029b-reinvention-phase-b-semantic.md  # ≥ 10 (all sections present)
 test -f lib/reinvention_semantic.py
-python3 -c "from lib.reinvention_semantic import SemanticIndex; s=SemanticIndex(); s.build_index('.'); assert len(s.items) > 10"
+python3 -c "from cos_lib.reinvention_semantic import SemanticIndex; s=SemanticIndex(); s.build_index('.'); assert len(s.items) > 10"
 pytest tests/unit/test_reinvention_semantic.py -v  # 5/5 pass
 REINVENTION_PHASE_B=0 bash hooks/reinvention-check.sh < /dev/null  # Phase A only
 ```
@@ -294,7 +294,7 @@ deferred per §5.
   precision/recall script that compares Jaccard vs embeddings on the same
   queries.
 - Index build on `SessionStart`. Currently build is manual
-  (`python3 -m lib.reinvention_semantic build --embeddings`). Auto-build on
+  (`python3 -m cos_lib.reinvention_semantic build --embeddings`). Auto-build on
   session start is separate work per ADR-029b §6 "Build triggers".
 - Threshold re-calibration in production. Default `DEFAULT_EMBED_MIN_SCORE=0.45`
   is a theoretical value; tune based on the benchmark above.

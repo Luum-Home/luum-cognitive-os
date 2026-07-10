@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.context_budget_monitor import build_report  # noqa: E402
+from cos_lib.context_budget_monitor import build_report  # noqa: E402
 
 
 def main(argv: list[str] | None = None) -> int:

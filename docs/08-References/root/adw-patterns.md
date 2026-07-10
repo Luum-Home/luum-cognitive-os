@@ -205,7 +205,7 @@ The pipeline executor (`lib/pipeline_executor.py`) is the runtime that executes 
 /run-pipeline feature my-feature
 
 # Direct CLI
-python3 -m lib.pipeline_executor --workflow .cognitive-os/workflows/feature-pipeline.yaml --change my-feature
+python3 -m cos_lib.pipeline_executor --workflow .cognitive-os/workflows/feature-pipeline.yaml --change my-feature
 ```
 
 ### State Management

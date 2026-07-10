@@ -46,7 +46,7 @@ if cmd and not re.search(r"(^|&&|;)\s*git\s+(commit|push|merge|rebase|cherry-pic
     raise SystemExit(0)
 
 sys.path.insert(0, str(cos_root))
-from lib.branch_lock import acquire  # noqa: E402
+from cos_lib.branch_lock import acquire  # noqa: E402
 
 try:
     branch = subprocess.check_output(["git", "branch", "--show-current"], cwd=str(project), text=True, stderr=subprocess.DEVNULL, timeout=1).strip() or "detached"

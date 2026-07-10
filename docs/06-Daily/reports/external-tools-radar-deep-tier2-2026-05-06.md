@@ -40,7 +40,7 @@ Phase-2 deep audit completion (41 of 95 pass-to-deep candidates). Sister batch c
 | Repo | Verdict | Score | License | Theme | One-line rationale |
 |---|---|---:|---|---|---|
 | ComposioHQ/agent-orchestrator | TRIAL | 8.5 | MIT | agent-orchestration | Genuine planner DAG primitive (TS); MONITOR for harness comparison, not adopt — COS already has S... |
-| testcontainers/testcontainers-python | TRIAL | 8.2 | Apache-2.0 | observability-eval | Apache-2.0 Python lib. Useful for integration test infra (sandbox patterns). Pairs with existing ... |
+| testcontainers/testcontainers-python | TRIAL | 8.2 | Apache-2.0 | observability-eval | Apache-2.0 Python cos_lib. Useful for integration test infra (sandbox patterns). Pairs with existing ... |
 | charmbracelet/vhs | TRIAL | 8.0 | MIT | tui-charm-go | CLI demo recorder. Useful for skill/feature documentation GIFs. Low integration cost — invoke as ... |
 | semgrep/semgrep | TRIAL | 7.6 | LGPL-2.1 | security-supply | Static-analysis OSS engine (LGPL-2.1, OCaml). Already integrated in COS via [semgrep-scan] skill.... |
 | antonmedv/fx | TRIAL | 7.3 | MIT | dev-tools-tui | Terminal JSON viewer/processor (Go). Useful as agent-output piping primitive — pairs with agent J... |
@@ -92,8 +92,8 @@ Substrate / component candidates with cited source-level evidence in this batch:
 |---|---|---|
 | charmbracelet/bubbletea | tea.go | Elm Architecture: Model interface (Init/Update/View) at L53; Cmd as deferred-effect function at L390; Program runtime at L426. |
 | Textualize/textual | src/textual/app.py | App(DOMNode) at L296; CSS-driven layout in __init__ at L560; Pilot test harness `run_test` at L2121; `run_async` at L2208. |
-| ratatui/ratatui | ARCHITECTURE.md, ratatui-core/src/lib.rs | Modular workspace (ratatui / ratatui-core / ratatui-widgets / ratatui-{crossterm,termion,termwiz}); `#![no_std]` core for embedded targets. |
-| crossterm-rs/crossterm | src/lib.rs | Lazy command API: queue then flush; underpins ratatui-crossterm backend. |
+| ratatui/ratatui | ARCHITECTURE.md, ratatui-core/src/cos_lib.rs | Modular workspace (ratatui / ratatui-core / ratatui-widgets / ratatui-{crossterm,termion,termwiz}); `#![no_std]` core for embedded targets. |
+| crossterm-rs/crossterm | src/cos_lib.rs | Lazy command API: queue then flush; underpins ratatui-crossterm backend. |
 | charmbracelet/lipgloss | style.go | Immutable Style at L142; NewStyle() zero-value-ok at L137. |
 | charmbracelet/bubbles | list/list.go | Delegate-pattern list.Model conforms to bubbletea Model interface. |
 | charmbracelet/huh | form.go | Form composes Group composes Field; Update/View pipeline; integrates with bubbletea v2 message router. |

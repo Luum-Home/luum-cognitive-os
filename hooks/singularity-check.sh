@@ -42,7 +42,7 @@ import sys, os, json
 sys.path.insert(0, '$PROJECT_DIR')
 
 try:
-    from lib.singularity import SingularityController
+    from cos_lib.singularity import SingularityController
     controller = SingularityController('$PROJECT_DIR')
     events = controller.detect_events()
 

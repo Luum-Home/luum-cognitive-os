@@ -64,9 +64,9 @@ mode = os.environ.get("MODE", "pretty")
 
 sys.path.insert(0, str(root))
 try:
-    from lib.telemetry import iter_records, SKILL_USAGE_FILE
+    from cos_lib.telemetry import iter_records, SKILL_USAGE_FILE
 except Exception as exc:
-    print(f"error: cannot import lib.telemetry ({exc})", file=sys.stderr)
+    print(f"error: cannot import cos_lib.telemetry ({exc})", file=sys.stderr)
     sys.exit(1)
 
 cutoff = datetime.now(timezone.utc) - timedelta(days=days)

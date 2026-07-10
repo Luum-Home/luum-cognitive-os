@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.project_paths import repo_root_from_file
+from cos_lib.project_paths import repo_root_from_file
 
 get_project_root = lambda: repo_root_from_file(__file__)
 get_project_root = lambda: repo_root_from_file(__file__)
@@ -75,8 +75,8 @@ def _is_imported(bare: str, corpus: str) -> bool:
         re.compile(rf"import\s+lib\.{re.escape(bare)}"),
         re.compile(rf"importlib\.import_module\(\s*[\"']lib\.{re.escape(bare)}[\"']\s*\)"),
         re.compile(rf"\bpython3?\s+-m\s+{re.escape(bare)}\b"),
-        re.compile(rf"lib/{re.escape(bare)}\.py"),
-        re.compile(rf"lib/{re.escape(bare)}"),
+        re.compile(rf"cos_lib/{re.escape(bare)}\.py"),
+        re.compile(rf"cos_lib/{re.escape(bare)}"),
     ]
     return any(pattern.search(corpus) for pattern in patterns)
 

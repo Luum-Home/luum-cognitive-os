@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # CONCERNS: rate-limiting, retry, queue-drain, non-blocking
 # Rate Limit Drainer (D45 wiring) — PostToolUse:Bash, NEVER blocks.
 #
@@ -57,7 +57,7 @@ sys.path.insert(0, os.environ["_DRAIN_HOOK_ROOT"])
 os.environ.setdefault("CLAUDE_PROJECT_DIR", PROJECT_DIR)
 
 try:
-    from lib.rate_limiter import (
+    from cos_lib.rate_limiter import (
         MAX_RETRY_COUNT,
         RateLimiter,
         RateLimitQueue,
@@ -282,7 +282,7 @@ from pathlib import Path
 
 project_dir = Path(os.environ.get("COGNITIVE_OS_PROJECT_DIR") or os.getcwd())
 try:
-    from lib.queue_drainer import QueueDrainer
+    from cos_lib.queue_drainer import QueueDrainer
 
     drainer = QueueDrainer(
         queue_path=str(project_dir / ".cognitive-os" / "tasks" / "dispatch-queue.json"),

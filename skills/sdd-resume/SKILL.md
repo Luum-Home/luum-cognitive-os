@@ -176,8 +176,8 @@ This skill uses two library modules:
 The orchestrator integrates timing into the SDD flow:
 
 ```python
-from lib.phase_timing import PhaseTimer, append_timing_jsonl
-from lib.sdd_resume import save_state
+from cos_lib.phase_timing import PhaseTimer, append_timing_jsonl
+from cos_lib.sdd_resume import save_state
 
 # Before launching a phase
 with PhaseTimer("apply", change_name="auth-refactor") as timer:

@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.simulation_arena import (
+from cos_lib.simulation_arena import (
     ScenarioResult,
     SimulationArena,
     Scenario,

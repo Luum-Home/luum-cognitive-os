@@ -2,7 +2,7 @@ import json
 import shutil
 from pathlib import Path
 
-from lib.service_mode_readiness import build_readiness_report
+from cos_lib.service_mode_readiness import build_readiness_report
 
 REPO = Path(__file__).resolve().parents[2]
 

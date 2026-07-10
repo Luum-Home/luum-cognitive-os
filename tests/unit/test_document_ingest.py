@@ -4,7 +4,7 @@ import json
 import subprocess
 from pathlib import Path
 
-from lib.document_ingest import html_to_markdown, ingest_document, pdf_to_markdown
+from cos_lib.document_ingest import html_to_markdown, ingest_document, pdf_to_markdown
 
 REPO = Path(__file__).resolve().parents[2]
 

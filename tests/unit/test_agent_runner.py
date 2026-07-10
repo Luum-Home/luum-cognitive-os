@@ -1,4 +1,4 @@
-"""Unit tests for lib.agent_runner (ADR-064 Task 4.1)."""
+"""Unit tests for cos_lib.agent_runner (ADR-064 Task 4.1)."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from typing import Any, Dict, List
 
 import pytest
 
-from lib.agent_runner import (
+from cos_lib.agent_runner import (
     DEFAULT_ALLOWED_TOOLS,
     spawn,
     _resolve_provider,

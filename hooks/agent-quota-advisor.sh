@@ -60,7 +60,7 @@ PRESSURE=$("$PY_BIN" - "$METRICS_DIR" <<'PYEOF' 2>/dev/null || echo "0.0"
 import sys
 from pathlib import Path
 
-# Ensure repo root is on sys.path so `lib.quota_pressure` resolves.
+# Ensure repo root is on sys.path so `cos_lib.quota_pressure` resolves.
 metrics = Path(sys.argv[1])
 # Walk up from metrics dir to find repo root (where lib/ lives).
 root = metrics.parent.parent if metrics.name == "metrics" else metrics
@@ -71,7 +71,7 @@ for _ in range(4):
     root = root.parent
 
 try:
-    from lib.quota_pressure import compute_quota_pressure
+    from cos_lib.quota_pressure import compute_quota_pressure
     p = compute_quota_pressure(metrics)
     print(f"{p:.4f}")
 except Exception:

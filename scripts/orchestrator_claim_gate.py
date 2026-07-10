@@ -27,7 +27,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from lib.orchestrator_verify import verify_all
+from cos_lib.orchestrator_verify import verify_all
 from scripts.verify_plan_claims import verify_plan
 
 

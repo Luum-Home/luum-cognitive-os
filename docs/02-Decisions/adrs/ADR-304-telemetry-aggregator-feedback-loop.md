@@ -22,11 +22,11 @@ tags:
 adr: 304
 implementation_files:
 - manifests/observability-slo.yaml
-- lib/telemetry_aggregator.py
+- cos_lib/telemetry_aggregator.py
 - scripts/cos-telemetry-aggregate
 - hooks/telemetry-budget-violator-detect.sh
 - manifests/control-plane-audits.yaml
-- lib/telemetry_banner.py
+- cos_lib/telemetry_banner.py
 - hooks/session-init.sh
 - tests/unit/test_telemetry_aggregator.py
 - tests/unit/test_session_start_banner_telemetry.py

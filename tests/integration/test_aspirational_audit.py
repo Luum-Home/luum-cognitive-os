@@ -219,7 +219,7 @@ class TestLibClassification:
         lib_mod.write_text("# real module\n" * 5)
         # Create a hook that imports it
         (project / "hooks" / "uses-mymod.sh").write_text(
-            "#!/usr/bin/env bash\npython3 -c \"from lib.my_module import foo\"\n"
+            "#!/usr/bin/env bash\npython3 -c \"from cos_lib.my_module import foo\"\n"
         )
         auditor = aa.Auditor(project)
         events = auditor.run()
@@ -243,7 +243,7 @@ class TestLibClassification:
         lib_mod.write_text("def fn(): pass\n" * 5)
         # Only a test file imports it — but test files are skipped
         (project / "scripts" / "test_something.py").write_text(
-            "from lib.test_mod import fn\n"
+            "from cos_lib.test_mod import fn\n"
         )
         auditor = aa.Auditor(project)
         events = auditor.run()

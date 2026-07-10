@@ -15,7 +15,7 @@ from __future__ import annotations
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-from lib.promote_from_telemetry import (
+from cos_lib.promote_from_telemetry import (
     detect_dormant_no_evidence,
     detect_provider_fallback_drift,
     detect_skill_override_patterns,

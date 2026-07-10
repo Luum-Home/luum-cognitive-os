@@ -28,10 +28,10 @@ path_classification:
   - path: cmd/cos/internal/manifest
     zone: core
     reason: "Package specification contract for installable OS agentic primitives."
-  - path: lib/execution_profile.py
+  - path: cos_lib/execution_profile.py
     zone: core
     reason: "Capability-centric execution profile contract."
-  - path: lib/outcome_metrics.py
+  - path: cos_lib/outcome_metrics.py
     zone: core
     reason: "Provider-agnostic outcome metrics contract."
   - path: hooks/self-install.sh
@@ -65,10 +65,10 @@ path_classification:
   - path: internal/provider
     zone: compatibility
     reason: "Provider adapters normalize vendor payloads into the canonical hook context."
-  - path: lib/compatibility_layer.py
+  - path: cos_lib/compatibility_layer.py
     zone: compatibility
     reason: "Compatibility inventory for providers, gateways, and schema churn."
-  - path: lib/gateway_selector.py
+  - path: cos_lib/gateway_selector.py
     zone: compatibility
     reason: "Gateway adapter selection and provider indirection."
   - path: .claude

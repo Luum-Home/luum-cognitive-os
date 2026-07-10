@@ -10,9 +10,9 @@ import os as _cos_os
 import sys as _cos_sys
 _cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
 import sys
-from lib.script_helpers import read_yaml_dict as load_yaml
-from lib.script_helpers import repo_root
-from lib.script_helpers import imported_roots
+from cos_lib.script_helpers import read_yaml_dict as load_yaml
+from cos_lib.script_helpers import repo_root
+from cos_lib.script_helpers import imported_roots
 
 import argparse
 import ast
@@ -59,7 +59,7 @@ def audit(repo: Path, manifest_path: Path) -> dict[str, Any]:
         findings.append(Finding("block", "manifest-schema-mismatch", "Skill-router retrieval manifest schema_version is missing or unsupported.", path=str(manifest_path)))
 
     policy = manifest.get("policy") or {}
-    core_router = repo / str(policy.get("core_router", "lib/skill_router.py"))
+    core_router = repo / str(policy.get("core_router", "cos_lib/skill_router.py"))
     if not core_router.exists():
         findings.append(Finding("block", "core-router-missing", "Declared core skill router file does not exist.", path=str(core_router)))
     else:
@@ -74,7 +74,7 @@ def audit(repo: Path, manifest_path: Path) -> dict[str, Any]:
                         "block",
                         "forbidden-core-retrieval-import",
                         "Core skill router imports an optional retrieval stack directly instead of through an adapter.",
-                        path=str(policy.get("core_router", "lib/skill_router.py")),
+                        path=str(policy.get("core_router", "cos_lib/skill_router.py")),
                         details={"module": module, "rationale": item.get("rationale")},
                     )
                 )

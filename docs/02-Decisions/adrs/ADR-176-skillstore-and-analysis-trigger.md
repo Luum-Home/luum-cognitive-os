@@ -8,7 +8,7 @@ date: 2026-05-05
 supersedes: []
 superseded_by: null
 implementation_files:
-  - lib/skill_store.py
+  - cos_lib/skill_store.py
   - scripts/migrate_skill_archive_to_store.py
   - hooks/skill-post-execution-analysis.sh
   - scripts/_lib/settings-driver-claude-code.sh

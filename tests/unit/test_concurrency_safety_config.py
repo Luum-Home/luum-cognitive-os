@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.concurrency_safety import load_concurrency_safety_config
+from cos_lib.concurrency_safety import load_concurrency_safety_config
 
 pytestmark = pytest.mark.unit
 

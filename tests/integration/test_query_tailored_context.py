@@ -16,12 +16,12 @@ from pathlib import Path
 
 import pytest
 
-# Ensure the repo root is on sys.path so lib.context_injector is importable.
+# Ensure the repo root is on sys.path so cos_lib.context_injector is importable.
 REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from lib.context_injector import (  # noqa: E402
+from cos_lib.context_injector import (  # noqa: E402
     build_context,
     _task_hash,
     _cache_path,
@@ -202,7 +202,7 @@ def test_jaccard_fallback_when_embeddings_unavailable(
 ) -> None:
     """When EmbeddingsIndex import fails, Jaccard fallback must still find results."""
     # Patch _search_code_embeddings to simulate ImportError / unavailability.
-    import lib.context_injector as ci
+    import cos_lib.context_injector as ci
 
     def _no_embeddings(task: str, project_root: Path, top_k: int = 3) -> None:
         return None  # Simulates ImportError / unavailability

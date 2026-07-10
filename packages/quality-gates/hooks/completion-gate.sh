@@ -35,7 +35,7 @@ _drain_queue() {
 import sys, os
 sys.path.insert(0, '$_PROJECT_DIR')
 try:
-    from lib.queue_drainer import QueueDrainer
+    from cos_lib.queue_drainer import QueueDrainer
     drainer = QueueDrainer()
     ready = drainer.get_ready_agents(max_count=3)
     if ready:
@@ -53,7 +53,7 @@ except Exception:
 import sys, os
 sys.path.insert(0, '$_PROJECT_DIR')
 try:
-    from lib.agent_health_monitor import AgentHealthMonitor
+    from cos_lib.agent_health_monitor import AgentHealthMonitor
     monitor = AgentHealthMonitor()
     health = monitor.check_health()
     if health['timeout'] or health['dead']:
@@ -91,7 +91,7 @@ _record_adr108_agent_completion() {
 import sys
 sys.path.insert(0, sys.argv[1])
 try:
-    from lib.concurrency_safety import load_concurrency_safety_config
+    from cos_lib.concurrency_safety import load_concurrency_safety_config
     cfg = load_concurrency_safety_config(sys.argv[1] + "/cognitive-os.yaml")
     print("\n".join(cfg.resource_leases.critical_domains))
 except Exception:
@@ -337,7 +337,7 @@ if [ "$IS_COMPLETION" = "true" ]; then
     _RC_VIOLATIONS=$(printf '%s' "$RESPONSE" | PYTHONPATH="$PROJECT_DIR" python3 -c '
 import sys
 try:
-    from lib.return_contract_parser import parse_return_contract, validate_return_contract
+    from cos_lib.return_contract_parser import parse_return_contract, validate_return_contract
     parsed = parse_return_contract(sys.stdin.read()[:12000])
     if parsed:
         for violation in validate_return_contract(parsed):
@@ -433,7 +433,7 @@ if [ "$FAILURE_DETECTED" = false ]; then
 import sys, os, json
 sys.path.insert(0, '$PROJECT_DIR')
 try:
-    from lib.escalation_detector import EscalationDetector
+    from cos_lib.escalation_detector import EscalationDetector
     d = EscalationDetector()
     d.save_metrics('$METRICS_DIR')
 except Exception:
@@ -457,7 +457,7 @@ if [ -n "$_ESCALATION_BLOCK" ]; then
 import sys, os
 sys.path.insert(0, '$PROJECT_DIR')
 try:
-    from lib.escalation_detector import EscalationDetector
+    from cos_lib.escalation_detector import EscalationDetector
     d = EscalationDetector()
     d.save_metrics('$METRICS_DIR')
 except Exception:
@@ -486,13 +486,13 @@ if [ "$RETRY_COUNT" -ge "$MAX_RETRIES" ]; then
 import sys, os
 sys.path.insert(0, os.environ.get('CLAUDE_PROJECT_DIR', '.'))
 try:
-    from lib.circuit_breaker import CircuitBreaker
+    from cos_lib.circuit_breaker import CircuitBreaker
     cb = CircuitBreaker()
     task_type = '$FAILURE_TYPE'.lower().replace('_error','').replace('_failure','')
     cb.record_failure(task_type or 'general')
 except Exception: pass
 try:
-    from lib.dead_letter_queue import DeadLetterQueue
+    from cos_lib.dead_letter_queue import DeadLetterQueue
     dlq = DeadLetterQueue()
     dlq.enqueue_dead_letter(
         task_id='$AGENT_ID'[:100],
@@ -522,7 +522,7 @@ if [ "$AUTO_REFINE_MODE" = "suggest" ]; then
 import sys, os
 sys.path.insert(0, '$PROJECT_DIR')
 try:
-    from lib.consequence_engine import ConsequenceEngine
+    from cos_lib.consequence_engine import ConsequenceEngine
     e = ConsequenceEngine('$METRICS_DIR/consequence-history.jsonl')
     skills = e.get_skills_needing_rewrite('$METRICS_DIR')
     for s in skills:
@@ -555,7 +555,7 @@ _REWRITE_OUTPUT=$(python3 -c "
 import sys, os
 sys.path.insert(0, '$PROJECT_DIR')
 try:
-    from lib.consequence_engine import ConsequenceEngine
+    from cos_lib.consequence_engine import ConsequenceEngine
     e = ConsequenceEngine('$METRICS_DIR/consequence-history.jsonl')
     skills = e.get_skills_needing_rewrite('$METRICS_DIR')
     phase = '$PHASE'

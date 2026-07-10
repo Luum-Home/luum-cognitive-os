@@ -71,8 +71,8 @@ tools:
     - hooks/cross-session-coordination-guard.sh
     - hooks/agent-message-inbox-guard.sh
   library:
-    - lib/session_coordination.py
-    - lib/agent_message_bus.py
+    - cos_lib/session_coordination.py
+    - cos_lib/agent_message_bus.py
 
 acceptance_tests:
   - tests/unit/test_session_coordination.py

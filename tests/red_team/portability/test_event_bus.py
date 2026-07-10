@@ -25,7 +25,7 @@ CLI_SH = REPO_ROOT / "scripts" / "cos-events.sh"
 
 sys.path.insert(0, str(REPO_ROOT))
 
-from lib.event_bus import emit, tail, EVENT_TYPES  # noqa: E402
+from cos_lib.event_bus import emit, tail, EVENT_TYPES  # noqa: E402
 
 
 # ---------------------------------------------------------------------------

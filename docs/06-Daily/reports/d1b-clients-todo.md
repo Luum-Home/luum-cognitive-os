@@ -58,7 +58,7 @@ local apply_pid=$!
   COGNITIVE_OS_PROJECT_DIR="$PROJECT_DIR" python3 - "$apply_pid" <<'PYEOF' >/dev/null 2>&1
 import sys, os; root = os.environ.get("COGNITIVE_OS_PROJECT_DIR") or os.getcwd(); sys.path.insert(0, root)
 try:
-    import lib.process_registry as process_registry
+    import cos_lib.process_registry as process_registry
     process_registry.register(int(sys.argv[1]), "execute-repair-apply", 120, "short_lived")
 except Exception: pass
 PYEOF

@@ -6,7 +6,7 @@ should_component_run logic, and boundary cases.
 
 import pytest
 
-from lib.capability_levels import (
+from cos_lib.capability_levels import (
     DEFAULT_AUTO_DISABLE,
     DEFAULT_LEVEL,
     format_capability_report,

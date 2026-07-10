@@ -22,7 +22,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from lib.llm_routing_fallback import (
+from cos_lib.llm_routing_fallback import (
     LLMCandidate,
     build_prompt,
     llm_route,
@@ -177,8 +177,8 @@ def test_vendor_neutral_no_hardcoded_provider() -> None:
     assert "from anthropic" not in src
     assert "import openai" not in src
     assert "from openai" not in src
-    # Module routes through lib.dispatch — primary integration point
-    assert "lib.dispatch" in src
+    # Module routes through cos_lib.dispatch — primary integration point
+    assert "cos_lib.dispatch" in src
 
 
 # ---------------------------------------------------------------------------
@@ -314,7 +314,7 @@ def test_parse_response_strict() -> None:
     reason="Live LLM test gated behind COS_LLM_ROUTING_LIVE_TEST=1",
 )
 def test_live_dispatch_roundtrip(tmp_project: Path) -> None:
-    """Smoke test that exercises the real lib.dispatch.dispatch path."""
+    """Smoke test that exercises the real cos_lib.dispatch.dispatch path."""
     cands = _ambiguous_candidates()
     result = llm_route("Which option fits best?", cands)
     # Either a valid pick or a clean None — but never an exception.

@@ -97,7 +97,7 @@ security:
 Prefer reset over disabling:
 
 ```python
-from lib.rate_limiter import RateLimiter
+from cos_lib.rate_limiter import RateLimiter
 RateLimiter().reset()
 ```
 

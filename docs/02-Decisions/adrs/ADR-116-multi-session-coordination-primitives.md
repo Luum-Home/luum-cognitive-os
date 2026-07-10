@@ -9,10 +9,10 @@ date: 2026-05-02
 supersedes: []
 superseded_by: null
 implementation_files:
-  - lib/task_claim_ledger.py
+  - cos_lib/task_claim_ledger.py
   - hooks/agent-prelaunch.sh
-  - lib/session_lifecycle.py
-  - lib/merge_queue.py
+  - cos_lib/session_lifecycle.py
+  - cos_lib/merge_queue.py
   - scripts/cos_coordination_status.py
   - scripts/so-reaper.sh
   - scripts/cos_work_inventory.py

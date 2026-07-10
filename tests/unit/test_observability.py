@@ -16,11 +16,11 @@ from unittest.mock import patch
 
 import pytest
 
-# Ensure repo root is on the path so `lib.observability` is importable
+# Ensure repo root is on the path so `cos_lib.observability` is importable
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-from lib.observability import (
+from cos_lib.observability import (
     trace,
     is_phoenix_available,
     _http_post,
@@ -53,7 +53,7 @@ class TestTraceBothDisabled:
         monkeypatch.delenv("OPIK_ENABLED", raising=False)
 
         # Force the Phoenix branch to report unavailable so this is a true noop.
-        with patch("lib.observability.is_phoenix_available", return_value=False):
+        with patch("cos_lib.observability.is_phoenix_available", return_value=False):
             result = trace(
                 name="test-agent",
                 start="2026-01-01T00:00:00Z",
@@ -69,7 +69,7 @@ class TestTraceBothDisabled:
         """trace() always returns a dict, never None."""
         monkeypatch.delenv("OPIK_ENABLED", raising=False)
 
-        with patch("lib.observability.is_phoenix_available", return_value=False):
+        with patch("cos_lib.observability.is_phoenix_available", return_value=False):
             result = trace(
                 name="noop",
                 start="2026-01-01T00:00:00Z",

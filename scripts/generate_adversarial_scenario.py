@@ -12,7 +12,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from lib.adversarial_rubric import generate_fixture, load_scenarios
+from cos_lib.adversarial_rubric import generate_fixture, load_scenarios
 
 
 DEFAULT_SCENARIOS = PROJECT_ROOT / ".cognitive-os" / "tests" / "adversarial-generalization" / "scenarios.yaml"

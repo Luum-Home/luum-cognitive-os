@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.intent_arbiter import process_once, read_json, result_path, submit_intent
+from cos_lib.intent_arbiter import process_once, read_json, result_path, submit_intent
 
 pytestmark = pytest.mark.unit
 

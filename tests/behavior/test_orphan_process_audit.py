@@ -4,7 +4,7 @@ import json
 import signal
 from pathlib import Path
 
-from lib.orphan_process_audit import (
+from cos_lib.orphan_process_audit import (
     ProcessRow,
     build_report,
     find_orphan_scan_processes,

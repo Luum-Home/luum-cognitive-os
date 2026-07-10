@@ -10,7 +10,7 @@ extends:
   - ADR-028
   - ADR-298
 implementation_files:
-  - lib/agent_spawn_benchmark.py
+  - cos_lib/agent_spawn_benchmark.py
   - scripts/cos-agent-spawn-benchmark
   - tests/unit/test_agent_spawn_benchmark.py
   - tests/unit/test_agent_spawn_budget.py

@@ -5,7 +5,7 @@ the process registry receives the expected records. All tests use tmp_path and
 COGNITIVE_OS_PROJECT_DIR override so no real project state is touched.
 
 Isolation: each test overrides COGNITIVE_OS_PROJECT_DIR to a fresh tmp directory
-and reloads lib.process_registry to pick up the new path.
+and reloads cos_lib.process_registry to pick up the new path.
 """
 from __future__ import annotations
 
@@ -28,10 +28,10 @@ REGISTER_BG = PROJECT_ROOT / "hooks" / "_lib" / "register-bg.sh"
 def _reload_registry(project_dir: Path):
     """Force-reload process_registry with the given COGNITIVE_OS_PROJECT_DIR."""
     os.environ["COGNITIVE_OS_PROJECT_DIR"] = str(project_dir)
-    if "lib.process_registry" in sys.modules:
-        del sys.modules["lib.process_registry"]
+    if "cos_lib.process_registry" in sys.modules:
+        del sys.modules["cos_lib.process_registry"]
     sys.path.insert(0, str(PROJECT_ROOT))
-    import lib.process_registry as reg  # noqa: PLC0415
+    import cos_lib.process_registry as reg  # noqa: PLC0415
     return reg
 
 
@@ -135,7 +135,7 @@ class TestRegisterBgShell:
 
 
 class TestRegisterBgPythonCleanup:
-    """Python lib.process_registry cleanup_expired removes expired records."""
+    """Python cos_lib.process_registry cleanup_expired removes expired records."""
 
     def test_cleanup_expired_removes_finished_process(self, tmp_path, monkeypatch):
         """Expired records (ttl_seconds=0, registered_at in the past) are removed by cleanup."""

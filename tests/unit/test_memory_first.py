@@ -1,6 +1,6 @@
 """Unit tests for lib/memory_first.py."""
 import pytest
-from lib.memory_first import MemoryFirst
+from cos_lib.memory_first import MemoryFirst
 
 
 @pytest.fixture()

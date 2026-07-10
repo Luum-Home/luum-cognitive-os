@@ -2,7 +2,7 @@
 
 import pytest
 
-from lib.threat_classifier import (
+from cos_lib.threat_classifier import (
     ThreatClassification,
     ThreatMatrix,
     ThreatScenario,

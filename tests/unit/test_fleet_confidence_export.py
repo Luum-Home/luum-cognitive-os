@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from lib.fleet_confidence import export_fleet_confidence
+from cos_lib.fleet_confidence import export_fleet_confidence
 
 
 MANIFEST = Path(__file__).resolve().parents[2] / "manifests" / "fleet-confidence-schema.yaml"

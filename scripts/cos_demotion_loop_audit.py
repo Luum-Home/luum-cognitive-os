@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.script_io import read_yaml_mapping as load_manifest
+from cos_lib.script_io import read_yaml_mapping as load_manifest
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]

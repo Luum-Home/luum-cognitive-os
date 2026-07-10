@@ -195,7 +195,7 @@ find "$PROJECT_DIR/.cognitive-os/sessions" -name user-requests.jsonl -print 2>/d
 
 Or use the lib module:
 ```python
-from lib.request_queue import get_pending_requests, format_pending_summary
+from cos_lib.request_queue import get_pending_requests, format_pending_summary
 pending = get_pending_requests(session_dir=f".cognitive-os/sessions/{session_id}")
 print(format_pending_summary(session_dir=f".cognitive-os/sessions/{session_id}"))
 ```

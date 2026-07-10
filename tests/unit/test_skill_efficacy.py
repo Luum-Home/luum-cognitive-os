@@ -1,4 +1,4 @@
-from lib.skill_efficacy import SkillRun, format_markdown, summarize_runs, task_fingerprint
+from cos_lib.skill_efficacy import SkillRun, format_markdown, summarize_runs, task_fingerprint
 
 
 def test_task_fingerprint_is_stable() -> None:

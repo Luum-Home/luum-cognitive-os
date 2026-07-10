@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.capability_levels import (
+from cos_lib.capability_levels import (
     DEFAULT_AUTO_DISABLE,
     get_disabled_components,
     should_component_run,

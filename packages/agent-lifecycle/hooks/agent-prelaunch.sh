@@ -389,7 +389,7 @@ if command -v python3 >/dev/null 2>&1; then
 import sys
 sys.path.insert(0, sys.argv[1])
 try:
-    from lib.concurrency_safety import load_concurrency_safety_config
+    from cos_lib.concurrency_safety import load_concurrency_safety_config
     cfg = load_concurrency_safety_config(sys.argv[1] + "/cognitive-os.yaml")
     print("\n".join(cfg.resource_leases.critical_domains))
 except Exception:

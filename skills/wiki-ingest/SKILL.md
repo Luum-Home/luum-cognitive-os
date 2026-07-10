@@ -30,7 +30,7 @@ Use this skill when a raw source needs to become a structured vault page under
 ## Procedure
 
 1. Confirm the source type: URL, local file, or inline pasted text.
-2. Use `lib.wiki_ingester.WikiIngester` from the repository root.
+2. Use `cos_lib.wiki_ingester.WikiIngester` from the repository root.
 3. Call the matching method: `ingest_url`, `ingest_file`, or `ingest_text`.
 4. Review the generated page and the appended raw index row.
 5. Run the relevant focused tests or audits for the touched docs surface.
@@ -39,7 +39,7 @@ Use this skill when a raw source needs to become a structured vault page under
 
 ```python
 from pathlib import Path
-from lib.wiki_ingester import WikiIngester
+from cos_lib.wiki_ingester import WikiIngester
 
 ingester = WikiIngester(Path.cwd())
 result = ingester.ingest_text("Source title", "Source body")

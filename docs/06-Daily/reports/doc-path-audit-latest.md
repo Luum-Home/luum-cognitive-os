@@ -80,9 +80,9 @@ Status: `fail`
 | ambiguous | P3 | README.md | 179 | `docs/03-PoCs/research/INDEX.md](docs/03-PoCs/research/INDEX.md` | Reference contains template, regex, shell, or prose syntax and needs human review. |
 | missing-exact | P0 | cmd/cos-test/internal/cli/focused_test.go | 86 | `docs/foo.txt` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P0 | cmd/cos-test/internal/cli/focused_test.go | 147 | `docs/random.md` | Exact documentation path does not exist after bridge removal. |
-| ambiguous | P0 | crates/cos-script-exposure-audit-rs/src/lib.rs | 159 | `docs/tests` | Reference looks like a directory, prefix, or template rather than an exact file path. |
-| ambiguous | P0 | crates/cos-script-exposure-audit-rs/src/lib.rs | 194 | `docs/tests/config/scripts` | Reference looks like a directory, prefix, or template rather than an exact file path. |
-| ambiguous | P0 | crates/cos-script-exposure-audit-rs/src/lib.rs | 242 | `docs/tests` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P0 | crates/cos-script-exposure-audit-rs/src/cos_lib.rs | 159 | `docs/tests` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P0 | crates/cos-script-exposure-audit-rs/src/cos_lib.rs | 194 | `docs/tests/config/scripts` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P0 | crates/cos-script-exposure-audit-rs/src/cos_lib.rs | 242 | `docs/tests` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P3 | docker-compose.cognitive-os.yml | 254 | `docs/backwards` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P3 | docs/00-MOCs/decisions.md | 13 | `docs/04-Concepts/architecture/adrs` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | historical-allowed | P3 | docs/00-MOCs/decisions.md | 20 | `docs/02-Decisions/adrs/ADR-NNN-*.md` | Historical file contains a documentation glob that no longer matches after migration. |
@@ -1317,8 +1317,8 @@ Status: `fail`
 | historical-allowed | P3 | docs/06-Daily/reports/primitive-usage-map-latest.json | 1988 | `docs/02-Decisions/adrs/ADR-097-task-tracker-lifecycle.md` | Historical file contains an exact documentation path that no longer exists after migration. |
 | ambiguous | P3 | docs/06-Daily/reports/prune-triage-2026-05-01.md | 119 | `docs/06-backoffice` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | historical-allowed | P3 | docs/06-Daily/reports/punch-list-hooks.md | 3 | `docs/06-Daily/reports/aspirational-audit-2026-05-01.md` | Historical file contains an exact documentation path that no longer exists after migration. |
-| historical-allowed | P3 | docs/06-Daily/reports/punch-list-lib.md | 3 | `docs/06-Daily/reports/aspirational-audit-2026-05-01.md` | Historical file contains an exact documentation path that no longer exists after migration. |
-| ambiguous | P3 | docs/06-Daily/reports/punch-list-lib.md | 10 | `docs/99-Archive/archive/lib` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| historical-allowed | P3 | docs/06-Daily/reports/punch-list-cos_lib.md | 3 | `docs/06-Daily/reports/aspirational-audit-2026-05-01.md` | Historical file contains an exact documentation path that no longer exists after migration. |
+| ambiguous | P3 | docs/06-Daily/reports/punch-list-cos_lib.md | 10 | `docs/99-Archive/archive/lib` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | historical-allowed | P3 | docs/06-Daily/reports/punch-list-rules.md | 3 | `docs/06-Daily/reports/aspirational-audit-2026-05-01.md` | Historical file contains an exact documentation path that no longer exists after migration. |
 | historical-allowed | P3 | docs/06-Daily/reports/punch-list-rules.md | 17 | `docs/06-Daily/reports/aspirational-audit-2026-05-01.md` | Historical file contains an exact documentation path that no longer exists after migration. |
 | historical-allowed | P3 | docs/06-Daily/reports/punch-list-skills.md | 3 | `docs/06-Daily/reports/aspirational-audit-2026-05-01.md` | Historical file contains an exact documentation path that no longer exists after migration. |

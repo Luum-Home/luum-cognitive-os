@@ -3,11 +3,11 @@
 Steps exercised:
   1. session-init.sh + session-start-worktree-nudge.sh (hooks fire, exit 0)
   2. rate-limit-precheck.sh with a fake bash command (additionalContext field)
-  3. lib.rate_limiter.RateLimitQueue.enqueue() + dequeue_ready (JSONL events)
-  4. lib.harness_adapter.dispatch.dispatch_event with fake CC Pre event
+  3. cos_lib.rate_limiter.RateLimitQueue.enqueue() + dequeue_ready (JSONL events)
+  4. cos_lib.harness_adapter.dispatch.dispatch_event with fake CC Pre event
      (canonical event written to metrics/)
   5. scripts/cos_sprint.py run <fixture.yaml> (manifest created)
-  6. lib.self_knowledge.query("rate limiter") returns a list
+  6. cos_lib.self_knowledge.query("rate limiter") returns a list
 
 Each step is isolated via tmp_path; no global state leaks.
 """
@@ -39,7 +39,7 @@ def _make_cos_layout(base: Path) -> Path:
     cos = base / ".cognitive-os"
     for sub in ("metrics", "sessions", "sprints", "self-knowledge"):
         (cos / sub).mkdir(parents=True, exist_ok=True)
-    # Minimal cognitive-os.yaml so lib.paths / lib.rate_limiter can find project root
+    # Minimal cognitive-os.yaml so cos_lib.paths / cos_lib.rate_limiter can find project root
     (base / "cognitive-os.yaml").write_text(
         "project:\n  phase: reconstruction\n  name: smoke-test\n",
         encoding="utf-8",
@@ -163,7 +163,7 @@ def test_step2_rate_limit_precheck(project_dir: Path) -> None:
 def test_step3_rate_limit_queue(project_dir: Path) -> None:
     """enqueue() writes a JSONL event; dequeue_ready() returns queued items."""
     sys.path.insert(0, str(_REPO_ROOT))
-    from lib.rate_limiter import RateLimitQueue  # noqa: PLC0415
+    from cos_lib.rate_limiter import RateLimitQueue  # noqa: PLC0415
 
     queue_path = str(project_dir / ".cognitive-os" / "rate-limit-queue.json")
     queue = RateLimitQueue(
@@ -203,7 +203,7 @@ def test_step3_rate_limit_queue(project_dir: Path) -> None:
 def test_step4_canonical_event_emission(project_dir: Path) -> None:
     """dispatch_event with a fake CC PreToolUse:Agent payload emits a canonical event."""
     sys.path.insert(0, str(_REPO_ROOT))
-    from lib.harness_adapter.dispatch import dispatch_event  # noqa: PLC0415
+    from cos_lib.harness_adapter.dispatch import dispatch_event  # noqa: PLC0415
 
     fake_pre_event: Dict[str, Any] = {
         "hook_event_name": "PreToolUse",
@@ -314,7 +314,7 @@ def test_step5_sprint_cli_run(project_dir: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Step 6 — lib.self_knowledge.query
+# Step 6 — cos_lib.self_knowledge.query
 # ---------------------------------------------------------------------------
 
 
@@ -330,7 +330,7 @@ def test_step6_self_knowledge_query(project_dir: Path) -> None:
     We only FAIL if the function raises an exception.
     """
     sys.path.insert(0, str(_REPO_ROOT))
-    from lib import self_knowledge  # noqa: PLC0415
+    from cos_lib import self_knowledge  # noqa: PLC0415
 
     # Point at the real project index (not the temp dir — index lives in the repo)
     try:

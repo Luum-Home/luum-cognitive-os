@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.project_paths import safe_relpath as rel
+from cos_lib.project_paths import safe_relpath as rel
 from typing import Any
 
 import yaml

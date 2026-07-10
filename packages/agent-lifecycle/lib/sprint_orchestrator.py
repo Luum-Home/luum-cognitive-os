@@ -28,7 +28,7 @@ from enum import Enum
 from pathlib import Path
 from typing import Any, ClassVar, Dict, List, Optional
 
-from lib.harness_adapter.base import CanonicalEvent, now_epoch
+from cos_lib.harness_adapter.base import CanonicalEvent, now_epoch
 
 
 # ---------------------------------------------------------------------------
@@ -199,7 +199,7 @@ class SprintTestSummary(CanonicalEvent):
 
     Introduced in Beta wave (ADR-036 follow-up). Callers produce this via
     :func:`aggregate_test_results`, which delegates to
-    ``lib.sprint_test_aggregator`` when available and falls back to the stub.
+    ``cos_lib.sprint_test_aggregator`` when available and falls back to the stub.
     """
 
     event_type: ClassVar[str] = "sprint_test_summary"
@@ -499,7 +499,7 @@ def aggregate_test_results(
 ) -> "SprintTestSummary":
     """Aggregate test results across all tasks and return a :class:`SprintTestSummary`.
 
-    Delegates to ``lib.sprint_test_aggregator.aggregate()`` when importable.
+    Delegates to ``cos_lib.sprint_test_aggregator.aggregate()`` when importable.
     Falls back to an empty summary (all zeros) so callers always get a typed
     object when the aggregator is not installed.
 
@@ -515,8 +515,8 @@ def aggregate_test_results(
     """
     base = Path(project_dir) if project_dir else Path.cwd()
     try:
-        from lib.sprint_test_aggregator import aggregate as _agg  # type: ignore
-        from lib.sprint_test_aggregator import detect_recent_sessions as _recent  # type: ignore
+        from cos_lib.sprint_test_aggregator import aggregate as _agg  # type: ignore
+        from cos_lib.sprint_test_aggregator import detect_recent_sessions as _recent  # type: ignore
     except ImportError:
         return SprintTestSummary(
             sprint_id=sprint_id,

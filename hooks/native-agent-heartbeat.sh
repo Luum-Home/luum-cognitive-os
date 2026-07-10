@@ -27,7 +27,7 @@ COGNITIVE_OS_PROJECT_DIR="$PROJECT_DIR" \
 python3 - "$TMP" <<'PYEOF' 2>/dev/null || true
 import sys
 from pathlib import Path
-from lib.harness_adapter.dispatch import handle_event
+from cos_lib.harness_adapter.dispatch import handle_event
 
 payload = Path(sys.argv[1]).read_text(encoding="utf-8")
 handle_event(payload)

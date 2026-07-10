@@ -5,7 +5,7 @@ Trigger: Stop
 
 Contract:
   - Python-driven hygiene with 30s timeout.
-  - Missing lib.session_hygiene must not crash the hook.
+  - Missing cos_lib.session_hygiene must not crash the hook.
   - Always exits 0 (|| true guard).
 """
 from __future__ import annotations

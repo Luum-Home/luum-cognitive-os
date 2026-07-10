@@ -15,6 +15,6 @@ def test_publication_safety_hook_is_project_configured_not_repo_hardcoded() -> N
 
 def test_publication_safety_cli_is_project_configured_not_repo_hardcoded() -> None:
     text = (REPO / "scripts" / "cos-publication-safety").read_text(encoding="utf-8")
-    assert "lib.publication_safety" in text
+    assert "cos_lib.publication_safety" in text
     assert "scripts/pre-publication-gate" not in text
     assert "luum-agent-harness" not in text

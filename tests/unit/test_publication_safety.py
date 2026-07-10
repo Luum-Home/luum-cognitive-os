@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.publication_safety import (
+from cos_lib.publication_safety import (
     CONFIG_SCHEMA_VERSION,
     SCHEMA_VERSION,
     PublicationSafetyConfigError,

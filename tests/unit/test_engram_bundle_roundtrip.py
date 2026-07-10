@@ -6,9 +6,9 @@ import sqlite3
 from pathlib import Path
 
 
-from lib.engram_bundle_exporter import BUNDLE_SCHEMA_VERSION, export
-from lib.engram_bundle_importer import apply_bundle, verify_bundle
-from lib.engram_wave3_schema import ensure_wave3_schema, register_source
+from cos_lib.engram_bundle_exporter import BUNDLE_SCHEMA_VERSION, export
+from cos_lib.engram_bundle_importer import apply_bundle, verify_bundle
+from cos_lib.engram_wave3_schema import ensure_wave3_schema, register_source
 
 
 def _bootstrap_source_db(path: Path) -> None:

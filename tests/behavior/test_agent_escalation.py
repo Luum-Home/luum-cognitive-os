@@ -40,13 +40,13 @@ class TestDetectorImport:
     """Verify the EscalationDetector library is importable and has expected API."""
 
     def test_import(self) -> None:
-        from lib.escalation_detector import EscalationDetector, EscalationSignal
+        from cos_lib.escalation_detector import EscalationDetector, EscalationSignal
 
         assert EscalationDetector is not None
         assert EscalationSignal is not None
 
     def test_detector_api(self) -> None:
-        from lib.escalation_detector import EscalationDetector
+        from cos_lib.escalation_detector import EscalationDetector
 
         d = EscalationDetector()
         assert hasattr(d, "record_tool_call")
@@ -58,7 +58,7 @@ class TestDetectorImport:
 
     def test_detector_signal_types(self) -> None:
         """Detector should be capable of producing all 5 signal types."""
-        from lib.escalation_detector import EscalationDetector
+        from cos_lib.escalation_detector import EscalationDetector
 
         # These are the documented signal types from the rule.
         # We verify by checking the method names exist for each check.
@@ -82,7 +82,7 @@ class TestFormatMarker:
     """Verify the formatted output uses the ESCALATION: marker."""
 
     def test_format_starts_with_marker(self) -> None:
-        from lib.escalation_detector import EscalationDetector, EscalationSignal
+        from cos_lib.escalation_detector import EscalationDetector, EscalationSignal
 
         d = EscalationDetector()
         signal = EscalationSignal(
@@ -96,7 +96,7 @@ class TestFormatMarker:
 
     def test_format_parseable(self) -> None:
         """The output should be parseable by splitting on 'ESCALATION:' and reading key-value pairs."""
-        from lib.escalation_detector import EscalationDetector, EscalationSignal
+        from cos_lib.escalation_detector import EscalationDetector, EscalationSignal
 
         d = EscalationDetector()
         signal = EscalationSignal(

@@ -121,7 +121,7 @@ git check-ignore --quiet .cognitive-os/goals/archive/example.json
 ```bash
 .venv/bin/python -m pytest tests/unit/test_goal_evaluator.py -q
 # Verify deterministic backend attribute
-.venv/bin/python -c "from lib.goal_evaluator import GoalEvaluator; e = GoalEvaluator(); assert e.backend == 'deterministic'"
+.venv/bin/python -c "from cos_lib.goal_evaluator import GoalEvaluator; e = GoalEvaluator(); assert e.backend == 'deterministic'"
 ```
 
 ### T-07 — Add evaluator prompt template snapshot [x]
@@ -154,7 +154,7 @@ git check-ignore --quiet .cognitive-os/goals/archive/example.json
 **Implement**:
 - `max_turns`: turn counter in `GoalState`, incremented once per Stop-hook cycle with new evidence.
 - `wall_clock_minutes`: derived from `time.time() - GoalState.started_at_epoch`; no extra state field.
-- `max_tokens` and `max_cost_usd`: add as optional fields to `GoalState`. Enforce by reading `.cognitive-os/metrics/llm-dispatch.jsonl` via `lib.dispatch._metrics_path()`. Filter records by `ts >= created_at`. Accumulate `tokens_in + tokens_out` for token count and `cost_usd` for cost. Implement this in `lib/goal_budget.py::_goal_dispatch_totals()`.
+- `max_tokens` and `max_cost_usd`: add as optional fields to `GoalState`. Enforce by reading `.cognitive-os/metrics/llm-dispatch.jsonl` via `cos_lib.dispatch._metrics_path()`. Filter records by `ts >= created_at`. Accumulate `tokens_in + tokens_out` for token count and `cost_usd` for cost. Implement this in `lib/goal_budget.py::_goal_dispatch_totals()`.
 - Budget exhaustion on any dimension writes a `budget_limited` event and returns allow-stop, not completion.
 
 **Acceptance**:

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # confidentiality-enforcer.sh — PostToolUse hook on Edit|Write
 # CONCERNS: confidentiality, ip-protection
 #
@@ -89,7 +89,7 @@ trap 'rm -f "$PYERR"' EXIT
 PYTHON_OUTPUT=$(python3 - "$FILE_PATH" "$PROJECT_DIR" "$CONFIG_FILE" <<'PYEOF' 2>"$PYERR"
 import json, sys
 try:
-    from lib.confidentiality_scanner import scan_file, load_protected_terms, is_scannable_path
+    from cos_lib.confidentiality_scanner import scan_file, load_protected_terms, is_scannable_path
 except Exception as e:
     print(f"SCANNER_INFRA_ERROR: {e}", file=sys.stderr)
     sys.exit(3)

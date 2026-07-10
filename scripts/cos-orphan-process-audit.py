@@ -13,7 +13,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from lib.orphan_process_audit import (  # noqa: E402
+from cos_lib.orphan_process_audit import (  # noqa: E402
     DEFAULT_OLDER_THAN_SECONDS,
     append_metric,
     build_report,

@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Advisor MCP Server — Model-agnostic strategic advisor for coding agents.
 
 Any AI coding agent (Claude Code, Cursor, Devin, etc.) can call the
@@ -182,7 +182,7 @@ async def _call_anthropic(
 ) -> tuple[str, int, int]:
     """Call the Anthropic API. Returns (reply, input_tokens, output_tokens)."""
     try:
-        from lib.anthropic_direct_policy import direct_anthropic_api_enabled
+        from cos_lib.anthropic_direct_policy import direct_anthropic_api_enabled
 
         if not direct_anthropic_api_enabled():
             return (
@@ -207,7 +207,7 @@ async def _call_anthropic(
             0,
         )
 
-    from lib.anthropic_direct_policy import direct_anthropic_api_key
+    from cos_lib.anthropic_direct_policy import direct_anthropic_api_key
 
     client = anthropic.AsyncAnthropic(api_key=direct_anthropic_api_key())
     user_content = f"Context:\n{context}\n\nQuestion:\n{question}"
@@ -345,7 +345,7 @@ def _anthropic_provider_available() -> bool:
     if not _module_available("anthropic"):
         return False
     try:
-        from lib.anthropic_direct_policy import (
+        from cos_lib.anthropic_direct_policy import (
             direct_anthropic_api_enabled,
             direct_anthropic_api_key_present,
         )

@@ -71,7 +71,7 @@ Run the pre-built analysis first to get a baseline:
 ```python
 import sys, os
 sys.path.insert(0, os.environ.get('CLAUDE_PROJECT_DIR', '.'))
-from lib.self_improvement import analyze_kpi_history, suggest_improvements, format_improvement_report
+from cos_lib.self_improvement import analyze_kpi_history, suggest_improvements, format_improvement_report
 
 analysis = analyze_kpi_history('.cognitive-os/metrics')
 suggestions = suggest_improvements(analysis)
@@ -84,7 +84,7 @@ entries by classification, and returns the actionable signals (category: feedbac
 correction, escalation):
 
 ```python
-from lib.feedback_consumer import summarise_for_skill_improvement
+from cos_lib.feedback_consumer import summarise_for_skill_improvement
 
 feedback_summary = summarise_for_skill_improvement(limit=50)
 print(f"Feedback window: {feedback_summary['total_entries']} entries, "

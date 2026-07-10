@@ -15,7 +15,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.research_quality_advisor import (
+from cos_lib.research_quality_advisor import (
     ResearchQualityAdvisor,
     score_file,
 )

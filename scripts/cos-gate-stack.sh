@@ -37,7 +37,7 @@ die()  { echo "[gate-stack] ERROR: $*" >&2; exit 2; }
 cmd_list() {
     log "STANDARD_STACK gate order:"
     PYTHONPATH="${REPO_ROOT}" python3 - <<'PYEOF'
-from lib.gate_runner import STANDARD_STACK
+from cos_lib.gate_runner import STANDARD_STACK
 for i, g in enumerate(STANDARD_STACK, 1):
     skip_env = g.allow_skip_env_var
     print(f"  {i}. {g.name}")
@@ -55,7 +55,7 @@ cmd_dry_run() {
     log "DRY-RUN: would run gate stack on branch '${branch}'"
     PYTHONPATH="${REPO_ROOT}" python3 - "$branch" <<'PYEOF'
 import sys
-from lib.gate_runner import STANDARD_STACK
+from cos_lib.gate_runner import STANDARD_STACK
 branch = sys.argv[1]
 print(f"[gate-stack] Gate stack for branch: {branch}")
 for i, g in enumerate(STANDARD_STACK, 1):
@@ -109,7 +109,7 @@ import sys, json
 branch   = sys.argv[1]
 repo_root = sys.argv[2]
 
-from lib.gate_runner import run_stack, STANDARD_STACK
+from cos_lib.gate_runner import run_stack, STANDARD_STACK
 
 result = run_stack(branch=branch, repo_root=repo_root, stack=STANDARD_STACK, fail_fast=True)
 
@@ -150,7 +150,7 @@ import sys
 branch    = sys.argv[1]
 repo_root = sys.argv[2]
 
-from lib.gate_runner import run_stack, STANDARD_STACK
+from cos_lib.gate_runner import run_stack, STANDARD_STACK
 
 result = run_stack(branch=branch, repo_root=repo_root, stack=STANDARD_STACK, fail_fast=True)
 

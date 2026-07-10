@@ -11,7 +11,7 @@ from typing import List
 
 import pytest
 
-from lib.planning_poker import (
+from cos_lib.planning_poker import (
     Complexity,
     Estimate,
     build_consensus,

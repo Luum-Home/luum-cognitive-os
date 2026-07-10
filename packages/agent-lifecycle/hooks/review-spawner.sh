@@ -61,7 +61,7 @@ read_yaml_value() {
 import sys, os
 try:
     sys.path.insert(0, '${PROJECT_DIR}')
-    from lib.config_loader import load_structured
+    from cos_lib.config_loader import load_structured
     cfg = load_structured()
     val = cfg.get('review', {}).get('${key}')
     print(val if val is not None else '${default}')
@@ -94,7 +94,7 @@ import sys, json, os
 sys.path.insert(0, '${PROJECT_DIR}')
 from pathlib import Path
 try:
-    from lib.review_agent import should_review, daily_budget_state, _save_budget_state
+    from cos_lib.review_agent import should_review, daily_budget_state, _save_budget_state
     state_file = Path('${BUDGET_STATE}')
     budget = daily_budget_state(state_file)
     result = should_review(
@@ -123,7 +123,7 @@ REVIEWER_MODEL=$(python3 -c "
 import sys
 sys.path.insert(0, '${PROJECT_DIR}')
 try:
-    from lib.review_agent import select_reviewer_model
+    from cos_lib.review_agent import select_reviewer_model
     print(select_reviewer_model('${PRODUCER_MODEL}'))
 except Exception:
     print('sonnet')
@@ -140,7 +140,7 @@ REVIEW_PROMPT=$(python3 -c "
 import sys, json
 sys.path.insert(0, '${PROJECT_DIR}')
 try:
-    from lib.review_agent import build_review_prompt
+    from cos_lib.review_agent import build_review_prompt
     producer = {
         'task_description': '''${AGENT_PROMPT:0:1000}''',
         'text': '''${AGENT_OUTPUT:0:6000}''',
@@ -177,7 +177,7 @@ from pathlib import Path
 
 project = Path(os.environ["PROJECT_DIR"])
 sys.path.insert(0, str(project))
-from lib.review_agent import enqueue_review_request
+from cos_lib.review_agent import enqueue_review_request
 
 enqueue_review_request({
     "prompt": os.environ.get("REVIEW_PROMPT", ""),
@@ -202,7 +202,7 @@ REVIEW_RESPONSE=$(python3 -c "
 import sys
 sys.path.insert(0, '${PROJECT_DIR}')
 try:
-    from lib.dispatch import dispatch
+    from cos_lib.dispatch import dispatch
     prompt = '''${REVIEW_PROMPT}'''
     result = dispatch(
         prompt=prompt,
@@ -236,7 +236,7 @@ import sys, json
 sys.path.insert(0, '${PROJECT_DIR}')
 from pathlib import Path
 try:
-    from lib.review_agent import parse_review_response, persist_finding
+    from cos_lib.review_agent import parse_review_response, persist_finding
 
     response = '''${REVIEW_RESPONSE}'''
     parsed = parse_review_response(response)

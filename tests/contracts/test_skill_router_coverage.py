@@ -20,7 +20,7 @@ import pytest
 import yaml
 
 import scripts.cos_adoption_profile as adoption_profile
-from lib.skill_router import (
+from cos_lib.skill_router import (
     SkillRouter,
     _detect_skill_md_paths,
     _load_routing_from_frontmatter,

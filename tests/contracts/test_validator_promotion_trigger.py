@@ -1,4 +1,4 @@
-"""Contract tests for lib.validator_soak_evaluator.evaluate_validator_soak.
+"""Contract tests for cos_lib.validator_soak_evaluator.evaluate_validator_soak.
 
 Covers:
   - Low FP rate + sufficient entries  → proposal artifact created
@@ -19,7 +19,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from lib.validator_soak_evaluator import evaluate_validator_soak
+from cos_lib.validator_soak_evaluator import evaluate_validator_soak
 
 
 # ---------------------------------------------------------------------------

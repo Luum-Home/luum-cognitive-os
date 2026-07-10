@@ -86,7 +86,7 @@ class TestContextDietRuleSelection:
     """Verify context_diet.get_minimal_rules returns task-appropriate rules."""
 
     def test_implementation_rules_differ_from_review(self) -> None:
-        from lib.context_diet import get_minimal_rules
+        from cos_lib.context_diet import get_minimal_rules
 
         impl_rules = set(get_minimal_rules("implementation"))
         review_rules = set(get_minimal_rules("review"))
@@ -94,25 +94,25 @@ class TestContextDietRuleSelection:
         assert impl_rules != review_rules
 
     def test_implementation_has_closed_loop(self) -> None:
-        from lib.context_diet import get_minimal_rules
+        from cos_lib.context_diet import get_minimal_rules
 
         rules = get_minimal_rules("implementation")
         assert "closed-loop-prompts.md" in rules
 
     def test_review_has_adversarial(self) -> None:
-        from lib.context_diet import get_minimal_rules
+        from cos_lib.context_diet import get_minimal_rules
 
         rules = get_minimal_rules("review")
         assert "adversarial-review.md" in rules
 
     def test_debugging_has_error_learning(self) -> None:
-        from lib.context_diet import get_minimal_rules
+        from cos_lib.context_diet import get_minimal_rules
 
         rules = get_minimal_rules("debugging")
         assert "error-learning.md" in rules
 
     def test_archiving_is_minimal(self) -> None:
-        from lib.context_diet import get_minimal_rules, ALWAYS_INCLUDED
+        from cos_lib.context_diet import get_minimal_rules, ALWAYS_INCLUDED
 
         rules = get_minimal_rules("archiving")
         # archiving should only have always-included rules
@@ -120,20 +120,20 @@ class TestContextDietRuleSelection:
             assert rule in ALWAYS_INCLUDED
 
     def test_unknown_type_returns_always_included_only(self) -> None:
-        from lib.context_diet import get_minimal_rules, ALWAYS_INCLUDED
+        from cos_lib.context_diet import get_minimal_rules, ALWAYS_INCLUDED
 
         rules = get_minimal_rules("totally_unknown_task_type")
         assert set(rules) == set(ALWAYS_INCLUDED)
 
     def test_rules_compact_always_first(self) -> None:
-        from lib.context_diet import get_minimal_rules, TASK_RULES
+        from cos_lib.context_diet import get_minimal_rules, TASK_RULES
 
         for task_type in TASK_RULES:
             rules = get_minimal_rules(task_type)
             assert rules[0] == "RULES-COMPACT.md"
 
     def test_context_diet_class_returns_different_rules(self) -> None:
-        from lib.context_diet import ContextDiet
+        from cos_lib.context_diet import ContextDiet
 
         diet = ContextDiet({"project": {"phase": "reconstruction"}})
         impl_rules = diet.select_rules("implement")
@@ -144,7 +144,7 @@ class TestContextDietRuleSelection:
         assert len(archive_rules) < len(impl_rules)
 
     def test_context_diet_explore_is_minimal(self) -> None:
-        from lib.context_diet import ContextDiet
+        from cos_lib.context_diet import ContextDiet
 
         diet = ContextDiet({"project": {"phase": "reconstruction"}})
         explore_rules = diet.select_rules("explore")
@@ -152,7 +152,7 @@ class TestContextDietRuleSelection:
         assert explore_rules == ["RULES-COMPACT.md"]
 
     def test_context_diet_production_phase_adds_phase_rules(self) -> None:
-        from lib.context_diet import ContextDiet
+        from cos_lib.context_diet import ContextDiet
 
         diet_prod = ContextDiet({"project": {"phase": "production"}})
         diet_reco = ContextDiet({"project": {"phase": "reconstruction"}})
@@ -173,7 +173,7 @@ class TestPromptCacheCacheControl:
     """Verify prompt_cache applies cache_control markers correctly."""
 
     def test_system_prompt_block_has_cache_control(self) -> None:
-        from lib.prompt_cache import apply_cache_to_system_prompt
+        from cos_lib.prompt_cache import apply_cache_to_system_prompt
 
         result = apply_cache_to_system_prompt("You are a helpful agent.")
         assert len(result) == 1
@@ -183,7 +183,7 @@ class TestPromptCacheCacheControl:
         assert block["cache_control"]["type"] == "ephemeral"
 
     def test_message_cache_marks_system_message(self) -> None:
-        from lib.prompt_cache import apply_message_cache
+        from cos_lib.prompt_cache import apply_message_cache
 
         messages = [
             {"role": "system", "content": "System rules here"},
@@ -196,7 +196,7 @@ class TestPromptCacheCacheControl:
         assert sys_content[0]["cache_control"]["type"] == "ephemeral"
 
     def test_original_messages_not_mutated(self) -> None:
-        from lib.prompt_cache import apply_message_cache
+        from cos_lib.prompt_cache import apply_message_cache
 
         messages = [
             {"role": "system", "content": "System"},
@@ -208,7 +208,7 @@ class TestPromptCacheCacheControl:
         assert messages[0]["content"] == original_system
 
     def test_max_4_cache_breakpoints(self) -> None:
-        from lib.prompt_cache import apply_message_cache
+        from cos_lib.prompt_cache import apply_message_cache
 
         messages = (
             [{"role": "system", "content": "System"}]
@@ -231,13 +231,13 @@ class TestPromptCacheCacheControl:
         assert count <= 4
 
     def test_1h_ttl_propagated_to_block(self) -> None:
-        from lib.prompt_cache import apply_cache_to_system_prompt
+        from cos_lib.prompt_cache import apply_cache_to_system_prompt
 
         result = apply_cache_to_system_prompt("System prompt", cache_ttl="1h")
         assert result[0]["cache_control"]["ttl"] == "1h"
 
     def test_empty_message_list(self) -> None:
-        from lib.prompt_cache import apply_message_cache
+        from cos_lib.prompt_cache import apply_message_cache
 
         assert apply_message_cache([]) == []
 
@@ -251,7 +251,7 @@ class TestPromptBuilderIntegration:
     """Verify PromptBuilder correctly combines context_diet and prompt_cache."""
 
     def test_build_system_prompt_returns_list(self, project_dir: Path) -> None:
-        from lib.prompt_builder import PromptBuilder
+        from cos_lib.prompt_builder import PromptBuilder
 
         builder = PromptBuilder.from_project(str(project_dir))
         result = builder.build_system_prompt(task_type="implement")
@@ -259,7 +259,7 @@ class TestPromptBuilderIntegration:
         assert len(result) >= 1
 
     def test_build_system_prompt_has_cache_control(self, project_dir: Path) -> None:
-        from lib.prompt_builder import PromptBuilder
+        from cos_lib.prompt_builder import PromptBuilder
 
         builder = PromptBuilder.from_project(str(project_dir), enable_cache=True)
         result = builder.build_system_prompt(task_type="implement")
@@ -268,7 +268,7 @@ class TestPromptBuilderIntegration:
         assert block["cache_control"]["type"] == "ephemeral"
 
     def test_build_system_prompt_no_cache_when_disabled(self, project_dir: Path) -> None:
-        from lib.prompt_builder import PromptBuilder
+        from cos_lib.prompt_builder import PromptBuilder
 
         builder = PromptBuilder.from_project(str(project_dir), enable_cache=False)
         result = builder.build_system_prompt(task_type="implement")
@@ -276,7 +276,7 @@ class TestPromptBuilderIntegration:
         assert "cache_control" not in block
 
     def test_build_system_prompt_contains_preamble(self, project_dir: Path) -> None:
-        from lib.prompt_builder import PromptBuilder
+        from cos_lib.prompt_builder import PromptBuilder
 
         builder = PromptBuilder.from_project(str(project_dir))
         result = builder.build_system_prompt(
@@ -287,7 +287,7 @@ class TestPromptBuilderIntegration:
         assert "CUSTOM_PREAMBLE_TEXT" in block["text"]
 
     def test_build_system_prompt_different_rules_per_task(self, project_dir: Path) -> None:
-        from lib.prompt_builder import PromptBuilder
+        from cos_lib.prompt_builder import PromptBuilder
 
         builder = PromptBuilder.from_project(str(project_dir))
         impl_result = builder.build_system_prompt(task_type="implement")
@@ -300,7 +300,7 @@ class TestPromptBuilderIntegration:
         assert impl_text != review_text
 
     def test_build_messages_starts_with_system(self, project_dir: Path) -> None:
-        from lib.prompt_builder import PromptBuilder
+        from cos_lib.prompt_builder import PromptBuilder
 
         builder = PromptBuilder.from_project(str(project_dir))
         messages = builder.build_messages(
@@ -310,7 +310,7 @@ class TestPromptBuilderIntegration:
         assert messages[0]["role"] == "system"
 
     def test_build_messages_conversation_appended(self, project_dir: Path) -> None:
-        from lib.prompt_builder import PromptBuilder
+        from cos_lib.prompt_builder import PromptBuilder
 
         builder = PromptBuilder.from_project(str(project_dir))
         user_msg = {"role": "user", "content": "Task description"}
@@ -323,7 +323,7 @@ class TestPromptBuilderIntegration:
         assert "user" in roles
 
     def test_build_messages_cache_applied_to_system(self, project_dir: Path) -> None:
-        from lib.prompt_builder import PromptBuilder
+        from cos_lib.prompt_builder import PromptBuilder
 
         builder = PromptBuilder.from_project(str(project_dir), enable_cache=True)
         messages = builder.build_messages(
@@ -335,8 +335,8 @@ class TestPromptBuilderIntegration:
         assert sys_content[0]["cache_control"]["type"] == "ephemeral"
 
     def test_selected_rules_delegated_to_diet(self, project_dir: Path) -> None:
-        from lib.prompt_builder import PromptBuilder
-        from lib.context_diet import ContextDiet
+        from cos_lib.prompt_builder import PromptBuilder
+        from cos_lib.context_diet import ContextDiet
 
         builder = PromptBuilder.from_project(str(project_dir))
         diet = ContextDiet({"project": {"phase": "reconstruction"}})
@@ -348,21 +348,21 @@ class TestPromptBuilderIntegration:
         assert builder_rules == diet_rules
 
     def test_phase_exposed(self, project_dir: Path) -> None:
-        from lib.prompt_builder import PromptBuilder
+        from cos_lib.prompt_builder import PromptBuilder
 
         builder = PromptBuilder.from_project(str(project_dir))
         assert builder.phase == "reconstruction"
 
     def test_from_project_works_with_missing_config(self, tmp_path: Path) -> None:
         """PromptBuilder.from_project should not raise when config is missing."""
-        from lib.prompt_builder import PromptBuilder
+        from cos_lib.prompt_builder import PromptBuilder
 
         builder = PromptBuilder.from_project(str(tmp_path))
         result = builder.build_system_prompt(task_type="implement")
         assert isinstance(result, list)
 
     def test_archive_task_has_fewer_rules_than_implement(self, project_dir: Path) -> None:
-        from lib.prompt_builder import PromptBuilder
+        from cos_lib.prompt_builder import PromptBuilder
 
         builder = PromptBuilder.from_project(str(project_dir))
         archive_rules = builder.selected_rules("archive")
@@ -371,7 +371,7 @@ class TestPromptBuilderIntegration:
         assert len(archive_rules) <= len(impl_rules)
 
     def test_preamble_phase_interpolated(self, project_dir: Path) -> None:
-        from lib.prompt_builder import PromptBuilder
+        from cos_lib.prompt_builder import PromptBuilder
 
         builder = PromptBuilder.from_project(str(project_dir))
         result = builder.build_system_prompt(task_type="implement")
@@ -381,7 +381,7 @@ class TestPromptBuilderIntegration:
         assert "reconstruction" in text
 
     def test_planning_task_includes_separate_planning_template(self, project_dir: Path) -> None:
-        from lib.prompt_builder import PromptBuilder
+        from cos_lib.prompt_builder import PromptBuilder
 
         builder = PromptBuilder.from_project(str(project_dir), enable_cache=False)
         result = builder.build_system_prompt(task_type="planning")
@@ -390,7 +390,7 @@ class TestPromptBuilderIntegration:
         assert "PLAN:" in text
 
     def test_implementation_task_omits_planning_template(self, project_dir: Path) -> None:
-        from lib.prompt_builder import PromptBuilder
+        from cos_lib.prompt_builder import PromptBuilder
 
         builder = PromptBuilder.from_project(str(project_dir), enable_cache=False)
         result = builder.build_system_prompt(task_type="implement")
@@ -398,7 +398,7 @@ class TestPromptBuilderIntegration:
         assert "Agent Planning Template (ADR-038 Wave 4)" not in text
 
     def test_build_prompt_for_hook_returns_string(self, project_dir: Path) -> None:
-        from lib.prompt_builder import build_prompt_for_hook
+        from cos_lib.prompt_builder import build_prompt_for_hook
 
         output = build_prompt_for_hook(
             task_type="implement",
@@ -409,14 +409,14 @@ class TestPromptBuilderIntegration:
         assert "implement" in output
 
     def test_build_prompt_for_hook_graceful_on_bad_dir(self) -> None:
-        from lib.prompt_builder import build_prompt_for_hook
+        from cos_lib.prompt_builder import build_prompt_for_hook
 
         # Should not raise even with a nonexistent project dir
         output = build_prompt_for_hook(task_type="debug", project_dir="/nonexistent/path")
         assert isinstance(output, str)
 
     def test_cache_ttl_1h_propagated(self, project_dir: Path) -> None:
-        from lib.prompt_builder import PromptBuilder
+        from cos_lib.prompt_builder import PromptBuilder
 
         builder = PromptBuilder.from_project(str(project_dir), cache_ttl="1h")
         result = builder.build_system_prompt(task_type="implement")
@@ -434,7 +434,7 @@ class TestNoBreakageOfExistingModules:
     """Ensure importing prompt_builder does not break context_diet or prompt_cache."""
 
     def test_context_diet_importable_independently(self) -> None:
-        from lib.context_diet import get_minimal_rules, ContextDiet
+        from cos_lib.context_diet import get_minimal_rules, ContextDiet
 
         rules = get_minimal_rules("implementation")
         assert isinstance(rules, list)
@@ -442,7 +442,7 @@ class TestNoBreakageOfExistingModules:
         assert diet.phase == "reconstruction"
 
     def test_prompt_cache_importable_independently(self) -> None:
-        from lib.prompt_cache import apply_cache_to_system_prompt, apply_message_cache
+        from cos_lib.prompt_cache import apply_cache_to_system_prompt, apply_message_cache
 
         blocks = apply_cache_to_system_prompt("test")
         assert isinstance(blocks, list)
@@ -451,16 +451,16 @@ class TestNoBreakageOfExistingModules:
         assert isinstance(msgs, list)
 
     def test_prompt_builder_importable(self) -> None:
-        from lib.prompt_builder import PromptBuilder, build_prompt_for_hook
+        from cos_lib.prompt_builder import PromptBuilder, build_prompt_for_hook
 
         assert callable(PromptBuilder.from_project)
         assert callable(build_prompt_for_hook)
 
     def test_both_modules_coexist_without_error(self) -> None:
         """Importing both modules in the same session must not cause errors."""
-        from lib.context_diet import ContextDiet, get_minimal_rules
-        from lib.prompt_cache import apply_cache_to_system_prompt
-        from lib.prompt_builder import PromptBuilder
+        from cos_lib.context_diet import ContextDiet, get_minimal_rules
+        from cos_lib.prompt_cache import apply_cache_to_system_prompt
+        from cos_lib.prompt_builder import PromptBuilder
 
         # Use both independently
         get_minimal_rules("review")

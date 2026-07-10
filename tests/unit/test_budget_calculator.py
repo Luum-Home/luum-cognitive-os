@@ -2,7 +2,7 @@
 
 import pytest
 
-from lib.budget_calculator import (
+from cos_lib.budget_calculator import (
     BudgetSummary,
     InfraCost,
     PhaseEstimate,

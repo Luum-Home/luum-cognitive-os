@@ -1,0 +1,266 @@
+# SCOPE: os-only
+"""Budget accounting for COS-native goal loop — all four dimensions (OD-002).
+
+Implements REQ-008. All four budget dimensions are enforced in MVP:
+
+  1. max_turns         — turn counter stored in GoalState.turns_used
+  2. wall_clock_minutes — derived from time.time() - GoalState.started_at_epoch
+  3. max_tokens         — cumulative tokens_in + tokens_out from llm-dispatch.jsonl
+  4. max_cost_usd       — cumulative cost_usd from llm-dispatch.jsonl
+
+The JSONL file is read via cos_lib.dispatch._metrics_path() and degrades gracefully
+when the file is absent (returns zeros, does not raise).
+
+JSONL record schema (per lib/dispatch.py):
+  ts           : ISO-8601 datetime string (Z-suffix or offset)
+  dispatch_id  : str
+  tokens_in    : int
+  tokens_out   : int
+  cost_usd     : float
+  (other fields ignored)
+"""
+
+from __future__ import annotations
+
+import datetime
+import json
+import time
+from dataclasses import dataclass
+from pathlib import Path
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from cos_lib.goal_state import GoalState, GoalStateStore
+
+
+# ---------------------------------------------------------------------------
+# Dispatch metrics reader
+# ---------------------------------------------------------------------------
+
+
+def _goal_dispatch_totals(
+    goal: "GoalState",
+    project_dir: Path | None = None,
+) -> tuple[int, float, int]:
+    """Return (new_tokens, new_cost_usd, new_cursor) for unread dispatches.
+
+    Uses ``goal.dispatch_cursor`` as a byte-offset start position so that each
+    call reads only *new* records appended since the last check — O(new records)
+    rather than O(total file size).
+
+    If the file is smaller than the stored cursor (log rotation), the cursor is
+    reset to 0 and the full file is re-read from the start.
+
+    Reads .cognitive-os/metrics/llm-dispatch.jsonl via cos_lib.dispatch._metrics_path().
+    Returns (0, 0.0, goal.dispatch_cursor) gracefully when the file is absent or
+    unreadable so transient metric-file unavailability does not rewind the
+    cursor and double-count later.
+
+    Args:
+        goal: Active GoalState whose dispatch_cursor and created_at are used.
+        project_dir: Optional override for project root resolution.
+    """
+    try:
+        from cos_lib.dispatch import _metrics_path
+        path = _metrics_path(project_dir)
+    except Exception:  # noqa: BLE001
+        return 0, 0.0, goal.dispatch_cursor
+
+    total_tokens: int = 0
+    total_cost: float = 0.0
+
+    if not path.exists():
+        return total_tokens, total_cost, goal.dispatch_cursor
+
+    try:
+        cutoff = datetime.datetime.fromisoformat(
+            goal.created_at.replace("Z", "+00:00")
+        )
+    except (ValueError, AttributeError):
+        # Unparseable timestamp — count all records conservatively
+        cutoff = datetime.datetime.min.replace(tzinfo=datetime.timezone.utc)
+
+    try:
+        file_size = path.stat().st_size
+        # Handle log rotation: if cursor is past the current file size, reset to 0
+        start_offset = goal.dispatch_cursor if goal.dispatch_cursor <= file_size else 0
+
+        with path.open(encoding="utf-8") as fh:
+            if start_offset > 0:
+                fh.seek(start_offset)
+            for line in fh:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    rec = json.loads(line)
+                    ts_raw = rec.get("ts", "")
+                    rec_ts = datetime.datetime.fromisoformat(
+                        ts_raw.replace("Z", "+00:00")
+                    )
+                    # Make cutoff timezone-aware if rec_ts is
+                    cmp_cutoff = cutoff
+                    if rec_ts.tzinfo is not None and cutoff.tzinfo is None:
+                        cmp_cutoff = cutoff.replace(tzinfo=datetime.timezone.utc)
+                    elif rec_ts.tzinfo is None and cmp_cutoff.tzinfo is not None:
+                        rec_ts = rec_ts.replace(tzinfo=datetime.timezone.utc)
+                    if rec_ts >= cmp_cutoff:
+                        total_tokens += int(rec.get("tokens_in", 0)) + int(
+                            rec.get("tokens_out", 0)
+                        )
+                        total_cost += float(rec.get("cost_usd", 0.0))
+                except Exception:  # noqa: BLE001
+                    continue
+            new_cursor = fh.tell()
+    except OSError:
+        return 0, 0.0, goal.dispatch_cursor
+
+    return total_tokens, total_cost, new_cursor
+
+
+# ---------------------------------------------------------------------------
+# Budget exhaustion check result
+# ---------------------------------------------------------------------------
+
+
+@dataclass
+class BudgetCheckResult:
+    """Outcome of checking all four budget dimensions."""
+
+    exhausted: bool
+    """True when at least one dimension is over its limit."""
+
+    dimension: str
+    """Which dimension triggered exhaustion (empty string if none)."""
+
+    reason: str
+    """Human-readable explanation."""
+
+    turns_used: int = 0
+    wall_minutes_used: float = 0.0
+    tokens_used: int = 0
+    cost_used: float = 0.0
+
+
+# ---------------------------------------------------------------------------
+# Public API
+# ---------------------------------------------------------------------------
+
+
+def check_budget(
+    goal: "GoalState",
+    project_dir: Path | None = None,
+    store: "GoalStateStore | None" = None,
+) -> BudgetCheckResult:
+    """Check all four budget dimensions for the given goal.
+
+    Dimensions are evaluated in the order specified in the design:
+      1. max_turns (cheapest — no I/O)
+      2. wall_clock_minutes (cheap — time.time())
+      3. max_tokens (requires reading llm-dispatch.jsonl)
+      4. max_cost_usd (same file, combined read)
+
+    Returns a BudgetCheckResult. If any dimension is exhausted, ``exhausted``
+    is True and ``dimension``/``reason`` name the first breach.
+
+    Gracefully handles absent dispatch metrics file (returns zeros for 3 & 4).
+
+    When ``store`` is provided, dispatch cursor and cumulative dispatch totals
+    are persisted back to the goal state after a successful metrics read. The
+    file read remains incremental, but max_tokens/max_cost_usd are enforced
+    against lifetime cumulative totals for the goal.
+    """
+    turns_used = goal.turns_used
+    wall_minutes_used = (time.time() - goal.started_at_epoch) / 60.0
+
+    # Dimensions 3 & 4 share a single file read
+    tokens_used: int = 0
+    cost_used: float = 0.0
+    if goal.max_tokens is not None or goal.max_cost_usd is not None:
+        new_tokens, new_cost, new_cursor = _goal_dispatch_totals(goal, project_dir)
+        tokens_used = goal.dispatch_tokens_used + new_tokens
+        cost_used = goal.dispatch_cost_used + new_cost
+        # Persist cumulative totals plus the advanced cursor so the next call
+        # starts from here without losing lifetime budget semantics.
+        if (
+            store is not None
+            and (
+                new_cursor != goal.dispatch_cursor
+                or new_tokens != 0
+                or new_cost != 0.0
+            )
+        ):
+            goal.dispatch_cursor = new_cursor
+            goal.dispatch_tokens_used = tokens_used
+            goal.dispatch_cost_used = cost_used
+            try:
+                store.save(goal)
+            except Exception:  # noqa: BLE001
+                pass  # persistence is best-effort; never block budget checks
+
+    # --- Dimension 1: max_turns ---
+    if goal.max_turns is not None and turns_used >= goal.max_turns:
+        return BudgetCheckResult(
+            exhausted=True,
+            dimension="max_turns",
+            reason=(
+                f"Turn budget exhausted: {turns_used}/{goal.max_turns} turns used."
+            ),
+            turns_used=turns_used,
+            wall_minutes_used=wall_minutes_used,
+            tokens_used=tokens_used,
+            cost_used=cost_used,
+        )
+
+    # --- Dimension 2: wall_clock_minutes ---
+    if goal.max_minutes is not None and wall_minutes_used >= goal.max_minutes:
+        return BudgetCheckResult(
+            exhausted=True,
+            dimension="wall_clock_minutes",
+            reason=(
+                f"Wall-clock budget exhausted: {wall_minutes_used:.1f}/{goal.max_minutes} "
+                "minutes elapsed."
+            ),
+            turns_used=turns_used,
+            wall_minutes_used=wall_minutes_used,
+            tokens_used=tokens_used,
+            cost_used=cost_used,
+        )
+
+    # --- Dimension 3: max_tokens ---
+    if goal.max_tokens is not None and tokens_used >= goal.max_tokens:
+        return BudgetCheckResult(
+            exhausted=True,
+            dimension="max_tokens",
+            reason=(
+                f"Token budget exhausted: {tokens_used}/{goal.max_tokens} tokens used."
+            ),
+            turns_used=turns_used,
+            wall_minutes_used=wall_minutes_used,
+            tokens_used=tokens_used,
+            cost_used=cost_used,
+        )
+
+    # --- Dimension 4: max_cost_usd ---
+    if goal.max_cost_usd is not None and cost_used >= goal.max_cost_usd:
+        return BudgetCheckResult(
+            exhausted=True,
+            dimension="max_cost_usd",
+            reason=(
+                f"Cost budget exhausted: ${cost_used:.4f}/${goal.max_cost_usd:.4f} spent."
+            ),
+            turns_used=turns_used,
+            wall_minutes_used=wall_minutes_used,
+            tokens_used=tokens_used,
+            cost_used=cost_used,
+        )
+
+    return BudgetCheckResult(
+        exhausted=False,
+        dimension="",
+        reason="Budget within limits.",
+        turns_used=turns_used,
+        wall_minutes_used=wall_minutes_used,
+        tokens_used=tokens_used,
+        cost_used=cost_used,
+    )

@@ -14,7 +14,7 @@ Control loops:
     5. Overhead ratio -> symbiosis alert
 
 Usage:
-    from lib.homeostasis import Homeostasis
+    from cos_lib.homeostasis import Homeostasis
 
     h = Homeostasis("/path/to/project")
     metrics = h.collect_metrics()

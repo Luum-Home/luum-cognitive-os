@@ -16,10 +16,10 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.agent_team import AgentTeam, AgentTeamError  # noqa: E402
-from lib.handoff_dispatcher import HandoffDispatchError, HandoffDispatcher  # noqa: E402
-from lib.handoff_envelope import HandoffEnvelope  # noqa: E402
-from lib.agent_team_transport import A2AHttpAgentTeamTransport, NatsAgentTeamTransport, transport_plan  # noqa: E402
+from cos_lib.agent_team import AgentTeam, AgentTeamError  # noqa: E402
+from cos_lib.handoff_dispatcher import HandoffDispatchError, HandoffDispatcher  # noqa: E402
+from cos_lib.handoff_envelope import HandoffEnvelope  # noqa: E402
+from cos_lib.agent_team_transport import A2AHttpAgentTeamTransport, NatsAgentTeamTransport, transport_plan  # noqa: E402
 
 
 def _json_default(value: Any) -> Any:

@@ -149,7 +149,7 @@ The orchestrator uses `lib/skill_router.py` to auto-select skills:
 5. Baseline regex patterns handle common task phrasing (e.g., "research", "fix", "I need")
 
 ```python
-from lib.skill_router import SkillRouter
+from cos_lib.skill_router import SkillRouter
 
 router = SkillRouter()
 match = router.best_match(user_message)

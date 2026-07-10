@@ -22,7 +22,7 @@ Usage:
 
 Design notes:
   - We do NOT parallelise. Sequential keeps provider-side state clean.
-  - All dispatches go through lib.dispatch.dispatch() — benchmarking the
+  - All dispatches go through cos_lib.dispatch.dispatch() — benchmarking the
     same code path that skills/hooks use. This IS the integration test.
   - In vanilla mode we set COS_DISABLE_ALL_GOVERNANCE=1 in the subprocess
     environment. The harness itself still runs under governance.
@@ -121,7 +121,7 @@ def run_via_dispatch(
     mode: str,
     timeout: int = 120,
 ) -> RunResult:
-    """Invoke lib.dispatch.dispatch() with governance enabled or disabled.
+    """Invoke cos_lib.dispatch.dispatch() with governance enabled or disabled.
 
     Split into two paths to isolate environment side-effects:
       - vanilla: set COS_DISABLE_ALL_GOVERNANCE=1 BEFORE calling dispatch
@@ -136,13 +136,13 @@ def run_via_dispatch(
             os.environ.pop("COS_DISABLE_ALL_GOVERNANCE", None)
 
         try:
-            from lib.dispatch import dispatch  # lazy import
+            from cos_lib.dispatch import dispatch  # lazy import
         except Exception as exc:  # pragma: no cover — env issue
             return RunResult(
                 task_id="(pre-dispatch)",
                 mode=mode,
                 success=False,
-                error=f"import lib.dispatch failed: {exc}",
+                error=f"import cos_lib.dispatch failed: {exc}",
             )
 
         t0 = time.monotonic()
@@ -444,6 +444,6 @@ def main(argv: list[str] | None = None) -> int:
 
 
 if __name__ == "__main__":
-    # Ensure lib.dispatch is importable
+    # Ensure cos_lib.dispatch is importable
     sys.path.insert(0, str(PROJECT_ROOT))
     raise SystemExit(main())

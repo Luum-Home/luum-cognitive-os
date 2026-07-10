@@ -12,7 +12,7 @@ import pytest
 
 pytestmark = pytest.mark.unit
 
-from lib import orchestrator_mode as om
+from cos_lib import orchestrator_mode as om
 
 
 # -----------------------------------------------------------------------
@@ -63,7 +63,7 @@ class TestDelegateTask:
         mock_executor_cls.return_value.run.return_value = mock_result
 
         # Patch at the module that delegate_task imports from
-        with patch("lib.claude_executor.ClaudeExecutor", mock_executor_cls):
+        with patch("cos_lib.claude_executor.ClaudeExecutor", mock_executor_cls):
             # Must call inside the patch context so the lazy import picks it up
             result = om.delegate_task("do something", model="sonnet")
 
@@ -89,17 +89,17 @@ class TestDelegateTask:
         mock_executor_cls = MagicMock()
         mock_executor_cls.return_value.run.return_value = mock_result
 
-        with patch("lib.claude_executor.ClaudeExecutor", mock_executor_cls):
+        with patch("cos_lib.claude_executor.ClaudeExecutor", mock_executor_cls):
             result = om.delegate_task("test", agent_id="my-agent-42")
 
         assert result["agent_id"] == "my-agent-42"
 
     def test_graceful_fallback_without_executor(self):
         """When ClaudeExecutor cannot be imported, should return error dict."""
-        # Temporarily remove lib.claude_executor from sys.modules
+        # Temporarily remove cos_lib.claude_executor from sys.modules
         import sys
-        saved = sys.modules.get("lib.claude_executor")
-        sys.modules["lib.claude_executor"] = None  # type: ignore[assignment]
+        saved = sys.modules.get("cos_lib.claude_executor")
+        sys.modules["cos_lib.claude_executor"] = None  # type: ignore[assignment]
         try:
             # Force re-import failure
             result = om.delegate_task("test task")
@@ -107,9 +107,9 @@ class TestDelegateTask:
             assert "not available" in result["result"].lower() or result["success"] is False
         finally:
             if saved is not None:
-                sys.modules["lib.claude_executor"] = saved
+                sys.modules["cos_lib.claude_executor"] = saved
             else:
-                sys.modules.pop("lib.claude_executor", None)
+                sys.modules.pop("cos_lib.claude_executor", None)
 
 
 # -----------------------------------------------------------------------
@@ -132,7 +132,7 @@ class TestDelegateSDDPhase:
         mock_executor_cls = MagicMock()
         mock_executor_cls.return_value.run.return_value = mock_result
 
-        with patch("lib.claude_executor.ClaudeExecutor", mock_executor_cls):
+        with patch("cos_lib.claude_executor.ClaudeExecutor", mock_executor_cls):
             result = om.delegate_sdd_phase("auth-refactor", "sdd-propose")
 
         assert result["success"] is True
@@ -151,7 +151,7 @@ class TestDelegateSDDPhase:
         mock_executor_cls = MagicMock()
         mock_executor_cls.return_value.run.return_value = mock_result
 
-        with patch("lib.claude_executor.ClaudeExecutor", mock_executor_cls):
+        with patch("cos_lib.claude_executor.ClaudeExecutor", mock_executor_cls):
             result = om.delegate_sdd_phase(
                 "my-change", "sdd-apply", model="haiku"
             )

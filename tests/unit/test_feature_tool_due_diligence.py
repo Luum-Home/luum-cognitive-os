@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from lib.feature_tool_due_diligence import deepwiki_url_for_github, fetch_external_source, scan_due_diligence
+from cos_lib.feature_tool_due_diligence import deepwiki_url_for_github, fetch_external_source, scan_due_diligence
 
 ROOT = Path(__file__).resolve().parents[2]
 MANIFEST = ROOT / "manifests" / "feature-tool-due-diligence.yaml"

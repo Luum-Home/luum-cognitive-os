@@ -9,10 +9,10 @@ superseded_by: null
 extends: []
 implementation_files:
 - hooks/branch-ownership-lock.sh
-- lib/branch_lock.py
+- cos_lib/branch_lock.py
 - tests/contracts/test_branch_ownership_lock.py
-- lib/session_coordination.py
-- lib/agent_message_bus.py
+- cos_lib/session_coordination.py
+- cos_lib/agent_message_bus.py
 tier: maintainer
 tags:
 - concurrency

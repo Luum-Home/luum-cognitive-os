@@ -9,7 +9,7 @@ supersedes: []
 superseded_by: null
 extends: [ADR-028, ADR-047, ADR-219, ADR-278]
 implementation_files:
-  - lib/orphan_process_audit.py
+  - cos_lib/orphan_process_audit.py
   - scripts/cos-orphan-process-audit.py
   - tests/behavior/test_orphan_process_audit.py
 tier: maintainer

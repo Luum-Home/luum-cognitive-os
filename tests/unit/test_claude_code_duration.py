@@ -11,9 +11,9 @@ from __future__ import annotations
 import time
 
 
-from lib.harness_adapter.base import AgentEnd
-from lib.harness_adapter.claude_code import ClaudeCodeAdapter
-from lib.harness_adapter.tool_use_correlation import CorrelationStore
+from cos_lib.harness_adapter.base import AgentEnd
+from cos_lib.harness_adapter.claude_code import ClaudeCodeAdapter
+from cos_lib.harness_adapter.tool_use_correlation import CorrelationStore
 
 
 class TestClaudeCodeDuration:

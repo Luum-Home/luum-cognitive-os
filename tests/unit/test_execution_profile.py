@@ -2,7 +2,7 @@
 
 import pytest
 
-from lib.execution_profile import (
+from cos_lib.execution_profile import (
     BALANCED_GENERAL,
     FAST_TURNAROUND,
     FRONTIER_REASONING,

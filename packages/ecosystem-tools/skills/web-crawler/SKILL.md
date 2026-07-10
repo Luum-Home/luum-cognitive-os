@@ -55,7 +55,7 @@ optimised for LLM consumption. When Crawl4AI is not installed the module falls b
 ### From Python (skills, lib modules)
 
 ```python
-from lib.web_crawler import fetch_markdown, fetch_structured, crawl_site, fetch_markdown_sync
+from cos_lib.web_crawler import fetch_markdown, fetch_structured, crawl_site, fetch_markdown_sync
 
 # Async -- single page
 md = await fetch_markdown("https://example.com/docs")

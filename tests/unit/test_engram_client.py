@@ -1,7 +1,7 @@
-"""Characterization tests for lib.engram_client against the current Engram CLI.
+"""Characterization tests for cos_lib.engram_client against the current Engram CLI.
 
 Engram v1.15.x does not expose JSON flags for ``search``/``save``/``get``.
-Structured reads go through ``lib.engram_http_client`` and saves use the
+Structured reads go through ``cos_lib.engram_http_client`` and saves use the
 positional CLI shape: ``engram save <title> <content>``.
 """
 
@@ -13,7 +13,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from lib import engram_client
+from cos_lib import engram_client
 
 pytestmark = pytest.mark.unit
 
@@ -29,27 +29,27 @@ def _mock_proc(stdout: str = "", returncode: int = 0, stderr: str = "") -> Magic
 class TestSearchObservations:
     def test_delegates_to_http_client(self):
         payload = [{"id": 1}, {"id": 2}]
-        with patch("lib.engram_client.engram_http_client.search_observations", return_value=payload) as search:
+        with patch("cos_lib.engram_client.engram_http_client.search_observations", return_value=payload) as search:
             result = engram_client.search_observations("query", limit=1, type_filter="decision", project="proj", timeout=9)
 
         assert result == payload[:1]
         search.assert_called_once_with("query", limit=1, type_filter="decision", project="proj", timeout=9)
 
     def test_http_error_returns_empty_list(self):
-        with patch("lib.engram_client.engram_http_client.search_observations", side_effect=RuntimeError("boom")):
+        with patch("cos_lib.engram_client.engram_http_client.search_observations", side_effect=RuntimeError("boom")):
             assert engram_client.search_observations("q") == []
 
 
 class TestGetObservation:
     def test_delegates_to_http_client(self):
         payload = {"id": 42, "title": "found"}
-        with patch("lib.engram_client.engram_http_client.get_observation", return_value=payload) as get:
+        with patch("cos_lib.engram_client.engram_http_client.get_observation", return_value=payload) as get:
             assert engram_client.get_observation(42, timeout=7) == payload
 
         get.assert_called_once_with(42, timeout=7)
 
     def test_http_error_returns_none(self):
-        with patch("lib.engram_client.engram_http_client.get_observation", side_effect=RuntimeError("boom")):
+        with patch("cos_lib.engram_client.engram_http_client.get_observation", side_effect=RuntimeError("boom")):
             assert engram_client.get_observation(1) is None
 
 
@@ -111,8 +111,8 @@ class TestSaveObservation:
 
     def test_topic_key_save_updates_existing_observation_instead_of_appending(self):
         existing = {"id": 42, "topic_key": "architecture/x", "project": "proj"}
-        with patch("lib.engram_client.search_observations", return_value=[existing]) as search, \
-             patch("lib.engram_client.engram_http_client.update_observation", return_value={"id": 42, "updated": True}) as update, \
+        with patch("cos_lib.engram_client.search_observations", return_value=[existing]) as search, \
+             patch("cos_lib.engram_client.engram_http_client.update_observation", return_value={"id": 42, "updated": True}) as update, \
              patch("subprocess.run") as run:
             result = engram_client.save_observation(
                 "New title",
@@ -136,8 +136,8 @@ class TestSaveObservation:
 
     def test_topic_key_save_requires_exact_project_match_before_append(self):
         existing = {"id": 42, "topic_key": "architecture/x", "project": "other"}
-        with patch("lib.engram_client.search_observations", return_value=[existing]), \
-             patch("lib.engram_client.engram_http_client.update_observation") as update, \
+        with patch("cos_lib.engram_client.search_observations", return_value=[existing]), \
+             patch("cos_lib.engram_client.engram_http_client.update_observation") as update, \
              patch("subprocess.run", return_value=_mock_proc('Memory saved: #99 "t" (manual)')) as run:
             result = engram_client.save_observation("t", "c", topic_key="architecture/x", project="proj")
 

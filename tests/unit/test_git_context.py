@@ -4,7 +4,7 @@ import subprocess
 
 import pytest
 
-from lib.git_context import (
+from cos_lib.git_context import (
     capture_session_git_context,
     format_git_summary,
     get_commits_between,

@@ -6,7 +6,7 @@ from __future__ import annotations
 import os as _cos_os
 import sys as _cos_sys
 _cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
-from lib.script_helpers import emit_result as emit
+from cos_lib.script_helpers import emit_result as emit
 
 import argparse
 import json
@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.agent_message_bus import (  # noqa: E402
+from cos_lib.agent_message_bus import (  # noqa: E402
     ack_message,
     blocker_findings,
     current_session,

@@ -6,7 +6,7 @@ import json
 import subprocess
 from pathlib import Path
 
-from lib.adapter_compile import compile_adapter
+from cos_lib.adapter_compile import compile_adapter
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 

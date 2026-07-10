@@ -18,10 +18,10 @@ extends:
 - ADR-256
 implementation_files:
 - docs/
-- lib/engram_wave3_schema.py
-- lib/engram_obsidian_exporter.py
-- lib/engram_crystallizer.py
-- lib/engram_bundle_exporter.py
+- cos_lib/engram_wave3_schema.py
+- cos_lib/engram_obsidian_exporter.py
+- cos_lib/engram_crystallizer.py
+- cos_lib/engram_bundle_exporter.py
 - manifests/capability-coverage.yaml
 tier: maintainer
 tags:

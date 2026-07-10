@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.skill_archive import (
+from cos_lib.skill_archive import (
     SkillArchiveManager,
     _content_hash,
 )

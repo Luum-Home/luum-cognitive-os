@@ -50,7 +50,7 @@ fi
 GIT_CONTEXT_JSON=$(python3 -c "
 import json, sys
 sys.path.insert(0, '$PROJECT_DIR')
-from lib.git_context import capture_session_git_context
+from cos_lib.git_context import capture_session_git_context
 
 project_dir = '$PROJECT_DIR'
 commit_start = '$COMMIT_START'

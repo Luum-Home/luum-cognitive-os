@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.token_usage import normalize_usage_record, summarize_usage_jsonl
+from cos_lib.token_usage import normalize_usage_record, summarize_usage_jsonl
 
 pytestmark = pytest.mark.unit
 

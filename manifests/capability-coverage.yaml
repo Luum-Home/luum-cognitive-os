@@ -28,11 +28,11 @@ capabilities:
     public_claim: false
     primitive_types: [lib, schema, retrieval]
     implementation:
-      - lib/engram_wave3_schema.py
-      - lib/engram_write_gate.py
-      - lib/engram_fts5_search.py
-      - lib/engram_bundle_exporter.py
-      - lib/engram_bundle_importer.py
+      - cos_lib/engram_wave3_schema.py
+      - cos_lib/engram_write_gate.py
+      - cos_lib/engram_fts5_search.py
+      - cos_lib/engram_bundle_exporter.py
+      - cos_lib/engram_bundle_importer.py
     consumers: []
     tests:
       - tests/unit/test_engram_wave3_schema.py
@@ -51,7 +51,7 @@ capabilities:
     reality_level: REAL
     public_claim: false
     primitive_types: [lib, protocol]
-    implementation: [lib/handoff_envelope.py, lib/handoff_dispatcher.py]
+    implementation: [cos_lib/handoff_envelope.py, cos_lib/handoff_dispatcher.py]
     consumers: [scripts/cos]
     tests: [tests/unit/test_handoff_dispatcher.py, tests/behavior/test_handoff_dispatcher_flow.py, tests/chaos/test_handoff_receiver_kill_mid_dispatch.py]
     receipts: [handoff-receipt, handoff-cycle-detected]
@@ -77,8 +77,8 @@ capabilities:
     reality_level: PARTIAL
     public_claim: false
     primitive_types: [adapter, sandbox]
-    implementation: [lib/sandbox_adapter.py, manifests/sandbox-adapters.yaml, scripts/cos-sandbox-run]
-    consumers: [lib/dispatch.py, scripts/cos-sandbox-run]
+    implementation: [cos_lib/sandbox_adapter.py, manifests/sandbox-adapters.yaml, scripts/cos-sandbox-run]
+    consumers: [cos_lib/dispatch.py, scripts/cos-sandbox-run]
     tests: [tests/unit/test_sandbox_adapter.py, tests/behavior/test_sandbox_run_cli.py, tests/audit/test_sandbox_adapter_manifest.py]
     receipts: [sandbox-run-report]
     control_plane_audits: []
@@ -90,7 +90,7 @@ capabilities:
     reality_level: REAL
     public_claim: false
     primitive_types: [lib, file-ipc]
-    implementation: [lib/agent_team.py, lib/agent_team_transport.py]
+    implementation: [cos_lib/agent_team.py, cos_lib/agent_team_transport.py]
     consumers: [scripts/cos]
     tests: [tests/behavior/test_agent_team_file_ipc_flow.py, tests/integration/test_agent_team_cross_harness_contract.py, tests/unit/test_agent_team_transport.py]
     receipts: [team-task-event, inbox-message]
@@ -103,7 +103,7 @@ capabilities:
     reality_level: PARTIAL
     public_claim: false
     primitive_types: [policy, script]
-    implementation: [lib/policy_eval.py, scripts/cos-policy-eval]
+    implementation: [cos_lib/policy_eval.py, scripts/cos-policy-eval]
     consumers: [scripts/cos-policy-eval]
     tests: [tests/unit/test_policy_eval.py]
     receipts: [policy-decision]
@@ -116,7 +116,7 @@ capabilities:
     reality_level: PARTIAL
     public_claim: false
     primitive_types: [daemon, cli]
-    implementation: [lib/agent_daemon.py, scripts/cos-agent-daemon]
+    implementation: [cos_lib/agent_daemon.py, scripts/cos-agent-daemon]
     consumers: [scripts/cos-agent-daemon]
     tests: [tests/unit/test_agent_daemon.py, tests/behavior/test_cos_agent_daemon_cli.py]
     receipts: [detached-agent-event]
@@ -130,7 +130,7 @@ capabilities:
     public_claim: false
     primitive_types: [adapter, dispatch]
     implementation: [packages/agent-lifecycle/lib/deferred_tool_loading.py]
-    consumers: [lib/dispatch.py]
+    consumers: [cos_lib/dispatch.py]
     tests: [tests/unit/test_deferred_tool_loading.py, tests/integration/test_dispatch_gate_real_dispatch.py]
     receipts: [toolsearch-index-injected]
     control_plane_audits: [skill-router-retrieval]
@@ -142,7 +142,7 @@ capabilities:
     reality_level: REAL
     public_claim: false
     primitive_types: [script, skill, manifest]
-    implementation: [manifests/test-execution-efficiency.yaml, lib/test_efficiency_planner.py, scripts/cos-test-efficiency-plan, .codex/skills/test-efficiency/SKILL.md]
+    implementation: [manifests/test-execution-efficiency.yaml, cos_lib/test_efficiency_planner.py, scripts/cos-test-efficiency-plan, .codex/skills/test-efficiency/SKILL.md]
     consumers: [scripts/cos-test-efficiency-plan, .codex/skills/test-efficiency/SKILL.md]
     tests: [tests/unit/test_test_efficiency_planner.py, tests/behavior/test_cos_test_efficiency_plan_cli.py]
     receipts: [test-efficiency-plan]
@@ -207,8 +207,8 @@ capabilities:
     reality_level: REAL
     public_claim: false
     primitive_types: [script, history-rewrite]
-    implementation: [scripts/cos-filter-repo-wrap.sh, lib/history_sanitization.py]
-    consumers: [lib/history_sanitization.py]
+    implementation: [scripts/cos-filter-repo-wrap.sh, cos_lib/history_sanitization.py]
+    consumers: [cos_lib/history_sanitization.py]
     tests: [tests/behavior/test_filter_repo_wrap.py]
     receipts: [.cognitive-os/recovery]
     control_plane_audits: [postmortem-regressions]
@@ -220,7 +220,7 @@ capabilities:
     reality_level: REAL
     public_claim: false
     primitive_types: [hook-lib, script]
-    implementation: [hooks/_lib/push-collision-check.sh, scripts/push_collision_detect.py, lib/history_sanitization.py]
+    implementation: [hooks/_lib/push-collision-check.sh, scripts/push_collision_detect.py, cos_lib/history_sanitization.py]
     consumers: [hooks/_lib/push-collision-check.sh]
     tests: [tests/behavior/test_push_collision_post_rewrite.py]
     receipts: [.cognitive-os/runtime/last-rewrite.json]
@@ -259,8 +259,8 @@ capabilities:
     reality_level: REAL
     public_claim: false
     primitive_types: [script, lib, manifest]
-    implementation: [scripts/cos-release-freeze, lib/release_freeze.py, manifests/release-freeze.yaml]
-    consumers: [scripts/cos-release-freeze, lib/history_sanitization.py]
+    implementation: [scripts/cos-release-freeze, cos_lib/release_freeze.py, manifests/release-freeze.yaml]
+    consumers: [scripts/cos-release-freeze, cos_lib/history_sanitization.py]
     tests: [tests/behavior/test_release_freeze.py, tests/unit/test_release_freeze_control_plane.py]
     receipts: [.cognitive-os/runtime/release-freeze]
     control_plane_audits: [primitive-behavior]

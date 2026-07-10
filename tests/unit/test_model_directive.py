@@ -19,7 +19,7 @@ from datetime import datetime, timezone, timedelta
 # Ensure lib is on the path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-from lib.model_router import get_consequence_override
+from cos_lib.model_router import get_consequence_override
 
 
 # ---------------------------------------------------------------------------
@@ -266,7 +266,7 @@ class TestBudgetDowngrade:
 
     def test_budget_downgrade_at_80_percent(self, tmp_path):
         """At >80% monthly spend, opus tasks should be downgraded to sonnet."""
-        from lib.dispatch_model_advisor import recommend_model
+        from cos_lib.dispatch_model_advisor import recommend_model
 
         # Set up: 85% of $10 spent = $8.50
         metrics_dir, config_path = self._write_cost_events(
@@ -289,7 +289,7 @@ class TestBudgetDowngrade:
 
     def test_budget_downgrade_at_95_percent(self, tmp_path):
         """At >95% monthly spend, all tasks should use haiku."""
-        from lib.dispatch_model_advisor import recommend_model
+        from cos_lib.dispatch_model_advisor import recommend_model
 
         # Set up: 97% of $10 spent = $9.70
         metrics_dir, config_path = self._write_cost_events(
@@ -312,7 +312,7 @@ class TestBudgetDowngrade:
 
     def test_no_downgrade_at_low_spend(self, tmp_path):
         """At low monthly spend, task-type routing should be used without modification."""
-        from lib.dispatch_model_advisor import recommend_model
+        from cos_lib.dispatch_model_advisor import recommend_model
 
         # Set up: 10% of $10 spent = $1.00
         metrics_dir, config_path = self._write_cost_events(
@@ -335,7 +335,7 @@ class TestBudgetDowngrade:
 
     def test_no_monthly_limit_no_downgrade(self, tmp_path):
         """When no monthly_limit_usd is set, no monthly downgrade should apply."""
-        from lib.dispatch_model_advisor import recommend_model
+        from cos_lib.dispatch_model_advisor import recommend_model
 
         # Write cost events but NO monthly limit in config
         metrics_dir = os.path.join(str(tmp_path), ".cognitive-os", "metrics")
@@ -369,7 +369,7 @@ class TestModelDirectiveFormat:
 
     def test_directive_format_high_confidence(self):
         """High confidence recommendations produce MODEL_DIRECTIVE marker."""
-        from lib.dispatch_model_advisor import format_model_directive
+        from cos_lib.dispatch_model_advisor import format_model_directive
 
         rec = {"model": "sonnet", "confidence": 0.9, "disabled": False}
         directive = format_model_directive(rec)
@@ -381,7 +381,7 @@ class TestModelDirectiveFormat:
 
     def test_directive_format_low_confidence(self):
         """Low confidence recommendations produce MODEL_ADVICE marker."""
-        from lib.dispatch_model_advisor import format_model_directive
+        from cos_lib.dispatch_model_advisor import format_model_directive
 
         rec = {"model": "opus", "confidence": 0.5, "disabled": False}
         directive = format_model_directive(rec)
@@ -392,7 +392,7 @@ class TestModelDirectiveFormat:
 
     def test_directive_format_disabled(self):
         """Disabled skills produce MODEL_DISABLED marker."""
-        from lib.dispatch_model_advisor import format_model_directive
+        from cos_lib.dispatch_model_advisor import format_model_directive
 
         rec = {
             "model": "haiku",

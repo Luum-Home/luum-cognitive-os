@@ -10,7 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from lib.sandbox_adapter import SandboxUnavailable, build_sandbox_command  # noqa: E402
+from cos_lib.sandbox_adapter import SandboxUnavailable, build_sandbox_command  # noqa: E402
 
 
 def main() -> int:

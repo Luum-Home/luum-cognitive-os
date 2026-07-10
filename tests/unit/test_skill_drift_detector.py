@@ -13,7 +13,7 @@ from pathlib import Path
 import pytest
 import yaml
 
-from lib.skill_drift_detector import (
+from cos_lib.skill_drift_detector import (
     DriftEvent,
     SkillDriftDetector,
 )
@@ -163,7 +163,7 @@ def test_mtime_cache_avoids_rehashing(tmp_path: Path, monkeypatch: pytest.Monkey
 
     # Track calls to _sha256_file via monkeypatching
     call_count = {"n": 0}
-    import lib.skill_drift_detector as sdd_module
+    import cos_lib.skill_drift_detector as sdd_module
     original_sha256 = sdd_module._sha256_file
 
     def counting_sha256(path: Path) -> str:

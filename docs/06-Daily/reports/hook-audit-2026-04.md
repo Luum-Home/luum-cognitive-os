@@ -16,10 +16,10 @@ Anti-patterns detected: `test_run_inside_hook` (3), `subproc_without_timeout` (7
 | `hooks/test-baseline-diff.sh` | 50 | `test_run_inside_hook` | BLOCKER | `"AFTER=$(python3 -m pytest --tb=no -q 2>&1 | tail -5) || true"` | `remove_test_run` |
 | `hooks/session-cleanup.sh` | 70-87 | `unbounded_loop` | CONCERN | `"while true; do if mkdir \"$_lock_dir\" 2>/dev/null;"` | `bounded_loop_guard` |
 | `hooks/orchestrator-mode-detect.sh` | 8-20 | `subproc_without_timeout` | CONCERN | `"python3 -c \"... OrchestratorCapabilities().detect()\""` | `add_timeout_30s` |
-| `hooks/mlflow-sync.sh` | 5-15 | `subproc_without_timeout` | CONCERN | `"python3 -c \"from lib.mlflow_bridge import MLflowBridge..."` | `add_timeout_30s` |
-| `hooks/session-hygiene.sh` | 3-10 | `subproc_without_timeout` | CONCERN | `"python3 -c \"from lib.session_hygiene import run_full_hygiene..."` | `add_timeout_30s` |
-| `hooks/ecosystem-check.sh` | 24-42 | `subproc_without_timeout` | CONCERN | `"python3 -c \"from lib.ecosystem_evaluator import EcosystemEvaluator..."` | `add_timeout_30s` |
-| `hooks/usage-health-check.sh` | 19-27 | `subproc_without_timeout` | CONCERN | `"python3 -c \"from lib.component_usage_tracker import ComponentUsageTracker..."` | `add_timeout_30s` |
+| `hooks/mlflow-sync.sh` | 5-15 | `subproc_without_timeout` | CONCERN | `"python3 -c \"from cos_lib.mlflow_bridge import MLflowBridge..."` | `add_timeout_30s` |
+| `hooks/session-hygiene.sh` | 3-10 | `subproc_without_timeout` | CONCERN | `"python3 -c \"from cos_lib.session_hygiene import run_full_hygiene..."` | `add_timeout_30s` |
+| `hooks/ecosystem-check.sh` | 24-42 | `subproc_without_timeout` | CONCERN | `"python3 -c \"from cos_lib.ecosystem_evaluator import EcosystemEvaluator..."` | `add_timeout_30s` |
+| `hooks/usage-health-check.sh` | 19-27 | `subproc_without_timeout` | CONCERN | `"python3 -c \"from cos_lib.component_usage_tracker import ComponentUsageTracker..."` | `add_timeout_30s` |
 | `hooks/adr-detector.sh` | 79-93 | `subproc_without_timeout` | CONCERN | `"RESULT=$(python3 -c \"...analyze_commit...\") || exit 0"` | `add_timeout_30s` |
 | `hooks/code-review-on-commit.sh` | 59-86 | `subproc_without_timeout` | CONCERN | `"review_output=$(cd \"$ROOT_DIR\" && python3 -c \"...CodeReviewer..."` | `add_timeout_30s` |
 | `hooks/pre-commit-gate.sh` | 67-69 | `unrotated_write` | CONCERN | `">> \"$COVERAGE_HISTORY\""` — no rotation owner for `coverage-history.jsonl` | `migrate_to_metric_event` |
@@ -50,10 +50,10 @@ Seven hooks invoke `python3` for potentially I/O-bound library operations (MLflo
 | hook | line | call |
 |------|------|------|
 | `orchestrator-mode-detect.sh` | 8 | `python3 -c "...OrchestratorCapabilities().detect()"` |
-| `mlflow-sync.sh` | 5 | `python3 -c "from lib.mlflow_bridge import MLflowBridge..."` |
-| `session-hygiene.sh` | 3 | `python3 -c "from lib.session_hygiene import run_full_hygiene..."` |
-| `ecosystem-check.sh` | 24 | `python3 -c "from lib.ecosystem_evaluator import EcosystemEvaluator..."` |
-| `usage-health-check.sh` | 19 | `python3 -c "from lib.component_usage_tracker import ComponentUsageTracker..."` |
+| `mlflow-sync.sh` | 5 | `python3 -c "from cos_lib.mlflow_bridge import MLflowBridge..."` |
+| `session-hygiene.sh` | 3 | `python3 -c "from cos_lib.session_hygiene import run_full_hygiene..."` |
+| `ecosystem-check.sh` | 24 | `python3 -c "from cos_lib.ecosystem_evaluator import EcosystemEvaluator..."` |
+| `usage-health-check.sh` | 19 | `python3 -c "from cos_lib.component_usage_tracker import ComponentUsageTracker..."` |
 | `adr-detector.sh` | 79 | `RESULT=$(python3 -c "...analyze_commit...")` |
 | `code-review-on-commit.sh` | 59 | `review_output=$(cd ... && python3 -c "...CodeReviewer...")` |
 

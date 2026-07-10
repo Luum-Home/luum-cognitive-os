@@ -23,7 +23,7 @@ _PROJ_ROOT = Path(__file__).resolve().parent.parent.parent
 if str(_PROJ_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJ_ROOT))
 
-from lib.metric_event import MetricEvent, append_event  # noqa: E402
+from cos_lib.metric_event import MetricEvent, append_event  # noqa: E402
 
 
 def _make_event() -> MetricEvent:

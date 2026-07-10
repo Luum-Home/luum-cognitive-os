@@ -4,7 +4,7 @@ import json
 import subprocess
 from pathlib import Path
 
-from lib.memory_retrieval_benchmark import run_benchmark
+from cos_lib.memory_retrieval_benchmark import run_benchmark
 
 ROOT = Path(__file__).resolve().parents[2]
 MANIFEST = ROOT / "manifests" / "memory-retrieval-benchmark.yaml"

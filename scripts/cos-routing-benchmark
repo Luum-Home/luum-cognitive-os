@@ -2,7 +2,7 @@
 # SCOPE: os-only
 # ADR-298 — Reproducible model-evaluation harness for the COS skill router.
 #
-# This wrapper invokes lib.routing_benchmark with the project's canonical
+# This wrapper invokes cos_lib.routing_benchmark with the project's canonical
 # .venv interpreter so cold-start measurements use the same environment
 # the router itself uses at runtime.
 set -euo pipefail
@@ -18,4 +18,4 @@ else
 fi
 
 cd "$REPO_ROOT"
-exec "$PYTHON" -m lib.routing_benchmark "$@"
+exec "$PYTHON" -m cos_lib.routing_benchmark "$@"

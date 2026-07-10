@@ -7,7 +7,7 @@
 Before creating ANY new `lib/`, `hook`, or `skill`, run the reinvention guard:
 
 ```python
-from lib.reinvention_guard import ReinventionGuard
+from cos_lib.reinvention_guard import ReinventionGuard
 guard = ReinventionGuard()
 results = guard.check("what you're about to build", keywords=["keyword1", "keyword2"])
 print(guard.format_report(results))

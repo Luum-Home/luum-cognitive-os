@@ -15,8 +15,8 @@ implementation_files:
 - manifests/history-rewrite-ledger.yaml
 - hooks/history-rewrite-documented.sh
 - scripts/cos-history-rewrite-audit
-- lib/history_sanitization.py
-- lib/history_rewrite_ledger.py
+- cos_lib/history_sanitization.py
+- cos_lib/history_rewrite_ledger.py
 tier: maintainer
 tags:
 - history-rewrite

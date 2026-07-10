@@ -23,7 +23,7 @@ _REPO = Path(__file__).resolve().parent.parent.parent
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from lib import qwen_provider  # noqa: E402
+from cos_lib import qwen_provider  # noqa: E402
 
 
 class TestConfigDetection(unittest.TestCase):

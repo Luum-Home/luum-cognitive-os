@@ -10,7 +10,7 @@ import os as _cos_os
 import sys as _cos_sys
 _cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
 import sys
-from lib.script_helpers import read_yaml_required as load_manifest
+from cos_lib.script_helpers import read_yaml_required as load_manifest
 
 import argparse
 import json

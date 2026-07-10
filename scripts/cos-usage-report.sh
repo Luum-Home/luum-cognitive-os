@@ -102,13 +102,13 @@ show_eff = os.environ.get("SHOW_EFFICIENCY", "0") == "1"
 
 sys.path.insert(0, str(root))
 try:
-    from lib.telemetry import (
+    from cos_lib.telemetry import (
         iter_records,
         SKILL_USAGE_FILE, HOOK_USAGE_FILE,
         AGENT_LAUNCHES_FILE, RATE_LIMIT_FILE,
     )
 except Exception as exc:
-    print(f"error: cannot import lib.telemetry ({exc})", file=sys.stderr)
+    print(f"error: cannot import cos_lib.telemetry ({exc})", file=sys.stderr)
     sys.exit(1)
 
 cutoff = datetime.now(timezone.utc) - timedelta(days=days)

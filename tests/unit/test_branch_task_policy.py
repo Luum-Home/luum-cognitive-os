@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from lib.branch_task_policy import branch_for_task, evaluate_branch_for_task
+from cos_lib.branch_task_policy import branch_for_task, evaluate_branch_for_task
 
 
 @pytest.mark.unit

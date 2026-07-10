@@ -18,14 +18,14 @@ import json
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from lib.script_helpers import script_repo_root as repo_root
+from cos_lib.script_helpers import script_repo_root as repo_root
 from typing import Any, Iterable
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from lib.time_utils import now_iso as utc_now
+from cos_lib.time_utils import now_iso as utc_now
 
 try:
     import yaml  # type: ignore[import]

@@ -11,7 +11,7 @@ from unittest.mock import patch
 
 import pytest
 
-from lib.staged_verification import (
+from cos_lib.staged_verification import (
     StageResult,
     VerificationStage,
     _COMPLEXITY_STAGES,
@@ -123,7 +123,7 @@ class TestRunStagedVerification:
         def mock_run_stage(stage, changed_files, project_root, lang):
             return stage_results.get(stage, _make_pass_result(stage))
 
-        with patch("lib.staged_verification._run_stage", side_effect=mock_run_stage):
+        with patch("cos_lib.staged_verification._run_stage", side_effect=mock_run_stage):
             result = run_staged_verification(
                 ["test.py"],
                 str(tmp_path),
@@ -139,7 +139,7 @@ class TestRunStagedVerification:
         def mock_run_stage(stage, changed_files, project_root, lang):
             return _make_pass_result(stage)
 
-        with patch("lib.staged_verification._run_stage", side_effect=mock_run_stage):
+        with patch("cos_lib.staged_verification._run_stage", side_effect=mock_run_stage):
             result = run_staged_verification(
                 ["test.py"],
                 str(tmp_path),
@@ -153,7 +153,7 @@ class TestRunStagedVerification:
         def mock_run_stage(stage, changed_files, project_root, lang):
             return _make_pass_result(stage)
 
-        with patch("lib.staged_verification._run_stage", side_effect=mock_run_stage):
+        with patch("cos_lib.staged_verification._run_stage", side_effect=mock_run_stage):
             result = run_staged_verification(
                 ["test.py"],
                 str(tmp_path),
@@ -172,7 +172,7 @@ class TestRunStagedVerification:
         def mock_run_stage(stage, changed_files, project_root, lang):
             return stage_results.get(stage, _make_pass_result(stage))
 
-        with patch("lib.staged_verification._run_stage", side_effect=mock_run_stage):
+        with patch("cos_lib.staged_verification._run_stage", side_effect=mock_run_stage):
             result = run_staged_verification(
                 ["test.py"],
                 str(tmp_path),
@@ -197,7 +197,7 @@ class TestRunStagedVerification:
                 return _make_fail_result(stage)
             return _make_pass_result(stage)
 
-        with patch("lib.staged_verification._run_stage", side_effect=mock_run_stage):
+        with patch("cos_lib.staged_verification._run_stage", side_effect=mock_run_stage):
             result = run_staged_verification(
                 ["test.py"],
                 str(tmp_path),

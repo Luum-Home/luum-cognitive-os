@@ -67,7 +67,7 @@ import json, sys, pathlib
 sys.path.insert(0, "${COS_ROOT}")
 sys.path.insert(0, "${PROJECT_DIR}")
 try:
-    from lib.research_quality_advisor import ResearchQualityAdvisor
+    from cos_lib.research_quality_advisor import ResearchQualityAdvisor
 except Exception as exc:
     print(json.dumps({"error": "import_failed", "detail": str(exc)}))
     sys.exit(0)

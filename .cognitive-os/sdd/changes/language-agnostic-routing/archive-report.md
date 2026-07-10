@@ -61,7 +61,7 @@ Benchmark behavior tests for REQ-006/007/008 are in
 
 | Path | Change |
 |---|---|
-| `lib/routing_benchmark.py` | `load_skill_catalog` now imports `load_skill_metadata` from `lib.semantic_skill_matcher`; `_build_candidates` inverted to catalog-wins |
+| `lib/routing_benchmark.py` | `load_skill_catalog` now imports `load_skill_metadata` from `cos_lib.semantic_skill_matcher`; `_build_candidates` inverted to catalog-wins |
 | `tests/unit/test_routing_benchmark.py` | Added `test_skill_catalog_includes_routing_intents`, amended `test_full_catalog_candidates_adds_distractors` |
 | `code-review/SKILL.md`, `compat-test/SKILL.md`, `run-tests/SKILL.md`, `doc-sync/SKILL.md`, `smoke-test/SKILL.md` | `routing_intents` enrichments (5 skills) |
 

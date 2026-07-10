@@ -217,7 +217,7 @@ When a slot frees up (on the next agent completion), you'll see:
 ```
 QUEUE DRAIN: 1 agent ready to dispatch:
   [1] implement-auth-endpoint (model: sonnet, priority: 5)
-  → Launch now or run: from lib.queue_drainer import QueueDrainer; QueueDrainer().get_ready_agents()
+  → Launch now or run: from cos_lib.queue_drainer import QueueDrainer; QueueDrainer().get_ready_agents()
 ```
 
 ---
@@ -312,9 +312,9 @@ For a formatted dashboard, run `/agent-kpis` inside Claude Code.
 
 | Situation | What to do |
 |-----------|-----------|
-| A skill was disabled but you think it's fine | Run `/optimize-skill {name}` — it rewrites the skill based on failure history, then auto-re-enables. Or manually: `python3 -c "from lib.consequence_engine import ConsequenceEngine; ConsequenceEngine().re_enable_skill('{name}')"` |
+| A skill was disabled but you think it's fine | Run `/optimize-skill {name}` — it rewrites the skill based on failure history, then auto-re-enables. Or manually: `python3 -c "from cos_lib.consequence_engine import ConsequenceEngine; ConsequenceEngine().re_enable_skill('{name}')"` |
 | A skill was degraded to haiku but needs opus | Override at launch with `model: "opus"` in the agent prompt. The consequence-based downgrade is advisory on launch. |
-| Circuit breaker is open but you need to run | Wait the 1-hour cooldown, or check `/repair-status` for the exact state. For emergencies: `python3 -c "from lib.circuit_breaker import CircuitBreaker; CircuitBreaker().reset()"` |
+| Circuit breaker is open but you need to run | Wait the 1-hour cooldown, or check `/repair-status` for the exact state. For emergencies: `python3 -c "from cos_lib.circuit_breaker import CircuitBreaker; CircuitBreaker().reset()"` |
 | Too many error pattern warnings | Run `/error-analyzer` to group patterns and get recommendations. |
 | Overall quality is declining | Run `/self-improve` — it reads error patterns, skill archive trends, and KPI history and proposes targeted changes. |
 | Want the full quality dashboard | Run `/agent-kpis` inside Claude Code. |

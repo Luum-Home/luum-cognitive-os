@@ -6963,7 +6963,7 @@ primitives:
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: "none"
-- id: lib/adapter_compile.py
+- id: cos_lib/adapter_compile.py
   kind: library
   owner_adr: ADR-258
   lifecycle_state: active
@@ -6974,7 +6974,7 @@ primitives:
   supported_harnesses:
   - shell
   projection_targets:
-  - lib/adapter_compile.py
+  - cos_lib/adapter_compile.py
   runtime_projection: false
   behavior_evidence: Fidelity-preserving adapter compiler API used by scripts/cos-adapter-compile and scripts/cos-adapters compile.
   evidence_commands:
@@ -12483,7 +12483,7 @@ primitives:
   - shell
   projection_targets:
   - scripts/cos-adapter-compile
-  - lib/adapter_compile.py
+  - cos_lib/adapter_compile.py
   runtime_projection: false
   behavior_evidence: 'Manual scope calibration iteration 038: adapter compiler is shared because COS uses it to produce governed adapter outputs and adopter projects consume the generated native IDE files.'
   evidence_commands:
@@ -12635,9 +12635,9 @@ primitives:
   - shell
   projection_targets:
   - scripts/cos-agent-daemon
-  - lib/agent_daemon.py
-  - lib/agent_lifecycle.py
-  - lib/agent_team.py
+  - cos_lib/agent_daemon.py
+  - cos_lib/agent_lifecycle.py
+  - cos_lib/agent_team.py
   runtime_projection: false
   behavior_evidence: 'Manual scope review iteration 036: local-first detached agent daemon accepts explicit project/root dirs and exposes generic enqueue/list/run/reap operations.'
   evidence_commands:
@@ -12944,7 +12944,7 @@ primitives:
   projection_targets:
   - scripts/cos-consumer-fleet-audit
   - scripts/cos_consumer_fleet_audit.py
-  - lib/consumer_fleet_audit.py
+  - cos_lib/consumer_fleet_audit.py
   - docs/04-Concepts/architecture/consumer-fleet-audit.md
   runtime_projection: false
   behavior_evidence: Manual scope calibration iteration 040 classified os-only. Maintainer audit for fleets of COS consumer installs; not projected into individual projects.
@@ -13072,7 +13072,7 @@ primitives:
   projection_targets:
   - scripts/cos-cross-instance-drill
   - scripts/cos_cross_instance_drill.py
-  - lib/cross_instance_learning.py
+  - cos_lib/cross_instance_learning.py
   - docs/04-Concepts/architecture/cross-instance-learning-runway.md
   runtime_projection: false
   behavior_evidence: Manual scope calibration iteration 040 classified os-only. COS cross-instance learning drill.
@@ -13343,7 +13343,7 @@ primitives:
   projection_targets:
   - scripts/cos-doctrine-proposer
   - scripts/cos_doctrine_proposer.py
-  - lib/doctrine_proposer.py
+  - cos_lib/doctrine_proposer.py
   - docs/02-Decisions/adrs/ADR-135-self-evolving-doctrine-proposals.md
   runtime_projection: false
   behavior_evidence: Manual scope calibration iteration 040 classified os-only. COS doctrine proposal workflow for SO governance.
@@ -13420,7 +13420,7 @@ primitives:
   - scripts/cos-engram-bundle
   - scripts/cos-engram-import-propose
   - scripts/cos_cross_instance_learning.py
-  - lib/cross_instance_learning.py
+  - cos_lib/cross_instance_learning.py
   runtime_projection: false
   behavior_evidence: portable Engram bundle export/import-propose covered by tests
   evidence_commands:
@@ -13471,7 +13471,7 @@ primitives:
   projection_targets:
   - scripts/cos-engram-import-propose
   - scripts/cos_cross_instance_learning.py
-  - lib/cross_instance_learning.py
+  - cos_lib/cross_instance_learning.py
   runtime_projection: false
   behavior_evidence: 'Manual scope review iteration 035: propose-only import reviews project-scoped Engram bundle evidence without mutating memory stores.'
   evidence_commands:
@@ -13492,7 +13492,7 @@ primitives:
   projection_targets:
   - scripts/cos-export-consumer-evidence
   - scripts/cos_cross_instance_learning.py
-  - lib/cross_instance_learning.py
+  - cos_lib/cross_instance_learning.py
   - manifests/external-adoption-evidence.yaml
   runtime_projection: false
   behavior_evidence: Manual scope calibration iteration 040 classified os-only. Exports sanitized consumer evidence for SO cross-instance learning.
@@ -13542,7 +13542,7 @@ primitives:
   projection_targets:
   - scripts/cos-federation-trigger-audit
   - scripts/cos_cross_instance_learning.py
-  - lib/cross_instance_learning.py
+  - cos_lib/cross_instance_learning.py
   - manifests/federation-triggers.yaml
   runtime_projection: false
   behavior_evidence: Shape-B trigger audit covered by cross-instance runway tests
@@ -14430,7 +14430,7 @@ primitives:
   projection_targets:
   - scripts/cos-import-consumer-evidence
   - scripts/cos_cross_instance_learning.py
-  - lib/cross_instance_learning.py
+  - cos_lib/cross_instance_learning.py
   - manifests/external-adoption-evidence.yaml
   runtime_projection: false
   behavior_evidence: Manual scope calibration iteration 040 classified os-only. Imports sanitized consumer evidence into SO cross-instance learning.
@@ -15463,7 +15463,7 @@ primitives:
   projection_targets:
   - scripts/cos-registry-lock
   - scripts/cos_cross_instance_learning.py
-  - lib/cross_instance_learning.py
+  - cos_lib/cross_instance_learning.py
   - manifests/agentic-primitive-registry.lock.yaml
   - skills/REGISTRY.lock
   runtime_projection: false
@@ -15739,7 +15739,7 @@ primitives:
   projection_targets:
   - scripts/cos-self-improvement-loop
   - scripts/cos_self_improvement_loop.py
-  - lib/self_improvement_loop.py
+  - cos_lib/self_improvement_loop.py
   - docs/02-Decisions/adrs/ADR-134-headless-self-improvement-proposer.md
   runtime_projection: false
   behavior_evidence: propose-only self-improvement loop with unit tests
@@ -16420,7 +16420,7 @@ primitives:
   - shell
   projection_targets:
   - scripts/cos_agent_message.py
-  - lib/agent_message_bus.py
+  - cos_lib/agent_message_bus.py
   runtime_projection: false
   behavior_evidence: 'Manual scope review iteration 036: directed message CLI uses explicit project-dir/environment and coordinates generic cross-session agent workflows.'
   evidence_commands:
@@ -18503,7 +18503,7 @@ primitives:
   projection_targets:
   - scripts/orchestrator.py
   - packages/agent-coordination/lib/agent_bus.py
-  - lib/agent_bus_metrics.py
+  - cos_lib/agent_bus_metrics.py
   runtime_projection: false
   behavior_evidence: Orchestrator control CLI exposes list-live, scan-stale, kill-hung, control, and answer verbs over Valkey when enabled and filesystem fallback otherwise.
   evidence_commands:

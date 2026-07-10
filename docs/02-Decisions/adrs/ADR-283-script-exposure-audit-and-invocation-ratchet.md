@@ -9,7 +9,7 @@ supersedes: []
 superseded_by: null
 extends: [ADR-072, ADR-120, ADR-206, ADR-274, ADR-281]
 implementation_files:
-  - lib/script_exposure_audit.py
+  - cos_lib/script_exposure_audit.py
   - scripts/cos-script-exposure-audit
   - tests/unit/test_script_exposure_audit.py
   - tests/behavior/test_script_exposure_audit_cli.py

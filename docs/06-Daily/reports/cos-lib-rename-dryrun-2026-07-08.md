@@ -26,8 +26,8 @@
 
 > **Guarded count note:** the codemod reports **94** guarded hook files vs. the operator's
 > earlier **82** grep estimate. The delta is real, not a false positive: the codemod also
-> catches split-token invocations such as `ARGS=("-m" "lib.session_lifecycle")` and
-> package-level `from lib import X` that a `-m lib.` / `from lib.` grep misses. All 94 were
+> catches split-token invocations such as `ARGS=("-m" "cos_lib.session_lifecycle")` and
+> package-level `from cos_lib import X` that a `-m cos_lib.` / `from cos_lib.` grep misses. All 94 were
 > verified to contain a genuine `lib` package reference.
 
 ## 2. Per-directory breakdown (importers, measured)
@@ -151,34 +151,34 @@ hooks/valkey-ensure.sh
 ## 4. RISKY / UNSAFE-to-auto-rewrite edge cases (human review required)
 
 All **47** flagged cases are in `workflows/` and share ONE root cause: they
-`from lib.<mod> import …` where `<mod>` (e.g. `telegram`, `shared_phases`, `utils`, `agent`,
+`from cos_lib.<mod> import …` where `<mod>` (e.g. `telegram`, `shared_phases`, `utils`, `agent`,
 `data_types`, `file_parser`) is a module of the **separate** `workflows/lib/` package, NOT the
 COS `lib/` package. There is no top-level `lib/telegram.py`. The codemod's **module allowlist**
 (373 real top-level `lib/` module names) correctly REFUSES to rewrite these — rewriting them to
 `cos_lib.telegram` would break `workflows/`. This is the U1 collision manifesting *internally*.
 
 **Disposition:** leave `workflows/` untouched by this rename; `workflows/lib/` is an
-independent vendored ADW package and keeps its own name. Confirm no COS `lib.*` import hides
+independent vendored ADW package and keeps its own name. Confirm no COS `cos_lib.*` import hides
 among them (none found — every flagged name resolves to `workflows/lib/`).
 
 Flagged lines (sample):
 
 ```
-workflows/backend_bug_pipeline.py:29  from lib.shared_phases import (
-workflows/backend_bug_pipeline.py:50  from lib.telegram import (
-workflows/backend_bug_pipeline.py:55  from lib.utils import get_service_config, make_workflow_id
-workflows/backend_deploy_pipeline.py:23  from lib.shared_phases import (
-workflows/backend_deploy_pipeline.py:35  from lib.telegram import (
-workflows/backend_deploy_pipeline.py:40  from lib.utils import get_service_config, make_workflow_id
-workflows/backend_feature_pipeline.py:32  from lib.shared_phases import (
-workflows/backend_feature_pipeline.py:54  from lib.telegram import (
-workflows/backend_feature_pipeline.py:59  from lib.utils import get_service_config, make_workflow_id
-workflows/backend_feature_pipeline.py:83  from lib.utils import get_services_config
-workflows/backend_migration_pipeline.py:25  from lib.agent import prompt_with_retry
-workflows/backend_migration_pipeline.py:26  from lib.data_types import AgentPromptRequest
-workflows/backend_migration_pipeline.py:27  from lib.shared_phases import (
-workflows/backend_migration_pipeline.py:39  from lib.utils import get_project_root, get_service_config, make_workflow_id
-workflows/backend_state.py:9  from lib.data_types import BackendWorkflowStateData
+workflows/backend_bug_pipeline.py:29  from cos_lib.shared_phases import (
+workflows/backend_bug_pipeline.py:50  from cos_lib.telegram import (
+workflows/backend_bug_pipeline.py:55  from cos_lib.utils import get_service_config, make_workflow_id
+workflows/backend_deploy_pipeline.py:23  from cos_lib.shared_phases import (
+workflows/backend_deploy_pipeline.py:35  from cos_lib.telegram import (
+workflows/backend_deploy_pipeline.py:40  from cos_lib.utils import get_service_config, make_workflow_id
+workflows/backend_feature_pipeline.py:32  from cos_lib.shared_phases import (
+workflows/backend_feature_pipeline.py:54  from cos_lib.telegram import (
+workflows/backend_feature_pipeline.py:59  from cos_lib.utils import get_service_config, make_workflow_id
+workflows/backend_feature_pipeline.py:83  from cos_lib.utils import get_services_config
+workflows/backend_migration_pipeline.py:25  from cos_lib.agent import prompt_with_retry
+workflows/backend_migration_pipeline.py:26  from cos_lib.data_types import AgentPromptRequest
+workflows/backend_migration_pipeline.py:27  from cos_lib.shared_phases import (
+workflows/backend_migration_pipeline.py:39  from cos_lib.utils import get_project_root, get_service_config, make_workflow_id
+workflows/backend_state.py:9  from cos_lib.data_types import BackendWorkflowStateData
 ... (47 total)
 ```
 
@@ -235,18 +235,18 @@ lib/agent_permissions.py -> ../packages/agent-lifecycle/lib/agent_permissions.py
 
 **Flag:** every symlink target is itself a `packages/*/lib/` path. Those package-internal
 `lib/` dirs are **NOT** renamed (only the top-level package is). The module BODIES behind the
-symlinks (`packages/*/lib/*.py`, 57 of which do `from lib.<mod>`) ARE rewritten to `cos_lib`
-since, once loaded as `cos_lib.<mod>`, their internal `from lib.` would otherwise fail.
+symlinks (`packages/*/lib/*.py`, 57 of which do `from cos_lib.<mod>`) ARE rewritten to `cos_lib`
+since, once loaded as `cos_lib.<mod>`, their internal `from cos_lib.` would otherwise fail.
 
 ## 7. Safety probe (false-positive tokens)
 
-The boundary-anchored matcher (`(?<![A-Za-z0-9_.])lib(?=\.)` + `from lib import` +
-`-m lib.`) was tested against 19 cases. All pass:
+The boundary-anchored matcher (`(?<![A-Za-z0-9_.])lib(?=\.)` + `from cos_lib import` +
+`-m cos_lib.`) was tested against 19 cases. All pass:
 
 - **Untouched:** `pathlib` (2848 hits in repo), `zlib`, `glob`, `joblib`, `library`,
   `mylib.foo`, `a.lib`, `lib_path`, `self.lib`, `{'lib': 1}`, `foo_lib`.
-- **Rewritten:** `from lib.foo import x`, `import lib.bar`, `from lib import baz`,
-  `python3 -m lib.mod`, `"-m","lib.session_lifecycle"`.
+- **Rewritten:** `from cos_lib.foo import x`, `import cos_lib.bar`, `from cos_lib import baz`,
+  `python3 -m cos_lib.mod`, `"-m","cos_lib.session_lifecycle"`.
 
 `import pathlib` is safe because `\blib` has no word boundary inside `pathlib` (`h`+`l` are
 both word chars); the negative lookbehind additionally blocks `.lib` / `_lib`.

@@ -8,9 +8,9 @@ import pytest
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(_REPO_ROOT))
 
-import lib.event_wrap as event_wrap_module  # noqa: E402
-from lib.event_wrap import WrappedStepSignatureChanged, event_wrap  # noqa: E402
-from lib.session_bus import read_session_events  # noqa: E402
+import cos_lib.event_wrap as event_wrap_module  # noqa: E402
+from cos_lib.event_wrap import WrappedStepSignatureChanged, event_wrap  # noqa: E402
+from cos_lib.session_bus import read_session_events  # noqa: E402
 
 
 def _reset_counters() -> None:

@@ -2,4 +2,4 @@
 # SCOPE: os-only
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-PYTHONPATH="$ROOT${PYTHONPATH:+:$PYTHONPATH}" python3 -m lib.language_dependence_audit --root "$ROOT" "$@"
+PYTHONPATH="$ROOT${PYTHONPATH:+:$PYTHONPATH}" python3 -m cos_lib.language_dependence_audit --root "$ROOT" "$@"

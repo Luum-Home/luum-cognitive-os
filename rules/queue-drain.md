@@ -20,7 +20,7 @@ launch; it is corrupt state and MUST NOT be dispatched.
 
 ```
 1. Import and check the queue:
-   from lib.queue_drainer import QueueDrainer
+   from cos_lib.queue_drainer import QueueDrainer
    drainer = QueueDrainer()
    ready = drainer.get_ready_agents()
 
@@ -38,7 +38,7 @@ launch; it is corrupt state and MUST NOT be dispatched.
 
 ```bash
 python3 -c "
-from lib.queue_drainer import QueueDrainer
+from cos_lib.queue_drainer import QueueDrainer
 d = QueueDrainer()
 print(d.format_drain_instruction())
 "
@@ -94,7 +94,7 @@ Create the CronCreate task when:
 - The orchestrator detects items in `.cognitive-os/tasks/dispatch-queue.json`
 
 ```python
-from lib.scheduled_drain import should_schedule_drain, get_cron_create_spec
+from cos_lib.scheduled_drain import should_schedule_drain, get_cron_create_spec
 
 if should_schedule_drain():
     spec = get_cron_create_spec()
@@ -106,7 +106,7 @@ if should_schedule_drain():
 ```
 Check the agent dispatch queue and launch any ready agents.
 
-1. Run: python3 -c "from lib.scheduled_drain import drain_and_report; print(drain_and_report())"
+1. Run: python3 -c "from cos_lib.scheduled_drain import drain_and_report; print(drain_and_report())"
 2. If agents are ready, launch them using the Agent tool with the queued prompt and model
 3. For each agent: mark_dispatched(id) before, remove_completed(id) after
 4. If dead agents found, escalate to user

@@ -6,7 +6,7 @@ Tests that require a running Valkey are automatically skipped when unavailable.
 
 import pytest
 
-from lib.orchestrator_capabilities import OrchestratorCapabilities
+from cos_lib.orchestrator_capabilities import OrchestratorCapabilities
 
 # ---------------------------------------------------------------------------
 # Session-level fixture: detect once, share across tests

@@ -35,7 +35,7 @@ _REPO_ROOT = Path(__file__).resolve().parent.parent
 if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
-from lib.sprint_orchestrator import (  # noqa: E402
+from cos_lib.sprint_orchestrator import (  # noqa: E402
     SprintCancelled,
     SprintManifest,
     SprintSpecError,
@@ -55,7 +55,7 @@ from lib.sprint_orchestrator import (  # noqa: E402
     save_manifest,
     transition,
 )
-from lib.harness_adapter.base import CanonicalEvent  # noqa: E402
+from cos_lib.harness_adapter.base import CanonicalEvent  # noqa: E402
 
 
 CANONICAL_LIVE = ".cognitive-os/metrics/canonical-live.jsonl"

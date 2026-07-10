@@ -42,7 +42,7 @@ flags:
   - 'off'
   owner_files:
   - scripts/smoke-qwen-fallback.sh
-  - lib/qwen_provider.py
+  - cos_lib/qwen_provider.py
   documentation:
   - docs/04-Concepts/root/runtime-env-flags.md
   - docs/05-Methodology/runbooks/llm-dispatch.md
@@ -278,7 +278,7 @@ flags:
   - 'false'
   - 'true'
   owner_files:
-  - lib/bifrost_client.py
+  - cos_lib/bifrost_client.py
   documentation:
   - docs/03-PoCs/research/claude-code-router-evaluation-2026-04-21.md
   risk_level: medium
@@ -292,7 +292,7 @@ flags:
   - '1'
   owner_files:
   - scripts/so_session_watchdog.py
-  - lib/session_watchdog_lib.py
+  - cos_lib/session_watchdog_lib.py
   documentation:
   - docs/04-Concepts/architecture/session-start-runtime-diet.md
   risk_level: medium
@@ -306,7 +306,7 @@ flags:
   - '1'
   owner_files:
   - scripts/so_session_watchdog.py
-  - lib/session_watchdog_lib.py
+  - cos_lib/session_watchdog_lib.py
   documentation:
   - docs/04-Concepts/architecture/session-start-runtime-diet.md
   risk_level: medium
@@ -319,7 +319,7 @@ flags:
   - '0'
   - '1'
   owner_files:
-  - lib/record_completion.py
+  - cos_lib/record_completion.py
   documentation:
   - docs/04-Concepts/architecture/local-connected-systems-validation.md
   risk_level: medium

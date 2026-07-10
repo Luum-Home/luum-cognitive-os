@@ -116,14 +116,14 @@ if command -v python3 &>/dev/null; then
 import sys
 sys.path.insert(0, '$PROJECT_DIR')
 try:
-    from lib.prompt_builder import PromptBuilder
+    from cos_lib.prompt_builder import PromptBuilder
     builder = PromptBuilder.from_project('$PROJECT_DIR')
     rules = builder.selected_rules('$TASK_TYPE')
     print(','.join(rules))
 except Exception:
     # Fallback to context_diet directly
     try:
-        from lib.context_diet import ContextDiet
+        from cos_lib.context_diet import ContextDiet
         diet = ContextDiet.from_yaml('$PROJECT_DIR/cognitive-os.yaml', rules_dir='$PROJECT_DIR/rules')
         rules = diet.select_rules('$TASK_TYPE')
         print(','.join(rules))

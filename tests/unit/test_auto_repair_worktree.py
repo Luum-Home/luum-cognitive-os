@@ -21,7 +21,7 @@ from unittest.mock import MagicMock, patch
 # Make sure lib/ is importable
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from lib.auto_repair import AutoRepairEngine, RepairResult, is_safe_to_repair
+from cos_lib.auto_repair import AutoRepairEngine, RepairResult, is_safe_to_repair
 
 
 # ---------------------------------------------------------------------------

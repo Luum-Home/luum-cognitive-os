@@ -12,12 +12,12 @@ Every item below has a concrete **first step** (≤ 15 min to verify), **effort 
 
 **Problem**: `lib/ref_key_loader.py` exists, 13 tests pass, zero callers in hooks.
 
-**Fix**: in `hooks/inject-phase-context.sh`, after assembling `CONTEXT_BUF`, pipe it through `lib.ref_key_loader.expand(text)`. Every `[\`ref-key\`]` in the preamble gets replaced with the full rule body inline.
+**Fix**: in `hooks/inject-phase-context.sh`, after assembling `CONTEXT_BUF`, pipe it through `cos_lib.ref_key_loader.expand(text)`. Every `[\`ref-key\`]` in the preamble gets replaced with the full rule body inline.
 
 **First step**:
 ```python
 # Add to the HEREDOC python block in inject-phase-context.sh:
-from lib.ref_key_loader import expand
+from cos_lib.ref_key_loader import expand
 CONTEXT_BUF = expand(CONTEXT_BUF, max_depth=1)
 ```
 
@@ -84,7 +84,7 @@ esac
 
 **Problem**: adapter only fires when `ORCHESTRATOR_MODE=executor`. Native Agent (Claude Code default) bypasses it.
 
-**Fix**: new hook `hooks/native-agent-heartbeat.sh` at `PostToolUse:Agent` + `PreToolUse:Agent` — synthesizes heartbeat events and writes them directly to `lib.agent_bus.FallbackBus` files. `AgentBusMetrics.on_heartbeat_event` then picks them up via its standard subscribe path.
+**Fix**: new hook `hooks/native-agent-heartbeat.sh` at `PostToolUse:Agent` + `PreToolUse:Agent` — synthesizes heartbeat events and writes them directly to `cos_lib.agent_bus.FallbackBus` files. `AgentBusMetrics.on_heartbeat_event` then picks them up via its standard subscribe path.
 
 **First step**:
 ```bash

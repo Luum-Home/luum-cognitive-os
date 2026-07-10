@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from lib.harness_adapter.base import (
+from cos_lib.harness_adapter.base import (
     AgentEnd,
     AgentStart,
     HarnessName,
@@ -10,7 +10,7 @@ from lib.harness_adapter.base import (
     TokenUsage,
     ToolUse,
 )
-from lib.harness_adapter.claude_code import ClaudeCodeAdapter
+from cos_lib.harness_adapter.claude_code import ClaudeCodeAdapter
 
 
 class TestClaudeCodeAdapter:

@@ -101,11 +101,11 @@ pending ──► running ──► completed
    └───────────┴──────► cancelled
 ```
 
-Terminal states (`completed`, `failed`, `cancelled`) do not transition further. `transition()` in `lib.sprint_orchestrator` is the single write path and raises `ValueError` on illegal moves.
+Terminal states (`completed`, `failed`, `cancelled`) do not transition further. `transition()` in `cos_lib.sprint_orchestrator` is the single write path and raises `ValueError` on illegal moves.
 
 ### Canonical sprint events (extends ADR-033)
 
-All events subclass `CanonicalEvent`, auto-register under `CanonicalEvent._registry`, and round-trip via `to_dict` / `from_dict`. They MUST be importable via `lib.harness_adapter.base` after `sprint_orchestrator` is imported (the subclass `__init_subclass__` wires the registry).
+All events subclass `CanonicalEvent`, auto-register under `CanonicalEvent._registry`, and round-trip via `to_dict` / `from_dict`. They MUST be importable via `cos_lib.harness_adapter.base` after `sprint_orchestrator` is imported (the subclass `__init_subclass__` wires the registry).
 
 | `event_type`              | Fields                                                                        | Emitted when                         |
 |---------------------------|-------------------------------------------------------------------------------|--------------------------------------|
@@ -217,7 +217,7 @@ MVP provides `consolidate_commits_stub()` so callers can import a stable symbol.
 
 1. **TUI — `cos watch --sprint <id>`**: extend `scripts/cos_watch.py` with a sprint-grouping table. Data source: `canonical-live.jsonl` filtered by `sprint_id`. Implement as Textual/rich table; reuse existing cost/token formatters.
 2. **Test aggregator — `lib/sprint_aggregator.py`**: implement `aggregate_test_results()` (pytest, go test, jest, vitest parsers), add `SprintTestSummary` canonical event, wire into `SprintCompleted` emission.
-3. **Consolidated commits — `lib.sprint_commit`**: implement `squash` strategy with safe rollback, capture base ref at `SprintStarted`, enforce file-scope guardrails.
+3. **Consolidated commits — `cos_lib.sprint_commit`**: implement `squash` strategy with safe rollback, capture base ref at `SprintStarted`, enforce file-scope guardrails.
 4. **Notifier**: on `SprintCompleted`, emit a desktop/terminal notification summarizing pass/fail counts and total cost.
 
 ## Resolution Log

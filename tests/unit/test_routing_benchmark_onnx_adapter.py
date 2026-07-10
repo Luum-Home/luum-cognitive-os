@@ -12,7 +12,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from lib.routing_benchmark import (  # noqa: E402
+from cos_lib.routing_benchmark import (  # noqa: E402
     BenchmarkHarness,
     LicenseViolation,
     OnnxDirectBiEncoderAdapter,

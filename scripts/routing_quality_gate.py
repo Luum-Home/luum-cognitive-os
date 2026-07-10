@@ -173,7 +173,7 @@ def main(argv: list[str] | None = None) -> int:
                 output_dir = Path(temp_ctx.name)
             if not args.skip_benchmark:
                 run_command(
-                    [py, "-m", "lib.routing_benchmark", "--multilingual", "--output", str(output_dir)],
+                    [py, "-m", "cos_lib.routing_benchmark", "--multilingual", "--output", str(output_dir)],
                     cwd=root,
                 )
             report_path = latest_report_json(output_dir)

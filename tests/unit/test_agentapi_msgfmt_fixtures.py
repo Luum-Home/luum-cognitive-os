@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from lib.harness_adapter.agentapi_msgfmt import summarize_fixtures
+from cos_lib.harness_adapter.agentapi_msgfmt import summarize_fixtures
 
 
 def test_agentapi_msgfmt_fixture_vendor_has_expected_harnesses() -> None:

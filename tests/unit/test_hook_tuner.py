@@ -13,7 +13,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.hook_tuner import HookTuner
+from cos_lib.hook_tuner import HookTuner
 
 pytestmark = pytest.mark.unit
 

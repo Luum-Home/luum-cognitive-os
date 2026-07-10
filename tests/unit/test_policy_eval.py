@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from lib.policy_eval import evaluate_action
+from cos_lib.policy_eval import evaluate_action
 
 
 @pytest.mark.unit

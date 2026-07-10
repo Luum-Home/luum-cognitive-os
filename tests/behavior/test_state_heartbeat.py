@@ -35,7 +35,7 @@ def _import_heartbeat():
     try:
         import sys
         sys.path.insert(0, str(PROJECT_ROOT))
-        from lib.state_heartbeat import StateHeartbeat
+        from cos_lib.state_heartbeat import StateHeartbeat
         return StateHeartbeat
     except ImportError as exc:
         pytest.skip(f"Cannot import StateHeartbeat: {exc}")

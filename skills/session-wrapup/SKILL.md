@@ -215,7 +215,7 @@ Also check the master plan (`self-optimizing-pipeline.md`) specifically:
 
 Read the user request queue:
 ```python
-from lib.request_queue import get_pending_requests, format_pending_summary
+from cos_lib.request_queue import get_pending_requests, format_pending_summary
 pending = get_pending_requests(session_dir=f".cognitive-os/sessions/{SESSION_ID}")
 ```
 

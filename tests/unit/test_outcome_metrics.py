@@ -2,7 +2,7 @@
 
 import pytest
 
-from lib.outcome_metrics import compute_dispatch_outcomes
+from cos_lib.outcome_metrics import compute_dispatch_outcomes
 
 pytestmark = pytest.mark.unit
 

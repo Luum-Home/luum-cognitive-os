@@ -5,8 +5,8 @@ from __future__ import annotations
 
 import json
 
-from lib.goal_evidence import parse_evidence, validate_evidence
-from lib.goal_state import EvidencePacket, CommandEvidence
+from cos_lib.goal_evidence import parse_evidence, validate_evidence
+from cos_lib.goal_state import EvidencePacket, CommandEvidence
 
 
 # ---------------------------------------------------------------------------

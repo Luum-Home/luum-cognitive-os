@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import pytest
 
-from lib.performance_ledger import (
+from cos_lib.performance_ledger import (
     attach_harness_metadata,
     attach_source_refs,
     rollup_primitive_metrics,

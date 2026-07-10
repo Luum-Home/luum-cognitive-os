@@ -194,7 +194,7 @@ The current hook gains a ledger lookup **antes** of truncar. Modified flow:
 ```bash
 # modified hook pseudocode
 mode=$(python3 -c "
-from lib.tool_replay_ledger import ToolReplayLedger
+from cos_lib.tool_replay_ledger import ToolReplayLedger
 ledger = ToolReplayLedger(session_id='$SESSION_ID')
 decision = ledger.record('$TOOL_NAME', '$TARGET_HASH', len('$OUTPUT'))
 print(decision.mode.value)
@@ -248,7 +248,7 @@ The session-end hook (`hooks/session-end.sh` or equivalent registered in `script
 ```bash
 # cleanup tool-replay ledger + spillover
 python3 -c "
-from lib.tool_replay_ledger import ToolReplayLedger
+from cos_lib.tool_replay_ledger import ToolReplayLedger
 ToolReplayLedger(session_id='$SESSION_ID').cleanup()
 "
 ```
@@ -294,10 +294,10 @@ The `chars_saved` field (result_chars - pointer_chars for REFERENCE_ONLY, result
 
 ```
 [ ] lib/tool_replay_ledger.py exists, importable via
-    python3 -c "from lib.tool_replay_ledger import ToolReplayLedger, Mode"
+    python3 -c "from cos_lib.tool_replay_ledger import ToolReplayLedger, Mode"
 
 [ ] lib/tool_budget_catalog.py exists, importable via
-    python3 -c "from lib.tool_budget_catalog import CATALOG"
+    python3 -c "from cos_lib.tool_budget_catalog import CATALOG"
 
 [ ] pytest tests/unit/test_tool_replay_ledger.py covers:
     - Transition FRESH → PREVIEW → REFERENCE_ONLY in successive calls to the same target

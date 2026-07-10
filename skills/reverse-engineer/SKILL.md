@@ -99,7 +99,7 @@ If the target was already cloned (directory exists in `/tmp/`), reuse it.
 Use `lib/reverse_engineer.py` to perform the analysis:
 
 ```python
-from lib.reverse_engineer import ReverseEngineer
+from cos_lib.reverse_engineer import ReverseEngineer
 
 re = ReverseEngineer()
 report = re.full_analysis(repo_path)

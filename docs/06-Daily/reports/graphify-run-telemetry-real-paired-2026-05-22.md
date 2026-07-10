@@ -1,6 +1,6 @@
 # Graphify Run Telemetry Report
 
-This report joins Graphify preload selection with real session telemetry. Preload token counts are deterministic local estimates; session token counts come from Claude Code JSONL usage parsed by `lib.session_parser.py`.
+This report joins Graphify preload selection with real session telemetry. Preload token counts are deterministic local estimates; session token counts come from Claude Code JSONL usage parsed by `cos_lib.session_parser.py`.
 
 ## Summary
 

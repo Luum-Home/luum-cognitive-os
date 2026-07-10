@@ -21,7 +21,7 @@ _PROJ_ROOT = Path(__file__).resolve().parent.parent.parent
 if str(_PROJ_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJ_ROOT))
 
-from lib.rate_limiter import (  # noqa: E402
+from cos_lib.rate_limiter import (  # noqa: E402
     MAX_RETRY_COUNT,
     RateLimitConfig,
     RateLimiter,

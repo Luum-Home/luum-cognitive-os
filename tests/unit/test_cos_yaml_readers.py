@@ -47,8 +47,8 @@ _PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 if str(_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJECT_ROOT))
 
-from lib import agent_health_monitor as ahm  # noqa: E402
-from lib import dispatch_helper as dh  # noqa: E402
+from cos_lib import agent_health_monitor as ahm  # noqa: E402
+from cos_lib import dispatch_helper as dh  # noqa: E402
 
 _DISPATCH_GATE_CHECK = _PROJECT_ROOT / "hooks" / "_lib" / "dispatch_gate_check.py"
 

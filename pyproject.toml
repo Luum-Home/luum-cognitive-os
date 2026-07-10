@@ -124,7 +124,7 @@ dev = [
 # by pytest lanes; optional heavy integrations stay import-lazy and are measured
 # separately before this lane becomes blocking.
 project-includes = [
-    "lib/**/*.py",
+    "cos_lib/**/*.py",
     "scripts/**/*.py",
     "packages/agent-service/src/**/*.py",
 ]
@@ -137,7 +137,7 @@ project-excludes = [
     "docs/**",
     "dist/**",
 ]
-search-path = [".", "lib", "scripts", "packages/agent-service/src"]
+search-path = [".", "cos_lib", "scripts", "packages/agent-service/src"]
 python-version = "3.11"
 
 [tool.pyrefly.errors]
@@ -155,10 +155,10 @@ select = ["F401", "F841", "E711", "E712"]
 
 [tool.vulture]
 min_confidence = 80
-paths = ["lib/"]
+paths = ["cos_lib/"]
 
 [tool.mutmut]
-paths_to_mutate = ["lib/"]
+paths_to_mutate = ["cos_lib/"]
 test_command = "python -m pytest tests/unit/test_rate_limiter.py -x -q --no-header -p no:timeout"
 
 [build-system]
@@ -166,4 +166,4 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["lib"]
+packages = ["cos_lib"]

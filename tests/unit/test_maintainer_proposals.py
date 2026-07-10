@@ -1,4 +1,4 @@
-from lib.maintainer_proposals import deterministic_proposal_id
+from cos_lib.maintainer_proposals import deterministic_proposal_id
 
 
 def test_deterministic_proposal_id_is_stable():
@@ -23,7 +23,7 @@ def test_deterministic_proposal_id_changes_by_day_window():
 
     assert first != second
 
-from lib.maintainer_proposals import PROPOSAL_SCHEMA_VERSION, validate_proposal_schema
+from cos_lib.maintainer_proposals import PROPOSAL_SCHEMA_VERSION, validate_proposal_schema
 
 
 def _schema_proposal():

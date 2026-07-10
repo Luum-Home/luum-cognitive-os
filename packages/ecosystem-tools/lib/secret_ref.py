@@ -6,7 +6,7 @@ A SecretRef is a dict with keys "source" and "id" that references
 a secret value stored in an environment variable, file, or literal.
 
 Usage:
-    from lib.secret_ref import resolve_secret_ref, resolve_config_secrets, mask_secrets
+    from cos_lib.secret_ref import resolve_secret_ref, resolve_config_secrets, mask_secrets
 
     ref = {"source": "env", "id": "GITHUB_TOKEN"}
     value = resolve_secret_ref(ref)  # -> "ghp_abc123..."

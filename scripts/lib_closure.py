@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
-"""Dependency-closure computation for hook `lib.*` imports.
+"""Dependency-closure computation for hook `cos_lib.*` imports.
 
 Implements the closure algorithm from
 `docs/02-Decisions/designs/hook-lib-projection-contract.md` §2.2:
 
 1. Seed set = hooks passed in by the caller (already filtered by profile).
-2. Extract `lib.<mod>` references from each seed hook across the three
+2. Extract `cos_lib.<mod>` references from each seed hook across the three
    embedding forms hooks use: heredocs, inline `-c` strings, and
-   `python3 -m lib.<mod>`. A regex seeds the candidate set; heredoc bodies
+   `python3 -m cos_lib.<mod>`. A regex seeds the candidate set; heredoc bodies
    are additionally parsed with `ast` to drop false positives that a pure
    regex would pick up from comments/strings.
-3. Transitive resolution over `lib/` itself: for every `lib.<mod>` found,
+3. Transitive resolution over `lib/` itself: for every `cos_lib.<mod>` found,
    resolve `lib/<mod>.py` through its symlink (if any), `ast.parse` the real
-   target, and add any further `lib.<other>` imports to the worklist until
+   target, and add any further `cos_lib.<other>` imports to the worklist until
    a fixpoint is reached.
 4. Return a `{module_name: ClosureEntry}` mapping the caller can use to
    project the closure and emit a provenance manifest.
@@ -34,8 +34,8 @@ from dataclasses import dataclass, asdict
 from pathlib import Path
 from typing import Dict, Iterable, List, Set
 
-# Matches `from lib.<mod>`, `import lib.<mod>`, `-m lib.<mod>`, and
-# `python3 -m lib.<mod>` — the three embedding forms named in §2.2 step 2.
+# Matches `from cos_lib.<mod>`, `import cos_lib.<mod>`, `-m cos_lib.<mod>`, and
+# `python3 -m cos_lib.<mod>` — the three embedding forms named in §2.2 step 2.
 _LIB_IMPORT_RE = re.compile(
     r"(?:from lib\.|import lib\.|-m lib\.|python3 -m lib\.)([A-Za-z0-9_]+)"
 )
@@ -50,7 +50,7 @@ _HEREDOC_RE = re.compile(
 
 @dataclass
 class ClosureEntry:
-    """One resolved member of the lib.* dependency closure."""
+    """One resolved member of the cos_lib.* dependency closure."""
 
     source_real_path: str
     was_symlink: bool
@@ -98,9 +98,9 @@ def _extract_lib_modules_ast(source: str) -> Set[str]:
 
 
 def extract_lib_modules_from_hook(hook_path: Path) -> Set[str]:
-    """Extract the `lib.<mod>` reference set from one hook file.
+    """Extract the `cos_lib.<mod>` reference set from one hook file.
 
-    Regex-seeds the whole file (covers `-c` / `-m lib.<mod>` forms), then
+    Regex-seeds the whole file (covers `-c` / `-m cos_lib.<mod>` forms), then
     upgrades heredoc bodies to AST-based extraction to drop false positives
     (comments, strings) that the regex alone would include.
     """
@@ -133,7 +133,7 @@ def _sha256_of_file(path: Path) -> str:
 def compute_closure(
     hook_paths: Iterable[Path], repo_root: Path
 ) -> Dict[str, ClosureEntry]:
-    """Compute the transitive lib.* dependency closure for a set of hooks.
+    """Compute the transitive cos_lib.* dependency closure for a set of hooks.
 
     Args:
         hook_paths: seed set — hooks actually projected for the active
@@ -188,7 +188,7 @@ def compute_closure(
             sha256_hex=_sha256_of_file(real_path),
         )
 
-        # Transitive step: parse the real target for further lib.* imports.
+        # Transitive step: parse the real target for further cos_lib.* imports.
         for other in _extract_lib_modules_ast(source) | _extract_lib_modules_from_text(source):
             if other not in seen:
                 seen.add(other)
@@ -199,7 +199,7 @@ def compute_closure(
 
 def main(argv: List[str] = None) -> int:
     parser = argparse.ArgumentParser(
-        description="Compute the transitive lib.* dependency closure for a set of hooks."
+        description="Compute the transitive cos_lib.* dependency closure for a set of hooks."
     )
     parser.add_argument(
         "--hooks", nargs="+", required=True, help="Hook file paths (seed set)."

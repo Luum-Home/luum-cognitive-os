@@ -1,4 +1,4 @@
-"""Unit tests for lib.mcp_thread_bridge (ADR-290 Pattern 3)."""
+"""Unit tests for cos_lib.mcp_thread_bridge (ADR-290 Pattern 3)."""
 from __future__ import annotations
 
 import asyncio
@@ -6,7 +6,7 @@ import time
 
 import pytest
 
-from lib.mcp_thread_bridge import MCPThreadBridge
+from cos_lib.mcp_thread_bridge import MCPThreadBridge
 
 
 async def _value() -> str:

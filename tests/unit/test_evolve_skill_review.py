@@ -6,13 +6,13 @@ import json
 from pathlib import Path
 
 
-from lib.evolve_skill_review import (
+from cos_lib.evolve_skill_review import (
     EvolveSkillReview,
     _parse_llm_response,
     _read_session_turns,
     _validate_proposal_dict,
 )
-from lib.evolve_task_queue import EvolveTaskQueue
+from cos_lib.evolve_task_queue import EvolveTaskQueue
 
 
 # ---------------------------------------------------------------------------

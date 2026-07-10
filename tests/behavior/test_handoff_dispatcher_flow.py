@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import pytest
 
-from lib.handoff_dispatcher import HandoffCycleDetected, HandoffDispatcher
-from lib.handoff_envelope import HandoffEnvelope
-from lib.session_bus import read_session_events
+from cos_lib.handoff_dispatcher import HandoffCycleDetected, HandoffDispatcher
+from cos_lib.handoff_envelope import HandoffEnvelope
+from cos_lib.session_bus import read_session_events
 
 
 @pytest.mark.behavior

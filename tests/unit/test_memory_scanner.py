@@ -1,5 +1,5 @@
 """
-Unit tests for lib.memory_scanner — MemoryScanner and ScanResult.
+Unit tests for cos_lib.memory_scanner — MemoryScanner and ScanResult.
 
 Covers:
   - Prompt injection detection
@@ -14,7 +14,7 @@ Minimum: 15 tests.
 """
 
 import pytest
-from lib.memory_scanner import MemoryScanner, ScanResult
+from cos_lib.memory_scanner import MemoryScanner, ScanResult
 
 
 @pytest.fixture

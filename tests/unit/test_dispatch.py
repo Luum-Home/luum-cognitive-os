@@ -26,7 +26,7 @@ _REPO = Path(__file__).resolve().parent.parent.parent
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from lib import dispatch as _d  # noqa: E402
+from cos_lib import dispatch as _d  # noqa: E402
 
 
 def _success_response(provider_label: str, text: str = "ok"):

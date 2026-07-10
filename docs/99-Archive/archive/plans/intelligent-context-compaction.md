@@ -108,7 +108,7 @@ class AnchoredSummary:
 | Task | File | Change |
 |---|---|---|
 | Create anchored summary library | `lib/anchored_summary.py` | `AnchoredSummary` class with `update(new_messages)`, `merge(delta)`, `to_engram()`, `from_engram()`, `format_for_injection()` methods |
-| Integrate with context-watchdog | `hooks/context-watchdog.sh` | At 70% threshold: call `python3 -c "from lib.anchored_summary import AnchoredSummary; AnchoredSummary.auto_save()"` to persist current anchor |
+| Integrate with context-watchdog | `hooks/context-watchdog.sh` | At 70% threshold: call `python3 -c "from cos_lib.anchored_summary import AnchoredSummary; AnchoredSummary.auto_save()"` to persist current anchor |
 | Integrate with pre-compaction-flush | `hooks/pre-compaction-flush.sh` | Before the existing FLUSH_MSG: merge recent messages into anchor and save to Engram with topic_key `session/{session_id}/anchor` |
 | Create session resume loader | `hooks/session-resume-anchor.sh` | SessionStart hook: search Engram for `session/*/anchor`, inject most recent anchor into agent context as "SESSION CONTEXT (from previous session/compaction)" |
 | Add orchestrator behavioral rule | `rules/context-management.md` | Add section: "At 70%, update the anchored summary. At 85%, finalize it. After compaction, load it immediately." |
@@ -168,7 +168,7 @@ mem_save(
 | Create docker extractor | `lib/smart_truncator.py` | `extract_docker_summary(output)`: parse `docker ps` table format, extract only NAME+STATUS columns + error lines |
 | Create JSON extractor | `lib/smart_truncator.py` | `extract_json_structure(output)`: parse JSON, emit top-level keys with types, array lengths, first element sample |
 | Create git extractor | `lib/smart_truncator.py` | `extract_git_summary(output)`: `--stat` summary, first 3 hunks with file context |
-| Update result-truncator hook | `hooks/result-truncator.sh` | Before char-based truncation: call `python3 -c "from lib.smart_truncator import SmartTruncator; ..."` with command and output; use smart result if available, fall back to char-based |
+| Update result-truncator hook | `hooks/result-truncator.sh` | Before char-based truncation: call `python3 -c "from cos_lib.smart_truncator import SmartTruncator; ..."` with command and output; use smart result if available, fall back to char-based |
 | Add unit tests | `tests/unit/test_smart_truncator.py` | Test each extractor with real-world output samples |
 
 **Measurement**:

@@ -48,8 +48,8 @@ Cross platform terminal library rust
 
 Files cited (read directly via `gh api .../contents/<path>`):
 
-- src/lib.rs:3 — `Cross-platform Terminal Manipulation Library` (crate-level docstring)
-- src/lib.rs:11–17 — Command API: lazy execution model (queue then flush) — direct fit for batched terminal updates
+- src/cos_lib.rs:3 — `Cross-platform Terminal Manipulation Library` (crate-level docstring)
+- src/cos_lib.rs:11–17 — Command API: lazy execution model (queue then flush) — direct fit for batched terminal updates
 
 **What still missing for an adoption ADR**: COS-fit matrix vs ADR-172 surfaces (lifecycle / doctrine / audit / hook / agent rendering); reversibility plan; integration boundary (read-only vs read-write into COS artifacts); 30/60/90-day falsifiable success criteria. These belong in a separate `ADR-XXX-surface-5-adopt-crossterm.md` per ADR-187 §Decision.
 

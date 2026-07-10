@@ -3,7 +3,7 @@
 
 Measures injected-context token cost per question, per retrieval "arm", using
 the same tokenizer ADR-186 already uses in production
-(`lib.context_budget.count_tokens`). This is a paired benchmark: each question
+(`cos_lib.context_budget.count_tokens`). This is a paired benchmark: each question
 in the frozen fixture is scored under one or more arms and results are written
 as one JSON object per line (JSONL) plus an optional summary report.
 
@@ -66,7 +66,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 ADR_DIR = REPO_ROOT / "docs" / "02-Decisions" / "adrs"
 
 sys.path.insert(0, str(REPO_ROOT))
-from lib.context_budget import count_tokens  # noqa: E402
+from cos_lib.context_budget import count_tokens  # noqa: E402
 
 ARMS = ("before", "after")
 

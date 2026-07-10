@@ -22,7 +22,7 @@ if str(ROOT) not in sys.path:
 
 import cos_service_control_plane as service_control_plane  # noqa: E402
 
-from lib.intent_arbiter import (  # noqa: E402
+from cos_lib.intent_arbiter import (  # noqa: E402
     atomic_write_json,
     pid_path,
     process_once,
@@ -34,7 +34,7 @@ from lib.intent_arbiter import (  # noqa: E402
     submit_intent,
     utc_now_iso,
 )
-from lib import cosd_grant as _cosd_grant  # noqa: E402  # ADR-260
+from cos_lib import cosd_grant as _cosd_grant  # noqa: E402  # ADR-260
 
 
 def resolve_project_dir(raw: str | None) -> Path:

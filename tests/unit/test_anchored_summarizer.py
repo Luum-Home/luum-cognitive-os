@@ -23,7 +23,7 @@ pytestmark = pytest.mark.unit
 # Ensure lib/ is importable
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from lib.anchored_summarizer import AnchoredSummarizer  # noqa: E402
+from cos_lib.anchored_summarizer import AnchoredSummarizer  # noqa: E402
 
 
 # ---------------------------------------------------------------------------

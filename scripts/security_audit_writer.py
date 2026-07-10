@@ -38,7 +38,7 @@ _HERE = Path(__file__).resolve().parent.parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 
-from lib.docs_writer import write_doc  # noqa: E402
+from cos_lib.docs_writer import write_doc  # noqa: E402
 
 
 CATEGORY = "04-security"

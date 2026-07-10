@@ -79,7 +79,7 @@ if [ "$SAME_ERROR_COUNT" -ge 3 ]; then
 import sys, os
 sys.path.insert(0, os.environ.get('CLAUDE_PROJECT_DIR', '.'))
 try:
-    from lib.auto_repair import AutoRepairEngine
+    from cos_lib.auto_repair import AutoRepairEngine
     engine = AutoRepairEngine()
     result = engine.attempt_repair(
         error_type='$ERROR_TYPE',
@@ -118,7 +118,7 @@ REPAIR_SUGGESTION=$(python3 -c "
 import sys, os
 sys.path.insert(0, os.environ.get('CLAUDE_PROJECT_DIR', '.'))
 try:
-    from lib.auto_repair import classify_error, format_repair_suggestion
+    from cos_lib.auto_repair import classify_error, format_repair_suggestion
     msg = '''$TOOL_OUTPUT'''[:2000]
     r = classify_error('AGENT_FAILURE', msg)
     if r:

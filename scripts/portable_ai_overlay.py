@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.primitive_contracts import load_contracts
+from cos_lib.primitive_contracts import load_contracts
 
 SCHEMA_VERSION = "portable-ai-overlay.v1"
 CONTEXT_SCHEMA_VERSION = "portable-ai-context.v1"

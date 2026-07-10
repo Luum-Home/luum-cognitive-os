@@ -15,7 +15,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.rule_router import RuleRouter
+from cos_lib.rule_router import RuleRouter
 
 pytestmark = pytest.mark.unit
 

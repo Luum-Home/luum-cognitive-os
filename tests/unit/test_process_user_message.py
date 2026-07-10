@@ -1,5 +1,5 @@
 """
-Unit tests for lib.process_user_message — process() function.
+Unit tests for cos_lib.process_user_message — process() function.
 
 Covers:
   - test_all_three_components_run_on_clean_message
@@ -14,7 +14,7 @@ from __future__ import annotations
 
 from unittest.mock import patch, MagicMock
 
-from lib.process_user_message import process
+from cos_lib.process_user_message import process
 
 
 # ---------------------------------------------------------------------------
@@ -35,7 +35,7 @@ class TestProcessUserMessage:
 
     def test_feedback_detector_exception_partial_result(self):
         """If FeedbackDetector.detect raises, feedback_type should be 'error'."""
-        with patch("lib.process_user_message.FeedbackDetector") as MockFD:
+        with patch("cos_lib.process_user_message.FeedbackDetector") as MockFD:
             mock_fd = MagicMock()
             mock_fd.detect.side_effect = RuntimeError("detector crashed")
             MockFD.return_value = mock_fd
@@ -48,7 +48,7 @@ class TestProcessUserMessage:
 
     def test_user_model_exception_does_not_block_classify(self):
         """If UserModel.infer_from_message raises, classify still runs."""
-        with patch("lib.process_user_message.UserModel") as MockUM:
+        with patch("cos_lib.process_user_message.UserModel") as MockUM:
             mock_um = MagicMock()
             mock_um.infer_from_message.side_effect = ValueError("model error")
             MockUM.return_value = mock_um
@@ -92,7 +92,7 @@ class TestProcessUserMessage:
 
     def test_classify_exception_sets_should_capture_false(self):
         """If classify_prompt raises, should_capture defaults to False."""
-        with patch("lib.process_user_message.classify_prompt") as mock_classify:
+        with patch("cos_lib.process_user_message.classify_prompt") as mock_classify:
             mock_classify.side_effect = RuntimeError("classify error")
             result = process("build something")
 

@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.prelaunch_audit import audit_history, audit_messages, build_rewrite_plan, apply_rewrite
+from cos_lib.prelaunch_audit import audit_history, audit_messages, build_rewrite_plan, apply_rewrite
 
 
 def _git(repo: Path, *args: str) -> subprocess.CompletedProcess[str]:

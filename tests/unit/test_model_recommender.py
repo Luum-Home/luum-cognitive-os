@@ -1,7 +1,7 @@
 """Unit tests for lib/model_recommender.py"""
 
 import pytest
-from lib.model_recommender import ModelRecommender
+from cos_lib.model_recommender import ModelRecommender
 
 
 @pytest.fixture

@@ -76,7 +76,7 @@ project_dir = sys.argv[1]
 agent_name = sys.argv[2]
 sys.path.insert(0, project_dir)
 try:
-    from lib.engram_client import search_observations
+    from cos_lib.engram_client import search_observations
     results = search_observations(f"agent/{agent_name}/sidecar", limit=1)
     if results:
         print(results[0].get("content", ""))

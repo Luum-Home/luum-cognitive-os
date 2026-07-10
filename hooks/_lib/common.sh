@@ -137,7 +137,7 @@ check_capability_level() {
 import sys
 sys.path.insert(0, '$_PROJECT_DIR')
 try:
-    from lib.capability_levels import should_component_run
+    from cos_lib.capability_levels import should_component_run
     if not should_component_run('$component_name', $level, '$_CONFIG_FILE'):
         print('disabled')
 except Exception:

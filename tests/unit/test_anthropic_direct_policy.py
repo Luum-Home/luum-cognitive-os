@@ -2,7 +2,7 @@
 
 import pytest
 
-from lib.anthropic_direct_policy import (
+from cos_lib.anthropic_direct_policy import (
     ANTHROPIC_API_KEY_ENV,
     advisor_strategy_enabled,
     direct_anthropic_api_enabled,

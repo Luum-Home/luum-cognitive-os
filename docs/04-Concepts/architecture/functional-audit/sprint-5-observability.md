@@ -70,7 +70,7 @@ know about rotation at all.
 ### Record events from Python
 
 ```python
-from lib.telemetry import (
+from cos_lib.telemetry import (
     record_skill_invocation,
     record_hook_fired,
     record_agent_launch,
@@ -189,7 +189,7 @@ python3 -m pytest tests/behavior/test_telemetry.py -v
 
 ```bash
 # 1. Telemetry module importable
-python3 -c "from lib.telemetry import record_skill_invocation, record_hook_fired; print('OK')"
+python3 -c "from cos_lib.telemetry import record_skill_invocation, record_hook_fired; print('OK')"
 
 # 2. Hook tracker is valid bash
 bash -n hooks/skill-usage-tracker.sh
@@ -204,7 +204,7 @@ bash scripts/cos-ghost-skills.sh 2>&1 | tail -5
 python3 -m pytest tests/behavior/test_telemetry.py -v
 
 # 6. Metrics file created on first invocation
-python3 -c "from lib.telemetry import record_skill_invocation; record_skill_invocation('test', 100, 50)"
+python3 -c "from cos_lib.telemetry import record_skill_invocation; record_skill_invocation('test', 100, 50)"
 test -f .cognitive-os/metrics/skill-usage.jsonl
 ```
 

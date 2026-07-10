@@ -21,7 +21,7 @@ try:
 except ImportError:
     tc_available = False
 
-from lib.smart_infra import SmartInfra, SERVICE_COMPOSE_MAP
+from cos_lib.smart_infra import SmartInfra, SERVICE_COMPOSE_MAP
 
 RUN_SMART_INFRA_CONTAINERS = os.environ.get("COS_RUN_SMART_INFRA_CONTAINERS") == "1"
 

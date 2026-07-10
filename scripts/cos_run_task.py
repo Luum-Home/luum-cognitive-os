@@ -25,7 +25,7 @@ if str(REPO_ROOT) not in sys.path:
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
-from lib.script_io import atomic_write_json
+from cos_lib.script_io import atomic_write_json
 
 from cos_headless_publication import check_publication_policy  # noqa: E402
 from cos_headless_safe_mode import read_state, resolve_project_dir  # noqa: E402

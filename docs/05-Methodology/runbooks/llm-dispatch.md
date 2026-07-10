@@ -114,7 +114,7 @@ Claude tries first; if rate-limited, Qwen picks up.
 ### 3.4 Programmatic (from Python)
 
 ```python
-from lib.dispatch import dispatch
+from cos_lib.dispatch import dispatch
 
 result = dispatch(
     prompt="Summarize the last commit",
@@ -132,7 +132,7 @@ For multi-step tasks (Read file → Edit → run Bash), use
 `lib/qwen_agent_loop.py`:
 
 ```python
-from lib.qwen_agent_loop import run_agent
+from cos_lib.qwen_agent_loop import run_agent
 
 r = run_agent(
     task="Read pyproject.toml and list all optional extras",
@@ -263,7 +263,7 @@ redirected. Workaround:
 Run the live probe:
 ```bash
 uv run python3 -c "
-from lib.qwen_provider import call
+from cos_lib.qwen_provider import call
 r = call([{'role':'user','content':'ping'}])
 print(r)
 "

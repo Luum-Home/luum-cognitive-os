@@ -4,7 +4,7 @@ import sys
 import os
 
 # Ensure lib/ is importable
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "lib"))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "cos_lib"))
 
 from smart_truncator import (
     smart_truncate,

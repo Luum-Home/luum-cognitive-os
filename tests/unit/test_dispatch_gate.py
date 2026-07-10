@@ -4,9 +4,9 @@ from pathlib import Path
 
 import pytest
 
-from lib.dispatch_gate import DispatchGate, IdempotencyConflict, claim_idempotency_key, idempotency_key
-from lib.retry_classifier import FailureClass
-from lib.session_budget import SessionBudgetExceeded
+from cos_lib.dispatch_gate import DispatchGate, IdempotencyConflict, claim_idempotency_key, idempotency_key
+from cos_lib.retry_classifier import FailureClass
+from cos_lib.session_budget import SessionBudgetExceeded
 
 
 def test_dispatch_gate_pre_call_signal_and_classify(tmp_path: Path) -> None:

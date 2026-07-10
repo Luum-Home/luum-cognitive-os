@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from lib.harness_adapter.aider import AiderAdapter
-from lib.harness_adapter.base import AgentEnd, AgentStart, HarnessName, ToolUse
+from cos_lib.harness_adapter.aider import AiderAdapter
+from cos_lib.harness_adapter.base import AgentEnd, AgentStart, HarnessName, ToolUse
 
 
 class TestAiderAdapter:

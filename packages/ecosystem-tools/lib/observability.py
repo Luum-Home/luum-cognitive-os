@@ -12,7 +12,7 @@ and hooks that want to emit a single span with arbitrary metadata
 (e.g., `trace_claude_result` below).
 
 Usage:
-    from lib.observability import trace, is_phoenix_available
+    from cos_lib.observability import trace, is_phoenix_available
 
     if is_phoenix_available():
         trace(

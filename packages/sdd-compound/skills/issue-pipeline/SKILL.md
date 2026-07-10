@@ -55,7 +55,7 @@ Automates the full lifecycle from GitHub issue to pull request using the SDD pip
 ### From Python
 
 ```python
-from lib.issue_pipeline import IssuePipeline
+from cos_lib.issue_pipeline import IssuePipeline
 
 pipeline = IssuePipeline(project_dir="/path/to/repo")
 result = pipeline.run(42)
@@ -67,7 +67,7 @@ if result.success:
 ### From CLI
 
 ```bash
-python -m lib.issue_pipeline 42 --verbose
+python -m cos_lib.issue_pipeline 42 --verbose
 ```
 
 ## Prerequisites

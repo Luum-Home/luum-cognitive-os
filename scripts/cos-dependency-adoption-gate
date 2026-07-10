@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.dependency_adoption_gate import current_dependency_inventory, evaluate_staged, format_human, repo_root  # noqa: E402
+from cos_lib.dependency_adoption_gate import current_dependency_inventory, evaluate_staged, format_human, repo_root  # noqa: E402
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -29,8 +29,8 @@ def build_parser() -> argparse.ArgumentParser:
 def main() -> int:
     args = build_parser().parse_args()
     if args.coverage_aware:
-        from lib.dependency_coverage_audit import build_report
-        from lib.dependency_tool_intake import build_triage_report, format_human as format_triage_human
+        from cos_lib.dependency_coverage_audit import build_report
+        from cos_lib.dependency_tool_intake import build_triage_report, format_human as format_triage_human
 
         coverage = build_report(args.project_dir)
         payload = build_triage_report(coverage)

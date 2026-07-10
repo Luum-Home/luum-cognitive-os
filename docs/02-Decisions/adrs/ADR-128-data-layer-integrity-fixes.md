@@ -45,14 +45,14 @@ surface.
 
 ### 1. Engram topic-key writes are wrapper-level upserts
 
-Internal `lib.engram_client.save_observation()` treats a supplied `topic_key` as
+Internal `cos_lib.engram_client.save_observation()` treats a supplied `topic_key` as
 an upsert key. Before appending, it searches for an exact topic-key/project match
 and updates that observation through the HTTP client. If the update path fails,
 the wrapper returns `None` instead of appending a duplicate.
 
 ### 2. Engram score fallback preserves rank without dominating lifecycle
 
-`lib.engram_lifecycle` uses a deterministic rank-derived fallback when Engram
+`cos_lib.engram_lifecycle` uses a deterministic rank-derived fallback when Engram
 results do not include a numeric `score`. The fallback range is intentionally
 narrow (`1.0` for the first result down to `0.9` for the last result) so provider
 rank remains visible but confidence/retention can still reorder stale matches.
@@ -60,7 +60,7 @@ rank remains visible but confidence/retention can still reorder stale matches.
 ### 3. Engram daemon-down reinforcement is visible
 
 When reinforcement cannot run because the Engram daemon is unavailable,
-`lib.engram_lifecycle` writes a best-effort metric to
+`cos_lib.engram_lifecycle` writes a best-effort metric to
 `.cognitive-os/metrics/engram-daemon-down.jsonl`. The method still returns
 `False`, but failure is no longer invisible.
 

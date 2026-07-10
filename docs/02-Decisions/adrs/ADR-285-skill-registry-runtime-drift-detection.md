@@ -9,7 +9,7 @@ supersedes: []
 superseded_by: null
 extends: []
 implementation_files:
-  - lib/skill_drift_detector.py
+  - cos_lib/skill_drift_detector.py
   - hooks/skill-drift-detector.sh
   - tests/unit/test_skill_drift_detector.py
 tier: maintainer

@@ -56,7 +56,7 @@ harness's execution model into the skill body.
    paths/rules with automatic stack and surface detection, plus configurable
    output-root selection like `plan-chore`.
 2. **Eval harness slice:** define a repo-native eval case schema, adapt the six
-   source evals, normalize aliases, and run them against `lib.skill_router.SkillRouter`
+   source evals, normalize aliases, and run them against `cos_lib.skill_router.SkillRouter`
    as deterministic code-based routing checks.
 
 This is not a replacement for model-based trajectory evals, Promptfoo, DeepEval,

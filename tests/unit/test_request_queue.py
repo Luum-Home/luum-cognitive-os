@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.request_queue import (
+from cos_lib.request_queue import (
     enqueue_request,
     get_all_requests,
     get_pending_requests,

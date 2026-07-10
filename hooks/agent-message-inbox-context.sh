@@ -25,7 +25,7 @@ project = Path(sys.argv[1]).resolve()
 session_id = sys.argv[2]
 cos_root = Path(sys.argv[3]).resolve()
 sys.path.insert(0, str(cos_root))
-from lib.agent_message_bus import inbox  # noqa: E402
+from cos_lib.agent_message_bus import inbox  # noqa: E402
 
 rows = inbox(project, session_id=session_id)[:5]
 if not rows:

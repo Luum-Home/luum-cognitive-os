@@ -8,7 +8,7 @@ filesystem state. Produces a hallucination score indicating what fraction
 of claims are false.
 
 Usage:
-    from lib.ground_truth import verify_all_claims, format_verification_report
+    from cos_lib.ground_truth import verify_all_claims, format_verification_report
 
     results = verify_all_claims(agent_output, project_root="/path/to/project")
     print(format_verification_report(results))

@@ -49,7 +49,7 @@ if command -v python3 >/dev/null 2>&1; then
 import sys
 from pathlib import Path
 try:
-    from lib.snapshot_manager import sweep_snapshot_plans
+    from cos_lib.snapshot_manager import sweep_snapshot_plans
     sweep_snapshot_plans(Path(sys.argv[1]), ttl_seconds=300)
 except Exception:
     pass
@@ -92,7 +92,7 @@ _emit_event() {
 import sys, json, os
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))
 try:
-    from lib.session_bus import append_event
+    from cos_lib.session_bus import append_event
     event_type = sys.argv[1]
     payload = json.loads(sys.argv[2])
     append_event(event_type, payload)
@@ -177,7 +177,7 @@ def emit_event(event_type, **kw):
         # session_bus lives at <project_dir>/lib/session_bus.py
         if project_dir not in sys.path:
             sys.path.insert(0, project_dir)
-        from lib.session_bus import append_event
+        from cos_lib.session_bus import append_event
         append_event(event_type, kw)
     except Exception:
         pass

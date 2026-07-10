@@ -144,7 +144,7 @@ class TestRunKillSwitch:
 
 class TestListCommand:
     def test_list_empty_queue(self, capsys: pytest.CaptureFixture, tmp_path: Path) -> None:
-        from lib.evolve_task_queue import EvolveTaskQueue
+        from cos_lib.evolve_task_queue import EvolveTaskQueue
 
         parser = build_parser()
         args = parser.parse_args(["list"])
@@ -159,7 +159,7 @@ class TestListCommand:
         assert "no pending" in captured.out.lower()
 
     def test_list_shows_pending_proposals(self, capsys: pytest.CaptureFixture, tmp_path: Path) -> None:
-        from lib.evolve_task_queue import EvolveProposal, EvolveTaskQueue
+        from cos_lib.evolve_task_queue import EvolveProposal, EvolveTaskQueue
 
         parser = build_parser()
         args = parser.parse_args(["list"])
@@ -187,7 +187,7 @@ class TestListCommand:
 
 class TestApproveCommand:
     def test_approve_existing_proposal(self, tmp_path: Path, capsys: pytest.CaptureFixture) -> None:
-        from lib.evolve_task_queue import EvolveProposal, EvolveTaskQueue
+        from cos_lib.evolve_task_queue import EvolveProposal, EvolveTaskQueue
 
         queue = EvolveTaskQueue(db_path=tmp_path / "test.db")
         pid = queue.enqueue(EvolveProposal(
@@ -209,7 +209,7 @@ class TestApproveCommand:
         assert proposal.status == "approved"
 
     def test_approve_nonexistent_exits_1(self, tmp_path: Path) -> None:
-        from lib.evolve_task_queue import EvolveTaskQueue
+        from cos_lib.evolve_task_queue import EvolveTaskQueue
 
         queue = EvolveTaskQueue(db_path=tmp_path / "test.db")
         parser = build_parser()
@@ -227,7 +227,7 @@ class TestApproveCommand:
 
 class TestRejectCommand:
     def test_reject_existing_proposal(self, tmp_path: Path, capsys: pytest.CaptureFixture) -> None:
-        from lib.evolve_task_queue import EvolveProposal, EvolveTaskQueue
+        from cos_lib.evolve_task_queue import EvolveProposal, EvolveTaskQueue
 
         queue = EvolveTaskQueue(db_path=tmp_path / "test.db")
         pid = queue.enqueue(EvolveProposal(
@@ -250,7 +250,7 @@ class TestRejectCommand:
         assert proposal.reject_reason == "Too noisy"
 
     def test_reject_nonexistent_exits_1(self, tmp_path: Path) -> None:
-        from lib.evolve_task_queue import EvolveTaskQueue
+        from cos_lib.evolve_task_queue import EvolveTaskQueue
 
         queue = EvolveTaskQueue(db_path=tmp_path / "test.db")
         parser = build_parser()
@@ -263,7 +263,7 @@ class TestRejectCommand:
 
     def test_reject_empty_reason_exits_2(self, tmp_path: Path) -> None:
         """Reject with empty reason string (edge case; parser --reason is required)."""
-        from lib.evolve_task_queue import EvolveTaskQueue
+        from cos_lib.evolve_task_queue import EvolveTaskQueue
 
         queue = EvolveTaskQueue(db_path=tmp_path / "test.db")
         parser = build_parser()

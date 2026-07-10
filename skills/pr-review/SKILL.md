@@ -115,7 +115,7 @@ mem_search(query: "{branch-name or PR title keywords}", project: "{project}")
 Run the code review on the diff (not full files — only changed lines):
 
 ```python
-from lib.code_reviewer import CodeReviewer
+from cos_lib.code_reviewer import CodeReviewer
 
 reviewer = CodeReviewer(project_root=".")
 diff = reviewer.get_diff(base_branch="{base}")
@@ -242,7 +242,7 @@ STATUS: FAILED
 Uses `lib/code_reviewer.py` for core review logic:
 
 ```python
-from lib.code_reviewer import CodeReviewer
+from cos_lib.code_reviewer import CodeReviewer
 
 reviewer = CodeReviewer(project_root=".")
 base = reviewer.detect_base_branch()

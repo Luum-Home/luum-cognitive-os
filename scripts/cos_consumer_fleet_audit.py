@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.consumer_fleet_audit import build_report, dumps_json  # noqa: E402
+from cos_lib.consumer_fleet_audit import build_report, dumps_json  # noqa: E402
 
 
 def main() -> int:

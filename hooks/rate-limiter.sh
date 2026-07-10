@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # CONCERNS: security, rate-limiting, resource-protection
 # Rate Limiter — prevents token flooding and excessive tool usage.
 # PreToolUse hook on Bash, Agent, Edit, Write.
@@ -107,7 +107,7 @@ RESULT=$("$PYTHON_BIN" -c "
 import sys, os
 sys.path.insert(0, os.environ['COGNITIVE_OS_HOOK_ROOT'])
 os.environ.setdefault('CLAUDE_PROJECT_DIR', '$_PROJECT_DIR')
-from lib.rate_limiter import RateLimiter, RateLimitQueue
+from cos_lib.rate_limiter import RateLimiter, RateLimitQueue
 
 rl = RateLimiter(
     state_path='$_PROJECT_DIR/.cognitive-os/rate-limit-state.json',
@@ -191,7 +191,7 @@ if [[ "$RESULT" == *"BLOCKED"* ]]; then
 import sys, os
 sys.path.insert(0, '$_PROJECT_DIR')
 os.environ.setdefault('CLAUDE_PROJECT_DIR', '$_PROJECT_DIR')
-from lib.rate_limiter import RateLimiter, RateLimitQueue
+from cos_lib.rate_limiter import RateLimiter, RateLimitQueue
 rl = RateLimiter(
     state_path='$_PROJECT_DIR/.cognitive-os/rate-limit-state.json',
     phase='$PHASE',

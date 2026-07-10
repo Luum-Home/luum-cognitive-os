@@ -13,7 +13,7 @@ extends:
 supersedes: []
 superseded_by: null
 implementation_files:
-  - lib/primitive_parser.py
+  - cos_lib/primitive_parser.py
   - tests/unit/test_primitive_parser.py
   - docs/04-Concepts/architecture/primitive-parser-contracts.md
   - docs/06-Daily/reports/primitive-structure-standardization-2026-05-14.md

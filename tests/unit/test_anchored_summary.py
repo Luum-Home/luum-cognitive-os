@@ -38,7 +38,7 @@ _SKIP_REASON = (
 try:
     if _MODULE_EXISTS:
         sys.path.insert(0, str(_MODULE_PATH.parent.parent))
-        from lib.anchored_summary import AnchoredSummary  # type: ignore[import]
+        from cos_lib.anchored_summary import AnchoredSummary  # type: ignore[import]
     else:
         AnchoredSummary = None  # type: ignore[assignment,misc]
 except ImportError:

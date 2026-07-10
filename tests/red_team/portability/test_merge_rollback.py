@@ -28,7 +28,7 @@ class TestImportPaths:
 
         sys.path.insert(0, str(REPO_ROOT))
         import importlib
-        mod = importlib.import_module("lib.merge_rollback")
+        mod = importlib.import_module("cos_lib.merge_rollback")
         assert hasattr(mod, "verify_post_merge")
         assert hasattr(mod, "auto_revert")
 
@@ -58,9 +58,9 @@ class TestDryRunFalsification:
 
     def test_verify_post_merge_no_stack_in_dry_run(self, tmp_path, capsys):
         sys.path.insert(0, str(REPO_ROOT))
-        from lib.merge_rollback import verify_post_merge
+        from cos_lib.merge_rollback import verify_post_merge
 
-        with patch("lib.gate_runner.run_stack") as mock_stack:
+        with patch("cos_lib.gate_runner.run_stack") as mock_stack:
             result = verify_post_merge("abc123", str(tmp_path), dry_run=True)
 
         assert result is True, "Dry-run must return True"
@@ -70,9 +70,9 @@ class TestDryRunFalsification:
 
     def test_auto_revert_no_git_in_dry_run(self, tmp_path, capsys):
         sys.path.insert(0, str(REPO_ROOT))
-        from lib.merge_rollback import auto_revert
+        from cos_lib.merge_rollback import auto_revert
 
-        with patch("lib.merge_rollback._run_git") as mock_git:
+        with patch("cos_lib.merge_rollback._run_git") as mock_git:
             result = auto_revert("abc123", "test", str(tmp_path), dry_run=True)
 
         mock_git.assert_not_called()
@@ -84,16 +84,16 @@ class TestDryRunFalsification:
         """Falsification: WITHOUT dry_run, run_stack IS called."""
         sys.path.insert(0, str(REPO_ROOT))
 
-        from lib.gate_runner import GateResult
+        from cos_lib.gate_runner import GateResult
 
         fake_result = GateResult(
             passed=True, gate_outcomes=[], failed_gate=None,
             evidence={"branch": "main", "gates_run": 0, "gates_passed": 0,
                       "gates_failed": 0, "gates_skipped": 0, "outcomes": []},
         )
-        with patch("lib.gate_runner.run_stack", return_value=fake_result) as mock_stack:
-            with patch("lib.merge_rollback._emit_event"):
-                from lib.merge_rollback import verify_post_merge
+        with patch("cos_lib.gate_runner.run_stack", return_value=fake_result) as mock_stack:
+            with patch("cos_lib.merge_rollback._emit_event"):
+                from cos_lib.merge_rollback import verify_post_merge
                 result = verify_post_merge("abc123", str(tmp_path), dry_run=False)
 
         mock_stack.assert_called_once()
@@ -117,16 +117,16 @@ class TestPostMergeFailTrigger:
         """verify_post_merge returns False when run_stack fails — enabling auto_revert."""
         sys.path.insert(0, str(REPO_ROOT))
 
-        from lib.gate_runner import GateResult
+        from cos_lib.gate_runner import GateResult
 
         fake_fail = GateResult(
             passed=False, gate_outcomes=[], failed_gate="mock-gate",
             evidence={"branch": "main", "gates_run": 1, "gates_passed": 0,
                       "gates_failed": 1, "gates_skipped": 0, "outcomes": []},
         )
-        with patch("lib.gate_runner.run_stack", return_value=fake_fail):
-            with patch("lib.merge_rollback._emit_event"):
-                from lib.merge_rollback import verify_post_merge
+        with patch("cos_lib.gate_runner.run_stack", return_value=fake_fail):
+            with patch("cos_lib.merge_rollback._emit_event"):
+                from cos_lib.merge_rollback import verify_post_merge
                 result = verify_post_merge("fail_sha_001", str(tmp_path), dry_run=False)
 
         assert result is False, "verify_post_merge must return False when gate fails"
@@ -141,16 +141,16 @@ class TestPostMergeFailTrigger:
             revert_calls.append(merged_sha)
             return {"reverted": True, "revert_sha": "r123", "error": None}
 
-        from lib.gate_runner import GateResult
+        from cos_lib.gate_runner import GateResult
         fake_fail = GateResult(
             passed=False, gate_outcomes=[], failed_gate="mock",
             evidence={"branch": "main", "gates_run": 1, "gates_passed": 0,
                       "gates_failed": 1, "gates_skipped": 0, "outcomes": []},
         )
-        with patch("lib.gate_runner.run_stack", return_value=fake_fail):
-            with patch("lib.merge_rollback._emit_event"):
-                with patch("lib.merge_rollback.auto_revert", side_effect=fake_revert):
-                    from lib.merge_rollback import verify_post_merge, auto_revert
+        with patch("cos_lib.gate_runner.run_stack", return_value=fake_fail):
+            with patch("cos_lib.merge_rollback._emit_event"):
+                with patch("cos_lib.merge_rollback.auto_revert", side_effect=fake_revert):
+                    from cos_lib.merge_rollback import verify_post_merge, auto_revert
                     ok = verify_post_merge("fail_sha_002", str(tmp_path), dry_run=False)
                     if not ok:
                         auto_revert("fail_sha_002", "post-merge failed", str(tmp_path))

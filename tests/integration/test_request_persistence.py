@@ -14,7 +14,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
 import pytest
 
-from lib.request_queue import (
+from cos_lib.request_queue import (
     enqueue_request,
     get_all_requests,
     get_pending_requests,
@@ -221,7 +221,7 @@ class TestRequestQueueCLI:
         sd = session_env["session_dir"]
         env = {**os.environ, "PYTHONPATH": str(PROJECT_ROOT)}
         result = subprocess.run(
-            [sys.executable, "-c", f"from lib.request_queue import enqueue_request; enqueue_request('subprocess msg', session_dir='{sd}')"],
+            [sys.executable, "-c", f"from cos_lib.request_queue import enqueue_request; enqueue_request('subprocess msg', session_dir='{sd}')"],
             capture_output=True, text=True, timeout=10,
             env=env,
             cwd=str(PROJECT_ROOT),
@@ -239,7 +239,7 @@ class TestRequestQueueCLI:
 
         env = {**os.environ, "PYTHONPATH": str(PROJECT_ROOT)}
         result = subprocess.run(
-            [sys.executable, "-c", f"from lib.request_queue import format_pending_summary; print(format_pending_summary(session_dir='{sd}'))"],
+            [sys.executable, "-c", f"from cos_lib.request_queue import format_pending_summary; print(format_pending_summary(session_dir='{sd}'))"],
             capture_output=True, text=True, timeout=10,
             env=env,
             cwd=str(PROJECT_ROOT),

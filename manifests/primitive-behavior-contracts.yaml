@@ -67,7 +67,7 @@ contracts:
 
   - id: history-sanitization-content-only
     adr: ADR-218
-    primitive: lib/history_sanitization.py
+    primitive: cos_lib/history_sanitization.py
     criticality: high
     proof_tests:
       - tests/unit/test_history_sanitization.py

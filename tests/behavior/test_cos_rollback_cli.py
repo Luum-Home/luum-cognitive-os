@@ -54,7 +54,7 @@ def test_cos_rollback_snapshot_preview_restore_smoke(project_root: Path, tmp_pat
 
 @pytest.mark.behavior
 def test_cos_rollback_files_and_conversation_restore(project_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    from lib.session_bus import append_session_event, read_session_events
+    from cos_lib.session_bus import append_session_event, read_session_events
 
     repo = tmp_path / "repo"
     repo.mkdir()

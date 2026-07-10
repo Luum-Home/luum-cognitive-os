@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from lib.primitive_parser import detect_primitive_kind, parse_primitive_file
+from cos_lib.primitive_parser import detect_primitive_kind, parse_primitive_file
 
 
 def write(path: Path, text: str) -> Path:

@@ -15,7 +15,7 @@ from unittest.mock import patch
 import pytest
 
 # Import the module under test
-from lib.adr_detector import (
+from cos_lib.adr_detector import (
     DEFAULT_THRESHOLD,
     DEFAULT_WEIGHTS,
     analyze_commit,
@@ -317,7 +317,7 @@ class TestADRNumbering:
 # ---------------------------------------------------------------------------
 
 class TestADRTemplate:
-    @patch("lib.adr_detector._git")
+    @patch("cos_lib.adr_detector._git")
     def test_generated_adr_has_correct_sections(self, mock_git, tmp_path):
         """The generated ADR must contain Status: Draft, Context, Decision."""
         mock_git.side_effect = lambda cmd, cwd: {
@@ -344,7 +344,7 @@ class TestADRTemplate:
         assert "## Source" in content
         assert "`abc1234`" in content
 
-    @patch("lib.adr_detector._git")
+    @patch("cos_lib.adr_detector._git")
     def test_adr_filename_format(self, mock_git, tmp_path):
         mock_git.return_value = "feat: migrate to pip\n"
 
@@ -358,7 +358,7 @@ class TestADRTemplate:
         assert filename.startswith("ADR-001-")
         assert filename.endswith(".md")
 
-    @patch("lib.adr_detector._git")
+    @patch("cos_lib.adr_detector._git")
     def test_adr_number_increments(self, mock_git, tmp_path):
         mock_git.return_value = "feat: change\n"
 
@@ -371,7 +371,7 @@ class TestADRTemplate:
 
         assert "ADR-021-" in os.path.basename(path)
 
-    @patch("lib.adr_detector._git")
+    @patch("cos_lib.adr_detector._git")
     def test_adr_generation_creates_reservation_record(self, mock_git, tmp_path):
         mock_git.return_value = "feat: reserve adr\n"
         (tmp_path / "docs" / "02-Decisions" / "adrs").mkdir(parents=True)
@@ -384,7 +384,7 @@ class TestADRTemplate:
         data = json.loads(state.read_text())
         assert data["reservations"][0]["path"] == Path(path).relative_to(tmp_path).as_posix()
 
-    @patch("lib.adr_detector._git")
+    @patch("cos_lib.adr_detector._git")
     def test_adr_signal_table_in_output(self, mock_git, tmp_path):
         mock_git.return_value = "feat: big change\n"
 
@@ -543,7 +543,7 @@ class TestMetricsLogging:
 # ---------------------------------------------------------------------------
 
 class TestAnalyzeCommitIntegration:
-    @patch("lib.adr_detector._git")
+    @patch("cos_lib.adr_detector._git")
     def test_adr_only_commit_not_triggered(self, mock_git):
         """Commits touching only ADR files should not trigger."""
         def git_side_effect(cmd, cwd):
@@ -558,7 +558,7 @@ class TestAnalyzeCommitIntegration:
         assert result["triggered"] is False
         assert result["total_score"] == 0.0
 
-    @patch("lib.adr_detector._git")
+    @patch("cos_lib.adr_detector._git")
     def test_license_change_triggers(self, mock_git):
         """A LICENSE change alone (0.60) should not trigger at 0.70 threshold."""
         def git_side_effect(cmd, cwd):
@@ -573,7 +573,7 @@ class TestAnalyzeCommitIntegration:
         assert result["total_score"] == pytest.approx(0.60)
         assert result["triggered"] is False
 
-    @patch("lib.adr_detector._git")
+    @patch("cos_lib.adr_detector._git")
     def test_combined_signals_trigger(self, mock_git):
         """LICENSE (0.60) + dependency (0.40) = 1.0 should trigger."""
         def git_side_effect(cmd, cwd):

@@ -78,7 +78,7 @@ Extract repo URL and flags from the invocation. Supported URL formats:
 Use `RepoAnalyzer` from `lib/repo_analyzer.py`:
 
 ```python
-from lib.repo_analyzer import RepoAnalyzer
+from cos_lib.repo_analyzer import RepoAnalyzer
 
 analyzer = RepoAnalyzer()
 ```

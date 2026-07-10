@@ -43,15 +43,15 @@ lib_available = True
 _import_error: str = ""
 
 try:
-    from lib.consequence_engine import (
+    from cos_lib.consequence_engine import (
         ConsequenceEngine,
         Consequence,
         ConsequenceAction,
         PerformanceRecord,
     )
-    from lib.skill_archive import SkillArchiveManager
-    from lib.learning_pipeline import LearningPipeline
-    from lib.record_completion import (
+    from cos_lib.skill_archive import SkillArchiveManager
+    from cos_lib.learning_pipeline import LearningPipeline
+    from cos_lib.record_completion import (
         extract_skill_name,
         extract_trust_score,
         detect_success,
@@ -657,7 +657,7 @@ class TestPipelineIntegrationFullChain:
         result = subprocess.run(
             [sys.executable, "-c",
              "import sys, os; sys.path.insert(0, os.environ.get('REPO_ROOT', '.')); "
-             "from lib.record_completion import main; main()"],
+             "from cos_lib.record_completion import main; main()"],
             input=stdin_payload,
             capture_output=True,
             text=True,
@@ -713,7 +713,7 @@ class TestPipelineIntegrationFullChain:
         result = subprocess.run(
             [sys.executable, "-c",
              "import sys, os; sys.path.insert(0, os.environ.get('REPO_ROOT', '.')); "
-             "from lib.record_completion import main; main()"],
+             "from cos_lib.record_completion import main; main()"],
             input=stdin_payload,
             capture_output=True,
             text=True,
@@ -757,7 +757,7 @@ class TestPipelineIntegrationFullChain:
         result = subprocess.run(
             [sys.executable, "-c",
              "import sys, os; sys.path.insert(0, os.environ.get('REPO_ROOT', '.')); "
-             "from lib.record_completion import main; main()"],
+             "from cos_lib.record_completion import main; main()"],
             input=stdin_payload,
             capture_output=True,
             text=True,

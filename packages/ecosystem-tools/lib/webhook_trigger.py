@@ -52,7 +52,7 @@ except ImportError:
 # ---------------------------------------------------------------------------
 # Local imports
 # ---------------------------------------------------------------------------
-from lib.claude_executor import ClaudeExecutor, ClaudeResult
+from cos_lib.claude_executor import ClaudeExecutor, ClaudeResult
 
 logger = logging.getLogger("webhook_trigger")
 

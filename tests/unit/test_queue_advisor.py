@@ -9,7 +9,7 @@ from typing import Any, Dict
 from unittest.mock import patch, MagicMock
 
 
-from lib.queue_advisor import (
+from cos_lib.queue_advisor import (
     QueueAdvisor,
     _minutes_since,
     _estimate_tokens,
@@ -431,7 +431,7 @@ class TestScoreDeterminism:
 class TestQueueDrainerIntegration:
     def test_queue_drainer_accepts_use_advisor_true(self, tmp_path):
         """QueueDrainer.get_ready_agents(use_advisor=True) should not raise."""
-        from lib.queue_drainer import QueueDrainer
+        from cos_lib.queue_drainer import QueueDrainer
 
         queue_file = str(tmp_path / "queue.json")
         tasks_file = str(tmp_path / "tasks.json")
@@ -460,7 +460,7 @@ class TestQueueDrainerIntegration:
 
     def test_queue_drainer_use_advisor_false_preserves_old_behaviour(self, tmp_path):
         """use_advisor=False should behave exactly like the original implementation."""
-        from lib.queue_drainer import QueueDrainer
+        from cos_lib.queue_drainer import QueueDrainer
 
         queue_file = str(tmp_path / "queue.json")
         tasks_file = str(tmp_path / "tasks.json")
@@ -482,7 +482,7 @@ class TestQueueDrainerIntegration:
 
     def test_queue_drainer_advisor_failure_falls_back_gracefully(self, tmp_path):
         """If advisor import or execution fails, drainer returns items in original order."""
-        from lib.queue_drainer import QueueDrainer
+        from cos_lib.queue_drainer import QueueDrainer
 
         queue_file = str(tmp_path / "queue.json")
         tasks_file = str(tmp_path / "tasks.json")

@@ -18,7 +18,7 @@ def _portable_project(tmp_path: Path) -> Path:
     hooks.mkdir()
     shutil.copy(ARTIFACT, hooks / "session-quality-close-gate.sh")
     lib = hooks / "_lib"
-    lib.mkdir()
+    cos_lib.mkdir()
     (lib / "killswitch_check.sh").write_text("# portable test stub\n", encoding="utf-8")
     return project
 

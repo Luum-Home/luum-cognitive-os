@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # code-review-on-commit.sh — Git pre-commit hook that runs code review on staged files
 #
 # Fires as a git pre-commit hook (NOT a Claude Code hook).
@@ -62,7 +62,7 @@ fi
 review_output=$(cd "$ROOT_DIR" && timeout 60 python3 -c "
 import sys, json
 sys.path.insert(0, '.')
-from lib.code_reviewer import CodeReviewer
+from cos_lib.code_reviewer import CodeReviewer
 
 files = [f.strip() for f in '''${source_files}'''.strip().split('\n') if f.strip()]
 if not files:

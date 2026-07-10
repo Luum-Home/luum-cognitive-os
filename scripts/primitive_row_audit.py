@@ -20,7 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.script_io import read_text as read_text
+from cos_lib.script_io import read_text as read_text
 
 EVENTS = ("SessionStart", "UserPromptSubmit", "PreToolUse", "PostToolUse", "Stop")
 
@@ -257,7 +257,7 @@ def audit_metrics(root: Path, tests: str, runtime: str, demotions: set[tuple[str
 
 def audit(root: Path) -> list[Row]:
     tests = corpus_text(root, ("tests/**/*.py",))
-    runtime = corpus_text(root, ("hooks/**/*.sh", "scripts/**/*.py", "lib/**/*.py", ".claude/settings.json", "rules/**/*.md"))
+    runtime = corpus_text(root, ("hooks/**/*.sh", "scripts/**/*.py", "cos_lib/**/*.py", ".claude/settings.json", "rules/**/*.md"))
     demotions = load_demotions(root)
     rows: list[Row] = []
     rows.extend(audit_hooks(root, tests, runtime, demotions))

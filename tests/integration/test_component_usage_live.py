@@ -13,7 +13,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from lib.component_usage_tracker import ComponentUsageTracker
+from cos_lib.component_usage_tracker import ComponentUsageTracker
 
 # Project root is two levels up from this file (tests/integration/)
 PROJECT_ROOT = Path(__file__).resolve().parents[2]

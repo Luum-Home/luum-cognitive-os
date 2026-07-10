@@ -88,7 +88,7 @@ import os, sys
 root = os.environ.get("COGNITIVE_OS_PROJECT_DIR") or os.getcwd()
 sys.path.insert(0, root)
 try:
-    from lib.telemetry import record_skill_invocation
+    from cos_lib.telemetry import record_skill_invocation
     name = sys.argv[1]
     try:
         dur = float(sys.argv[2])

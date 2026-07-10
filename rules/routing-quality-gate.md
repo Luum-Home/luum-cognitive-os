@@ -37,7 +37,7 @@ scripts/cos-routing-corpus-audit
 scripts/cos-routing-quality-gate --fail-on-top1-misses
 ```
 
-`lib.routing_benchmark --multilingual` now reports `min_top_2_margin`,
+`cos_lib.routing_benchmark --multilingual` now reports `min_top_2_margin`,
 `avg_top_2_margin`, and low-margin correct hits. A pass with tiny top-2 margins
 is not strong evidence of worldwide routing; it means the current corpus passed
 but has near-neighbor risk that the corpus expansion SDD should cover.

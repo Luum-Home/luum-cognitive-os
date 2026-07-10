@@ -15,7 +15,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from lib.smoke_report_cli import run_smoke_report_cli
+from cos_lib.smoke_report_cli import run_smoke_report_cli
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_JSON = ROOT / "docs" / "06-Daily" / "reports" / "primitive-service-headless-smoke-latest.json"

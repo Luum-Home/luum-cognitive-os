@@ -48,7 +48,7 @@ import sys, os
 sys.path.insert(0, '$PROJECT_DIR')
 
 try:
-    from lib.memory_manager import MemoryManager, EngramMemoryProvider
+    from cos_lib.memory_manager import MemoryManager, EngramMemoryProvider
     provider = EngramMemoryProvider()
     if not provider.is_available():
         sys.exit(0)

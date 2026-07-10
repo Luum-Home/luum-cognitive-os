@@ -16,7 +16,7 @@ import pytest
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from lib.ecosystem_evaluator import EcosystemEvaluator  # noqa: E402
+from cos_lib.ecosystem_evaluator import EcosystemEvaluator  # noqa: E402
 
 pytestmark = pytest.mark.integration
 

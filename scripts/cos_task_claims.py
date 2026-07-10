@@ -9,7 +9,7 @@ from __future__ import annotations
 import os as _cos_os
 import sys as _cos_sys
 _cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
-from lib.script_helpers import read_json_or as read_json
+from cos_lib.script_helpers import read_json_or as read_json
 
 import argparse
 import fcntl
@@ -27,7 +27,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.time_utils import now_iso as now_iso
+from cos_lib.time_utils import now_iso as now_iso
 
 
 def project_dir(args: argparse.Namespace | None = None) -> Path:

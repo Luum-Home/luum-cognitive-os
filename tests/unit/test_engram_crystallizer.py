@@ -1,4 +1,4 @@
-"""Unit tests for lib.engram_crystallizer — Phase 2 of ADR-071.
+"""Unit tests for cos_lib.engram_crystallizer — Phase 2 of ADR-071.
 
 All tests mock HTTP and CLI clients so no engram daemon is required.
 """
@@ -11,7 +11,7 @@ from typing import Any
 from unittest.mock import MagicMock
 
 
-from lib.engram_crystallizer import EngramCrystallizer, _CRYSTALLIZED_SUFFIX
+from cos_lib.engram_crystallizer import EngramCrystallizer, _CRYSTALLIZED_SUFFIX
 
 
 # ---------------------------------------------------------------------------

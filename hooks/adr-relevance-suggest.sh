@@ -66,7 +66,7 @@ session_id  = os.environ.get("_ARPS_SESSION", "unknown")
 prompt_text = os.environ.get("_ARPS_PROMPT", "")
 
 try:
-    from lib.adr_router import AdrRouter
+    from cos_lib.adr_router import AdrRouter
 except Exception:
     sys.exit(0)
 

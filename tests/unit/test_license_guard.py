@@ -9,7 +9,7 @@ import json
 from pathlib import Path
 
 
-from lib.license_guard import (
+from cos_lib.license_guard import (
     BLOCKED_LICENSES,
     auto_block_in_content_policy,
     check_and_enforce,

@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.deferred_tool_loading import (
+from cos_lib.deferred_tool_loading import (
     estimate_toolsearch_token_delta,
     plan_tool_loading,
     record_toolsearch_token_delta,
@@ -102,7 +102,7 @@ def test_list_changed_tracks_tool_index_hash(tmp_path: Path) -> None:
         "schema_version: deferred-tool-loading/v1\n"
         "tools:\n  - name: alpha\n    load_mode: deferred\n"
     )
-    from lib.deferred_tool_loading import list_changed
+    from cos_lib.deferred_tool_loading import list_changed
 
     first = list_changed(tmp_path, update_state=True)
     assert first["changed"] is True
@@ -121,7 +121,7 @@ def test_list_changed_tracks_tool_index_hash(tmp_path: Path) -> None:
 
 @pytest.mark.unit
 def test_provider_native_payload_is_truthful_until_provider_api_exists(tmp_path: Path) -> None:
-    from lib.deferred_tool_loading import provider_native_defer_payload
+    from cos_lib.deferred_tool_loading import provider_native_defer_payload
 
     payload = provider_native_defer_payload(tmp_path, provider="claude")
     assert payload["native_defer_loading_supported"] is False
@@ -130,7 +130,7 @@ def test_provider_native_payload_is_truthful_until_provider_api_exists(tmp_path:
 
 
 def test_provider_native_payload_can_be_enabled_by_operator(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    from lib.deferred_tool_loading import provider_native_defer_payload
+    from cos_lib.deferred_tool_loading import provider_native_defer_payload
 
     (tmp_path / "manifests").mkdir()
     (tmp_path / "manifests/deferred-tool-loading.yaml").write_text(

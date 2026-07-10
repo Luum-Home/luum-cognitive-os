@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.estimation_calibrator import (
+from cos_lib.estimation_calibrator import (
     VALID_COMPLEXITIES,
     _compute_accuracy,
     _compute_files_accuracy,

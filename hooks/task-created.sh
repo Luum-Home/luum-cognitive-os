@@ -97,7 +97,7 @@ from pathlib import Path
 
 os_root, project_dir, team_name, title, task_id = sys.argv[1:6]
 sys.path.insert(0, os_root)
-from lib.agent_team import AgentTeam
+from cos_lib.agent_team import AgentTeam
 
 team = AgentTeam(team_name, project_dir=Path(project_dir))
 team.create_task(title, task_id=(task_id or None))

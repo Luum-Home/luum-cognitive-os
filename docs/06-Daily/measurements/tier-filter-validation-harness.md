@@ -61,7 +61,7 @@ provide controlled coverage of all Tier-1 categories and are fully reproducible.
 
 ### Metrics per trial
 
-- `unexpanded_keys` under each config (from `lib.ref_key_loader.expand`)
+- `unexpanded_keys` under each config (from `cos_lib.ref_key_loader.expand`)
 - `delta = B.unexpanded_keys - A.unexpanded_keys` (positive = B is worse)
 
 ### Aggregate statistics

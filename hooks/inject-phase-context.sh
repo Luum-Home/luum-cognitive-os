@@ -239,7 +239,7 @@ try:
 import sys
 sys.path.insert(0, \"$PROJECT_DIR\")
 try:
-    from lib.engram_client import search_observations
+    from cos_lib.engram_client import search_observations
     results = search_observations(term.strip(), limit=2)
     for r in results:
         t = r.get(\"type\", \"\")
@@ -364,7 +364,7 @@ import sys
 sys.path.insert(0, '${PROJECT_DIR}')
 buf = sys.stdin.read()
 try:
-    from lib.ref_key_loader import expand
+    from cos_lib.ref_key_loader import expand
     raw_filter = '${_EXPANSION_TIER_FILTER}'.strip()
     # Parse comma-separated ints into a set; empty or 'all' means no filter.
     tier_filter = None

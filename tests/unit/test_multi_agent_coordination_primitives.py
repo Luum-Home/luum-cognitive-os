@@ -6,8 +6,8 @@ from pathlib import Path
 
 import pytest
 
-from lib.session_bus import append_event, read_events
-from lib.task_claim_ledger import acquire_claim, list_claims, release_claim
+from cos_lib.session_bus import append_event, read_events
+from cos_lib.task_claim_ledger import acquire_claim, list_claims, release_claim
 from scripts.orphan_overwrite_detector import overwritten_paths
 
 pytestmark = pytest.mark.unit
@@ -103,7 +103,7 @@ def test_merge_to_main_refuses_validation_dirty_worktree() -> None:
     assert "validation dirtied tracked worktree" in text
     assert "status --porcelain=v1 --untracked-files=no" in text
 
-from lib.task_reconciliation import reconcile_completed_by_other_session
+from cos_lib.task_reconciliation import reconcile_completed_by_other_session
 
 
 def test_completed_by_other_agent_reconciles_pending_task_with_watermark(tmp_path: Path) -> None:

@@ -67,7 +67,7 @@ Net test delta vs. v0.11.0: **+10 passing (5820 total)**, 42 pre-existing failur
 **Status**: open, out of R2 scope.
 
 **Context**: 42 shell scripts (`.sh`) read `cognitive-os.yaml` via `grep`/`awk`. Options:
-- Migrate to invoke `python3 -m lib.config_loader …`
+- Migrate to invoke `python3 -m cos_lib.config_loader …`
 - Keep bash-side separate and document both as "two-language parity"
 
 **No decision yet**. Track as separate ADR when Lote 4 lands.

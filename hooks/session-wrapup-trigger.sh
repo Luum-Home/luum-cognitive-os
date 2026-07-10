@@ -93,7 +93,7 @@ import os, sys
 root = sys.argv[1]
 sys.path.insert(0, root)
 try:
-    from lib.metric_event import MetricEvent, append_event
+    from cos_lib.metric_event import MetricEvent, append_event
     event = MetricEvent(
         source="session-wrapup-trigger",
         event_type="auto_trigger.emitted",

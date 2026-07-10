@@ -104,7 +104,7 @@ def _ensure_valkey_via_smart_infra() -> bool:
     This is a best-effort operation that never raises.
     """
     try:
-        from lib.smart_infra import ensure_service
+        from cos_lib.smart_infra import ensure_service
 
         return ensure_service("valkey")
     except Exception as exc:

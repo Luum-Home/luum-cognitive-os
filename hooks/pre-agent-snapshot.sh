@@ -270,7 +270,7 @@ if command -v python3 >/dev/null 2>&1; then
 import sys, json
 sys.path.insert(0, '$OS_ROOT')
 try:
-    from lib.snapshot_manager import plan_snapshot
+    from cos_lib.snapshot_manager import plan_snapshot
     from pathlib import Path
 
     def _read_snapshot_int(key, default):

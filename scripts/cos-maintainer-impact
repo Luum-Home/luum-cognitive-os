@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.maintainer_impact import (  # noqa: E402
+from cos_lib.maintainer_impact import (  # noqa: E402
     append_decision_event,
     append_post_change_impact_event,
     build_decision_event,

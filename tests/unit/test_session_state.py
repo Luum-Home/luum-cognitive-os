@@ -18,7 +18,7 @@ import pytest
 # Ensure project root is importable
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-from lib.session_state import (
+from cos_lib.session_state import (
     _atomic_write,
     _empty_state,
     _state_path,

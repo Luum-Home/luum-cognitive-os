@@ -67,7 +67,7 @@ from pathlib import Path
 
 os_root, project_dir, team_name, session_id = sys.argv[1:5]
 sys.path.insert(0, os_root)
-from lib.agent_team import AgentTeam
+from cos_lib.agent_team import AgentTeam
 
 team = AgentTeam(team_name, project_dir=Path(project_dir))
 task = team.claim_next(session_id=session_id)

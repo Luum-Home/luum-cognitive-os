@@ -18,9 +18,9 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.script_io import read_text as read_text
-from lib.project_paths import relpath as relpath
-from lib.primitive_readiness_common import family_counts, load_lifecycle, row_to_dict
+from cos_lib.script_io import read_text as read_text
+from cos_lib.project_paths import relpath as relpath
+from cos_lib.primitive_readiness_common import family_counts, load_lifecycle, row_to_dict
 from typing import Any
 
 

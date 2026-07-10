@@ -1,7 +1,7 @@
 """Consumer-sandbox regression for hook-lib-projection-contract.
 
 Design: docs/02-Decisions/designs/hook-lib-projection-contract.md §4.
-Ensures projected hooks that `import lib.*` resolve against .cognitive-os/lib/
+Ensures projected hooks that `import cos_lib.*` resolve against .cognitive-os/lib/
 (closure projection, §2) and that confidentiality-enforcer.sh fails open on
 infra error instead of the historical false `exit 2` (§3).
 
@@ -96,7 +96,7 @@ def _projected_hooks_dir(consumer_dir: Path) -> Path:
 
 
 def _lib_importing_projected_hooks(consumer_dir: Path) -> Dict[Path, Set[str]]:
-    """Map each projected hook that imports lib.* to its module set."""
+    """Map each projected hook that imports cos_lib.* to its module set."""
     hooks_dir = _projected_hooks_dir(consumer_dir)
     result: Dict[Path, Set[str]] = {}
     for hook_path in sorted(hooks_dir.glob("*.sh")):
@@ -123,7 +123,7 @@ def test_closure_presence_full(consumer_full: Path) -> None:
     for hook_path, mods in lib_importers.items():
         for mod in mods:
             if not (lib_dir / f"{mod}.py").is_file():
-                missing.append(f"{hook_path.name} -> lib.{mod}")
+                missing.append(f"{hook_path.name} -> cos_lib.{mod}")
     assert not missing, "closure did not ship modules referenced by hooks:\n" + "\n".join(missing)
 
 
@@ -138,7 +138,7 @@ def test_closure_presence_default(consumer_default: Path) -> None:
     for hook_path, mods in lib_importers.items():
         for mod in mods:
             if not (lib_dir / f"{mod}.py").is_file():
-                missing.append(f"{hook_path.name} -> lib.{mod}")
+                missing.append(f"{hook_path.name} -> cos_lib.{mod}")
     assert not missing, "closure did not ship modules referenced by hooks:\n" + "\n".join(missing)
 
 
@@ -158,16 +158,16 @@ def test_import_resolution_full(consumer_full: Path) -> None:
     # This repo's own .venv carries an editable-install .pth
     # (_editable_impl_luum_cognitive_os.pth) that unconditionally prepends
     # the SOURCE repo root to sys.path for every interpreter invocation.
-    # Left unfiltered, `import lib.<mod>` would silently resolve against the
+    # Left unfiltered, `import cos_lib.<mod>` would silently resolve against the
     # SOURCE repo's real lib/ regardless of PYTHONPATH/cwd, masking a broken
     # closure projection instead of raising ModuleNotFoundError. Strip that
     # one entry (not -S, which would also drop legitimate third-party deps
-    # like yaml/pydantic that lib.* modules transitively import).
+    # like yaml/pydantic that cos_lib.* modules transitively import).
     _repo_root_str = str(REPO_ROOT)
     _probe_src = (
         "import sys; "
         f"sys.path = [p for p in sys.path if p != {_repo_root_str!r}]; "
-        "import lib.{mod}"
+        "import cos_lib.{mod}"
     )
 
     failures = []
@@ -181,7 +181,7 @@ def test_import_resolution_full(consumer_full: Path) -> None:
             env=env,
         )
         if proc.returncode != 0 and "ModuleNotFoundError" in proc.stderr:
-            failures.append(f"lib.{mod}: {proc.stderr.strip().splitlines()[-1]}")
+            failures.append(f"cos_lib.{mod}: {proc.stderr.strip().splitlines()[-1]}")
     assert not failures, "ModuleNotFoundError on projected closure:\n" + "\n".join(failures)
 
 
@@ -263,7 +263,7 @@ def test_no_false_exit_2_benign_write(consumer_full: Path) -> None:
 
 def test_fail_open_when_lib_hidden(consumer_full: Path) -> None:
     lib_dir = consumer_full / ".cognitive-os" / "lib"
-    backup_dir = consumer_full / ".cognitive-os" / "lib.bak"
+    backup_dir = consumer_full / ".cognitive-os" / "cos_lib.bak"
     metrics_file = (
         consumer_full / ".cognitive-os" / "metrics" / "confidentiality-enforcer.jsonl"
     )

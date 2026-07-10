@@ -11,7 +11,7 @@ superseded_by: null
 extends:
 - ADR-174
 implementation_files:
-- lib/rule_router.py
+- cos_lib/rule_router.py
 - hooks/rule-router-prompt-suggest.sh
 - hooks/rule-md-routing-validator.sh
 - manifests/rule-routing-coverage.yaml

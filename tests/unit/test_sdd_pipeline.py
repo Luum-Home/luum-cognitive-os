@@ -8,7 +8,7 @@ Author: luum
 
 import pytest
 
-from lib.sdd_pipeline import SDDPipeline, FULL_PHASES, FAST_PHASES, _tier_index
+from cos_lib.sdd_pipeline import SDDPipeline, FULL_PHASES, FAST_PHASES, _tier_index
 
 pytestmark = pytest.mark.unit
 
@@ -198,7 +198,7 @@ class TestModelCatalogIntegration:
         """Aliases known only in ModelCatalog (not in our local map)
         should still resolve via the fallback."""
         # claude-opus-4-20250514 is only an alias in model_catalog
-        from lib.model_catalog import ModelCatalog
+        from cos_lib.model_catalog import ModelCatalog
 
         try:
             ModelCatalog.resolve("claude-opus-4-20250514")

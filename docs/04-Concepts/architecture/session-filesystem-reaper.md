@@ -14,7 +14,7 @@ flowchart TD
   A[so-reaper.sh] --> B[process registry cleanup]
   A --> C[active task zombie/watermark sweeps]
   A --> D[session-fs-reap.sh]
-  D --> E[lib.session_lifecycle]
+  D --> E[cos_lib.session_lifecycle]
   E --> F{reap_decision}
   F -->|live PID| K[KEEP_ACTIVE]
   F -->|pending content| P[KEEP_PENDING_CONTENT]

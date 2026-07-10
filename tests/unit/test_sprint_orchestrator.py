@@ -1,4 +1,4 @@
-"""Unit tests for lib.sprint_orchestrator (ADR-036 MVP)."""
+"""Unit tests for cos_lib.sprint_orchestrator (ADR-036 MVP)."""
 
 from __future__ import annotations
 
@@ -12,8 +12,8 @@ _REPO = Path(__file__).resolve().parents[2]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from lib.harness_adapter.base import CanonicalEvent  # noqa: E402
-from lib.sprint_orchestrator import (  # noqa: E402
+from cos_lib.harness_adapter.base import CanonicalEvent  # noqa: E402
+from cos_lib.sprint_orchestrator import (  # noqa: E402
     CommitStrategy,
     SprintCancelled,
     SprintCompleted,

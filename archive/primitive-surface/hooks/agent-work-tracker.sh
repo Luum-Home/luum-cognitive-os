@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # Hook: agent-work-tracker
 # Events: PreToolUse (Agent), PostToolUse (Agent)
 # Purpose: Track agent tasks in persistent work queue so the next session
@@ -43,7 +43,7 @@ if [ "$EVENT" = "PreToolUse" ]; then
     python3 - <<PYEOF 2>/dev/null || true
 import sys, os
 sys.path.insert(0, '$PROJECT_ROOT')
-from lib.work_queue import WorkQueue
+from cos_lib.work_queue import WorkQueue
 q = WorkQueue(queue_path='$PROJECT_ROOT/.cognitive-os/work-queue.json')
 q.add_task(
     task_id='$TASK_ID',
@@ -68,7 +68,7 @@ elif [ "$EVENT" = "PostToolUse" ]; then
     python3 - <<PYEOF 2>/dev/null || true
 import sys, os, re
 sys.path.insert(0, '$PROJECT_ROOT')
-from lib.work_queue import WorkQueue
+from cos_lib.work_queue import WorkQueue
 q = WorkQueue(queue_path='$PROJECT_ROOT/.cognitive-os/work-queue.json')
 
 # Find the most recent pending task whose ID contains our slug

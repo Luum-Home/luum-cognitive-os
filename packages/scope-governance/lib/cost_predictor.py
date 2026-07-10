@@ -628,7 +628,7 @@ class CostPredictor:
     def _get_calibration_factor(self) -> float:
         """Get calibration multiplier from estimation_calibrator if available."""
         try:
-            from lib.estimation_calibrator import get_calibration_factor
+            from cos_lib.estimation_calibrator import get_calibration_factor
             factors = get_calibration_factor("orchestrator")
             if factors.get("sample_size", 0) >= 10:
                 return factors.get("effort_bias", 1.0)

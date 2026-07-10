@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from lib.deferred_tool_loading import dumps_json, estimate_toolsearch_token_delta, list_changed, plan_tool_loading, provider_native_defer_payload, toolsearch_index  # noqa: E402
+from cos_lib.deferred_tool_loading import dumps_json, estimate_toolsearch_token_delta, list_changed, plan_tool_loading, provider_native_defer_payload, toolsearch_index  # noqa: E402
 
 
 def main() -> int:

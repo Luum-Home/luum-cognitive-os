@@ -246,7 +246,7 @@ Replace the subprocess call in `safe_save` with `save_observation()`; preserve t
 Add explicit cross-references in each module docstring:
 
 - `safe_engram.py` — *"Use this for user-facing writes (returns `SafeEngramResult` with human-readable `engram_output`). For programmatic writes, use `engram_client.save_observation`."*
-- `engram_client.py` — strengthen the existing line 129 note ("Prefer `lib.safe_engram.safe_save` when content may be untrusted") and add: *"Returns `dict | None` with parsed JSON. For user-facing strings and scanner gating, use `safe_engram.safe_save`."*
+- `engram_client.py` — strengthen the existing line 129 note ("Prefer `cos_lib.safe_engram.safe_save` when content may be untrusted") and add: *"Returns `dict | None` with parsed JSON. For user-facing strings and scanner gating, use `safe_engram.safe_save`."*
 
 Fix the latent bug in `cos_mcp.py:217-219` (returncode=127 is classified as success) as a *separate commit* with its own test.
 

@@ -33,7 +33,7 @@ if [ -d "$SESSIONS_DIR" ] && command -v python3 >/dev/null 2>&1; then
 import sys
 sys.path.insert(0, '$PROJECT_DIR')
 try:
-    from lib.state_heartbeat import StateHeartbeat
+    from cos_lib.state_heartbeat import StateHeartbeat
     h = StateHeartbeat('$RECENT_SESSION')
     print(h.format_recovery_prompt())
 except Exception as e:
@@ -58,7 +58,7 @@ if [ -f "$QUEUE_FILE" ] && command -v python3 >/dev/null 2>&1; then
 import sys
 sys.path.insert(0, '$PROJECT_DIR')
 try:
-    from lib.work_queue import WorkQueue
+    from cos_lib.work_queue import WorkQueue
     q = WorkQueue('$QUEUE_FILE')
     pending = q.get_pending()
     if pending:
@@ -87,7 +87,7 @@ import sys, json, os
 project_dir = os.environ.get("COGNITIVE_OS_PROJECT_DIR") or os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
 sys.path.insert(0, project_dir)
 try:
-    from lib.snapshot_manager import list_snapshots
+    from cos_lib.snapshot_manager import list_snapshots
     from pathlib import Path
     snaps = list_snapshots(Path(project_dir))
     if not snaps:
@@ -119,11 +119,11 @@ PYEOF
         echo "$SNAPSHOT_REPORT" >&2
         echo "" >&2
         echo "  To restore a snapshot (all files):" >&2
-        echo "    python3 -c \"from lib.snapshot_manager import restore_snapshot; from pathlib import Path; restore_snapshot(Path('.'), '<snapshot_id>')\"" >&2
+        echo "    python3 -c \"from cos_lib.snapshot_manager import restore_snapshot; from pathlib import Path; restore_snapshot(Path('.'), '<snapshot_id>')\"" >&2
         echo "  To restore specific files:" >&2
-        echo "    python3 -c \"from lib.snapshot_manager import restore_snapshot; from pathlib import Path; restore_snapshot(Path('.'), '<snapshot_id>', files=['path/to/file'])\"" >&2
+        echo "    python3 -c \"from cos_lib.snapshot_manager import restore_snapshot; from pathlib import Path; restore_snapshot(Path('.'), '<snapshot_id>', files=['path/to/file'])\"" >&2
         echo "  To prune old snapshots (>30d):" >&2
-        echo "    python3 -c \"from lib.snapshot_manager import prune_expired; from pathlib import Path; prune_expired(Path('.'))\"" >&2
+        echo "    python3 -c \"from cos_lib.snapshot_manager import prune_expired; from pathlib import Path; prune_expired(Path('.'))\"" >&2
         echo "" >&2
     fi
 fi

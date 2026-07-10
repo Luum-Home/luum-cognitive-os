@@ -28,12 +28,12 @@ Justification:
    `apply_edits()` refuses guarded files without the env var; if unguarded directories
    (`tests/`, `scripts/`, `lib/`, `packages/`) are rewritten in one batch and `hooks/` in a
    second, the repo sits in a broken intermediate state between the two commits — every hook
-   still does `import lib.*` against a package that (once `git mv lib cos_lib` runs) no longer
+   still does `import cos_lib.*` against a package that (once `git mv lib cos_lib` runs) no longer
    exists at that path. Batching does not make recovery easier; it manufactures a guaranteed
    broken commit on `main` (or the working branch) between batches.
 3. **The "902 files argues for reviewability" concern (proposal §U-Q1) is addressed by review
    granularity, not apply granularity.** The diff is large but mechanical and homogeneous
-   (`lib.X` → `cos_lib.X` substring rewrite); a reviewer diffs by directory in the PR view
+   (`cos_lib.X` → `cos_lib.X` substring rewrite); a reviewer diffs by directory in the PR view
    without the *apply* itself being split. Splitting the apply buys no additional safety over
    splitting the *review*.
 4. **Partial-recovery framing is inverted.** Batching by guardedness only ever produces two
@@ -64,7 +64,7 @@ git add -A && git commit -m "..."   # ONE commit
 **Decision: accept the dry-run's "leave untouched" finding as correct, but do not accept
 narrative confirmation alone as final — add one automated regression assertion.**
 
-All 47 share one root cause (dry-run §4): `workflows/*.py` doing `from lib.<mod> import ...`
+All 47 share one root cause (dry-run §4): `workflows/*.py` doing `from cos_lib.<mod> import ...`
 where `<mod>` ∈ `{telegram, shared_phases, utils, agent, data_types, file_parser, ...}` resolves
 to the separate, vendored `workflows/lib/` package, not the COS package under rename. Grouped
 by pattern, all 47 are the *same* pattern (import-from-foreign-package), not 47 distinct cases —
@@ -72,14 +72,14 @@ this is a single disposition applied uniformly, not 47 individual judgment calls
 
 | Disposition | Count | Action |
 |---|---|---|
-| **skip (leave as `lib.*`, correct as-is)** | 47/47 | No edit. `workflows/lib/` keeps its own name; these imports are already correct for that package. |
+| **skip (leave as `cos_lib.*`, correct as-is)** | 47/47 | No edit. `workflows/lib/` keeps its own name; these imports are already correct for that package. |
 
 **Required automated gate (closes the "narrative-only" gap the proposal flagged):** extend
 `tests/audit/test_hook_lib_projection.py` (or add a sibling
 `tests/audit/test_workflows_lib_isolation.py`) with an assertion that:
 
 ```python
-# For every `from lib.<mod> import` in workflows/*.py, <mod> must NOT be a member of the
+# For every `from cos_lib.<mod> import` in workflows/*.py, <mod> must NOT be a member of the
 # cos_lib module allowlist (the same 373-name set scripts/cos_lib_rename_codemod.py computes
 # via load_allowlist()). If any workflows/ import's <mod> IS a real cos_lib module, fail —
 # a future workflows/ change silently reintroduced a missed COS import (the R4 regression).
@@ -195,12 +195,12 @@ apply.**
   document read — see §8 residual uncertainty. The analysis below is qualitative and holds
   regardless of the exact consumer count.)
 - **What breaks first if a consumer does NOT re-init:** the consumer's projected hooks were
-  generated referencing `lib.*` imports (pre-rename). Post-rename, the SOURCE repo's `lib/`
+  generated referencing `cos_lib.*` imports (pre-rename). Post-rename, the SOURCE repo's `lib/`
   package no longer exists (`git mv` to `cos_lib/`), but this is a SOURCE-repo-only change — the
   consumer's *already-projected* files are static copies (per `hook-lib-projection-contract`'s
   dependency-closure projection model) and do not change until the consumer re-runs `cos init`.
   A non-re-initted consumer keeps working exactly as before (still importing its own projected
-  `lib.*` files, which still exist in *their* tree) — **nothing breaks immediately.**
+  `cos_lib.*` files, which still exist in *their* tree) — **nothing breaks immediately.**
 - **What breaks on next `cos init --full` without understanding the rename:** a consumer that
   re-inits picks up the new `cos_lib`-projected hooks. If their own environment/tooling
   hardcodes a `PYTHONPATH` entry or path reference assuming `.cognitive-os/lib/...` (rather than
@@ -211,7 +211,7 @@ apply.**
 - **Does fail-open (hook-lib-projection-contract §3) cover the transition period?** **Yes, for
   the "missing" case, but not for a genuine mid-transition collision.** Fail-open converts
   `ModuleNotFoundError` into a silent no-op — it does NOT distinguish "consumer hasn't re-initted
-  yet, still on old `lib` hooks importing their own already-present `lib.*`" (nothing to fail
+  yet, still on old `lib` hooks importing their own already-present `cos_lib.*`" (nothing to fail
   open on — those imports still resolve fine, package unchanged from the consumer's point of
   view) from "consumer re-initted, got `cos_lib`-projected hooks, but something in their
   environment still shadows/blocks the import." The proposal's own §1 already established
@@ -221,9 +221,9 @@ apply.**
 
 **Recommendation:** ship a short upgrade-note addendum alongside the existing
 `hook-lib-projection-contract` migration note: *"if you installed before 2026-07-09, your
-projected hooks import `lib.*`; re-run `cos init --full` to receive `cos_lib.*`-projected hooks
+projected hooks import `cos_lib.*`; re-run `cos init --full` to receive `cos_lib.*`-projected hooks
 and close namespace-collision risk U1 for your project."* Detection/warning inside `cos init`
-itself (scanning a consumer's `.cognitive-os/` for stale `lib.*` references pre-re-init) is
+itself (scanning a consumer's `.cognitive-os/` for stale `cos_lib.*` references pre-re-init) is
 **out of scope for this SDD** — it requires new installer-side logic beyond the codemod's scope
 and belongs to `hook-lib-projection-contract`'s own follow-on surface, not this rename's task
 list. Flagged as residual risk (§8).

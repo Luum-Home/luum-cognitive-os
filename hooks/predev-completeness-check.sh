@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # predev-completeness-check.sh — PreToolUse hook on Agent
 # CONCERNS: pre-development, readiness, completeness
 #
@@ -55,7 +55,7 @@ fi
 PYTHON_OUTPUT=$(python3 - "$PROJECT_DIR" <<'PYEOF' 2>&1
 import sys
 sys.path.insert(0, '.')
-from lib.completeness_checker import check_predev_artifacts, format_report
+from cos_lib.completeness_checker import check_predev_artifacts, format_report
 
 project_dir = sys.argv[1]
 report = check_predev_artifacts(project_dir)

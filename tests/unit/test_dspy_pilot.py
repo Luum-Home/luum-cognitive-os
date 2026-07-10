@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from lib.dspy_pilot import build_pilot_report, sdd_verify_signature
+from cos_lib.dspy_pilot import build_pilot_report, sdd_verify_signature
 
 
 def test_dspy_pilot_declares_structured_io_without_router_touch() -> None:

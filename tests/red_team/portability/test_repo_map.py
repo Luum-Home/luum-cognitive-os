@@ -21,7 +21,7 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from lib.repo_map import build_repo_map  # noqa: E402
+from cos_lib.repo_map import build_repo_map  # noqa: E402
 
 
 def _init_synth_project(root: Path) -> None:

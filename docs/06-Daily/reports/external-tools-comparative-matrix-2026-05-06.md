@@ -145,7 +145,7 @@ Grouped by COS surface. Each row = (their feature, our gap, source repo + cited 
 |---|---|---|---|
 | Elm-architecture model with `Init/Update/View` interface, `Cmd` deferred-effect functions, `Program` runtime | COS has no TUI surface (SURFACE-5 unreached); only CLI + statusline | `charmbracelet/bubbletea` (`tea.go` L53/L390/L426 — cited tier-2 §4) | large — requires ADR-187 proof pack ADR |
 | `App(DOMNode)` with CSS-driven layout + `Pilot` test harness `run_test`/`run_async` | Same surface gap | `Textualize/textual` (`src/textual/app.py` L296/L560/L2121/L2208 — cited tier-2 §4) | large — separate ADR-XXX-surface-5-adopt |
-| Modular `#![no_std]` core for embedded targets + multi-backend (crossterm/termion/termwiz) | Same | `ratatui/ratatui` (`ARCHITECTURE.md`, `ratatui-core/src/lib.rs` — cited tier-2 §4) | large |
+| Modular `#![no_std]` core for embedded targets + multi-backend (crossterm/termion/termwiz) | Same | `ratatui/ratatui` (`ARCHITECTURE.md`, `ratatui-core/src/cos_lib.rs` — cited tier-2 §4) | large |
 | Process-per-invocation TUI primitives (`gum` style) for shell-glue use | COS has no TUI primitives for skill UI prompts | `charmbracelet/gum` (`main.go` — kong CLI dispatcher, cited tier-2 §4) | small once SURFACE-5 lands |
 | Form/prompt component pipeline (`Form composes Group composes Field`) | Skills clarification UI is plain text only | `charmbracelet/huh` (`form.go`, cited tier-2 §4) | small once SURFACE-5 lands |
 | Markdown-to-ANSI rendering pipeline | No structured rich-text output for skill responses | `charmbracelet/glamour` (`glamour.go`, cited tier-2 §4); `Textualize/rich` (monitor-followup) | small (≤2d) |

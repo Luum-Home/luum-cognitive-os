@@ -10,7 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from lib.agent_lifecycle import AgentLifecycleError, cleanup_agent_worktrees, lifecycle_projection, prepare_agent_worktree  # noqa: E402
+from cos_lib.agent_lifecycle import AgentLifecycleError, cleanup_agent_worktrees, lifecycle_projection, prepare_agent_worktree  # noqa: E402
 
 
 def main() -> int:

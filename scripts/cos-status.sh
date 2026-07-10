@@ -140,7 +140,7 @@ from pathlib import Path
 
 import yaml
 
-from lib.telemetry_aggregator import aggregate_streams
+from cos_lib.telemetry_aggregator import aggregate_streams
 
 repo = Path(sys.argv[1])
 mode = sys.argv[2]

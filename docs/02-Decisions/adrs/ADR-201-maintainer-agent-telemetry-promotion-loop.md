@@ -7,9 +7,9 @@ date: '2026-05-06'
 supersedes: []
 superseded_by: null
 implementation_files:
-- lib/performance_ledger.py
-- lib/promote_from_telemetry.py
-- lib/maintainer_impact.py
+- cos_lib/performance_ledger.py
+- cos_lib/promote_from_telemetry.py
+- cos_lib/maintainer_impact.py
 - scripts/cos-performance-ledger
 - scripts/cos-promote-from-telemetry
 - scripts/cos-maintainer-agent
@@ -184,7 +184,7 @@ affected_primitive: lib/skill_router.py
 degradation_pattern: recovery_skill_suggested_in_meta_discussion
 candidate_action: add negative-context guard and tests
 allowed_write_paths:
-  - lib/skill_router.py
+  - cos_lib/skill_router.py
   - tests/unit/test_skill_router.py
 blocked_write_paths:
   - .env

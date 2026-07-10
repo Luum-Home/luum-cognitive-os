@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.script_io import read_text as read_text
+from cos_lib.script_io import read_text as read_text
 
 DONE_WORDS = re.compile(r"\b(done|implemented|completed|shipped|added|wired|accepted|resolved|closed)\b", re.I)
 PLAN_WORDS = re.compile(r"\b(todo|next steps?|remaining|planned|future|pending|backlog|not yet|to implement)\b", re.I)
@@ -53,7 +53,7 @@ def candidate_docs(root: Path) -> list[Path]:
     return sorted(p for p in paths if not p.relative_to(root).as_posix().startswith(DOC_SOURCE_EXCLUDED_PREFIXES))
 
 def evidence_files(root: Path) -> list[Path]:
-    patterns = ("scripts/**/*.py", "hooks/**/*.sh", "skills/**/SKILL.md", "rules/**/*.md", "tests/**/*.py", ".github/workflows/*.yml", ".github/workflows/*.yaml", "primitive_coverage/**/*.py", "primitive_coverage/**/*.yaml", "manifests/**/*.json", "lib/**/*.py", ".cognitive-os/plans/**/*.md")
+    patterns = ("scripts/**/*.py", "hooks/**/*.sh", "skills/**/SKILL.md", "rules/**/*.md", "tests/**/*.py", ".github/workflows/*.yml", ".github/workflows/*.yaml", "primitive_coverage/**/*.py", "primitive_coverage/**/*.yaml", "manifests/**/*.json", "cos_lib/**/*.py", ".cognitive-os/plans/**/*.md")
     out: list[Path] = []
     for pattern in patterns:
         out.extend(p for p in root.glob(pattern) if p.is_file())

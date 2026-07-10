@@ -19,8 +19,8 @@ tags:
 - ratchet
 - primitive-governance
 implementation_files:
-- lib/dependency_tool_intake.py
-- lib/dependency_profile_ratchet.py
+- cos_lib/dependency_tool_intake.py
+- cos_lib/dependency_profile_ratchet.py
 - scripts/cos-deps-triage
 - scripts/cos-deps-profile-ratchet
 - scripts/dependency-lane.sh

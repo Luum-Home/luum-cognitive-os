@@ -154,7 +154,7 @@ python3 -m pytest tests/unit/test_engram_lifecycle.py -v
 
 # 2. Trailer round-trip: save an observation, read it back, confirm trailer is present and parseable
 python3 -c "
-from lib.engram_lifecycle import EngramLifecycle
+from cos_lib.engram_lifecycle import EngramLifecycle
 lc = EngramLifecycle()
 content_with_trailer = lc.build_content_with_trailer(
     'original content',
@@ -171,7 +171,7 @@ print('PASS: trailer round-trip')
 # 3. Decay function is bounded and monotonically decreasing
 python3 -c "
 import math
-from lib.engram_lifecycle import decay_retention
+from cos_lib.engram_lifecycle import decay_retention
 
 tau_values = {'architecture': 365, 'decision': 180, 'bugfix': 60}
 for cls, tau in tau_values.items():
@@ -185,7 +185,7 @@ print('PASS: decay bounds and monotonicity')
 
 # 4. Reinforcement increases confidence asymptotically, never exceeds 1.0
 python3 -c "
-from lib.engram_lifecycle import reinforce_confidence
+from cos_lib.engram_lifecycle import reinforce_confidence
 c = 0.5
 beta = 0.15
 prev = c
@@ -199,7 +199,7 @@ print(f'PASS: confidence after 30 reinforcements = {c:.4f} (< 1.0)')
 
 # 5. Adjusted score is always in [0, 1]
 python3 -c "
-from lib.engram_lifecycle import adjusted_score
+from cos_lib.engram_lifecycle import adjusted_score
 import random
 random.seed(42)
 for _ in range(1000):
@@ -213,7 +213,7 @@ print('PASS: adjusted_score bounded [0,1] over 1000 random samples')
 
 # 6. Missing-trailer fallback: observations without trailer get defaults
 python3 -c "
-from lib.engram_lifecycle import EngramLifecycle
+from cos_lib.engram_lifecycle import EngramLifecycle
 lc = EngramLifecycle()
 trailer = lc._parse_trailer('observation content with no lifecycle block')
 assert trailer is None or trailer == lc.default_trailer(), 'Expected None or defaults'
@@ -264,7 +264,7 @@ New files introduced in this addendum:
 
 `lib/engram_obsidian_exporter.py` implements the one-way Engram → Obsidian export layer requested after the follow-up research in `docs/03-PoCs/research/obsidian-doc-graph-ai-agent-memory-2026-05-05.md`:
 
-- Reads observations via `lib.engram_http_client.get_recent()` with optional project, limit, and since filters.
+- Reads observations via `cos_lib.engram_http_client.get_recent()` with optional project, limit, and since filters.
 - Reads `memory_relations` from SQLite in read-only mode and exports only non-rejected typed relations between exported observations.
 - Renders one Markdown file per observation under `Cognitive OS/Engram/` in an explicit vault path.
 - Converts lifecycle trailer fields (`confidence`, `last_reinforced`, `reinforcement_count`, `decay_class`, etc.) into YAML frontmatter and strips the raw trailer from the Markdown body.

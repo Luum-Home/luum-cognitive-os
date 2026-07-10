@@ -32,8 +32,8 @@ patterns:
         - manifests/agent-orchestration-adapters.yaml
         - docs/02-Decisions/adrs/ADR-203-subagent-capability-contract-and-launch-preflight.md
         - docs/02-Decisions/adrs/ADR-251-agent-orchestration-adapter-boundary.md
-        - lib/agent_lifecycle.py
-        - lib/agent_team.py
+        - cos_lib/agent_lifecycle.py
+        - cos_lib/agent_team.py
       planned:
         - manifests/primitive-contracts.yaml
         - .cognitive-os/metrics/primitive-interventions.jsonl
@@ -52,12 +52,12 @@ patterns:
       claim: Agents can synthesize tools and skills during execution.
     cos_surfaces:
       existing:
-        - lib/dynamic_tool_creator.py
+        - cos_lib/dynamic_tool_creator.py
         - skills/primitive-authoring/SKILL.md
         - docs/02-Decisions/adrs/ADR-120-conversation-to-primitive-harvester.md
         - docs/02-Decisions/adrs/ADR-216-tool-discovery-pre-use-gate.md
-        - lib/license_guard.py
-        - lib/credential_safe_run.py
+        - cos_lib/license_guard.py
+        - cos_lib/credential_safe_run.py
       planned:
         - manifests/primitive-contracts.yaml
         - .cognitive-os/metrics/primitive-interventions.jsonl
@@ -79,7 +79,7 @@ patterns:
         - docs/02-Decisions/adrs/ADR-232-sandbox-adapter-tiers.md
         - manifests/sandbox-adapters.yaml
         - scripts/cos-sandbox-run
-        - lib/sandbox_adapter.py
+        - cos_lib/sandbox_adapter.py
         - docs/04-Concepts/architecture/cos-service-runtime-boundary.md
         - docs/02-Decisions/adrs/ADR-211-service-mode-readiness-gate.md
       planned:
@@ -101,8 +101,8 @@ patterns:
     cos_surfaces:
       existing:
         - docs/04-Concepts/architecture/memory-lifecycle.md
-        - lib/engram_lifecycle.py
-        - lib/memory_retrieval_benchmark.py
+        - cos_lib/engram_lifecycle.py
+        - cos_lib/memory_retrieval_benchmark.py
         - docs/04-Concepts/architecture/memory-layer-evolution-sdd.md
       planned:
         - .cognitive-os/metrics/codebase-itinerary.jsonl

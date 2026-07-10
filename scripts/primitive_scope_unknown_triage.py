@@ -19,8 +19,8 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
 
-from lib.primitive_parser import PrimitiveContract, parse_primitive_file
-from lib.project_paths import relpath
+from cos_lib.primitive_parser import PrimitiveContract, parse_primitive_file
+from cos_lib.project_paths import relpath
 
 OS_INTERNAL_PATTERNS = [
     r"\.cognitive-os/",

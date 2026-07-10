@@ -3,7 +3,7 @@
 """cos-lib-symlink-invariant-audit — ADR-267 follow-up.
 
 Detects silent drift between lib/*.py (root) and packages/*/lib/*.py
-counterparts.  The project invariant claims "lib/*.py are SYMLINKS — NOT
+counterparts.  The project invariant claims "cos_lib/*.py are SYMLINKS — NOT
 duplicates"; this script enforces that invariant and surfaces violations.
 
 Four conditions are checked per same-named file pair:
@@ -50,23 +50,23 @@ SEVERITY_WARN = "WARN"
 # real silent-copy regressions.
 INTENTIONAL_DISTINCT_MODULE_PAIRS: set[tuple[str, str]] = {
     (
-        "lib/dispatch.py",
+        "cos_lib/dispatch.py",
         "packages/agent-lifecycle/lib/harness_adapter/dispatch.py",
     ),
     (
-        "lib/retry_classifier.py",
+        "cos_lib/retry_classifier.py",
         "packages/agent-lifecycle/lib/event_projections/retry_classifier.py",
     ),
     (
-        "lib/__init__.py",
+        "cos_lib/__init__.py",
         "packages/agent-lifecycle/lib/event_projections/__init__.py",
     ),
     (
-        "lib/__init__.py",
+        "cos_lib/__init__.py",
         "packages/agent-lifecycle/lib/harness_adapter/__init__.py",
     ),
     (
-        "lib/__init__.py",
+        "cos_lib/__init__.py",
         "packages/llm-providers/lib/__init__.py",
     ),
 }
@@ -124,8 +124,8 @@ def _is_symlink_to(src: Path, target: Path) -> bool:
 
 
 def _collect_root_lib(repo: Path) -> dict[str, Path]:
-    """Return {basename: Path} for lib/*.py (top-level only, no subdirs)."""
-    lib_dir = repo / "lib"
+    """Return {basename: Path} for cos_lib/*.py (top-level only, no subdirs)."""
+    lib_dir = repo / "cos_lib"
     if not lib_dir.is_dir():
         return {}
     result: dict[str, Path] = {}

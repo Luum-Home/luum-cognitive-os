@@ -493,7 +493,7 @@ verify-archived.sh \
 from typing import List, Dict, Optional
 from dataclasses import dataclass
 
-# Reuses lib.ground_truth.Claim (verb, target, evidence_required) extended
+# Reuses cos_lib.ground_truth.Claim (verb, target, evidence_required) extended
 
 @dataclass
 class HighStakesClaim:
@@ -510,7 +510,7 @@ class VerificationOutcome:
     failure_reason: Optional[str]
 
 def extract_high_stakes_claims(agent_output: str) -> List[HighStakesClaim]:
-    """Extract ADR-105 verbs from agent text. Composes lib.ground_truth.extract_claims."""
+    """Extract ADR-105 verbs from agent text. Composes cos_lib.ground_truth.extract_claims."""
 
 def verify_claim(claim: HighStakesClaim, project_root: str) -> VerificationOutcome:
     """Run bilateral check for one claim. Dispatches by verb."""
@@ -525,7 +525,7 @@ def format_report(outcomes: List[VerificationOutcome]) -> str:
 HIGH_STAKES_VERBS = frozenset({"archived", "wired", "tested", "verified", "claimed"})
 ```
 
-**Reuse decision**: COMPOSE with `lib.ground_truth` (extend, don't fork). Internally `extract_high_stakes_claims` calls `lib.ground_truth.extract_claims` then filters by verb.
+**Reuse decision**: COMPOSE with `cos_lib.ground_truth` (extend, don't fork). Internally `extract_high_stakes_claims` calls `cos_lib.ground_truth.extract_claims` then filters by verb.
 
 **Naming**: snake_case (RULES §13). Symlink `lib/orchestrator_verify.py` → `../packages/verification-audit/lib/orchestrator_verify.py` (matches existing `lib/ground_truth.py` pattern).
 

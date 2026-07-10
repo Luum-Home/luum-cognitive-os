@@ -32,7 +32,7 @@ bash scripts/chaos/snapshot-vanishing-untracked.sh
 
 **What to do on FAIL**:
 1. Check if `python3` is available (`which python3`).
-2. Run `python3 -c "from lib.snapshot_manager import create_snapshot; print('ok')"` from project root.
+2. Run `python3 -c "from cos_lib.snapshot_manager import create_snapshot; print('ok')"` from project root.
 3. Inspect hook output: `bash hooks/pre-agent-snapshot.sh <<< '{"tool_name":"Agent","tool_input":{}}' 2>&1`.
 
 ---
@@ -87,7 +87,7 @@ bash scripts/chaos/snapshot-crash-rollback.sh
 **What to do on FAIL**:
 1. Inspect the manifest: `cat .cognitive-os/snapshots/<snap-id>/manifest.json`.
 2. Verify backup copy exists: `ls .cognitive-os/snapshots/<snap-id>/`.
-3. Manually restore: `python3 -c "from lib.snapshot_manager import restore_snapshot; from pathlib import Path; print(restore_snapshot(Path('.'), '<snap-id>'))"`.
+3. Manually restore: `python3 -c "from cos_lib.snapshot_manager import restore_snapshot; from pathlib import Path; print(restore_snapshot(Path('.'), '<snap-id>'))"`.
 
 ---
 

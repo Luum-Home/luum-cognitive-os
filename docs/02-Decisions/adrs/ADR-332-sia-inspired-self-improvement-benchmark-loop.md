@@ -11,7 +11,7 @@ implementation_files:
   - scripts/cos-improve-feedback
   - scripts/cos-improve-context
   - scripts/cos_improve.py
-  - lib/improve_loop.py
+  - cos_lib/improve_loop.py
   - skills/self-improvement-loop/SKILL.md
 tier: maintainer
 tags:

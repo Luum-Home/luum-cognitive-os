@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from lib.project_profile_bootstrap import (
+from cos_lib.project_profile_bootstrap import (
     build_project_profile_draft,
     detect_conflicts,
     sanitize_text,

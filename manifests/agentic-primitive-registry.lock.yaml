@@ -3164,7 +3164,7 @@ primitives:
   projection_targets:
   - hooks/worktree-submodule-fix.sh
   sha256: 51e77a00c2090077f0b927193207784c35058e139de8f5a252a298a2bb96bf33
-- id: lib/adapter_compile.py
+- id: cos_lib/adapter_compile.py
   kind: library
   owner_adr: ADR-258
   lifecycle_state: active
@@ -3172,7 +3172,7 @@ primitives:
   distribution: team
   runtime_projection: false
   projection_targets:
-  - lib/adapter_compile.py
+  - cos_lib/adapter_compile.py
   sha256: 6a3d039b4f6a8713115d7f81b9f95fd8b4f0d30355bb3cc97aaa21cd4c39cb95
 - id: manifests/primitive-behavior-evidence.yaml
   kind: manifest
@@ -5443,7 +5443,7 @@ primitives:
   runtime_projection: false
   projection_targets:
   - scripts/cos-adapter-compile
-  - lib/adapter_compile.py
+  - cos_lib/adapter_compile.py
   sha256: 8593bddbf1f7dab6f2b0752890e4fb573571291f95ceb2e078b5fb91c4bab414
 - id: scripts/cos-adapters
   kind: script
@@ -5518,9 +5518,9 @@ primitives:
   runtime_projection: false
   projection_targets:
   - scripts/cos-agent-daemon
-  - lib/agent_daemon.py
-  - lib/agent_lifecycle.py
-  - lib/agent_team.py
+  - cos_lib/agent_daemon.py
+  - cos_lib/agent_lifecycle.py
+  - cos_lib/agent_team.py
   sha256: 3b69ec1501a0f6f3849dad3f659cda1109ee57e69762c1eb37df1b617e05b721
 - id: scripts/cos-agent-flicker-report
   kind: script
@@ -5756,7 +5756,7 @@ primitives:
   projection_targets:
   - scripts/cos-consumer-fleet-audit
   - scripts/cos_consumer_fleet_audit.py
-  - lib/consumer_fleet_audit.py
+  - cos_lib/consumer_fleet_audit.py
   - docs/04-Concepts/architecture/consumer-fleet-audit.md
   sha256: 23e351a9c27a8160bf100f610ebf36483b404f0fb0fc8b8f161701ffd2ef9aab
 - id: scripts/cos-context-plan
@@ -5823,7 +5823,7 @@ primitives:
   projection_targets:
   - scripts/cos-cross-instance-drill
   - scripts/cos_cross_instance_drill.py
-  - lib/cross_instance_learning.py
+  - cos_lib/cross_instance_learning.py
   - docs/04-Concepts/architecture/cross-instance-learning-runway.md
   sha256: 298b47a18439d77c7574ccbe9358abf281d741b4438d2ce7366deb26b1833f7a
 - id: scripts/cos-demotion-loop-audit
@@ -5944,7 +5944,7 @@ primitives:
   projection_targets:
   - scripts/cos-doctrine-proposer
   - scripts/cos_doctrine_proposer.py
-  - lib/doctrine_proposer.py
+  - cos_lib/doctrine_proposer.py
   - docs/02-Decisions/adrs/ADR-135-self-evolving-doctrine-proposals.md
   sha256: f17dda9d774aabab0f94fdb764098479e0c2424c6fc3701a683b64cb5ded0e61
 - id: scripts/cos-document-ingest
@@ -5978,7 +5978,7 @@ primitives:
   - scripts/cos-engram-bundle
   - scripts/cos-engram-import-propose
   - scripts/cos_cross_instance_learning.py
-  - lib/cross_instance_learning.py
+  - cos_lib/cross_instance_learning.py
   sha256: d7004c32e3943fe34075d66f92d7eabe6e67adde2ee2b178695abf7de1eaffbd
 - id: scripts/cos-engram-cloud-docker-smoke
   kind: script
@@ -6002,7 +6002,7 @@ primitives:
   projection_targets:
   - scripts/cos-engram-import-propose
   - scripts/cos_cross_instance_learning.py
-  - lib/cross_instance_learning.py
+  - cos_lib/cross_instance_learning.py
   sha256: f70d8c2911609c030e00a637b35bd60a0058f918a5e26f89902a06adcf972fe1
 - id: scripts/cos-evidence-rank
   kind: script
@@ -6025,7 +6025,7 @@ primitives:
   projection_targets:
   - scripts/cos-export-consumer-evidence
   - scripts/cos_cross_instance_learning.py
-  - lib/cross_instance_learning.py
+  - cos_lib/cross_instance_learning.py
   - manifests/external-adoption-evidence.yaml
   sha256: 655a642b267e3b1dea230b383d91b7458cfbb77b8207a2b51e4385bc3632d06c
 - id: scripts/cos-export-consumer-improvement-proposals
@@ -6048,7 +6048,7 @@ primitives:
   projection_targets:
   - scripts/cos-federation-trigger-audit
   - scripts/cos_cross_instance_learning.py
-  - lib/cross_instance_learning.py
+  - cos_lib/cross_instance_learning.py
   - manifests/federation-triggers.yaml
   sha256: d7fcec9d8752be217e27b07f6b80081cad7f6d823fa1f5930a477971430017f0
 - id: scripts/cos-fingerprint.sh
@@ -6310,7 +6310,7 @@ primitives:
   projection_targets:
   - scripts/cos-import-consumer-evidence
   - scripts/cos_cross_instance_learning.py
-  - lib/cross_instance_learning.py
+  - cos_lib/cross_instance_learning.py
   - manifests/external-adoption-evidence.yaml
   sha256: e2e8535cadb5df441bb49ebcb02722fa3fd2b8f3476e95b0cabdbb345ee0bec9
 - id: scripts/cos-import-consumer-improvement-proposals
@@ -6965,7 +6965,7 @@ primitives:
   projection_targets:
   - scripts/cos-registry-lock
   - scripts/cos_cross_instance_learning.py
-  - lib/cross_instance_learning.py
+  - cos_lib/cross_instance_learning.py
   - manifests/agentic-primitive-registry.lock.yaml
   - skills/REGISTRY.lock
   sha256: 964ad9aa79dd1c937f6b94140a4eeb903f3b837d8d15291f15f8d62c37416904
@@ -7117,7 +7117,7 @@ primitives:
   projection_targets:
   - scripts/cos-self-improvement-loop
   - scripts/cos_self_improvement_loop.py
-  - lib/self_improvement_loop.py
+  - cos_lib/self_improvement_loop.py
   - docs/02-Decisions/adrs/ADR-134-headless-self-improvement-proposer.md
   sha256: c14ec74ebcb12735124131164816721904f54400d8de9b3f4d48dc81a0f6fb63
 - id: scripts/cos-service-readiness-gate
@@ -7642,7 +7642,7 @@ primitives:
   runtime_projection: false
   projection_targets:
   - scripts/cos_agent_message.py
-  - lib/agent_message_bus.py
+  - cos_lib/agent_message_bus.py
   sha256: abb27ab61e46c814b693b6c8823595746b9275e8a27baaafac863adf76c2f61f
 - id: scripts/cos_agent_supervision.py
   kind: script-lib
@@ -8626,7 +8626,7 @@ primitives:
   projection_targets:
   - scripts/orchestrator.py
   - packages/agent-coordination/lib/agent_bus.py
-  - lib/agent_bus_metrics.py
+  - cos_lib/agent_bus_metrics.py
   sha256: 4d1b68c54e4d2e8199baa099213c0cb4522d83b77d92ce9a2db05de0ce74ce17
 - id: scripts/orchestrator_claim_gate.py
   kind: script

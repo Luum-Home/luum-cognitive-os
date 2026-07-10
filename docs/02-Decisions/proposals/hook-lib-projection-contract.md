@@ -12,12 +12,12 @@
 
 ## 1. Problem
 
-Projected Cognitive OS hooks `import lib.*`, but the installer never ships the `lib/`
+Projected Cognitive OS hooks `import cos_lib.*`, but the installer never ships the `lib/`
 package to consumers, so lib-importing hooks are broken in every consumer install. The
 empirical probe (real projection into temp consumer sandboxes via `scripts/cos_init.py`,
-plus one controlled real hook run) found **84 hooks** contain a `from lib.` / `import lib.`
-/ `-m lib.` statement, and **84/84 fail** to import `lib.*` in a consumer under both the
-"no lib" and the "reality" scenarios (isolated `import lib.<module>` probes, 0 passers).
+plus one controlled real hook run) found **84 hooks** contain a `from cos_lib.` / `import cos_lib.`
+/ `-m cos_lib.` statement, and **84/84 fail** to import `cos_lib.*` in a consumer under both the
+"no lib" and the "reality" scenarios (isolated `import cos_lib.<module>` probes, 0 passers).
 Wired-in breakage: **55/55** lib-importing hooks projected in a `--full` install are broken
 and **16/16** in the common `--default` install are broken. The installer projects only a
 hard-coded **2-module subset** (`duplicate_scanner.py`, `project_paths.py`) into
@@ -50,7 +50,7 @@ hook's error handling around the Python call:
   with `2>/dev/null || true`, `|| exit 0`, `$(...)`-capture, or `set -e`-immune command
   substitution (e.g. `rate-limiter.sh` fails open to `"OK"`; `trust-score-validator.sh`
   parses an empty result and warns "missing" then `exit 0`; `completion-gate.sh` wraps every
-  `lib.*` call in `|| true`). They exit 0, but the feature (rate limiting, trust parsing,
+  `cos_lib.*` call in `|| true`). They exit 0, but the feature (rate limiting, trust parsing,
   queue drain, memory prefetch, phase context, telemetry, etc.) is **dead** in every consumer.
 
 ## 3. Options
@@ -63,7 +63,7 @@ Deref and ship all of `lib/` to `.cognitive-os/lib/`; install a single
 `_lib/hook-python-env.sh` that exports `PYTHONPATH=.cognitive-os/lib`, wired via the
 Claude-native settings env where available and sourced from the `_lib` hooks already load.
 
-- **Correctness:** HIGH — every current and future `lib.*` import resolves; no closure gaps.
+- **Correctness:** HIGH — every current and future `cos_lib.*` import resolves; no closure gaps.
 - **Blast radius:** MEDIUM — installer (`cos_init.py`, ~2 functions) + 1 bootstrap file +
   settings driver; **0** hook edits if env-injected, else one source line per hook. Ships
   **369** modules.
@@ -75,7 +75,7 @@ Claude-native settings env where available and sourced from the `_lib` hooks alr
 - **Reversibility:** HIGH — installer-only change; revert + re-init.
 
 ### (b) Dependency-closure projection + shared bootstrap
-Installer statically computes the transitive `lib.*` import set of the hooks actually
+Installer statically computes the transitive `cos_lib.*` import set of the hooks actually
 projected for the active profile and ships exactly those modules (plus their intra-`lib`
 dependencies) to `.cognitive-os/lib/`, plus the same bootstrap as (a).
 
@@ -152,10 +152,10 @@ Commands are run from the SOURCE repo root unless noted.
 
 1. **Closure lib is projected.** After a real `--full` init into a temp consumer, the
    consumer's `.cognitive-os/lib/` contains every module in the projected hooks' transitive
-   `lib.*` closure:
+   `cos_lib.*` closure:
    `python3 scripts/cos_init.py --full <tmp> && test -f <tmp>/.cognitive-os/lib/confidentiality_scanner.py` exits 0.
 2. **Bootstrap present and exports the path.** `test -f <tmp>/.cognitive-os/hooks/cos/_lib/hook-python-env.sh`
-   exits 0, and sourcing it makes `python3 -c "import lib.confidentiality_scanner"` succeed
+   exits 0, and sourcing it makes `python3 -c "import cos_lib.confidentiality_scanner"` succeed
    with cwd = consumer root.
 3. **No false block (Tier-1).** The projected `confidentiality-enforcer.sh`, run in the
    consumer sandbox (cwd = consumer root, `CLAUDE_PROJECT_DIR` = consumer root, benign
@@ -163,7 +163,7 @@ Commands are run from the SOURCE repo root unless noted.
 4. **NEW regression test — consumer-sandbox import contract.** A new test
    (`tests/audit/test_hook_lib_projection.py`, seeded from `…/scratchpad/hook-lib-probe.py`)
    performs a real `cos init` projection into a foreign-cwd temp consumer and, for **every**
-   projected lib-importing hook, asserts: (a) no `ModuleNotFoundError` for any `lib.<module>`
+   projected lib-importing hook, asserts: (a) no `ModuleNotFoundError` for any `cos_lib.<module>`
    it imports, and (b) no hook produces a false `exit 2` on a benign PostToolUse payload.
    `python3 -m pytest tests/audit/test_hook_lib_projection.py -q` exits 0.
 5. **Probe parity.** Re-running the seed probe against a freshly projected consumer reports

@@ -13,7 +13,7 @@ from __future__ import annotations
 import os as _cos_os
 import sys as _cos_sys
 _cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
-from lib.script_helpers import utc_now
+from cos_lib.script_helpers import utc_now
 
 import argparse
 import fnmatch
@@ -29,7 +29,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.script_io import read_json, write_json
+from cos_lib.script_io import read_json, write_json
 
 import yaml
 

@@ -6,7 +6,7 @@ import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 
-from lib.agent_lifecycle import slugify
+from cos_lib.agent_lifecycle import slugify
 
 SCHEMA_VERSION = "branch-per-task/v1"
 DEFAULT_PREFIX = "codex/task"

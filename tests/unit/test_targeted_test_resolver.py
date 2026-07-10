@@ -1,4 +1,4 @@
-"""Behavioral tests for lib.targeted_test_resolver.
+"""Behavioral tests for cos_lib.targeted_test_resolver.
 
 Mutation-safe: each test exercises return values, not just file existence.
 """
@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import pytest
 
-from lib.targeted_test_resolver import resolve_tests_for_changes
+from cos_lib.targeted_test_resolver import resolve_tests_for_changes
 
 
 @pytest.fixture

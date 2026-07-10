@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from lib.performance_ledger import compile_ledger
+from cos_lib.performance_ledger import compile_ledger
 
 
 REPO = Path(__file__).resolve().parents[2]

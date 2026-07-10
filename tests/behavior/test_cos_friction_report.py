@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.friction_telemetry import summarize
+from cos_lib.friction_telemetry import summarize
 
 pytestmark = pytest.mark.behavior
 

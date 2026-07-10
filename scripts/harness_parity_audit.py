@@ -23,7 +23,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.script_io import read_json as _load_json
+from cos_lib.script_io import read_json as _load_json
 
 try:
     import yaml

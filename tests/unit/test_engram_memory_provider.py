@@ -1,5 +1,5 @@
 """
-Unit tests for lib.memory_manager.EngramMemoryProvider.
+Unit tests for cos_lib.memory_manager.EngramMemoryProvider.
 
 Covers:
 - is_available() returns False when engram binary is not on PATH
@@ -25,8 +25,8 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from lib.memory_manager import EngramMemoryProvider
-from lib.memory_scanner import MemoryScanner
+from cos_lib.memory_manager import EngramMemoryProvider
+from cos_lib.memory_scanner import MemoryScanner
 
 
 # ---------------------------------------------------------------------------

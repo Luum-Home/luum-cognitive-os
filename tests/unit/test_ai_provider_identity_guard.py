@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from lib.ai_provider_identity_guard import scan_text
+from cos_lib.ai_provider_identity_guard import scan_text
 
 
 def _policy() -> dict:

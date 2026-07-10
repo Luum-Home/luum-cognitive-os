@@ -85,6 +85,6 @@ No unintentional duplicates this round.
 
 - `ADR-028.md:584` `[ ] Killswitch sourced as first real line` → blocks `killswitch_check.sh` from SHIPPED
 - `ADR-028.md:585` `[ ] All & / nohup / disown register a PID` → partial (register-bg.sh exists but not universally sourced)
-- `ADR-028.md:587` `[ ] All JSONL writes use lib.metric_event` → partial
+- `ADR-028.md:587` `[ ] All JSONL writes use cos_lib.metric_event` → partial
 - `ADR-028a.md:320` `[ ] Add Complements ADR-028 D1.C comment to agent_bus_metrics.py` → cosmetic
 - ADR-028 action item to add `so-slo` ref-key to `RULES-COMPACT.md` → open

@@ -223,7 +223,7 @@ class TestLibraryExists:
         assert lib_path.exists(), "lib/code_reviewer.py must exist"
 
     def test_code_reviewer_importable(self):
-        from lib.code_reviewer import CodeReviewer, ReviewFinding, ReviewReport
+        from cos_lib.code_reviewer import CodeReviewer, ReviewFinding, ReviewReport
         assert CodeReviewer is not None
         assert ReviewFinding is not None
         assert ReviewReport is not None

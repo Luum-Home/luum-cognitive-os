@@ -11,7 +11,7 @@ import pytest
 from pathlib import Path
 
 # Use real parser to catch parser regressions too
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "lib"))
+sys.path.insert(0, str(Path(__file__).parent.parent.parent / "cos_lib"))
 from session_hygiene import _fm
 
 REPO = Path(__file__).parent.parent.parent

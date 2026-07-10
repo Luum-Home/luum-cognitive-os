@@ -6,7 +6,7 @@ import tempfile
 
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
-from lib.self_improvement import (
+from cos_lib.self_improvement import (
     analyze_kpi_history,
     suggest_improvements,
     format_improvement_report,

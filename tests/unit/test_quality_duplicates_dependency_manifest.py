@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from lib.manifest_loader import load_manifest
+from cos_lib.manifest_loader import load_manifest
 
 
 def test_duplicate_quality_tools_are_manifested_for_installable_profiles() -> None:

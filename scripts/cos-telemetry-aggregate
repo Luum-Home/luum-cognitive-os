@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SCOPE: os-only
-"""CLI wrapper for lib.telemetry_aggregator (ADR-304).
+"""CLI wrapper for cos_lib.telemetry_aggregator (ADR-304).
 
 Reads manifests/observability-slo.yaml, evaluates each SLO against its source
 stream, writes a snapshot, and appends breach findings to the control-plane
@@ -17,7 +17,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from lib.telemetry_aggregator import (  # noqa: E402
+from cos_lib.telemetry_aggregator import (  # noqa: E402
     aggregate_streams,
     append_findings_idempotent,
     write_snapshot,

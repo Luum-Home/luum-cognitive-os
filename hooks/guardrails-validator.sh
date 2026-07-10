@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # @on-demand: fired via /guardrails skill invocation; requires GUARDRAILS_ENABLED=true
 # PostToolUse hook: Guardrails AI Validator
 # Fires on "Agent" tool use — runs PII check on agent responses
@@ -67,7 +67,7 @@ PII_RESULT=$(python3 -c "
 import sys
 import json
 sys.path.insert(0, '$SCRIPT_DIR')
-from lib.guardrails_validators import check_pii
+from cos_lib.guardrails_validators import check_pii
 
 text = sys.stdin.read()
 findings = check_pii(text)

@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 import yaml
 
-from lib.skill_router import (
+from cos_lib.skill_router import (
     SkillRouter,
     _detect_skill_md_paths,
     _load_routing_from_frontmatter,

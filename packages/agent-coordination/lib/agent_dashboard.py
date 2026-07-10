@@ -197,7 +197,7 @@ class AgentDashboard:
 
     def run(self) -> None:
         """Run the dashboard in a loop."""
-        from lib.agent_bus import OrchestratorSubscriber, is_valkey_available
+        from cos_lib.agent_bus import OrchestratorSubscriber, is_valkey_available
 
         if not is_valkey_available(self.valkey_url):
             print("ERROR: Valkey is not available at %s" % self.valkey_url)

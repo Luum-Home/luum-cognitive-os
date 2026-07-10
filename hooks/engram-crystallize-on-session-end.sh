@@ -43,7 +43,7 @@ run_crystallizer() {
 import signal
 import sys
 sys.path.insert(0, '${HOOK_REPO_ROOT}')
-from lib.engram_crystallizer import EngramCrystallizer
+from cos_lib.engram_crystallizer import EngramCrystallizer
 signal.alarm(int('${COS_ENGRAM_CRYSTALLIZER_TIMEOUT_SECONDS:-10}'))
 digests = EngramCrystallizer().crystallize_all()
 print(len(digests))

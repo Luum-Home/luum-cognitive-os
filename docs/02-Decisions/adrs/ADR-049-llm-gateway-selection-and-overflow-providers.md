@@ -592,7 +592,7 @@ After rollout completion:
 python3 scripts/cos-config-audit.sh | grep llm_providers_reachable
 
 # Direct SDK smoke test
-python3 -c "from lib.model_router import dispatch; print(dispatch('test', budget_usd=0.01))"
+python3 -c "from cos_lib.model_router import dispatch; print(dispatch('test', budget_usd=0.01))"
 
 # No LiteLLM/Bifrost containers
 docker ps --filter name=cognitive-os- --format '{{.Names}}' | grep -E 'litellm|bifrost'

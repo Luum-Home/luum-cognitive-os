@@ -21,7 +21,7 @@ tags:
 - manifests
 - tooling
 implementation_files:
-- lib/dependency_coverage_audit.py
+- cos_lib/dependency_coverage_audit.py
 - scripts/cos-deps-coverage-audit
 - tests/unit/test_dependency_coverage_audit.py
 adr: 305
@@ -142,8 +142,8 @@ Implemented files:
 
 The implementation intentionally reuses existing COS helpers where practical:
 
-- `lib.manifest_loader.load_manifest` for ADR-168 dependency manifest parsing.
-- `lib.external_tool_intelligence` package parsers and normalization helpers.
+- `cos_lib.manifest_loader.load_manifest` for ADR-168 dependency manifest parsing.
+- `cos_lib.external_tool_intelligence` package parsers and normalization helpers.
 - `manifests/external-tools-adoption.yaml` for REMOVE/REJECT policy signals.
 
 ## Alternatives rejected

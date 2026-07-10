@@ -32,9 +32,9 @@
 
 set -uo pipefail
 
-# ── Bootstrap: PYTHONPATH for hooks that `import lib.<mod>` ─────────────────
+# ── Bootstrap: PYTHONPATH for hooks that `import cos_lib.<mod>` ─────────────────
 # ADR: hook-lib-projection-contract — set PYTHONPATH so hooks that import
-# lib.* resolve against the projected .cognitive-os/lib/ package. Must run
+# cos_lib.* resolve against the projected .cognitive-os/lib/ package. Must run
 # before the killswitch exec below so the exported PYTHONPATH is inherited by
 # the real hook on both the killswitch path and the normal invocation path.
 _HOOK_ENV_LIB="$(dirname "${BASH_SOURCE[0]}")/../hooks/cos/_lib/hook-python-env.sh"

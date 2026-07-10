@@ -12,7 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from lib.operational_status import build_status  # noqa: E402
+from cos_lib.operational_status import build_status  # noqa: E402
 
 
 def render_text(payload: dict) -> str:

@@ -49,7 +49,7 @@ import json, sys
 from pathlib import Path
 sys.path.insert(0, sys.argv[1])
 try:
-    from lib.history_rewrite_ledger import find_orphan_bundles
+    from cos_lib.history_rewrite_ledger import find_orphan_bundles
     orphans = [str(p.relative_to(Path(sys.argv[1]))) for p in find_orphan_bundles(Path(sys.argv[1]))]
     print(json.dumps({"status": "ok", "orphans": orphans}))
 except Exception as exc:

@@ -31,14 +31,14 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.goal_state import (
+from cos_lib.goal_state import (
     EvidencePacket,
     CommandEvidence,
     GoalState,
     GoalStateStore,
     apply_transition,
 )
-from lib.harness_adapter.goal_stop import detect_enforcement_level, parse_stop_event
+from cos_lib.harness_adapter.goal_stop import detect_enforcement_level, parse_stop_event
 
 HOOK_PATH = ROOT / "hooks" / "goal-stop-gate.sh"
 
@@ -486,7 +486,7 @@ class TestGoalContinuationBoundedRateLimiterCarveout:
 
 
 class TestDetectEnforcementLevel:
-    """Unit tests for lib.harness_adapter.goal_stop.detect_enforcement_level."""
+    """Unit tests for cos_lib.harness_adapter.goal_stop.detect_enforcement_level."""
 
     def test_returns_dict_with_support_level(self, tmp_path):
         result = detect_enforcement_level(project_dir=tmp_path)
@@ -672,8 +672,8 @@ class TestStopHookFailClosed:
         if str(ROOT) not in _sys.path:
             _sys.path.insert(0, str(ROOT))
 
-        from lib.goal_state import GoalStateStore, _ALLOW_STOP_STATUSES
-        import lib.goal_evaluator as ge_module
+        from cos_lib.goal_state import GoalStateStore, _ALLOW_STOP_STATUSES
+        import cos_lib.goal_evaluator as ge_module
 
         # Create an active goal with evidence so the evaluator path is reached
         base_dir = tmp_path / ".cognitive-os" / "goals"
@@ -820,7 +820,7 @@ class TestGoalContinuationBoundedContract:
         goal = _make_active_goal()
         store.save(goal)
         # Transition to budget_limited (hard stop)
-        from lib.goal_state import apply_transition
+        from cos_lib.goal_state import apply_transition
         bl_goal = apply_transition(goal, "budget_limited")
         store.save(bl_goal)
 

@@ -16,8 +16,8 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from lib.metric_event import MetricEvent, append_event
-from lib.skill_efficacy import format_markdown, load_runs_from_archive, summarize_runs, task_fingerprint
+from cos_lib.metric_event import MetricEvent, append_event
+from cos_lib.skill_efficacy import format_markdown, load_runs_from_archive, summarize_runs, task_fingerprint
 
 DEFAULT_TASKS = PROJECT_ROOT / ".cognitive-os" / "tests" / "skill-efficacy" / "tasks.json"
 DEFAULT_ARCHIVE = PROJECT_ROOT / ".cognitive-os" / "metrics" / "skill-efficacy-smoke.jsonl"

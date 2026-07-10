@@ -35,16 +35,16 @@ from typing import Optional
 _REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(_REPO_ROOT))
 
-from lib.record_completion import (
+from cos_lib.record_completion import (
     _MODEL_PRICING,
     _DEFAULT_PRICING,
     _get_pricing,
     calculate_cost_usd,
     find_session_jsonl,
 )
-from lib.metric_event import MetricEvent, append_event
-from lib.paths import runtime_project_root_or_cwd
-from lib.token_usage import summarize_usage_jsonl
+from cos_lib.metric_event import MetricEvent, append_event
+from cos_lib.paths import runtime_project_root_or_cwd
+from cos_lib.token_usage import summarize_usage_jsonl
 
 _TRANSCRIPT_ENV_VARS = (
     "COGNITIVE_OS_SESSION_JSONL",

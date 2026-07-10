@@ -41,7 +41,7 @@ fi
 _SCAN_RESULT=$(python3 -c "
 import sys
 sys.path.insert(0, '$_PROJECT_DIR')
-from lib.safe_engram import scan_only_check
+from cos_lib.safe_engram import scan_only_check
 print(scan_only_check(sys.stdin.read()))
 " <<< "$prompt_text" 2>/dev/null || echo "OK")
 
@@ -70,7 +70,7 @@ sys.path.insert(0, '$_PROJECT_DIR')
 prompt_text = json.loads(sys.stdin.read())
 
 try:
-    from lib.prompt_classifier import classify_prompt
+    from cos_lib.prompt_classifier import classify_prompt
     result = classify_prompt(prompt_text)
 
     if not result.should_capture:
@@ -107,7 +107,7 @@ echo "$prompt_text" | python3 "$_PROJECT_DIR/lib/process_user_message.py" >/dev/
 # input never stalls.
 PEER_CARD_RESULT=$(
   printf '%s' "$prompt_text" \
-    | PYTHONPATH="$_PROJECT_DIR" python3 -m lib.peer_card hook 2>/dev/null \
+    | PYTHONPATH="$_PROJECT_DIR" python3 -m cos_lib.peer_card hook 2>/dev/null \
     || echo '{"confidence":"none","reason":"hook_error"}'
 )
 

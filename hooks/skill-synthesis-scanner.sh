@@ -63,7 +63,7 @@ from datetime import datetime, timezone
 
 sys.path.insert(0, "$PROJECT_DIR")
 try:
-    from lib.skill_synthesizer import (
+    from cos_lib.skill_synthesizer import (
         find_recurring_sequences,
         propose_skill_draft,
         auto_promote_eligible,

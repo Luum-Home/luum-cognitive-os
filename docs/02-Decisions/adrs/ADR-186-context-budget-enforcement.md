@@ -11,7 +11,7 @@ extends: [ADR-038]
 implementation_files:
   - hooks/context-budget-meter.sh
   - hooks/_lib/context_budget_lib.sh
-  - lib/context_budget.py
+  - cos_lib/context_budget.py
   - tests/contracts/test_context_budget_enforcement.py
   - tests/unit/test_context_budget.py
   - .cognitive-os/metrics/context-budget.jsonl # runtime artifact

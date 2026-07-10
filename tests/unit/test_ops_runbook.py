@@ -1,5 +1,5 @@
 # SCOPE: os-only
-"""Behavior tests for lib.ops_runbook (ADR-054 Phase 2)."""
+"""Behavior tests for cos_lib.ops_runbook (ADR-054 Phase 2)."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 
 
-from lib.ops_runbook import FILES, FOOTER, HEADER, OpsRunbookScaffolder
+from cos_lib.ops_runbook import FILES, FOOTER, HEADER, OpsRunbookScaffolder
 
 
 EXPECTED_FILES = {"operations.md", "admin-processes.md", "monitoring.md"}

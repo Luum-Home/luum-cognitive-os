@@ -13,7 +13,7 @@
 - `lib/goal_state.py` — GoalState/EvidencePacket/CommandEvidence/EvaluatorVerdict + GoalStateStore (workspace-scoped fcntl lock, append-only events) + state transitions
 - `lib/goal_evidence.py` — explicit-packet parser/validator (JSON + fenced markdown)
 - `lib/goal_evaluator.py` — deterministic self-evaluator with 4 rule types (file_exists, test_command_passes, regex_match, command_exit_zero); prompt template with `<untrusted_*>` escape (REQ-014); seam-only model-adapter mention (OD-001)
-- `lib/goal_budget.py` — 4-dimension budget enforcement (turns/wall-clock/tokens/cost) wired to `lib.dispatch._metrics_path()` (OD-002)
+- `lib/goal_budget.py` — 4-dimension budget enforcement (turns/wall-clock/tokens/cost) wired to `cos_lib.dispatch._metrics_path()` (OD-002)
 - `packages/agent-lifecycle/lib/harness_adapter/goal_stop.py` — ADR-064 harness adapter (CC-only in MVP)
 - `scripts/cos_goal.py` + `scripts/cos-goal` — operator CLI (create/status/pause/resume/clear/archive/evaluate/doctor)
 - `hooks/goal-stop-gate.sh` — Stop hook gate; registered in templates/security-profiles/{standard,paranoid}.json + scripts/_lib/settings-driver-claude-code.sh + cognitive-os.yaml harness.hooks

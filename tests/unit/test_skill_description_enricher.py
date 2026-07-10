@@ -18,7 +18,7 @@ from typing import Any, Callable
 
 import pytest
 
-from lib.skill_description_enricher import (
+from cos_lib.skill_description_enricher import (
     AUDIT_REL,
     enrich_skills,
     parse_llm_response,
@@ -346,7 +346,7 @@ def test_enriched_corpus_improves_baseline_routing(tmp_path: Path) -> None:
     pytest.importorskip("fastembed")
     pytest.importorskip("numpy")
 
-    from lib.semantic_skill_matcher import (
+    from cos_lib.semantic_skill_matcher import (
         SemanticSkillMatcher,
         _SkillIndex,
     )

@@ -23,7 +23,7 @@ import sys
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.token_usage import summarize_usage_jsonl  # noqa: E402
+from cos_lib.token_usage import summarize_usage_jsonl  # noqa: E402
 
 DEFAULT_ARCHIVE = ROOT / ".cognitive-os" / "metrics" / "token-optimization-consumer-smoke.jsonl"
 DEFAULT_REPORT = ROOT / ".cognitive-os" / "reports" / "token-optimization-consumer-smoke.md"

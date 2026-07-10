@@ -59,7 +59,7 @@ fi
 say "Check 2 / 4 — qwen_provider.call() live smoke"
 live_result=$(
   uv run python3 -c "
-from lib.qwen_provider import call, is_configured
+from cos_lib.qwen_provider import call, is_configured
 if not is_configured():
     print('UNCONFIGURED'); raise SystemExit(0)
 r = call(

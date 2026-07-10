@@ -23,7 +23,7 @@ def _write_jsonl(path: Path, records: list[dict]) -> None:
 
 class TestIsAvailableCheck:
     def test_returns_bool(self):
-        from lib.mlflow_bridge import MLflowBridge
+        from cos_lib.mlflow_bridge import MLflowBridge
         result = MLflowBridge.is_available()
         assert isinstance(result, bool)
 
@@ -31,7 +31,7 @@ class TestIsAvailableCheck:
         fake_mlflow = MagicMock()
         with patch.dict(sys.modules, {"mlflow": fake_mlflow}):
             from importlib import reload
-            import lib.mlflow_bridge as mod
+            import cos_lib.mlflow_bridge as mod
             reload(mod)
             assert mod.MLflowBridge.is_available() is True
 
@@ -50,7 +50,7 @@ class TestIsAvailableCheck:
 
             with patch("builtins.__import__", side_effect=fake_import):
                 from importlib import reload
-                import lib.mlflow_bridge as mod
+                import cos_lib.mlflow_bridge as mod
                 reload(mod)
                 assert mod.MLflowBridge.is_available() is False
         finally:
@@ -62,7 +62,7 @@ class TestGracefulWithoutMlflow:
     """All public methods must succeed even when mlflow is absent."""
 
     def _bridge_no_mlflow(self):
-        from lib.mlflow_bridge import MLflowBridge
+        from cos_lib.mlflow_bridge import MLflowBridge
         b = MLflowBridge.__new__(MLflowBridge)
         b._tracking_uri = "sqlite:///mlflow.db"
         b._mlflow = None  # simulate not installed
@@ -95,7 +95,7 @@ class TestLogAgentRunSchema:
         fake_mlflow.start_run.return_value.__exit__ = MagicMock(return_value=False)
         fake_mlflow.get_experiment_by_name.return_value = MagicMock(experiment_id="1")
 
-        from lib.mlflow_bridge import MLflowBridge
+        from cos_lib.mlflow_bridge import MLflowBridge
         b = MLflowBridge.__new__(MLflowBridge)
         b._mlflow = fake_mlflow
         b._tracking_uri = "sqlite:///mlflow.db"
@@ -119,7 +119,7 @@ class TestLogAgentCompletionSchema:
         fake_mlflow.start_run.return_value.__exit__ = MagicMock(return_value=False)
         fake_mlflow.get_experiment_by_name.return_value = MagicMock(experiment_id="4")
 
-        from lib.mlflow_bridge import MLflowBridge
+        from cos_lib.mlflow_bridge import MLflowBridge
         bridge = MLflowBridge.__new__(MLflowBridge)
         bridge._mlflow = fake_mlflow
         bridge._tracking_uri = "sqlite:///mlflow.db"
@@ -176,7 +176,7 @@ class TestLogAgentCompletionSchema:
         assert params["skill_name"] == "broken-skill"
 
     def test_completion_noops_without_mlflow(self):
-        from lib.mlflow_bridge import MLflowBridge
+        from cos_lib.mlflow_bridge import MLflowBridge
         bridge = MLflowBridge.__new__(MLflowBridge)
         bridge._mlflow = None
         bridge._tracking_uri = "sqlite:///mlflow.db"
@@ -210,7 +210,7 @@ class TestSyncCostEventsReadsJsonl:
             metrics_dir.mkdir()
             _write_jsonl(metrics_dir / "cost-events.jsonl", records)
 
-            from lib.mlflow_bridge import MLflowBridge
+            from cos_lib.mlflow_bridge import MLflowBridge
             b = MLflowBridge.__new__(MLflowBridge)
             b._mlflow = fake_mlflow
             b._tracking_uri = "sqlite:///mlflow.db"
@@ -240,7 +240,7 @@ class TestSyncSkillMetricsReadsJsonl:
             metrics_dir.mkdir()
             _write_jsonl(metrics_dir / "skill-metrics.jsonl", records)
 
-            from lib.mlflow_bridge import MLflowBridge
+            from cos_lib.mlflow_bridge import MLflowBridge
             b = MLflowBridge.__new__(MLflowBridge)
             b._mlflow = fake_mlflow
             b._tracking_uri = "sqlite:///mlflow.db"
@@ -253,7 +253,7 @@ class TestSyncSkillMetricsReadsJsonl:
 
 class TestFormatSyncReport:
     def test_readable_string(self):
-        from lib.mlflow_bridge import MLflowBridge
+        from cos_lib.mlflow_bridge import MLflowBridge
         b = MLflowBridge.__new__(MLflowBridge)
         b._mlflow = None
         report = b.format_sync_report({"synced": 42, "skipped": 5, "errors": 0})
@@ -262,7 +262,7 @@ class TestFormatSyncReport:
         assert "0" in report
 
     def test_format_with_errors(self):
-        from lib.mlflow_bridge import MLflowBridge
+        from cos_lib.mlflow_bridge import MLflowBridge
         b = MLflowBridge.__new__(MLflowBridge)
         b._mlflow = None
         report = b.format_sync_report({"synced": 10, "skipped": 2, "errors": 3})
@@ -277,7 +277,7 @@ class TestSessionSummarySchema:
         fake_mlflow.start_run.return_value.__exit__ = MagicMock(return_value=False)
         fake_mlflow.get_experiment_by_name.return_value = MagicMock(experiment_id="3")
 
-        from lib.mlflow_bridge import MLflowBridge
+        from cos_lib.mlflow_bridge import MLflowBridge
         b = MLflowBridge.__new__(MLflowBridge)
         b._mlflow = fake_mlflow
         b._tracking_uri = "sqlite:///mlflow.db"
@@ -311,7 +311,7 @@ class TestDeduplication:
             _write_jsonl(metrics_dir / "cost-events.jsonl", records)
             synced_ids_file = str(Path(tmpdir) / ".mlflow-synced-ids")
 
-            from lib.mlflow_bridge import MLflowBridge
+            from cos_lib.mlflow_bridge import MLflowBridge
             b = MLflowBridge.__new__(MLflowBridge)
             b._mlflow = fake_mlflow
             b._tracking_uri = "sqlite:///mlflow.db"

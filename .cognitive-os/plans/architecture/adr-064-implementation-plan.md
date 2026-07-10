@@ -74,7 +74,7 @@ ADR-064 declares **four surfaces**. Surface 1 is shipped via ADR-033. Surfaces 2
   2. `CodexAdapter.detect_harness` returns `HarnessName.CODEX` for payloads carrying `codex_session_id` or env-tagged `COGNITIVE_OS_HARNESS=codex`, else `None`. Verification: covered by unit test.
   3. The adapter handles the documented gap (Codex emits Pre/Post only for Bash per ADR-064 lines 24–27): non-Bash tools produce a `ParseError` canonical event with `reason="codex_tool_coverage_gap"` rather than silent skip. Verification: `grep -c "codex_tool_coverage_gap" lib/harness_adapter/codex.py` ≥ 1.
   4. Added to `dispatch.py:41` `ADAPTERS` list; existing CC dispatch tests still pass. Verification: `pytest tests/integration/test_harness_adapter_dispatch.py -v`.
-  5. New `HarnessName.CODEX = "codex"` enum value in `base.py:30`. Verification: `python -c "from lib.harness_adapter.base import HarnessName; assert HarnessName.CODEX.value == 'codex'"`.
+  5. New `HarnessName.CODEX = "codex"` enum value in `base.py:30`. Verification: `python -c "from cos_lib.harness_adapter.base import HarnessName; assert HarnessName.CODEX.value == 'codex'"`.
 - Files touched: `lib/harness_adapter/codex.py` (new), `lib/harness_adapter/base.py` (enum addition), `lib/harness_adapter/dispatch.py` (registry), `tests/unit/test_harness_adapter_codex.py` (new).
 - Files NOT touched: `claude_code.py`, `aider.py`, all `.claude/` and `.codex/` configs.
 

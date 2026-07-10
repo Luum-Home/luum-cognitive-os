@@ -100,7 +100,7 @@ Rules are pure behavioral constraints. They define what agents MUST and MUST NOT
 **Design constraints:**
 - A rule describes WHAT, never HOW. "Every agent completion must include a Trust Report" is a rule. "Extract the score with grep and log it to JSONL" is a hook's job.
 - Rules are model-agnostic. They work whether the LLM is Claude, GPT, Gemini, or a local model.
-- Rules reference other rules by name, never by file path of a hook or lib.
+- Rules reference other rules by name, never by file path of a hook or cos_lib.
 
 **Antipattern: Rule-as-documentation.** When a rule exceeds ~60 lines, it is mixing behavioral constraint (WHAT) with implementation guidance (HOW) and rationale (WHY). Fix: keep the rule concise; move documentation to `docs/`.
 
@@ -283,7 +283,7 @@ The further inward the layer, the more stable it is. Rules almost never change. 
 
 **Fix:** Move the logic to a `lib/*.py` module. The hook becomes a thin caller: detect the condition, invoke the lib function, log the result.
 
-**Test:** If a hook needs unit tests for its internal logic, that logic belongs in a lib.
+**Test:** If a hook needs unit tests for its internal logic, that logic belongs in a cos_lib.
 
 ### 3. Skill-calling-code
 

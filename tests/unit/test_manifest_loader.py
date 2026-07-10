@@ -16,7 +16,7 @@ from pathlib import Path
 import pytest
 import yaml
 
-from lib.manifest_loader import (
+from cos_lib.manifest_loader import (
     SCHEMA_VERSION,
     Manifest,
     ManifestError,

@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.session_coordination import (
+from cos_lib.session_coordination import (
     acquire_claim,
     adr_tombstone_findings,
     read_claims,

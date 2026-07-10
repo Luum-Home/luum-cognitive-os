@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.governed_self_improvement import (
+from cos_lib.governed_self_improvement import (
     create_improvement_draft,
     promote_improvement_draft,
     suggest_improvement_signals,

@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.cost_dashboard import (
+from cos_lib.cost_dashboard import (
     CostDashboard,
     SessionCostReport,
     record_cost_event,

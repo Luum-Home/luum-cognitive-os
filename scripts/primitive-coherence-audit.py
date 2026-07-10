@@ -9,7 +9,7 @@ from __future__ import annotations
 import os as _cos_os
 import sys as _cos_sys
 _cos_sys.path.insert(0, _cos_os.path.dirname(_cos_os.path.dirname(__file__)))
-from lib.script_helpers import read_yaml_dict as load_yaml
+from cos_lib.script_helpers import read_yaml_dict as load_yaml
 
 import argparse
 import json

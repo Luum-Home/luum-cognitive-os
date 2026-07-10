@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 
 
-from lib.repetition_detector import RepetitionDetector
+from cos_lib.repetition_detector import RepetitionDetector
 
 
 # ---------------------------------------------------------------------------
