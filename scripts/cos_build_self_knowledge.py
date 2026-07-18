@@ -153,7 +153,7 @@ def _scan_bash(path: Path) -> dict[str, Any]:
 # ---------------------------------------------------------------------------
 
 _PY_IMPORT_RE = re.compile(
-    r'^(?:from|import)\s+(lib\.\w[\w.]*|hooks\._lib\.\w[\w.]*|packages\.\w[\w.]*)',
+    r'^(?:from|import)\s+(cos_lib\.\w[\w.]*|lib\.\w[\w.]*|hooks\._lib\.\w[\w.]*|packages\.\w[\w.]*)',
     re.MULTILINE,
 )
 _BASH_SOURCE_RE = re.compile(
@@ -309,6 +309,7 @@ def _collect_source_files(project_dir: Path) -> list[Path]:
     """Return all Python + Bash files in the indexed trees."""
     files: list[Path] = []
     search_roots = [
+        project_dir / "cos_lib",
         project_dir / "lib",
         project_dir / "hooks",
         project_dir / "scripts",

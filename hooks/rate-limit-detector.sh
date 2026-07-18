@@ -78,7 +78,7 @@ fi
 touch "$SEEN_FLAG" 2>/dev/null || true
 
 # Build the advisory message based on what's actually configured
-if [ -n "${ALIBABA_QWEN_API_KEY:-}" ] && [ -f "$PROJECT_DIR/lib/qwen_provider.py" ]; then
+if [ -n "${ALIBABA_QWEN_API_KEY:-}" ] && [ -f "$PROJECT_DIR/cos_lib/qwen_provider.py" ]; then
   cat >&2 <<'ADV'
 [rate-limit-detector] Claude Code subscription rate-limit detected.
   Overflow available: Alibaba Qwen Coding Plan Pro (ADR-049).
@@ -86,7 +86,7 @@ if [ -n "${ALIBABA_QWEN_API_KEY:-}" ] && [ -f "$PROJECT_DIR/lib/qwen_provider.py
   tool for remaining sub-agents this session. Or run:
     python3 -c "from cos_lib.qwen_provider import call; print(call([{'role':'user','content':'hi'}]).text)"
 ADV
-elif [ -f "$PROJECT_DIR/lib/qwen_provider.py" ]; then
+elif [ -f "$PROJECT_DIR/cos_lib/qwen_provider.py" ]; then
   cat >&2 <<'ADV'
 [rate-limit-detector] Claude Code subscription rate-limit detected.
   ADR-049 overflow module present (cos_lib/qwen_provider.py) but NOT configured.

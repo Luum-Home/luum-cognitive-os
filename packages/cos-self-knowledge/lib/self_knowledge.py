@@ -264,6 +264,7 @@ def is_index_stale(project_dir: Path | None = None) -> bool:
             return False
 
         search_roots = [
+            project_dir / "cos_lib",
             project_dir / "lib",
             project_dir / "hooks",
             project_dir / "scripts",

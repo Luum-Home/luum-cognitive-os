@@ -138,7 +138,7 @@ class TestConfiguredAdvice(unittest.TestCase):
         if flag.exists():
             flag.unlink()
         r = _run("out of extra usage · resets 2pm", env=env)
-        self.assertIn("Dispatch via lib/qwen_provider.py", r.stderr)
+        self.assertIn("Dispatch via cos_lib/qwen_provider.py", r.stderr)
         # Cleanup
         if flag.exists():
             flag.unlink()
