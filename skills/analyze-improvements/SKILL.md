@@ -64,7 +64,7 @@ The report is designed to be pasted directly into `/apply-improvements` as input
 
 ## Instructions
 
-### Step 0: Quick Analysis via lib/self_improvement.py + lib/feedback_consumer.py
+### Step 0: Quick Analysis via cos_lib/self_improvement.py + cos_lib/feedback_consumer.py
 
 Run the pre-built analysis first to get a baseline:
 
