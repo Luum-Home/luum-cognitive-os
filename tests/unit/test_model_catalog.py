@@ -342,8 +342,8 @@ class TestAllHardcodedModelsInCatalog:
     )
 
     def test_all_lib_model_ids_in_catalog(self) -> None:
-        lib_dir = Path(__file__).resolve().parent.parent.parent / "lib"
-        assert lib_dir.is_dir(), f"lib directory not found at {lib_dir}"
+        lib_dir = Path(__file__).resolve().parent.parent.parent / "cos_lib"
+        assert lib_dir.is_dir(), f"cos_lib directory not found at {lib_dir}"
 
         missing: list[str] = []
         all_aliases = ModelCatalog.all_aliases()

@@ -55,7 +55,7 @@ def _classify_single(path: str) -> str:
     # Directory-based rules
     parts = norm.split("/")
     top = parts[0] if parts else ""
-    if top in ("lib",):
+    if top in ("cos_lib", "lib"):
         return "lib"
     if top in ("hooks",):
         return "hooks"
