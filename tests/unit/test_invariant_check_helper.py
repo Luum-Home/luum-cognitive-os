@@ -110,7 +110,7 @@ def test_adr_id_preserves_leading_zeros() -> None:
 
 def test_module_path_trims_absolute_prefix(tmp_path: Path) -> None:
     # Absolute path should resolve to a plausible dotted module based on anchor
-    abs_path = str(Path("/") / "Users" / "x" / "project" / "lib" / "session_watchdog_lib.py")
+    abs_path = str(Path("/") / "Users" / "x" / "project" / "cos_lib" / "session_watchdog_lib.py")
     mp = _mod.module_path(abs_path)
     assert mp == "cos_lib.session_watchdog_lib"
 

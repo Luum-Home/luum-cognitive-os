@@ -170,7 +170,7 @@ def test_rate_limit_degrades_to_none(tmp_project: Path, monkeypatch: pytest.Monk
 # ---------------------------------------------------------------------------
 
 def test_vendor_neutral_no_hardcoded_provider() -> None:
-    module_path = Path(__file__).resolve().parents[2] / "lib" / "llm_routing_fallback.py"
+    module_path = Path(__file__).resolve().parents[2] / "cos_lib" / "llm_routing_fallback.py"
     src = module_path.read_text(encoding="utf-8")
     # No direct vendor SDK imports
     assert "import anthropic" not in src
