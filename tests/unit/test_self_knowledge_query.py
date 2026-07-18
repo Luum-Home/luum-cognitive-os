@@ -35,7 +35,7 @@ SK = _load_module("self_knowledge", _SK_PATH)
 def indexed_project(tmp_path: Path) -> Path:
     """Create and index a project with known content."""
     # lib/rate_limiter.py
-    lib = tmp_path / "lib"
+    lib = tmp_path / "cos_lib"
     lib.mkdir()
     (lib / "rate_limiter.py").write_text(
         textwrap.dedent("""\
