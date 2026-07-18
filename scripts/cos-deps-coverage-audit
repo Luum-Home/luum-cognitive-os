@@ -13,4 +13,4 @@ if [ -z "${PYTHON_BIN:-}" ]; then
     PYTHON_BIN="python3"
   fi
 fi
-exec "$PYTHON_BIN" "$REPO_ROOT/lib/dependency_coverage_audit.py" "$@"
+exec "$PYTHON_BIN" "$REPO_ROOT/cos_lib/dependency_coverage_audit.py" "$@"

@@ -206,7 +206,7 @@ def test_cli_emits_json(tmp_path: Path) -> None:
     result = subprocess.run(
         [
             "python3",
-            str(Path(__file__).resolve().parents[2] / "lib" / "dependency_coverage_audit.py"),
+            str(Path(__file__).resolve().parents[2] / "cos_lib" / "dependency_coverage_audit.py"),
             "--root",
             str(tmp_path),
             "--manifest",

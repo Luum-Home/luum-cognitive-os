@@ -4,4 +4,4 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 PYTHON="${PYTHON:-python3}"
-exec "$PYTHON" "$REPO_ROOT/lib/harness_action_receipts.py" "$@"
+exec "$PYTHON" "$REPO_ROOT/cos_lib/harness_action_receipts.py" "$@"

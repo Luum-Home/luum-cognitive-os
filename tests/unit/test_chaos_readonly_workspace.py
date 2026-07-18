@@ -26,7 +26,7 @@ def test_snapshot_restores_modified_production_file(tmp_path: Path) -> None:
     mutations = guard.restore_source_mutations(tmp_path, snapshot)
 
     assert target.read_text(encoding="utf-8") == "original\n"
-    assert [(m.kind, m.path) for m in mutations] == [("modified-restored", "cos_lib/example.py")]
+    assert [(m.kind, m.path) for m in mutations] == [("modified-restored", "lib/example.py")]
 
 
 def test_snapshot_removes_added_production_file(tmp_path: Path) -> None:
