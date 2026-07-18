@@ -121,7 +121,8 @@ class TestBrokenChains:
 
     def test_ignores_valid_import(self, detector, tmp_project):
         """An import to an existing module should NOT be flagged."""
-        (tmp_project / "lib" / "valid_module.py").write_text("x = 1\n")
+        (tmp_project / "cos_lib" / "valid_module.py").parent.mkdir(parents=True, exist_ok=True)
+        (tmp_project / "cos_lib" / "valid_module.py").write_text("x = 1\n")
         (tmp_project / "lib" / "caller.py").write_text(
             "from cos_lib.valid_module import x\n"
         )
@@ -218,11 +219,12 @@ class TestSymlinkResolution:
     def test_symlinked_import_not_flagged(self, detector, tmp_project):
         """A valid import via symlink should NOT be flagged as broken."""
         # Create actual file
-        actual = tmp_project / "lib" / "real_module.py"
+        (tmp_project / "cos_lib").mkdir(parents=True, exist_ok=True)
+        actual = tmp_project / "cos_lib" / "real_module.py"
         actual.write_text("y = 2\n")
 
         # Create symlink to it
-        link = tmp_project / "lib" / "aliased_module.py"
+        link = tmp_project / "cos_lib" / "aliased_module.py"
         link.symlink_to(actual)
 
         # Import via symlink name
