@@ -153,7 +153,7 @@ def plan_tests(
     if changed:
         if _python_files(changed):
             selected.append(TestLane("syntax", _lane_command("syntax", changed), "python/script files changed"))
-        if any(path.startswith(("lib/", "packages/")) for path in changed):
+        if any(path.startswith(("cos_lib/", "lib/", "packages/")) for path in changed):
             selected.append(TestLane("unit", _lane_command("unit", changed), "runtime/package files changed"))
         if any(path.startswith(("scripts/", "hooks/")) for path in changed):
             selected.append(TestLane("behavior", _lane_command("behavior", changed), "script/hook behavior changed"))

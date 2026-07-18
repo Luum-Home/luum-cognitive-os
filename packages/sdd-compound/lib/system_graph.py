@@ -230,7 +230,9 @@ def _scan_hooks(project_root: str, graph: SystemGraph) -> None:
 
 def _scan_libs(project_root: str, graph: SystemGraph) -> None:
     """Scan lib/*.py and register as Layer 4 components."""
-    lib_dir = os.path.join(project_root, "lib")
+    lib_dir = os.path.join(project_root, "cos_lib")
+    if not os.path.isdir(lib_dir):
+        lib_dir = os.path.join(project_root, "lib")
     if not os.path.isdir(lib_dir):
         return
 
@@ -474,7 +476,7 @@ def _detect_imports(project_root: str, graph: SystemGraph) -> None:
     ]
 
     import_pattern = re.compile(
-        r"(?:from\s+lib\.(\w+)\s+import|import\s+lib\.(\w+))"
+        r"(?:from\s+cos_lib\.(\w+)\s+import|import\s+cos_lib\.(\w+))"
     )
 
     for name, comp in graph.components.items():
