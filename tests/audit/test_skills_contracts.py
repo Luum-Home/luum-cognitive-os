@@ -86,7 +86,7 @@ _STUB_PATTERNS = [
 ]
 
 _REFERENCE_RE = re.compile(
-    r"(?P<path>(?:scripts|hooks|packages|lib|templates|rules)/[A-Za-z0-9_./\-]+)"
+    r"(?<![A-Za-z0-9_])(?P<path>(?:scripts|hooks|packages|cos_lib|templates|rules)/[A-Za-z0-9_./\-]+)"
 )
 _BARE_FILE_RE = re.compile(r"`([a-zA-Z0-9_][a-zA-Z0-9_\-]*\.(?:sh|py))`")
 
@@ -226,7 +226,7 @@ def _ref_resolves(kind: str, ref: str) -> bool:
                 return True
         return False
     if kind == "bare":
-        for subdir in ("hooks", "scripts", "lib", "packages"):
+        for subdir in ("hooks", "scripts", "cos_lib", "packages"):
             if (REPO_ROOT / subdir / ref).exists():
                 return True
         return False
