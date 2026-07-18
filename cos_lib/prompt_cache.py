@@ -527,7 +527,7 @@ def maybe_apply_cache(
 ) -> "list[dict]":
     """Opt-in cache injection for the dispatch layer.
 
-    Called by ``lib/dispatch.py`` when ``COS_PROMPT_CACHE=1``. Returns the
+    Called by ``cos_lib/dispatch.py`` when ``COS_PROMPT_CACHE=1``. Returns the
     message list with cache_control markers injected for Anthropic, or the
     original list unchanged for other providers.
 

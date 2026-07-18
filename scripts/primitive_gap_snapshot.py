@@ -204,7 +204,7 @@ def collect(root: Path) -> Snapshot:
     ]
     memory_referenced = [path for path in memory_files if path.name in runtime_text or path.stem in tests_text]
 
-    mcp_files = [path for path in text_files(root, [".claude/settings.json", "docs", "rules", "skills", "hooks", "lib", "scripts"]) if "mcp" in read_text(path).lower()]
+    mcp_files = [path for path in text_files(root, [".claude/settings.json", "docs", "rules", "skills", "hooks", "cos_lib", "scripts"]) if "mcp" in read_text(path).lower()]
     mcp_tested = [path for path in mcp_files if path.name in tests_text]
 
     projection_files = [

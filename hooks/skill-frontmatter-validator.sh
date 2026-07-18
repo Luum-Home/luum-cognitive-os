@@ -57,7 +57,7 @@ if [ ! -f "$FILE_PATH" ]; then
     exit 0
 fi
 
-# Validate using the real _fm() parser from lib/session_hygiene.py
+# Validate using the real _fm() parser from cos_lib/session_hygiene.py
 ISSUES="$(python3 - "$FILE_PATH" <<'PYEOF'
 import sys, re
 from pathlib import Path

@@ -14,7 +14,7 @@ CONSUMERS (as of 2026-04-17)
 - ``mcp-server/cos_mcp.py:204`` — the ``_engram_save`` tool handler (primary consumer).
   Reads ``SafeEngramResult.blocked``, ``.reasons``, ``.returncode``, and
   ``.engram_output`` directly via attribute access.
-- ``lib/anchored_summarizer.py:274`` — injects an inline ``safe_save`` call into
+- ``cos_lib/anchored_summarizer.py:274`` — injects an inline ``safe_save`` call into
   agent prompts for session-summary writes.
 - ``tests/unit/test_safe_engram.py`` and ``tests/unit/test_safe_engram_contract.py``
   — the contract test suite that locks consumer-facing behavior.
@@ -35,7 +35,7 @@ CONTRACT
 NOT (cross-reference)
 ----------------------
 This module is **not** for trusted internal reads or structured machine-parseable
-writes.  For those, use ``cos_lib.engram_client`` (see ``lib/engram_client.py``), which
+writes.  For those, use ``cos_lib.engram_client`` (see ``cos_lib/engram_client.py``), which
 returns ``dict | None`` and passes ``--json`` to the CLI.  The two modules have
 **zero overlapping callers** — see ADR-026 and ADR-026a for the investigation
 that confirmed this boundary.

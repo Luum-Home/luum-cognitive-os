@@ -1,5 +1,5 @@
 # SCOPE: both
-"""Compatibility shim for lib/task_claim_ledger.py.
+"""Compatibility shim for cos_lib/task_claim_ledger.py.
 
 DEPRECATED: This module now delegates to scripts/cos_task_claims.py, the
 canonical single source of truth for task claims per ADR-116 §P1.1.
@@ -10,7 +10,7 @@ Canonical API:   scripts/cos_task_claims.py
 Previous behaviour (flock + .cognitive-os/runtime/task-claims.json) is
 preserved via delegation to the canonical API, which writes to the
 ADR-116-mandated path.  The ClaimResult dataclass and function signatures are
-kept intact so callers (tests, lib/session_coordination.py) do not require
+kept intact so callers (tests, cos_lib/session_coordination.py) do not require
 changes.
 """
 

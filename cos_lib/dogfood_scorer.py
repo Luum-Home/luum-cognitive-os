@@ -81,7 +81,7 @@ HARNESS_SPECIFIC_PATTERNS = [
     r"claude" + r"-code",   # noqa: harness tool name, not a model ID
 ]
 HARNESS_SCAN_EXTENSIONS = {".sh", ".py"}
-HARNESS_SCAN_DIRS = ("hooks", "scripts", "lib")
+HARNESS_SCAN_DIRS = ("hooks", "scripts", "cos_lib")
 
 
 # -----------------------------------------------------------------------------

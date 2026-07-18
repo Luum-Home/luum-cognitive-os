@@ -141,7 +141,7 @@ def test_is_scannable_path():
     assert is_scannable_path("src/main.go") is False
     assert is_scannable_path("tests/test_foo.py") is False
     assert is_scannable_path("go.mod") is False
-    assert is_scannable_path("lib/scanner.py") is False
+    assert is_scannable_path("cos_lib/scanner.py") is False
     assert is_scannable_path("hooks/rate-limiter.sh") is False
 
 

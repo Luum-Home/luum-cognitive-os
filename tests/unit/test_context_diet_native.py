@@ -62,7 +62,7 @@ class TestContextDietNative:
         if not result.stdout.strip():
             pytest.skip(
                 "context-diet produced no rules output — likely missing "
-                "lib/prompt_builder.py or rules dir; transport layer untestable"
+                "cos_lib/prompt_builder.py or rules dir; transport layer untestable"
             )
 
         parsed = json.loads(result.stdout)

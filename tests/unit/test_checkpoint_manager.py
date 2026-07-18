@@ -395,7 +395,7 @@ class TestFormatRecoveryReport:
             "stash_count": 1,
             "last_checkpoint": None,
             "tasks_in_progress": ["Implement JWT auth"],
-            "files_modified": ["lib/auth.py", "tests/test_auth.py"],
+            "files_modified": ["cos_lib/auth.py", "tests/test_auth.py"],
             "cost_since_last_commit": 0.45,
         }
 
@@ -406,7 +406,7 @@ class TestFormatRecoveryReport:
         assert "Crash time" in report
         assert "Recoverable work" in report
         assert "uncommitted file" in report
-        assert "lib/auth.py" in report
+        assert "cos_lib/auth.py" in report
         assert "task(s) were in progress" in report
         assert "Implement JWT auth" in report
         assert "$0.45" in report

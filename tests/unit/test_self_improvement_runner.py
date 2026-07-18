@@ -145,7 +145,7 @@ def _make_minimal_plan_and_write(tmp_path: Path) -> tuple[dict, Path]:
                 "title": "Test proposal",
                 "summary": "A synthetic proposal for schema validation.",
                 "candidate_action": "bounded_fix",
-                "allowed_write_paths": ["lib/"],
+                "allowed_write_paths": ["cos_lib/"],
                 "required_tests": ["tests/unit/"],
                 "human_approval_required": True,
                 "blocked_actions": ["auto_merge", "auto_promote_core_or_team"],

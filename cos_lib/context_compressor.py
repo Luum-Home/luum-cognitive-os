@@ -5,7 +5,7 @@ MIT-licensed. Attribution: the Hermes project. See .cognitive-os/adoption-regist
 
 Design decisions made during port (2026-04-30, Session A):
 - Provider coupling: Hermes uses its own ``call_llm`` (OpenAI-compatible).
-  This port routes through COS's lib/dispatch.py (qwen→claude cascade, ADR-049).
+  This port routes through COS's cos_lib/dispatch.py (qwen→claude cascade, ADR-049).
   If dispatch is unavailable the compressor degrades gracefully — it returns
   uncompressed messages with a warning and never crashes.
 - Token counting: Hermes uses tiktoken. This port uses the same ``chars/4`` rough

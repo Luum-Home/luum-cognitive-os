@@ -8,7 +8,7 @@ the full 9,000-test collection.
 
 Resolution strategy (naming conventions in this repo):
 
-    lib/foo.py                     → tests/unit/test_foo.py
+    cos_lib/foo.py                     → tests/unit/test_foo.py
                                      tests/behavior/test_foo.py
     packages/pkg/lib/foo.py        → tests/unit/test_foo.py
                                      tests/behavior/test_foo.py

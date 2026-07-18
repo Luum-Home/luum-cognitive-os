@@ -47,7 +47,7 @@ def _minimal_goal(workspace_thread_id: str = "test-wt") -> GoalState:
 def _make_evidence(iteration: int = 1) -> EvidencePacket:
     return EvidencePacket(
         iteration=iteration,
-        files_changed=["lib/router.py"],
+        files_changed=["cos_lib/router.py"],
         commands_run=[CommandEvidence(command="pytest", exit_code=0, output_excerpt="5 passed")],
         passing_checks=["all tests pass"],
         acceptance_coverage={"all tests pass": "pytest exit 0", "no routing gaps": ""},
@@ -125,7 +125,7 @@ class TestGoalStateCreation:
         restored = GoalState.from_dict(goal.to_dict())
         assert len(restored.evidence_history) == 1
         assert restored.evidence_history[0].iteration == 1
-        assert restored.evidence_history[0].files_changed == ["lib/router.py"]
+        assert restored.evidence_history[0].files_changed == ["cos_lib/router.py"]
 
     def test_round_trip_with_evaluator_history(self):
         goal = _minimal_goal()

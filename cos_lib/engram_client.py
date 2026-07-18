@@ -12,7 +12,7 @@ persistence from a hook or library, this is the right module.
 
 CONSUMERS (as of 2026-04-17)
 -----------------------------
-- ``lib/memory.py:19`` — ``mem_search``, ``mem_get_observation``, and ``mem_save``
+- ``cos_lib/memory.py:19`` — ``mem_search``, ``mem_get_observation``, and ``mem_save``
   helper functions used by the orchestrator memory layer.
 - ``hooks/inject-phase-context.sh`` — searches for discovery/bugfix/feedback
   observations to inject into sub-agent context.
@@ -33,7 +33,7 @@ CONTRACT
 NOT (cross-reference)
 ----------------------
 This module is **not** for content from untrusted sources (agent output, user input,
-LLM-generated text).  For those, use ``cos_lib.safe_engram`` (see ``lib/safe_engram.py``),
+LLM-generated text).  For those, use ``cos_lib.safe_engram`` (see ``cos_lib/safe_engram.py``),
 which runs ``MemoryScanner`` before any write and returns a ``SafeEngramResult``
 dataclass with human-readable ``engram_output`` strings (no ``--json``).
 

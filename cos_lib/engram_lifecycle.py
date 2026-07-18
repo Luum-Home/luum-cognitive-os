@@ -773,7 +773,7 @@ def _parse_iso8601_utc(timestamp: str) -> datetime:
 
 
 # ---------------------------------------------------------------------------
-# CLI entry point for hook usage: python3 lib/engram_lifecycle.py reinforce <id>
+# CLI entry point for hook usage: python3 cos_lib/engram_lifecycle.py reinforce <id>
 # ---------------------------------------------------------------------------
 
 

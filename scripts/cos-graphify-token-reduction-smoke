@@ -91,9 +91,9 @@ def _write_matrix(path: Path) -> None:
                 "preload_files": [
                     "lib/harness_adapter/base.py",
                     "lib/harness_adapter/codex.py",
-                    "lib/sprint_orchestrator.py",
+                    "cos_lib/sprint_orchestrator.py",
                 ],
-                "inspect_paths": ["lib/harness_adapter/base.py", "lib/sprint_orchestrator.py"],
+                "inspect_paths": ["lib/harness_adapter/base.py", "cos_lib/sprint_orchestrator.py"],
                 "tests": [".venv/bin/python -m pytest tests/unit/test_harness_adapter_base.py -q"],
             },
             indent=2,

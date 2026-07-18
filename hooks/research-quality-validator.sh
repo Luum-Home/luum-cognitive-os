@@ -42,7 +42,7 @@ esac
 [[ ! -f "$FILE_PATH" ]] && exit 0
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-${COGNITIVE_OS_PROJECT_DIR:-$(pwd)}}"
-# Locate the COS install (where lib/research_quality_advisor.py lives).
+# Locate the COS install (where cos_lib/research_quality_advisor.py lives).
 HOOK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 COS_ROOT="$(cd "$HOOK_DIR/.." && pwd)"
 METRICS_DIR="$PROJECT_DIR/.cognitive-os/metrics"

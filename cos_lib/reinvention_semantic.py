@@ -73,7 +73,7 @@ _STOPWORDS = frozenset({
 })
 
 # Scanned subtrees (relative to project root). Ordered; duplicates are fine.
-_SCAN_DIRS = ("lib", "hooks", "scripts")
+_SCAN_DIRS = ("cos_lib", "hooks", "scripts")
 
 # File suffixes → language key. Anything else is skipped.
 _SUFFIX_TO_KIND = {

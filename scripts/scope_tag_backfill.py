@@ -20,7 +20,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
-SEARCH_DIRS = ["hooks", "lib", "scripts", "rules", "skills"]
+SEARCH_DIRS = ["hooks", "cos_lib", "scripts", "rules", "skills"]
 INCLUDE_EXTS = {"*.sh", "*.py", "*.md"}
 
 

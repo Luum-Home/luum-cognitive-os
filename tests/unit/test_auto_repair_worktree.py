@@ -128,7 +128,7 @@ class TestSafetyChecks:
 
     # 4. Normal paths are allowed
     def test_safety_check_allows_normal_code(self):
-        assert is_safe_to_repair("lib/utils.py"), "normal lib file should be allowed"
+        assert is_safe_to_repair("cos_lib/utils.py"), "normal lib file should be allowed"
         assert is_safe_to_repair("src/main.go"), "go source should be allowed"
         assert is_safe_to_repair("tests/unit/test_helper.py"), "test files should be allowed"
         assert is_safe_to_repair("hooks/my-hook.sh"), "hooks should be allowed"

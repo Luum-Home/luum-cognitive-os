@@ -41,7 +41,7 @@ for f in \
   scripts/agent_work_ledger.py \
   scripts/approval_ledger.py \
   scripts/cross_session_reconciler.py \
-  lib/concurrency_safety.py \
+  cos_lib/concurrency_safety.py \
   docs/02-Decisions/adrs/ADR-108-concurrent-agent-safety-layer.md \
   docs/02-Decisions/adrs/ADR-111-core-consumer-concurrency-safety-boundary.md \
   docs/04-Concepts/architecture/concurrent-agent-scenario-test-matrix.md \
@@ -61,7 +61,7 @@ for py in \
   scripts/agent_work_ledger.py \
   scripts/approval_ledger.py \
   scripts/cross_session_reconciler.py \
-  lib/concurrency_safety.py; do
+  cos_lib/concurrency_safety.py; do
   if python3 -m py_compile "$PROJECT_DIR/$py" >/dev/null 2>&1; then pass "python compiles: $py"; else fail "python compile failed: $py"; fi
 done
 

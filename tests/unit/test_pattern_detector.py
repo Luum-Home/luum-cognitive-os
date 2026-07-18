@@ -407,7 +407,7 @@ class TestRunAll:
             DetectedPattern(
                 type="broken_chain",
                 severity="critical",
-                component="lib/bad.py",
+                component="cos_lib/bad.py",
                 description="Broken import",
                 evidence="Not found",
                 suggestion="Fix it",

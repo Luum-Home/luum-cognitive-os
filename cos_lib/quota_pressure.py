@@ -18,7 +18,7 @@ import time
 from pathlib import Path
 from typing import Iterable
 
-# Match `lib/dispatch.py::_RATE_LIMIT_PATTERNS` — kept in sync.
+# Match `cos_lib/dispatch.py::_RATE_LIMIT_PATTERNS` — kept in sync.
 # Any substring (case-insensitive) in a dispatched provider error means
 # the call was throttled and should count toward quota pressure.
 _RATE_LIMIT_PATTERNS: tuple[str, ...] = (

@@ -15,7 +15,7 @@ Public entry points:
     render_json(...)        — JSON schema-stable serialization
 
 Design constraints honored (from the task):
-  - Uses lib/dispatch.py (provider-agnostic, Qwen→Claude cascade)
+  - Uses cos_lib/dispatch.py (provider-agnostic, Qwen→Claude cascade)
   - Respects resources.compute.max_parallel_agents when available
   - Haiku by default; persona-level override possible
   - Personas domain-agnostic (see persona_library.py)

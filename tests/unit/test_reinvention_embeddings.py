@@ -260,7 +260,7 @@ def test_find_similar_returns_scored_matches(sample_project, monkeypatch):
     )
     assert matches, "expected at least one match above 0.0"
     paths = [m["path"] for m in matches]
-    assert "lib/agent_bus.py" in paths
+    assert "cos_lib/agent_bus.py" in paths
     # Results must be sorted descending by score.
     scores = [m["score"] for m in matches]
     assert scores == sorted(scores, reverse=True)

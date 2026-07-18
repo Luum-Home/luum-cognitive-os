@@ -38,7 +38,7 @@ def test_guard_blocks_risky_git_when_blocker_exists(tmp_path: Path) -> None:
 
 
 def test_context_hook_emits_pending_messages(tmp_path: Path) -> None:
-    send_message(tmp_path, from_session="auditor", to_session="operator", message_type="audit_finding", severity="warn", target="lib/x.py", body="Check edge case")
+    send_message(tmp_path, from_session="auditor", to_session="operator", message_type="audit_finding", severity="warn", target="cos_lib/x.py", body="Check edge case")
     env = {**os.environ, "CLAUDE_PROJECT_DIR": str(tmp_path), "COGNITIVE_OS_SESSION_ID": "operator"}
 
     res = subprocess.run(["bash", str(CONTEXT)], text=True, capture_output=True, env=env, timeout=10)

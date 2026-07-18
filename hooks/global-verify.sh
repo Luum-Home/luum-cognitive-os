@@ -72,7 +72,7 @@ mode, project_dir, agent_id, baseline_file, verify_resolver_dir = sys.argv[1:6]
 project_dir = Path(project_dir)
 
 # VERIFY_RESOLVER_DIR (5th arg) lets tests inject a per-worker resolver without
-# mutating the shared lib/targeted_test_resolver.py on disk.
+# mutating the shared cos_lib/targeted_test_resolver.py on disk.
 if verify_resolver_dir:
     sys.path.insert(0, verify_resolver_dir)
 sys.path.insert(0 if not verify_resolver_dir else 1, str(project_dir))

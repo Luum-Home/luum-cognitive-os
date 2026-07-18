@@ -48,7 +48,7 @@ def _sha256(data: str) -> str:
 def _map_entry(entry: Dict[str, Any]) -> Tuple[Dict[str, Any], Dict[str, Any]]:
     """Map a skill-archive JSONL entry to (skill_record_kwargs, analysis_kwargs).
 
-    skill-archive entry fields (from lib/skill_archive.py SkillSnapshot):
+    skill-archive entry fields (from cos_lib/skill_archive.py SkillSnapshot):
         skill_name, version, timestamp, trust_score, success,
         task_description, tokens_used, cost_usd, metadata
     """

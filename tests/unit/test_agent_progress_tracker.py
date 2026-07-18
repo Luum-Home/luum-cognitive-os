@@ -114,11 +114,11 @@ class TestFormatProgressSave:
     def test_format_progress_save_content_includes_files(self, tracker):
         result = tracker.format_progress_save(
             10,
-            files_created=["lib/new.py"],
-            files_modified=["lib/auth.py"],
+            files_created=["cos_lib/new.py"],
+            files_modified=["cos_lib/auth.py"],
         )
-        assert "lib/new.py" in result["content"]
-        assert "lib/auth.py" in result["content"]
+        assert "cos_lib/new.py" in result["content"]
+        assert "cos_lib/auth.py" in result["content"]
 
     def test_format_progress_save_default_status(self, tracker):
         result = tracker.format_progress_save(10)
@@ -162,10 +162,10 @@ class TestFormatFinalSave:
 
     def test_format_final_save_includes_files(self, tracker):
         result = tracker.format_final_save(
-            files_created=["lib/auth_v2.py"],
+            files_created=["cos_lib/auth_v2.py"],
             files_modified=["tests/test_auth.py"],
         )
-        assert "lib/auth_v2.py" in result["content"]
+        assert "cos_lib/auth_v2.py" in result["content"]
         assert "tests/test_auth.py" in result["content"]
 
 

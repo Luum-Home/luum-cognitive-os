@@ -52,7 +52,7 @@ MINIMAL_MANIFEST_TEXT = textwrap.dedent("""\
         copyright: "Copyright (c) 2025 Fake Author"
         attribution: "Ported by test."
         cos_files:
-          - "lib/fake.py"
+          - "cos_lib/fake.py"
         annex_f: "docs/03-PoCs/research/fake-annex-f.md"
         notes: >
           This is a test entry.

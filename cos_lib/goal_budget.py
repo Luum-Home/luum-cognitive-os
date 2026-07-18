@@ -11,7 +11,7 @@ Implements REQ-008. All four budget dimensions are enforced in MVP:
 The JSONL file is read via cos_lib.dispatch._metrics_path() and degrades gracefully
 when the file is absent (returns zeros, does not raise).
 
-JSONL record schema (per lib/dispatch.py):
+JSONL record schema (per cos_lib/dispatch.py):
   ts           : ISO-8601 datetime string (Z-suffix or offset)
   dispatch_id  : str
   tokens_in    : int

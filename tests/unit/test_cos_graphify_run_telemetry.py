@@ -28,7 +28,7 @@ def _write_session(path: Path, *, input_tokens: int, output_tokens: int, session
                         "type": "tool_use",
                         "id": f"tool-{session_id}",
                         "name": "Read",
-                        "input": {"file_path": "lib/harness_adapter/base.py"},
+                        "input": {"file_path": "cos_lib/harness_adapter/base.py"},
                     }
                 ],
             },
@@ -53,8 +53,8 @@ def _write_matrix(path: Path) -> None:
                         "rationale": "Graphify Phase C.1 identified CanonicalEvent as a hotspot.",
                     }
                 ],
-                "preload_files": ["lib/harness_adapter/base.py"],
-                "inspect_paths": ["lib/harness_adapter/base.py"],
+                "preload_files": ["cos_lib/harness_adapter/base.py"],
+                "inspect_paths": ["cos_lib/harness_adapter/base.py"],
                 "tests": [".venv/bin/python -m pytest tests/unit/test_harness_adapter_base.py -q"],
             }
         ),

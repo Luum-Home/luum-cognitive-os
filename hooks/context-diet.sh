@@ -7,7 +7,7 @@
 # Must complete in <1 second.
 #
 # PURPOSE: Reduces sub-agent cold start by advising which rules matter.
-# Works with lib/context_diet.py to map task_type -> minimal rule set.
+# Works with cos_lib/context_diet.py to map task_type -> minimal rule set.
 #
 # Transport: emits hookSpecificOutput.additionalContext on stdout (Claude Code native).
 # Falls back to stderr when invoked outside Claude Code (no valid stdin JSON).
@@ -79,7 +79,7 @@ fi
 
 # --- Task Type Classification ---
 # Match keywords in the prompt to determine task type.
-# This mirrors the mapping in lib/context_diet.py.
+# This mirrors the mapping in cos_lib/context_diet.py.
 TASK_TYPE="unknown"
 PROMPT_LOWER=$(echo "$AGENT_PROMPT" | tr '[:upper:]' '[:lower:]')
 

@@ -1,9 +1,14 @@
 # ADR-341: Iroh Optional Transport Adapter
 
-- Status: accepted
 - Implementation status: partial
 - Date: 2026-06-18
 - Owner: Cognitive OS maintainers
+
+## Status
+
+Accepted. Iroh 1.0 is exposed as an OPTIONAL host tool with an OPTIONAL
+transport adapter behind a feature flag; the default runtime path stays
+Iroh-free and no Cognitive OS surface hard-depends on it.
 
 ## Context
 
@@ -75,6 +80,20 @@ Every received peer key is parsed and checked against an allowlist when one is
 configured. Destructive event types or message content are blocked before any
 ledger write. The only write performed by the bus adapter is the local append-only
 ledger at `.cognitive-os/iroh/agent-bus.jsonl`.
+
+## Alternatives rejected
+
+- **Ship Iroh as a required dependency** — rejected because it forces every
+  consumer install to accept a substantial Rust runtime + relay-fallback
+  behavior that most projects do not need; violates the ADR-093 default-lean
+  install principle.
+- **Custom WebRTC / raw QUIC transport** — rejected because it re-implements
+  NAT traversal and relay fallback that Iroh already solves under a
+  compatible license, with no differentiating capability we would gain.
+- **Cloud-only relay (e.g., WebSocket to a hosted broker)** — rejected
+  because it introduces a central-server dependency at odds with the
+  local-first agent-runtime posture; kept as a future adapter alongside
+  Iroh, not as a replacement.
 
 ## Consequences
 

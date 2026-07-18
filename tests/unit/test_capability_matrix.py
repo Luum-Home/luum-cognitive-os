@@ -68,7 +68,7 @@ def test_capability_matrix_blocks_uncovered_accepted_adr(tmp_path: Path) -> None
 
 def test_capability_matrix_blocks_real_capability_without_behavioral_evidence(tmp_path: Path) -> None:
     write(tmp_path / "docs/02-Decisions/adrs/ADR-100-demo.md", "# ADR-100\n\n## Status\nAccepted\n")
-    write(tmp_path / "lib/demo.py", "")
+    write(tmp_path / "cos_lib/demo.py", "")
     manifest = tmp_path / "capabilities.yaml"
     manifest.write_text(
         yaml.safe_dump(
@@ -88,7 +88,7 @@ def test_capability_matrix_blocks_real_capability_without_behavioral_evidence(tm
                         "reality_level": "REAL",
                         "public_claim": False,
                         "primitive_types": ["lib"],
-                        "implementation": ["lib/demo.py"],
+                        "implementation": ["cos_lib/demo.py"],
                         "consumers": [],
                         "tests": [],
                         "receipts": [],
@@ -113,7 +113,7 @@ def test_capability_matrix_blocks_real_capability_without_behavioral_evidence(tm
 
 def test_capability_matrix_write_and_check_generated_roundtrip(tmp_path: Path) -> None:
     write(tmp_path / "docs/02-Decisions/adrs/ADR-101-demo.md", "# ADR-101\n\n## Status\nAccepted\n")
-    write(tmp_path / "lib/demo.py", "")
+    write(tmp_path / "cos_lib/demo.py", "")
     write(tmp_path / "tests/test_demo.py", "def test_demo():\n    assert True\n")
     manifest = tmp_path / "capabilities.yaml"
     manifest.write_text(
@@ -134,8 +134,8 @@ def test_capability_matrix_write_and_check_generated_roundtrip(tmp_path: Path) -
                         "reality_level": "REAL",
                         "public_claim": False,
                         "primitive_types": ["lib"],
-                        "implementation": ["lib/demo.py"],
-                        "consumers": ["lib/demo.py"],
+                        "implementation": ["cos_lib/demo.py"],
+                        "consumers": ["cos_lib/demo.py"],
                         "tests": ["tests/test_demo.py"],
                         "receipts": ["demo-receipt"],
                         "control_plane_audits": [],

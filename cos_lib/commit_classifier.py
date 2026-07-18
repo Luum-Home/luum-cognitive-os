@@ -98,8 +98,8 @@ def classify_files(file_list: List[str]) -> Dict[str, List[str]]:
 
     Example
     -------
-    >>> classify_files(["lib/foo.py", "hooks/bar.sh", "tests/unit/test_foo.py"])
-    {'lib': ['lib/foo.py'], 'hooks': ['hooks/bar.sh'], 'tests': ['tests/unit/test_foo.py']}
+    >>> classify_files(["cos_lib/foo.py", "hooks/bar.sh", "tests/unit/test_foo.py"])
+    {'lib': ['cos_lib/foo.py'], 'hooks': ['hooks/bar.sh'], 'tests': ['tests/unit/test_foo.py']}
     """
     result: Dict[str, List[str]] = {}
     for path in file_list:
@@ -198,7 +198,7 @@ def propose_commits(classified: Dict[str, List[str]]) -> List[Dict]:
         proposals = [p for p in proposals if p["files"]]
 
     # Sort proposals in a logical commit order: lib → tests → hooks → skills → rules → docs → rest
-    order = ["lib", "hooks", "skills", "rules", "tests", "docs", "packages", "templates", "config", "misc"]
+    order = ["cos_lib", "hooks", "skills", "rules", "tests", "docs", "packages", "templates", "config", "misc"]
     proposals.sort(key=lambda p: order.index(p["theme"]) if p["theme"] in order else 99)
 
     return proposals

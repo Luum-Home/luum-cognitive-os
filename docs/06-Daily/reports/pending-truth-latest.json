@@ -20,7 +20,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/2026-07-08-kb-rollout-doc-truth-debt.md:L61",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -36,7 +36,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/2026-07-08-kb-rollout-doc-truth-debt.md:L63",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -52,7 +52,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/2026-07-08-kb-rollout-doc-truth-debt.md:L65",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -68,7 +68,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/2026-07-08-kb-rollout-doc-truth-debt.md:L67",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -84,7 +84,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/2026-07-08-kb-rollout-doc-truth-debt.md:L69",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -100,7 +100,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/2026-07-08-kb-rollout-doc-truth-debt.md:L71",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -116,7 +116,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/2026-07-08-kb-rollout-doc-truth-debt.md:L73",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -132,7 +132,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/2026-07-08-kb-rollout-doc-truth-debt.md:L75",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -148,7 +148,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/hook-architecture-v2.md:L500",
       "status": "verified-done",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "file_exists",
@@ -165,7 +165,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/hook-architecture-v2.md:L504",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -181,7 +181,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/hook-architecture-v2.md:L509",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -197,7 +197,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/hook-architecture-v2.md:L665",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -213,7 +213,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/hook-architecture-v2.md:L666",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -229,7 +229,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/hook-architecture-v2.md:L668",
       "status": "verified-done",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "file_exists",
@@ -246,7 +246,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/hook-architecture-v2.md:L669",
       "status": "verified-done",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "file_exists",
@@ -263,7 +263,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L535",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "file_exists",
@@ -285,7 +285,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L536",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -301,7 +301,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L537",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -317,7 +317,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L538",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "file_exists",
@@ -334,7 +334,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L539",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -350,7 +350,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L540",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -366,7 +366,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L541",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "file_exists",
@@ -383,7 +383,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L545",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -399,7 +399,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L546",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -415,7 +415,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L547",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -431,7 +431,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L548",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -447,7 +447,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L549",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -463,7 +463,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L550",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -479,7 +479,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L551",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -495,7 +495,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L555",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -511,7 +511,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L556",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -527,7 +527,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L557",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -543,7 +543,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L558",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -559,7 +559,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L559",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -575,7 +575,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L560",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -591,7 +591,7 @@
       "type": "plan-checkbox",
       "source": ".cognitive-os/plans/features/workflow-engine.md:L561",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "path_extraction",
@@ -607,7 +607,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-266-protected-config-write-guard-bash-coverage.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -624,7 +624,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-174c-validator-blocking-promotion.md",
       "status": "verified-done",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -641,7 +641,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-126-agentic-primitive-lifecycle-governor.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -658,7 +658,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-069-research-first-protocol.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -675,7 +675,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-002-docker-pip-localhost-envs-targetedtestresolver-redis-dep.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -692,7 +692,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-117-stash-mutation-reversibility.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -709,7 +709,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-126.synthesis.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -726,7 +726,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-117.synthesis.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -743,7 +743,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-067.synthesis.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -760,7 +760,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-271-clean-room-detection-tier-2-ast-similarity.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -777,7 +777,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-265-mandatory-minimum-inspection-caps.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -794,7 +794,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-066.synthesis.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -811,7 +811,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-034.synthesis.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -828,7 +828,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-070-convention-enforcement-mechanism.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -845,7 +845,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-047.synthesis.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -862,7 +862,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-047-session-lifecycle-management.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -879,7 +879,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-036.synthesis.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -896,7 +896,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-059-so-existential-validation.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -913,7 +913,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-124-cos-distribution-boundaries.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -930,7 +930,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-065.synthesis.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -947,7 +947,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-067-frontmatter-defense-in-depth.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -964,7 +964,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-062.synthesis.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -981,7 +981,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-001-abc-parallel-dedup-fix-broken-infra-add-global-verify.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -998,7 +998,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-070.synthesis.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -1015,7 +1015,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-128-data-layer-integrity-fixes.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -1032,7 +1032,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-065-radar-update-curation-pipeline.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -1049,7 +1049,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-059.synthesis.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -1066,7 +1066,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-066-polyglot-language-boundaries.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -1083,7 +1083,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-271.synthesis.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -1100,7 +1100,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-062-multi-provider-agent-loop.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -1117,7 +1117,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-069.synthesis.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -1134,7 +1134,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-039-reinvention-phase-b-beta.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -1151,7 +1151,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-125-governance-tools-value-boundary.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -1168,7 +1168,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-034-harness-agnostic-live-streaming.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -1185,7 +1185,7 @@
       "type": "adr-slice",
       "source": "docs/02-Decisions/adrs/ADR-036-sprint-orchestration-primitives.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [
         {
           "kind": "adr_status",
@@ -1202,7 +1202,7 @@
       "type": "follow-up",
       "source": "docs/06-Daily/reports/radar-2026-05-08-implementation-tracker.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [],
       "next_action": "Resolve tracker follow-up: T-W3-bench",
       "owner_adr": null,
@@ -1213,7 +1213,7 @@
       "type": "follow-up",
       "source": "docs/06-Daily/reports/radar-2026-05-08-implementation-tracker.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [],
       "next_action": "Resolve tracker follow-up: T-W3-dspy-real",
       "owner_adr": null,
@@ -1224,7 +1224,7 @@
       "type": "follow-up",
       "source": "docs/06-Daily/reports/radar-2026-05-08-implementation-tracker.md",
       "status": "verified-pending",
-      "last_verified": "2026-07-08T21:23:36Z",
+      "last_verified": "2026-07-18T19:41:39Z",
       "evidence": [],
       "next_action": "Resolve tracker follow-up: T-W3-parsers",
       "owner_adr": null,
@@ -1232,11 +1232,11 @@
     }
   ],
   "verifier": {
-    "ran_at": "2026-07-08T21:23:36Z",
+    "ran_at": "2026-07-18T19:41:39Z",
     "transitions": {
-      "unverified->verified-pending": 70,
-      "unverified->verified-done": 4
+      "verified-pending->verified-pending": 70,
+      "verified-done->verified-done": 4
     },
-    "drift_count": 74
+    "drift_count": 0
   }
 }

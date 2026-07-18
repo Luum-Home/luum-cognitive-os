@@ -59,7 +59,7 @@ class TestEscalationMarkerInOutput:
     def test_escalation_type_is_loop_detected(self):
         d = _make_detector()
         for _ in range(3):
-            d.record_tool_call("Edit", success=False, target_file="lib/handler.py")
+            d.record_tool_call("Edit", success=False, target_file="cos_lib/handler.py")
 
         signal = d.check_should_escalate()
         assert signal is not None

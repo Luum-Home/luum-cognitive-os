@@ -2,7 +2,7 @@
 # scope: both
 """Rule Router — Auto-select agent-instruction rules from prompt context.
 
-Analogous to ``lib/skill_router.py`` (ADR-174), but for rules under
+Analogous to ``cos_lib/skill_router.py`` (ADR-174), but for rules under
 ``rules/`` and ``packages/*/rules/``. See ADR-179.
 
 A *rule* in the Cognitive OS is one of:
@@ -167,7 +167,7 @@ def _parse_frontmatter(text: str) -> Dict[str, Any]:
 
 def _detect_project_root() -> Path:
     here = Path(__file__).resolve()
-    return here.parent.parent  # lib/rule_router.py -> repo root
+    return here.parent.parent  # cos_lib/rule_router.py -> repo root
 
 
 def _enumerate_rule_paths(project_root: Path) -> List[Path]:

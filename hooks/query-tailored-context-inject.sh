@@ -7,7 +7,7 @@
 #
 # Replaces the FIXED "KNOWN TRAPS" injection with a task-aware semantic search:
 #   1. Extracts task description from agent prompt (first paragraph / 500 chars)
-#   2. Delegates to lib/context_injector.py (EmbeddingsIndex → Jaccard fallback)
+#   2. Delegates to cos_lib/context_injector.py (EmbeddingsIndex → Jaccard fallback)
 #   3. Appends top-3 relevant snippets, capped at ~1 000 tokens
 #   4. Caches by hash(task) — identical tasks skip re-embedding (p95 <50ms)
 #

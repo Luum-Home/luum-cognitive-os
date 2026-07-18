@@ -8,7 +8,7 @@
 #   bash scripts/cos-locks.sh heartbeat <resource> <session-id>
 #   bash scripts/cos-locks.sh find      <resource>
 #
-# All heavy lifting is delegated to lib/engram_locks.py.
+# All heavy lifting is delegated to cos_lib/engram_locks.py.
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -69,7 +69,7 @@ case "${SUBCOMMAND}" in
 esac
 
 # --------------------------------------------------------------------------
-# Python inline runner — delegates to lib/engram_locks.py
+# Python inline runner — delegates to cos_lib/engram_locks.py
 # --------------------------------------------------------------------------
 
 run_python() {

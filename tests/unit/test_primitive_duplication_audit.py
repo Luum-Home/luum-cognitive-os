@@ -34,7 +34,7 @@ def shared_logic(value: str) -> str:
 
     finding = next(item for item in data["findings"] if item["kind"] == "python-function-repeat")
     assert finding["recommendation"] == "extract-common-python-helper"
-    assert finding["common_home"] == "lib/"
+    assert finding["common_home"] == "cos_lib/"
 
 
 def test_detects_shell_function_repeat_with_shell_common_home(tmp_path: Path) -> None:

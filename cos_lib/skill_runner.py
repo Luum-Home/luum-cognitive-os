@@ -155,7 +155,7 @@ def _skills_root() -> Path:
         if candidate.is_dir():
             return candidate
 
-    # Derive from this file's location: lib/skill_runner.py → repo root
+    # Derive from this file's location: cos_lib/skill_runner.py → repo root
     this_file = Path(__file__).resolve()
     # Follow symlinks
     repo_root = this_file.parent.parent

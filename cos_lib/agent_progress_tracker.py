@@ -32,7 +32,7 @@ class AgentProgressTracker:
     def generate_topic_key(self) -> str:
         """Stable topic key from first 5 words of the task description.
 
-        'Fix auth bug in lib/auth.py' → 'agent-progress/fix-auth-bug-in-lib'
+        'Fix auth bug in cos_lib/auth.py' → 'agent-progress/fix-auth-bug-in-lib'
         """
         words = re.sub(r"[^a-zA-Z0-9\s]", "", self.task_description).split()
         slug = "-".join(w.lower() for w in words[:5]) or "unknown"

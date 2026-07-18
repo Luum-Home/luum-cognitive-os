@@ -157,7 +157,7 @@ def _parse_fast_path_from_file(path: str) -> Optional[Dict[str, Any]]:
     """Lightweight parser that extracts ``sdd.fast_path`` values.
 
     We avoid a hard ``yaml`` dependency by using simple regex parsing,
-    matching the pattern used in ``lib/rate_limiter.py``.  This handles
+    matching the pattern used in ``cos_lib/rate_limiter.py``.  This handles
     the expected flat structure:
 
     .. code-block:: yaml

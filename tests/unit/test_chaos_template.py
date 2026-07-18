@@ -171,7 +171,7 @@ def test_script_template_used_for_python_scripts(tmp_path: Path):
     output_dir = tmp_path / "chaos"
 
     out_path = generate_skeleton(
-        "lib/license_guard.py",
+        "cos_lib/license_guard.py",
         trigger=None,
         project_dir=fake_project,
         output_dir=output_dir,

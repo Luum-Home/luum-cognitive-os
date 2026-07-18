@@ -2,7 +2,7 @@
 # SCOPE: both
 # cos-usage-report.sh — Heatmap aggregator for COS runtime telemetry.
 #
-# Reads the four JSONL files written by lib/telemetry.py and produces a usage
+# Reads the four JSONL files written by cos_lib/telemetry.py and produces a usage
 # report: top skills, top hooks, zero-invocation skills, agent cost per model,
 # rate-limit histogram, and (optionally) an efficiency metric comparing token
 # savings from skills against token cost of hooks.

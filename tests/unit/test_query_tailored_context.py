@@ -39,7 +39,7 @@ def minimal_project(tmp_path: Path) -> Path:
     (adrs / "ADR-028-rate-limiter.md").write_text(
         "# ADR-028 — Rate Limiter\n\n"
         "Controls agent bash_command call frequency. "
-        "lib/rate_limiter.py is the primary implementation.\n"
+        "cos_lib/rate_limiter.py is the primary implementation.\n"
     )
     (adrs / "ADR-001-ui-components.md").write_text(
         "# ADR-001 — UI Components\n\n"
@@ -51,19 +51,19 @@ def minimal_project(tmp_path: Path) -> Path:
     cos.mkdir()
     index_items = [
         {
-            "path": "lib/rate_limiter.py",
+            "path": "cos_lib/rate_limiter.py",
             "kind": "python",
             "tokens": ["rate", "limiter", "quota", "minute", "window", "bucket", "throttle"],
             "docstring_excerpt": "Rate limiter: per-minute quota enforcement for bash_command calls.",
         },
         {
-            "path": "lib/dispatch.py",
+            "path": "cos_lib/dispatch.py",
             "kind": "python",
             "tokens": ["dispatch", "llm", "provider", "qwen", "claude", "route", "fallback"],
             "docstring_excerpt": "LLM dispatch: routes prompts to Qwen/Claude based on quota.",
         },
         {
-            "path": "lib/ui_renderer.py",
+            "path": "cos_lib/ui_renderer.py",
             "kind": "python",
             "tokens": ["ui", "renderer", "component", "frontend", "react", "render", "page"],
             "docstring_excerpt": "UI renderer: React component rendering helper.",

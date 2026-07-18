@@ -2,7 +2,7 @@
 # SCOPE: both
 # UserPromptSubmit hook: Skill Router Prompt Suggest
 #
-# Runs lib/skill_router.py against the incoming user prompt and, when
+# Runs cos_lib/skill_router.py against the incoming user prompt and, when
 # confidence >= 0.80, emits an additionalContext hint so the orchestrator
 # knows which canonical skill to invoke instead of writing a bespoke prompt.
 #

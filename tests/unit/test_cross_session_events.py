@@ -26,13 +26,13 @@ def test_append_event_standardizes_schema_and_reads_by_type(tmp_path: Path) -> N
 
 def test_peers_summarizes_recent_live_peer(tmp_path: Path) -> None:
     append_event("session-start", {"branch": "session/a", "topic_keywords": ["routing"]}, project_dir=tmp_path, session_id="peer")
-    append_event("file-write-intent", {"branch": "session/a", "path": "lib/session_bus.py"}, project_dir=tmp_path, session_id="peer")
+    append_event("file-write-intent", {"branch": "session/a", "path": "cos_lib/session_bus.py"}, project_dir=tmp_path, session_id="peer")
 
     result = peers(project_dir=tmp_path, current_session_id="me", alive_only=True)
 
     assert result
     assert result[0].session_id == "peer"
-    assert result[0].recent_writes == ["lib/session_bus.py"]
+    assert result[0].recent_writes == ["cos_lib/session_bus.py"]
 
 
 def test_event_emit_hook_maps_write_payload(tmp_path: Path) -> None:

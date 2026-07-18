@@ -2,7 +2,7 @@
 # SCOPE: both
 # UserPromptSubmit hook: ADR Relevance Suggest
 #
-# Runs lib/adr_router.py against the incoming user prompt and, when at least one
+# Runs cos_lib/adr_router.py against the incoming user prompt and, when at least one
 # ADR matches with confidence >= 0.85, emits an additionalContext hint so the
 # orchestrator knows which ADRs are relevant before it starts reasoning.
 #

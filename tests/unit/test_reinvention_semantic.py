@@ -16,11 +16,11 @@ from cos_lib.reinvention_semantic import SemanticIndex
 @pytest.fixture
 def sample_project(tmp_path: Path) -> Path:
     """Minimal project tree with lib/ and hooks/ files to index."""
-    (tmp_path / "lib").mkdir()
+    (tmp_path / "cos_lib").mkdir()
     (tmp_path / "hooks").mkdir()
     (tmp_path / "scripts").mkdir()
 
-    (tmp_path / "lib" / "rate_limiter.py").write_text(textwrap.dedent('''\
+    (tmp_path / "cos_lib" / "rate_limiter.py").write_text(textwrap.dedent('''\
         """Rate Limiter — prevents token flooding and excessive tool usage.
 
         Tracks tool calls, agent launches, bash commands per minute and hour.
@@ -31,7 +31,7 @@ def sample_project(tmp_path: Path) -> Path:
                 return True
     '''))
 
-    (tmp_path / "lib" / "agent_bus.py").write_text(textwrap.dedent('''\
+    (tmp_path / "cos_lib" / "agent_bus.py").write_text(textwrap.dedent('''\
         """Agent Bus — Valkey pub/sub for heartbeat, liveness, and progress."""
         class AgentBus:
             def publish_heartbeat(self, agent_id):
@@ -39,7 +39,7 @@ def sample_project(tmp_path: Path) -> Path:
                 pass
     '''))
 
-    (tmp_path / "lib" / "tiny.py").write_text('"""x"""\n')  # too thin, filtered
+    (tmp_path / "cos_lib" / "tiny.py").write_text('"""x"""\n')  # too thin, filtered
 
     (tmp_path / "hooks" / "auto-verify.sh").write_text(textwrap.dedent('''\
         #!/usr/bin/env bash
@@ -58,11 +58,11 @@ def test_build_index_populates_items(sample_project: Path):
     idx.build_index(sample_project)
 
     paths = {item["path"] for item in idx.items}
-    assert "lib/rate_limiter.py" in paths
-    assert "lib/agent_bus.py" in paths
+    assert "cos_lib/rate_limiter.py" in paths
+    assert "cos_lib/agent_bus.py" in paths
     assert "hooks/auto-verify.sh" in paths
     # tiny.py has < 2 tokens after filtering -> dropped
-    assert "lib/tiny.py" not in paths
+    assert "cos_lib/tiny.py" not in paths
     assert idx.index_path.is_file()
 
     # Persisted JSON is valid and round-trips.
@@ -76,12 +76,12 @@ def test_exact_name_match_scores_highest(sample_project: Path):
     idx.build_index(sample_project)
 
     matches = idx.find_similar(
-        "create lib/rate_limiter.py to cap tool calls per minute",
+        "create cos_lib/rate_limiter.py to cap tool calls per minute",
         top_k=3,
         min_score=0.05,
     )
     assert matches, "expected at least one match"
-    assert matches[0]["path"] == "lib/rate_limiter.py"
+    assert matches[0]["path"] == "cos_lib/rate_limiter.py"
     assert matches[0]["score"] > 0.1
     # The matched_tokens should include the real overlap.
     assert "rate" in matches[0]["matched_tokens"]
@@ -98,10 +98,10 @@ def test_paraphrase_match_surfaces_agent_bus(sample_project: Path):
         min_score=0.05,
     )
     paths = [m["path"] for m in matches]
-    assert "lib/agent_bus.py" in paths, f"expected agent_bus.py in {paths}"
+    assert "cos_lib/agent_bus.py" in paths, f"expected agent_bus.py in {paths}"
     # agent_bus must outrank rate_limiter on this query.
-    bus_score = next(m["score"] for m in matches if m["path"] == "lib/agent_bus.py")
-    rl_scores = [m["score"] for m in matches if m["path"] == "lib/rate_limiter.py"]
+    bus_score = next(m["score"] for m in matches if m["path"] == "cos_lib/agent_bus.py")
+    rl_scores = [m["score"] for m in matches if m["path"] == "cos_lib/rate_limiter.py"]
     if rl_scores:
         assert bus_score > rl_scores[0]
 

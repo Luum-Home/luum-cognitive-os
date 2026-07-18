@@ -17,7 +17,7 @@ from cos_lib.goal_state import EvidencePacket, CommandEvidence
 def _make_valid_packet_dict(**overrides) -> dict:
     base = {
         "iteration": 1,
-        "files_changed": ["lib/foo.py"],
+        "files_changed": ["cos_lib/foo.py"],
         "commands_run": [
             {"command": "pytest tests/", "exit_code": 0, "output_excerpt": "1 passed"}
         ],
@@ -65,7 +65,7 @@ class TestParseEvidenceValid:
         result = parse_evidence(_valid_json())
         pkt = result.packet
         assert pkt.iteration == 1
-        assert pkt.files_changed == ["lib/foo.py"]
+        assert pkt.files_changed == ["cos_lib/foo.py"]
         assert len(pkt.commands_run) == 1
         assert isinstance(pkt.commands_run[0], CommandEvidence)
         assert pkt.commands_run[0].exit_code == 0

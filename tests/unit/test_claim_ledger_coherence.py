@@ -81,7 +81,7 @@ def test_tcl_release_visible_via_ctc(tmp_path: Path) -> None:
 def test_tcl_blocks_duplicate_claim_via_shared_store(tmp_path: Path) -> None:
     """TCL shim blocks a second acquirer using the same CTC backing store."""
     # First claim via CTC directly.
-    task = {"id": "coherence-task-4", "description": "block test", "deliverable": "lib/foo.py"}
+    task = {"id": "coherence-task-4", "description": "block test", "deliverable": "cos_lib/foo.py"}
     ok, _ = ctc_claim_task(tmp_path, task, session="s-first")
     assert ok is True
 

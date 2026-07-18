@@ -17,7 +17,7 @@
 # Graceful degradation: missing JSONL files -> pressure = 0.0 -> silent exit.
 #
 # Must complete in <500ms. Reference: hooks/blast-radius.sh for the
-# additionalContext pattern; lib/quota_pressure.py for the math.
+# additionalContext pattern; cos_lib/quota_pressure.py for the math.
 
 set -uo pipefail
 
@@ -54,7 +54,7 @@ if [ -x "$PROJECT_DIR/.venv/bin/python" ]; then
   PY_BIN="$PROJECT_DIR/.venv/bin/python"
 fi
 
-# Compute pressure via lib/quota_pressure.py. Pass metrics dir via arg to
+# Compute pressure via cos_lib/quota_pressure.py. Pass metrics dir via arg to
 # keep the call hermetic (no env leakage between agent runs).
 PRESSURE=$("$PY_BIN" - "$METRICS_DIR" <<'PYEOF' 2>/dev/null || echo "0.0"
 import sys

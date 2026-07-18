@@ -162,14 +162,14 @@ class TestAgentLifecycle:
         state = record_agent(
             agent_id="agent-01",
             description="Implementing auth module",
-            files_expected=["lib/auth.py"],
+            files_expected=["cos_lib/auth.py"],
             project_dir=str(state_dir),
         )
         assert len(state["agents"]) == 1
         agent = state["agents"][0]
         assert agent["id"] == "agent-01"
         assert agent["status"] == "running"
-        assert agent["files_expected"] == ["lib/auth.py"]
+        assert agent["files_expected"] == ["cos_lib/auth.py"]
         assert agent["files_created"] == []
 
     def test_record_agent_replaces_existing(self, state_dir: Path) -> None:

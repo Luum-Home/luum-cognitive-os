@@ -38,8 +38,8 @@ class TestBumpHelper:
 class TestClassifyLibFiles:
     def test_classify_lib_files(self, tmp_path):
         a = ReleaseAnalyzer(str(tmp_path))
-        result = a.classify_changes(["lib/foo.py", "lib/bar.py"])
-        assert result["core"]["libs"] == ["lib/foo.py", "lib/bar.py"]
+        result = a.classify_changes(["cos_lib/foo.py", "cos_lib/bar.py"])
+        assert result["core"]["libs"] == ["cos_lib/foo.py", "cos_lib/bar.py"]
         assert result["core"]["hooks"] == []
 
     def test_classify_hook_files(self, tmp_path):
@@ -98,13 +98,13 @@ class TestClassifyLibFiles:
 
         a = ReleaseAnalyzer(str(tmp_path))
         files = [
-            "lib/thing.py",
+            "cos_lib/thing.py",
             "hooks/my.sh",
             "packages/bar/SKILL.md",
             "tests/unit/test_thing.py",
         ]
         result = a.classify_changes(files)
-        assert result["core"]["libs"] == ["lib/thing.py"]
+        assert result["core"]["libs"] == ["cos_lib/thing.py"]
         assert result["core"]["hooks"] == ["hooks/my.sh"]
         assert result["core"]["tests"] == ["tests/unit/test_thing.py"]
         assert "bar" in result["packages"]
@@ -149,7 +149,7 @@ class TestVersionBumps:
         a = self._make_analyzer(tmp_path, "0.8.7")
         classified = {
             "core": {
-                "libs": ["lib/foo.py", "lib/bar.py"],
+                "libs": ["cos_lib/foo.py", "cos_lib/bar.py"],
                 "hooks": [], "rules": [], "templates": [],
                 "scripts": [], "tests": [], "docs": [], "config": [],
             },
@@ -258,7 +258,7 @@ class TestReleaseOrder:
             "files_changed": 4,
             "insertions": 100,
             "deletions": 10,
-            "files": ["lib/foo.py", "packages/alpha/SKILL.md"],
+            "files": ["cos_lib/foo.py", "packages/alpha/SKILL.md"],
         }):
             plan = a.generate_release_plan(tag="v0.8.7")
 
@@ -275,7 +275,7 @@ class TestReleaseOrder:
             "files_changed": 2,
             "insertions": 50,
             "deletions": 5,
-            "files": ["lib/foo.py"],
+            "files": ["cos_lib/foo.py"],
         }):
             plan = a.generate_release_plan(tag="v0.8.7")
 
@@ -297,7 +297,7 @@ class TestFormatReport:
             "files_changed": 183,
             "insertions": 23000,
             "deletions": 2000,
-            "files": ["lib/foo.py", "hooks/bar.sh", "rules/my.md"],
+            "files": ["cos_lib/foo.py", "hooks/bar.sh", "rules/my.md"],
         }):
             plan = a.generate_release_plan(tag="v0.8.7")
 
@@ -387,7 +387,7 @@ class TestEdgeCases:
             "files_changed": 5,
             "insertions": 100,
             "deletions": 10,
-            "files": ["lib/new.py", "packages/pkg1/hooks/run.sh"],
+            "files": ["cos_lib/new.py", "packages/pkg1/hooks/run.sh"],
         }):
             plan = a.generate_release_plan(tag="v0.8.7")
 

@@ -12,16 +12,16 @@ via ClaudeExecutor, and feeds outcomes back into persistent knowledge.
 
 Usage:
     # Single pass (for cron)
-    python lib/singularity.py run
+    python cos_lib/singularity.py run
 
     # Continuous daemon
-    python lib/singularity.py daemon --interval 300
+    python cos_lib/singularity.py daemon --interval 300
 
     # Preview what would run
-    python lib/singularity.py dry-run
+    python cos_lib/singularity.py dry-run
 
     # Show active pipelines
-    python lib/singularity.py status
+    python cos_lib/singularity.py status
 
 Python 3.9+ compatible.
 """
@@ -1224,10 +1224,10 @@ def build_parser() -> argparse.ArgumentParser:
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=(
             "Examples:\n"
-            "  python lib/singularity.py run\n"
-            "  python lib/singularity.py dry-run\n"
-            "  python lib/singularity.py daemon --interval 300\n"
-            "  python lib/singularity.py status\n"
+            "  python cos_lib/singularity.py run\n"
+            "  python cos_lib/singularity.py dry-run\n"
+            "  python cos_lib/singularity.py daemon --interval 300\n"
+            "  python cos_lib/singularity.py status\n"
         ),
     )
     parser.add_argument(

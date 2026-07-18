@@ -27,7 +27,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 SCRIPT_DIR = Path(__file__).resolve().parent
 
-# Proposal output directory — mirrors write_plan() in lib/self_improvement_loop.py
+# Proposal output directory — mirrors write_plan() in cos_lib/self_improvement_loop.py
 PROPOSALS_DIR = PROJECT_ROOT / ".cognitive-os" / "improvements" / "proposals"
 
 REQUIRED_PROPOSAL_FIELDS = {"timestamp", "source", "proposal_text", "kind"}

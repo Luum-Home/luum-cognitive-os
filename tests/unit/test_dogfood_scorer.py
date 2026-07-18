@@ -238,7 +238,7 @@ def test_harness_portability(tmp_path):
     # 2 clean files, 1 dirty
     _write(repo / "hooks/clean.sh", 'echo "hello"\n')
     _write(repo / "scripts/alsoclean.py", "x = 1\n")
-    _write(repo / "lib/dirty.py", 'path = ".claude/settings.json"\n')
+    _write(repo / "cos_lib/dirty.py", 'path = ".claude/settings.json"\n')
     score, ev = DogfoodScorer(repo)._score_harness_portability()
     # 2/3 clean
     assert score == pytest.approx(66.67, rel=0.01)
@@ -284,7 +284,7 @@ def test_self_build_activity_no_git(tmp_path, monkeypatch):
 def test_doc_freshness_blend(tmp_path):
     repo = _minimal_repo(tmp_path)
     # ADR with a real file ref and a fake one
-    _write(repo / "lib/foo.py", "pass\n")
+    _write(repo / "cos_lib/foo.py", "pass\n")
     _write(
         repo / "docs/02-Decisions/adrs/ADR-001.md",
         "## Status\nAccepted\n\nSee `lib/foo.py` and `lib/bar.py`.\n",

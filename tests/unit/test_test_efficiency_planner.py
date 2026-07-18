@@ -7,7 +7,7 @@ from cos_lib.test_efficiency_planner import extract_failed_nodeids, plan_tests
 
 @pytest.mark.unit
 def test_runtime_change_selects_targeted_before_laptop(project_root) -> None:
-    plan = plan_tests(project_root, changed_files=["lib/dispatch.py"], include_final_laptop=True)
+    plan = plan_tests(project_root, changed_files=["cos_lib/dispatch.py"], include_final_laptop=True)
     names = [lane.name for lane in plan.lanes]
     assert names[:2] == ["syntax", "unit"]
     assert "integration" in names
@@ -38,7 +38,7 @@ def test_failure_text_prefers_failed_nodeids_before_broad(project_root) -> None:
 
 @pytest.mark.unit
 def test_final_laptop_lane_uses_bounded_repair_loop(project_root) -> None:
-    plan = plan_tests(project_root, changed_files=["lib/dispatch.py"], include_final_laptop=True)
+    plan = plan_tests(project_root, changed_files=["cos_lib/dispatch.py"], include_final_laptop=True)
     assert plan.final_lane is not None
     assert plan.final_lane.name == "laptop"
     assert plan.final_lane.command.startswith("scripts/cos-test-repair-loop")

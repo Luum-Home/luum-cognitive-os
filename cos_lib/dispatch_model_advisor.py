@@ -57,7 +57,7 @@ _BUDGET_DOWNGRADE_PCT: float = 20.0  # < 20% remaining → force haiku
 
 
 # ---------------------------------------------------------------------------
-# classify_task_type — reused from lib/record_completion.py
+# classify_task_type — reused from cos_lib/record_completion.py
 # ---------------------------------------------------------------------------
 
 def classify_task_type(description: str) -> str:

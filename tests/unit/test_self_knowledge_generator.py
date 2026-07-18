@@ -35,7 +35,7 @@ def fake_project(tmp_path: Path) -> Path:
     """Create a minimal fake project tree."""
     # lib/
     lib = tmp_path / "lib"
-    cos_lib.mkdir()
+    lib.mkdir()
     (lib / "sample_module.py").write_text(
         textwrap.dedent("""\
             # SCOPE: os-only
@@ -55,7 +55,7 @@ def fake_project(tmp_path: Path) -> Path:
         encoding="utf-8",
     )
     (lib / "importer.py").write_text(
-        "from cos_lib.sample_module import hello\n",
+        "from lib.sample_module import hello\n",
         encoding="utf-8",
     )
 

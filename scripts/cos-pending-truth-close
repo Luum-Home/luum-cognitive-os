@@ -20,7 +20,7 @@ Usage:
   python3 scripts/cos-pending-truth-close --id <id> --proof <ref> --reason "..."
 
 Proof refs:
-  path:line       e.g. lib/foo.py:42
+  path:line       e.g. cos_lib/foo.py:42
   adr-ref         e.g. ADR-274  (must be status: accepted|implemented)
   test-id         e.g. tests/red_team/portability/test_X.py::test_Y
   commit-sha      e.g. 35752b38

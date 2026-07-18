@@ -7,7 +7,7 @@
 # OFF by default — set GUARDRAILS_ENABLED=true to activate
 #
 # PURPOSE: Adds PII and jailbreak detection to agent output.
-# Uses lib/guardrails_validators.py for pattern-based detection
+# Uses cos_lib/guardrails_validators.py for pattern-based detection
 # with optional guardrails-ai package for enhanced detection.
 
 set -uo pipefail

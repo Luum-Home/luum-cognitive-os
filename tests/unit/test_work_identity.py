@@ -41,8 +41,8 @@ from work_identity import (  # noqa: E402
 
 def test_compute_fingerprint_determinism():
     """Same description + outputs always produce the same fingerprint."""
-    fp1 = compute_fingerprint("implement rate-limiter", ["lib/rate_limiter.py", "tests/unit/test_rate_limiter.py"])
-    fp2 = compute_fingerprint("implement rate-limiter", ["lib/rate_limiter.py", "tests/unit/test_rate_limiter.py"])
+    fp1 = compute_fingerprint("implement rate-limiter", ["cos_lib/rate_limiter.py", "tests/unit/test_rate_limiter.py"])
+    fp2 = compute_fingerprint("implement rate-limiter", ["cos_lib/rate_limiter.py", "tests/unit/test_rate_limiter.py"])
     assert fp1 == fp2
     assert len(fp1) == 16
     assert fp1.isalnum()
@@ -55,17 +55,17 @@ def test_compute_fingerprint_determinism():
 
 def test_compute_fingerprint_case_insensitive():
     """Case differences in description should not affect the fingerprint."""
-    fp_lower = compute_fingerprint("add caching layer", ["lib/cache.py"])
-    fp_upper = compute_fingerprint("Add Caching Layer", ["lib/cache.py"])
-    fp_mixed = compute_fingerprint("ADD CACHING LAYER", ["lib/cache.py"])
+    fp_lower = compute_fingerprint("add caching layer", ["cos_lib/cache.py"])
+    fp_upper = compute_fingerprint("Add Caching Layer", ["cos_lib/cache.py"])
+    fp_mixed = compute_fingerprint("ADD CACHING LAYER", ["cos_lib/cache.py"])
     assert fp_lower == fp_upper == fp_mixed
 
 
 def test_compute_fingerprint_whitespace_insensitive():
     """Extra whitespace / newlines in description collapse to the same fp."""
-    fp1 = compute_fingerprint("fix  the  bug", ["lib/foo.py"])
-    fp2 = compute_fingerprint("fix the bug", ["lib/foo.py"])
-    fp3 = compute_fingerprint("  fix\tthe\nbug  ", ["lib/foo.py"])
+    fp1 = compute_fingerprint("fix  the  bug", ["cos_lib/foo.py"])
+    fp2 = compute_fingerprint("fix the bug", ["cos_lib/foo.py"])
+    fp3 = compute_fingerprint("  fix\tthe\nbug  ", ["cos_lib/foo.py"])
     assert fp1 == fp2 == fp3
 
 
@@ -76,8 +76,8 @@ def test_compute_fingerprint_whitespace_insensitive():
 
 def test_compute_fingerprint_output_order_invariant():
     """Sorted outputs → same fingerprint regardless of input order."""
-    fp1 = compute_fingerprint("add migration", ["db/001.sql", "lib/migrate.py", "tests/test_migrate.py"])
-    fp2 = compute_fingerprint("add migration", ["tests/test_migrate.py", "lib/migrate.py", "db/001.sql"])
+    fp1 = compute_fingerprint("add migration", ["db/001.sql", "cos_lib/migrate.py", "tests/test_migrate.py"])
+    fp2 = compute_fingerprint("add migration", ["tests/test_migrate.py", "cos_lib/migrate.py", "db/001.sql"])
     assert fp1 == fp2
 
 
@@ -88,15 +88,15 @@ def test_compute_fingerprint_output_order_invariant():
 
 def test_compute_fingerprint_different_description_differs():
     """Different descriptions → different fingerprints."""
-    fp_a = compute_fingerprint("add login endpoint", ["lib/auth.py"])
-    fp_b = compute_fingerprint("add logout endpoint", ["lib/auth.py"])
+    fp_a = compute_fingerprint("add login endpoint", ["cos_lib/auth.py"])
+    fp_b = compute_fingerprint("add logout endpoint", ["cos_lib/auth.py"])
     assert fp_a != fp_b
 
 
 def test_compute_fingerprint_different_outputs_differs():
     """Same description but different outputs → different fingerprints."""
-    fp_a = compute_fingerprint("refactor core", ["lib/core.py"])
-    fp_b = compute_fingerprint("refactor core", ["lib/other.py"])
+    fp_a = compute_fingerprint("refactor core", ["cos_lib/core.py"])
+    fp_b = compute_fingerprint("refactor core", ["cos_lib/other.py"])
     assert fp_a != fp_b
 
 
@@ -157,7 +157,7 @@ def test_embed_idempotent():
 
 def test_parse_fingerprint_roundtrip():
     """A fingerprint embedded with embed_in_commit_msg can be parsed back."""
-    original_fp = compute_fingerprint("roundtrip test", ["lib/x.py"])
+    original_fp = compute_fingerprint("roundtrip test", ["cos_lib/x.py"])
     msg = "feat: something\n\nBody text."
     with_trailer = embed_in_commit_msg(msg, original_fp)
     parsed = parse_fingerprint_from_msg(with_trailer)
@@ -176,7 +176,7 @@ def test_parse_fingerprint_missing_returns_none():
 
 def test_find_existing_work_active_claims_match(tmp_path: Path):
     """find_existing_work returns a match when fingerprint is in active-claims."""
-    fp = compute_fingerprint("build auth service", ["lib/auth.py"])
+    fp = compute_fingerprint("build auth service", ["cos_lib/auth.py"])
 
     # Create the .cognitive-os/tasks/ structure
     claims_dir = tmp_path / ".cognitive-os" / "tasks"

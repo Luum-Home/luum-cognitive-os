@@ -9,7 +9,7 @@
 #   bash scripts/cos-events.sh stats [--window <seconds>]
 #
 # All heavy lifting is delegated to packages/agent-coordination/lib/event_bus.py
-# (symlinked as lib/event_bus.py).
+# (symlinked as cos_lib/event_bus.py).
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

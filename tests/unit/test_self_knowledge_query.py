@@ -36,7 +36,7 @@ def indexed_project(tmp_path: Path) -> Path:
     """Create and index a project with known content."""
     # lib/rate_limiter.py
     lib = tmp_path / "lib"
-    cos_lib.mkdir()
+    lib.mkdir()
     (lib / "rate_limiter.py").write_text(
         textwrap.dedent("""\
             class RateLimiter:
@@ -143,7 +143,7 @@ def test_query_ranks_path_match_highest(indexed_project: Path) -> None:
 def test_get_module_hit(indexed_project: Path) -> None:
     """get_module returns the api-surface entry for a known module."""
     SK._invalidate_cache()
-    mod = SK.get_module("lib/rate_limiter.py", project_dir=indexed_project)
+    mod = SK.get_module("cos_lib/rate_limiter.py", project_dir=indexed_project)
     assert mod is not None
     assert "RateLimiter" in mod["classes"]
     fn_names = [f["name"] for f in mod["functions"]]
@@ -153,7 +153,7 @@ def test_get_module_hit(indexed_project: Path) -> None:
 def test_get_module_miss(indexed_project: Path) -> None:
     """get_module returns None for a non-existent module."""
     SK._invalidate_cache()
-    result = SK.get_module("lib/does_not_exist.py", project_dir=indexed_project)
+    result = SK.get_module("cos_lib/does_not_exist.py", project_dir=indexed_project)
     assert result is None
 
 
@@ -164,14 +164,14 @@ def test_get_module_miss(indexed_project: Path) -> None:
 def test_get_importers(indexed_project: Path) -> None:
     """get_importers returns all files that import a given module."""
     SK._invalidate_cache()
-    importers = SK.get_importers("lib/circuit_breaker.py", project_dir=indexed_project)
-    assert "lib/agent_bus.py" in importers
+    importers = SK.get_importers("cos_lib/circuit_breaker.py", project_dir=indexed_project)
+    assert "cos_lib/agent_bus.py" in importers
 
 
 def test_get_importers_none(indexed_project: Path) -> None:
     """get_importers returns empty list for a module with no known importers."""
     SK._invalidate_cache()
-    importers = SK.get_importers("lib/rate_limiter_nonexistent.py", project_dir=indexed_project)
+    importers = SK.get_importers("cos_lib/rate_limiter_nonexistent.py", project_dir=indexed_project)
     assert importers == []
 
 

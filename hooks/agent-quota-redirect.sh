@@ -99,7 +99,7 @@ fi
 [ -z "$PROMPT" ] && PROMPT="(original prompt unavailable)"
 
 # ── Compute quota pressure + rate-limit signal ────────────────────────
-# Uses lib/quota_pressure.py when available (Agent A's artifact). Falls
+# Uses cos_lib/quota_pressure.py when available (Agent A's artifact). Falls
 # back to a local stub that reads rate-limit-events.jsonl directly so
 # this hook ships independently.
 PRESSURE_AND_RL=$("$PYTHON_BIN" -c "
@@ -113,7 +113,7 @@ pressure = 0.0
 rate_limit_recent = False
 window = int(os.environ.get('COS_RATE_LIMIT_WINDOW_SEC', '300'))
 
-# Preferred path: Agent A's lib/quota_pressure.py
+# Preferred path: Agent A's cos_lib/quota_pressure.py
 try:
     from cos_lib.quota_pressure import compute_quota_pressure  # type: ignore
     pressure = float(compute_quota_pressure())

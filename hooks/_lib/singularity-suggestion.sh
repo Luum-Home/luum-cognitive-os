@@ -77,7 +77,7 @@ _singularity_suggestion() {
       echo "Detected: $signal_str"
       echo "Consider activating Singularity for autonomous monitoring."
     fi
-    echo "Try: SINGULARITY_ENABLED=true python3 lib/singularity.py dry-run"
+    echo "Try: SINGULARITY_ENABLED=true python3 cos_lib/singularity.py dry-run"
     echo "=== END SINGULARITY ==="
     echo ""
   } >&2

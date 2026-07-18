@@ -2,7 +2,7 @@
 # scope: both
 """ADR Router — Suggest relevant Architecture Decision Records from prompt context.
 
-Analogous to ``lib/skill_router.py`` (ADR-174) and ``lib/rule_router.py`` (ADR-179),
+Analogous to ``cos_lib/skill_router.py`` (ADR-174) and ``cos_lib/rule_router.py`` (ADR-179),
 but for ADRs under ``docs/02-Decisions/adrs/``. See ADR-181.
 
 Each ADR may have YAML frontmatter::

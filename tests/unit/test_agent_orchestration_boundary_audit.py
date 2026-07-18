@@ -39,7 +39,7 @@ def test_current_agent_orchestration_boundary_manifest_passes() -> None:
 
 
 def test_audit_blocks_direct_optional_framework_import_in_core(tmp_path: Path) -> None:
-    write(tmp_path / "lib/agent_runtime.py", "import langgraph\n")
+    write(tmp_path / "cos_lib/agent_runtime.py", "import langgraph\n")
     write(tmp_path / "tests/evidence.py", "handoff-cycle-detected\n")
     write(tmp_path / "scripts/bench.py", "")
     manifest = tmp_path / "manifest.yaml"
@@ -60,7 +60,7 @@ def test_audit_blocks_direct_optional_framework_import_in_core(tmp_path: Path) -
                         "id": "local",
                         "status": "active",
                         "default": True,
-                        "implementation": "lib/agent_runtime.py",
+                        "implementation": "cos_lib/agent_runtime.py",
                         "license_spdx": "project",
                         "footprint": "zero",
                         "hot_path_allowed": True,
@@ -73,12 +73,12 @@ def test_audit_blocks_direct_optional_framework_import_in_core(tmp_path: Path) -
                         "id": "runtime",
                         "owner_adr": "ADR-X",
                         "kind": "launch_boundary",
-                        "implementations": ["lib/agent_runtime.py"],
+                        "implementations": ["cos_lib/agent_runtime.py"],
                         "required_tests": ["tests/evidence.py"],
                         "required_receipts": ["receipt"],
                     }
                 ],
-                "core_file_allowlist": ["lib/agent_runtime.py"],
+                "core_file_allowlist": ["cos_lib/agent_runtime.py"],
                 "unmanifested_core_file_scan": {"scopes": ["lib"], "filename_regex": "agent", "allowed_suffixes": [".py"]},
                 "benchmark": {
                     "script": "scripts/bench.py",
@@ -123,8 +123,8 @@ def test_audit_blocks_direct_optional_framework_import_in_core(tmp_path: Path) -
 
 
 def test_audit_blocks_unmanifested_orchestration_core_file(tmp_path: Path) -> None:
-    write(tmp_path / "lib/agent_runtime.py", "")
-    write(tmp_path / "lib/agent_daemon_v2.py", "")
+    write(tmp_path / "cos_lib/agent_runtime.py", "")
+    write(tmp_path / "cos_lib/agent_daemon_v2.py", "")
     write(tmp_path / "tests/evidence.py", "handoff-cycle-detected\n")
     write(tmp_path / "scripts/bench.py", "")
     manifest = tmp_path / "manifest.yaml"
@@ -145,7 +145,7 @@ def test_audit_blocks_unmanifested_orchestration_core_file(tmp_path: Path) -> No
                         "id": "local",
                         "status": "active",
                         "default": True,
-                        "implementation": "lib/agent_runtime.py",
+                        "implementation": "cos_lib/agent_runtime.py",
                         "license_spdx": "project",
                         "footprint": "zero",
                         "hot_path_allowed": True,
@@ -158,12 +158,12 @@ def test_audit_blocks_unmanifested_orchestration_core_file(tmp_path: Path) -> No
                         "id": "runtime",
                         "owner_adr": "ADR-X",
                         "kind": "launch_boundary",
-                        "implementations": ["lib/agent_runtime.py"],
+                        "implementations": ["cos_lib/agent_runtime.py"],
                         "required_tests": ["tests/evidence.py"],
                         "required_receipts": ["receipt"],
                     }
                 ],
-                "core_file_allowlist": ["lib/agent_runtime.py"],
+                "core_file_allowlist": ["cos_lib/agent_runtime.py"],
                 "unmanifested_core_file_scan": {"scopes": ["lib"], "filename_regex": "agent", "allowed_suffixes": [".py"]},
                 "benchmark": {
                     "script": "scripts/bench.py",
@@ -191,4 +191,4 @@ def test_audit_blocks_unmanifested_orchestration_core_file(tmp_path: Path) -> No
     payload = run_audit(tmp_path, manifest)
 
     assert payload["status"] == "block"
-    assert any(f["code"] == "unmanifested-orchestration-core-file" and f["path"] == "lib/agent_daemon_v2.py" for f in payload["findings"])
+    assert any(f["code"] == "unmanifested-orchestration-core-file" and f["path"] == "cos_lib/agent_daemon_v2.py" for f in payload["findings"])

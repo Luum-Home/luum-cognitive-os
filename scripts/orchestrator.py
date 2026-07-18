@@ -76,7 +76,7 @@ def _fallback_disabled(verbose: bool = False) -> bool:
 
 
 def _try_qwen_primary(prompt: str, claude_model: str | None = None, verbose: bool = False):
-    """Dispatch a prompt via lib/qwen_provider.py direct-SDK as PRIMARY path
+    """Dispatch a prompt via cos_lib/qwen_provider.py direct-SDK as PRIMARY path
     for sub-agents (ADR-049 corrected architecture).
 
     Sub-agents invoked via scripts/orchestrator.py go to Qwen by default to
@@ -302,7 +302,7 @@ def cmd_run(args: argparse.Namespace) -> int:
         print(f"[orchestrator] launching agent_id={agent_id} model={args.model or 'default'}", file=sys.stderr)
 
     # ADR-049 (corrected architecture — Option B): delegate cascade to
-    # lib/dispatch.py. cmd_run becomes a thin wrapper that instantiates
+    # cos_lib/dispatch.py. cmd_run becomes a thin wrapper that instantiates
     # ClaudeExecutor and forwards the task to the abstract dispatcher.
     # Benefits: uniform metrics logging, testable in isolation, reusable
     # from skills/hooks/future auto-router.

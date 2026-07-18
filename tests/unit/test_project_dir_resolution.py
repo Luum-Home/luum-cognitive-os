@@ -205,12 +205,12 @@ PATTERN_A_MIGRATED_IMPORT = "from cos_lib.paths import project_root"
 @pytest.mark.parametrize(
     "relpath",
     [
-        "lib/dispatch_helper.py",
-        "lib/dispatch_model_advisor.py",
-        "lib/rate_limiter.py",
-        "lib/sdd_pipeline.py",
-        "lib/queue_drainer.py",
-        "lib/agent_health_monitor.py",
+        "cos_lib/dispatch_helper.py",
+        "cos_lib/dispatch_model_advisor.py",
+        "cos_lib/rate_limiter.py",
+        "cos_lib/sdd_pipeline.py",
+        "cos_lib/queue_drainer.py",
+        "cos_lib/agent_health_monitor.py",
     ],
 )
 def test_pattern_a_literal_present_in_source(relpath):
@@ -241,7 +241,7 @@ def test_pattern_a_literal_appears_4_times_in_agent_health_monitor():
     Previously the 4 Pattern A sites used the inline expression at :96, :125,
     :404, :433.  After R1 all 4 are replaced by project_root() calls.
     """
-    src = (REPO_ROOT / "lib/agent_health_monitor.py").read_text()
+    src = (REPO_ROOT / "cos_lib/agent_health_monitor.py").read_text()
     old_total = src.count(PATTERN_A_LITERAL) + src.count(PATTERN_A_LITERAL_INDENTED)
     assert old_total == 0, (
         f"agent_health_monitor.py: found {old_total} old Pattern A literals — "
@@ -261,7 +261,7 @@ def test_pattern_a_literal_appears_twice_in_dispatch_model_advisor():
     lookup path was merged with the hourly lookup path so _find_metrics_dir() and recommendation logging
     use direct project_root() calls. Count updated 2026-04-21.
     """
-    src = (REPO_ROOT / "lib/dispatch_model_advisor.py").read_text()
+    src = (REPO_ROOT / "cos_lib/dispatch_model_advisor.py").read_text()
     assert src.count(PATTERN_A_LITERAL) == 0, (
         "dispatch_model_advisor.py: still contains old Pattern A literals — "
         "expected 0 after R1 migration."
@@ -273,7 +273,7 @@ def test_pattern_a_literal_appears_twice_in_dispatch_model_advisor():
 
 def test_model_router_uses_pattern_a_prime_with_dot_default():
     """model_router:321 is the lone Pattern A' (dot default) — refactor MUST preserve."""
-    src = (REPO_ROOT / "lib/model_router.py").read_text()
+    src = (REPO_ROOT / "cos_lib/model_router.py").read_text()
     assert PATTERN_A_PRIME_LITERAL in src, (
         "model_router.py no longer uses '.' default for project_dir at line ~321. "
         "Other sites use '' default — silently changing the default would change "
@@ -306,7 +306,7 @@ def test_dispatch_gate_check_uses_cognitive_os_fallback():
 
 def test_queue_drainer_line_316_uses_pattern_c():
     """queue_drainer.py has 2 sites: :66 uses Pattern A, :316 uses Pattern C."""
-    src = (REPO_ROOT / "lib/queue_drainer.py").read_text()
+    src = (REPO_ROOT / "cos_lib/queue_drainer.py").read_text()
     assert PATTERN_C_LITERAL in src, (
         "queue_drainer.py:316 (inside select_top, advisor branch) no longer "
         "uses Pattern C. Refactor must preserve the divergence from :66."
@@ -314,7 +314,7 @@ def test_queue_drainer_line_316_uses_pattern_c():
 
 
 def test_telemetry_uses_pattern_d_reverse_precedence():
-    src = (REPO_ROOT / "lib/telemetry.py").read_text()
+    src = (REPO_ROOT / "cos_lib/telemetry.py").read_text()
     assert 'os.environ.get("COGNITIVE_OS_PROJECT_DIR")' in src
     assert 'os.environ.get("CLAUDE_PROJECT_DIR")' in src
     cog_idx = src.find('os.environ.get("COGNITIVE_OS_PROJECT_DIR")')
@@ -332,7 +332,7 @@ def test_telemetry_uses_pattern_d_reverse_precedence():
 
 
 class TestDispatchHelperFindConfigPath:
-    """lib/dispatch_helper._find_config_path() — exercises Pattern A at line 47."""
+    """cos_lib/dispatch_helper._find_config_path() — exercises Pattern A at line 47."""
 
     def test_finds_yaml_under_claude_project_dir(self, monkeypatch, tmp_path):
         from cos_lib import dispatch_helper
@@ -365,7 +365,7 @@ class TestDispatchHelperFindConfigPath:
 
 
 class TestModelRouterMetricsDirResolution:
-    """lib/model_router.get_consequence_override: line 321 builds metrics_dir from env."""
+    """cos_lib/model_router.get_consequence_override: line 321 builds metrics_dir from env."""
 
     def test_no_env_uses_dot_relative_metrics_dir(self, monkeypatch):
         from cos_lib import model_router
@@ -418,7 +418,7 @@ class TestModelRouterMetricsDirResolution:
 
 
 class TestQueueDrainerReadMaxParallelAgents:
-    """lib/queue_drainer._read_max_parallel_agents — Pattern A at line 66."""
+    """cos_lib/queue_drainer._read_max_parallel_agents — Pattern A at line 66."""
 
     def test_finds_value_via_claude_project_dir(self, monkeypatch, tmp_path):
         from cos_lib import queue_drainer
@@ -441,7 +441,7 @@ class TestQueueDrainerReadMaxParallelAgents:
 
 
 class TestTelemetryProjectRoot:
-    """lib/telemetry._project_root — Pattern D (reverse precedence)."""
+    """cos_lib/telemetry._project_root — Pattern D (reverse precedence)."""
 
     def test_cognitive_os_wins_when_both_set(self, monkeypatch, tmp_path):
         from cos_lib import telemetry
@@ -535,22 +535,22 @@ def test_audit_count_of_sites_per_pattern():
     """
     counts: dict[str, int] = {"A": 0, "A_prime": 0, "C": 0, "D": 0}
     for relpath in [
-        "lib/dispatch_helper.py",
-        "lib/dispatch_model_advisor.py",
-        "lib/rate_limiter.py",
-        "lib/sdd_pipeline.py",
-        "lib/queue_drainer.py",
-        "lib/agent_health_monitor.py",
-        "lib/model_router.py",
+        "cos_lib/dispatch_helper.py",
+        "cos_lib/dispatch_model_advisor.py",
+        "cos_lib/rate_limiter.py",
+        "cos_lib/sdd_pipeline.py",
+        "cos_lib/queue_drainer.py",
+        "cos_lib/agent_health_monitor.py",
+        "cos_lib/model_router.py",
         "hooks/_lib/dispatch_gate_check.py",
-        "lib/telemetry.py",
+        "cos_lib/telemetry.py",
     ]:
         src = (REPO_ROOT / relpath).read_text()
         counts["A"] += src.count(PATTERN_A_LITERAL) + src.count(PATTERN_A_LITERAL_INDENTED)
         counts["A_prime"] += src.count(PATTERN_A_PRIME_LITERAL)
         counts["C"] += src.count(PATTERN_C_LITERAL)
         # Pattern D detection is the reversed precedence in telemetry only.
-        if relpath == "lib/telemetry.py":
+        if relpath == "cos_lib/telemetry.py":
             cog_idx = src.find('os.environ.get("COGNITIVE_OS_PROJECT_DIR")')
             claude_idx = src.find('os.environ.get("CLAUDE_PROJECT_DIR")')
             if cog_idx >= 0 and claude_idx >= 0 and cog_idx < claude_idx:
