@@ -154,18 +154,18 @@ def _install_fake_st(monkeypatch, *, dim: int = 8):
 @pytest.fixture
 def sample_project(tmp_path: Path) -> Path:
     """Minimal project tree — same shape as the Jaccard test fixture."""
-    (tmp_path / "lib").mkdir()
+    (tmp_path / "cos_lib").mkdir()
     (tmp_path / "hooks").mkdir()
     (tmp_path / "scripts").mkdir()
 
-    (tmp_path / "lib" / "rate_limiter.py").write_text(textwrap.dedent('''\
+    (tmp_path / "cos_lib" / "rate_limiter.py").write_text(textwrap.dedent('''\
         """Rate Limiter — prevents token flooding and excessive tool usage."""
         class RateLimiter:
             def check(self, action):
                 """Return whether the action is allowed."""
                 return True
     '''))
-    (tmp_path / "lib" / "agent_bus.py").write_text(textwrap.dedent('''\
+    (tmp_path / "cos_lib" / "agent_bus.py").write_text(textwrap.dedent('''\
         """Agent Bus — heartbeat and liveness pings via pub/sub."""
         class AgentBus:
             def publish_heartbeat(self, agent_id):

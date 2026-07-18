@@ -27,7 +27,9 @@ class ComponentUsageTracker:
     def __init__(self, project_root: str = ".") -> None:
         self.root = Path(project_root).resolve()
         self.hooks_dir = self.root / "hooks"
-        self.lib_dir = self.root / "lib"
+        self.lib_dir = self.root / "cos_lib"
+        if not self.lib_dir.exists():
+            self.lib_dir = self.root / "lib"
         self.rules_dir = self.root / "rules"
         self.skills_dir = self.root / "skills"
         self.settings_files = [
@@ -131,7 +133,7 @@ class ComponentUsageTracker:
         existing_dirs = [d for d in search_dirs if d.exists()]
 
         importers_by_lib: dict[str, set[str]] = {lib: set() for lib in lib_files}
-        import_re = re.compile(r"(?:from|import)\s+lib\.([A-Za-z_][A-Za-z0-9_]*)\b")
+        import_re = re.compile(r"(?:from|import)\s+cos_lib\.([A-Za-z_][A-Za-z0-9_]*)\b")
 
         def record_line(path: str, line: str) -> None:
             for match in import_re.finditer(line):
@@ -149,7 +151,7 @@ class ComponentUsageTracker:
                         "--include=*.py",
                         "--include=*.sh",
                         "-E",
-                        r"(from|import)[[:space:]]+lib\.",
+                        r"(from|import)[[:space:]]+cos_lib\.",
                         *[str(d) for d in existing_dirs],
                     ],
                     capture_output=True,
