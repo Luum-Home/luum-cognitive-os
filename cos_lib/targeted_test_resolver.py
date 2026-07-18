@@ -74,7 +74,7 @@ def _candidate_paths_for(file_path: str) -> List[Path]:
 
     # Source-file conventions
     if suffix == ".py":
-        if len(parts) >= 2 and parts[0] == "lib":
+        if len(parts) >= 2 and parts[0] in ("cos_lib", "lib"):
             candidates += [
                 root / "tests" / "unit" / f"test_{stem}.py",
                 root / "tests" / "behavior" / f"test_{stem}.py",

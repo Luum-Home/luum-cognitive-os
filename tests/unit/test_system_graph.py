@@ -89,7 +89,7 @@ def minimal_project(tmp_path):
     (lib_hooks_dir / "common.sh").write_text("#!/bin/bash\n# Shared utilities\n")
 
     # Libs
-    lib_dir = tmp_path / "lib"
+    lib_dir = tmp_path / "cos_lib"
     lib_dir.mkdir()
     (lib_dir / "__init__.py").write_text("")
     (lib_dir / "agent_bus.py").write_text("# Agent bus module\nclass AgentBus:\n    pass\n")
