@@ -13,7 +13,7 @@ from pathlib import Path
 import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-_LIB_DIR = str(PROJECT_ROOT / "lib")
+_LIB_DIR = str(PROJECT_ROOT / "cos_lib")
 if _LIB_DIR not in sys.path:
     sys.path.insert(0, _LIB_DIR)
 
@@ -109,8 +109,8 @@ class TestSessionBacklogSkillExists:
 
     def test_request_queue_module_exists(self):
         """SKILL.md Step 7b references lib/request_queue — it must exist."""
-        rq = PROJECT_ROOT / "lib" / "request_queue.py"
-        assert rq.exists(), f"Missing lib/request_queue.py — backlog Step 7b broken"
+        rq = PROJECT_ROOT / "cos_lib" / "request_queue.py"
+        assert rq.exists(), f"Missing cos_lib/request_queue.py — backlog Step 7b broken"
 
     def test_request_queue_importable(self):
         """request_queue must import without errors."""

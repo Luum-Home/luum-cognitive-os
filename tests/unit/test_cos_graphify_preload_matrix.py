@@ -21,16 +21,16 @@ def _run_json(*items: str) -> dict[str, object]:
 
 
 def test_selects_harness_bundle_from_path() -> None:
-    payload = _run_json("cos_lib/harness_adapter/base.py")
+    payload = _run_json("lib/harness_adapter/base.py")
     keys = [bundle["key"] for bundle in payload["bundles"]]
 
     assert keys == ["harness-events"]
-    assert "cos_lib/harness_adapter/base.py" in payload["preload_files"]
+    assert "lib/harness_adapter/base.py" in payload["preload_files"]
     assert any("test_harness_adapter_base.py" in command for command in payload["tests"])
 
 
 def test_selects_multiple_bundles_without_duplicate_outputs() -> None:
-    payload = _run_json("cos_lib/harness_adapter/base.py", "hooks/destructive-git-blocker.sh")
+    payload = _run_json("lib/harness_adapter/base.py", "hooks/destructive-git-blocker.sh")
     keys = [bundle["key"] for bundle in payload["bundles"]]
 
     assert keys == ["harness-events", "destructive-git"]
