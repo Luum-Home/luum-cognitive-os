@@ -26,7 +26,7 @@ from cos_lib.component_usage_tracker import ComponentUsageTracker
 def repo(tmp_path: Path) -> Path:
     """Minimal fake repo skeleton."""
     (tmp_path / "hooks").mkdir()
-    (tmp_path / "lib").mkdir()
+    (tmp_path / "cos_lib").mkdir()
     (tmp_path / "rules").mkdir()
     (tmp_path / "skills").mkdir()
     (tmp_path / ".claude").mkdir()
@@ -112,7 +112,7 @@ def test_scan_hooks_coverage_pct(repo: Path) -> None:
 
 
 def test_scan_libs_finds_imports(repo: Path) -> None:
-    (repo / "lib" / "my_util.py").write_text("def foo(): pass")
+    (repo / "cos_lib" / "my_util.py").write_text("def foo(): pass")
     consumer = repo / "hooks" / "consumer.py"
     consumer.write_text("from cos_lib.my_util import foo\nfoo()")
 
@@ -124,7 +124,7 @@ def test_scan_libs_finds_imports(repo: Path) -> None:
 
 
 def test_scan_libs_never_imported(repo: Path) -> None:
-    (repo / "lib" / "orphaned_lib.py").write_text("def bar(): pass")
+    (repo / "cos_lib" / "orphaned_lib.py").write_text("def bar(): pass")
 
     t = ComponentUsageTracker(str(repo))
     result = t.scan_lib_imports()
@@ -133,8 +133,8 @@ def test_scan_libs_never_imported(repo: Path) -> None:
 
 
 def test_scan_libs_usage_pct(repo: Path) -> None:
-    (repo / "lib" / "used.py").write_text("x=1")
-    (repo / "lib" / "unused.py").write_text("y=2")
+    (repo / "cos_lib" / "used.py").write_text("x=1")
+    (repo / "cos_lib" / "unused.py").write_text("y=2")
     (repo / "hooks" / "importer.py").write_text("from cos_lib.used import x")
 
     t = ComponentUsageTracker(str(repo))
@@ -267,8 +267,8 @@ def test_health_score_calculation(repo: Path) -> None:
     make_settings(repo / ".claude" / "settings.json", ["reg.sh"])
 
     # 2 libs, 1 imported
-    (repo / "lib" / "used.py").write_text("x=1")
-    (repo / "lib" / "unused.py").write_text("y=2")
+    (repo / "cos_lib" / "used.py").write_text("x=1")
+    (repo / "cos_lib" / "unused.py").write_text("y=2")
     (repo / "hooks" / "importer.py").write_text("from cos_lib.used import x")
 
     t = ComponentUsageTracker(str(repo))

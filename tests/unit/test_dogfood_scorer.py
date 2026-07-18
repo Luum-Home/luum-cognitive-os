@@ -93,7 +93,7 @@ def _minimal_repo(tmp_path: Path) -> Path:
     (tmp_path / "skills").mkdir()
     (tmp_path / "tests/unit").mkdir(parents=True)
     (tmp_path / "scripts").mkdir()
-    (tmp_path / "lib").mkdir()
+    (tmp_path / "cos_lib").mkdir()
     (tmp_path / "docs/02-Decisions/adrs").mkdir(parents=True)
     (tmp_path / ".claude").mkdir()
     (tmp_path / ".claude/settings.json").write_text('{"hooks":{}}', encoding="utf-8")
