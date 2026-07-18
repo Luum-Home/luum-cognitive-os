@@ -89,14 +89,14 @@ PROVIDER_ADAPTERS: tuple[ProviderAdapterContract, ...] = (
 HARNESS_ADAPTERS: tuple[HarnessAdapterContract, ...] = (
     HarnessAdapterContract(
         name="claude_code",
-        adapter_path="lib/harness_adapter/claude_code.py",
-        normalized_into="lib/harness_adapter/base.py",
+        adapter_path="cos_lib/harness_adapter/claude_code.py",
+        normalized_into="cos_lib/harness_adapter/base.py",
         compatibility_surface="Canonical event emission for agent lifecycle, tool use, heartbeat, and token usage.",
     ),
     HarnessAdapterContract(
         name="aider",
-        adapter_path="lib/harness_adapter/aider.py",
-        normalized_into="lib/harness_adapter/base.py",
+        adapter_path="cos_lib/harness_adapter/aider.py",
+        normalized_into="cos_lib/harness_adapter/base.py",
         compatibility_surface="Passive transcript parsing into canonical events with version-aware dispatch and parse errors.",
     ),
 )

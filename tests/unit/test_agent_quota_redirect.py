@@ -164,7 +164,7 @@ def _mk_project(tmp_path: Path) -> Path:
     """
     proj = tmp_path / "proj"
     proj.mkdir()
-    (proj / "lib").symlink_to(REPO / "lib")
+    (proj / "cos_lib").symlink_to(REPO / "cos_lib")
     (proj / ".cognitive-os" / "metrics").mkdir(parents=True)
     return proj
 

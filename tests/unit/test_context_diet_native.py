@@ -88,7 +88,7 @@ class TestContextDietNative:
 
         with tempfile.TemporaryDirectory() as tmpdir:
             tmp_root = Path(tmpdir)
-            (tmp_root / "lib").mkdir()
+            (tmp_root / "cos_lib").mkdir()
             # Stub prompt_builder that returns 2000 fake rules → ~30K chars
             stub = '''
 class PromptBuilder:
@@ -98,8 +98,8 @@ class PromptBuilder:
     def selected_rules(self, _task_type):
         return [f"fake-rule-{i:04d}.md" for i in range(2000)]
 '''
-            (tmp_root / "lib" / "prompt_builder.py").write_text(stub)
-            (tmp_root / "lib" / "__init__.py").write_text("")
+            (tmp_root / "cos_lib" / "prompt_builder.py").write_text(stub)
+            (tmp_root / "cos_lib" / "__init__.py").write_text("")
             (tmp_root / ".cognitive-os").mkdir()
             (tmp_root / ".cognitive-os" / "cognitive-os.yaml").write_text(
                 "project:\n  name: test\n  type: webapp\n  phase: reconstruction\n"
