@@ -234,7 +234,7 @@ if echo "$STEP4_OUT" | grep -qi "QUOTA ADVISORY\|quota.*pressure\|qwen\|ADR-056"
 elif echo "$STEP4_OUT" | grep -qi "hookSpecificOutput\|additionalContext"; then
   record "OK" "Quota advisory" "agent-quota-advisor emitted hookSpecificOutput context"
 else
-  record "FAIL" "Quota advisory" "agent-quota-advisor emitted no advisory (check lib/quota_pressure.py)"
+  record "FAIL" "Quota advisory" "agent-quota-advisor emitted no advisory (check cos_lib/quota_pressure.py)"
 fi
 
 echo ""

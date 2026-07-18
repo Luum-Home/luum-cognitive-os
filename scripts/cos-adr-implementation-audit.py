@@ -64,7 +64,7 @@ def _matches_allowlist(rel_path: str, allowlist: list[dict[str, Any]]) -> bool:
 
 
 def _strip_comment(value: str) -> str:
-    """Strip inline YAML comments like '`lib/foo.py # description`'."""
+    """Strip inline YAML comments like '`cos_lib/foo.py # description`'."""
     if "#" in value:
         return value.split("#", 1)[0].strip()
     return value.strip()

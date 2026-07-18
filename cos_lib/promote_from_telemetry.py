@@ -78,7 +78,7 @@ def build_signal_quality_proposal(rollup: dict[str, Any], *, day_window: str, po
         ),
         "allowed_write_paths": [
             "manifests/reward-signal-contract.yaml",
-            "lib/reward_signal_quality.py",
+            "cos_lib/reward_signal_quality.py",
             "tests/unit/test_reward_signal_quality.py",
         ],
         "blocked_write_paths": [".env", "secrets/**", ".git/config"],

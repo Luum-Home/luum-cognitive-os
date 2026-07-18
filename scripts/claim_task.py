@@ -5,7 +5,7 @@
 Thin CLI wrapper around scripts/cos_task_claims.py (canonical API).
 Canonical store: .cognitive-os/tasks/active-claims.json (ADR-116 §P1.1).
 
-Previously delegated to lib/task_claim_ledger.py (deprecated shim).
+Previously delegated to cos_lib/task_claim_ledger.py (deprecated shim).
 """
 
 from __future__ import annotations

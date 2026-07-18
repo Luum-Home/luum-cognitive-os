@@ -107,7 +107,7 @@ def _python_files(changed_files: list[str]) -> list[str]:
 def _lane_command(name: str, changed_files: list[str], failure_text: str = "") -> str:
     if name == "syntax":
         py = _python_files(changed_files)
-        return "python3 -m py_compile " + " ".join(py or ["lib/test_efficiency_planner.py"])
+        return "python3 -m py_compile " + " ".join(py or ["cos_lib/test_efficiency_planner.py"])
     if name == "unit":
         return "python3 -m pytest tests/unit -q"
     if name == "behavior":
@@ -161,7 +161,7 @@ def plan_tests(
             selected.append(TestLane("audit", _lane_command("audit", changed), "docs/manifests/rules/skills changed"))
         if any(path.startswith("tests/chaos/") or "handoff" in path or "dispatch_gate" in path for path in changed):
             selected.append(TestLane("chaos", _lane_command("chaos", changed), "chaos-sensitive surface changed", heavy=True))
-        if any(path.startswith("tests/integration/") or path in {"lib/dispatch.py", "lib/claude_executor.py"} for path in changed):
+        if any(path.startswith("tests/integration/") or path in {"cos_lib/dispatch.py", "cos_lib/claude_executor.py"} for path in changed):
             selected.append(TestLane("integration", _lane_command("integration", changed), "integration-sensitive surface changed", heavy=True))
 
     dedup: dict[str, TestLane] = {}

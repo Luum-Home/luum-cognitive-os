@@ -59,6 +59,12 @@ def _scan_paths() -> list[Path]:
         for path in root.rglob("*"):
             if not path.is_file() or path.suffix not in SCAN_SUFFIXES:
                 continue
+            # Skip OKF synthesis pages — compact LLM summaries whose
+            # cross-references to agent-training-harness.md are pointers,
+            # not new claims. The canonical claim contract is enforced on
+            # the source markdown, not the synthesis sibling.
+            if path.name.endswith(".synthesis.md"):
+                continue
             rel_parts = set(path.relative_to(REPO).parts)
             if rel_parts & SKIP_PARTS:
                 continue

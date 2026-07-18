@@ -162,10 +162,10 @@ def _iter_settings_hook_groups(data: dict) -> list[tuple[str, list]]:
 # ---------------------------------------------------------------------------
 
 def _check_session_watchdog(root: Path):
-    lib_ok = _exists("lib/session_watchdog_lib.py")
+    lib_ok = _exists("cos_lib/session_watchdog_lib.py")
     script_ok = _exists("scripts/so_session_watchdog.py")
     if not lib_ok:
-        return ("ASPIR", "lib/session_watchdog_lib.py missing — no implementation")
+        return ("ASPIR", "cos_lib/session_watchdog_lib.py missing — no implementation")
     if not script_ok:
         return ("ASPIR", "lib exists but scripts/so_session_watchdog.py missing")
     # Singleton launcher hook (ADR-047 Phase A auto-start) is the canonical
@@ -188,7 +188,7 @@ def _check_session_watchdog(root: Path):
         return ("IMPL", f"lib + script present; auto-start wired via {autostart[0]}")
     return (
         "PARTIAL",
-        "lib/session_watchdog_lib.py + scripts/so_session_watchdog.py exist "
+        "cos_lib/session_watchdog_lib.py + scripts/so_session_watchdog.py exist "
         "but no auto-start found (no hook launch, no launchd/systemd/Makefile target)",
     )
 
@@ -289,20 +289,20 @@ def _check_project_phase(root: Path):
 
 def _check_resources_budget(root: Path):
     monitor_ok = _exists("hooks/token-budget-monitor.sh")
-    lib_ok = _exists("lib/budget_calculator.py")
+    lib_ok = _exists("cos_lib/budget_calculator.py")
     if monitor_ok and lib_ok:
         cmds = _settings_commands()
         active_registered = any("token-budget-monitor" in c for c in cmds)
         profile_registered = _script_mentions(root, "scripts/set-security-profile.sh", "token-budget-monitor.sh")
         if active_registered:
-            return ("IMPL", "hooks/token-budget-monitor.sh + lib/budget_calculator.py present; hook active in current settings driver")
+            return ("IMPL", "hooks/token-budget-monitor.sh + cos_lib/budget_calculator.py present; hook active in current settings driver")
         if profile_registered:
-            return ("IMPL", "hooks/token-budget-monitor.sh + lib/budget_calculator.py present; hook wired through security-profile generation")
+            return ("IMPL", "hooks/token-budget-monitor.sh + cos_lib/budget_calculator.py present; hook wired through security-profile generation")
         return ("PARTIAL", "hook + lib exist but token-budget-monitor is not wired through profiles or the active settings driver")
     if monitor_ok or lib_ok:
-        which = "hooks/token-budget-monitor.sh" if monitor_ok else "lib/budget_calculator.py"
+        which = "hooks/token-budget-monitor.sh" if monitor_ok else "cos_lib/budget_calculator.py"
         return ("PARTIAL", f"only {which} found; both expected for full implementation")
-    return ("ASPIR", "neither hooks/token-budget-monitor.sh nor lib/budget_calculator.py found")
+    return ("ASPIR", "neither hooks/token-budget-monitor.sh nor cos_lib/budget_calculator.py found")
 
 
 def _check_settings_freshness(root: Path):
@@ -514,7 +514,7 @@ def _check_llm_providers_reachable(root: Path):
     This check does NOT ping the actual provider endpoint — that would
     require a live API call per audit run, which burns quota. Reachability
     is inferred from config completeness; runtime failures are logged by
-    the dispatcher itself to lib/qwen_provider.py's QwenResult.error.
+    the dispatcher itself to cos_lib/qwen_provider.py's QwenResult.error.
     """
     # Known direct-SDK providers + their env-var schema
     providers = [
@@ -586,8 +586,8 @@ def _check_docs_convention_enforcement(root: Path):
     to honor the 10-category docs convention.
 
     Required pieces:
-      - lib/docs_writer.py (shared writer utility)
-      - lib/project_scaffolder.py (already shipped by ADR-054)
+      - cos_lib/docs_writer.py (shared writer utility)
+      - cos_lib/project_scaffolder.py (already shipped by ADR-054)
       - scripts/project_scaffold.py (CLI)
       - scripts/security_audit_writer.py (persistence sidecar)
       - scripts/rules_export.py (standards exporter)
@@ -595,8 +595,8 @@ def _check_docs_convention_enforcement(root: Path):
       - skills/rules-export/SKILL.md
     """
     required = [
-        "lib/docs_writer.py",
-        "lib/project_scaffolder.py",
+        "cos_lib/docs_writer.py",
+        "cos_lib/project_scaffolder.py",
         "scripts/project_scaffold.py",
         "scripts/security_audit_writer.py",
         "scripts/rules_export.py",

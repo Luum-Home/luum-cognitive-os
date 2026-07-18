@@ -39,7 +39,7 @@ def _schema_proposal():
         "affected_primitive": "reward-signal:skill-feedback",
         "degradation_pattern": "corrupt-reward-signal-rows:skill-feedback:matias",
         "candidate_action": "Tighten validator contract.",
-        "allowed_write_paths": ["lib/reward_signal_quality.py"],
+        "allowed_write_paths": ["cos_lib/reward_signal_quality.py"],
         "blocked_write_paths": [".env", "secrets/**"],
         "tests_required": ["python3 -m pytest tests/unit/test_reward_signal_quality.py -q"],
         "rollback_plan": "Revert validator change.",

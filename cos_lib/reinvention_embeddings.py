@@ -3,7 +3,7 @@
 
 IMPLEMENTATION: STUB — hash-based deterministic embeddings (no model download).
 
-This module exposes two public functions used by ``lib/reinvention_semantic.py``
+This module exposes two public functions used by ``cos_lib/reinvention_semantic.py``
 when ``sentence-transformers`` / ``fastembed`` are not installed:
 
 * ``embed(text: str) -> list[float]``  — fixed-dimension deterministic vector
@@ -27,12 +27,12 @@ STUB (this file, always available):
 REAL (sentence-transformers / fastembed):
     Replace ``embed()`` with a SentenceTransformer.encode() call and lower
     the threshold to DEFAULT_EMBED_MIN_SCORE (0.45) as defined in
-    ``lib/reinvention_semantic.py``.  The ``cosine()`` function below is
+    ``cos_lib/reinvention_semantic.py``.  The ``cosine()`` function below is
     implementation-agnostic and can be reused unchanged.
 
 Upgrade path:
     When ``sentence-transformers`` is installed, ``EmbeddingsIndex`` in
-    ``lib/reinvention_semantic.py`` takes over the hot path automatically
+    ``cos_lib/reinvention_semantic.py`` takes over the hot path automatically
     (REINVENTION_PHASE_B=2).  This module serves as the stdlib-only fallback
     so the gate is never silently disabled.
 
@@ -63,7 +63,7 @@ keeps the curated test corpus separated without pretending to be a dense
 semantic model.
 
 For REAL sentence-transformer embeddings, use DEFAULT_EMBED_MIN_SCORE = 0.45
-(defined in lib/reinvention_semantic.py), which is calibrated for dense
+(defined in cos_lib/reinvention_semantic.py), which is calibrated for dense
 semantic vectors rather than sparse token projections.
 """
 

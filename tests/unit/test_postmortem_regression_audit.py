@@ -79,7 +79,7 @@ checks:
 
 
 def test_manifest_forbidden_line_pair_detects_chaos_protected_source_write(tmp_path: Path) -> None:
-    write(tmp_path / "tests" / "chaos" / "test_bad.py", "Path('lib/targeted_test_resolver.py').write_text('x')\n")
+    write(tmp_path / "tests" / "chaos" / "test_bad.py", "Path('cos_lib/targeted_test_resolver.py').write_text('x')\n")
     manifest = tmp_path / "manifest.yaml"
     write(manifest, r"""schema_version: postmortem-regression-audit/v1
 checks:

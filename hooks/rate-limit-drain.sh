@@ -4,7 +4,7 @@
 # Rate Limit Drainer (D45 wiring) — PostToolUse:Bash, NEVER blocks.
 #
 # Closes the loop on the rate-limiter compounding-retry protection:
-#   - lib/rate_limiter.py already enforces MAX_RETRY_COUNT, exponential
+#   - cos_lib/rate_limiter.py already enforces MAX_RETRY_COUNT, exponential
 #     backoff, circuit breaker, and corruption recovery.
 #
 # This drainer:

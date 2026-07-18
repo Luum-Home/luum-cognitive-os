@@ -1,7 +1,7 @@
 # SCOPE: both
 """Backward-compatibility shim — Qwen agent loop (ADR-062).
 
-This module is now a thin shim over lib/openai_compatible_agent_loop.py that
+This module is now a thin shim over cos_lib/openai_compatible_agent_loop.py that
 pre-fills provider="qwen" for backward compatibility. All implementation has
 moved to the provider-agnostic module.
 

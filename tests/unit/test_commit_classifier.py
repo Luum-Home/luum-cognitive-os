@@ -9,8 +9,8 @@ from cos_lib.commit_classifier import classify_files, detect_related_files, prop
 
 class TestClassifyFiles:
     def test_lib_files(self):
-        result = classify_files(["lib/foo.py", "lib/bar.py"])
-        assert result == {"lib": ["lib/foo.py", "lib/bar.py"]}
+        result = classify_files(["cos_lib/foo.py", "cos_lib/bar.py"])
+        assert result == {"lib": ["cos_lib/foo.py", "cos_lib/bar.py"]}
 
     def test_hooks_files(self):
         result = classify_files(["hooks/my-hook.sh"])
@@ -21,13 +21,13 @@ class TestClassifyFiles:
         assert result == {"tests": ["tests/unit/test_foo.py"]}
 
     def test_test_suffix_pattern(self):
-        result = classify_files(["lib/foo_test.py"])
-        assert result == {"tests": ["lib/foo_test.py"]}
+        result = classify_files(["cos_lib/foo_test.py"])
+        assert result == {"tests": ["cos_lib/foo_test.py"]}
 
     def test_mixed_themes(self):
-        result = classify_files(["lib/foo.py", "hooks/bar.sh", "tests/unit/test_foo.py"])
+        result = classify_files(["cos_lib/foo.py", "hooks/bar.sh", "tests/unit/test_foo.py"])
         assert set(result.keys()) == {"lib", "hooks", "tests"}
-        assert result["lib"] == ["lib/foo.py"]
+        assert result["lib"] == ["cos_lib/foo.py"]
         assert result["hooks"] == ["hooks/bar.sh"]
         assert result["tests"] == ["tests/unit/test_foo.py"]
 
@@ -73,7 +73,7 @@ class TestClassifyFiles:
 
     def test_test_inside_lib_is_test_theme(self):
         # A test file inside lib/ should still classify as 'tests'
-        result = classify_files(["lib/test_helper.py"])
+        result = classify_files(["cos_lib/test_helper.py"])
         assert "tests" in result
 
     def test_spec_ts_files(self):
@@ -87,7 +87,7 @@ class TestClassifyFiles:
 
 class TestDetectRelatedFiles:
     def test_basic_pair(self):
-        files = ["lib/commit_classifier.py", "tests/unit/test_commit_classifier.py"]
+        files = ["cos_lib/commit_classifier.py", "tests/unit/test_commit_classifier.py"]
         pairs = detect_related_files(files)
         assert len(pairs) == 1
         src, tst = pairs[0]
@@ -95,14 +95,14 @@ class TestDetectRelatedFiles:
         assert "test_commit_classifier" in tst
 
     def test_no_pairs(self):
-        files = ["lib/foo.py", "hooks/bar.sh"]
+        files = ["cos_lib/foo.py", "hooks/bar.sh"]
         pairs = detect_related_files(files)
         assert pairs == []
 
     def test_multiple_pairs(self):
         files = [
-            "lib/alpha.py",
-            "lib/beta.py",
+            "cos_lib/alpha.py",
+            "cos_lib/beta.py",
             "tests/unit/test_alpha.py",
             "tests/unit/test_beta.py",
         ]
@@ -121,16 +121,16 @@ class TestDetectRelatedFiles:
 
 class TestProposeCommits:
     def test_single_theme(self):
-        classified = {"lib": ["lib/foo.py"]}
+        classified = {"lib": ["cos_lib/foo.py"]}
         proposals = propose_commits(classified)
         assert len(proposals) == 1
         assert proposals[0]["prefix"] == "feat"
         assert "library changes" in proposals[0]["message"]
-        assert "lib/foo.py" in proposals[0]["files"]
+        assert "cos_lib/foo.py" in proposals[0]["files"]
 
     def test_multiple_themes_produce_multiple_commits(self):
         classified = {
-            "lib":   ["lib/foo.py"],
+            "lib":   ["cos_lib/foo.py"],
             "hooks": ["hooks/bar.sh"],
         }
         proposals = propose_commits(classified)
@@ -159,20 +159,20 @@ class TestProposeCommits:
         # lib/commit_classifier.py and tests/.../test_commit_classifier.py
         # should end up in the same commit
         classified = {
-            "lib":   ["lib/commit_classifier.py"],
+            "lib":   ["cos_lib/commit_classifier.py"],
             "tests": ["tests/unit/test_commit_classifier.py"],
         }
         proposals = propose_commits(classified)
         # Either one proposal (merged) or two — but the test file should
         # appear somewhere
         all_files = [f for p in proposals for f in p["files"]]
-        assert "lib/commit_classifier.py" in all_files
+        assert "cos_lib/commit_classifier.py" in all_files
         assert "tests/unit/test_commit_classifier.py" in all_files
 
     def test_proposal_order_lib_before_tests(self):
         classified = {
             "tests": ["tests/unit/test_foo.py"],
-            "lib":   ["lib/foo.py"],
+            "lib":   ["cos_lib/foo.py"],
         }
         proposals = propose_commits(classified)
         # lib should come before tests in ordering

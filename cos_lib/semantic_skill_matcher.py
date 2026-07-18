@@ -6,7 +6,7 @@ fell back to zero cross-language signal because the corpus and query
 shared no normalised tokens across languages.
 
 This module is the *semantic fallback* layer for the regex router in
-``lib/skill_router.py`` (line ~1668). It is consulted only when the
+``cos_lib/skill_router.py`` (line ~1668). It is consulted only when the
 regex path returns a top confidence below 0.75.
 
 Engine

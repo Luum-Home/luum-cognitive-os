@@ -18,7 +18,7 @@
 #   2 — collision detected in block mode (commit blocked)
 #
 # Emits a conflict_detected event to .cognitive-os/sessions/events.jsonl
-# via lib/event_bus.py when a collision is found.
+# via cos_lib/event_bus.py when a collision is found.
 set -uo pipefail
 
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"

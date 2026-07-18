@@ -14,7 +14,7 @@ Usage::
         print(chunk["file"], chunk["score"])
 
 Each returned chunk is a dict with keys:
-    file           str   — relative path to the source file (e.g. "lib/rate_limiter.py")
+    file           str   — relative path to the source file (e.g. "cos_lib/rate_limiter.py")
     lineno         int   — 0 (line-level granularity not available in the current index)
     content_snippet str  — short excerpt or docstring from the indexed item
     score          float — similarity score in [0.0, 1.0]

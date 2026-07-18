@@ -8,7 +8,7 @@
 # - >50%: INFO (silent, logged only)
 #
 # Renamed from rate-limit-protection.sh (which monitored token budget, not action rate).
-# For action-count rate limiting see lib/rate_limiter.py.
+# For action-count rate limiting see cos_lib/rate_limiter.py.
 # Override: RATE_LIMIT_OVERRIDE=true
 # Author: luum
 

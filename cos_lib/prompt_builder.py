@@ -2,8 +2,8 @@
 """Prompt Builder — wires context_diet + prompt_cache into agent orchestration.
 
 This module is the integration point between:
-  - lib/context_diet.py  (select only relevant rules for a task type)
-  - lib/prompt_cache.py  (mark stable content with Anthropic cache_control)
+  - cos_lib/context_diet.py  (select only relevant rules for a task type)
+  - cos_lib/prompt_cache.py  (mark stable content with Anthropic cache_control)
 
 It is designed to be called from two places:
   1. Python orchestrator code (ClaudeExecutor, batch_runner, etc.)

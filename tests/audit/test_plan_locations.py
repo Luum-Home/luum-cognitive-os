@@ -190,6 +190,12 @@ def test_no_plan_files_outside_canonical_root() -> None:
         if md_file.is_symlink():
             continue
 
+        # Skip OKF synthesis pages — they are compact LLM-retrieval summaries
+        # of canonical docs, not plans themselves. The `.synthesis.md` sibling
+        # of docs/04-Concepts/architecture/foo-plan.md is not a plan file.
+        if md_file.name.endswith(".synthesis.md"):
+            continue
+
         # Skip git internals and virtual-env directories
         parts = md_file.parts
         if any(p.startswith(".git") for p in parts):

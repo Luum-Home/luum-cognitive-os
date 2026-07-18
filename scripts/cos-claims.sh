@@ -8,7 +8,7 @@
 #   bash scripts/cos-claims.sh complete <task-id> <session-id> <evidence>
 #   bash scripts/cos-claims.sh release  <task-id> <session-id>
 #
-# All heavy lifting is delegated to lib/engram_claims.py.
+# All heavy lifting is delegated to cos_lib/engram_claims.py.
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -66,7 +66,7 @@ case "${SUBCOMMAND}" in
 esac
 
 # --------------------------------------------------------------------------
-# Python inline runner — delegates to lib/engram_claims.py
+# Python inline runner — delegates to cos_lib/engram_claims.py
 # --------------------------------------------------------------------------
 
 run_python() {

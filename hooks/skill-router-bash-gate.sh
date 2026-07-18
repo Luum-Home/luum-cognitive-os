@@ -2,7 +2,7 @@
 # SCOPE: both
 # PreToolUse hook: Skill Router Bash Gate
 #
-# Uses lib/skill_router.py to detect shell commands that bypass a mandatory
+# Uses cos_lib/skill_router.py to detect shell commands that bypass a mandatory
 # maintenance skill. Advisory for generic matches; blocks dependency upgrades
 # that should go through /deps-update so the SO records audit/apply intent.
 

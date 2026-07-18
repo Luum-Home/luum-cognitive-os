@@ -126,7 +126,7 @@ class TestExtractClaims:
 
     def test_handles_quoted_paths(self):
         """Should handle file paths wrapped in quotes."""
-        output = 'Created "lib/helper.py" with utility functions.'
+        output = 'Created "cos_lib/helper.py" with utility functions.'
         claims = extract_claims(output)
         assert any(c.claim_type == "file_exists" and "helper.py" in c.target for c in claims)
 

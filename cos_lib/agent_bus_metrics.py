@@ -23,7 +23,7 @@ from typing import Any, Dict, List, Optional
 # Keep imports lazy/guarded so the module is importable without Valkey
 # installed.
 try:
-    # lib/agent_bus.py is a symlink to packages/agent-coordination/lib/agent_bus.py.
+    # cos_lib/agent_bus.py is a symlink to packages/agent-coordination/lib/agent_bus.py.
     # Python can't import package paths with hyphens, so we go through the symlink.
     from cos_lib.agent_bus import (  # type: ignore
         OrchestratorSubscriber,
@@ -223,7 +223,7 @@ class AgentBusMetrics:
             if OrchestratorSubscriber is None:
                 raise RuntimeError(
                     "agent_bus.OrchestratorSubscriber unavailable — install 'redis' or "
-                    "run in a checkout with lib/agent_bus.py on the path."
+                    "run in a checkout with cos_lib/agent_bus.py on the path."
                 )
             self._subscriber = OrchestratorSubscriber(
                 valkey_url=self._valkey_url,

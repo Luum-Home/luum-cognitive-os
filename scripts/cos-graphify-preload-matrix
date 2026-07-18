@@ -28,7 +28,7 @@ BUNDLES: tuple[PreloadBundle, ...] = (
         label="Harness event contract",
         triggers=(
             "lib/harness_adapter/",
-            "lib/sprint_orchestrator.py",
+            "cos_lib/sprint_orchestrator.py",
             "packages/agent-lifecycle/lib/harness_adapter/",
             "packages/agent-lifecycle/lib/sprint_orchestrator.py",
             "CanonicalEvent",
@@ -40,12 +40,12 @@ BUNDLES: tuple[PreloadBundle, ...] = (
             "lib/harness_adapter/aider_streaming.py",
             "lib/harness_adapter/bare_cli.py",
             "lib/harness_adapter/dispatch.py",
-            "lib/sprint_orchestrator.py",
+            "cos_lib/sprint_orchestrator.py",
         ),
         inspect_paths=(
             "lib/harness_adapter/base.py",
             "lib/harness_adapter/",
-            "lib/sprint_orchestrator.py",
+            "cos_lib/sprint_orchestrator.py",
         ),
         tests=(
             ".venv/bin/python -m pytest tests/unit/test_harness_adapter_base.py tests/unit/test_sprint_orchestrator.py tests/integration/test_preamble_v2_wave1.py -q",
@@ -56,21 +56,21 @@ BUNDLES: tuple[PreloadBundle, ...] = (
         key="history-rewrite",
         label="History rewrite and sanitization",
         triggers=(
-            "lib/history_sanitization.py",
-            "lib/history_rewrite_ledger.py",
+            "cos_lib/history_sanitization.py",
+            "cos_lib/history_rewrite_ledger.py",
             "scripts/cos-history-sanitization",
             "scripts/cos-filter-repo-wrap.sh",
             "history_sanitization",
         ),
         preload_files=(
-            "lib/history_sanitization.py",
-            "lib/history_rewrite_ledger.py",
+            "cos_lib/history_sanitization.py",
+            "cos_lib/history_rewrite_ledger.py",
             "scripts/cos-history-sanitization",
             "scripts/cos-filter-repo-wrap.sh",
         ),
         inspect_paths=(
-            "lib/history_sanitization.py",
-            "lib/history_rewrite_ledger.py",
+            "cos_lib/history_sanitization.py",
+            "cos_lib/history_rewrite_ledger.py",
             "scripts/cos-filter-repo-wrap.sh",
         ),
         tests=(

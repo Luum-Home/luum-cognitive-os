@@ -16,7 +16,7 @@
 #   - Append a JSONL record to .cognitive-os/metrics/rate-limit-events.jsonl
 #   - Emit a one-line advisory to stderr when the pattern first matches
 #     in the current session (deduped via session state file)
-#   - If ALIBABA_QWEN_API_KEY is set in env AND lib/qwen_provider.py exists,
+#   - If ALIBABA_QWEN_API_KEY is set in env AND cos_lib/qwen_provider.py exists,
 #     suggest flipping to direct-SDK dispatch. If not, tell the user what
 #     they need to subscribe/configure.
 #   - Exits 0 ALWAYS (advisory, never blocks).
@@ -82,14 +82,14 @@ if [ -n "${ALIBABA_QWEN_API_KEY:-}" ] && [ -f "$PROJECT_DIR/lib/qwen_provider.py
   cat >&2 <<'ADV'
 [rate-limit-detector] Claude Code subscription rate-limit detected.
   Overflow available: Alibaba Qwen Coding Plan Pro (ADR-049).
-  Dispatch via lib/qwen_provider.py.call() instead of the native Agent
+  Dispatch via cos_lib/qwen_provider.py.call() instead of the native Agent
   tool for remaining sub-agents this session. Or run:
     python3 -c "from cos_lib.qwen_provider import call; print(call([{'role':'user','content':'hi'}]).text)"
 ADV
 elif [ -f "$PROJECT_DIR/lib/qwen_provider.py" ]; then
   cat >&2 <<'ADV'
 [rate-limit-detector] Claude Code subscription rate-limit detected.
-  ADR-049 overflow module present (lib/qwen_provider.py) but NOT configured.
+  ADR-049 overflow module present (cos_lib/qwen_provider.py) but NOT configured.
   To activate: subscribe to Alibaba Qwen Coding Plan Pro ($50/mo) at
   https://www.alibabacloud.com/en/campaign/ai-coding-plan, then add
   ALIBABA_QWEN_API_KEY=<your-key> to .env. See ADR-049 for rationale.
@@ -97,7 +97,7 @@ ADV
 else
   cat >&2 <<'ADV'
 [rate-limit-detector] Claude Code subscription rate-limit detected.
-  No direct-SDK overflow module found (lib/qwen_provider.py missing).
+  No direct-SDK overflow module found (cos_lib/qwen_provider.py missing).
   See docs/02-Decisions/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md
   for the recommended overflow stack.
 ADV

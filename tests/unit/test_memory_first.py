@@ -54,7 +54,7 @@ def test_should_read_metrics_jsonl_glob(m):
 
 
 def test_should_read_normal_file(m):
-    result = m.should_read_file("lib/smart_access.py", "read module")
+    result = m.should_read_file("cos_lib/smart_access.py", "read module")
     assert result["action"] == "read_full"
 
 
@@ -73,7 +73,7 @@ def test_pre_action_check_read_jsonl(m):
 
 
 def test_pre_action_check_normal(m):
-    assert m.pre_action_check("Read", "lib/smart_access.py") is None
+    assert m.pre_action_check("Read", "cos_lib/smart_access.py") is None
 
 
 def test_pre_action_check_bash_cat_jsonl(m):

@@ -238,7 +238,7 @@ def test_format_report_readable(evaluator: EcosystemEvaluator) -> None:
         ],
         "reinvention": [
             {
-                "our_lib": "lib/context_estimator.py",
+                "our_lib": "cos_lib/context_estimator.py",
                 "plugin_file": "hermes-agent/context_manager.py",
                 "plugin": "hermes-agent",
                 "similarity": "purpose_overlap",

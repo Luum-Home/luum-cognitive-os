@@ -179,17 +179,17 @@ DOCUMENTED_COMPATIBILITY_TARGETS: tuple[DocumentedCompatibilityTarget, ...] = (
 GATEWAY_ADAPTERS: tuple[GatewayAdapterContract, ...] = (
     GatewayAdapterContract(
         name="bifrost",
-        adapter_path="lib/gateway_selector.py",
+        adapter_path="cos_lib/gateway_selector.py",
         concern="Fast-path gateway health and selection.",
     ),
     GatewayAdapterContract(
         name="litellm",
-        adapter_path="lib/gateway_selector.py",
+        adapter_path="cos_lib/gateway_selector.py",
         concern="Feature-rich fallback gateway and broad provider coverage.",
     ),
     GatewayAdapterContract(
         name="claude_direct",
-        adapter_path="lib/gateway_selector.py",
+        adapter_path="cos_lib/gateway_selector.py",
         concern="Direct CLI execution when no proxy should be involved.",
     ),
 )

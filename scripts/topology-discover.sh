@@ -16,7 +16,7 @@
 #     "directory_symlinks": [{ "path": "lib/harness_adapter",
 #                              "target": "packages/agent-lifecycle/lib/harness_adapter",
 #                              "resolved": "<absolute>" }, ...],
-#     "file_symlinks":      [{ "path": "lib/ground_truth.py",
+#     "file_symlinks":      [{ "path": "cos_lib/ground_truth.py",
 #                              "target": "../packages/verification-audit/lib/ground_truth.py",
 #                              "resolved": "<absolute>" }, ...],
 #     "summary": { "directory_count": N, "file_count": M }

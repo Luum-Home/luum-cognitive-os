@@ -37,7 +37,7 @@ Written to `.cognitive-os/metrics/llm-dispatch.jsonl` (appended, never truncated
 ORDERING CONTRACT (ADR-220 M3 sweep finding)
 ----------------------------------------------------------------------------
 
-`lib/dispatch.py` is the single integration point for four ADRs that all
+`cos_lib/dispatch.py` is the single integration point for four ADRs that all
 landed in the 226–236 batch. Each ADR owns a phase of `dispatch()`; the
 phases run in a fixed order before any provider call is made. Future
 amendments to this file MUST preserve the order below.
@@ -356,7 +356,7 @@ def _try_qwen(
     claude_model: Optional[str] = None,
     verbose: bool = False,
 ) -> Optional[dict]:
-    """Call lib/qwen_provider.py. Returns dict with response fields or None if
+    """Call cos_lib/qwen_provider.py. Returns dict with response fields or None if
     unavailable/disabled. Kept here (rather than imported from orchestrator.py)
     so tests can stub this cleanly and the dispatch logic stays self-contained.
     """

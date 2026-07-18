@@ -6,7 +6,7 @@ need to query the agent memory system without going through the engram
 CLI directly.
 
 Primary consumers:
-  - lib/agent_context_injector.py (searches for prior context before injecting)
+  - cos_lib/agent_context_injector.py (searches for prior context before injecting)
 
 When engram is unavailable, all functions return empty results.
 For write operations with untrusted content, use cos_lib.safe_engram instead.

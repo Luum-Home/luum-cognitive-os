@@ -11,7 +11,7 @@ SCRIPT = ROOT / "scripts" / "cos-graphify-token-footprint"
 
 def test_estimates_harness_preload_reduction() -> None:
     completed = subprocess.run(
-        [str(SCRIPT), "lib/harness_adapter/base.py", "--json"],
+        [str(SCRIPT), "cos_lib/harness_adapter/base.py", "--json"],
         cwd=ROOT,
         check=True,
         capture_output=True,
@@ -22,7 +22,7 @@ def test_estimates_harness_preload_reduction() -> None:
     assert payload["bundle_keys"] == ["harness-events"]
     assert payload["baseline"]["estimated_tokens"] > payload["preload"]["estimated_tokens"]
     assert payload["estimated_reduction_ratio"] > 1
-    assert "lib/harness_adapter/base.py" in payload["preload"]["token_by_file"]
+    assert "cos_lib/harness_adapter/base.py" in payload["preload"]["token_by_file"]
 
 
 def test_unknown_path_has_zero_reduction() -> None:

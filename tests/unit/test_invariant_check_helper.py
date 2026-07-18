@@ -82,7 +82,7 @@ def test_emit_test_produces_valid_python_and_cites_adr() -> None:
         value=5.0,
         source="py",
         line=10,
-        file="lib/watchdog.py",
+        file="cos_lib/watchdog.py",
         raw="",
     )
     adr_c = _mod.Constant(
@@ -181,7 +181,7 @@ def test_cli_real_adr_047_pair_produces_non_empty_output() -> None:
     pair produces at least one proposed invariant."""
     adr = REPO_ROOT / "docs" / "02-Decisions" / "adrs" / "ADR-047-session-lifecycle-management.md"
     lib = REPO_ROOT / "lib" / "session_watchdog_lib.py"
-    if not adr.exists() or not cos_lib.exists():
+    if not adr.exists() or not lib.exists():
         pytest.skip("ADR-047 or session_watchdog_lib.py not present")
     result = subprocess.run(
         ["python3", str(HELPER), str(adr), str(lib)],

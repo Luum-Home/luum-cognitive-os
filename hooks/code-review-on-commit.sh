@@ -3,7 +3,7 @@
 # code-review-on-commit.sh — Git pre-commit hook that runs code review on staged files
 #
 # Fires as a git pre-commit hook (NOT a Claude Code hook).
-# Gets staged files, runs lib/code_reviewer.py static analysis, and shows
+# Gets staged files, runs cos_lib/code_reviewer.py static analysis, and shows
 # findings before commit. WARN only — never blocks commits.
 #
 # Environment variables:

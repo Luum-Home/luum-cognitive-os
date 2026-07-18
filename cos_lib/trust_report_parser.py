@@ -24,7 +24,7 @@ Usage:
         print(report.score, report.status)
 
 Wave 3 change: TrustReport is now a Pydantic v2 model defined in
-lib/trust_report_schema.py. The parser validates the extracted fields
+cos_lib/trust_report_schema.py. The parser validates the extracted fields
 through that schema so structural errors surface immediately with clear
 error messages pointing at the malformed section.
 

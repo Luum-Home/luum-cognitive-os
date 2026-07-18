@@ -55,8 +55,8 @@ ALLOWED_REFERENCES: tuple[AllowedReference, ...] = (
 
     # Direct API implementation/policy surfaces; all must remain config-gated.
     AllowedReference("cognitive-os.yaml", "direct_api_opt_in_config", "claude_sdk opt-in disabled by default"),
-    AllowedReference("lib/anthropic_direct_policy.py", "direct_api_policy", "central policy helper"),
-    AllowedReference("lib/claude_executor.py", "direct_api_executor", "advisor fallback checks"),
+    AllowedReference("cos_lib/anthropic_direct_policy.py", "direct_api_policy", "central policy helper"),
+    AllowedReference("cos_lib/claude_executor.py", "direct_api_executor", "advisor fallback checks"),
     AllowedReference("packages/llm-providers/lib/__init__.py", "direct_api_provider", "provider inventory docs"),
     AllowedReference("pyproject.toml", "direct_api_optional_extra", "optional claude-sdk extra docs"),
     AllowedReference("rules/model-routing.md", "direct_api_routing_docs", "advisor preconditions"),
@@ -136,6 +136,12 @@ def _iter_text_files() -> list[Path]:
         if rel_path.startswith(IGNORED_PATH_PREFIXES):
             continue
         if path.suffix in IGNORED_SUFFIXES:
+            continue
+        # Skip OKF synthesis pages — compact LLM summaries of canonical
+        # policy docs; their ANTHROPIC_API_KEY mentions are quotes of the
+        # source doc's classification, not new references. The allowlist
+        # contract is enforced on the canonical .md, not its .synthesis.md.
+        if path.name.endswith(".synthesis.md"):
             continue
         paths.append(path)
     return paths

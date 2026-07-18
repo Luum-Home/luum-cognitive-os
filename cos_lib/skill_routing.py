@@ -2,7 +2,7 @@
 """Skill frontmatter routing loader (ADR-050 Per-Skill Routing Policy).
 
 Loads a `routing:` block from the YAML frontmatter of a `SKILL.md` file and
-returns a canonicalised `SkillRequirements` object that `lib/dispatch.py`
+returns a canonicalised `SkillRequirements` object that `cos_lib/dispatch.py`
 consumes.
 
 Frontmatter schema (all fields optional, conservative defaults):
@@ -31,7 +31,7 @@ Design invariants:
 
 See:
   - `docs/02-Decisions/adrs/ADR-050-per-skill-routing-policy.md`
-  - `lib/dispatch.py::dispatch(skill_requirements=...)`
+  - `cos_lib/dispatch.py::dispatch(skill_requirements=...)`
   - `tests/unit/test_skill_routing.py`
 """
 
@@ -58,8 +58,8 @@ VALID_TIERS = ("frontier", "balanced", "cheap")
 class SkillRequirements:
     """Canonical, dispatch-ready routing block parsed from skill frontmatter.
 
-    Dataclass form is the public contract between `lib/skill_routing.py` and
-    `lib/dispatch.py`. Every field has a safe default so partial frontmatter
+    Dataclass form is the public contract between `cos_lib/skill_routing.py` and
+    `cos_lib/dispatch.py`. Every field has a safe default so partial frontmatter
     is never a fatal error.
     """
 

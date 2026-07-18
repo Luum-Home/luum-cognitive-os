@@ -5,7 +5,7 @@
 #
 # What it checks (in order):
 #   1. cos-config-audit.sh reports meta.llm_providers_reachable = IMPL
-#   2. lib/qwen_provider.py is importable and call() works (real API call)
+#   2. cos_lib/qwen_provider.py is importable and call() works (real API call)
 #   3. scripts/orchestrator.py _try_qwen_primary() returns a result object
 #      when invoked programmatically (mocked rate-limit error)
 #   4. COS_DISABLE_LLM_FALLBACK=1 kill-switch blocks the fallback
@@ -28,7 +28,7 @@ PROJECT_DIR="$(pwd)"
 # Source .env if present (for ALIBABA_QWEN_API_KEY, ALIBABA_QWEN_BASE_URL).
 # COS_SKIP_DOTENV=1 is the public operator/agent-safe bypass for live smokes
 # that must use already-exported environment variables only. It also prevents
-# lib/qwen_provider.py from auto-loading .env later in the Python process.
+# cos_lib/qwen_provider.py from auto-loading .env later in the Python process.
 case "${COS_SKIP_DOTENV:-0}" in
   1|true|TRUE|yes|YES|on|ON)
     export _COS_QWEN_DOTENV_LOADED=1

@@ -25,7 +25,7 @@ changes).
 
 Usage (standalone, for manual testing)::
 
-    uv run python3 lib/context_injector.py "refactor rate limiter"
+    uv run python3 cos_lib/context_injector.py "refactor rate limiter"
 
 Returns block printed to stdout.
 
@@ -558,7 +558,7 @@ if __name__ == "__main__":
     import sys
 
     if len(sys.argv) < 2:
-        print("Usage: uv run python3 lib/context_injector.py \"<task description>\"", file=sys.stderr)
+        print("Usage: uv run python3 cos_lib/context_injector.py \"<task description>\"", file=sys.stderr)
         sys.exit(1)
 
     task_arg = " ".join(sys.argv[1:])

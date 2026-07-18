@@ -147,6 +147,6 @@ def _get_health_report(tasks_path: str | None = None) -> str:
         monitor = AgentHealthMonitor(**kwargs)
         return monitor.format_health_report()
     except ImportError:
-        return "AGENT HEALTH: monitor not available (lib/agent_health_monitor.py not found)"
+        return "AGENT HEALTH: monitor not available (cos_lib/agent_health_monitor.py not found)"
     except Exception as exc:  # noqa: BLE001
         return f"AGENT HEALTH: error running health check — {exc}"

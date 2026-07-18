@@ -30,7 +30,7 @@ TEXT_SUFFIXES = {
 }
 BASELINE_ROOTS_BY_BUNDLE = {
     "harness-events": ("lib",),
-    "history-rewrite": ("lib", "scripts"),
+    "history-rewrite": ("cos_lib", "scripts"),
     "destructive-git": ("hooks",),
     "work-inventory": ("scripts", "hooks"),
     "agent-service-session": ("packages/agent-service",),

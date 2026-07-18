@@ -127,7 +127,7 @@ if [ -z "$SKILL_NAME" ] || [ "$SKILL_NAME" = "null" ]; then
   exit 0
 fi
 
-# ── Load frontmatter via lib/skill_routing.py ──────────────────────────────
+# ── Load frontmatter via cos_lib/skill_routing.py ──────────────────────────────
 # Returns: opt_in|<threshold> when skill has auto_fallback_to_qwen: true
 #          no_optin                when skill exists but hasn't opted in
 #          unknown                 when skill cannot be located

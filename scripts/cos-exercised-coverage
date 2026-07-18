@@ -43,7 +43,7 @@ def _load_lib(project_dir: Path):
     lib_path = project_dir / "lib" / "exercised_coverage.py"
     if not lib_path.is_file():
         print(
-            f"ERROR: lib/exercised_coverage.py not found at {lib_path}",
+            f"ERROR: cos_lib/exercised_coverage.py not found at {lib_path}",
             file=sys.stderr,
         )
         sys.exit(1)

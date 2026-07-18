@@ -270,7 +270,7 @@ class PatternDetector:
         """Check if a module import resolves to an existing file."""
         # Only check local imports (cos_lib.*, hooks.*, etc.)
         parts = module_name.split(".")
-        if parts[0] not in ("lib", "hooks", "skills"):
+        if parts[0] not in ("cos_lib", "hooks", "skills"):
             return None
 
         # Convert module path to file path

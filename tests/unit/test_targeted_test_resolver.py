@@ -40,7 +40,7 @@ def tmp_project(tmp_path, monkeypatch):
 
 
 def test_lib_py_resolves_to_unit_test(tmp_project):
-    result = resolve_tests_for_changes(["lib/foo.py"])
+    result = resolve_tests_for_changes(["cos_lib/foo.py"])
     assert "tests/unit/test_foo.py" in result
 
 
@@ -56,7 +56,7 @@ def test_hook_sh_resolves_to_hook_test(tmp_project):
 
 def test_missing_test_file_is_dropped(tmp_project):
     # lib/unused.py has no test — should produce empty result
-    result = resolve_tests_for_changes(["lib/unused.py"])
+    result = resolve_tests_for_changes(["cos_lib/unused.py"])
     assert result == []
 
 
@@ -74,7 +74,7 @@ def test_docs_changes_resolve_to_empty(tmp_project):
 
 def test_deduplicates_multiple_changes_mapping_to_same_test(tmp_project):
     # If two source files map to the same test, it appears once
-    result = resolve_tests_for_changes(["lib/foo.py", "lib/foo.py"])
+    result = resolve_tests_for_changes(["cos_lib/foo.py", "cos_lib/foo.py"])
     assert result.count("tests/unit/test_foo.py") == 1
 
 
@@ -85,7 +85,7 @@ def test_empty_input_returns_empty_list(tmp_project):
 
 def test_mixed_inputs_return_sorted_list(tmp_project):
     result = resolve_tests_for_changes(
-        ["packages/p1/lib/baz.py", "lib/foo.py", "hooks/bar.sh"]
+        ["packages/p1/lib/baz.py", "cos_lib/foo.py", "hooks/bar.sh"]
     )
     assert result == sorted(result)
     # All three real tests exist, so all three should resolve
@@ -93,7 +93,7 @@ def test_mixed_inputs_return_sorted_list(tmp_project):
 
 
 def test_returns_strings_relative_to_project_root(tmp_project):
-    result = resolve_tests_for_changes(["lib/foo.py"])
+    result = resolve_tests_for_changes(["cos_lib/foo.py"])
     for p in result:
         assert not p.startswith("/"), f"expected relative path, got {p}"
         assert p.endswith(".py")

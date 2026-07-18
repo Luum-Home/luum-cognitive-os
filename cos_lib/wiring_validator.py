@@ -135,7 +135,7 @@ class WiringValidator:
             return self._python_contents
 
         contents: list[tuple[Path, str]] = []
-        for search_dir in ("lib", "hooks", "tests", "scripts", "skills"):
+        for search_dir in ("cos_lib", "hooks", "tests", "scripts", "skills"):
             root = self.root / search_dir
             if not root.exists():
                 continue

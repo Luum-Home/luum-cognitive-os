@@ -92,4 +92,4 @@ def test_missing_implementation_file_fails_even_with_strong_command(tmp_path: Pa
     row = adr_verification_audit.audit_adr_file(path, root=root)
 
     assert row.status == "fail"
-    assert row.missing_implementation_files == ["lib/example.py"]
+    assert row.missing_implementation_files == ["cos_lib/example.py"]

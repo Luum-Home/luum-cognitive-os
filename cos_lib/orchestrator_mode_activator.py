@@ -4,7 +4,7 @@
 Checks if Valkey is reachable and, when it is, activates executor mode
 for the current process by setting ORCHESTRATOR_MODE in os.environ.
 
-Renamed from lib/auto_executor.py (v0.15).  The old name is kept as a
+Renamed from cos_lib/auto_executor.py (v0.15).  The old name is kept as a
 deprecation shim — import cos_lib.auto_executor to get a deprecation warning
 and the same API.
 

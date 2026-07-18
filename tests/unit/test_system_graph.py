@@ -429,7 +429,7 @@ class TestRiskCalculation:
             name="hook1", path="hooks/hook1.sh", layer=Layer.HOOKS
         )
         graph.components["lib1"] = Component(
-            name="lib1", path="lib/lib1.py", layer=Layer.LIBS
+            name="lib1", path="cos_lib/lib1.py", layer=Layer.LIBS
         )
         for dep in ["skill1", "hook1", "lib1"]:
             graph.edges.append(Edge(

@@ -2,7 +2,7 @@
 # SCOPE: os-only
 # manifest-check.sh — Report status of declared dependencies vs reality.
 #
-# Reads manifests/dependencies.yaml via lib/manifest_loader.py, then for the
+# Reads manifests/dependencies.yaml via cos_lib/manifest_loader.py, then for the
 # selected profile reports each tool/MCP/python-group as OK / MISSING / SKIP.
 #
 # Exit codes:

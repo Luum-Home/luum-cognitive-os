@@ -31,7 +31,7 @@ _MODULE_PATH = Path(__file__).resolve().parent.parent.parent / "lib" / "anchored
 _MODULE_EXISTS = _MODULE_PATH.exists()
 
 _SKIP_REASON = (
-    "lib/anchored_summary.py not yet implemented. "
+    "cos_lib/anchored_summary.py not yet implemented. "
     "These tests are ready to unskip when the module is created."
 )
 

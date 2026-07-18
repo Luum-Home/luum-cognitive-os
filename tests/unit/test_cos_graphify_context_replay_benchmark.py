@@ -16,7 +16,7 @@ def test_context_replay_benchmark_measures_savings_from_real_repo_files(tmp_path
     completed = subprocess.run(
         [
             str(SCRIPT),
-            "lib/harness_adapter/base.py",
+            "cos_lib/harness_adapter/base.py",
             "--archive",
             str(archive),
             "--report",

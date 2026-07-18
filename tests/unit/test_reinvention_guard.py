@@ -52,7 +52,7 @@ def _make_fake_project(base: Path) -> Path:
 
     # Fake lib/
     lib = base / "lib"
-    cos_lib.mkdir(exist_ok=True)
+    lib.mkdir(exist_ok=True)
     (lib / "cost_dashboard.py").write_text("# cost dashboard — unrelated\n")
 
     # Fake adoption registry

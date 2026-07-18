@@ -1,13 +1,13 @@
 # SCOPE: os-only
 """ADR-288 — intent classifier and routing facade for web automation.
 
-This is the integration seam between `lib/dispatch.py` (or any caller that
-wants to dispatch a web-automation task) and `lib/browser_use_adapter.py`.
+This is the integration seam between `cos_lib/dispatch.py` (or any caller that
+wants to dispatch a web-automation task) and `cos_lib/browser_use_adapter.py`.
 It is intentionally tiny: a regex-based intent classifier plus a route()
 helper that either returns a ready-to-use :class:`BrowserUseAdapter` or
 raises :class:`WebAutomationUnavailable` with a clear reason.
 
-The dispatch ordering contract in ``lib/dispatch.py`` (ADR-236 → 232 → 228 →
+The dispatch ordering contract in ``cos_lib/dispatch.py`` (ADR-236 → 232 → 228 →
 226) means we do not mutate ``dispatch()`` from this ADR. A follow-up ADR
 will add a phase that calls :func:`route` before the ADR-228 cost gate so
 browser runs debit the session budget correctly.

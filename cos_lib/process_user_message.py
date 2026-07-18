@@ -1,6 +1,6 @@
 # SCOPE: both
 """Process user messages: feedback detection + user model + prompt classification.
-Called by user-prompt-capture.sh via: python3 lib/process_user_message.py"""
+Called by user-prompt-capture.sh via: python3 cos_lib/process_user_message.py"""
 import sys, json, os
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)) + "/..")

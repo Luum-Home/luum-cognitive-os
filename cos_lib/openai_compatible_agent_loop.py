@@ -7,7 +7,7 @@ OpenAI function-calling protocol.
 
 This module is a generalization of the Qwen-specific loop (ADR-051) to the
 full multi-provider cascade (ADR-062). The Qwen-specific module
-(lib/qwen_agent_loop.py) is now a backward-compat shim that imports from
+(cos_lib/qwen_agent_loop.py) is now a backward-compat shim that imports from
 here and pre-fills provider="qwen".
 
 Loop mechanics:

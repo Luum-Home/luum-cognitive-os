@@ -7,7 +7,7 @@
 #   scripts/cos-skill-description-enrich --dry-run --skills product-answer
 #   scripts/cos-skill-description-enrich --skills all --languages en,es,pt
 #
-# See lib/skill_description_enricher.py for the contract.
+# See cos_lib/skill_description_enricher.py for the contract.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

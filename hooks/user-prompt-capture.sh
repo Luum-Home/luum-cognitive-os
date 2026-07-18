@@ -102,7 +102,7 @@ echo "$prompt_text" | python3 "$_PROJECT_DIR/lib/process_user_message.py" >/dev/
 
 # ADR-077 Phase 1: peer-card capture for high-confidence durable signals only.
 # Medium-confidence cues are buffered for session-end consolidation by
-# lib/peer_card.py. Secrets / PII are rejected inside the Python entry point.
+# cos_lib/peer_card.py. Secrets / PII are rejected inside the Python entry point.
 # The hook stays non-blocking: any failure is silently swallowed so user
 # input never stalls.
 PEER_CARD_RESULT=$(

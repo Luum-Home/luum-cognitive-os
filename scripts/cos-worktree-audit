@@ -7,4 +7,4 @@ if [ "${1:-}" = "--project-dir" ]; then
   PROJECT_DIR="$2"
   shift 2
 fi
-exec python3 "$SCRIPT_DIR/../lib/worktree_audit.py" --project-dir "$PROJECT_DIR" "$@"
+exec python3 "$SCRIPT_DIR/../cos_lib/worktree_audit.py" --project-dir "$PROJECT_DIR" "$@"

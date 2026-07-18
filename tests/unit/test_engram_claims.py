@@ -81,10 +81,10 @@ class TestClaimTask:
         """claim_task stores expected_files and fingerprint."""
         record = engram_claims.claim_task(
             "T456", "session-B",
-            expected_files=["lib/foo.py"],
+            expected_files=["cos_lib/foo.py"],
             fingerprint="abc123",
         )
-        assert record["expected_files"] == ["lib/foo.py"]
+        assert record["expected_files"] == ["cos_lib/foo.py"]
         assert record["fingerprint"] == "abc123"
 
     def test_claim_saves_to_engram(self, patch_engram):

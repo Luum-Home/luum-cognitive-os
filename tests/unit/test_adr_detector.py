@@ -114,7 +114,7 @@ class TestHookChangeSignal:
         assert len(signals) == 1
 
     def test_no_signal_for_lib_scripts(self):
-        files = _make_files([("M", "lib/utils.sh")])
+        files = _make_files([("M", "cos_lib/utils.sh")])
         signals = _check_hook_change(files)
         assert len(signals) == 0
 

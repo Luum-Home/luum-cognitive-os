@@ -191,7 +191,7 @@ def test_ui_detection_web_vue(evaluator: ToolAdoptionEvaluator) -> None:
 
 def test_ui_detection_none(evaluator: ToolAdoptionEvaluator) -> None:
     """No UI files → has_ui=False."""
-    files = ["main.py", "lib/core.py", "pyproject.toml"]
+    files = ["main.py", "cos_lib/core.py", "pyproject.toml"]
     result = _classify_ui(files)
     assert result["has_ui"] is False
     assert result["ui_type"] is None

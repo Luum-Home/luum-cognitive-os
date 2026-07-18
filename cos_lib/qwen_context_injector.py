@@ -32,7 +32,7 @@ logger = logging.getLogger(__name__)
 
 VALID_LEVELS: tuple = ("none", "minimal", "full")
 
-# Repo root = two levels up from this file (lib/qwen_context_injector.py -> repo/).
+# Repo root = two levels up from this file (cos_lib/qwen_context_injector.py -> repo/).
 _REPO_ROOT = Path(__file__).resolve().parent.parent
 _TEMPLATES_DIR = _REPO_ROOT / "templates"
 

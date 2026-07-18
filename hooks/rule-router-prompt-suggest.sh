@@ -2,7 +2,7 @@
 # SCOPE: both
 # UserPromptSubmit hook: Rule Router Prompt Suggest (ADR-179)
 #
-# Runs lib/rule_router.py against the incoming user prompt and, when at
+# Runs cos_lib/rule_router.py against the incoming user prompt and, when at
 # least one match has confidence >= 0.80, emits an additionalContext hint
 # listing the top agent-instruction rules to load before responding.
 #
