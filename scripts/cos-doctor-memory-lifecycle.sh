@@ -172,7 +172,7 @@ mkdir -p \
   "$SCRATCH_PROJECT/.cognitive-os/sessions/$SESSION_ID" \
   "$SCRATCH_PROJECT/.codex"
 
-ln -s "$OS_SOURCE_ROOT/lib" "$SCRATCH_PROJECT/lib" 2>/dev/null || true
+ln -s "$OS_SOURCE_ROOT/cos_lib" "$SCRATCH_PROJECT/cos_lib" 2>/dev/null || true
 cat > "$SCRATCH_PROJECT/.cognitive-os/install-meta.json" <<EOF
 {"source":"$OS_SOURCE_ROOT","harness":"$HARNESS","settings_driver":"$(cos_settings_driver_label "$HARNESS")"}
 EOF

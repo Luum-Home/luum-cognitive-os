@@ -130,7 +130,7 @@ json_mode  = os.environ.get("_COS_AGENT_JSON", "0") == "1"
 
 tools = [t.strip() for t in tools_raw.split(",") if t.strip()] if tools_raw else None
 
-from lib.agent_runner import spawn
+from cos_lib.agent_runner import spawn
 result = spawn(prompt=prompt, model=model, allowed_tools=tools, timeout_s=timeout_s)
 
 if json_mode:
