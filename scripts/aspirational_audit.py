@@ -296,8 +296,11 @@ def build_lib_callers(project_root: Path) -> dict[str, int]:
         project_root / "packages",
         project_root / "scripts",
     ]
-    lib_modules = {path.stem for path in (project_root / "lib").glob("*.py") if not path.name.startswith("__")}
-    import_pattern = re.compile(r"(?:from\s+(?:lib\.)?(\w+)|import\s+(?:lib\.)?(\w+))")
+    lib_dir_scan = project_root / "cos_lib"
+    if not lib_dir_scan.is_dir():
+        lib_dir_scan = project_root / "lib"
+    lib_modules = {path.stem for path in lib_dir_scan.glob("*.py") if not path.name.startswith("__")}
+    import_pattern = re.compile(r"(?:from\s+(?:(?:cos_lib|lib)\.)?(\w+)|import\s+(?:(?:cos_lib|lib)\.)?(\w+))")
     caller_counts: dict[str, int] = defaultdict(int)
     for search_dir in search_dirs:
         if not search_dir.is_dir():
@@ -314,7 +317,7 @@ def build_lib_callers(project_root: Path) -> dict[str, int]:
                 if mod and mod in lib_modules:
                     caller_counts[mod] += 1
     # Also check .sh files for embedded Python imports and shell references.
-    sh_import_pattern = re.compile(r"(?:from\s+(?:lib\.)?(\w+)|import\s+(?:lib\.)?(\w+)|lib\.(\w+))")
+    sh_import_pattern = re.compile(r"(?:from\s+(?:(?:cos_lib|lib)\.)?(\w+)|import\s+(?:(?:cos_lib|lib)\.)?(\w+)|(?:cos_lib|lib)\.(\w+))")
     for search_dir in search_dirs:
         if not search_dir.is_dir():
             continue
