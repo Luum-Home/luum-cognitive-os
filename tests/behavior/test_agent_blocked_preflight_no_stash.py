@@ -48,6 +48,7 @@ def _project_with_manual_stash_and_visible_wip(tmp_path: Path) -> Path:
     (project / "hooks").symlink_to(ROOT / "hooks", target_is_directory=True)
     (project / "scripts").symlink_to(ROOT / "scripts", target_is_directory=True)
     (project / "lib").symlink_to(ROOT / "lib", target_is_directory=True)
+    (project / "cos_lib").symlink_to(ROOT / "cos_lib", target_is_directory=True)
     (project / "manifests").symlink_to(ROOT / "manifests", target_is_directory=True)
     (project / ".gitignore").write_text(".cognitive-os/\nhooks\nscripts\nlib\nmanifests\n", encoding="utf-8")
 

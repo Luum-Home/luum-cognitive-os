@@ -33,9 +33,9 @@ _notifications_mock = MagicMock()
 _orig_notifications = sys.modules.get("notifications")
 sys.modules["notifications"] = _notifications_mock
 
-from claude_executor import ClaudeResult
-import singularity
-from singularity import (
+from cos_lib.claude_executor import ClaudeResult
+from cos_lib import singularity
+from cos_lib.singularity import (
     EventType,
     SingularityEvent,
     PipelineExecution,
@@ -137,7 +137,7 @@ class TestMonitorGithubIssues:
         mock_result.returncode = 0
         mock_result.stdout = issues_json
 
-        with patch("singularity.subprocess.run", return_value=mock_result):
+        with patch("cos_lib.singularity.subprocess.run", return_value=mock_result):
             events = _monitor_github_issues(str(tmp_path))
 
         assert len(events) == 1
@@ -159,7 +159,7 @@ class TestMonitorGithubIssues:
         mock_result.returncode = 0
         mock_result.stdout = issues_json
 
-        with patch("singularity.subprocess.run", return_value=mock_result):
+        with patch("cos_lib.singularity.subprocess.run", return_value=mock_result):
             events = _monitor_github_issues(str(tmp_path))
 
         assert len(events) == 1
@@ -172,14 +172,14 @@ class TestMonitorGithubIssues:
         mock_result.returncode = 1
         mock_result.stderr = "not logged in"
 
-        with patch("singularity.subprocess.run", return_value=mock_result):
+        with patch("cos_lib.singularity.subprocess.run", return_value=mock_result):
             events = _monitor_github_issues(str(tmp_path))
 
         assert events == []
 
     def test_gh_not_installed_returns_empty(self, tmp_path):
         """When gh is not installed, return empty list."""
-        with patch("singularity.subprocess.run", side_effect=FileNotFoundError):
+        with patch("cos_lib.singularity.subprocess.run", side_effect=FileNotFoundError):
             events = _monitor_github_issues(str(tmp_path))
 
         assert events == []
@@ -187,7 +187,7 @@ class TestMonitorGithubIssues:
     def test_gh_timeout_returns_empty(self, tmp_path):
         """When gh times out, return empty list."""
         import subprocess as sp
-        with patch("singularity.subprocess.run", side_effect=sp.TimeoutExpired("gh", 30)):
+        with patch("cos_lib.singularity.subprocess.run", side_effect=sp.TimeoutExpired("gh", 30)):
             events = _monitor_github_issues(str(tmp_path))
 
         assert events == []
@@ -203,7 +203,7 @@ class TestMonitorGithubIssues:
         mock_result.returncode = 0
         mock_result.stdout = issues_json
 
-        with patch("singularity.subprocess.run", return_value=mock_result):
+        with patch("cos_lib.singularity.subprocess.run", return_value=mock_result):
             events = _monitor_github_issues(str(tmp_path))
 
         assert len(events) == 3
@@ -218,7 +218,7 @@ class TestMonitorGithubIssues:
         mock_result.returncode = 0
         mock_result.stdout = ""
 
-        with patch("singularity.subprocess.run", return_value=mock_result):
+        with patch("cos_lib.singularity.subprocess.run", return_value=mock_result):
             events = _monitor_github_issues(str(tmp_path))
 
         assert events == []
@@ -657,7 +657,7 @@ class TestMonitorNoEvents:
         """All metric files missing returns empty list."""
         with patch.object(singularity, "_METRICS_DIR", str(tmp_path / "nonexistent")):
             with patch.object(singularity, "_COGNITIVE_OS_METRICS", str(tmp_path / "also_missing")):
-                with patch("singularity.subprocess.run", side_effect=FileNotFoundError):
+                with patch("cos_lib.singularity.subprocess.run", side_effect=FileNotFoundError):
                     events = monitor_all(str(tmp_path))
 
         assert events == []
@@ -675,7 +675,7 @@ class TestMonitorNoEvents:
 
         with patch.object(singularity, "_METRICS_DIR", str(metrics_dir)):
             with patch.object(singularity, "_COGNITIVE_OS_METRICS", str(tmp_path / "nonexistent")):
-                with patch("singularity.subprocess.run", side_effect=FileNotFoundError):
+                with patch("cos_lib.singularity.subprocess.run", side_effect=FileNotFoundError):
                     events = monitor_all(str(tmp_path))
 
         assert events == []
@@ -775,10 +775,10 @@ class TestPlan:
         events.sort(key=lambda e: e.priority)
 
         # Patch budget and phase
-        with patch("singularity._get_daily_spend", return_value=0.0):
-            with patch("singularity._read_phase", return_value="reconstruction"):
-                with patch("singularity._append_jsonl"):
-                    with patch("singularity.send_raw"):
+        with patch("cos_lib.singularity._get_daily_spend", return_value=0.0):
+            with patch("cos_lib.singularity._read_phase", return_value="reconstruction"):
+                with patch("cos_lib.singularity._append_jsonl"):
+                    with patch("cos_lib.singularity.send_raw"):
                         planned = plan(events, str(tmp_path), active_count=0)
 
         # Circuit open is NOT in planned (escalated to human)
@@ -795,8 +795,8 @@ class TestPlan:
             for i in range(10)
         ]
 
-        with patch("singularity._get_daily_spend", return_value=0.0):
-            with patch("singularity._read_phase", return_value="reconstruction"):
+        with patch("cos_lib.singularity._get_daily_spend", return_value=0.0):
+            with patch("cos_lib.singularity._read_phase", return_value="reconstruction"):
                 planned = plan(events, str(tmp_path), active_count=0)
 
         assert len(planned) <= _MAX_PARALLEL
@@ -808,8 +808,8 @@ class TestPlan:
             for i in range(5)
         ]
 
-        with patch("singularity._get_daily_spend", return_value=0.0):
-            with patch("singularity._read_phase", return_value="reconstruction"):
+        with patch("cos_lib.singularity._get_daily_spend", return_value=0.0):
+            with patch("cos_lib.singularity._read_phase", return_value="reconstruction"):
                 planned = plan(events, str(tmp_path), active_count=2)
 
         assert len(planned) <= _MAX_PARALLEL - 2
@@ -826,9 +826,9 @@ class TestPlan:
             _make_event(EventType.TEST_FAILURE, dedup_key="e2"),
         ]
 
-        with patch("singularity._get_daily_spend", return_value=15.0):
-            with patch("singularity._read_phase", return_value="reconstruction"):
-                with patch("singularity._append_jsonl"):
+        with patch("cos_lib.singularity._get_daily_spend", return_value=15.0):
+            with patch("cos_lib.singularity._read_phase", return_value="reconstruction"):
+                with patch("cos_lib.singularity._append_jsonl"):
                     planned = plan(events, str(tmp_path), active_count=0,
                                    daily_budget_usd=10.0)
 
@@ -857,9 +857,9 @@ class TestPlan:
             _make_event(EventType.TEST_FAILURE, dedup_key="tf1"),
         ]
 
-        with patch("singularity._get_daily_spend", return_value=0.0):
-            with patch("singularity._read_phase", return_value="production"):
-                with patch("singularity._append_jsonl"):
+        with patch("cos_lib.singularity._get_daily_spend", return_value=0.0):
+            with patch("cos_lib.singularity._read_phase", return_value="production"):
+                with patch("cos_lib.singularity._append_jsonl"):
                     planned = plan(events, str(tmp_path), active_count=0)
 
         types_planned = [e.event_type for e in planned]
@@ -876,8 +876,8 @@ class TestPlan:
             _make_event(EventType.SKILL_FAILURE, dedup_key="sf1"),
         ]
 
-        with patch("singularity._get_daily_spend", return_value=0.0):
-            with patch("singularity._read_phase", return_value="reconstruction"):
+        with patch("cos_lib.singularity._get_daily_spend", return_value=0.0):
+            with patch("cos_lib.singularity._read_phase", return_value="reconstruction"):
                 planned = plan(events, str(tmp_path), active_count=0)
 
         assert len(planned) == 3
@@ -886,10 +886,10 @@ class TestPlan:
         """Circuit open events are escalated (logged) but not planned for execution."""
         events = [_make_event(EventType.CIRCUIT_OPEN, dedup_key="c1")]
 
-        with patch("singularity._get_daily_spend", return_value=0.0):
-            with patch("singularity._read_phase", return_value="reconstruction"):
-                with patch("singularity._append_jsonl") as mock_log:
-                    with patch("singularity.send_raw") as mock_notify:
+        with patch("cos_lib.singularity._get_daily_spend", return_value=0.0):
+            with patch("cos_lib.singularity._read_phase", return_value="reconstruction"):
+                with patch("cos_lib.singularity._append_jsonl") as mock_log:
+                    with patch("cos_lib.singularity.send_raw") as mock_notify:
                         planned = plan(events, str(tmp_path), active_count=0)
 
         assert len(planned) == 0
@@ -1107,7 +1107,7 @@ class TestRecordKnowledge:
         log_path = str(tmp_path / "metrics" / "singularity-events.jsonl")
         with patch.object(singularity, "_SINGULARITY_LOG", log_path):
             with patch.object(singularity, "_METRICS_DIR", str(tmp_path / "metrics")):
-                with patch("singularity.send_raw") as mock_notify:
+                with patch("cos_lib.singularity.send_raw") as mock_notify:
                     record_knowledge(execution, str(tmp_path))
 
         entries = _read_jsonl(log_path)
@@ -1190,13 +1190,13 @@ class TestRunOnce:
             with patch.object(singularity, "_METRICS_DIR", str(metrics_dir)):
                 with patch.object(singularity, "_COGNITIVE_OS_METRICS", str(tmp_path / "cos_metrics")):
                     with patch.object(singularity, "_SINGULARITY_LOG", log_path):
-                        with patch("singularity.subprocess.run", side_effect=FileNotFoundError):
-                            with patch("singularity._read_phase", return_value="reconstruction"):
+                        with patch("cos_lib.singularity.subprocess.run", side_effect=FileNotFoundError):
+                            with patch("cos_lib.singularity._read_phase", return_value="reconstruction"):
                                 mock_executor = MagicMock()
                                 mock_executor.run_with_retry.return_value = _make_claude_result(
                                     success=True, cost_usd=0.03,
                                 )
-                                with patch("singularity.send_raw"):
+                                with patch("cos_lib.singularity.send_raw"):
                                     controller = SingularityController.__new__(SingularityController)
                                     controller.project_root = str(tmp_path)
                                     controller.daily_budget_usd = 10.0
@@ -1227,8 +1227,8 @@ class TestRunOnce:
             with patch.object(singularity, "_METRICS_DIR", str(metrics_dir)):
                 with patch.object(singularity, "_COGNITIVE_OS_METRICS", str(tmp_path / "cos_metrics")):
                     with patch.object(singularity, "_SINGULARITY_LOG", log_path):
-                        with patch("singularity.subprocess.run", side_effect=FileNotFoundError):
-                            with patch("singularity.send_raw"):
+                        with patch("cos_lib.singularity.subprocess.run", side_effect=FileNotFoundError):
+                            with patch("cos_lib.singularity.send_raw"):
                                 controller = SingularityController.__new__(SingularityController)
                                 controller.project_root = str(tmp_path)
                                 controller.daily_budget_usd = 10.0
@@ -1288,7 +1288,7 @@ class TestDaemonShutdown:
         with patch.object(singularity, "_PROJECT_ROOT", str(tmp_path)):
             with patch.object(singularity, "_SINGULARITY_LOG", str(tmp_path / "log.jsonl")):
                 with patch.object(singularity, "_METRICS_DIR", str(tmp_path / "metrics")):
-                    with patch("singularity.send_raw"):
+                    with patch("cos_lib.singularity.send_raw"):
                         controller = SingularityController.__new__(SingularityController)
                         controller.project_root = str(tmp_path)
                         controller.daily_budget_usd = 10.0

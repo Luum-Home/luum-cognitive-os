@@ -33,6 +33,7 @@ def _init_project(tmp_path: Path) -> Path:
     (project / "hooks").symlink_to(ROOT / "hooks", target_is_directory=True)
     (project / "scripts").symlink_to(ROOT / "scripts", target_is_directory=True)
     (project / "lib").symlink_to(ROOT / "lib", target_is_directory=True)
+    (project / "cos_lib").symlink_to(ROOT / "cos_lib", target_is_directory=True)
     (project / ".gitignore").write_text(".cognitive-os/\nhooks\nscripts\nlib\n", encoding="utf-8")
     _git(project, "init", "-b", "main")
     _git(project, "config", "user.email", "test@example.invalid")

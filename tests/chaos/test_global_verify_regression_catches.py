@@ -95,7 +95,7 @@ def _run_hook(mode: str, agent_id: str, project_dir: Path, resolver_dir: Path | 
     # SO repo, global-verify defaults to cos-test focused and only allows the
     # legacy resolver through an explicit compatibility flag.
     env["COS_GLOBAL_VERIFY_ALLOW_LEGACY_RESOLVER"] = "1"
-    env["VERIFY_FILES_OVERRIDE"] = "lib/synthetic_changed_for_chaos.py"
+    env["VERIFY_FILES_OVERRIDE"] = "cos_lib/synthetic_changed_for_chaos.py"
     if resolver_dir is not None:
         # ADR-238 Bug 5: inject a per-test resolver directory; the hook prepends
         # this to sys.path before importing cos_lib.targeted_test_resolver so we do
