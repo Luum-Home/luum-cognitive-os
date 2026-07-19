@@ -221,7 +221,9 @@ class EcosystemEvaluator:
         return risks
 
     def _collect_lib_stems(self) -> list[str]:
-        lib_dir = self.root / "lib"
+        lib_dir = self.root / "cos_lib"
+        if not lib_dir.exists():
+            lib_dir = self.root / "lib"
         if not lib_dir.exists():
             return []
         return [

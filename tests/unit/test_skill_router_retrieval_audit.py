@@ -29,7 +29,7 @@ def minimal_manifest(extra: str = "") -> str:
     return f"""
 schema_version: skill-router-retrieval/v1
 policy:
-  core_router: lib/skill_router.py
+  core_router: cos_lib/skill_router.py
   default_adapter: regex_frontmatter
 forbidden_core_imports:
   - module: langchain

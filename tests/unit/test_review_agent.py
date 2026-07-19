@@ -268,7 +268,7 @@ class TestBuildReviewPrompt:
 WELL_FORMED_RESPONSE = """\
 REVIEW_SCORE: 74
 EVIDENCE:
-- Agent correctly wrote the file lib/utils.py
+- Agent correctly wrote the file cos_lib/utils.py
 - Test output shows 5/5 pass
 GAPS:
 - No verification that edge case for empty string was tested
