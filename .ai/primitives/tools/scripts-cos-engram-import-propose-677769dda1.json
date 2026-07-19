@@ -81,7 +81,7 @@
       "projection_targets": [
         "scripts/cos-engram-import-propose",
         "scripts/cos_cross_instance_learning.py",
-        "lib/cross_instance_learning.py"
+        "cos_lib/cross_instance_learning.py"
       ],
       "runtime_projection": false
     }
@@ -90,7 +90,7 @@
   "projection_targets": [
     "scripts/cos-engram-import-propose",
     "scripts/cos_cross_instance_learning.py",
-    "lib/cross_instance_learning.py"
+    "cos_lib/cross_instance_learning.py"
   ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "scripts/cos-engram-import-propose",

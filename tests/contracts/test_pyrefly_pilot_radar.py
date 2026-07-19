@@ -39,7 +39,7 @@ def test_pyrefly_optional_typecheck_extra_and_config_are_advisory() -> None:
     assert "pyrefly>=1.0,<1.1" in extras["typecheck"]
 
     config = pyproject["tool"]["pyrefly"]
-    assert "lib/**/*.py" in config["project-includes"]
+    assert "cos_lib/**/*.py" in config["project-includes"]
     assert "packages/agent-service/src/**/*.py" in config["project-includes"]
     assert config["errors"]["missing-import"] is False
 

@@ -2,7 +2,7 @@
 
 ## How to Use This Index
 
-This generated table is the status inventory for all 350 Architecture Decision Record files (ADRs).
+This generated table is the status inventory for all 501 Architecture Decision Record files (ADRs).
 Status semantics are defined in [STATUS-TAXONOMY.md](STATUS-TAXONOMY.md): decision status, implementation status, and index bucket are separate fields.
 Rows link to the canonical ADR file and group by index bucket for human and agent navigation.
 
@@ -183,7 +183,6 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [335](ADR-335-generic-task-closure-ledger-gate.md) | Generic Task Closure Ledger Gate | accepted | implemented | 2026-06-06 | Accepted — implemented on 2026-06-06. |
 | [336](ADR-336-agent-loop-engineering-runtime.md) | Agent Loop Engineering Runtime | accepted | implemented | 2026-06-13 | Cognitive OS already had bounded reflection, goal-state gates, flicker reports, and task closure checks, but agent loops were not represented as a first-class p |
 | [337](ADR-337-agent-process-loop-contract-layer.md) | Agent Process Loop Contract Layer | accepted | implemented | 2026-06-13 | Accepted — implemented on 2026-06-13. |
-| [341](ADR-341-iroh-optional-transport-adapter.md) | Iroh Optional Transport Adapter | accepted | partial | 2026-06-18 | Accepted. Initial adapter is optional, disabled by default, and limited to safe local contract smokes until a real Iroh backend is promoted. |
 | [340](ADR-340-english-native-artifacts-multilingual-user-routing.md) | English-Native Artifacts with Multilingual User-Facing Routing | accepted | implemented | 2026-06-17 | Accepted — 2026-06-17. Implemented by the language policy manifest and audit ratchets listed in this ADR. |
 
 ### Active / Partial (122)
@@ -343,6 +342,145 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [172](ADR-172-multi-surface-ui-architecture.md) | Multi-Surface UI Architecture - CLI + Phoenix + Engram Cloud + Obsidian | accepted | not-applicable | 2026-05-05 | Accepted. Supersedes [ADR-170](ADR-170-operator-cli-as-primary-ui-surface.md). |
 | [272](ADR-272-structural-rule-backend-boundary.md) | Structural Rule Backend Boundary | accepted | not-applicable | 2026-05-12 | Status: Accepted |
 
+### Active / Unclassified (134)
+
+| ADR | Title | Decision Status | Implementation | Date | Summary |
+|---|---|---|---|---|---|
+| [026](ADR-026-r2-r3-design-review.synthesis.md) | r2-r3-design-review.synthesis | accepted |  |  | R2 (`cognitive-os.yaml` readers, 3 characterized sites with 5 locked behavioral divergences): adopt Option B — a single `lib/config_loader.py` exposing three va |
+| [026a](ADR-026a-decisions.synthesis.md) | decisions.synthesis | accepted |  |  | Answers all 7 open questions from ADR-026 with evidence and explicit confidence levels: D2.1 YES adopt Option B (multi-variant `lib/config_loader.py`) — HIGH co |
+| [027](ADR-027.synthesis.md) | ADR-027.synthesis | accepted |  |  | Three decisions to slim the SO: (D1) agents verify TARGETED (only files they touched) while the orchestrator verifies GLOBAL (full suite) once at Stop; (D2) red |
+| [027a](ADR-027a.synthesis.md) | ADR-027a.synthesis | accepted |  |  | Correct ADR-027's baseline and scope in place rather than re-doing already-completed work. Remove from D2: the `scripts/compact-claude-md.py` migration script ( |
+| [028](ADR-028.synthesis.md) | ADR-028.synthesis | accepted |  |  | Establish a 6-pillar SO Reliability & Observability Framework: (D1) runtime observability (metrics census, process registry + reaper, sub-agent heartbeat, unifi |
+| [028a](ADR-028a.synthesis.md) | ADR-028a.synthesis | accepted |  |  | Four reconciliations to ADR-028 before its execution phases launch: (1) WS11 replacement — `hooks/global-verify.sh` (ADR-027 Phase 1) becomes the anti-confirmat |
+| [028b](ADR-028b.synthesis.md) | ADR-028b.synthesis | accepted |  |  | Do not recreate the reverted artifacts (`lib/agent_heartbeat.py`, `hooks/_lib/heartbeat.sh`, `.cognitive-os/tasks/{agent_id}.heartbeat`). Instead, build a thin  |
+| [029b](ADR-029b.synthesis.md) | ADR-029b.synthesis | accepted |  |  | Ship Jaccard token-bag similarity (docstring + function-name tokens) as Phase B-alpha: stdlib-only, <300ms, advisory-only (never blocks), scored 0.3 threshold b |
+| [030](ADR-030.synthesis.md) | ADR-030.synthesis | accepted |  |  | Wire two opt-in, advisory-only auto-trigger mechanisms, neither of which replaces manual invocation. Q1: a `UserPromptSubmit` hook (`hooks/session-wrapup-trigge |
+| [033](ADR-033.synthesis.md) | ADR-033.synthesis | accepted |  |  | Introduce a `HarnessAdapter` abstraction under `lib/harness_adapter/`: an ABC with `detect_harness`/`parse_event`/`emit_canonical`, a canonical event schema (`A |
+| [035](ADR-035.synthesis.md) | ADR-035.synthesis | accepted |  |  | A 3-layer defense-in-depth. Layer 1 (this ADR, implemented): `hooks/session-start-worktree-nudge.sh` fires on SessionStart, detects a non-main worktree by check |
+| [036](ADR-036.synthesis.md) | ADR-036.synthesis | implemented |  |  | Introduce `cos sprint` as a first-class, harness-agnostic concept with four primitives: a declarative Sprint YAML spec, a durable JSON manifest (`.cognitive-os/ |
+| [041](ADR-041.synthesis.md) | ADR-041.synthesis | accepted |  |  | Drive the dormant+aspirational ratio below 40% via a structured exercise pipeline: classify all agentic primitives into 4 risk tiers (A-Safety-Critical, B-Infra |
+| [044](ADR-044.synthesis.md) | ADR-044.synthesis | accepted |  |  | Adopt a tiered (T1/T2/T3) context loading model for everything non-rule (a paired Agent B ADR, ADR-043, covers rule payload separately). T1 (always loaded): ide |
+| [048](ADR-048.synthesis.md) | ADR-048.synthesis | accepted |  |  | A 4-layer defense: (1) `scripts/cos-config-audit.sh` gains a `meta.docker_container_freshness` contract comparing the compose file's `@sha256:` pin against each |
+| [049](ADR-049-llm-gateway-selection-and-overflow-providers.synthesis.md) | providers.synthesis | accepted |  |  | Remove LiteLLM entirely and do not adopt Bifrost as a proxy; implement direct-SDK dispatch in `lib/model_router.py` instead. Build a multi-provider overflow cas |
+| [051](ADR-051.synthesis.md) | ADR-051.synthesis | accepted |  |  | Build `lib/qwen_agent_loop.py`, a Qwen agent loop mirroring Claude Code's `Agent()` tool iteration using OpenAI-style function-calling (Qwen's native tool-call  |
+| [056](ADR-056.synthesis.md) | ADR-056.synthesis | accepted |  |  | Ship a three-tier progressive adaptive-dispatch system, independently togglable, with only L1 shipping now. L1 (Quota Pressure Advisory, advisory-only, always o |
+| [058](ADR-058.synthesis.md) | ADR-058.synthesis | accepted |  |  | Deprecate Langfuse (frozen trace sink, containers stopped but volumes preserved) and adopt Arize Phoenix (`pip install arize-phoenix`, no Docker/ClickHouse) as  |
+| [064](ADR-064.synthesis.md) | ADR-064.synthesis | accepted |  |  | Define four harness integration surfaces the OS must abstract, with Claude Code staying the on-by-default reference harness and other harnesses opt-in via adapt |
+| [068](ADR-068.synthesis.md) | ADR-068.synthesis | accepted |  |  | Ship a self-contained heuristic (`scripts/detect_runner_capacity.py`) evaluated top-to-bottom, first-match-wins: cores ≤2 -> serial (`0`); load >70% -> `2` work |
+| [071](ADR-071-engram-lifecycle-evolution.synthesis.md) | evolution.synthesis | accepted |  |  | Extend engram's behavior via a Python wrapper layer (`lib/engram_lifecycle.py`) rather than forking or migrating the backend: lifecycle metadata (confidence, la |
+| [072](ADR-072.synthesis.md) | ADR-072.synthesis | accepted |  |  | Codify eight canonical test lanes (unit, audit, contract, integration-isolated, integration-shared, behavior, hooks, e2e, chaos — note the ADR body table lists  |
+| [073](ADR-073.synthesis.md) | ADR-073.synthesis | accepted |  |  | Adopt a role registry where every test-related primitive gets exactly one primary role: Selection (`.cognitive-os/test-lanes.yaml`, `tests/conftest.py`, `cmd/co |
+| [077](ADR-077.synthesis.md) | ADR-077.synthesis | accepted |  |  | Implement a local peer-card model as an Engram observation (type `peer-card`, scope `personal`, topic_key `user/peer-card`, upserted on update) holding structur |
+| [080](ADR-080-hermes-cross-harness-adoption.synthesis.md) | adoption.synthesis | accepted |  |  | Umbrella ADR grouping remaining MIT-licensed Hermes plugin pieces into four tiers by cross-harness necessity: Tier 1 (critical parity — multi-provider adapters, |
+| [081](ADR-081.synthesis.md) | ADR-081.synthesis | accepted |  |  | Implement `lib/harness_adapter/codex.py` satisfying the same `HarnessAdapter` ABC as `claude_code.py`: parses Codex hook stdin, maps native events to canonical  |
+| [082](ADR-082.synthesis.md) | ADR-082.synthesis | accepted |  |  | Adopt Option A: a single root `.cognitive-os/plans/` with typed subdirectories — `features/` (SDD change plans), `research/` (pre-decision research/audits), `ar |
+| [087](ADR-087.synthesis.md) | ADR-087.synthesis | accepted |  |  | Consolidate all project-level ADRs into a single canonical root, `docs/02-Decisions/adrs/`, using `ADR-NNN-kebab-slug.md` naming (Option A, rejecting Option B's |
+| [089](ADR-089-multi-session-git-coordination.synthesis.md) | coordination.synthesis | accepted |  |  | Three coordination layers shipped in value-to-risk order. Layer 1 (high value, low risk): mandate `git commit --only -- <path>` (or explicit `-a` with stated in |
+| [091](ADR-091.synthesis.md) | ADR-091.synthesis | accepted |  |  | Accept a two-mode runtime taxonomy — (1) local harness runtime (current mode) and (2) headless runtime (future mode accepting tasks from queues/CI/tickets witho |
+| [093](ADR-093.synthesis.md) | ADR-093.synthesis | accepted |  |  | Collapse the three-tier installer (`--lean`/`--standard`/`--full`, plus an internal `--minimal` alias and an auto-detection heuristic `has_git && src_count >= 5 |
+| [094](ADR-094.synthesis.md) | ADR-094.synthesis | accepted |  |  | Three layered defenses, registered in both `default` and `full` profiles as safety-critical: Mechanism A, `hooks/pre-agent-snapshot.sh` (PreToolUse:Agent) runs  |
+| [095](ADR-095.synthesis.md) | ADR-095.synthesis | accepted |  |  | Detect recurring tool-call sequences (Bash, Edit, Read, Write, Agent, etc.) across sessions via a new `tool-sequences.jsonl` instrumentation stream and pure Pyt |
+| [096](ADR-096.synthesis.md) | ADR-096.synthesis | accepted |  |  | Add a Hermes-inspired review-agent pattern: after a sub-agent completes, a second agent (reviewer) is triggered post-hoc/async on a 20% sample rate by default,  |
+| [098](ADR-098.synthesis.md) | ADR-098.synthesis | accepted |  |  | Add a file-level edit-coordination layer built on the same atomic-mkdir primitive as ADR-089's git-coop, with a deliberately rich (~15-field) YAML lock schema s |
+| [102](ADR-102.synthesis.md) | ADR-102.synthesis | accepted |  |  | Four coordinated fixes to the task tracker lifecycle. Fix 1: defer `in_progress` until the agent process actually starts — `hooks/agent-prelaunch.sh` and `hooks |
+| [105](ADR-105.synthesis.md) | ADR-105.synthesis | implemented |  |  | Define a bilateral claim verification contract: high-stakes claim verbs (`archived`, `deleted`, `removed`, `wired`, `integrated`, `registered`, `done`, `closed` |
+| [106](ADR-106.synthesis.md) | ADR-106.synthesis | accepted |  |  | Four independently-deployable primitives. (1) Stash Leak Alarm: at SessionStart and before every agent dispatch, scan for `auto-pre-agent-*` stashes; WARN via ` |
+| [108](ADR-108.synthesis.md) | ADR-108.synthesis | accepted |  |  | Establish a named "Concurrent Agent Safety Layer" as an umbrella contract composing existing/adjacent primitives rather than replacing them: ADR-089 (git-index  |
+| [113](ADR-113.synthesis.md) | ADR-113.synthesis | accepted |  |  | Extend the validation capsule lock (`hooks/_lib/validation-lock.sh`, `scripts/cos-validation-capsule.sh`) with 5 liveness primitives: P1 heartbeat (writer updat |
+| [116](ADR-116.synthesis.md) | ADR-116.synthesis | accepted |  |  | Twelve coordination primitives organized into six layers (L1 Detection through L6 Shared evidence): task-claim ledger, work-identity fingerprinting, inter-sessi |
+| [130](ADR-130.synthesis.md) | ADR-130.synthesis | accepted |  |  | Suspend all eleven GitHub Actions workflow YAML files by renaming them to `.disabled` (a filesystem rename, not `gh workflow disable`), preserving their content |
+| [131](ADR-131.synthesis.md) | ADR-131.synthesis | accepted |  |  | Replace GitHub Actions with a three-layer local architecture. Layer 1 (pre-push hook): `git-hooks/pre-push` invokes `scripts/cos-ci-local.sh`, consolidating the |
+| [137](ADR-137.synthesis.md) | ADR-137.synthesis | accepted |  |  | Commit Cognitive OS to a directional trajectory from "Framing B" (governance layer wrapped around an existing harness/agent) to "Framing A" (COS as a runtime th |
+| [138](ADR-138.synthesis.md) | ADR-138.synthesis | accepted |  |  | Commit `manifests/flow-contract-schema.yaml`, a required shape every flow primitive registered after this ADR must satisfy (partial conformance rejected at regi |
+| [139](ADR-139.synthesis.md) | ADR-139.synthesis | implemented |  |  | Every COS runtime surface (local maintainer session, cloud worker, ephemeral sandbox) must use credentials supplied by that surface's own caller — never forward |
+| [140](ADR-140.synthesis.md) | ADR-140.synthesis | accepted |  |  | Cloud workers needing COS as an embedded runtime MUST be launchable via a Docker Compose stack (`docker/cos-worker/docker-compose.yml`) containing a `cos-worker |
+| [141](ADR-141.synthesis.md) | ADR-141.synthesis | implemented |  |  | Wire the upstream `engram cloud` feature into COS without replacing any existing path — this is explicitly not an adoption decision for Engram itself (already i |
+| [142](ADR-142.synthesis.md) | ADR-142.synthesis | implemented |  |  | `.cognitive-os/runtime/agent-audit-trail.jsonl` becomes the single canonical, append-only compliance evidence surface that other per-domain JSONLs (`blast-radiu |
+| [143](ADR-143.synthesis.md) | ADR-143.synthesis | accepted |  |  | Add `scripts/cos-closure-discipline-audit` as a blocking maintainer primitive wired into `scripts/cos-ci-local.sh quick`. It is intentionally narrow, checking e |
+| [144](ADR-144.synthesis.md) | ADR-144.synthesis | accepted |  |  | A rule may only be listed in `EXCLUDED_RULES` with a `# → hook.sh` enforcement claim if: (1) the referenced hook file exists; (2) it is registered in `cognitive |
+| [146](ADR-146.synthesis.md) | ADR-146.synthesis | accepted |  |  | Add a primitive readiness ledger for scripts (`python3 scripts/primitive_readiness_ledger.py --project-dir .`), generating `docs/06-Daily/reports/primitive-read |
+| [149](ADR-149.synthesis.md) | ADR-149.synthesis | accepted |  |  | Add `scripts/primitive_duplication_audit.py` as the first unified, dependency-free duplication audit across agentic-primitive and configuration surfaces, writin |
+| [159](ADR-159.synthesis.md) | ADR-159.synthesis | accepted |  |  | Promote six harnesses to implemented structural projection: `gemini-cli`, `warp`, `amp-code`, `jetbrains-junie`, `qoder`, `factory-droid`. Each gets specific ge |
+| [161](ADR-161.synthesis.md) | ADR-161.synthesis | implemented |  |  | Separate remote ingress from provider/executor adapters as a hard architectural boundary. Remote ingress adapters (Telegram, REST, allowlist-based) may receive  |
+| [162](ADR-162.synthesis.md) | ADR-162.synthesis | implemented |  |  | Adopt `manifests/task-lifecycle-schema.yaml` as the contract for COS task execution outside a single IDE session. It defines: task statuses from `queued` throug |
+| [166](ADR-166.synthesis.md) | ADR-166.synthesis | implemented |  |  | Introduce an expected-skip registry (`manifests/test-skip-registry.yaml`) enforced from the pytest summary wrapper used by `cos-test`. Each expected-skip entry  |
+| [167](ADR-167.synthesis.md) | ADR-167.synthesis | implemented |  |  | Add `scripts/proof-drill-select` as the selector/doctor primitive for the proof-drill registry, selecting by id, scope, class, projection profile, and text toke |
+| [168](ADR-168.synthesis.md) | ADR-168.synthesis | implemented |  |  | Evolve `manifests/dependencies.yaml` into the single source of truth for cross-device dependency installation. Each entry must declare: name, category (runtime/ |
+| [172](ADR-172.synthesis.md) | ADR-172.synthesis | accepted |  |  | The UI is four cooperating, independently opt-in surfaces, none mandatory: **Surface 1 — Operator CLI** (always-on; live operator state via scripts like `cos-bo |
+| [174](ADR-174.synthesis.md) | ADR-174.synthesis | accepted |  |  | Add a `routing_patterns:` field to the SKILL.md frontmatter schema (list of `{pattern (regex, IGNORECASE), confidence (0.0-1.0)}`, English or Spanish). A new `_ |
+| [174b](ADR-174b.synthesis.md) | ADR-174b.synthesis | accepted |  |  | Part A: when `auto-skill-generator.sh` fires, it now calls `lib/routing_pattern_deriver.py` to derive 2–3 routing patterns (skill-name match, hyphen-collapsed v |
+| [175](ADR-175.synthesis.md) | ADR-175.synthesis | accepted |  |  | Add a lightweight, non-blocking research-quality scorer running as a PostToolUse Edit/Write hook (`hooks/research-quality-validator.sh`) on `**/docs/06-Daily/re |
+| [176](ADR-176.synthesis.md) | ADR-176.synthesis | accepted |  |  | Adopt OpenSpace's 6-table SQLite schema verbatim into `lib/skill_store.py` (COS-namespace column adjustments only: `creator_id`→session IDs not user IDs, `analy |
+| [178](ADR-178.synthesis.md) | ADR-178.synthesis | accepted |  |  | Cherry-pick exactly 3 primitives from OpenHarness (commit `7873f0d109174a57b3b1af7aa5397a6b3b0bd551`, fields read verbatim via `gh api`) — explicitly NOT a subs |
+| [180](ADR-180.synthesis.md) | ADR-180.synthesis | accepted |  |  | Operationally activate the skill lifecycle promotion ladder (doctrinally declared in ADR-177) with five concrete artifacts: `scripts/cos-promotion-proposer` (ev |
+| [181](ADR-181.synthesis.md) | ADR-181.synthesis | accepted |  |  | A lightweight `AdrRouter` (`lib/adr_router.py`) indexes all non-tombstone/non-superseded/non-deprecated ADRs lazily, scoring keywords from three weighted tiers: |
+| [182](ADR-182.synthesis.md) | ADR-182.synthesis | accepted |  |  | Introduce a branch ownership lock primitive. A session intending to mutate a branch acquires a lease recorded at `.cognitive-os/runtime/branch-locks/<branch-slu |
+| [183](ADR-183.synthesis.md) | ADR-183.synthesis | accepted |  |  | Extend the existing minimal `lib/session_bus.py` append-only bus with a fixed event schema and two hooks. Event log: `.cognitive-os/sessions/events.jsonl`, appe |
+| [184](ADR-184.synthesis.md) | ADR-184.synthesis | accepted |  |  | Introduce `cosd` — an opt-in, per-machine, long-running daemon that is the sole authoritative writer for critical surfaces: ADR sequence/ownership (number reser |
+| [185](ADR-185.synthesis.md) | ADR-185.synthesis | accepted |  |  | Adopt a typed, severity-graded, append-only directed message queue (`lib/agent_message_bus.py`, implemented as `agent_message_bus` because it also carries imple |
+| [186](ADR-186.synthesis.md) | ADR-186.synthesis | accepted |  |  | Activate ADR-038 Wave 3 enforcement via `lib/context_budget.py` (pure stdlib, `len(text)//4` heuristic token counting with optional `tiktoken` via `COS_USE_REAL |
+| [188](ADR-188.synthesis.md) | ADR-188.synthesis | accepted |  |  | When the skill router emits a match at `confidence >= 0.90` for the current user prompt, the orchestrator must do one of three things: invoke the suggested skil |
+| [190](ADR-190.synthesis.md) | ADR-190.synthesis | accepted |  |  | Model this as "harness action receipts" — a vendor-neutral event vocabulary (schema `harness-action-receipt.v1`) describing an action's source, repository conte |
+| [201](ADR-201.synthesis.md) | ADR-201.synthesis | accepted |  |  | Introduce a Maintainer Agent as a bounded, scheduled, propose-only runtime role that owns the loop: observe telemetry -> detect drift -> propose change -> valid |
+| [202](ADR-202.synthesis.md) | ADR-202.synthesis | accepted |  |  | Define a private-content portability boundary orthogonal to public harness portability. Every private-content surface must declare one of 6 portability classes: |
+| [215](ADR-215.synthesis.md) | ADR-215.synthesis | accepted |  |  | Adopt a manifest-backed cross-stack secret audit policy: primary toolchain is `gitleaks` + `trufflehog` (both run by default, either finding a real secret fails |
+| [217](ADR-217.synthesis.md) | ADR-217.synthesis | accepted |  |  | Adopt a manifest-backed cross-stack adoption-truth audit mirroring ADR-212's shape: canonical CLI `cos adoption audit [--json] [--strict]`, manifest `manifests/ |
+| [218](ADR-218.synthesis.md) | ADR-218.synthesis | accepted |  |  | Adopt a manifest-backed history-sanitization primitive: canonical CLI `cos history sanitize [--dry-run\|--execute] [--json]`, default mode `--dry-run` (in-memory |
+| [220](ADR-220.synthesis.md) | ADR-220.synthesis | accepted |  |  | Adopt a manifest-backed worktree-divergence audit primitive: `cos worktree audit [--json] [--strict] [--against <ref>]`, defaulting to comparing against `origin |
+| [221](ADR-221.synthesis.md) | ADR-221.synthesis | accepted |  |  | All persistence of stash identity in Cognitive OS MUST use the immutable 40-char stash commit SHA (resolved via `git rev-parse stash@{0}` at the moment of push  |
+| [222](ADR-222.synthesis.md) | ADR-222.synthesis | implemented |  |  | Replace speculative-capture-on-PreToolUse with a two-phase capture-then-commit pattern. Phase 1 (Plan, PreToolUse, after all blocking preflight passes): `pre-ag |
+| [226](ADR-226-event-sourced-session-bus.synthesis.md) | bus.synthesis | accepted |  |  | Extend the ADR-205 Flight Recorder substrate with three additive, opt-in primitives on top of the existing `session_bus.append_event()` API: (1) monotonic per-s |
+| [227](ADR-227.synthesis.md) | ADR-227.synthesis | accepted |  |  | Ship `lib/shadow_git.py` as the canonical checkpoint substrate: one bare git repo per session at `~/.cognitive-os/snapshots/{project_id}/{session_id}/.git`, out |
+| [228](ADR-228.synthesis.md) | ADR-228.synthesis | implemented |  |  | Ship `lib/dispatch_gate.py` as a unified pre-call gate consolidating both fixes into one chokepoint (both live in `dispatch()`, both need a sync gate, both need |
+| [230](ADR-230.synthesis.md) | ADR-230.synthesis | implemented |  |  | Ship `lib/handoff_envelope.py` + `lib/handoff_dispatcher.py` as the canonical handoff protocol, with three primitives: (1) a frozen `HandoffEnvelope` dataclass  |
+| [239](ADR-239.synthesis.md) | ADR-239.synthesis | accepted |  |  | Change the default `cognitive-os.yaml` setting from `sub_agent_cwd: main_worktree` to `sub_agent_cwd: isolated_worktree`. Write-capable agents now get a dedicat |
+| [240](ADR-240.synthesis.md) | ADR-240.synthesis | accepted |  |  | Adopt a machine-readable primitive coherence manifest (`manifests/primitive-coherence.yaml`) declaring surfaces, owners, writers, write-protocols, and ordering  |
+| [241](ADR-241.synthesis.md) | ADR-241.synthesis | accepted |  |  | Replace seven separately-named bypass env vars (`COS_ALLOW_DESTRUCTIVE_GIT`, `COS_BYPASS_COMMIT_GUARD`, `COS_ALLOW_MAIN_BRANCH_WRITE`, `COS_ALLOW_UNPROVEN_SCOPE |
+| [242](ADR-242.synthesis.md) | ADR-242.synthesis | accepted |  |  | Ship `scripts/cos-filter-repo-wrap.sh` as the sole call site for `git filter-repo --execute` within the governed toolchain; `lib/history_sanitization.py:execute |
+| [243](ADR-243.synthesis.md) | ADR-243.synthesis | accepted |  |  | Introduce a "post-rewrite mode": `lib/history_sanitization.py` (and the ADR-242 wrapper) writes `.cognitive-os/runtime/last-rewrite.json` (`pre_head`, `post_hea |
+| [244](ADR-244.synthesis.md) | ADR-244.synthesis | accepted |  |  | Promote the claim-validator from advisory to blocking for high-stakes claims. Renamed `claim-enforcer` (`hooks/claim-validator.sh` retained as a one-release bac |
+| [245](ADR-245.synthesis.md) | ADR-245.synthesis | accepted |  |  | Enforce `lib/`, `scripts/`, and `hooks/` as read-only for the duration of every chaos test via an autouse pytest fixture, `chaos_readonly_workspace`, in `tests/ |
+| [246](ADR-246.synthesis.md) | ADR-246.synthesis | accepted |  |  | Introduce `cos release freeze` as a transaction primitive for high-risk public/destructive operations. It creates a `release_transaction_id` and writes an immut |
+| [247](ADR-247.synthesis.md) | ADR-247.synthesis | accepted |  |  | Postmortem regression audits must be manifest-driven: `manifests/postmortem-regression-audit.yaml` declares checks (`forbidden_pattern`, `required_paths` types) |
+| [248](ADR-248.synthesis.md) | ADR-248.synthesis | implemented |  |  | Introduce a manifest-driven control-plane audit runner (`manifests/control-plane-audits.yaml` + `scripts/cos-control-plane-audit`) that executes declared read-o |
+| [249](ADR-249.synthesis.md) | ADR-249.synthesis | accepted |  |  | A critical governance primitive is not behaviorally proven until it has a declared behavioral proof contract with at least one falsification probe, tracked in ` |
+| [250](ADR-250.synthesis.md) | ADR-250.synthesis | accepted |  |  | Split the skill router into an explicit pipeline: skill catalog → candidate retriever adapter → COS policy/intent guard → telemetry/feedback ledger → suggest/bl |
+| [251](ADR-251.synthesis.md) | ADR-251.synthesis | accepted |  |  | Define an explicit boundary: COS owns policy/safety gates, work ownership/liveness/branch-worktree boundaries, release-freeze preconditions, evidence receipts a |
+| [252](ADR-252.synthesis.md) | ADR-252.synthesis | accepted |  |  | Introduce a manifest-backed Capability Coverage Matrix and Feature Reality Ledger: `manifests/capability-coverage.yaml` (declares every capability's stable id,  |
+| [256](ADR-256.synthesis.md) | ADR-256.synthesis | accepted |  |  | Introduce a Primitive Contract Registry (`manifests/primitive-contracts.yaml`) and a Runtime Evidence Ledger. A primitive is not fully governed until it has: a  |
+| [258](ADR-258.synthesis.md) | ADR-258.synthesis | accepted |  |  | Adopt `.ai/` as a **generated portable overlay/export surface**, not as the internal canonical source of truth. Canonical sources remain `manifests/primitive-co |
+| [259](ADR-259.synthesis.md) | ADR-259.synthesis | accepted |  |  | Treat holaOS as a **patterns-only reference library**: ideas, algorithms, policies, state machines, and taxonomies are freely adoptable (17 USC §102(b)); source |
+| [260](ADR-260-grant-signed-cosd-api.synthesis.md) | api.synthesis | accepted |  |  | Replace the static bearer token with a self-contained HMAC-signed capability grant: `lib/cosd_grant.py` provides `issue_token(scope, ttl_seconds)` and `verify_t |
+| [261](ADR-261-memory-governance-v2.synthesis.md) | v2.synthesis | accepted |  |  | New stdlib-only module `lib/memory_governance.py` defines a static per-type policy table (`MemoryTypePolicy`: verification tier, staleness tier, stale-after thr |
+| [263](ADR-263-tool-replay-budget-ledger.synthesis.md) | ledger.synthesis | accepted |  |  | New module `lib/tool_replay_ledger.py` with a per-session SQLite-backed ledger tracking `(tool_name, target_hash)` tuples through three modes: FRESH (first occu |
+| [264](ADR-264.synthesis.md) | ADR-264.synthesis | accepted |  |  | New dependency-free module `lib/tool_result_envelope.py` exposing `wrap_if_large(raw_result, tool_name, target_hint, threshold=28*1024, preview_size=7*1024, per |
+| [267](ADR-267.synthesis.md) | ADR-267.synthesis | accepted |  |  | A layered defense: six new pre-commit hooks, two new governance manifests/scripts, and this ADR plus a deferred future "legal review gate" ADR — while explicitl |
+| [268](ADR-268.synthesis.md) | ADR-268.synthesis | accepted |  |  | Two `git filter-repo` passes plus an Engram SQL maintenance pass, scoped strictly to surface text and never touching ADRs, recovery bundles, or audit artifacts: |
+| [269](ADR-269.synthesis.md) | ADR-269.synthesis | accepted |  |  | A four-primitive enforcement layer operating at three time points (pre-execute gate, post-rewrite ledger entry, periodic audit). Primitive 1: `manifests/history |
+| [270](ADR-270.synthesis.md) | ADR-270.synthesis | accepted |  |  | Introduce eight primitives that mechanize the evidence-gathering and bookkeeping parts of legal compliance while leaving all counsel judgment manual: `cos-uspto |
+| [273](ADR-273.synthesis.md) | ADR-273.synthesis | accepted |  |  | Introduce one canonical pending-truth ledger with bilateral verification. A schema (`manifests/pending-truth.yaml`) gives every actionable item a stable composi |
+| [274](ADR-274.synthesis.md) | ADR-274.synthesis | accepted |  |  | Establish a contract requiring a §Operational Guide section in maintainer-tier ADRs that introduce a new capability (new script/manifest/hook/schema/public surf |
+| [275](ADR-275.synthesis.md) | ADR-275.synthesis | accepted |  |  | Ship two Slice-A primitives with a shared schema and trust contract: (1) `scripts/cos-session-start-projector`, which reads pending-truth, operational-guide-aud |
+| [278](ADR-278.synthesis.md) | ADR-278.synthesis | accepted |  |  | Three-layer enforcement mirroring the ADR-274 audit pattern. (1) Convention: every `subprocess.run(...)` in scripts/, hooks/, lib/, tests/, or packages/ MUST in |
+| [281](ADR-281.synthesis.md) | ADR-281.synthesis | accepted |  |  | Add a permanent audit (`scripts/cos-adr-implementation-audit.py`) that cross-validates every ADR declaring `implementation_status: implemented` against on-disk  |
+| [283](ADR-283.synthesis.md) | ADR-283.synthesis | accepted |  |  | Add `scripts/cos-script-exposure-audit` (with `--json` and `--fail-p0` modes), reading `docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json` by |
+| [287](ADR-287.synthesis.md) | ADR-287.synthesis | accepted |  |  | Ship four orthogonal, additive Engram v3 capabilities, each independently adoptable without breaking the v2 surface: (1) evidence-grounded claims — new `evidenc |
+| [288](ADR-288.synthesis.md) | ADR-288.synthesis | accepted |  |  | Adopt `browser-use>=0.12.6` (MIT, 93.7k stars) as an optional runtime dependency under a new `web-automation` extra in `pyproject.toml` (not in default install) |
+| [289](ADR-289.synthesis.md) | ADR-289.synthesis | accepted |  |  | Adopt a three-layer knowledge architecture as the canonical model: Layer 1 (raw sources) — immutable original inputs, SHA-256 identified, canonical location pro |
+| [291](ADR-291.synthesis.md) | ADR-291.synthesis | accepted |  |  | Build `packages/agent-service/` as a standalone FastAPI + Uvicorn HTTP service exposing the agent runtime: plain HTTP REST for request/response, Server-Sent Eve |
+| [296](ADR-296.synthesis.md) | ADR-296.synthesis | accepted |  |  | Replace the Jaccard semantic fallback in the skill router with a multilingual embedding matcher backed by FastEmbed (MIT) using `sentence-transformers/paraphras |
+| [299](ADR-299.synthesis.md) | ADR-299.synthesis | accepted |  |  | Build an offline enricher (`lib/skill_description_enricher.py`, CLI `scripts/cos-skill-description-enrich`) that, per skill, generates ~2 short natural-language |
+| [300](ADR-300.synthesis.md) | ADR-300.synthesis | accepted |  |  | Phase 1 (accepted): document the benchmark winner (`multilingual-e5-large`, MIT-adjacent per its own license, precision@1 0.897 vs MiniLM's 0.753) and expose a  |
+| [304](ADR-304.synthesis.md) | ADR-304.synthesis | accepted |  |  | A periodic telemetry aggregator with three independently-testable slices. Slice 1: `lib/telemetry_aggregator.py` reads SLO declarations from `manifests/observab |
+| [314](ADR-314.synthesis.md) | ADR-314.synthesis | accepted |  |  | Adopt an evidence-weighted Primitive Scope Taxonomy Calibration Loop with two parts: (1) `scripts/primitive_scope_classifier.py`, which emits row-level hypothes |
+| [315](ADR-315.synthesis.md) | ADR-315.synthesis | accepted |  |  | Introduce a canonical primitive parser layer (`lib/primitive_parser.py`) that runs before scope classification. It produces a normalized, descriptive-only `Prim |
+| [320](ADR-320.synthesis.md) | ADR-320.synthesis | accepted |  |  | Treat the installer as having two real installed surfaces until a future ADR gives `project` and `both` separate executable semantics: (1) consumer filtered ins |
+| [321](ADR-321.synthesis.md) | ADR-321.synthesis | accepted |  |  | Classify every primitive along four orthogonal axes instead of scope alone: (1) **Scope** — `os-only`/`project`/`both` (install surface); (2) **Plane** — `contr |
+| [325](ADR-325.synthesis.md) | ADR-325.synthesis | accepted |  |  | Introduce an explicit AI Resource Economy control plane in five phases, canonically declared in `manifests/ai-resource-economy.yaml`. (1) Taximeter ledger: ever |
+| [328](ADR-328.synthesis.md) | ADR-328.synthesis | accepted |  |  | Add a first-class friction-vs-catch ratio to the governance ROI dashboard, exposed via `cos status` / `cos governance roi`. Three executable surfaces: (1) read- |
+| [331](ADR-331.synthesis.md) | ADR-331.synthesis | accepted |  |  | Adopt Graphify as a maintainer-only context optimization backend for an owned COS context-graph primitive, in controlled phases, treating Graphify as replaceabl |
+| [341](ADR-341-iroh-optional-transport-adapter.md) | Iroh Optional Transport Adapter | accepted |  |  | - Implementation status: partial |
+
 ## Proposed
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
@@ -350,41 +488,56 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [001](ADR-001-abc-parallel-dedup-fix-broken-infra-add-global-verify.md) | A+B+C parallel — dedup, fix broken infra, add global-verify | proposed | planned | 2026-04-20 | Draft |
 | [002](ADR-002-docker-pip-localhost-envs-targetedtestresolver-redis-dep.md) | docker-pip localhost envs + targeted_test_resolver + redis dep | proposed | planned | 2026-04-20 | Draft |
 | [034](ADR-034-harness-agnostic-live-streaming.md) | Harness-Agnostic Live Agent Streaming | proposed | planned | 2026-04-20 | - **Status**: Proposed |
+| [034](ADR-034.synthesis.md) | ADR-034.synthesis | proposed |  |  | Introduce three components to promote ADR-033's event schema from a write-only sink to a live, subscribable stream: (1) `scripts/cos_executor.py`, a PID-locked  |
 | [036](ADR-036-sprint-orchestration-primitives.md) | Sprint orchestration primitives | proposed | partial | 2026-04-20 | Proposed — MVP implemented 2026-04-20 (CLI skeleton + manifest + canonical events + example spec). Wave 1 test aggregation shipped 2026-04-21. Dispatch wiring v |
 | [039](ADR-039-reinvention-phase-b-beta.md) | Reinvention Phase B-beta (semantic embeddings) | proposed | planned | 2026-04-20 | > Originally drafted in `.cognitive-os/pending-tasks/adr-039-reinvention-phase-b-beta.md`; canonical location is `docs/02-Decisions/adrs/`. |
 | [047](ADR-047-session-lifecycle-management.md) | Session Lifecycle Management | proposed | planned | 2026-04-20 | Proposed — 2026-04-20. Author: Agent E (software-architect). Coordinates with |
+| [047](ADR-047.synthesis.md) | ADR-047.synthesis | proposed |  |  | Introduce a Session Lifecycle Management (SLM) subsystem: a psutil-based watchdog daemon (`scripts/so_session_watchdog.py`) enforcing TTL + idle heuristics + TT |
 | [059](ADR-059-so-existential-validation.md) | SO Existential Validation: Prune, Install Timing, Core-vs-Extensions Split | proposed | planned | 2026-04-24 | **Proposed** — 2026-04-24. 3-phase plan with measurable exit criteria, |
+| [059](ADR-059.synthesis.md) | ADR-059.synthesis | proposed |  |  | Adopt a 3-phase validation plan with hard exit criteria, explicitly designed to demote unproven claims rather than quietly preserve them. Phase 1 (Aggressive Pr |
 | [062](ADR-062-multi-provider-agent-loop.md) | Multi-Provider Agent Loop | proposed | planned | 2026-04-24 | **Proposed** — 2026-04-24. Extends ADR-049 (provider cascade) and ADR-051 |
+| [062](ADR-062.synthesis.md) | ADR-062.synthesis | proposed |  |  | Generalize `lib/qwen_agent_loop.py` (misnamed — it's a generic OpenAI-SDK-compatible loop, not Qwen-specific) into `lib/openai_compatible_agent_loop.py`, keepin |
 | [065](ADR-065-radar-update-curation-pipeline.md) | Tech Radar Curation Pipeline (`/radar-update`) | proposed | planned | 2026-04-24 | **Proposed** — 2026-04-24. Builds on `/repo-scout` (formerly `/eval-repo`, |
+| [065](ADR-065.synthesis.md) | ADR-065.synthesis | proposed |  |  | Create a new SO-only skill `/radar-update <url-or-file> [--apply]` that delegates per-repo evaluation entirely to the existing `/repo-scout` pipeline (no new De |
 | [066](ADR-066-polyglot-language-boundaries.md) | Polyglot Language Boundaries & Migration Pressure | proposed | planned | 2026-04-24 | Proposed — 2026-04-24. |
+| [066](ADR-066.synthesis.md) | ADR-066.synthesis | proposed |  |  | This is a design-only ADR (no code rewritten) that codifies an explicit role matrix for the three in-tree languages — bash for event handlers/hooks/thin glue (r |
 | [067](ADR-067-frontmatter-defense-in-depth.md) | Defense-in-Depth for SKILL.md Frontmatter Quality | proposed | planned | 2026-04-24 | Proposed — 2026-04-24. Implementation tracked separately as Phase 1 of this ADR. |
+| [067](ADR-067.synthesis.md) | ADR-067.synthesis | proposed |  |  | Ratify a mandatory three-layer, defense-in-depth policy for SKILL.md frontmatter quality — all three layers required, none optional: (A) a canonical skill templ |
 | [069](ADR-069-research-first-protocol.md) | Research-First Protocol for High-Risk Changes | proposed | planned | 2026-04-24 | **Proposed** — 2026-04-24. Adopted alongside three concrete research tasks (H/I/J) |
+| [069](ADR-069.synthesis.md) | ADR-069.synthesis | proposed |  |  | Route any task by four risk dimensions (acceptance-criteria clarity, blast radius, reversibility, decision count). If any dimension is "High," the task goes thr |
 | [070](ADR-070-convention-enforcement-mechanism.md) | Convention Enforcement — From Documentation to Mechanism | proposed | planned | 2026-04-27 | **Proposed** — 2026-04-27. Direct outcome of the |
+| [070](ADR-070.synthesis.md) | ADR-070.synthesis | proposed |  |  | Codify four enforcement patterns as the menu every new convention must pick from: (A) an audit test that walks artifacts read-only and asserts pattern complianc |
 | [117](ADR-117-stash-mutation-reversibility.md) | Stash Mutation Must Be Reversible-by-Design | proposed | planned | 2026-05-02 | **Status:** Proposed |
+| [117](ADR-117.synthesis.md) | ADR-117.synthesis | proposed |  |  | Every `git stash` operation executed by an OS hook (in `hooks/`, `packages/*/hooks/`, or any hook-invoked script) MUST satisfy five invariants simultaneously: ( |
 | [124](ADR-124-cos-distribution-boundaries.md) | COS Distribution Boundaries — Core, Team, Maintainer, Lab | proposed | planned | 2026-05-02 | Proposed — 2026-05-02 |
 | [125](ADR-125-governance-tools-value-boundary.md) | Governance Tools Value Boundary | proposed | planned | 2026-05-02 | Proposed — 2026-05-02 |
 | [126](ADR-126-agentic-primitive-lifecycle-governor.md) | Agentic Primitive Lifecycle Governor | proposed | planned | 2026-05-02 | Proposed — 2026-05-02 |
+| [126](ADR-126.synthesis.md) | ADR-126.synthesis | proposed |  |  | Introduce a governed lifecycle state machine for any primitive (hook, skill, rule, script, doctor) created/modified/promoted/demoted/archived/deleted by an agen |
 | [128](ADR-128-data-layer-integrity-fixes.md) | Data Layer Integrity Fixes | proposed | planned | 2026-05-03 | Proposed — 2026-05-03 |
 | [174c](ADR-174c-validator-blocking-promotion.md) | Validator Advisory-to-Blocking Promotion After Soak | proposed | deferred | 2026-05-12 | Proposed. This ADR is intentionally not accepted until soak data proves the |
 | [265](ADR-265-mandatory-minimum-inspection-caps.md) | Mandatory-minimum inspection caps for COS eval surfaces | proposed | planned | 2026-05-11 | Proposed (2026-05-11) |
 | [266](ADR-266-protected-config-write-guard-bash-coverage.md) | Extend protected-config-write-guard to intercept Bash file-write commands | proposed | planned | 2026-05-11 | Proposed (2026-05-11). |
 | [271](ADR-271-clean-room-detection-tier-2-ast-similarity.md) | Clean-Room Detection Tier 2: AST-Normalized Similarity | proposed | planned | 2026-05-11 | Proposed (2026-05-11) |
+| [271](ADR-271.synthesis.md) | ADR-271.synthesis | proposed |  |  | Build `hooks/clean-room-ast-similarity-gate.sh` plus `scripts/cos_clean_room_ast_similarity.py` as ADR-267 Hook #8 (Tier 2 of the clean-room detection matrix).  |
 
 ## Exploration
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
 | [132](ADR-132-solo-swarm-vs-multi-maintainer-fork.md) | Solo-Swarm vs Multi-Maintainer Fork — Documenting the Pending Strategic Decision | exploration | not-applicable | 2026-05-03 | **Exploration.** This ADR does not commit to an architectural change. |
+| [132](ADR-132.synthesis.md) | ADR-132.synthesis | exploration |  |  | This ADR deliberately commits to nothing except naming the decision space. It documents two hypothetical shapes — Shape A (current solo-swarm: one maintainer, m |
 | [262](ADR-262-evolve-loop-spike.md) | Evolve Loop Spike: Task Proposal Queue + LLM-driven Skill Candidates | exploration | not-applicable | 2026-05-11 | **Spike** (not Accepted — pending exit criteria evaluation) |
+| [262](ADR-262.synthesis.md) | ADR-262.synthesis | exploration |  |  | Time-boxed 3-4 day Spike (not an Accepted ADR) to design and prototype an LLM-driven evolve loop: `lib/evolve_skill_review.py` (LLM extraction job via `cos_lib. |
 
 ## Resolved
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
 | [238](ADR-238-tier-1-4-followup-bug-tracking.md) | Tier 1-4 Follow-Up Bug Tracking | resolved | resolved | 2026-05-07 | During the Tier 1-4 case-study leak audit (privacy decoupling, commits |
+| [238](ADR-238.synthesis.md) | ADR-238.synthesis | resolved |  |  | Track all 5 bugs found during the audit as a single consolidated ADR Bug Registry (severity, affected file, reproducer, proposed remediation, status per entry)  |
 
 <details>
-<summary>Superseded ADRs (5)</summary>
+<summary>Superseded ADRs (7)</summary>
 
 ## Superseded
 
@@ -393,8 +546,10 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [011](ADR-011-dual-gateway-bifrost-litellm.md) | Dual Gateway -- Bifrost Primary, LiteLLM Fallback | superseded | not-applicable | 2026-03-28 | **Date:** 2026-03-28 |
 | [084](ADR-084-headless-clustered-runtime-shape.md) | Headless and Clustered Runtime Shape | superseded | not-applicable | 2026-04-30 | **Author**: Maintainer |
 | [170](ADR-170-operator-cli-as-primary-ui-surface.md) | Operator-CLI as Primary UI Surface — No Web Dashboard Until a Real Driver Exists | superseded | not-applicable | 2026-05-05 | Superseded by [ADR-172](ADR-172-multi-surface-ui-architecture.md) (2026-05-05). |
+| [170](ADR-170.synthesis.md) | ADR-170.synthesis | superseded |  |  | The primary UI surface for Cognitive OS is the operator CLI plus the markdown report library, period — no web dashboard until a real driver exists. `scripts/cos |
 | [187](ADR-187-surface-5-adoption-proof-contract.md) | Surface 5 Adoption Proof Contract — Source-Level Gate for Custom TUI/UI | superseded | not-applicable | 2026-05-06 | **Superseded by ADR-192** — the proof contract was satisfied by the accepted Bubble Tea adoption decision. Future Surface 5 adoption work extends ADR-192 rather |
 | [290](ADR-290-five-agent-quality-patterns.md) | Five Agent Quality-of-Life Patterns: Lazy Imports, Typed Hook Events, MCP Sync↔Async Bridge, Memory Quality Scoring, Reflection Loop | superseded | resolved | 2026-05-13 | **Status: superseded — 2026-05-13.** Split into four standalone ADRs because this |
+| [290](ADR-290.synthesis.md) | ADR-290.synthesis | superseded |  |  | This is a tombstone ADR: superseded and split into four standalone successor ADRs — ADR-292 (Pattern 1 lazy imports + Pattern 3 MCP thread bridge), ADR-293 (Pat |
 
 </details>
 

@@ -1,5 +1,5 @@
 {
-  "canonical_source": "lib/adapter_compile.py",
+  "canonical_source": "cos_lib/adapter_compile.py",
   "canonical_source_kind": "cos-internal",
   "contract": {
     "actions": {
@@ -56,7 +56,7 @@
     "trigger": {
       "kind": "documented_or_on_demand",
       "projection_targets": [
-        "lib/adapter_compile.py"
+        "cos_lib/adapter_compile.py"
       ],
       "runtime_projection": false
     }
@@ -151,17 +151,17 @@
     "trigger": {
       "kind": "documented_or_on_demand",
       "projection_targets": [
-        "lib/adapter_compile.py"
+        "cos_lib/adapter_compile.py"
       ],
       "runtime_projection": false
     }
   },
   "portable_id": "library-adapter-compile-py",
   "projection_targets": [
-    "lib/adapter_compile.py"
+    "cos_lib/adapter_compile.py"
   ],
   "schema_version": "portable-ai-primitive.v1",
-  "source_id": "lib/adapter_compile.py",
+  "source_id": "cos_lib/adapter_compile.py",
   "supported_harnesses": [
     "shell"
   ]

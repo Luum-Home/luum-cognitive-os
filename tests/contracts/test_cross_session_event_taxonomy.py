@@ -57,7 +57,7 @@ def test_adr_183_v1_taxonomy_is_pinned_but_open() -> None:
         ({"hook_event_name": "Stop"}, "session-end"),
         ({"hook_event_name": "PreToolUse", "tool_name": "Agent", "tool_input": {"prompt": "review ADR routing"}}, "agent-spawn"),
         ({"hook_event_name": "PreToolUse", "tool_name": "Write", "tool_input": {"file_path": "docs/x.md"}}, "file-write-intent"),
-        ({"hook_event_name": "PreToolUse", "tool_name": "Edit", "tool_input": {"file_path": "lib/x.py"}}, "file-write-intent"),
+        ({"hook_event_name": "PreToolUse", "tool_name": "Edit", "tool_input": {"file_path": "cos_lib/x.py"}}, "file-write-intent"),
         ({"hook_event_name": "PreToolUse", "tool_name": "Bash", "tool_input": {"command": "git commit -m x"}}, "commit-intent"),
         ({"hook_event_name": "PostToolUse", "tool_name": "Bash", "tool_input": {"command": "git commit -m x"}}, "commit-landed"),
     ],

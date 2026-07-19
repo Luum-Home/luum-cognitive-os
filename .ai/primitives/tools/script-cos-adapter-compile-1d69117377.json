@@ -59,7 +59,7 @@
       "kind": "documented_or_on_demand",
       "projection_targets": [
         "scripts/cos-adapter-compile",
-        "lib/adapter_compile.py"
+        "cos_lib/adapter_compile.py"
       ],
       "runtime_projection": false
     }
@@ -159,7 +159,7 @@
       "kind": "documented_or_on_demand",
       "projection_targets": [
         "scripts/cos-adapter-compile",
-        "lib/adapter_compile.py"
+        "cos_lib/adapter_compile.py"
       ],
       "runtime_projection": false
     }
@@ -167,7 +167,7 @@
   "portable_id": "script-cos-adapter-compile",
   "projection_targets": [
     "scripts/cos-adapter-compile",
-    "lib/adapter_compile.py"
+    "cos_lib/adapter_compile.py"
   ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "scripts/cos-adapter-compile",

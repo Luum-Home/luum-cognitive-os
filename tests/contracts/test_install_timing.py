@@ -4,7 +4,7 @@
 ADR-059 §Phase 2 exit criteria:
   - install-timing.jsonl accumulates records with required fields.
   - Records within budget (elapsed_s < 300, manual_steps <= 3, errors == 0).
-  - lib/install_timing.py writes and reads back correct schema.
+  - cos_lib/install_timing.py writes and reads back correct schema.
 
 These tests run against the logger library itself (real writes to tmp_path).
 They do NOT run the full end-to-end install (that is the job of make install-test).

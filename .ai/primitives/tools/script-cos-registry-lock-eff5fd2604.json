@@ -58,7 +58,7 @@
       "projection_targets": [
         "scripts/cos-registry-lock",
         "scripts/cos_cross_instance_learning.py",
-        "lib/cross_instance_learning.py",
+        "cos_lib/cross_instance_learning.py",
         "manifests/agentic-primitive-registry.lock.yaml",
         "skills/REGISTRY.lock"
       ],
@@ -157,7 +157,7 @@
       "projection_targets": [
         "scripts/cos-registry-lock",
         "scripts/cos_cross_instance_learning.py",
-        "lib/cross_instance_learning.py",
+        "cos_lib/cross_instance_learning.py",
         "manifests/agentic-primitive-registry.lock.yaml",
         "skills/REGISTRY.lock"
       ],
@@ -168,7 +168,7 @@
   "projection_targets": [
     "scripts/cos-registry-lock",
     "scripts/cos_cross_instance_learning.py",
-    "lib/cross_instance_learning.py",
+    "cos_lib/cross_instance_learning.py",
     "manifests/agentic-primitive-registry.lock.yaml",
     "skills/REGISTRY.lock"
   ],

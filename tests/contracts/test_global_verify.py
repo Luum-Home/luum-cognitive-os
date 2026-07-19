@@ -148,7 +148,7 @@ def test_before_phase_writes_baseline_when_tests_resolve(tmp_path):
             # Inject a synthetic changed-file list so the resolver gets called
             # regardless of the working-tree state (this test must work on a
             # clean checkout in CI).
-            env_extra={**LEGACY_RESOLVER_ENV, "VERIFY_FILES_OVERRIDE": "lib/synthetic_changed.py"},
+            env_extra={**LEGACY_RESOLVER_ENV, "VERIFY_FILES_OVERRIDE": "cos_lib/synthetic_changed.py"},
         )
         # Hook should exit 0 regardless of test results (baseline capture, not blocking)
         assert result.returncode == 0, (
@@ -222,7 +222,7 @@ def test_before_phase_persists_canonical_summary_artifacts(tmp_path):
             resolver_dir=r.resolver_dir,
             env_extra={
                 **LEGACY_RESOLVER_ENV,
-                "VERIFY_FILES_OVERRIDE": "lib/synthetic_changed.py",
+                "VERIFY_FILES_OVERRIDE": "cos_lib/synthetic_changed.py",
                 "COS_TEST_REPORT_DIR": str(report_dir),
             },
         )

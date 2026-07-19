@@ -60,7 +60,7 @@ def _run_hook(prompt: str, env_extra: dict | None = None) -> subprocess.Complete
 
 def test_hook_always_exits_zero_on_match() -> None:
     """reinvention-check must always exit 0, even when a match is found."""
-    # Use a file we know exists: lib/rate_limiter.py or lib/metric_event.py
+    # Use a file we know exists: cos_lib/rate_limiter.py or cos_lib/metric_event.py
     candidate = "rate_limiter.py"
     if not (_PROJ_ROOT / "lib" / candidate).exists():
         candidate = "metric_event.py"
@@ -77,7 +77,7 @@ def test_hook_always_exits_zero_on_match() -> None:
 
 def test_hook_always_exits_zero_on_no_match() -> None:
     """reinvention-check must exit 0 when no existing file matches."""
-    prompt = "Create lib/totally_novel_zzz_module_xyz.py with new logic."
+    prompt = "Create cos_lib/totally_novel_zzz_module_xyz.py with new logic."
     result = _run_hook(prompt)
     assert result.returncode == 0, (
         f"reinvention-check.sh must always exit 0.\nstderr: {result.stderr}"
@@ -96,7 +96,7 @@ def test_stderr_contains_existing_module_path() -> None:
     the hook writes its warning to stderr, which Claude Code injects into the
     agent's context as additional information.
 
-    Uses lib/rate_limiter.py as the probe because it is a real file (not a symlink)
+    Uses cos_lib/rate_limiter.py as the probe because it is a real file (not a symlink)
     and the hook's `find -type f` resolves it reliably.
     """
     # rate_limiter.py is a known real (non-symlink) file in lib/
@@ -135,7 +135,7 @@ def test_stderr_contains_existing_module_path() -> None:
 
 def test_no_warning_without_creation_intent() -> None:
     """Hook must not fire for prompts that don't mention create/implement/write/add."""
-    prompt = "Review lib/rate_limiter.py and suggest improvements."
+    prompt = "Review cos_lib/rate_limiter.py and suggest improvements."
     result = _run_hook(prompt)
     assert result.returncode == 0
     # No warning should be emitted (nothing to reinvent — not creating anything)

@@ -21,7 +21,7 @@ def test_primitive_authority_write_effects_doc_names_existing_enforcement_surfac
         "manifests/shell-ci-projection.yaml",
         "manifests/protected-config-write-policy.yaml",
         "manifests/primitive-coherence.yaml",
-        "lib/consumer_improvement_proposals.py",
+        "cos_lib/consumer_improvement_proposals.py",
         "scripts/portable_ai_real_consumer_smoke.py",
         "tests/security/test_boundary_enforcement_p0.py",
         "tests/contracts/test_primitive_scope_governance.py",
