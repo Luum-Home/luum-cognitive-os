@@ -458,6 +458,7 @@ prepare_source() {
       .claude/settings.json \
       hooks \
       lib \
+      cos_lib \
       manifests \
       packages \
       rules \

@@ -299,7 +299,7 @@ class TestSingularityEmitsMetricEvent:
         # Import the private function directly
         import sys as _sys
         # singularity uses local imports; ensure lib is on path
-        lib_dir = str(Path(__file__).parent.parent.parent / "lib")
+        lib_dir = str(Path(__file__).parent.parent.parent / "cos_lib")
         if lib_dir not in _sys.path:
             _sys.path.insert(0, lib_dir)
         from singularity import _append_jsonl  # type: ignore[import]
@@ -317,7 +317,7 @@ class TestSingularityEmitsMetricEvent:
 
     def test_singularity_row_has_schema_version(self, tmp_path: Path) -> None:
         import sys as _sys
-        lib_dir = str(Path(__file__).parent.parent.parent / "lib")
+        lib_dir = str(Path(__file__).parent.parent.parent / "cos_lib")
         if lib_dir not in _sys.path:
             _sys.path.insert(0, lib_dir)
         from singularity import _append_jsonl  # type: ignore[import]
@@ -334,7 +334,7 @@ class TestSingularityEmitsMetricEvent:
     def test_read_back_via_read_jsonl_works(self, tmp_path: Path) -> None:
         """_read_jsonl must normalise MetricEvent rows back to flat dicts."""
         import sys as _sys
-        lib_dir = str(Path(__file__).parent.parent.parent / "lib")
+        lib_dir = str(Path(__file__).parent.parent.parent / "cos_lib")
         if lib_dir not in _sys.path:
             _sys.path.insert(0, lib_dir)
         from singularity import _append_jsonl, _read_jsonl  # type: ignore[import]

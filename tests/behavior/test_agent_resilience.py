@@ -20,7 +20,7 @@ pytestmark = pytest.mark.behavior
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 TEMPLATES_DIR = PROJECT_ROOT / "templates"
 HOOKS_DIR = PROJECT_ROOT / "hooks"
-LIB_DIR = PROJECT_ROOT / "lib"
+LIB_DIR = PROJECT_ROOT / "cos_lib"
 SETTINGS_PATH = PROJECT_ROOT / ".claude" / "settings.json"
 PREAMBLE_PATH = TEMPLATES_DIR / "agent-preamble.md"
 
@@ -199,7 +199,7 @@ class TestRequestPersistence:
 
 
     def test_request_queue_has_enqueue_function(self):
-        """lib/request_queue.py must export enqueue_request."""
+        """cos_lib/request_queue.py must export enqueue_request."""
         sys.path.insert(0, str(LIB_DIR))
         try:
             import request_queue
@@ -213,7 +213,7 @@ class TestRequestPersistence:
             sys.path.pop(0)
 
     def test_request_queue_has_mark_done_function(self):
-        """lib/request_queue.py must export mark_done."""
+        """cos_lib/request_queue.py must export mark_done."""
         sys.path.insert(0, str(LIB_DIR))
         try:
             import request_queue

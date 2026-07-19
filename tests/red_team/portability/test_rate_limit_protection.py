@@ -1,5 +1,5 @@
 # SCOPE: os-only
-"""Portability proof for lib/rate_limit_protection.py."""
+"""Portability proof for cos_lib/rate_limit_protection.py."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-ARTIFACT = REPO_ROOT / "lib/rate_limit_protection.py"
+ARTIFACT = REPO_ROOT / "cos_lib/rate_limit_protection.py"
 
 
 def test_rate_limit_protection_imports_from_arbitrary_project_root(tmp_path: Path, monkeypatch) -> None:

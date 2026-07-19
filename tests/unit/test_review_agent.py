@@ -268,7 +268,7 @@ class TestBuildReviewPrompt:
 WELL_FORMED_RESPONSE = """\
 REVIEW_SCORE: 74
 EVIDENCE:
-- Agent correctly wrote the file lib/utils.py
+- Agent correctly wrote the file cos_lib/utils.py
 - Test output shows 5/5 pass
 GAPS:
 - No verification that edge case for empty string was tested
@@ -289,7 +289,7 @@ class TestParseReviewResponse:
     def test_parses_evidence_list(self):
         result = parse_review_response(WELL_FORMED_RESPONSE)
         assert len(result["evidence"]) >= 1
-        assert any("lib/utils.py" in e for e in result["evidence"])
+        assert any("cos_lib/utils.py" in e for e in result["evidence"])
 
     def test_parses_gaps_list(self):
         result = parse_review_response(WELL_FORMED_RESPONSE)

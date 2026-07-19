@@ -219,12 +219,18 @@ class WiringValidator:
         name = lib_name if lib_name.endswith(".py") else f"{lib_name}.py"
         bare = name[:-3]
 
-        file_path = self.root / "lib" / name
+        file_path = self.root / "cos_lib" / name
+        if not file_path.exists():
+            legacy = self.root / "lib" / name
+            if legacy.exists():
+                file_path = legacy
         file_exists = file_path.exists()
 
         # Search for imports only in first-party directories (avoids scanning submodules)
         imported_by: list[str] = []
         patterns = [
+            re.compile(rf'from\s+cos_lib\.{re.escape(bare)}\s+import'),
+            re.compile(rf'import\s+cos_lib\.{re.escape(bare)}'),
             re.compile(rf'from\s+lib\.{re.escape(bare)}\s+import'),
             re.compile(rf'import\s+lib\.{re.escape(bare)}'),
             re.compile(rf'from\s+{re.escape(bare)}\s+import'),
@@ -329,7 +335,9 @@ class WiringValidator:
 
     def validate_all_libs(self) -> list[dict[str, Any]]:
         results = []
-        lib_dir = self.root / "lib"
+        lib_dir = self.root / "cos_lib"
+        if not lib_dir.exists():
+            lib_dir = self.root / "lib"
         if not lib_dir.exists():
             return results
         for lib_file in sorted(lib_dir.glob("*.py")):

@@ -29,7 +29,7 @@ PROJECT_ROOT = Path(__file__).parent.parent.parent
 def _make_tmp_project(tmp_path: Path) -> Path:
     """Create a minimal project directory structure in tmp."""
     (tmp_path / ".cognitive-os" / "metrics").mkdir(parents=True, exist_ok=True)
-    (tmp_path / "lib").symlink_to(PROJECT_ROOT / "lib")
+    (tmp_path / "cos_lib").symlink_to(PROJECT_ROOT / "cos_lib")
     return tmp_path
 
 

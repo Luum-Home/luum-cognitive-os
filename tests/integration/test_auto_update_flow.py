@@ -178,9 +178,9 @@ def create_fake_cos_source(
 
     # cos_init.py imports cos_lib.script_io; fake release sources must include the
     # minimal support library so integration tests exercise update behavior.
-    lib_dst = cos_src / "lib"
+    lib_dst = cos_src / "cos_lib"
     lib_dst.mkdir(exist_ok=True)
-    shutil.copy2(PROJECT_ROOT / "lib" / "script_io.py", lib_dst / "script_io.py")
+    shutil.copy2(PROJECT_ROOT / "cos_lib" / "script_io.py", lib_dst / "script_io.py")
 
     # Merge-settings script (if exists)
     merge_script = SCRIPTS_DIR / "merge-settings.sh"

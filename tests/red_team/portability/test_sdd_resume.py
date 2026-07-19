@@ -1,5 +1,5 @@
 # SCOPE: os-only
-"""Portability proof for lib/sdd_resume.py."""
+"""Portability proof for cos_lib/sdd_resume.py."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-ARTIFACT = REPO_ROOT / "lib/sdd_resume.py"
+ARTIFACT = REPO_ROOT / "cos_lib/sdd_resume.py"
 
 
 def test_sdd_resume_imports_from_arbitrary_project_root(tmp_path: Path, monkeypatch) -> None:

@@ -777,7 +777,7 @@ def cos_status() -> str:
     status["packages"] = _count_files("packages/*/cos-package.yaml", PROJECT_ROOT)
 
     # Count lib modules
-    status["lib_modules"] = _count_files("lib/*.py", PROJECT_ROOT)
+    status["lib_modules"] = _count_files("cos_lib/*.py", PROJECT_ROOT) or _count_files("lib/*.py", PROJECT_ROOT)
 
     # Metrics files
     metrics_dir = PROJECT_ROOT / ".cognitive-os" / "metrics"

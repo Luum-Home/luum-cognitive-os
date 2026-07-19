@@ -26,7 +26,7 @@ if ! command -v python3 &>/dev/null; then
   exit 0
 fi
 
-if [ ! -f "$PROJECT_DIR/lib/component_registry.py" ]; then
+if [ ! -f "$PROJECT_DIR/cos_lib/component_registry.py" ] && [ ! -f "$PROJECT_DIR/lib/component_registry.py" ]; then
   exit 0
 fi
 

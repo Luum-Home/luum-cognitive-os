@@ -67,7 +67,7 @@ def test_does_not_trigger_on_code_change(tmp_project: Path) -> None:
     payload = {
         "tool_name": "Edit",
         "tool_input": {
-            "file_path": str(tmp_project / "lib" / "thing.py"),
+            "file_path": str(tmp_project / "cos_lib" / "thing.py"),
             "old_string": "_THRESHOLD = 1.0\n",
             "new_string": "_THRESHOLD = 5.0\n",
         },

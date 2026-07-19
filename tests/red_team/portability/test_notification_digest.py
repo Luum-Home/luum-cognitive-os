@@ -1,5 +1,5 @@
 # SCOPE: os-only
-"""Portability proof for lib/notification_digest.py."""
+"""Portability proof for cos_lib/notification_digest.py."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-ARTIFACT = REPO_ROOT / "lib/notification_digest.py"
+ARTIFACT = REPO_ROOT / "cos_lib/notification_digest.py"
 
 
 def test_notification_digest_imports_from_arbitrary_project_root(tmp_path: Path, monkeypatch) -> None:

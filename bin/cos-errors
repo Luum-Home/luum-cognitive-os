@@ -30,8 +30,8 @@ def _add_lib_to_path():
 
 _add_lib_to_path()
 
-from lib.error_classifier import classify_jsonl, default_errors_path  # noqa: E402
-from lib.error_insights import summarize  # noqa: E402
+from cos_lib.error_classifier import classify_jsonl, default_errors_path  # noqa: E402
+from cos_lib.error_insights import summarize  # noqa: E402
 
 
 def _parse_window(value: str) -> int:

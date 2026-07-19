@@ -39,7 +39,7 @@ pytestmark = pytest.mark.unit
 def tmp_project(tmp_path: Path) -> Path:
     """Minimal project layout."""
     (tmp_path / ".claude" / "plugins").mkdir(parents=True)
-    (tmp_path / "lib").mkdir()
+    (tmp_path / "cos_lib").mkdir()
     (tmp_path / ".cognitive-os" / "metrics").mkdir(parents=True)
     return tmp_path
 
@@ -193,7 +193,7 @@ def test_not_stale_recent(tmp_project: Path) -> None:
 
 def test_reinvention_name_match(tmp_project: Path) -> None:
     # Create a lib file
-    (tmp_project / "lib" / "context_manager.py").write_text("# our lib")
+    (tmp_project / "cos_lib" / "context_manager.py").write_text("# our lib")
 
     # Create a matching plugin file
     plugin_dir = tmp_project / ".claude" / "plugins" / "hermes-agent"

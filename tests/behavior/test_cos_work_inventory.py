@@ -63,7 +63,7 @@ def test_inventory_reports_dirty_worktree_and_untracked_files(repo: Path) -> Non
 def test_inventory_reports_preserve_branch_manifest_and_integration_checklist(repo: Path) -> None:
     run(["git", "checkout", "-b", "codex/preserve-mixed"], repo)
     commit_file(repo, "docs/note.md", "note\n", "docs change")
-    commit_file(repo, "lib/tool.py", "print('x')\n", "lib change")
+    commit_file(repo, "cos_lib/tool.py", "print('x')\n", "lib change")
     run(["git", "checkout", "main"], repo)
 
     payload = inventory(repo)

@@ -14,7 +14,7 @@ def injector():
 # ── Search permission by task type ──────────────────────────────────────────
 
 def test_implementation_no_search_permission(injector):
-    ctx = injector.prepare_context("Implement login endpoint in lib/auth.py", "implementation")
+    ctx = injector.prepare_context("Implement login endpoint in cos_lib/auth.py", "implementation")
     assert ctx["search_permission"] is False
 
 
@@ -24,17 +24,17 @@ def test_research_has_search_permission(injector):
 
 
 def test_debugging_has_search_permission(injector):
-    ctx = injector.prepare_context("Fix auth bug in lib/auth.py", "debugging")
+    ctx = injector.prepare_context("Fix auth bug in cos_lib/auth.py", "debugging")
     assert ctx["search_permission"] is True
 
 
 def test_review_no_search_permission(injector):
-    ctx = injector.prepare_context("Review lib/auth.py for security issues", "review")
+    ctx = injector.prepare_context("Review cos_lib/auth.py for security issues", "review")
     assert ctx["search_permission"] is False
 
 
 def test_documentation_no_search_permission(injector):
-    ctx = injector.prepare_context("Document lib/auth.py", "documentation")
+    ctx = injector.prepare_context("Document cos_lib/auth.py", "documentation")
     assert ctx["search_permission"] is False
 
 
@@ -64,7 +64,7 @@ def test_unknown_task_type_uses_default(injector):
 def test_format_context_block_structure(injector):
     ctx = {
         "engram_results": [],
-        "file_hints": ["lib/auth.py"],
+        "file_hints": ["cos_lib/auth.py"],
         "decisions": [{"title": "Use JWT", "type": "decision", "summary": "stateless auth"}],
         "token_budget": 500,
         "search_permission": False,
@@ -72,7 +72,7 @@ def test_format_context_block_structure(injector):
     block = injector.format_context_block(ctx)
     assert "CONTEXT (from orchestrator):" in block
     assert "SEARCH PERMISSION:" in block
-    assert "lib/auth.py" in block
+    assert "cos_lib/auth.py" in block
     assert "Use JWT" in block
 
 
@@ -142,15 +142,15 @@ def test_context_truncation(injector):
 
 def test_file_hints_extracted(injector):
     with patch.object(injector, "_search_engram", return_value=[]):
-        ctx = injector.prepare_context("Fix auth bug in lib/auth.py and update tests/auth_test.py", "implementation")
-    assert "lib/auth.py" in ctx["file_hints"]
+        ctx = injector.prepare_context("Fix auth bug in cos_lib/auth.py and update tests/auth_test.py", "implementation")
+    assert "cos_lib/auth.py" in ctx["file_hints"]
     assert "tests/auth_test.py" in ctx["file_hints"]
 
 
 def test_file_hints_no_duplicates(injector):
     with patch.object(injector, "_search_engram", return_value=[]):
-        ctx = injector.prepare_context("Edit lib/auth.py then review lib/auth.py again", "review")
-    assert ctx["file_hints"].count("lib/auth.py") == 1
+        ctx = injector.prepare_context("Edit cos_lib/auth.py then review cos_lib/auth.py again", "review")
+    assert ctx["file_hints"].count("cos_lib/auth.py") == 1
 
 
 def test_file_hints_empty_when_no_paths(injector):
@@ -164,7 +164,7 @@ def test_file_hints_empty_when_no_paths(injector):
 def test_prepare_context_resilient(injector):
     """Should not crash if Engram is unavailable."""
     with patch.object(injector, "_search_engram", return_value=[]):
-        ctx = injector.prepare_context("Fix auth bug in lib/auth.py", "debugging")
+        ctx = injector.prepare_context("Fix auth bug in cos_lib/auth.py", "debugging")
     assert "search_permission" in ctx
     assert "token_budget" in ctx
     assert "file_hints" in ctx

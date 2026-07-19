@@ -23,8 +23,8 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 
 class TestImportPaths:
     def test_importable_from_lib_symlink(self):
-        lib_path = REPO_ROOT / "lib" / "merge_rollback.py"
-        assert lib_path.exists(), f"Symlink missing: {lib_path}"
+        lib_path = REPO_ROOT / "cos_lib" / "merge_rollback.py"
+        assert lib_path.exists(), f"Module missing: {lib_path}"
 
         sys.path.insert(0, str(REPO_ROOT))
         import importlib

@@ -231,9 +231,9 @@ def test_local_lib_resolution_uses_install_meta_source_for_consumer_script(
     source = tmp_path / "source-os"
     (consumer / "scripts").mkdir(parents=True)
     (consumer / ".cognitive-os").mkdir(parents=True)
-    (source / "lib").mkdir(parents=True)
+    (source / "cos_lib").mkdir(parents=True)
     (consumer / ".cognitive-os" / "install-meta.json").write_text(json.dumps({"source": str(source)}))
-    (source / "lib" / "engram_client.py").write_text("def search_observations(*args, **kwargs): return []\n")
+    (source / "cos_lib" / "engram_client.py").write_text("def search_observations(*args, **kwargs): return []\n")
 
     monkeypatch.setattr(cos_session_backlog, "__file__", str(consumer / "scripts" / "cos_session_backlog.py"))
     monkeypatch.setattr(sys, "path", [])
@@ -250,8 +250,8 @@ def test_local_lib_resolution_preserves_source_repo_usage(
     """Source-repo execution still imports lib from the source repo itself."""
     source = tmp_path / "source-os"
     (source / "scripts").mkdir(parents=True)
-    (source / "lib").mkdir(parents=True)
-    (source / "lib" / "engram_client.py").write_text("def search_observations(*args, **kwargs): return []\n")
+    (source / "cos_lib").mkdir(parents=True)
+    (source / "cos_lib" / "engram_client.py").write_text("def search_observations(*args, **kwargs): return []\n")
 
     monkeypatch.setattr(cos_session_backlog, "__file__", str(source / "scripts" / "cos_session_backlog.py"))
     monkeypatch.setattr(sys, "path", [])

@@ -25,7 +25,7 @@ def test_report_blocks_invalid_scope_and_missing_both_proof(tmp_path: Path) -> N
     hook = tmp_path / "hooks" / "portable.sh"
     hook.parent.mkdir(parents=True)
     hook.write_text("#!/usr/bin/env bash\n# SCOPE: both\necho ok\n", encoding="utf-8")
-    bad = tmp_path / "lib" / "bad.py"
+    bad = tmp_path / "cos_lib" / "bad.py"
     bad.parent.mkdir(parents=True)
     bad.write_text("# SCOPE: OS\n", encoding="utf-8")
 
