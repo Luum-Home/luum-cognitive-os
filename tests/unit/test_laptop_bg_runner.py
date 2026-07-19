@@ -51,7 +51,7 @@ def test_background_command_writes_log_and_pid(tmp_path: Path) -> None:
     assert isinstance(payload["pid"], int)
     log = Path(payload["log"])
     for _ in range(30):
-        if log.exists() and "bg-ok" in log.read_text(errors="replace"):
+        if log.exists() and "exit_code=" in log.read_text(errors="replace"):
             break
         time.sleep(0.1)
     log_text = log.read_text(errors="replace")

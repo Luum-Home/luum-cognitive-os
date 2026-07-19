@@ -25678,7 +25678,7 @@ primitives:
   distribution: maintainer
   consumer_accessibility: lifecycle-declared-maintainer
   governance_class: runtime-transport
-  risk_class: medium
+  risk_class: advisory
   supported_harnesses:
   - codex
   - claude
