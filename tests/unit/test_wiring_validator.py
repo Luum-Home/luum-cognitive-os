@@ -21,7 +21,7 @@ def mock_project(tmp_path: Path) -> Path:
     (hooks / "_lib-helper.sh").write_text("#!/usr/bin/env bash\n# internal")
 
     # lib/
-    lib = tmp_path / "lib"
+    lib = tmp_path / "cos_lib"
     lib.mkdir()
     (lib / "imported_lib.py").write_text("def foo(): pass")
     (lib / "orphan_lib.py").write_text("def bar(): pass")

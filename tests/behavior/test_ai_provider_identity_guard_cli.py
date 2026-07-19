@@ -12,16 +12,16 @@ def _run(cmd: list[str], cwd: Path, *, env: dict | None = None) -> subprocess.Co
 
 
 def _install_guard_fixture(repo: Path) -> None:
-    (repo / "lib").mkdir()
+    (repo / "cos_lib").mkdir()
     (repo / "scripts").mkdir()
     (repo / "manifests").mkdir()
     (repo / ".githooks").mkdir()
-    shutil.copy2(ROOT / "lib" / "ai_provider_identity_guard.py", repo / "lib" / "ai_provider_identity_guard.py")
+    shutil.copy2(ROOT / "cos_lib" / "ai_provider_identity_guard.py", repo / "cos_lib" / "ai_provider_identity_guard.py")
     shutil.copy2(ROOT / "scripts" / "ai-provider-identity-guard", repo / "scripts" / "ai-provider-identity-guard")
     shutil.copy2(ROOT / "manifests" / "ai-provider-identity-policy.yaml", repo / "manifests" / "ai-provider-identity-policy.yaml")
     shutil.copy2(ROOT / ".githooks" / "commit-msg", repo / ".githooks" / "commit-msg")
     shutil.copy2(ROOT / ".githooks" / "pre-commit", repo / ".githooks" / "pre-commit")
-    (repo / "lib" / "__init__.py").write_text("\n", encoding="utf-8")
+    (repo / "cos_lib" / "__init__.py").write_text("\n", encoding="utf-8")
     (repo / "scripts" / "cos-dependency-adoption-gate").write_text("#!/usr/bin/env bash\nexit 0\n", encoding="utf-8")
     (repo / "scripts" / "cos-dependency-adoption-gate").chmod(0o755)
 

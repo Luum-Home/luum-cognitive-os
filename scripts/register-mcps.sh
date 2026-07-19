@@ -200,11 +200,15 @@ get_mcps_json() {
   # Uses COS_MANIFEST_PATH env override so tests can inject a scratch manifest.
   "$PYTHON_BIN" - <<PYEOF
 import sys, json, os
+sys.path.insert(0, '${PROJECT_ROOT}')
 sys.path.insert(0, '${PROJECT_ROOT}/lib')
 # Honor COS_MANIFEST_PATH env override (set by tests)
 manifest_path = os.environ.get('COS_MANIFEST_PATH')
 try:
-    from manifest_loader import get_mcps_for_profile, ManifestError
+    try:
+        from cos_lib.manifest_loader import get_mcps_for_profile, ManifestError
+    except ModuleNotFoundError:
+        from manifest_loader import get_mcps_for_profile, ManifestError
     mcps = get_mcps_for_profile('${PROFILE}', path=manifest_path if manifest_path else None)
     print(json.dumps(mcps))
 except ManifestError as e:

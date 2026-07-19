@@ -18,7 +18,7 @@ This contract defines how Cognitive OS protects concurrent agent work in the cor
 | `worktree triage doctor` | `scripts/cos-worktree-triage.sh` | Compare one linked worktree to a target branch, identify already-applied vs still-to-port commits, surface dirty/stash blockers, and mark removal safe only after proof. |
 | `approval ledger` | `scripts/approval_ledger.py` | Record high-risk approvals with verification and rollback evidence. |
 | `resource lease` | `scripts/resource_lease.py` | Provide named, expiring cooperative leases for critical domains. |
-| `task claim ledger` | `scripts/claim_task.py` + `lib/task_claim_ledger.py` | Acquire an expiring task-level claim before concurrent agents start the same logical work; records `task_id`, `session_id`, `agent_id`, `scope`, `expected_files`, and fingerprint. |
+| `task claim ledger` | `scripts/claim_task.py` + `cos_lib/task_claim_ledger.py` | Acquire an expiring task-level claim before concurrent agents start the same logical work; records `task_id`, `session_id`, `agent_id`, `scope`, `expected_files`, and fingerprint. |
 | `agent work ledger` | `scripts/agent_work_ledger.py` | Record started/completed/aborted work scopes across agents. |
 | `cross-session reconciler` | `scripts/cross_session_reconciler.py` | Merge runtime safety state into one recovery report. |
 | `session filesystem reaper` | `hooks/_lib/session-fs-reap.sh` + `lib/session_lifecycle.py` | Archive stale clean session directories and delete only archived sessions beyond retention. |

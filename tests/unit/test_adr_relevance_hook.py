@@ -119,9 +119,9 @@ class TestSyntheticAdrMatch:
             adr_content, encoding="utf-8"
         )
         # Symlink lib/ from real project so imports work
-        lib_link = tmp_path / "lib"
+        lib_link = tmp_path / "cos_lib"
         if not lib_link.exists():
-            lib_link.symlink_to(PROJECT_ROOT / "lib")
+            lib_link.symlink_to(PROJECT_ROOT / "cos_lib")
         return tmp_path
 
     def test_rejected_surface_prompt_emits_additional_context(self, tmp_path: Path) -> None:
@@ -181,9 +181,9 @@ class TestMetricsLog:
     def test_metrics_file_written_on_run(self, tmp_path: Path) -> None:
         """Hook writes to .cognitive-os/metrics/adr-suggestion.jsonl."""
         # Symlink lib/ so imports work
-        lib_link = tmp_path / "lib"
+        lib_link = tmp_path / "cos_lib"
         if not lib_link.exists():
-            lib_link.symlink_to(PROJECT_ROOT / "lib")
+            lib_link.symlink_to(PROJECT_ROOT / "cos_lib")
 
         # Create a minimal docs/02-Decisions/adrs dir
         adrs_dir = tmp_path / "docs" / "02-Decisions" / "adrs"

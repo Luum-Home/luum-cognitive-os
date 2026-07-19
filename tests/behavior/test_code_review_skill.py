@@ -219,8 +219,8 @@ class TestLibraryExists:
     """Verify the supporting library exists."""
 
     def test_code_reviewer_module_exists(self):
-        lib_path = PROJECT_ROOT / "lib" / "code_reviewer.py"
-        assert lib_path.exists(), "lib/code_reviewer.py must exist"
+        lib_path = PROJECT_ROOT / "cos_lib" / "code_reviewer.py"
+        assert lib_path.exists(), "cos_lib/code_reviewer.py must exist"
 
     def test_code_reviewer_importable(self):
         from cos_lib.code_reviewer import CodeReviewer, ReviewFinding, ReviewReport

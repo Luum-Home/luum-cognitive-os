@@ -32,7 +32,7 @@ from cos_lib.tool_adoption_evaluator import (
 @pytest.fixture()
 def evaluator(tmp_path: Path) -> ToolAdoptionEvaluator:
     """Evaluator pointing at a temp dir with a minimal lib/ skeleton."""
-    lib_dir = tmp_path / "lib"
+    lib_dir = tmp_path / "cos_lib"
     lib_dir.mkdir()
     (lib_dir / "rate_limiter.py").write_text("# rate limiter")
     (lib_dir / "cost_dashboard.py").write_text("# cost dashboard")

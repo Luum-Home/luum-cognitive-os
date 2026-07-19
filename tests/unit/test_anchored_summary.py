@@ -27,7 +27,7 @@ pytestmark = [
 # Conditional import: skip all tests if module not yet implemented
 # ---------------------------------------------------------------------------
 
-_MODULE_PATH = Path(__file__).resolve().parent.parent.parent / "lib" / "anchored_summary.py"
+_MODULE_PATH = Path(__file__).resolve().parent.parent.parent / "cos_lib" / "anchored_summary.py"
 _MODULE_EXISTS = _MODULE_PATH.exists()
 
 _SKIP_REASON = (

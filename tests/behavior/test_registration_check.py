@@ -62,8 +62,8 @@ def _make_os_env(cognitive_os_env: dict) -> dict:
 
     # Copy lib/component_registry.py from the real project so the hook can import it
     import shutil
-    real_lib = Path(__file__).resolve().parent.parent.parent / "lib" / "component_registry.py"
-    lib_dir = project_dir / "lib"
+    real_lib = Path(__file__).resolve().parent.parent.parent / "cos_lib" / "component_registry.py"
+    lib_dir = project_dir / "cos_lib"
     lib_dir.mkdir(parents=True, exist_ok=True)
     shutil.copy(real_lib, lib_dir / "component_registry.py")
 

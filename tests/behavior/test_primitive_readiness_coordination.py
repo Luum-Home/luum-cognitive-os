@@ -114,7 +114,7 @@ def test_docs_connect_task_claim_primitive_to_primitive_readiness_workflow() -> 
 
     assert "task claim ledger" in contract
     assert "scripts/claim_task.py" in contract
-    assert "lib/task_claim_ledger.py" in contract
+    assert "cos_lib/task_claim_ledger.py" in contract
     assert "first live claim win" in contract
 
     assert "## Coordination preflight" in plan

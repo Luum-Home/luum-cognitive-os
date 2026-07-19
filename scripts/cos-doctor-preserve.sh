@@ -114,7 +114,7 @@ def category_for(path: str) -> str:
         return "hooks"
     if path.startswith("scripts/"):
         return "scripts"
-    if path.startswith("lib/"):
+    if path.startswith(("cos_lib/", "lib/")):
         return "lib"
     if path.startswith("packages/"):
         return "packages"

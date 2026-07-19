@@ -209,7 +209,7 @@ class TestNoViolations:
             [
                 "grep", "-rn", "Author:",
                 "--include=*.py",
-                str(PROJECT_ROOT / "lib"),
+                str(PROJECT_ROOT / "cos_lib"),
             ],
             capture_output=True,
             text=True,

@@ -34,7 +34,7 @@ from cos_lib.portability_proof_paths import paired_candidates, suggested_test_pa
 
 SCHEMA_VERSION = "scope-projection-audit/v1"
 VALID_SCOPES = {"os-only", "project", "both"}
-SOURCE_ROOTS = ("hooks", "scripts", "lib", "skills", "rules", "templates")
+SOURCE_ROOTS = ("hooks", "scripts", "cos_lib", "lib", "skills", "rules", "templates")
 DEFAULT_JSON = Path(".cognitive-os/reports/scope-projection-audit.json")
 DEFAULT_MD = Path(".cognitive-os/reports/scope-projection-audit.md")
 SCOPE_RE = re.compile(r"\bSCOPE:\s*([A-Za-z0-9_-]+)")
