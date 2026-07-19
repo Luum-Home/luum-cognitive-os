@@ -11,7 +11,7 @@ REPO = Path(__file__).resolve().parents[2]
 @pytest.mark.contract
 def test_publication_safety_contract_files_exist() -> None:
     for rel in [
-        "lib/publication_safety.py",
+        "cos_lib/publication_safety.py",
         "scripts/cos-publication-safety",
         "hooks/publication-safety.sh",
         "manifests/publication-safety.yaml",
@@ -38,7 +38,7 @@ def test_publication_safety_core_does_not_hardcode_harness_paths() -> None:
     text = "\n".join(
         (REPO / rel).read_text(encoding="utf-8")
         for rel in [
-            "lib/publication_safety.py",
+            "cos_lib/publication_safety.py",
             "scripts/cos-publication-safety",
             "hooks/publication-safety.sh",
             "manifests/publication-safety.yaml",

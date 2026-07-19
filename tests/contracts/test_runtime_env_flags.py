@@ -56,7 +56,7 @@ def test_cos_skip_dotenv_is_public_contract() -> None:
     assert flag["risk_level"] == "medium"
     assert flag["bypasses_safety_primitive"] is False
     assert "scripts/smoke-qwen-fallback.sh" in flag["owner_files"]
-    assert "lib/qwen_provider.py" in flag["owner_files"]
+    assert "cos_lib/qwen_provider.py" in flag["owner_files"]
 
 
 def test_cos_codex_exec_model_is_public_provider_smoke_contract() -> None:

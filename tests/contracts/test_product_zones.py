@@ -59,7 +59,7 @@ def test_required_product_surfaces_are_classified():
         "pkg/hook": "core",
         "internal/validator": "core",
         "internal/provider": "compatibility",
-        "lib/compatibility_layer.py": "compatibility",
+        "cos_lib/compatibility_layer.py": "compatibility",
         "skills": "extensions",
         "rules": "extensions",
         "squads": "experimental",
@@ -84,7 +84,7 @@ def test_root_guardrails_cover_major_product_surfaces():
 
     expected_roots = {
         "hooks": "core",
-        "lib": "core",
+        "cos_lib": "core",
         "scripts": "core",
         "cmd/cos": "core",
         "internal": "compatibility",

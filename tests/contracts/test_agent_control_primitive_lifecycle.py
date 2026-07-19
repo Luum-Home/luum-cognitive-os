@@ -106,7 +106,7 @@ def test_lifecycle_validator_accepts_agent_control_transition_types() -> None:
         "governance_class": "runtime-safety",
         "risk_class": "advisory",
         "supported_harnesses": ["claude", "codex"],
-        "projection_targets": ["lib/example.py"],
+        "projection_targets": ["cos_lib/example.py"],
         "evidence_commands": ["python3 -m pytest tests/contracts/test_agent_control_primitive_lifecycle.py -q"],
         "exit_behavior": "mixed",
         "metrics_file": ".cognitive-os/example.jsonl",

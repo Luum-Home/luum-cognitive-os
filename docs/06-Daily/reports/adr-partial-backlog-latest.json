@@ -1105,7 +1105,7 @@
         "scripts/verify_plan_claims.py",
         "scripts/verify-archived.sh",
         "scripts/orchestrator_claim_gate.py",
-        "lib/orchestrator_verify.py"
+        "cos_lib/orchestrator_verify.py"
       ],
       "implementation_status": "partial",
       "number": "105",
@@ -1175,10 +1175,10 @@
       "decision_status": "accepted",
       "follow_up_adr": "",
       "implementation_files": [
-        "lib/task_claim_ledger.py",
+        "cos_lib/task_claim_ledger.py",
         "hooks/agent-prelaunch.sh",
-        "lib/session_lifecycle.py",
-        "lib/merge_queue.py",
+        "cos_lib/session_lifecycle.py",
+        "cos_lib/merge_queue.py",
         "scripts/cos_coordination_status.py",
         "scripts/so-reaper.sh",
         "scripts/cos_work_inventory.py"
@@ -1237,8 +1237,8 @@
         "tests/unit/test_validation_capsule.py",
         "tests/behavior/test_cos_cleanup_preserved_wip.py",
         "scripts/derived_artifact_gate.py",
-        "lib/merge_queue.py",
-        "lib/validation_lanes.py"
+        "cos_lib/merge_queue.py",
+        "cos_lib/validation_lanes.py"
       ],
       "implementation_status": "partial",
       "number": "121",
@@ -1798,7 +1798,7 @@
       "follow_up_adr": "",
       "implementation_files": [
         "scripts/cos-release-freeze",
-        "lib/release_freeze.py",
+        "cos_lib/release_freeze.py",
         "manifests/release-freeze.yaml",
         "tests/behavior/test_release_freeze.py"
       ],
@@ -2022,10 +2022,10 @@
       "follow_up_adr": "",
       "implementation_files": [
         "docs/",
-        "lib/engram_wave3_schema.py",
-        "lib/engram_obsidian_exporter.py",
-        "lib/engram_crystallizer.py",
-        "lib/engram_bundle_exporter.py",
+        "cos_lib/engram_wave3_schema.py",
+        "cos_lib/engram_obsidian_exporter.py",
+        "cos_lib/engram_crystallizer.py",
+        "cos_lib/engram_bundle_exporter.py",
         "manifests/capability-coverage.yaml"
       ],
       "implementation_status": "partial",
@@ -2132,7 +2132,7 @@
         "scripts/ai_budget_preflight.py",
         "scripts/ai-budget-preflight",
         "rules/language-token-economy.md",
-        "lib/taximeter.py",
+        "cos_lib/taximeter.py",
         "hooks/context-budget-meter.sh",
         "hooks/token-budget-monitor.sh",
         "hooks/subagent-budget-enforcer.sh",
@@ -2196,7 +2196,7 @@
       "decision_status": "accepted",
       "follow_up_adr": "",
       "implementation_files": [
-        "lib/capability_ceiling.py",
+        "cos_lib/capability_ceiling.py",
         "tests/unit/test_capability_ceiling.py"
       ],
       "implementation_status": "partial",
@@ -2267,7 +2267,7 @@
         "scripts/cos-improve-feedback",
         "scripts/cos-improve-context",
         "scripts/cos_improve.py",
-        "lib/improve_loop.py",
+        "cos_lib/improve_loop.py",
         "skills/self-improvement-loop/SKILL.md"
       ],
       "implementation_status": "partial",

@@ -82,7 +82,7 @@
       "kind": "documented_or_on_demand",
       "projection_targets": [
         "scripts/cos_agent_message.py",
-        "lib/agent_message_bus.py"
+        "cos_lib/agent_message_bus.py"
       ],
       "runtime_projection": false
     }
@@ -90,7 +90,7 @@
   "portable_id": "scripts/cos_agent_message.py",
   "projection_targets": [
     "scripts/cos_agent_message.py",
-    "lib/agent_message_bus.py"
+    "cos_lib/agent_message_bus.py"
   ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "scripts/cos_agent_message.py",

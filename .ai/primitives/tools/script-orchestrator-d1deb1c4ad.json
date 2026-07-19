@@ -58,7 +58,7 @@
       "projection_targets": [
         "scripts/orchestrator.py",
         "packages/agent-coordination/lib/agent_bus.py",
-        "lib/agent_bus_metrics.py"
+        "cos_lib/agent_bus_metrics.py"
       ],
       "runtime_projection": false
     }
@@ -157,7 +157,7 @@
       "projection_targets": [
         "scripts/orchestrator.py",
         "packages/agent-coordination/lib/agent_bus.py",
-        "lib/agent_bus_metrics.py"
+        "cos_lib/agent_bus_metrics.py"
       ],
       "runtime_projection": false
     }
@@ -166,7 +166,7 @@
   "projection_targets": [
     "scripts/orchestrator.py",
     "packages/agent-coordination/lib/agent_bus.py",
-    "lib/agent_bus_metrics.py"
+    "cos_lib/agent_bus_metrics.py"
   ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "scripts/orchestrator.py",

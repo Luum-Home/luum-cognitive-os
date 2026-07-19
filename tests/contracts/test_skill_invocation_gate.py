@@ -61,11 +61,11 @@ def _run_hook(workdir: Path, *, tool_name: str, tool_input: dict, env_extra=None
 @pytest.fixture
 def workdir(tmp_path: Path):
     # Provide a project-shaped tmp dir with a symlink to the real lib/skill_router
-    (tmp_path / "lib").mkdir()
-    real_router = REPO_ROOT / "lib" / "skill_router.py"
-    shutil.copy(real_router, tmp_path / "lib" / "skill_router.py")
+    (tmp_path / "cos_lib").mkdir()
+    real_router = REPO_ROOT / "cos_lib" / "skill_router.py"
+    shutil.copy(real_router, tmp_path / "cos_lib" / "skill_router.py")
     # Empty __init__ so `from cos_lib.skill_router import ...` works
-    (tmp_path / "lib" / "__init__.py").write_text("")
+    (tmp_path / "cos_lib" / "__init__.py").write_text("")
     return tmp_path
 
 

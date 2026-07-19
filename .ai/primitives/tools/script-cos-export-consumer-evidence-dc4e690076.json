@@ -58,7 +58,7 @@
       "projection_targets": [
         "scripts/cos-export-consumer-evidence",
         "scripts/cos_cross_instance_learning.py",
-        "lib/cross_instance_learning.py",
+        "cos_lib/cross_instance_learning.py",
         "manifests/external-adoption-evidence.yaml"
       ],
       "runtime_projection": false
@@ -156,7 +156,7 @@
       "projection_targets": [
         "scripts/cos-export-consumer-evidence",
         "scripts/cos_cross_instance_learning.py",
-        "lib/cross_instance_learning.py",
+        "cos_lib/cross_instance_learning.py",
         "manifests/external-adoption-evidence.yaml"
       ],
       "runtime_projection": false
@@ -166,7 +166,7 @@
   "projection_targets": [
     "scripts/cos-export-consumer-evidence",
     "scripts/cos_cross_instance_learning.py",
-    "lib/cross_instance_learning.py",
+    "cos_lib/cross_instance_learning.py",
     "manifests/external-adoption-evidence.yaml"
   ],
   "schema_version": "portable-ai-primitive.v1",

@@ -82,9 +82,9 @@
       "kind": "documented_or_on_demand",
       "projection_targets": [
         "scripts/cos-agent-daemon",
-        "lib/agent_daemon.py",
-        "lib/agent_lifecycle.py",
-        "lib/agent_team.py"
+        "cos_lib/agent_daemon.py",
+        "cos_lib/agent_lifecycle.py",
+        "cos_lib/agent_team.py"
       ],
       "runtime_projection": false
     }
@@ -92,9 +92,9 @@
   "portable_id": "scripts/cos-agent-daemon",
   "projection_targets": [
     "scripts/cos-agent-daemon",
-    "lib/agent_daemon.py",
-    "lib/agent_lifecycle.py",
-    "lib/agent_team.py"
+    "cos_lib/agent_daemon.py",
+    "cos_lib/agent_lifecycle.py",
+    "cos_lib/agent_team.py"
   ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "scripts/cos-agent-daemon",

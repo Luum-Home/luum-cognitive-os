@@ -27,7 +27,7 @@
     "lifecycle_state": "candidate",
     "maturity": "advisory",
     "owner_adr": "ADR-341",
-    "risk_class": "medium",
+    "risk_class": "advisory",
     "runtime_projection": false
   },
   "overlay_role": "generated-reference",

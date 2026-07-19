@@ -212,7 +212,7 @@ def test_audit_adrs_verifies_declared_implementation_files_for_accepted_implemen
         "title: Accepted Implemented Missing File\n"
         "status: accepted\n"
         "implementation_status: implemented\n"
-        "implementation_files:\n  - lib/missing.py\n"
+        "implementation_files:\n  - cos_lib/missing.py\n"
         "tier: maintainer\n"
         "tags: []\n"
         "---\n# ADR-188\n",
@@ -223,7 +223,7 @@ def test_audit_adrs_verifies_declared_implementation_files_for_accepted_implemen
     assert result["level"] == "FAIL"
     assert result["code"] == "STATUS_REALITY_MISMATCH"
     assert result["implementation_status"] == "implemented"
-    assert result["missing_files"] == ["lib/missing.py"]
+    assert result["missing_files"] == ["cos_lib/missing.py"]
 
 
 def test_audit_adrs_verifies_declared_implementation_files_for_partial_too(tmp_path: Path) -> None:

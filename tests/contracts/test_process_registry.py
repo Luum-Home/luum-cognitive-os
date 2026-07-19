@@ -1,4 +1,4 @@
-"""Contract tests for lib/process_registry.py — ADR-028 D1.B."""
+"""Contract tests for cos_lib/process_registry.py — ADR-028 D1.B."""
 from __future__ import annotations
 
 import json
