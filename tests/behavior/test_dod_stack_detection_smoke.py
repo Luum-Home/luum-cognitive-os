@@ -123,7 +123,7 @@ def test_smoke_unknown_stack_still_reports_base_dod_uncertainty(tmp_path: Path) 
         ("App.csproj", "<Project Sdk=\"Microsoft.NET.Sdk.Web\"></Project>\n", "src/server/Program.cs", "dotnet"),
         ("Gemfile", "source 'https://rubygems.org'\n", "app/api/users.rb", "ruby"),
         ("composer.json", "{\"require\":{}}\n", "src/api/users.php", "php"),
-        ("mix.exs", "defmodule Demo.MixProject do\nend\n", "lib/server/handler.ex", "elixir"),
+        ("mix.exs", "defmodule Demo.MixProject do\nend\n", "cos_lib/server/handler.ex", "elixir"),
         ("deno.json", "{}\n", "src/server/main.ts", "deno"),
         ("Dockerfile", "FROM scratch\n", "src/server/main.py", "docker"),
         ("docker-compose.yml", "services: {}\n", "src/server/main.py", "docker-compose"),

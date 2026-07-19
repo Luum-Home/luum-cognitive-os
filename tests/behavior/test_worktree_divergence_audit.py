@@ -8,7 +8,7 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
-AUDIT = ROOT / "lib" / "worktree_audit.py"
+AUDIT = ROOT / "cos_lib" / "worktree_audit.py"
 pytestmark = pytest.mark.behavior
 
 

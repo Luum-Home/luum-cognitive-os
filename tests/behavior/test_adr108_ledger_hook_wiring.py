@@ -16,7 +16,6 @@ def _project(tmp_path: Path) -> Path:
     project = tmp_path / "project"
     project.mkdir()
     (project / "scripts").symlink_to(ROOT / "scripts", target_is_directory=True)
-    (project / "lib").symlink_to(ROOT / "lib", target_is_directory=True)
     (project / "cos_lib").symlink_to(ROOT / "cos_lib", target_is_directory=True)
     (project / "cognitive-os.yaml").write_text(
         "project:\n  phase: reconstruction\n"

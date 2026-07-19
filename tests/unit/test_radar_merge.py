@@ -71,7 +71,7 @@ ECOSYSTEM_WITH_ONE_ENTRY = textwrap.dedent("""\
     npx ccusage@latest --json
     ```
 
-    **Adoption notes**: We use this in lib/record_completion.py to read real token data.
+    **Adoption notes**: We use this in cos_lib/record_completion.py to read real token data.
 
     **Gotchas**: Requires ~/.claude/projects to be accessible.
 
@@ -203,7 +203,7 @@ class TestHumanFieldPreservation:
 
         new_text, _ = merge_into_doc(doc_text, [ev], "ecosystem-tools", "2026-04-24")
 
-        assert "lib/record_completion.py" in new_text, "Adoption notes referencing lib/ must be preserved"
+        assert "cos_lib/record_completion.py" in new_text, "Adoption notes referencing lib/ must be preserved"
 
     def test_gotchas_preserved(self):
         ev = _make_eval("ryoppippi/ccusage", stars=9999)
@@ -335,7 +335,7 @@ class TestClassificationShift:
         )
 
         assert "npx ccusage@latest" in new_blk, "Usage examples must travel with moved entry"
-        assert "lib/record_completion.py" in new_blk, "Adoption notes must travel with moved entry"
+        assert "cos_lib/record_completion.py" in new_blk, "Adoption notes must travel with moved entry"
 
     def test_move_prepends_moved_comment(self):
         ev = _make_eval("ryoppippi/ccusage", classification="REJECT", license="AGPL")

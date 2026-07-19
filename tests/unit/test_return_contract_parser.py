@@ -234,7 +234,7 @@ RESULT:
   status: completed
   summary: Implemented bounded agent digest rendering.
   files_created: tests/unit/test_format_converter.py
-  files_modified: lib/notification_digest.py, lib/return_contract_parser.py
+  files_modified: cos_lib/notification_digest.py, cos_lib/return_contract_parser.py
   tests: 12 passed, 0 failed, 1 skipped
   blockers: none
 
@@ -244,7 +244,7 @@ TRUST_REPORT: SCORE=82 STATUS=MEDIUM EVIDENCE=4 UNCERTAINTIES=1
     assert parsed is not None
     assert parsed["status"] == "completed"
     assert parsed["files_created"] == ["tests/unit/test_format_converter.py"]
-    assert "lib/notification_digest.py" in parsed["files_modified"]
+    assert "cos_lib/notification_digest.py" in parsed["files_modified"]
     assert parsed["tests"] == {"passed": 12, "failed": 0, "xfail": 0, "skipped": 1}
     assert validate_return_contract(parsed) == []
     compact = format_compact_result(parsed)

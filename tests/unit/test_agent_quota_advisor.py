@@ -177,7 +177,7 @@ def _stage_project(tmp_path: Path) -> Path:
     metrics = proj / ".cognitive-os" / "metrics"
     metrics.mkdir(parents=True)
     # Link the repo's lib/ dir so the inline Python can import it.
-    (proj / "lib").symlink_to(REPO_ROOT / "lib")
+    (proj / "cos_lib").symlink_to(REPO_ROOT / "cos_lib")
     return metrics
 
 
@@ -256,7 +256,7 @@ def test_hook_survives_missing_metrics(tmp_path: Path) -> None:
     # Deliberately don't create metrics dir — hook must not crash.
     proj = tmp_path / "proj"
     proj.mkdir()
-    (proj / "lib").symlink_to(REPO_ROOT / "lib")
+    (proj / "cos_lib").symlink_to(REPO_ROOT / "cos_lib")
     env = os.environ.copy()
     env["CLAUDE_PROJECT_DIR"] = str(proj)
     result = subprocess.run(

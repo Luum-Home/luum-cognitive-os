@@ -22,7 +22,7 @@ import pytest
 # We need to mock sibling imports before importing singularity
 import sys
 
-_LIB_DIR = str(Path(__file__).resolve().parent.parent.parent / "lib")
+_LIB_DIR = str(Path(__file__).resolve().parent.parent.parent / "cos_lib")
 if _LIB_DIR not in sys.path:
     sys.path.insert(0, _LIB_DIR)
 

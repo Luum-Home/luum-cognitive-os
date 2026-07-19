@@ -42,7 +42,7 @@ checks:
 
 
 def test_manifest_forbidden_pattern_check_detects_direct_filter_repo_callsite(tmp_path: Path) -> None:
-    write(tmp_path / "lib" / "history_sanitization.py", "cmd = ['git', 'filter-repo']\n")
+    write(tmp_path / "cos_lib" / "history_sanitization.py", "cmd = ['git', 'filter-repo']\n")
     manifest = tmp_path / "manifest.yaml"
     write(manifest, r"""schema_version: postmortem-regression-audit/v1
 checks:

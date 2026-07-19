@@ -144,7 +144,7 @@ def _candidate_lib_roots(project_dir: Path) -> list[Path]:
 def ensure_local_lib_importable(project_dir: Path) -> None:
     """Put the repo that owns ``lib`` on sys.path for source and consumer runs."""
     for root in reversed(_candidate_lib_roots(project_dir)):
-        if (root / "lib" / "engram_client.py").exists():
+        if (root / "cos_lib" / "engram_client.py").exists() or (root / "lib" / "engram_client.py").exists():
             root_text = str(root)
             if root_text in sys.path:
                 sys.path.remove(root_text)

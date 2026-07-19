@@ -69,7 +69,7 @@ def test_current_repo_skill_router_retrieval_audit_passes() -> None:
 
 def test_blocks_optional_retrieval_stack_import_in_core_router(tmp_path: Path) -> None:
     repo = tmp_path / "repo"
-    write(repo / "lib" / "skill_router.py", "import langchain\n")
+    write(repo / "cos_lib" / "skill_router.py", "import langchain\n")
     write(repo / "scripts" / "skill-router-benchmark.py", "#!/usr/bin/env python3\n")
     manifest = repo / "manifest.yaml"
     write(manifest, minimal_manifest())
@@ -82,7 +82,7 @@ def test_blocks_optional_retrieval_stack_import_in_core_router(tmp_path: Path) -
 
 def test_blocks_missing_default_adapter(tmp_path: Path) -> None:
     repo = tmp_path / "repo"
-    write(repo / "lib" / "skill_router.py", "import re\n")
+    write(repo / "cos_lib" / "skill_router.py", "import re\n")
     write(repo / "scripts" / "skill-router-benchmark.py", "#!/usr/bin/env python3\n")
     manifest = repo / "manifest.yaml"
     write(manifest, minimal_manifest().replace("default: true", "default: false"))
@@ -95,7 +95,7 @@ def test_blocks_missing_default_adapter(tmp_path: Path) -> None:
 
 def test_blocks_manifest_without_false_positive_fixture(tmp_path: Path) -> None:
     repo = tmp_path / "repo"
-    write(repo / "lib" / "skill_router.py", "import re\n")
+    write(repo / "cos_lib" / "skill_router.py", "import re\n")
     write(repo / "scripts" / "skill-router-benchmark.py", "#!/usr/bin/env python3\n")
     manifest = repo / "manifest.yaml"
     write(

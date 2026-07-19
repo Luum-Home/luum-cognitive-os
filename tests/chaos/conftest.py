@@ -14,7 +14,7 @@ from pathlib import Path
 import pytest
 
 
-PROTECTED_DIRS = ("lib", "scripts", "hooks")
+PROTECTED_DIRS = ("cos_lib", "lib", "scripts", "hooks")
 IGNORED_PARTS = {"__pycache__"}
 IGNORED_SUFFIXES = {".pyc", ".pyo"}
 

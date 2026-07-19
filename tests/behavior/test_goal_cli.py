@@ -304,7 +304,7 @@ class TestGoalPauseResume:
         from cos_lib.goal_state import EvidencePacket
         ev = EvidencePacket(
             iteration=1,
-            files_changed=["lib/foo.py"],
+            files_changed=["cos_lib/foo.py"],
             commands_run=[],
             passing_checks=[],
             acceptance_coverage={},
@@ -418,7 +418,7 @@ class TestGoalEvaluate:
         evidence_file = tmp_path / "evidence.json"
         evidence_file.write_text(json.dumps({
             "iteration": 1,
-            "files_changed": ["lib/example.py"],
+            "files_changed": ["cos_lib/example.py"],
             "commands_run": [
                 {"command": "pytest tests/example.py", "exit_code": 0, "output_excerpt": "1 passed"}
             ],
