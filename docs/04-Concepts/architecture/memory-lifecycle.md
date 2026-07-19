@@ -97,18 +97,18 @@ That doctor creates an isolated scratch project and proves:
 | Purpose | Primitive | Output / Effect |
 |---|---|---|
 | Start Engram daemon when available | `hooks/engram-daemon-launcher.sh` | best-effort Engram HTTP daemon startup and runtime log |
-| Bootstrap project profile draft | `hooks/session-init.sh` + `hooks/_lib/session_init_helper.py` + `lib/project_profile_bootstrap.py` | during the first three sessions, writes `.cognitive-os/project-profile/draft.json` and `draft.md` with source-linked, sanitized signals |
+| Bootstrap project profile draft | `hooks/session-init.sh` + `hooks/_lib/session_init_helper.py` + `cos_lib/project_profile_bootstrap.py` | during the first three sessions, writes `.cognitive-os/project-profile/draft.json` and `draft.md` with source-linked, sanitized signals |
 | Resume incomplete tasks | `hooks/session-resume.sh` | marks verified tasks complete or tells the agent what needs relaunch |
-| Retrieve memory programmatically | `lib/memory_retriever.py` | hybrid ranked retrieval over Engram memory |
-| Talk to Engram from Python | `lib/engram_client.py` | machine-readable Engram CLI wrapper |
+| Retrieve memory programmatically | `cos_lib/memory_retriever.py` | hybrid ranked retrieval over Engram memory |
+| Talk to Engram from Python | `cos_lib/engram_client.py` | machine-readable Engram CLI wrapper |
 
 ## Protection Surfaces
 
 | Purpose | Primitive | Contract |
 |---|---|---|
-| Scan before user-facing saves | `lib/safe_engram.py` | blocks suspicious content before invoking Engram writes |
-| Detect memory threats | `lib/memory_scanner.py` | classifies prompt-injection, credential, and unsafe-memory patterns |
-| Build compact durable summaries | `lib/anchored_summarizer.py` | extracts decisions, files, task state, and next steps before compaction |
+| Scan before user-facing saves | `cos_lib/safe_engram.py` | blocks suspicious content before invoking Engram writes |
+| Detect memory threats | `cos_lib/memory_scanner.py` | classifies prompt-injection, credential, and unsafe-memory patterns |
+| Build compact durable summaries | `cos_lib/anchored_summarizer.py` | extracts decisions, files, task state, and next steps before compaction |
 
 ## Harness Behavior
 
@@ -156,7 +156,7 @@ are proven.
 
 Memory bootstrap starts locally before it becomes durable memory. During the
 first three valid sessions, `session-init.sh` calls the consolidated
-`session_init_helper.py`, which invokes `lib/project_profile_bootstrap.py`. The
+`session_init_helper.py`, which invokes `cos_lib/project_profile_bootstrap.py`. The
 module writes:
 
 - `.cognitive-os/project-profile/draft.json`

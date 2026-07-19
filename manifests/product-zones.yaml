@@ -150,7 +150,7 @@ root_guardrails:
   - root: hooks
     default_zone: core
     rule: "New hook runtime paths must either be kernel-critical or move into an installable extension package."
-  - root: lib
+  - root: cos_lib
     default_zone: core
     rule: "New Python runtime modules must document whether they are core contracts, compatibility adapters, or extension support."
   - root: scripts

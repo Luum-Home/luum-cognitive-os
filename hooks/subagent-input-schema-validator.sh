@@ -10,7 +10,7 @@ set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
-VALIDATOR="$PROJECT_DIR/lib/agent_input_validator.py"
+VALIDATOR="$PROJECT_DIR/cos_lib/agent_input_validator.py"
 METRICS="$PROJECT_DIR/.cognitive-os/metrics/subagent-input-schema-validator.jsonl"
 
 INPUT=$(cat)
@@ -38,7 +38,7 @@ import sys
 import datetime
 
 hook_json_path, project_dir, metrics_path = sys.argv[1], sys.argv[2], sys.argv[3]
-sys.path.insert(0, os.path.join(project_dir, 'lib'))
+sys.path.insert(0, os.path.join(project_dir, 'cos_lib'))
 
 from agent_input_validator import validate_input, format_escalation, _BLOCK_RE  # noqa: E402
 
