@@ -32,8 +32,8 @@ TEXT_SUFFIXES = {
     ".json",
 }
 BASELINE_ROOTS_BY_BUNDLE = {
-    "harness-events": ("lib",),
-    "history-rewrite": ("lib", "scripts"),
+    "harness-events": ("cos_lib",),
+    "history-rewrite": ("cos_lib", "scripts"),
     "destructive-git": ("hooks",),
     "work-inventory": ("scripts", "hooks"),
     "agent-service-session": ("packages/agent-service",),
