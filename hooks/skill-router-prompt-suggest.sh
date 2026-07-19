@@ -46,7 +46,7 @@ if [ -z "$prompt_text" ] || [ "${#prompt_text}" -lt 10 ]; then
 fi
 
 # Skip if router module is unavailable
-if [ ! -f "$_PROJECT_DIR/lib/skill_router.py" ]; then
+if [ ! -f "$_PROJECT_DIR/cos_lib/skill_router.py" ]; then
   exit 0
 fi
 
