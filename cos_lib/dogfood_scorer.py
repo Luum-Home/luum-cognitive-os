@@ -494,7 +494,7 @@ class DogfoodScorer:
         # its basename appears anywhere under hooks/, scripts/, lib/, rules/,
         # docs/, or the repo root. Bare basenames are a common ADR style.
         basename_index: set[str] = set()
-        for sub in ("hooks", "scripts", "lib", "rules", "docs"):
+        for sub in ("hooks", "scripts", "cos_lib", "lib", "rules", "docs"):
             d = self.repo / sub
             if d.is_dir():
                 for p in d.rglob("*"):

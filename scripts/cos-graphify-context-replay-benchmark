@@ -29,7 +29,7 @@ TEXT_SUFFIXES = {
     ".py", ".sh", ".bash", ".zsh", ".js", ".ts", ".tsx", ".jsx", ".go", ".rs", ".java", ".kt", ".rb", ".php", ".toml", ".json", ".yaml", ".yml", ".md",
 }
 BASELINE_ROOTS_BY_BUNDLE = {
-    "harness-events": ("lib",),
+    "harness-events": ("cos_lib",),
     "history-rewrite": ("cos_lib", "scripts"),
     "destructive-git": ("hooks",),
     "work-inventory": ("scripts", "hooks"),
