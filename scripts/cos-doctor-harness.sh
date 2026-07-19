@@ -232,10 +232,10 @@ check_adapter() {
   emit_adapter "$adapter" ok "driver=$driver_rel projection=$projection_rel"
 }
 
-check_adapter "claude-code" "scripts/_lib/settings-driver-claude-code.sh" ".claude/settings.json" "lib/harness_adapter/claude_code.py"
-check_adapter "codex"       "scripts/_lib/settings-driver-codex.sh"       ".codex/hooks.json"      "lib/harness_adapter/codex.py"
-check_adapter "bare-cli"    "scripts/_lib/settings-driver-bare.sh"        ".cognitive-os/cos-runner-hooks.json" "lib/harness_adapter/bare_cli.py"
-check_adapter "opencode"    "scripts/_lib/settings-driver-opencode.sh"    "opencode.json"          "lib/harness_adapter/opencode.py"
+check_adapter "claude-code" "scripts/_lib/settings-driver-claude-code.sh" ".claude/settings.json" "cos_lib/harness_adapter/claude_code.py"
+check_adapter "codex"       "scripts/_lib/settings-driver-codex.sh"       ".codex/hooks.json"      "cos_lib/harness_adapter/codex.py"
+check_adapter "bare-cli"    "scripts/_lib/settings-driver-bare.sh"        ".cognitive-os/cos-runner-hooks.json" "cos_lib/harness_adapter/bare_cli.py"
+check_adapter "opencode"    "scripts/_lib/settings-driver-opencode.sh"    "opencode.json"          "cos_lib/harness_adapter/opencode.py"
 
 if command -v python3 >/dev/null 2>&1; then emit_check ok "python3" "available"; else emit_check fail "python3" "missing"; fi
 if command -v git >/dev/null 2>&1; then emit_check ok "git" "available"; else emit_check warn "git" "missing or unavailable"; fi

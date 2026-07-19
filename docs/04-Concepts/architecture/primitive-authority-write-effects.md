@@ -24,7 +24,7 @@ Those facts answer “where is it visible?” They do not fully answer “what m
 | `manifests/shell-ci-projection.yaml` | Shell/CI command projection paths | Limits projected shell commands to canonical `.cognitive-os/scripts/cos/`, driver symlinks under `scripts/`, and generated CI workflow paths. |
 | `manifests/protected-config-write-policy.yaml` | Protected control-plane write globs | Blocks agent tool writes to hooks, rules, skills, agent settings, MCP config, and sensitive manifests unless explicitly approved. |
 | `manifests/primitive-coherence.yaml` | Cross-primitive ownership and write surfaces | Documents multi-writer constraints for known mutable surfaces. |
-| `lib/consumer_improvement_proposals.py` | Consumer-to-SO improvement exchange | Imports consumer evidence as review artifacts with `runtime_effect: none`; it must not mutate live hooks, rules, skills, manifests, Engram, or vault state. |
+| `cos_lib/consumer_improvement_proposals.py` | Consumer-to-SO improvement exchange | Imports consumer evidence as review artifacts with `runtime_effect: none`; it must not mutate live hooks, rules, skills, manifests, Engram, or vault state. |
 | `scripts/portable_ai_real_consumer_smoke.py` | `.ai` overlay consumer smoke | Projects into temporary consumer shadows and verifies registered consumer repositories remain unchanged. |
 
 ## Authority classes
