@@ -21,7 +21,12 @@ trap 'rm -rf "$TMP"' EXIT
 PROJ="$TMP/proj"
 METRICS="$PROJ/.cognitive-os/metrics"
 mkdir -p "$METRICS"
-ln -s "$ROOT/lib" "$PROJ/lib"
+if [ -d "$ROOT/cos_lib" ]; then
+  ln -s "$ROOT/cos_lib" "$PROJ/cos_lib"
+fi
+if [ -d "$ROOT/lib" ]; then
+  ln -s "$ROOT/lib" "$PROJ/lib"
+fi
 
 fail() {
   echo "SMOKE FAIL: $1" >&2

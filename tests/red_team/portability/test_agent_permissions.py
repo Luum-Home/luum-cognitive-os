@@ -1,5 +1,5 @@
 # SCOPE: os-only
-"""Portability proof for lib/agent_permissions.py."""
+"""Portability proof for cos_lib/agent_permissions.py."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-ARTIFACT = REPO_ROOT / "lib/agent_permissions.py"
+ARTIFACT = REPO_ROOT / "cos_lib/agent_permissions.py"
 
 
 def test_agent_permissions_imports_from_arbitrary_project_root(tmp_path: Path, monkeypatch) -> None:

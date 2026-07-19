@@ -121,7 +121,7 @@ def _run_hook(project_dir: Path, env: dict | None = None) -> subprocess.Complete
 def project_with_stale_index(tmp_path: Path) -> Path:
     """Project where .mtime exists but source files are newer."""
     lib = tmp_path / "lib"
-    cos_lib.mkdir()
+    lib.mkdir()
     py_file = lib / "sample.py"
     py_file.write_text("def foo(): pass\n")
 
@@ -152,7 +152,7 @@ def project_with_fresh_index(tmp_path: Path) -> Path:
     spec.loader.exec_module(gen)
 
     lib = tmp_path / "lib"
-    cos_lib.mkdir()
+    lib.mkdir()
     (lib / "sample.py").write_text("def foo(): pass\n")
     (tmp_path / "cognitive-os.yaml").write_text("project:\n  name: test\n")
 

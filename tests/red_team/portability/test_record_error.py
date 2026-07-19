@@ -1,5 +1,5 @@
 # SCOPE: os-only
-"""Portability proof for lib/record_error.py."""
+"""Portability proof for cos_lib/record_error.py."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-ARTIFACT = REPO_ROOT / "lib/record_error.py"
+ARTIFACT = REPO_ROOT / "cos_lib/record_error.py"
 
 
 def test_record_error_imports_from_arbitrary_project_root(tmp_path: Path, monkeypatch) -> None:

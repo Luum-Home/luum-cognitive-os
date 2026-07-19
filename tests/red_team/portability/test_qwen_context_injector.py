@@ -1,5 +1,5 @@
 # SCOPE: os-only
-"""Portability proof for lib/qwen_context_injector.py."""
+"""Portability proof for cos_lib/qwen_context_injector.py."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-ARTIFACT = REPO_ROOT / "lib/qwen_context_injector.py"
+ARTIFACT = REPO_ROOT / "cos_lib/qwen_context_injector.py"
 
 
 def test_qwen_context_injector_imports_from_arbitrary_project_root(tmp_path: Path, monkeypatch) -> None:

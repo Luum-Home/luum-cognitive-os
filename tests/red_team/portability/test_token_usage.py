@@ -1,5 +1,5 @@
 # SCOPE: os-only
-"""Portability proof for lib/token_usage.py."""
+"""Portability proof for cos_lib/token_usage.py."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-ARTIFACT = REPO_ROOT / "lib/token_usage.py"
+ARTIFACT = REPO_ROOT / "cos_lib/token_usage.py"
 
 
 def test_token_usage_artifact_exists() -> None:

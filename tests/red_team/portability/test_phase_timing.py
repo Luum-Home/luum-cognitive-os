@@ -1,5 +1,5 @@
 # SCOPE: os-only
-"""Portability proof for lib/phase_timing.py."""
+"""Portability proof for cos_lib/phase_timing.py."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-ARTIFACT = REPO_ROOT / "lib/phase_timing.py"
+ARTIFACT = REPO_ROOT / "cos_lib/phase_timing.py"
 
 
 def test_phase_timing_imports_from_arbitrary_project_root(tmp_path: Path, monkeypatch) -> None:
