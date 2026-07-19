@@ -28,6 +28,6 @@ PYTHON="${PYTHON:-python3}"
 exec "$PYTHON" -c "
 import sys
 sys.path.insert(0, '$REPO_ROOT')
-from lib.skill_runner import main_cli
+from cos_lib.skill_runner import main_cli
 sys.exit(main_cli())
 " "$@"

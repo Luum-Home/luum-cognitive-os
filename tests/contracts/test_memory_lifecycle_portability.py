@@ -104,7 +104,7 @@ def test_session_init_bootstraps_project_profile_under_codex_without_claude_env(
 ) -> None:
     project = tmp_path / "project"
     project.mkdir()
-    (project / "lib").symlink_to(PROJECT_ROOT / "lib")
+    (project / "cos_lib").symlink_to(PROJECT_ROOT / "cos_lib")
     (project / "go.mod").write_text("module example.com/profile\n")
     session_dir = project / ".cognitive-os" / "sessions" / "codex-session"
     session_dir.mkdir(parents=True)

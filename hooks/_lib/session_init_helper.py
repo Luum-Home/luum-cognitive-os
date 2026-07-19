@@ -40,6 +40,9 @@ def _emit_self_improve(flag_path: str) -> None:
 def _load_user_model(project_dir: str, session_dir: str) -> None:
     """Load user model from engram and write profile summary."""
     try:
+        _c_lib = os.path.join(project_dir, ".cognitive-os")
+        if os.path.isdir(os.path.join(_c_lib, "cos_lib")):
+            sys.path.insert(0, _c_lib)
         sys.path.insert(0, project_dir)
         from cos_lib.user_model import UserModel
 
@@ -55,6 +58,9 @@ def _load_user_model(project_dir: str, session_dir: str) -> None:
 def _maybe_generate_project_profile_draft(project_dir: str) -> None:
     """Generate a draft project profile during the early bootstrap window."""
     try:
+        _c_lib = os.path.join(project_dir, ".cognitive-os")
+        if os.path.isdir(os.path.join(_c_lib, "cos_lib")):
+            sys.path.insert(0, _c_lib)
         sys.path.insert(0, project_dir)
         from cos_lib.project_profile_bootstrap import write_project_profile_draft
 
@@ -66,6 +72,9 @@ def _maybe_generate_project_profile_draft(project_dir: str) -> None:
 def _check_work_queue(project_dir: str) -> None:
     """Check work queue for pending items from prior sessions."""
     try:
+        _c_lib = os.path.join(project_dir, ".cognitive-os")
+        if os.path.isdir(os.path.join(_c_lib, "cos_lib")):
+            sys.path.insert(0, _c_lib)
         sys.path.insert(0, project_dir)
         from cos_lib.work_queue import WorkQueue
 
