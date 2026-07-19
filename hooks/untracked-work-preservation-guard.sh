@@ -11,8 +11,8 @@ source "$(dirname "$0")/_lib/safe-jsonl.sh"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$(pwd)}}}"
 SOURCE_ROOT="${COS_SOURCE_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
-DELETE_INTENT_PY="$SOURCE_ROOT/lib/delete_intent.py"
-[ ! -f "$DELETE_INTENT_PY" ] && DELETE_INTENT_PY="$PROJECT_DIR/lib/delete_intent.py"
+DELETE_INTENT_PY="$SOURCE_ROOT/cos_lib/delete_intent.py"
+[ ! -f "$DELETE_INTENT_PY" ] && DELETE_INTENT_PY="$PROJECT_DIR/cos_lib/delete_intent.py"
 LOG_PATH="$PROJECT_DIR/.cognitive-os/metrics/untracked-delete-blocks.jsonl"
 
 INPUT=""

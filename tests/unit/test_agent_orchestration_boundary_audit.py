@@ -79,7 +79,7 @@ def test_audit_blocks_direct_optional_framework_import_in_core(tmp_path: Path) -
                     }
                 ],
                 "core_file_allowlist": ["cos_lib/agent_runtime.py"],
-                "unmanifested_core_file_scan": {"scopes": ["lib"], "filename_regex": "agent", "allowed_suffixes": [".py"]},
+                "unmanifested_core_file_scan": {"scopes": ["cos_lib"], "filename_regex": "agent", "allowed_suffixes": [".py"]},
                 "benchmark": {
                     "script": "scripts/bench.py",
                     "fixtures": [
@@ -164,7 +164,7 @@ def test_audit_blocks_unmanifested_orchestration_core_file(tmp_path: Path) -> No
                     }
                 ],
                 "core_file_allowlist": ["cos_lib/agent_runtime.py"],
-                "unmanifested_core_file_scan": {"scopes": ["lib"], "filename_regex": "agent", "allowed_suffixes": [".py"]},
+                "unmanifested_core_file_scan": {"scopes": ["cos_lib"], "filename_regex": "agent", "allowed_suffixes": [".py"]},
                 "benchmark": {
                     "script": "scripts/bench.py",
                     "fixtures": [
