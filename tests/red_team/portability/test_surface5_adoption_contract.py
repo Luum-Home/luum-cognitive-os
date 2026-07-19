@@ -1,5 +1,5 @@
 # SCOPE: os-only
-"""Portability proof for lib/surface5_adoption_contract.py."""
+"""Portability proof for cos_lib/surface5_adoption_contract.py."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-ARTIFACT = REPO_ROOT / "lib/surface5_adoption_contract.py"
+ARTIFACT = REPO_ROOT / "cos_lib/surface5_adoption_contract.py"
 
 
 def test_surface5_adoption_contract_imports_from_arbitrary_project_root(tmp_path: Path, monkeypatch) -> None:

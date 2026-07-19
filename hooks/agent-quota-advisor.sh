@@ -65,7 +65,7 @@ metrics = Path(sys.argv[1])
 # Walk up from metrics dir to find repo root (where lib/ lives).
 root = metrics.parent.parent if metrics.name == "metrics" else metrics
 for _ in range(4):
-    if (root / "lib" / "quota_pressure.py").exists():
+    if (root / "cos_lib" / "quota_pressure.py").exists() or (root / "lib" / "quota_pressure.py").exists():
         sys.path.insert(0, str(root))
         break
     root = root.parent

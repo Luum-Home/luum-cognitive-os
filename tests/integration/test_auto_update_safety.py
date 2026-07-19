@@ -163,9 +163,9 @@ def create_fake_cos_source(base_path: Path, version: str = "0.3.0") -> Path:
     # Minimal Python support library required by scripts/cos_init.py.
     # Keep the fake source realistic enough to exercise the installer rather
     # than failing before the safety path under test.
-    lib_dst = cos_src / "lib"
+    lib_dst = cos_src / "cos_lib"
     lib_dst.mkdir(exist_ok=True)
-    shutil.copy2(PROJECT_ROOT / "lib" / "script_io.py", lib_dst / "script_io.py")
+    shutil.copy2(PROJECT_ROOT / "cos_lib" / "script_io.py", lib_dst / "script_io.py")
 
     # .claude/settings.json (minimal)
     claude_dir = cos_src / ".claude"

@@ -1,5 +1,5 @@
 # SCOPE: os-only
-"""Portability proof for lib/handoff_envelope.py."""
+"""Portability proof for cos_lib/handoff_envelope.py."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-ARTIFACT = REPO_ROOT / "lib/handoff_envelope.py"
+ARTIFACT = REPO_ROOT / "cos_lib/handoff_envelope.py"
 
 
 def test_handoff_envelope_imports_from_arbitrary_project_root(tmp_path: Path, monkeypatch) -> None:

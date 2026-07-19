@@ -1,5 +1,5 @@
 # SCOPE: os-only
-"""Portability proof for lib/improve_loop.py."""
+"""Portability proof for cos_lib/improve_loop.py."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-ARTIFACT = REPO_ROOT / 'lib/improve_loop.py'
+ARTIFACT = REPO_ROOT / 'cos_lib/improve_loop.py'
 
 
 def test_improve_loop_artifact_exists() -> None:

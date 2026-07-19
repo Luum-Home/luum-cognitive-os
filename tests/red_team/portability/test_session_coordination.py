@@ -1,5 +1,5 @@
 # SCOPE: os-only
-"""Portability proof for lib/session_coordination.py."""
+"""Portability proof for cos_lib/session_coordination.py."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-ARTIFACT = REPO_ROOT / "lib/session_coordination.py"
+ARTIFACT = REPO_ROOT / "cos_lib/session_coordination.py"
 
 
 def test_session_coordination_imports_from_arbitrary_project_root(tmp_path: Path, monkeypatch) -> None:

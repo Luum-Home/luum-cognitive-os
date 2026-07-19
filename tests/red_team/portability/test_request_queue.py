@@ -1,5 +1,5 @@
 # SCOPE: os-only
-"""Portability proof for lib/request_queue.py."""
+"""Portability proof for cos_lib/request_queue.py."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-ARTIFACT = REPO_ROOT / "lib/request_queue.py"
+ARTIFACT = REPO_ROOT / "cos_lib/request_queue.py"
 
 
 def test_request_queue_imports_from_arbitrary_project_root(tmp_path: Path, monkeypatch) -> None:

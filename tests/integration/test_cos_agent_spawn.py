@@ -59,7 +59,7 @@ def _stub_runner_source() -> str:
 @pytest.fixture()
 def stub_lib(tmp_path: Path) -> Path:
     """Create a temporary lib/ directory with a stub agent_runner."""
-    lib_dir = tmp_path / "lib"
+    lib_dir = tmp_path / "cos_lib"
     lib_dir.mkdir()
     (lib_dir / "__init__.py").write_text("")
     (lib_dir / "agent_runner.py").write_text(_stub_runner_source())
