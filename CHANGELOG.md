@@ -5,6 +5,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.29.38] - 2026-07-19 — "cos-lib rename cleanup — aspirational audit"
+
+### Added
+- Added the `cos-patch-release` primitive for repeatable patch release preparation, validation, publishing, and diagnostics.
+
+### Validation
+- `scripts/cos-patch-release validate` is the required patch-release validation lane.
+
 ## [0.29.37] - 2026-07-19 — "cos-lib rename cleanup"
 
 ### Added
