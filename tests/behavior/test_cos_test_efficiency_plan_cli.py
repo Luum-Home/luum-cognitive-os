@@ -12,7 +12,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 @pytest.mark.behavior
 def test_cos_test_efficiency_plan_cli_outputs_commands() -> None:
     proc = subprocess.run(
-        [str(PROJECT_ROOT / "scripts/cos-test-efficiency-plan"), "--project-dir", str(PROJECT_ROOT), "--changed-file", "lib/dispatch.py", "--commands", "--include-final-laptop"],
+        [str(PROJECT_ROOT / "scripts/cos-test-efficiency-plan"), "--project-dir", str(PROJECT_ROOT), "--changed-file", "cos_lib/dispatch.py", "--commands", "--include-final-laptop"],
         capture_output=True,
         text=True,
         timeout=10,

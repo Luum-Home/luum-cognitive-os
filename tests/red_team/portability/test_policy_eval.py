@@ -1,5 +1,5 @@
 # SCOPE: os-only
-"""Portability proof for lib/policy_eval.py."""
+"""Portability proof for cos_lib/policy_eval.py."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-ARTIFACT = REPO_ROOT / "lib/policy_eval.py"
+ARTIFACT = REPO_ROOT / "cos_lib/policy_eval.py"
 
 
 def test_policy_eval_imports_from_arbitrary_project_root(tmp_path: Path, monkeypatch) -> None:

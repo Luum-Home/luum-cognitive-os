@@ -63,7 +63,7 @@ def test_detects_preserve_branch_without_manifest(repo: Path):
 def test_detects_mixed_scope_preserve_branch(repo: Path):
     run(["git", "checkout", "-b", "codex/preserve-mixed"], repo)
     commit_file(repo, "docs/note.md", "note\n", "docs change")
-    commit_file(repo, "lib/tool.py", "print('x')\n", "lib change")
+    commit_file(repo, "cos_lib/tool.py", "print('x')\n", "lib change")
     run(["git", "checkout", "main"], repo)
 
     payload = doctor_json(repo)

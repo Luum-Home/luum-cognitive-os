@@ -1,5 +1,5 @@
 # SCOPE: os-only
-"""Portability proof for lib/targeted_test_resolver.py."""
+"""Portability proof for cos_lib/targeted_test_resolver.py."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-ARTIFACT = REPO_ROOT / "lib/targeted_test_resolver.py"
+ARTIFACT = REPO_ROOT / "cos_lib/targeted_test_resolver.py"
 
 
 def test_targeted_test_resolver_imports_from_arbitrary_project_root(tmp_path: Path, monkeypatch) -> None:

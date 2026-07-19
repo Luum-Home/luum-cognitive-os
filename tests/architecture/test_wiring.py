@@ -72,6 +72,6 @@ def test_scripts_are_executable():
 def test_allowlists_exist():
     """Allowlist files exist to grandfather existing unwired components."""
     hook_allowlist = PROJECT_ROOT / "hooks" / "_lib" / "registration-allowlist.txt"
-    lib_allowlist = PROJECT_ROOT / "lib" / "_wiring-allowlist.txt"
+    lib_allowlist = PROJECT_ROOT / "cos_lib" / "_wiring-allowlist.txt"
     assert hook_allowlist.exists(), "hooks/_lib/registration-allowlist.txt is missing"
-    assert lib_allowlist.exists(), "lib/_wiring-allowlist.txt is missing"
+    assert lib_allowlist.exists(), "cos_lib/_wiring-allowlist.txt is missing"

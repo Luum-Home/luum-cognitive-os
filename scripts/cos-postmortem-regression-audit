@@ -80,16 +80,21 @@ def git_root(start: Path) -> Path:
 
 def iter_files(root: Path, scopes: Iterable[str], suffixes: tuple[str, ...]) -> Iterable[Path]:
     for scope in scopes:
-        path = root / scope
-        if path.is_file():
-            if path.suffix in suffixes:
-                yield path
-            continue
-        if not path.exists():
-            continue
-        for candidate in path.rglob("*"):
-            if candidate.is_file() and candidate.suffix in suffixes and ".git" not in candidate.parts:
-                yield candidate
+        candidates = [root / scope]
+        if scope == "lib" and not candidates[0].exists():
+            candidates = [root / "cos_lib"]
+        elif scope == "lib" and (root / "cos_lib").exists():
+            candidates.append(root / "cos_lib")
+        for path in candidates:
+            if path.is_file():
+                if path.suffix in suffixes:
+                    yield path
+                continue
+            if not path.exists():
+                continue
+            for candidate in path.rglob("*"):
+                if candidate.is_file() and candidate.suffix in suffixes and ".git" not in candidate.parts:
+                    yield candidate
 
 
 def finding(check: dict[str, Any], path: str | None = None, details: dict[str, Any] | None = None) -> Finding:

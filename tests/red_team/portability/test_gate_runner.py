@@ -26,8 +26,8 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 class TestImportPaths:
     def test_importable_from_lib_symlink(self):
         """lib/gate_runner must be importable (it is a symlink to the real module)."""
-        lib_path = REPO_ROOT / "lib" / "gate_runner.py"
-        assert lib_path.exists(), f"Symlink missing: {lib_path}"
+        lib_path = REPO_ROOT / "cos_lib" / "gate_runner.py"
+        assert lib_path.exists(), f"Module missing: {lib_path}"
         assert lib_path.is_symlink() or lib_path.is_file(), \
             f"Expected symlink or file at {lib_path}"
 

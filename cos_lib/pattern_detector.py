@@ -225,7 +225,9 @@ class PatternDetector:
     def _check_python_imports(self, project_dir: str) -> List[DetectedPattern]:
         """Check Python imports in lib/*.py for broken references."""
         patterns = []
-        lib_dir = os.path.join(project_dir, "lib")
+        lib_dir = os.path.join(project_dir, "cos_lib")
+        if not os.path.isdir(lib_dir):
+            lib_dir = os.path.join(project_dir, "lib")
         if not os.path.isdir(lib_dir):
             return patterns
 

@@ -17,9 +17,9 @@ def tmp_project(tmp_path, monkeypatch):
     monkeypatch.setenv("CLAUDE_PROJECT_DIR", str(tmp_path))
 
     # Create some source + test files
-    (tmp_path / "lib").mkdir()
-    (tmp_path / "lib" / "foo.py").write_text("x=1\n")
-    (tmp_path / "lib" / "unused.py").write_text("x=1\n")  # no tests
+    (tmp_path / "cos_lib").mkdir()
+    (tmp_path / "cos_lib" / "foo.py").write_text("x=1\n")
+    (tmp_path / "cos_lib" / "unused.py").write_text("x=1\n")  # no tests
 
     (tmp_path / "hooks").mkdir()
     (tmp_path / "hooks" / "bar.sh").write_text("#!/bin/bash\n")

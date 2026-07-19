@@ -19,11 +19,11 @@ pytestmark = pytest.mark.behavior
 # Setup for lib imports
 # ---------------------------------------------------------------------------
 
-_LIB_DIR = str(Path(__file__).resolve().parent.parent.parent / "lib")
+_LIB_DIR = str(Path(__file__).resolve().parent.parent.parent / "cos_lib")
 if _LIB_DIR not in sys.path:
     sys.path.insert(0, _LIB_DIR)
 
-from impact_analysis import (
+from cos_lib.impact_analysis import (
     ImpactReport,
     RiskLevel,
     analyze_impact,

@@ -1,5 +1,5 @@
 # SCOPE: os-only
-"""Portability proof for lib/model_router.py."""
+"""Portability proof for cos_lib/model_router.py."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-ARTIFACT = REPO_ROOT / "lib/model_router.py"
+ARTIFACT = REPO_ROOT / "cos_lib/model_router.py"
 
 
 def test_model_router_imports_from_arbitrary_project_root(tmp_path: Path, monkeypatch) -> None:

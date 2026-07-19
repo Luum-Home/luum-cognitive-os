@@ -52,7 +52,9 @@ class ReinventionGuard:
         self.project_root = Path(project_root).resolve()
         self.hermes_path = self.project_root / ".claude/plugins/hermes-agent"
         self.pi_path = self.project_root / ".claude/plugins/pi-mono"
-        self.lib_path = self.project_root / "lib"
+        self.lib_path = self.project_root / "cos_lib"
+        if not self.lib_path.exists():
+            self.lib_path = self.project_root / "lib"
         self.registry_path = (
             self.project_root / ".cognitive-os/adoption-registry.yaml"
         )

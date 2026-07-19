@@ -1,5 +1,5 @@
 # SCOPE: os-only
-"""Portability proof for lib/audit_id.py."""
+"""Portability proof for cos_lib/audit_id.py."""
 
 from __future__ import annotations
 

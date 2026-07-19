@@ -737,11 +737,11 @@ class TestStopHookFailClosed:
         store.save(goal)
 
         shutil.copytree(
-            ROOT / "lib",
-            tmp_path / "lib",
+            ROOT / "cos_lib",
+            tmp_path / "cos_lib",
             ignore=shutil.ignore_patterns("__pycache__", "*.pyc"),
         )
-        (tmp_path / "lib" / "goal_budget.py").write_text(
+        (tmp_path / "cos_lib" / "goal_budget.py").write_text(
             "def check_budget(goal, project_dir=None, store=None):\n"
             "    raise RuntimeError('simulated budget boom')\n",
             encoding="utf-8",

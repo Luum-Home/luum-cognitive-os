@@ -1,5 +1,5 @@
 # SCOPE: os-only
-"""Portability proof for lib/reinvention_guard.py."""
+"""Portability proof for cos_lib/reinvention_guard.py."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-ARTIFACT = REPO_ROOT / "lib/reinvention_guard.py"
+ARTIFACT = REPO_ROOT / "cos_lib/reinvention_guard.py"
 
 
 def test_reinvention_guard_imports_from_arbitrary_project_root(tmp_path: Path, monkeypatch) -> None:

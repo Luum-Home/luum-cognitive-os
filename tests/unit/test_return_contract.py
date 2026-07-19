@@ -18,7 +18,7 @@ Some agent prose here.
 RESULT:
   status: completed
   summary: Implemented the auth middleware and wrote unit tests.
-  files_created: lib/auth.py, tests/unit/test_auth.py
+  files_created: cos_lib/auth.py, tests/unit/test_auth.py
   files_modified: main.py, requirements.txt
   tests: 12 passed, 0 failed, 1 xfail
   discoveries: JWT secret must be at least 32 bytes
@@ -85,7 +85,7 @@ class TestExtractStructuredReturn:
         assert result is not None
         assert result["status"] == "completed"
         assert "auth middleware" in result["summary"]
-        assert "lib/auth.py" in result["files_created"]
+        assert "cos_lib/auth.py" in result["files_created"]
         assert "main.py" in result["files_modified"]
 
     def test_extract_no_block(self):
@@ -162,7 +162,7 @@ class TestFormatCompactSummary:
         structured = {
             "status": "completed",
             "summary": "Implemented the auth middleware.",
-            "files_created": ["lib/auth.py"],
+            "files_created": ["cos_lib/auth.py"],
             "files_modified": ["main.py"],
             "tests": {"passed": 12, "failed": 0, "xfail": 1},
             "discoveries": ["JWT secret must be 32+ bytes"],

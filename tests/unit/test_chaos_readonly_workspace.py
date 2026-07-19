@@ -17,7 +17,7 @@ def _load_conftest():
 
 def test_snapshot_restores_modified_production_file(tmp_path: Path) -> None:
     guard = _load_conftest()
-    target = tmp_path / "lib" / "example.py"
+    target = tmp_path / "cos_lib" / "example.py"
     target.parent.mkdir()
     target.write_text("original\n", encoding="utf-8")
     snapshot = guard.take_source_snapshot(tmp_path)
@@ -26,7 +26,7 @@ def test_snapshot_restores_modified_production_file(tmp_path: Path) -> None:
     mutations = guard.restore_source_mutations(tmp_path, snapshot)
 
     assert target.read_text(encoding="utf-8") == "original\n"
-    assert [(m.kind, m.path) for m in mutations] == [("modified-restored", "lib/example.py")]
+    assert [(m.kind, m.path) for m in mutations] == [("modified-restored", "cos_lib/example.py")]
 
 
 def test_snapshot_removes_added_production_file(tmp_path: Path) -> None:
@@ -44,7 +44,7 @@ def test_snapshot_removes_added_production_file(tmp_path: Path) -> None:
 
 def test_snapshot_ignores_pycache_artifacts(tmp_path: Path) -> None:
     guard = _load_conftest()
-    pycache = tmp_path / "lib" / "__pycache__"
+    pycache = tmp_path / "cos_lib" / "__pycache__"
     pycache.mkdir(parents=True)
     ignored = pycache / "example.cpython-314.pyc"
     ignored.write_bytes(b"cache")

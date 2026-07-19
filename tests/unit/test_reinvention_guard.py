@@ -51,7 +51,7 @@ def _make_fake_project(base: Path) -> Path:
     )
 
     # Fake lib/
-    lib = base / "lib"
+    lib = base / "cos_lib"
     lib.mkdir(exist_ok=True)
     (lib / "cost_dashboard.py").write_text("# cost dashboard — unrelated\n")
 

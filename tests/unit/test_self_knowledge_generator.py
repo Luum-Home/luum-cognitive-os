@@ -34,7 +34,7 @@ GEN = _load_generator()
 def fake_project(tmp_path: Path) -> Path:
     """Create a minimal fake project tree."""
     # lib/
-    lib = tmp_path / "lib"
+    lib = tmp_path / "cos_lib"
     lib.mkdir()
     (lib / "sample_module.py").write_text(
         textwrap.dedent("""\
@@ -55,7 +55,7 @@ def fake_project(tmp_path: Path) -> Path:
         encoding="utf-8",
     )
     (lib / "importer.py").write_text(
-        "from lib.sample_module import hello\n",
+        "from cos_lib.sample_module import hello\n",
         encoding="utf-8",
     )
 
@@ -99,7 +99,7 @@ def test_api_surface_schema(fake_project: Path) -> None:
 
     surface = json.loads(out.read_text())
     # Key uses relative path
-    key = "lib/sample_module.py"
+    key = "cos_lib/sample_module.py"
     assert key in surface, f"Expected {key} in api-surface"
     entry = surface[key]
     assert "classes" in entry and "functions" in entry
@@ -129,8 +129,8 @@ def test_dep_graph_correctness(fake_project: Path) -> None:
     graph = json.loads(out.read_text())
 
     # importer.py imports lib/sample_module.py
-    assert "lib/importer.py" in graph
-    assert "lib/sample_module.py" in graph["lib/importer.py"]
+    assert "cos_lib/importer.py" in graph
+    assert "cos_lib/sample_module.py" in graph["cos_lib/importer.py"]
 
     # my-hook.sh sources hooks/_lib/probe.sh
     assert "hooks/my-hook.sh" in graph
@@ -190,7 +190,7 @@ def test_mtime_tracking(fake_project: Path) -> None:
 def test_empty_codebase(tmp_path: Path) -> None:
     """build() succeeds on a project with no source files."""
     (tmp_path / "cognitive-os.yaml").write_text("project:\n  name: empty\n")
-    (tmp_path / "lib").mkdir()
+    (tmp_path / "cos_lib").mkdir()
     (tmp_path / "hooks").mkdir()
 
     result = GEN.build(tmp_path)

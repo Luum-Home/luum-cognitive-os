@@ -198,11 +198,11 @@ class TestHookBehaviour(unittest.TestCase):
         # mirroring the real `lib` directory so `sys.path.insert(0, project_dir)`
         # in the hook finds the real module.
         # Easiest: symlink the real lib/ into the scratch tree.
-        real_lib = _REPO / "lib"
+        real_lib = _REPO / "cos_lib"
         try:
-            os.symlink(real_lib, self.root / "lib")
+            os.symlink(real_lib, self.root / "cos_lib")
         except OSError:
-            shutil.copytree(real_lib, self.root / "lib")
+            shutil.copytree(real_lib, self.root / "cos_lib")
 
     def _write_skill(self, name: str, frontmatter: dict) -> None:
         import yaml as _yaml

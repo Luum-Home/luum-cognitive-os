@@ -42,7 +42,7 @@ fi
 if [ "${COS_ALLOW_TOOL_DISCOVERY_BYPASS:-0}" != "1" ] \
    && ! printf '%s' "$COMMAND" | grep -q 'COS_ALLOW_TOOL_DISCOVERY_BYPASS=1' \
    && command -v python3 >/dev/null 2>&1 \
-   && [ -f "$PROJECT_DIR/lib/tool_discovery_preuse.py" ]; then
+   && { [ -f "$PROJECT_DIR/cos_lib/tool_discovery_preuse.py" ] || [ -f "$PROJECT_DIR/lib/tool_discovery_preuse.py" ]; }; then
   TOOL_DISCOVERY_OUT=$(python3 "$PROJECT_DIR/scripts/cos-tool-discovery-preuse" \
     --project-dir "$PROJECT_DIR" --command "$COMMAND" 2>&1)
   TOOL_DISCOVERY_RC=$?

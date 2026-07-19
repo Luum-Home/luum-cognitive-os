@@ -26,8 +26,8 @@ def detector():
 def tmp_project(tmp_path):
     """Create a minimal project structure for testing."""
     # Create directories
-    (tmp_path / "lib").mkdir()
-    (tmp_path / "lib" / "__init__.py").write_text("")
+    (tmp_path / "cos_lib").mkdir()
+    (tmp_path / "cos_lib" / "__init__.py").write_text("")
     (tmp_path / "hooks").mkdir()
     (tmp_path / "hooks" / "_lib").mkdir()
     (tmp_path / "skills").mkdir()
@@ -54,7 +54,7 @@ class TestDeadMetadata:
             Test skill.
         """))
         # No code references 'custom-unused-field'
-        (tmp_project / "lib" / "helper.py").write_text("x = 1\n")
+        (tmp_project / "cos_lib" / "helper.py").write_text("x = 1\n")
 
         results = detector.detect_dead_metadata(str(tmp_project))
 
@@ -76,7 +76,7 @@ class TestDeadMetadata:
             Test skill.
         """))
         # Code references 'audience'
-        (tmp_project / "lib" / "loader.py").write_text(
+        (tmp_project / "cos_lib" / "loader.py").write_text(
             'data = fm.get("audience", "both")\n'
         )
 
@@ -109,7 +109,7 @@ class TestDeadMetadata:
 class TestBrokenChains:
     def test_detects_broken_python_import(self, detector, tmp_project):
         """An import to a missing local module should be flagged."""
-        (tmp_project / "lib" / "caller.py").write_text(
+        (tmp_project / "cos_lib" / "caller.py").write_text(
             "from cos_lib.nonexistent_module import something\n"
         )
 
@@ -123,7 +123,7 @@ class TestBrokenChains:
         """An import to an existing module should NOT be flagged."""
         (tmp_project / "cos_lib" / "valid_module.py").parent.mkdir(parents=True, exist_ok=True)
         (tmp_project / "cos_lib" / "valid_module.py").write_text("x = 1\n")
-        (tmp_project / "lib" / "caller.py").write_text(
+        (tmp_project / "cos_lib" / "caller.py").write_text(
             "from cos_lib.valid_module import x\n"
         )
 
@@ -133,7 +133,7 @@ class TestBrokenChains:
 
     def test_ignores_stdlib_imports(self, detector, tmp_project):
         """Standard library imports should NOT be checked."""
-        (tmp_project / "lib" / "stdlib_user.py").write_text(
+        (tmp_project / "cos_lib" / "stdlib_user.py").write_text(
             "import os\nimport json\nfrom pathlib import Path\n"
         )
 
@@ -228,7 +228,7 @@ class TestSymlinkResolution:
         link.symlink_to(actual)
 
         # Import via symlink name
-        (tmp_project / "lib" / "user.py").write_text(
+        (tmp_project / "cos_lib" / "user.py").write_text(
             "from cos_lib.aliased_module import y\n"
         )
 
@@ -286,7 +286,7 @@ class TestPhantomEntries:
               zzz_unused_flag_xyz: true
         """))
         # No code references zzz_unused_flag_xyz
-        (tmp_project / "lib" / "helper.py").write_text("x = 1\n")
+        (tmp_project / "cos_lib" / "helper.py").write_text("x = 1\n")
 
         results = detector.detect_phantom_entries(str(tmp_project))
         config_phantoms = [
@@ -370,7 +370,7 @@ class TestRunAll:
         """))
 
         # Set up a broken chain
-        (tmp_project / "lib" / "broken.py").write_text(
+        (tmp_project / "cos_lib" / "broken.py").write_text(
             "from cos_lib.does_not_exist import foo\n"
         )
 
