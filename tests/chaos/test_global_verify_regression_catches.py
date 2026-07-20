@@ -23,7 +23,7 @@ import pytest
 
 _PROJ_ROOT = Path(__file__).resolve().parent.parent.parent
 _HOOK = _PROJ_ROOT / "hooks" / "global-verify.sh"
-_RESOLVER_PATH = _PROJ_ROOT / "lib" / "targeted_test_resolver.py"
+_RESOLVER_PATH = _PROJ_ROOT / "cos_lib" / "targeted_test_resolver.py"
 
 pytestmark = pytest.mark.skipif(
     not _HOOK.exists(), reason="hooks/global-verify.sh not found"
@@ -53,7 +53,7 @@ class _FakeResolver:
         self._test_ids = test_ids
         # Per-instance dedicated subtree so concurrent chaos tests don't clash.
         self._root = tmp_root / "fake_resolver_root"
-        self._lib_dir = self._root / "lib"
+        self._lib_dir = self._root / "cos_lib"
         self._resolver_path = self._lib_dir / "targeted_test_resolver.py"
 
     @property
