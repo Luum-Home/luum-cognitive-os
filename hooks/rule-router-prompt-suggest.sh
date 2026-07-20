@@ -42,7 +42,9 @@ if [ -z "$prompt_text" ] || [ "${#prompt_text}" -lt 10 ]; then
   exit 0
 fi
 
-if [ ! -f "$_PROJECT_DIR/lib/rule_router.py" ]; then
+_RULE_ROUTER_PY="$_PROJECT_DIR/cos_lib/rule_router.py"
+[ -f "$_RULE_ROUTER_PY" ] || _RULE_ROUTER_PY="$_PROJECT_DIR/lib/rule_router.py"
+if [ ! -f "$_RULE_ROUTER_PY" ]; then
   exit 0
 fi
 
