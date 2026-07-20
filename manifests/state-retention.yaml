@@ -16,6 +16,14 @@ required_surface_fields:
   - owner_pid
   - owner_files
   - documentation
+optional_surface_fields:
+  max_total_mib: >
+    Byte budget for the whole surface, checked by audit_glob. max_count alone
+    cannot bound disk when a single member is large: one pre-agent snapshot or
+    a checkpoint taken mid-refactor copies every dirty file and can exceed
+    40 MiB, so a 20-entry pool silently permits ~800 MiB against the 400 MiB
+    .cognitive-os ceiling asserted by tests/contracts/test_ram_ceiling.py. The
+    ceiling is expressed in MiB, so retention must be able to express it too.
 kinds:
   ledger: Append-only or mostly append-only records whose historical value decays.
   artifact-pool: Runtime artifacts created generously to preserve operator work.
@@ -191,6 +199,7 @@ surfaces:
     path: .cognitive-os/checkpoints/cos-*
     max_age: P14D
     max_count: 20
+    max_total_mib: 120
     reaper: auto-on-create-plus-one
     retention_mode: observe
     tombstone: none-recovery-artifact
@@ -221,6 +230,7 @@ surfaces:
     path: .cognitive-os/snapshots/auto-pre-agent-*
     max_age: P1D
     max_count: 20
+    max_total_mib: 80
     reaper: manual
     retention_mode: observe
     tombstone: none-recovery-artifact
