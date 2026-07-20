@@ -98,7 +98,9 @@ except Exception:
 " <<< "$(echo "$prompt_text" | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read()))' 2>/dev/null)" 2>/dev/null || true
 
 # Wire to feedback_detector, user_model, and learning_pipeline
-echo "$prompt_text" | python3 "$_PROJECT_DIR/lib/process_user_message.py" >/dev/null 2>&1 || true
+_PROCESS_MSG_PY="$_PROJECT_DIR/cos_lib/process_user_message.py"
+[ -f "$_PROCESS_MSG_PY" ] || _PROCESS_MSG_PY="$_PROJECT_DIR/lib/process_user_message.py"
+echo "$prompt_text" | python3 "$_PROCESS_MSG_PY" >/dev/null 2>&1 || true
 
 # ADR-077 Phase 1: peer-card capture for high-confidence durable signals only.
 # Medium-confidence cues are buffered for session-end consolidation by

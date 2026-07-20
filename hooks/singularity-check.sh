@@ -15,7 +15,8 @@ if [ "$SINGULARITY_CHECK" != "true" ]; then
 fi
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-.}"
-SINGULARITY_SCRIPT="$PROJECT_DIR/lib/singularity.py"
+SINGULARITY_SCRIPT="$PROJECT_DIR/cos_lib/singularity.py"
+[ -f "$SINGULARITY_SCRIPT" ] || SINGULARITY_SCRIPT="$PROJECT_DIR/lib/singularity.py"
 
 # Require Python
 PYTHON=""

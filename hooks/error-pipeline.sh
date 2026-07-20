@@ -303,6 +303,8 @@ elif [ "$REPAIR_PATH" = "llm" ]; then
 fi
 
 # Wire to learning pipeline
-echo "$INPUT" | python3 "$PROJECT_DIR/lib/record_error.py" 2>/dev/null || true
+_RECORD_ERROR_PY="$PROJECT_DIR/cos_lib/record_error.py"
+[ -f "$_RECORD_ERROR_PY" ] || _RECORD_ERROR_PY="$PROJECT_DIR/lib/record_error.py"
+echo "$INPUT" | python3 "$_RECORD_ERROR_PY" 2>/dev/null || true
 
 exit 0

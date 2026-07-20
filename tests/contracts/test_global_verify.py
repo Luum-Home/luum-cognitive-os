@@ -80,7 +80,11 @@ class _FakeResolver:
 
     def __enter__(self) -> "_FakeResolver":
         self._tmpdir = tempfile.TemporaryDirectory(prefix="cos-fake-resolver-")
-        lib_dir = Path(self._tmpdir.name) / "lib"
+        # Must be `cos_lib`, not `lib`: hooks/global-verify.sh imports
+        # `from cos_lib.targeted_test_resolver import resolve_tests_for_changes`,
+        # so a fake published under `lib/` is never shadowed and the hook falls
+        # back to "no tests resolved for changed files".
+        lib_dir = Path(self._tmpdir.name) / "cos_lib"
         lib_dir.mkdir()
         (lib_dir / "__init__.py").write_text("", encoding="utf-8")
         code = (
