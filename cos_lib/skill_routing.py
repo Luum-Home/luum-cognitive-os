@@ -1,4 +1,4 @@
-# SCOPE: os-only
+# SCOPE: both
 """Skill frontmatter routing loader (ADR-050 Per-Skill Routing Policy).
 
 Loads a `routing:` block from the YAML frontmatter of a `SKILL.md` file and

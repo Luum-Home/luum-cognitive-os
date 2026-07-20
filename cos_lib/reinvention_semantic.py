@@ -1,4 +1,4 @@
-# SCOPE: os-only
+# SCOPE: both
 """Reinvention-gate Phase B — semantic similarity index (Jaccard + Embeddings).
 
 See: docs/02-Decisions/adrs/ADR-029b-reinvention-phase-b-semantic.md

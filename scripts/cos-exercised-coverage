@@ -40,7 +40,9 @@ def _load_lib(project_dir: Path):
     """Import lib/exercised_coverage from project_dir."""
     import importlib.util
 
-    lib_path = project_dir / "lib" / "exercised_coverage.py"
+    lib_path = project_dir / "cos_lib" / "exercised_coverage.py"
+    if not lib_path.is_file():
+        lib_path = project_dir / "lib" / "exercised_coverage.py"
     if not lib_path.is_file():
         print(
             f"ERROR: cos_lib/exercised_coverage.py not found at {lib_path}",

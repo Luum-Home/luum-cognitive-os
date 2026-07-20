@@ -192,7 +192,46 @@ def summarize(findings: list[Finding], files_scanned: int, tools: dict[str, Any]
     return {"files_scanned": files_scanned, "findings": len(findings), "by_lane": dict(sorted(by_lane.items())), "by_kind": dict(sorted(by_kind.items())), "external_tools_present": sorted(name for name, row in tools.items() if row.get("present"))}
 
 
-def audit_project(root: Path, include: list[str], exclude: list[str], min_tokens: int, shingle_size: int, threshold: float, run_external: bool, baseline: Path | None = None) -> dict[str, Any]:
+# Cap on the finding list persisted to disk. The full list is still computed and
+# still drives summary counts and the ratchet; only the serialized detail is
+# bounded. Unbounded, latest.json reached 167 MiB carrying 245778 findings,
+# which is neither loadable by the dashboard nor actionable by an operator, and
+# it dominated the .cognitive-os disk ceiling on its own.
+MAX_PERSISTED_FINDINGS = 2000
+
+
+def _bound_findings(data: dict[str, Any], max_findings: int) -> dict[str, Any]:
+    """Truncate the persisted finding list, disclosing the cut in the payload.
+
+    Truncation is recorded rather than silent: a consumer must be able to tell a
+    complete report from a bounded one.
+    """
+    findings = data.get("findings") or []
+    if max_findings <= 0 or len(findings) <= max_findings:
+        return data
+
+    data["findings_truncated"] = {
+        "total": len(findings),
+        "persisted": max_findings,
+        "omitted": len(findings) - max_findings,
+        "reason": "report-size-cap",
+        "note": "summary counts and ratchet reflect the complete finding set",
+    }
+    data["findings"] = findings[:max_findings]
+
+    ratchet = data.get("ratchet")
+    if isinstance(ratchet, dict):
+        new_ids = ratchet.get("new_finding_ids") or []
+        if len(new_ids) > max_findings:
+            ratchet["new_finding_ids"] = new_ids[:max_findings]
+            ratchet["new_finding_ids_truncated"] = {
+                "total": len(new_ids),
+                "persisted": max_findings,
+            }
+    return data
+
+
+def audit_project(root: Path, include: list[str], exclude: list[str], min_tokens: int, shingle_size: int, threshold: float, run_external: bool, baseline: Path | None = None, max_findings: int = MAX_PERSISTED_FINDINGS) -> dict[str, Any]:
     files = collect_files(root, include, exclude)
     findings = [*lexical_findings(root, files, min_tokens, shingle_size, threshold), *function_findings(root, files, min_tokens)]
     by_id: dict[str, Finding] = {}
@@ -210,8 +249,9 @@ def audit_project(root: Path, include: list[str], exclude: list[str], min_tokens
         "findings": [asdict(f) | {"pair_key": f.pair_key} for f in findings],
     }
     if baseline:
+        # Ratchet must see the complete finding set, so it runs before the cap.
         data = apply_ratchet(data, baseline)
-    return data
+    return _bound_findings(data, max_findings)
 
 
 def render_markdown(data: dict[str, Any]) -> str:

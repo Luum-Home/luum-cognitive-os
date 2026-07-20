@@ -10,6 +10,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import pytest
+import yaml
 
 ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = ROOT / "scripts" / "state_retention_audit.py"
@@ -144,9 +145,24 @@ def test_auto_safe_selects_only_repair_safe_surfaces(git_repo: Path) -> None:
     result = run_audit(git_repo, "--auto-safe", "--reap", "--json", "--no-metrics")
     payload = parse_json(result)
 
+    # Derive the expectation from the manifest instead of hardcoding a surface
+    # list: --auto-safe must select exactly the repair-safe surfaces, whichever
+    # those are. A literal set here silently turns every newly-registered
+    # retention surface into a test failure, which is what previously
+    # discouraged registering surfaces at all.
+    manifest = yaml.safe_load(
+        (ROOT / "manifests" / "state-retention.yaml").read_text(encoding="utf-8")
+    )
+    expected = {
+        surface["id"]
+        for surface in manifest["surfaces"]
+        if surface.get("retention_mode") == "repair-safe"
+    }
+    assert expected, "manifest must declare at least one repair-safe surface"
+
     surfaces = {surface["surface"] for surface in payload["surfaces"]}
-    assert surfaces == {"task-claims-ledger", "agent-bus-directories"}
-    assert {item["surface"] for item in payload["reap"]} == {"task-claims-ledger", "agent-bus-directories"}
+    assert surfaces == expected
+    assert {item["surface"] for item in payload["reap"]} == expected
 
 
 def test_repair_before_block_selects_only_auto_stash_surface(git_repo: Path, tmp_path: Path) -> None:

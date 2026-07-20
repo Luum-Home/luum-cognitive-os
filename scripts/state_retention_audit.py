@@ -192,10 +192,34 @@ def audit_json_ledger(project: Path, surface: dict[str, Any]) -> dict[str, Any]:
     if max_count is not None and len(rows)>max_count: findings.append({"level":"WARN","code":"ledger-count","count":len(rows),"max_count":max_count})
     return {"surface":surface["id"],"kind":surface["kind"],"path":str(path),"count":len(rows),"terminal_count":len(terminal),"old_terminal_count":len(old),"findings":findings}
 
+def path_bytes(path: Path) -> int:
+    """On-disk bytes for a file or a directory tree."""
+    if path.is_file():
+        try: return path.stat().st_size
+        except OSError: return 0
+    total=0
+    for root,_dirs,files in os.walk(path):
+        for name in files:
+            try: total+=os.path.getsize(os.path.join(root,name))
+            except OSError: continue
+    return total
+
 def audit_glob(project: Path, surface: dict[str, Any]) -> dict[str, Any]:
     paths=sorted(project.glob(surface["path"])); max_count=as_int(surface.get("max_count")); findings=[]
     if max_count is not None and len(paths)>max_count: findings.append({"level":"WARN","code":"surface-count","count":len(paths),"max_count":max_count})
-    return {"surface":surface["id"],"kind":surface["kind"],"path":surface["path"],"count":len(paths),"sample":[str(p.relative_to(project)) for p in paths[:10]],"findings":findings}
+    # Byte budget. max_count cannot bound disk when a single member is large:
+    # one pre-agent snapshot or mid-refactor checkpoint copies every dirty file
+    # and can exceed 40 MiB on its own, so a 20-entry pool silently permits
+    # ~800 MiB against a 400 MiB ceiling. The ceiling is expressed in MiB, so
+    # retention must be able to express it too.
+    max_total_mib=surface.get("max_total_mib"); total_bytes=None
+    if max_total_mib is not None:
+        total_bytes=sum(path_bytes(p) for p in paths)
+        if total_bytes > float(max_total_mib)*1024*1024:
+            findings.append({"level":"WARN","code":"surface-bytes","total_mib":round(total_bytes/1024/1024,1),"max_total_mib":max_total_mib})
+    row={"surface":surface["id"],"kind":surface["kind"],"path":surface["path"],"count":len(paths),"sample":[str(p.relative_to(project)) for p in paths[:10]],"findings":findings}
+    if total_bytes is not None: row["total_mib"]=round(total_bytes/1024/1024,1)
+    return row
 
 def audit_worktrees(project: Path, surface: dict[str, Any]) -> dict[str, Any]:
     r=git(project,["worktree","list","--porcelain"]); patterns=surface.get("selector",{}).get("branch_patterns",[]); branches=[]

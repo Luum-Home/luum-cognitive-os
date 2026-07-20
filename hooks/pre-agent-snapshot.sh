@@ -377,5 +377,55 @@ if [ -n "$SNAPSHOT_ID" ] && [ "$SNAPSHOT_STATUS" != "skip_clean" ]; then
   fi
 fi
 
+# Retention. One snapshot directory is created per agent launch, so an
+# agent-heavy session grows this pool fast: it reached 328 MiB during a single
+# 26-minute test run. manifests/state-retention.yaml declares the budget
+# (auto-pre-agent-snapshot-dirs, max_total_mib) but its reaper is manual, so the
+# creator prunes its own pool here — the same auto-on-create-plus-one shape
+# hooks/auto-checkpoint.sh uses. Count alone cannot bound this: a snapshot taken
+# mid-refactor copies every dirty file and can exceed 40 MiB by itself.
+COS_SNAPSHOT_MAX_TOTAL_MIB="${COS_SNAPSHOT_MAX_TOTAL_MIB:-80}"
+python3 - "$PROJECT_DIR" "$COS_SNAPSHOT_MAX_TOTAL_MIB" <<'RETENTION_EOF' 2>/dev/null || true
+import os
+import shutil
+import sys
+from pathlib import Path
+
+project_dir, budget_mib = sys.argv[1], float(sys.argv[2])
+base = Path(project_dir) / ".cognitive-os" / "snapshots"
+if not base.is_dir():
+    sys.exit(0)
+
+
+def size_of(path: Path) -> int:
+    total = 0
+    for root, _dirs, files in os.walk(path):
+        for name in files:
+            try:
+                total += os.path.getsize(os.path.join(root, name))
+            except OSError:
+                continue
+    return total
+
+
+entries = [p for p in base.glob("auto-pre-agent-*") if p.is_dir()]
+try:
+    entries.sort(key=lambda p: p.stat().st_mtime, reverse=True)
+except OSError:
+    sys.exit(0)
+
+budget = int(budget_mib * 1024 * 1024)
+used = 0
+for index, entry in enumerate(entries):
+    used += size_of(entry)
+    # index > 0 always keeps the newest snapshot: it is the safety net for the
+    # agent launch happening right now, and a single large one must not evict
+    # itself and leave this launch unprotected.
+    if used > budget and index > 0:
+        for stale in entries[index:]:
+            shutil.rmtree(stale, ignore_errors=True)
+        break
+RETENTION_EOF
+
 # Always advisory — never block
 exit 0

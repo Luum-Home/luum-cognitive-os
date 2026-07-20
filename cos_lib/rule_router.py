@@ -1,5 +1,4 @@
-# SCOPE: os-only
-# scope: both
+# SCOPE: both
 """Rule Router — Auto-select agent-instruction rules from prompt context.
 
 Analogous to ``cos_lib/skill_router.py`` (ADR-174), but for rules under
