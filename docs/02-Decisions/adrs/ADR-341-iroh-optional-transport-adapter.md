@@ -1,3 +1,10 @@
+---
+adr: 341
+title: Iroh Optional Transport Adapter
+status: accepted
+implementation_status: partial
+date: 2026-06-18
+---
 # ADR-341: Iroh Optional Transport Adapter
 
 - Implementation status: partial
