@@ -6310,7 +6310,7 @@
         "rule": 57,
         "script": 601,
         "skill": 114,
-        "test": 1308,
+        "test": 1325,
         "workflow": 2
       },
       "consumers": [
@@ -16436,6 +16436,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_adr_router.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_agent_bus.py"
         },
         {
@@ -16508,6 +16512,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_auto_repair.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_backfill_cost_events.py"
         },
         {
@@ -16545,6 +16553,10 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_claude_usage_reader.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_code_reviewer.py"
         },
         {
           "family": "test",
@@ -17556,6 +17568,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_git_context.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_governance-policy.py"
         },
         {
@@ -17620,6 +17636,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_llm_routing_fallback.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_low_confidence_scope_batch.py"
         },
         {
@@ -17628,7 +17648,15 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_memory_governance.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_memory_manager.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_memory_scanner.py"
         },
         {
           "family": "test",
@@ -17641,6 +17669,10 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_metric_event.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_model_catalog.py"
         },
         {
           "family": "test",
@@ -17780,6 +17812,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_queue_advisor.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_queue_drainer.py"
         },
         {
@@ -17821,6 +17857,10 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_reinvention_guard.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_reinvention_semantic.py"
         },
         {
           "family": "test",
@@ -17876,6 +17916,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_rule_router.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_safe_engram.py"
         },
         {
@@ -17897,6 +17941,10 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_self_knowledge.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_semantic_skill_matcher.py"
         },
         {
           "family": "test",
@@ -17952,6 +18000,14 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_router.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_routing.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_skill_skill_creator.py"
         },
         {
@@ -17973,6 +18029,10 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_staged_verification.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_stash_sha.py"
         },
         {
           "family": "test",
@@ -18004,6 +18064,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_taximeter.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_telemetry.py"
         },
         {
@@ -18025,6 +18089,10 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_trust_report_parser.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_trust_report_schema.py"
         },
         {
           "family": "test",
@@ -20236,7 +20304,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:114",
-        "test_consumers:1308",
+        "test_consumers:1325",
         "hook_consumers:188",
         "workflow_consumers:2",
         "doc_consumers:1120",
@@ -20258,7 +20326,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 3479,
+      "total_consumers": 3496,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {

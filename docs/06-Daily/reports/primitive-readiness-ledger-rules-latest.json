@@ -1135,7 +1135,7 @@
         "rule": 13,
         "script": 4,
         "skill": 3,
-        "test": 15
+        "test": 16
       },
       "consumers": [
         {
@@ -1468,6 +1468,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_rule_router.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_context_diet.py"
         },
         {
@@ -1506,7 +1510,7 @@
         "hook_consumers:2",
         "rule_consumers:13",
         "script_consumers:4",
-        "test_consumers:15",
+        "test_consumers:16",
         "doc_consumers:47",
         "config_consumers:6"
       ],
@@ -1522,7 +1526,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 90
+      "total_consumers": 91
     },
     {
       "confidence": "high",
@@ -4686,7 +4690,7 @@
         "hook": 8,
         "rule": 2,
         "script": 7,
-        "test": 12
+        "test": 13
       },
       "consumers": [
         {
@@ -5095,6 +5099,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_auto_repair.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_auto_repair.py"
         },
         {
@@ -5120,7 +5128,7 @@
         "hook_consumers:8",
         "rule_consumers:2",
         "script_consumers:7",
-        "test_consumers:12",
+        "test_consumers:13",
         "doc_consumers:62",
         "config_consumers:15"
       ],
@@ -5136,7 +5144,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 106
+      "total_consumers": 107
     },
     {
       "confidence": "high",
@@ -5148,7 +5156,7 @@
         "hook": 2,
         "rule": 4,
         "script": 10,
-        "test": 17
+        "test": 18
       },
       "consumers": [
         {
@@ -5501,6 +5509,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_router.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_chaos_template.py"
         },
         {
@@ -5530,7 +5542,7 @@
         "hook_consumers:2",
         "rule_consumers:4",
         "script_consumers:10",
-        "test_consumers:17",
+        "test_consumers:18",
         "doc_consumers:50",
         "config_consumers:10"
       ],
@@ -5546,7 +5558,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 93
+      "total_consumers": 94
     },
     {
       "confidence": "high",
@@ -5819,7 +5831,7 @@
         "rule": 9,
         "script": 11,
         "skill": 1,
-        "test": 27
+        "test": 28
       },
       "consumers": [
         {
@@ -6428,6 +6440,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_router.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_blast_radius_additional_context.py"
         },
         {
@@ -6486,7 +6502,7 @@
         "hook_consumers:5",
         "rule_consumers:9",
         "script_consumers:11",
-        "test_consumers:27",
+        "test_consumers:28",
         "doc_consumers:95",
         "config_consumers:16"
       ],
@@ -6502,7 +6518,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 164
+      "total_consumers": 165
     },
     {
       "confidence": "high",
@@ -19905,7 +19921,7 @@
         "rule": 2,
         "script": 3,
         "skill": 1,
-        "test": 10
+        "test": 11
       },
       "consumers": [
         {
@@ -20070,6 +20086,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_queue_advisor.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_skill_queue_drain.py"
         },
         {
@@ -20084,7 +20104,7 @@
         "hook_consumers:3",
         "rule_consumers:2",
         "script_consumers:3",
-        "test_consumers:10",
+        "test_consumers:11",
         "doc_consumers:16",
         "config_consumers:7"
       ],
@@ -20100,7 +20120,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 42
+      "total_consumers": 43
     },
     {
       "confidence": "high",
@@ -20278,7 +20298,7 @@
         "hook": 4,
         "rule": 2,
         "script": 1,
-        "test": 6
+        "test": 7
       },
       "consumers": [
         {
@@ -20435,6 +20455,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_semantic_skill_matcher.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_rule_router.py"
         },
         {
@@ -20448,7 +20472,7 @@
         "hook_consumers:4",
         "rule_consumers:2",
         "script_consumers:1",
-        "test_consumers:6",
+        "test_consumers:7",
         "doc_consumers:22",
         "config_consumers:5"
       ],
@@ -20464,7 +20488,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 40
+      "total_consumers": 41
     },
     {
       "confidence": "medium",
