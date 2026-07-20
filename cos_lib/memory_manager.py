@@ -1,4 +1,4 @@
-# SCOPE: os-only
+# SCOPE: both
 """MemoryManager — orchestrates multi-provider memory access with a single
 integration point for mid-task reflection and recall.
 

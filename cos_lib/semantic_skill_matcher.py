@@ -1,4 +1,4 @@
-# SCOPE: os-only
+# SCOPE: both
 """Semantic skill matcher — language-agnostic skill router (ADR-296).
 
 Replaces the prior Jaccard token-overlap implementation, which silently

@@ -1,4 +1,4 @@
-# SCOPE: os-only
+# SCOPE: both
 """LLM-dispatched routing fallback for the COS skill router (ADR-297).
 
 Tail-cleanup layer that closes the ambiguity gap left by the semantic

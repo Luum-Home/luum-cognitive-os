@@ -73,7 +73,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 4,
-        "doc": 5,
+        "doc": 6,
         "script": 2,
         "skill": 1,
         "test": 7
@@ -114,6 +114,10 @@
         {
           "family": "doc",
           "path": "docs/08-References/root/adoption-tiers.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/worktree-sweeper.synthesis.md"
         },
         {
           "family": "script",
@@ -162,7 +166,7 @@
         "skill_consumers:1",
         "script_consumers:2",
         "test_consumers:7",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -175,7 +179,7 @@
       "supported_harnesses": [
         "codex"
       ],
-      "total_consumers": 19
+      "total_consumers": 20
     },
     {
       "confidence": "medium",
@@ -234,7 +238,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 4,
-        "doc": 11,
+        "doc": 13,
         "rule": 3,
         "script": 1,
         "skill": 2,
@@ -263,11 +267,19 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-143.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture.md"
         },
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.synthesis.md"
         },
         {
           "family": "doc",
@@ -360,7 +372,7 @@
         "rule_consumers:3",
         "script_consumers:1",
         "test_consumers:7",
-        "doc_consumers:11",
+        "doc_consumers:13",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -371,7 +383,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 28
+      "total_consumers": 30
     },
     {
       "confidence": "high",
@@ -472,7 +484,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 5,
-        "doc": 9,
+        "doc": 11,
         "script": 1,
         "test": 4
       },
@@ -519,6 +531,14 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/external-tool-adoption-doctrine.synthesis.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-integration-assessment-2026-05-22.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/graphify-next-step-decision-2026-05-22.md"
         },
         {
@@ -558,7 +578,7 @@
       "evidence": [
         "script_consumers:1",
         "test_consumers:4",
-        "doc_consumers:9",
+        "doc_consumers:11",
         "config_consumers:5"
       ],
       "family": "skills",
@@ -569,7 +589,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 19
+      "total_consumers": 21
     },
     {
       "confidence": "high",
@@ -639,7 +659,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 3,
+        "doc": 5,
         "script": 1
       },
       "consumers": [
@@ -649,7 +669,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-108.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/concurrent-agent-safety-master.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/concurrent-agent-safety-master.synthesis.md"
         },
         {
           "family": "doc",
@@ -663,7 +691,7 @@
       "distribution": null,
       "evidence": [
         "script_consumers:1",
-        "doc_consumers:3"
+        "doc_consumers:5"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -673,7 +701,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 4
+      "total_consumers": 6
     },
     {
       "confidence": "medium",
@@ -813,7 +841,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 4,
-        "doc": 6,
+        "doc": 7,
         "rule": 1,
         "script": 1,
         "skill": 2,
@@ -843,6 +871,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.synthesis.md"
         },
         {
           "family": "doc",
@@ -936,7 +968,7 @@
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:13",
-        "doc_consumers:6",
+        "doc_consumers:7",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -951,7 +983,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 27
+      "total_consumers": 28
     },
     {
       "confidence": "high",
@@ -959,7 +991,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 3,
-        "doc": 6,
+        "doc": 7,
         "test": 1
       },
       "consumers": [
@@ -982,6 +1014,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.synthesis.md"
         },
         {
           "family": "doc",
@@ -1008,7 +1044,7 @@
       "evidence": [
         "lifecycle",
         "test_consumers:1",
-        "doc_consumers:6",
+        "doc_consumers:7",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -1023,7 +1059,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 10
+      "total_consumers": 11
     },
     {
       "confidence": "high",
@@ -1031,7 +1067,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 4,
-        "doc": 5,
+        "doc": 6,
         "rule": 1,
         "script": 1,
         "skill": 1,
@@ -1057,6 +1093,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.synthesis.md"
         },
         {
           "family": "doc",
@@ -1106,7 +1146,7 @@
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:3",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -1121,7 +1161,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 15
+      "total_consumers": 16
     },
     {
       "confidence": "high",
@@ -1129,7 +1169,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 6,
-        "doc": 14,
+        "doc": 18,
         "rule": 2,
         "script": 2,
         "skill": 3,
@@ -1178,11 +1218,23 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-095.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-174-auto-derived-primitive-routing.md"
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-174.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-250-skill-router-retrieval-adapter-boundary.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-250.synthesis.md"
         },
         {
           "family": "doc",
@@ -1195,6 +1247,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.synthesis.md"
         },
         {
           "family": "doc",
@@ -1268,7 +1324,7 @@
         "rule_consumers:2",
         "script_consumers:2",
         "test_consumers:4",
-        "doc_consumers:14",
+        "doc_consumers:18",
         "config_consumers:6"
       ],
       "family": "skills",
@@ -1283,7 +1339,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 31
+      "total_consumers": 35
     },
     {
       "confidence": "high",
@@ -1401,7 +1457,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 10,
-        "doc": 1,
+        "doc": 2,
         "hook": 1,
         "rule": 1,
         "script": 6,
@@ -1451,6 +1507,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-185-cross-agent-audit-findings.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-185.synthesis.md"
         },
         {
           "family": "hook",
@@ -1528,7 +1588,7 @@
         "rule_consumers:1",
         "script_consumers:6",
         "test_consumers:9",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:10"
       ],
       "family": "skills",
@@ -1543,7 +1603,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 28
+      "total_consumers": 29
     },
     {
       "confidence": "medium",
@@ -1551,7 +1611,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 4,
-        "doc": 10,
+        "doc": 12,
         "script": 1,
         "test": 5
       },
@@ -1586,6 +1646,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-093.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/03-PoCs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md"
         },
         {
@@ -1607,6 +1671,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/harness-adoption-gap/diagnosis.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/harness-adoption-gap/diagnosis.synthesis.md"
         },
         {
           "family": "doc",
@@ -1642,7 +1710,7 @@
         "lifecycle",
         "script_consumers:1",
         "test_consumers:5",
-        "doc_consumers:10",
+        "doc_consumers:12",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -1657,7 +1725,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 20
+      "total_consumers": 22
     },
     {
       "confidence": "high",
@@ -1730,7 +1798,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 3,
-        "doc": 3,
+        "doc": 4,
         "rule": 2,
         "test": 3
       },
@@ -1760,6 +1828,10 @@
           "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.synthesis.md"
+        },
+        {
           "family": "rule",
           "path": "rules/cognitive-load.md"
         },
@@ -1785,7 +1857,7 @@
         "lifecycle",
         "rule_consumers:2",
         "test_consumers:3",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -1800,7 +1872,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 11
+      "total_consumers": 12
     },
     {
       "confidence": "high",
@@ -1808,7 +1880,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 5,
-        "doc": 10,
+        "doc": 14,
         "skill": 2,
         "test": 1
       },
@@ -1839,6 +1911,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-058.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-074-tier-0-learning-loop-closure.md"
         },
         {
@@ -1848,6 +1924,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-096-review-agent-pattern.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-096.synthesis.md"
         },
         {
           "family": "doc",
@@ -1867,7 +1947,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/observability-backend-evaluation-2026-04-24.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/ssr-agentic-primitive-enablement-gaps.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/ssr-agentic-primitive-enablement-gaps.synthesis.md"
         },
         {
           "family": "doc",
@@ -1891,7 +1979,7 @@
         "lifecycle",
         "skill_consumers:2",
         "test_consumers:1",
-        "doc_consumers:10",
+        "doc_consumers:14",
         "config_consumers:5"
       ],
       "family": "skills",
@@ -1906,7 +1994,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 18
+      "total_consumers": 22
     },
     {
       "confidence": "high",
@@ -2106,7 +2194,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 5,
-        "doc": 11,
+        "doc": 17,
         "hook": 1,
         "script": 1,
         "test": 6
@@ -2142,7 +2230,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-174.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-180-lifecycle-promotion-activation.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-180.synthesis.md"
         },
         {
           "family": "doc",
@@ -2154,7 +2250,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/LESSONS-LEARNED.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/POST-MORTEM-2026-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/POST-MORTEM-2026-04.synthesis.md"
         },
         {
           "family": "doc",
@@ -2170,11 +2274,19 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/provenance.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/09-Quality/legal/pre-public-readiness-checklist.md"
         },
         {
           "family": "doc",
           "path": "docs/09-Quality/security/cognitive-os-attack-surface-inventory.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/security/cognitive-os-attack-surface-inventory.synthesis.md"
         },
         {
           "family": "hook",
@@ -2215,7 +2327,7 @@
         "hook_consumers:1",
         "script_consumers:1",
         "test_consumers:6",
-        "doc_consumers:11",
+        "doc_consumers:17",
         "config_consumers:5"
       ],
       "family": "skills",
@@ -2230,7 +2342,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 24
+      "total_consumers": 30
     },
     {
       "confidence": "high",
@@ -2238,7 +2350,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 4,
-        "doc": 5,
+        "doc": 6,
         "script": 2,
         "skill": 1,
         "test": 7
@@ -2279,6 +2391,10 @@
         {
           "family": "doc",
           "path": "docs/08-References/root/adoption-tiers.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/worktree-sweeper.synthesis.md"
         },
         {
           "family": "script",
@@ -2327,7 +2443,7 @@
         "skill_consumers:1",
         "script_consumers:2",
         "test_consumers:7",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -2366,7 +2482,7 @@
         "goose",
         "aider"
       ],
-      "total_consumers": 19
+      "total_consumers": 20
     },
     {
       "confidence": "high",
@@ -2374,7 +2490,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 5,
-        "doc": 2,
+        "doc": 3,
         "test": 4
       },
       "consumers": [
@@ -2407,6 +2523,10 @@
           "path": "docs/02-Decisions/adrs/ADR-288-web-automation-adapter-for-dispatch.md"
         },
         {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-288.synthesis.md"
+        },
+        {
           "family": "test",
           "path": "tests/behavior/test_skill_auto_selection.py"
         },
@@ -2427,7 +2547,7 @@
       "evidence": [
         "lifecycle",
         "test_consumers:4",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:5"
       ],
       "family": "skills",
@@ -2442,7 +2562,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 11
+      "total_consumers": 12
     },
     {
       "confidence": "medium",
@@ -2556,7 +2676,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 3,
-        "doc": 3,
+        "doc": 4,
         "hook": 1,
         "rule": 1,
         "script": 1,
@@ -2582,6 +2702,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/ssr-agentic-primitive-enablement-gaps.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/ssr-agentic-primitive-enablement-gaps.synthesis.md"
         },
         {
           "family": "doc",
@@ -2619,7 +2743,7 @@
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:3",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -2634,7 +2758,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 12
+      "total_consumers": 13
     },
     {
       "confidence": "high",
@@ -2716,7 +2840,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 5,
-        "doc": 9,
+        "doc": 10,
         "hook": 1,
         "skill": 1,
         "test": 7
@@ -2779,6 +2903,10 @@
           "path": "docs/04-Concepts/root/component-sources.md"
         },
         {
+          "family": "doc",
+          "path": "docs/04-Concepts/root/component-sources.synthesis.md"
+        },
+        {
           "family": "hook",
           "path": "hooks/agent-qwen-bridge.sh"
         },
@@ -2821,7 +2949,7 @@
         "skill_consumers:1",
         "hook_consumers:1",
         "test_consumers:7",
-        "doc_consumers:9",
+        "doc_consumers:10",
         "config_consumers:5"
       ],
       "family": "skills",
@@ -2836,7 +2964,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 23
+      "total_consumers": 24
     },
     {
       "confidence": "high",
@@ -2844,12 +2972,12 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 12,
-        "doc": 21,
+        "doc": 24,
         "hook": 2,
         "rule": 3,
         "script": 1,
         "skill": 1,
-        "test": 18
+        "test": 19
       },
       "consumers": [
         {
@@ -2918,6 +3046,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-174.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-215-cross-stack-secret-audit-toolchain.md"
         },
         {
@@ -2962,6 +3094,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/root/component-sources.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/root/global-vs-project-config.md"
         },
         {
@@ -2983,6 +3119,10 @@
         {
           "family": "doc",
           "path": "docs/08-References/root/bmad-v6-patterns.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/root/testing-cognitive-os-suite.synthesis.md"
         },
         {
           "family": "hook",
@@ -3050,6 +3190,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_code-review-on-commit.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_low_confidence_scope_batch.py"
         },
         {
@@ -3092,8 +3236,8 @@
         "hook_consumers:2",
         "rule_consumers:3",
         "script_consumers:1",
-        "test_consumers:18",
-        "doc_consumers:21",
+        "test_consumers:19",
+        "doc_consumers:24",
         "config_consumers:12"
       ],
       "family": "skills",
@@ -3108,7 +3252,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 58
+      "total_consumers": 62
     },
     {
       "confidence": "high",
@@ -3116,7 +3260,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 7,
-        "doc": 32,
+        "doc": 39,
         "rule": 2,
         "script": 3,
         "skill": 1,
@@ -3181,6 +3325,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-174.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-238-tier-1-4-followup-bug-tracking.md"
         },
         {
@@ -3217,6 +3365,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/core-vs-extensions.md"
         },
         {
@@ -3229,6 +3381,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/functional-audit/sprint-2a-orphan-fate.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/patterns/os-vs-project.md"
         },
         {
@@ -3238,6 +3394,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/root/design-philosophy.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/root/design-philosophy.synthesis.md"
         },
         {
           "family": "doc",
@@ -3261,6 +3421,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/08-References/business/executive-summary.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/08-References/business/features.md"
         },
         {
@@ -3269,7 +3433,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/08-References/business/value-proposition.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/08-References/migration-from/from-vanilla-claude-code.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/migration-from/from-vanilla-claude-code.synthesis.md"
         },
         {
           "family": "doc",
@@ -3331,7 +3503,7 @@
         "rule_consumers:2",
         "script_consumers:3",
         "test_consumers:5",
-        "doc_consumers:32",
+        "doc_consumers:39",
         "config_consumers:7"
       ],
       "family": "skills",
@@ -3346,7 +3518,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 50
+      "total_consumers": 57
     },
     {
       "confidence": "medium",
@@ -3354,7 +3526,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 5,
-        "doc": 16,
+        "doc": 19,
         "rule": 2,
         "script": 1,
         "skill": 1,
@@ -3399,6 +3571,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/core-vs-extensions.md"
         },
         {
@@ -3411,6 +3587,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/root/execution-backends.md"
         },
         {
@@ -3420,6 +3600,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/root/ux-principles.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/root/ux-principles.synthesis.md"
         },
         {
           "family": "doc",
@@ -3473,7 +3657,7 @@
         "rule_consumers:2",
         "script_consumers:1",
         "test_consumers:1",
-        "doc_consumers:16",
+        "doc_consumers:19",
         "config_consumers:5"
       ],
       "family": "skills",
@@ -3488,7 +3672,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 26
+      "total_consumers": 29
     },
     {
       "confidence": "high",
@@ -3496,7 +3680,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 5,
-        "doc": 13,
+        "doc": 16,
         "rule": 2,
         "skill": 5,
         "test": 4
@@ -3540,6 +3724,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
@@ -3556,6 +3744,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/root/safety-mesh.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/root/self-improvement-loop.md"
         },
         {
@@ -3569,6 +3761,10 @@
         {
           "family": "doc",
           "path": "docs/09-Quality/root/testing-cognitive-os-suite.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/root/testing-cognitive-os-suite.synthesis.md"
         },
         {
           "family": "doc",
@@ -3625,7 +3821,7 @@
         "skill_consumers:5",
         "rule_consumers:2",
         "test_consumers:4",
-        "doc_consumers:13",
+        "doc_consumers:16",
         "config_consumers:5"
       ],
       "family": "skills",
@@ -3640,7 +3836,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 29
+      "total_consumers": 32
     },
     {
       "confidence": "high",
@@ -3790,7 +3986,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 5,
-        "doc": 7,
+        "doc": 10,
         "hook": 1,
         "rule": 1,
         "skill": 1,
@@ -3827,6 +4023,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-174.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/03-PoCs/research/orchestration-coverage-gap-analysis-2026-05-06.md"
         },
         {
@@ -3835,7 +4035,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/07-Capabilities/acc/latest-compact.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/07-Capabilities/root/agent-capability-coverage.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/07-Capabilities/root/agent-capability-coverage.synthesis.md"
         },
         {
           "family": "doc",
@@ -3877,7 +4085,7 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "test_consumers:3",
-        "doc_consumers:7",
+        "doc_consumers:10",
         "config_consumers:5"
       ],
       "family": "skills",
@@ -3892,7 +4100,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 18
+      "total_consumers": 21
     },
     {
       "confidence": "high",
@@ -3900,7 +4108,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 7,
-        "doc": 7,
+        "doc": 11,
         "test": 2
       },
       "consumers": [
@@ -3942,7 +4150,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-098.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-116-multi-session-coordination-primitives.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-116.synthesis.md"
         },
         {
           "family": "doc",
@@ -3958,7 +4174,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/08-References/root/adoption-tiers.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/09-Quality/quality/test-coverage-report.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/quality/test-coverage-report.synthesis.md"
         },
         {
           "family": "test",
@@ -3973,7 +4197,7 @@
       "evidence": [
         "lifecycle",
         "test_consumers:2",
-        "doc_consumers:7",
+        "doc_consumers:11",
         "config_consumers:7"
       ],
       "family": "skills",
@@ -3988,7 +4212,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 16
+      "total_consumers": 20
     },
     {
       "confidence": "high",
@@ -4106,7 +4330,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 10,
-        "doc": 33,
+        "doc": 52,
         "hook": 1,
         "script": 12,
         "test": 17,
@@ -4179,6 +4403,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-093.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-168-cross-device-dependency-installation.md"
         },
         {
@@ -4199,6 +4427,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-328.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-339-efficiency-operating-model-primitives.md"
         },
         {
@@ -4207,7 +4439,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/bootstrap-portability.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.synthesis.md"
         },
         {
           "family": "doc",
@@ -4219,7 +4459,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/surface-5-and-secure-cosd-roadmap.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/05-Methodology/onboarding/recording-recipe.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/onboarding/recording-recipe.synthesis.md"
         },
         {
           "family": "doc",
@@ -4227,11 +4475,23 @@
         },
         {
           "family": "doc",
+          "path": "docs/05-Methodology/onboarding/walkthrough.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/05-Methodology/usage/cos-status.md"
         },
         {
           "family": "doc",
+          "path": "docs/05-Methodology/usage/cos-status.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/08-References/business/cognitive-os-efficiency-operating-model.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/business/cognitive-os-efficiency-operating-model.synthesis.md"
         },
         {
           "family": "doc",
@@ -4243,7 +4503,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/08-References/migration-from/from-hermes.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/08-References/migration-from/from-vanilla-claude-code.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/migration-from/from-vanilla-claude-code.synthesis.md"
         },
         {
           "family": "doc",
@@ -4255,7 +4523,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/09-Quality/manual-tests/first-run-onboarding.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/09-Quality/manual-tests/five-minute-demo.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/five-minute-demo.synthesis.md"
         },
         {
           "family": "doc",
@@ -4263,7 +4539,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/09-Quality/manual-tests/kimi-code-cli-structural-projection.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/09-Quality/manual-tests/multi-ide-structural-projection.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/multi-ide-structural-projection.synthesis.md"
         },
         {
           "family": "doc",
@@ -4271,7 +4555,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/09-Quality/manual-tests/primitive-harness-coverage.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/09-Quality/manual-tests/proof-paths.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/proof-paths.synthesis.md"
         },
         {
           "family": "doc",
@@ -4279,7 +4571,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/09-Quality/manual-tests/qwen-code-structural-projection.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/09-Quality/manual-tests/shell-ci-formal-harness.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/shell-ci-formal-harness.synthesis.md"
         },
         {
           "family": "doc",
@@ -4416,7 +4716,7 @@
         "hook_consumers:1",
         "script_consumers:12",
         "test_consumers:17",
-        "doc_consumers:33",
+        "doc_consumers:52",
         "config_consumers:10",
         "workflow_consumers:1"
       ],
@@ -4432,7 +4732,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 74
+      "total_consumers": 93
     },
     {
       "confidence": "high",
@@ -4522,7 +4822,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 4,
-        "doc": 5,
+        "doc": 7,
         "rule": 1,
         "script": 2,
         "skill": 1,
@@ -4559,7 +4859,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-069.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-070-convention-enforcement-mechanism.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-070.synthesis.md"
         },
         {
           "family": "doc",
@@ -4613,7 +4921,7 @@
         "rule_consumers:1",
         "script_consumers:2",
         "test_consumers:6",
-        "doc_consumers:5",
+        "doc_consumers:7",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -4628,7 +4936,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 19
+      "total_consumers": 21
     },
     {
       "confidence": "high",
@@ -4636,7 +4944,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 3,
-        "doc": 3,
+        "doc": 4,
         "rule": 1,
         "skill": 1,
         "test": 4
@@ -4657,6 +4965,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-267-license-compliance-enforcement-architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-267.synthesis.md"
         },
         {
           "family": "doc",
@@ -4697,7 +5009,7 @@
         "skill_consumers:1",
         "rule_consumers:1",
         "test_consumers:4",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -4712,7 +5024,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 12
+      "total_consumers": 13
     },
     {
       "confidence": "high",
@@ -4720,7 +5032,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 7,
-        "doc": 8,
+        "doc": 10,
         "hook": 1,
         "script": 1,
         "skill": 1,
@@ -4773,6 +5085,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-144.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-145-dependency-lane-split.md"
         },
         {
@@ -4786,6 +5102,10 @@
         {
           "family": "doc",
           "path": "docs/05-Methodology/root/tooling-update-protocol.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/root/tooling-update-protocol.synthesis.md"
         },
         {
           "family": "hook",
@@ -4823,7 +5143,7 @@
         "hook_consumers:1",
         "script_consumers:1",
         "test_consumers:4",
-        "doc_consumers:8",
+        "doc_consumers:10",
         "config_consumers:7"
       ],
       "family": "skills",
@@ -4838,7 +5158,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 22
+      "total_consumers": 24
     },
     {
       "confidence": "medium",
@@ -4846,7 +5166,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 3,
-        "doc": 4,
+        "doc": 5,
         "hook": 1,
         "test": 1
       },
@@ -4880,6 +5200,10 @@
           "path": "docs/04-Concepts/architecture/parser-coverage-audit-2026-04-24.md"
         },
         {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/parser-coverage-audit-2026-04-24.synthesis.md"
+        },
+        {
           "family": "hook",
           "path": "hooks/pattern-check.sh"
         },
@@ -4893,7 +5217,7 @@
         "lifecycle",
         "hook_consumers:1",
         "test_consumers:1",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -4908,7 +5232,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "high",
@@ -4916,7 +5240,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 4,
-        "doc": 5,
+        "doc": 6,
         "skill": 3,
         "test": 2
       },
@@ -4948,6 +5272,10 @@
         {
           "family": "doc",
           "path": "docs/08-References/business/open-source-design.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/business/open-source-design.synthesis.md"
         },
         {
           "family": "doc",
@@ -4983,7 +5311,7 @@
         "lifecycle",
         "skill_consumers:3",
         "test_consumers:2",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -4998,7 +5326,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 14
+      "total_consumers": 15
     },
     {
       "confidence": "high",
@@ -5150,7 +5478,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 5,
-        "doc": 9,
+        "doc": 10,
         "rule": 2,
         "script": 2,
         "skill": 3,
@@ -5180,6 +5508,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-059-so-existential-validation.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-059.synthesis.md"
         },
         {
           "family": "doc",
@@ -5261,7 +5593,7 @@
         "rule_consumers:2",
         "script_consumers:2",
         "test_consumers:3",
-        "doc_consumers:9",
+        "doc_consumers:10",
         "config_consumers:5"
       ],
       "family": "skills",
@@ -5276,7 +5608,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 24
+      "total_consumers": 25
     },
     {
       "confidence": "high",
@@ -5502,12 +5834,12 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 8,
-        "doc": 37,
+        "doc": 47,
         "hook": 1,
         "rule": 1,
         "script": 4,
         "skill": 4,
-        "test": 8
+        "test": 9
       },
       "consumers": [
         {
@@ -5560,6 +5892,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-095.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-124-cos-distribution-boundaries.md"
         },
         {
@@ -5569,6 +5905,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-263-tool-replay-budget-ledger.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-263-tool-replay-budget-ledger.synthesis.md"
         },
         {
           "family": "doc",
@@ -5628,11 +5968,19 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/root/design-philosophy.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/root/kernel-contract.md"
         },
         {
           "family": "doc",
           "path": "docs/04-Concepts/root/model-evolution-resilience.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/root/model-evolution-resilience.synthesis.md"
         },
         {
           "family": "doc",
@@ -5644,11 +5992,23 @@
         },
         {
           "family": "doc",
+          "path": "docs/05-Methodology/root/automation.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/07-Capabilities/root/agent-teams-testing.md"
         },
         {
           "family": "doc",
+          "path": "docs/07-Capabilities/root/agent-teams-testing.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/07-Capabilities/root/agent-teams.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/07-Capabilities/root/agent-teams.synthesis.md"
         },
         {
           "family": "doc",
@@ -5668,6 +6028,14 @@
         },
         {
           "family": "doc",
+          "path": "docs/08-References/business/durable-product-master-plan.synthesis.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/business/feature-reality-audit.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/08-References/business/features.md"
         },
         {
@@ -5677,6 +6045,10 @@
         {
           "family": "doc",
           "path": "docs/08-References/business/master-plan-execution-requirements.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/business/master-plan-execution-requirements.synthesis.md"
         },
         {
           "family": "doc",
@@ -5748,6 +6120,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cos-primitive-guard.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_os_only_scope_family.py"
         },
         {
@@ -5770,8 +6146,8 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "script_consumers:4",
-        "test_consumers:8",
-        "doc_consumers:37",
+        "test_consumers:9",
+        "doc_consumers:47",
         "config_consumers:8"
       ],
       "family": "skills",
@@ -5786,7 +6162,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 63
+      "total_consumers": 74
     },
     {
       "confidence": "high",
@@ -5938,7 +6314,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 3,
-        "doc": 5,
+        "doc": 6,
         "skill": 3,
         "test": 2
       },
@@ -5958,6 +6334,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.synthesis.md"
         },
         {
           "family": "doc",
@@ -6001,7 +6381,7 @@
         "lifecycle",
         "skill_consumers:3",
         "test_consumers:2",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -6016,7 +6396,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 13
+      "total_consumers": 14
     },
     {
       "confidence": "high",
@@ -6024,7 +6404,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 5,
-        "doc": 5,
+        "doc": 8,
         "hook": 1,
         "test": 5
       },
@@ -6055,6 +6435,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-331.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/gentle-ai-comparative-audit-2026-06-15.md"
         },
         {
@@ -6063,7 +6447,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-integration-assessment-2026-05-22.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/graphify-next-step-decision-2026-05-22.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-next-step-decision-2026-05-22.synthesis.md"
         },
         {
           "family": "doc",
@@ -6099,7 +6491,7 @@
         "lifecycle",
         "hook_consumers:1",
         "test_consumers:5",
-        "doc_consumers:5",
+        "doc_consumers:8",
         "config_consumers:5"
       ],
       "family": "skills",
@@ -6138,15 +6530,15 @@
         "goose",
         "aider"
       ],
-      "total_consumers": 16
+      "total_consumers": 19
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 8,
-        "doc": 17,
+        "config": 9,
+        "doc": 22,
         "script": 12,
         "test": 19
       },
@@ -6162,6 +6554,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/lib-projection-contract.yaml"
         },
         {
           "family": "config",
@@ -6209,6 +6605,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-142.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-222-pre-agent-stash-defer-until-launch-confirmed.md"
         },
         {
@@ -6221,11 +6621,23 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-304.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-309-current-window-subagent-spawn-slos.md"
         },
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-328-governance-roi-friction-vs-catch.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-328.synthesis.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/designs/hook-lib-projection-contract.md"
         },
         {
           "family": "doc",
@@ -6250,6 +6662,10 @@
         {
           "family": "doc",
           "path": "docs/09-Quality/manual-tests/claude-code-startup-hang-regression.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/claude-code-startup-hang-regression.synthesis.md"
         },
         {
           "family": "script",
@@ -6381,8 +6797,8 @@
         "lifecycle",
         "script_consumers:12",
         "test_consumers:19",
-        "doc_consumers:17",
-        "config_consumers:8"
+        "doc_consumers:22",
+        "config_consumers:9"
       ],
       "family": "skills",
       "lifecycle_id": "skills/hook-timing/SKILL.md",
@@ -6394,7 +6810,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 56
+      "total_consumers": 62
     },
     {
       "confidence": "high",
@@ -6402,7 +6818,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 5,
-        "doc": 1,
+        "doc": 2,
         "script": 1,
         "skill": 1,
         "test": 3
@@ -6433,6 +6849,10 @@
           "path": "docs/02-Decisions/adrs/ADR-059-so-existential-validation.md"
         },
         {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-059.synthesis.md"
+        },
+        {
           "family": "script",
           "path": "scripts/cos-install-hook"
         },
@@ -6458,7 +6878,7 @@
         "skill_consumers:1",
         "script_consumers:1",
         "test_consumers:3",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:5"
       ],
       "family": "skills",
@@ -6469,7 +6889,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 11
+      "total_consumers": 12
     },
     {
       "confidence": "high",
@@ -6543,7 +6963,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 5,
-        "doc": 2,
+        "doc": 3,
         "script": 1,
         "skill": 1,
         "test": 2
@@ -6575,6 +6995,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-059.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/root/component-sources.md"
         },
         {
@@ -6599,7 +7023,7 @@
         "skill_consumers:1",
         "script_consumers:1",
         "test_consumers:2",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:5"
       ],
       "family": "skills",
@@ -6610,7 +7034,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 11
+      "total_consumers": 12
     },
     {
       "confidence": "high",
@@ -6768,7 +7192,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 4,
-        "doc": 4,
+        "doc": 6,
         "rule": 2,
         "script": 1,
         "test": 3
@@ -6796,6 +7220,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-056-adaptive-agent-dispatch.md"
         },
         {
@@ -6805,6 +7233,10 @@
         {
           "family": "doc",
           "path": "docs/05-Methodology/runbooks/llm-dispatch.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/runbooks/llm-dispatch.synthesis.md"
         },
         {
           "family": "rule",
@@ -6837,7 +7269,7 @@
         "rule_consumers:2",
         "script_consumers:1",
         "test_consumers:3",
-        "doc_consumers:4",
+        "doc_consumers:6",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -6852,7 +7284,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 14
+      "total_consumers": 16
     },
     {
       "confidence": "high",
@@ -6860,7 +7292,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 4,
-        "doc": 5,
+        "doc": 7,
         "script": 1,
         "skill": 1,
         "test": 1
@@ -6900,7 +7332,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/09-Quality/security/cognitive-os-attack-surface-inventory.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/09-Quality/security/security-red-team.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/security/security-red-team.synthesis.md"
         },
         {
           "family": "script",
@@ -6921,7 +7361,7 @@
         "skill_consumers:1",
         "script_consumers:1",
         "test_consumers:1",
-        "doc_consumers:5",
+        "doc_consumers:7",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -6936,7 +7376,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 12
+      "total_consumers": 14
     },
     {
       "confidence": "high",
@@ -7156,7 +7596,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 6,
-        "doc": 8,
+        "doc": 10,
         "script": 4,
         "test": 2
       },
@@ -7199,11 +7639,19 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-321.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/opensage-self-programming-patterns.md"
         },
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/parser-coverage-audit-2026-04-24.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/parser-coverage-audit-2026-04-24.synthesis.md"
         },
         {
           "family": "doc",
@@ -7247,7 +7695,7 @@
         "lifecycle",
         "script_consumers:4",
         "test_consumers:2",
-        "doc_consumers:8",
+        "doc_consumers:10",
         "config_consumers:6"
       ],
       "family": "skills",
@@ -7262,7 +7710,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 20
+      "total_consumers": 22
     },
     {
       "confidence": "high",
@@ -7270,7 +7718,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 3,
-        "doc": 7,
+        "doc": 9,
         "hook": 1,
         "test": 2
       },
@@ -7293,7 +7741,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-077.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-080-hermes-cross-harness-adoption.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-080-hermes-cross-harness-adoption.synthesis.md"
         },
         {
           "family": "doc",
@@ -7333,7 +7789,7 @@
         "lifecycle",
         "hook_consumers:1",
         "test_consumers:2",
-        "doc_consumers:7",
+        "doc_consumers:9",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -7348,7 +7804,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 13
+      "total_consumers": 15
     },
     {
       "confidence": "high",
@@ -7356,7 +7812,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 3,
-        "doc": 5,
+        "doc": 7,
         "test": 5
       },
       "consumers": [
@@ -7386,7 +7842,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/infrastructure-service-catalog.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/observability-backend-evaluation-2026-04-24.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/observability-backend-evaluation-2026-04-24.synthesis.md"
         },
         {
           "family": "doc",
@@ -7417,7 +7881,7 @@
       "evidence": [
         "lifecycle",
         "test_consumers:5",
-        "doc_consumers:5",
+        "doc_consumers:7",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -7432,7 +7896,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 13
+      "total_consumers": 15
     },
     {
       "confidence": "high",
@@ -7440,7 +7904,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 7,
-        "doc": 13,
+        "doc": 18,
         "hook": 2,
         "script": 1,
         "skill": 1,
@@ -7493,7 +7957,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-130.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-131-local-ci-migration.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-131.synthesis.md"
         },
         {
           "family": "doc",
@@ -7517,6 +7989,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/direct-anthropic-api-policy.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
@@ -7525,7 +8001,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/05-Methodology/root/automation.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/05-Methodology/root/configurable-quality-gates.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/root/configurable-quality-gates.synthesis.md"
         },
         {
           "family": "hook",
@@ -7571,7 +8055,7 @@
         "hook_consumers:2",
         "script_consumers:1",
         "test_consumers:5",
-        "doc_consumers:13",
+        "doc_consumers:18",
         "config_consumers:7"
       ],
       "family": "skills",
@@ -7586,7 +8070,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 29
+      "total_consumers": 34
     },
     {
       "confidence": "high",
@@ -7670,7 +8154,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 6,
-        "doc": 7,
+        "doc": 8,
         "rule": 2,
         "script": 1,
         "skill": 6,
@@ -7724,6 +8208,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/ssr-agentic-primitive-enablement-gaps.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/ssr-agentic-primitive-enablement-gaps.synthesis.md"
         },
         {
           "family": "doc",
@@ -7793,7 +8281,7 @@
         "rule_consumers:2",
         "script_consumers:1",
         "test_consumers:5",
-        "doc_consumers:7",
+        "doc_consumers:8",
         "config_consumers:6"
       ],
       "family": "skills",
@@ -7808,7 +8296,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 27
+      "total_consumers": 28
     },
     {
       "confidence": "high",
@@ -7816,7 +8304,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 4,
-        "doc": 6,
+        "doc": 9,
         "script": 5,
         "test": 8
       },
@@ -7859,7 +8347,19 @@
         },
         {
           "family": "doc",
+          "path": "docs/09-Quality/manual-tests/primitive-duplication-audit.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/09-Quality/manual-tests/primitive-harness-coverage.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/primitive-harness-coverage.synthesis.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/primitive-readiness-ledger.synthesis.md"
         },
         {
           "family": "script",
@@ -7919,7 +8419,7 @@
         "lifecycle",
         "script_consumers:5",
         "test_consumers:8",
-        "doc_consumers:6",
+        "doc_consumers:9",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -7934,7 +8434,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 23
+      "total_consumers": 26
     },
     {
       "confidence": "high",
@@ -7942,7 +8442,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 8,
-        "doc": 7,
+        "doc": 9,
         "script": 2,
         "test": 6
       },
@@ -8001,7 +8501,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/primitive-readiness-continuity-plan.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/ssr-agentic-primitive-enablement-gaps.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/ssr-agentic-primitive-enablement-gaps.synthesis.md"
         },
         {
           "family": "doc",
@@ -8045,7 +8553,7 @@
         "lifecycle",
         "script_consumers:2",
         "test_consumers:6",
-        "doc_consumers:7",
+        "doc_consumers:9",
         "config_consumers:8"
       ],
       "family": "skills",
@@ -8060,7 +8568,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 23
+      "total_consumers": 25
     },
     {
       "confidence": "high",
@@ -8146,7 +8654,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 6,
-        "doc": 4,
+        "doc": 6,
         "script": 2,
         "test": 4
       },
@@ -8189,7 +8697,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/ssr-agentic-primitive-enablement-gaps.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/08-References/business/conversation-reality-audit-2026-04-30.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/business/conversation-reality-audit-2026-04-30.synthesis.md"
         },
         {
           "family": "script",
@@ -8221,7 +8737,7 @@
         "lifecycle",
         "script_consumers:2",
         "test_consumers:4",
-        "doc_consumers:4",
+        "doc_consumers:6",
         "config_consumers:6"
       ],
       "family": "skills",
@@ -8236,7 +8752,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 16
+      "total_consumers": 18
     },
     {
       "confidence": "high",
@@ -8244,7 +8760,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 8,
-        "doc": 14,
+        "doc": 22,
         "script": 3,
         "skill": 1,
         "test": 9
@@ -8300,7 +8816,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-288.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-296-language-agnostic-semantic-routing.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-296.synthesis.md"
         },
         {
           "family": "doc",
@@ -8324,6 +8848,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/ssr-agentic-primitive-enablement-gaps.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/root/developer-as-orchestrator.md"
         },
         {
@@ -8332,11 +8860,31 @@
         },
         {
           "family": "doc",
+          "path": "docs/08-References/business/install-scope-anti-slop-audit-2026-05-15.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/08-References/business/master-plan-checklist.md"
         },
         {
           "family": "doc",
+          "path": "docs/08-References/business/master-plan-checklist.synthesis.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/business/master-plan-execution-requirements.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/08-References/business/product-answer-playbook.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/business/product-answer-playbook.synthesis.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/business/product-messaging.synthesis.md"
         },
         {
           "family": "script",
@@ -8397,7 +8945,7 @@
         "skill_consumers:1",
         "script_consumers:3",
         "test_consumers:9",
-        "doc_consumers:14",
+        "doc_consumers:22",
         "config_consumers:8"
       ],
       "family": "skills",
@@ -8412,7 +8960,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 35
+      "total_consumers": 43
     },
     {
       "confidence": "high",
@@ -8508,7 +9056,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 11,
-        "doc": 13,
+        "doc": 20,
         "script": 8,
         "skill": 1,
         "test": 10
@@ -8572,6 +9120,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-167.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/INDEX.md"
         },
         {
@@ -8581,6 +9133,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/headless-runtime-proof-strategy.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/headless-runtime-proof-strategy.synthesis.md"
         },
         {
           "family": "doc",
@@ -8600,7 +9156,19 @@
         },
         {
           "family": "doc",
+          "path": "docs/09-Quality/manual-tests/headless-docker-service-runtime.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/09-Quality/manual-tests/headless-runtime-proof-drills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/headless-runtime-proof-drills.synthesis.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/local-connected-systems-validation.synthesis.md"
         },
         {
           "family": "doc",
@@ -8608,7 +9176,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/09-Quality/manual-tests/proof-drill-registry.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/09-Quality/manual-tests/service-control-plane-proof-drills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/service-control-plane-proof-drills.synthesis.md"
         },
         {
           "family": "script",
@@ -8692,7 +9268,7 @@
         "skill_consumers:1",
         "script_consumers:8",
         "test_consumers:10",
-        "doc_consumers:13",
+        "doc_consumers:20",
         "config_consumers:11"
       ],
       "family": "skills",
@@ -8703,7 +9279,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 43
+      "total_consumers": 50
     },
     {
       "confidence": "medium",
@@ -8881,7 +9457,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 7,
-        "doc": 12,
+        "doc": 16,
         "hook": 3,
         "rule": 3,
         "script": 3,
@@ -8934,6 +9510,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-091.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/03-PoCs/research/helixdb-annex-c-runtime-mcp-2026-05-11.md"
         },
         {
@@ -8958,11 +9538,23 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/service-control-plane-implementation-plan.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/05-Methodology/root/rules-consolidation-plan.md"
         },
         {
           "family": "doc",
+          "path": "docs/09-Quality/manual-tests/headless-docker-service-runtime.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/09-Quality/manual-tests/service-control-plane-proof-drills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/service-control-plane-proof-drills.synthesis.md"
         },
         {
           "family": "hook",
@@ -9048,7 +9640,7 @@
         "rule_consumers:3",
         "script_consumers:3",
         "test_consumers:10",
-        "doc_consumers:12",
+        "doc_consumers:16",
         "config_consumers:7"
       ],
       "family": "skills",
@@ -9063,7 +9655,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 38
+      "total_consumers": 42
     },
     {
       "confidence": "high",
@@ -9071,7 +9663,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 5,
-        "doc": 8,
+        "doc": 10,
         "script": 1,
         "test": 1
       },
@@ -9110,7 +9702,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-065.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-067-frontmatter-defense-in-depth.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-067.synthesis.md"
         },
         {
           "family": "doc",
@@ -9142,7 +9742,7 @@
         "lifecycle",
         "script_consumers:1",
         "test_consumers:1",
-        "doc_consumers:8",
+        "doc_consumers:10",
         "config_consumers:5"
       ],
       "family": "skills",
@@ -9157,7 +9757,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 15
+      "total_consumers": 17
     },
     {
       "confidence": "high",
@@ -9165,7 +9765,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 9,
-        "doc": 41,
+        "doc": 58,
         "hook": 1,
         "rule": 3,
         "script": 11,
@@ -9243,7 +9843,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-314.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-319-detractor-review-modes.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-320.synthesis.md"
         },
         {
           "family": "doc",
@@ -9303,6 +9911,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/agentic-mastery-license-weight-dx-matrix.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
@@ -9315,7 +9927,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/red-team-harness-design.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/red-team-harness-design.synthesis.md"
         },
         {
           "family": "doc",
@@ -9323,7 +9943,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/red-team-harness-proposal.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/so-wide-impact-evaluation-plane.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/so-wide-impact-evaluation-plane.synthesis.md"
         },
         {
           "family": "doc",
@@ -9335,6 +9963,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/patterns/ecosystem-tools.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/root/component-sources.md"
         },
         {
@@ -9343,7 +9975,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/root/security-stack.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/root/tool-stack.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/root/tool-stack.synthesis.md"
         },
         {
           "family": "doc",
@@ -9351,7 +9991,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/09-Quality/quality/test-coverage-report.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/09-Quality/root/testing-cognitive-os.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/root/testing-cognitive-os.synthesis.md"
         },
         {
           "family": "doc",
@@ -9359,7 +10007,19 @@
         },
         {
           "family": "doc",
+          "path": "docs/09-Quality/security/cognitive-os-agent-security-research-2026-05-05.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/09-Quality/security/cognitive-os-attack-surface-inventory.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/security/cognitive-os-attack-surface-inventory.synthesis.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/security/credential-safe-runner-red-team-2026-05-05.synthesis.md"
         },
         {
           "family": "doc",
@@ -9367,7 +10027,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/09-Quality/security/lethal-trifecta-gate.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/09-Quality/security/security-red-team.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/security/security-red-team.synthesis.md"
         },
         {
           "family": "doc",
@@ -9510,7 +10178,7 @@
         "rule_consumers:3",
         "script_consumers:11",
         "test_consumers:11",
-        "doc_consumers:41",
+        "doc_consumers:58",
         "config_consumers:9"
       ],
       "family": "skills",
@@ -9525,7 +10193,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 82
+      "total_consumers": 99
     },
     {
       "confidence": "high",
@@ -9533,7 +10201,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 3,
-        "doc": 14,
+        "doc": 17,
         "script": 1,
         "skill": 1,
         "test": 4
@@ -9597,6 +10265,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/red-team-harness-proposal.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/09-Quality/security/cognitive-os-agent-security-research-2026-05-05.md"
         },
         {
@@ -9605,7 +10277,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/09-Quality/security/cognitive-os-attack-surface-inventory.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/09-Quality/security/security-red-team.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/security/security-red-team.synthesis.md"
         },
         {
           "family": "script",
@@ -9638,7 +10318,7 @@
         "skill_consumers:1",
         "script_consumers:1",
         "test_consumers:4",
-        "doc_consumers:14",
+        "doc_consumers:17",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -9653,7 +10333,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 23
+      "total_consumers": 26
     },
     {
       "confidence": "high",
@@ -9661,7 +10341,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 5,
-        "doc": 7,
+        "doc": 8,
         "rule": 1,
         "script": 1,
         "test": 3
@@ -9694,6 +10374,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-180-lifecycle-promotion-activation.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-180.synthesis.md"
         },
         {
           "family": "doc",
@@ -9742,7 +10426,7 @@
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:3",
-        "doc_consumers:7",
+        "doc_consumers:8",
         "config_consumers:5"
       ],
       "family": "skills",
@@ -9757,7 +10441,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 17
+      "total_consumers": 18
     },
     {
       "confidence": "high",
@@ -9829,7 +10513,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 8,
-        "doc": 14,
+        "doc": 16,
         "rule": 1,
         "skill": 2,
         "test": 10
@@ -9913,11 +10597,19 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/root/self-building-protocol.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/08-References/business/master-plan-checklist.md"
         },
         {
           "family": "doc",
           "path": "docs/09-Quality/manual-tests/cross-stack-license-audit-cli.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/cross-stack-license-audit-cli.synthesis.md"
         },
         {
           "family": "doc",
@@ -9982,7 +10674,7 @@
         "skill_consumers:2",
         "rule_consumers:1",
         "test_consumers:10",
-        "doc_consumers:14",
+        "doc_consumers:16",
         "config_consumers:8"
       ],
       "family": "skills",
@@ -9997,7 +10689,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 35
+      "total_consumers": 37
     },
     {
       "confidence": "high",
@@ -10005,7 +10697,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 4,
-        "doc": 14,
+        "doc": 19,
         "hook": 1,
         "rule": 3,
         "script": 2,
@@ -10038,6 +10730,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-080-hermes-cross-harness-adoption.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-092-harness-skills-sync-path.md"
         },
         {
@@ -10050,6 +10746,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
@@ -10058,7 +10758,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/harness-adoption-gap/diagnosis.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.synthesis.md"
         },
         {
           "family": "doc",
@@ -10075,6 +10783,10 @@
         {
           "family": "doc",
           "path": "docs/09-Quality/root/testing-cognitive-os-suite.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/root/testing-cognitive-os-suite.synthesis.md"
         },
         {
           "family": "doc",
@@ -10136,7 +10848,7 @@
         "rule_consumers:3",
         "script_consumers:2",
         "test_consumers:5",
-        "doc_consumers:14",
+        "doc_consumers:19",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -10151,7 +10863,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 29
+      "total_consumers": 34
     },
     {
       "confidence": "high",
@@ -10159,7 +10871,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 4,
-        "doc": 13,
+        "doc": 14,
         "test": 2
       },
       "consumers": [
@@ -10232,6 +10944,10 @@
           "path": "docs/04-Concepts/root/self-building-protocol.md"
         },
         {
+          "family": "doc",
+          "path": "docs/04-Concepts/root/self-building-protocol.synthesis.md"
+        },
+        {
           "family": "test",
           "path": "tests/contracts/test_orchestrator_skill_routing.py"
         },
@@ -10244,7 +10960,7 @@
       "evidence": [
         "lifecycle",
         "test_consumers:2",
-        "doc_consumers:13",
+        "doc_consumers:14",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -10259,7 +10975,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 19
+      "total_consumers": 20
     },
     {
       "confidence": "high",
@@ -10429,7 +11145,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 7,
-        "doc": 16,
+        "doc": 19,
         "rule": 1,
         "script": 2,
         "skill": 2,
@@ -10482,6 +11198,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-167.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-302-language-agnostic-primitive-routing-authoring.md"
         },
         {
@@ -10491,6 +11211,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.synthesis.md"
         },
         {
           "family": "doc",
@@ -10527,6 +11251,10 @@
         {
           "family": "doc",
           "path": "docs/09-Quality/manual-tests/proof-drill-registry.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/proof-drill-registry.synthesis.md"
         },
         {
           "family": "rule",
@@ -10608,7 +11336,7 @@
         "rule_consumers:1",
         "script_consumers:2",
         "test_consumers:13",
-        "doc_consumers:16",
+        "doc_consumers:19",
         "config_consumers:7"
       ],
       "family": "skills",
@@ -10623,7 +11351,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 41
+      "total_consumers": 44
     },
     {
       "confidence": "high",
@@ -10631,7 +11359,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 3,
-        "doc": 4,
+        "doc": 6,
         "skill": 3,
         "test": 4
       },
@@ -10658,7 +11386,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/05-Methodology/usage/skill-authoring.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/usage/skill-authoring.synthesis.md"
         },
         {
           "family": "doc",
@@ -10698,7 +11434,7 @@
         "lifecycle",
         "skill_consumers:3",
         "test_consumers:4",
-        "doc_consumers:4",
+        "doc_consumers:6",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -10713,7 +11449,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 14
+      "total_consumers": 16
     },
     {
       "confidence": "high",
@@ -10721,7 +11457,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 8,
-        "doc": 104,
+        "doc": 112,
         "hook": 1,
         "rule": 9,
         "script": 2,
@@ -10795,7 +11531,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-065.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-188-mandatory-skill-invocation-at-high-confidence.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-188.synthesis.md"
         },
         {
           "family": "doc",
@@ -10815,11 +11559,19 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-217.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md"
         },
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-267-license-compliance-enforcement-architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-267.synthesis.md"
         },
         {
           "family": "doc",
@@ -11123,6 +11875,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/graphify-integration-assessment-2026-05-22.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/install-harness-ux-gap-2026-05-15.md"
         },
         {
@@ -11143,7 +11899,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/root/component-sources.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/root/ecosystem-comparison.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/root/ecosystem-comparison.synthesis.md"
         },
         {
           "family": "doc",
@@ -11172,6 +11936,10 @@
         {
           "family": "doc",
           "path": "docs/09-Quality/manual-tests/cross-stack-license-audit-cli.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/cross-stack-license-audit-cli.synthesis.md"
         },
         {
           "family": "doc",
@@ -11326,7 +12094,7 @@
         "rule_consumers:9",
         "script_consumers:2",
         "test_consumers:16",
-        "doc_consumers:104",
+        "doc_consumers:112",
         "config_consumers:8"
       ],
       "family": "skills",
@@ -11341,7 +12109,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 147
+      "total_consumers": 155
     },
     {
       "confidence": "high",
@@ -11349,7 +12117,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 4,
-        "doc": 40,
+        "doc": 49,
         "hook": 6,
         "rule": 14,
         "skill": 2,
@@ -11454,6 +12222,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/red-team-harness-design.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/patterns/ecosystem-tools.md"
         },
         {
@@ -11470,6 +12242,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/root/organizational-model.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/root/zero-touch-engineering.md"
         },
         {
@@ -11478,7 +12254,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/05-Methodology/root/automation.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/05-Methodology/root/executable-acceptance-specification.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/root/executable-acceptance-specification.synthesis.md"
         },
         {
           "family": "doc",
@@ -11518,7 +12302,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/08-References/root/adw-patterns.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/08-References/root/bmad-v6-patterns.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/root/bmad-v6-patterns.synthesis.md"
         },
         {
           "family": "doc",
@@ -11526,7 +12318,19 @@
         },
         {
           "family": "doc",
+          "path": "docs/08-References/root/patterns-adopted.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/08-References/root/piter-framework.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/root/piter-framework.synthesis.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/consumer-sdd-lane.synthesis.md"
         },
         {
           "family": "doc",
@@ -11776,7 +12580,7 @@
         "hook_consumers:6",
         "rule_consumers:14",
         "test_consumers:37",
-        "doc_consumers:40",
+        "doc_consumers:49",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -11791,7 +12595,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 103
+      "total_consumers": 112
     },
     {
       "confidence": "high",
@@ -11799,7 +12603,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 3,
-        "doc": 9,
+        "doc": 10,
         "rule": 1,
         "test": 3
       },
@@ -11853,6 +12657,10 @@
           "path": "docs/08-References/root/bmad-v6-patterns.md"
         },
         {
+          "family": "doc",
+          "path": "docs/08-References/root/bmad-v6-patterns.synthesis.md"
+        },
+        {
           "family": "rule",
           "path": "rules/skill-management.md"
         },
@@ -11874,7 +12682,7 @@
         "lifecycle",
         "rule_consumers:1",
         "test_consumers:3",
-        "doc_consumers:9",
+        "doc_consumers:10",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -11889,7 +12697,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 16
+      "total_consumers": 17
     },
     {
       "confidence": "high",
@@ -11897,7 +12705,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 3,
-        "doc": 15,
+        "doc": 17,
         "hook": 3,
         "rule": 5,
         "skill": 2,
@@ -11962,7 +12770,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/root/organizational-model.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/05-Methodology/root/automation.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/root/automation.synthesis.md"
         },
         {
           "family": "doc",
@@ -12064,7 +12880,7 @@
         "hook_consumers:3",
         "rule_consumers:5",
         "test_consumers:10",
-        "doc_consumers:15",
+        "doc_consumers:17",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -12079,7 +12895,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 38
+      "total_consumers": 40
     },
     {
       "confidence": "high",
@@ -12173,7 +12989,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 3,
-        "doc": 13,
+        "doc": 18,
         "hook": 2,
         "rule": 3,
         "skill": 1,
@@ -12222,11 +13038,23 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/root/organizational-model.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/05-Methodology/root/automation.md"
         },
         {
           "family": "doc",
+          "path": "docs/05-Methodology/root/automation.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/05-Methodology/root/executable-acceptance-specification.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/root/executable-acceptance-specification.synthesis.md"
         },
         {
           "family": "doc",
@@ -12243,6 +13071,14 @@
         {
           "family": "doc",
           "path": "docs/08-References/root/piter-framework.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/root/piter-framework.synthesis.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/consumer-sdd-lane.synthesis.md"
         },
         {
           "family": "hook",
@@ -12300,7 +13136,7 @@
         "hook_consumers:2",
         "rule_consumers:3",
         "test_consumers:6",
-        "doc_consumers:13",
+        "doc_consumers:18",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -12315,7 +13151,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 28
+      "total_consumers": 33
     },
     {
       "confidence": "high",
@@ -12323,7 +13159,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 3,
-        "doc": 13,
+        "doc": 19,
         "hook": 1,
         "rule": 2,
         "skill": 3,
@@ -12368,11 +13204,23 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/root/organizational-model.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/05-Methodology/root/automation.md"
         },
         {
           "family": "doc",
+          "path": "docs/05-Methodology/root/automation.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/05-Methodology/root/executable-acceptance-specification.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/root/executable-acceptance-specification.synthesis.md"
         },
         {
           "family": "doc",
@@ -12392,7 +13240,19 @@
         },
         {
           "family": "doc",
+          "path": "docs/08-References/root/bmad-v6-patterns.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/08-References/root/piter-framework.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/root/piter-framework.synthesis.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/consumer-sdd-lane.synthesis.md"
         },
         {
           "family": "hook",
@@ -12458,7 +13318,7 @@
         "hook_consumers:1",
         "rule_consumers:2",
         "test_consumers:8",
-        "doc_consumers:13",
+        "doc_consumers:19",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -12473,7 +13333,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 30
+      "total_consumers": 36
     },
     {
       "confidence": "high",
@@ -12481,7 +13341,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 4,
-        "doc": 33,
+        "doc": 41,
         "hook": 4,
         "rule": 11,
         "script": 1,
@@ -12559,6 +13419,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture-principles.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture.md"
         },
         {
@@ -12583,6 +13447,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/root/organizational-model.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/root/singularity.md"
         },
         {
@@ -12595,7 +13463,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/05-Methodology/root/automation.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/05-Methodology/root/executable-acceptance-specification.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/root/executable-acceptance-specification.synthesis.md"
         },
         {
           "family": "doc",
@@ -12604,6 +13480,10 @@
         {
           "family": "doc",
           "path": "docs/05-Methodology/root/rules.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/root/rules.synthesis.md"
         },
         {
           "family": "doc",
@@ -12635,7 +13515,19 @@
         },
         {
           "family": "doc",
+          "path": "docs/08-References/root/patterns-adopted.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/08-References/root/piter-framework.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/root/piter-framework.synthesis.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/consumer-sdd-lane.synthesis.md"
         },
         {
           "family": "hook",
@@ -12838,7 +13730,7 @@
         "rule_consumers:11",
         "script_consumers:1",
         "test_consumers:27",
-        "doc_consumers:33",
+        "doc_consumers:41",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -12853,7 +13745,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 85
+      "total_consumers": 93
     },
     {
       "confidence": "high",
@@ -12861,7 +13753,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 6,
-        "doc": 10,
+        "doc": 12,
         "script": 1,
         "test": 5
       },
@@ -12928,7 +13820,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/09-Quality/security/cognitive-os-attack-surface-inventory.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/09-Quality/security/security-red-team.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/security/security-red-team.synthesis.md"
         },
         {
           "family": "script",
@@ -12960,7 +13860,7 @@
         "lifecycle",
         "script_consumers:1",
         "test_consumers:5",
-        "doc_consumers:10",
+        "doc_consumers:12",
         "config_consumers:6"
       ],
       "family": "skills",
@@ -12975,7 +13875,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 22
+      "total_consumers": 24
     },
     {
       "confidence": "high",
@@ -12983,7 +13883,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 12,
-        "doc": 13,
+        "doc": 15,
         "script": 2,
         "test": 4
       },
@@ -13074,11 +13974,19 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/root/self-improvement-loop.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/08-References/business/master-plan-checklist.md"
         },
         {
           "family": "doc",
           "path": "docs/08-References/case-studies/external-review-cycle-2026-05-02.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/case-studies/external-review-cycle-2026-05-02.synthesis.md"
         },
         {
           "family": "doc",
@@ -13117,7 +14025,7 @@
       "evidence": [
         "script_consumers:2",
         "test_consumers:4",
-        "doc_consumers:13",
+        "doc_consumers:15",
         "config_consumers:12"
       ],
       "family": "skills",
@@ -13128,7 +14036,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 31
+      "total_consumers": 33
     },
     {
       "confidence": "high",
@@ -13136,7 +14044,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 6,
-        "doc": 18,
+        "doc": 24,
         "hook": 1,
         "rule": 1,
         "script": 3,
@@ -13182,6 +14090,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-030.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-092-harness-skills-sync-path.md"
         },
         {
@@ -13202,11 +14114,19 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/core-vs-extensions.md"
         },
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/cross-tool-task-recovery-research-2026-05.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/cross-tool-task-recovery-research-2026-05.synthesis.md"
         },
         {
           "family": "doc",
@@ -13222,11 +14142,23 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/harness-adoption-gap/diagnosis.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.md"
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/05-Methodology/guides/queue-classes-routing.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/guides/queue-classes-routing.synthesis.md"
         },
         {
           "family": "doc",
@@ -13333,7 +14265,7 @@
         "rule_consumers:1",
         "script_consumers:3",
         "test_consumers:14",
-        "doc_consumers:18",
+        "doc_consumers:24",
         "config_consumers:6"
       ],
       "family": "skills",
@@ -13348,7 +14280,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 45
+      "total_consumers": 51
     },
     {
       "confidence": "high",
@@ -13356,7 +14288,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 3,
-        "doc": 8,
+        "doc": 9,
         "test": 2
       },
       "consumers": [
@@ -13390,6 +14322,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/core-vs-extensions.md"
         },
         {
@@ -13417,7 +14353,7 @@
       "evidence": [
         "lifecycle",
         "test_consumers:2",
-        "doc_consumers:8",
+        "doc_consumers:9",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -13432,7 +14368,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 13
+      "total_consumers": 14
     },
     {
       "confidence": "high",
@@ -13640,7 +14576,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 12,
-        "doc": 11,
+        "doc": 13,
         "hook": 3,
         "rule": 2,
         "script": 6,
@@ -13710,6 +14646,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-030.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-054-project-docs-convention.md"
         },
         {
@@ -13723,6 +14663,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.synthesis.md"
         },
         {
           "family": "doc",
@@ -13837,7 +14781,7 @@
         "rule_consumers:2",
         "script_consumers:6",
         "test_consumers:9",
-        "doc_consumers:11",
+        "doc_consumers:13",
         "config_consumers:12"
       ],
       "family": "skills",
@@ -13852,7 +14796,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 45
+      "total_consumers": 47
     },
     {
       "confidence": "high",
@@ -13860,7 +14804,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 4,
-        "doc": 27,
+        "doc": 36,
         "rule": 5,
         "script": 1,
         "skill": 1,
@@ -13909,7 +14853,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-056.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-067-frontmatter-defense-in-depth.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-067.synthesis.md"
         },
         {
           "family": "doc",
@@ -13922,6 +14874,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-095-skill-synthesis-success-patterns.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-095.synthesis.md"
         },
         {
           "family": "doc",
@@ -13945,6 +14901,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
@@ -13961,7 +14921,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/harness-adoption-gap/diagnosis.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/root/component-sources.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/root/component-sources.synthesis.md"
         },
         {
           "family": "doc",
@@ -13973,6 +14941,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/root/singularity.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/05-Methodology/root/hooks.md"
         },
         {
@@ -13981,7 +14953,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/05-Methodology/root/rules.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/05-Methodology/root/skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/root/skills.synthesis.md"
         },
         {
           "family": "doc",
@@ -14051,7 +15031,7 @@
         "rule_consumers:5",
         "script_consumers:1",
         "test_consumers:6",
-        "doc_consumers:27",
+        "doc_consumers:36",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -14090,7 +15070,7 @@
         "goose",
         "aider"
       ],
-      "total_consumers": 44
+      "total_consumers": 53
     },
     {
       "confidence": "high",
@@ -14176,7 +15156,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 10,
-        "doc": 6,
+        "doc": 10,
         "hook": 1,
         "script": 5,
         "test": 10
@@ -14240,11 +15220,27 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/gentle-ai-comparative-audit-2026-06-15.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/so-wide-impact-evaluation-plane.md"
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/so-wide-impact-evaluation-plane.synthesis.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/benchmarks/workstation-container-comparison-report.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/08-References/business/cognitive-os-efficiency-operating-model.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/business/cognitive-os-efficiency-operating-model.synthesis.md"
         },
         {
           "family": "hook",
@@ -14317,7 +15313,7 @@
         "hook_consumers:1",
         "script_consumers:5",
         "test_consumers:10",
-        "doc_consumers:6",
+        "doc_consumers:10",
         "config_consumers:10"
       ],
       "family": "skills",
@@ -14332,7 +15328,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 32
+      "total_consumers": 36
     },
     {
       "confidence": "high",
@@ -14340,7 +15336,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 4,
-        "doc": 3,
+        "doc": 4,
         "hook": 1,
         "rule": 1,
         "script": 2,
@@ -14374,6 +15370,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/so-wide-impact-evaluation-plane.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/so-wide-impact-evaluation-plane.synthesis.md"
         },
         {
           "family": "hook",
@@ -14411,7 +15411,7 @@
         "rule_consumers:1",
         "script_consumers:2",
         "test_consumers:3",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -14426,14 +15426,14 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 14
+      "total_consumers": 15
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "keep install/profile/harness proof current",
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
-        "config": 5,
+        "config": 6,
         "doc": 4,
         "rule": 1,
         "script": 2,
@@ -14459,6 +15459,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/state-retention.yaml"
         },
         {
           "family": "doc",
@@ -14504,7 +15508,7 @@
         "script_consumers:2",
         "test_consumers:2",
         "doc_consumers:4",
-        "config_consumers:5"
+        "config_consumers:6"
       ],
       "family": "skills",
       "lifecycle_id": "skills/stash-quarantine/SKILL.md",
@@ -14518,7 +15522,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 14
+      "total_consumers": 15
     },
     {
       "confidence": "high",
@@ -14526,7 +15530,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 4,
-        "doc": 1,
+        "doc": 2,
         "test": 1
       },
       "consumers": [
@@ -14551,6 +15555,10 @@
           "path": "docs/02-Decisions/adrs/ADR-095-skill-synthesis-success-patterns.md"
         },
         {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-095.synthesis.md"
+        },
+        {
           "family": "test",
           "path": "tests/red_team/portability/test_os_only_scope_family.py"
         }
@@ -14559,7 +15567,7 @@
       "evidence": [
         "lifecycle",
         "test_consumers:1",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -14572,7 +15580,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 6
+      "total_consumers": 7
     },
     {
       "confidence": "medium",
@@ -14778,7 +15786,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 3,
-        "doc": 6,
+        "doc": 8,
         "rule": 1,
         "test": 4
       },
@@ -14805,6 +15813,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/core-vs-extensions.md"
         },
         {
@@ -14818,6 +15830,10 @@
         {
           "family": "doc",
           "path": "docs/08-References/root/bmad-v6-patterns.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/root/bmad-v6-patterns.synthesis.md"
         },
         {
           "family": "rule",
@@ -14845,7 +15861,7 @@
         "lifecycle",
         "rule_consumers:1",
         "test_consumers:4",
-        "doc_consumers:6",
+        "doc_consumers:8",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -14860,7 +15876,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 14
+      "total_consumers": 16
     },
     {
       "confidence": "high",
@@ -14962,7 +15978,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 5,
-        "doc": 6,
+        "doc": 8,
         "test": 2
       },
       "consumers": [
@@ -15000,11 +16016,19 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-138.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-139-account-agnostic-multi-provider-runtime.md"
         },
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/dx-cloud-flow-bootstrap-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/dx-cloud-flow-bootstrap-plan.synthesis.md"
         },
         {
           "family": "doc",
@@ -15023,7 +16047,7 @@
       "evidence": [
         "lifecycle",
         "test_consumers:2",
-        "doc_consumers:6",
+        "doc_consumers:8",
         "config_consumers:5"
       ],
       "family": "skills",
@@ -15038,7 +16062,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 13
+      "total_consumers": 15
     },
     {
       "confidence": "high",
@@ -15046,7 +16070,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 4,
-        "doc": 8,
+        "doc": 11,
         "rule": 1,
         "script": 1,
         "skill": 1,
@@ -15083,6 +16107,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/patterns/ecosystem-tools.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/root/component-sources.md"
         },
         {
@@ -15095,7 +16123,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/09-Quality/security/cognitive-os-attack-surface-inventory.synthesis.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/09-Quality/security/security-red-team.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/security/security-red-team.synthesis.md"
         },
         {
           "family": "doc",
@@ -15129,7 +16165,7 @@
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:2",
-        "doc_consumers:8",
+        "doc_consumers:11",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -15144,7 +16180,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 17
+      "total_consumers": 20
     },
     {
       "confidence": "high",
@@ -15152,7 +16188,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 3,
-        "doc": 2,
+        "doc": 3,
         "script": 1,
         "test": 3
       },
@@ -15172,6 +16208,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-289-three-layer-knowledge-architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-289.synthesis.md"
         },
         {
           "family": "doc",
@@ -15199,7 +16239,7 @@
         "lifecycle",
         "script_consumers:1",
         "test_consumers:3",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -15214,7 +16254,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "high",

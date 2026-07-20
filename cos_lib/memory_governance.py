@@ -1,4 +1,4 @@
-# SCOPE: os-only
+# SCOPE: both
 """Memory Governance v2 — Typed memory policies with verification, staleness, and recall boost.
 
 Implements the static rule table defined in ADR-261.  Each governed memory type
