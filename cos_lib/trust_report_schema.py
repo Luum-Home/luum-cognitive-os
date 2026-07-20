@@ -1,4 +1,4 @@
-# SCOPE: os-only
+# SCOPE: both
 """trust_report_schema.py — ADR-038 Wave 3 Pydantic v2 TrustReport model.
 
 Defines the canonical structured schema for the TRUST_REPORT block emitted
