@@ -245,4 +245,28 @@ fi
 # Update timestamp marker
 date +%s > "$CHECKPOINT_MARKER"
 
+# Retention (ADR-318). A checkpoint is TWO entries: {id}.json plus the copy-only
+# payload dir {id}/files/. Nothing pruned either one until now, so .cognitive-os
+# reached 2082 MiB across 378 checkpoints against the 400 MiB ceiling asserted by
+# tests/contracts/test_ram_ceiling.py. Delegates to the single implementation in
+# cos_lib/checkpoint_manager.py so bash and Python cannot drift apart.
+COS_CHECKPOINT_KEEP="${COS_CHECKPOINT_KEEP:-20}"
+COS_CHECKPOINT_MAX_AGE_DAYS="${COS_CHECKPOINT_MAX_AGE_DAYS:-14}"
+COS_CHECKPOINT_MAX_TOTAL_MIB="${COS_CHECKPOINT_MAX_TOTAL_MIB:-120}"
+python3 - "$PROJECT_DIR" "$COS_CHECKPOINT_KEEP" "$COS_CHECKPOINT_MAX_AGE_DAYS" "$COS_CHECKPOINT_MAX_TOTAL_MIB" <<'RETENTION_EOF' 2>/dev/null || true
+import sys
+
+project_dir = sys.argv[1]
+keep, max_age, max_mib = int(sys.argv[2]), float(sys.argv[3]), float(sys.argv[4])
+sys.path.insert(0, project_dir)
+try:
+    from cos_lib.checkpoint_manager import CheckpointManager
+except ImportError:
+    sys.exit(0)
+
+CheckpointManager(project_dir=project_dir).cleanup_old_checkpoints(
+    keep_last=keep, max_age_days=max_age, max_total_mib=max_mib
+)
+RETENTION_EOF
+
 exit 0

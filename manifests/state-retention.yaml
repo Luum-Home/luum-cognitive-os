@@ -186,6 +186,85 @@ surfaces:
       gates. It is intentionally replace-in-place and should not accumulate.
 
 
+  - id: copy-only-checkpoints
+    kind: artifact-pool
+    path: .cognitive-os/checkpoints/cos-*
+    max_age: P14D
+    max_count: 20
+    reaper: auto-on-create-plus-one
+    retention_mode: observe
+    tombstone: none-recovery-artifact
+    owner_pid: false
+    owner_files:
+      - hooks/auto-checkpoint.sh
+      - cos_lib/checkpoint_manager.py
+    documentation:
+      - docs/02-Decisions/adrs/ADR-318-copy-only-checkpoints-and-stash-quarantine.md
+    rationale: >
+      A checkpoint is two entries: cos-{id}.json plus the copy-only payload dir
+      cos-{id}/files/. This surface was unregistered and unbounded until
+      2026-07-20, when it held 378 checkpoints / 1731 MiB by itself against the
+      400 MiB .cognitive-os ceiling in tests/contracts/test_ram_ceiling.py.
+      cleanup_old_checkpoints() existed but was orphaned (called only by its own
+      unit test) and deleted only the .json half, leaving every payload behind.
+      Count alone cannot bound this pool: one checkpoint taken mid-refactor
+      copies every dirty file and can exceed 40 MiB, so the creator path also
+      enforces COS_CHECKPOINT_MAX_TOTAL_MIB (default 120) and always retains the
+      newest checkpoint so a recovery point always exists.
+      retention_mode is observe rather than repair-safe on purpose: enforcement
+      lives in the creator path (auto-on-create-plus-one), and state_retention_audit
+      has no reaper implementation for glob-kind artifact pools, so claiming
+      repair-safe here would advertise automation this tool does not perform.
+
+  - id: auto-pre-agent-snapshot-dirs
+    kind: artifact-pool
+    path: .cognitive-os/snapshots/auto-pre-agent-*
+    max_age: P1D
+    max_count: 20
+    reaper: manual
+    retention_mode: observe
+    tombstone: none-recovery-artifact
+    owner_pid: false
+    owner_files:
+      - hooks/pre-agent-snapshot.sh
+      - hooks/post-agent-snapshot-restore.sh
+    documentation:
+      - docs/02-Decisions/adrs/ADR-318-copy-only-checkpoints-and-stash-quarantine.md
+    rationale: >
+      The directory half of the pre-agent safety net. The stash half is already
+      bounded by the auto-pre-agent-stashes surface (P1H / max_count 2), but its
+      path is git:refs/stash, so the payload directories written by
+      hooks/pre-agent-snapshot.sh were never covered by any policy. One
+      directory is created per agent launch, so an agent-heavy session grows
+      this pool quickly: 56 directories / 172 MiB accumulated by 2026-07-20,
+      of which only 4 were older than 14 days. Retention is deliberately more
+      generous than the stash side (P1D vs P1H) because the directory holds the
+      recoverable payload, and observe-first because reaping a recovery artifact
+      should be an explicit operator promotion, not an automatic default.
+
+  - id: quality-duplicate-reports
+    kind: cache
+    path: .cognitive-os/reports/quality-duplicates/*
+    max_age: P7D
+    max_count: 2
+    reaper: manual
+    retention_mode: observe
+    tombstone: regenerate-from-source
+    owner_pid: false
+    owner_files:
+      - scripts/cos_quality_duplicates.py
+    documentation:
+      - docs/04-Concepts/architecture/state-retention.md
+    rationale: >
+      Replace-in-place latest.json + latest.md; this pool does not accumulate by
+      count. It is registered because the surface was unbounded in a different
+      dimension: latest.json reached 167 MiB carrying 245778 findings in a
+      single document. That is a report-size defect in the generator, not a
+      retention defect — a quarter-million findings is not an actionable
+      operator artifact — and bounding the finding set belongs in
+      scripts/cos_quality_duplicates.py. Registered here so the surface stops
+      being invisible to the retention audit while that fix is scoped.
+
   - id: run-flight-recorder-traces
     kind: artifact-pool
     path: .cognitive-os/runs/*/trace.json

@@ -159,6 +159,13 @@ def row_for(path: Path) -> AdrRow:
     title = normalize_title(str(fm.get("title") or first_heading(text, path.stem)))
     status = canonical_status(fm.get("status")) if "status" in fm else prose_status(text)
     impl = str(fm.get("implementation_status") or "").strip()
+    if not impl and ".synthesis." in path.name:
+        # Synthesis companion docs (round/decision write-ups attached to a
+        # parent ADR, e.g. ADR-026-*.synthesis.md) are not independent
+        # decisions with their own implementation lifecycle, so they do not
+        # carry implementation_status frontmatter. Classify them as
+        # not-applicable instead of leaving them in the Unclassified bucket.
+        impl = "not-applicable"
     date = str(fm.get("date") or "")
     bucket = STATUS_TO_BUCKET.get(status, "Other")
     return AdrRow(sort_key, number, path, title, status, impl, date, first_summary(text), bucket)

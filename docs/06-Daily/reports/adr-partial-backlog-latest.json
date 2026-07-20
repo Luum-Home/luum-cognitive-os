@@ -2331,16 +2331,33 @@
       "remaining": "advisory JSON-first receipt primitives for status, adapters, context planning, role selection, testing capability detection, TDD evidence, and review workload forecasting",
       "remaining_in_scope": null,
       "title": "Cognitive OS Efficiency Operating Model Primitives"
+    },
+    {
+      "adr": "ADR-341",
+      "classification_basis": "",
+      "date": "2026-06-18",
+      "decision_status": "accepted",
+      "follow_up_adr": "",
+      "implementation_files": [],
+      "implementation_status": "partial",
+      "number": "341",
+      "owner": "",
+      "partial_remaining": "",
+      "partial_remaining_basis": "",
+      "path": "docs/02-Decisions/adrs/ADR-341-iroh-optional-transport-adapter.md",
+      "remaining": "",
+      "remaining_in_scope": null,
+      "title": "Iroh Optional Transport Adapter"
     }
   ],
   "schema_version": "adr-partial-backlog/v1",
   "summary": {
     "by_implementation_status": {
       "deferred": 1,
-      "partial": 122,
+      "partial": 123,
       "partial-blocked": 1
     },
-    "missing_partial_remaining": 6,
-    "total": 124
+    "missing_partial_remaining": 7,
+    "total": 125
   }
 }
