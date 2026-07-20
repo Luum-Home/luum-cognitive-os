@@ -1,4 +1,4 @@
-# SCOPE: os-only
+# SCOPE: both
 """Taximeter — ADR-325 cost-accounting and resource ledgers.
 
 Append-only JSONL ledger at .cognitive-os/metrics/taximeter.jsonl.
