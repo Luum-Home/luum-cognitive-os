@@ -1,4 +1,4 @@
-# SCOPE: os-only
+# SCOPE: both
 # scope: both
 """Skill Router — Auto-select skills from conversation context.
 

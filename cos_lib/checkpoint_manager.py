@@ -1,4 +1,4 @@
-# SCOPE: os-only
+# SCOPE: both
 """Checkpoint Manager -- periodic WAL-like saves for crash recovery.
 
 Creates named git stashes at regular intervals so uncommitted work survives
@@ -13,6 +13,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import shutil
 import subprocess
 import tempfile
 import time
@@ -349,31 +350,130 @@ class CheckpointManager:
 
         return results
 
-    def cleanup_old_checkpoints(self, keep_last: int = 10) -> int:
-        """Remove old checkpoint files (keep stashes for git gc).
+    def _checkpoint_size_bytes(self, record: Dict[str, Any]) -> int:
+        """Total on-disk bytes for one checkpoint (metadata + payload tree)."""
+        total = 0
+        for path in record.values():
+            if os.path.isfile(path):
+                try:
+                    total += os.path.getsize(path)
+                except OSError:
+                    continue
+                continue
+            for root, _dirs, files in os.walk(path):
+                for name in files:
+                    try:
+                        total += os.path.getsize(os.path.join(root, name))
+                    except OSError:
+                        continue
+        return total
 
-        Returns the number of checkpoint files removed.
+    def cleanup_old_checkpoints(
+        self,
+        keep_last: int = 10,
+        max_age_days: Optional[float] = None,
+        max_total_mib: Optional[float] = None,
+    ) -> int:
+        """Retain only the ``keep_last`` newest checkpoints; delete the rest.
+
+        A checkpoint occupies TWO filesystem entries: the metadata file
+        ``checkpoints/{id}.json`` and the copy-only payload directory
+        ``checkpoints/{id}/files/`` (ADR-318). Both are removed together, and a
+        payload directory with no surviving metadata file is treated as an
+        orphan and removed as well. Removing only the metadata file -- as this
+        method previously did -- leaves the payload behind, which is how
+        ``.cognitive-os`` grew past its configured disk ceiling.
+
+        Args:
+            keep_last: number of newest checkpoints to retain.
+            max_age_days: when set, additionally drop any retained checkpoint
+                older than this, so an idle project still converges.
+            max_total_mib: when set, evict oldest-first until the retained
+                checkpoints fit this byte budget. A count-only policy cannot
+                bound disk: one checkpoint taken mid-refactor copies every
+                dirty file and can exceed 40 MiB on its own, so ``keep_last=20``
+                silently permits ~800 MiB. The disk ceiling is expressed in MiB
+                (tests/contracts/test_ram_ceiling.py), so retention is too.
+
+        Returns:
+            The number of checkpoints removed (not the number of files).
         """
         if not os.path.isdir(self.checkpoint_dir):
             return 0
 
-        checkpoint_files = []
+        # A checkpoint id may be present as metadata, as a payload dir, or both.
+        entries: Dict[str, Dict[str, Any]] = {}
         for fname in os.listdir(self.checkpoint_dir):
-            if fname.startswith("cos-") and fname.endswith(".json"):
-                full = os.path.join(self.checkpoint_dir, fname)
-                checkpoint_files.append(full)
+            if not fname.startswith("cos-"):
+                continue
+            full = os.path.join(self.checkpoint_dir, fname)
+            if fname.endswith(".json") and os.path.isfile(full):
+                checkpoint_id = fname[: -len(".json")]
+                entries.setdefault(checkpoint_id, {})["meta"] = full
+            elif os.path.isdir(full):
+                entries.setdefault(fname, {})["payload"] = full
 
-        # Sort by mtime, newest first
-        checkpoint_files.sort(key=lambda p: os.path.getmtime(p), reverse=True)
+        if not entries:
+            return 0
 
-        to_remove = checkpoint_files[keep_last:]
+        def _mtime(record: Dict[str, Any]) -> float:
+            times = []
+            for path in record.values():
+                try:
+                    times.append(os.path.getmtime(path))
+                except OSError:
+                    continue
+            return max(times) if times else 0.0
+
+        # Tie-break on checkpoint id. Ids are `cos-YYYYMMDD-HHMMSS-<hash>`, so they
+        # order chronologically; without this, checkpoints written inside the same
+        # second share an mtime and eviction picks arbitrarily among them.
+        ordered = sorted(
+            entries.items(), key=lambda kv: (_mtime(kv[1]), kv[0]), reverse=True
+        )
+
+        to_remove = list(ordered[keep_last:])
+        survivors = list(ordered[:keep_last])
+
+        if max_age_days is not None:
+            cutoff = time.time() - (max_age_days * 86400)
+            aged_out = [kv for kv in survivors if _mtime(kv[1]) < cutoff]
+            to_remove.extend(aged_out)
+            aged_ids = {kv[0] for kv in aged_out}
+            survivors = [kv for kv in survivors if kv[0] not in aged_ids]
+
+        if max_total_mib is not None:
+            budget = int(max_total_mib * 1024 * 1024)
+            used = 0
+            # survivors is already newest-first; keep newest until the budget runs out.
+            for index, (_checkpoint_id, record) in enumerate(survivors):
+                used += self._checkpoint_size_bytes(record)
+                # index > 0 keeps the newest checkpoint unconditionally: a single
+                # mid-refactor snapshot can exceed the whole budget, and evicting
+                # it would leave the project with no recovery point at all.
+                if used > budget and index > 0:
+                    to_remove.extend(survivors[index:])
+                    break
+
         removed = 0
-        for path in to_remove:
-            try:
-                os.unlink(path)
+        for _checkpoint_id, record in to_remove:
+            deleted_any = False
+            meta = record.get("meta")
+            if meta:
+                try:
+                    os.unlink(meta)
+                    deleted_any = True
+                except OSError:
+                    pass
+            payload = record.get("payload")
+            if payload:
+                try:
+                    shutil.rmtree(payload)
+                    deleted_any = True
+                except OSError:
+                    pass
+            if deleted_any:
                 removed += 1
-            except OSError:
-                pass
 
         return removed
 

@@ -46,7 +46,9 @@ if [ -z "$prompt_text" ] || [ "${#prompt_text}" -lt 10 ]; then
 fi
 
 # Skip if router module is unavailable
-if [ ! -f "$_PROJECT_DIR/lib/adr_router.py" ]; then
+_ADR_ROUTER_PY="$_PROJECT_DIR/cos_lib/adr_router.py"
+[ -f "$_ADR_ROUTER_PY" ] || _ADR_ROUTER_PY="$_PROJECT_DIR/lib/adr_router.py"
+if [ ! -f "$_ADR_ROUTER_PY" ]; then
   exit 0
 fi
 

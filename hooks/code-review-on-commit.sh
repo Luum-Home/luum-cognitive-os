@@ -30,7 +30,9 @@ if ! command -v python3 &>/dev/null; then
   exit 0
 fi
 
-if [[ ! -f "$ROOT_DIR/lib/code_reviewer.py" ]]; then
+REVIEWER_PY="$ROOT_DIR/cos_lib/code_reviewer.py"
+[[ -f "$REVIEWER_PY" ]] || REVIEWER_PY="$ROOT_DIR/lib/code_reviewer.py"
+if [[ ! -f "$REVIEWER_PY" ]]; then
   exit 0
 fi
 

@@ -1,4 +1,4 @@
-# SCOPE: os-only
+# SCOPE: both
 """Code Reviewer — Engram-integrated code review with adversarial protocol.
 
 Provides structured code review with severity tiers (BLOCKER/CONCERN/SUGGESTION/QUESTION),

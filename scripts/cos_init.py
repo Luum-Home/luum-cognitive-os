@@ -1895,8 +1895,20 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
     closure = lib_closure.compute_closure(projected_hook_paths, cos_source)
     closure_manifest: dict[str, dict] = {}
     for mod_name, entry in closure.items():
-        dest_mod_path = lib_closure_dest / f"{mod_name}.py"
         source_mod_path = cos_source / entry.source_real_path
+        # ADR-019 scope governance: never project a `cos_lib` module whose
+        # header declares `SCOPE: os-only` into a consumer install, even if
+        # it is transitively reachable from a `both`-scoped hook's import
+        # graph (see test_primitive_scope_governance.py
+        # ::test_default_consumer_projection_contains_no_os_only_markers).
+        # A `both`/`project`-scoped hook that only works via an os-only
+        # module is a real dependency bug in that hook, not a reason to
+        # leak the os-only module — skip it here (the existing
+        # static-closure-miss fail-open backstop in lib_closure.py already
+        # tolerates modules that are absent from the projected package).
+        if not scope_allows(str(source_mod_path), os.environ.get("COS_INSTALL_SCOPE", "both")):
+            continue
+        dest_mod_path = lib_closure_dest / f"{mod_name}.py"
         shutil.copy2(str(source_mod_path), str(dest_mod_path))
         closure_manifest[mod_name] = entry.to_manifest_dict()
 

@@ -222,11 +222,13 @@ def emit_event(event_type, payload, severity="info"):
         try:
             from cos_lib.metric_event import MetricEvent, append_event
         except Exception:
-            # VERIFY_RESOLVER_DIR may inject a fake ``lib`` package for
+            # VERIFY_RESOLVER_DIR may inject a fake ``cos_lib`` package for
             # targeted_test_resolver. Load metric_event from the real project
             # path so resolver test doubles do not suppress verification metrics.
             import importlib.util
-            metric_path = project_dir / "lib" / "metric_event.py"
+            metric_path = project_dir / "cos_lib" / "metric_event.py"
+            if not metric_path.is_file():
+                metric_path = project_dir / "lib" / "metric_event.py"
             spec = importlib.util.spec_from_file_location("cos_real_metric_event", metric_path)
             if spec is None or spec.loader is None:
                 raise

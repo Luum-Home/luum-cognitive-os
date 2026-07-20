@@ -1,5 +1,4 @@
-# SCOPE: os-only
-# scope: both
+# SCOPE: both
 """ADR Router — Suggest relevant Architecture Decision Records from prompt context.
 
 Analogous to ``cos_lib/skill_router.py`` (ADR-174) and ``cos_lib/rule_router.py`` (ADR-179),

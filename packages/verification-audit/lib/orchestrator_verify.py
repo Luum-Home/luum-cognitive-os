@@ -1,4 +1,4 @@
-# SCOPE: os-only
+# SCOPE: both
 """Orchestrator Verify — ADR-105 high-stakes claim extraction and verification.
 
 Composes cos_lib.ground_truth (does NOT fork it). Filters the general claim set

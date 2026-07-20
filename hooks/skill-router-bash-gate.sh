@@ -109,7 +109,7 @@ fi
 # was a multi-second PreToolUse tax; UserPromptSubmit skill suggestions cover
 # the normal discovery path. Re-enable for debugging with
 # COS_SKILL_ROUTER_BASH_SUGGEST=1.
-if [ "${COS_SKILL_ROUTER_BASH_SUGGEST:-0}" = "1" ] && command -v python3 >/dev/null 2>&1 && [ -f "$PROJECT_DIR/lib/skill_router.py" ]; then
+if [ "${COS_SKILL_ROUTER_BASH_SUGGEST:-0}" = "1" ] && command -v python3 >/dev/null 2>&1 && { [ -f "$PROJECT_DIR/cos_lib/skill_router.py" ] || [ -f "$PROJECT_DIR/lib/skill_router.py" ]; }; then
   SUGGESTION=$(PROJECT_DIR="$PROJECT_DIR" python3 - "$COMMAND" <<'PYEOF' 2>/dev/null || true
 import os
 import sys

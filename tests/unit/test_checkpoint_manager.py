@@ -317,6 +317,23 @@ class TestListCheckpoints:
 # ---------------------------------------------------------------------------
 
 
+def _stamp_ages(payload_dirs, checkpoint_dir) -> None:
+    """Give each checkpoint a distinct mtime, oldest first.
+
+    create_checkpoint() can emit several checkpoints inside the same second and
+    ids end in a random hash, so neither mtime nor id alone orders them. Tests
+    that assert *which* checkpoint is evicted must set the ordering explicitly.
+    """
+    now = time.time()
+    total = len(payload_dirs)
+    for index, payload in enumerate(payload_dirs):
+        stamp = now - ((total - index) * 60)
+        meta = payload.with_suffix(".json")
+        for target in (payload, meta):
+            if target.exists():
+                os.utime(target, (stamp, stamp))
+
+
 class TestCleanupOldCheckpoints:
 
     def test_keeps_n_most_recent(self, manager: CheckpointManager, dirty_repo: Path):
@@ -342,6 +359,100 @@ class TestCleanupOldCheckpoints:
         manager.create_checkpoint(note="only-one")
         removed = manager.cleanup_old_checkpoints(keep_last=10)
         assert removed == 0
+
+    def test_removes_copy_only_payload_directory(
+        self, manager: CheckpointManager, dirty_repo: Path
+    ):
+        """Regression: cleanup must delete the ADR-318 payload dir, not just the JSON.
+
+        Deleting only ``{id}.json`` orphans ``{id}/files/``, which is what let
+        .cognitive-os/checkpoints grow to 1.6 GB (378 checkpoints) against a
+        400 MiB disk ceiling.
+        """
+        checkpoint_dir = Path(manager.checkpoint_dir)
+        payloads = []
+        for i in range(4):
+            cp = manager.create_checkpoint(note=f"cp-{i}")
+            payload = checkpoint_dir / cp.checkpoint_id / "files"
+            payload.mkdir(parents=True, exist_ok=True)
+            (payload / "snapshot.txt").write_text("x" * 512, encoding="utf-8")
+            payloads.append(checkpoint_dir / cp.checkpoint_id)
+
+        assert all(p.is_dir() for p in payloads)
+        _stamp_ages(payloads, checkpoint_dir)
+
+        removed = manager.cleanup_old_checkpoints(keep_last=1)
+        assert removed == 3
+
+        # The three oldest payload dirs AND their metadata are gone.
+        for stale in payloads[:3]:
+            assert not stale.exists(), f"payload dir survived cleanup: {stale}"
+            assert not stale.with_suffix(".json").exists()
+
+        # The newest checkpoint keeps both halves.
+        assert payloads[-1].is_dir()
+        assert payloads[-1].with_suffix(".json").is_file()
+
+    def test_evicts_oldest_until_under_size_budget(
+        self, manager: CheckpointManager, dirty_repo: Path
+    ):
+        """Retention is byte-bounded, not just count-bounded.
+
+        keep_last alone cannot hold a MiB ceiling: a checkpoint taken during a
+        large refactor copies every dirty file and can exceed 40 MiB by itself.
+        """
+        checkpoint_dir = Path(manager.checkpoint_dir)
+        created = []
+        for i in range(5):
+            cp = manager.create_checkpoint(note=f"cp-{i}")
+            payload = checkpoint_dir / cp.checkpoint_id / "files"
+            payload.mkdir(parents=True, exist_ok=True)
+            # ~256 KiB each; a 0.9 MiB budget admits 3 payloads plus metadata.
+            (payload / "blob.bin").write_bytes(b"\0" * 256 * 1024)
+            created.append(checkpoint_dir / cp.checkpoint_id)
+
+        # Stamp distinct mtimes: checkpoint ids carry a random hash suffix, so
+        # checkpoints written inside the same second cannot be ordered by id.
+        _stamp_ages(created, checkpoint_dir)
+
+        removed = manager.cleanup_old_checkpoints(keep_last=99, max_total_mib=0.9)
+
+        assert removed == 2, "the two oldest checkpoints should be evicted"
+        assert not created[0].exists()
+        assert not created[1].exists()
+        for survivor in created[2:]:
+            assert survivor.is_dir()
+
+    def test_never_evicts_the_newest_checkpoint(
+        self, manager: CheckpointManager, dirty_repo: Path
+    ):
+        """A single oversized checkpoint must not leave zero recovery points."""
+        checkpoint_dir = Path(manager.checkpoint_dir)
+        cp = manager.create_checkpoint(note="oversized")
+        payload = checkpoint_dir / cp.checkpoint_id / "files"
+        payload.mkdir(parents=True, exist_ok=True)
+        (payload / "huge.bin").write_bytes(b"\0" * 512 * 1024)
+
+        removed = manager.cleanup_old_checkpoints(keep_last=99, max_total_mib=0.01)
+
+        assert removed == 0
+        assert (checkpoint_dir / cp.checkpoint_id).is_dir()
+
+    def test_removes_orphaned_payload_directory(
+        self, manager: CheckpointManager, dirty_repo: Path
+    ):
+        """A payload dir whose metadata was already deleted is still reclaimed."""
+        checkpoint_dir = Path(manager.checkpoint_dir)
+        checkpoint_dir.mkdir(parents=True, exist_ok=True)
+        orphan = checkpoint_dir / "cos-20200101-000000" / "files"
+        orphan.mkdir(parents=True)
+        (orphan / "leftover.txt").write_text("stale", encoding="utf-8")
+
+        manager.create_checkpoint(note="current")
+
+        removed = manager.cleanup_old_checkpoints(keep_last=1)
+        assert removed == 1
+        assert not (checkpoint_dir / "cos-20200101-000000").exists()
 
 
 # ---------------------------------------------------------------------------
