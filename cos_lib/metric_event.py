@@ -1,4 +1,4 @@
-# SCOPE: os-only
+# SCOPE: both
 """MetricEvent — canonical JSONL event schema for SO observability (ADR-028 D1.A).
 
 Schema versioning and migration strategy: docs/02-Decisions/adrs/ADR-028c.md
