@@ -101,6 +101,7 @@ class HarnessActionReceipt:
     tree_hash: str | None = None
     candidate_sha256: str | None = None
     changed_paths: list[str] = field(default_factory=list)
+    changed_paths_digest: str | None = None
     binding_base: str | None = None
     timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"))
     schema_version: str = SCHEMA_VERSION
@@ -188,39 +189,65 @@ def head_tree_hash(project_dir: Path) -> str | None:
     return proc.stdout.strip() or None
 
 
+# Pinned diff flags so the candidate SHA is reproducible across git versions and
+# user config. Unpinned diff output (renames/textconv/ext-diff/algorithm/context
+# heuristics) varies by git version and ~/.gitconfig, which would make the hash
+# non-reproducible and the gate false-deny. Mirrors gentle-ai's frozen set
+# (frozen_candidate_context.go) — the flags are the reproducibility contract.
+_PINNED_DIFF_FLAGS = [
+    "--no-color",
+    "--full-index",
+    "--no-renames",
+    "--no-ext-diff",
+    "--no-textconv",
+    "--diff-algorithm=myers",
+    "--no-indent-heuristic",
+    "--unified=3",
+]
+
+
 def _diff_bytes(project_dir: Path, base: str | None) -> tuple[bytes, list[str]]:
     """Return (unified-diff bytes, changed paths) for base..HEAD, or working tree if no base.
 
-    The diff is captured as raw bytes so the SHA-256 is over the exact reviewed
-    content, not a re-rendered string.
+    Raw bytes, pinned flags: the SHA is over the exact reviewed content and is
+    reproducible independent of git version or user config.
     """
-    if base:
-        diff_args = ["diff", "--no-color", f"{base}..HEAD"]
-        name_args = ["diff", "--name-only", f"{base}..HEAD"]
-    else:
-        # No base: bind the currently-tracked working-tree diff against HEAD.
-        diff_args = ["diff", "--no-color", "HEAD"]
-        name_args = ["diff", "--name-only", "HEAD"]
+    target = f"{base}..HEAD" if base else "HEAD"
     diff = subprocess.run(
-        ["git", *diff_args],
+        ["git", "diff", *_PINNED_DIFF_FLAGS, target],
         cwd=str(project_dir),
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         check=False,
         timeout=60,
     )
-    names = _run_git(project_dir, name_args)
+    names = _run_git(project_dir, ["diff", "--name-only", target])
     changed = [line for line in names.stdout.splitlines() if line.strip()] if names.returncode == 0 else []
     return (diff.stdout if diff.returncode == 0 else b""), changed
+
+
+def changed_paths_digest(paths: Iterable[str]) -> str | None:
+    """SHA-256 over the sorted, newline-joined changed paths — binds review scope.
+
+    gentle-ai's gate keys on CandidateTree + PathsDigest (not the diff SHA); the
+    paths digest is what prevents a receipt approved for one file set from
+    silently covering a different one at the same tree.
+    """
+    ordered = sorted({p for p in paths if p and p.strip()})
+    if not ordered:
+        return None
+    return hashlib.sha256("\n".join(ordered).encode("utf-8")).hexdigest()
 
 
 def compute_content_binding(project_dir: str | Path | None = None, base: str | None = None) -> dict[str, Any]:
     """Compute the content binding for the current repository state.
 
-    Returns tree_hash (HEAD tree), candidate_sha256 (SHA-256 over the base..HEAD
-    diff bytes), changed_paths, and binding_base. Values are None/empty when git
-    is unavailable so callers can degrade to a v1 event-log receipt rather than
-    fabricate a binding.
+    Canonical gate binding is the git tree OID (content-addressed by git) plus a
+    sorted changed-paths digest — matching gentle-ai's gate, which keys on
+    CandidateTree + PathsDigest rather than the diff SHA. candidate_sha256 (over
+    the pinned base..HEAD diff) is recorded as an auxiliary reviewer-input
+    identity. Values are None/empty when git is unavailable so callers degrade to
+    a v1 event-log receipt rather than fabricate a binding.
     """
     root = resolve_project_dir(str(project_dir) if project_dir else None)
     tree = head_tree_hash(root)
@@ -230,6 +257,7 @@ def compute_content_binding(project_dir: str | Path | None = None, base: str | N
         "tree_hash": tree,
         "candidate_sha256": candidate,
         "changed_paths": changed,
+        "changed_paths_digest": changed_paths_digest(changed),
         "binding_base": base or "",
     }
 
@@ -251,6 +279,7 @@ def verify_content_binding(receipt: Mapping[str, Any], project_dir: str | Path |
     root = resolve_project_dir(str(project_dir) if project_dir else str(receipt.get("project_dir") or ""))
     live = compute_content_binding(root, receipt.get("binding_base") or None)
 
+    # Canonical binding: tree OID + changed-paths scope (gentle-ai's gate key).
     receipt_tree = receipt.get("tree_hash")
     if receipt_tree:
         if live["tree_hash"] is None:
@@ -258,6 +287,11 @@ def verify_content_binding(receipt: Mapping[str, Any], project_dir: str | Path |
         if live["tree_hash"] != receipt_tree:
             return False, f"tree-mismatch: receipt={receipt_tree} live={live['tree_hash']}"
 
+    receipt_paths = receipt.get("changed_paths_digest")
+    if receipt_paths and live["changed_paths_digest"] != receipt_paths:
+        return False, "paths-mismatch"
+
+    # Auxiliary reviewer-input identity, checked only when present.
     receipt_diff = receipt.get("candidate_sha256")
     if receipt_diff:
         if live["candidate_sha256"] is None:
@@ -336,6 +370,7 @@ def make_receipt(
         tree_hash=binding.get("tree_hash"),
         candidate_sha256=binding.get("candidate_sha256"),
         changed_paths=list(binding.get("changed_paths") or []),
+        changed_paths_digest=binding.get("changed_paths_digest"),
         binding_base=binding.get("binding_base"),
         timestamp=timestamp or datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         schema_version=SCHEMA_VERSION_V2 if bound else SCHEMA_VERSION,

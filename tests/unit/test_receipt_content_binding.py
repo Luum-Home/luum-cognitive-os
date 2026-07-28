@@ -115,3 +115,21 @@ def test_compute_binding_degrades_without_git(tmp_path: Path) -> None:
     binding = compute_content_binding(tmp_path)
     assert binding["tree_hash"] is None
     assert binding["candidate_sha256"] is None
+
+
+def test_candidate_sha_is_reproducible_across_calls(repo: Path) -> None:
+    """Pinned diff flags ⇒ the candidate hash is stable, not config-dependent."""
+    (repo / "a.py").write_text("x = 41\n", encoding="utf-8")
+    first = compute_content_binding(repo)
+    second = compute_content_binding(repo)
+    assert first["candidate_sha256"] == second["candidate_sha256"]
+    assert first["candidate_sha256"] is not None
+
+
+def test_paths_digest_binds_review_scope(repo: Path) -> None:
+    """The paths digest reflects the changed set and is order-independent."""
+    from cos_lib.harness_action_receipts import changed_paths_digest
+
+    assert changed_paths_digest([]) is None
+    assert changed_paths_digest(["a", "b"]) == changed_paths_digest(["b", "a"])
+    assert changed_paths_digest(["a"]) != changed_paths_digest(["a", "b"])
