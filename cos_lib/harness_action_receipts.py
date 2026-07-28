@@ -8,6 +8,7 @@ A raw harness directive is advisory until local repository evidence promotes it.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -19,7 +20,15 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable, Mapping
 
+# v1: event-log receipts (records that an action happened).
+# v2: adds an OPTIONAL content binding (git tree hash + SHA-256 over the reviewed
+#     diff) so a receipt can prove it vouches for *these exact bytes*. A v2
+#     receipt whose binding no longer matches the working tree is stale by
+#     construction — the antidote to self-generated evidence that cannot be
+#     falsified. v1 receipts remain valid; the binding fields are additive.
 SCHEMA_VERSION = "harness-action-receipt.v1"
+SCHEMA_VERSION_V2 = "harness-action-receipt.v2"
+SUPPORTED_SCHEMA_VERSIONS = frozenset({SCHEMA_VERSION, SCHEMA_VERSION_V2})
 DEFAULT_METRICS_PATH = Path(".cognitive-os/metrics/vcs-actions.jsonl")
 TRUST_LEVELS = ("advisory", "observed", "verified", "authoritative")
 TRUST_RANK = {name: idx for idx, name in enumerate(TRUST_LEVELS)}
@@ -84,6 +93,15 @@ class HarnessActionReceipt:
     protected_branch: bool | None = None
     governed_path: str | None = None
     evidence: dict[str, Any] = field(default_factory=dict)
+    # v2 content binding (all optional; absent ⇒ a v1-style event-log receipt).
+    # tree_hash: git tree object the receipt vouches for — content-addressed by git.
+    # candidate_sha256: SHA-256 over the unified diff of base..target (the reviewed bytes).
+    # changed_paths: the exact paths the binding covers.
+    # binding_base: the git ref the diff was taken against (empty ⇒ whole-tree binding).
+    tree_hash: str | None = None
+    candidate_sha256: str | None = None
+    changed_paths: list[str] = field(default_factory=list)
+    binding_base: str | None = None
     timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"))
     schema_version: str = SCHEMA_VERSION
 
@@ -157,13 +175,106 @@ def _event_action(event_type: str) -> str:
     return ACTION_BY_EVENT.get(event_type, event_type.split(".", 1)[-1])
 
 
+def head_tree_hash(project_dir: Path) -> str | None:
+    """Return the git tree object of HEAD — a content-addressed hash of the tree.
+
+    Git trees are Merkle roots over their exact content, so this is a native,
+    tamper-evident content hash: any change to a tracked file that is committed
+    changes this value.
+    """
+    proc = _run_git(project_dir, ["rev-parse", "HEAD^{tree}"])
+    if proc.returncode != 0:
+        return None
+    return proc.stdout.strip() or None
+
+
+def _diff_bytes(project_dir: Path, base: str | None) -> tuple[bytes, list[str]]:
+    """Return (unified-diff bytes, changed paths) for base..HEAD, or working tree if no base.
+
+    The diff is captured as raw bytes so the SHA-256 is over the exact reviewed
+    content, not a re-rendered string.
+    """
+    if base:
+        diff_args = ["diff", "--no-color", f"{base}..HEAD"]
+        name_args = ["diff", "--name-only", f"{base}..HEAD"]
+    else:
+        # No base: bind the currently-tracked working-tree diff against HEAD.
+        diff_args = ["diff", "--no-color", "HEAD"]
+        name_args = ["diff", "--name-only", "HEAD"]
+    diff = subprocess.run(
+        ["git", *diff_args],
+        cwd=str(project_dir),
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+        timeout=60,
+    )
+    names = _run_git(project_dir, name_args)
+    changed = [line for line in names.stdout.splitlines() if line.strip()] if names.returncode == 0 else []
+    return (diff.stdout if diff.returncode == 0 else b""), changed
+
+
+def compute_content_binding(project_dir: str | Path | None = None, base: str | None = None) -> dict[str, Any]:
+    """Compute the content binding for the current repository state.
+
+    Returns tree_hash (HEAD tree), candidate_sha256 (SHA-256 over the base..HEAD
+    diff bytes), changed_paths, and binding_base. Values are None/empty when git
+    is unavailable so callers can degrade to a v1 event-log receipt rather than
+    fabricate a binding.
+    """
+    root = resolve_project_dir(str(project_dir) if project_dir else None)
+    tree = head_tree_hash(root)
+    diff, changed = _diff_bytes(root, base)
+    candidate = hashlib.sha256(diff).hexdigest() if diff else None
+    return {
+        "tree_hash": tree,
+        "candidate_sha256": candidate,
+        "changed_paths": changed,
+        "binding_base": base or "",
+    }
+
+
+def receipt_is_content_bound(receipt: Mapping[str, Any]) -> bool:
+    """True when the receipt carries a usable content binding (v2)."""
+    return bool(receipt.get("tree_hash") or receipt.get("candidate_sha256"))
+
+
+def verify_content_binding(receipt: Mapping[str, Any], project_dir: str | Path | None = None) -> tuple[bool, str]:
+    """Check that a v2 receipt still matches the live repository content.
+
+    Returns (matches, reason). A receipt without a binding cannot be verified as
+    content-bound — it returns (False, "no-binding") rather than a vacuous pass,
+    so a gate cannot be satisfied by an event-log receipt masquerading as proof.
+    """
+    if not receipt_is_content_bound(receipt):
+        return False, "no-binding"
+    root = resolve_project_dir(str(project_dir) if project_dir else str(receipt.get("project_dir") or ""))
+    live = compute_content_binding(root, receipt.get("binding_base") or None)
+
+    receipt_tree = receipt.get("tree_hash")
+    if receipt_tree:
+        if live["tree_hash"] is None:
+            return False, "tree-unavailable"
+        if live["tree_hash"] != receipt_tree:
+            return False, f"tree-mismatch: receipt={receipt_tree} live={live['tree_hash']}"
+
+    receipt_diff = receipt.get("candidate_sha256")
+    if receipt_diff:
+        if live["candidate_sha256"] is None:
+            return False, "diff-unavailable"
+        if live["candidate_sha256"] != receipt_diff:
+            return False, "diff-mismatch"
+
+    return True, "matches"
+
+
 def validate_receipt(receipt: Mapping[str, Any]) -> None:
     """Validate a receipt dictionary against the v1 structural contract."""
     required = ("schema_version", "event_type", "domain", "provider", "source", "trust", "timestamp")
     missing = [field for field in required if not receipt.get(field)]
     if missing:
         raise ReceiptError(f"missing required receipt fields: {', '.join(missing)}")
-    if receipt["schema_version"] != SCHEMA_VERSION:
+    if receipt["schema_version"] not in SUPPORTED_SCHEMA_VERSIONS:
         raise ReceiptError(f"unsupported schema_version: {receipt['schema_version']!r}")
     if receipt["domain"] != "vcs":
         raise ReceiptError(f"unsupported receipt domain: {receipt['domain']!r}")
@@ -193,9 +304,19 @@ def make_receipt(
     governed_path: str | None = None,
     evidence: Mapping[str, Any] | None = None,
     timestamp: str | None = None,
+    bind_content: bool = False,
+    binding_base: str | None = None,
 ) -> dict[str, Any]:
-    """Build and validate one normalized receipt dictionary."""
+    """Build and validate one normalized receipt dictionary.
+
+    When ``bind_content`` is set, capture a v2 content binding (git tree hash +
+    SHA-256 over the base..HEAD diff) so the receipt is falsifiable against the
+    live tree. If the binding cannot be computed (no git), the receipt stays a
+    v1 event-log receipt rather than claiming a binding it does not have.
+    """
     root = resolve_project_dir(str(project_dir) if project_dir else None)
+    binding = compute_content_binding(root, binding_base) if bind_content else {}
+    bound = bool(binding.get("tree_hash") or binding.get("candidate_sha256"))
     receipt = HarnessActionReceipt(
         event_type=event_type,
         provider=provider,
@@ -212,7 +333,12 @@ def make_receipt(
         protected_branch=protected_branch,
         governed_path=governed_path,
         evidence=dict(evidence or {}),
+        tree_hash=binding.get("tree_hash"),
+        candidate_sha256=binding.get("candidate_sha256"),
+        changed_paths=list(binding.get("changed_paths") or []),
+        binding_base=binding.get("binding_base"),
         timestamp=timestamp or datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        schema_version=SCHEMA_VERSION_V2 if bound else SCHEMA_VERSION,
     ).to_dict()
     validate_receipt(receipt)
     return receipt
