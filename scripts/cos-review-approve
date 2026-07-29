@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# SCOPE: both
+# Freeze the current git tree as an approved content-bound receipt for the branch.
+# Call at the sdd-verify PASS moment: the approved tree is what a later merge gate
+# checks the live tree against. Upstream half of the content-bound approval gate.
+set -euo pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+PYTHON="${PYTHON:-python3}"
+exec "$PYTHON" "$REPO_ROOT/cos_lib/harness_action_receipts.py" approve "$@"
