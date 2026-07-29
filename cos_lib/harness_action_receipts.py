@@ -46,6 +46,7 @@ VCS_EVENTS = frozenset(
         "vcs.merge.fail",
         "vcs.bypass",
         "vcs.conflict.detected",
+        "vcs.review.approved",
     }
 )
 ACTION_BY_EVENT = {
@@ -61,6 +62,7 @@ ACTION_BY_EVENT = {
     "vcs.merge.fail": "merge.fail",
     "vcs.bypass": "bypass",
     "vcs.conflict.detected": "conflict.detected",
+    "vcs.review.approved": "review.approved",
 }
 DIRECTIVE_EVENT = {
     "git-stage": "vcs.stage",
@@ -300,6 +302,95 @@ def verify_content_binding(receipt: Mapping[str, Any], project_dir: str | Path |
             return False, "diff-mismatch"
 
     return True, "matches"
+
+
+# --------------------------------------------------------------------------- #
+# Review-approval store (content-bound approval gate)
+#
+# The freeze/check split that gives a content binding teeth: sdd-verify PASS
+# freezes the approved tree into a per-branch approval receipt UPSTREAM; the
+# merge-to-main gate re-derives the live tree DOWNSTREAM and denies if it
+# diverged. Transparent per-branch JSON under
+# .cognitive-os/receipts/review-approvals/ — no authority state machine, no diff
+# transport: an approval is one receipt carrying one tree OID.
+# --------------------------------------------------------------------------- #
+
+APPROVAL_STORE_DIR = Path(".cognitive-os/receipts/review-approvals")
+
+
+def _branch_slug(branch: str) -> str:
+    """Filesystem-safe slug for a branch name (keeps it human-readable)."""
+    return re.sub(r"[^A-Za-z0-9._-]", "_", branch.strip()) or "_detached"
+
+
+def approval_store_path(project_dir: str | Path | None, branch: str) -> Path:
+    root = resolve_project_dir(str(project_dir) if project_dir else None)
+    return root / APPROVAL_STORE_DIR / f"{_branch_slug(branch)}.json"
+
+
+def freeze_approval(
+    *,
+    project_dir: str | Path | None = None,
+    branch: str | None = None,
+    provider: str = "sdd-verify",
+    source: str = "cos-review-approve",
+    binding_base: str | None = None,
+    evidence: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Freeze the current tree as an approved content-bound receipt for a branch.
+
+    Called at the upstream approval moment (sdd-verify PASS). Raises ReceiptError
+    if no content binding could be computed — an approval that cannot bind to a
+    tree must fail loudly rather than persist an unfalsifiable record.
+    """
+    root = resolve_project_dir(str(project_dir) if project_dir else None)
+    ref = branch or current_branch(root)
+    if not ref:
+        raise ReceiptError("cannot freeze approval: no branch (detached HEAD?)")
+    receipt = make_receipt(
+        event_type="vcs.review.approved",
+        provider=provider,
+        source=source,
+        trust="verified",
+        project_dir=root,
+        branch=ref,
+        evidence=dict(evidence or {}),
+        bind_content=True,
+        binding_base=binding_base,
+    )
+    if not receipt_is_content_bound(receipt):
+        raise ReceiptError("cannot freeze approval: no content binding (not a git repo?)")
+    path = approval_store_path(root, ref)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return receipt
+
+
+def load_approval(project_dir: str | Path | None, branch: str) -> dict[str, Any] | None:
+    path = approval_store_path(project_dir, branch)
+    if not path.is_file():
+        return None
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+
+
+def check_approval_gate(project_dir: str | Path | None = None, branch: str | None = None) -> tuple[bool, str]:
+    """Gate: does an approval receipt exist for this branch AND still match the tree?
+
+    Returns (allowed, reason). Denies when there is no approval ("no-approval")
+    and when the live tree diverged from the approved one ("tree-mismatch: …") —
+    the divergence a byte-mutation-after-approval produces.
+    """
+    root = resolve_project_dir(str(project_dir) if project_dir else None)
+    ref = branch or current_branch(root)
+    if not ref:
+        return False, "no-branch"
+    receipt = load_approval(root, ref)
+    if receipt is None:
+        return False, "no-approval"
+    return verify_content_binding(receipt, root)
 
 
 def validate_receipt(receipt: Mapping[str, Any]) -> None:
@@ -666,6 +757,19 @@ def build_parser() -> argparse.ArgumentParser:
     report.add_argument("--metrics-path")
     report.add_argument("--output", default="docs/06-Daily/reports/vcs-action-receipts-latest.md")
     report.add_argument("--json", action="store_true")
+
+    approve = sub.add_parser("approve", help="Freeze the current tree as an approved content-bound receipt (sdd-verify PASS)")
+    approve.add_argument("--project-dir")
+    approve.add_argument("--branch")
+    approve.add_argument("--base", help="Diff base for the reviewer-input identity (optional)")
+    approve.add_argument("--provider", default="sdd-verify")
+    approve.add_argument("--evidence-json", default="{}")
+    approve.add_argument("--json", action="store_true")
+
+    gate = sub.add_parser("gate", help="Deny unless an approval receipt matches the live tree (merge gate)")
+    gate.add_argument("--project-dir")
+    gate.add_argument("--branch")
+    gate.add_argument("--json", action="store_true")
     return parser
 
 
@@ -732,6 +836,25 @@ def main(argv: list[str] | None = None) -> int:
             output.write_text(render_markdown_report(stats), encoding="utf-8")
             payload = {"output": str(output), "stats": stats}
             print(json.dumps(payload, indent=2 if args.json else None, sort_keys=True))
+            return 0
+        if args.command == "approve":
+            receipt = freeze_approval(
+                project_dir=args.project_dir,
+                branch=args.branch,
+                provider=args.provider,
+                binding_base=args.base,
+                evidence=json.loads(args.evidence_json),
+            )
+            path = approval_store_path(args.project_dir, receipt["branch"])
+            print(json.dumps({"approved": True, "branch": receipt["branch"], "tree_hash": receipt.get("tree_hash"), "store": str(path)}, indent=2 if args.json else None, sort_keys=True))
+            return 0
+        if args.command == "gate":
+            allowed, reason = check_approval_gate(project_dir=args.project_dir, branch=args.branch)
+            payload = {"allowed": allowed, "reason": reason}
+            print(json.dumps(payload, indent=2 if args.json else None, sort_keys=True))
+            if not allowed:
+                print(f"cos-review-gate: BLOCK ({reason})", file=sys.stderr)
+                return 2
             return 0
         raw = json.loads(_read_arg(args.receipt_json))
         validate_receipt(raw)

@@ -329,6 +329,24 @@ def command_process_verdict(args: argparse.Namespace) -> int:
     payload = {"schema_version": "cos.final-verdict.v1", "process_id": process_id, "verdict": verdict, "requested_status": requested, "summary": args.summary, "blockers": blockers, "updated_at": utc_now()}
     write_json(paths["verdict"], payload)
     trace(paths, "process.verdict", payload)
+
+    # On a genuine PASS, freeze the current tree as a content-bound approval
+    # (upstream half of the merge gate). Freezing only writes a receipt — it
+    # blocks nothing — so it defaults on; the outcome is recorded, never a silent
+    # fail-soft. Disable with COS_REVIEW_FREEZE_ON_PASS=0. The gate that *reads*
+    # this approval stays opt-in (COS_MERGE_VALIDATE_CMD).
+    if verdict in PASS_VERDICTS and os.environ.get("COS_REVIEW_FREEZE_ON_PASS", "1") != "0":
+        freeze_outcome: dict[str, Any] = {"process_id": process_id}
+        try:
+            repo_root = Path(args.project_dir).resolve()
+            sys.path.insert(0, str(repo_root))
+            from cos_lib.harness_action_receipts import freeze_approval
+
+            approval = freeze_approval(project_dir=repo_root, evidence={"process_id": process_id, "verdict": verdict})
+            freeze_outcome.update({"frozen": True, "branch": approval.get("branch"), "tree_hash": approval.get("tree_hash")})
+        except Exception as exc:  # noqa: BLE001 — record, never break the verdict
+            freeze_outcome.update({"frozen": False, "reason": type(exc).__name__ + ": " + str(exc)})
+        trace(paths, "review.approval.freeze", freeze_outcome)
     state["status"] = verdict
     state["final_verdict"] = verdict
     state["next_recommended"] = next_recommended_action(state, contract)
