@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Falsification tests for v2 content-bound receipts.
 
 A content-bound receipt exists to solve one problem: an event-log receipt cannot
