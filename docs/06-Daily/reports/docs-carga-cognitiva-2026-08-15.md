@@ -4,6 +4,15 @@
 > puertas de entrada, los 190 PoCs, y duplicación en `04-Concepts`.
 > Todo número de acá abajo viene con el comando que lo produjo.
 
+> **ERRATA 2026-08-15 (posterior al commit).** Este informe afirmó que
+> `cos-init.sh --full/--minimal/--standard` eran «flags que no existen». **Es
+> falso.** Los tres parsean y funcionan. La medición que sostenía la afirmación
+> —un `grep` sobre `scripts/cos-init.sh`— no medía el parser: ese archivo es un
+> shim de 15 líneas que hace `exec` a `scripts/cos_init.py`, donde están los
+> flags. La sección «¿Competían?» quedó corregida más abajo con el defecto real,
+> que existe pero es otro. Forense completo, con el comando de cada veredicto:
+> [`install-doors-forensics-2026-08-15.md`](install-doors-forensics-2026-08-15.md).
+
 ## Resumen
 
 - **Punto 1 (puertas): hecho y commiteado** (`958845a18`). Tres puertas de
@@ -50,18 +59,31 @@ El remoto real:
 git remote -v          # git@github.com:Luum-Home/luum-cognitive-os.git
 ```
 
-Dos defectos duros en `quickstart.md`, la puerta más corta y por eso la más
-probable de seguir:
+Dos defectos en `quickstart.md`, la puerta más corta y por eso la más probable
+de seguir. **El segundo está corregido respecto de la versión commiteada
+(ver ERRATA arriba):**
 
 1. Clonaba `luum-agent-os`, que no es el nombre del remoto. El clon no resolvía.
-2. Ofrecía `cos-init.sh --full` / `--minimal` / `--standard`. Esos flags no
-   existen:
+2. Ofrecía `cos-init.sh --full` / `--minimal` / `--standard` como si fueran tres
+   perfiles distintos. **Los tres flags parsean sin error** — la versión
+   commiteada de este informe decía lo contrario, apoyada en un `grep` sobre el
+   shim de 15 líneas en vez del parser real. El defecto verdadero es que
+   `--minimal` y `--standard` son **alias de `--default`** (ADR-093), así que la
+   línea ofrecía tres perfiles donde el programa sólo tiene dos:
+
    ```bash
-   grep -nE 'minimal|standard|full' scripts/cos-init.sh   # sin salida
+   python3 -c "
+   import importlib.util
+   s=importlib.util.spec_from_file_location('c','scripts/cos_init.py')
+   m=importlib.util.module_from_spec(s); s.loader.exec_module(m); p=m._build_parser()
+   for f in ['--default','--full','--minimal','--standard','--lean']:
+       print(f, '->', p.parse_known_args([f])[0].mode)"
+   # --default -> --default | --full -> --full
+   # --minimal -> --default | --standard -> --default | --lean -> --default
    ```
 
 O sea: el problema no era solo que hubiera tres puertas, sino que la más barata
-de leer estaba rota.
+de leer tenía una URL que no resolvía y presentaba dos perfiles como tres.
 
 ### Qué contenía cada una, y qué quedó
 
@@ -285,7 +307,8 @@ Seis, todas verificadas:
    con nombre repetido y contenido distinto: **once superficies**.
 2. **"Tres son variantes de cómo empezar"** → son tres, pero el problema no era la
    redundancia sino la **contradicción**: tres comandos de instalación distintos,
-   uno con URL de clon que no resuelve y flags que no existen.
+   uno con URL de clon que no resuelve y con dos perfiles presentados como tres
+   (ver ERRATA: los flags sí existen).
 3. **"04-Concepts 378 — el bulto"** → el bulto real es **275**; 103 son synthesis
    que no se tocan.
 4. **"03-PoCs 190 — el bulto"** → **188 ya están protegidos en código**
