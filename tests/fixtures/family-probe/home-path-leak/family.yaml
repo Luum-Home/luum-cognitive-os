@@ -1,0 +1,58 @@
+# Family: enforcers of "no operator home path in committed text".
+#
+# Adding a family costs this file plus three fixtures. There is no plugin, no
+# registry and no base class — the probe globs this directory.
+name: home-path-leak
+
+question: >
+  Given one staged file, does the candidate refuse a real operator home path
+  while letting through a document that DESCRIBES the pattern?
+
+# Where members might live. Deliberately wide: membership is decided by the
+# fixtures, not by this list.
+candidate_globs:
+  - "hooks/*.sh"
+  - "scripts/*.sh"
+  - "scripts/*.py"
+
+# Static screen on the INPUT CHANNEL, never on the family's pattern.
+# Executing all 708 scripts under hooks/ and scripts/ is neither fast nor safe;
+# this asks only "can it read staged repository content at all". It is
+# orthogonal to the pattern: hooks/research-compliance-guard.sh hides its
+# home-prefix literal behind string concatenation and still says `diff --cached`
+# in the clear.
+channel_screen:
+  - "diff --cached"
+  - "ls-files"
+  - "--staged"
+
+# Path the fixture takes inside the throwaway sandbox repository.
+fixture_path: "docs/06-Daily/reports/probe-fixture.md"
+
+# Expanded when the fixture is written into the sandbox. See the docstring of
+# fixture_text(): the must-trigger fixture cannot be stored verbatim in a
+# repository whose own guards block exactly that content.
+# Values given as a LIST are joined at run time. The macOS home prefix is stored
+# in pieces for the same reason hooks/research-compliance-guard.sh builds its own
+# in pieces: a file that holds the assembled literal trips every member of this
+# family, including the two that still lack the discriminator. Composing it here
+# means no gate ever needs an exception for a fixture directory.
+substitutions:
+  "[[HOME]]": ["/", "Users"]
+  "[[LINUX_HOME]]": ["/", "home"]
+  "[[PROBE_USER]]": ["mnprobe"]
+
+# Invocation shapes tried in order. The first one that reacts to must-trigger
+# is the shape the other two fixtures are judged under.
+argv_shapes:
+  - []
+  - ["--staged"]
+  - ["{fixture}"]
+
+# PreToolUse payload, so hooks gated on "the command is a git commit" wake up.
+stdin_payload: |
+  {"session_id":"family-probe","hook_event_name":"PreToolUse","tool_name":"Bash","tool_input":{"command":"git commit -m \"probe\"","description":"commit"}}
+
+# Population guard. An instrument that flags nobody exits 0 and measures
+# nothing; below this count the probe fails instead of passing.
+min_members: 2
