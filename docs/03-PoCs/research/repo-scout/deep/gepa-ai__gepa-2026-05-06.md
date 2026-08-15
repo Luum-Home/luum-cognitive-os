@@ -8,6 +8,12 @@ deepwiki_url: https://deepwiki.com/gepa-ai/gepa
 engram_id: pending
 ---
 
+> **Estado 2026-08-15 — veredicto superado.** El veredicto tecnico ADOPT es del
+> 2026-05-06. El 2026-05-11 el operador congelo toda adopcion externa por decision
+> comercial/legal, y nada de este repo llego al codigo: 0 hits de `gepa` fuera de docs/.
+> Descongelar exige revision legal de IP, busquedas USPTO + TESS y firma del operador.
+> Ver `manifests/external-tool-adoption-freeze.yaml` y ADR-267.
+
 ## Repository Evaluation: gepa-ai/gepa
 
 ### Classification: ADOPT
