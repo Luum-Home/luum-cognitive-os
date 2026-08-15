@@ -28,7 +28,6 @@ profiles:
         - hooks/auto-verify.sh
         - hooks/dod-gate.sh
         - hooks/trust-score-validator.sh
-        - hooks/skill-metrics-tracker.sh
         - hooks/inject-phase-context.sh
         - hooks/stack-detector.sh
         - hooks/pre-compaction-flush.sh

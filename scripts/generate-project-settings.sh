@@ -145,7 +145,7 @@ DEFAULT_HOOKS="error-learning.sh error-pipeline.sh result-truncator.sh session-i
   user-prompt-capture.sh session-wrapup-trigger.sh session-heartbeat.sh memory-prefetch.sh
   clarification-gate.sh blast-radius.sh scope-proportionality.sh bash-hot-path-dispatcher.sh provenance-scan.sh orchestrator-claim-gate.sh
   error-pattern-detector.sh auto-refine.sh auto-verify.sh dod-gate.sh
-  trust-score-validator.sh skill-metrics-tracker.sh inject-phase-context.sh stack-detector.sh
+  trust-score-validator.sh inject-phase-context.sh stack-detector.sh
   pre-compaction-flush.sh rate-limiter.sh large-file-advisor.sh secret-detector.sh content-policy.sh research-compliance-guard.sh
   doc-sync-detector.sh auto-checkpoint.sh claim-validator.sh completion-gate.sh
   clarification-interceptor.sh agent-checkpoint.sh session-sanity.sh confidentiality-enforcer.sh
