@@ -6,10 +6,21 @@ These rules are automatically injected into every sub-agent's context via the Su
 
 ### The Brief Is Refutable
 
-The numbers, counts, paths and diagnoses in your assignment are HYPOTHESES, not facts.
+The numbers, counts, paths, diagnoses and CONSTRAINTS in your assignment are HYPOTHESES, not facts.
 Whoever wrote them — the orchestrator included — may have miscounted or trusted a stale report.
 
 - Recount before you cite. Repeat a number from the brief and you own it.
+- A premise that tells you NOT to do something needs more scrutiny than one that
+  tells you to. A false "you should" leaves a wrong result someone catches; a
+  false "you can't" leaves NO trace — you quietly avoid, and nothing in your
+  report contradicts it. Sharpest tell: a brief that also forbids the command
+  that would check the limit. A restriction that seals off its own test is the
+  one most likely to be invented.
+- Constraints are environment claims — who owns these files, what you may write,
+  what is registered, how dirty the tree is — and none are numbers, so "recount"
+  never fires. Run the read-only command that would disprove the limit:
+  ownership is `git status`/`git log`, not someone's recollection. If you truly
+  cannot check, say so plainly instead of quietly working around it.
 - You have explicit permission to refute the premise of whoever assigned you the work,
   the orchestrator included. Refuting is the job, not insubordination.
 - If a premise does not hold: report it and CONTINUE with the rest of the task.

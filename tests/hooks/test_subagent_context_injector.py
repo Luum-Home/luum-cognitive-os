@@ -141,6 +141,78 @@ class TestMandatoryRulesFileIntegrity:
         assert "python3" in content
 
 
+class TestMandatoryRulesDelivery:
+    """The template must ARRIVE intact — this tests transport, not wording.
+
+    Deliberately NOT a content assertion: it never names a phrase from the
+    template, so rewording the rules cannot break it. What it catches is the
+    delivery mechanism failing — the file going missing (hook silently drops to
+    its inline fallback), the composition dropping it, or the 10K truncation
+    eating part of it. Those are the failures that leave sub-agents without
+    rules while every phrase-matching test still passes.
+    """
+
+    def test_template_body_is_delivered_verbatim(self):
+        """Every byte of the template must reach additionalContext.
+
+        The hook loads it via `$(cat ...)`, which strips trailing newlines —
+        hence the rstrip. Any other difference means the mechanism mutated or
+        truncated the rules on the way to the sub-agent.
+        """
+        context = _additional_context(_run_hook({"prompt": "any task at all"}))
+        body = MANDATORY_RULES_PATH.read_text().rstrip("\n")
+        assert body in context, (
+            "templates/agent-mandatory-rules.md did not arrive verbatim in "
+            "additionalContext — sub-agents are running without the full rule "
+            "set (check for the inline fallback or 10K truncation)"
+        )
+
+    def test_inline_fallback_is_not_in_use(self):
+        """The fallback is a degraded copy; using it silently loses rules.
+
+        The fallback text omits sections the real template carries, so a hook
+        that quietly falls back still returns plausible-looking context.
+        """
+        context = _additional_context(_run_hook({"prompt": "any task at all"}))
+        assert "## MANDATORY PROJECT RULES" in context, (
+            "Hook fell back to its inline rule set — the template was not read"
+        )
+
+
+class TestContextBudget:
+    """The composed context must fit the hook's hard cap, with margin.
+
+    subagent-context-injector.sh caps additionalContext at
+    MAX_CONTEXT_CHARS=10000. Truncation is SILENT and cuts from the end, so
+    growth in the rules template degrades the preamble — a different file than
+    the one anyone edited. Every sub-agent pays this corpus on every turn, so
+    the budget is a real constraint, not a style preference.
+    """
+
+    MAX_CONTEXT_CHARS = 10000
+    # Margin so the next rule addition fails this test rather than silently
+    # truncating the preamble in production.
+    RESERVE_CHARS = 250
+
+    def test_delivered_context_is_not_truncated(self):
+        context = _additional_context(_run_hook({"prompt": "any task at all"}))
+        assert "[truncated at 10K chars]" not in context, (
+            f"additionalContext hit the {self.MAX_CONTEXT_CHARS}-char cap and was "
+            "truncated — the tail of the agent preamble is being dropped"
+        )
+
+    def test_delivered_context_keeps_headroom(self):
+        context = _additional_context(_run_hook({"prompt": "any task at all"}))
+        budget = self.MAX_CONTEXT_CHARS - self.RESERVE_CHARS
+        assert len(context) <= budget, (
+            f"Injected context is {len(context)} chars, over the "
+            f"{budget}-char working budget "
+            f"({self.MAX_CONTEXT_CHARS} cap - {self.RESERVE_CHARS} reserve). "
+            "Every sub-agent pays this on every turn: shorten an existing rule "
+            "before adding another."
+        )
+
+
 class TestHookDoesNotBlock:
     """The hook must never block sub-agent launch."""
 
