@@ -2,6 +2,15 @@
 # SCOPE: os-only
 # ROLE: instrumentation
 # CANONICAL: scripts/hook-io-overhead-bench.sh
+# @on-demand: benchmark, not a gate -- deliberately NOT wired into CI.
+#   It measures wall-clock cost of the hook-timing wrapper's stdout/stderr
+#   accounting. Timings depend on machine load, so any threshold that is stable
+#   on a busy CI runner is too loose to detect the regression it exists to catch,
+#   and a tight one flakes. Wiring it as a test would buy a red that gets retried
+#   away rather than read. Consumer is whoever changes scripts/hook-timing-wrapper.sh
+#   on the hot path: run it before and after and compare, on the same idle machine.
+#   Route: `bash scripts/hook-io-overhead-bench.sh` (see ops-runbook for the
+#   before/after protocol).
 # hook-io-overhead-bench.sh — What the stdout/stderr accounting added to
 # scripts/hook-timing-wrapper.sh costs on the hot path.
 #

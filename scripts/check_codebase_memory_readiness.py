@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
 # SCOPE: project
+# @on-demand: machine-local probe, deliberately NOT wired as a test or CI gate.
+#   Its whole job is to answer whether the third-party codebase-memory-mcp server
+#   is reachable on THIS machine. That answer is legitimately "no" on any checkout
+#   without the MCP installed, so a test asserting readiness would go red for a
+#   configuration difference rather than a defect, and the usual repair -- relaxing
+#   the assert until it passes everywhere -- would leave a test that asserts nothing.
+#   Consumer is the operator, invoked when deciding whether the codebase-memory
+#   directive applies here. Route: `python3 scripts/check_codebase_memory_readiness.py --explain`
+#   prints the decision rule and exits 0 without probing.
 """check_codebase_memory_readiness.py — Is the codebase-memory-mcp directive applicable HERE?
 
 ADR-343. Read-only, deterministic, no session state, no network.
