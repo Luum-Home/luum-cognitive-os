@@ -40,6 +40,14 @@ unmarked_published A module the closure publishes carries no marker at all. It
                    ships by the fail-open default, i.e. by accident.
 os_only_published  A module marked `os-only` is in the closure anyway — the
                    filter is being bypassed on some path.
+dangling_import    A shipped file imports a `cos_lib` module that is NOT in the
+                   closure and is NOT os-only: nothing forbids shipping it, the
+                   closure simply never proposed it, so the consumer receives
+                   the importer without the import. Same failure as the circuit
+                   breaker from a different cause — and the known cause is
+                   scripts/lib_closure.py:92-96, whose ImportFrom branch drops
+                   `from cos_lib import x` entirely (it requires a dotted module
+                   and never reads node.names).
 marker_invisible   A marker exists but the real parser cannot see it: lowercase
                    `# scope:`, or placed past line 3. Silently fail-open, and a
                    trap the day someone writes `# scope: os-only` in lowercase.
@@ -77,6 +85,7 @@ FINDING_CLASSES = (
     "unmarked_published",
     "os_only_published",
     "marker_invisible",
+    "dangling_import",
 )
 
 # Mirrors scripts/cos_init.py:284 exactly — uppercase only, whitespace required.
@@ -87,6 +96,12 @@ _LOOSE_MARKER_RE = re.compile(r"(?:#\s*scope\s*:|<!--\s*scope\s*:)\s*([a-zA-Z_/-
 # by a blank line would capture "\n" as its indent and be misread as deferred —
 # which would have reported the one defect this gate exists to catch as benign.
 _IMPORT_RE = re.compile(r"^([ \t]*)(?:from|import)\s+cos_lib\.([a-z_0-9]+)", re.M)
+# `from cos_lib import x, y` binds modules just as `import cos_lib.x` does, and
+# missing it undercounts the closure. scripts/lib_closure.py:92-96 has this exact
+# blind spot — its ImportFrom branch requires a dotted module and never inspects
+# node.names — so this gate would inherit the undercount from the very function
+# it calls if it only mirrored that shape.
+_FROM_PKG_RE = re.compile(r"^([ \t]*)from\s+cos_lib\s+import\s+([^\n#]+)", re.M)
 
 
 @dataclass
@@ -161,6 +176,12 @@ def imported_modules(path: Path) -> Dict[str, bool]:
     for indent, mod in _IMPORT_RE.findall(text):
         module_level = indent == ""
         out[mod] = out.get(mod, False) or module_level
+    for indent, names in _FROM_PKG_RE.findall(text):
+        module_level = indent == ""
+        for raw in names.replace("(", "").replace(")", "").split(","):
+            name = raw.strip().split(" as ")[0].strip()
+            if name and name != "*" and re.fullmatch(r"[a-z_0-9]+", name):
+                out[name] = out.get(name, False) or module_level
     return out
 
 
@@ -240,6 +261,15 @@ def analyse(profile: str) -> Report:
                 if dep == mod:
                     continue  # self-reference (re-export / __main__ guard), not a conflict
                 dep_path = lib_dir / f"{dep}.py"
+                if dep_path.is_file() and dep not in closure and real_marker(dep_path) != "os-only":
+                    how = "module-level" if module_level else "deferred"
+                    report.findings.append(
+                        Finding(
+                            "dangling_import",
+                            rel,
+                            f"imports cos_lib.{dep}, which the closure never proposes ({how})",
+                        )
+                    )
                 if dep_path.is_file() and real_marker(dep_path) == "os-only":
                     how = (
                         "module-level — ImportError on load"
@@ -352,8 +382,11 @@ def main(argv: Iterable[str] | None = None) -> int:
         )
         return 1 if report.findings else 0
 
-    over = {k: (counts[k], baseline[k]) for k in FINDING_CLASSES if counts[k] > baseline.get(k, 0)}
-    under = {k: (counts[k], baseline[k]) for k in FINDING_CLASSES if counts[k] < baseline.get(k, 0)}
+    # `.get(k, 0)` on both sides: a finding class added after the baseline was
+    # written must read as new debt, not crash the gate. A gate that raises is
+    # indistinguishable from a gate that is broken, and both stop guarding.
+    over = {k: (counts[k], baseline.get(k, 0)) for k in FINDING_CLASSES if counts[k] > baseline.get(k, 0)}
+    under = {k: (counts[k], baseline.get(k, 0)) for k in FINDING_CLASSES if counts[k] < baseline.get(k, 0)}
 
     if over:
         print("\nFAIL — new scope debt:", file=sys.stderr)
