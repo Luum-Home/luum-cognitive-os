@@ -20,11 +20,18 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
+from cos_lib.paths import runtime_project_root
+
 logger = logging.getLogger(__name__)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_DB_PATH = REPO_ROOT / ".cognitive-os" / "state" / "evolve-proposals.db"
-ERROR_LEARNING_PATH = REPO_ROOT / ".cognitive-os" / "error-learning.jsonl"
+
+# The single path every error-learning consumer reads (hooks/error-learning.sh,
+# hooks/error-pipeline.sh, cos_lib/singularity.py, cos_lib/kpi_collector.py,
+# bin/cos-errors, packages/verification-audit/lib/error_classifier.py, …).
+# Anything written outside it is a private log, not error learning.
+ERROR_LEARNING_SUBPATH = Path(".cognitive-os") / "metrics" / "error-learning.jsonl"
 
 QUEUE_CAP = 50  # Hard cap on pending proposals
 
@@ -97,20 +104,47 @@ def compute_fingerprint(kind: str, title: str, draft: str) -> str:
     return hashlib.sha256(raw.encode("utf-8")).hexdigest()
 
 
+def error_learning_path() -> Path:
+    """Return the canonical error-learning.jsonl for the *current* project.
+
+    Resolved at call time, not at import time: a module-level constant anchored
+    to this checkout made every test run append to the operator's real telemetry
+    (102 rows of one unit-test fixture, 2026-05-11 → 2026-08-15). Honouring the
+    project-root env vars lets a test point the write at its own tmp tree.
+    """
+    root = runtime_project_root() or REPO_ROOT
+    return root / ERROR_LEARNING_SUBPATH
+
+
 def _log_error_learning(message: str, context: dict | None = None) -> None:
-    """Append a warning record to error-learning.jsonl."""
+    """Append a saturation record to the canonical error-learning.jsonl.
+
+    Schema matches what hooks/error-learning.sh emits — ``type`` + ``service`` +
+    ``timestamp_epoch`` are the three fields every consumer groups on. A record
+    missing them is unreadable for the readers even when the path is right.
+    """
+    path = error_learning_path()
     try:
-        ERROR_LEARNING_PATH.parent.mkdir(parents=True, exist_ok=True)
+        now = datetime.now(timezone.utc)
+        fingerprint = hashlib.sha256(
+            f"QUEUE_CAPACITY|evolve-queue|{message}".encode("utf-8")
+        ).hexdigest()[:32]
         record = {
-            "ts": datetime.now(timezone.utc).isoformat(),
-            "source": "evolve_task_queue",
+            "timestamp": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "timestamp_epoch": int(now.timestamp()),
+            "type": "QUEUE_CAPACITY",
+            "service": "evolve-queue",
+            "fingerprint": fingerprint,
+            "command": "cos_lib.evolve_task_queue.enqueue",
             "message": message,
             "context": context or {},
+            "exit_code": None,
         }
-        with ERROR_LEARNING_PATH.open("a") as fh:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open("a") as fh:
             fh.write(json.dumps(record) + "\n")
     except Exception as exc:  # pragma: no cover
-        logger.warning("Failed to write error-learning.jsonl: %s", exc)
+        logger.warning("Failed to write %s: %s", path, exc)
 
 
 class EvolveTaskQueue:
