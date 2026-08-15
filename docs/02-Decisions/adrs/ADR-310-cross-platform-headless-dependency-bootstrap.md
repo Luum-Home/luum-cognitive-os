@@ -1,5 +1,5 @@
 ---
-status: Accepted
+status: accepted
 date: 2026-05-14
 deciders: Cognitive OS maintainers
 tags:
@@ -8,7 +8,7 @@ tags:
 - portability
 - headless
 - standalone
-implementation_status: Implemented
+implementation_status: implemented
 adr: 310
 title: Cross-Platform and Headless Dependency Bootstrap
 implementation_files:
