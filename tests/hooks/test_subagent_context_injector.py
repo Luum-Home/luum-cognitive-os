@@ -46,11 +46,36 @@ def _run_hook(stdin_json: dict, env_overrides: dict | None = None) -> dict:
 
 
 def _additional_context(output: dict) -> str:
-    """Return additionalContext from current Claude hook output shape."""
-    return output.get("hookSpecificOutput", {}).get(
-        "additionalContext",
-        output.get("additionalContext", ""),
-    )
+    """Return additionalContext from the ONE shape Claude Code consumes.
+
+    The host reads ``additionalContext`` only from inside ``hookSpecificOutput``,
+    alongside ``hookEventName``. There is no top-level form: a hook that prints
+    ``{"additionalContext": "..."}`` at the root emits valid JSON that the host
+    parses and then discards, because the field is not in the schema. The drop
+    is silent — a payload starting with ``{`` that parses as valid JSON is never
+    re-read as plain text, so there is no fallback either.
+
+    Contract and citations: ``manifests/claude-code-hooks-schema.yaml``
+    (``additional_context.placement``, ``stdout_parsing``).
+
+    This helper used to fall back to the root-level key. That made it impossible
+    for these tests to fail because a hook used the wrong shape — a suppressor
+    that suppressed nothing, inside the very test that exists to rule that out.
+    """
+    hso = output.get("hookSpecificOutput")
+    if not isinstance(hso, dict):
+        raise AssertionError(
+            "hook output has no `hookSpecificOutput` object; Claude Code reads "
+            f"additionalContext only from there. Got top-level keys: "
+            f"{sorted(output)}"
+        )
+    if hso.get("hookEventName") != "SubagentStart":
+        raise AssertionError(
+            "hookSpecificOutput.hookEventName must be 'SubagentStart' — the host "
+            "requires the event name alongside additionalContext. Got: "
+            f"{hso.get('hookEventName')!r}"
+        )
+    return hso.get("additionalContext", "")
 
 
 class TestMandatoryRulesInjection:
@@ -141,30 +166,48 @@ class TestMandatoryRulesFileIntegrity:
         assert "python3" in content
 
 
-class TestMandatoryRulesDelivery:
-    """The template must ARRIVE intact — this tests transport, not wording.
+class TestMandatoryRulesEmission:
+    """The template must be EMITTED intact — this tests composition, not arrival.
 
-    Deliberately NOT a content assertion: it never names a phrase from the
-    template, so rewording the rules cannot break it. What it catches is the
-    delivery mechanism failing — the file going missing (hook silently drops to
-    its inline fallback), the composition dropping it, or the 10K truncation
-    eating part of it. Those are the failures that leave sub-agents without
-    rules while every phrase-matching test still passes.
+    Renamed from ``TestMandatoryRulesDelivery`` on 2026-08-15. The old name and
+    its assertion messages claimed the rules "arrive" in the sub-agent. Nothing
+    here can show that. Every test in this file runs the hook under
+    ``subprocess.run`` and inspects ``result.stdout`` — that is the hook's
+    output, measured one step before the host decides whether to consume it.
+    Whether the host consumes it depends on the registration in
+    ``.claude/settings.json`` (see ``async``) and on the event's contract, and
+    neither is exercised by running the script.
+
+    So the whole file is now scoped to what it can prove: given this stdin, the
+    hook emits this JSON, in the shape the host documents, without truncation.
+
+    Arrival is a separate, non-deterministic question measured against real
+    sub-agent transcripts by ``scripts/check_subagent_context_arrival.py``.
+    Deliberately NOT a pytest case: it reads ``~/.claude/projects`` and its
+    result depends on what has run on this machine, so in CI it would either be
+    skipped into meaninglessness or mocked — and a mocked transcript asserting
+    the mock contains what the mock put there proves nothing at all.
+
+    Deliberately NOT a content assertion either: it never names a phrase from
+    the template, so rewording the rules cannot break it. What it catches is the
+    composition failing — the file going missing (hook silently drops to its
+    inline fallback), the composition dropping it, or the 10K truncation eating
+    part of it.
     """
 
-    def test_template_body_is_delivered_verbatim(self):
-        """Every byte of the template must reach additionalContext.
+    def test_template_body_is_emitted_verbatim(self):
+        """Every byte of the template must reach the emitted additionalContext.
 
         The hook loads it via `$(cat ...)`, which strips trailing newlines —
         hence the rstrip. Any other difference means the mechanism mutated or
-        truncated the rules on the way to the sub-agent.
+        truncated the rules while composing them.
         """
         context = _additional_context(_run_hook({"prompt": "any task at all"}))
         body = MANDATORY_RULES_PATH.read_text().rstrip("\n")
         assert body in context, (
-            "templates/agent-mandatory-rules.md did not arrive verbatim in "
-            "additionalContext — sub-agents are running without the full rule "
-            "set (check for the inline fallback or 10K truncation)"
+            "templates/agent-mandatory-rules.md was not emitted verbatim in "
+            "additionalContext — the composition dropped or truncated it "
+            "(check for the inline fallback or the 10K cap)"
         )
 
     def test_inline_fallback_is_not_in_use(self):
