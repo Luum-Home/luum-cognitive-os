@@ -56,7 +56,7 @@ The first line uses a deterministic key=value format for reliable extraction by 
 | `EVIDENCE` | Count of items in `WHAT I VERIFIED` | integer |
 | `UNCERTAINTIES` | Count of items in `UNSURE ABOUT` | integer >= 1 |
 
-The `---` separator divides the header from the human-readable body. Parsing library: `lib/trust_report_parser.py`.
+The `---` separator divides the header from the human-readable body. Parsing library: `cos_lib/trust_report_parser.py`.
 
 ### Structured Verification Field
 

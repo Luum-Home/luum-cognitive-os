@@ -54,7 +54,7 @@ Cognitive OS loads ~88 rules (~73K tokens). As context fills during a session, a
 
 ## Library
 
-`lib/cognitive_load_monitor.py` provides:
+`cos_lib/cognitive_load_monitor.py` provides:
 
 | Function | Description |
 |----------|-------------|

@@ -3,7 +3,7 @@
 # Token Budget Monitor (formerly Rate Limit Protection)
 
 > **Note**: The hook and Python module were renamed.  Use `hooks/token-budget-monitor.sh`
-> and `lib/token_budget_monitor.py`.  This rule file keeps its original name for
+> and `cos_lib/token_budget_monitor.py`.  This rule file keeps its original name for
 > backwards compatibility with `hooks/self-install.sh` registry mapping.
 
 ## Always Active
@@ -37,7 +37,7 @@ Set `RATE_LIMIT_OVERRIDE=true` for emergencies. This bypasses the block but does
 
 ### Lib Module
 
-`lib/token_budget_monitor.py` provides `RateLimitProtection` class with `check()`, `should_launch_agent()`, `record_usage()`, and formatting helpers.  The old name `lib/rate_limit_protection.py` is a deprecation shim.
+`cos_lib/token_budget_monitor.py` provides `RateLimitProtection` class with `check()`, `should_launch_agent()`, `record_usage()`, and formatting helpers.  The old name `cos_lib/rate_limit_protection.py` is a deprecation shim.
 
 ### Metrics
 

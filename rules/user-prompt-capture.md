@@ -8,7 +8,7 @@ Engram captures what agents DO (decisions, bugs, discoveries) but NOT what the u
 
 ## Rule (Always Active)
 
-The orchestrator MUST call `mem_save_prompt` for every user message that contains actionable intent. Use `lib/prompt_classifier.py` to classify prompts before deciding.
+The orchestrator MUST call `mem_save_prompt` for every user message that contains actionable intent. Use `cos_lib/prompt_classifier.py` to classify prompts before deciding.
 
 ### Capture These Categories
 
@@ -63,7 +63,7 @@ Future sessions can search user prompts to understand:
 
 ## Classifier Library
 
-`lib/prompt_classifier.py` provides:
+`cos_lib/prompt_classifier.py` provides:
 
 | Function | Returns | Purpose |
 |----------|---------|---------|
@@ -94,7 +94,7 @@ Claude Code does not expose a `UserPromptSubmit` hook event. The available hook 
 
 On every user message:
 
-1. Run `classify_prompt(message)` from `lib/prompt_classifier.py`
+1. Run `classify_prompt(message)` from `cos_lib/prompt_classifier.py`
 2. If `result.should_capture` is True, call `mem_save_prompt(content=message, project=project)`
 3. If `result.should_capture` is False, skip silently
 4. Proceed with normal task processing

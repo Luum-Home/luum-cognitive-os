@@ -32,7 +32,7 @@ The orchestrator checks this table before delegating to sub-agents.
 - **default** confidence: Initial guess, needs real data from /model-optimizer
 
 > Prices as of March 2026. Verify current pricing at provider documentation.
-> The cost predictor (lib/cost_predictor.py) calculates real prices from actual API responses.
+> The cost predictor (cos_lib/cost_predictor.py) calculates real prices from actual API responses.
 
 ## Model Cost Reference
 
@@ -48,7 +48,7 @@ The orchestrator checks this table before delegating to sub-agents.
 
 ## Dynamic Multi-Provider Routing
 
-The `lib/model_router.py` module extends static routing with dynamic, multi-provider model selection.
+The `cos_lib/model_router.py` module extends static routing with dynamic, multi-provider model selection.
 
 ### Supported Models
 

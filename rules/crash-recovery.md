@@ -37,7 +37,7 @@ The `crash-recovery.sh` SessionStart hook detects orphaned checkpoint stashes:
 
 ## Integration
 
-- **Lib**: `lib/checkpoint_manager.py` provides the Python API for checkpoint operations
+- **Lib**: `cos_lib/checkpoint_manager.py` provides the Python API for checkpoint operations
 - **Hook (PostToolUse)**: `hooks/auto-checkpoint.sh` on Bash, Edit, Write
 - **Hook (SessionStart)**: `hooks/crash-recovery.sh` detects orphaned stashes
 - **Fault Tolerance**: Extends Tier 4 (Agent Resilience) with periodic checkpoints

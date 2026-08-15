@@ -93,7 +93,7 @@ permanent posture.
 - `docs/02-Decisions/adrs/ADR-188-mandatory-skill-invocation-at-high-confidence.md`
 - `hooks/orchestrator-skill-invocation-gate.sh`
 - `hooks/skill-router-prompt-suggest.sh` (advisory layer)
-- `lib/skill_router.py` — `last_suggestion(session_id)`
+- `cos_lib/skill_router.py` — `last_suggestion(session_id)`
 - `tests/contracts/test_skill_invocation_gate.py`
 
 ## Contextual Trigger

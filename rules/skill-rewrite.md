@@ -15,7 +15,7 @@ A skill MUST be suggested for rewrite when it has accumulated **3 or more failur
 (``success=False`` performance records) within a rolling **24-hour window**.
 
 Detection runs via `ConsequenceEngine.get_skills_needing_rewrite()` in
-`lib/consequence_engine.py` after every agent completion (PostToolUse via
+`cos_lib/consequence_engine.py` after every agent completion (PostToolUse via
 `completion-gate.sh`).
 
 ## Phase-Aware Behavior
@@ -43,7 +43,7 @@ AUTO-REWRITE SUGGESTED: sdd-apply has 4 failures in 24h
 
 A performance record is counted as a failure when the ``success`` field is
 ``False`` in `.cognitive-os/metrics/consequence-history.jsonl`.  These records
-are written by `lib/record_completion.py` (called from `completion-gate.sh`
+are written by `cos_lib/record_completion.py` (called from `completion-gate.sh`
 after every agent completion).
 
 ## How to Act on a Suggestion
@@ -59,9 +59,9 @@ after every agent completion).
 
 | Primitive | Role |
 |-----------|------|
-| `lib/consequence_engine.py` | `get_skills_needing_rewrite()` counts recent failures |
+| `cos_lib/consequence_engine.py` | `get_skills_needing_rewrite()` counts recent failures |
 | `packages/quality-gates/hooks/completion-gate.sh` | Calls the method after every Agent completion |
-| `lib/record_completion.py` | Writes performance records (success/failure) |
+| `cos_lib/record_completion.py` | Writes performance records (success/failure) |
 | `packages/skill-governance/skills/optimize-skill/SKILL.md` | Performs the actual rewrite |
 | `rules/skill-management.md` | Broader skill adaptation protocol |
 | `rules/auto-skill-generation.md` | Act → Learn → Reuse cycle |

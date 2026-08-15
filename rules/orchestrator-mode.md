@@ -43,7 +43,7 @@ if is_executor_mode():
 
 ## Valkey Backend
 
-The agent bus (`lib/agent_bus.py`) requires Valkey for heartbeat and pub/sub.
+The agent bus (`cos_lib/agent_bus.py`) requires Valkey for heartbeat and pub/sub.
 It runs via OrbStack Docker (stack `luum-agent-os`, container `valkey`).
 When not running, `agent_bus.py` falls back to the file-based `FallbackBus`
 automatically.
@@ -54,9 +54,9 @@ The hook is a no-op when executor mode is off — it will not touch OrbStack.
 
 ## Integration
 
-* `lib/orchestrator_mode.py` -- public API (`is_executor_mode`, `delegate_task`, `delegate_sdd_phase`)
-* `lib/claude_executor.py` -- subprocess execution engine
-* `lib/agent_bus.py` -- Valkey pub/sub communication (FallbackBus when Valkey is down)
+* `cos_lib/orchestrator_mode.py` -- public API (`is_executor_mode`, `delegate_task`, `delegate_sdd_phase`)
+* `cos_lib/claude_executor.py` -- subprocess execution engine
+* `cos_lib/agent_bus.py` -- Valkey pub/sub communication (FallbackBus when Valkey is down)
 * `lib/file_lock_registry.py` -- distributed file locking
 * `hooks/valkey-ensure.sh` -- SessionStart hook to auto-start Valkey in executor mode
 

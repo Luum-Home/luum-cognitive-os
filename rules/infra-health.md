@@ -82,7 +82,7 @@ When `smart_start: true` is set in `cognitive-os.yaml`, Docker services start au
 ### How It Works
 
 1. A skill or hook triggers (e.g., `/agent-kpis`)
-2. `lib/smart_infra.py` looks up the skill→service map
+2. `cos_lib/smart_infra.py` looks up the skill→service map
 4. The system polls for healthy status (up to 120s)
 5. Once healthy, the skill proceeds normally
 6. On session exit, `idle-service-cleanup.sh` stops services past their `idle_timeout_minutes`

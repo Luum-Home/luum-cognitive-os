@@ -43,10 +43,10 @@ All events logged to `.cognitive-os/metrics/consequence-history.jsonl`. Use `Con
 
 | Primitive | Role |
 |-----------|------|
-| `lib/consequence_engine.py` | Core logic: evaluate, apply, query |
+| `cos_lib/consequence_engine.py` | Core logic: evaluate, apply, query |
 | `hooks/consequence-evaluator.sh` | PostToolUse hook on Agent |
-| `lib/skill_archive.py` | Snapshot storage for promoted skills |
-| `lib/model_router.py` | Model selection affected by degradation |
+| `cos_lib/skill_archive.py` | Snapshot storage for promoted skills |
+| `cos_lib/model_router.py` | Model selection affected by degradation |
 | `rules/trust-score.md` | Trust Report that provides the input score |
 | `rules/agent-kpis.md` | OKR targets that define thresholds |
 

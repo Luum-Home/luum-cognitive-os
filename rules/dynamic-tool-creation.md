@@ -147,7 +147,7 @@ Dynamic tools MUST NOT:
 | System | Integration |
 |--------|-------------|
 | Auto-Skill Generation (`auto-skill-generation.md`) | Post-hoc generation remains for complex tasks. Dynamic tools are lighter and mid-task. Promoted dynamic tools go to the same `skills/auto-generated/` directory. |
-| Skill Router (`lib/skill_router.py`) | Dynamic tools are NOT routed by the skill router. They are invoked directly by the agent that created them. |
+| Skill Router (`cos_lib/skill_router.py`) | Dynamic tools are NOT routed by the skill router. They are invoked directly by the agent that created them. |
 | Agent Security (`agent-security.md`) | Dynamic tool execution goes through normal Bash/Python tool calls, so all PreToolUse/PostToolUse hooks still apply. |
 | Error Learning (`error-learning.md`) | Failures in dynamic tools are captured by the error-learning pipeline like any other command. |
 | Session Concurrency (`session-concurrency.md`) | Dynamic tools are session-scoped. Each session has its own tools directory contents. The registry.json prevents conflicts. |

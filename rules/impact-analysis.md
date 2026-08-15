@@ -46,7 +46,7 @@ If post-apply risk is significantly higher than pre-apply risk, the verify phase
 
 ## Lib Module
 
-The analysis logic lives in `lib/impact_analysis.py`:
+The analysis logic lives in `cos_lib/impact_analysis.py`:
 
 - `analyze_impact(changed_files, project_dir) -> ImpactReport`
 - `format_impact_report(report) -> str`

@@ -50,7 +50,7 @@ Update feedback to note the successful approach.
 ## Skill Routing Table
 
 When the orchestrator receives a task, consult this routing table to select the most appropriate skill.
-Auto-selection is handled by `lib/skill_router.py` — the `SkillRouter` class matches user messages
+Auto-selection is handled by `cos_lib/skill_router.py` — the `SkillRouter` class matches user messages
 to skills using regex intent detection plus optional semantic fallback.
 
 ### Core Routing Table
@@ -140,7 +140,7 @@ Note: This table COMPLEMENTS model-routing (which picks the MODEL). Skill routin
 
 ### Auto-Selection Protocol
 
-The orchestrator uses `lib/skill_router.py` to auto-select skills:
+The orchestrator uses `cos_lib/skill_router.py` to auto-select skills:
 
 1. On every user message, call `router.best_match(message)`
 2. If confidence >= 0.80: suggest the skill to the user (do not auto-invoke without confirmation)

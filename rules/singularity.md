@@ -8,9 +8,9 @@ The Singularity controller is activated in one of three modes:
 
 | Mode | How | Use Case |
 |------|-----|----------|
-| Manual | `/singularity run` or `python lib/singularity.py run` | Ad-hoc single pass |
-| Cron | `python lib/singularity.py run` in a crontab or scheduled task | Periodic checks (e.g., every 5 minutes) |
-| Daemon | `/singularity daemon` or `python lib/singularity.py daemon` | Continuous background monitoring |
+| Manual | `/singularity run` or `python cos_lib/singularity.py run` | Ad-hoc single pass |
+| Cron | `python cos_lib/singularity.py run` in a crontab or scheduled task | Periodic checks (e.g., every 5 minutes) |
+| Daemon | `/singularity daemon` or `python cos_lib/singularity.py daemon` | Continuous background monitoring |
 
 The controller is **inactive by default**. It must be explicitly started by the user.
 
