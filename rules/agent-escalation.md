@@ -134,7 +134,7 @@ Before escalating, the agent saves any partial progress to Engram so the next ag
 
 ## Detection Library
 
-The detection logic lives in `lib/escalation_detector.py`:
+The detection logic lives in `cos_lib/escalation_detector.py`:
 
 | Function | Description |
 |----------|-------------|

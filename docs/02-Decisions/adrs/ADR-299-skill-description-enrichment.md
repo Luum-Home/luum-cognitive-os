@@ -168,7 +168,8 @@ python3 -m pytest tests/unit -q
 - Quality of utterances is provider-dependent; the strict-JSON contract +
   audit trail mitigate silent corruption but cannot guarantee semantic
   fidelity.
-- ~385 SKILL.md files will gain 12 lines of frontmatter each — diff
+- Every SKILL.md in the tree gains 12 lines of frontmatter — ~385 files on
+  2026-05-13 (`find . -name SKILL.md -not -path './.git/*' | wc -l`) — so diff
   reviewers should expect a large but mechanically uniform PR when the
   enricher is run on the full catalog.
 

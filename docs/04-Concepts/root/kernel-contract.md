@@ -38,14 +38,14 @@ at the center of the system. The kernel must be stable enough to survive:
 
 The machine-readable source of truth is:
 
-- [manifests/kernel-contract.yaml](../manifests/kernel-contract.yaml)
+- [manifests/kernel-contract.yaml](../../../manifests/kernel-contract.yaml)
 
 That manifest is backed by automated contract tests and manual verification
 guidance so the kernel boundary remains explicit, visible, and enforceable.
 
 The broader product taxonomy is intentionally separate:
 
-- [manifests/product-zones.yaml](../manifests/product-zones.yaml)
+- [manifests/product-zones.yaml](../../../manifests/product-zones.yaml)
 - [docs/04-Concepts/root/product-zones.md](product-zones.md)
 
 The kernel contract protects the smallest stable core. Product zones classify

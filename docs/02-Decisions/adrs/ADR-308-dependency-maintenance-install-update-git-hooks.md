@@ -1,5 +1,5 @@
 ---
-status: Accepted
+status: accepted
 date: 2026-05-14
 deciders: Cognitive OS maintainers
 tags:
@@ -7,7 +7,7 @@ tags:
 - installer
 - git-hooks
 - maintenance
-implementation_status: Implemented
+implementation_status: implemented
 adr: 308
 title: Dependency Maintenance in Install, Update, and Git Hooks
 implementation_files:

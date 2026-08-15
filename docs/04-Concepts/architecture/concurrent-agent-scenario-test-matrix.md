@@ -3,7 +3,7 @@
 > Status: draft
 > Updated: 2026-05-02
 > Scope: automated scenarios that reproduce realistic concurrent-agent failures
-> Related: [ADR-108](../adrs/ADR-108-concurrent-agent-safety-layer.md), [Concurrent Agent Safety Master](concurrent-agent-safety-master.md), [Concurrent Agent Safety Testbed Plan](../../.cognitive-os/plans/architecture/concurrent-agent-safety-testbed-plan.md)
+> Related: [ADR-108](../../02-Decisions/adrs/ADR-108-concurrent-agent-safety-layer.md), [Concurrent Agent Safety Master](concurrent-agent-safety-master.md), [Concurrent Agent Safety Testbed Plan](../../../.cognitive-os/plans/architecture/concurrent-agent-safety-testbed-plan.md)
 
 ## Rule
 

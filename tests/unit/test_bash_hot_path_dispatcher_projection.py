@@ -43,10 +43,13 @@ def bash_group(settings: dict) -> list[str]:
 
 
 def codex_bash_group(settings: dict) -> list[str]:
-    for group in settings["PreToolUse"]:
-        if group.get("matcher") == "bash":
+    # Codex nests events under the mandatory top-level "hooks" namespace and
+    # matches on a tool-name regex, not the invented "bash" literal.
+    # Authority: manifests/codex-hooks-schema.yaml.
+    for group in settings["hooks"]["PreToolUse"]:
+        if group.get("matcher") == "^Bash$":
             return [hook["command"] for hook in group["hooks"]]
-    raise AssertionError("Codex PreToolUse bash group not found")
+    raise AssertionError("Codex PreToolUse ^Bash$ group not found")
 
 
 def stop_group(settings: dict) -> list[str]:
@@ -56,9 +59,11 @@ def stop_group(settings: dict) -> list[str]:
 
 
 def codex_stop_group(settings: dict) -> list[str]:
-    for group in settings["Stop"]:
-        if group.get("matcher") == "shutdown":
-            return [hook["command"] for hook in group["hooks"]]
+    # Stop accepts no matcher in Codex; the old "shutdown" literal was invented
+    # and matched nothing. Authority: manifests/codex-hooks-schema.yaml.
+    for group in settings["hooks"]["Stop"]:
+        assert "matcher" not in group, "Codex Stop must not carry a matcher"
+        return [hook["command"] for hook in group["hooks"]]
     raise AssertionError("Codex Stop group not found")
 
 

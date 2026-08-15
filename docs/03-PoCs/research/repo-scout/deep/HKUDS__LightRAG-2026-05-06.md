@@ -8,6 +8,11 @@ deepwiki_url: https://deepwiki.com/HKUDS/LightRAG
 engram_id: pending
 ---
 
+> **Estado 2026-08-15 — ya adoptado, sin ADR.** El veredicto ADOPT es del 2026-05-06
+> y la adopcion aterrizo el 2026-05-08, ANTES del freeze del 2026-05-11: `cos_lib/memory_retrieval_benchmark.py`, con entradas en `NOTICE.md` y `manifests/external-tool-licenses.yaml`.
+> El freeze NO alcanza a este caso. Lo que falta es la decision escrita: ninguna ADR
+> respalda esta adopcion. Ver `manifests/external-tool-adoption-freeze.yaml` y ADR-267.
+
 ## Repository Evaluation: HKUDS/LightRAG
 
 ### Classification: ADOPT

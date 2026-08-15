@@ -5,7 +5,7 @@ status: superseded
 implementation_status: not-applicable
 date: '2026-04-30'
 supersedes: []
-superseded_by: null
+superseded_by: ADR-091
 implementation_files: []
 tier: maintainer
 tags: []

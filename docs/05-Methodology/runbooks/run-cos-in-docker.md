@@ -11,7 +11,7 @@
 - You need a **cross-OS** path (Linux / macOS / Windows + WSL2) without shell-profile assumptions.
 - You need a **compliance-evaluable surface** (BYOK credentials, audit trail with `audit_class` / `tenant_id` per ADR-142).
 
-This is **not** the path for installing Cognitive OS as your daily Claude Code / Codex governance layer on your own laptop. For that, see [`getting-started.md`](../getting-started.md).
+This is **not** the path for installing Cognitive OS as your daily Claude Code / Codex governance layer on your own laptop. For that, see [`getting-started.md`](../../00-MOCs/entrypoints/getting-started.md).
 
 ## Prerequisites
 
@@ -160,7 +160,7 @@ The entrypoint is intentionally thin. ADR-140 explicitly chose Compose configura
 
 - **Windows-native Docker without WSL2.** ADR-140 declares this out of scope. The invariant is WSL2 + Docker Desktop.
 - **Auto credential pickup from your host shell.** The worker does not read your `~/.zshrc` or shell profile. Pass `LLM_*_API_KEY` explicitly or it stays unset.
-- **Daily Claude Code / Codex usage.** This is a worker container, not your IDE governance layer. For day-to-day use, install on your laptop directly per [`getting-started.md`](../getting-started.md).
+- **Daily Claude Code / Codex usage.** This is a worker container, not your IDE governance layer. For day-to-day use, install on your laptop directly per [`getting-started.md`](../../00-MOCs/entrypoints/getting-started.md).
 
 ## Troubleshooting
 
@@ -192,12 +192,12 @@ COS_WORKSPACE="$PWD" bash scripts/cos-cloud-worker-bootstrap.sh self-test
 
 ## Related ADRs and documents
 
-- [ADR-140](../adrs/ADR-140-cross-os-containerized-deployment.md) — the architectural decision that defines this surface
-- [ADR-141](../adrs/ADR-141-engram-cloud-cross-instance-replication.md) — engram cloud replication
-- [ADR-142](../adrs/ADR-142-compliance-audit-air-gapped-surface.md) — audit trail compliance surface
-- [ADR-139](../adrs/ADR-139-account-agnostic-multi-provider-runtime.md) — BYOK credential posture
-- [ADR-137](../adrs/ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md) — why this surface exists at all
-- [`docs/04-Concepts/architecture/bootstrap-portability.md`](../architecture/bootstrap-portability.md) — the portability gate this stack satisfies
-- [`docs/04-Concepts/architecture/cloud-worker-runtime-tooling-research-2026-05.md`](../architecture/cloud-worker-runtime-tooling-research-2026-05.md) — research that informed ADR-140
-- [`docs/09-Quality/manual-tests/headless-docker-service-runtime.md`](../manual-tests/headless-docker-service-runtime.md) — manual test of the worker surface
-- [`docs/09-Quality/manual-tests/engram-cloud-docker-sync.md`](../manual-tests/engram-cloud-docker-sync.md) — manual test of the engram-cloud profile
+- [ADR-140](../../02-Decisions/adrs/ADR-140-cross-os-containerized-deployment.md) — the architectural decision that defines this surface
+- [ADR-141](../../02-Decisions/adrs/ADR-141-engram-cloud-cross-instance-replication.md) — engram cloud replication
+- [ADR-142](../../02-Decisions/adrs/ADR-142-compliance-audit-air-gapped-surface.md) — audit trail compliance surface
+- [ADR-139](../../02-Decisions/adrs/ADR-139-account-agnostic-multi-provider-runtime.md) — BYOK credential posture
+- [ADR-137](../../02-Decisions/adrs/ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md) — why this surface exists at all
+- [`docs/04-Concepts/architecture/bootstrap-portability.md`](../../04-Concepts/architecture/bootstrap-portability.md) — the portability gate this stack satisfies
+- [`docs/04-Concepts/architecture/cloud-worker-runtime-tooling-research-2026-05.md`](../../04-Concepts/architecture/cloud-worker-runtime-tooling-research-2026-05.md) — research that informed ADR-140
+- [`docs/09-Quality/manual-tests/headless-docker-service-runtime.md`](../../09-Quality/manual-tests/headless-docker-service-runtime.md) — manual test of the worker surface
+- [`docs/09-Quality/manual-tests/engram-cloud-docker-sync.md`](../../09-Quality/manual-tests/engram-cloud-docker-sync.md) — manual test of the engram-cloud profile

@@ -12,7 +12,7 @@ The engram daemon at port 7437 stores the project's persistent memory in a local
 - **NEVER** run `PATCH`, `POST`, or `DELETE` requests against the production engram daemon at port 7437 for the purpose of API exploration, curl experiments, or testing.
 - **NEVER** issue ad-hoc `curl -X PATCH http://127.0.0.1:7437/...` commands against real observation IDs.
 - **ALWAYS** spawn a sandboxed daemon on an alternate port with a temporary data directory when you need to test mutating endpoints.
-- The only approved client for `PATCH /observations/<id>` in production code is `lib/engram_http_client.py`, which is typed, reviewed, and never used for ad-hoc exploration.
+- The only approved client for `PATCH /observations/<id>` in production code is `cos_lib/engram_http_client.py`, which is typed, reviewed, and never used for ad-hoc exploration.
 - Read-only production operations are safe: `GET /health`, `GET /search`, `GET /observations/<id>`, and `GET /stats` do not modify data and may be called freely.
 
 ## Rationale
@@ -63,9 +63,9 @@ The following read-only endpoints are safe to call against the production daemon
 
 ## Tooling
 
-`lib/engram_http_client.py` is the only approved production caller for `PATCH /observations/<id>`. It:
+`cos_lib/engram_http_client.py` is the only approved production caller for `PATCH /observations/<id>`. It:
 - Requires at least one field to be specified (raises `ValueError` on empty PATCH as a programming-error guard).
-- Is used exclusively by `lib/engram_lifecycle.py` for in-place reinforcement updates.
+- Is used exclusively by `cos_lib/engram_lifecycle.py` for in-place reinforcement updates.
 - Logs at debug level; never raises on network failure.
 
 Do not use `engram_http_client.update_observation()` for arbitrary experimentation. Its sole purpose is lifecycle reinforcement.
@@ -103,8 +103,8 @@ curl -X DELETE http://127.0.0.1:7437/observations/1
 
 ## Related
 
-- `lib/engram_http_client.py` — the only approved production client for PATCH
-- `lib/engram_lifecycle.py` — uses `engram_http_client.update_observation()` in `reinforce()`
+- `cos_lib/engram_http_client.py` — the only approved production client for PATCH
+- `cos_lib/engram_lifecycle.py` — uses `engram_http_client.update_observation()` in `reinforce()`
 - `docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md` — addendum 2026-04-27 documents the incident
 - `rules/credential-management.md` — related data-protection conventions
 

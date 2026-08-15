@@ -259,7 +259,7 @@ a pre-launch blocker.
 Required actions:
 
 - [x] Fresh clone → first useful skill invocation under 10 minutes —
-      documented in [`docs/05-Methodology/onboarding/walkthrough.md`](../onboarding/walkthrough.md).
+      documented in [`docs/05-Methodology/onboarding/walkthrough.md`](../../05-Methodology/onboarding/walkthrough.md).
       Live measurement: 52s for steps 4-7, ~7 min total including
       read-only steps. Public-safe command snippets are copied into the
       walkthrough; raw terminal transcripts remain local-only until sanitized.

@@ -5,7 +5,7 @@
 ## Current State
 
 - Vendor lock-in: Claude Code (.claude/, CLAUDE.md, settings.json)
-- 14 hooks, 17 rules, 25+ skills, 16 agents
+- the primitive inventory at the time this plan was written; measure current size with `ls hooks/*.sh | wc -l` hook scripts, `ls rules/*.md | wc -l` rule files, `ls -d skills/*/ | wc -l` skills
 - All configuration in Claude Code-specific formats
 
 ## Target State
@@ -21,13 +21,13 @@ The goal is not to abandon Claude Code, but to ensure the investment in rules, s
 
 ### Pillar 1: Rules (ai-rulez or Ruler)
 
-**Problem**: Our 17 rules live in `.claude/rules/*.md` — a Claude Code-specific path.
+**Problem**: Our rules live in `.claude/rules/*.md` — a Claude Code-specific path.
 
 **Solution**: Single canonical directory that generates configs for 18+ tools.
 
 - AGENTS.md as universal standard (Linux Foundation AAIF)
 - Tools: **ai-rulez** (MIT, 18 targets) or **Ruler** (MIT, 30+ targets)
-- Our 17 rules in canonical markdown, auto-generated per-tool configs
+- Our rules in canonical markdown, auto-generated per-tool configs
 
 **How it works**:
 1. Write rules once in `.cognitive-os/rules/` (canonical markdown)
@@ -39,7 +39,7 @@ The goal is not to abandon Claude Code, but to ensure the investment in rules, s
 **Problem**: None — SKILL.md is already the universal standard.
 
 - 16+ tools support SKILL.md format natively
-- Our 25+ skills work without conversion
+- Our skills work without conversion
 - `.claude/skills/` directory is now a cross-tool convention
 - No action needed beyond maintaining the format
 
@@ -102,7 +102,7 @@ The canonical hook scripts remain unchanged. Only the adapter layer (JSON config
 
 ### Phase 1: Centralize Rules (1-2 days)
 - Adopt ai-rulez or Ruler
-- Move 17 rules to `.cognitive-os/rules/` canonical format
+- Move every rule in `rules/` to `.cognitive-os/rules/` canonical format
 - Generate Claude Code configs (verify no regression)
 - Add `generate-configs.sh` script
 

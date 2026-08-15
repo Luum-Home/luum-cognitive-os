@@ -25,7 +25,7 @@ registers without modification.
 
 ## Context
 
-[ADR-137](ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md) commits Cognitive OS to the trajectory `Framing B → Framing A` and introduces the **framing-exercise statement** as a required field in flow skill metadata. [ADR-134](ADR-134-headless-self-improvement-proposer.md) and [ADR-135](ADR-135-self-evolving-doctrine-proposals.md) define the propose-only contract for the self-improvement and doctrine proposers. The [`dx-cloud-flow-bootstrap-plan.md`](../architecture/dx-cloud-flow-bootstrap-plan.md) commits the bootstrap path: vulnerability remediation in sandbox as flow #1, with explicit bootstrap budget caps.
+[ADR-137](ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md) commits Cognitive OS to the trajectory `Framing B → Framing A` and introduces the **framing-exercise statement** as a required field in flow skill metadata. [ADR-134](ADR-134-headless-self-improvement-proposer.md) and [ADR-135](ADR-135-self-evolving-doctrine-proposals.md) define the propose-only contract for the self-improvement and doctrine proposers. The [`dx-cloud-flow-bootstrap-plan.md`](../../04-Concepts/architecture/dx-cloud-flow-bootstrap-plan.md) commits the bootstrap path: vulnerability remediation in sandbox as flow #1, with explicit bootstrap budget caps.
 
 What is missing: a single, declarative shape that every flow primitive must satisfy. Today the propose-only contract for ADR-134 / ADR-135 lives inside the proposer scripts as constants. The flow primitives the bootstrap plan introduces need that contract generalised so that:
 
@@ -111,14 +111,14 @@ required_flow_shape:
 - `flow_id` MUST be unique across the registry. Re-registration with the same ID requires a `lifecycle_state` transition, not a silent overwrite.
 - `lifecycle_state` MUST start at `lab` for any new flow ([ADR-133](ADR-133-expansion-without-monsterization.md)). Promotion requires the same evidence block ADR-126 mandates for `default-on` primitives.
 - `input_source.determinism: deterministic` is a precondition for promotion beyond `advisory`. `best-effort` flows stay in `lab` / `sandbox` until the input source becomes deterministic or until evidence shows best-effort is acceptable for the flow class.
-- `success_condition.verifier` MUST be runnable from CI without maintainer-machine assumptions. A verifier that requires `~/.claude/` or `~/.engram/` violates [`bootstrap-portability.md`](../architecture/bootstrap-portability.md).
+- `success_condition.verifier` MUST be runnable from CI without maintainer-machine assumptions. A verifier that requires `~/.claude/` or `~/.engram/` violates [`bootstrap-portability.md`](../../04-Concepts/architecture/bootstrap-portability.md).
 - `sandboxed_write_paths` MUST exclude `manifests/`, `rules/`, `docs/02-Decisions/adrs/`, and `.cognitive-os/runtime/` by default. A flow that needs to write into any of these requires an explicit per-path opt-in and a reason field.
 - `blocked_actions` MUST include the five entries above as a minimum. Flow-specific additions are allowed; removals are not. The list mirrors the proposer constants from ADR-134.
 - `human_approval_required: true` is hardcoded in the schema. A flow that proposes to remove this field fails validation. The trajectory committed in ADR-137 is `Framing B → Framing A`, not `human-in-loop → autonomous`.
 - `evidence_shape.independence` mirrors `manifests/external-adoption-evidence.yaml` (commit `d4535df`). A flow whose evidence is `maintainer_owned: true` produces drill output, not adoption signal.
 - `framing_exercise_statement` MUST have all five axes declared per [ADR-137](ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md). Missing axes block promotion out of `lab`. `partial` is a valid value but requires the `notes` field to explain what makes it partial.
 - `non_goals` MUST contain at least one entry. An empty list is signal that the flow has not been thought about adversarially.
-- `falsifiable_when` MUST contain at least one observable condition. This mirrors the stage-2 maturity property from [`cognitive-prosthesis.md`](../architecture/cognitive-prosthesis.md): every capability ships alongside the conditions under which it would be considered broken.
+- `falsifiable_when` MUST contain at least one observable condition. This mirrors the stage-2 maturity property from [`cognitive-prosthesis.md`](../../04-Concepts/architecture/cognitive-prosthesis.md): every capability ships alongside the conditions under which it would be considered broken.
 
 ### Promotion rule for the schema itself
 
@@ -135,7 +135,7 @@ The promotion rule itself is enforced by `scripts/cos-flow-contract-audit` (to b
 
 This ADR is satisfied when:
 
-1. The first flow registered under [`dx-cloud-flow-bootstrap-plan.md`](../architecture/dx-cloud-flow-bootstrap-plan.md) (`vuln-remediation-flow`) carries a `flow_contract.yaml` (or equivalent) in its skill directory whose shape matches `required_flow_shape` above.
+1. The first flow registered under [`dx-cloud-flow-bootstrap-plan.md`](../../04-Concepts/architecture/dx-cloud-flow-bootstrap-plan.md) (`vuln-remediation-flow`) carries a `flow_contract.yaml` (or equivalent) in its skill directory whose shape matches `required_flow_shape` above.
 2. CI at registration time rejects a flow whose contract is missing any required field or whose values violate the field-level rules above. The implementation lives in `scripts/cos-flow-register.sh` (to be created).
 3. The schema lands as `manifests/flow-contract-schema.yaml` no later than the first flow's `lab` registration. Until that point, the schema lives in this ADR as canonical reference.
 4. After the second flow lands, either: (a) it registers against the unchanged schema and the schema is promoted to shared status, or (b) it requires extensions and a new ADR carries them. Silent schema evolution is rejected by audit.
@@ -178,9 +178,9 @@ This ADR is satisfied when:
 - [ADR-133](ADR-133-expansion-without-monsterization.md) — `lab`-first promotion gate that the schema enforces by setting `lifecycle_state` default to `lab`.
 - [ADR-136](ADR-136-cross-instance-learning-runway.md) — `cos-engram-import-propose` listed as a valid `evidence_shape.transport`.
 - `manifests/external-adoption-evidence.yaml` (commit `d4535df`) — the `independence` flags structure this schema reuses.
-- [`dx-cloud-flow-bootstrap-plan.md`](../architecture/dx-cloud-flow-bootstrap-plan.md) — the operational plan that consumes this schema.
-- [`cognitive-prosthesis.md`](../architecture/cognitive-prosthesis.md) — the stage-2 maturity property (`falsifiable_when`) the schema reifies as a required field.
-- [`bootstrap-portability.md`](../architecture/bootstrap-portability.md) — the gate the `success_condition.verifier` rule defers to.
+- [`dx-cloud-flow-bootstrap-plan.md`](../../04-Concepts/architecture/dx-cloud-flow-bootstrap-plan.md) — the operational plan that consumes this schema.
+- [`cognitive-prosthesis.md`](../../04-Concepts/architecture/cognitive-prosthesis.md) — the stage-2 maturity property (`falsifiable_when`) the schema reifies as a required field.
+- [`bootstrap-portability.md`](../../04-Concepts/architecture/bootstrap-portability.md) — the gate the `success_condition.verifier` rule defers to.
 - [ADR-139](ADR-139-account-agnostic-multi-provider-runtime.md) — adds `credential_source`, `billing_identity`, `provider_capabilities` fields to `required_flow_shape`.
 - [ADR-141](ADR-141-engram-cloud-cross-instance-replication.md) — adds `engram_project_scope`, `air_gapped_compatible` fields to `required_flow_shape`.
 - [ADR-142](ADR-142-compliance-audit-air-gapped-surface.md) — adds `tenant_id`, `audit_class` fields to `required_flow_shape`.

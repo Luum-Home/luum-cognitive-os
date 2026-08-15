@@ -9,9 +9,9 @@ audit.
 This document is an execution snapshot, not a replacement for the ADRs. The
 canonical decisions are:
 
-- [ADR-191: COS Binary Release Pipeline](../adrs/ADR-191-cos-binary-release-pipeline.md)
-- [ADR-192: Surface 5 Bubble Tea Adoption](../adrs/ADR-192-surface-5-adopt-bubbletea.md)
-- [ADR-193: cosd Local Network API](../adrs/ADR-193-cosd-local-network-api.md)
+- [ADR-191: COS Binary Release Pipeline](../../02-Decisions/adrs/ADR-191-cos-binary-release-pipeline.md)
+- [ADR-192: Surface 5 Bubble Tea Adoption](../../02-Decisions/adrs/ADR-192-surface-5-adopt-bubbletea.md)
+- [ADR-193: cosd Local Network API](../../02-Decisions/adrs/ADR-193-cosd-local-network-api.md)
 
 ## Readiness Matrix
 

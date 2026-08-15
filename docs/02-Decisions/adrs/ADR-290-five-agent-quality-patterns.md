@@ -170,7 +170,9 @@ Adopt five small, independent patterns. Each is delivered as one module plus one
 ### Negative
 
 - Five new modules to maintain. Each is small (well under 200 LOC) and self-contained.
-- Pattern 2 does not migrate the existing 237 hooks; this is intentional but defers the actual win until hooks opt in one by one.
+- Pattern 2 does not migrate the hooks that already exist (237 of them on
+  2026-05-13, `ls hooks/*.sh | wc -l`); this is intentional but defers the actual
+  win until hooks opt in one by one.
 - Pattern 4's "missing == 0" filter policy is conservative. A writer who supplies three of four quality fields and forgets the fourth will be filtered out at any `min_quality > 0`. Documented in the function docstring.
 
 ### Risks

@@ -18,13 +18,13 @@ tags: [strategy, trajectory, runtime, harness-agnostic, dx, cloud-flows]
 
 **Accepted** for the trajectory itself. The directional commitment (B → A, defined below) is firm.
 
-The individual priority shifts that follow from the trajectory are **not scheduled** by this ADR. They become required artefacts only when a flow under the [`dx-cloud-flow-bootstrap-plan.md`](../architecture/dx-cloud-flow-bootstrap-plan.md) needs them. This ADR fixes the destination, not the calendar.
+The individual priority shifts that follow from the trajectory are **not scheduled** by this ADR. They become required artefacts only when a flow under the [`dx-cloud-flow-bootstrap-plan.md`](../../04-Concepts/architecture/dx-cloud-flow-bootstrap-plan.md) needs them. This ADR fixes the destination, not the calendar.
 
 ## Context
 
 Today Cognitive OS operates as **Framing B**: a governance layer over agents that already exist (Claude Code, Codex, Cursor, etc.). The harness runs the agent; COS provides the audit trail, the hooks, the Engram memory layer, the dispatch policy, and the propose-only contract. The agent is not aware it is inside COS — COS is wrapped around the harness.
 
-This shape is operationally sound for the maintainer's day-to-day workflow and for absorption of external agent capabilities as they ship. It is also a **dead end** for the use case named in [`dx-cloud-flow-bootstrap-plan.md`](../architecture/dx-cloud-flow-bootstrap-plan.md): cloud-instance agents executing maintenance flows (vulnerability remediation, bug fixing, feature construction, documentation, primitive expansion) under human audit. That use case requires the agent to behave as a COS-native runtime: Engram-aware, hook-aware, dispatch-aware, lifecycle-aware. A wrapper that lives only on the maintainer's machine cannot fulfil it.
+This shape is operationally sound for the maintainer's day-to-day workflow and for absorption of external agent capabilities as they ship. It is also a **dead end** for the use case named in [`dx-cloud-flow-bootstrap-plan.md`](../../04-Concepts/architecture/dx-cloud-flow-bootstrap-plan.md): cloud-instance agents executing maintenance flows (vulnerability remediation, bug fixing, feature construction, documentation, primitive expansion) under human audit. That use case requires the agent to behave as a COS-native runtime: Engram-aware, hook-aware, dispatch-aware, lifecycle-aware. A wrapper that lives only on the maintainer's machine cannot fulfil it.
 
 The target is **Framing A**: COS as a runtime that travels with the agent. A cloud worker boots with `cos-init`, registers with a central Engram, runs hooks natively, dispatches through the configured providers, and returns evidence via the [ADR-136](ADR-136-cross-instance-learning-runway.md) runway. The agent operates *inside* COS, not next to it.
 
@@ -35,7 +35,7 @@ This trajectory is **not** a fork. It is a directional commitment that the prese
 Commit Cognitive OS to the trajectory **Framing B → Framing A**. Specifically:
 
 1. Framing B remains the operational reality during transition. No deprecation, no removal of governance-layer behaviour. The maintainer's workflow continues unchanged.
-2. Every new flow shipped under [`dx-cloud-flow-bootstrap-plan.md`](../architecture/dx-cloud-flow-bootstrap-plan.md) is evaluated by **how much of Framing A it exercises**. A flow that runs entirely in Framing B is acceptable for `lab` but cannot be promoted to `default-on` or `core`.
+2. Every new flow shipped under [`dx-cloud-flow-bootstrap-plan.md`](../../04-Concepts/architecture/dx-cloud-flow-bootstrap-plan.md) is evaluated by **how much of Framing A it exercises**. A flow that runs entirely in Framing B is acceptable for `lab` but cannot be promoted to `default-on` or `core`.
 3. The [ADR-136](ADR-136-cross-instance-learning-runway.md) runway primitives (`cos-engram-bundle`, `cos-engram-import-propose`, registry locks, `cos-cross-instance-drill`) are the transport layer for the transition. They were built as runway; this ADR commits to using them as runtime infrastructure.
 4. Framing A is **not** Shape B in the sense of [ADR-132](ADR-132-solo-swarm-vs-multi-maintainer-fork.md). Shape B is a *maintainer-topology* fork (one human → multiple humans). Framing A is a *runtime-topology* shift (governance layer → embedded runtime). They are orthogonal axes. Framing A under Shape A — embedded runtime, single maintainer signing — is the explicit near-term shape and is the configuration this ADR commits to.
 
@@ -86,8 +86,8 @@ The trajectory implies the following priority changes. These are **not scheduled
 
 This ADR is satisfied when the following are observable:
 
-1. The next flow shipped under [`dx-cloud-flow-bootstrap-plan.md`](../architecture/dx-cloud-flow-bootstrap-plan.md) carries an explicit **framing-exercise statement** in its skill metadata: how much of Framing A it exercises (e.g., "boots cos-init in sandbox: yes; uses native Engram client: no; dispatches through configured providers: yes"). Flows without this statement cannot be promoted out of `lab`.
-2. ADR-064 implementation status is reflected in [`docs/04-Concepts/architecture/bootstrap-portability.md`](../architecture/bootstrap-portability.md) and the gaps blocking the first cloud-worker flow are named there as backlog with owners.
+1. The next flow shipped under [`dx-cloud-flow-bootstrap-plan.md`](../../04-Concepts/architecture/dx-cloud-flow-bootstrap-plan.md) carries an explicit **framing-exercise statement** in its skill metadata: how much of Framing A it exercises (e.g., "boots cos-init in sandbox: yes; uses native Engram client: no; dispatches through configured providers: yes"). Flows without this statement cannot be promoted out of `lab`.
+2. ADR-064 implementation status is reflected in [`docs/04-Concepts/architecture/bootstrap-portability.md`](../../04-Concepts/architecture/bootstrap-portability.md) and the gaps blocking the first cloud-worker flow are named there as backlog with owners.
 3. `manifests/federation-triggers.yaml` (introduced in ADR-136 as runway observability) gains a `framing_a_flows_active` counter or equivalent. The counter increments when a flow runs end-to-end in Framing A. Zero counter after three flows is signal that the trajectory is being talked about, not lived.
 4. No flow primitive promoted to `core` or `team` tier before at least one flow has shipped end-to-end in Framing A. This is the structural protection against the trajectory becoming aspirational.
 
@@ -103,7 +103,7 @@ This ADR is satisfied when the following are observable:
 
 **Positive.**
 
-- The strategic intent in [`dx-cloud-flow-bootstrap-plan.md`](../architecture/dx-cloud-flow-bootstrap-plan.md) has a directional anchor that future flows can be evaluated against.
+- The strategic intent in [`dx-cloud-flow-bootstrap-plan.md`](../../04-Concepts/architecture/dx-cloud-flow-bootstrap-plan.md) has a directional anchor that future flows can be evaluated against.
 - ADR-064 stops being aspirational and becomes flow-gated. Its completion is paid for by the flows that need it, not by a separate roadmap.
 - The runway primitives from ADR-136 acquire a second purpose (runtime transport layer), justifying their continued existence beyond the cross-instance drill.
 - The orthogonality of Framing and Shape is named explicitly. Future contributors do not conflate "embedded runtime" with "multi-maintainer," which are distinct concerns.
@@ -128,15 +128,15 @@ Re-read this ADR before promoting any flow primitive out of `lab`. The promotion
 
 ## Cross-references
 
-- [`dx-cloud-flow-bootstrap-plan.md`](../architecture/dx-cloud-flow-bootstrap-plan.md) — the operational plan this ADR's trajectory anchors.
+- [`dx-cloud-flow-bootstrap-plan.md`](../../04-Concepts/architecture/dx-cloud-flow-bootstrap-plan.md) — the operational plan this ADR's trajectory anchors.
 - [ADR-064](ADR-064-harness-agnostic-cognitive-os.md) — harness-agnostic implementation, now flow-gated rather than roadmap-gated.
 - [ADR-132](ADR-132-solo-swarm-vs-multi-maintainer-fork.md) — orthogonal axis (maintainer topology); this ADR commits to `(Shape A, Framing A)`.
 - [ADR-136](ADR-136-cross-instance-learning-runway.md) — runway primitives, now repurposed as runtime transport layer.
 - [ADR-126](ADR-126-agentic-primitive-lifecycle-governor.md) — lifecycle discipline that prevents trajectory from inflating surface.
 - [ADR-133](ADR-133-expansion-without-monsterization.md) — `lab`-first promotion gate, applies to all flow primitives.
 - [ADR-134](ADR-134-headless-self-improvement-proposer.md) / [ADR-135](ADR-135-self-evolving-doctrine-proposals.md) — propose-only contract pattern, transport-agnostic.
-- [`bootstrap-portability.md`](../architecture/bootstrap-portability.md) — gate that becomes load-bearing under Framing A.
-- [`cognitive-prosthesis.md`](../architecture/cognitive-prosthesis.md) — rationale layer; the "knows-when-it-doesn't-work" property applies to flows under this trajectory.
+- [`bootstrap-portability.md`](../../04-Concepts/architecture/bootstrap-portability.md) — gate that becomes load-bearing under Framing A.
+- [`cognitive-prosthesis.md`](../../04-Concepts/architecture/cognitive-prosthesis.md) — rationale layer; the "knows-when-it-doesn't-work" property applies to flows under this trajectory.
 
 ## Alternatives rejected
 

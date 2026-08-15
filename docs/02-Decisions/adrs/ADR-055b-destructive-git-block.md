@@ -150,7 +150,7 @@ already documents the killswitch-as-blanket-bypass risk.
   `tests/chaos/test_safety_drill.py` (17 tests, all pass — user-context test
   updated to assert block)
 
-Total: 69 tests passing across unit + behavior + chaos layers.
+Total on 2026-04-21: 69 tests passing across unit + behavior + chaos layers.
 
 ## Rollback
 

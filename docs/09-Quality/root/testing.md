@@ -269,7 +269,7 @@ see the active harness driver, declared dependencies, MCP registrations, and
 optional tools such as Engram.
 
 For the multi-host Engram/MCP setup and expected output, see
-[Host Tooling and Engram MCP Verification](manual-tests/host-tooling-engram-mcp-verification.md).
+[Host Tooling and Engram MCP Verification](../manual-tests/host-tooling-engram-mcp-verification.md).
 
 Installed projects also run `hooks/host-tool-doctor.sh` on SessionStart. That
 hook schedules the doctor with the default dependency profile, caches the result

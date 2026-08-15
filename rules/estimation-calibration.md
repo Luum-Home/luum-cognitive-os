@@ -129,7 +129,7 @@ When calibration data has 10+ entries for an agent:
 
 ## Library
 
-The calibration logic lives in `lib/estimation_calibrator.py`:
+The calibration logic lives in `cos_lib/estimation_calibrator.py`:
 
 | Function | Description |
 |----------|-------------|

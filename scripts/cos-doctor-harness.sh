@@ -126,6 +126,10 @@ import json
 from pathlib import Path
 p=Path('.codex/hooks.json')
 data=json.loads(p.read_text())
+# Codex nests events under the mandatory top-level "hooks" namespace
+# (manifests/codex-hooks-schema.yaml); tolerate the older flat shape.
+if isinstance(data.get('hooks'), dict):
+    data = data['hooks']
 for event in ['SessionStart','UserPromptSubmit','PreToolUse','PostToolUse','Stop']:
     print(event, len(data.get(event, [])))
 PYJSON

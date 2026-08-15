@@ -167,10 +167,31 @@ def posix_user_segment(match: str) -> str:
     return match[len(prefix) :].split("/", 1)[0]
 
 
+def describes_a_username(segment: str) -> bool:
+    """True when the segment is a pattern *matching* usernames, not one itself.
+
+    Without this, the guard cannot tell a leaked path apart from a document
+    explaining how to hunt for leaked paths: a home prefix followed by a bracketed
+    character class, quoted inside a `git grep` command, was reported as a
+    developer home path, so any audit of privacy hygiene blocked its own
+    commit. The example is described rather than shown here for exactly the
+    same reason: writing it out trips the portability guard on this file. Observed 2026-08-15 on
+    four lines across two audit reports.
+
+    The discriminator is exact rather than heuristic: none of these characters
+    is legal in a POSIX or macOS account name, so a segment containing one is
+    describing usernames by construction. That also bounds the escape hatch —
+    it cannot mask an *accidental* commit of a real path, which is what this
+    guard is for, only a deliberately obfuscated one, which it never caught.
+    """
+    return any(ch in segment for ch in "[]()*+?\\|^$")
+
+
 def is_allowed_posix_home(match: str) -> bool:
     if any(match.startswith(prefix) for prefix in ALLOWED_POSIX_PREFIXES):
         return True
-    return posix_user_segment(match) in PLACEHOLDER_USERS
+    segment = posix_user_segment(match)
+    return segment in PLACEHOLDER_USERS or describes_a_username(segment)
 
 
 def load_private_patterns(path: Path) -> list[PrivatePattern]:

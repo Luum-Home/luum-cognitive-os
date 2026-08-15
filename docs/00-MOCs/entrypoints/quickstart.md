@@ -1,56 +1,38 @@
-# Cognitive OS -- 5 Minute Quickstart
+# Cognitive OS — Quickstart
 
-## Install
+**This page moved.** The install instructions live in one place now:
+**[getting-started.md](getting-started.md)**.
 
-```bash
-# Clone the Cognitive OS source (one-time)
-git clone https://github.com/luum-home/luum-agent-os.git ~/.cognitive-os-src
+- Under a minute → [Fast path](getting-started.md#fast-path-one-minute)
+- Without Docker → [What Works Without Docker?](getting-started.md#what-works-without-docker)
+- Update or remove → [Upgrade and uninstall](getting-started.md#upgrade-and-uninstall)
 
-# cd into YOUR PROJECT, then run the installer
-cd /path/to/your/project
-bash ~/.cognitive-os-src/scripts/cos-init.sh
-```
+This file is kept as a redirect because other documents still link to it.
 
-> The installer installs into the **current directory**. Always `cd` into your project first.
+---
 
-## That's it. Start coding.
+## Why this page no longer carries its own commands
 
-The AI already knows about:
-- **Quality gates** -- verifies its own work before claiming done
-- **Error learning** -- captures mistakes, warns on repeat patterns
-- **Safe operations** -- won't delete what it shouldn't
+It had drifted away from the repository it was describing (verified 2026-08-15):
 
-No Docker, Python, or Go required for core features.
+- It cloned `github.com/luum-home/luum-agent-os`. The actual remote is
+  `github.com/Luum-Home/luum-cognitive-os` (`git remote -v`), so the documented
+  clone did not resolve.
+- It presented `cos-init.sh --full` / `--minimal` / `--standard` as three
+  profiles. There are only two: `--minimal`, `--standard` and `--lean` all remap
+  to `--default` under ADR-093, so the only real choice is `--default` (the
+  no-flag default) or `--full`.
 
-## Want more?
+> **Correction, 2026-08-15.** An earlier version of this page claimed
+> `scripts/cos-init.sh` parsed none of those flags. That was wrong. All three
+> parse and run; the check behind the claim grepped `scripts/cos-init.sh`, a
+> 15-line shim that `exec`s `scripts/cos_init.py` — the parser lives in the
+> Python file. Verify with `bash scripts/cos-init.sh --minimal --help`, or see
+> [install-doors-forensics-2026-08-15.md](../../06-Daily/reports/install-doors-forensics-2026-08-15.md).
 
-```bash
-bash ~/.cognitive-os-src/scripts/cos-init.sh --full  # or --minimal / --standard
-```
+Its "what works without Docker" table was a subset of the one in
+`getting-started.md`, which additionally covers the `cos` CLI row.
 
-## What works without Docker?
-
-| Feature | Docker? | Python? | Go? |
-|---------|---------|---------|-----|
-| Core rules + hooks | No | No | No |
-| SDD pipeline | No | No | No |
-| Safety mesh | No | No | No |
-| Error learning | No | No | No |
-| cos-test TUI | No | No | Yes |
-| Performance monitor | No | Yes | No |
-| Cost dashboard | No | Yes | No |
-| Testcontainers | Yes | Yes | No |
-| Langfuse/Opik | Yes | No | No |
-| Agent Bus (Valkey) | Yes | Yes | No |
-
-## Upgrade
-
-```bash
-bash ~/.cognitive-os-src/scripts/upgrade.sh
-```
-
-## Uninstall
-
-```bash
-bash ~/.cognitive-os-src/scripts/uninstall.sh
-```
+The local-clone install path this page used to document is back in
+[Installation → From a local clone](getting-started.md#from-a-local-clone-of-the-source),
+with the clone URL corrected.

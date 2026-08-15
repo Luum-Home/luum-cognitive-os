@@ -78,7 +78,7 @@ The `large-file-advisor.sh` hook fires on every Read tool use:
 
 ### SmartReader Library
 
-`lib/smart_reader.py` provides programmatic auto-pagination for agents and skills:
+`cos_lib/smart_reader.py` provides programmatic auto-pagination for agents and skills:
 
 ```python
 from cos_lib.smart_reader import SmartReader

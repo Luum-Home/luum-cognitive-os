@@ -88,7 +88,7 @@ Model assignments per phase: propose=opus, spec=sonnet, design=opus, tasks=sonne
 
 **Model-tier fast path** (Opus only): `explore → propose → apply → verify → archive`
 Skips spec/design/tasks entirely. Controlled by `sdd.fast_path.model_threshold` in `cognitive-os.yaml`.
-Use `SDDPipeline.get_phases(model, config)` from `lib/sdd_pipeline.py` to resolve the correct phase list.
+Use `SDDPipeline.get_phases(model, config)` from `cos_lib/sdd_pipeline.py` to resolve the correct phase list.
 
 ### Auto-Refinement (PITER Loop)
 When an agent task fails (test/build/lint errors detected by auto-refine hook):

@@ -128,7 +128,66 @@ fi
 
 VERIFY_LOG="$METRICS_DIR/auto-verify.jsonl"
 REFINE_DIR="$METRICS_DIR/auto-refine"
-MAX_VERIFY_TIME=8
+MAX_VERIFY_TIME="${COS_MAX_VERIFY_TIME:-8}"
+
+# --- Portable bounded execution -------------------------------------------
+# GNU `timeout` is not present on a stock macOS install. Invoking it there
+# returns 127, which this gate used to read as "the acceptance criterion
+# failed" — a missing tool silently became a false negative on every check.
+# Resolve a real timeout binary when one exists, otherwise enforce the wall
+# clock from shell so absence of a tool is never reported as a failed criterion.
+# COS_FORCE_SHELL_TIMEOUT=1 forces the shell watchdog even where GNU timeout
+# exists, so both branches stay covered by tests on every platform.
+_TIMEOUT_BIN=""
+if [ "${COS_FORCE_SHELL_TIMEOUT:-0}" != "1" ]; then
+  if command -v timeout >/dev/null 2>&1; then
+    _TIMEOUT_BIN="$(command -v timeout)"
+  elif command -v gtimeout >/dev/null 2>&1; then
+    _TIMEOUT_BIN="$(command -v gtimeout)"
+  fi
+fi
+if [ -z "$_TIMEOUT_BIN" ]; then
+  echo "[completion-gate] neither timeout nor gtimeout on PATH — bounding verification commands with the shell watchdog (${MAX_VERIFY_TIME}s)." >&2
+fi
+
+_bounded_bash() {
+  # $1 = wall-clock limit in seconds, $2 = command string.
+  # Streams the command stdout; returns its exit code, or 124 on timeout.
+  local limit="$1" cmd="$2"
+  if [ -n "$_TIMEOUT_BIN" ]; then
+    "$_TIMEOUT_BIN" "$limit" bash -c "$cmd"
+    return $?
+  fi
+  local out_file err_file pid waited status
+  out_file="${TMPDIR:-/tmp}/cos-completion-gate-out-$$-$RANDOM"
+  err_file="${TMPDIR:-/tmp}/cos-completion-gate-err-$$-$RANDOM"
+  bash -c "$cmd" >"$out_file" 2>"$err_file" &
+  pid=$!
+  waited=0
+  while kill -0 "$pid" 2>/dev/null; do
+    if [ "$waited" -ge "$limit" ]; then
+      kill -TERM "$pid" 2>/dev/null || true
+      sleep 1
+      kill -KILL "$pid" 2>/dev/null || true
+      wait "$pid" 2>/dev/null || true
+      rm -f "$out_file" "$err_file" 2>/dev/null || true
+      return 124
+    fi
+    sleep 1
+    waited=$((waited + 1))
+  done
+  wait "$pid"
+  status=$?
+  cat "$out_file" 2>/dev/null || true
+  cat "$err_file" >&2 2>/dev/null || true
+  rm -f "$out_file" "$err_file" 2>/dev/null || true
+  return "$status"
+}
+
+_gate_run() {
+  # Runs an acceptance-criteria command bounded, in the project dir.
+  ( cd "$PROJECT_DIR" && _bounded_bash "$MAX_VERIFY_TIME" "$1" )
+}
 MAX_RETRIES=3
 
 INPUT=$(cat)
@@ -223,7 +282,7 @@ if [ "$IS_COMPLETION" = "true" ] && [ -n "$AGENT_PROMPT" ] && [ "$AGENT_PROMPT" 
           VERIFY_CMD=$(echo "$CMD" | sed 's/`//g' | sed 's/[[:space:]]*=[[:space:]]*[0-9]*$//')
           EXPECTED=$(echo "$CMD" | grep -oE '[0-9]+$')
           if [ -n "$VERIFY_CMD" ] && [ -n "$EXPECTED" ]; then
-            ACTUAL=$(cd "$PROJECT_DIR" && timeout "$MAX_VERIFY_TIME" bash -c "$VERIFY_CMD" 2>/dev/null | tr -d '[:space:]')
+            ACTUAL=$(_gate_run "$VERIFY_CMD" 2>/dev/null | tr -d '[:space:]')
             if [ "$ACTUAL" = "$EXPECTED" ]; then PASSED_CHECKS=$((PASSED_CHECKS + 1)); PASS_DETAILS="${PASS_DETAILS}\n  PASS: $CRITERION_DESC"
             else FAILED_CHECKS=$((FAILED_CHECKS + 1)); FAILED_DETAILS="${FAILED_DETAILS}\n  FAIL: $CRITERION_DESC (actual=${ACTUAL:-<error>}, expected=$EXPECTED)"; fi; continue; fi; fi
 
@@ -233,7 +292,7 @@ if [ "$IS_COMPLETION" = "true" ] && [ -n "$AGENT_PROMPT" ] && [ "$AGENT_PROMPT" 
           VERIFY_CMD=$(echo "$CMD" | sed 's/`//g' | sed 's/[[:space:]]*>=[[:space:]]*[0-9]*$//')
           THRESHOLD=$(echo "$CMD" | grep -oE '[0-9]+$')
           if [ -n "$VERIFY_CMD" ] && [ -n "$THRESHOLD" ]; then
-            ACTUAL=$(cd "$PROJECT_DIR" && timeout "$MAX_VERIFY_TIME" bash -c "$VERIFY_CMD" 2>/dev/null | tr -d '[:space:]' | grep -oE '[0-9]+' | head -1)
+            ACTUAL=$(_gate_run "$VERIFY_CMD" 2>/dev/null | tr -d '[:space:]' | grep -oE '[0-9]+' | head -1)
             if [ -n "$ACTUAL" ] && [ "$ACTUAL" -ge "$THRESHOLD" ] 2>/dev/null; then PASSED_CHECKS=$((PASSED_CHECKS + 1)); PASS_DETAILS="${PASS_DETAILS}\n  PASS: $CRITERION_DESC"
             else FAILED_CHECKS=$((FAILED_CHECKS + 1)); FAILED_DETAILS="${FAILED_DETAILS}\n  FAIL: $CRITERION_DESC (actual=${ACTUAL:-<error>}, threshold=$THRESHOLD)"; fi; continue; fi; fi
 
@@ -241,21 +300,25 @@ if [ "$IS_COMPLETION" = "true" ] && [ -n "$AGENT_PROMPT" ] && [ "$AGENT_PROMPT" 
         if echo "$line" | grep -qiE '`[^`]+`\s*exits?\s*0'; then
           VERIFY_CMD=$(echo "$line" | grep -oE '`[^`]+`' | head -1 | tr -d '`')
           if [ -n "$VERIFY_CMD" ]; then
-            if cd "$PROJECT_DIR" && timeout "$MAX_VERIFY_TIME" bash -c "$VERIFY_CMD" &>/dev/null; then PASSED_CHECKS=$((PASSED_CHECKS + 1)); PASS_DETAILS="${PASS_DETAILS}\n  PASS: $CRITERION_DESC"
-            else FAILED_CHECKS=$((FAILED_CHECKS + 1)); FAILED_DETAILS="${FAILED_DETAILS}\n  FAIL: $CRITERION_DESC (exit code non-zero, expected 0)"; fi; continue; fi; fi
+            _gate_run "$VERIFY_CMD" &>/dev/null; RC=$?
+            if [ "$RC" -eq 0 ]; then PASSED_CHECKS=$((PASSED_CHECKS + 1)); PASS_DETAILS="${PASS_DETAILS}\n  PASS: $CRITERION_DESC"
+            elif [ "$RC" -eq 124 ]; then FAILED_CHECKS=$((FAILED_CHECKS + 1)); FAILED_DETAILS="${FAILED_DETAILS}\n  FAIL: $CRITERION_DESC (timed out after ${MAX_VERIFY_TIME}s)"
+            else FAILED_CHECKS=$((FAILED_CHECKS + 1)); FAILED_DETAILS="${FAILED_DETAILS}\n  FAIL: $CRITERION_DESC (exit code $RC, expected 0)"; fi; continue; fi; fi
 
         # Pattern D: `cmd` should exit 0 / should return 0 / returns 0
         if echo "$line" | grep -qiE '`[^`]+`\s*(should\s+)?(exit|return)s?\s*0'; then
           VERIFY_CMD=$(echo "$line" | grep -oE '`[^`]+`' | head -1 | tr -d '`')
           if [ -n "$VERIFY_CMD" ]; then
-            if cd "$PROJECT_DIR" && timeout "$MAX_VERIFY_TIME" bash -c "$VERIFY_CMD" &>/dev/null; then PASSED_CHECKS=$((PASSED_CHECKS + 1)); PASS_DETAILS="${PASS_DETAILS}\n  PASS: $CRITERION_DESC"
-            else FAILED_CHECKS=$((FAILED_CHECKS + 1)); FAILED_DETAILS="${FAILED_DETAILS}\n  FAIL: $CRITERION_DESC (exit code non-zero, expected 0)"; fi; continue; fi; fi
+            _gate_run "$VERIFY_CMD" &>/dev/null; RC=$?
+            if [ "$RC" -eq 0 ]; then PASSED_CHECKS=$((PASSED_CHECKS + 1)); PASS_DETAILS="${PASS_DETAILS}\n  PASS: $CRITERION_DESC"
+            elif [ "$RC" -eq 124 ]; then FAILED_CHECKS=$((FAILED_CHECKS + 1)); FAILED_DETAILS="${FAILED_DETAILS}\n  FAIL: $CRITERION_DESC (timed out after ${MAX_VERIFY_TIME}s)"
+            else FAILED_CHECKS=$((FAILED_CHECKS + 1)); FAILED_DETAILS="${FAILED_DETAILS}\n  FAIL: $CRITERION_DESC (exit code $RC, expected 0)"; fi; continue; fi; fi
 
         # Pattern E: `cmd` should return empty / returns nothing / returns empty
         if echo "$line" | grep -qiE '`[^`]+`\s*(should\s+)?(return|returns|produce)s?\s*(empty|nothing|no\s+output)'; then
           VERIFY_CMD=$(echo "$line" | grep -oE '`[^`]+`' | head -1 | tr -d '`')
           if [ -n "$VERIFY_CMD" ]; then
-            ACTUAL=$(cd "$PROJECT_DIR" && timeout "$MAX_VERIFY_TIME" bash -c "$VERIFY_CMD" 2>/dev/null)
+            ACTUAL=$(_gate_run "$VERIFY_CMD" 2>/dev/null)
             if [ -z "$ACTUAL" ]; then PASSED_CHECKS=$((PASSED_CHECKS + 1)); PASS_DETAILS="${PASS_DETAILS}\n  PASS: $CRITERION_DESC"
             else FAILED_CHECKS=$((FAILED_CHECKS + 1)); FAILED_DETAILS="${FAILED_DETAILS}\n  FAIL: $CRITERION_DESC (expected empty output, got: ${ACTUAL:0:60})"; fi; continue; fi; fi
 
@@ -263,7 +326,7 @@ if [ "$IS_COMPLETION" = "true" ] && [ -n "$AGENT_PROMPT" ] && [ "$AGENT_PROMPT" 
         if echo "$line" | grep -qiE '(^|:[[:space:]]*)(grep|find|wc|test|ls|go |python|pytest|yarn|npm|cargo|make|./)[[:alnum:]]'; then
           BARE_CMD=$(echo "$line" | grep -oE '(grep|find|wc|test|ls|go |python[23]?|pytest|yarn|npm|cargo|make|\./)[^|&;]*' | head -1)
           if [ -n "$BARE_CMD" ]; then
-            if cd "$PROJECT_DIR" && timeout "$MAX_VERIFY_TIME" bash -c "$BARE_CMD" &>/dev/null; then PASSED_CHECKS=$((PASSED_CHECKS + 1)); PASS_DETAILS="${PASS_DETAILS}\n  PASS: $CRITERION_DESC"
+            if _gate_run "$BARE_CMD" &>/dev/null; then PASSED_CHECKS=$((PASSED_CHECKS + 1)); PASS_DETAILS="${PASS_DETAILS}\n  PASS: $CRITERION_DESC"
             else FAILED_CHECKS=$((FAILED_CHECKS + 1)); FAILED_DETAILS="${FAILED_DETAILS}\n  FAIL: $CRITERION_DESC (command failed)"; fi; continue; fi; fi
 
         # --- Fix 3: Don't discard — report as SKIPPED ---

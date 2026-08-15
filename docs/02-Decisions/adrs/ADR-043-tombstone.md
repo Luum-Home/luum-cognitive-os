@@ -6,7 +6,7 @@ status: tombstone
 implementation_status: not-applicable
 date: 2026-05-05
 supersedes: []
-superseded_by: null
+superseded_by: ADR-171
 implementation_files:
   - scripts/adr_tombstone.py
   - tests/unit/test_adr_tombstone.py

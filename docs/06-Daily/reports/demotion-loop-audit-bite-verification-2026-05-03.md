@@ -1,9 +1,9 @@
 # Verification — `cos_demotion_loop_audit` Bite at Budget Expiry (2026-05-03)
 
 **Date:** 2026-05-03
-**Scope:** [`scripts/cos_demotion_loop_audit.py`](../../scripts/cos_demotion_loop_audit.py)
+**Scope:** [`scripts/cos_demotion_loop_audit.py`](../../../scripts/cos_demotion_loop_audit.py)
 **Property under test:** the `roi-signed-demotion-missing` finding escalates from `severity: warn` / `status: warn` to `severity: fail` / `status: fail` when the warning budget (`ROI_WARNING_BUDGET_DAYS = 30`) expires without an ROI-signed demotion.
-**Companion:** [`external-review-cycle-2026-05-02.md`](../case-studies/external-review-cycle-2026-05-02.md), §"Maturity position at end of cycle".
+**Companion:** [`external-review-cycle-2026-05-02.md`](../../08-References/case-studies/external-review-cycle-2026-05-02.md), §"Maturity position at end of cycle".
 
 ## Why this exists
 
@@ -69,7 +69,7 @@ Three transitions confirmed in the same call:
 
 ### CI integration
 
-The audit is invoked from [`scripts/cos-ci-local.sh`](../../scripts/cos-ci-local.sh) and the `quick` lane uses `--fail-on-findings`. With that flag set, the day-31 invocation returns non-zero exit, which fails the quick CI gate. The escalation is therefore not advisory: it blocks the build by default once the budget elapses.
+The audit is invoked from [`scripts/cos-ci-local.sh`](../../../scripts/cos-ci-local.sh) and the `quick` lane uses `--fail-on-findings`. With that flag set, the day-31 invocation returns non-zero exit, which fails the quick CI gate. The escalation is therefore not advisory: it blocks the build by default once the budget elapses.
 
 ## What this verifies
 

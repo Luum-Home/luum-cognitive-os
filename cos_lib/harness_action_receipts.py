@@ -8,6 +8,7 @@ A raw harness directive is advisory until local repository evidence promotes it.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -19,7 +20,15 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable, Mapping
 
+# v1: event-log receipts (records that an action happened).
+# v2: adds an OPTIONAL content binding (git tree hash + SHA-256 over the reviewed
+#     diff) so a receipt can prove it vouches for *these exact bytes*. A v2
+#     receipt whose binding no longer matches the working tree is stale by
+#     construction — the antidote to self-generated evidence that cannot be
+#     falsified. v1 receipts remain valid; the binding fields are additive.
 SCHEMA_VERSION = "harness-action-receipt.v1"
+SCHEMA_VERSION_V2 = "harness-action-receipt.v2"
+SUPPORTED_SCHEMA_VERSIONS = frozenset({SCHEMA_VERSION, SCHEMA_VERSION_V2})
 DEFAULT_METRICS_PATH = Path(".cognitive-os/metrics/vcs-actions.jsonl")
 TRUST_LEVELS = ("advisory", "observed", "verified", "authoritative")
 TRUST_RANK = {name: idx for idx, name in enumerate(TRUST_LEVELS)}
@@ -37,6 +46,7 @@ VCS_EVENTS = frozenset(
         "vcs.merge.fail",
         "vcs.bypass",
         "vcs.conflict.detected",
+        "vcs.review.approved",
     }
 )
 ACTION_BY_EVENT = {
@@ -52,6 +62,7 @@ ACTION_BY_EVENT = {
     "vcs.merge.fail": "merge.fail",
     "vcs.bypass": "bypass",
     "vcs.conflict.detected": "conflict.detected",
+    "vcs.review.approved": "review.approved",
 }
 DIRECTIVE_EVENT = {
     "git-stage": "vcs.stage",
@@ -84,6 +95,16 @@ class HarnessActionReceipt:
     protected_branch: bool | None = None
     governed_path: str | None = None
     evidence: dict[str, Any] = field(default_factory=dict)
+    # v2 content binding (all optional; absent ⇒ a v1-style event-log receipt).
+    # tree_hash: git tree object the receipt vouches for — content-addressed by git.
+    # candidate_sha256: SHA-256 over the unified diff of base..target (the reviewed bytes).
+    # changed_paths: the exact paths the binding covers.
+    # binding_base: the git ref the diff was taken against (empty ⇒ whole-tree binding).
+    tree_hash: str | None = None
+    candidate_sha256: str | None = None
+    changed_paths: list[str] = field(default_factory=list)
+    changed_paths_digest: str | None = None
+    binding_base: str | None = None
     timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"))
     schema_version: str = SCHEMA_VERSION
 
@@ -157,13 +178,228 @@ def _event_action(event_type: str) -> str:
     return ACTION_BY_EVENT.get(event_type, event_type.split(".", 1)[-1])
 
 
+def head_tree_hash(project_dir: Path) -> str | None:
+    """Return the git tree object of HEAD — a content-addressed hash of the tree.
+
+    Git trees are Merkle roots over their exact content, so this is a native,
+    tamper-evident content hash: any change to a tracked file that is committed
+    changes this value.
+    """
+    proc = _run_git(project_dir, ["rev-parse", "HEAD^{tree}"])
+    if proc.returncode != 0:
+        return None
+    return proc.stdout.strip() or None
+
+
+# Pinned diff flags so the candidate SHA is reproducible across git versions and
+# user config. Unpinned diff output (renames/textconv/ext-diff/algorithm/context
+# heuristics) varies by git version and ~/.gitconfig, which would make the hash
+# non-reproducible and the gate false-deny. Mirrors gentle-ai's frozen set
+# (frozen_candidate_context.go) — the flags are the reproducibility contract.
+_PINNED_DIFF_FLAGS = [
+    "--no-color",
+    "--full-index",
+    "--no-renames",
+    "--no-ext-diff",
+    "--no-textconv",
+    "--diff-algorithm=myers",
+    "--no-indent-heuristic",
+    "--unified=3",
+]
+
+
+def _diff_bytes(project_dir: Path, base: str | None) -> tuple[bytes, list[str]]:
+    """Return (unified-diff bytes, changed paths) for base..HEAD, or working tree if no base.
+
+    Raw bytes, pinned flags: the SHA is over the exact reviewed content and is
+    reproducible independent of git version or user config.
+    """
+    target = f"{base}..HEAD" if base else "HEAD"
+    diff = subprocess.run(
+        ["git", "diff", *_PINNED_DIFF_FLAGS, target],
+        cwd=str(project_dir),
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+        timeout=60,
+    )
+    names = _run_git(project_dir, ["diff", "--name-only", target])
+    changed = [line for line in names.stdout.splitlines() if line.strip()] if names.returncode == 0 else []
+    return (diff.stdout if diff.returncode == 0 else b""), changed
+
+
+def changed_paths_digest(paths: Iterable[str]) -> str | None:
+    """SHA-256 over the sorted, newline-joined changed paths — binds review scope.
+
+    gentle-ai's gate keys on CandidateTree + PathsDigest (not the diff SHA); the
+    paths digest is what prevents a receipt approved for one file set from
+    silently covering a different one at the same tree.
+    """
+    ordered = sorted({p for p in paths if p and p.strip()})
+    if not ordered:
+        return None
+    return hashlib.sha256("\n".join(ordered).encode("utf-8")).hexdigest()
+
+
+def compute_content_binding(project_dir: str | Path | None = None, base: str | None = None) -> dict[str, Any]:
+    """Compute the content binding for the current repository state.
+
+    Canonical gate binding is the git tree OID (content-addressed by git) plus a
+    sorted changed-paths digest — matching gentle-ai's gate, which keys on
+    CandidateTree + PathsDigest rather than the diff SHA. candidate_sha256 (over
+    the pinned base..HEAD diff) is recorded as an auxiliary reviewer-input
+    identity. Values are None/empty when git is unavailable so callers degrade to
+    a v1 event-log receipt rather than fabricate a binding.
+    """
+    root = resolve_project_dir(str(project_dir) if project_dir else None)
+    tree = head_tree_hash(root)
+    diff, changed = _diff_bytes(root, base)
+    candidate = hashlib.sha256(diff).hexdigest() if diff else None
+    return {
+        "tree_hash": tree,
+        "candidate_sha256": candidate,
+        "changed_paths": changed,
+        "changed_paths_digest": changed_paths_digest(changed),
+        "binding_base": base or "",
+    }
+
+
+def receipt_is_content_bound(receipt: Mapping[str, Any]) -> bool:
+    """True when the receipt carries a usable content binding (v2)."""
+    return bool(receipt.get("tree_hash") or receipt.get("candidate_sha256"))
+
+
+def verify_content_binding(receipt: Mapping[str, Any], project_dir: str | Path | None = None) -> tuple[bool, str]:
+    """Check that a v2 receipt still matches the live repository content.
+
+    Returns (matches, reason). A receipt without a binding cannot be verified as
+    content-bound — it returns (False, "no-binding") rather than a vacuous pass,
+    so a gate cannot be satisfied by an event-log receipt masquerading as proof.
+    """
+    if not receipt_is_content_bound(receipt):
+        return False, "no-binding"
+    root = resolve_project_dir(str(project_dir) if project_dir else str(receipt.get("project_dir") or ""))
+    live = compute_content_binding(root, receipt.get("binding_base") or None)
+
+    # Canonical binding: tree OID + changed-paths scope (gentle-ai's gate key).
+    receipt_tree = receipt.get("tree_hash")
+    if receipt_tree:
+        if live["tree_hash"] is None:
+            return False, "tree-unavailable"
+        if live["tree_hash"] != receipt_tree:
+            return False, f"tree-mismatch: receipt={receipt_tree} live={live['tree_hash']}"
+
+    receipt_paths = receipt.get("changed_paths_digest")
+    if receipt_paths and live["changed_paths_digest"] != receipt_paths:
+        return False, "paths-mismatch"
+
+    # Auxiliary reviewer-input identity, checked only when present.
+    receipt_diff = receipt.get("candidate_sha256")
+    if receipt_diff:
+        if live["candidate_sha256"] is None:
+            return False, "diff-unavailable"
+        if live["candidate_sha256"] != receipt_diff:
+            return False, "diff-mismatch"
+
+    return True, "matches"
+
+
+# --------------------------------------------------------------------------- #
+# Review-approval store (content-bound approval gate)
+#
+# The freeze/check split that gives a content binding teeth: sdd-verify PASS
+# freezes the approved tree into a per-branch approval receipt UPSTREAM; the
+# merge-to-main gate re-derives the live tree DOWNSTREAM and denies if it
+# diverged. Transparent per-branch JSON under
+# .cognitive-os/receipts/review-approvals/ — no authority state machine, no diff
+# transport: an approval is one receipt carrying one tree OID.
+# --------------------------------------------------------------------------- #
+
+APPROVAL_STORE_DIR = Path(".cognitive-os/receipts/review-approvals")
+
+
+def _branch_slug(branch: str) -> str:
+    """Filesystem-safe slug for a branch name (keeps it human-readable)."""
+    return re.sub(r"[^A-Za-z0-9._-]", "_", branch.strip()) or "_detached"
+
+
+def approval_store_path(project_dir: str | Path | None, branch: str) -> Path:
+    root = resolve_project_dir(str(project_dir) if project_dir else None)
+    return root / APPROVAL_STORE_DIR / f"{_branch_slug(branch)}.json"
+
+
+def freeze_approval(
+    *,
+    project_dir: str | Path | None = None,
+    branch: str | None = None,
+    provider: str = "sdd-verify",
+    source: str = "cos-review-approve",
+    binding_base: str | None = None,
+    evidence: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Freeze the current tree as an approved content-bound receipt for a branch.
+
+    Called at the upstream approval moment (sdd-verify PASS). Raises ReceiptError
+    if no content binding could be computed — an approval that cannot bind to a
+    tree must fail loudly rather than persist an unfalsifiable record.
+    """
+    root = resolve_project_dir(str(project_dir) if project_dir else None)
+    ref = branch or current_branch(root)
+    if not ref:
+        raise ReceiptError("cannot freeze approval: no branch (detached HEAD?)")
+    receipt = make_receipt(
+        event_type="vcs.review.approved",
+        provider=provider,
+        source=source,
+        trust="verified",
+        project_dir=root,
+        branch=ref,
+        evidence=dict(evidence or {}),
+        bind_content=True,
+        binding_base=binding_base,
+    )
+    if not receipt_is_content_bound(receipt):
+        raise ReceiptError("cannot freeze approval: no content binding (not a git repo?)")
+    path = approval_store_path(root, ref)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return receipt
+
+
+def load_approval(project_dir: str | Path | None, branch: str) -> dict[str, Any] | None:
+    path = approval_store_path(project_dir, branch)
+    if not path.is_file():
+        return None
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+
+
+def check_approval_gate(project_dir: str | Path | None = None, branch: str | None = None) -> tuple[bool, str]:
+    """Gate: does an approval receipt exist for this branch AND still match the tree?
+
+    Returns (allowed, reason). Denies when there is no approval ("no-approval")
+    and when the live tree diverged from the approved one ("tree-mismatch: …") —
+    the divergence a byte-mutation-after-approval produces.
+    """
+    root = resolve_project_dir(str(project_dir) if project_dir else None)
+    ref = branch or current_branch(root)
+    if not ref:
+        return False, "no-branch"
+    receipt = load_approval(root, ref)
+    if receipt is None:
+        return False, "no-approval"
+    return verify_content_binding(receipt, root)
+
+
 def validate_receipt(receipt: Mapping[str, Any]) -> None:
     """Validate a receipt dictionary against the v1 structural contract."""
     required = ("schema_version", "event_type", "domain", "provider", "source", "trust", "timestamp")
     missing = [field for field in required if not receipt.get(field)]
     if missing:
         raise ReceiptError(f"missing required receipt fields: {', '.join(missing)}")
-    if receipt["schema_version"] != SCHEMA_VERSION:
+    if receipt["schema_version"] not in SUPPORTED_SCHEMA_VERSIONS:
         raise ReceiptError(f"unsupported schema_version: {receipt['schema_version']!r}")
     if receipt["domain"] != "vcs":
         raise ReceiptError(f"unsupported receipt domain: {receipt['domain']!r}")
@@ -193,9 +429,19 @@ def make_receipt(
     governed_path: str | None = None,
     evidence: Mapping[str, Any] | None = None,
     timestamp: str | None = None,
+    bind_content: bool = False,
+    binding_base: str | None = None,
 ) -> dict[str, Any]:
-    """Build and validate one normalized receipt dictionary."""
+    """Build and validate one normalized receipt dictionary.
+
+    When ``bind_content`` is set, capture a v2 content binding (git tree hash +
+    SHA-256 over the base..HEAD diff) so the receipt is falsifiable against the
+    live tree. If the binding cannot be computed (no git), the receipt stays a
+    v1 event-log receipt rather than claiming a binding it does not have.
+    """
     root = resolve_project_dir(str(project_dir) if project_dir else None)
+    binding = compute_content_binding(root, binding_base) if bind_content else {}
+    bound = bool(binding.get("tree_hash") or binding.get("candidate_sha256"))
     receipt = HarnessActionReceipt(
         event_type=event_type,
         provider=provider,
@@ -212,7 +458,13 @@ def make_receipt(
         protected_branch=protected_branch,
         governed_path=governed_path,
         evidence=dict(evidence or {}),
+        tree_hash=binding.get("tree_hash"),
+        candidate_sha256=binding.get("candidate_sha256"),
+        changed_paths=list(binding.get("changed_paths") or []),
+        changed_paths_digest=binding.get("changed_paths_digest"),
+        binding_base=binding.get("binding_base"),
         timestamp=timestamp or datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        schema_version=SCHEMA_VERSION_V2 if bound else SCHEMA_VERSION,
     ).to_dict()
     validate_receipt(receipt)
     return receipt
@@ -505,6 +757,19 @@ def build_parser() -> argparse.ArgumentParser:
     report.add_argument("--metrics-path")
     report.add_argument("--output", default="docs/06-Daily/reports/vcs-action-receipts-latest.md")
     report.add_argument("--json", action="store_true")
+
+    approve = sub.add_parser("approve", help="Freeze the current tree as an approved content-bound receipt (sdd-verify PASS)")
+    approve.add_argument("--project-dir")
+    approve.add_argument("--branch")
+    approve.add_argument("--base", help="Diff base for the reviewer-input identity (optional)")
+    approve.add_argument("--provider", default="sdd-verify")
+    approve.add_argument("--evidence-json", default="{}")
+    approve.add_argument("--json", action="store_true")
+
+    gate = sub.add_parser("gate", help="Deny unless an approval receipt matches the live tree (merge gate)")
+    gate.add_argument("--project-dir")
+    gate.add_argument("--branch")
+    gate.add_argument("--json", action="store_true")
     return parser
 
 
@@ -571,6 +836,25 @@ def main(argv: list[str] | None = None) -> int:
             output.write_text(render_markdown_report(stats), encoding="utf-8")
             payload = {"output": str(output), "stats": stats}
             print(json.dumps(payload, indent=2 if args.json else None, sort_keys=True))
+            return 0
+        if args.command == "approve":
+            receipt = freeze_approval(
+                project_dir=args.project_dir,
+                branch=args.branch,
+                provider=args.provider,
+                binding_base=args.base,
+                evidence=json.loads(args.evidence_json),
+            )
+            path = approval_store_path(args.project_dir, receipt["branch"])
+            print(json.dumps({"approved": True, "branch": receipt["branch"], "tree_hash": receipt.get("tree_hash"), "store": str(path)}, indent=2 if args.json else None, sort_keys=True))
+            return 0
+        if args.command == "gate":
+            allowed, reason = check_approval_gate(project_dir=args.project_dir, branch=args.branch)
+            payload = {"allowed": allowed, "reason": reason}
+            print(json.dumps(payload, indent=2 if args.json else None, sort_keys=True))
+            if not allowed:
+                print(f"cos-review-gate: BLOCK ({reason})", file=sys.stderr)
+                return 2
             return 0
         raw = json.loads(_read_arg(args.receipt_json))
         validate_receipt(raw)

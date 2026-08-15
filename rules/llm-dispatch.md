@@ -6,7 +6,7 @@
 ## Purpose
 
 Define provider-selection semantics for sub-agent dispatches that go
-through `scripts/orchestrator.py` or `lib/dispatch.py`. The goal is to
+through `scripts/orchestrator.py` or `cos_lib/dispatch.py`. The goal is to
 **preserve Claude Max subscription quota for the primary user↔Claude Code
 chat** by routing sub-agents through cheaper providers by default.
 
@@ -14,9 +14,9 @@ chat** by routing sub-agents through cheaper providers by default.
 
 **Covered** (this rule applies):
 - `scripts/orchestrator.py` invocations (CLI from terminal)
-- `lib/dispatch.py::dispatch()` programmatic calls from skills, hooks,
+- `cos_lib/dispatch.py::dispatch()` programmatic calls from skills, hooks,
   scripts, and future auto-routers
-- `lib/qwen_agent_loop.py::run_agent()` tool-use sub-agents (ADR-051)
+- `cos_lib/qwen_agent_loop.py::run_agent()` tool-use sub-agents (ADR-051)
 
 **NOT covered** (Claude Code native limitation — no workaround today):
 - The primary user↔Claude Code chat session
@@ -179,9 +179,9 @@ today — add when needed.
 - ADR-050 — per-skill routing (reserved, future)
 - ADR-052 — benchmark harness (reserved, future)
 - ADR-053 — auto-optimizer (reserved, future)
-- `lib/dispatch.py` — implementation
-- `lib/qwen_provider.py` — Qwen direct-SDK
-- `lib/qwen_agent_loop.py` — Qwen tool-use loop
+- `cos_lib/dispatch.py` — implementation
+- `cos_lib/qwen_provider.py` — Qwen direct-SDK
+- `cos_lib/qwen_agent_loop.py` — Qwen tool-use loop
 - `scripts/orchestrator.py` — CLI entry point
 - `scripts/smoke-qwen-fallback.sh` — live verification
 - `hooks/rate-limit-detector.sh` — PostToolUse pattern detector

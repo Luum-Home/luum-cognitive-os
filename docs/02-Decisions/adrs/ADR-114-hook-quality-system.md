@@ -126,7 +126,7 @@ each automatic hook surface has an explicit tier and evidence.
 
 - [ADR-064 — Harness-Agnostic Cognitive OS](ADR-064-harness-agnostic-cognitive-os.md)
 - [ADR-112 — Codex Governed Tool Layer](ADR-112-codex-governed-tool-layer.md)
-- [Hook Quality System](../architecture/hook-quality-system.md)
+- [Hook Quality System](../../04-Concepts/architecture/hook-quality-system.md)
 
 
 ## Alternatives rejected

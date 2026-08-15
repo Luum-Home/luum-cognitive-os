@@ -29,7 +29,7 @@ Tombstone
 
 ## Reason
 
-ADR-229 was originally proposed in [`SYNTHESIS-2026-05-06.md`](../research/orchestration-gaps/SYNTHESIS-2026-05-06.md) as the standalone "Session Budget Pre-Call Gate" ADR for gap G8 (cost-aware routing).
+ADR-229 was originally proposed in [`SYNTHESIS-2026-05-06.md`](../../03-PoCs/research/orchestration-gaps/SYNTHESIS-2026-05-06.md) as the standalone "Session Budget Pre-Call Gate" ADR for gap G8 (cost-aware routing).
 
 During Phase-1 ADR drafting, the synthesis flagged ADR-228 (retry contract) and ADR-229 (cost budget) as a consolidation candidate because both:
 

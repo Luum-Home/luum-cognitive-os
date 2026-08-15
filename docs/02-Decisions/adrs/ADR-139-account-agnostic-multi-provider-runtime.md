@@ -26,7 +26,7 @@ tags: [security, provider, byok, billing, credentials, license-policy, cloud-flo
 
 ## Context
 
-The [DX-first cloud flow bootstrap plan](../architecture/dx-cloud-flow-bootstrap-plan.md) requires cloud workers to call LLM providers from ephemeral containers without sharing the maintainer's personal credentials. The current dispatch layer ([ADR-049](ADR-049-llm-gateway-selection-and-overflow-providers.md)) is account-agnostic at the dispatch level but makes no guarantees at the credential-management level: in practice, workers inherit whatever environment variables are present.
+The [DX-first cloud flow bootstrap plan](../../04-Concepts/architecture/dx-cloud-flow-bootstrap-plan.md) requires cloud workers to call LLM providers from ephemeral containers without sharing the maintainer's personal credentials. The current dispatch layer ([ADR-049](ADR-049-llm-gateway-selection-and-overflow-providers.md)) is account-agnostic at the dispatch level but makes no guarantees at the credential-management level: in practice, workers inherit whatever environment variables are present.
 
 Three problems converge:
 
@@ -169,7 +169,7 @@ provider_capabilities:
 - [ADR-141](ADR-141-engram-cloud-cross-instance-replication.md) — Engram cloud enroll wrapper that must follow generic env var names.
 - [ADR-142](ADR-142-compliance-audit-air-gapped-surface.md) — compliance and audit surface consuming `billing_identity`.
 - Rules §10 (`license-policy`) — primary gate for dependency licenses; this ADR adds provider-SDK specificity.
-- [`dx-cloud-flow-bootstrap-plan.md`](../architecture/dx-cloud-flow-bootstrap-plan.md) — the operational plan that requires this credential posture.
+- [`dx-cloud-flow-bootstrap-plan.md`](../../04-Concepts/architecture/dx-cloud-flow-bootstrap-plan.md) — the operational plan that requires this credential posture.
 
 ## Operational Guide
 

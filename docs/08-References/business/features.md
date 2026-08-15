@@ -92,7 +92,7 @@ optional init --> explore --> propose --> spec --+--> tasks --> apply --> verify
 
 **What exists today:**
 - 8 core SDD phase skills plus optional init/bootstrap/orchestration helpers
-- OpenSpec alternative (4 skills for lighter change tracking)
+- OpenSpec alternative (the `skills/openspec-*/` set, for lighter change tracking)
 - Engram-backed artifact persistence
 - Orchestrator protocol for multi-agent SDD execution
 
@@ -114,7 +114,7 @@ Quality gates enforced by infrastructure, not by hope.
 **Additional enforcement proof paths:**
 - Control manifest: forbidden zones, performance constraints, security constraints
 - License policy: automatically blocks AGPL, SSPL, BSL, ELv2 dependencies
-- Profile-specific hook projections: minimal currently requires 3 hooks; full maintainer projections are much larger and measured by `scripts/measure_harness_profiles.py`
+- Profile-specific hook projections: the minimal profile requires only a handful of hooks (see `manifests/harness-projection.yaml`); full maintainer projections are much larger and measured by `scripts/measure_harness_profiles.py`
 - Configurable coverage thresholds per industry (80% fintech, 90% healthcare, 50% startup MVP)
 
 **What exists today:**
@@ -294,9 +294,9 @@ A rich ecosystem of specialized capabilities exists, but the default user experi
 | Primitive | Count | Examples |
 |---|---|---|
 | Skills | 176 `SKILL.md` files in this repo | Includes project, maintainer, package, and experimental skills; not all are default adoption surface |
-| Hooks | 244 hook scripts; minimal profile requires 3 | Full Claude projection currently has 153 hook commands; full Codex projection has 64 |
-| Rules | 120 rule files | Rule packs are loaded/projected by profile and task context |
-| Scripts | 561 script files | Maintainer/developer tooling, not all runtime primitives |
+| Hooks | `ls hooks/*.sh | wc -l` scripts; minimal profile requires only a handful | Claude projection command count from `manifests/harness-projection.yaml`; full Codex projection has 64 |
+| Rules | `ls rules/*.md | wc -l` rule files | Rule packs are loaded/projected by profile and task context |
+| Scripts | `ls scripts/* | wc -l` script files | Maintainer/developer tooling, not all runtime primitives |
 | Agent/persona patterns | Maintainer/team-oriented | Use only when the task needs explicit specialization or coordination |
 
 **Progressive skill loading:**

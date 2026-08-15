@@ -101,7 +101,7 @@ The honest comparison is against the stack you would need to build and maintain 
 | Write code | Claude Code / Aider / Cursor | Built-in (any LLM) |
 | Error repair | Manual + StackStorm/Rundeck | MAPE-K-inspired remediation registry with governed execution |
 | Cross-session memory | Nothing (lost every session) | Engram (persistent, searchable) |
-| Quality gates | Custom CI/CD pipeline | 44 rules + 41 hooks |
+| Quality gates | Custom CI/CD pipeline | the rule set in `rules/` + the hook layer in `hooks/` |
 | Metrics & KPIs | Grafana + custom dashboards | Built-in telemetry plus reviewed calibration proposals |
 | Tool discovery | Manual research | Weekly auto-scan |
 | Self-improvement | Doesn't exist | Propose-only feedback loops (DORMANT — captures errors and drafts skill/routing updates for human approval; autonomous mutation gated by ADR-201/204/206) |

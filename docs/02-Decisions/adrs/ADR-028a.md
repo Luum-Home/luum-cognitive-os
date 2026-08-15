@@ -276,7 +276,7 @@ Scope change: Add to D1.A.0. Each file needs EITHER a writer assigned OR the rea
 
 ### 5.5 F-6: agent-bus test-e2e cleanup
 
-309 test-e2e-{hex}/ directories accumulate indefinitely in .cognitive-os/agent-bus/. No TTL, no cleanup.
+test-e2e-{hex}/ directories accumulate indefinitely in .cognitive-os/agent-bus/ — 309 of them on 2026-04-18, countable with `ls -d .cognitive-os/agent-bus/test-e2e-* | wc -l`. No TTL, no cleanup.
 
 Action: Add `find .cognitive-os/agent-bus -maxdepth 1 -name 'test-e2e-*' -mtime +7 -exec rm -rf {} \;` to `hooks/rotate-metrics.sh` or `session-cleanup.sh`. Minor, include in D1.A alongside the rotation extension.
 

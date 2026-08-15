@@ -53,7 +53,15 @@ except Exception:
     # skip silently (observability must never block completion recording).
     pass
 
-from cos_lib.learning_pipeline import LearningPipeline
+# `cos_lib.learning_pipeline` is `SCOPE: os-only` and therefore never projected
+# into a consumer install, while this module is `SCOPE: both` and is. Importing
+# it at module level made `record_completion` unimportable in every consumer —
+# and because `hooks/_lib/dispatch_gate_check.py` loaded it inside an `except
+# Exception` shared with `CircuitBreaker`, the failure surfaced only as a string
+# in an `error` field, leaving the agent circuit breaker silently dead in every
+# consumer install. Deferred to its single call site in `record_completion()`,
+# where the OS-side learning pipeline is genuinely optional.
+# Enforced by: python3 scripts/scope_closure_gate.py
 from cos_lib.metric_event import MetricEvent, append_event
 from cos_lib.paths import runtime_project_root_or_cwd, runtime_session_id
 
@@ -483,6 +491,9 @@ def main():
     if real_usage:
         tokens_used = real_usage["input_tokens"] + real_usage["output_tokens"]
         model = real_usage.get("model", model)
+
+    # Deferred: os-only, absent in consumer installs (see the note at the imports).
+    from cos_lib.learning_pipeline import LearningPipeline
 
     pipeline = LearningPipeline()
     result = pipeline.record_agent_completion(

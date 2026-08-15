@@ -79,6 +79,10 @@ def _count_codex_hooks(root: Path) -> dict[str, Any]:
     if not path.exists():
         return {"available": False, "hook_commands": 0, "events": {}}
     data = json.loads(path.read_text(encoding="utf-8"))
+    # Codex nests every event under the mandatory top-level "hooks" namespace
+    # (manifests/codex-hooks-schema.yaml). Tolerate the older flat shape too.
+    if isinstance(data, dict) and isinstance(data.get("hooks"), dict):
+        data = data["hooks"]
     events: dict[str, int] = {}
     total = 0
     for event, entries in data.items():

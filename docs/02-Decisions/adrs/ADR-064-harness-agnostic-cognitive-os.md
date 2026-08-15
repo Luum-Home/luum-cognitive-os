@@ -363,3 +363,53 @@ $15–$30 in agent costs before human review.
    canonical → native. Should they also detect drift when a user edits
    `.claude/settings.json` manually and surface it? Likely yes; scope in
    Phase 2 under `cos doctor harness`.
+
+---
+
+## Verification note — 2026-08-15 (path-reality census)
+
+Measured, not re-decided. This section records what was checked against the
+code and what no longer holds. The `status` field is untouched: an ADR that
+stopped describing the code is still the record of why the decision was made.
+
+**1. The canonical registry is not read by the driver that runs.**
+Surface 2 above states that `cognitive-os.yaml > harness.hooks` is the
+canonical hook registry, projected per harness by a settings driver. That is
+true for the Codex driver and false for the Claude Code one:
+
+```console
+$ grep -n 'CONFIG_FILE' scripts/_lib/settings-driver-claude-code.sh
+39:CONFIG_FILE="$PROJECT_DIR/cognitive-os.yaml"
+$ grep -cE 'yq |yaml\.safe_load|import yaml' scripts/_lib/settings-driver-claude-code.sh
+0
+$ grep -cE 'yaml|yq' scripts/_lib/settings-driver-codex.sh
+9
+```
+
+`CONFIG_FILE` is assigned once and never read again in the file's 614 lines.
+The hook groups the Claude Code driver projects are bash string literals
+(`scripts/_lib/settings-driver-claude-code.sh:124` onward), so registering a
+hook in `cognitive-os.yaml` alone does not make it fire under Claude Code.
+
+This matters beyond the ADR: the same claim is injected into agent context at
+`hooks/inject-phase-context.sh:204` and `:210`, so every agent that receives
+that note is told to register hooks in a file the running driver does not
+parse.
+
+**2. One driver named here does not exist; one that exists is not named.**
+
+```console
+$ ls scripts/_lib/ | grep settings-driver
+settings-driver-bare.sh
+settings-driver-claude-code.sh
+settings-driver-codex.sh
+settings-driver-opencode.sh
+settings-driver.sh
+```
+
+`scripts/_lib/settings-driver-cursor.sh` (listed under Surface 2 "Drivers")
+was never created; `settings-driver-opencode.sh` was added later and is not
+mentioned here.
+
+Reproduce the path half of this note over the whole ADR corpus with
+`python3 scripts/audit_adr_path_reality.py`.

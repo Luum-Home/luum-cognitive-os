@@ -163,7 +163,7 @@ Verification runs in stages from cheapest to most expensive, stopping at the fir
 
 Complexity level determines which stages run (trivial=2, small=4, medium=5, large=6, critical=7). A syntax error at stage 1 skips all subsequent stages, saving 99%+ of cost and time.
 
-Library: `lib/staged_verification.py`
+Library: `cos_lib/staged_verification.py`
 
 ## Metrics Files
 
@@ -175,7 +175,7 @@ Library: `lib/staged_verification.py`
 | `metrics/primitive-promotion-evaluations.jsonl` | Baseline-vs-candidate evidence proving a draft primitive performs better before promotion | `scripts/cos_governed_self_improvement.py evaluate` |
 | `metrics/improvement-blocklist.jsonl` | Failed improvements to skip | `/self-improve` rollback |
 | `metrics/.self-improve-recommended` | Flag file for next session | `kpi-trigger.sh` |
-| `metrics/skill-archive.jsonl` | Scored skill execution history | `lib/skill_archive.py` |
+| `metrics/skill-archive.jsonl` | Scored skill execution history | `cos_lib/skill_archive.py` |
 
 ## Key Learnings Capture
 

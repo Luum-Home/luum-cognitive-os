@@ -87,7 +87,7 @@ Generic phrasing for the bottom of every error block:
    `docs/03-PoCs/research/*-annex-*.md` for verbatim cache blocks? Annexes legitimately
    quote upstream under attribution; pre-commit warn (not block) on these is the
    likely answer. Deferred until T2 lands.
-2. **Cross-language drift** — `lib/file_mutation_queue.py` was ported from a
+2. **Cross-language drift** — `cos_lib/file_mutation_queue.py` was ported from a
    `.ts` upstream. T1 byte-hash fingerprint will not detect a TS to Python
    translation. T2 AST normalization is also single-language. Cross-language
    similarity is currently T5 only.

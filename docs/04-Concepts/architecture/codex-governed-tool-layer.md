@@ -83,6 +83,6 @@ python3 scripts/cos_governed_runner.py --harness codex post-write --list
 
 ## Related
 
-- [ADR-112 — Codex Governed Tool Layer](../adrs/ADR-112-codex-governed-tool-layer.md)
+- [ADR-112 — Codex Governed Tool Layer](../../02-Decisions/adrs/ADR-112-codex-governed-tool-layer.md)
 - [Harness Driver Parity](harness-driver-parity.md)
 - [Bootstrap Portability](bootstrap-portability.md)

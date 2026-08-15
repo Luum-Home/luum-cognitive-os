@@ -49,7 +49,7 @@ Developers are ephemeral — they spawn, execute a task, and return results. Dev
 | Circuit Breaker | `circuit-breaker.sh` | Stops repairs if they fail 3+ times consecutively |
 | Error Analyst | `error-learning.sh` | Captures and fingerprints every error |
 
-The SRE department implements a closed-loop self-healing system. When a service fails, the Incident Commander dispatches a repair. If the same repair fails repeatedly, the Circuit Breaker trips to prevent cascading damage. Every error is fingerprinted and stored so the system learns from past incidents. See [automation.md](automation.md) for details.
+The SRE department implements a closed-loop self-healing system. When a service fails, the Incident Commander dispatches a repair. If the same repair fails repeatedly, the Circuit Breaker trips to prevent cascading damage. Every error is fingerprinted and stored so the system learns from past incidents. See [automation.md](../../05-Methodology/root/automation.md) for details.
 
 ## Data & Business Intelligence Department
 
@@ -71,7 +71,7 @@ This department measures everything. KPIs cover quality, velocity, self-improvem
 | Security Guard | `block-prod-urls.sh` | Blocks access to production URLs |
 | Auditor | OKR 5 (Security KPIs) | Target: 0 violations. CRITICAL alert if any occur |
 
-Security operates as a non-negotiable layer. The constitutional gates cannot be overridden by any agent, including the orchestrator. The license checker prevents introducing dependencies with incompatible licenses. See [rules.md](rules.md) for the full rule set.
+Security operates as a non-negotiable layer. The constitutional gates cannot be overridden by any agent, including the orchestrator. The license checker prevents introducing dependencies with incompatible licenses. See [rules.md](../../05-Methodology/root/rules.md) for the full rule set.
 
 ## HR & Talent Department
 
@@ -140,4 +140,4 @@ This is what enables Cognitive OS to improve over time without any single agent 
 
 ---
 
-**Related docs**: [overview.md](overview.md) | [rules.md](rules.md) | [skills.md](skills.md) | [hooks.md](hooks.md) | [automation.md](automation.md)
+**Related docs**: [overview.md](overview.md) | [rules.md](../../05-Methodology/root/rules.md) | [skills.md](skills.md) | [hooks.md](hooks.md) | [automation.md](../../05-Methodology/root/automation.md)

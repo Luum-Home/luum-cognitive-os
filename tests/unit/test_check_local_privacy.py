@@ -124,3 +124,48 @@ def test_rule_and_template_document_private_configuration() -> None:
     assert ".cognitive-os/private/local-privacy-patterns.txt" in rule
     assert "literal:<private-project-name>" in template
     assert "regex:github[.]com/<private-org>/<private-repo>" in template
+
+
+# ---------------------------------------------------------------------------
+# A pattern that MATCHES usernames is not a username (2026-08-15)
+# ---------------------------------------------------------------------------
+# The guard used to read the quoted regex inside a documented `git grep` command
+# as a leaked developer home path, so every audit report about privacy hygiene
+# blocked its own commit. The first fix attempted was to edit the documents;
+# that changed what was measured instead of the measurement, so the guard itself
+# now distinguishes the two. These tests pin both halves: the pattern passes,
+# and — the half that matters — a real path still fails.
+
+HOME_ROOT = "/" + "Users" + "/"
+
+
+def test_documented_username_pattern_is_not_a_leak(tmp_path: Path) -> None:
+    """A regex describing usernames must not be reported as a username."""
+    init_git_repo(tmp_path)
+    (tmp_path / "REPORT.md").write_text(
+        f'Command used: `git grep -nI -E \'{HOME_ROOT}[a-zA-Z0-9._-]+\'`\n',
+        encoding="utf-8",
+    )
+    result = run_guard(tmp_path, str(tmp_path / "REPORT.md"))
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert "developer home path" not in (result.stdout + result.stderr)
+
+
+def test_real_home_path_still_blocks_beside_a_pattern(tmp_path: Path) -> None:
+    """The relaxation must not weaken the guard: a literal path still fails.
+
+    Both lines live in the same file on purpose — the pattern must be ignored
+    and the concrete path caught, in one pass.
+    """
+    init_git_repo(tmp_path)
+    (tmp_path / "REPORT.md").write_text(
+        f'config = "{HOME_ROOT}testuser/Projects/private/app.py"\n'
+        f'command = `git grep -E \'{HOME_ROOT}[a-zA-Z0-9._-]+\'`\n',
+        encoding="utf-8",
+    )
+    result = run_guard(tmp_path, str(tmp_path / "REPORT.md"))
+    output = result.stdout + result.stderr
+    assert result.returncode != 0, output
+    assert "developer home path" in output
+    assert "REPORT.md:1" in output, "must flag the literal path on line 1"
+    assert "REPORT.md:2" not in output, "must not flag the documented pattern on line 2"

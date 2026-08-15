@@ -4,7 +4,7 @@ You (human or agent) are new to this project. Start here.
 
 ## For humans
 
-1. **Read first**: [`docs/00-MOCs/entrypoints/HOW-TO-USE-COS.md`](../HOW-TO-USE-COS.md) — single-page intro
+1. **Read first**: [`docs/00-MOCs/entrypoints/HOW-TO-USE-COS.md`](entrypoints/HOW-TO-USE-COS.md) — single-page intro
 2. **Then**: [`docs/05-Methodology/getting-started/`](../getting-started/) — guided setup
 3. **Then**: [`docs/05-Methodology/onboarding/`](../onboarding/) — deeper orientation
 4. **Reference**: [`docs/04-Concepts/architecture.md`](../architecture.md) + [`docs/00-MOCs/entrypoints/INDEX.md`](../INDEX.md) (the flat catalogue)
@@ -22,7 +22,7 @@ You (human or agent) are new to this project. Start here.
 |---|---|
 | **COS** | Cognitive OS — this project |
 | **ADR** | Architecture Decision Record (in `docs/02-Decisions/adrs/`) |
-| **Primitive** | Atomic agentic capability (hook, rule, skill, lib, MCP). See [ADR-009](../adrs/ADR-009-package-architecture.md). |
+| **Primitive** | Atomic agentic capability (hook, rule, skill, lib, MCP). See [ADR-009](../02-Decisions/adrs/ADR-009-package-architecture.md). |
 | **Harness** | Claude Code, Cursor, Aider, etc. — the runtime executing the agent |
 | **SDD** | Spec-Driven Development pipeline |
 | **SCOPE** | A marker on artifacts: `os-only`, `project`, or `both`. `both` requires a portability test. |
@@ -33,10 +33,10 @@ More terms in [`docs/00-MOCs/entrypoints/AGENTS.md`](../AGENTS.md).
 
 ## Project background
 
-- [ADR-007 Cognitive OS rebrand](../adrs/ADR-007-cognitive-os-rebrand.md) — why "Cognitive OS"
-- [ADR-008 Multi-tool support](../adrs/ADR-008-multi-tool-support.md) — why not Claude-only
+- [ADR-007 Cognitive OS rebrand](../02-Decisions/adrs/ADR-007-cognitive-os-rebrand.md) — why "Cognitive OS"
+- [ADR-008 Multi-tool support](../02-Decisions/adrs/ADR-008-multi-tool-support.md) — why not Claude-only
 - [`docs/08-References/business/`](../business/) — vision and roadmap
-- [`docs/08-References/business/master-plan-checklist.md`](../business/master-plan-checklist.md) — current high-level plan
+- [`docs/08-References/business/master-plan-checklist.md`](../08-References/business/master-plan-checklist.md) — current high-level plan
 
 ## Setup
 

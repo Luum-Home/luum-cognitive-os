@@ -31,7 +31,7 @@ The schema has no native fields for confidence, decay rate, reinforcement count,
 
 The LLM Wiki v2 gist (2026) [1] — written by the author of agentmemory and extending Karpathy's original LLM Wiki [2] — crystallizes the industry learning on this failure mode: **the bottleneck for AI memory is not visualization but memory lifecycle**. Specifically: confidence scoring with Ebbinghaus decay, supersession, consolidation tiers (working → episodic → semantic → procedural), and graph traversal as a query strategy. A 38-source research survey conducted 2026-04-27 confirms this diagnosis across the major AI memory frameworks (Mem0, Zep/Graphiti, Cognee, Letta/MemGPT, GraphRAG, HippoRAG, LightRAG).
 
-Full analysis: [`docs/03-PoCs/research/llm-wiki-v2-engram-evolution-2026-04-27.md`](../research/llm-wiki-v2-engram-evolution-2026-04-27.md).
+Full analysis: [`docs/03-PoCs/research/llm-wiki-v2-engram-evolution-2026-04-27.md`](../../03-PoCs/research/llm-wiki-v2-engram-evolution-2026-04-27.md).
 
 The project is in `reconstruction` phase. Patching is not acceptable; the wrapper layer must be complete and test-covered in the same session it is introduced.
 
@@ -115,7 +115,7 @@ Reinforcement is implemented via hook `hooks/engram-reinforce-on-access.sh` (Pos
 | 3 | Graph traversal in queries (walk `memory_relations` SQLite table, 2-hop max, merge into ranked results) | **Done** (Wave 3b) |
 | 4 | Obsidian export as human-readable layer (read-only; no writes from Obsidian to engram) | **Manual slice done** (2026-05-05); automation deferred |
 
-Feature plan: [`.cognitive-os/plans/features/engram-lifecycle-evolution.md`](../../.cognitive-os/plans/features/engram-lifecycle-evolution.md).
+Feature plan: [`.cognitive-os/plans/features/engram-lifecycle-evolution.md`](../../../.cognitive-os/plans/features/engram-lifecycle-evolution.md).
 
 ## Consequences
 
@@ -279,7 +279,7 @@ The vault remains outside the repository by default. `docs/` is the curated, rev
 
 ## Honest Limitations (post-implementation, 2026-04-27)
 
-The implementation works end-to-end (89 tests passing: 75 unit + 14 e2e against a real sandboxed engram daemon). What follows is what does **not** work, what is **partial**, and what is **best-effort** — documented so future readers don't inherit false confidence.
+The implementation works end-to-end (on 2026-04-27, 89 tests passing: 75 unit + 14 e2e against a real sandboxed engram daemon). What follows is what does **not** work, what is **partial**, and what is **best-effort** — documented so future readers don't inherit false confidence.
 
 ### What is partial
 

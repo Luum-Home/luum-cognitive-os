@@ -123,7 +123,7 @@ for agentic development rather than another overgrown framework.
 ## Related artifacts
 
 - [Boring Reliability Control Plane](boring-reliability-control-plane.md)
-- [Kernel Contract](../kernel-contract.md)
-- [COS Distribution Boundaries](../adrs/ADR-124-cos-distribution-boundaries.md)
-- [Agentic Primitive Lifecycle Governor](../adrs/ADR-126-agentic-primitive-lifecycle-governor.md)
-- [Core 30-Minute Onboarding](../getting-started/core-30-minute-onboarding.md)
+- [Kernel Contract](../root/kernel-contract.md)
+- [COS Distribution Boundaries](../../02-Decisions/adrs/ADR-124-cos-distribution-boundaries.md)
+- [Agentic Primitive Lifecycle Governor](../../02-Decisions/adrs/ADR-126-agentic-primitive-lifecycle-governor.md)
+- [Core 30-Minute Onboarding](../../05-Methodology/getting-started/core-30-minute-onboarding.md)

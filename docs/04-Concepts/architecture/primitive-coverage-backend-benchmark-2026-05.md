@@ -22,10 +22,10 @@ Conclusion:
 
 Generated benchmark outputs:
 
-- JSON: [`docs/06-Daily/reports/primitive-coverage-backend-benchmark-2026-05-01.json`](../reports/primitive-coverage-backend-benchmark-2026-05-01.json)
-- Markdown: [`docs/06-Daily/reports/primitive-coverage-backend-benchmark-2026-05-01.md`](../reports/primitive-coverage-backend-benchmark-2026-05-01.md)
-- Harness: [`scripts/primitive_backend_benchmark.py`](../../scripts/primitive_backend_benchmark.py)
-- Tests: [`tests/unit/test_primitive_backend_benchmark.py`](../../tests/unit/test_primitive_backend_benchmark.py)
+- JSON: [`docs/06-Daily/reports/primitive-coverage-backend-benchmark-2026-05-01.json`](../../06-Daily/reports/primitive-coverage-backend-benchmark-2026-05-01.json)
+- Markdown: [`docs/06-Daily/reports/primitive-coverage-backend-benchmark-2026-05-01.md`](../../06-Daily/reports/primitive-coverage-backend-benchmark-2026-05-01.md)
+- Harness: [`scripts/primitive_backend_benchmark.py`](../../../scripts/primitive_backend_benchmark.py)
+- Tests: [`tests/unit/test_primitive_backend_benchmark.py`](../../../tests/unit/test_primitive_backend_benchmark.py)
 
 ## Problem
 

@@ -129,8 +129,8 @@ Canonical: [`docs/06-Daily/reports/p4-active-tasks-prune-2026-05-11.md`](p4-acti
 
 | Path | Scope |
 |---|---|
-| [`.cognitive-os/plans/roadmaps/stabilization-roadmap.md`](../../.cognitive-os/plans/roadmaps/stabilization-roadmap.md) | Stabilization phase exit criteria |
-| [`.cognitive-os/plans/architecture/governed-self-improvement-roadmap.md`](../../.cognitive-os/plans/architecture/governed-self-improvement-roadmap.md) | Governed self-improvement loop |
+| [`.cognitive-os/plans/roadmaps/stabilization-roadmap.md`](../../../.cognitive-os/plans/roadmaps/stabilization-roadmap.md) | Stabilization phase exit criteria |
+| [`.cognitive-os/plans/architecture/governed-self-improvement-roadmap.md`](../../../.cognitive-os/plans/architecture/governed-self-improvement-roadmap.md) | Governed self-improvement loop |
 
 ## 8. Other backlog surfaces
 

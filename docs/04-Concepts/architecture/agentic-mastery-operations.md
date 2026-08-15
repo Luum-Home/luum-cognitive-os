@@ -84,7 +84,7 @@ python3 -m pytest tests/contracts/test_orphan_hooks.py tests/unit/test_cognitive
 
 ## Manual checks
 
-Manual proof path: [Agentic Mastery Manual Test](../manual-tests/agentic-mastery.md).
+Manual proof path: [Agentic Mastery Manual Test](../../09-Quality/manual-tests/agentic-mastery.md).
 
 ### Lethal Trifecta block proof
 

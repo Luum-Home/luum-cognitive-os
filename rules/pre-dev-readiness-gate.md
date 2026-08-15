@@ -60,7 +60,7 @@ The hook fires only on implementation-related agent prompts. Detection uses keyw
 
 ## Lib
 
-`lib/completeness_checker.py` provides:
+`cos_lib/completeness_checker.py` provides:
 
 | Function | Description |
 |---|---|

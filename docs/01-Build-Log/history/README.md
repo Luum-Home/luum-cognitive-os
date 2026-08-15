@@ -2,7 +2,7 @@
 
 This directory captures the auditable evidence that surrounds the one-time
 git history sanitization scheduled for 2026-05-07 per
-[ADR-218](../adrs/ADR-218-history-sanitization-toolchain.md).
+[ADR-218](../../02-Decisions/adrs/ADR-218-history-sanitization-toolchain.md).
 
 **Why this exists**: a history rewrite changes every commit SHA. Without a
 public, in-repo trail of (a) what the rewrite was supposed to do and (b)
@@ -76,8 +76,8 @@ to refine. See ADR-218 §"Hard rules" for the full enforcement contract.
 
 ## ADR + skill cross-references
 
-- [ADR-218](../adrs/ADR-218-history-sanitization-toolchain.md) — primitive specification, hard rules, alternatives rejected
-- [ADR-055b](../adrs/ADR-055b-destructive-git-block.md) — destructive-git operation gate (`COS_ALLOW_DESTRUCTIVE_GIT=1`)
-- [`manifests/history-sanitization.yaml`](../../manifests/history-sanitization.yaml) — live (post-rewrite) manifest
-- [`scripts/cos history sanitize`](../../scripts/cos-history-sanitization) — the canonical CLI
-- [`lib/history_sanitization.py`](../../lib/history_sanitization.py) — implementation
+- [ADR-218](../../02-Decisions/adrs/ADR-218-history-sanitization-toolchain.md) — primitive specification, hard rules, alternatives rejected
+- [ADR-055b](../../02-Decisions/adrs/ADR-055b-destructive-git-block.md) — destructive-git operation gate (`COS_ALLOW_DESTRUCTIVE_GIT=1`)
+- [`manifests/history-sanitization.yaml`](../../../manifests/history-sanitization.yaml) — live (post-rewrite) manifest
+- [`scripts/cos history sanitize`](../../../scripts/cos-history-sanitization) — the canonical CLI
+- [`lib/history_sanitization.py`](../../../cos_lib/history_sanitization.py) — implementation

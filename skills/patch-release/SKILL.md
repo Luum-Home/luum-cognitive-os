@@ -1,4 +1,3 @@
-<!-- SCOPE: both -->
 ---
 name: patch-release
 description: Use when preparing, validating, publishing, or diagnosing a Cognitive OS patch release without running the full laptop lane.
@@ -19,6 +18,7 @@ routing_patterns:
   confidence: 0.8
 summary_line: Repeatable patch release prepare/validate/publish/doctor workflow.
 ---
+<!-- SCOPE: os-only -->
 
 # /patch-release
 

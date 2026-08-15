@@ -145,7 +145,7 @@ DEFAULT_HOOKS="error-learning.sh error-pipeline.sh result-truncator.sh session-i
   user-prompt-capture.sh session-wrapup-trigger.sh session-heartbeat.sh memory-prefetch.sh
   clarification-gate.sh blast-radius.sh scope-proportionality.sh bash-hot-path-dispatcher.sh provenance-scan.sh orchestrator-claim-gate.sh
   error-pattern-detector.sh auto-refine.sh auto-verify.sh dod-gate.sh
-  trust-score-validator.sh skill-metrics-tracker.sh inject-phase-context.sh stack-detector.sh
+  trust-score-validator.sh inject-phase-context.sh stack-detector.sh
   pre-compaction-flush.sh rate-limiter.sh large-file-advisor.sh secret-detector.sh content-policy.sh research-compliance-guard.sh
   doc-sync-detector.sh auto-checkpoint.sh claim-validator.sh completion-gate.sh
   clarification-interceptor.sh agent-checkpoint.sh session-sanity.sh confidentiality-enforcer.sh
@@ -243,17 +243,40 @@ esac
 
 # ── Output ──────────────────────────────────────────────────────────
 if [ "$HARNESS" = "codex" ]; then
-  # Codex hooks.json uses lifecycle events at the top level and has a narrower
-  # proven hook contract than Claude.  Project only lifecycle hooks plus
-  # Bash-scoped tool hooks, and translate matcher names to Codex-native values.
+  # Codex hook contract: manifests/codex-hooks-schema.yaml (the authority).
+  #   - The top-level "hooks" namespace is mandatory; without it Codex does not
+  #     read the file as a hook registry and every guard is inert.
+  #   - PreToolUse/PostToolUse matchers are regexes over the TOOL NAME.
+  #   - UserPromptSubmit and Stop accept no matcher: drop the key.
+  #   - Edit/Write/MultiEdit have no Codex equivalent — they map onto
+  #     apply_patch, Codex's only file-mutation tool. Without that mapping the
+  #     write-side guard coverage on Codex is zero.
   # Do not copy unsupported Claude events into Codex just to make counts match.
-  result=$(echo "$result" | jq '{
-    SessionStart: ((.hooks.SessionStart // []) | map(.matcher = "startup")),
-    UserPromptSubmit: ((.hooks.UserPromptSubmit // []) | map(.matcher = "prompt")),
-    PreToolUse: ((.hooks.PreToolUse // []) | map(select(.matcher == "Bash") | .matcher = "bash")),
-    PostToolUse: ((.hooks.PostToolUse // []) | map(select(.matcher == "Bash") | .matcher = "bash")),
-    Stop: ((.hooks.Stop // []) | map(.matcher = "shutdown"))
-  }')
+  result=$(echo "$result" | jq '
+    def tool_groups:
+      [ .[]
+        | . as $g
+        | ($g.matcher // "") as $m
+        | ( (if ($m | test("(^|\\|)Bash($|\\|)")) then ["^Bash$"] else [] end)
+          + (if ($m | test("(^|\\|)(Edit|Write|MultiEdit)($|\\|)")) then ["^apply_patch$"] else [] end)
+          ) as $ms
+        | $ms[]
+        | . as $x
+        | ($g | .matcher = $x) ];
+    {
+      hooks: {
+        SessionStart: ((.hooks.SessionStart // []) | map(.matcher = "startup")),
+        UserPromptSubmit: ((.hooks.UserPromptSubmit // []) | map(del(.matcher))),
+        PreToolUse: ((.hooks.PreToolUse // []) | tool_groups),
+        PostToolUse: ((.hooks.PostToolUse // []) | tool_groups),
+        Stop: ((.hooks.Stop // []) | map(del(.matcher)))
+      }
+    }
+    # Codex parses "async" but does not honour it: a handler marked async runs
+    # synchronously anyway. Carrying the Claude-side flag over would advertise
+    # non-blocking behaviour Codex will not deliver, so strip it here.
+    | .hooks |= with_entries(.value |= map(.hooks |= map(del(.async))))
+    ')
 fi
 
 if [ -n "$OUTPUT" ]; then

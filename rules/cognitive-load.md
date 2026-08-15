@@ -6,7 +6,7 @@
 
 Detect and respond to agent cognitive degradation caused by context overload. Based on the WISC framework (arxiv 2507.11538) finding that >150 instructions degrade LLM performance.
 
-Cognitive OS loads ~88 rules (~73K tokens). As context fills during a session, agent quality degrades: instructions are forgotten, hallucinations increase, and output quality drops. This rule defines monitoring behavior and response thresholds.
+Cognitive OS loads the full rule set in `rules/` (`ls rules/*.md | wc -l`; tens of thousands of tokens). As context fills during a session, agent quality degrades: instructions are forgotten, hallucinations increase, and output quality drops. This rule defines monitoring behavior and response thresholds.
 
 ## Degradation Types
 
@@ -54,7 +54,7 @@ Cognitive OS loads ~88 rules (~73K tokens). As context fills during a session, a
 
 ## Library
 
-`lib/cognitive_load_monitor.py` provides:
+`cos_lib/cognitive_load_monitor.py` provides:
 
 | Function | Description |
 |----------|-------------|

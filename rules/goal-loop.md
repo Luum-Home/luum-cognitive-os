@@ -129,7 +129,7 @@ check — is also rejected.
 
 ## References
 
-- Implementation: `lib/goal_state.py`, `lib/goal_evaluator.py`, `lib/goal_evidence.py`, `lib/goal_budget.py`
+- Implementation: `cos_lib/goal_state.py`, `cos_lib/goal_evaluator.py`, `cos_lib/goal_evidence.py`, `cos_lib/goal_budget.py`
 - CLI: `scripts/cos_goal.py` / `scripts/cos-goal`
 - Hook: `hooks/goal-stop-gate.sh`
 - Architecture: `docs/04-Concepts/architecture/goal-loop.md`

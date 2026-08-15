@@ -150,7 +150,7 @@ These are automatic responses — the agent should suggest them when thresholds 
 - High escalation rate: improve task clarity, use `/exhaustive-prompt`, check model capability
 - Low resolution rate: review orchestrator re-launch strategies, consider different models or approaches
 - High time-to-escalate: lower `max_tool_calls_before_check` in EscalationDetector config
-- High false escalation rate: raise thresholds in `lib/escalation_detector.py` constants
+- High false escalation rate: raise thresholds in `cos_lib/escalation_detector.py` constants
 
 ## KPI Storage
 

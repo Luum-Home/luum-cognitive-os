@@ -256,7 +256,8 @@ python3 -m pytest tests/red_team/portability/test_cos-operational-guide-audit.py
 
 - **ADR-275** — Closure & projection primitives. ADR-275's
   `cos-session-start-projector` surfaces this audit's P0/P1 backfill
-  list at session start across 3 harnesses, and
+  list at session start across every harness in
+  `manifests/harness-projection.yaml`, and
   `cos-closure-trust-signal` quantifies operator trust based on whether
   closures used the close primitive. Together they make the §OG contract
   self-correcting (audit → projector surfaces → operator closes via

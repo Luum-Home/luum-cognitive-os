@@ -206,7 +206,7 @@ canonical before Phase 5.
 
 Impact report:
 
-- [Portable `.ai` Overlay vs Consumer `.ai` Model Impact — 2026-05-12](../reports/portable-ai-overlay-consumer-model-impact-2026-05-12.md)
+- [Portable `.ai` Overlay vs Consumer `.ai` Model Impact — 2026-05-12](../../06-Daily/reports/portable-ai-overlay-consumer-model-impact-2026-05-12.md)
 
 Documentation consequence: future docs must name whether they mean the
 maintainer generated overlay or the consumer package view whenever `.ai/` is

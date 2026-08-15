@@ -58,14 +58,14 @@ When the rate limiter returns `RATE_LIMIT_QUEUED`:
 
 | Primitive | Role |
 |-----------|------|
-| `lib/rate_limiter.py` | RateLimitQueue enqueues blocked actions |
-| `lib/retry_scheduler.py` | Formats CronCreate-compatible retry schedule |
+| `cos_lib/rate_limiter.py` | RateLimitQueue enqueues blocked actions |
+| `cos_lib/retry_scheduler.py` | Formats CronCreate-compatible retry schedule |
 | `lib/workload_scheduler.py` | `next_slot_available_in()` estimates wait time |
 | CronCreate (scheduled tasks) | Fires the deferred retry |
 
 ## Library
 
-`lib/retry_scheduler.py` provides:
+`cos_lib/retry_scheduler.py` provides:
 
 | Function | Description |
 |----------|-------------|

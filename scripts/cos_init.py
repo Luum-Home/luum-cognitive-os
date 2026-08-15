@@ -103,7 +103,7 @@ DEFAULT_HOOKS = (
     "user-prompt-capture session-wrapup-trigger session-heartbeat memory-prefetch "
     "clarification-gate blast-radius scope-proportionality bash-hot-path-dispatcher provenance-scan orchestrator-claim-gate "
     "error-pattern-detector auto-refine auto-verify dod-gate "
-    "trust-score-validator skill-metrics-tracker inject-phase-context stack-detector "
+    "trust-score-validator inject-phase-context stack-detector "
     "pre-compaction-flush rate-limiter large-file-advisor secret-detector content-policy "
     "research-compliance-guard "
     "doc-sync-detector auto-checkpoint claim-validator completion-gate "
@@ -1619,6 +1619,28 @@ def _apply_harness_settings(
     else:
         # No generator or no jq — fallback to direct copy
         _fallback_settings(cos_source, settings_path)
+
+    if harness == "codex":
+        _print_codex_trust_notice(settings_label)
+
+
+def _print_codex_trust_notice(settings_label: str) -> None:
+    """Tell the operator the projected Codex hooks are inert until trusted.
+
+    Codex does not run non-managed command hooks until the operator trusts the
+    layer that declares them. Writing the file is therefore not the same as
+    enabling it: an install that stays silent here hands back a project whose
+    every guard is off while the file on disk says otherwise.
+
+    Contract: manifests/codex-hooks-schema.yaml > trust.
+    """
+    print("")
+    print(f"NOTE: Codex hooks were written to {settings_label} but are NOT active yet.")
+    print("      Codex requires trust before it runs non-managed command hooks.")
+    print("      Run /hooks inside Codex and trust this project's .codex/ layer,")
+    print("      otherwise every projected COS guard stays inert.")
+    print("      Verify: /hooks should list the COS entries as trusted.")
+    print("")
 
 
 def _fallback_settings(cos_source: Path, settings_path: Path) -> None:

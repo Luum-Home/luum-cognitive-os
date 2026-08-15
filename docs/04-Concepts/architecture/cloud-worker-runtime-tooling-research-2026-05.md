@@ -6,7 +6,7 @@
 
 ## Related Plan
 
-The execution plan is [`Headless and Clustered Runtime Plan`](../../.cognitive-os/plans/architecture/headless-clustered-runtime-plan.md).
+The execution plan is [`Headless and Clustered Runtime Plan`](../../../.cognitive-os/plans/architecture/headless-clustered-runtime-plan.md).
 This research is complementary: it evaluates event, queue, and durable workflow
 options without making the local product heavy.
 

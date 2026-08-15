@@ -272,7 +272,8 @@ Rationale:
 
 - The cos-dispatch decision log is a closed, immutable-once-accepted record for
   a Go subsystem with its own release lifecycle. It is not a project-level
-  governance record. Promoting its 11 ADRs to the root namespace would assign
+  governance record. Promoting its ADRs (11 of them on 2026-04-30) to the root
+namespace would assign
   project-level slots (001–011) to subsystem-internal decisions that have no
   meaning to the rest of the project.
 - However, the current naming (`001-reuse-klaudiush-predicates.md`) has no

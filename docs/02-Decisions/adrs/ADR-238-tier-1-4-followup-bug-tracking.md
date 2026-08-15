@@ -98,7 +98,8 @@ materialise mid-session.
 improvement. The rule now refers to the events stream conceptually and points
 readers to `lib/harness_adapter/` for the harness-specific path resolver.
 `tests/audit/test_rules_enforcement.py::test_no_rule_references_missing_file`
-passes (116 rules audited, all green).
+passes over the whole `rules/` tree, all green (116 rules on 2026-05-07,
+`ls rules/*.md | wc -l`).
 
 ---
 
