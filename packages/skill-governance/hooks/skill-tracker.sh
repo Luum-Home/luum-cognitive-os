@@ -34,17 +34,45 @@ TOOL_RESULT=$(echo "$INPUT" | jq -r '.tool_response // empty' 2>/dev/null)
 EXIT_CODE=$(echo "$INPUT" | jq -r '.exit_code // "0"' 2>/dev/null)
 
 # --- Extract skill name ---
-SKILL_NAME=$(echo "$INPUT" | jq -r '
-  .tool_input.skill // .tool_input.description // .tool_input.prompt // "unknown"
-' 2>/dev/null | head -c 100)
+# The `skill` field feeds five KPI modules (cos_lib/kpi_collector.py,
+# repetition_detector.py, component_usage_tracker.py, singularity.py,
+# performance_ledger.py), so only a real skill identifier may land in it.
+# Until this fix the fallback chain was
+# `.tool_input.skill // .tool_input.description // .tool_input.prompt`
+# followed by "keep the first word", which turned every Agent launch into a
+# fake skill named after the first word of its description — "juez", "forense",
+# "test" — and truncated at the first non-ASCII byte, so "Decisión ..." was
+# recorded as the skill "decisi".
+_skill_exists() {
+  [ -n "${1:-}" ] || return 1
+  [ -f "$_PROJECT_DIR/skills/$1/SKILL.md" ] && return 0
+  [ -f "$_PROJECT_DIR/.cognitive-os/skills/cos/$1/SKILL.md" ] && return 0
+  return 1
+}
 
-# Normalize: "sdd-explore: Explore the codebase" -> "sdd-explore"
-SKILL_NAME=$(echo "$SKILL_NAME" | sed -E 's/^([a-zA-Z0-9_-]+).*/\1/' | tr '[:upper:]' '[:lower:]')
+# 1. The Skill tool carries the name explicitly: that value is authoritative.
+SKILL_NAME=$(echo "$INPUT" | jq -r '.tool_input.skill // ""' 2>/dev/null \
+  | head -c 100 | tr '[:upper:]' '[:lower:]' | tr -cd 'a-z0-9:_-' || true)
 
-if [ -z "$SKILL_NAME" ] || [ "$SKILL_NAME" = "unknown" ]; then
-  SKILL_NAME=$(echo "$INPUT" | jq -r '.tool_input.prompt // ""' 2>/dev/null | grep -oE '(sdd-[a-z]+|systematic-debugging|test-driven|verification|model-optimizer|skill-[a-z]+)' | head -1)
-  [ -z "$SKILL_NAME" ] && SKILL_NAME="unknown-agent"
+# 2. Agent launches carry no skill field. The only trustworthy signal is an
+#    explicit `skills/<name>` reference in the prompt, and it still has to name
+#    a skill that exists on disk. No inference from free text.
+if [ -z "$SKILL_NAME" ]; then
+  PROMPT_REFS=$(echo "$INPUT" | jq -r '.tool_input.prompt // ""' 2>/dev/null \
+    | grep -oE 'skills/[a-z0-9][a-z0-9_-]*' | sed 's|^skills/||' | head -5 || true)
+  while IFS= read -r candidate; do
+    [ -n "$candidate" ] || continue
+    if _skill_exists "$candidate"; then
+      SKILL_NAME="$candidate"
+      break
+    fi
+  done <<EOF_REFS
+$PROMPT_REFS
+EOF_REFS
 fi
+
+# 3. An agent run nobody can attribute to a skill is recorded as exactly that.
+[ -z "$SKILL_NAME" ] && SKILL_NAME="unknown-agent"
 
 # --- Part 1: Failure detection + Engram feedback ---
 FAILED=false
