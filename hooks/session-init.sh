@@ -270,10 +270,31 @@ PRUNE_CONTEXT_MARKERS
 
 # ─── Self-improve + user model + work queue (consolidated) ────────────────────
 # Consolidated into a single python3 call (was 3 cold starts).
+#
+# What dies with this helper: the self-improve recommendation reason, the user
+# model written to $SESSION_DIR/user-profile.txt, the early project-profile
+# draft, and the pending work-queue warning. The session then starts without its
+# orientation payload and nothing says so.
+# The old `2>/dev/null` was worse than hiding errors: the helper's own docstring
+# declares stderr as its OUTPUT channel ("Outputs to stderr: self-improve reason,
+# work queue warnings"), so the redirect also discarded the advisory it exists to
+# produce. stderr is forwarded verbatim by scripts/hook-timing-wrapper.sh, and
+# SessionStart context travels on stdout, so nothing here touches the protocol.
+_SI_HELPER_ERR=$(mktemp "${TMPDIR:-/tmp}/cos-session-init-helper.err.XXXXXX" 2>/dev/null || printf '/tmp/cos-session-init-helper-err-%s' "$$")
+_SI_HELPER_RC=0
 SELF_IMPROVE_FLAG="$PROJECT_DIR/.cognitive-os/metrics/.self-improve-recommended" \
 SESSION_DIR="$SESSION_DIR" \
 COGNITIVE_OS_PROJECT_DIR="$PROJECT_DIR" \
-python3 "$(dirname "$0")/_lib/session_init_helper.py" 2>/dev/null || true
+python3 "$(dirname "$0")/_lib/session_init_helper.py" 2>"$_SI_HELPER_ERR" || _SI_HELPER_RC=$?
+if [ -s "$_SI_HELPER_ERR" ]; then
+    if [ "$_SI_HELPER_RC" -ne 0 ]; then
+        echo "SESSION INIT: _lib/session_init_helper.py failed (exit ${_SI_HELPER_RC}) — no self-improve reason, no user model, no project-profile draft, no work-queue warning for this session." >&2
+    fi
+    head -30 "$_SI_HELPER_ERR" >&2
+elif [ "$_SI_HELPER_RC" -ne 0 ]; then
+    echo "SESSION INIT: _lib/session_init_helper.py failed (exit ${_SI_HELPER_RC}, no stderr) — session starts without its orientation payload." >&2
+fi
+rm -f "$_SI_HELPER_ERR" 2>/dev/null || true
 
 # ─── Singularity auto-suggestion ─────────────────────────────────────────────
 # Advisory only — always exits 0. Lightweight file checks only (no subprocess).
