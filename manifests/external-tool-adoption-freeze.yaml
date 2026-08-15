@@ -72,22 +72,48 @@ pending_on_unfreeze:
   adopted_before_freeze_without_adr:
     # Freeze does NOT apply — these landed first. What is missing is a written
     # decision, not permission. Decision debt, not adoption debt.
+    #
+    # The `inventoried` field below states where each entry is recorded, and was
+    # made accurate on 2026-08-15. The `also:` notes it replaces were written
+    # earlier the same day and three of the four were wrong within hours:
+    # LightRAG claimed to be in NOTICE.md and the license manifest when it was in
+    # neither, and aider and dspy were declared absent from both — true when
+    # written, false once the inventory landed. Do not restate here what those
+    # files contain; state where to look, and let the verify command answer.
+    #
+    # verify: for t in crawl4ai LightRAG aider dspy; do
+    #           printf '%s %s %s\n' "$t" \
+    #             "$(grep -ci "$t" NOTICE.md)" \
+    #             "$(grep -ci "$t" manifests/external-tool-licenses.yaml)"; done
     - repo: unclecode/crawl4ai
       landed: '2026-03-27'
       where: packages/ecosystem-tools/lib/web_crawler.py, requirements.txt
-      also: manifests/external-tools-adoption.yaml marks it verdict INTEGRATE
+      inventoried: [NOTICE, NOTICE.md, manifests/external-tool-licenses.yaml]
+      also: |
+        manifests/external-tools-adoption.yaml marks it verdict INTEGRATE.
+        Apache-2.0 with a mandatory attribution clause: the upstream LICENSE
+        requires a verbatim sentence carrying two URLs, which the earlier
+        paraphrase omitted. Corrected 2026-08-15.
     - repo: HKUDS/LightRAG
       landed: '2026-05-08'
       where: cos_lib/memory_retrieval_benchmark.py
-      also: recorded in NOTICE.md and manifests/external-tool-licenses.yaml
+      inventoried: [NOTICE, NOTICE.md, manifests/external-tool-licenses.yaml]
+      also: MIT. Form is conceptual-reference, not vendored code.
     - repo: Aider-AI/aider
       landed: '2026-05-10'
       where: cos_lib/repo_map.py, scripts/cos-repo-map
-      also: docstring declares it a pattern-port; absent from NOTICE / license manifest
+      inventoried: [NOTICE, NOTICE.md, manifests/external-tool-licenses.yaml]
+      also: |
+        Apache-2.0, not MIT — 8 of 13 entries in the license manifest are MIT,
+        so MIT was the assumable default and the assumable default was wrong.
+        The docstring declares it a pattern-port; whether the implementation
+        resembles aider's algorithm is NOT ASSESSED.
     - repo: stanfordnlp/dspy
       landed: '2026-05-10'
       where: cos_lib/dspy_pilot.py, scripts/cos-dspy-pilot
-      also: absent from NOTICE / license manifest
+      inventoried: [NOTICE, NOTICE.md, manifests/external-tool-licenses.yaml,
+                    manifests/feature-tool-due-diligence.yaml]
+      also: MIT. Form is optional-probe.
   not_governed_by_freeze:
     - repo: agentsmd/agents.md
       reason: |

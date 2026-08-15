@@ -140,7 +140,7 @@ curl -fsSL https://raw.githubusercontent.com/luum-home/luum-cognitive-os/main/in
 Or manually:
 
 ```bash
-git clone --depth 1 https://github.com/luum-home/luum-cognitive-os.git /tmp/cos
+git clone --depth 1 https://github.com/Luum-Home/luum-cognitive-os.git /tmp/cos
 cp -r /tmp/cos/.cognitive-os .cognitive-os
 cp /tmp/cos/cognitive-os.yaml cognitive-os.yaml
 rm -rf /tmp/cos
