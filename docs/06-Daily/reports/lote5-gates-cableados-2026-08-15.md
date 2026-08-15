@@ -3,7 +3,11 @@
 **Fecha:** 2026-08-15
 **Alcance:** los 66 gates *cableados* del censo canónico (no los 40 del `settings.json`).
 **Veredicto corto:** de 66, **22 son teatro** — están cableados y no pueden bloquear.
-Sólo **3** tienen evidencia de haber bloqueado alguna vez.
+Otros **11 son advisory-only**: su camino de bloqueo existe pero corre en un evento
+que no puede prevenir nada. Sólo **2** previenen y tienen evidencia de haberlo hecho.
+
+> **Corrección post-lote-2 (2026-08-15).** Tres premisas de mi primera pasada
+> cayeron. Ver §9. Los números de arriba ya están corregidos.
 
 ---
 
@@ -44,8 +48,9 @@ Las dos preguntas se responden con fuentes distintas y no se mezclan:
 
 | cuadrante | qué significa | n |
 |---|---|---:|
-| **live** | puede + bloqueó | **3** |
-| **untested** | puede + nunca bloqueó, *y la telemetría lo ve* | 21 |
+| **live** | puede prevenir + bloqueó | **2** |
+| **advisory-only** | tiene camino de bloqueo, pero corre en PostToolUse/Stop: informa, no previene | **11** |
+| **untested** | puede prevenir + nunca bloqueó, *y la telemetría lo ve* | 11 |
 | **unmeasured** | puede + la telemetría **no puede verlo** (§5) | 20 |
 | **theatre** | **no puede** + nunca bloqueó | **22** |
 | **telemetry-lying** | no puede + "bloqueó" | 0 |
@@ -299,3 +304,81 @@ contador de `ever_blocked` subió de 4 a 6 durante esta auditoría.
 
 *`vía`: `disp` = llega por `bash-hot-path-dispatcher.sh`; `set` = nombrado en el
 settings generado; `prof` = sólo por perfil de seguridad / registry.*
+
+
+---
+
+## 9. Correcciones del lote 2 (2026-08-15, posteriores a la primera pasada)
+
+Tres cosas que di por buenas y no lo eran. Las tres cambian números.
+
+### 9.1 `exit 2` no significa lo mismo en todos los eventos — 11 gates reclasificados
+
+Mi cuadrante "puede bloquear" miraba si existía el camino, no **dónde corre el hook**.
+En `PostToolUse` la herramienta **ya corrió**: el mensaje vuelve al modelo, informa,
+no previene. Lo mismo con `Stop`, `TaskCreated`, `TeammateIdle`.
+
+Once de los 66 tienen camino de bloqueo y corren sólo en eventos que no previenen:
+
+| gate | evento | bloqueos |
+|---|---|---:|
+| `subagent-budget-enforcer` | PostToolUse | **48** |
+| `confidence-gate` | PostToolUse | 0 |
+| `confidentiality-enforcer` | PostToolUse | 0 |
+| `content-policy` | PostToolUse | 0 |
+| `dequeue-notify` | PostToolUse | 0 |
+| `eas-validation-gate` | Stop | 0 |
+| `goal-stop-gate` | Stop | 0 |
+| `quality-duplicates` | Stop | 0 |
+| `session-quality-close-gate` | Stop | 0 |
+| `task-created` | TaskCreated | 0 |
+| `teammate-idle` | TeammateIdle | 0 |
+
+**`subagent-budget-enforcer` era uno de mis 3 `live`.** Tiene 48 `exit 2` reales, pero
+ninguno previno una llamada: todos llegaron después. `live` baja de 3 a 2
+(`lethal-trifecta-gate` y `protected-config-write-guard`, ambos PreToolUse).
+
+Lo comprobé sin buscarlo: **este gate me bloqueó dos veces durante la auditoría**, a
+los 51 y 52 tool calls. Las dos veces la herramienta ya había corrido y el archivo ya
+estaba modificado. Es la demostración empírica de la distinción.
+
+### 9.2 `exit 2` no es el único camino de bloqueo
+
+`hooks/secret-detector.sh:181` bloquea emitiendo `permissionDecision: "block"` y
+saliendo **0**. Mi `BLOCK_RE` —copiada de `audit_gate_registration.py`— exigía comilla
+antes de `permissionDecision` y sólo aceptaba `deny`, así que no lo veía. Corregida.
+
+Alcance real, medido: `secret-detector` es **el único** hook del repo que usa esa
+forma, y **no está entre los 66** — el censo lo clasifica `ambiguo` por el token
+"detector" del nombre. Los dos hooks de los 66 que tocan `permissionDecision`
+(`agent-bash-cwd-enforcer`, `pending-truth-staleness-gate`) emiten `"allow"`.
+
+**Ninguno de los 22 veredictos de teatro cambia por esto.** Pero confirma que el
+denominador está mal armado: un bloqueador real queda fuera de la clase `gate` porque
+se llama "-detector". Es la misma deuda de §7.4, desde el otro lado.
+
+### 9.3 "No cableado" es hipótesis, no veredicto
+
+El lote 2 encontró una quinta superficie de ejecución que ningún censo enumera.
+Consecuencia para este informe: **el cableado no es insumo de mi clasificación de
+`can_block`** —ésa se lee del código fuente— así que los 22 de teatro se sostienen.
+Pero **la población de 66 es un piso**: puede haber gates que el censo da por no
+cableados y que algo ejecuta.
+
+Lo que sí pude verificar: los 3 "no cableados" del censo (`agent-quota-redirect`,
+`pre-commit-gate`, `valkey-ensure`) tienen **0 filas** en `hook-timing.jsonl`. Y
+`resource-check`/`auto-verify` tampoco aparecen ahí — su evidencia de ejecución sale
+de otros archivos (`hook-health.jsonl`, `so-vitals.jsonl`, `tool-sequences.jsonl`), no
+de la telemetría que usé. No contradice al lote 2: mide otra cosa.
+
+### 9.4 El colchón de allowlist — no nos contradecimos, medimos objetos distintos
+
+El coordinador verificó que `.claude/settings.json` menciona 155 hooks y registra 155
+dentro de `hooks{}`, sin fantasmas. **Lo confirmo**: contar las entradas de `hooks{}`
+da exactamente 155.
+
+Mi "185 entradas, 152 ya cableadas" **no era sobre `settings.json`**: es lo que
+`audit_gate_registration.py` reporta sobre el allowlist de
+`scripts/check_hook_registration.py`, que es otro artefacto. Las dos afirmaciones son
+verdaderas a la vez. Retiro la mía como evidencia de colchón en el registro —
+sigue en pie sólo como observación sobre ese allowlist, que es donde la medí.
