@@ -61,12 +61,75 @@ class ProtectedTerms:
         client_names:  Client identifiers (e.g. ``"acme-corp"``).
         repo_urls:     Full repository slugs (e.g. ``"org/repo-private"``).
         org_names:     GitHub / GitLab organization names (e.g. ``"luum"``).
+        scan_external_paths: When False, ``external_path`` violations are not
+                     reported. Defaults to True.
     """
 
     project_names: List[str] = field(default_factory=list)
     client_names: List[str] = field(default_factory=list)
     repo_urls: List[str] = field(default_factory=list)
     org_names: List[str] = field(default_factory=list)
+    scan_external_paths: bool = True
+
+
+# Every top-level key the loader understands. The shipped template is asserted
+# against this set by tests/unit/test_confidentiality_schema_contract.py, so a
+# key can never again be documented in the template without being consumed here.
+CONFIG_KEYS: frozenset[str] = frozenset(
+    {
+        "project_names",
+        "client_names",
+        "repo_urls",
+        "org_names",
+        "scan_external_paths",
+        # Legacy keys, accepted so configs written against the pre-2026-08-15
+        # template keep working instead of silently loading zero terms.
+        "protected_terms",
+        "protected_orgs",
+    }
+)
+
+_LEGACY_ALIASES = {
+    "protected_terms": "project_names",
+    "protected_orgs": "org_names",
+}
+
+
+def _coerce_terms(value: object) -> List[str]:
+    """Normalise a config value into a flat list of strings.
+
+    Accepts a plain list of strings, a single string, or the legacy list of
+    ``{term: ..., reason: ...}`` mappings used by the old template.
+    """
+    if value is None:
+        return []
+    if isinstance(value, str):
+        return [value] if value else []
+    if not isinstance(value, (list, tuple)):
+        return []
+    out: List[str] = []
+    for item in value:
+        if isinstance(item, str):
+            if item:
+                out.append(item)
+        elif isinstance(item, dict):
+            term = item.get("term") or item.get("name") or item.get("value")
+            if isinstance(term, str) and term:
+                out.append(term)
+    return out
+
+
+def _coerce_bool(value: object, default: bool = True) -> bool:
+    """Normalise a config value into a bool, tolerating YAML-ish strings."""
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        lowered = value.strip().lower()
+        if lowered in ("true", "yes", "on", "1"):
+            return True
+        if lowered in ("false", "no", "off", "0"):
+            return False
+    return default
 
 
 # ---------------------------------------------------------------------------
@@ -129,9 +192,9 @@ def load_protected_terms(config_path: str = ".cognitive-os/confidentiality.yaml"
         return ProtectedTerms()
 
     if yaml is None:
-        raw: dict[str, list[str]] = {}
+        raw: dict[str, object] = {}
         current_key: str | None = None
-        allowed = {"project_names", "client_names", "repo_urls", "org_names"}
+        allowed = set(CONFIG_KEYS)
         for raw_line in text.splitlines():
             line = raw_line.split("#", 1)[0].rstrip()
             if not line.strip():
@@ -156,20 +219,57 @@ def load_protected_terms(config_path: str = ".cognitive-os/confidentiality.yaml"
                 current_key = None
                 continue
             if current_key and stripped.startswith("-"):
-                value = stripped[1:].strip().strip('"').strip("'")
+                value = stripped[1:].strip()
+                # Legacy list-of-mappings form: "- term: my-project".
+                if value.startswith(("term:", "name:", "value:")):
+                    value = value.split(":", 1)[1].strip()
+                elif ":" in value and not value.startswith(("http", '"', "'")):
+                    # Any other mapping key inside a legacy entry (e.g. reason:)
+                    # carries no protected term.
+                    continue
+                value = value.strip('"').strip("'")
                 if value:
-                    raw.setdefault(current_key, []).append(value)
+                    bucket = raw.setdefault(current_key, [])
+                    if isinstance(bucket, list):
+                        bucket.append(value)
     else:
         try:
             raw = yaml.safe_load(text) or {}
         except Exception:  # noqa: BLE001
             return ProtectedTerms()
 
+    if not isinstance(raw, dict):
+        return ProtectedTerms()
+
+    # Legacy keys fold into their modern equivalent instead of being dropped.
+    # Both forms may coexist; entries are merged, preserving order and
+    # de-duplicating.
+    merged: dict[str, List[str]] = {
+        "project_names": [],
+        "client_names": [],
+        "repo_urls": [],
+        "org_names": [],
+    }
+    for key in ("project_names", "client_names", "repo_urls", "org_names"):
+        merged[key].extend(_coerce_terms(raw.get(key)))
+    for legacy_key, modern_key in _LEGACY_ALIASES.items():
+        merged[modern_key].extend(_coerce_terms(raw.get(legacy_key)))
+
+    for key, values in merged.items():
+        seen: set[str] = set()
+        deduped: List[str] = []
+        for value in values:
+            if value not in seen:
+                seen.add(value)
+                deduped.append(value)
+        merged[key] = deduped
+
     return ProtectedTerms(
-        project_names=list(raw.get("project_names", []) or []),
-        client_names=list(raw.get("client_names", []) or []),
-        repo_urls=list(raw.get("repo_urls", []) or []),
-        org_names=list(raw.get("org_names", []) or []),
+        project_names=merged["project_names"],
+        client_names=merged["client_names"],
+        repo_urls=merged["repo_urls"],
+        org_names=merged["org_names"],
+        scan_external_paths=_coerce_bool(raw.get("scan_external_paths"), default=True),
     )
 
 
@@ -200,7 +300,8 @@ def scan_text(
     violations: List[Violation] = []
 
     # -- 1. External filesystem paths -----------------------------------------
-    for match in _EXTERNAL_PATH_RE.finditer(text):
+    # Suppressed entirely when the config sets scan_external_paths: false.
+    for match in _EXTERNAL_PATH_RE.finditer(text) if terms.scan_external_paths else ():
         matched = match.group(0)
         # Strip trailing punctuation that may have been captured.
         matched = matched.rstrip(".,;:)'\"")
@@ -244,7 +345,7 @@ def scan_text(
                 triggered = True
                 break
 
-        if not triggered:
+        if not triggered and terms.scan_external_paths:
             # Check for an external path in the trailing snippet.
             path_match = _EXTERNAL_PATH_RE.search(snippet)
             if path_match:

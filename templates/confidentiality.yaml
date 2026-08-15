@@ -1,0 +1,52 @@
+# Confidentiality Configuration
+#
+# Install target: <project>/.cognitive-os/confidentiality.yaml
+#
+# Read by cos_lib/confidentiality_scanner.py:load_protected_terms() and used by
+# the confidentiality-enforcer hook on every Edit/Write to docs, README, and
+# markdown files. Every key below is consumed by the loader — that invariant is
+# enforced by tests/unit/test_confidentiality_schema_contract.py, so this file
+# cannot drift away from the parser again.
+#
+# All lists default to empty. An empty list is not an error: it means the
+# scanner falls back to the structural detections (external paths, attribution
+# phrases) that need no configuration.
+
+# Internal project identifiers that must never appear in generated output.
+# Matched case-insensitively as whole words.
+project_names: []
+  # - internal-project-codename
+  # - project-alpha
+
+# Client or customer identifiers under confidentiality.
+client_names: []
+  # - acme-corp
+
+# Repository slugs that must not be referenced. Use the "org/repo" form; the
+# scanner also matches the full https:// and git@ URLs built from it.
+repo_urls: []
+  # - my-private-org/internal-service
+
+# GitHub / GitLab organization names that must not be referenced.
+org_names: []
+  # - my-private-org
+
+# Report absolute paths belonging to *other* projects on this machine as
+# violations. Paths under the current project are never flagged.
+# Set to false only if the noise outweighs the protection — this is the one
+# detection that works with no configuration at all.
+scan_external_paths: true
+
+# ---------------------------------------------------------------------------
+# Legacy keys (pre-2026-08-15)
+# ---------------------------------------------------------------------------
+# Earlier versions of this template shipped `protected_terms` and
+# `protected_orgs`, which the parser never read — a config written against them
+# loaded zero terms and the scanner reported nothing, silently. The loader now
+# accepts both spellings and merges them:
+#
+#   protected_terms  ->  project_names   (plain strings, or {term, reason} maps)
+#   protected_orgs   ->  org_names
+#
+# Existing configs keep working unchanged. New configs should use the keys
+# above; the legacy names are accepted, not recommended.
