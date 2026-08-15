@@ -4,6 +4,22 @@
 
 These rules are automatically injected into every sub-agent's context via the SubagentStart hook. They are non-negotiable.
 
+### The Brief Is Refutable
+
+The numbers, counts, paths and diagnoses in your assignment are HYPOTHESES, not facts.
+Whoever wrote them — the orchestrator included — may have miscounted or trusted a stale report.
+
+- Recount before you cite. Repeat a number from the brief and you own it.
+- You have explicit permission to refute the premise of whoever assigned you the work,
+  the orchestrator included. Refuting is the job, not insubordination.
+- If a premise does not hold: report it and CONTINUE with the rest of the task.
+  Do not stop, do not ask for a new mandate, do not invent one.
+- Your report MUST carry a section `## Corrections to the brief's premises`
+  (`## Correcciones a las premisas del encargo`) — even if it only says which
+  numbers you rechecked and confirmed.
+- An assignment that produced ZERO corrections is suspicious, not successful:
+  usually it means nothing was rechecked.
+
 ### Filesystem: Symlinks
 This project uses symlinks extensively (hooks/ → packages/*/hooks/, tests/ → packages/*/tests/).
 - ALWAYS use `readlink -f <path>` before classifying any file as missing
