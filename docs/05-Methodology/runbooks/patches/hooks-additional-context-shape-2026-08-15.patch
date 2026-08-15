@@ -1,0 +1,53 @@
+diff --git a/hooks/agent-message-inbox-context.sh b/hooks/agent-message-inbox-context.sh
+index 9975781..4cac5e2 100755
+--- a/hooks/agent-message-inbox-context.sh
++++ b/hooks/agent-message-inbox-context.sh
+@@ -39,7 +39,14 @@ for row in rows:
+     body = str(row.get("body") or "")[:160]
+     lines.append(f"- {mid} [{sev}] from={sender} target={target}: {body}")
+ lines.append("After applying or triaging a message, acknowledge it with scripts/cos-agent-message ack.")
+-print(json.dumps({"additionalContext": "\n".join(lines)}, ensure_ascii=False))
++# Claude Code reads additionalContext ONLY from inside hookSpecificOutput,
++# alongside hookEventName. The root-level form is valid JSON, so the host
++# parses it, finds no recognized field, and drops it without a word.
++# Contract: manifests/claude-code-hooks-schema.yaml
++print(json.dumps({"hookSpecificOutput": {
++    "hookEventName": "UserPromptSubmit",
++    "additionalContext": "\n".join(lines),
++}}, ensure_ascii=False))
+ PY
+ )"
+ if [ -n "$CONTEXT_JSON" ]; then
+diff --git a/hooks/cross-session-peer-context.sh b/hooks/cross-session-peer-context.sh
+index e629cbe..d594db0 100755
+--- a/hooks/cross-session-peer-context.sh
++++ b/hooks/cross-session-peer-context.sh
+@@ -37,7 +37,14 @@ for peer in items:
+     branch = peer.branch or "unknown-branch"
+     lines.append(f"- session {peer.session_id} on branch {branch}; recent writes: {writes}; topics: {topics}")
+ lines.append("Coordinate before issuing conflicting ADR/path/policy changes.")
+-print(json.dumps({"additionalContext": "\n".join(lines)}, ensure_ascii=False))
++# Claude Code reads additionalContext ONLY from inside hookSpecificOutput,
++# alongside hookEventName. The root-level form is valid JSON, so the host
++# parses it, finds no recognized field, and drops it without a word.
++# Contract: manifests/claude-code-hooks-schema.yaml
++print(json.dumps({"hookSpecificOutput": {
++    "hookEventName": "UserPromptSubmit",
++    "additionalContext": "\n".join(lines),
++}}, ensure_ascii=False))
+ PY
+ )"
+ if [ -n "$CONTEXT_JSON" ]; then
+diff --git a/hooks/eas-validation-gate.sh b/hooks/eas-validation-gate.sh
+index 6c6f82a..90c445f 100755
+--- a/hooks/eas-validation-gate.sh
++++ b/hooks/eas-validation-gate.sh
+@@ -125,6 +125,8 @@ payload = {
+     "decision": "block",
+     "reason": summary,
+     "hookSpecificOutput": {
++        # hookEventName is required by the host to route hookSpecificOutput.
++        "hookEventName": "Stop",
+         "additionalContext": (
+             f"EAS Validation Gate blocked stop for review surface '{surface}'.\n\n"
+             f"{details}\n\n"

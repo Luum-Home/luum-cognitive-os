@@ -1,0 +1,285 @@
+schema_version: 1
+harness: claude-code
+description: >
+  Published hook OUTPUT schema of the Claude Code harness, transcribed from
+  upstream documentation. This manifest is the EXTERNAL contract: it records
+  what Claude Code itself consumes, independent of what this repo's hooks
+  happen to emit. The conformance test validates our hooks against THIS file,
+  so a hook that agrees only with itself cannot pass.
+
+  Scope note: unlike manifests/codex-hooks-schema.yaml (which describes a
+  projection this repo GENERATES), Claude Code is the harness this repo RUNS
+  ON. The hooks in hooks/ are hand-written, not generated, so this manifest is
+  the only place the host contract is written down. Before this file existed,
+  the contract lived nowhere and two hooks had been emitting a shape the host
+  silently discards.
+
+sources:
+  - url: https://code.claude.com/docs/en/hooks.md
+    what: >
+      Hooks reference, raw markdown (272682 bytes as fetched). Sections used —
+      "JSON output" (universal fields, the three field kinds), "Add context for
+      Claude" (additionalContext placement and per-event insertion point),
+      "Decision control" (which events honor which fields), "Exit code 0"
+      (stdout-vs-JSON parsing rule), "Exit code 2 behavior per event",
+      "SubagentStart" (input fields and output table), "Run hooks in the
+      background" (async semantics).
+    verified: 2026-08-15
+    how: >
+      curl -sSL https://code.claude.com/docs/en/hooks.md
+      Fetched and grepped locally rather than summarized, because the HTML page
+      truncates under WebFetch and three separate summarization passes each
+      lost the additionalContext placement rule.
+  - url: https://code.claude.com/docs/en/agent-sdk/hooks
+    what: >
+      Agent SDK hooks page. Used for the sentence distinguishing
+      hookSpecificOutput (controls the current operation) from
+      additionalContext (passes context to the model), and for confirmation
+      that agent_id/agent_type are required fields on SubagentStart.
+    verified: 2026-08-15
+  - note: >
+      Mirror behaviour observed 2026-08-15, recorded because it burned time:
+      https://code.claude.com/docs/en/sdk/sdk-typescript issues a 301 to
+      https://docs.claude.com/en/docs/agent-sdk/typescript — that is
+      code.claude.com redirecting TO docs.claude.com, the opposite direction
+      from the 301 recorded elsewhere in this repo. Both hosts are live and
+      redirect each other for different path prefixes; neither is safe to
+      assume canonical. Prefer the .md suffix on code.claude.com: it returns
+      the full source and does not truncate.
+  - note: >
+      Re-verify on the dates above before trusting a claim in a later session.
+      When Claude Code changes its contract, this file is the single place to
+      update and tests/contracts/test_claude_code_hooks_schema_conformance.py
+      starts failing on its own.
+
+# ── The one rule that matters ─────────────────────────────────────────────────
+# There is NO top-level `additionalContext` field. Not for any event.
+# A hook that prints {"additionalContext": "..."} at the root emits valid JSON
+# that the host parses and then discards, because the field is not in the
+# schema. The failure is SILENT: no error, no warning, no fallback to plain
+# text (see stdout_parsing below — a payload starting with `{` that parses as
+# valid JSON is never re-read as plain text).
+additional_context:
+  placement: hookSpecificOutput.additionalContext
+  root_level_allowed: false
+  requires_sibling: hookEventName
+  quote: >
+    "Return `additionalContext` inside `hookSpecificOutput` alongside the event
+    name" — hooks.md, section "Add context for Claude".
+  canonical_shape: |
+    {
+      "hookSpecificOutput": {
+        "hookEventName": "<EventName>",
+        "additionalContext": "<string>"
+      }
+    }
+  max_chars: 10000
+  overflow_behavior: >
+    Output exceeding 10,000 characters is saved to a file in the session
+    directory and replaced with a preview plus the file path.
+  multi_hook_behavior: >
+    When several hooks return additionalContext for the same event, Claude
+    receives all of the values.
+  authoring_guidance: >
+    Write the text as factual statements, not imperative system instructions.
+    Text framed as out-of-band system commands can trigger Claude's
+    prompt-injection defenses, which causes Claude to surface the text to the
+    user instead of treating it as context.
+
+  # Where the injected reminder lands, per event.
+  insertion_point:
+    - events: [SessionStart, Setup, SubagentStart]
+      where: at the start of the conversation, before the first prompt
+    - events: [UserPromptSubmit, UserPromptExpansion]
+      where: alongside the submitted prompt
+    - events: [PreToolUse, PostToolUse, PostToolUseFailure, PostToolBatch]
+      where: next to the tool result
+    - events: [Stop, SubagentStop]
+      where: at the end of the turn
+
+# ── How the host decides whether stdout is JSON or prose ──────────────────────
+# Decided by the FIRST non-whitespace character. This is why the flat form
+# fails silently instead of degrading into plain-text context.
+stdout_parsing:
+  quote: >
+    "Whether Claude Code reads your stdout as JSON output or as plain text
+    depends on its first character, ignoring leading whitespace" — hooks.md,
+    section "Exit code 0".
+  rules:
+    - starts_with: "{"
+      behavior: >
+        Parsed as JSON. If it is NOT valid JSON, treated as plain text. If it
+        IS valid JSON, it is structured output and unrecognized fields are
+        dropped — there is no fallback to plain text.
+    - starts_with: anything else
+      behavior: >
+        Treated as plain text, including a JSON array or a quoted JSON string.
+  plain_text_stdout_becomes_context_for:
+    - UserPromptSubmit
+    - UserPromptExpansion
+    - SessionStart
+  plain_text_stdout_elsewhere: >
+    For every other event, stdout goes to the debug log and is not shown in the
+    transcript.
+
+# ── Universal JSON fields, accepted by every event ────────────────────────────
+universal_fields:
+  continue:
+    default: true
+    note: "If false, Claude stops processing entirely after the hook runs."
+  stopReason:
+    note: "Shown to the user when continue is false. Not shown to Claude."
+  suppressOutput:
+    note: >
+      Accepted but inert — the host does not act on it. Recorded here so nobody
+      "fixes" a hook by setting it.
+  systemMessage:
+    note: "Warning shown to the USER, not to the model."
+  terminalSequence:
+    note: >
+      Terminal escape sequence, restricted to OSC 0/1/2/9/99/777 and BEL.
+      Anything outside the allowlist makes the field ignored.
+
+# ── Per-event decision control ────────────────────────────────────────────────
+# Only the events this repo actually registers are transcribed in full. The
+# "context only" group is the one that matters for the injector family.
+events:
+  SubagentStart:
+    fires_when: "A Claude Code subagent is spawned via the Agent tool."
+    matcher_supported: true
+    matcher_semantics: >
+      Regex against the agent type name. Built-in agents use the agent name
+      (general-purpose, Explore, Plan). Custom subagents use the `name` field
+      from frontmatter, not the filename. Plugin subagents use the
+      plugin-scoped identifier (my-plugin:reviewer) — anchor with ^...$ because
+      the colon puts it on the regex path.
+    stdin_fields:
+      required: [session_id, transcript_path, cwd, hook_event_name, agent_id, agent_type]
+    can_block: false
+    exit_2_behavior: "Shows stderr to user only."
+    decision_pattern: "context only"
+    output_fields_allowed: [additionalContext]
+    output_fields_ignored: [permissionDecision, permissionDecisionReason, decision, reason]
+    quote: >
+      "SubagentStart hooks can't block subagent creation, but they can inject
+      context into the subagent." — hooks.md, section "SubagentStart".
+
+  UserPromptSubmit:
+    can_block: true
+    exit_2_behavior: "Blocks prompt processing and erases the prompt."
+    decision_pattern: "top-level decision"
+    decision_fields: [decision, reason]
+    output_fields_allowed: [additionalContext]
+    plain_stdout_is_context: true
+
+  SessionStart:
+    can_block: false
+    exit_2_behavior: "Shows stderr to user only."
+    decision_pattern: "context only"
+    output_fields_allowed:
+      - additionalContext
+      - initialUserMessage
+      - watchPaths
+      - sessionTitle
+      - reloadSkills
+    plain_stdout_is_context: true
+    resume_behavior: >
+      SessionStart hooks re-run on resume with `source` set to "resume", or
+      "fork" with --fork-session. Mid-session events (PostToolUse,
+      UserPromptSubmit) do NOT re-run — the host replays saved text, so
+      timestamps and commit SHAs go stale on --continue/--resume.
+
+  PreToolUse:
+    can_block: true
+    exit_2_behavior: "Blocks the tool call."
+    decision_pattern: hookSpecificOutput
+    decision_fields: [permissionDecision, permissionDecisionReason, updatedInput]
+    permission_decision_values: [allow, deny, ask, defer]
+    output_fields_allowed: [additionalContext, permissionDecision, permissionDecisionReason, updatedInput]
+
+  PostToolUse:
+    can_block: false
+    decision_pattern: "top-level decision"
+    decision_fields: [decision, reason]
+    output_fields_allowed: [additionalContext, updatedToolOutput]
+
+  Stop:
+    can_block: true
+    exit_2_behavior: "Prevents Claude from stopping, continues the conversation."
+    decision_pattern: "top-level decision"
+    output_fields_allowed: [additionalContext]
+
+# ── Handler configuration fields ──────────────────────────────────────────────
+handler_fields:
+  type:
+    values: [command, http, mcp_tool, prompt, agent]
+  command:
+    note: "Shell command. Only `type: command` supports `async`."
+  timeout:
+    defaults:
+      command: 600
+      http: 600
+      mcp_tool: 600
+      prompt: 30
+      agent: 60
+    per_event_overrides:
+      UserPromptSubmit: 30   # for command/http/mcp_tool
+      MessageDisplay: 10
+      SessionEnd: >
+        1.5-second shared budget; longer timeouts raise it up to 60 seconds.
+    on_timeout: >
+      The hook is canceled, output is DISCARDED, and no decision is reported.
+  async:
+    default: false
+    applies_to: 'type: "command" only'
+    quote: >
+      "By default, hooks block Claude's execution until they complete. For
+      long-running tasks like deployments, test suites, or external API calls,
+      set \"async\": true to run the hook in the background while Claude
+      continues working. Async hooks can't block or control Claude's behavior:
+      response fields like `decision`, `permissionDecision`, and `continue`
+      have no effect, because the action they would have controlled has
+      already completed." — hooks.md, section "Run hooks in the background".
+    delivery: >
+      "When the script finishes, its output is delivered on the next
+      conversation turn."
+    # See docs/06-Daily/reports/contrato-salida-hooks-2026-08-15.md §Async.
+    # The doc names decision/permissionDecision/continue as inert. It does NOT
+    # name additionalContext. What it DOES state is the delivery point ("the
+    # next conversation turn") and, separately, that SubagentStart's
+    # additionalContext lands "at the start of the conversation, before its
+    # first prompt". Those two are unsatisfiable together: a hook that returns
+    # after the subagent's conversation has begun cannot be inserted before its
+    # first prompt. This manifest therefore records async-on-SubagentStart as
+    # CONTRA-INDICATED rather than as documented-inert, and the distinction is
+    # deliberate — see the report for what would settle it.
+    contraindicated_for:
+      - event: SubagentStart
+        reason: >
+          Insertion point is "before the first prompt"; async delivery is "the
+          next conversation turn". Inference, not a quoted rule.
+      - event: SessionStart
+        reason: Same conflict — insertion point precedes the first prompt.
+    self_documenting_requirement: >
+      A hook's header comment stating "Async: false" while settings.json
+      registers it with "async": true is a contract contradiction in the repo
+      itself. The conformance test checks this pair.
+
+# ── What this repo must not do ────────────────────────────────────────────────
+prohibited_in_this_repo:
+  - id: root-level-additional-context
+    rule: >
+      No hook may print a JSON object whose ROOT contains additionalContext.
+      It is silently discarded by the host.
+    detect: tests/contracts/test_claude_code_hooks_schema_conformance.py
+  - id: header-registration-async-mismatch
+    rule: >
+      A hook's "# Async:" header comment must agree with its registration in
+      .claude/settings.json.
+    detect: tests/contracts/test_claude_code_hooks_schema_conformance.py
+  - id: decision-fields-on-context-only-events
+    rule: >
+      SubagentStart, SessionStart and Setup are context-only. Emitting
+      permissionDecision on them is inert; it signals the author believed the
+      event supports gating.
+    severity: advisory
