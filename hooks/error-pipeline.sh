@@ -15,6 +15,7 @@ _HOOK_NAME="error-pipeline"
 
 _LIB_DIR="$(cd "$(dirname "$0")/_lib" && pwd)"
 source "$_LIB_DIR/safe-jsonl.sh"
+source "$_LIB_DIR/tool-outcome.sh"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
 
@@ -36,10 +37,40 @@ CONFIG_FILE="$PROJECT_DIR/cognitive-os.yaml"
 INPUT=$(cat)
 COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty' 2>/dev/null)
 RESPONSE=$(echo "$INPUT" | jq -r '.tool_response // empty' 2>/dev/null)
-EXIT_CODE=$(echo "$INPUT" | jq -r '.exit_code // "0"' 2>/dev/null)
+
+# The harness sends no exit_code — at any level, for any tool. Failure is a
+# CHANGE OF TYPE on tool_response. See hooks/_lib/tool-outcome.sh for the
+# measured contract and the command that reproduces it.
+classify_tool_outcome "$INPUT"
+EXIT_CODE="$TOOL_EXIT_CODE"
 
 [ -z "$COMMAND" ] && exit 0
-[ "$EXIT_CODE" = "0" ] && exit 0
+
+case "$TOOL_OUTCOME" in
+  ok)
+    exit 0
+    ;;
+  absent)
+    # The payload shape moved. Never silently read that as success.
+    record_payload_contract_drift "$METRICS_DIR" "error-pipeline"
+    exit 0
+    ;;
+  blocked)
+    # The command never ran: a PreToolUse gate of this OS, a permission denial,
+    # or model unavailability. Real signal, but not a project error — it must
+    # not enter error-learning.jsonl and must not reach auto-repair, or the OS
+    # starts trying to repair its own guardrails.
+    mkdir -p "$METRICS_DIR" 2>/dev/null || true
+    safe_jsonl_append "$METRICS_DIR/gate-blocks.jsonl" \
+      "$(jq -cn --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+                --argjson te "$(date +%s)" \
+                --arg cmd "$COMMAND" \
+                --arg reason "$(printf '%s' "$RESPONSE" | head -c 300)" \
+         '{timestamp:$ts,timestamp_epoch:$te,hook:"error-pipeline",command:$cmd,reason:$reason}')"
+    exit 0
+    ;;
+esac
+# Only TOOL_OUTCOME=failed reaches here: a command that ran and exited non-zero.
 
 # === PHASE 1: ERROR DETECTION & CLASSIFICATION ===
 ERROR_TYPE=""

@@ -68,8 +68,20 @@ if ! echo "$NEW_CONTENT" | grep -q "^---"; then
   exit 0
 fi
 
-# ── Emit non-blocking warning ─────────────────────────────────────────────────
+# ── Record the finding ────────────────────────────────────────────────────
+# This hook is registered async, so its exit code is ignored and its stderr
+# has no delivery guarantee: over 1028 invocations the advisory below reached
+# neither the model nor any file. The JSONL row is the part that survives —
+# it is what makes this an instrument instead of a hook talking into a closed
+# channel.
 SKILL_NAME="$(basename "$(dirname "$FILE_PATH")")"
+
+METRICS_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$PWD}}/.cognitive-os/metrics"
+if mkdir -p "$METRICS_DIR" 2>/dev/null; then
+  printf '{"timestamp":"%s","hook":"skill-md-routing-validator","skill":"%s","file":"%s","finding":"missing-routing-patterns","adr":"ADR-174"}\n' \
+    "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$SKILL_NAME" "$FILE_PATH" \
+    >> "$METRICS_DIR/skill-routing-gaps.jsonl" 2>/dev/null || true
+fi
 
 cat >&2 <<WARNING
 

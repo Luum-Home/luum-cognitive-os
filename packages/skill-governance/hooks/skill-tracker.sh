@@ -31,7 +31,17 @@ if ! command -v jq &>/dev/null; then exit 0; fi
 TOOL_NAME=$(stdin_field '.tool_name' 'unknown')
 
 TOOL_RESULT=$(echo "$INPUT" | jq -r '.tool_response // empty' 2>/dev/null)
-EXIT_CODE=$(echo "$INPUT" | jq -r '.exit_code // "0"' 2>/dev/null)
+
+# The harness sends no exit_code (measured: zero occurrences at any nesting
+# level across 2,684 tool results). Agent/Skill payloads carry their own verdict
+# fields instead, and their shapes differ from Bash:
+#   object with .status -> "async_launched" (150) | "completed" (5)
+#   object with .success (Skill invocations, 10)
+#   string              -> failure or refusal (17)
+# hooks/_lib/tool-outcome.sh classifies all three plus the drift case.
+source "$(dirname "$0")/_lib/tool-outcome.sh"
+classify_tool_outcome "$INPUT"
+EXIT_CODE="$TOOL_EXIT_CODE"
 
 # --- Extract skill name ---
 # The `skill` field feeds five KPI modules (cos_lib/kpi_collector.py,
@@ -78,14 +88,31 @@ fi
 FAILED=false
 FAILURE_REASON=""
 
-if [ "$EXIT_CODE" != "0" ] && [ "$EXIT_CODE" != "" ]; then
-  FAILED=true
-  FAILURE_REASON="Exit code: $EXIT_CODE"
-fi
+case "$TOOL_OUTCOME" in
+  failed)
+    FAILED=true
+    FAILURE_REASON="tool reported failure${TOOL_EXIT_CODE:+ (exit ${TOOL_EXIT_CODE})}"
+    ;;
+  blocked)
+    # The launch was refused before it ran. Not the skill's fault — do not feed
+    # it back to Engram as skill failure evidence.
+    FAILED=false
+    ;;
+  absent)
+    exit 0
+    ;;
+esac
 
-if echo "$TOOL_RESULT" | grep -qi "error\|failed\|rejected\|exception\|timed out\|permission denied" 2>/dev/null; then
-  FAILED=true
-  FAILURE_REASON="${FAILURE_REASON:+$FAILURE_REASON | }Pattern match in result"
+# The pattern match only ever looked at the harness's own words, never at the
+# prompt we sent it. Agent payloads embed the full `prompt`, and agent prompts
+# routinely contain "error" or "failed" as ordinary subject matter, so grepping
+# the whole payload marked healthy runs as failures. Scope it to the string
+# form, which is the only shape that carries a harness error message.
+if [ "$TOOL_OUTCOME" = "failed" ] || [ "$TOOL_OUTCOME" = "blocked" ]; then
+  if echo "$TOOL_RESULT" | head -c 500 \
+     | grep -qi "error\|failed\|rejected\|exception\|timed out\|permission denied" 2>/dev/null; then
+    FAILURE_REASON="${FAILURE_REASON:+$FAILURE_REASON | }$(echo "$TOOL_RESULT" | head -c 120 | tr '\n' ' ')"
+  fi
 fi
 
 if [ "$FAILED" = "true" ]; then
