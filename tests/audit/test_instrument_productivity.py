@@ -16,6 +16,7 @@ Two jobs:
 """
 from __future__ import annotations
 
+import importlib.util
 import subprocess
 import sys
 from pathlib import Path
@@ -66,14 +67,33 @@ def test_reader_is_not_counted_as_writer() -> None:
 
 
 def test_census_matches_upstream_population() -> None:
-    """Both audits must classify from the same rules, or the numbers diverge."""
+    """Both audits must classify from the same rules, or the numbers diverge.
+
+    This used to pin the instrument count to the literal 119. That number was a
+    snapshot of a DEFECTIVE rule: the class came from filename tokens, and 82 of
+    those 119 hooks had no instrument token at all — they reached the class
+    through a final `else`. Pinning the output of a broken classifier turns the
+    test into a ratchet that defends the bug.
+
+    So the assertion now states the property the test was named for, computed
+    live against the upstream census: the two scripts must agree hook-for-hook.
+    It cannot go stale, and it fails loudly the day one of them grows a private
+    copy of the rule again (which is exactly how the drift started).
+    """
     mod = _load()
-    pop = mod.census()
-    instruments = [r for r in pop.values() if r["class"] == "instrument"]
-    assert len(instruments) == 119, (
-        f"instrument population drifted to {len(instruments)}; "
-        "scripts/audit_gate_registration.py reported 119 on 2026-08-15"
-    )
+    spec = importlib.util.spec_from_file_location(
+        "audit_gate_registration", REPO / "scripts" / "audit_gate_registration.py")
+    upstream = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(upstream)
+
+    mine = {r["name"]: r["class"] for r in mod.census().values()}
+    theirs = {e["name"]: upstream.classify(e["name"], Path(real))[0]
+              for real, e in upstream.census().items()}
+
+    assert set(mine) == set(theirs), "the two censuses disagree about the population"
+    disagreements = {n: (mine[n], theirs[n]) for n in mine if mine[n] != theirs[n]}
+    assert not disagreements, f"class disagreements (mine, upstream): {disagreements}"
+    assert mine, "empty census — the audit would report nothing and exit 0"
 
 
 def test_script_is_read_only_toward_metrics() -> None:

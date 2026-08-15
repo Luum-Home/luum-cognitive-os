@@ -50,13 +50,12 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 METRICS = REPO / ".cognitive-os" / "metrics"
 
-# Kept identical to scripts/audit_gate_registration.py so both censuses agree.
-GATE_TOKENS = ["guard", "gate", "enforcer", "blocker", "interceptor", "limiter",
-               "firewall", "lock", "freeze"]
-INSTRUMENT_TOKENS = ["capture", "heartbeat", "emit", "metric", "watchdog",
-                     "tracker", "sync", "snapshot", "monitor", "logger",
-                     "recorder", "reporter", "collector", "notifier",
-                     "aggregator", "meter"]
+# Name tokens are imported, not re-listed. They no longer decide anything; they
+# are used only to report how often a filename misdescribes its hook.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from hook_behavior import (  # noqa: E402
+    GATE_TOKENS, INSTRUMENT_TOKENS, AMBIGUOUS_TOKENS,
+)
 
 # Hooks never write a literal path. They assign it to a shell variable first
 # (ACI_FILE="$METRICS_DIR/aci-observations.jsonl") and redirect into the
@@ -108,32 +107,19 @@ def sh(cmd: str) -> str:
                           text=True).stdout
 
 
-AMBIGUOUS_TOKENS = ["check", "validator", "detector", "scan", "advisor",
-                    "reminder", "audit", "review", "verify", "classifier"]
-BLOCK_RE = re.compile(
-    r"exit\s+2\b|\"decision\"\s*:\s*\"block\"|permissionDecision\"?\s*:?\s*\"?deny|'block'",
-    re.IGNORECASE)
+# The class is NOT decided here any more. It used to be a verbatim copy of the
+# filename rule in audit_gate_registration.py, kept in sync by hand and wrong in
+# both places: 82 of the 119 hooks this script called "instruments" reached that
+# class through the final `else` branch, with no instrument token in the name and
+# no positive evidence of instrumenting anything.
+from hook_behavior import classify as _behaviour_classify  # noqa: E402
+from hook_behavior import name_class  # noqa: E402
 
 
-def classify(name: str, src: str) -> tuple[str, bool]:
-    """Identical to scripts/audit_gate_registration.py so the censuses agree.
-
-    Note the last line: a hook whose name carries no token at all and cannot
-    block falls through to "instrument". Most of the 119 are that fallback, not
-    a positive identification.
-    """
-    low = name.lower()
-    can_block = bool(BLOCK_RE.search(src))
-    gate_n = any(t in low for t in GATE_TOKENS)
-    instr_n = any(t in low for t in INSTRUMENT_TOKENS)
-    amb_n = any(t in low for t in AMBIGUOUS_TOKENS)
-    if gate_n and not instr_n:
-        return "gate", can_block
-    if instr_n and not gate_n:
-        return ("ambiguo" if can_block else "instrument"), can_block
-    if amb_n:
-        return "ambiguo", can_block
-    return ("gate" if can_block else "instrument"), can_block
+def classify(name: str, path) -> tuple[str, bool]:
+    """(class, can_block) from scripts/hook_behavior.py — one rule, one file."""
+    cls, can_block, _n, _scan = _behaviour_classify(name, Path(path))
+    return cls, can_block
 
 
 def census() -> dict[str, dict]:
@@ -159,7 +145,8 @@ def census() -> dict[str, dict]:
             })
             row["aliases"].append(rel)
     for row in out.values():
-        row["class"], row["can_block"] = classify(row["name"], row["body"])
+        row["class"], row["can_block"] = classify(row["name"], REPO / row["real"])
+        row["name_class"] = name_class(row["name"])
         row["name_token"] = any(
             t in row["name"].lower()
             for t in GATE_TOKENS + INSTRUMENT_TOKENS + AMBIGUOUS_TOKENS)
@@ -290,7 +277,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--class", dest="klass", default="instrument",
-                    choices=["instrument", "gate", "ambiguo", "all"])
+                    choices=["instrument", "gate", "inert", "all"])
     args = ap.parse_args()
 
     try:
