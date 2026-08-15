@@ -102,6 +102,50 @@ pending_on_unfreeze:
     with an unwired enforcer. Registering it is an operator decision, recorded
     here so the gap is not mistaken for coverage.
 
+# ADDITIVE 2026-08-15 — written exceptions. `frozen: true`, `unfreeze_requires`
+# and `gated_path_globs` above remain untouched operator decisions. An entry here
+# does NOT unfreeze anything; it records a case the operator decided while the
+# freeze was active, with its reason, so practice and policy do not silently
+# diverge. A manifest that says `frozen: true` while the practice adopts is worse
+# than either posture on its own.
+operator_exceptions:
+  - id: codebase-memory-mcp-2026-08-15
+    decided_by: operator
+    decided_at: '2026-08-15'
+    adr: ADR-343
+    tool: codebase-memory-mcp
+    upstream: https://github.com/DeusData/codebase-memory-mcp
+    spdx: MIT
+    disposition: recommend-only (NOT adopted, NOT installed, NOT vendored)
+    why_it_is_not_an_adoption: |
+      Nothing upstream is vendored, ported, or reimplemented. No code, no
+      algorithm, no schema enters this repo. What lands is (a) a read-only
+      detection script and (b) a conditional advisory rule that stops an
+      existing directive from firing when the server's graph does not hold
+      this project. The IP surface the freeze protects against — accumulating
+      externally-derived code without counsel review — is not touched.
+    why_it_is_recorded_anyway: |
+      The operator's decision ("install it from the OS itself, or have the OS
+      recommend it") sits adjacent to a policy that freezes external-tool
+      adoption. Even landing on the conservative side of that line, the
+      adjacency is written down rather than left to inference.
+    licenses_inventory_entry: none-by-design
+    licenses_inventory_reason: |
+      manifests/external-tool-licenses.yaml tracks tools "vendored or ported
+      into Cognitive OS" and NOTICE carries their attribution. This case ports
+      nothing, so it correctly has no entry in either. Recorded explicitly so a
+      later audit does not read the absence as the aider/dspy-style gap, where
+      genuinely adopted code is missing from both inventories.
+    gap_disclosed: |
+      Two holes this exception does not close, both measured 2026-08-15:
+      1. gated_path_globs does not cover manifests/dependencies.yaml, so
+         declaring an MCP recommendation there would never reach the gate even
+         if the gate were wired.
+      2. An MCP configured in the operator's own profile bypasses this policy
+         entirely — the freeze governs documented adoption, not de-facto use.
+         codebase-memory-mcp is already reachable on this machine by that path.
+      Closing either is an operator decision, not something this entry does.
+
 freeze_history:
   - frozen_at: '2026-05-11T17:35:00Z'
     by: operator
