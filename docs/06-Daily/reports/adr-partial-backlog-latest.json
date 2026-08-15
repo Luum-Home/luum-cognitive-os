@@ -2348,16 +2348,33 @@
       "remaining": "",
       "remaining_in_scope": null,
       "title": "Iroh Optional Transport Adapter"
+    },
+    {
+      "adr": "ADR-342",
+      "classification_basis": "",
+      "date": "2026-08-15",
+      "decision_status": "accepted",
+      "follow_up_adr": "",
+      "implementation_files": [],
+      "implementation_status": "partial",
+      "number": "342",
+      "owner": "",
+      "partial_remaining": "",
+      "partial_remaining_basis": "",
+      "path": "docs/02-Decisions/adrs/ADR-342-existence-criterion-for-primitives.md",
+      "remaining": "",
+      "remaining_in_scope": null,
+      "title": "Existence Criterion for Primitives"
     }
   ],
   "schema_version": "adr-partial-backlog/v1",
   "summary": {
     "by_implementation_status": {
       "deferred": 1,
-      "partial": 123,
+      "partial": 124,
       "partial-blocked": 1
     },
-    "missing_partial_remaining": 7,
-    "total": 125
+    "missing_partial_remaining": 8,
+    "total": 126
   }
 }

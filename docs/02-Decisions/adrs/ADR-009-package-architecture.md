@@ -1,6 +1,6 @@
 ---
 adr: 9
-title: Package Architecture -- 375 Agentic Primitives Reclassified
+title: Package Architecture -- Agentic Primitive Reclassification
 status: accepted
 implementation_status: implemented
 date: '2026-03-28'
@@ -12,16 +12,26 @@ tags: []
 classification_basis: 'package taxonomy exists in repository package/manifests layout; ADR is a historical classification decision rather than open runtime work'
 ---
 
-# ADR-009: Package Architecture -- 375 Agentic Primitives Reclassified
+# ADR-009: Package Architecture -- Agentic Primitive Reclassification
 
 **Date:** 2026-03-28
 **Status:** Accepted
 **Commits:** 688f669, 677e8af, 83b3d99, b217282, 2c3baee
 **Engram IDs:** 1671, 1701, 1704, 1719
 
+> **On the count that used to be in this title.** The heading read "375 Agentic
+> Primitives Reclassified" until 2026-08-15. The 375 is an observation of what
+> the repository held on 2026-03-28, not part of the decision — the decision is
+> the kernel/add-on boundary and the package taxonomy, which does not depend on
+> how many primitives exist. Titles are link targets, so it was moved into the
+> Context below rather than dropped. For the current figure, run the census:
+> `python3 scripts/audit_gate_registration.py`.
+
 ## Context
 
-Cognitive OS had grown to 375+ agentic primitives (72+ skills, 55+ rules, 57+ hooks, 40+ libs) all stored flat in their respective directories. There was no clear boundary between what constituted the OS kernel and what was an optional add-on. The `cos` package manager had been built but had no packages from the OS's own codebase to manage. Everything was installed together, regardless of whether a user needed it.
+As of 2026-03-28 Cognitive OS held roughly 375 agentic primitives (about 72
+skills, 55 rules, 57 hooks, 40 libs), all stored flat in their respective
+directories. There was no clear boundary between what constituted the OS kernel and what was an optional add-on. The `cos` package manager had been built but had no packages from the OS's own codebase to manage. Everything was installed together, regardless of whether a user needed it.
 
 ## Decision
 

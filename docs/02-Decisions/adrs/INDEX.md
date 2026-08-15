@@ -2,18 +2,18 @@
 
 ## How to Use This Index
 
-This generated table is the status inventory for all 501 Architecture Decision Record files (ADRs).
+This generated table is the status inventory for all 502 Architecture Decision Record files (ADRs).
 Status semantics are defined in [STATUS-TAXONOMY.md](STATUS-TAXONOMY.md): decision status, implementation status, and index bucket are separate fields.
 Rows link to the canonical ADR file and group by index bucket for human and agent navigation.
 
 ## Active
 
-### Active / Implemented (172)
+### Active / Implemented (175)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
 | [008](ADR-008-multi-tool-support.md) | Multi-Tool Support -- Not Claude Code-Only | accepted | implemented | 2026-03-28 | **Date:** 2026-03-28 |
-| [009](ADR-009-package-architecture.md) | Package Architecture -- 375 Agentic Primitives Reclassified | accepted | implemented | 2026-03-28 | **Date:** 2026-03-28 |
+| [009](ADR-009-package-architecture.md) | Package Architecture -- Agentic Primitive Reclassification | accepted | implemented | 2026-03-28 | **Date:** 2026-03-28 |
 | [010](ADR-010-hook-architecture-v2.md) | Hook Architecture v2 -- 10 Event Types, 3 Security Profiles | accepted | implemented | 2026-03-28 | **Date:** 2026-03-28 to 2026-04-13 |
 | [012](ADR-012-prompt-driven-governance.md) | Prompt-Driven Governance -- Declarative Hook Logic | accepted | implemented | 2026-03-29 | **Date:** 2026-03-29 |
 | [013](ADR-013-security-stack.md) | Security Stack -- 8 Layers, 32 Tools | accepted | implemented | 2026-03-29 | **Date:** 2026-03-29 |
@@ -108,9 +108,9 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [219](ADR-219-work-ownership-liveness-preflight.md) | Work Ownership Liveness Preflight | accepted | implemented | 2026-05-06 | During the license-switch work, WIP was preserved to a temporary branch |
 | [222](ADR-222-pre-agent-stash-defer-until-launch-confirmed.md) | Pre-Agent Stash Deferred Until Agent Launch Confirmed | accepted | implemented | 2026-05-07 | **Supersedes (in part)**: the PreToolUse-Agent ordering currently relied on by `pre-agent-snapshot.sh`. |
 | [223](ADR-223-agent-lifecycle-reconstruction.md) | Agent Lifecycle Reconstruction: Worktree-Per-Write-Agent | accepted | implemented | 2026-05-07 | **Source**: `docs/03-PoCs/research/multi-agent-orchestration-prior-art-2026-05-06.md`, `docs/03-PoCs/research/orchestration-gaps/background-agent-patterns.md`,  |
-| [227](ADR-227-shadow-git-checkpoint-substrate.md) | Shadow-Git Checkpoint Substrate | accepted | implemented | 2026-05-07 | **Source**: [`docs/03-PoCs/research/orchestration-gaps/replay-timeline-architectures.md`](../../03-PoCs/research/orchestration-gaps/replay-timeline-architectures.md). Clin |
+| [227](ADR-227-shadow-git-checkpoint-substrate.md) | Shadow-Git Checkpoint Substrate | accepted | implemented | 2026-05-07 | **Source**: [`docs/03-PoCs/research/orchestration-gaps/replay-timeline-architectures.md`](../../03-PoCs/research/orchestration-gaps/replay-timeline-architecture |
 | [228](ADR-228-retry-contract-and-cost-budget.md) | Retry Contract + Cost Session Budget (consolidated) | accepted | implemented | 2026-05-07 | Accepted — Slices A–F implemented (2026-05-07) |
-| [230](ADR-230-handoff-envelope-and-cycle-deduplication.md) | Agent Handoff Envelope + Call-Chain Deduplication | accepted | implemented | 2026-05-07 | **Source**: [`docs/03-PoCs/research/orchestration-gaps/agent-to-agent-handoff.md`](../../03-PoCs/research/orchestration-gaps/agent-to-agent-handoff.md). Production failure |
+| [230](ADR-230-handoff-envelope-and-cycle-deduplication.md) | Agent Handoff Envelope + Call-Chain Deduplication | accepted | implemented | 2026-05-07 | **Source**: [`docs/03-PoCs/research/orchestration-gaps/agent-to-agent-handoff.md`](../../03-PoCs/research/orchestration-gaps/agent-to-agent-handoff.md). Product |
 | [231](ADR-231-mcp-server-surface-for-cos-primitives.md) | MCP Server Surface for COS Primitives | accepted | implemented | 2026-05-07 | **Source**: [`docs/03-PoCs/research/orchestration-gaps/mcp-as-orchestration-bus.md`](../../03-PoCs/research/orchestration-gaps/mcp-as-orchestration-bus.md) |
 | [232](ADR-232-sandbox-adapter-tiers.md) | Sandbox Adapter Tiers | accepted | implemented | 2026-05-07 | COS needs filesystem/process permission boundaries that are enforced below the prompt layer. Prior-art research recommends OS-native sandbox tiers first: Bubble |
 | [233](ADR-233-cross-session-agent-team-file-ipc.md) | Cross-Session Agent-Team File IPC | accepted | implemented | 2026-05-07 | **Source**: [`docs/03-PoCs/research/orchestration-gaps/cross-session-agent-teams.md`](../../03-PoCs/research/orchestration-gaps/cross-session-agent-teams.md) |
@@ -165,6 +165,9 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [305](ADR-305-dependency-coverage-reconciliation-audit.md) | Dependency Coverage Reconciliation Audit | accepted | implemented | 2026-05-14 | Accepted and implemented 2026-05-14. |
 | [306](ADR-306-scope-projection-runtime-audit.md) | Scope Projection Runtime Audit | accepted | implemented | 2026-05-14 | Accepted, implemented 2026-05-14. |
 | [307](ADR-307-dependency-tool-intake-and-profile-ratchet.md) | Dependency Tool Intake and Profile Ratchet | accepted | implemented | 2026-05-14 | Accepted and implemented 2026-05-14. |
+| [308](ADR-308-dependency-maintenance-install-update-git-hooks.md) | Dependency Maintenance in Install, Update, and Git Hooks | accepted | implemented | 2026-05-14 | ADR-305 added a read-only dependency coverage audit and ADR-307 added triage plus a fail-new profile ratchet. Those primitives make dependency drift visible, bu |
+| [309](ADR-309-current-window-subagent-spawn-slos.md) | Current-Window Subagent Spawn SLOs | accepted | implemented | 2026-05-14 | ADR-303 introduced a synthetic sub-agent spawn cold-start benchmark. ADR-304 made production telemetry the authoritative latency signal through `manifests/obser |
+| [310](ADR-310-cross-platform-headless-dependency-bootstrap.md) | Cross-Platform and Headless Dependency Bootstrap | accepted | implemented | 2026-05-14 | ADR-168 created the dependency installation contract and ADR-308 made dependency drift visible during install, update, push, and pull. That still left a product |
 | [311](ADR-311-primitive-closure-ratchets-and-subagent-budget-enforcement.md) | Primitive Closure Ratchets and Subagent Budget Enforcement | accepted | implemented | 2026-05-14 | - **Status**: Accepted |
 | [312](ADR-312-harness-normalized-primitive-closure.md) | Harness-Normalized Primitive Closure | accepted | implemented | 2026-05-14 | - **Status**: Accepted |
 | [313](ADR-313-commercial-architecture-map-answer-primitive.md) | Commercial Architecture Map Answer Primitive | accepted | implemented | 2026-05-14 | Accepted and implemented — 2026-05-14. |
@@ -185,7 +188,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [337](ADR-337-agent-process-loop-contract-layer.md) | Agent Process Loop Contract Layer | accepted | implemented | 2026-06-13 | Accepted — implemented on 2026-06-13. |
 | [340](ADR-340-english-native-artifacts-multilingual-user-routing.md) | English-Native Artifacts with Multilingual User-Facing Routing | accepted | implemented | 2026-06-17 | Accepted — 2026-06-17. Implemented by the language policy manifest and audit ratchets listed in this ADR. |
 
-### Active / Partial (123)
+### Active / Partial (124)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
@@ -312,6 +315,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [338](ADR-338-so-wide-impact-evaluation-plane.md) | SO-Wide Impact Evaluation Plane | accepted | partial | 2026-06-13 | Accepted. Implementation remains advisory until workflow capsules include replicated cross-harness measured usage receipts. |
 | [339](ADR-339-efficiency-operating-model-primitives.md) | Cognitive OS Efficiency Operating Model Primitives | accepted | partial | 2026-06-15 | Accepted. Initial primitives are advisory and receipt-oriented; runtime enforcement requires separate lifecycle promotion. |
 | [341](ADR-341-iroh-optional-transport-adapter.md) | Iroh Optional Transport Adapter | accepted | partial | 2026-06-18 | - Implementation status: partial |
+| [342](ADR-342-existence-criterion-for-primitives.md) | Existence Criterion for Primitives | accepted | partial | 2026-08-15 | - Implementation status: partial (three of the four censuses exist; the first has no census yet) |
 
 ### Active / Partial / Blocked (1)
 
