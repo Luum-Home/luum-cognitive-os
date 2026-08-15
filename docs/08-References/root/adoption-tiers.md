@@ -49,11 +49,33 @@ Answer these questions in order. Stop when you reach a tier.
 |---|---|---|---|
 | Target team size | 1 developer | 2-5 developers | 5+ or enterprise, including a solo maintainer operating a multi-IDE swarm |
 | Concurrent sessions | 1 | occasional parallel | 5+ simultaneous, or multiple harnesses/projects controlled by one operator |
-| Hooks wired | ~116 (minimal profile) | ~154 (standard profile) | ~170 (paranoid profile) |
+| Hooks wired | minimal profile | standard profile | paranoid profile |
 | Setup time | 15-30 min | 45-90 min | 2-4 hours |
 | Primary ADRs | ADR-105, ADR-121 §4 | + ADR-116, ADR-119, ADR-122 | + ADR-116 full, ADR-121 all |
 | Kill problems | Silent WIP loss, agent commits to main | + duplicate claims, stale sessions, orphaned commits | + multi-agent races, merge collisions, chaos-level failures |
-| Primary cost | ~116 hook fires/turn | ~154 hook fires/turn | ~170 hook fires/turn + engram I/O |
+| Primary cost | hook fires per turn, plus one profile's worth of wiring | same, at standard wiring | same, at paranoid wiring + engram I/O |
+
+Two counts used to live in this table and they are not the same magnitude, which
+is why neither is printed here any more:
+
+```bash
+# hooks WIRED — a configuration count, read from the profile you applied
+python3 -c "import json;d=json.load(open('.claude/settings.json'));print(sum(len(g.get('hooks',[])) for ev in d.get('hooks',{}).values() for g in ev))"
+
+# hook FIRES PER TURN — a runtime rate, measured from telemetry
+python3 -c "
+import json
+rows=[json.loads(l) for l in open('.cognitive-os/metrics/hook-timing.jsonl')]
+turns=sum(1 for r in rows if (r.get('event') or r.get('hook_event_name'))=='UserPromptSubmit')
+print(round(len(rows)/turns,1) if turns else 'no turns recorded')"
+```
+
+A wired hook does not fire every turn: most are `PreToolUse`/`PostToolUse` behind
+a matcher, so they fire once per matching tool call and not at all otherwise. The
+table previously carried the profile's `_hook_count` in both rows, which reads as
+though wiring and firing were one number. On 2026-08-15 the two measured 162 and
+75.6 respectively — a factor of two apart, in the direction that made the cost
+look worse than it is.
 
 ---
 
@@ -202,7 +224,9 @@ python3 scripts/cos_work_inventory.py --json | \
 
 ### Overhead at lean tier
 
-- ~116 hook fires per agent turn
+- Hook fires per agent turn: measure it with the telemetry command above rather
+  than quoting a figure. The number printed here previously was the profile's
+  wired-hook count, which is a different magnitude and ran about twice high.
 - `session-init.sh` + `crash-recovery.sh` add ~200ms to session open
 - `destructive-git-blocker.sh` adds ~50ms per Bash call (checks command string)
 - `secret-detector.sh` adds ~100ms per Edit/Write call (regex scan)
