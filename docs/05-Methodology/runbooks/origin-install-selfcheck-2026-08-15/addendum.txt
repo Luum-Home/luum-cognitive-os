@@ -1,0 +1,190 @@
+########## FINDING 1, CORRECTED CAUSE: the path is IGNORED BY DESIGN ##########
+
+$ grep -n 'cognitive-os' <repo-root>/.gitignore
+6:.cognitive-os/
+7:!.cognitive-os/
+8:.cognitive-os/*
+9:!.cognitive-os/plans/
+10:!.cognitive-os/plans/*/
+11:!.cognitive-os/plans/*/.gitkeep
+12:!.cognitive-os/reports/
+13:.cognitive-os/reports/*
+14:!.cognitive-os/reports/research/
+15:!.cognitive-os/reports/research/.gitkeep
+16:!.cognitive-os/skills/
+17:.cognitive-os/skills/*
+18:!.cognitive-os/skills/_catalog-allowlist.txt
+19:!.cognitive-os/preserve-manifests/
+20:!.cognitive-os/preserve-manifests/*.json
+21:!.cognitive-os/test-quarantine.yaml
+22:# SDD archive trail is tracked, in-flight changes stay local (override .cognitive-os/* ignore)
+23:!.cognitive-os/sdd/
+24:.cognitive-os/sdd/*
+25:!.cognitive-os/sdd/changes/
+26:.cognitive-os/sdd/changes/*
+27:!.cognitive-os/sdd/changes/archive/
+28:!.cognitive-os/sdd/changes/archive/**
+57:.claude/plugins/.cognitive-os/
+61:# .cognitive-os/skills/. Not committed; installer is source of truth.
+97:cmd/cos-test/.cognitive-os/
+126:.cognitive-os/skill_store.db
+129:.cognitive-os/runtime/
+130:.cognitive-os/sessions/*.jsonl
+131:.cognitive-os/sessions/*.lock
+132:.cognitive-os/sessions/events-archive/
+133:.cognitive-os/coordination/*.jsonl
+134:.cognitive-os/coordination/*.lock
+135:.cognitive-os/coordination/agent-messages-archive/
+136:.cognitive-os/metrics/context-budget.jsonl
+139:.cognitive-os/external-source-cache/
+140:.cognitive-os/private/
+[exit=0]
+
+$ git -C <repo-root> check-ignore -v .cognitive-os/templates/confidentiality.yaml
+.gitignore:8:.cognitive-os/*	.cognitive-os/templates/confidentiality.yaml
+[exit=0]
+# => the template could never travel: it lives in ignored runtime state.
+
+$ git -C <repo-root> ls-files templates/ | wc -l
+      58
+[exit=0]
+# The versioned templates/ dir uses a .template suffix convention:
+
+$ git -C <repo-root> ls-files templates/ | grep -c '\.template$'
+1
+[exit=0]
+
+$ git -C <repo-root> ls-files templates/ | grep '\.template$' | head -5
+templates/CLAUDE.md.template
+[exit=0]
+
+$ grep -n 'CLAUDE.md.template' <repo-root>/install.sh
+509:    TEMPLATE="$TEMP_DIR/templates/CLAUDE.md.template"
+[exit=0]
+
+########## THIS PATCH PUTS THE TEMPLATE AT A VERSIONED PATH ##########
+
+$ grep -c 'templates/confidentiality.yaml.template' /tmp/origin-fix/origin.patch
+2
+[exit=0]
+# and adds NOTHING under .cognitive-os/:
+
+$ grep -E '^(diff --git|\+\+\+ b/)' /tmp/origin-fix/origin.patch
+diff --git a/cos_lib/record_completion.py b/cos_lib/record_completion.py
++++ b/cos_lib/record_completion.py
+diff --git a/manifests/install-selfcheck-allowlist.yaml b/manifests/install-selfcheck-allowlist.yaml
++++ b/manifests/install-selfcheck-allowlist.yaml
+diff --git a/scripts/cos_init.py b/scripts/cos_init.py
++++ b/scripts/cos_init.py
+diff --git a/scripts/cos_install_selfcheck.py b/scripts/cos_install_selfcheck.py
++++ b/scripts/cos_install_selfcheck.py
+diff --git a/scripts/hook-timing-wrapper.sh b/scripts/hook-timing-wrapper.sh
++++ b/scripts/hook-timing-wrapper.sh
+diff --git a/scripts/lib_closure.py b/scripts/lib_closure.py
++++ b/scripts/lib_closure.py
+diff --git a/templates/confidentiality.yaml.template b/templates/confidentiality.yaml.template
++++ b/templates/confidentiality.yaml.template
+[exit=0]
+# would any patched path be ignored by the origin's own rules?
+cos_lib/record_completion.py                         tracked-ok
+scripts/cos_init.py                                  tracked-ok
+scripts/hook-timing-wrapper.sh                       tracked-ok
+scripts/lib_closure.py                               tracked-ok
+cos_lib/record_completion.py                         tracked-ok
+manifests/install-selfcheck-allowlist.yaml           tracked-ok
+scripts/cos_init.py                                  tracked-ok
+scripts/cos_install_selfcheck.py                     tracked-ok
+scripts/hook-timing-wrapper.sh                       tracked-ok
+scripts/lib_closure.py                               tracked-ok
+templates/confidentiality.yaml.template              tracked-ok
+
+########## REPO-WIDE SWALLOWING (corroboration, measured here) ##########
+
+$ grep -rn 'except.*:\s*pass' --include='*.py' <repo-root>/cos_lib <repo-root>/scripts <repo-root>/hooks 2>/dev/null | wc -l
+       1
+[exit=0]
+# references to the non-existent lib/ package in docs+rules:
+
+$ grep -rEo 'lib/[a-z_]+\.py' --include='*.md' <repo-root>/docs <repo-root>/rules 2>/dev/null | wc -l
+    5631
+[exit=0]
+
+$ ls -d <repo-root>/lib 2>&1
+ls: <repo-root>/lib: No such file or directory
+[exit=1]
+
+$ ls -d <repo-root>/cos_lib >/dev/null && echo 'cos_lib/ exists (the real package)'
+cos_lib/ exists (the real package)
+[exit=0]
+
+########## FLEET CENSUS ##########
+
+$ bash /tmp/origin-fix/census.sh
+PROJECT                                    VERSION   WRAPPER  COS-ROOT CONF-YAML REC-COMPL
+------------------------------------------ --------  -------  -------  -------  ------- 
+matias.nahuel.amendola                     ?         NO       NO       NO       NO      
+cos_batchA_check                           ?         NO       NO       NO       NO      
+cos_batchB_check_22422                     ?         NO       NO       NO       NO      
+cos_batchC_check_5173                      ?         NO       NO       NO       NO      
+cos_verify5_30335                          ?         NO       NO       NO       NO      
+cienciayjusticia-voting                    ?         YES      NO       NO       NO      
+rbvm-platform                              ?         NO       NO       NO       NO      
+luum                                       ?         NO       NO       NO       NO      
+FinOpenPOS                                 ?         YES      YES      NO       NO      
+accounting                                 ?         YES      NO       NO       NO      
+aisotropy                                  ?         YES      NO       YES      NO      
+cognitive-layer                            ?         YES      NO       NO       NO      
+cognitive-os-demo                          ?         NO       NO       NO       NO      
+cos-consumer-e2e-drill                     ?         YES      NO       NO       NO      
+luum-agent-harness                         ?         YES      NO       NO       NO      
+--help                                     ?         NO       NO       NO       NO      
+plugins                                    ?         NO       NO       NO       NO      
+luum-cybersecurity                         ?         YES      NO       NO       NO      
+luum-interface-layer                       ?         YES      NO       NO       NO      
+web                                        ?         NO       NO       NO       NO      
+luum-lang                                  ?         YES      NO       NO       NO      
+luum-platform-lab                          ?         YES      NO       NO       NO      
+luum-talent                                ?         YES      NO       NO       NO      
+luum-woocommerce-distrinorth               ?         YES      NO       NO       NO      
+magil-openclaw                             ?         YES      NO       NO       NO      
+live-profile                               ?         YES      NO       NO       NO      
+n1u                                        ?         YES      NO       NO       NO      
+
+TOTAL installs scanned:            27
+  with hook-timing-wrapper.sh:    16
+  MISSING _lib/cos-root:          26
+  MISSING confidentiality.yaml:   26
+  MISSING cos_lib/record_completion.py: 27
+[exit=0]
+
+########## ORIGIN FINAL STATE ##########
+
+$ git -C <repo-root> rev-parse HEAD
+8602ddc70b8bba77e47300c672a01b24f447d72c
+[exit=0]
+
+$ git -C <repo-root> branch --show-current
+main
+[exit=0]
+
+$ git -C <repo-root> status --porcelain | wc -l
+      15
+[exit=0]
+
+$ git -C <repo-root> status --short
+ M docs/06-Daily/reports/pending-truth-latest.json
+ M docs/06-Daily/reports/pending-truth-latest.md
+?? --help/
+?? .agents/
+?? docs/06-Daily/reports/judge-adversarial-2026-07-28.md
+?? docs/06-Daily/reports/judge-codigo-2026-07-28.md
+?? docs/06-Daily/reports/judge-documentacion-2026-07-28.md
+?? docs/06-Daily/reports/judge-funcionamiento-2026-07-28.md
+?? docs/06-Daily/reports/judge-primitivas-2026-07-28.md
+?? docs/06-Daily/reports/judge-vale-la-pena-2026-07-28.md
+?? docs/06-Daily/reports/judge2-costo-gobernanza-2026-08-15.md
+?? docs/06-Daily/reports/judge2-docs-2026-08-15.md
+?? docs/06-Daily/reports/judge2-funcionamiento-2026-08-15.md
+?? docs/06-Daily/reports/judge2-sentido-2026-08-15.md
+?? docs/06-Daily/reports/judge2-vigencia-2026-08-15.md
+[exit=0]
