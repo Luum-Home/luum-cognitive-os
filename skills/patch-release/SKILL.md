@@ -18,6 +18,7 @@ routing_patterns:
   confidence: 0.8
 summary_line: Repeatable patch release prepare/validate/publish/doctor workflow.
 ---
+<!-- SCOPE: os-only -->
 
 # /patch-release
 
