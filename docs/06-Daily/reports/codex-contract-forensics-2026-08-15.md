@@ -94,17 +94,34 @@ calculado sobre una concurrencia que no ocurre.
 
 ## El defecto que los tapa a todos
 
-**El instalador nunca escribe `.codex/hooks.json`.**
+> **CORREGIDO 2026-08-15, después de publicado.** La versión original de esta
+> sección afirmaba *"el instalador nunca escribe `.codex/hooks.json`"*. Es
+> **falso**, y la refutación vino del agente que mandé a arreglarlo.
+>
+> El instalador **sí** lo escribe, por un camino genérico por harness:
+> `cos_init.py:2015` → `:1567` (resuelve el generador) → `:1576`
+> (`subprocess.run` con `--harness=codex --output=…`) → `:1610` (`shutil.move`),
+> con `HARNESS_SETTINGS['codex'] == ('.codex/hooks.json', '.codex/hooks.json')`.
+>
+> El error se produjo por concluir una negativa desde un `grep '\.codex'`: el
+> camino de escritura usa una variable, así que la búsqueda por literal nunca lo
+> vio. **"El grep no encontró nada" no es "no existe"** — y las líneas 232–240
+> efectivamente son detección de harness, lo que hizo la conclusión equivocada
+> más creíble.
+>
+> Segundo error, más consecuente: este informe decía **un** emisor de Codex. Hay
+> **dos**, y el que el instalador invoca es el jq de
+> `generate-project-settings.sh`, no `settings-driver-codex.sh`. Arreglar solo el
+> driver habría dejado al instalador escribiendo el formato inerte, con todos los
+> arreglos invisibles.
 
-`scripts/cos_init.py:232-240` solo lo **lee**, para detectar qué harness usa el
-proyecto. La única invocación del generador documentada es un comentario:
+**El defecto real:** hay dos emisores de Codex y ambos escribían la forma
+equivocada. `scripts/cos_init.py` invoca el generador (`generate-project-settings.sh`),
+no el driver. Lo que estaba roto no era el cableado sino el contenido que ese
+cableado escribía — y el emisor que había que arreglar primero era el que el
+instalador usa de verdad.
 
-```
-scripts/generate-project-settings.sh:13
-#   bash scripts/generate-project-settings.sh --full --harness codex > hooks.json
-```
-
-Y cuando se lo llama a mano, emite un mapa de eventos pelado:
+Ambos emitían un mapa de eventos pelado:
 
 ```json
 { "SessionStart": [...], "UserPromptSubmit": [...] }
