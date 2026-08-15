@@ -1,68 +1,76 @@
-# Cierre del bypass de `ESCALATION:` — gracia de un solo uso (2026-08-15)
+# Cierre del bypass de `ESCALATION:` — el payload sale de la decisión (2026-08-15)
 
 **Estado: NO aplicado. `git apply --check` limpio sobre `HEAD` (`fe888ab7f`).**
 No se aplicó desde la sesión porque `hooks/**` está protegido por
 `protected-config-write-guard`, y el env var de aprobación no alcanza: el guard
-corre en su propio proceso antes del comando del agente. El parche queda acá
-para que lo aplique el operador.
+corre en su propio proceso antes del comando del agente.
 
 ```
-122 +/ 19 -  hooks/subagent-budget-enforcer.sh
-259 +/  0 -  tests/contracts/test_subagent_budget_escalation_grace.py   (nuevo)
+108 +/ 22 -  hooks/subagent-budget-enforcer.sh
+312 +/  0 -  tests/contracts/test_subagent_budget_escalation_grace.py   (nuevo)
+ 30 +/  8 -  tests/contracts/test_subagent_budget_enforcer.py
+  6 +/  0 -  tests/contracts/test_subagent_budget_enforcer_modes.py
 ```
 
 ## Qué cierra
 
 `hooks/subagent-budget-enforcer.sh:69` testeaba el payload **entero** contra el
 substring `ESCALATION:`, y lo hacía **antes** de comparar el contador con el
-presupuesto. Cualquier subagente que tuviera esa cadena en su payload reabría su
+presupuesto. Cualquier subagente cuyo payload tuviera esa cadena reabría su
 propio presupuesto, una vez por llamada, para siempre.
 
-El problema no es la laxitud del patrón. Es que **el canal de autorización y el
-canal de contenido eran el mismo canal**: ningún patrón separa "declaro que
-estoy trabado" de "mi texto contiene una palabra". Un token que el agente puede
-emitir no es una autorización, es un ítem de vocabulario, y un modelo que quiere
-seguir trabajando lo va a producir porque es el token que continúa la
-trayectoria. Endurecer la regex (`^ESCALATION:`, exigir un bloque con formato)
-no cierra nada: el agente elige qué escribe, y pasa a escribir el formato
-exacto.
+Dos hechos descartaron cualquier arreglo que consistiera en filtrar mejor:
 
-El canal correcto ya estaba en el hook y **el parche no lo toca**:
-`COS_ALLOW_SUBAGENT_BUDGET_BYPASS=1` + `COS_SUBAGENT_BUDGET_BYPASS_REASON`, en el
-entorno del harness, inalcanzable desde el `tool_input` del agente. Es el modelo
-que había que preservar, y el parche lo mueve a evaluarse **primero**.
+1. **El agente elige qué escribe.** Una regex más estricta (`^ESCALATION:`, un
+   bloque con formato) es simplemente lo próximo que escribe. Un token que el
+   agente puede emitir no es una autorización, es un ítem de vocabulario.
+2. **No hacía falta ni escribirlo.** El payload de `PostToolUse` incluye
+   `tool_response`, así que un agente que apenas **lee** un archivo con el token
+   —el propio hook, sus tests— recibía el pase sin autorar nada. Verificado el
+   2026-08-15: un `cat` del hook quedó registrado como `escalation_declared` en
+   `tool_calls: 1`.
+
+Si observar el mecanismo lo dispara, el token no se puede acotar. **Hay que
+sacarlo de la decisión**, que es lo que hace este parche.
 
 ## Qué hace el parche
 
-1. **Reordena la decisión.** Bypass del operador → bajo presupuesto → sobre
-   presupuesto. Antes, el test del substring corría antes que todo.
-2. **Bajo presupuesto el token es inerte.** No hay nada que autorizar ahí. Esto
-   solo ya elimina 18 de los 57 usos históricos del pase.
-3. **Sobre presupuesto: gracia de un solo uso.** La primera declaración otorga
-   `GRACE` llamadas contadas desde ese momento (`grace_until = COUNT + GRACE - 1`),
-   **una sola vez por `(session_id, agent_id)`**. A partir del otorgamiento el
-   payload deja de importar: solo decide el contador. La segunda declaración no
-   abre nada y devuelve `exit 2`.
-4. **El estado de la gracia vive en el ledger que ya existe**
+**La decisión del presupuesto lee el contador y el entorno del harness, y nada
+más.** El payload se parsea únicamente para identificar al subagente
+(`session_id`, `agent_id`, `transcript_path`); no participa del veredicto.
+
+1. **Se elimina el test del substring.** No hay declaración, no hay token, no
+   hay nada que el agente pueda escribir para cambiar el resultado.
+2. **Gracia incondicional.** En la **primera llamada sobre presupuesto** se
+   otorga una gracia de `GRACE` llamadas (`grace_until = COUNT + GRACE - 1`),
+   **una sola vez por `(session_id, agent_id)`**, consumida por contador. Un
+   agente que choca el presupuesto a mitad de trabajo puede guardar estado y
+   entregar su informe; lo que no puede es seguir trabajando, ni pedir más.
+3. **Orden de decisión:** bypass del operador → bajo presupuesto → sobre
+   presupuesto (concede una vez) → bloquea.
+4. **El bypass por entorno no se toca.**
+   `COS_ALLOW_SUBAGENT_BUDGET_BYPASS=1` + `COS_SUBAGENT_BUDGET_BYPASS_REASON`,
+   inalcanzable desde el payload del agente, y ahora se evalúa primero. El
+   contraste es el punto: un canal que el gobernado no puede escribir se
+   conserva entero; el otro se eliminó justamente porque observarlo alcanzaba
+   para escribirlo.
+5. **El estado vive en el ledger que ya existe**
    (`.cognitive-os/metrics/subagent-budget-enforcer.jsonl`), en una fila
    `escalation_grace_granted` con campo `grace_until`. Sin archivo nuevo, sin
-   read-modify-write que perder: el ledger es append-only. No se agregó lock —
-   otra medición del mismo día mostró que la carrera de lost-update no reproduce
-   con 12, 30 ni 60 procesos concurrentes.
-5. **Contador atómico.** `printf > file` trunca antes de escribir; pasa a
-   temp + `mv` (temp con punto inicial para no ensuciar el glob
-   `subagent-tool-calls-*` de los tests).
-6. **Detección acotada a `tool_input`.** Ver "El defecto que el encargo no tenía"
-   abajo. Esto **no** es el arreglo de seguridad y no hay que confundirlo con uno.
+   read-modify-write que perder. No se agregó lock: otra medición del mismo día
+   mostró que la carrera de lost-update no reproduce con 12, 30 ni 60 procesos.
+6. **Contador atómico.** `printf > file` trunca antes de escribir; pasa a
+   temp + `mv`, con el temp arrancando en punto para no ensuciar el glob
+   `subagent-tool-calls-*` de los tests.
 
-## El tamaño de la gracia: 5, y por qué
+## El tamaño de la gracia: 5
 
-La gracia se dimensiona para **cerrar**, no para continuar: guardar estado y
-entregar el informe. El número sale del propio ledger. 41 subagentes chocaron el
-presupuesto **sin** tener el pase disponible (nunca escribieron el token), y
-siguieron pidiendo llamadas contra el bloqueo:
+La gracia se dimensiona para **cerrar** (persistir estado, entregar el informe),
+no para continuar. Sale del propio ledger: los 41 subagentes que chocaron el
+presupuesto **sin** tener el pase disponible y siguieron pidiendo llamadas
+contra el bloqueo.
 
-| llamadas extra tras el bloqueo | agentes |
+| llamadas extra tras el bloqueo | |
 |---|---|
 | mediana | 2 |
 | p90 | 7 |
@@ -70,18 +78,11 @@ siguieron pidiendo llamadas contra el bloqueo:
 | ≤ 5 | 34 / 41 |
 | ≤ 10 | 40 / 41 |
 
-Cinco cubre 34/41. La cola (6, 7, 8, 10, 14) son agentes reintentando contra un
-bloqueo duro, no evidencia de que necesitaran esas llamadas para cerrar; y cinco
-llamadas **concedidas** rinden más que catorce **bloqueadas**, porque cada
-bloqueada se gasta igual. Cinco tampoco alcanza para seguir trabajando, que es
-la propiedad que importa.
-
-Configurable con `COS_SUBAGENT_ESCALATION_GRACE`. El default 5 mantiene en
-`xfail` el test del split (`test_escalation_grace_is_bounded_and_recorded`, que
-corre con presupuesto 2): es intencional, ese test es el trinquete del otro
-encargo y no había que hacerlo pasar desde acá.
-
-Reproducir la tabla:
+Es la única población del ledger que estuvo efectivamente restringida a cerrar.
+Cinco cubre 34/41; la cola son agentes reintentando contra un bloqueo duro, no
+evidencia de necesidad. Cinco llamadas **concedidas** rinden más que catorce
+**bloqueadas**, y cinco no alcanza para seguir trabajando, que es la propiedad
+que importa. Configurable con `COS_SUBAGENT_ESCALATION_GRACE`.
 
 ```bash
 python3 - <<'PY'
@@ -97,41 +98,25 @@ print("<=5:",sum(1 for x in ov if x<=5),"  <=10:",sum(1 for x in ov if x<=10))
 PY
 ```
 
-## El defecto que el encargo no tenía: alcanza con *leer*
+## Serializar el payload: era el único motivo, y no era caro
 
-El encargo decía "cualquier agente que **escriba** esa cadena". La realidad es
-peor. El payload de `PostToolUse` incluye `tool_response`, y el hook serializaba
-el payload completo. Un agente que simplemente **lee** un archivo que contiene el
-token — el propio hook, sus tests, este runbook — se abre el presupuesto sin
-haberlo escrito nunca.
+`json.dumps(payload, ...)` aparecía **una sola vez** en el hook y era
+exclusivamente para el test del substring. Con el parche desaparece (1 → 0).
+**`json.loads(raw) se queda`**: la identidad del subagente (`session_kind`,
+`agent_id`, `transcript_path`) sale del payload, así que se sigue parseando.
+Se va el costo de *serializar*, no el de *parsear*.
 
-Reproducción (sobre `HEAD`, presupuesto 2, tres llamadas, el token solo en
-`tool_response`):
-
-```bash
-python3 - <<'PY'
-import json, os, subprocess, tempfile, pathlib
-tok = "ESCALATION" + ":"
-tmp = pathlib.Path(tempfile.mkdtemp())
-env = dict(os.environ, COGNITIVE_OS_PROJECT_DIR=str(tmp), COGNITIVE_OS_SESSION_ID="s",
-           COGNITIVE_OS_SESSION_KIND="subagent", COGNITIVE_OS_HOOK_AGENT_ID="ag",
-           COS_SUBAGENT_TOOL_CALL_BUDGET="2")
-payload = {"tool_name": "Read",
-           "tool_input": {"file_path": "hooks/subagent-budget-enforcer.sh"},
-           "tool_response": {"content": f"Emit `{tok}` with diagnosis"}}
-for i in range(3):
-    r = subprocess.run(["bash","hooks/subagent-budget-enforcer.sh"], input=json.dumps(payload),
-                       text=True, capture_output=True, env=env, check=False)
-    print(f"call {i+1}: rc={r.returncode}")
-PY
-# HEAD:      call 1: rc=0 / call 2: rc=0 / call 3: rc=0   <-- la 3ra debía bloquear
-# parcheado: call 1: rc=0 / call 2: rc=0 / call 3: rc=2
+```
+payload                  json.loads (queda)   json.dumps (se va)
+este hook (~9 KB)              0.01 ms             0.02 ms
+una lectura de 100 KB          0.10 ms             0.23 ms
+un dump de grep de 1 MB        1.01 ms             2.25 ms
 ```
 
-El parche acota la detección a `payload["tool_input"]`. **Esto no agrega
-seguridad** — el agente también autora el `tool_input` — y está comentado como
-tal en el hook. Lo que compra es que una lectura ajena no queme en silencio la
-gracia de cierre, que es de un solo uso.
+Contra los ~264 ms de arranque de python que ya se midieron para este hook, es
+entre 0,008 % y 0,85 %. **El parche no hace al hook más rápido de forma
+perceptible.** Lo que saca es superficie, no latencia; decirlo al revés sería
+vender otra cosa.
 
 ## Aplicar
 
@@ -140,41 +125,57 @@ cd <repo>
 git apply --check docs/05-Methodology/runbooks/escalation-grace-2026-08-15/escalation-grace.patch
 git apply         docs/05-Methodology/runbooks/escalation-grace-2026-08-15/escalation-grace.patch
 bash -n hooks/subagent-budget-enforcer.sh
+.venv/bin/python -m pytest -q tests/contracts/test_subagent_budget_escalation_grace.py \
+                              tests/contracts/test_subagent_budget_enforcer.py \
+                              tests/contracts/test_subagent_budget_enforcer_modes.py
 ```
 
-## Verificar
+## Verificar antes de aplicar
 
-El árbol del repo tiene un guard de venv en `conftest.py` que rechaza
-intérpretes cuyo `sys.prefix` resuelto cae fuera del árbol, así que la
-verificación previa a aplicar se hizo sobre un snapshot de `HEAD`
-(`git archive HEAD | tar -x`) con un runner que importa el módulo de test desde
-el árbol bajo prueba. **No se usó `PYTEST_ALLOW_NONVENV=1`**: era el verde barato
-disponible y habría apagado una señal que no tiene nada que ver con el contrato.
+El `conftest.py` del repo rechaza intérpretes cuyo `sys.prefix` resuelto cae
+fuera del árbol, así que la verificación previa se hizo sobre un snapshot de
+`HEAD` (`git archive HEAD | tar -x`) con un runner que importa el módulo de test
+desde el árbol bajo prueba, de modo que `REPO_ROOT`/`HOOK` resuelvan ahí.
+**No se usó `PYTEST_ALLOW_NONVENV=1`** ni `--allow-destructive` para el
+worktree: eran los dos verdes baratos disponibles y ambos habrían apagado una
+señal ajena al contrato.
 
 ```bash
-# ya aplicado, en el repo, con pytest de verdad:
-.venv/bin/python -m pytest -q \
-  tests/contracts/test_subagent_budget_escalation_grace.py \
-  tests/contracts/test_subagent_budget_enforcer.py \
-  tests/contracts/test_subagent_budget_enforcer_modes.py
-
-# antes de aplicar, contra dos snapshots (el runner va en este mismo directorio):
 python3 verify_contract.py <snapshot> tests/contracts/test_subagent_budget_escalation_grace.py
 ```
 
-Resultado medido el 2026-08-15:
-
-| árbol | nuevo contrato | legacy | modes |
+| árbol | contrato nuevo | legacy | modes |
 |---|---|---|---|
-| `HEAD` sin parchear | 7 fail / 1 pass | 3 pass | 6 pass / 10 xfail |
-| parcheado | **8 pass** | **3 pass** | **6 pass / 10 xfail** |
+| `HEAD` sin parchear | 9 fail / 1 pass | (no aplica, cambia con el parche) | 6 pass / 10 xfail |
+| parcheado | **10 pass** | **3 pass** | **6 pass / 10 xfail** |
 
 El fallo más elocuente del baseline es
-`test_repeated_declarations_never_exceed_the_pre_sized_grace`:
-`expected exactly 3 allowed calls, got 10`. Es el 96-llamadas en miniatura.
+`test_token_arriving_only_in_tool_response_is_indistinguishable`:
+`reading=[(0, 'escalation_declared'), (0, 'escalation_declared'), ...]` — un
+`Read` común, sin token en el `tool_input`, autorizado en **todas** las llamadas
+y bloqueado en ninguna.
 
-Ningún `xfail(strict=True)` del archivo de modos pasó a `XPASS`: el trinquete del
-split Post/Pre queda intacto.
+Ningún `xfail(strict=True)` del archivo de modos pasó a `XPASS`.
+
+## Los tests que el parche toca (y por qué)
+
+Mover el límite del presupuesto rompe tests que codificaban el límite viejo. Se
+arreglaron en el origen, no alrededor:
+
+- **`test_subagent_budget_enforcer.py`** (legacy). El bloqueo ya no cae en
+  `BUDGET+1` sino en `BUDGET+GRACE+1`, así que
+  `test_subagent_budget_blocks_after_configured_budget` pasa a
+  `..._plus_grace`: espera la concesión en la 3ra y el bloqueo en la 4ta.
+  `test_subagent_budget_allows_structured_escalation_after_budget` afirmaba que
+  el token compraba el pase: **su premisa está muerta**. Queda invertido, como
+  `test_declaring_an_escalation_neither_helps_nor_hurts`. Dejarlo pasando por el
+  motivo nuevo habría sido un verde que no prueba nada.
+- **`test_subagent_budget_enforcer_modes.py`**: **6 líneas**, sólo fijar
+  `COS_SUBAGENT_ESCALATION_GRACE=1` en el env del helper. Con el default 5 y
+  presupuesto 2, cinco llamadas no llegan a ningún bloqueo y dos
+  `xfail(strict=True)` daban `XPASS` por una razón que no tiene nada que ver con
+  el split Post/Pre. Es un pin, no un cambio de expectativas: ningún assert se
+  tocó y los 10 xfail siguen en xfail.
 
 ## Orden respecto del split Post/Pre
 
@@ -184,19 +185,19 @@ commit `27191622d`). Al revés se convierte un contador con fugas en un gate que
 se abre con una cadena de texto: estrictamente peor, porque ahí sí *parece*
 enforceado.
 
-El parche es compatible con el split y no lo implementa:
+Compatible con el split, y no lo implementa:
 
-- No toca resolución de modo ni `hook_event_name`; sigue siendo un solo camino.
-- La lógica agregada es de **decisión**, no de conteo. El split separa conteo
-  (Post) de decisión (Pre); todo lo nuevo cae del lado de decisión y se mueve
-  entero al modo `enforce`.
-- El estado de la gracia se lee del ledger, no del contador, así que el modo
-  `enforce` (que por contrato **no** debe mutar el contador) puede leerlo sin
+- No toca resolución de modo ni `hook_event_name`.
+- Todo lo agregado es lógica de **decisión**, no de conteo. El split mueve la
+  decisión entera al modo `enforce`.
+- El estado de la gracia se lee del **ledger**, no del contador, así que
+  `enforce` —que por contrato no debe mutar el contador— puede leerlo sin
   escribir nada.
-- `grace_until` se guarda absoluto, no relativo, así que no depende de quién
-  incrementó el contador.
+- `grace_until` se guarda absoluto, no relativo: no depende de quién incrementó.
+- El pin de `COS_SUBAGENT_ESCALATION_GRACE` en los tests de modos deja esas
+  pruebas independientes del default de la gracia, que es lo que querían medir.
 
 ## Rollback
 
 `git apply -R` del mismo parche. El estado de la gracia son filas de un ledger
-append-only: revertir el hook lo vuelve inerte, no hay que limpiar nada.
+append-only: revertir el hook lo vuelve inerte, no hay nada que limpiar.

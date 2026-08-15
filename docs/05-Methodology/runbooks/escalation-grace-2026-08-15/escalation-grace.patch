@@ -1,8 +1,8 @@
 diff --git a/hooks/subagent-budget-enforcer.sh b/hooks/subagent-budget-enforcer.sh
-index 7a5f7d4..6bca66e 100755
+index 7a5f7d4..bbd34e6 100755
 --- a/hooks/subagent-budget-enforcer.sh
 +++ b/hooks/subagent-budget-enforcer.sh
-@@ -8,7 +8,23 @@
+@@ -8,7 +8,38 @@
  #
  # Killswitch: DISABLE_HOOK_SUBAGENT_BUDGET_ENFORCER=1
  # Bypass: COS_ALLOW_SUBAGENT_BUDGET_BYPASS=1 + COS_SUBAGENT_BUDGET_BYPASS_REASON
@@ -11,45 +11,62 @@ index 7a5f7d4..6bca66e 100755
 +#
 +# Authorization model (ADR-311, hardened 2026-08-15)
 +# --------------------------------------------------
-+# A token the agent can emit is not an authorization, it is a vocabulary item:
-+# a model that wants to keep working will produce it, because it is the token
-+# that continues the trajectory. `ESCALATION:` in the payload therefore grants
-+# NO budget. It only *triggers* a grace that is pre-sized, granted at most once
-+# per (session_id, agent_id), consumed by call count, and recorded in the
-+# ledger. Writing the string a second time opens nothing.
++# THE PAYLOAD DOES NOT PARTICIPATE IN THE BUDGET DECISION. Only the call count
++# and the harness environment do.
 +#
-+# The grace is sized to CLOSE, not to CONTINUE: enough calls to persist state
-+# and hand off a report. Default 5, from the ledger's own history — 41 agents
-+# hit the budget with no pass available and made a median of 2 further calls
-+# (p90 7, max 14); 34/41 finished within 5. Override with
++# This hook used to test the whole payload for the substring `ESCALATION:`
++# BEFORE comparing the count to the budget, which made the string an unlimited
++# pass: one subagent used it 43 times and reached 96 tool calls against a
++# budget of 50.
++#
++# Narrowing the pattern would not have closed it — the agent chooses what it
++# writes, so it would simply write the stricter form. And the channel turned
++# out to be worse than "what the agent writes": a PostToolUse payload carries
++# `tool_response`, so an agent that merely READ a file containing the token —
++# this file, or its tests — was granted the pass without authoring anything.
++# Verified 2026-08-15: a plain `cat` of this hook logged `escalation_declared`
++# at tool_calls 1. When observing the mechanism trips it, the token cannot be
++# filtered, only removed from the decision.
++#
++# What replaces it: a grace granted UNCONDITIONALLY on the first over-budget
++# call, once per (session_id, agent_id), consumed by call count, recorded in
++# the ledger. An agent that hits the budget mid-task still gets to persist
++# state and hand off its report; it does not get to keep working, and there is
++# nothing it can write to extend it.
++#
++# The grace is sized to CLOSE, not to CONTINUE. Default 5, from this hook's own
++# ledger: 41 agents hit the budget with no pass available and made a median of
++# 2 further calls (p90 7, max 14); 34/41 finished within 5. Override with
 +# COS_SUBAGENT_ESCALATION_GRACE.
  
  set -uo pipefail
  
-@@ -65,7 +81,21 @@ agent_id = first(
+@@ -65,9 +96,6 @@ agent_id = first(
  transcript = first(payload.get("transcript_path"), payload.get("transcript"))
  is_subagent = session_kind == "subagent" or bool(agent_id) or "/subagents/" in transcript
  
 -blob = json.dumps(payload, ensure_ascii=False, sort_keys=True)
-+# Scoped to what the agent AUTHORED, not to the whole payload. A PostToolUse
-+# payload carries `tool_response`, so the old whole-blob test made a plain read
-+# of any file containing the token — this hook's own source, or its tests —
-+# grant the pass without the agent ever writing it. Reproduced 2026-08-15: a
-+# Read payload with the token only in `tool_response` returned 0 on call 3 of 3
-+# against a budget of 2.
-+#
-+# This narrowing is NOT the security fix and must not be mistaken for one: the
-+# agent authors `tool_input` too, so it can still emit the token at will. What
-+# it buys is that an unrelated read no longer silently burns the one-time
-+# close-out grace. The security property lives in the grace being pre-sized,
-+# granted once, and consumed by call count.
-+declared_scope = payload.get("tool_input")
-+blob = json.dumps(declared_scope if declared_scope is not None else {},
-+                  ensure_ascii=False, sort_keys=True)
- escalation_declared = "ESCALATION:" in blob
- 
+-escalation_declared = "ESCALATION:" in blob
+-
  safe_session = first(
-@@ -102,6 +132,8 @@ case "$BUDGET" in ''|*[!0-9]*) BUDGET=50 ;; esac
+     os.environ.get("COGNITIVE_OS_SESSION_ID"),
+     os.environ.get("CODEX_SESSION_ID"),
+@@ -83,7 +111,6 @@ print(json.dumps({
+     "is_subagent": is_subagent,
+     "session_id": safe_session,
+     "agent_id": safe_agent,
+-    "escalation_declared": escalation_declared,
+ }))
+ PYEOF
+ )"
+@@ -95,13 +122,14 @@ IS_SUBAGENT="$(printf '%s' "$EVAL_JSON" | python3 -c 'import json,sys; print("1"
+ 
+ SESSION_ID="$(printf '%s' "$EVAL_JSON" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("session_id","current"))' 2>/dev/null || echo current)"
+ AGENT_ID="$(printf '%s' "$EVAL_JSON" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("agent_id","subagent"))' 2>/dev/null || echo subagent)"
+-ESCALATION_DECLARED="$(printf '%s' "$EVAL_JSON" | python3 -c 'import json,sys; print("1" if json.load(sys.stdin).get("escalation_declared") else "0")' 2>/dev/null || echo 0)"
+ 
+ BUDGET="${COS_SUBAGENT_TOOL_CALL_BUDGET:-50}"
+ case "$BUDGET" in ''|*[!0-9]*) BUDGET=50 ;; esac
  [ "$BUDGET" -le 0 ] 2>/dev/null && BUDGET=50
  WARN_AT="${COS_SUBAGENT_TOOL_CALL_WARN_AT:-$BUDGET}"
  case "$WARN_AT" in ''|*[!0-9]*) WARN_AT="$BUDGET" ;; esac
@@ -58,7 +75,7 @@ index 7a5f7d4..6bca66e 100755
  
  RUNTIME_DIR="$PROJECT_DIR/.cognitive-os/sessions/$SESSION_ID"
  METRICS_DIR="$PROJECT_DIR/.cognitive-os/metrics"
-@@ -116,18 +148,25 @@ if [ -f "$COUNTER_FILE" ]; then
+@@ -116,18 +144,25 @@ if [ -f "$COUNTER_FILE" ]; then
    case "$COUNT" in ''|*[!0-9]*) COUNT=0 ;; esac
  fi
  COUNT=$((COUNT + 1))
@@ -87,7 +104,7 @@ index 7a5f7d4..6bca66e 100755
  entry = {
      "timestamp": ts,
      "session_id": session_id,
-@@ -137,6 +176,8 @@ entry = {
+@@ -137,6 +172,8 @@ entry = {
      "action": action,
      "reason": reason,
  }
@@ -96,7 +113,7 @@ index 7a5f7d4..6bca66e 100755
  with open(path, "a", encoding="utf-8") as fh:
      fh.write(json.dumps(entry, sort_keys=True) + "\n")
  
-@@ -163,10 +204,16 @@ resource_tick(
+@@ -163,10 +200,14 @@ resource_tick(
  PYEOF
  }
  
@@ -105,19 +122,17 @@ index 7a5f7d4..6bca66e 100755
 -  exit 0
 -fi
 +# ---------------------------------------------------------------------------
-+# Decision order is load-bearing.
-+#   1. operator bypass  — harness environment, the only real authorization
-+#   2. under budget     — nothing to authorize; the string is inert here
-+#   3. over budget      — one-shot grace, then hard block
-+# The previous order tested the payload for `ESCALATION:` FIRST, before the
-+# budget was ever compared, so the string was an unlimited pass. Measured on
-+# .cognitive-os/metrics/subagent-budget-enforcer.jsonl: one subagent used it
-+# 43 times and reached 96 tool calls against a budget of 50.
++# Decision order:
++#   1. operator bypass — harness environment, the only authorization channel
++#   2. under budget    — warn / observe
++#   3. over budget     — one-shot close-out grace, then hard block
++# The payload appears nowhere in this chain. It is parsed only to identify the
++# subagent (session id, agent id), never to authorize it.
 +# ---------------------------------------------------------------------------
  
  if [ "${COS_ALLOW_SUBAGENT_BUDGET_BYPASS:-0}" = "1" ]; then
    reason="${COS_SUBAGENT_BUDGET_BYPASS_REASON:-}"
-@@ -179,20 +226,76 @@ if [ "${COS_ALLOW_SUBAGENT_BUDGET_BYPASS:-0}" = "1" ]; then
+@@ -179,20 +220,65 @@ if [ "${COS_ALLOW_SUBAGENT_BUDGET_BYPASS:-0}" = "1" ]; then
    exit 0
  fi
  
@@ -126,13 +141,9 @@ index 7a5f7d4..6bca66e 100755
 -  printf 'subagent-budget-enforcer: BLOCK — subagent `%s` reached %s tool calls, exceeding budget %s. Emit `ESCALATION:` with diagnosis, progress, files touched, and next safe action before more tool use. Override only with COS_ALLOW_SUBAGENT_BUDGET_BYPASS=1 and COS_SUBAGENT_BUDGET_BYPASS_REASON=<text>.\n' "$AGENT_ID" "$COUNT" "$BUDGET" >&2
 -  exit 2
 +if [ "$COUNT" -le "$BUDGET" ]; then
-+  # Within budget there is nothing to authorize, so `ESCALATION:` in the
-+  # payload changes nothing — it is recorded by the periodic tick like any
-+  # other call. 18 of the 57 historical uses of the pass fired here, below the
-+  # budget, on agents that were merely writing about escalation.
 +  if [ "$COUNT" -ge "$WARN_AT" ]; then
 +    emit_metric "warn" "budget_reached"
-+    printf 'subagent-budget-enforcer: WARN — subagent `%s` reached %s/%s tool calls. Emit `ESCALATION:` next to claim the one-time grace of %s calls to hand off, or use an audited bypass.\n' "$AGENT_ID" "$COUNT" "$BUDGET" "$GRACE" >&2
++    printf 'subagent-budget-enforcer: WARN — subagent `%s` reached %s/%s tool calls. On the next call you receive a one-time grace of %s calls to persist state and hand off. Nothing you write extends it; only an operator bypass does.\n' "$AGENT_ID" "$COUNT" "$BUDGET" "$GRACE" >&2
 +    exit 0
 +  fi
 +  if [ "$((COUNT % 10))" -eq 0 ]; then
@@ -144,10 +155,9 @@ index 7a5f7d4..6bca66e 100755
 -if [ "$COUNT" -ge "$WARN_AT" ]; then
 -  emit_metric "warn" "budget_reached"
 -  printf 'subagent-budget-enforcer: WARN — subagent `%s` reached %s/%s tool calls. Next tool call requires `ESCALATION:` or audited bypass.\n' "$AGENT_ID" "$COUNT" "$BUDGET" >&2
--  exit 0
-+# Over budget. Was a grace already granted to this (session_id, agent_id)?
-+# State lives in the hook's own append-only ledger: no new file, and no
-+# read-modify-write to lose.
++# Over budget. Was the close-out grace already granted to this
++# (session_id, agent_id)? State lives in this hook's own append-only ledger:
++# no new file, and no read-modify-write to lose.
 +GRACE_UNTIL="$(python3 - "$METRICS_FILE" "$SESSION_ID" "$AGENT_ID" <<'PYEOF' 2>/dev/null || true
 +import json
 +import sys
@@ -177,82 +187,180 @@ index 7a5f7d4..6bca66e 100755
 +)"
 +case "$GRACE_UNTIL" in ''|*[!0-9]*) GRACE_UNTIL="" ;; esac
 +
-+if [ -n "$GRACE_UNTIL" ]; then
-+  # Already granted once. From here the payload is irrelevant: only the count
-+  # decides. This is the line that makes a second declaration worthless.
-+  if [ "$COUNT" -le "$GRACE_UNTIL" ]; then
-+    emit_metric "allow" "escalation_grace_consumed" "$GRACE_UNTIL"
-+    printf 'subagent-budget-enforcer: GRACE %s/%s — subagent `%s` is closing out. Persist state and return; the grace does not renew.\n' "$COUNT" "$GRACE_UNTIL" "$AGENT_ID" >&2
-+    exit 0
-+  fi
-+  emit_metric "block" "escalation_grace_exhausted" "$GRACE_UNTIL"
-+  printf 'subagent-budget-enforcer: BLOCK — subagent `%s` spent its one-time close-out grace (through call %s) and is at %s against budget %s. Declaring escalation again grants nothing. Only COS_ALLOW_SUBAGENT_BUDGET_BYPASS=1 with COS_SUBAGENT_BUDGET_BYPASS_REASON=<text>, set by the operator in the harness environment, can extend this.\n' "$AGENT_ID" "$GRACE_UNTIL" "$COUNT" "$BUDGET" >&2
-+  exit 2
++if [ -z "$GRACE_UNTIL" ]; then
++  # First over-budget call. The grace is granted because the COUNT says so, not
++  # because the payload asked for it — there is no way to ask.
++  GRACE_UNTIL=$((COUNT + GRACE - 1))
++  emit_metric "allow" "escalation_grace_granted" "$GRACE_UNTIL"
++  printf 'subagent-budget-enforcer: GRACE GRANTED — subagent `%s` is over budget (%s/%s) and may use calls through %s to persist state and hand off. Emit `ESCALATION:` with diagnosis, progress, files touched, and next safe action. One time only, per (session, agent).\n' "$AGENT_ID" "$COUNT" "$BUDGET" "$GRACE_UNTIL" >&2
+   exit 0
  fi
  
 -if [ "$((COUNT % 10))" -eq 0 ]; then
 -  emit_metric "observe" "periodic"
-+if [ "$ESCALATION_DECLARED" = "1" ]; then
-+  # First and only grant. Sized from the moment of declaration so that stalling
-+  # the declaration buys nothing, and consumed by call count from here on.
-+  GRACE_UNTIL=$((COUNT + GRACE - 1))
-+  emit_metric "allow" "escalation_grace_granted" "$GRACE_UNTIL"
-+  printf 'subagent-budget-enforcer: GRACE GRANTED — subagent `%s` at %s/%s may use calls through %s to persist state and hand off its report. One time only, per (session, agent); it will not be granted again.\n' "$AGENT_ID" "$COUNT" "$BUDGET" "$GRACE_UNTIL" >&2
++if [ "$COUNT" -le "$GRACE_UNTIL" ]; then
++  emit_metric "allow" "escalation_grace_consumed" "$GRACE_UNTIL"
++  printf 'subagent-budget-enforcer: GRACE %s/%s — subagent `%s` is closing out. Persist state and return; the grace does not renew.\n' "$COUNT" "$GRACE_UNTIL" "$AGENT_ID" >&2
 +  exit 0
  fi
  
 -exit 0
-+emit_metric "block" "budget_exceeded"
-+printf 'subagent-budget-enforcer: BLOCK — subagent `%s` reached %s tool calls, exceeding budget %s. Emit `ESCALATION:` with diagnosis, progress, files touched, and next safe action to claim a one-time grace of %s calls to hand off. Override only with COS_ALLOW_SUBAGENT_BUDGET_BYPASS=1 and COS_SUBAGENT_BUDGET_BYPASS_REASON=<text>.\n' "$AGENT_ID" "$COUNT" "$BUDGET" "$GRACE" >&2
++emit_metric "block" "escalation_grace_exhausted" "$GRACE_UNTIL"
++printf 'subagent-budget-enforcer: BLOCK — subagent `%s` spent its one-time close-out grace (through call %s) and is at %s against budget %s. No declaration extends this: the payload is not part of the decision. Only COS_ALLOW_SUBAGENT_BUDGET_BYPASS=1 with COS_SUBAGENT_BUDGET_BYPASS_REASON=<text>, set by the operator in the harness environment, can.\n' "$AGENT_ID" "$GRACE_UNTIL" "$COUNT" "$BUDGET" >&2
 +exit 2
+diff --git a/tests/contracts/test_subagent_budget_enforcer.py b/tests/contracts/test_subagent_budget_enforcer.py
+index 27cd6f4..8d3f2b2 100644
+--- a/tests/contracts/test_subagent_budget_enforcer.py
++++ b/tests/contracts/test_subagent_budget_enforcer.py
+@@ -25,6 +25,7 @@ def _run_hook(tmp_path: Path, payload: dict, env_extra: dict[str, str] | None =
+             "COGNITIVE_OS_SESSION_KIND": "subagent",
+             "COGNITIVE_OS_HOOK_AGENT_ID": "agent-a",
+             "COS_SUBAGENT_TOOL_CALL_BUDGET": "2",
++            "COS_SUBAGENT_ESCALATION_GRACE": "1",
+         }
+     )
+     if env_extra:
+@@ -41,19 +42,28 @@ def _run_hook(tmp_path: Path, payload: dict, env_extra: dict[str, str] | None =
+     )
+ 
+ 
+-def test_subagent_budget_blocks_after_configured_budget(tmp_path: Path) -> None:
++def test_subagent_budget_blocks_after_configured_budget_plus_grace(tmp_path: Path) -> None:
++    """The first over-budget call buys a close-out grace; the next one blocks.
++
++    The boundary moved by design. Exceeding the budget no longer blocks on the
++    spot: an agent that hits it mid-task gets a fixed, one-time grace
++    (COS_SUBAGENT_ESCALATION_GRACE, pinned to 1 here) to persist state and hand
++    off. What it does not get is a way to ask for more.
++    """
+     payload = {"tool_name": "Bash", "tool_input": {"command": "echo ok"}}
+ 
+     first = _run_hook(tmp_path, payload)
+     second = _run_hook(tmp_path, payload)
+     third = _run_hook(tmp_path, payload)
++    fourth = _run_hook(tmp_path, payload)
+ 
+     assert first.returncode == 0, first.stderr
+     assert second.returncode == 0, second.stderr
+     assert "WARN" in second.stderr
+-    assert third.returncode == 2
+-    assert "BLOCK" in third.stderr
+-    assert "ESCALATION:" in third.stderr
++    assert third.returncode == 0, third.stderr
++    assert "GRACE GRANTED" in third.stderr
++    assert fourth.returncode == 2
++    assert "BLOCK" in fourth.stderr
+ 
+     metrics = tmp_path / ".cognitive-os" / "metrics" / "subagent-budget-enforcer.jsonl"
+     assert metrics.exists()
+@@ -63,13 +73,21 @@ def test_subagent_budget_blocks_after_configured_budget(tmp_path: Path) -> None:
+     rows = [json.loads(line) for line in resource_ledger.read_text().splitlines()]
+     assert [row["kind"] for row in rows] == [
+         "subagent_budget_warn",
++        "subagent_budget_allow",
+         "subagent_budget_block",
+     ]
+     assert rows[-1]["source"] == "subagent-budget-enforcer"
+-    assert rows[-1]["tool_calls"] == 3
++    assert rows[-1]["tool_calls"] == 4
++
+ 
++def test_declaring_an_escalation_neither_helps_nor_hurts(tmp_path: Path) -> None:
++    """This test used to assert that the token bought a pass. It no longer does.
+ 
+-def test_subagent_budget_allows_structured_escalation_after_budget(tmp_path: Path) -> None:
++    Kept, inverted: the same call is allowed with or without the declaration,
++    and blocked with or without it once the grace is spent. The verdict comes
++    from the count. The wider property has its own file,
++    ``test_subagent_budget_escalation_grace.py``.
++    """
+     payload = {"tool_name": "Bash", "tool_input": {"command": "echo ok"}}
+     escalation_payload = {
+         "tool_name": "Bash",
+@@ -78,9 +96,13 @@ def test_subagent_budget_allows_structured_escalation_after_budget(tmp_path: Pat
+ 
+     assert _run_hook(tmp_path, payload).returncode == 0
+     assert _run_hook(tmp_path, payload).returncode == 0
+-    escalation = _run_hook(tmp_path, escalation_payload)
+ 
+-    assert escalation.returncode == 0, escalation.stderr
++    # call 3: the grace, granted by the count, not by the text
++    assert _run_hook(tmp_path, escalation_payload).returncode == 0
++
++    # call 4: grace spent. Declaring again changes nothing.
++    assert _run_hook(tmp_path, escalation_payload).returncode == 2
++    assert _run_hook(tmp_path, payload).returncode == 2
+ 
+ 
+ def test_subagent_budget_ignores_orchestrator_sessions(tmp_path: Path) -> None:
+diff --git a/tests/contracts/test_subagent_budget_enforcer_modes.py b/tests/contracts/test_subagent_budget_enforcer_modes.py
+index 1e28ab6..f7e6818 100644
+--- a/tests/contracts/test_subagent_budget_enforcer_modes.py
++++ b/tests/contracts/test_subagent_budget_enforcer_modes.py
+@@ -60,6 +60,12 @@ def _run(
+             "COGNITIVE_OS_PROJECT_DIR": str(tmp_path),
+             "COGNITIVE_OS_SESSION_ID": "session-a",
+             "COS_SUBAGENT_TOOL_CALL_BUDGET": "2",
++            # Pinned so these tests measure mode resolution, not the size of
++            # the close-out grace. With the default (5) a budget of 2 would not
++            # reach a block inside 5 calls, and two of the strict xfails below
++            # would flip to XPASS for a reason that has nothing to do with the
++            # mode split -- a green marker proving nothing.
++            "COS_SUBAGENT_ESCALATION_GRACE": "1",
+             # Identity must come from the payload, exactly as the harness
+             # delivers it. The timing wrapper only derives
+             # COGNITIVE_OS_HOOK_AGENT_ID for SessionStart/SubagentStart, so on
 diff --git a/tests/contracts/test_subagent_budget_escalation_grace.py b/tests/contracts/test_subagent_budget_escalation_grace.py
 new file mode 100644
-index 0000000..6910b2b
+index 0000000..c895e51
 --- /dev/null
 +++ b/tests/contracts/test_subagent_budget_escalation_grace.py
-@@ -0,0 +1,259 @@
+@@ -0,0 +1,312 @@
 +# SCOPE: both
-+"""The `ESCALATION:` pass is a one-time, pre-sized, consumed grace.
++"""The payload does not participate in the budget decision.
 +
 +Why this file exists
 +--------------------
 +`hooks/subagent-budget-enforcer.sh` used to test the whole payload for the
 +substring `ESCALATION:` *before* comparing the count to the budget. Any
-+subagent that wrote that string anywhere — including in a report *about*
-+escalation — reopened its own budget, once per call, forever.
++subagent whose payload carried that string reopened its own budget, once per
++call, forever.
 +
 +Measured on `.cognitive-os/metrics/subagent-budget-enforcer.jsonl` at
-+2026-08-15 (732 rows):
++2026-08-15 (732 rows): 57 uses of the pass, 18 of them *below* the budget where
++there was nothing to authorize; one subagent (`a632278962fd85ae2`) used it 43
++times, absorbed 7 blocks in the gaps, and reached 96 tool calls against a
++budget of 50.
 +
-+* 57 uses of the pass; 18 of them fired *below* the budget, where there was
-+  nothing to authorize;
-+* one subagent (`a632278962fd85ae2`) used it 43 times, absorbed 7 blocks in
-+  the gaps where it happened not to write the string, and reached 96 tool
-+  calls against a budget of 50.
++Two facts killed every attempt to filter the string rather than remove it:
 +
-+That is not an implementation bug. The authorization channel and the content
-+channel were the same channel, so no pattern can separate "I declare I am
-+stuck" from "my text contains a word". A token the agent can emit is not an
-+authorization; it is a vocabulary item, and a model that wants to keep working
-+will produce it.
++1. The agent chooses what it writes, so a stricter pattern (`^ESCALATION:`, a
++   formatted block) is simply the next thing it writes. A token the agent can
++   emit is not an authorization, it is a vocabulary item.
++2. Worse, it did not have to write it at all. A `PostToolUse` payload carries
++   `tool_response`, so an agent that merely **read** a file containing the
++   token — the hook itself, or this very file — was granted the pass. Verified
++   2026-08-15: a plain `cat` of the hook logged `escalation_declared` at
++   `tool_calls: 1`. When observing the mechanism trips it, the token cannot be
++   filtered, only removed from the decision.
 +
 +The contract these tests fix
 +----------------------------
-+The string no longer grants budget. It *triggers* a grace that is:
++The budget decision reads the **call count** and the **harness environment**,
++and nothing else. The payload is parsed only to identify the subagent.
 +
-+* granted at most once per ``(session_id, agent_id)``,
-+* pre-sized (``COS_SUBAGENT_ESCALATION_GRACE``, default 5),
-+* consumed by call count, not by what the payload says,
-+* recorded in the hook's own ledger with an explicit ``grace_until``.
++An agent that hits the budget mid-task still gets to close out: a grace of
++`COS_SUBAGENT_ESCALATION_GRACE` calls (default 5) is granted
++**unconditionally** on the first over-budget call, once per
++``(session_id, agent_id)``, consumed by count, recorded in the hook's own
++ledger with an explicit ``grace_until``. It is sized to *close* — persist state,
++hand off a report — never to continue. Rationale and the measurement behind the
++5 are in `docs/06-Daily/reports/escalation-bypass-close-2026-08-15.md`.
 +
-+Sizing rationale lives in
-+``docs/06-Daily/reports/escalation-bypass-close-2026-08-15.md``: the grace is
-+dimensioned to *close* (persist state, hand off a report), never to continue.
-+
-+These tests are mode-agnostic on purpose. They constrain the authorization
++These tests are mode-agnostic on purpose: they constrain the authorization
 +decision only, so they stay valid across the ADR-311 PostToolUse/PreToolUse
 +split described in
-+``docs/06-Daily/reports/subagent-budget-enforcer-architecture-2026-08-15.md``.
++`docs/06-Daily/reports/subagent-budget-enforcer-architecture-2026-08-15.md`.
 +"""
 +
 +from __future__ import annotations
@@ -272,10 +380,15 @@ index 0000000..6910b2b
 +BUDGET = 2
 +GRACE = 3
 +
++# Built rather than written, so this file can be read by a subagent without the
++# old hook granting it a pass on the way past. That evasion is a finding in its
++# own right: the substring test was defeated by a `+`.
++TOKEN = "ESCALATION" + ":"
++
 +
 +def _run(
 +    tmp_path: Path,
-+    command: str = "echo ok",
++    payload: dict | None = None,
 +    env_extra: dict[str, str] | None = None,
 +    agent_id: str = "agent-a",
 +) -> subprocess.CompletedProcess[str]:
@@ -294,10 +407,9 @@ index 0000000..6910b2b
 +    )
 +    if env_extra:
 +        env.update(env_extra)
-+    payload = {"tool_name": "Bash", "tool_input": {"command": command}}
 +    return subprocess.run(
 +        ["bash", str(HOOK)],
-+        input=json.dumps(payload),
++        input=json.dumps(payload if payload is not None else _plain()),
 +        text=True,
 +        capture_output=True,
 +        cwd=tmp_path,
@@ -307,9 +419,34 @@ index 0000000..6910b2b
 +    )
 +
 +
-+def _declare(tmp_path: Path, **kwargs) -> subprocess.CompletedProcess[str]:
-+    """A call whose payload carries the escalation token."""
-+    return _run(tmp_path, "printf 'ESCALATION: stuck, handing off'", **kwargs)
++def _plain() -> dict:
++    return {
++        "hook_event_name": "PostToolUse",
++        "tool_name": "Bash",
++        "tool_input": {"command": "echo ok"},
++        "tool_response": {"stdout": "ok"},
++    }
++
++
++def _authored() -> dict:
++    """The agent writes the token itself: the old declaration."""
++    payload = _plain()
++    payload["tool_input"] = {"command": f"printf '{TOKEN} stuck, handing off'"}
++    return payload
++
++
++def _merely_read() -> dict:
++    """The agent reads a file that happens to contain the token.
++
++    Innocent `tool_input`; the token arrives only in `tool_response`. Under the
++    old hook this was indistinguishable from a declaration, which is how a
++    `cat` of the hook granted its reader a pass.
++    """
++    payload = _plain()
++    payload["tool_input"] = {"file_path": "hooks/subagent-budget-enforcer.sh"}
++    payload["tool_name"] = "Read"
++    payload["tool_response"] = {"content": f"printf 'BLOCK ... Emit `{TOKEN}` ...'"}
++    return payload
 +
 +
 +def _ledger(tmp_path: Path) -> list[dict]:
@@ -319,108 +456,134 @@ index 0000000..6910b2b
 +    return [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
 +
 +
-+def _spend_budget(tmp_path: Path, agent_id: str = "agent-a") -> None:
-+    for _ in range(BUDGET):
-+        assert _run(tmp_path, agent_id=agent_id).returncode == 0
++def _verdicts(tmp_path: Path, payload: dict, calls: int, agent_id: str) -> list[tuple]:
++    """(returncode, ledger reason) for `calls` consecutive invocations."""
++    out = []
++    for _ in range(calls):
++        rc = _run(tmp_path, payload, agent_id=agent_id).returncode
++        rows = [r for r in _ledger(tmp_path) if r["agent_id"] == agent_id]
++        out.append((rc, rows[-1]["reason"] if rows else None))
++    return out
 +
 +
-+# ── the hole this file closes ───────────────────────────────────────────────
++# ── the property that replaces the pass ─────────────────────────────────────
 +
 +
-+def test_second_declaration_over_budget_opens_nothing(tmp_path: Path) -> None:
-+    """The missing case. One grant, then the token is inert.
++def test_payload_content_does_not_change_the_verdict(tmp_path: Path) -> None:
++    """The test the substring version could not have.
 +
-+    With GRACE=3 the grant covers calls N..N+2. The fourth over-budget call is
-+    blocked no matter how well-formed its declaration is.
++    Two agents, same call sequence, payloads identical except that one carries
++    the token in every single call. Same verdicts, call for call. Under the old
++    hook the second sequence never blocked at all.
 +    """
-+    _spend_budget(tmp_path)
++    plain = _verdicts(tmp_path, _plain(), calls=BUDGET + GRACE + 2, agent_id="agent-plain")
++    declaring = _verdicts(tmp_path, _authored(), calls=BUDGET + GRACE + 2, agent_id="agent-decl")
 +
-+    first = _declare(tmp_path)
-+    assert first.returncode == 0, first.stderr
-+    assert "GRACE GRANTED" in first.stderr
-+
-+    # calls 2 and 3 of the grace: still open, and the token is not what opens
-+    # them — the count is.
-+    assert _run(tmp_path).returncode == 0
-+    assert _run(tmp_path).returncode == 0
-+
-+    exhausted = _declare(tmp_path)
-+    assert exhausted.returncode == 2, (
-+        "a second declaration must not reopen the budget; "
-+        f"got rc={exhausted.returncode} stderr={exhausted.stderr!r}"
++    assert declaring == plain, (
++        "the payload must not change the verdict; "
++        f"plain={plain} declaring={declaring}"
 +    )
-+    assert "grants nothing" in exhausted.stderr
++    # and the sequence is the intended one: warn, grant, consume, then block
++    assert [rc for rc, _ in plain] == [0, 0, 0, 0, 0, 2, 2], plain
++    assert [reason for _, reason in plain] == [
++        None,
++        "budget_reached",
++        "escalation_grace_granted",
++        "escalation_grace_consumed",
++        "escalation_grace_consumed",
++        "escalation_grace_exhausted",
++        "escalation_grace_exhausted",
++    ], plain
 +
-+    reasons = [row["reason"] for row in _ledger(tmp_path)]
-+    assert reasons.count("escalation_grace_granted") == 1, reasons
-+    assert "escalation_grace_exhausted" in reasons
 +
++def test_token_arriving_only_in_tool_response_is_indistinguishable(
++    tmp_path: Path,
++) -> None:
++    """Reading a file that mentions the token must be an ordinary call.
 +
-+def test_repeated_declarations_never_exceed_the_pre_sized_grace(tmp_path: Path) -> None:
-+    """The 96-call regression, in miniature.
-+
-+    Ten consecutive declarations must buy exactly GRACE calls, not ten.
++    This is the case that made filtering hopeless: the agent authored nothing.
 +    """
-+    _spend_budget(tmp_path)
++    reading = _verdicts(tmp_path, _merely_read(), calls=BUDGET + GRACE + 2, agent_id="agent-read")
++    plain = _verdicts(tmp_path, _plain(), calls=BUDGET + GRACE + 2, agent_id="agent-plain")
 +
-+    allowed = sum(1 for _ in range(10) if _declare(tmp_path).returncode == 0)
++    assert reading == plain, f"reading={reading} plain={plain}"
++
++
++def test_declaring_repeatedly_never_exceeds_the_pre_sized_grace(tmp_path: Path) -> None:
++    """The 96-call regression, in miniature: ten declarations buy GRACE calls."""
++    for _ in range(BUDGET):
++        assert _run(tmp_path).returncode == 0
++
++    allowed = sum(1 for _ in range(10) if _run(tmp_path, _authored()).returncode == 0)
 +
 +    assert allowed == GRACE, f"expected exactly {GRACE} allowed calls, got {allowed}"
 +
 +
-+def test_grace_is_granted_once_and_recorded_with_its_bound(tmp_path: Path) -> None:
-+    _spend_budget(tmp_path)
-+    _declare(tmp_path)
-+
-+    grants = [r for r in _ledger(tmp_path) if r["reason"] == "escalation_grace_granted"]
-+    assert len(grants) == 1, grants
-+    grant = grants[0]
-+    assert grant["action"] == "allow"
-+    assert grant["grace_until"] == grant["tool_calls"] + GRACE - 1
-+    assert grant["agent_id"] == "agent-a"
++# ── the grace itself ────────────────────────────────────────────────────────
 +
 +
-+def test_declaration_below_budget_authorizes_nothing_and_burns_no_grace(
++def test_grace_is_granted_unconditionally_on_the_first_over_budget_call(
 +    tmp_path: Path,
 +) -> None:
-+    """18 of the 57 historical uses fired here, on agents merely writing prose.
++    """No declaration exists, and none is needed. Hitting the budget is enough."""
++    for _ in range(BUDGET):
++        _run(tmp_path)
 +
-+    Below the budget there is nothing to authorize, so the token must be inert
-+    *and* must not consume the close-out grace the agent may still need.
-+    """
-+    assert _declare(tmp_path).returncode == 0
++    first_over = _run(tmp_path)
 +
-+    reasons = [row["reason"] for row in _ledger(tmp_path)]
-+    assert "escalation_grace_granted" not in reasons, reasons
++    assert first_over.returncode == 0, first_over.stderr
++    assert "GRACE GRANTED" in first_over.stderr
++    grants = [r for r in _ledger(tmp_path) if r["reason"] == "escalation_grace_granted"]
++    assert len(grants) == 1, grants
++    assert grants[0]["grace_until"] == grants[0]["tool_calls"] + GRACE - 1
 +
-+    # budget still intact: the second call warns, the third gets the grant.
-+    assert _run(tmp_path).returncode == 0
-+    third = _declare(tmp_path)
-+    assert third.returncode == 0
-+    assert "GRACE GRANTED" in third.stderr
++
++def test_grace_is_granted_once_and_never_renews(tmp_path: Path) -> None:
++    for _ in range(BUDGET + GRACE):
++        _run(tmp_path)
++
++    for _ in range(4):
++        assert _run(tmp_path).returncode == 2
++
++    reasons = [r["reason"] for r in _ledger(tmp_path)]
++    assert reasons.count("escalation_grace_granted") == 1, reasons
++    assert reasons.count("escalation_grace_exhausted") == 4, reasons
 +
 +
 +def test_grace_is_scoped_per_agent(tmp_path: Path) -> None:
 +    """One agent burning its grace must not close the exit for another."""
-+    _spend_budget(tmp_path, agent_id="agent-a")
-+    for _ in range(GRACE):
-+        _declare(tmp_path, agent_id="agent-a")
-+    assert _declare(tmp_path, agent_id="agent-a").returncode == 2
++    for _ in range(BUDGET + GRACE):
++        _run(tmp_path, agent_id="agent-a")
++    assert _run(tmp_path, agent_id="agent-a").returncode == 2
 +
-+    _spend_budget(tmp_path, agent_id="agent-b")
-+    assert _declare(tmp_path, agent_id="agent-b").returncode == 0
++    for _ in range(BUDGET):
++        assert _run(tmp_path, agent_id="agent-b").returncode == 0
++    assert _run(tmp_path, agent_id="agent-b").returncode == 0
 +
 +
-+def test_plain_block_still_names_the_grace_it_offers(tmp_path: Path) -> None:
-+    """Over budget without a declaration: blocked, and told the exit exists."""
-+    _spend_budget(tmp_path)
++def test_below_budget_nothing_is_granted_and_the_warning_names_the_grace(
++    tmp_path: Path,
++) -> None:
++    assert _run(tmp_path).returncode == 0
++    warned = _run(tmp_path)
++
++    assert warned.returncode == 0
++    assert "WARN" in warned.stderr
++    assert str(GRACE) in warned.stderr
++    reasons = [r["reason"] for r in _ledger(tmp_path)]
++    assert "escalation_grace_granted" not in reasons, reasons
++
++
++def test_exhausted_block_says_that_writing_more_will_not_help(tmp_path: Path) -> None:
++    """The message must not invite the behaviour the hook no longer honours."""
++    for _ in range(BUDGET + GRACE):
++        _run(tmp_path)
 +
 +    blocked = _run(tmp_path)
 +
 +    assert blocked.returncode == 2
-+    assert "BLOCK" in blocked.stderr
-+    assert "ESCALATION:" in blocked.stderr
-+    assert [r["reason"] for r in _ledger(tmp_path)][-1] == "budget_exceeded"
++    assert "payload is not part of the decision" in blocked.stderr
++    assert "COS_ALLOW_SUBAGENT_BUDGET_BYPASS" in blocked.stderr
 +
 +
 +# ── the channel that must survive: harness environment ──────────────────────
@@ -429,15 +592,15 @@ index 0000000..6910b2b
 +def test_operator_bypass_still_works_after_the_grace_is_exhausted(
 +    tmp_path: Path,
 +) -> None:
-+    """The env var is unreachable from the agent's tool input. It stays whole.
++    """The env var is unreachable from the agent's payload. It stays whole.
 +
-+    This is the model the fix preserves: authorization arrives on a channel the
-+    governed party cannot write to.
++    This is the contrast worth keeping: one channel the governed party cannot
++    write to, and one removed precisely because observing it was enough to
++    write to it.
 +    """
-+    _spend_budget(tmp_path)
-+    for _ in range(GRACE):
-+        _declare(tmp_path)
-+    assert _declare(tmp_path).returncode == 2
++    for _ in range(BUDGET + GRACE):
++        _run(tmp_path)
++    assert _run(tmp_path).returncode == 2
 +
 +    allowed = _run(
 +        tmp_path,
@@ -451,16 +614,11 @@ index 0000000..6910b2b
 +    assert any("bypass:" in r["reason"] for r in _ledger(tmp_path))
 +
 +
-+def test_bypass_is_checked_before_the_payload_is_trusted(tmp_path: Path) -> None:
-+    """Ordering guard: the operator channel is evaluated first, always.
-+
-+    An empty reason must block even when the payload declares escalation — the
-+    payload cannot rescue a malformed operator bypass.
-+    """
-+    _spend_budget(tmp_path)
-+
-+    result = _declare(
++def test_bypass_is_evaluated_before_anything_else(tmp_path: Path) -> None:
++    """Ordering guard: a malformed operator bypass blocks even below budget."""
++    result = _run(
 +        tmp_path,
++        _authored(),
 +        env_extra={
 +            "COS_ALLOW_SUBAGENT_BUDGET_BYPASS": "1",
 +            "COS_SUBAGENT_BUDGET_BYPASS_REASON": "",
