@@ -70,15 +70,27 @@ sys.path.insert(0, str(REPO / "scripts"))
 TIMING = REPO / ".cognitive-os/metrics/hook-timing.jsonl"
 CONFIG = REPO / "cognitive-os.yaml"
 
-# A blocking exit. Mirrors audit_gate_registration.BLOCK_RE so the two scripts
-# agree on what "blocking" means, and stays a separate constant so a change
-# here is a deliberate change, not an inherited one.
+# A blocking exit. Started as a copy of audit_gate_registration.BLOCK_RE and
+# has since diverged deliberately: that pattern requires a leading quote before
+# `permissionDecision` and only matches "deny", so it misses the native form
+# `permissionDecision: "block"` used by hooks/secret-detector.sh, which blocks
+# while exiting 0. An exit-code-only criterion classifies such a hook as an
+# instrument and is simply wrong.
 BLOCK_RE = re.compile(
     r"exit\s+2\b"
     r"|\"decision\"\s*:\s*\"block\""
-    r"|permissionDecision\"?\s*:?\s*\"?deny"
+    r"|permissionDecision\"?\s*:\s*\"?(?:deny|block)"
     r"|'block'",
     re.IGNORECASE)
+
+# Where a hook is registered decides what a block MEANS. On PreToolUse a
+# blocking verdict prevents the tool call. On PostToolUse the tool has already
+# run and the message is fed back to the model: it informs, it does not
+# prevent. Counting both as "can block" flattens a real distinction, so
+# enforcement is reported as its own dimension.
+PREVENTING_EVENTS = {"PreToolUse", "UserPromptSubmit"}
+
+HOOK_REF = re.compile(r"([A-Za-z0-9_.-]+)\.sh\b")
 
 BLOCK_PHASES = ("production", "maintenance")
 PHASE_CMP_RE = re.compile(
@@ -101,6 +113,36 @@ SELF_DECLARED_RE = re.compile(
 POLICY_RE = re.compile(r"cos_governance_policy_allows_block\s+(\w[\w-]*)")
 
 OPENERS = ("if ", "if[", "elif ", "while ", "until ", "for ", "case ")
+
+
+def hook_events() -> dict[str, set[str]]:
+    """hook basename -> the harness events it is registered under.
+
+    Read from .claude/settings.json, which is generated but is the artifact the
+    harness actually dispatches from. Hooks reached only through the Bash
+    dispatcher are absent here; the dispatcher itself is PreToolUse:Bash, so
+    its children inherit that event (see enforcement()).
+    """
+    out: dict[str, set[str]] = {}
+    try:
+        data = json.loads((REPO / ".claude/settings.json").read_text())
+    except Exception:
+        return out
+    for event, groups in (data.get("hooks") or {}).items():
+        for grp in groups or []:
+            for hk in grp.get("hooks") or []:
+                for m in HOOK_REF.finditer(str(hk.get("command", ""))):
+                    out.setdefault(m.group(1), set()).add(event)
+    return out
+
+
+def enforcement(name: str, via_dispatcher: bool, events: set[str]) -> str:
+    """prevents | informs | unknown."""
+    if via_dispatcher:
+        return "prevents"  # bash-hot-path-dispatcher runs on PreToolUse:Bash
+    if not events:
+        return "unknown"   # profile/registry only; event not resolvable here
+    return "prevents" if events & PREVENTING_EVENTS else "informs"
 
 
 def current_phase() -> str:
@@ -271,10 +313,17 @@ QUADRANT = {
     (False, True): "telemetry-lying",
 }
 
-QUADRANTS = ("live", "untested", "unmeasured", "theatre", "telemetry-lying")
+QUADRANTS = ("live", "advisory-only", "untested", "unmeasured", "theatre",
+             "telemetry-lying")
 
 
-def quadrant(can_block: bool, ever_blocked: int, measurable: bool) -> str:
+def quadrant(can_block: bool, ever_blocked: int, measurable: bool,
+             enforcement: str = "prevents") -> str:
+    # A blocking path that only ever runs PostToolUse cannot prevent anything:
+    # the tool already ran. It is advisory no matter how loud its message, and
+    # calling it "live" was the error this dimension exists to correct.
+    if can_block and enforcement == "informs":
+        return "advisory-only"
     q = QUADRANT[(can_block, ever_blocked > 0)]
     # Only the "never blocked" half of the table depends on telemetry. When the
     # telemetry cannot see the gate at all, saying "never blocked" would be
@@ -305,6 +354,7 @@ def main() -> int:
 
     phase = current_phase()
     fired, blocked, trows = telemetry()
+    events = hook_events()
     policy_cache: dict[str, bool | None] = {}
 
     out = []
@@ -318,16 +368,20 @@ def main() -> int:
         # The timing wrapper is injected into settings.json entries only, so a
         # gate the telemetry can speak about is one settings.json names.
         measurable = "settings" in g["wiring"] or n in fired
+        disp = "dispatcher" in g["wiring"]
+        enf = enforcement(n, disp, events.get(n, set()))
         out.append({
             "name": n, "path": g["real"], "wiring": g["wiring"],
-            "via_dispatcher": "dispatcher" in g["wiring"],
+            "via_dispatcher": disp,
             "in_settings": "settings" in g["wiring"],
+            "events": sorted(events.get(n, set())),
+            "enforcement": enf,
             "measurable": measurable,
             "can_block": a["can_block"], "reason": a["reason"],
             "detail": a["detail"],
             "block_sites": a["block_sites"], "reachable_sites": a["reachable_sites"],
             "fired": fired.get(n, 0), "ever_blocked": ever,
-            "quadrant": quadrant(a["can_block"], ever, measurable),
+            "quadrant": quadrant(a["can_block"], ever, measurable, enf),
         })
     out.sort(key=lambda r: (r["quadrant"], r["name"]))
 
