@@ -2,7 +2,7 @@
 
 ## How to Use This Index
 
-This generated table is the status inventory for all 502 Architecture Decision Record files (ADRs).
+This generated table is the status inventory for all 503 Architecture Decision Record files (ADRs).
 Status semantics are defined in [STATUS-TAXONOMY.md](STATUS-TAXONOMY.md): decision status, implementation status, and index bucket are separate fields.
 Rows link to the canonical ADR file and group by index bucket for human and agent navigation.
 
@@ -317,11 +317,12 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [341](ADR-341-iroh-optional-transport-adapter.md) | Iroh Optional Transport Adapter | accepted | partial | 2026-06-18 | - Implementation status: partial |
 | [342](ADR-342-existence-criterion-for-primitives.md) | Existence Criterion for Primitives | accepted | partial | 2026-08-15 | - Implementation status: partial (three of the four censuses exist; the first has no census yet) |
 
-### Active / Partial / Blocked (1)
+### Active / Partial / Blocked (2)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
 | [044](ADR-044-context-payload-slimming.md) | Context Payload Slimming — Non-Rule Startup Payloads | accepted | partial-blocked | 2026-04-20 | **Authors**: Agent C (startup-optimization initiative, stream 3/4) |
+| [343](ADR-343-codebase-memory-mcp-recommend-only-and-conditional-discovery-directive.md) | codebase-memory-mcp — Recommend-Only, and a Conditional Structural-Discovery Directive | accepted | partial-blocked | 2026-08-15 | - Implementation status: partial-blocked (detection script landed and demonstrated; the rule file is blocked by the protected-config write guard and ships as a  |
 
 ### Active / Deferred (1)
 
