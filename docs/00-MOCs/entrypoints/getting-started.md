@@ -146,6 +146,39 @@ cp /tmp/cos/cognitive-os.yaml cognitive-os.yaml
 rm -rf /tmp/cos
 ```
 
+### From a local clone of the source
+
+If you keep a clone of the Cognitive OS source around (this is the path the old
+`quickstart.md` documented, and what `scripts/upgrade.sh` and
+`scripts/uninstall.sh` below assume):
+
+```bash
+# 1. Clone the source once
+git clone https://github.com/Luum-Home/luum-cognitive-os.git ~/.cognitive-os-src
+
+# 2. cd into YOUR PROJECT, then run the initializer
+cd /path/to/your/project
+bash ~/.cognitive-os-src/scripts/cos-init.sh
+```
+
+The initializer installs into the **current working directory**, so the `cd` is
+not optional.
+
+Two install profiles exist, not three:
+
+| Flag | What you get |
+|------|--------------|
+| *(none)* or `--default` | 10 curated skills, the standard hook set, 14 core rules (~8K tokens/session) |
+| `--full` | Everything (~142K tokens/session) |
+
+`--minimal`, `--standard` and `--lean` are accepted for backward compatibility
+but all remap to `--default` (ADR-093); the script prints a note on stderr when
+you use one. Confirm the current list yourself with:
+
+```bash
+bash scripts/cos-init.sh --help
+```
+
 ### About the `--from` flag
 
 The `--from PATH` flag tells the installer where the Cognitive OS source code is.
@@ -263,7 +296,7 @@ registered projects are updated automatically via git hooks:
 Both hooks run `scripts/auto-update-projects.sh`, which:
 1. Reads `~/.cognitive-os/installations.json` (the global registry)
 2. Finds projects installed from this specific COS repo
-3. Re-runs `cos-init.sh` with each project's original mode (minimal/standard/full)
+3. Re-runs `cos-init.sh` with each project's original mode (`--default` or `--full`)
 4. Updates rules, hooks, skills, and templates without touching project-specific files
 
 To install the git hooks (one-time setup):
@@ -292,7 +325,7 @@ values), restarts changed containers, and re-syncs rules and hooks.
 
 Every installation is registered in `~/.cognitive-os/installations.json` with:
 - The project path and name
-- The install mode (minimal/standard/full)
+- The install mode (`--default` or `--full`; legacy names remap to `--default`)
 - The COS source repo path (for auto-update matching)
 - The version at install time
 

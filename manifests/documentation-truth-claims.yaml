@@ -210,3 +210,33 @@ claims:
     forbidden_phrases:
       - necesita transcripts, no corre en CI
       - el canario no puede ser determinista
+  cos_init_flag_surface:
+    severity: medium
+    description: >-
+      Install documentation must describe cos-init.sh flags as the parser
+      actually implements them: --default and --full are the only two effective
+      profiles, and --minimal/--standard/--lean parse successfully but remap to
+      --default (ADR-093). Two failure modes are forbidden — claiming the legacy
+      flags are unparsed or nonexistent (they parse), and presenting them as
+      three distinct profiles (there are two). The claim exists because both the
+      commit message of 958845a18 and the first version of the carga-cognitiva
+      report asserted the flags did not parse, on the strength of a grep against
+      scripts/cos-init.sh, which is a 15-line shim; the parser is in
+      scripts/cos_init.py.
+    facts:
+      shim: scripts/cos-init.sh
+      parser: scripts/cos_init.py
+      verify_command: bash scripts/cos-init.sh --help
+      effective_profiles: "--default, --full"
+      legacy_aliases: "--minimal, --standard, --lean -> --default"
+    required_docs:
+      - docs/00-MOCs/entrypoints/getting-started.md
+      - docs/00-MOCs/entrypoints/quickstart.md
+      - docs/06-Daily/reports/install-doors-forensics-2026-08-15.md
+    required_phrases:
+      - remap to `--default`
+      - Two install profiles exist, not three
+    forbidden_phrases:
+      - parses no such flags
+      - flags scripts/cos-init.sh does not parse
+      - Esos flags no
