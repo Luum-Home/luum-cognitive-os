@@ -120,35 +120,39 @@ cos_lib/ exists (the real package)
 ########## FLEET CENSUS ##########
 
 $ bash /tmp/origin-fix/census.sh
+# PROJECT column redacted to <install-NN> on rescue, same convention as <repo-root>
+# above: the census printed real directory names from the operator's machine, and
+# this runbook projects to every install. The per-install YES/NO evidence and the
+# totals below are verbatim; only the identities are gone.
 PROJECT                                    VERSION   WRAPPER  COS-ROOT CONF-YAML REC-COMPL
 ------------------------------------------ --------  -------  -------  -------  ------- 
-matias.nahuel.amendola                     ?         NO       NO       NO       NO      
-cos_batchA_check                           ?         NO       NO       NO       NO      
-cos_batchB_check_22422                     ?         NO       NO       NO       NO      
-cos_batchC_check_5173                      ?         NO       NO       NO       NO      
-cos_verify5_30335                          ?         NO       NO       NO       NO      
-cienciayjusticia-voting                    ?         YES      NO       NO       NO      
-rbvm-platform                              ?         NO       NO       NO       NO      
-luum                                       ?         NO       NO       NO       NO      
-FinOpenPOS                                 ?         YES      YES      NO       NO      
-accounting                                 ?         YES      NO       NO       NO      
-aisotropy                                  ?         YES      NO       YES      NO      
-cognitive-layer                            ?         YES      NO       NO       NO      
-cognitive-os-demo                          ?         NO       NO       NO       NO      
-cos-consumer-e2e-drill                     ?         YES      NO       NO       NO      
-luum-agent-harness                         ?         YES      NO       NO       NO      
---help                                     ?         NO       NO       NO       NO      
-plugins                                    ?         NO       NO       NO       NO      
-luum-cybersecurity                         ?         YES      NO       NO       NO      
-luum-interface-layer                       ?         YES      NO       NO       NO      
-web                                        ?         NO       NO       NO       NO      
-luum-lang                                  ?         YES      NO       NO       NO      
-luum-platform-lab                          ?         YES      NO       NO       NO      
-luum-talent                                ?         YES      NO       NO       NO      
-luum-woocommerce-distrinorth               ?         YES      NO       NO       NO      
-magil-openclaw                             ?         YES      NO       NO       NO      
-live-profile                               ?         YES      NO       NO       NO      
-n1u                                        ?         YES      NO       NO       NO      
+<install-01>                               ?         NO       NO       NO       NO      
+<install-02>                               ?         NO       NO       NO       NO      
+<install-03>                               ?         NO       NO       NO       NO      
+<install-04>                               ?         NO       NO       NO       NO      
+<install-05>                               ?         NO       NO       NO       NO      
+<install-06>                               ?         YES      NO       NO       NO      
+<install-07>                               ?         NO       NO       NO       NO      
+<install-08>                               ?         NO       NO       NO       NO      
+<install-09>                               ?         YES      YES      NO       NO      
+<install-10>                               ?         YES      NO       NO       NO      
+<install-11>                               ?         YES      NO       YES      NO      
+<install-12>                               ?         YES      NO       NO       NO      
+<install-13>                               ?         NO       NO       NO       NO      
+<install-14>                               ?         YES      NO       NO       NO      
+<install-15>                               ?         YES      NO       NO       NO      
+<install-16>                               ?         NO       NO       NO       NO      
+<install-17>                               ?         NO       NO       NO       NO      
+<install-18>                               ?         YES      NO       NO       NO      
+<install-19>                               ?         YES      NO       NO       NO      
+<install-20>                               ?         NO       NO       NO       NO      
+<install-21>                               ?         YES      NO       NO       NO      
+<install-22>                               ?         YES      NO       NO       NO      
+<install-23>                               ?         YES      NO       NO       NO      
+<install-24>                               ?         YES      NO       NO       NO      
+<install-25>                               ?         YES      NO       NO       NO      
+<install-26>                               ?         YES      NO       NO       NO      
+<install-27>                               ?         YES      NO       NO       NO      
 
 TOTAL installs scanned:            27
   with hook-timing-wrapper.sh:    16
