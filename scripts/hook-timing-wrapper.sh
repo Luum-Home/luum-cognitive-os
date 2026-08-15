@@ -18,6 +18,8 @@
 #   COS_HOOK_TIMING_DISABLE=1   — bypass wrapper entirely (no logging, no fork)
 #   COS_HOOK_TIMING_VERBOSE=1   — emit stderr summary (JSONL still written)
 #   COS_HOOK_TIMING_FIFO=1      — write to hook-stream.fifo (best-effort)
+#   COS_HOOK_IO_MEASURE_DISABLE=1 — skip stdout/stderr byte accounting
+#                                   (stdout_bytes/stderr_bytes logged as 0)
 #   COGNITIVE_OS_PROJECT_DIR     — canonical project root override
 #   CODEX_PROJECT_DIR            — Codex project root
 #   CLAUDE_PROJECT_DIR           — Claude Code project root
@@ -158,6 +160,8 @@ HOOK_SKIPPED=0
 HOOK_SAFE_MODE=0
 HOOK_SKIP_REASON=""
 HOOK_BODY_DURATION_MS=0
+HOOK_STDOUT_BYTES=0
+HOOK_STDERR_BYTES=0
 
 # ── Startup circuit breaker / safe mode ─────────────────────────────────────
 # SessionStart is the highest-risk event: hooks can mutate watched settings,
@@ -312,7 +316,66 @@ else
     esac
   fi
 
-  if [ "$QUARANTINE_STDOUT" = "1" ]; then
+  # ── Output-size instrumentation (context cost per invocation) ─────────────
+  # hook-timing.jsonl recorded duration and exit code but never how much text a
+  # hook injects into the model context. stdout is the context channel
+  # (PreToolUse additionalContext, SessionStart context); stderr is the
+  # blocking-feedback channel on exit 2. Capture both to per-PID temp files,
+  # record their byte counts, then re-emit verbatim.
+  #
+  # Cost discipline (this is the hot path of every tool call): the only fixed
+  # added cost is one `rm` in the EXIT trap — and it replaces the `mktemp` the
+  # quarantine path used to pay, so quarantined hooks come out even. `wc` and
+  # `cat` run only when a stream is non-empty, so measurement cost is
+  # proportional to the thing measured: silent hooks (the majority) pay one
+  # fork. The `wc` output is parsed with shell builtins, never a second fork.
+  #
+  # Kill-switch: COS_HOOK_IO_MEASURE_DISABLE=1 restores the old passthrough
+  # (stdout streams straight through, no byte counts recorded).
+  IO_MEASURE=1
+  [ "${COS_HOOK_IO_MEASURE_DISABLE:-0}" = "1" ] && IO_MEASURE=0
+  if [ "$IO_MEASURE" = "1" ]; then
+    IO_OUT="${TMPDIR:-/tmp}/cos-hook-io.$$.out"
+    IO_ERR="${TMPDIR:-/tmp}/cos-hook-io.$$.err"
+    if : >"$IO_OUT" 2>/dev/null && : >"$IO_ERR" 2>/dev/null; then
+      trap 'rm -f "$IO_OUT" "$IO_ERR" 2>/dev/null || true' EXIT
+    else
+      # No writable TMPDIR — degrade to passthrough rather than lose the hook.
+      IO_MEASURE=0
+    fi
+  fi
+
+  if [ "$IO_MEASURE" = "1" ]; then
+    if [ ${#HOOK_ARGS[@]} -gt 0 ]; then
+      printf '%s' "$HOOK_INPUT_JSON" | bash "$HOOK_PATH" "${HOOK_ARGS[@]}" >"$IO_OUT" 2>"$IO_ERR"
+    else
+      printf '%s' "$HOOK_INPUT_JSON" | bash "$HOOK_PATH" >"$IO_OUT" 2>"$IO_ERR"
+    fi
+    HOOK_EXIT=$?
+
+    if [ -s "$IO_OUT" ] || [ -s "$IO_ERR" ]; then
+      # Single `wc` covering both files; word-split into an array by builtins.
+      # BSD/GNU wc emit "<n> <path>" per file plus a "<n> total" line.
+      _IO_WC="$(wc -c "$IO_OUT" "$IO_ERR" 2>/dev/null || true)"
+      # shellcheck disable=SC2206  # intentional word splitting
+      _IO_FIELDS=( $_IO_WC )
+      HOOK_STDOUT_BYTES="${_IO_FIELDS[0]:-0}"
+      HOOK_STDERR_BYTES="${_IO_FIELDS[2]:-0}"
+      case "$HOOK_STDOUT_BYTES" in ''|*[!0-9]*) HOOK_STDOUT_BYTES=0 ;; esac
+      case "$HOOK_STDERR_BYTES" in ''|*[!0-9]*) HOOK_STDERR_BYTES=0 ;; esac
+    fi
+
+    if [ -s "$IO_OUT" ]; then
+      if [ "$QUARANTINE_STDOUT" = "1" ]; then
+        cat "$IO_OUT" >&2 || true
+      else
+        cat "$IO_OUT" || true
+      fi
+    fi
+    if [ -s "$IO_ERR" ]; then
+      cat "$IO_ERR" >&2 || true
+    fi
+  elif [ "$QUARANTINE_STDOUT" = "1" ]; then
     STDOUT_TMP="$(mktemp "${TMPDIR:-/tmp}/cos-hook-stdout.XXXXXX")"
     if [ ${#HOOK_ARGS[@]} -gt 0 ]; then
       printf '%s' "$HOOK_INPUT_JSON" | bash "$HOOK_PATH" "${HOOK_ARGS[@]}" >"$STDOUT_TMP"
@@ -363,7 +426,7 @@ else
   HOOK_EXECUTION_STATUS="error"
 fi
 
-JSON_LINE="{\"timestamp\":\"$START_TS\",\"event\":\"$SAFE_EVENT\",\"hook\":\"$SAFE_HOOK\",\"duration_ms\":$DURATION_MS,\"body_duration_ms\":$HOOK_BODY_DURATION_MS,\"execution_status\":\"$HOOK_EXECUTION_STATUS\",\"exit_code\":$HOOK_EXIT,\"signal\":\"$HOOK_SIGNAL\",\"pid\":$HOOK_PID,\"session_id\":\"$SAFE_SESSION\",\"session_kind\":\"$COGNITIVE_OS_SESSION_KIND\",\"skipped\":$HOOK_SKIPPED,\"safe_mode\":$HOOK_SAFE_MODE,\"skip_reason\":\"$SAFE_SKIP_REASON\"}"
+JSON_LINE="{\"timestamp\":\"$START_TS\",\"event\":\"$SAFE_EVENT\",\"hook\":\"$SAFE_HOOK\",\"duration_ms\":$DURATION_MS,\"body_duration_ms\":$HOOK_BODY_DURATION_MS,\"execution_status\":\"$HOOK_EXECUTION_STATUS\",\"exit_code\":$HOOK_EXIT,\"signal\":\"$HOOK_SIGNAL\",\"stdout_bytes\":$HOOK_STDOUT_BYTES,\"stderr_bytes\":$HOOK_STDERR_BYTES,\"pid\":$HOOK_PID,\"session_id\":\"$SAFE_SESSION\",\"session_kind\":\"$COGNITIVE_OS_SESSION_KIND\",\"skipped\":$HOOK_SKIPPED,\"safe_mode\":$HOOK_SAFE_MODE,\"skip_reason\":\"$SAFE_SKIP_REASON\"}"
 
 # Append to JSONL — redirect all errors to /dev/null so a full disk or
 # read-only filesystem never breaks the hook chain.
