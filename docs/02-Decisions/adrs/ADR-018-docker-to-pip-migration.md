@@ -4,7 +4,7 @@ title: Docker-to-pip Migration -- Service Infrastructure Change
 status: accepted
 implementation_status: partial
 date: '2026-04-11'
-supersedes: []
+supersedes: [ADR-011]
 superseded_by: null
 implementation_files: []
 tier: maintainer

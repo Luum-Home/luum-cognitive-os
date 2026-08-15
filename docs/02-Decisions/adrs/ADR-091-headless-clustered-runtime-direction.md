@@ -4,7 +4,7 @@ title: Headless and Clustered Runtime Direction
 status: accepted
 implementation_status: partial
 date: '2026-04-30'
-supersedes: []
+supersedes: [ADR-084]
 superseded_by: null
 implementation_files: []
 tier: maintainer

@@ -1,5 +1,5 @@
 ---
-status: Accepted
+status: accepted
 date: 2026-05-14
 deciders: Cognitive OS maintainers
 tags:
@@ -7,7 +7,7 @@ tags:
 - telemetry
 - slo
 - subagents
-implementation_status: Implemented
+implementation_status: implemented
 adr: 309
 title: Current-Window Subagent Spawn SLOs
 implementation_files:
