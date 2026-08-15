@@ -12,8 +12,52 @@ Copyright UncleCode
 Licensed under the Apache License, Version 2.0
 https://github.com/unclecode/crawl4ai
 
-This product includes software developed by UncleCode as part of the
-Crawl4AI project (Apache-2.0).
+This product includes software developed by UncleCode (https://x.com/unclecode)
+as part of the Crawl4AI project (https://github.com/unclecode/crawl4ai).
+
+Attribution wording above is the sentence the upstream LICENSE requires verbatim;
+verified 2026-08-15 against
+https://raw.githubusercontent.com/unclecode/crawl4ai/main/LICENSE. Declared
+runtime dependency (requirements.txt), imported by
+packages/ecosystem-tools/lib/web_crawler.py. No upstream source vendored.
+
+---
+
+Aider
+Aider-AI/aider
+Licensed under the Apache License, Version 2.0
+https://github.com/Aider-AI/aider
+
+Repo-map concept referenced by cos_lib/repo_map.py and scripts/cos-repo-map,
+whose docstring declares it a pattern-port. First-party implementation: aider is
+not imported and not a declared dependency. Separately,
+cos_lib/harness_adapter/aider.py parses aider's chat-transcript format for
+interoperability. License verified 2026-08-15 against
+https://raw.githubusercontent.com/Aider-AI/aider/main/LICENSE.txt.
+
+---
+
+DSPy
+Copyright (c) 2023 Stanford Future Data Systems
+Licensed under the MIT License
+https://github.com/stanfordnlp/dspy
+
+Referenced by cos_lib/dspy_pilot.py and scripts/cos-dspy-pilot as an optional
+integration seam. The package is probed for via importlib.util.find_spec and
+never imported; it is not a declared dependency. License verified 2026-08-15
+against https://raw.githubusercontent.com/stanfordnlp/dspy/main/LICENSE.
+
+---
+
+LightRAG
+Copyright (c) 2025 LightRAG Team
+Licensed under the MIT License
+https://github.com/HKUDS/LightRAG
+
+Retrieval concept referenced in a comment in cos_lib/memory_retrieval_benchmark.py.
+No upstream source present; not imported and not a declared dependency. License
+verified 2026-08-15 against
+https://raw.githubusercontent.com/HKUDS/LightRAG/main/LICENSE.
 
 ---
 

@@ -11,8 +11,34 @@
 #   annex_f       - Path to the Annex F compliance dossier (relative to repo root)
 #   notes         - Free-form compliance notes
 #
+# Fields added 2026-08-15 (additive; the generator reads entries with .get() and
+# ignores unknown keys, so older entries stay valid without them):
+#   adoption_form    - HOW the upstream relates to this repo. This is the fact a
+#                      reviewer needs and the one the older entries do not state.
+#                      Vocabulary, narrowest to broadest contact with upstream code:
+#                        conceptual-reference   - named in a comment/docstring; no
+#                                                 upstream code, no import, no dependency
+#                        optional-probe         - code checks whether the upstream
+#                                                 package is importable; never imports it
+#                        pattern-reimplementation - the idea was rebuilt first-party;
+#                                                 no upstream code present
+#                        declared-dependency    - listed in requirements/pyproject and
+#                                                 imported at runtime; not vendored
+#                        ported-code            - upstream source copied and adapted
+#   landed           - Date the adoption first reached the default branch, from
+#                      `git log --follow --diff-filter=A`
+#   license_verified - Date + method the SPDX/copyright fields were checked against
+#                      the raw upstream LICENSE (not a README, not memory)
+#
+# Status vocabulary note (2026-08-15): the four entries added on this date carry
+# status INVENTORIED-PENDING-REVIEW. It is not a verdict. It records that the
+# adoption is now on the list with its form, files and date established, and that
+# nobody has assessed its legal posture. Assigning ALLOWED/BLOCKED/HOLD to these is
+# the reviewer's call under manifests/external-tool-adoption-freeze.yaml
+# unfreeze_requires item 1, not the inventory's.
+#
 # Schema version: 1
-# Last updated: 2026-05-11
+# Last updated: 2026-08-15
 
 schema_version: 1
 
@@ -157,4 +183,135 @@ entries:
       installation through the typecheck extra or uvx. Verify exact LICENSE
       copyright line before any vendoring, though current adoption is subprocess
       tooling only.
+
+  # ---------------------------------------------------------------------------
+  # Backfill 2026-08-15 — four adoptions that landed before the 2026-05-11 freeze
+  # and were never inventoried here. Found by cross-reading
+  # manifests/external-tool-adoption-freeze.yaml (pending_on_unfreeze block,
+  # commit cb8fcbe36) against this manifest. Two of them (LightRAG, Crawl4AI) were
+  # believed to be inventoried already; they were not. Reproduce:
+  #   grep -ciE 'aider|dspy|lightrag|crawl4ai' manifests/external-tool-licenses.yaml
+  # returned 1 before this backfill, and the single hit was the word "LightRAG"
+  # inside the MegaMemory notes, not an entry.
+  # ---------------------------------------------------------------------------
+
+  - name: "Aider"
+    upstream_url: "https://github.com/Aider-AI/aider"
+    spdx: "Apache-2.0"
+    status: "INVENTORIED-PENDING-REVIEW"
+    copyright: "MISSING — upstream LICENSE.txt is the unmodified Apache-2.0 body; the copyright line exists only as the unfilled template in the appendix"
+    attribution: "Repo-map concept referenced from Aider-AI/aider (Apache-2.0). Implementation is first-party; no upstream source present."
+    adoption_form: "pattern-reimplementation"
+    landed: '2026-05-10'
+    license_verified: "2026-08-15 — WebFetch of https://raw.githubusercontent.com/Aider-AI/aider/main/LICENSE.txt returned the Apache-2.0 body (Version 2.0, January 2004). Note: Apache-2.0, NOT MIT."
+    cos_files:
+      - "cos_lib/repo_map.py"
+      - "scripts/cos-repo-map"
+    annex_f: "NONE — no Annex F dossier was written for this adoption"
+    notes: >
+      Form evidence, verbatim from the cos_lib/repo_map.py module docstring (lines 4-6):
+      "Pattern-port of Aider's repo-map idea: build a compact, token-budgeted map of
+      relevant repository files/symbols, then overlay COS governance context. This is
+      first-party code; no Aider runtime dependency is required."
+      Corroborated mechanically: `grep -rnE '^\s*(import|from)\s+aider\b' --include='*.py' .`
+      returns zero rows, and `grep -in aider requirements.txt pyproject.toml` returns zero
+      rows — aider is neither imported nor declared as a dependency.
+      scripts/cos-repo-map is a 23-line argparse wrapper that calls
+      cos_lib.repo_map.build_repo_map; it contains no upstream-derived logic.
+      SEPARATE RELATIONSHIP, deliberately not listed in cos_files because no code is
+      adopted: cos_lib/harness_adapter/aider.py (registered in
+      cos_lib/compatibility_layer.py:97-98) parses aider's chat-transcript FORMAT
+      (.aider.chat.history.md) so COS can ingest sessions produced by the tool. That is
+      interoperability with an output format, a different relationship from porting an
+      idea, and it is recorded here so a reviewer sees both and can tell them apart.
+      install.sh also lists "aider" as a supported harness target (line 25).
+      NOT ASSESSED by this entry: whether the reimplementation is substantively
+      independent of upstream's algorithm. This entry records that the docstring
+      declares a pattern-port and that no upstream source is present; it does not
+      compare the two implementations.
+
+  - name: "DSPy"
+    upstream_url: "https://github.com/stanfordnlp/dspy"
+    spdx: "MIT"
+    status: "INVENTORIED-PENDING-REVIEW"
+    copyright: "Copyright (c) 2023 Stanford Future Data Systems"
+    attribution: "Optional integration seam for stanfordnlp/dspy (MIT). No upstream source present; the package is probed for, never imported."
+    adoption_form: "optional-probe"
+    landed: '2026-05-10'
+    license_verified: "2026-08-15 — WebFetch of https://raw.githubusercontent.com/stanfordnlp/dspy/main/LICENSE returned MIT with the copyright line quoted above."
+    cos_files:
+      - "cos_lib/dspy_pilot.py"
+      - "scripts/cos-dspy-pilot"
+    annex_f: "NONE — no Annex F dossier was written for this adoption"
+    notes: >
+      Weakest form of contact in this manifest. cos_lib/dspy_pilot.py is 46 lines and
+      the only reference to upstream is a capability probe:
+      `importlib.util.find_spec("dspy") is not None`. It never imports dspy; the
+      dataclass (DspyPilotReport) and the input/output signature it emits are written
+      in-repo. `grep -rnE '^\s*(import|from)\s+dspy\b' --include='*.py' .` returns zero
+      rows, and dspy appears in neither requirements.txt nor pyproject.toml — so the
+      probe reports status "dependency-missing" on a default install.
+      What IS borrowed is vocabulary: "signature" with inputs/outputs is DSPy's term of
+      art, here a plain dict returned by sdd_verify_signature().
+      Already recorded elsewhere, though not as a license entry:
+      manifests/feature-tool-due-diligence.yaml:23-26 carries tool_id dspy with the same
+      upstream link. That is a due-diligence row, not an attribution row; this entry does
+      not duplicate it, it closes the license-manifest gap.
+
+  - name: "LightRAG"
+    upstream_url: "https://github.com/HKUDS/LightRAG"
+    spdx: "MIT"
+    status: "INVENTORIED-PENDING-REVIEW"
+    copyright: "Copyright (c) 2025 LightRAG Team"
+    attribution: "Retrieval concept referenced from HKUDS/LightRAG (MIT). No upstream source present."
+    adoption_form: "conceptual-reference"
+    landed: '2026-05-08'
+    license_verified: "2026-08-15 — WebFetch of https://raw.githubusercontent.com/HKUDS/LightRAG/main/LICENSE returned MIT with the copyright line quoted above."
+    cos_files:
+      - "cos_lib/memory_retrieval_benchmark.py"
+    annex_f: "NONE — no Annex F dossier was written for this adoption"
+    notes: >
+      CORRECTS A STANDING CLAIM. manifests/external-tool-adoption-freeze.yaml (line 79-81)
+      states LightRAG is "recorded in NOTICE.md and manifests/external-tool-licenses.yaml".
+      It was in neither. Before this entry,
+      `grep -in lightrag manifests/external-tool-licenses.yaml NOTICE NOTICE.md` returned
+      exactly two rows, both the phrase "ONNX embedder deferred to LightRAG slice" inside
+      the MegaMemory notes — a forward-looking mention of a different project, not an entry
+      for this one. Root NOTICE had zero LightRAG rows.
+      Form evidence: the sole reference in code is the comment at
+      cos_lib/memory_retrieval_benchmark.py:139, verbatim:
+      "# LightRAG-inspired dual-level local proxy: precise title/entity".
+      Landed 2026-05-08 in commit e6b41fd43 "feat(memory): add retrieval benchmark Slice 0"
+      (`git log --follow --diff-filter=A -- cos_lib/memory_retrieval_benchmark.py`).
+      No import, no dependency declaration.
+
+  - name: "Crawl4AI"
+    upstream_url: "https://github.com/unclecode/crawl4ai"
+    spdx: "Apache-2.0"
+    status: "INVENTORIED-PENDING-REVIEW"
+    copyright: "MISSING — upstream LICENSE is the unmodified Apache-2.0 body with no filled-in copyright line. Upstream adds a MANDATORY attribution clause, quoted verbatim in notes."
+    attribution: "This product includes software developed by UncleCode (https://x.com/unclecode) as part of the Crawl4AI project (https://github.com/unclecode/crawl4ai)."
+    adoption_form: "declared-dependency"
+    landed: '2026-03-28'
+    license_verified: "2026-08-15 — WebFetch of https://raw.githubusercontent.com/unclecode/crawl4ai/main/LICENSE returned the Apache-2.0 body plus an explicit attribution requirement."
+    cos_files:
+      - "requirements.txt"
+      - "packages/ecosystem-tools/lib/web_crawler.py"
+    annex_f: "NONE — no Annex F dossier was written for this adoption"
+    notes: >
+      Strongest form of contact among the four backfilled entries, and the only one that
+      is an actual dependency: requirements.txt:31 pins `crawl4ai>=0.8.0`, and
+      packages/ecosystem-tools/lib/web_crawler.py imports it directly at lines 23 and 179
+      (`from crawl4ai import AsyncWebCrawler, BrowserConfig, CrawlerRunConfig`;
+      `from crawl4ai.extraction_strategy import JsonCssExtractionStrategy`), degrading to a
+      urllib+regex fallback when absent. No upstream source is vendored into this repo.
+      ATTRIBUTION DEFECT FOUND, now fixed in the root NOTICE. The upstream LICENSE requires
+      this exact sentence in distributions:
+      "This product includes software developed by UncleCode (https://x.com/unclecode) as
+      part of the Crawl4AI project (https://github.com/unclecode/crawl4ai)."
+      The root NOTICE carried a paraphrase that dropped both URLs. Verified 2026-08-15 by
+      fetching the raw upstream LICENSE; the two URLs were added to NOTICE on the same date.
+      Crawl4AI was present in the root NOTICE but absent from this manifest and from
+      NOTICE.md before this entry. It is separately recorded in
+      manifests/external-tools-adoption.yaml:214-216 with verdict INTEGRATE.
 
