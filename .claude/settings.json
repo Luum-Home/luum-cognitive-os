@@ -202,7 +202,7 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SubagentStart \"$CLAUDE_PROJECT_DIR/hooks/subagent-context-injector.sh\"",
-            "async": true
+            "async": false
           }
         ]
       }

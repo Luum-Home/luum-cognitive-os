@@ -1052,10 +1052,18 @@ harness:
 
     # ── SubagentStart ─────────────────────────────────────────────────────────
     # Codex: unsupported (SubagentStart not emitted by Codex v0.126.0-alpha.8)
+    # async MUST stay false. SubagentStart inserts context before the subagent's
+    # first prompt; async output is delivered on the NEXT conversation turn, which
+    # for a subagent never comes. Registered async:true, this hook emitted a
+    # correct 10 KB payload that reached 0 of 149 subagent transcripts (measured
+    # 2026-08-15, ADR-342 question 4). Emission was never the defect.
+    # If the hook is ever too slow to block on, make it faster — do not re-enable
+    # async, which is precisely the setting that guarantees non-arrival.
+    # Arrival check: scripts/check_subagent_context_arrival.py
     subagent-context-injector:
       script: hooks/subagent-context-injector.sh
       event: SubagentStart
-      async: true
+      async: false
       scope: os-only
 
     # ── PreCompact ────────────────────────────────────────────────────────────
