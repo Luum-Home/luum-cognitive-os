@@ -6,7 +6,7 @@
   "harness": "codex",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 827,
+  "projected_primitive_count": 828,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": false,
@@ -1707,6 +1707,13 @@
       "fidelity": "documented-only",
       "portable_id": "hooks/_lib/timing.sh",
       "primitive_file": "primitives/other-script/hooks-lib-timing-sh-33b16f4f6c.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/tool-outcome.sh",
+      "primitive_file": "primitives/other-script/hooks-lib-tool-outcome-sh-8288096b8b.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {

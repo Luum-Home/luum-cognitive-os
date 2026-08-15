@@ -2386,6 +2386,7 @@ hooks:
     script: hooks/prompt-quality-llm.sh
   protected-config-write-guard:
     behavior_tests:
+    - tests/contracts/test_opencode_hooks_schema_conformance.py
     - tests/contracts/test_opencode_native_adapter_design.py
     - tests/contracts/test_primitive_contract_registry.py
     - tests/unit/test_governance_policy_hook_adoption.py
@@ -2829,6 +2830,7 @@ hooks:
     - tests/behavior/test_pentest_self.py
     - tests/chaos/test_secret_detector_exercised.py
     - tests/contracts/test_killswitch.py
+    - tests/contracts/test_opencode_hooks_schema_conformance.py
     - tests/contracts/test_opencode_native_adapter_design.py
     - tests/contracts/test_p95_hook_latency.py
     - tests/contracts/test_primitive_contract_registry.py
@@ -3499,8 +3501,10 @@ hooks:
     script: hooks/state-heartbeat.sh
   subagent-budget-enforcer:
     behavior_tests:
+    - tests/contracts/test_opencode_hooks_schema_conformance.py
     - tests/contracts/test_primitive_closure_ratchet.py
     - tests/contracts/test_subagent_budget_enforcer.py
+    - tests/contracts/test_subagent_budget_enforcer_modes.py
     bypass_policy: not_required_warning_only
     criticality: coordination
     event: PostToolUse
