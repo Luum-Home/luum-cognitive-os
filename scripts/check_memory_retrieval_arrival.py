@@ -240,19 +240,26 @@ def main() -> int:
         )
         return 0
 
-    if rows and not real_ids:
-        # Rows exist but no transcript corroborates them. Either the transcripts
-        # were rotated away, or the rows were manufactured. Not an arrival.
+    if rows:
+        # Rows exist, none corroborated. Three causes, and this must NOT be
+        # reported as "the hook is not recording" — it demonstrably did record.
+        # The most common cause is benign and was observed on 2026-08-15: the
+        # harness flushes a session's transcript lazily, so a row written
+        # seconds ago has no transcript backing it YET. The others are that the
+        # transcripts were rotated away, or that the rows were manufactured.
+        # All three are "not yet proven", none is "proven absent".
         print(
-            "VERDICT: UNCORROBORATED — ledger has rows but no transcript retrieval "
-            "backs them. Do not count as coverage."
+            f"VERDICT: PENDING CORROBORATION — {len(rows)} ledger row(s), none yet "
+            "matched to a transcript retrieval. The hook IS writing; arrival is not "
+            "yet provable. Most often the current session's transcript has not been "
+            "flushed — re-run after the session ends. Do not count as coverage until "
+            "it turns to ARRIVES."
         )
         return 1
 
     print(
-        f"VERDICT: DOES NOT ARRIVE — {len(events)} real retrieval(s) on record, "
-        f"{len(rows)} ledger row(s) corroborated by them. The hook is not recording "
-        "what the harness retrieves."
+        f"VERDICT: DOES NOT ARRIVE — {len(events)} real retrieval(s) on record and "
+        "0 ledger rows. The hook is not recording what the harness retrieves."
     )
     return 1
 

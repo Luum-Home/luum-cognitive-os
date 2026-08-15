@@ -219,11 +219,38 @@ python3 scripts/check_memory_retrieval_arrival.py -v
 # exit=1
 ```
 
-**Sigue en rojo, y está bien.** El código está arreglado; la llegada se prueba
-cuando ocurra una recuperación real con el hook nuevo instalado. Backfillear el
-ledger con las recuperaciones de julio para que el checker diera 0 habría sido
-el verde barato de este entregable, con timestamps de hoy sobre eventos de hace
-un mes. No se hizo.
+### Y después ocurrió una recuperación real
+
+Con el hook ya commiteado, se hizo un `mem_search` de verdad por el harness
+—ninguna simulación, ninguna fixture— y **el ledger apareció en producción**:
+
+```bash
+ls -la .cognitive-os/metrics/lifecycle-reinforcement.jsonl
+# -rw-r--r--  148  Aug 15 19:42
+cat .cognitive-os/metrics/lifecycle-reinforcement.jsonl
+# {"timestamp":"2026-08-15T22:42:56Z","tool":"mem_search","outcome":"hit",
+#  "observation_ids":["32048"],"n":1,"project":"luum-cognitive-os"}
+
+grep -c 'engram-reinforce' .cognitive-os/metrics/hook-timing.jsonl
+# 1   ← primer disparo registrado del hook, nunca antes
+```
+
+El id `32048` es exactamente la observación que esa búsqueda devolvió. El hook
+escribe, en producción, sobre una recuperación real.
+
+**Y eso destapó un defecto en mi propio verificador**, que vale registrar porque
+es del mismo tipo que todo lo demás: con la fila fresca en el ledger, el checker
+seguía diciendo *"DOES NOT ARRIVE — the hook is not recording what the harness
+retrieves"*. Falso, y ya demostrablemente falso. La causa es benigna: el harness
+vuelca el transcript de la sesión en curso con retraso, así que una fila escrita
+hace segundos todavía no tiene transcript que la respalde. El veredicto se
+corrigió a **`PENDING CORROBORATION`** — *el hook SÍ está escribiendo; la llegada
+todavía no es demostrable* — que sigue saliendo por 1, porque no probado no es
+probado, pero ya no afirma lo contrario de lo que se ve.
+
+**El ledger no se backfilleó.** Llenarlo con las recuperaciones de julio para que
+el checker diera 0, con timestamps de hoy sobre eventos de hace un mes, era el
+verde barato de este entregable. La única fila que hay la escribió el harness.
 
 ### Que la rama positiva no sea inalcanzable
 
@@ -288,13 +315,15 @@ decisión.
 
 ## 6. Lo que queda abierto
 
-- **La llegada no está probada en producción.** Está probado que el hook
-  convierte payloads reales en filas correctas, y que el checker distingue
-  llegada de no-llegada. Falta una recuperación real con el hook instalado. El
-  comando que lo va a contestar ya existe y hoy da 1.
-- **`async: true`** en el registro: no verifiqué si el harness ejecuta hooks
-  async con el mismo payload. Todo lo medido acá es sobre el contenido del
-  payload, no sobre el modo de invocación.
+- **La escritura en producción está probada; la corroboración todavía no.** El
+  harness disparó el hook y el ledger se escribió (§4). Falta que el transcript
+  de esta sesión se vuelque para que el checker pueda cruzar la fila contra la
+  recuperación que la causó. Correr de nuevo `check_memory_retrieval_arrival.py`
+  después de cerrar la sesión: debería pasar de `PENDING CORROBORATION` a
+  `ARRIVES`. Si no pasa, hay algo más.
+- **`async: true`** en el registro: quedó demostrado que un hook async se ejecuta
+  y escribe (el ledger apareció), pero no medí si el payload que recibe es
+  idéntico en todos los casos.
 - **`classify_tool_outcome()` sobre tools MCP** devuelve `absent` sobre payloads
   legibles. Este hook lo esquiva; otros consumidores puede que no.
 - **El puenteo de `MemoryRetriever`** (premisa 7) sigue en pie: el chequeo de
