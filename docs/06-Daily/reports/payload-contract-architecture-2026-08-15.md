@@ -118,7 +118,28 @@ No es un caso aislado: el canario encuentra **otros seis** consumidores apoyados
 en el mismo campo fantasma (§4.2), incluido `hooks/tool-sequence-capture.sh:62`,
 que es el hook del que sale el campo `success` de la telemetría.
 
-### 0.4 «El código fue correcto alguna vez» — no hay evidencia de eso
+### 0.4 El archivo se llama distinto, y los consumidores son diez, no cinco
+
+El encargo habla de «un `error-events.jsonl` de 11 filas» leído por cinco
+consumidores. **`error-events.jsonl` no existe en el repo** (`find . -name
+'error-events.jsonl'` → 0). El archivo real es
+`.cognitive-os/metrics/error-learning.jsonl`, y sí tiene 11 filas.
+
+```bash
+grep -rln 'error-learning.jsonl' bin/ cos_lib/ lib/ scripts/ | wc -l   # → 10
+```
+
+Diez consumidores, no cinco: `bin/cos-errors`, `cos_lib/error_insights.py`,
+`feedback_consumer.py`, `singularity.py`, `learning_pipeline.py`,
+`self_improvement.py`, `consumer_improvement_proposals.py`,
+`evolve_task_queue.py`, `kpi_collector.py`, `governed_self_improvement.py`.
+El encargo subestima el blast radius del arreglo: cuando el hook empiece a
+escribir de verdad, diez lectores van a empezar a ver datos por primera vez —
+incluidos tres del lazo de auto-mejora. Eso refuerza el ítem 2 de §6 (los
+characterization tests) y agrega una pregunta que este informe no responde:
+**¿esos diez consumidores están listos para un archivo que crece?**
+
+### 0.5 «El código fue correcto alguna vez» — no hay evidencia de eso
 
 Los 57 transcripts cubren desde el más viejo disponible hasta hoy y ninguno trae
 `exit_code`. Si alguna versión del harness lo mandó, fue antes de la ventana de
