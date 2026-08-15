@@ -125,7 +125,12 @@ KPIs suben -> loop cerrado
 
 ### Hooks (46 registered) — Runtime Interceptors
 
-Hooks fire automatically at specific lifecycle points. They run shell scripts. 46 hooks are registered in `.claude/settings.json` across 8 lifecycle events; 94 hook scripts exist in `hooks/`.
+Hooks fire automatically at specific lifecycle points. They run shell scripts. Registrations live in `.claude/settings.json` across its lifecycle events; the scripts live in `hooks/`. Measure both:
+
+```bash
+ls hooks/*.sh | wc -l   # scripts on disk
+python3 -c "import json;d=json.load(open('.claude/settings.json'));print(sum(len(m.get('hooks',[])) for ev in d.get('hooks',{}).values() for m in ev))"
+```
 
 | Hook | Trigger | Purpose |
 |------|---------|---------|

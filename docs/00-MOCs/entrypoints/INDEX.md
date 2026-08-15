@@ -147,7 +147,7 @@ These files record inter-session continuity state — read the most recent one t
 
 | File | Description |
 |------|-------------|
-| [hooks.md](hooks.md) | Hook system: 94 scripts, 46 registered, lifecycle and security profiles |
+| [hooks.md](hooks.md) | Hook system: lifecycle and security profiles. Counts: `ls hooks/*.sh | wc -l` on disk, registered via `.claude/settings.json` |
 | [rules.md](../../05-Methodology/root/rules.md) | Rules system: 16 always-loaded core rules, 150+ total |
 | [skills.md](skills.md) | Skill system: project vs global, auto-detection, auto-improvement, creation |
 | [automation.md](../../05-Methodology/root/automation.md) | Session lifecycle, CI/CD (GitHub Actions), scheduled tasks, Agent Teams |
@@ -189,7 +189,7 @@ These files record inter-session continuity state — read the most recent one t
 
 | File | Description |
 |------|-------------|
-| [testing.md](../../09-Quality/root/testing.md) | Test suite: 1714 tests across 60 files, pytest + Go TUI dashboard |
+| [testing.md](../../09-Quality/root/testing.md) | Test suite: pytest + Go TUI dashboard. Size: `python3 -m pytest --collect-only -q | tail -1` |
 | [testing-cognitive-os.md](../../09-Quality/root/testing-cognitive-os.md) | Testing the Cognitive OS itself — meta-test approach |
 | [testing-cognitive-os-suite.md](../../09-Quality/root/testing-cognitive-os-suite.md) | 3-layer test suite for Cognitive OS |
 | [agent-teams-testing.md](../../07-Capabilities/root/agent-teams-testing.md) | Test strategy for Agent Teams multi-agent workflows |
