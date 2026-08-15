@@ -50,8 +50,12 @@ def _registered_claude_hook_paths() -> set[str]:
 
 def _registered_codex_hook_paths() -> set[str]:
     data = json.loads((PROJECT_ROOT / ".codex" / "hooks.json").read_text(encoding="utf-8"))
+    # Codex nests the event map under a top-level "hooks" namespace (5ba5ab18f).
+    # Reading the file root instead yields an empty registry, which reads as
+    # "nothing is projected to Codex" — a false negative, not a missing hook.
+    events = data.get("hooks", data) if isinstance(data, dict) else {}
     hooks: set[str] = set()
-    for groups in data.values():
+    for groups in events.values():
         if not isinstance(groups, list):
             continue
         for group in groups:

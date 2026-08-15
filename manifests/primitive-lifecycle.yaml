@@ -784,6 +784,36 @@ primitives:
   exit_behavior: sourced-library
   metrics_file: "none"
   consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.
+- id: hooks/_lib/tool-outcome.sh
+  kind: script-lib
+  owner_adr: ADR-126
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: hook-runtime-support
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/tool-outcome.sh
+  runtime_projection: true
+  runtime_dependency_of:
+  - hooks/error-learning.sh
+  - hooks/error-pipeline.sh
+  behavior_evidence: Classifies PostToolUse outcome by tool_response type because the harness sends no exit_code; sourced by the two error hooks, both in the default install boundary, so it must travel with them.
+  evidence_commands:
+  - bash -n hooks/_lib/tool-outcome.sh hooks/error-learning.sh hooks/error-pipeline.sh
+  - python3 -m pytest tests/red_team/portability/test_tool-outcome.py tests/audit/test_instrument_productivity.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/tool-outcome.sh
+  rollback_or_repair_command: Inline the classifier back into hooks/error-learning.sh and hooks/error-pipeline.sh and drop the source line.
+  sunset_criteria: Remove when the harness emits a first-class exit_code on PostToolUse and both error hooks read it directly.
+  docs_claim_level: observe
+  exit_behavior: sourced-library
+  metrics_file: "none"
+  consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.
 - id: hooks/_lib/tuning.sh
   kind: script-lib
   owner_adr: ADR-314

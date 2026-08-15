@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Structural Code Discovery — conditional, never unconditional
 
 > **The directive fires only when the graph can answer.** An order to consult a
@@ -10,7 +11,7 @@
 `codebase-memory-mcp`, does not write MCP config for any harness, and does not
 require the server to be present.
 
-## The rule
+## Rule
 
 Before using `codebase-memory-mcp` tools (`search_graph`, `query_graph`,
 `trace_path`, `get_architecture`, `search_code`, ...) for structural code
