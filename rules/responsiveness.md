@@ -27,7 +27,7 @@ The orchestrator communicates proactively. Silence while waiting for tools, agen
 - Maximum 10-15 agents per "sprint" within a session
 - After each sprint: commit changes, run tests, checkpoint progress
 - If context feels heavy (many accumulated notifications), proactively:
-  1. Save session state to disk via `lib/session_state.py`
+  1. Save session state to disk via `cos_lib/session_state.py`
   2. Suggest a session split to the user
   3. Save summary to Engram before it is too late
 

@@ -52,7 +52,7 @@ Agent IDs are sanitized: only alphanumeric characters, hyphens, underscores, and
 - **Timeout**: agent considered stale after the orchestrator's selected max age.
 - **Payload**: `{type, agent_id, phase, step, tokens_used, alive, timestamp}`.
 - **Final heartbeat**: agents publish `alive: false` on graceful stop when the harness supports it.
-- **Snapshots**: `lib/state_heartbeat.py` and native heartbeat hooks persist current runtime state.
+- **Snapshots**: `cos_lib/state_heartbeat.py` and native heartbeat hooks persist current runtime state.
 
 ## Question/Answer Flow
 
@@ -91,7 +91,7 @@ python3 scripts/orchestrator.py kill-hung <agent_id>
 
 ## Agent-to-Agent Messaging
 
-`lib/agent_message_bus.py` and `scripts/cos-agent-message` remain the ADR-185 store-and-forward queue for peer messages such as `audit_finding`, `implementation_request`, `question`, `reply`, and `status`. This path is asynchronous JSONL with `flock`; it is not real-time peer-to-peer. Its lifecycle is pending sunset once `/agent-control` plus cosd directed queues cover equivalent acknowledgement, replay, and gate behavior.
+`cos_lib/agent_message_bus.py` and `scripts/cos-agent-message` remain the ADR-185 store-and-forward queue for peer messages such as `audit_finding`, `implementation_request`, `question`, `reply`, and `status`. This path is asynchronous JSONL with `flock`; it is not real-time peer-to-peer. Its lifecycle is pending sunset once `/agent-control` plus cosd directed queues cover equivalent acknowledgement, replay, and gate behavior.
 
 ## Graceful Degradation
 
@@ -115,7 +115,7 @@ Messages are capped at 256KB. Larger messages have their `content` field truncat
 | `packages/agent-coordination/lib/agent_bus.py` | Valkey transport plus filesystem interrupt/control/answer fallback. |
 | `hooks/agent-control-inbound-guard.sh` | PreToolUse boundary enforcement for inbound stop/pause/resume. |
 | `packages/agent-lifecycle/lib/harness_adapter/base.py` | Surfaces pending controls and answers as `inbound_signal`. |
-| `lib/state_heartbeat.py` | Publishes and reads heartbeat snapshots. |
+| `cos_lib/state_heartbeat.py` | Publishes and reads heartbeat snapshots. |
 | `agent-bus-monitor.sh` | SessionStart advisory check for Valkey connectivity and active agents. |
 | `agent_dashboard.py` | Terminal UI for live and fallback status inspection. |
 | `/agent-control` | Skill-routed operator workflow for natural-language control requests. |
@@ -131,9 +131,9 @@ Messages are capped at 256KB. Larger messages have their `content` field truncat
 ## Running the Dashboard
 
 ```bash
-python lib/agent_dashboard.py
-python lib/agent_dashboard.py --url redis://valkey:6379
-python lib/agent_dashboard.py --refresh 2
+python cos_lib/agent_dashboard.py
+python cos_lib/agent_dashboard.py --url redis://valkey:6379
+python cos_lib/agent_dashboard.py --refresh 2
 ```
 
 ## Contextual Trigger

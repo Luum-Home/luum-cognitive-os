@@ -97,7 +97,7 @@ security:
 
 - **Hook**: `hooks/rate-limiter.sh` — implementado para PreToolUse sobre Bash,
   Agent, Edit y Write. **Sin registrar en `.claude/settings.json` al 2026-08-15.**
-- **Library**: `lib/rate_limiter.py` — token bucket, warnings, priority lane, diversity penalty, queue API
+- **Library**: `cos_lib/rate_limiter.py` — token bucket, warnings, priority lane, diversity penalty, queue API
 - **State**: `.cognitive-os/rate-limit-state.json` — counters, buckets, signatures, cost
 - **Queue**: `.cognitive-os/rate-limit-queue.jsonl` — queued retries
 - **Architecture**: `docs/04-Concepts/architecture/rate-limiter-flow-control.md`

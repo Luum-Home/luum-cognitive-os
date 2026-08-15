@@ -49,7 +49,7 @@ check_capability_level "clarification-gate"  # exits 0 if disabled at current le
 
 ## Python API
 
-The `lib/capability_levels.py` module provides:
+The `cos_lib/capability_levels.py` module provides:
 
 | Function | Description |
 |----------|-------------|

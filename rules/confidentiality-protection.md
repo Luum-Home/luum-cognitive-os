@@ -53,7 +53,7 @@ scan_external_paths: true
 ## Enforcement
 
 - **Hook**: `hooks/confidentiality-enforcer.sh` (PostToolUse on Edit|Write)
-- **Lib**: `lib/confidentiality_scanner.py`
+- **Lib**: `cos_lib/confidentiality_scanner.py`
 - **Scope**: Only scans `docs/`, `README*`, `*.md`, `CHANGELOG*` — not source code
 - **Behavior**: BLOCK (exit 2) on violation
 

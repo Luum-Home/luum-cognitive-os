@@ -7,7 +7,7 @@
 ### 1. Transparency
 
 The user must know their cost at all times. Every session MUST report cost on completion.
-Cost-per-action should be estimable before execution. Use `lib/cost_dashboard.py` for
+Cost-per-action should be estimable before execution. Use `cos_lib/cost_dashboard.py` for
 formatted cost reports and `format_compact_status()` for mid-session awareness.
 
 ### 2. Worthiness
@@ -58,7 +58,7 @@ Check `rules/model-routing.md` for the routing table.
 
 ## Integration
 
-- **Cost Dashboard**: `lib/cost_dashboard.py` provides session/daily/monthly reports
+- **Cost Dashboard**: `cos_lib/cost_dashboard.py` provides session/daily/monthly reports
 - **Resource Governance**: `rules/resource-governance.md` enforces budget limits
 - **Model Routing**: `rules/model-routing.md` maps tasks to optimal models
 - **Context Optimization**: `rules/context-optimization.md` reduces token overhead

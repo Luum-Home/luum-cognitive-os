@@ -16,7 +16,7 @@ The notification includes a `<result>` field with the agent's final output, alre
 ### Priority 2: Engram search
 Agents are instructed (via agent-preamble.md) to ALWAYS save findings to Engram before finishing. Search by keywords from the task description, not by exact topic_key. Cost: ~100 tokens.
 
-### Priority 3: `lib/agent_output_extractor.py`
+### Priority 3: `cos_lib/agent_output_extractor.py`
 Python module that extracts assistant text from JSONL and parses the final `RESULT:` contract into `compact_result`. Functions: `extract_assistant_text()`, `extract_last_response()`, `summarize_agent_output()`. Cost: ~500 tokens for the bash call.
 
 ### Priority 4: `jq` one-liner
@@ -38,7 +38,7 @@ A single Read attempt on a JSONL file wastes 10K+ tokens. Multiple attempts (off
 
 - **agent-preamble.md**: Instructs all sub-agents to save findings to Engram (ensures Priority 2 works)
 - **CLAUDE.md**: Orchestrator rule to use `<result>` first (ensures Priority 1 is followed)
-- **lib/agent_output_extractor.py**: Programmatic extraction (Priority 3)
+- **cos_lib/agent_output_extractor.py**: Programmatic extraction (Priority 3)
 - **scripts/extract-agent-output.sh**: CLI wrapper for manual use
 
 ## Contextual Trigger
