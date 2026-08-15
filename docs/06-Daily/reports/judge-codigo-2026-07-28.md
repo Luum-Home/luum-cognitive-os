@@ -212,7 +212,7 @@ La de 977 líneas es **datos disfrazados de código** — debería ser un manife
 | `raise NotImplementedError` | 1 en todo el código no-test | `git grep -nIE 'raise NotImplementedError' -- '*.py' \| grep -v '^tests/' \| wc -l` |
 | `pass  # TODO` | **0** | `git grep -nIE '^\s*pass\s*#\s*TODO' -- '*.py'` |
 | Paths `/Users/` hardcodeados | **0** (grep exit 1 = cero legítimo, verificado) | `git grep -nI '/Users/' -- '*.py' '*.go' '*.sh' '*.rs' \| grep -v '^tests/'` |
-| Literales `/home/` o `/opt/` | 4 | `git grep -nI -E '"/[h]ome/[a-z]\|"/[o]pt/[a-z]'` |
+| Literales `/home/` o `/opt/` | 4 | `git grep -nI -E '"/home/[a-z]\|"/opt/[a-z]'` |
 | Imports rotos | **0** — las referencias `from lib.` son internas a `workflows/`, resuelven bien en su propio root | `ls -d lib`; `head -20 workflows/DEPRECATED.md` |
 
 La regla del repo contra TODOs en código commiteado **se cumple**. La regla de privacidad local (sin paths de home) **se cumple al 100%**.
