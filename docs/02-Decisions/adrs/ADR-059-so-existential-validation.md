@@ -153,13 +153,17 @@ is small and digestible.
 ### Positive
 - SO goes from "heavy blob" to "lean kernel + modular extensions" — matches
   the operator's stated direction.
-- Adoption friction drops: new user sees 23 skills + 67 hooks, not 137 + 155.
+- Adoption friction drops: a new user sees the `core/` set this ADR sizes at 23
+  skills + 67 hooks instead of the whole tree, which on 2026-04-24 held 137
+  skills and 155 hooks (`ls -d skills/*/ | wc -l`, `ls hooks/*.sh | wc -l`).
 - Measurement replaces intuition: phase 2 tells us whether to keep the PnP
   claim or demote it.
 - Prune pressure (Phase 1) prevents future bloat via a documented cycle.
 
 ### Negative
-- Migration work: 114 skills + 88 hooks to classify and potentially move.
+- Migration work: everything outside the target `core/` set has to be classified
+  and potentially moved — 114 skills + 88 hooks as counted on 2026-04-24
+  (`ls -d skills/*/ | wc -l`, `ls hooks/*.sh | wc -l`).
   ~20-30 hours of human+agent effort distributed over 3 weeks.
 - Risk of archiving legitimate rarely-used agentic primitives (mitigated by 180-day
   window + test-coverage filter).

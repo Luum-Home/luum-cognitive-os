@@ -43,9 +43,11 @@ Measured cost (2026-04-30):
 | Tier-0 only (`{0}`) | 63,067 | ~15,766 |
 | Tier-0 + Tier-1 default (`{0,1}`) | 408,832 | ~102,208 |
 
-Expanding all 112 rules on every agent call costs ~107K tokens — roughly 50× the
+Expanding every rule on each agent call costs ~107K tokens — roughly 50× the
 input size. This inflates context cost, hits the 10K-char `additionalContext`
-truncation cap in Claude Code, and drowns critical rules in noise.
+truncation cap in Claude Code, and drowns critical rules in noise. The table
+above was measured on 2026-04-30 over the 112 rules that existed then; re-measure
+with `ls rules/*.md | wc -l` and the token counts in the row above.
 
 ---
 
@@ -60,7 +62,9 @@ Every `rules/*.md` file carries a `<!-- TIER: N -->` comment on line 1:
 - **Tier-0** (always-on, ~9 rules): mandatory for all agents — `acceptance-criteria`,
   `agent-quality`, `agent-escalation`, `closed-loop-prompts`, `definition-of-done`,
   `phase-aware-agents`, `trust-score`, `RULES-COMPACT`, `ROADMAP`.
-- **Tier-1** (default, ~95 rules): expanded unless operator opts down to Tier-0 only.
+- **Tier-1** (default): every rule not listed under Tier-0 or Tier-2 — expanded
+  unless the operator opts down to Tier-0 only. That was ~95 rules on 2026-04-30;
+  count today with `grep -L 'TIER: [02]' rules/*.md | wc -l`.
 - **Tier-2** (on-demand, ~8 rules): never expanded by default — integrations and
   ecosystem tools (`aguara-integration`, `e2b-integration`, `hcom-integration`,
   `parry-integration`, `repomix-integration`, `tero-integration`, `trailofbits-skills`,
@@ -113,8 +117,9 @@ expansion:
   whether this matters depends on task context.
 - **Tier-0-only risk**: reducing to `[0]` withholds ~95 Tier-1 rules from
   context. Agent escalation rate may increase; monitor before enabling in production.
-- Classification boundary: 95 rules are Tier-1 — the tier system is coarse. Fine-
-  grained per-rule adjustment is possible by editing frontmatter manually.
+- Classification boundary: nearly every rule lands in Tier-1 (~95 of them on
+  2026-04-30) — the tier system is coarse. Fine-grained per-rule adjustment is
+  possible by editing frontmatter manually.
 
 ---
 

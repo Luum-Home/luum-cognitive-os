@@ -25,7 +25,7 @@ Cognitive OS was using approximately 10% of Claude Code's hook capabilities. The
 
 ## Decision
 
-Expand the hook architecture from 4 events (13 hooks) to 10 event types with 3 security profiles:
+Expand the hook architecture from 4 events (13 hooks registered on 2026-03-28) to 10 event types with 3 security profiles:
 
 **New event types added**:
 - **SubagentStart**: Automatic preamble and sidecar injection into sub-agents, replacing manual orchestrator injection.

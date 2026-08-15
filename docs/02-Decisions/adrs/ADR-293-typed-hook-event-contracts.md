@@ -102,7 +102,8 @@ ADR-290 left "237 hooks not migrated" as an open item. This ADR closes that open
 
 ### Negative
 
-- Existing 237 hooks remain on untyped dicts until Phase C/D touches them. The schema lives, the legacy callers do not benefit immediately.
+- Every hook that already exists stays on untyped dicts until Phase C/D touches
+  it — 237 of them on 2026-05-13 (`ls hooks/*.sh | wc -l`). The schema lives, the legacy callers do not benefit immediately.
 - Two patterns will coexist in the codebase during the migration window: typed events for new hooks, untyped dicts for legacy hooks.
 
 ### Risks

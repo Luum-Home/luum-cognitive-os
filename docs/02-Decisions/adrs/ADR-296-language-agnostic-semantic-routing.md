@@ -71,8 +71,8 @@ Expected: `/product-answer` at confidence > 0.6. Pre-ADR result: NONE.
 Replace the Jaccard matcher with a multilingual embedding matcher backed
 by **FastEmbed** (qdrant, MIT). The chosen model is
 `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` (Apache-2.0,
-~220 MB ONNX, 50+ languages, ~9 ms warm latency on CPU). All 196 skills
-participate — the corpus per skill is `routing_intents (if any) +
+~220 MB ONNX, 50+ languages, ~9 ms warm latency on CPU). Every skill in the
+catalog participates — 196 of them on 2026-05-13 (`ls -d skills/*/ | wc -l`) — — the corpus per skill is `routing_intents (if any) +
 description + summary_line`. Cosine similarity is the score; the
 calibrated cutoff is **0.50** (env-overridable via
 `COS_SEMANTIC_THRESHOLD`). Scores above the gate are linearly mapped onto
