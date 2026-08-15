@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import pytest
@@ -31,8 +32,16 @@ def _make_proposal(
 
 
 @pytest.fixture
-def queue(tmp_path: Path) -> EvolveTaskQueue:
-    """Return an in-memory queue backed by a temp SQLite file."""
+def queue(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> EvolveTaskQueue:
+    """Return an in-memory queue backed by a temp SQLite file.
+
+    The project root is repointed at ``tmp_path`` so the queue's error-learning
+    write lands in the test tree. Without this, every run of the cap test
+    appended to the operator's real telemetry.
+    """
+    monkeypatch.setenv("COGNITIVE_OS_PROJECT_DIR", str(tmp_path))
+    monkeypatch.delenv("CODEX_PROJECT_DIR", raising=False)
+    monkeypatch.delenv("CLAUDE_PROJECT_DIR", raising=False)
     db_file = tmp_path / "test-evolve.db"
     return EvolveTaskQueue(db_path=db_file)
 
@@ -112,7 +121,7 @@ class TestDedup:
 
 class TestQueueCap:
     def test_51st_enqueue_returns_none_and_logs(
-        self, queue: EvolveTaskQueue, caplog: pytest.LogCaptureFixture
+        self, queue: EvolveTaskQueue, tmp_path: Path, caplog: pytest.LogCaptureFixture
     ) -> None:
         """Enqueue 50 proposals (fills cap), then 51st must return None."""
         with caplog.at_level("WARNING", logger="cos_lib.evolve_task_queue"):
@@ -134,6 +143,26 @@ class TestQueueCap:
         assert result is None
         assert queue.pending_count() == QUEUE_CAP
         assert any("capacity" in record.message.lower() for record in caplog.records)
+
+        # The saturation record goes to the ONE path consumers read...
+        canonical = tmp_path / ".cognitive-os" / "metrics" / "error-learning.jsonl"
+        orphan = tmp_path / ".cognitive-os" / "error-learning.jsonl"
+        assert canonical.exists(), f"no error-learning row written to {canonical}"
+        assert not orphan.exists(), (
+            "writer resurrected the unread sibling path .cognitive-os/error-learning.jsonl"
+        )
+
+        rows = [json.loads(line) for line in canonical.read_text().splitlines() if line.strip()]
+        assert len(rows) == 1, f"expected exactly 1 saturation row, got {len(rows)}"
+        row = rows[0]
+        # ...in the schema those consumers group on. singularity.py buckets by
+        # type+service and filters by timestamp_epoch; a row missing any of the
+        # three is invisible even when the path is right.
+        for field in ("timestamp", "timestamp_epoch", "type", "service", "fingerprint"):
+            assert field in row, f"canonical reader field {field!r} missing from {row}"
+        assert row["type"] == "QUEUE_CAPACITY"
+        assert row["service"] == "evolve-queue"
+        assert isinstance(row["timestamp_epoch"], int)
 
 
 # ---------------------------------------------------------------------------
