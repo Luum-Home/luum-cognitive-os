@@ -337,10 +337,32 @@ These files record inter-session continuity state — read the most recent one t
 | Skills | 166 top-level `SKILL.md` files | `skills/` |
 | Lib modules | 316 top-level Python files | `lib/` |
 | ADRs | 282 `ADR-*.md` files, including suffixed follow-ups | `docs/02-Decisions/adrs/` |
-| Docs | 1 209 files, including 1 140 markdown files | `docs/` |
+| Docs | 1 955 files, including 1 852 markdown files (1 433 excluding the 419 generated `*.synthesis.md`) | `docs/` |
 | Tests | 3 086 `test_*` files | `tests/` |
 
 ## Entry Points
+
+`docs/00-MOCs/entrypoints/` holds nine files. They are not nine alternatives —
+each answers a different question, and only one is the install door. Use this
+table instead of picking a filename that looks promising.
+
+| Your question | Door | Note |
+|---------------|------|------|
+| "I want to install it" | [getting-started.md](getting-started.md) | **The install door.** `quickstart.md` and `getting-started-quick.md` are redirects to it. |
+| "What is this, and is it for me?" | [../../../README.md](../../../README.md) | Repo landing page: the pitch, and the explicit "Cognitive OS is NOT" list. |
+| "How do I build *with* the OS?" | [HOW-TO-USE-COS.md](HOW-TO-USE-COS.md) | Self-construction, `cos-skill`, using COS in other projects. |
+| "How is it put together?" | [overview.md](overview.md) | Architecture diagram, primitive inventory, data flow, MAPE-K. |
+| "I have a specific question" | [faq.md](faq.md) | Ten themed sections, question-shaped headings. |
+| "Where does topic X live?" | this file (INDEX.md) | 18 categories across the whole `docs/` tree. |
+| "I am an agent — what do I read for this task?" | [AGENTS.md](AGENTS.md) | Task-to-doc routing table, glossary, and a **What NOT to Read** list. |
+| "I am an agent — what are the project's rules?" | [../../../AGENTS.md](../../../AGENTS.md) | Root file, different content: architecture table and vocabulary. |
+| "What is the documentation *about*?" | [README.md](README.md) | Long-range architecture and future layers. Design material, not the adoption path. |
+
+Two pairs share a filename and do **not** share content: `AGENTS.md` and
+`README.md` each exist at the repo root and in this folder. The table above says
+which is which.
+
+### By task
 
 - **New user?** → [getting-started.md](getting-started.md) then [faq.md](faq.md)
 - **Resume a session?** → Latest `SESSION-HANDOFF-*.md` above
