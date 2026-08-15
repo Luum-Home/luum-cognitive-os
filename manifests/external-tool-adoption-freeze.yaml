@@ -34,6 +34,74 @@ gated_path_globs:
   - 'docs/03-PoCs/research/repo-scout/deep/*.md'
   - 'manifests/external-tools-adoption.yaml'
 
+# ADDITIVE 2026-08-15 — inverse index. Purely informational: reading or editing
+# this block changes no policy. `frozen`, `unfreeze_requires` and
+# `gated_path_globs` above are untouched operator decisions.
+#
+# When the unfreeze conditions are met, this is the backlog the operator inherits:
+# repo-scout deep verdicts of 2026-05-06 that said ADOPT and never landed. Each
+# PoC file now carries a matching status note. Measured by
+# scripts/audit_adopt_verdict_linkage.py (read-only, deterministic).
+pending_on_unfreeze:
+  measured_at: '2026-08-15'
+  source_dir: docs/03-PoCs/research/repo-scout/deep/
+  measured_by: scripts/audit_adopt_verdict_linkage.py
+  note: |
+    18 files carry deep_verdict: ADOPT dated 2026-05-06. NONE of the 18 is cited
+    by org/repo slug in any ADR, so "which ones landed" cannot be answered from
+    the ADR corpus — it is answered by looking for the verdict's payload in code.
+    Nothing was adopted AFTER the freeze: every adoption below predates
+    2026-05-11. The freeze held.
+  superseded_by_freeze:
+    # Verdict never reached code. These are the real pending-on-unfreeze items.
+    - repo: OSU-NLP-Group/HippoRAG
+      payload: Personalized-PageRank multi-hop retrieval algorithm
+      verdict_scope: algorithm-only
+    - repo: getzep/graphiti
+      payload: bi-temporal edge schema (event-time vs ingest-time) + cross-encoder rerank
+      verdict_scope: algorithm-only
+    - repo: gepa-ai/gepa
+      payload: reflective text-evolution optimizer
+      verdict_scope: full
+    - repo: MemPalace/mempalace
+      payload: memory scoring/eviction patterns
+      verdict_scope: full
+    - repo: SWE-agent/SWE-agent
+      payload: ACI tool-package shape (tools/* directory)
+      verdict_scope: reference
+  adopted_before_freeze_without_adr:
+    # Freeze does NOT apply — these landed first. What is missing is a written
+    # decision, not permission. Decision debt, not adoption debt.
+    - repo: unclecode/crawl4ai
+      landed: '2026-03-27'
+      where: packages/ecosystem-tools/lib/web_crawler.py, requirements.txt
+      also: manifests/external-tools-adoption.yaml marks it verdict INTEGRATE
+    - repo: HKUDS/LightRAG
+      landed: '2026-05-08'
+      where: cos_lib/memory_retrieval_benchmark.py
+      also: recorded in NOTICE.md and manifests/external-tool-licenses.yaml
+    - repo: Aider-AI/aider
+      landed: '2026-05-10'
+      where: cos_lib/repo_map.py, scripts/cos-repo-map
+      also: docstring declares it a pattern-port; absent from NOTICE / license manifest
+    - repo: stanfordnlp/dspy
+      landed: '2026-05-10'
+      where: cos_lib/dspy_pilot.py, scripts/cos-dspy-pilot
+      also: absent from NOTICE / license manifest
+  not_governed_by_freeze:
+    - repo: agentsmd/agents.md
+      reason: |
+        Verdict is "spec only — there is no library to vendor". AGENTS.md predates
+        the verdict (2026-04-09); .ai/adapters/agents-md/ landed 2026-05-12. The
+        freeze governs adoption of external code, not adherence to a published spec.
+  enforcement_caveat: |
+    purpose: above calls this a "mechanical kill-switch". As of 2026-08-15 it is
+    not mechanical: hooks/adoption-freeze-gate.sh is not registered in
+    .claude/settings.json (0 occurrences among 162 hook entries) and is not
+    invoked from .githooks/pre-commit. The freeze is currently a written policy
+    with an unwired enforcer. Registering it is an operator decision, recorded
+    here so the gap is not mistaken for coverage.
+
 freeze_history:
   - frozen_at: '2026-05-11T17:35:00Z'
     by: operator

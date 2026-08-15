@@ -8,6 +8,11 @@ deepwiki_url: https://deepwiki.com/Aider-AI/aider
 engram_id: pending
 ---
 
+> **Estado 2026-08-15 — ya adoptado, sin ADR.** El veredicto ADOPT es del 2026-05-06
+> y la adopcion aterrizo el 2026-05-10, ANTES del freeze del 2026-05-11: `cos_lib/repo_map.py` + `scripts/cos-repo-map` (pattern-port del repo-map, declarado en el docstring).
+> El freeze NO alcanza a este caso. Lo que falta es la decision escrita: ninguna ADR
+> respalda esta adopcion. Ver `manifests/external-tool-adoption-freeze.yaml` y ADR-267.
+
 ## Repository Evaluation: Aider-AI/aider
 
 ### Classification: ADOPT
