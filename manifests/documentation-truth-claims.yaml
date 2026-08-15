@@ -167,3 +167,23 @@ claims:
       doc: docs/02-Decisions/adrs/ADR-278-subprocess-run-timeout-discipline.md
       marker: subprocess_timeout_discipline
       required: false
+  payload_canary_determinism:
+    severity: medium
+    description: >-
+      The payload field canary runs in the test suite against an in-repo
+      redacted corpus, with a ratchet on phantom field dependencies. Docs must
+      not keep claiming it can only run against live transcripts.
+    facts:
+      corpus: tests/fixtures/payload-corpus/harness-payloads.jsonl
+      capture_command: scripts/capture_payload_corpus.py
+      canary_command: scripts/audit_payload_field_contracts.py --canary
+      ratchet_test: tests/audit/test_payload_field_contracts.py
+    required_docs:
+      - docs/06-Daily/reports/payload-contract-architecture-2026-08-15.md
+      - tests/fixtures/payload-corpus/README.md
+    required_phrases:
+      - tests/fixtures/payload-corpus
+      - --canary --live
+    forbidden_phrases:
+      - necesita transcripts, no corre en CI
+      - el canario no puede ser determinista
