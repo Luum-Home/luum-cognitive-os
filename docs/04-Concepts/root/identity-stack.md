@@ -217,6 +217,6 @@ Requires: AIM library, SPIRE server (container), DNS/well-known endpoint for age
 ## Related Documents
 
 - [Cognitive OS README](README.md) — Architecture vision and 13 infrastructure layers
-- [Recommended Stack](recommended-stack.md) — Best-of-breed tool selection
-- [Implementation Phases](implementation-phases.md) — 4-phase rollout plan
+- [Recommended Stack](../../08-References/root/recommended-stack.md) — Best-of-breed tool selection
+- [Implementation Phases](../../01-Build-Log/root/implementation-phases.md) — 4-phase rollout plan
 - [Constitutional Gates](../../.claude/rules/constitutional-gates.md) — Immutable security principles

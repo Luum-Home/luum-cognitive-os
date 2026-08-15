@@ -22,7 +22,7 @@ partial_remaining_basis: explicit body remaining signal
 **Status**: Accepted — initial doctor and behavior tests shipped
 **Date**: 2026-05-02
 **Author**: Maintainer + Cognitive OS
-**Related**: ADR-088 (provenance markers), ADR-089 (multi-session git coordination), ADR-106 (multi-session safety primitives), ADR-108 (concurrent agent safety layer), [Preserve Branch Governance Report](../reports/preserve-branch-governance-2026-05-02.md), [Preserve Branch Lifecycle](../architecture/preserve-branch-lifecycle.md)
+**Related**: ADR-088 (provenance markers), ADR-089 (multi-session git coordination), ADR-106 (multi-session safety primitives), ADR-108 (concurrent agent safety layer), [Preserve Branch Governance Report](../../06-Daily/reports/preserve-branch-governance-2026-05-02.md), [Preserve Branch Lifecycle](../../04-Concepts/architecture/preserve-branch-lifecycle.md)
 
 ## Status
 

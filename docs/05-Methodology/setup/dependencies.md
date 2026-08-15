@@ -1,7 +1,7 @@
 # Cognitive OS Dependency Manifest
 
 > Single source of truth for every tool, runtime, and library that Cognitive OS uses.
-> For installation steps, see [Getting Started](../getting-started.md). For a one-command
+> For installation steps, see [Getting Started](../../00-MOCs/entrypoints/getting-started.md). For a one-command
 > setup, run `scripts/setup.sh`.
 
 ---
@@ -209,7 +209,7 @@ project). The project uses:
 ## 8. Infrastructure Services (Docker)
 
 These services are started via `scripts/cos-bootstrap.sh` and are entirely optional.
-See [Getting Started](../getting-started.md#optional-start-infrastructure-services) for profiles.
+See [Getting Started](../../00-MOCs/entrypoints/getting-started.md#optional-start-infrastructure-services) for profiles.
 
 | Service | Port | Profile | Purpose |
 |---------|------|---------|---------|

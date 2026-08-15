@@ -106,7 +106,7 @@ hook requesting evidence before accepting a "done" claim.
 **What is the cost overhead?**
 
 Hooks are bash scripts that run locally. They add < 200 ms per tool call in
-typical operation (see SLO 2 in [rules/so-slo.md](../../rules/so-slo.md)).
+typical operation (see SLO 2 in [rules/so-slo.md](../../../rules/so-slo.md)).
 There is no external API call in the governance layer itself.
 
 **How do I disable temporarily?**

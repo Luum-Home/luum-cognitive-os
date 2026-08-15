@@ -90,7 +90,7 @@ make test-laptop
 
 ## References
 
-- [Validation Worktree Mutation Postmortem — 2026-05-02](../reports/validation-worktree-mutation-postmortem-2026-05-02.md)
+- [Validation Worktree Mutation Postmortem — 2026-05-02](../../06-Daily/reports/validation-worktree-mutation-postmortem-2026-05-02.md)
 - [Validation Capsule](../architecture/validation-capsule.md)
 - [ADR-072: Test Lane Taxonomy & Escalation Ladder](ADR-072-test-lane-taxonomy.md)
 - [ADR-100: Test Resource Governance](ADR-100-test-resource-governance.md)

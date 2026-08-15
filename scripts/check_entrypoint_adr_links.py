@@ -9,23 +9,28 @@ import re
 import sys
 from pathlib import Path
 
-ADR_LINK_RE = re.compile(r"\[[^\]]+\]\((adrs/[^)#]+)(?:#[^)]+)?\)")
+# Any relative markdown link whose target sits under an `adrs/` segment. The
+# previous pattern anchored on a bare `adrs/` prefix, so the moment the links
+# were corrected to real relative paths it matched nothing and the checker went
+# green by having stopped looking.
+ADR_LINK_RE = re.compile(r"\[[^\]]+\]\((?!https?:)([^)#]*adrs/[^)#]+\.md)(?:#[^)]+)?\)")
 
 
 def find_broken_links(root: Path) -> list[str]:
     entrypoints = root / "docs/00-MOCs/entrypoints"
-    adr_root = root / "docs/02-Decisions/adrs"
     missing: list[str] = []
-    for path in sorted(entrypoints.glob("*.md")):
+    # rglob, not glob: the previous version only ever read the top level.
+    for path in sorted(entrypoints.rglob("*.md")):
         text = path.read_text(encoding="utf-8")
         for match in ADR_LINK_RE.finditer(text):
             target = match.group(1)
-            canonical = adr_root / target.removeprefix("adrs/")
+            # Resolve against the linking file's own directory, which is what a
+            # reader's markdown viewer does. Resolving against the canonical ADR
+            # root instead made every wrong path look right — the checker
+            # normalised away the exact defect it exists to catch.
+            canonical = (path.parent / target).resolve()
             if not canonical.exists():
-                missing.append(
-                    f"{path.relative_to(root)} -> {target} "
-                    f"(expected {canonical.relative_to(root)})"
-                )
+                missing.append(f"{path.relative_to(root)} -> {target}")
     return missing
 
 

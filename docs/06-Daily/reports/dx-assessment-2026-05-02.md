@@ -298,4 +298,4 @@ Items **not** clearly covered by current work, candidates for new ADR:
 - Long-running `go test ./...` failure in `error-learning.jsonl`
 - `pyproject.toml` vs `CHANGELOG.md` version skew
 
-See [ADR-128: Data-Layer Integrity Fixes](../adrs/ADR-128-data-layer-integrity-fixes.md).
+See [ADR-128: Data-Layer Integrity Fixes](../../02-Decisions/adrs/ADR-128-data-layer-integrity-fixes.md).

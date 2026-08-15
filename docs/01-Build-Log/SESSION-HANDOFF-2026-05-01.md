@@ -75,7 +75,7 @@ Sub-agent fan-out (initially the leading hypothesis from the SRE agent's RCA) wa
 - `tests/integration/test_settings_atomic_write.py` — 8 tests including a structural invariant on the `mktemp` template, a codebase audit scanning for other unsafe `mktemp`+`mv` patterns (currently 0 hits), and a stress test with a concurrent reader thread.
 - `tests/integration/test_profile_drift_autoapply_flock.py` — 5 tests including 5-worker concurrent invocation asserting exactly-1-apply AND non-blocking lock (wall time < 4s).
 
-All 13 tests pass. Full postmortem: [`docs/06-Daily/incidents/2026-05-01-session-multi-spawn-hang.md`](incidents/2026-05-01-session-multi-spawn-hang.md).
+All 13 tests pass. Full postmortem: [`docs/06-Daily/incidents/2026-05-01-session-multi-spawn-hang.md`](../06-Daily/incidents/2026-05-01-session-multi-spawn-hang.md).
 
 **Operator workaround** (only needed if your local checkout is pre-fix):
 

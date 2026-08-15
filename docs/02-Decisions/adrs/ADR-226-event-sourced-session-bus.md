@@ -28,7 +28,7 @@ Accepted
 **Extends**: **ADR-205 (Cross-Stream Trace Joiner and Flight Recorder)** — ADR-226 is an *extension* of the Flight Recorder's append-only event substrate, not a replacement. ADR-205 keeps owning cross-stream trace joining and the flight-recorder retention story; ADR-226 adds three primitives (per-session sequencing, per-session streams, memoized step wrapping) on top of that substrate.
 **Related**: ADR-027 (session_bus baseline), ADR-099 (pre-agent snapshot), ADR-200 (state retention controller), ADR-220 (worktree divergence audit), ADR-221 (stash refs by SHA), ADR-222 (two-phase capture); load-bearing for ADR-227 (shadow-git), ADR-228 (retry+budget), ADR-230 (handoff), ADR-233 (cross-session agent teams)
 **Source**: Synthesis of 11 orchestration-gap research reports (`docs/03-PoCs/research/orchestration-gaps/`). The replay-timeline, retry-classifier, cost-ledger, and cross-session agent-team gaps all share the same prerequisite: per-session sequencing + memoized step wrapping on top of the existing flight recorder.
-**Evaluation contract**: [`manifests/orchestration-research-evaluation.yaml`](../../manifests/orchestration-research-evaluation.yaml) — C1/C2/C3/C4.
+**Evaluation contract**: [`manifests/orchestration-research-evaluation.yaml`](../../../manifests/orchestration-research-evaluation.yaml) — C1/C2/C3/C4.
 
 ---
 
@@ -41,13 +41,13 @@ Accepted
 3. **Memoized step recording** — non-deterministic LLM calls cannot be replayed. The Temporal/Inngest pattern is to record the *result* of an LLM call as an event on first execution and inject the stored result during replay rather than re-invoking the model. Without this, replay (ADR-227) is impossible for any session that includes an LLM call — i.e., every session.
 
 Five separate research reports identified this same primitive as a prerequisite:
-- Replay timeline ([`replay-timeline-architectures.md`](../research/orchestration-gaps/replay-timeline-architectures.md))
-- Failure recovery ([`failure-recovery-retry-semantics.md`](../research/orchestration-gaps/failure-recovery-retry-semantics.md)) — needs sequence numbers for retry-after-position
-- Cost-aware routing ([`cost-aware-routing.md`](../research/orchestration-gaps/cost-aware-routing.md)) — needs per-session streams for budget reconciliation
-- Cross-session agent teams ([`cross-session-agent-teams.md`](../research/orchestration-gaps/cross-session-agent-teams.md)) — needs per-session streams as the IPC carrier
-- Event-driven state ([`event-driven-orchestrator-state.md`](../research/orchestration-gaps/event-driven-orchestrator-state.md)) — direct prescription
+- Replay timeline ([`replay-timeline-architectures.md`](../../03-PoCs/research/orchestration-gaps/replay-timeline-architectures.md))
+- Failure recovery ([`failure-recovery-retry-semantics.md`](../../03-PoCs/research/orchestration-gaps/failure-recovery-retry-semantics.md)) — needs sequence numbers for retry-after-position
+- Cost-aware routing ([`cost-aware-routing.md`](../../03-PoCs/research/orchestration-gaps/cost-aware-routing.md)) — needs per-session streams for budget reconciliation
+- Cross-session agent teams ([`cross-session-agent-teams.md`](../../03-PoCs/research/orchestration-gaps/cross-session-agent-teams.md)) — needs per-session streams as the IPC carrier
+- Event-driven state ([`event-driven-orchestrator-state.md`](../../03-PoCs/research/orchestration-gaps/event-driven-orchestrator-state.md)) — direct prescription
 
-OpenCode's `SyncEvent` and Temporal's `WorkflowEventHistory` are the production-validated reference shapes. Both are open-source, both share the same three primitives. We adopt the *pattern*, not the implementations — see C1 in [`orchestration-coverage-gap-analysis-2026-05-06.md`](../research/orchestration-coverage-gap-analysis-2026-05-06.md).
+OpenCode's `SyncEvent` and Temporal's `WorkflowEventHistory` are the production-validated reference shapes. Both are open-source, both share the same three primitives. We adopt the *pattern*, not the implementations — see C1 in [`orchestration-coverage-gap-analysis-2026-05-06.md`](../../03-PoCs/research/orchestration-coverage-gap-analysis-2026-05-06.md).
 
 This ADR is **load-bearing for the Phase-1 substrate**. It must land before ADR-227, ADR-228, and ADR-233 because they all consume its shape. ADR-230 (handoff envelope) is independent but benefits from per-session streams as the natural carrier for envelope deltas.
 

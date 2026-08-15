@@ -119,7 +119,7 @@ parallel sessions see the same projection.
 
 ## Layer 3 — CLOSE (write side)
 
-**Canonical status vocabulary**: [`docs/02-Decisions/adrs/STATUS-TAXONOMY.md`](../adrs/STATUS-TAXONOMY.md)
+**Canonical status vocabulary**: [`docs/02-Decisions/adrs/STATUS-TAXONOMY.md`](../../02-Decisions/adrs/STATUS-TAXONOMY.md)
 defines the decision-status and implementation-status values that all
 closure primitives consume (`accepted | implemented | partial |
 partial-blocked | blocked | deferred | superseded | tombstone |

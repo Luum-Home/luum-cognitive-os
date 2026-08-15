@@ -64,7 +64,7 @@ The difference: a traditional OS manages hardware. Cognitive OS manages **cognit
 
 ## Self-Improvement Loop
 
-See [`docs/04-Concepts/architecture/agent-training-harness.md`](architecture/agent-training-harness.md) for the canonical definition of "training agents" in COS: operational learning over skills, rules, templates, routing, evals, and memory, not provider-weight fine-tuning.
+See [`docs/04-Concepts/architecture/agent-training-harness.md`](../../04-Concepts/architecture/agent-training-harness.md) for the canonical definition of "training agents" in COS: operational learning over skills, rules, templates, routing, evals, and memory, not provider-weight fine-tuning.
 
 The AI ecosystem implements a closed-loop self-improvement cycle backed by `lib/learning_pipeline.py`, which integrates 5 previously isolated subsystems (error learning, skill feedback, memory scanning, user model, and reinvention guard) into a single connected pipeline. Each agent execution feeds data back into the system, which uses it to improve future executions.
 
@@ -277,7 +277,7 @@ Cognitive OS continuously discovers new open-source tools via the `/tool-discove
 
 Current radar state: 10 ADOPT, 9 TRIAL, 10 ASSESS, 4 HOLD, 6 REJECTED.
 
-See [reference/tool-watchlist.md](../reference/tool-watchlist.md) for the full radar.
+See [reference/tool-watchlist.md](../../../reference/tool-watchlist.md) for the full radar.
 
 ## Configuration
 

@@ -2,7 +2,7 @@
 
 > Status: diagnostic report
 > Scope: `codex/preserve-*` branch lifecycle and safety governance
-> Related: [ADR-110](../adrs/ADR-110-preserve-branch-governance.md), [Preserve Branch Lifecycle](../architecture/preserve-branch-lifecycle.md)
+> Related: [ADR-110](../../02-Decisions/adrs/ADR-110-preserve-branch-governance.md), [Preserve Branch Lifecycle](../../04-Concepts/architecture/preserve-branch-lifecycle.md)
 
 ## Executive Summary
 

@@ -22,9 +22,9 @@ As a result:
 
 The following pieces already support the long-term portability direction:
 
-- [internal/provider/codex.go](../../internal/provider/codex.go) provides a real Codex provider adapter.
-- [pkg/hook/context.go](../../pkg/hook/context.go) defines a canonical provider-agnostic context model.
-- [docs/02-Decisions/adrs/ADR-008-multi-tool-support.md](../adrs/ADR-008-multi-tool-support.md) documents the decision to avoid Claude-only lock-in.
+- [internal/provider/codex.go](../../../internal/provider/codex.go) provides a real Codex provider adapter.
+- [pkg/hook/context.go](../../../pkg/hook/context.go) defines a canonical provider-agnostic context model.
+- [docs/02-Decisions/adrs/ADR-008-multi-tool-support.md](../../02-Decisions/adrs/ADR-008-multi-tool-support.md) documents the decision to avoid Claude-only lock-in.
 - [docs/04-Concepts/architecture/cross-tool-landscape.md](cross-tool-landscape.md) documents cross-tool portability tiers and ecosystem constraints.
 
 ## Where the Real Lock-In Still Lives
@@ -197,7 +197,7 @@ center, then project into active driver files (`.claude/settings.json`,
 etc.) and optional consumer-friendly `.ai/` views.
 
 The impact analysis is recorded in
-[Portable `.ai` Overlay vs Consumer `.ai` Model Impact — 2026-05-12](../reports/portable-ai-overlay-consumer-model-impact-2026-05-12.md).
+[Portable `.ai` Overlay vs Consumer `.ai` Model Impact — 2026-05-12](../../06-Daily/reports/portable-ai-overlay-consumer-model-impact-2026-05-12.md).
 
 
 Practical implication: bootstrap now has a clearly named compiler/projection

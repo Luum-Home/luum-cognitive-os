@@ -399,10 +399,10 @@ Do not:
 
 ## Related documents
 
-- [ADR-190: Harness Action Receipts and VCS Event Telemetry](../adrs/ADR-190-harness-action-receipts.md)
+- [ADR-190: Harness Action Receipts and VCS Event Telemetry](../../02-Decisions/adrs/ADR-190-harness-action-receipts.md)
 - [Protected Landing Contract](protected-landing-contract.md)
-- [ADR-116: Multi-Session Coordination Primitives](../adrs/ADR-116-multi-session-coordination-primitives.md)
+- [ADR-116: Multi-Session Coordination Primitives](../../02-Decisions/adrs/ADR-116-multi-session-coordination-primitives.md)
 - [Harness Driver Parity](harness-driver-parity.md)
 - [Codex Governed Tool Layer](codex-governed-tool-layer.md)
-- [ADR-064: Harness-Agnostic Cognitive OS](../adrs/ADR-064-harness-agnostic-cognitive-os.md)
-- [ADR-189: Surface Implementation Coverage for Agentic Primitives](../adrs/ADR-189-harness-implementation-coverage.md)
+- [ADR-064: Harness-Agnostic Cognitive OS](../../02-Decisions/adrs/ADR-064-harness-agnostic-cognitive-os.md)
+- [ADR-189: Surface Implementation Coverage for Agentic Primitives](../../02-Decisions/adrs/ADR-189-harness-implementation-coverage.md)

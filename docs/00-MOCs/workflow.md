@@ -4,8 +4,8 @@ Multi-step processes: SDD pipeline, sprints, self-improvement loops, agent orche
 
 ## Start here
 
-1. [`docs/00-MOCs/entrypoints/HOW-TO-USE-COS.md`](../HOW-TO-USE-COS.md) — single-page intro to how the OS is used day to day
-2. [`docs/07-Capabilities/root/agent-teams.md`](../agent-teams.md) — orchestrator vs. sub-agent model
+1. [`docs/00-MOCs/entrypoints/HOW-TO-USE-COS.md`](entrypoints/HOW-TO-USE-COS.md) — single-page intro to how the OS is used day to day
+2. [`docs/07-Capabilities/root/agent-teams.md`](../07-Capabilities/root/agent-teams.md) — orchestrator vs. sub-agent model
 3. [`docs/05-Methodology/runbooks/`](../runbooks/) — step-by-step operational playbooks
 
 ## SDD (Spec-Driven Development)
@@ -18,15 +18,15 @@ The full pipeline: explore → propose → spec → design → tasks → apply �
 
 ## Agent orchestration
 
-- [`docs/07-Capabilities/root/agent-teams.md`](../agent-teams.md) + [`docs/07-Capabilities/root/agent-teams-testing.md`](../agent-teams-testing.md)
+- [`docs/07-Capabilities/root/agent-teams.md`](../07-Capabilities/root/agent-teams.md) + [`docs/07-Capabilities/root/agent-teams-testing.md`](../07-Capabilities/root/agent-teams-testing.md)
 - [`docs/07-Capabilities/root/agent-quality.md`](../agent-quality.md) — quality gates
-- [`docs/07-Capabilities/root/agent-efficiency-strategy.md`](../agent-efficiency-strategy.md) — model routing (Opus/Sonnet/Haiku)
-- [`docs/07-Capabilities/root/agent-capability-coverage.md`](../agent-capability-coverage.md)
+- [`docs/07-Capabilities/root/agent-efficiency-strategy.md`](../07-Capabilities/root/agent-efficiency-strategy.md) — model routing (Opus/Sonnet/Haiku)
+- [`docs/07-Capabilities/root/agent-capability-coverage.md`](../07-Capabilities/root/agent-capability-coverage.md)
 
 ## Sprints & change management
 
-- [ADR-036 Sprint orchestration primitives](../adrs/ADR-036-sprint-orchestration-primitives.md)
-- [`docs/08-References/business/master-plan-checklist.md`](../business/master-plan-checklist.md) — current high-level plan
+- [ADR-036 Sprint orchestration primitives](../02-Decisions/adrs/ADR-036-sprint-orchestration-primitives.md)
+- [`docs/08-References/business/master-plan-checklist.md`](../08-References/business/master-plan-checklist.md) — current high-level plan
 - [`docs/05-Methodology/guides/`](../guides/) — operator guides for specific workflows
 
 ## Self-improvement & autonomy

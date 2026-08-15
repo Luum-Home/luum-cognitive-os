@@ -28,8 +28,8 @@ The practical goal of this audit is to separate:
 
 ## Taxonomy
 
-The durable repository taxonomy is defined in [Product Zones](../product-zones.md)
-and [manifests/product-zones.yaml](../../manifests/product-zones.yaml).
+The durable repository taxonomy is defined in [Product Zones](../../04-Concepts/root/product-zones.md)
+and [manifests/product-zones.yaml](../../../manifests/product-zones.yaml).
 
 This audit uses an additional feature-level lens to evaluate portability,
 current product value, and complexity risk.

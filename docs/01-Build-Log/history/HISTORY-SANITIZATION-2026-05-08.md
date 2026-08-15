@@ -9,7 +9,7 @@ while preserving the development record.
 
 The canonical runtime report is copied, with local-only rollback paths
 redacted, at
-[`docs/06-Daily/reports/history-sanitization-20260508T061208Z.json`](../reports/history-sanitization-20260508T061208Z.json).
+[`docs/06-Daily/reports/history-sanitization-20260508T061208Z.json`](../../06-Daily/reports/history-sanitization-20260508T061208Z.json).
 The frozen policy used to authorize the rewrite remains at
 [`docs/01-Build-Log/history/manifest-snapshot-2026-05-07.yaml`](manifest-snapshot-2026-05-07.yaml).
 
@@ -72,10 +72,10 @@ project history inspectable.
 ## Verification pointers
 
 - Runtime report:
-  [`docs/06-Daily/reports/history-sanitization-20260508T061208Z.json`](../reports/history-sanitization-20260508T061208Z.json)
+  [`docs/06-Daily/reports/history-sanitization-20260508T061208Z.json`](../../06-Daily/reports/history-sanitization-20260508T061208Z.json)
 - Manifest snapshot:
   [`docs/01-Build-Log/history/manifest-snapshot-2026-05-07.yaml`](manifest-snapshot-2026-05-07.yaml)
 - Pre-sanitization SHA inventory:
   [`docs/01-Build-Log/history/pre-sanitization-sha-inventory-2026-05-07.txt`](pre-sanitization-sha-inventory-2026-05-07.txt)
 - Policy ADR:
-  [`docs/02-Decisions/adrs/ADR-218-history-sanitization-toolchain.md`](../adrs/ADR-218-history-sanitization-toolchain.md)
+  [`docs/02-Decisions/adrs/ADR-218-history-sanitization-toolchain.md`](../../02-Decisions/adrs/ADR-218-history-sanitization-toolchain.md)

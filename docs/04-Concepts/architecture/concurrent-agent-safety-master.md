@@ -3,10 +3,10 @@
 > Status: research master document
 > Updated: 2026-05-02
 > Scope: Cognitive OS primitives and automated scenario tests for simultaneous agents and sessions
-> Related ADRs: [ADR-089](../adrs/ADR-089-multi-session-git-coordination.md), [ADR-098](../adrs/ADR-098-multi-agent-file-coordination.md), [ADR-105](../adrs/ADR-105-claim-verification-contract.md), [ADR-106](../adrs/ADR-106-multi-session-safety-primitives.md)
-> Execution plan: [Concurrent Agent Safety Testbed Plan](../../.cognitive-os/plans/architecture/concurrent-agent-safety-testbed-plan.md)
+> Related ADRs: [ADR-089](../../02-Decisions/adrs/ADR-089-multi-session-git-coordination.md), [ADR-098](../../02-Decisions/adrs/ADR-098-multi-agent-file-coordination.md), [ADR-105](../../02-Decisions/adrs/ADR-105-claim-verification-contract.md), [ADR-106](../../02-Decisions/adrs/ADR-106-multi-session-safety-primitives.md)
+> Execution plan: [Concurrent Agent Safety Testbed Plan](../../../.cognitive-os/plans/architecture/concurrent-agent-safety-testbed-plan.md)
 > Scenario matrix: [Concurrent Agent Scenario Test Matrix](concurrent-agent-scenario-test-matrix.md)
-> Decision record: [ADR-108 — Concurrent Agent Safety Layer](../adrs/ADR-108-concurrent-agent-safety-layer.md)
+> Decision record: [ADR-108 — Concurrent Agent Safety Layer](../../02-Decisions/adrs/ADR-108-concurrent-agent-safety-layer.md)
 
 ## Executive Summary
 

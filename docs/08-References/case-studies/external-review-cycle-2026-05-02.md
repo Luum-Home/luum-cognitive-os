@@ -2,7 +2,7 @@
 
 **Date:** 2026-05-02 → 2026-05-03
 **Audience:** External adopters and future contributors evaluating whether the boring-reliability doctrine actually behaves as advertised.
-**Companion docs:** [`boring-reliability-control-plane.md`](../architecture/boring-reliability-control-plane.md), [`cognitive-prosthesis.md`](../architecture/cognitive-prosthesis.md), [ADR-126](../adrs/ADR-126-agentic-primitive-lifecycle-governor.md), [ADR-132](../adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md), [ADR-133](../adrs/ADR-133-expansion-without-monsterization.md).
+**Companion docs:** [`boring-reliability-control-plane.md`](../../04-Concepts/architecture/boring-reliability-control-plane.md), [`cognitive-prosthesis.md`](../../04-Concepts/architecture/cognitive-prosthesis.md), [ADR-126](../../02-Decisions/adrs/ADR-126-agentic-primitive-lifecycle-governor.md), [ADR-132](../../02-Decisions/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md), [ADR-133](../../02-Decisions/adrs/ADR-133-expansion-without-monsterization.md).
 
 ## Why this exists
 
@@ -21,15 +21,15 @@ A senior/Solutions-Architect read of the repository was solicited explicitly. Th
 - ADR programme had volume but no demonstrated retirement discipline; lifecycle states were paper.
 - Recommendation: a `--minimal` tier and a hard threshold on default-visible primitives, or the surface would re-inflate within sprints.
 
-Captured at: [`docs/08-References/business/cos-vs-vanilla-dx-review.md`](../business/cos-vs-vanilla-dx-review.md), [`docs/06-Daily/reports/dx-assessment-2026-05-02.md`](../reports/dx-assessment-2026-05-02.md).
+Captured at: [`docs/08-References/business/cos-vs-vanilla-dx-review.md`](../business/cos-vs-vanilla-dx-review.md), [`docs/06-Daily/reports/dx-assessment-2026-05-02.md`](../../06-Daily/reports/dx-assessment-2026-05-02.md).
 
 ### Step 2 — Strategic reframing (decision capture)
 
 Instead of treating the review as a request for cosmetic surface reduction, the response framed it as a distribution problem and a lifecycle problem:
 
-- [ADR-124](../adrs/ADR-124-cos-distribution-boundaries.md) — distribution tiers (`core` / `team` / `maintainer` / `lab`) so the small surface and the full surface can coexist.
-- [ADR-125](../adrs/ADR-125-governance-tools-value-boundary.md) — explicit value boundary: governance must earn its runtime cost; low-ROI primitives are demoted, not preserved by inertia.
-- [ADR-126](../adrs/ADR-126-agentic-primitive-lifecycle-governor.md) — eight lifecycle states (`candidate` → `sandbox` → `advisory` → `blocking` → `default-on` → `demoted` → `archived` → `deleted`) with required metadata.
+- [ADR-124](../../02-Decisions/adrs/ADR-124-cos-distribution-boundaries.md) — distribution tiers (`core` / `team` / `maintainer` / `lab`) so the small surface and the full surface can coexist.
+- [ADR-125](../../02-Decisions/adrs/ADR-125-governance-tools-value-boundary.md) — explicit value boundary: governance must earn its runtime cost; low-ROI primitives are demoted, not preserved by inertia.
+- [ADR-126](../../02-Decisions/adrs/ADR-126-agentic-primitive-lifecycle-governor.md) — eight lifecycle states (`candidate` → `sandbox` → `advisory` → `blocking` → `default-on` → `demoted` → `archived` → `deleted`) with required metadata.
 
 The review was not absorbed as an opinion. It was absorbed as an obligation to make existing doctrine machine-checkable.
 
@@ -37,9 +37,9 @@ The review was not absorbed as an opinion. It was absorbed as an obligation to m
 
 Three primitives were added to make the framing self-policing rather than aspirational:
 
-- [`scripts/active_primitive_index.py`](../../scripts/active_primitive_index.py) — hard thresholds on the default-visible surface (`VISIBLE_WARN_THRESHOLD = 12`, `VISIBLE_FAIL_THRESHOLD = 25`), wired into CI through [`scripts/cos-ci-local.sh`](../../scripts/cos-ci-local.sh).
-- [`scripts/lab_first_promotion_gate.py`](../../scripts/lab_first_promotion_gate.py) — every new primitive starts in `lab`/`sandbox`; promotion to `core` / `team` / `default-on` requires a machine-readable evidence block. See [ADR-133](../adrs/ADR-133-expansion-without-monsterization.md).
-- [`scripts/session_start_budget.py`](../../scripts/session_start_budget.py) — measures and budgets what gets injected into the session preamble, attacking the runtime token cost the review named.
+- [`scripts/active_primitive_index.py`](../../../scripts/active_primitive_index.py) — hard thresholds on the default-visible surface (`VISIBLE_WARN_THRESHOLD = 12`, `VISIBLE_FAIL_THRESHOLD = 25`), wired into CI through [`scripts/cos-ci-local.sh`](../../../scripts/cos-ci-local.sh).
+- [`scripts/lab_first_promotion_gate.py`](../../../scripts/lab_first_promotion_gate.py) — every new primitive starts in `lab`/`sandbox`; promotion to `core` / `team` / `default-on` requires a machine-readable evidence block. See [ADR-133](../../02-Decisions/adrs/ADR-133-expansion-without-monsterization.md).
+- [`scripts/session_start_budget.py`](../../../scripts/session_start_budget.py) — measures and budgets what gets injected into the session preamble, attacking the runtime token cost the review named.
 
 These exist so the next person who proposes adding a primitive must first explain why it does not start in `lab`. The default direction of travel was inverted.
 
@@ -56,7 +56,7 @@ demotion_evidence:
 sunset_criteria: archive after 90 days with no opt-in use
 ```
 
-Proof artefact: [`docs/06-Daily/reports/lifecycle-demotion-task-completed-2026-05-03.md`](../reports/lifecycle-demotion-task-completed-2026-05-03.md). Implementation commit: `97307e34 feat: prove lifecycle demotion semantics`.
+Proof artefact: [`docs/06-Daily/reports/lifecycle-demotion-task-completed-2026-05-03.md`](../../06-Daily/reports/lifecycle-demotion-task-completed-2026-05-03.md). Implementation commit: `97307e34 feat: prove lifecycle demotion semantics`.
 
 The demotion is intentionally small. It exercises the semantics without asking for organisational courage. The next demotions are expected to be larger and ROI-driven.
 
@@ -64,8 +64,8 @@ The demotion is intentionally small. It exercises the semantics without asking f
 
 The rationale layer was extended so future readers do not have to re-derive the framing:
 
-- [`cognitive-prosthesis.md`](../architecture/cognitive-prosthesis.md) — companion doc to the control plane: why the system has the shape it has, including the explicit naming of the velocity-vs-durability tradeoff that ADR-132's trigger conditions sit on top of.
-- [ADR-132](../adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md) — strategic decision left open: at what point the present single-maintainer calibration should be re-shaped for wider adoption.
+- [`cognitive-prosthesis.md`](../../04-Concepts/architecture/cognitive-prosthesis.md) — companion doc to the control plane: why the system has the shape it has, including the explicit naming of the velocity-vs-durability tradeoff that ADR-132's trigger conditions sit on top of.
+- [ADR-132](../../02-Decisions/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md) — strategic decision left open: at what point the present single-maintainer calibration should be re-shaped for wider adoption.
 
 The cycle ended with an open question documented as such, not with a claim of completion.
 
@@ -88,7 +88,7 @@ A fifth property is worth naming separately because it is easy to miss and easy 
 
 **On the maintainer's side**, the obligation is symmetric: translate the falsifiable claim into committed code, not leave it as a sketch in the conversation buffer. A review that the maintainer absorbs as draft but does not execute degrades into the same artefact graveyard the doctrine was built to prevent. The reviewer is obliged to not be lazy; the maintainer is obliged to not stop at the sketch.
 
-In this cycle, the wall-clock from review delivery to enforcement merged on `main` was approximately 8 hours overnight, covering five production-grade ADRs, three gate refactors with unit tests, a control-plane audit, and this case study itself. That speed is **not** evidence of skill or virtue. It is evidence of the single-maintainer property that [ADR-132](../adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md) catalogues:
+In this cycle, the wall-clock from review delivery to enforcement merged on `main` was approximately 8 hours overnight, covering five production-grade ADRs, three gate refactors with unit tests, a control-plane audit, and this case study itself. That speed is **not** evidence of skill or virtue. It is evidence of the single-maintainer property that [ADR-132](../../02-Decisions/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md) catalogues:
 
 - One brain holding the full model means decisions do not need to be socialised before execution.
 - One repository without code-owners means a refactor of `destructive-git-blocker.sh` does not need approval.
@@ -127,7 +127,7 @@ over the governed path, the choice becomes evidence, not folklore.
 
 The "Protected landing" sub-cycle above documents *what happened*. Worth naming separately is *the structural property it demonstrates*: the system absorbed friction it produced **about itself, during its own documentation pass**, and converted that friction into a doctrine artefact within the same wall-clock.
 
-Concretely: the friction with `direct-main-guard.sh` happened during the documentation pass for this case study. Approximately 40 minutes after the recovery, commit `95239a50 fix: audit direct main bypasses` landed on `main` — hardening the guard by ~80 lines, adding unit tests for the bypass paths, and creating [`docs/04-Concepts/architecture/direct-main-policy.md`](../architecture/direct-main-policy.md). The fix targets the exact failure mode the documentation pass surfaced.
+Concretely: the friction with `direct-main-guard.sh` happened during the documentation pass for this case study. Approximately 40 minutes after the recovery, commit `95239a50 fix: audit direct main bypasses` landed on `main` — hardening the guard by ~80 lines, adding unit tests for the bypass paths, and creating [`docs/04-Concepts/architecture/direct-main-policy.md`](../../04-Concepts/architecture/direct-main-policy.md). The fix targets the exact failure mode the documentation pass surfaced.
 
 The structural difference from the main external-review cycle: the main cycle absorbed an **external** input (a senior review). This sub-cycle absorbed an **internal** input (the cycle's own friction) and produced the same class of artefact — gate hardening, tests, policy doc — without an external trigger. **The cycle ate its own friction.**
 
@@ -149,7 +149,7 @@ This is not failure of the audit. It is the two cadences operating correctly, in
 
 For external adopters: expect any audit of this system to be partially obsolete by the time you read it. The artefact value of an audit is **not its present-tense snapshot** — that drifts within hours under active maintenance — **but its structural frame**: what categories of risk, what kinds of evidence, what falsifiable claims. The snapshot expires; the frame composts into the next audit.
 
-A useful heuristic: read review documents as time-windowed dated photographs. Treat them as accurate at their timestamp and structural beyond it. The case study above has the date in its filename (`-2026-05-02.md`) precisely so future readers can apply that calibration without thinking about it. The companion documents — [`boring-reliability-control-plane.md`](../architecture/boring-reliability-control-plane.md), [`cognitive-prosthesis.md`](../architecture/cognitive-prosthesis.md), the relevant ADRs — are the structural frame; this case study is the photograph.
+A useful heuristic: read review documents as time-windowed dated photographs. Treat them as accurate at their timestamp and structural beyond it. The case study above has the date in its filename (`-2026-05-02.md`) precisely so future readers can apply that calibration without thinking about it. The companion documents — [`boring-reliability-control-plane.md`](../../04-Concepts/architecture/boring-reliability-control-plane.md), [`cognitive-prosthesis.md`](../../04-Concepts/architecture/cognitive-prosthesis.md), the relevant ADRs — are the structural frame; this case study is the photograph.
 
 ## Self-evolving doctrine: when the audit subsystem proposes rules about itself
 
@@ -157,8 +157,8 @@ After the cycle had absorbed external review (main cycle) and absorbed its own i
 
 The mechanism landed as two ADRs in sequence within minutes of each other:
 
-- [ADR-134](../adrs/ADR-134-headless-self-improvement-proposer.md) — `cos-self-improvement-loop` reads control-plane evidence and emits bounded **operational** proposals (gate refactors, configuration changes, scoped fixes). Propose-only mode, human approval required, sandboxed write paths, blocked actions list.
-- [ADR-135](../adrs/ADR-135-self-evolving-doctrine-proposals.md) — `cos-doctrine-proposer` reads the same evidence and emits proposed **doctrine amendments** as markdown under `docs/03-PoCs/proposals/`. Status `proposed`, `runtime_effect: none`. The system proposes new rules; it does not apply them.
+- [ADR-134](../../02-Decisions/adrs/ADR-134-headless-self-improvement-proposer.md) — `cos-self-improvement-loop` reads control-plane evidence and emits bounded **operational** proposals (gate refactors, configuration changes, scoped fixes). Propose-only mode, human approval required, sandboxed write paths, blocked actions list.
+- [ADR-135](../../02-Decisions/adrs/ADR-135-self-evolving-doctrine-proposals.md) — `cos-doctrine-proposer` reads the same evidence and emits proposed **doctrine amendments** as markdown under `docs/03-PoCs/proposals/`. Status `proposed`, `runtime_effect: none`. The system proposes new rules; it does not apply them.
 
 On first execution against the live audit data, the doctrine proposer generated **five concrete amendments**, each grounded in observation rather than speculation:
 
@@ -217,9 +217,9 @@ This case study itself is a single data point. Replication would require running
 
 A property that closes the recursion documented above is the **runway-not-rocket discipline**: the system invests in the infrastructure required for the next operating shape without actually operating it.
 
-[ADR-132](../adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md) named the future Shape B (multi-maintainer, federated, distributed) and recommended *"do not implement Shape B until trigger fires"*. That recommendation is correct but easy to fail at: the natural temptations are either to implement none of Shape B (leaving the gap) or to implement all of it (premature complexity). Neither is right.
+[ADR-132](../../02-Decisions/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md) named the future Shape B (multi-maintainer, federated, distributed) and recommended *"do not implement Shape B until trigger fires"*. That recommendation is correct but easy to fail at: the natural temptations are either to implement none of Shape B (leaving the gap) or to implement all of it (premature complexity). Neither is right.
 
-[ADR-136](../adrs/ADR-136-cross-instance-learning-runway.md) built the third option: a runway that
+[ADR-136](../../02-Decisions/adrs/ADR-136-cross-instance-learning-runway.md) built the third option: a runway that
 
 1. **costs less than full Shape B operation** — four non-speculative primitives: consumer evidence exchange, deterministic registry locks (`agentic-primitive-registry.lock.yaml` SHA-pinning every primitive, `skills/REGISTRY.lock` for the skill set), portable Engram bundle (export plus import-propose-only), and federation trigger audit;
 2. **reduces the activation cost when triggers fire** — a future maintainer joining does not require the system to be redesigned from scratch; the primitives are present, dormant;
@@ -266,7 +266,7 @@ The fourth refusal closes the most subtle attack vector — one that became visi
 
 The fix is structural. `manifests/external-adoption-evidence.yaml` codifies the schema of an admissible external-help claim: `independence.maintainer_owned: false`, `independence.same_machine: false`, `independence.same_repo: false`, `independence.self_reported: false`, plus a `provenance.producer` block carrying type, identity, optional signature, and timestamp. Evidence with any `independence` flag set to `true` is rejected as drill output, not as adoption signal. The system **refuses to validate itself with its own data**.
 
-The first drill report — [`docs/06-Daily/reports/cross-instance-consumer-e2e-2026-05-03.md`](../reports/cross-instance-consumer-e2e-2026-05-03.md) — applies that schema to its own output and explicitly disqualifies itself: *"This is a drill report, not external adoption evidence. The generated consumer evidence is maintainer-owned, same-machine, same-repo, and self-reported; it must not sign the helps-projects product claim."* The doctrine is applied to the doctrine's own first verification artefact.
+The first drill report — [`docs/06-Daily/reports/cross-instance-consumer-e2e-2026-05-03.md`](../../06-Daily/reports/cross-instance-consumer-e2e-2026-05-03.md) — applies that schema to its own output and explicitly disqualifies itself: *"This is a drill report, not external adoption evidence. The generated consumer evidence is maintainer-owned, same-machine, same-repo, and self-reported; it must not sign the helps-projects product claim."* The doctrine is applied to the doctrine's own first verification artefact.
 
 For external adopters, this is the falsifiable claim: a system that builds Shape B's runway should not also operate Shape B, and a system that runs drills should not also count drill output as adoption signal. If `cos-federation-trigger-audit` reports zero observed triggers and federation primitives are nonetheless executing in production, the discipline is broken. If the runway primitives never activate after triggers fire, the runway is decorative. If `manifests/external-adoption-evidence.yaml` accumulates entries with `maintainer_owned: true` *and* those entries are used to sign claims, the anti-self-validation is broken. The healthy state is **dormant runway with continuous trigger observability and zero self-signed adoption evidence**.
 
@@ -306,8 +306,8 @@ Two properties this position depends on, both of which the system itself tracks:
 - **Bilateral external validation** is the variable that does not yet have a primitive in the repository. It would look like a third-party project running `core` for 30+ days and reporting prevented-incident counts, false-positive ratios, and cognitive-cost qualitative feedback. Building the receiving primitive for that data is itself a future cycle.
 
 That receiving primitive now exists as a truth surface:
-[`scripts/cos-claim-signature-audit`](../../scripts/cos-claim-signature-audit)
-and [`claim-signature-audit.md`](../architecture/claim-signature-audit.md). It
+[`scripts/cos-claim-signature-audit`](../../../scripts/cos-claim-signature-audit)
+and [`claim-signature-audit.md`](../../04-Concepts/architecture/claim-signature-audit.md). It
 does not sign the claims by itself. It records exactly what evidence would sign
 them, and currently reports the three remaining gaps as warnings.
 

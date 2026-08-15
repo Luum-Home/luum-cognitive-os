@@ -12,13 +12,13 @@ extensions:
 This roadmap answers the open questions from existing Cognitive OS features
 rather than inventing a new product surface. It should be read with:
 
-- [ADR-161: Remote Control Plane and Provider Adapter Boundary](../adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md)
-- [ADR-189: Surface Implementation Coverage for Agentic Primitives](../adrs/ADR-189-harness-implementation-coverage.md)
-- [ADR-190: Harness Action Receipts and VCS Event Telemetry](../adrs/ADR-190-harness-action-receipts.md)
-- [ADR-192: Surface 5 Bubble Tea Adoption](../adrs/ADR-192-surface-5-adopt-bubbletea.md)
-- [ADR-193: cosd Local Network API](../adrs/ADR-193-cosd-local-network-api.md)
-- [ADR-194: cosd Secure Remote API Guardrails](../adrs/ADR-194-cosd-secure-remote-api.md)
-- [ADR-195: Surface 5 Operable TUI Contract](../adrs/ADR-195-surface-5-operable-tui-contract.md)
+- [ADR-161: Remote Control Plane and Provider Adapter Boundary](../../02-Decisions/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md)
+- [ADR-189: Surface Implementation Coverage for Agentic Primitives](../../02-Decisions/adrs/ADR-189-harness-implementation-coverage.md)
+- [ADR-190: Harness Action Receipts and VCS Event Telemetry](../../02-Decisions/adrs/ADR-190-harness-action-receipts.md)
+- [ADR-192: Surface 5 Bubble Tea Adoption](../../02-Decisions/adrs/ADR-192-surface-5-adopt-bubbletea.md)
+- [ADR-193: cosd Local Network API](../../02-Decisions/adrs/ADR-193-cosd-local-network-api.md)
+- [ADR-194: cosd Secure Remote API Guardrails](../../02-Decisions/adrs/ADR-194-cosd-secure-remote-api.md)
+- [ADR-195: Surface 5 Operable TUI Contract](../../02-Decisions/adrs/ADR-195-surface-5-operable-tui-contract.md)
 - [COS Service Runtime Boundary](cos-service-runtime-boundary.md)
 - [COS Service Control Plane Implementation Plan](service-control-plane-implementation-plan.md)
 - [Agent Message Bus](agent-message-bus.md)
