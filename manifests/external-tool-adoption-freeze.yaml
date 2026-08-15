@@ -121,12 +121,44 @@ pending_on_unfreeze:
         the verdict (2026-04-09); .ai/adapters/agents-md/ landed 2026-05-12. The
         freeze governs adoption of external code, not adherence to a published spec.
   enforcement_caveat: |
-    purpose: above calls this a "mechanical kill-switch". As of 2026-08-15 it is
-    not mechanical: hooks/adoption-freeze-gate.sh is not registered in
-    .claude/settings.json (0 occurrences among 162 hook entries) and is not
-    invoked from .githooks/pre-commit. The freeze is currently a written policy
-    with an unwired enforcer. Registering it is an operator decision, recorded
-    here so the gap is not mistaken for coverage.
+    CORRECTED 2026-08-15. This field previously stated that the gate was "not
+    registered" and that the freeze was "a written policy with an unwired
+    enforcer". Both were wrong. The gate has been running for months.
+
+    The error was searching for the gate by name in .claude/settings.json, where
+    it structurally cannot appear. It is registered by DELEGATION:
+    settings.json:252 registers hooks/bash-hot-path-dispatcher.sh on
+    PreToolUse:Bash, and dispatcher line 140 runs adoption-freeze-gate.sh. The
+    telemetry check was invalid for the same reason — hook-timing.jsonl records
+    only what the wrapper invokes, so all of the dispatcher's children are
+    absent from it by construction, not by inactivity.
+
+    The gate keeps its own log, and that log settles it:
+
+      verify: python3 -c "import json,collections;
+        print(collections.Counter(json.loads(l).get('action')
+        for l in open('.cognitive-os/logs/adoption-freeze-gate.jsonl')))"
+      # 2026-08-15: 285 invocations — 280 pass, 5 block
+
+    Two real limits, replacing the false one:
+
+    1. It reaches `block` and does not block. The gate prints BLOCKED and exits
+       1; the repo contract is that only exit 2 blocks, and the dispatcher
+       propagates the child code verbatim. On 2026-08-15 at 15:41:24Z it blocked
+       five paths and commit eda279d1f landed them 34 seconds later. A patch
+       is prepared at docs/05-Methodology/runbooks/gate-exit-code-contract-2026-08-15/
+       and deliberately not applied — see that runbook for what switching it on
+       would and would not catch.
+
+    2. `git commit --only` blinds it. The gate triggers on command shape but
+       decides on the git index (git diff --cached), and the path-scoped commit
+       idiom this repo mandates under concurrency leaves the index empty, so the
+       gate exits via its "no staged" path. That accounted for 153 of the first
+       279 invocations — 55%. No exit-code change fixes this; it is a defect in
+       what the gate inspects, not in how it reports.
+
+    Recorded this way so the gap is not mistaken for coverage, and so the
+    correction is not mistaken for the original claim.
 
 # ADDITIVE 2026-08-15 — written exceptions. `frozen: true`, `unfreeze_requires`
 # and `gated_path_globs` above remain untouched operator decisions. An entry here
