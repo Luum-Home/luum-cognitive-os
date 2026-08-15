@@ -215,8 +215,8 @@ Costos concretos identificados:
 **La portabilidad está mucho mejor de lo que suponías.** Fue la premisa que más falló.
 
 ```bash
-git grep -nI -E '/[U]sers/[a-zA-Z0-9._-]+' -- '*.py' '*.sh' '*.go' '*.yaml' | wc -l   # 4
-git grep -lI -E '/[U]sers/[a-zA-Z0-9._-]+' -- '*.py' '*.sh' '*.go' '*.yaml'
+git grep -nI -E '/Users/[a-zA-Z0-9._-]+' -- '*.py' '*.sh' '*.go' '*.yaml' | wc -l   # 4
+git grep -lI -E '/Users/[a-zA-Z0-9._-]+' -- '*.py' '*.sh' '*.go' '*.yaml'
 # manifests/history-sanitization.yaml   (intencional: manifiesto de sanitización)
 # tests/unit/test_provenance_scan.py    (intencional: fixture)
 ```
@@ -483,7 +483,7 @@ git ls-files 'docs/02-Decisions/adrs/*.md' | wc -l
 git ls-files -z | xargs -0 du -ch | tail -1
 git shortlog -sne --all
 git log --format='%ai' | cut -c1-7 | sort | uniq -c
-git grep -nI -E '/[U]sers/[a-zA-Z0-9._-]+' -- '*.py' '*.sh' '*.go' '*.yaml' | wc -l
+git grep -nI -E '/Users/[a-zA-Z0-9._-]+' -- '*.py' '*.sh' '*.go' '*.yaml' | wc -l
 for d in $(find ~/Projects -maxdepth 4 -name '.cognitive-os' -type d); do \
   echo "$(find $d -name '*.jsonl' -exec cat {} + 2>/dev/null | wc -l) $(dirname $d)"; done | sort -rn
 cd ../aisotropy && bash ../luum-agent-os/hooks/confidentiality-enforcer.sh <<< \

@@ -119,11 +119,31 @@ def _posix_user_segment(match: str) -> str:
     return remainder.split("/", 1)[0]
 
 
+def _describes_a_username(segment: str) -> bool:
+    """True when the segment is a pattern *matching* usernames, not one itself.
+
+    Same defect, same fix as `describes_a_username` in check-local-privacy.sh:
+    a home prefix followed by a bracketed character class — the shape of a
+    quoted `git grep` command inside a report — was read as a real developer
+    home path, so a document explaining how to hunt for absolute paths could
+    not be committed. Kept as a sibling copy rather than a shared import
+    because these two guards are deliberately independent; if that changes,
+    both should move together.
+
+    Exact, not heuristic: none of these characters is legal in a POSIX or
+    macOS account name, so a segment containing one is describing usernames by
+    construction. It cannot mask an accidental commit of a real path — only a
+    deliberately obfuscated one, which this guard never caught.
+    """
+    return any(ch in segment for ch in "[]()*+?\\|^$")
+
+
 def _is_allowed_match(match: str) -> bool:
     if any(match.startswith(prefix) for prefix in ALLOWED_POSIX_PREFIXES):
         return True
     if match.startswith(MAC_HOME_PREFIX) or match.startswith(LINUX_HOME_PREFIX):
-        return _posix_user_segment(match) in PLACEHOLDER_USER_SEGMENTS
+        segment = _posix_user_segment(match)
+        return segment in PLACEHOLDER_USER_SEGMENTS or _describes_a_username(segment)
     return False
 
 
