@@ -40,6 +40,27 @@ POSIX_HOME_RE = re.compile(
 WINDOWS_HOME_RE = re.compile(r"[A-Za-z]:\\Users\\[^\s`'\"<>)]*(?:\\[^\s`'\"<>)]*)?")
 
 PLACEHOLDER_USERS = {"<user>", "{user}", "$USER", "${USER}", "USER", "..."}
+
+# Home segments allocated to a MACHINE rather than to a person. `runner` is the
+# fixed home of a GitHub Actions runner: identical on every runner in the world
+# and published in the runner image.
+#
+# The bar for adding an entry is one question and only that question — *does
+# this string identify a person on some machine?* If the answer is "it depends",
+# it does not belong. A username that merely happens to be common (admin, dev,
+# ubuntu) does NOT qualify: somewhere it is someone's actual account.
+#
+# This is a different exemption from describes_a_username() below, and one does
+# not imply the other: that one covers segments that cannot be usernames at all,
+# while `runner` is a perfectly legal account name that simply never denotes a
+# person here. The 2026-08-15 fix added only the first, so a report auditing
+# home-path leakage still blocked its own commit on four CI-runner matches it
+# had itself classified as CI before concluding zero leaks.
+#
+# Kept in parity with CI_MACHINE_SEGMENTS in hooks/research-compliance-guard.sh
+# and check_absolute_paths.py.
+CI_MACHINE_SEGMENTS = {"runner"}
+
 ALLOWED_POSIX_PREFIXES = {LINUX_HOME_PREFIX + "jovyan/"}
 DEFAULT_EXCLUDED_DIRS = {
     ".git",
@@ -191,7 +212,11 @@ def is_allowed_posix_home(match: str) -> bool:
     if any(match.startswith(prefix) for prefix in ALLOWED_POSIX_PREFIXES):
         return True
     segment = posix_user_segment(match)
-    return segment in PLACEHOLDER_USERS or describes_a_username(segment)
+    return (
+        segment in PLACEHOLDER_USERS
+        or segment in CI_MACHINE_SEGMENTS
+        or describes_a_username(segment)
+    )
 
 
 def load_private_patterns(path: Path) -> list[PrivatePattern]:

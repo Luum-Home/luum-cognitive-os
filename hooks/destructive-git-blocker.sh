@@ -224,6 +224,20 @@ def emit(kind: str, op: str, wip: int = 0) -> None:
 if sub == "stash" and args and args[0] in {"pop", "drop", "apply"}:
     emit("destructive", f"git stash {args[0]}")
 if sub == "reset":
+    # `git reset [<tree-ish>] -- <paths>` never moves HEAD and never touches
+    # the working tree: with a pathspec, git resets index entries only, and it
+    # refuses --hard/--merge/--keep in that form outright. It is the classic
+    # unstage, and the modern spelling of it (`git restore --staged`) is
+    # handled below. The explicit `--` separator is what makes the pathspec
+    # unambiguous, so it is required: `git reset HEAD file` without it stays
+    # blocked rather than guessed at. --hard/--merge/--keep/--soft anywhere in
+    # the args disqualify, belt-and-braces against a future git that permits
+    # the combination.
+    _tree_touching = {"--hard", "--merge", "--keep", "--soft"}
+    if "--" in args and not _tree_touching.intersection(args):
+        _paths = args[args.index("--") + 1 :]
+        if any(a.strip() for a in _paths):
+            emit("index_only", "git reset -- <pathspec>")
     emit("destructive", "git reset")
 if sub == "pull" and "--rebase" in args:
     emit("destructive", "git pull --rebase", 1)
@@ -241,6 +255,15 @@ if sub == "switch":
 if sub == "clean" and any(arg.startswith("-") and "f" in arg for arg in args):
     emit("destructive", "git clean -f")
 if sub == "restore":
+    # git-restore(1): "Specifying --staged will only restore the index."
+    # Index-only, so nothing in the working tree is discarded — this is the
+    # modern `git reset HEAD <file>`. --worktree/-W alongside it restores both
+    # and stays blocked, as does plain `git restore <path>`, which is the
+    # genuinely destructive form.
+    _staged = any(a in {"--staged", "-S"} for a in args)
+    _worktree = any(a in {"--worktree", "-W"} for a in args)
+    if _staged and not _worktree:
+        emit("index_only", "git restore --staged")
     emit("destructive", "git restore")
 if sub == "revert":
     emit("destructive", "git revert")
@@ -279,6 +302,15 @@ while IFS= read -r segment; do
   trimmed="${segment#"${segment%%[![:space:]]*}"}"
   semantic_hit=$(_semantic_git_match "$trimmed" || true)
   if [ -n "$semantic_hit" ]; then
+    # An index_only verdict means the parser proved the segment touches the
+    # index and nothing else (unstage forms). Skip the whole segment rather
+    # than break: the coarse DESTRUCTIVE_PATTERN below matches `reset` and
+    # `restore` unconditionally and would otherwise re-block what the parser
+    # just cleared. The semantic parser is the only layer that can see flags,
+    # so it is the only layer that can grant this.
+    if [ "$(printf '%s' "$semantic_hit" | awk -F '\t' '{print $1}')" = "index_only" ]; then
+      continue
+    fi
     FIRST_HIT="$trimmed"
     FIRST_HIT_TYPE=$(printf '%s' "$semantic_hit" | awk -F '\t' '{print $1}')
     SEMANTIC_OP_NAME=$(printf '%s' "$semantic_hit" | awk -F '\t' '{print $2}')
@@ -379,7 +411,7 @@ _op_rationale() {
     "git clean -f")
       echo "force-delete untracked files including generated state and WIP";;
     "git restore")
-      echo "discards working-tree changes (modern equivalent of `checkout --`)";;
+      echo 'discards working-tree changes (modern equivalent of `checkout --`)';;
     "git revert")
       echo "creates new commits that may conflict unexpectedly with in-flight work";;
     "git worktree")
@@ -421,7 +453,13 @@ _op_repair_command() {
     branch_context_change)
       echo "announce current branch, target branch, reason, and rerun with --allow-branch-switch if approved";;
     *)
-      echo "git stash push -u -m 'pre-destructive-git-<reason>' && inspect the named stash before any restore";;
+      # `git stash push -u` was suggested here for every destructive op. On a
+      # shared checkout it is strictly worse than most of what it repairs: it
+      # sweeps the ENTIRE working tree, including another session's untracked
+      # and unstaged work, into a single entry, and ADR-055b r5 exists because
+      # restoring such an entry re-enacts state nobody asked for. Scope the
+      # advice to the file at hand and prefer the non-mutating inspection.
+      echo "inspect with 'git status --porcelain' and 'git diff -- <path>' first; if you must park work, scope it: git stash push -u -m 'pre-destructive-git-<reason>' -- <path>";;
   esac
 }
 
