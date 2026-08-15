@@ -97,7 +97,24 @@ Estuve a un comando de publicar una afirmación de cableado falsa, que es
 exactamente la clase que este cambio viene a instalar. La dejo escrita porque el
 encargo pedía refutar, no quedar bien.
 
-### 1.5 Cifras del encargo que NO verifiqué
+### 1.5 Segundo casi-error propio: el `BLOCKED-` del scratchpad
+
+En el scratchpad compartido hay
+`BLOCKED-rules-encargo-refutable.md` (92 líneas), con pinta de rule que el guard de
+`rules/**` dejó afuera y quedó viviendo sólo en `/tmp`. Iba a reportarlo como
+referencia colgada del índice. **Falso otra vez:**
+
+```bash
+ls -la rules/encargo-refutable.md            # existe, 5180 bytes
+git log --oneline -- rules/encargo-refutable.md
+# c32e0539c docs(rules): land the refutable-brief rule, marked os-only because it is
+```
+
+La rule **ya está en el repo y commiteada**. El archivo del scratchpad es una copia
+**vieja** (4304 bytes vs 5180) de antes de que aterrizara. Se deja anotado para que
+una sesión futura no lo «rescate» y meta un duplicado desactualizado en `rules/`.
+
+### 1.6 Cifras del encargo que NO verifiqué
 
 `42 gates → 3`, `~68.000 → 28.267`, `8 de 18 ADOPT → 0`, `502 → 352 ADRs`,
 «seis superficies de registro», «19 cifras, 4 reproducidas», «seis tests que fijaban
