@@ -169,17 +169,32 @@ if skill_name:
 # ---------------------------------------------------------------------------
 # 7. Circuit breaker check
 # ---------------------------------------------------------------------------
+# `cb_evaluated` exists because the previous shape could not tell "the breaker
+# allowed this launch" apart from "the breaker never ran". Both left
+# `cb_blocked` unset, so an unavailable control read exactly like a permissive
+# one. That is how a module-level ImportError in `record_completion` (it used to
+# import an os-only module) kept the breaker dead in every consumer install,
+# leaving only a substring in `error` that nothing parsed.
+# Import failure and evaluation failure are also separated: the first means the
+# control is ABSENT, the second that it is BROKEN. Different fixes.
+result["cb_evaluated"] = False
 try:
     from cos_lib.circuit_breaker import CircuitBreaker  # type: ignore
     from cos_lib.record_completion import classify_task_type  # type: ignore
-
-    task_type = classify_task_type(task_desc or "general")
-    cb = CircuitBreaker()
-    if not cb.can_launch(task_type):
-        result["cb_blocked"] = True
-        result["cb_task_type"] = task_type
 except Exception as e:
-    result["error"] += f"circuit_breaker:{e};"
+    result["error"] += f"circuit_breaker_unavailable:{e};"
+    result["cb_unavailable"] = str(e)
+else:
+    try:
+        task_type = classify_task_type(task_desc or "general")
+        cb = CircuitBreaker()
+        result["cb_evaluated"] = True
+        if not cb.can_launch(task_type):
+            result["cb_blocked"] = True
+            result["cb_task_type"] = task_type
+    except Exception as e:
+        result["cb_evaluated"] = False
+        result["error"] += f"circuit_breaker_failed:{e};"
 
 # ---------------------------------------------------------------------------
 # 8. Model routing (only on allow path — but we compute it always so bash
