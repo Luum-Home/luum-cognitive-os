@@ -128,6 +128,45 @@ receipts, so **this decision does not authorise retiring Graphify**. Measured
 overlap is 3 of 11 capabilities; the remaining 8 do not compete. The two coexist:
 Graphify stays explicit team/advisory tooling with `runtime_projection: false`.
 
+## Alternatives rejected
+
+Every option below was live when the work started — the operator's framing left
+"install it, or have it recommend it" explicitly open. Sources:
+`docs/06-Daily/reports/codebase-memory-mcp-adopcion-2026-08-15.md`
+§"Instalar vs recomendar — con el motivo" and §"Relación con Graphify".
+
+- **Install the MCP from the Cognitive OS.** Not rejected for being impossible:
+  `npm view codebase-memory-mcp repository.url license` returns MIT, which
+  passes `rules/license-policy` (ALLOW MIT), so the argument against is not
+  feasibility. Rejected because **the value is zero until each project is
+  indexed**, and indexing is a per-project, stateful, expensive operation the SO
+  cannot perform at install time. An installed-but-unindexed server is precisely
+  the defect this ADR exists to fix, shipped to every consumer install — plus an
+  external runtime dependency each of them would carry.
+- **Emit our own MCP configuration per harness** (`.mcp.json`,
+  `.codex/config.toml`, opencode config). Rejected because the vendor's own
+  installer already auto-detects nine harnesses — Claude Code, Codex CLI, Gemini
+  CLI, Zed, OpenCode, Antigravity, Aider, KiloCode, Kiro (`codebase-memory-mcp
+  --help`). Writing ours would mean asserting three harness contracts against a
+  tool that implements all nine, and this repo produced a fresh example of that
+  failure mode the same day: a 228-line harness driver written against an
+  imagined contract. The correct install command is the vendor's.
+- **Leave the unconditional directive as it is** (do nothing; it lives in the
+  operator's environment, not in this repo). Rejected on measurement, not
+  preference: `python3 scripts/check_codebase_memory_readiness.py` shows 8
+  projects in the graph and this one absent, so *"ALWAYS use the graph FIRST"*
+  applied here orders an agent to query an empty graph, burn the call, and fall
+  back to `grep`. The missing precondition is the defect.
+- **Recommend it on efficiency grounds** ("the graph beats grep"). Rejected
+  because nobody has benchmarked graph-vs-grep on this repository, and this
+  repository is not in the graph — it would be an assertion without a command.
+  The design deliberately does not rest on that claim; it rests on the measured
+  one, that a directive must not fire against an empty graph.
+- **Treat this as a replacement for Graphify.** Rejected because
+  `manifests/primitive-lifecycle.yaml` sets Graphify's sunset criteria as
+  replacement by an *owned* primitive with *equivalent receipts*; a third-party
+  MCP is neither. Measured overlap is 3 of 11 capabilities.
+
 ## Consequences
 
 **When the MCP is absent** — the script exits `1`, the rule tells the agent to use
