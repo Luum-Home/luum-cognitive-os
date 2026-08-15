@@ -1,10 +1,21 @@
 #!/usr/bin/env python3
 # SCOPE: os-only
-"""Classify ambiguous hooks by BEHAVIOUR, not by name.
+"""Refine, per harness event, the behavioural class the census already derived.
 
 A hook called `-check` / `-detector` / `-validator` does not say whether it
-BLOCKS (gate) or only OBSERVES (instrument). This script answers two separate
-questions per hook, with evidence:
+BLOCKS (gate) or only OBSERVES (instrument). Neither does a hook called `-gate`:
+`decision-depth-gate` and `dod-gate` state in their own source that they never
+exit non-zero. As of 2026-08-15 the census (audit_gate_registration.py) no
+longer classifies by name either — both scripts read scripts/hook_behavior.py,
+so they cannot disagree about what a gate is. What is left for THIS script is
+the question the census deliberately does not answer: given the harness event a
+hook is registered on, does its block emitter actually prevent anything?
+
+The default population is therefore no longer "hooks with an ambiguous token in
+the name". It is the set whose FILENAME disagrees with its behaviour — the
+disagreement itself, which is the thing worth reading. `--all` covers all 256.
+
+This script answers two separate questions per hook, with evidence:
 
   1. CAN it block?      -> comment-stripped source scan for a block emitter,
                            crossed with the harness event it is registered on.
@@ -33,9 +44,12 @@ Classification produced:
     instrument        no block emitter, writes an artifact (JSONL/report/context)
     neither           no block emitter, nothing persisted, output reaches nobody
 
-Wiring is read from four surfaces (delegated to audit_gate_registration.py):
+Wiring is read from FIVE surfaces (delegated to audit_gate_registration.py):
 `.claude/settings.json`, dispatcher fan-out, DEFAULT_HOOKS projected into every
-consumer install, and packages/*/cos-package.yaml.
+consumer install, packages/*/cos-package.yaml, and — added 2026-08-15 — the
+hook configs of OTHER harnesses (.cursor/hooks.json, .devin/hooks.json,
+.kiro/hooks/*.kiro.hook, .codex/hooks.json), which execute repo hooks by path
+and which every previous census missed.
 
 Read-only. Exit codes: 0 = no `neither`, 1 = at least one `neither`, 2 = error.
 
@@ -43,6 +57,7 @@ Usage:
     .venv/bin/python scripts/classify_ambiguous_hooks.py            # table
     .venv/bin/python scripts/classify_ambiguous_hooks.py --json     # rows
     .venv/bin/python scripts/classify_ambiguous_hooks.py --all      # all 256
+
 """
 from __future__ import annotations
 
@@ -56,6 +71,7 @@ from collections import defaultdict
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO / "scripts"))
 
 # ---------------------------------------------------------------- reuse audit
 _spec = importlib.util.spec_from_file_location(
@@ -70,153 +86,13 @@ ADVISORY_EVENTS = {"PostToolUse", "SessionStart", "SessionEnd", "PreCompact",
                    "Notification", "SubagentStart", "TeammateIdle",
                    "TaskCreated", "TaskCompleted"}
 
-BLOCK_PATTERNS = [
-    ("exit2", re.compile(r"(?:^|[;&|]|\bthen\b|\belse\b|\bdo\b|\{)\s*exit\s+2\b")),
-]
-
-# These are emitted as JSON, frequently by a multi-line `jq -n` program, so a
-# per-line scan misses them. `secret-detector` blocks exactly this way and a
-# line-by-line grep reported it as a pure instrument.
-BLOCK_MULTILINE = [
-    ("decision-block", re.compile(r'"decision"\s*:\s*\\?"\s*block', re.S)),
-    ("deny", re.compile(r'permissionDecision\\?"?\s*:\s*\\?"\s*(?:deny|block)', re.S)),
-    ("sys-exit2", re.compile(r"sys\.exit\(\s*2\s*\)")),
-]
-
-# An `exit 2` that only fires on a malformed CLI invocation is not a policy
-# block; it is argument validation. Flag those so a human can audit the call.
-ARGPARSE_RE = re.compile(
-    r"unknown option|usage:|requires value|--help|invalid argument|missing arg",
-    re.IGNORECASE)
-
-ARTIFACT_PATTERNS = [
-    ("jsonl", re.compile(r"\.jsonl\b")),
-    ("cos-state", re.compile(r"\.cognitive-os/")),
-    ("append-redirect", re.compile(r">>\s*[\"'$]?\S*(?:\.cognitive-os|metrics|log)")),
-    ("safe-jsonl-lib", re.compile(r"safe_jsonl_append|jsonl_append|cos_append")),
-    ("additional-context", re.compile(r"additionalContext|hookSpecificOutput")),
-    ("report-file", re.compile(r"docs/06-Daily/reports|/reports/")),
-]
-
-# A hook is often a thin wrapper. Follow ONE hop into what it executes, or the
-# scan describes the wrapper instead of the behaviour. `completeness-check.sh`
-# is 16 lines that `exec` a real gate; scanning only the wrapper called it inert.
-#
-# Matching the *invocation* was too brittle: hooks routinely stash the target
-# in a variable first (`SCRIPT="$PROJECT_DIR/scripts/state_retention_audit.py"`
-# then `python3 "$SCRIPT"`), which no call-site regex resolves. So instead we
-# take any reference to an EXISTING repo file and treat it as a delegate.
-# Over-inclusive by design: a hook that merely names a file it never runs gets
-# its callee's signals folded in, so `delegates_to` is printed for audit.
-DELEGATE_RE = re.compile(
-    r"(?:hooks|scripts|lib|cos_lib|packages)/[A-Za-z0-9_./-]+\.(?:sh|py)")
-
-# Bare sibling reference: `exec "$HOOK_DIR/predev-completeness-check.sh"`.
-DELEGATE_BARE_RE = re.compile(r"[A-Za-z0-9_.-]+\.(?:sh|py)")
-
-# Python-module handoff: `from cos_lib.skill_drift_detector import main`.
-# skill-drift-detector.sh is 50 lines of guards around exactly this line, and a
-# path-only scan concluded it writes nothing while it fills skill-drift.jsonl.
-DELEGATE_MODULE_RE = re.compile(
-    r"(?:from|import)\s+((?:cos_lib|lib|scripts)(?:\.[A-Za-z0-9_]+)+)")
-
-# `cmd || true` (or `|| exit 0`) swallows the delegate's exit code: even if the
-# delegate can exit 2, the wrapper cannot propagate a block.
-SWALLOW_RE = re.compile(r"\|\|\s*(?:true|exit\s+0|:)\s*$")
-
-# stdout on an advisory event still reaches the model as context; count only
-# deliberate structured emission, not incidental echoes to the user's terminal.
-CONTEXT_RE = re.compile(r"additionalContext|hookSpecificOutput|systemMessage")
-
-
-def strip_comments(src: str) -> list[tuple[int, str]]:
-    """(1-based lineno, code) with whole-line comments and shebang removed.
-
-    Inline `# ...` is NOT stripped (a `#` inside a quoted string is common in
-    these hooks and naive stripping produced false negatives on jq programs).
-    Whole-line comments are the ones that caused false POSITIVES in the earlier
-    name-based audit, and those are removed exactly.
-    """
-    out = []
-    for i, line in enumerate(src.splitlines(), 1):
-        s = line.strip()
-        if not s or s.startswith("#"):
-            continue
-        out.append((i, line))
-    return out
-
-
-def _delegates(code: list[tuple[int, str]], self_name: str) -> list[tuple[str, bool]]:
-    """[(repo-relative path, every-reference-swallowed)] this hook hands off to."""
-    seen: dict[str, list[bool]] = {}
-    for _, line in code:
-        if "_lib/" in line:
-            continue  # helper sourcing; not a behaviour delegate
-        refs = [m.group(0) for m in DELEGATE_RE.finditer(line)]
-        refs += [m.group(0) for m in DELEGATE_BARE_RE.finditer(line)]
-        refs += [m.group(1).replace(".", "/") + ".py"
-                 for m in DELEGATE_MODULE_RE.finditer(line)]
-        for ref in refs:
-            cand = next((c for c in (REPO / ref, REPO / "hooks" / ref,
-                                     REPO / "scripts" / ref) if c.is_file()), None)
-            if cand is None:
-                continue
-            rel = cand.resolve().relative_to(REPO).as_posix()
-            if Path(rel).stem == self_name:
-                continue
-            seen.setdefault(rel, []).append(bool(SWALLOW_RE.search(line.strip())))
-    return [(rel, all(sw)) for rel, sw in seen.items()]
-
-
-def scan_source(path: Path, _depth: int = 0) -> dict:
-    src = path.read_text(errors="ignore") if path.is_file() else ""
-    code = strip_comments(src)
-    joined = "\n".join(l for _, l in code)
-
-    blocks = []
-    for lineno, line in code:
-        for kind, rx in BLOCK_PATTERNS:
-            if rx.search(line):
-                blocks.append({"line": lineno, "kind": kind, "where": path.name,
-                               "code": line.strip()[:160],
-                               "argparse": bool(ARGPARSE_RE.search(line))})
-    for kind, rx in BLOCK_MULTILINE:
-        m = rx.search(joined)
-        if m:
-            blocks.append({"line": joined[:m.start()].count("\n") + 1,
-                           "kind": kind, "where": path.name,
-                           "code": m.group(0).replace("\n", " ")[:160],
-                           "argparse": False})
-
-    artifacts = {kind for kind, rx in ARTIFACT_PATTERNS if rx.search(joined)}
-    ctx = bool(CONTEXT_RE.search(joined))
-    warns = bool(re.search(r"(?:echo|printf)\s+[^\n]*>&2", joined))
-    speaks = bool(re.search(r"^\s*(?:echo|printf|cat)\s+(?![^\n]*>&2)", joined, re.M))
-    delegated: list[str] = []
-
-    if _depth == 0:  # follow exactly one hop
-        for ref, swallowed in _delegates(code, path.stem):
-            sub = scan_source(REPO / ref, _depth + 1)
-            artifacts |= set(sub["artifact_signals"])
-            ctx = ctx or sub["emits_context"]
-            warns = warns or sub["warns_stderr"]
-            speaks = speaks or sub["writes_stdout"]
-            tag = f"{ref}{' (exit swallowed)' if swallowed else ''}"
-            delegated.append(tag)
-            if not swallowed:
-                for b in sub["block_sites"]:
-                    blocks.append({**b, "where": f"via {ref}"})
-
-    return {
-        "block_sites": blocks,
-        "block_sites_policy": [b for b in blocks if not b["argparse"]],
-        "artifact_signals": sorted(artifacts),
-        "emits_context": ctx,
-        "delegates_to": delegated,
-        "warns_stderr": warns,
-        "writes_stdout": speaks,
-        "loc": len(code),
-    }
+# Block detection, artifact detection, delegate-following and the class rule all
+# live in scripts/hook_behavior.py now. They used to live HERE, correct, while
+# the census that feeds this script decided the same question from the filename.
+# One rule, one file: that is the whole point of the unification.
+from hook_behavior import (  # noqa: E402
+    behaviour_class, scan_source, name_class,
+)
 
 
 def settings_events() -> dict[str, set[str]]:
@@ -334,6 +210,7 @@ def main() -> int:
     prof = _audit.profile_registrations()
     yreg = _audit.yaml_registry()
     consumer = _audit.consumer_projection()
+    harness_native = _audit.harness_native_registrations()
 
     live = {d for d in fan if d in direct}
     transitive: set[str] = set()
@@ -347,9 +224,12 @@ def main() -> int:
     rows = []
     for real, e in hooks.items():
         p = Path(real)
-        src = _audit.read(p)
-        cls, _ = _audit.classify(e["name"], src)
-        if cls != "ambiguo" and not want_all:
+        cls, _ = _audit.classify(e["name"], p)
+        n_cls = name_class(e["name"])
+        # The population used to be "hooks with an ambiguous TOKEN in the name",
+        # which is exactly the criterion this whole change exists to retire.
+        # Now it is the set the filename gets WRONG — the disagreement itself.
+        if not want_all and n_cls == cls:
             continue
         names = {e["name"]} | {Path(a).stem for a in e["aliases"]}
         wiring = []
@@ -363,11 +243,14 @@ def main() -> int:
             wiring.append("cognitive-os.yaml")
         if names & consumer:
             wiring.append("consumer-install")
+        if names & harness_native:
+            wiring.append("harness-native")
         ev: set[str] = set()
         for n in names:
             ev |= direct_ev.get(n, set()) | disp_ev.get(n, set())
         scan = scan_source(p)
-        row = {"name": e["name"], "real": e["real"], "name_class": cls,
+        row = {"name": e["name"], "real": e["real"],
+               "behaviour_class": cls, "name_class": n_cls,
                "wiring": wiring, "events": sorted(ev)}
         verdict, why = classify_row(row, ev, scan)
         t = tele.get(e["name"], {})
@@ -400,7 +283,7 @@ def main() -> int:
     for r in rows:
         counts[r["verdict"]] += 1
     print(f"hooks classified: {len(rows)}"
-          f"{' (all classes)' if want_all else ' (name-ambiguous only)'}")
+          f"{' (all hooks)' if want_all else ' (filename disagrees with behaviour)'}")
     for k in ("gate-effective", "gate-advisory", "gate-unreachable",
               "instrument", "neither"):
         print(f"  {k:<16} {counts.get(k, 0):>4}")

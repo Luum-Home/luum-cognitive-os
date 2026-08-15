@@ -10,7 +10,9 @@ Two INDEPENDENT questions, never collapsed into one:
                        source. A gate whose only `exit 2` sits behind a
                        condition that cannot hold under the current
                        configuration is a FALSE gate no matter how it is wired.
-  (2) DID it block?    Telemetry: `exit_code == 2` rows in hook-timing.jsonl.
+  (2) DID it block?    Telemetry: `exit_code == 2` rows in hook-timing.jsonl
+                       (wrapper-attributed) AND hook-health.jsonl + its rotated
+                       archives (self-attributed, see self_reported()).
 
 Crossing them gives four quadrants with genuinely different meanings:
 
@@ -40,15 +42,33 @@ Unreachability patterns detected (each one confirmed in this repo):
   policy-demoted  `cos_governance_policy_allows_block <cat>` currently returns
                   false, demoting the hard block to an advisory.
 
-MEASURABILITY. hook-timing.jsonl is written by the timing wrapper that
+MEASURABILITY, and how the attribution hole was closed.
+
+hook-timing.jsonl is written by the timing wrapper that
 scripts/generate-project-settings.sh injects into .claude/settings.json, so it
 only ever sees hooks named THERE. A gate reached exclusively through
 bash-hot-path-dispatcher.sh is invisible to it: the row is attributed to the
-dispatcher. For those gates `ever_blocked == 0` is ABSENCE OF MEASUREMENT, not
-evidence of never blocking, and they are reported as `unmeasured` rather than
-silently folded into `untested`. Question (1) is unaffected — reachability is
-read from source, not from telemetry — so a dispatcher-only gate can still be
-classified as theatre on static grounds alone.
+dispatcher. That blind spot is what forced the `unmeasured` quadrant.
+
+It is no longer the only source. hooks/_lib/safe-jsonl.sh installs an EXIT trap
+that writes {hook, exit_code, duration_ms} to hook-health.jsonl using the hook's
+own `_HOOK_NAME`, so the attribution comes from INSIDE the hook and survives any
+invocation path. Measured 2026-08-15: destructive-rm-blocker has 0 rows in
+hook-timing.jsonl and 42 in hook-health.jsonl; direct-main-guard 0 / 105;
+destructive-git-blocker 0 / 100; untracked-work-preservation-guard 0 / 95.
+Reading both retired 4 of the 22 unmeasured gates on the first run.
+
+`unmeasured` is KEPT for what remains genuinely unobservable: a hook that never
+sources _lib/safe-jsonl.sh, or is killed by a signal before its trap runs, still
+leaves no row anywhere. Presence in either file is strong evidence; absence from
+both is weak. Question (1) is unaffected — reachability is read from source, not
+telemetry — so a dispatcher-only gate can still be theatre on static grounds.
+
+POPULATION. The gate population comes from audit_gate_registration.py, which
+since 2026-08-15 derives the class from BEHAVIOUR (scripts/hook_behavior.py)
+rather than from filename tokens. That is why this script now sees
+`secret-detector` — it blocks via `permissionDecision: "block"` and the token
+"detector" used to file it `ambiguo`, outside the gate population entirely.
 
 Usage:
     .venv/bin/python scripts/audit_gate_liveness.py            # summary table
@@ -58,6 +78,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import gzip
 import json
 import re
 import subprocess
@@ -281,28 +302,86 @@ def analyse(path: Path, phase: str, policy_cache: dict) -> dict:
             "block_sites": len(sites), "reachable_sites": len(reachable)}
 
 
+def _read_jsonl(path: Path, fired: dict[str, int], blocked: dict[str, int]) -> int:
+    rows = 0
+    opener = gzip.open if path.suffix == ".gz" else open
+    try:
+        with opener(path, "rt", errors="ignore") as fh:  # type: ignore[operator]
+            for line in fh:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    d = json.loads(line)
+                except Exception:
+                    continue
+                rows += 1
+                h = d.get("hook") or ""
+                if not h:
+                    continue
+                fired[h] = fired.get(h, 0) + 1
+                if str(d.get("exit_code")) == "2":
+                    blocked[h] = blocked.get(h, 0) + 1
+    except OSError:
+        return rows
+    return rows
+
+
 def telemetry() -> tuple[dict[str, int], dict[str, int], int]:
+    """Wrapper-attributed telemetry: hook-timing.jsonl only.
+
+    Kept separate from the self-attributed source below because the two have
+    DIFFERENT blind spots and merging them would hide that.
+    """
+    fired: dict[str, int] = {}
+    blocked: dict[str, int] = {}
+    rows = _read_jsonl(TIMING, fired, blocked) if TIMING.is_file() else 0
+    return fired, blocked, rows
+
+
+def self_reported() -> tuple[dict[str, int], dict[str, int], int]:
+    """Self-attributed telemetry: hook-health.jsonl (+ rotated .archive/*.gz).
+
+    THIS IS THE FIX FOR THE ATTRIBUTION HOLE described in the module docstring.
+
+    hook-timing.jsonl is written by the wrapper that generate-project-settings.sh
+    injects into .claude/settings.json entries, so it can only ever name a hook
+    that file names. A gate reached through bash-hot-path-dispatcher.sh is
+    invisible there and its row is attributed to the dispatcher.
+
+    hook-health.jsonl is written from the OTHER end: hooks/_lib/safe-jsonl.sh
+    installs an EXIT trap that emits {hook, exit_code, duration_ms} using the
+    hook's own `_HOOK_NAME`. The attribution comes from inside the hook, so it
+    survives ANY invocation path — settings entry, dispatcher fan-out, another
+    harness's hook config, or a bare shell call.
+
+    Measured 2026-08-15 on gates the previous run filed `unmeasured`:
+
+        for h in destructive-rm-blocker direct-main-guard \\
+                 destructive-git-blocker untracked-work-preservation-guard; do
+          echo "$h timing=$(grep -c "\\"hook\\":\\"$h\\"" \\
+                 .cognitive-os/metrics/hook-timing.jsonl) health=$(grep -c \\
+                 "\\"hook\\":\\"$h\\"" .cognitive-os/metrics/hook-health.jsonl)"
+        done
+        -> destructive-rm-blocker            timing=0 health=42
+           direct-main-guard                 timing=0 health=105
+           destructive-git-blocker           timing=0 health=100
+           untracked-work-preservation-guard timing=0 health=95
+
+    Caveat kept explicit: the trap fires on the hook's OWN exit, so a hook
+    killed by a signal leaves no row, and a hook that does not source
+    _lib/safe-jsonl.sh is still invisible here. Absence remains weak evidence;
+    presence is now strong.
+    """
     fired: dict[str, int] = {}
     blocked: dict[str, int] = {}
     rows = 0
-    if not TIMING.is_file():
-        return fired, blocked, rows
-    with TIMING.open(errors="ignore") as fh:
-        for line in fh:
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                d = json.loads(line)
-            except Exception:
-                continue
-            rows += 1
-            h = d.get("hook") or ""
-            if not h:
-                continue
-            fired[h] = fired.get(h, 0) + 1
-            if str(d.get("exit_code")) == "2":
-                blocked[h] = blocked.get(h, 0) + 1
+    md = REPO / ".cognitive-os/metrics"
+    files = [md / "hook-health.jsonl"] + sorted(
+        (md / ".archive").glob("hook-health-*.jsonl*"))
+    for f in files:
+        if f.is_file():
+            rows += _read_jsonl(f, fired, blocked)
     return fired, blocked, rows
 
 
@@ -354,6 +433,7 @@ def main() -> int:
 
     phase = current_phase()
     fired, blocked, trows = telemetry()
+    hfired, hblocked, hrows = self_reported()
     events = hook_events()
     policy_cache: dict[str, bool | None] = {}
 
@@ -364,10 +444,13 @@ def main() -> int:
             "can_block": False, "reason": "missing", "detail": "file not found",
             "block_sites": 0, "reachable_sites": 0}
         n = g["name"]
-        ever = blocked.get(n, 0)
-        # The timing wrapper is injected into settings.json entries only, so a
-        # gate the telemetry can speak about is one settings.json names.
-        measurable = "settings" in g["wiring"] or n in fired
+        # Self-attributed rows count as blocks too: the EXIT trap records the
+        # hook's own exit code regardless of who invoked it.
+        ever = blocked.get(n, 0) + hblocked.get(n, 0)
+        # The timing wrapper is injected into settings.json entries only. A gate
+        # that emits its own heartbeat is measurable no matter how it is reached,
+        # which is what retires most of the old `unmeasured` quadrant.
+        measurable = ("settings" in g["wiring"] or n in fired or n in hfired)
         disp = "dispatcher" in g["wiring"]
         enf = enforcement(n, disp, events.get(n, set()))
         out.append({
@@ -380,7 +463,10 @@ def main() -> int:
             "can_block": a["can_block"], "reason": a["reason"],
             "detail": a["detail"],
             "block_sites": a["block_sites"], "reachable_sites": a["reachable_sites"],
-            "fired": fired.get(n, 0), "ever_blocked": ever,
+            "fired": fired.get(n, 0) + hfired.get(n, 0),
+            "fired_wrapper": fired.get(n, 0),
+            "fired_self_reported": hfired.get(n, 0),
+            "ever_blocked": ever,
             "quadrant": quadrant(a["can_block"], ever, measurable, enf),
         })
     out.sort(key=lambda r: (r["quadrant"], r["name"]))
@@ -390,20 +476,23 @@ def main() -> int:
 
     if args.json:
         print(json.dumps({"phase": phase, "population": len(gates),
-                          "telemetry_rows": trows, "rows": out}, indent=2))
+                          "telemetry_rows": trows,
+                          "self_reported_rows": hrows, "rows": out}, indent=2))
     else:
         counts: dict[str, int] = {}
         for r in out:
             counts[r["quadrant"]] = counts.get(r["quadrant"], 0) + 1
         print(f"phase={phase}  gates(wired)={len(gates)}  "
-              f"telemetry_rows={trows}")
+              f"hook-timing rows={trows}  hook-health rows={hrows}")
         for q in QUADRANTS:
             print(f"  {q:<16} {counts.get(q, 0)}")
         print()
-        print(f"{'quadrant':<16} {'gate':<40} {'reason':<16} {'fire':>6} {'blk':>4} disp")
+        print(f"{'quadrant':<16} {'gate':<40} {'reason':<16} {'wrap':>5} "
+              f"{'self':>5} {'blk':>4} disp")
         for r in out:
             print(f"{r['quadrant']:<16} {r['name']:<40} {r['reason']:<16} "
-                  f"{r['fired']:>6} {r['ever_blocked']:>4} "
+                  f"{r['fired_wrapper']:>5} {r['fired_self_reported']:>5} "
+                  f"{r['ever_blocked']:>4} "
                   f"{'Y' if r['via_dispatcher'] else '-'}")
 
     return 1 if any(r["quadrant"] == "theatre" for r in out) else 0

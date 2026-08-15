@@ -12,6 +12,19 @@ Why this exists (and what it corrects in the 2026-08-15 architecture audit):
     (c) the cognitive-os.yaml harness registry that feeds the projector.
     `destructive-rm-blocker` is wired through (a) and was reported as dead.
 
+  * The CLASS was decided from the filename: a token like "gate" or "detector"
+    in the name, with the source consulted only as a tiebreaker. Corrected
+    2026-08-15 — the class now comes from scripts/hook_behavior.py, which reads
+    the source. `secret-detector` blocks via `permissionDecision: "block"` and
+    was filed `ambiguo`, which kept it out of the gate population this script
+    hands to audit_gate_liveness.py: a real blocker missing from the audit of
+    blockers. 82 of the 119 "instruments" had no instrument token at all and
+    reached that class through the final `else`. The name is still computed, as
+    `name_class`, purely so the disagreement stays measurable.
+
+  * A FIFTH wiring surface was missing: the hook configs of other harnesses.
+    See HARNESS_NATIVE_GLOBS below.
+
   * Symlinks were counted as distinct hooks. A symlink and its target are ONE
     hook; this census keys on os.path.realpath.
 
@@ -36,21 +49,16 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 
-GATE_TOKENS = ["guard", "gate", "enforcer", "blocker", "interceptor", "limiter",
-               "firewall", "lock", "freeze"]
-INSTRUMENT_TOKENS = ["capture", "heartbeat", "emit", "metric", "watchdog",
-                     "tracker", "sync", "snapshot", "monitor", "logger",
-                     "recorder", "reporter", "collector", "notifier",
-                     "aggregator", "meter"]
-AMBIGUOUS_TOKENS = ["check", "validator", "detector", "scan", "advisor",
-                    "reminder", "audit", "review", "verify", "classifier"]
-
-BLOCK_RE = re.compile(
-    r"exit\s+2\b"
-    r"|\"decision\"\s*:\s*\"block\""
-    r"|permissionDecision\"?\s*:?\s*\"?deny"
-    r"|'block'",
-    re.IGNORECASE)
+# The class comes from BEHAVIOUR, never from the filename. See
+# scripts/hook_behavior.py for what the name-token rule cost: `secret-detector`
+# blocks via `permissionDecision: "block"` and was filed `ambiguo`, so it sat
+# outside the gate population the liveness audit reads from here.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from hook_behavior import (  # noqa: E402
+    GATE_TOKENS, INSTRUMENT_TOKENS, AMBIGUOUS_TOKENS,  # re-exported: name signals
+    classify as behaviour_classify,
+    name_class,
+)
 
 HOOK_REF = re.compile(r"([A-Za-z0-9_.-]+)\.sh\b")
 
@@ -88,27 +96,71 @@ def census() -> dict[str, dict]:
     return out
 
 
-def classify(name: str, src: str) -> tuple[str, bool]:
-    low = name.lower()
-    can_block = bool(BLOCK_RE.search(src))
-    gate_n = any(t in low for t in GATE_TOKENS)
-    instr_n = any(t in low for t in INSTRUMENT_TOKENS)
-    amb_n = any(t in low for t in AMBIGUOUS_TOKENS)
-    if gate_n and not instr_n:
-        return "gate", can_block
-    if instr_n and not gate_n:
-        return ("ambiguo" if can_block else "instrument"), can_block
-    if amb_n:
-        return "ambiguo", can_block
-    return ("gate" if can_block else "instrument"), can_block
+def classify(name: str, path: Path) -> tuple[str, bool]:
+    """(class, can_block) — delegated to the behaviour scanner.
+
+    Kept as a thin wrapper so every caller that used to import THIS function
+    (audit_gate_liveness.py, classify_ambiguous_hooks.py,
+    audit_instrument_productivity.py) gets the behavioural answer without a
+    second copy of the rule. Classes are gate / instrument / inert; there is no
+    `ambiguo`, because behaviour does not shrug.
+    """
+    cls, can_block, _name_cls, _scan = behaviour_classify(name, Path(path))
+    return cls, can_block
 
 
 def direct_registrations() -> set[str]:
-    """Hook basenames named by a concrete settings artifact the harness reads."""
+    """Hook basenames named by the Claude Code settings this harness dispatches."""
     txt = "\n".join(read(REPO / p) for p in (
-        ".claude/settings.json", ".claude/settings.local.json",
-        ".codex/hooks.json"))
+        ".claude/settings.json", ".claude/settings.local.json"))
     return {m.group(1) for m in HOOK_REF.finditer(txt)}
+
+
+# The FIFTH surface. Every other census surface is Claude-Code-shaped
+# (.claude/settings.json, the Bash dispatcher, DEFAULT_HOOKS, cos-package.yaml),
+# and the one non-Claude file that was read — .codex/hooks.json — was folded
+# into `direct_registrations` as though it were the same thing. It is not: the
+# hook-timing wrapper is injected only into .claude/settings.json entries, so
+# calling a Codex/Cursor registration "settings" corrupted the measurability
+# test downstream in audit_gate_liveness.py.
+#
+# Verified 2026-08-15: `hooks/resource-check.sh` is an executing PreToolUse hook
+# in .cursor/hooks.json, .devin/hooks.json and .kiro/hooks/pre-agent-gates.kiro.hook
+# (`bash "${PWD}/hooks/resource-check.sh"`), while the four censused surfaces all
+# reported it unwired. Its 122 self-reported heartbeats in hook-health.jsonl
+# (2026-06-12 .. 2026-08-15, live file + .archive/*.gz) had no explanation until
+# this surface was enumerated.
+#
+# Globbed, not listed, so a harness added tomorrow is counted without an edit.
+HARNESS_NATIVE_GLOBS = (
+    ".codex/hooks.json", ".cursor/hooks.json", ".devin/hooks.json",
+    ".windsurf/hooks.json", ".continue/hooks.json",
+    ".kiro/hooks/*.kiro.hook", ".kiro/hooks/*.json",
+)
+
+
+def harness_native_registrations() -> set[str]:
+    """Hook basenames executed by a NON-Claude harness's own hook config.
+
+    Only counts a reference that appears in an executable position (`command`,
+    `run`, `script`, or a bash invocation); a hook merely NAMED in a manifest
+    that declares `claims_runtime_enforcement: false` — as .ai/adapters/*.json
+    does — is documentation, not an executor, and is deliberately excluded.
+    """
+    names: set[str] = set()
+    for pattern in HARNESS_NATIVE_GLOBS:
+        for p in sorted(REPO.glob(pattern)):
+            txt = read(p)
+            if not txt:
+                continue
+            # The value is a shell line with ESCAPED quotes inside
+            # (`"command": "bash \"${PWD}/hooks/x.sh\""`), so a naive
+            # `[^"]*` stops at the first \" and finds nothing.
+            for m in re.finditer(
+                    r'"(?:command|run|script|exec)"\s*:\s*"((?:[^"\\]|\\.)*)"',
+                    txt):
+                names |= {mm.group(1) for mm in HOOK_REF.finditer(m.group(1))}
+    return names
 
 
 # An invocation is either a call to one of the dispatcher's _run* helpers
@@ -245,6 +297,7 @@ def main() -> int:
     prof = profile_registrations()
     yreg = yaml_registry()
     consumer = consumer_projection()
+    harness_native = harness_native_registrations()
     manifest = classification_manifest()
     allow = allowlist()
 
@@ -256,8 +309,8 @@ def main() -> int:
 
     rows = []
     for real, e in hooks.items():
-        src = read(Path(real))
-        cls, can_block = classify(e["name"], src)
+        cls, can_block = classify(e["name"], Path(real))
+        n_cls = name_class(e["name"])
         names = {e["name"]} | {Path(a).stem for a in e["aliases"]}
         wiring = []
         if names & direct:
@@ -270,10 +323,13 @@ def main() -> int:
             wiring.append("cognitive-os.yaml")
         if names & consumer:
             wiring.append("consumer-install")
+        if names & harness_native:
+            wiring.append("harness-native")
         entry = manifest.get(e["name"])
         rows.append({
             "name": e["name"], "real": e["real"], "aliases": e["aliases"],
             "class": cls, "can_block": can_block, "wiring": wiring,
+            "name_class": n_cls, "name_lies": n_cls != cls,
             "manifest_status": entry["status"] if entry else None,
             "manifest_rationale": (entry or {}).get("rationale"),
             "allowlisted": e["name"] in allow,
@@ -305,10 +361,19 @@ def main() -> int:
         counts[r["class"]] = counts.get(r["class"], 0) + 1
     print(f"canonical hooks (symlink-resolved): {len(rows)}   "
           f"(aliases collapsed: {sum(len(r['aliases']) for r in rows) - len(rows)})")
+    print("class derived from BEHAVIOUR (scripts/hook_behavior.py), not filename")
     for k in sorted(counts):
         sub = [r for r in rows if r["class"] == k]
         w = sum(1 for r in sub if r["wiring"])
         print(f"  {k:<11} {len(sub):>4}   wired {w:>4}   unwired {len(sub)-w:>4}")
+    lies = [r for r in rows if r["name_lies"]]
+    print(f"\nhooks whose FILENAME implies a different class : {len(lies)}")
+    for nc in ("gate", "instrument", "ambiguo", "unnamed"):
+        sub = [r for r in lies if r["name_class"] == nc]
+        if sub:
+            print(f"  name says {nc:<11} -> behaviour says "
+                  + ", ".join(f"{c}:{sum(1 for r in sub if r['class'] == c)}"
+                              for c in sorted({r['class'] for r in sub})))
     print(f"\nlive dispatchers (registered + fanning out): "
           f"{sorted(live_dispatchers)}")
     print(f"gates absent from .claude/settings.json : {len(not_in_settings)}")
