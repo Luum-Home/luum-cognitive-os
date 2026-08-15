@@ -29,9 +29,7 @@ classification_basis: 'package taxonomy exists in repository package/manifests l
 
 ## Context
 
-As of 2026-03-28 Cognitive OS held roughly 375 agentic primitives (about 72
-skills, 55 rules, 57 hooks, 40 libs), all stored flat in their respective
-directories. There was no clear boundary between what constituted the OS kernel and what was an optional add-on. The `cos` package manager had been built but had no packages from the OS's own codebase to manage. Everything was installed together, regardless of whether a user needed it.
+As of 2026-03-28 Cognitive OS held roughly 375 agentic primitives (about 72 skills, 55 rules, 57 hooks and 40 libs on 2026-03-28), all stored flat in their respective directories. There was no clear boundary between what constituted the OS kernel and what was an optional add-on. The `cos` package manager had been built but had no packages from the OS's own codebase to manage. Everything was installed together, regardless of whether a user needed it.
 
 ## Decision
 

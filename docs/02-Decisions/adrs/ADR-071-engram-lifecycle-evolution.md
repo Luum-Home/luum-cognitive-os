@@ -279,7 +279,7 @@ The vault remains outside the repository by default. `docs/` is the curated, rev
 
 ## Honest Limitations (post-implementation, 2026-04-27)
 
-The implementation works end-to-end (89 tests passing: 75 unit + 14 e2e against a real sandboxed engram daemon). What follows is what does **not** work, what is **partial**, and what is **best-effort** — documented so future readers don't inherit false confidence.
+The implementation works end-to-end (on 2026-04-27, 89 tests passing: 75 unit + 14 e2e against a real sandboxed engram daemon). What follows is what does **not** work, what is **partial**, and what is **best-effort** — documented so future readers don't inherit false confidence.
 
 ### What is partial
 

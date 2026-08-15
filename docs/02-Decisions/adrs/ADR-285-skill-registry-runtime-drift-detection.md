@@ -75,7 +75,7 @@ tamper-evidence can set `COS_SKILL_DRIFT_POLICY=block` in their environment.
 
 ### Performance budget
 
-The detector must complete in under 50 ms for a full registry of 175 skills.
+The detector must complete in under 50 ms for a full registry (175 skills on 2026-05-13; recount with `ls -d skills/*/ | wc -l`).
 Hashing every file on every session start is expensive. A mtime-keyed cache at
 `.cognitive-os/state/skill-hash-cache.json` avoids re-hashing files whose
 modification time has not changed since the last check:

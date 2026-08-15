@@ -2,21 +2,21 @@
   "schema_version": "volatile-numbers.v1",
   "generated_by": "scripts/volatile_number_audit.py --write-report",
   "totals": {
-    "findings": 2036,
-    "files": 515,
-    "volatile": 324,
-    "historical": 1036,
-    "contract": 369,
+    "findings": 2032,
+    "files": 517,
+    "volatile": 281,
+    "historical": 1077,
+    "contract": 366,
     "external": 55,
-    "illustrative": 252,
+    "illustrative": 253,
     "adr-title": 0
   },
   "volatile_by_tier": {
-    "1": 25,
-    "2": 216,
+    "1": 22,
+    "2": 176,
     "3": 83
   },
-  "baselined": 291,
+  "baselined": 255,
   "new_volatile": 0,
   "volatile": [
     {
@@ -251,39 +251,6 @@
       "key": "docs/08-References/business/roadmap.synthesis.md#1e27246cfe30e466"
     },
     {
-      "path": "docs/08-References/root/adoption-tiers.md",
-      "line": 56,
-      "tier": 1,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "116",
-      "noun": "hook",
-      "snippet": "| Primary cost | ~116 hook fires/turn | ~154 hook fires/turn | ~170 hook fires/turn + engram I/O |",
-      "key": "docs/08-References/root/adoption-tiers.md#a84f7064b0313c2b"
-    },
-    {
-      "path": "docs/08-References/root/adoption-tiers.md",
-      "line": 56,
-      "tier": 1,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "154",
-      "noun": "hook",
-      "snippet": "| Primary cost | ~116 hook fires/turn | ~154 hook fires/turn | ~170 hook fires/turn + engram I/O |",
-      "key": "docs/08-References/root/adoption-tiers.md#a84f7064b0313c2b"
-    },
-    {
-      "path": "docs/08-References/root/adoption-tiers.md",
-      "line": 56,
-      "tier": 1,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "170",
-      "noun": "hook",
-      "snippet": "| Primary cost | ~116 hook fires/turn | ~154 hook fires/turn | ~170 hook fires/turn + engram I/O |",
-      "key": "docs/08-References/root/adoption-tiers.md#a84f7064b0313c2b"
-    },
-    {
       "path": "rules/ROADMAP.md",
       "line": 9,
       "tier": 1,
@@ -295,30 +262,8 @@
       "key": "rules/ROADMAP.md#69e6295d58623c60"
     },
     {
-      "path": "docs/02-Decisions/adrs/ADR-001-abc-parallel-dedup-fix-broken-infra-add-global-verify.md",
-      "line": 64,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "4",
-      "noun": "tests",
-      "snippet": "- tests/contracts/test_global_verify.py: 4 tests, all pass.",
-      "key": "docs/02-Decisions/adrs/ADR-001-abc-parallel-dedup-fix-broken-infra-add-global-verify.md#2eb09f49be7a2162"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-001-abc-parallel-dedup-fix-broken-infra-add-global-verify.md",
-      "line": 121,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "4",
-      "noun": "tests",
-      "snippet": "- tests/contracts/test_global_verify.py: 4 tests, all pass.",
-      "key": "docs/02-Decisions/adrs/ADR-001-abc-parallel-dedup-fix-broken-infra-add-global-verify.md#2eb09f49be7a2162"
-    },
-    {
       "path": "docs/02-Decisions/adrs/ADR-009-package-architecture.md",
-      "line": 30,
+      "line": 38,
       "tier": 2,
       "verdict": "volatile",
       "reason": "bare census count in prose",
@@ -329,7 +274,7 @@
     },
     {
       "path": "docs/02-Decisions/adrs/ADR-009-package-architecture.md",
-      "line": 30,
+      "line": 38,
       "tier": 2,
       "verdict": "volatile",
       "reason": "bare census count in prose",
@@ -340,7 +285,7 @@
     },
     {
       "path": "docs/02-Decisions/adrs/ADR-009-package-architecture.md",
-      "line": 30,
+      "line": 38,
       "tier": 2,
       "verdict": "volatile",
       "reason": "bare census count in prose",
@@ -351,7 +296,7 @@
     },
     {
       "path": "docs/02-Decisions/adrs/ADR-009-package-architecture.md",
-      "line": 31,
+      "line": 39,
       "tier": 2,
       "verdict": "volatile",
       "reason": "present-tense state claim",
@@ -362,7 +307,7 @@
     },
     {
       "path": "docs/02-Decisions/adrs/ADR-009-package-architecture.md",
-      "line": 31,
+      "line": 39,
       "tier": 2,
       "verdict": "volatile",
       "reason": "present-tense state claim",
@@ -373,7 +318,7 @@
     },
     {
       "path": "docs/02-Decisions/adrs/ADR-009-package-architecture.md",
-      "line": 31,
+      "line": 39,
       "tier": 2,
       "verdict": "volatile",
       "reason": "present-tense state claim",
@@ -384,7 +329,7 @@
     },
     {
       "path": "docs/02-Decisions/adrs/ADR-009-package-architecture.md",
-      "line": 31,
+      "line": 39,
       "tier": 2,
       "verdict": "volatile",
       "reason": "present-tense state claim",
@@ -392,17 +337,6 @@
       "noun": "agents",
       "snippet": "...- **PACKAGE (227 agentic primitives)**: 93 skills, 41 hooks, 44 rules, 41 libs, 3 agents, 5 templates. Optional add-ons organized into 23 packages under `packages/`, each with a...",
       "key": "docs/02-Decisions/adrs/ADR-009-package-architecture.md#cbff39bde979287e"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-010-hook-architecture-v2.md",
-      "line": 28,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "13",
-      "noun": "hooks",
-      "snippet": "Expand the hook architecture from 4 events (13 hooks) to 10 event types with 3 security profiles:",
-      "key": "docs/02-Decisions/adrs/ADR-010-hook-architecture-v2.md#b66e2d106fb49e9b"
     },
     {
       "path": "docs/02-Decisions/adrs/ADR-010-hook-architecture-v2.md",
@@ -450,29 +384,7 @@
     },
     {
       "path": "docs/02-Decisions/adrs/ADR-027.md",
-      "line": 81,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "ADR observes system state at authoring time",
-      "number": "27",
-      "noun": "hook",
-      "snippet": "**Grand total: 27 hook entries registered.** Distribution:",
-      "key": "docs/02-Decisions/adrs/ADR-027.md#744d1af43227ae6f"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-027.md",
-      "line": 181,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "ADR observes system state at authoring time",
-      "number": "7",
-      "noun": "skill",
-      "snippet": "canonical place. It is duplicated across \u2265 7 skill manifests. That is why",
-      "key": "docs/02-Decisions/adrs/ADR-027.md#9c129e54457274df"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-027.md",
-      "line": 335,
+      "line": 337,
       "tier": 2,
       "verdict": "volatile",
       "reason": "present-tense state claim",
@@ -483,7 +395,7 @@
     },
     {
       "path": "docs/02-Decisions/adrs/ADR-027.md",
-      "line": 336,
+      "line": 338,
       "tier": 2,
       "verdict": "volatile",
       "reason": "bare census count in prose",
@@ -505,25 +417,14 @@
     },
     {
       "path": "docs/02-Decisions/adrs/ADR-028.md",
-      "line": 668,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "110",
-      "noun": "hooks",
-      "snippet": "3. **Audit finding volume.** Whether 110 hooks produce 10 findings or",
-      "key": "docs/02-Decisions/adrs/ADR-028.md#bcf9454ab41b5828"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-028.md",
       "line": 669,
       "tier": 2,
       "verdict": "volatile",
       "reason": "bare census count in prose",
       "number": "5",
       "noun": "agents",
-      "snippet": "400 is unknown. D4 batching (3\u20135 agents) may need to be 10 agents or",
-      "key": "docs/02-Decisions/adrs/ADR-028.md#656278041a3a381f"
+      "snippet": "10 findings or 400 is unknown. D4 batching (3\u20135 agents) may need to be 10 agents or",
+      "key": "docs/02-Decisions/adrs/ADR-028.md#cdc1f4769eb2635c"
     },
     {
       "path": "docs/02-Decisions/adrs/ADR-028.md",
@@ -533,8 +434,8 @@
       "reason": "bare census count in prose",
       "number": "10",
       "noun": "agents",
-      "snippet": "400 is unknown. D4 batching (3\u20135 agents) may need to be 10 agents or",
-      "key": "docs/02-Decisions/adrs/ADR-028.md#656278041a3a381f"
+      "snippet": "10 findings or 400 is unknown. D4 batching (3\u20135 agents) may need to be 10 agents or",
+      "key": "docs/02-Decisions/adrs/ADR-028.md#cdc1f4769eb2635c"
     },
     {
       "path": "docs/02-Decisions/adrs/ADR-028.md",
@@ -548,17 +449,6 @@
       "key": "docs/02-Decisions/adrs/ADR-028.md#4db7a0d726c90b65"
     },
     {
-      "path": "docs/02-Decisions/adrs/ADR-028a.md",
-      "line": 279,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "309",
-      "noun": "test",
-      "snippet": "309 test-e2e-{hex}/ directories accumulate indefinitely in .cognitive-os/agent-bus/. No TTL, no cleanup.",
-      "key": "docs/02-Decisions/adrs/ADR-028a.md#b3f57b7d5f7777c2"
-    },
-    {
       "path": "docs/02-Decisions/adrs/ADR-033-harness-agnostic-event-capture.md",
       "line": 22,
       "tier": 2,
@@ -568,28 +458,6 @@
       "noun": "agent",
       "snippet": "**Related**: ADR-028b (SLO 9 agent heartbeats), ADR-032 (orchestrator trap awareness), D43 (advisory-llm packages extraction)",
       "key": "docs/02-Decisions/adrs/ADR-033-harness-agnostic-event-capture.md#7eeb64a04e8ff6c7"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-041.md",
-      "line": 44,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "5",
-      "noun": "hooks",
-      "snippet": "~4 out of every 5 hooks, scripts, and skills are dead weight \u2014 they silently fail",
-      "key": "docs/02-Decisions/adrs/ADR-041.md#ad90dc1806df9adf"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-041.md",
-      "line": 263,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "50",
-      "noun": "test",
-      "snippet": "**50 test cases**, all passing (<2s per file, ~0.5s per case on average).",
-      "key": "docs/02-Decisions/adrs/ADR-041.md#3a0dc60751f20aa4"
     },
     {
       "path": "docs/02-Decisions/adrs/ADR-041.synthesis.md",
@@ -603,72 +471,6 @@
       "key": "docs/02-Decisions/adrs/ADR-041.synthesis.md#686ec033f86b0fe7"
     },
     {
-      "path": "docs/02-Decisions/adrs/ADR-044-context-payload-slimming.md",
-      "line": 99,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "126",
-      "noun": "skills",
-      "snippet": "- If the harness uses the frontmatter `description` field for the listing, we shorten that field. 80 chars \u00d7 126 skills \u2248 10KB \u2248 2,500 tokens (vs. current ~3,500). Save: ~1,000 tokens.",
-      "key": "docs/02-Decisions/adrs/ADR-044-context-payload-slimming.md#b4cdc5339906060b"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-055b-destructive-git-block.md",
-      "line": 153,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "present-tense state claim",
-      "number": "69",
-      "noun": "tests",
-      "snippet": "Total: 69 tests passing across unit + behavior + chaos layers.",
-      "key": "docs/02-Decisions/adrs/ADR-055b-destructive-git-block.md#98454036358b1e7e"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-059-so-existential-validation.md",
-      "line": 156,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "23",
-      "noun": "skills",
-      "snippet": "- Adoption friction drops: new user sees 23 skills + 67 hooks, not 137 + 155.",
-      "key": "docs/02-Decisions/adrs/ADR-059-so-existential-validation.md#6a0e0458f1316d35"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-059-so-existential-validation.md",
-      "line": 156,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "67",
-      "noun": "hooks",
-      "snippet": "- Adoption friction drops: new user sees 23 skills + 67 hooks, not 137 + 155.",
-      "key": "docs/02-Decisions/adrs/ADR-059-so-existential-validation.md#6a0e0458f1316d35"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-059-so-existential-validation.md",
-      "line": 162,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "114",
-      "noun": "skills",
-      "snippet": "- Migration work: 114 skills + 88 hooks to classify and potentially move.",
-      "key": "docs/02-Decisions/adrs/ADR-059-so-existential-validation.md#ee458c8ee5aa49da"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-059-so-existential-validation.md",
-      "line": 162,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "88",
-      "noun": "hooks",
-      "snippet": "- Migration work: 114 skills + 88 hooks to classify and potentially move.",
-      "key": "docs/02-Decisions/adrs/ADR-059-so-existential-validation.md#ee458c8ee5aa49da"
-    },
-    {
       "path": "docs/02-Decisions/adrs/ADR-067-frontmatter-defense-in-depth.md",
       "line": 74,
       "tier": 2,
@@ -680,41 +482,8 @@
       "key": "docs/02-Decisions/adrs/ADR-067-frontmatter-defense-in-depth.md#6ae2b85ec6b36089"
     },
     {
-      "path": "docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md",
-      "line": 282,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "89",
-      "noun": "tests",
-      "snippet": "...The implementation works end-to-end (89 tests passing: 75 unit + 14 e2e against a real sandboxed engram daemon). What follows is what d...",
-      "key": "docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md#c2035457c55734b8"
-    },
-    {
       "path": "docs/02-Decisions/adrs/ADR-075-stage2-selective-expansion.md",
-      "line": 46,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "112",
-      "noun": "rules",
-      "snippet": "Expanding all 112 rules on every agent call costs ~107K tokens \u2014 roughly 50\u00d7 the",
-      "key": "docs/02-Decisions/adrs/ADR-075-stage2-selective-expansion.md#197706ea720ca927"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-075-stage2-selective-expansion.md",
-      "line": 63,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "95",
-      "noun": "rules",
-      "snippet": "- **Tier-1** (default, ~95 rules): expanded unless operator opts down to Tier-0 only.",
-      "key": "docs/02-Decisions/adrs/ADR-075-stage2-selective-expansion.md#d191f2cd5f94e968"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-075-stage2-selective-expansion.md",
-      "line": 64,
+      "line": 68,
       "tier": 2,
       "verdict": "volatile",
       "reason": "bare census count in prose",
@@ -725,18 +494,7 @@
     },
     {
       "path": "docs/02-Decisions/adrs/ADR-075-stage2-selective-expansion.md",
-      "line": 116,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "95",
-      "noun": "rules",
-      "snippet": "- Classification boundary: 95 rules are Tier-1 \u2014 the tier system is coarse. Fine-",
-      "key": "docs/02-Decisions/adrs/ADR-075-stage2-selective-expansion.md#71046f4bc3a00f71"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-075-stage2-selective-expansion.md",
-      "line": 139,
+      "line": 144,
       "tier": 2,
       "verdict": "volatile",
       "reason": "bare census count in prose",
@@ -746,107 +504,8 @@
       "key": "docs/02-Decisions/adrs/ADR-075-stage2-selective-expansion.md#b8bac3e08b487068"
     },
     {
-      "path": "docs/02-Decisions/adrs/ADR-076-skill-frontmatter-alignment.md",
-      "line": 128,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "142",
-      "noun": "skill",
-      "snippet": "- **Scope**: 142 SKILL.md files updated",
-      "key": "docs/02-Decisions/adrs/ADR-076-skill-frontmatter-alignment.md#a1b93bf5b076e42d"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-081-codex-harness-adapter.md",
-      "line": 68,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "present-tense state claim",
-      "number": "28",
-      "noun": "hooks",
-      "snippet": "of this ADR it registers 28 hooks across three Codex lifecycle events:",
-      "key": "docs/02-Decisions/adrs/ADR-081-codex-harness-adapter.md#2cedb0030fe41a3e"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-087-adr-namespace-consolidation.md",
-      "line": 275,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "11",
-      "noun": "adrs",
-      "snippet": "governance record. Promoting its 11 ADRs to the root namespace would assign",
-      "key": "docs/02-Decisions/adrs/ADR-087-adr-namespace-consolidation.md#5ce4721ed06c04e6"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-093-simplify-profiles.md",
-      "line": 75,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "29",
-      "noun": "hooks",
-      "snippet": "~29 hooks including rate-limiter, agent-prelaunch, auto-verify, dod-gate,",
-      "key": "docs/02-Decisions/adrs/ADR-093-simplify-profiles.md#c65461038fc9be2e"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-093-simplify-profiles.md",
-      "line": 93,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "10",
-      "noun": "skills",
-      "snippet": "- `install.sh` without flags produces a working OS with 10 skills visible to",
-      "key": "docs/02-Decisions/adrs/ADR-093-simplify-profiles.md#f90f6a2654e29335"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-093-simplify-profiles.md",
-      "line": 145,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "9",
-      "noun": "skills",
-      "snippet": "9 skills installed until the skill wrapper is authored. Once the",
-      "key": "docs/02-Decisions/adrs/ADR-093-simplify-profiles.md#f94c657f9cb50a55"
-    },
-    {
       "path": "docs/02-Decisions/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md",
-      "line": 45,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "present-tense state claim",
-      "number": "162",
-      "noun": "skills",
-      "snippet": "- 162 skills, 116 hooks, 131 ADRs (this is 132). The cognitive load",
-      "key": "docs/02-Decisions/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md#5a330a664588660f"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md",
-      "line": 45,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "present-tense state claim",
-      "number": "116",
-      "noun": "hooks",
-      "snippet": "- 162 skills, 116 hooks, 131 ADRs (this is 132). The cognitive load",
-      "key": "docs/02-Decisions/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md#5a330a664588660f"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md",
-      "line": 45,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "present-tense state claim",
-      "number": "131",
-      "noun": "adrs",
-      "snippet": "- 162 skills, 116 hooks, 131 ADRs (this is 132). The cognitive load",
-      "key": "docs/02-Decisions/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md#5a330a664588660f"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md",
-      "line": 81,
+      "line": 84,
       "tier": 2,
       "verdict": "volatile",
       "reason": "bare census count in prose",
@@ -854,39 +513,6 @@
       "noun": "harnesses",
       "snippet": "This shape **scales to**: 2 machines, 2\u20133 harnesses, N concurrent",
       "key": "docs/02-Decisions/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md#9a9f905a0ad9ae9b"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-174-auto-derived-primitive-routing.md",
-      "line": 34,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "103",
-      "noun": "skills",
-      "snippet": "a SKILL.md directory, and 103 skills remained unrouteable. The effective",
-      "key": "docs/02-Decisions/adrs/ADR-174-auto-derived-primitive-routing.md#edf074526a5cd622"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-174-auto-derived-primitive-routing.md",
-      "line": 212,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "95",
-      "noun": "skills",
-      "snippet": "- **Migration cost**: ~95 skills need frontmatter migration. Estimated 2-4h",
-      "key": "docs/02-Decisions/adrs/ADR-174-auto-derived-primitive-routing.md#362ad90a1133f324"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-174-auto-derived-primitive-routing.md",
-      "line": 222,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "108",
-      "noun": "skills",
-      "snippet": "The status quo. Rejected because the gap is 108 skills and growing. The",
-      "key": "docs/02-Decisions/adrs/ADR-174-auto-derived-primitive-routing.md#9189756136ac7696"
     },
     {
       "path": "docs/02-Decisions/adrs/ADR-178-openharness-primitive-adoption.md",
@@ -944,17 +570,6 @@
       "key": "docs/02-Decisions/adrs/ADR-215-cross-stack-secret-audit-toolchain.md#d25dd546ed53f0d5"
     },
     {
-      "path": "docs/02-Decisions/adrs/ADR-238-tier-1-4-followup-bug-tracking.md",
-      "line": 101,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "116",
-      "noun": "rules",
-      "snippet": "passes (116 rules audited, all green).",
-      "key": "docs/02-Decisions/adrs/ADR-238-tier-1-4-followup-bug-tracking.md#b67edadd5a1b7988"
-    },
-    {
       "path": "docs/02-Decisions/adrs/ADR-262-evolve-loop-spike.md",
       "line": 62,
       "tier": 2,
@@ -977,39 +592,6 @@
       "key": "docs/02-Decisions/adrs/ADR-262-evolve-loop-spike.md#9d1d1c1615ad3cab"
     },
     {
-      "path": "docs/02-Decisions/adrs/ADR-274-operational-guide-required-for-capability-adrs.md",
-      "line": 259,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "present-tense state claim",
-      "number": "3",
-      "noun": "harnesses",
-      "snippet": "list at session start across 3 harnesses, and",
-      "key": "docs/02-Decisions/adrs/ADR-274-operational-guide-required-for-capability-adrs.md#76c71ee4c7deb747"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-275-closure-and-projection-primitives.md",
-      "line": 277,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "present-tense state claim",
-      "number": "3",
-      "noun": "harnesses",
-      "snippet": "4. The hook wiring across the 3 harnesses lives in",
-      "key": "docs/02-Decisions/adrs/ADR-275-closure-and-projection-primitives.md#7d2c0b63a7abc9d1"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-278-subprocess-run-timeout-discipline.md",
-      "line": 94,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "169",
-      "noun": "test",
-      "snippet": "This unblocks the suite IMMEDIATELY without backfilling all 169 test",
-      "key": "docs/02-Decisions/adrs/ADR-278-subprocess-run-timeout-discipline.md#bfae998b6790a076"
-    },
-    {
       "path": "docs/02-Decisions/adrs/ADR-281-adr-implementation-reality-audit.md",
       "line": 213,
       "tier": 2,
@@ -1021,28 +603,6 @@
       "key": "docs/02-Decisions/adrs/ADR-281-adr-implementation-reality-audit.md#e8d44f4a3bc87db1"
     },
     {
-      "path": "docs/02-Decisions/adrs/ADR-285-skill-registry-runtime-drift-detection.md",
-      "line": 78,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "175",
-      "noun": "skills",
-      "snippet": "The detector must complete in under 50 ms for a full registry of 175 skills.",
-      "key": "docs/02-Decisions/adrs/ADR-285-skill-registry-runtime-drift-detection.md#f2e7239667ae9e9a"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-290-five-agent-quality-patterns.md",
-      "line": 173,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "ADR observes system state at authoring time",
-      "number": "237",
-      "noun": "hooks",
-      "snippet": "- Pattern 2 does not migrate the existing 237 hooks; this is intentional but defers the actual win until hooks opt in one by one.",
-      "key": "docs/02-Decisions/adrs/ADR-290-five-agent-quality-patterns.md#3539d542ce375a32"
-    },
-    {
       "path": "docs/02-Decisions/adrs/ADR-290.synthesis.md",
       "line": 14,
       "tier": 2,
@@ -1052,28 +612,6 @@
       "noun": "hook",
       "snippet": "...ok bodies that never need them, with no shared thread-safe deferred-import primitive; (2) 237 hook scripts parsing untyped JSON dicts with manual key-fishing and no schema, so a typo like...",
       "key": "docs/02-Decisions/adrs/ADR-290.synthesis.md#7df40a7147192c99"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-293-typed-hook-event-contracts.md",
-      "line": 105,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "ADR observes system state at authoring time",
-      "number": "237",
-      "noun": "hooks",
-      "snippet": "- Existing 237 hooks remain on untyped dicts until Phase C/D touches them. The schema lives, the legacy callers do not benefit immediately.",
-      "key": "docs/02-Decisions/adrs/ADR-293-typed-hook-event-contracts.md#1b9051ad459868b4"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-296-language-agnostic-semantic-routing.md",
-      "line": 74,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "196",
-      "noun": "skills",
-      "snippet": "~220 MB ONNX, 50+ languages, ~9 ms warm latency on CPU). All 196 skills",
-      "key": "docs/02-Decisions/adrs/ADR-296-language-agnostic-semantic-routing.md#e279533300fa7aa3"
     },
     {
       "path": "docs/02-Decisions/adrs/ADR-296.synthesis.md",
@@ -1096,17 +634,6 @@
       "noun": "skills",
       "snippet": "corpus (10 skills \u00d7 ~5 prompts per language where available). Operators",
       "key": "docs/02-Decisions/adrs/ADR-298-routing-model-benchmark-harness.md#eaf738a50f94145d"
-    },
-    {
-      "path": "docs/02-Decisions/adrs/ADR-299-skill-description-enrichment.md",
-      "line": 171,
-      "tier": 2,
-      "verdict": "volatile",
-      "reason": "bare census count in prose",
-      "number": "385",
-      "noun": "skill",
-      "snippet": "- ~385 SKILL.md files will gain 12 lines of frontmatter each \u2014 diff",
-      "key": "docs/02-Decisions/adrs/ADR-299-skill-description-enrichment.md#469c0eacc8b2ce18"
     },
     {
       "path": "docs/04-Concepts/architecture-principles.md",
