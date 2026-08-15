@@ -1,4 +1,3 @@
-<!-- SCOPE: both -->
 ---
 name: patch-release
 description: Use when preparing, validating, publishing, or diagnosing a Cognitive OS patch release without running the full laptop lane.
