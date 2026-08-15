@@ -42,7 +42,7 @@ if [ -n "$SESSION_ID" ] && [ -d "$PROJECT_DIR/.cognitive-os/sessions/$SESSION_ID
 fi
 
 VERIFY_LOG="$METRICS_DIR/auto-verify.jsonl"
-MAX_VERIFY_TIME=8
+MAX_VERIFY_TIME="${COS_MAX_VERIFY_TIME:-8}"
 
 RESPONSE=$(echo "$INPUT" | jq -r '.tool_response // empty' 2>/dev/null)
 if [ -z "$RESPONSE" ] || [ "$RESPONSE" = "null" ]; then
@@ -114,9 +114,63 @@ fi
 TOTAL=0; PASSED=0; FAILED=0; SKIPPED=0
 FAIL_LINES=""; PASS_LINES=""; SKIP_LINES=""
 
+# --- Portable bounded execution -------------------------------------------
+# GNU `timeout` is not present on a stock macOS install. Invoking it there
+# returns 127, which this hook used to read as "the acceptance criterion
+# failed" — a missing tool silently became a false negative on every check.
+# Resolve a real timeout binary when one exists, otherwise enforce the wall
+# clock from shell so absence of a tool is never reported as a failed criterion.
+# COS_FORCE_SHELL_TIMEOUT=1 forces the shell watchdog even where GNU timeout
+# exists, so both branches stay covered by tests on every platform.
+_TIMEOUT_BIN=""
+if [ "${COS_FORCE_SHELL_TIMEOUT:-0}" != "1" ]; then
+  if command -v timeout >/dev/null 2>&1; then
+    _TIMEOUT_BIN="$(command -v timeout)"
+  elif command -v gtimeout >/dev/null 2>&1; then
+    _TIMEOUT_BIN="$(command -v gtimeout)"
+  fi
+fi
+if [ -z "$_TIMEOUT_BIN" ]; then
+  echo "[auto-verify] neither timeout nor gtimeout on PATH — bounding verification commands with the shell watchdog (${MAX_VERIFY_TIME}s)." >&2
+fi
+
+_bounded_bash() {
+  # $1 = wall-clock limit in seconds, $2 = command string.
+  # Streams the command stdout; returns its exit code, or 124 on timeout.
+  local limit="$1" cmd="$2"
+  if [ -n "$_TIMEOUT_BIN" ]; then
+    "$_TIMEOUT_BIN" "$limit" bash -c "$cmd"
+    return $?
+  fi
+  local out_file err_file pid waited status
+  out_file="${TMPDIR:-/tmp}/cos-auto-verify-out-$$-$RANDOM"
+  err_file="${TMPDIR:-/tmp}/cos-auto-verify-err-$$-$RANDOM"
+  bash -c "$cmd" >"$out_file" 2>"$err_file" &
+  pid=$!
+  waited=0
+  while kill -0 "$pid" 2>/dev/null; do
+    if [ "$waited" -ge "$limit" ]; then
+      kill -TERM "$pid" 2>/dev/null || true
+      sleep 1
+      kill -KILL "$pid" 2>/dev/null || true
+      wait "$pid" 2>/dev/null || true
+      rm -f "$out_file" "$err_file" 2>/dev/null || true
+      return 124
+    fi
+    sleep 1
+    waited=$((waited + 1))
+  done
+  wait "$pid"
+  status=$?
+  cat "$out_file" 2>/dev/null || true
+  cat "$err_file" >&2 2>/dev/null || true
+  rm -f "$out_file" "$err_file" 2>/dev/null || true
+  return "$status"
+}
+
 _run_cmd() {
-  # Runs a command with timeout in the project dir; echoes stdout; exit code in $?
-  cd "$PROJECT_DIR" && timeout "$MAX_VERIFY_TIME" bash -c "$1" 2>/dev/null
+  # Runs a command bounded in the project dir; echoes stdout; exit code in $?
+  ( cd "$PROJECT_DIR" && _bounded_bash "$MAX_VERIFY_TIME" "$1" 2>/dev/null )
 }
 
 while IFS= read -r line; do
@@ -196,10 +250,14 @@ while IFS= read -r line; do
   if echo "$line" | grep -qiE '`[^`]+`[[:space:]]*(should[[:space:]]+)?(exit|return)s?[[:space:]]*0'; then
     VCMD=$(echo "$line" | grep -oE '`[^`]+`' | head -1 | tr -d '`')
     if [ -n "$VCMD" ]; then
-      if _run_cmd "$VCMD" >/dev/null 2>&1; then
+      _run_cmd "$VCMD" >/dev/null 2>&1
+      RC=$?
+      if [ "$RC" -eq 0 ]; then
         PASSED=$((PASSED + 1)); PASS_LINES="${PASS_LINES}\n  PASS: $DESC"
+      elif [ "$RC" -eq 124 ]; then
+        FAILED=$((FAILED + 1)); FAIL_LINES="${FAIL_LINES}\n  FAIL: $DESC (timed out after ${MAX_VERIFY_TIME}s)"
       else
-        FAILED=$((FAILED + 1)); FAIL_LINES="${FAIL_LINES}\n  FAIL: $DESC (exit code non-zero)"
+        FAILED=$((FAILED + 1)); FAIL_LINES="${FAIL_LINES}\n  FAIL: $DESC (exit code $RC)"
       fi
       continue
     fi

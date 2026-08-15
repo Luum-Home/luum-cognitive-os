@@ -1,0 +1,297 @@
+diff --git a/hooks/_lib/tool-outcome.sh b/hooks/_lib/tool-outcome.sh
+new file mode 100644
+index 0000000..92b3acd
+--- /dev/null
++++ b/hooks/_lib/tool-outcome.sh
+@@ -0,0 +1,111 @@
++#!/usr/bin/env bash
++# SCOPE: both
++# CONCERNS: observability, harness-contract
++# Outcome classification for PostToolUse payloads — without `.exit_code`.
++#
++# WHY THIS FILE EXISTS
++# ---------------------
++# The harness does not send `exit_code`. Not at the top level, not nested under
++# `tool_response`, not at any depth, for any tool. Measured over 57 transcripts
++# (2,684 tool results, 1,962 of them Bash) and cross-checked against 4,248 live
++# hook observations in `aci-observations.jsonl`, every single one of which
++# recorded `exit_code: 0` because its producer read the same phantom field.
++# Reproduce both numbers with:
++#
++#   docs/05-Methodology/runbooks/error-pipeline-type-contract-2026-08-15/verify_type_contract.py
++#
++# THE REAL CONTRACT — failure is signalled by a CHANGE OF TYPE
++# -------------------------------------------------------------
++#   tool_response is an OBJECT  -> the tool ran and returned normally
++#       {stdout, stderr, interrupted, isImage, noOutputExpected}
++#   tool_response is a STRING   -> failure, always prefixed "Error:"
++#       "Error: Exit code N"    -> the command RAN and exited N       (50 of 125)
++#       any other "Error: ..."  -> the command NEVER RAN: a PreToolUse
++#                                  gate of this very OS, a permission
++#                                  denial, or model unavailability    (75 of 125)
++#
++# Those last two are different events and must not share a bucket. A gate of
++# ours refusing a command is not a command that failed; feeding it to the
++# auto-repair loop makes the OS try to repair its own guardrails, and feeding it
++# to error-learning teaches the improvement loop from our own refusals.
++#
++# API
++# ---
++#   classify_tool_outcome "<payload json>"
++#     sets TOOL_OUTCOME    ok | failed | blocked | absent
++#     sets TOOL_EXIT_CODE  numeric string when the payload carries one, else ""
++#   Always returns 0; callers branch on TOOL_OUTCOME.
++#
++# `absent` IS NOT `ok`. It means the payload carried no readable tool_response,
++# i.e. the harness contract moved under us. Callers must record drift and bail —
++# never proceed as if the tool had succeeded. Reading absence as success is the
++# exact defect this file replaces: `.exit_code // "0"` did it 5,335 times per
++# hook and produced 11 rows.
++
++# Guard against double-sourcing.
++if [ -n "${_COS_TOOL_OUTCOME_SOURCED:-}" ]; then return 0 2>/dev/null || true; fi
++_COS_TOOL_OUTCOME_SOURCED=1
++
++TOOL_OUTCOME=""
++TOOL_EXIT_CODE=""
++
++classify_tool_outcome() {
++  local payload="${1:-}"
++  TOOL_OUTCOME="absent"
++  TOOL_EXIT_CODE=""
++
++  if [ -z "$payload" ] || ! command -v jq >/dev/null 2>&1; then
++    return 0
++  fi
++
++  local pair
++  pair=$(printf '%s' "$payload" | jq -r '
++    def code: capture("^Error: Exit code (?<c>[0-9]+)") | .c;
++    if (type != "object") or (has("tool_response") | not) or (.tool_response == null)
++    then "absent|"
++    elif (.tool_response | type) == "string" then
++      ( if   (.tool_response | test("^Error: Exit code [0-9]+"))
++             then "failed|" + (.tool_response | code)
++        elif (.tool_response | startswith("Error:"))
++             then "blocked|"
++        else "ok|" end )
++    elif (.tool_response | type) == "object" then
++      ( if   (.tool_response.is_error == true)                     then "failed|"
++        elif (.tool_response | has("success")) and
++             (.tool_response.success == false)                     then "failed|"
++        elif (.tool_response.status? // "" | tostring
++              | test("^(error|failed|failure)$"; "i"))             then "failed|"
++        elif (.tool_response.interrupted == true)                  then "blocked|"
++        else "ok|" end )
++    else "absent|" end' 2>/dev/null) || pair=""
++
++  # jq failed outright, or produced nothing: that is drift, not success.
++  [ -z "$pair" ] && return 0
++
++  TOOL_OUTCOME="${pair%%|*}"
++  TOOL_EXIT_CODE="${pair#*|}"
++  case "$TOOL_OUTCOME" in
++    ok|failed|blocked|absent) ;;
++    *) TOOL_OUTCOME="absent"; TOOL_EXIT_CODE="" ;;
++  esac
++  return 0
++}
++
++# Record a broken harness contract. Deliberately its own stream: a drift row is
++# an alarm about the OS's ability to observe, not an error of the project.
++record_payload_contract_drift() {
++  local metrics_dir="${1:-}" hook="${2:-unknown}" detail="${3:-tool_response absent or of unexpected shape}"
++  [ -n "$metrics_dir" ] || return 0
++  mkdir -p "$metrics_dir" 2>/dev/null || return 0
++  local row
++  row=$(jq -cn \
++    --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
++    --arg hook "$hook" \
++    --arg reason "$detail" \
++    '{timestamp:$ts,hook:$hook,reason:$reason}' 2>/dev/null) || return 0
++  if type safe_jsonl_append >/dev/null 2>&1; then
++    safe_jsonl_append "$metrics_dir/payload-contract-drift.jsonl" "$row"
++  else
++    printf '%s\n' "$row" >> "$metrics_dir/payload-contract-drift.jsonl"
++  fi
++}
+diff --git a/hooks/error-learning.sh b/hooks/error-learning.sh
+index 3194011..dc1d62f 100755
+--- a/hooks/error-learning.sh
++++ b/hooks/error-learning.sh
+@@ -11,20 +11,42 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
+ _HOOK_NAME="error-learning"
+ source "$(dirname "$0")/_lib/safe-jsonl.sh"
+ source "$(dirname "$0")/_lib/common.sh"
++source "$(dirname "$0")/_lib/tool-outcome.sh"
+ 
+ check_private_mode
+ read_stdin_json
+ 
+-EXIT_CODE=$(stdin_field '.exit_code' '0')
+ COMMAND=$(stdin_field '.tool_input.command' '')
++
++# No exit_code is ever sent. Failure is a change of type on tool_response, and
++# there are four outcomes, not two. See hooks/_lib/tool-outcome.sh.
++classify_tool_outcome "$_STDIN_JSON"
++EXIT_CODE="$TOOL_EXIT_CODE"
+ # tool_response may be a plain string (stdout) or an object with stdout/stderr fields.
+ # Use direct jq with type-checking to handle both formats.
+ STDOUT=$(echo "$_STDIN_JSON" | jq -r 'if (.tool_response | type) == "object" then .tool_response.stdout // "" else .tool_response // "" end' 2>/dev/null || true)
+ STDERR=$(echo "$_STDIN_JSON" | jq -r 'if (.tool_response | type) == "object" then .tool_response.stderr // "" else "" end' 2>/dev/null || true)
+ 
+-# Only process failures
+-[ "$EXIT_CODE" = "0" ] || [ "$EXIT_CODE" = "" ] && exit 0
+-[ "$EXIT_CODE" = "null" ] && exit 0
++# Only process commands that actually ran and failed.
++#
++# The line this replaces was `[ A ] || [ B ] && exit 0`, which by left
++# associativity meant `(A || B) && exit 0`. With EXIT_CODE hardwired to the
++# literal "0" by the phantom-field default, condition A was always true, so the
++# hook exited unconditionally on every one of its 5,335 invocations.
++case "$TOOL_OUTCOME" in
++  ok)
++    exit 0
++    ;;
++  absent)
++    record_payload_contract_drift "$(_resolve_metrics_dir)" "error-learning"
++    exit 0
++    ;;
++  blocked)
++    # Command never ran (PreToolUse gate / permission / model unavailable).
++    # error-pipeline owns the gate-blocks.jsonl stream; do not double-log.
++    exit 0
++    ;;
++esac
+ 
+ COMBINED="$STDOUT $STDERR"
+ 
+@@ -71,7 +93,9 @@ fi
+ # Extract service name from command path
+ SERVICE=$(echo "$COMMAND" | grep -oE 'internal/[a-z_-]+' | head -1 | tr '/' '-' || echo "unknown")
+ 
++# TOOL_EXIT_CODE is "" when the failure carried no numeric code; emit null, not
++# a bare empty token that would make the row unparseable for all ten consumers.
+ safe_jsonl_append "$ERROR_LOG" \
+-  "{\"timestamp\":\"$TIMESTAMP\",\"timestamp_epoch\":$NOW_EPOCH,\"type\":\"$ERROR_TYPE\",\"service\":\"$SERVICE\",\"fingerprint\":\"$FINGERPRINT\",\"command\":$(echo "$COMMAND" | jq -Rs '.'),\"exit_code\":$EXIT_CODE}"
++  "{\"timestamp\":\"$TIMESTAMP\",\"timestamp_epoch\":$NOW_EPOCH,\"type\":\"$ERROR_TYPE\",\"service\":\"$SERVICE\",\"fingerprint\":\"$FINGERPRINT\",\"command\":$(echo "$COMMAND" | jq -Rs '.'),\"exit_code\":${EXIT_CODE:-null}}"
+ 
+ exit 0
+diff --git a/hooks/error-pipeline.sh b/hooks/error-pipeline.sh
+index c9f0f7d..b9e74ac 100755
+--- a/hooks/error-pipeline.sh
++++ b/hooks/error-pipeline.sh
+@@ -15,6 +15,7 @@ _HOOK_NAME="error-pipeline"
+ 
+ _LIB_DIR="$(cd "$(dirname "$0")/_lib" && pwd)"
+ source "$_LIB_DIR/safe-jsonl.sh"
++source "$_LIB_DIR/tool-outcome.sh"
+ 
+ PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
+ 
+@@ -36,10 +37,40 @@ CONFIG_FILE="$PROJECT_DIR/cognitive-os.yaml"
+ INPUT=$(cat)
+ COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty' 2>/dev/null)
+ RESPONSE=$(echo "$INPUT" | jq -r '.tool_response // empty' 2>/dev/null)
+-EXIT_CODE=$(echo "$INPUT" | jq -r '.exit_code // "0"' 2>/dev/null)
++
++# The harness sends no exit_code — at any level, for any tool. Failure is a
++# CHANGE OF TYPE on tool_response. See hooks/_lib/tool-outcome.sh for the
++# measured contract and the command that reproduces it.
++classify_tool_outcome "$INPUT"
++EXIT_CODE="$TOOL_EXIT_CODE"
+ 
+ [ -z "$COMMAND" ] && exit 0
+-[ "$EXIT_CODE" = "0" ] && exit 0
++
++case "$TOOL_OUTCOME" in
++  ok)
++    exit 0
++    ;;
++  absent)
++    # The payload shape moved. Never silently read that as success.
++    record_payload_contract_drift "$METRICS_DIR" "error-pipeline"
++    exit 0
++    ;;
++  blocked)
++    # The command never ran: a PreToolUse gate of this OS, a permission denial,
++    # or model unavailability. Real signal, but not a project error — it must
++    # not enter error-learning.jsonl and must not reach auto-repair, or the OS
++    # starts trying to repair its own guardrails.
++    mkdir -p "$METRICS_DIR" 2>/dev/null || true
++    safe_jsonl_append "$METRICS_DIR/gate-blocks.jsonl" \
++      "$(jq -cn --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
++                --argjson te "$(date +%s)" \
++                --arg cmd "$COMMAND" \
++                --arg reason "$(printf '%s' "$RESPONSE" | head -c 300)" \
++         '{timestamp:$ts,timestamp_epoch:$te,hook:"error-pipeline",command:$cmd,reason:$reason}')"
++    exit 0
++    ;;
++esac
++# Only TOOL_OUTCOME=failed reaches here: a command that ran and exited non-zero.
+ 
+ # === PHASE 1: ERROR DETECTION & CLASSIFICATION ===
+ ERROR_TYPE=""
+diff --git a/packages/skill-governance/hooks/skill-tracker.sh b/packages/skill-governance/hooks/skill-tracker.sh
+index c02d9a6..f870873 100755
+--- a/packages/skill-governance/hooks/skill-tracker.sh
++++ b/packages/skill-governance/hooks/skill-tracker.sh
+@@ -31,7 +31,17 @@ if ! command -v jq &>/dev/null; then exit 0; fi
+ TOOL_NAME=$(stdin_field '.tool_name' 'unknown')
+ 
+ TOOL_RESULT=$(echo "$INPUT" | jq -r '.tool_response // empty' 2>/dev/null)
+-EXIT_CODE=$(echo "$INPUT" | jq -r '.exit_code // "0"' 2>/dev/null)
++
++# The harness sends no exit_code (measured: zero occurrences at any nesting
++# level across 2,684 tool results). Agent/Skill payloads carry their own verdict
++# fields instead, and their shapes differ from Bash:
++#   object with .status -> "async_launched" (150) | "completed" (5)
++#   object with .success (Skill invocations, 10)
++#   string              -> failure or refusal (17)
++# hooks/_lib/tool-outcome.sh classifies all three plus the drift case.
++source "$(dirname "$0")/_lib/tool-outcome.sh"
++classify_tool_outcome "$INPUT"
++EXIT_CODE="$TOOL_EXIT_CODE"
+ 
+ # --- Extract skill name ---
+ # The `skill` field feeds five KPI modules (cos_lib/kpi_collector.py,
+@@ -78,14 +88,31 @@ fi
+ FAILED=false
+ FAILURE_REASON=""
+ 
+-if [ "$EXIT_CODE" != "0" ] && [ "$EXIT_CODE" != "" ]; then
+-  FAILED=true
+-  FAILURE_REASON="Exit code: $EXIT_CODE"
+-fi
+-
+-if echo "$TOOL_RESULT" | grep -qi "error\|failed\|rejected\|exception\|timed out\|permission denied" 2>/dev/null; then
+-  FAILED=true
+-  FAILURE_REASON="${FAILURE_REASON:+$FAILURE_REASON | }Pattern match in result"
++case "$TOOL_OUTCOME" in
++  failed)
++    FAILED=true
++    FAILURE_REASON="tool reported failure${TOOL_EXIT_CODE:+ (exit ${TOOL_EXIT_CODE})}"
++    ;;
++  blocked)
++    # The launch was refused before it ran. Not the skill's fault — do not feed
++    # it back to Engram as skill failure evidence.
++    FAILED=false
++    ;;
++  absent)
++    exit 0
++    ;;
++esac
++
++# The pattern match only ever looked at the harness's own words, never at the
++# prompt we sent it. Agent payloads embed the full `prompt`, and agent prompts
++# routinely contain "error" or "failed" as ordinary subject matter, so grepping
++# the whole payload marked healthy runs as failures. Scope it to the string
++# form, which is the only shape that carries a harness error message.
++if [ "$TOOL_OUTCOME" = "failed" ] || [ "$TOOL_OUTCOME" = "blocked" ]; then
++  if echo "$TOOL_RESULT" | head -c 500 \
++     | grep -qi "error\|failed\|rejected\|exception\|timed out\|permission denied" 2>/dev/null; then
++    FAILURE_REASON="${FAILURE_REASON:+$FAILURE_REASON | }$(echo "$TOOL_RESULT" | head -c 120 | tr '\n' ' ')"
++  fi
+ fi
+ 
+ if [ "$FAILED" = "true" ]; then

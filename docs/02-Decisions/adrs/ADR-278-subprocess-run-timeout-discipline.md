@@ -91,8 +91,8 @@ inject `timeout=45` when the caller omits it. Configurable via
 `COS_TEST_SUBPROCESS_DEFAULT_TIMEOUT` (set to 0 to disable). Explicit
 per-call timeouts override.
 
-This unblocks the suite IMMEDIATELY without backfilling all 169 test
-calls; the audit + allowlist provide the per-call discipline that
+This unblocks the suite IMMEDIATELY without backfilling every uncovered call
+site — 169 of them counted on 2026-05-12; the audit + allowlist provide the per-call discipline that
 backfilling will eventually satisfy.
 
 ### 4. Pre-commit gate (Phase 2, follow-up)

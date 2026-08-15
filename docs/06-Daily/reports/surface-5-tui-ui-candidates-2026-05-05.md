@@ -201,7 +201,7 @@ After all candidates are scored, propose ADR-173 with:
 ## Cross-references
 
   pattern this audit must avoid.
-- [ADR-172](../adrs/ADR-172-multi-surface-ui-architecture.md) — the
+- [ADR-172](../../02-Decisions/adrs/ADR-172-multi-surface-ui-architecture.md) — the
   architecture Surface 5 would extend.
 - `rules/license-policy.md` — license allowlist/blocklist for adoption decisions.
 - `scripts/aspirational_audit.py` — the REAL/DORMANT/ASPIRATIONAL

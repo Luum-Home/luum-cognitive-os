@@ -118,7 +118,7 @@ portability.
 
 - [ADR-064 — Harness-Agnostic Cognitive OS](ADR-064-harness-agnostic-cognitive-os.md)
 - [ADR-081 — Codex Harness Adapter](ADR-081-codex-harness-adapter.md)
-- [Codex Governed Tool Layer](../architecture/codex-governed-tool-layer.md)
+- [Codex Governed Tool Layer](../../04-Concepts/architecture/codex-governed-tool-layer.md)
 
 
 ## Alternatives rejected

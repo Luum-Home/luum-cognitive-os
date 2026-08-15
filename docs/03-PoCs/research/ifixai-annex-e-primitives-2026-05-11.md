@@ -103,7 +103,7 @@ Medium. Digest + manifest schema: ~1 day. Wiring into 4 eval skills + CI: ~2-3 d
 
 **Clean-room re-implement.** The algorithm is small enough that copying it would be more procedural overhead (NOTICE files, attribution licenses) than rewriting. Pin the canonicalisation algorithm to a versioned constant so any change is an explicit break.
 
-> **Reclassification note (2026-05-11, cluster-D self-critique).** The **mandatory-minimum inspection cap** mechanic itself (`B01 ≥ 1.00` / `B08 ≥ 0.95` failure clamps overall to `0.60` per `ifixai/scoring/mandatory_minimums.py:6-11`) has been **reclassified from extractable primitive → governance policy**. See the new "Governance policies (not primitives)" subsection at §6a below, and [ADR-265 — Mandatory-minimum inspection caps for COS eval surfaces](../adrs/ADR-265-mandatory-minimum-inspection-caps.md) (Proposed). Primitive #4 below continues to cover the **calibration self-disclaimer** convention, which is pattern-extractable independently of the cap mechanic.
+> **Reclassification note (2026-05-11, cluster-D self-critique).** The **mandatory-minimum inspection cap** mechanic itself (`B01 ≥ 1.00` / `B08 ≥ 0.95` failure clamps overall to `0.60` per `ifixai/scoring/mandatory_minimums.py:6-11`) has been **reclassified from extractable primitive → governance policy**. See the new "Governance policies (not primitives)" subsection at §6a below, and [ADR-265 — Mandatory-minimum inspection caps for COS eval surfaces](../../02-Decisions/adrs/ADR-265-mandatory-minimum-inspection-caps.md) (Proposed). Primitive #4 below continues to cover the **calibration self-disclaimer** convention, which is pattern-extractable independently of the cap mechanic.
 
 ## 5. Primitive 4 — Threshold-policy-as-data + calibration self-disclaimer
 
@@ -111,7 +111,7 @@ Medium. Digest + manifest schema: ~1 day. Wiring into 4 eval skills + CI: ~2-3 d
 
 iFixAi's defaults (`B01=1.00`, `B08=0.95`, `pass=0.85`, `mandatory-minimum cap=0.60`,[^mm-cap] category weights summing to 1.00) live in two files only: `ifixai/scoring/mandatory_minimums.py` (`MANDATORY_MINIMUMS`, `SCORE_CAP_ON_FAILURE`, `PASS_THRESHOLD`) and `ifixai/scoring/category_weights.py` (`DEFAULT_CATEGORY_WEIGHTS`, `STRATEGIC_TEST_IDS`). They are **data**, not deep-embedded heuristics — easy to swap out.
 
-[^mm-cap]: The `mandatory-minimum cap=0.60` is listed here as a *data point* (a value declared in source), not as an endorsed COS primitive. Adoption of the cap mechanic is deferred under [ADR-265 (Proposed)](../adrs/ADR-265-mandatory-minimum-inspection-caps.md); see §6a.
+[^mm-cap]: The `mandatory-minimum cap=0.60` is listed here as a *data point* (a value declared in source), not as an endorsed COS primitive. Adoption of the cap mechanic is deferred under [ADR-265 (Proposed)](../../02-Decisions/adrs/ADR-265-mandatory-minimum-inspection-caps.md); see §6a.
 
 The accompanying README L35-L42 caveat is the cultural primitive: declare honestly that thresholds are policy defaults, not empirically calibrated. iFixAi recommends treating the score as "a CI drift signal and a fixture-controlled comparison tool" rather than an authoritative grade.
 
@@ -143,7 +143,7 @@ Entries here were initially scoped as extractable primitives but, on cluster-D s
 
 **Open questions** (must be operator-resolved before promotion): (1) inspection set, (2) cap value calibration, (3) fail-mode (loud raise vs silent clamp), (4) opt-in scope (per-skill vs repo-wide).
 
-**Tracked under.** [ADR-265 — Mandatory-minimum inspection caps for COS eval surfaces](../adrs/ADR-265-mandatory-minimum-inspection-caps.md) (Proposed, 2026-05-11). Independent of Primitives #1, #2, #3, #4, #5 above, all of which remain pattern-extractable on their own.
+**Tracked under.** [ADR-265 — Mandatory-minimum inspection caps for COS eval surfaces](../../02-Decisions/adrs/ADR-265-mandatory-minimum-inspection-caps.md) (Proposed, 2026-05-11). Independent of Primitives #1, #2, #3, #4, #5 above, all of which remain pattern-extractable on their own.
 
 ## 6. Primitive 5 — Conservative ensemble tie-break with per-judge attribution
 

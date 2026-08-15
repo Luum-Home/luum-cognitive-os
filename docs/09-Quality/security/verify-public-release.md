@@ -1,7 +1,7 @@
 # Verify the Public Release Yourself
 
 > Anti-FUD toolkit. This document is the long-form companion to
-> [TRANSPARENCY.md §6](../../TRANSPARENCY.md#6-verify-it-yourself-anti-fud-toolkit).
+> [TRANSPARENCY.md §6](../../../TRANSPARENCY.md#6-verify-it-yourself-anti-fud-toolkit).
 > Every command runs against a fresh clone with no privileged input. If a
 > result diverges from what we claim here, file an issue.
 
@@ -54,16 +54,16 @@ git tag -v v1.0.0
 ```
 
 If the signature fails to verify on a release flagged as public, treat
-the release as compromised and follow [TRANSPARENCY.md §7](../../TRANSPARENCY.md#7-contact--responsible-disclosure).
+the release as compromised and follow [TRANSPARENCY.md §7](../../../TRANSPARENCY.md#7-contact--responsible-disclosure).
 
 ---
 
 ## 3. Manifest-snapshot byte-diff
 
 The pre-rewrite policy was frozen at
-[`docs/01-Build-Log/history/manifest-snapshot-2026-05-07.yaml`](../history/manifest-snapshot-2026-05-07.yaml).
+[`docs/01-Build-Log/history/manifest-snapshot-2026-05-07.yaml`](../../01-Build-Log/history/manifest-snapshot-2026-05-07.yaml).
 The live manifest is at
-[`manifests/history-sanitization.yaml`](../../manifests/history-sanitization.yaml).
+[`manifests/history-sanitization.yaml`](../../../manifests/history-sanitization.yaml).
 
 ```
 diff manifests/history-sanitization.yaml docs/01-Build-Log/history/manifest-snapshot-2026-05-07.yaml
@@ -91,7 +91,7 @@ python3 -c "import yaml; m=yaml.safe_load(open('manifests/history-sanitization.y
 ## 4. SHA-inventory sanity check
 
 The pre-rewrite SHA inventory was published at
-[`docs/01-Build-Log/history/pre-sanitization-sha-inventory-2026-05-07.txt`](../history/pre-sanitization-sha-inventory-2026-05-07.txt)
+[`docs/01-Build-Log/history/pre-sanitization-sha-inventory-2026-05-07.txt`](../../01-Build-Log/history/pre-sanitization-sha-inventory-2026-05-07.txt)
 (1,775 commits, one line per commit, format `SHA AUTHOR-DATE SUBJECT`).
 
 ```

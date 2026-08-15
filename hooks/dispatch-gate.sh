@@ -103,20 +103,62 @@ fi
 
 # ─── Single Python pass: config + active tasks + skill + CE + CB + routing ───
 # Replaces 7 sequential python3 cold starts with one.
+#
+# The fallback below used to carry `"cb_blocked":false` with nothing else, and
+# the check ran under `2>/dev/null`. That combination made the hook answer for a
+# control it never consulted: when the check died, the JSON said "the circuit
+# breaker allowed this launch" and the reason died with the discarded stderr.
+# Now the failure path is labelled (`cb_evaluated:false` + `cb_unavailable`) and
+# stderr is reprinted. `cb_blocked` stays `false` on purpose — this change makes
+# a failure legible, it does not turn it into a new block.
 
-GATE_JSON=$(echo "$_dispatch_stdin_json" | python3 "$(dirname "$0")/_lib/dispatch_gate_check.py" 2>/dev/null \
-    || echo '{"max_agents":5,"active":0,"skill_name":"","disabled":false,"model_override":"","cb_blocked":false,"cb_task_type":"","model_directive":"MODEL_ADVICE: sonnet","model_advice":"Model: sonnet (default)","log_desc":"","error":"python-failed"}')
+_GATE_STDERR=$(mktemp "${TMPDIR:-/tmp}/cos-dispatch-gate.err.XXXXXX" 2>/dev/null || printf '/tmp/cos-dispatch-gate-err-%s' "$$")
+_GATE_FALLBACK='{"max_agents":5,"active":0,"skill_name":"","disabled":false,"model_override":"","cb_blocked":false,"cb_evaluated":false,"cb_unavailable":"gate-check-failed","cb_task_type":"","model_directive":"MODEL_ADVICE: sonnet","model_advice":"Model: sonnet (default)","log_desc":"","error":"python-failed"}'
 
+GATE_JSON=$(echo "$_dispatch_stdin_json" | python3 "$(dirname "$0")/_lib/dispatch_gate_check.py" 2>"$_GATE_STDERR") || GATE_JSON=""
+# The check is contracted to always exit 0 with JSON on stdout; treat unparsable
+# output as a failure too, otherwise a half-written payload reads as a verdict.
+if [ -z "$GATE_JSON" ] || ! echo "$GATE_JSON" | jq -e . >/dev/null 2>&1; then
+    GATE_JSON="$_GATE_FALLBACK"
+    {
+        echo "DISPATCH GATE: _lib/dispatch_gate_check.py failed — circuit breaker NOT evaluated."
+        echo "  This launch proceeds unguarded by the breaker (fail-open, by design)."
+        if [ -s "$_GATE_STDERR" ]; then
+            echo "  --- gate-check stderr ---"
+            sed 's/^/  /' "$_GATE_STDERR" 2>/dev/null | head -20
+            echo "  --- end gate-check stderr ---"
+        else
+            echo "  (gate-check produced no stderr; output was empty or not JSON)"
+        fi
+    } >&2
+fi
+rm -f "$_GATE_STDERR" 2>/dev/null || true
+
+# NOTE on jq: `X // Y` yields Y when X is null, missing *or* false — so it can
+# never return false for a boolean field. That idiom is what left claim-validator
+# dead (`.ok // true`). Here the defaults happened to match the false branch, but
+# the shape is a trap, so boolean reads are written as explicit `== true` tests.
 MAX_AGENTS=$(echo "$GATE_JSON" | jq -r '.max_agents // 5')
 ACTIVE=$(echo "$GATE_JSON"     | jq -r '.active // 0')
 SKILL_NAME=$(echo "$GATE_JSON" | jq -r '.skill_name // ""')
-DISABLED=$(echo "$GATE_JSON"   | jq -r '.disabled // false')
+DISABLED=$(echo "$GATE_JSON"   | jq -r '(.disabled == true)')
 MODEL_OVERRIDE=$(echo "$GATE_JSON" | jq -r '.model_override // ""')
-CB_BLOCKED=$(echo "$GATE_JSON" | jq -r '.cb_blocked // false')
+CB_BLOCKED=$(echo "$GATE_JSON" | jq -r '(.cb_blocked == true)')
+CB_EVALUATED=$(echo "$GATE_JSON" | jq -r '(.cb_evaluated == true)')
+CB_UNAVAILABLE=$(echo "$GATE_JSON" | jq -r '.cb_unavailable // ""')
 CB_TASK_TYPE=$(echo "$GATE_JSON" | jq -r '.cb_task_type // ""')
 MODEL_DIRECTIVE=$(echo "$GATE_JSON" | jq -r '.model_directive // "MODEL_ADVICE: sonnet"')
 MODEL_ADVICE_LINE=$(echo "$GATE_JSON" | jq -r '.model_advice // "Model: sonnet (default)"')
 LOG_DESC=$(echo "$GATE_JSON"   | jq -r '.log_desc // ""')
+
+# ─── The breaker did not run: say so instead of implying it said yes ──────────
+# Covers both failure shapes: the fallback above, and a successful check whose
+# `cos_lib.circuit_breaker` import blew up (the shape that kept the breaker dead
+# in every consumer install — see _lib/dispatch_gate_check.py §7).
+if [ "$CB_EVALUATED" != "true" ]; then
+    echo "DISPATCH GATE: circuit breaker NOT evaluated${CB_UNAVAILABLE:+ — ${CB_UNAVAILABLE}}" >&2
+    echo "  Launch is allowed, but no breaker verdict backs that decision." >&2
+fi
 
 # ─── Log helper ───────────────────────────────────────────────────────────────
 
@@ -126,8 +168,10 @@ _log_event() {
     mkdir -p "$metrics_dir" 2>/dev/null || true
     local ts
     ts=$(date -u +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || echo "unknown")
-    printf '{"timestamp":"%s","active":%s,"max":%s,"action":"%s","description":"%s"}\n' \
-        "$ts" "$ACTIVE" "$MAX_AGENTS" "$action" "$LOG_DESC" \
+    # cb_evaluated is additive: readers that ignore it keep working, and the
+    # ledger stops being unable to tell an allowed launch from an unguarded one.
+    printf '{"timestamp":"%s","active":%s,"max":%s,"action":"%s","cb_evaluated":%s,"description":"%s"}\n' \
+        "$ts" "$ACTIVE" "$MAX_AGENTS" "$action" "${CB_EVALUATED:-false}" "$LOG_DESC" \
         >> "$metrics_dir/dispatch-gate.jsonl" 2>/dev/null || true
 }
 

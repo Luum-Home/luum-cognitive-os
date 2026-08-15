@@ -34,6 +34,144 @@ gated_path_globs:
   - 'docs/03-PoCs/research/repo-scout/deep/*.md'
   - 'manifests/external-tools-adoption.yaml'
 
+# ADDITIVE 2026-08-15 — inverse index. Purely informational: reading or editing
+# this block changes no policy. `frozen`, `unfreeze_requires` and
+# `gated_path_globs` above are untouched operator decisions.
+#
+# When the unfreeze conditions are met, this is the backlog the operator inherits:
+# repo-scout deep verdicts of 2026-05-06 that said ADOPT and never landed. Each
+# PoC file now carries a matching status note. Measured by
+# scripts/audit_adopt_verdict_linkage.py (read-only, deterministic).
+pending_on_unfreeze:
+  measured_at: '2026-08-15'
+  source_dir: docs/03-PoCs/research/repo-scout/deep/
+  measured_by: scripts/audit_adopt_verdict_linkage.py
+  note: |
+    18 files carry deep_verdict: ADOPT dated 2026-05-06. NONE of the 18 is cited
+    by org/repo slug in any ADR, so "which ones landed" cannot be answered from
+    the ADR corpus — it is answered by looking for the verdict's payload in code.
+    Nothing was adopted AFTER the freeze: every adoption below predates
+    2026-05-11. The freeze held.
+  superseded_by_freeze:
+    # Verdict never reached code. These are the real pending-on-unfreeze items.
+    - repo: OSU-NLP-Group/HippoRAG
+      payload: Personalized-PageRank multi-hop retrieval algorithm
+      verdict_scope: algorithm-only
+    - repo: getzep/graphiti
+      payload: bi-temporal edge schema (event-time vs ingest-time) + cross-encoder rerank
+      verdict_scope: algorithm-only
+    - repo: gepa-ai/gepa
+      payload: reflective text-evolution optimizer
+      verdict_scope: full
+    - repo: MemPalace/mempalace
+      payload: memory scoring/eviction patterns
+      verdict_scope: full
+    - repo: SWE-agent/SWE-agent
+      payload: ACI tool-package shape (tools/* directory)
+      verdict_scope: reference
+  adopted_before_freeze_without_adr:
+    # Freeze does NOT apply — these landed first. What is missing is a written
+    # decision, not permission. Decision debt, not adoption debt.
+    #
+    # The `inventoried` field below states where each entry is recorded, and was
+    # made accurate on 2026-08-15. The `also:` notes it replaces were written
+    # earlier the same day and three of the four were wrong within hours:
+    # LightRAG claimed to be in NOTICE.md and the license manifest when it was in
+    # neither, and aider and dspy were declared absent from both — true when
+    # written, false once the inventory landed. Do not restate here what those
+    # files contain; state where to look, and let the verify command answer.
+    #
+    # verify: for t in crawl4ai LightRAG aider dspy; do
+    #           printf '%s %s %s\n' "$t" \
+    #             "$(grep -ci "$t" NOTICE.md)" \
+    #             "$(grep -ci "$t" manifests/external-tool-licenses.yaml)"; done
+    - repo: unclecode/crawl4ai
+      landed: '2026-03-27'
+      where: packages/ecosystem-tools/lib/web_crawler.py, requirements.txt
+      inventoried: [NOTICE, NOTICE.md, manifests/external-tool-licenses.yaml]
+      also: |
+        manifests/external-tools-adoption.yaml marks it verdict INTEGRATE.
+        Apache-2.0 with a mandatory attribution clause: the upstream LICENSE
+        requires a verbatim sentence carrying two URLs, which the earlier
+        paraphrase omitted. Corrected 2026-08-15.
+    - repo: HKUDS/LightRAG
+      landed: '2026-05-08'
+      where: cos_lib/memory_retrieval_benchmark.py
+      inventoried: [NOTICE, NOTICE.md, manifests/external-tool-licenses.yaml]
+      also: MIT. Form is conceptual-reference, not vendored code.
+    - repo: Aider-AI/aider
+      landed: '2026-05-10'
+      where: cos_lib/repo_map.py, scripts/cos-repo-map
+      inventoried: [NOTICE, NOTICE.md, manifests/external-tool-licenses.yaml]
+      also: |
+        Apache-2.0, not MIT — 8 of 13 entries in the license manifest are MIT,
+        so MIT was the assumable default and the assumable default was wrong.
+        The docstring declares it a pattern-port; whether the implementation
+        resembles aider's algorithm is NOT ASSESSED.
+    - repo: stanfordnlp/dspy
+      landed: '2026-05-10'
+      where: cos_lib/dspy_pilot.py, scripts/cos-dspy-pilot
+      inventoried: [NOTICE, NOTICE.md, manifests/external-tool-licenses.yaml,
+                    manifests/feature-tool-due-diligence.yaml]
+      also: MIT. Form is optional-probe.
+  not_governed_by_freeze:
+    - repo: agentsmd/agents.md
+      reason: |
+        Verdict is "spec only — there is no library to vendor". AGENTS.md predates
+        the verdict (2026-04-09); .ai/adapters/agents-md/ landed 2026-05-12. The
+        freeze governs adoption of external code, not adherence to a published spec.
+  enforcement_caveat: |
+    purpose: above calls this a "mechanical kill-switch". As of 2026-08-15 it is
+    not mechanical: hooks/adoption-freeze-gate.sh is not registered in
+    .claude/settings.json (0 occurrences among 162 hook entries) and is not
+    invoked from .githooks/pre-commit. The freeze is currently a written policy
+    with an unwired enforcer. Registering it is an operator decision, recorded
+    here so the gap is not mistaken for coverage.
+
+# ADDITIVE 2026-08-15 — written exceptions. `frozen: true`, `unfreeze_requires`
+# and `gated_path_globs` above remain untouched operator decisions. An entry here
+# does NOT unfreeze anything; it records a case the operator decided while the
+# freeze was active, with its reason, so practice and policy do not silently
+# diverge. A manifest that says `frozen: true` while the practice adopts is worse
+# than either posture on its own.
+operator_exceptions:
+  - id: codebase-memory-mcp-2026-08-15
+    decided_by: operator
+    decided_at: '2026-08-15'
+    adr: ADR-343
+    tool: codebase-memory-mcp
+    upstream: https://github.com/DeusData/codebase-memory-mcp
+    spdx: MIT
+    disposition: recommend-only (NOT adopted, NOT installed, NOT vendored)
+    why_it_is_not_an_adoption: |
+      Nothing upstream is vendored, ported, or reimplemented. No code, no
+      algorithm, no schema enters this repo. What lands is (a) a read-only
+      detection script and (b) a conditional advisory rule that stops an
+      existing directive from firing when the server's graph does not hold
+      this project. The IP surface the freeze protects against — accumulating
+      externally-derived code without counsel review — is not touched.
+    why_it_is_recorded_anyway: |
+      The operator's decision ("install it from the OS itself, or have the OS
+      recommend it") sits adjacent to a policy that freezes external-tool
+      adoption. Even landing on the conservative side of that line, the
+      adjacency is written down rather than left to inference.
+    licenses_inventory_entry: none-by-design
+    licenses_inventory_reason: |
+      manifests/external-tool-licenses.yaml tracks tools "vendored or ported
+      into Cognitive OS" and NOTICE carries their attribution. This case ports
+      nothing, so it correctly has no entry in either. Recorded explicitly so a
+      later audit does not read the absence as the aider/dspy-style gap, where
+      genuinely adopted code is missing from both inventories.
+    gap_disclosed: |
+      Two holes this exception does not close, both measured 2026-08-15:
+      1. gated_path_globs does not cover manifests/dependencies.yaml, so
+         declaring an MCP recommendation there would never reach the gate even
+         if the gate were wired.
+      2. An MCP configured in the operator's own profile bypasses this policy
+         entirely — the freeze governs documented adoption, not de-facto use.
+         codebase-memory-mcp is already reachable on this machine by that path.
+      Closing either is an operator decision, not something this entry does.
+
 freeze_history:
   - frozen_at: '2026-05-11T17:35:00Z'
     by: operator

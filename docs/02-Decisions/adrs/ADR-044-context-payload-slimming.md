@@ -96,7 +96,7 @@ Add `commands/engram-help.md` that prints the full protocol (lifted verbatim fro
 The harness injects the skills catalog with full per-skill descriptions (~3,500 tok observed in this session). We cannot stop the harness injection, but we can shrink *what the harness reads*:
 - Add a `skills/<name>/SKILL.md` frontmatter convention: `summary_line: "<≤80 chars>"`.
 - Keep the full description in the body (read only when user invokes `Skill` tool — the body is already lazy).
-- If the harness uses the frontmatter `description` field for the listing, we shorten that field. 80 chars × 126 skills ≈ 10KB ≈ 2,500 tokens (vs. current ~3,500). Save: ~1,000 tokens.
+- If the harness uses the frontmatter `description` field for the listing, we shorten that field. 80 chars × 126 skills (the catalog on 2026-04-20; `ls -d skills/*/ | wc -l`) ≈ 10KB ≈ 2,500 tokens (vs. current ~3,500). Save: ~1,000 tokens.
 - **Discovery**: a new `/skills-search <query>` slash command runs `skills/skill-registry` or grep against `CATALOG-COMPACT.md` for full descriptions on demand.
 
 **L3 — SDD phase detail lazy load.**

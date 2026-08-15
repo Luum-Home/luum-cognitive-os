@@ -213,7 +213,7 @@ $EDITOR scripts/cos-flow-register.sh
 ## 2026-05-04 Codex continuation
 
 The ADR-137+ review was preserved as
-[`docs/06-Daily/reports/adr-137-plus-implementation-review-2026-05-04.md`](reports/adr-137-plus-implementation-review-2026-05-04.md)
+[`docs/06-Daily/reports/adr-137-plus-implementation-review-2026-05-04.md`](../06-Daily/reports/adr-137-plus-implementation-review-2026-05-04.md)
 and linked from `docs/00-MOCs/entrypoints/README.md` and
 `docs/08-References/business/master-plan-checklist.md`.
 

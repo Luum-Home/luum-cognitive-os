@@ -16,7 +16,7 @@ Before starting medium+ complexity tasks, run cost prediction to set expectation
 
 ## How It Works
 
-1. The `CostPredictor` (`lib/cost_predictor.py`) finds similar historical tasks using Jaccard similarity
+1. The `CostPredictor` (`cos_lib/cost_predictor.py`) finds similar historical tasks using Jaccard similarity
 2. It applies calibration factors from `estimation_calibrator` to adjust for known biases
 3. It returns a prediction with confidence level and per-phase breakdown
 4. After task completion, `task-recorder.sh` (Stop hook) records actual costs for future predictions
@@ -32,7 +32,7 @@ Before starting medium+ complexity tasks, run cost prediction to set expectation
 ## Integration
 
 - **Hook**: `hooks/task-recorder.sh` (Stop) -- records completed task costs
-- **Lib**: `lib/cost_predictor.py` -- prediction engine
+- **Lib**: `cos_lib/cost_predictor.py` -- prediction engine
 - **Data**: `.cognitive-os/metrics/task-history.jsonl` -- historical task records
 - **Data**: `.cognitive-os/metrics/cost-events.jsonl` -- raw API cost events
 

@@ -15,7 +15,7 @@ It classifies repository surfaces into four zones:
 - `extensions`: optional capabilities that add value without defining the kernel
 - `experimental`: future-facing work that needs proof before product-center promotion
 
-The machine-readable source of truth is [manifests/product-zones.yaml](../manifests/product-zones.yaml).
+The machine-readable source of truth is [manifests/product-zones.yaml](../../../manifests/product-zones.yaml).
 
 ## Zone Definitions
 
@@ -66,7 +66,7 @@ If the classification is unclear, default away from core. Put the work in compat
 
 ## Root Guardrails
 
-The taxonomy also defines root-level guardrails in [manifests/product-zones.yaml](../manifests/product-zones.yaml). These guardrails do not classify every file one by one. Instead, they set the default expectation for new work under major roots:
+The taxonomy also defines root-level guardrails in [manifests/product-zones.yaml](../../../manifests/product-zones.yaml). These guardrails do not classify every file one by one. Instead, they set the default expectation for new work under major roots:
 
 - `hooks`, `lib`, `scripts`, `cmd/cos`, and `pkg` are treated as protected runtime surfaces.
 - `internal` is treated as the compatibility boundary for provider and adapter churn unless a stable contract is explicitly promoted.
@@ -87,7 +87,7 @@ Everything else should support that promise from its proper zone.
 
 The taxonomy is backed by:
 
-- [manifests/product-zones.yaml](../manifests/product-zones.yaml)
-- [tests/contracts/test_product_zones.py](../tests/contracts/test_product_zones.py)
-- [docs/08-References/business/feature-reality-audit.md](business/feature-reality-audit.md)
-- [docs/08-References/business/master-plan-checklist.md](business/master-plan-checklist.md)
+- [manifests/product-zones.yaml](../../../manifests/product-zones.yaml)
+- [tests/contracts/test_product_zones.py](../../../tests/contracts/test_product_zones.py)
+- [docs/08-References/business/feature-reality-audit.md](../../08-References/business/feature-reality-audit.md)
+- [docs/08-References/business/master-plan-checklist.md](../../08-References/business/master-plan-checklist.md)

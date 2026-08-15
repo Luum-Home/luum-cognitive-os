@@ -14,7 +14,7 @@ related_docs:
   - docs/06-Daily/reports/external-tools-radar-full-reassessment-2026-05-08.md
 ---
 
-> **License attribution.** Code excerpts in this document are quoted from `ifixai-ai/iFixAi` v1.0.0 (Apache License 2.0, Copyright 2026 iMe — see https://github.com/ifixai-ai/iFixAi/blob/main/LICENSE). Quoted under Apache-2.0 §4.b (reproduction with attribution). See [`../research/ifixai-annex-d-provider-imeisplit-2026-05-11.md`](../research/ifixai-annex-d-provider-imeisplit-2026-05-11.md) for license disposition + iMe open-core risk analysis, and [`../research/ifixai-annex-f-compliance-cleanroom-2026-05-11.md`](../research/ifixai-annex-f-compliance-cleanroom-2026-05-11.md) for the full compliance protocol. No COS code derives from iFixAi source; pattern extraction is recommended over direct vendoring per addendum and cluster-D self-critique Finding 9.
+> **License attribution.** Code excerpts in this document are quoted from `ifixai-ai/iFixAi` v1.0.0 (Apache License 2.0, Copyright 2026 iMe — see https://github.com/ifixai-ai/iFixAi/blob/main/LICENSE). Quoted under Apache-2.0 §4.b (reproduction with attribution). See [`../research/ifixai-annex-d-provider-imeisplit-2026-05-11.md`](../../03-PoCs/research/ifixai-annex-d-provider-imeisplit-2026-05-11.md) for license disposition + iMe open-core risk analysis, and [`../research/ifixai-annex-f-compliance-cleanroom-2026-05-11.md`](../../03-PoCs/research/ifixai-annex-f-compliance-cleanroom-2026-05-11.md) for the full compliance protocol. No COS code derives from iFixAi source; pattern extraction is recommended over direct vendoring per addendum and cluster-D self-critique Finding 9.
 
 # External Tools Radar Addendum — iFixAi 2026-05-11
 

@@ -23,8 +23,8 @@ Accepted — Slices A–F implemented (2026-05-07)
 **Status**: Accepted — Slices A–F implemented (2026-05-07)
 **Date**: 2026-05-06
 **Related**: ADR-049 (LLM dispatch), ADR-056 (adaptive Agent dispatch), ADR-211 (service mode readiness); depends on ADR-226 (event-sourced session bus)
-**Supersedes**: scattered retry magic numbers in `closed-loop-prompts.md`, `task-dag.md`, `estimation-calibration.md`, `agent-escalation.md`, `responsiveness.md`, `error-learning.md` (six files identified by [`failure-recovery-retry-semantics.md`](../research/orchestration-gaps/failure-recovery-retry-semantics.md))
-**Source**: synthesis of two related orchestration-gap research reports — [`failure-recovery-retry-semantics.md`](../research/orchestration-gaps/failure-recovery-retry-semantics.md) and [`cost-aware-routing.md`](../research/orchestration-gaps/cost-aware-routing.md). Consolidated because both close the same architectural gap: dispatch happens without a sync gate that classifies *why* the call is happening and whether it's *allowed* to happen. Retry-without-cost-awareness produces the $47K agent-loop incident; cost-without-retry-classification produces silent ECONNRESET drops.
+**Supersedes**: scattered retry magic numbers in `closed-loop-prompts.md`, `task-dag.md`, `estimation-calibration.md`, `agent-escalation.md`, `responsiveness.md`, `error-learning.md` (six files identified by [`failure-recovery-retry-semantics.md`](../../03-PoCs/research/orchestration-gaps/failure-recovery-retry-semantics.md))
+**Source**: synthesis of two related orchestration-gap research reports — [`failure-recovery-retry-semantics.md`](../../03-PoCs/research/orchestration-gaps/failure-recovery-retry-semantics.md) and [`cost-aware-routing.md`](../../03-PoCs/research/orchestration-gaps/cost-aware-routing.md). Consolidated because both close the same architectural gap: dispatch happens without a sync gate that classifies *why* the call is happening and whether it's *allowed* to happen. Retry-without-cost-awareness produces the $47K agent-loop incident; cost-without-retry-classification produces silent ECONNRESET drops.
 
 ---
 

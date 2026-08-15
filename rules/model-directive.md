@@ -65,9 +65,9 @@ lower cost + lower expectations → either recovers or gets disabled for rewrite
 | Primitive | Role |
 |-----------|------|
 | `hooks/dispatch-gate.sh` | Emits MODEL_DIRECTIVE on every allowed agent launch |
-| `lib/dispatch_model_advisor.py` | `format_model_directive()` formats the marker |
-| `lib/model_router.py` | `get_consequence_override()` reads consequence history |
-| `lib/consequence_engine.py` | Records DEGRADE/PROMOTE/DISABLE actions |
+| `cos_lib/dispatch_model_advisor.py` | `format_model_directive()` formats the marker |
+| `cos_lib/model_router.py` | `get_consequence_override()` reads consequence history |
+| `cos_lib/consequence_engine.py` | Records DEGRADE/PROMOTE/DISABLE actions |
 | `rules/resource-governance.md` | Defines budget thresholds used here |
 | `rules/model-routing.md` | Defines task-type → model routing table |
 | `rules/consequence-system.md` | Defines the OKR-driven feedback loop |

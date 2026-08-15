@@ -23,7 +23,7 @@ Accepted
 **Status**: Accepted — Slices A–F implemented (2026-05-07)
 **Date**: 2026-05-06
 **Related**: ADR-099 (pre-agent snapshot), ADR-200 (state retention controller), ADR-220 (worktree divergence audit), ADR-223 (agent lifecycle reconstruction — reserved), ADR-224 (shadow-state snapshots — reserved); depends on ADR-226 (event-sourced session bus)
-**Source**: [`docs/03-PoCs/research/orchestration-gaps/replay-timeline-architectures.md`](../research/orchestration-gaps/replay-timeline-architectures.md). Cline, Hermes, Kilo.ai, and `git-shadow` independently converged on the same primitive: a bare git repo *outside* the project, `git write-tree` after every tool call, tree SHA stored alongside conversation context. No hypervisor, no cloud, no service.
+**Source**: [`docs/03-PoCs/research/orchestration-gaps/replay-timeline-architectures.md`](../../03-PoCs/research/orchestration-gaps/replay-timeline-architectures.md). Cline, Hermes, Kilo.ai, and `git-shadow` independently converged on the same primitive: a bare git repo *outside* the project, `git write-tree` after every tool call, tree SHA stored alongside conversation context. No hypervisor, no cloud, no service.
 
 ---
 
@@ -176,7 +176,7 @@ T10 ✅ audit invariants — `git status` on user repo byte-identical before and
 
 ## Alternatives rejected
 
-- **`git stash` as the snapshot primitive.** This is exactly what the prior-art research argued against (see [`multi-agent-orchestration-prior-art-2026-05-06.md`](../research/multi-agent-orchestration-prior-art-2026-05-06.md) §1.2). Rejected.
+- **`git stash` as the snapshot primitive.** This is exactly what the prior-art research argued against (see [`multi-agent-orchestration-prior-art-2026-05-06.md`](../../03-PoCs/research/multi-agent-orchestration-prior-art-2026-05-06.md) §1.2). Rejected.
 - **VM snapshots (Devin-style).** Hard constraint from C2: no hypervisor in default path. Optional adapter at most. Rejected as primary.
 - **Block-level CoW (Replit-style).** Requires control of the storage backend. Local-first OS doesn't have that. Rejected.
 - **Per-event commit to user's repo with custom committer.** Pollutes history; user's `git log` becomes unreadable; bisect breaks. Rejected.

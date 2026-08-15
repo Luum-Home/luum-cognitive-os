@@ -2,7 +2,7 @@
 
 > Status: draft
 > Updated: 2026-05-02
-> Related: [ADR-110](../adrs/ADR-110-preserve-branch-governance.md), [Preserve Branch Governance Report](../reports/preserve-branch-governance-2026-05-02.md)
+> Related: [ADR-110](../../02-Decisions/adrs/ADR-110-preserve-branch-governance.md), [Preserve Branch Governance Report](../../06-Daily/reports/preserve-branch-governance-2026-05-02.md)
 
 ## Purpose
 

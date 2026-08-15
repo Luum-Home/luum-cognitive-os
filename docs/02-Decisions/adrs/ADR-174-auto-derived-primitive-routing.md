@@ -31,7 +31,8 @@ fallback routing table plus frontmatter-derived routing support. The local
 post-mortem snapshot found 185 unique SKILL.md directories across `skills/`
 and `.cognitive-os/skills/`; 82 were routeable as primary router targets,
 one primary router entry (`sdd-new`) was an intentional meta-command without
-a SKILL.md directory, and 103 skills remained unrouteable. The effective
+a SKILL.md directory, and 103 skills remained unrouteable on 2026-05-05
+(re-run `python3 scripts/dogfood_score.py` for the current split). The effective
 global/full-surface routing coverage was therefore **44.3%**.
 
 Evidence from `scripts/dogfood_score.py`:
@@ -209,7 +210,9 @@ logs a warning and skips that file. It never raises.
 - **Frontmatter discipline required**: skill authors must add
   `routing_patterns:`. The validator hook (Phase 5) provides a non-blocking
   reminder.
-- **Migration cost**: ~95 skills need frontmatter migration. Estimated 2-4h
+- **Migration cost**: every skill without `routing_patterns:` needs frontmatter
+  migration — ~95 of them on 2026-05-05 (`grep -L routing_patterns
+  skills/*/SKILL.md | wc -l`). Estimated 2-4h
   with sonnet auto-extraction (batch task, not this ADR).
 - **YAML parse overhead**: scanning 186+ SKILL.md files at `SkillRouter()`
   construction time adds ~50-150ms. Acceptable for CLI usage; cache if this
@@ -219,7 +222,8 @@ logs a warning and skips that file. It never raises.
 
 ### Keep Hand-Maintained Table
 
-The status quo. Rejected because the gap is 108 skills and growing. The
+The status quo. Rejected because the gap grows with every skill added — 108
+unrouteable skills on 2026-05-05, per `python3 scripts/dogfood_score.py`. The
 maintenance burden scales O(N) with skill count; the auto-derive approach
 scales O(1) per skill.
 

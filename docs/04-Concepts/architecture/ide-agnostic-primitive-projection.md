@@ -138,7 +138,7 @@ COS canonical contracts
 ```
 
 The impact analysis for this distinction is recorded in
-[Portable `.ai` Overlay vs Consumer `.ai` Model Impact — 2026-05-12](../reports/portable-ai-overlay-consumer-model-impact-2026-05-12.md).
+[Portable `.ai` Overlay vs Consumer `.ai` Model Impact — 2026-05-12](../../06-Daily/reports/portable-ai-overlay-consumer-model-impact-2026-05-12.md).
 
 
 ### Compiler gap and target architecture

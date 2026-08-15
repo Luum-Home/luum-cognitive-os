@@ -31,7 +31,7 @@ Allowed:
 ## Enforcement
 
 - **Manifest**: `manifests/ai-provider-identity-policy.yaml`
-- **Lib**: `lib/ai_provider_identity_guard.py`
+- **Lib**: `cos_lib/ai_provider_identity_guard.py`
 - **CLI**: `scripts/ai-provider-identity-guard`
 - **PostToolUse hook**: `hooks/ai-provider-identity-guard.sh`
 - **Git hooks**: `.githooks/pre-commit` scans staged files; `.githooks/commit-msg`

@@ -64,8 +64,7 @@ harness adapter.
 ### Codex is the operator's live secondary harness
 
 The operator runs both Claude Code and Codex CLI daily. Evidence:
-`.codex/hooks.json` exists in the repo and is hand-maintained. As of the date
-of this ADR it registers 28 hooks across three Codex lifecycle events:
+`.codex/hooks.json` exists in the repo and is hand-maintained. It registered 28 hooks on 2026-04-30, across three Codex lifecycle events:
 
 | Event | Hooks registered |
 |---|---|

@@ -8,6 +8,11 @@ deepwiki_url: https://deepwiki.com/unclecode/crawl4ai
 engram_id: pending
 ---
 
+> **Estado 2026-08-15 — ya adoptado, sin ADR.** El veredicto ADOPT es del 2026-05-06
+> y la adopcion aterrizo el 2026-03-27, ANTES del freeze del 2026-05-11: `packages/ecosystem-tools/lib/web_crawler.py` + `requirements.txt`; `manifests/external-tools-adoption.yaml` lo marca `verdict: INTEGRATE`.
+> El freeze NO alcanza a este caso. Lo que falta es la decision escrita: ninguna ADR
+> respalda esta adopcion. Ver `manifests/external-tool-adoption-freeze.yaml` y ADR-267.
+
 ## Repository Evaluation: unclecode/crawl4ai
 
 ### Classification: ADOPT

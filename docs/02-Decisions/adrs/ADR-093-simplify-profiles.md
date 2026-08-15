@@ -72,7 +72,7 @@ one power-user override for maximum install.
   (`RULES-COMPACT.md` plus the set already hard-coded in `self-install.sh`
   as `CORE_RULES`) into `.claude/rules/cos/`, and wires the pre-existing
   standard hook set (what was previously called the `standard` tier:
-  ~29 hooks including rate-limiter, agent-prelaunch, auto-verify, dod-gate,
+  ~29 hooks on 2026-04-30, including rate-limiter, agent-prelaunch, auto-verify, dod-gate,
   completion-gate, mlflow-sync, etc.). Target token overhead remains
   ~8000 tokens per session.
 
@@ -90,7 +90,8 @@ install is always the same, and `--full` is always opt-in.
 
 ### User-facing
 
-- `install.sh` without flags produces a working OS with 10 skills visible to
+- `install.sh` without flags produces a working OS with the default skill set
+  (10 skills on 2026-04-30) visible to
   the harness immediately after the first session — the orchestrator can
   invoke `/compose-prompt`, `/plan-feature`, `/auto-refine`, etc. without
   any follow-up install step.
@@ -141,8 +142,7 @@ install is always the same, and `--full` is always opt-in.
   manual fix.
 - `cos-status` (the upcoming UX5 skill listed in `DEFAULT_SKILLS`) does not
   yet exist as a skill directory — only as `scripts/cos-status.sh`. The
-  installer skips missing skill names silently, so the install succeeds with
-  9 skills installed until the skill wrapper is authored. Once the
+  installer skips missing skill names silently, so the install succeeded with 9 skills on 2026-04-30, until the skill wrapper is authored. Once the
   directory exists, the next install cycle picks it up without any code
   change.
 

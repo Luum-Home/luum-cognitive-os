@@ -42,8 +42,11 @@ the single-maintainer assumption explicit:
   in the current allowlist; this baseline was set by the maintainer
   after auditing them personally. A second maintainer cannot inherit
   that mental cache.
-- 162 skills, 116 hooks, 131 ADRs (this is 132). The cognitive load
-  to navigate is currently held in one person's head, supported by
+- On 2026-05-03 the tree held 162 skills, 116 hooks and 131 ADRs (this one is
+  132); today's figures come from `ls -d skills/*/ | wc -l`,
+  `ls hooks/*.sh | wc -l` and the ADR total reported by
+  `python3 scripts/audit_adr_status_links.py`. The cognitive load
+  to navigate that is currently held in one person's head, supported by
   Engram and the Boring Reliability dashboard.
 - The boring-reliability doctrine assumes one person decides what
   qualifies for `core` vs `team` vs `lab`. There is no formal review

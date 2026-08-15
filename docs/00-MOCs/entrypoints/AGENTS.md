@@ -6,12 +6,12 @@ Human-curated. <150 lines. Do not auto-generate or overwrite.
 
 When you don't yet know which file to read, start at the right **Map of Content**:
 
-- [`00-MOCs/decisions.md`](00-MOCs/decisions.md) — anything ADR-related
+- [`00-MOCs/decisions.md`](../decisions.md) — anything ADR-related
 - [`00-MOCs/architecture.md`](00-MOCs/architecture.md) — designing or understanding components
-- [`00-MOCs/workflow.md`](00-MOCs/workflow.md) — SDD pipeline, sprints, agent orchestration
-- [`00-MOCs/quality.md`](00-MOCs/quality.md) — tests, gates, security, compliance
-- [`00-MOCs/operations.md`](00-MOCs/operations.md) — incidents, releases, capabilities
-- [`00-MOCs/onboarding.md`](00-MOCs/onboarding.md) — first time on this project
+- [`00-MOCs/workflow.md`](../workflow.md) — SDD pipeline, sprints, agent orchestration
+- [`00-MOCs/quality.md`](../quality.md) — tests, gates, security, compliance
+- [`00-MOCs/operations.md`](../operations.md) — incidents, releases, capabilities
+- [`00-MOCs/onboarding.md`](../onboarding.md) — first time on this project
 
 Use the routing table below for task types where the entrypoint is obvious.
 

@@ -120,10 +120,10 @@ If conditions 1–3 hold for one calendar year, the demotion is judged correct a
 
 ## Cross-references
 
-- [`dashboard/ARCHIVED.md`](../../dashboard/ARCHIVED.md) — the in-tree demotion notice.
+- [`dashboard/ARCHIVED.md`](../../../dashboard/ARCHIVED.md) — the in-tree demotion notice.
 - [ADR-132](ADR-132-solo-swarm-vs-multi-maintainer-fork.md) — the maintainer-cache transferability frame this ADR addresses.
 - [ADR-133](ADR-133-expansion-without-monsterization.md) — lab-first promotion contract; the wiring-not-resurrection path satisfies its requirements.
-- [`docs/05-Methodology/runbooks/run-cos-in-docker.md`](../runbooks/run-cos-in-docker.md) — the external-evaluator path that does not depend on the dashboard.
+- [`docs/05-Methodology/runbooks/run-cos-in-docker.md`](../../05-Methodology/runbooks/run-cos-in-docker.md) — the external-evaluator path that does not depend on the dashboard.
 
 ## Verification
 

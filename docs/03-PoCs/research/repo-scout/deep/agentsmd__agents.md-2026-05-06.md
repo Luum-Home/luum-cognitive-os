@@ -8,6 +8,12 @@ deepwiki_url: https://deepwiki.com/agentsmd/agents.md
 engram_id: pending
 ---
 
+> **Estado 2026-08-15 — spec, no codigo.** El veredicto ADOPT es "spec only": no hay
+> libreria que vendorizar. La convencion ya estaba en el repo antes del veredicto
+> (`AGENTS.md`, 2026-04-09) y la proyeccion `.ai/adapters/agents-md/` llego el 2026-05-12.
+> El freeze del 2026-05-11 gobierna adopcion de codigo externo, no la adhesion a una spec.
+> Ver `manifests/external-tool-adoption-freeze.yaml` y ADR-267.
+
 ## Repository Evaluation: agentsmd/agents.md
 
 ### Classification: ADOPT

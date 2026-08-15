@@ -265,8 +265,8 @@ Codex directive parsing, Git-state promotion, and event-bus trust filtering.
 
 ## Related
 
-- [Harness Action Receipts](../architecture/harness-action-receipts.md)
-- [Protected Landing Contract](../architecture/protected-landing-contract.md)
+- [Harness Action Receipts](../../04-Concepts/architecture/harness-action-receipts.md)
+- [Protected Landing Contract](../../04-Concepts/architecture/protected-landing-contract.md)
 - [ADR-116: Multi-Session Coordination Primitives](ADR-116-multi-session-coordination-primitives.md)
 - [ADR-064: Harness-Agnostic Cognitive OS](ADR-064-harness-agnostic-cognitive-os.md)
 - [ADR-081: Codex Harness Adapter](ADR-081-codex-harness-adapter.md)

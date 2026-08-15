@@ -125,7 +125,7 @@ round-trip) to avoid reordering or reformatting existing keys.
 
 The bulk pass was executed in the same commit as this ADR:
 - **Script**: `scripts/align_skill_frontmatter.py`
-- **Scope**: 142 SKILL.md files updated
+- **Scope**: 142 SKILL.md files updated on 2026-04-30
 - **Verification**: `for f in skills/*/SKILL.md; do for k in version platforms prerequisites; do grep -q "^$k:" "$f" || echo "MISSING $k in $f"; done; done` returns empty.
 
 Future skills (created via `/add-skill` or `skills/skill-creator`) MUST include

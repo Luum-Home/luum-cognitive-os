@@ -1,0 +1,10 @@
+# Scope closure gate baseline — ratchet DESCENDS only.
+# Regenerate with: python3 scripts/scope_closure_gate.py --write-baseline
+# Raising any number here is not a fix. Lower it as findings are resolved.
+# Written from profile: default
+
+scope_conflict: 4
+unmarked_published: 5
+os_only_published: 4
+marker_invisible: 0
+dangling_import: 1

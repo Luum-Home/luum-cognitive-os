@@ -44,7 +44,7 @@ For each primitive in Annex E, the adoption path is:
 - **Step 2**: Choose one of:
   - **(a) Clean-room re-implement** from the extracted spec. Own the resulting code outright. Add a comment citing iFixAi as the source of the design pattern (not the implementation). This is the recommended path for all five primitives per Annex E.
   - **(b) Vendor with full Apache attribution** (only if clean-room cost is prohibitive): include Apache-2.0 header in every vendored file, preserve any upstream `NOTICE`, add "Original work © 2026 iMe, modified by Cognitive OS" to modified files.
-- **Step 3**: The mandatory-minimum inspection cap mechanic (Annex E §6a.1) is **blocked** from adoption until [ADR-265 — Mandatory-minimum inspection caps for COS eval surfaces](../adrs/ADR-265-mandatory-minimum-inspection-caps.md) moves from Proposed to Accepted. Do not implement the cap until the ADR is resolved.
+- **Step 3**: The mandatory-minimum inspection cap mechanic (Annex E §6a.1) is **blocked** from adoption until [ADR-265 — Mandatory-minimum inspection caps for COS eval surfaces](../../02-Decisions/adrs/ADR-265-mandatory-minimum-inspection-caps.md) moves from Proposed to Accepted. Do not implement the cap until the ADR is resolved.
 - **Step 4**: If vendoring, the output artifact MUST include: (a) Apache-2.0 license header, (b) "Original work © 2026 iMe, modified by Cognitive OS", (c) preserved upstream `NOTICE` if one exists.
 
 ## 4. iMe open-core split risk

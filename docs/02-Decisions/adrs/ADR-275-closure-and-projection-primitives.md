@@ -274,7 +274,8 @@ If you encounter ADR-275 cold:
 2. Read this ADR §Decision §1 (projector) and §2 (close primitive).
 3. Inspect a recent entry in `.cognitive-os/audit/closure-trail.jsonl`
    to see what a real closure looks like.
-4. The hook wiring across the 3 harnesses lives in
+4. The hook wiring for every harness in `manifests/harness-projection.yaml`
+   lives in
    `docs/05-Methodology/runbooks/adr-275-session-start-hook-staging/`; if SessionStart
    isn't firing the projector, the patch wasn't deployed yet.
 5. The projector is read-only (no mutation), so running it is always

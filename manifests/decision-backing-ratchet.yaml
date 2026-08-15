@@ -1,0 +1,36 @@
+schema_version: 1
+# Ratchet for scripts/audit_decision_backing.py — the INVERSE direction of ADR
+# coverage: implemented decisions that have no written decision behind them.
+#
+# Values below are the MEASURED reality on 2026-08-15, not a padded budget.
+# A baseline above reality is a cushion: it accepts new debt while reporting
+# "0 new". Reproduce before changing anything:
+#
+#   python3 scripts/audit_decision_backing.py
+#
+# Lowering a number is the point. Raising one requires a written reason here
+# AND the finding it accepts — never "to make the gate green".
+owner_report: docs/06-Daily/reports/adr-cobertura-inversa-2026-08-15.md
+
+max_unbacked:
+  # Hooks that can deny an operator action and no ADR names them.
+  # Two of these ten actually block today (provenance-scan,
+  # untracked-work-preservation-guard) — those are the priority.
+  blocking-gate: 10
+
+  # manifests/*.yaml whose top-level keys encode a policy (freeze, allowlist,
+  # budget, scope, threshold, ratchet) and no ADR names them.
+  # 12, not 11: THIS FILE is the twelfth. The detector matched its own ratchet
+  # under D2 and it is not exempted — a gate that excuses itself is the first
+  # cheap green. Whether the inverse-coverage gate earns an ADR is an operator
+  # decision; until it does, it is counted as debt like everything else.
+  policy-manifest: 12
+
+  # packages/*/cos-package.yaml with no ADR naming the package. Weakest of the
+  # three classes: sampling showed 3 of 5 have their EXPORTS named in ADRs, so
+  # what is unbacked is the bundling/versioning decision, not the behavior.
+  package: 18
+
+  # Files citing an ADR number that has no file. Worse than no citation:
+  # it reads as backed and is not. Target is 0 and should stay reachable.
+  dangling: 1

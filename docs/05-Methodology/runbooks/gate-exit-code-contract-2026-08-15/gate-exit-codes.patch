@@ -1,0 +1,72 @@
+--- a/hooks/adoption-freeze-gate.sh
++++ b/hooks/adoption-freeze-gate.sh
+@@ -10,7 +10,8 @@
+ # Event:    PreToolUse
+ # Matcher:  Bash
+ # Trigger:  command contains `git commit`
+-# Exit:     0 = allow / 1 = block
++# Exit:     0 = allow / 2 = block  (2 is the blocking code for PreToolUse
++#           hooks; exit 1 is a non-blocking error and the commit proceeds)
+ # Bypass:
+ #   COS_ALLOW_ADOPTION_FREEZE_BYPASS=1   — generic logged bypass
+ #   COS_ALLOW_FREEZE_TOGGLE=1            — allows commit of freeze yaml alone
+@@ -116,4 +117,4 @@
+ echo "     COS_ALLOW_FREEZE_TOGGLE=1 git commit ... (yaml alone)" >&2
+ echo "  2. Bypass logged: COS_ALLOW_ADOPTION_FREEZE_BYPASS=1 git commit ..." >&2
+ echo "Reference: docs/02-Decisions/adrs/ADR-267-license-compliance-enforcement-architecture.md" >&2
+-exit 1
++exit 2
+--- a/hooks/clean-room-ast-similarity-gate.sh
++++ b/hooks/clean-room-ast-similarity-gate.sh
+@@ -13,7 +13,8 @@
+ # Event:    PreToolUse
+ # Matcher:  Bash
+ # Trigger:  command contains `git commit`
+-# Exit:     0 = allow / 1 = block
++# Exit:     0 = allow / 2 = block  (2 is the blocking code for PreToolUse
++#           hooks; exit 1 is a non-blocking error and the commit proceeds)
+ # Bypass:   COS_ALLOW_AST_SIMILARITY=1   (specific bypass, logged)
+ #           COS_ALLOW_CLEAN_ROOM_BYPASS=1 (shared bypass with T1 hook, logged)
+ # Log:      .cognitive-os/logs/clean-room-ast-similarity-gate.jsonl
+@@ -137,4 +138,4 @@
+ 
+ EOF
+ 
+-exit 1
++exit 2
+--- a/hooks/external-pattern-cleanroom-gate.sh
++++ b/hooks/external-pattern-cleanroom-gate.sh
+@@ -12,7 +12,9 @@
+ #
+ # Exit codes:
+ #   0 — clean (or skip/bypass)
+-#   1 — leak detected, commit blocked
++#   2 — leak detected, commit blocked
++#       (2 is the blocking code for PreToolUse hooks; exit 1 is a
++#        non-blocking hook error and lets the commit through)
+ #
+ # Environment variables:
+ #   COS_ALLOW_UPSTREAM_PATTERN_LEAK=1  — bypass gate (logged as action: "bypass")
+@@ -123,7 +125,7 @@
+       echo "" >&2
+       echo "COMMIT BLOCKED (ADR-259 clean-room policy)." >&2
+       echo "If this is a false positive, set COS_ALLOW_UPSTREAM_PATTERN_LEAK=1 to bypass (logged)." >&2
+-      exit 1
++      exit 2
+     fi
+   done <<EOF
+ $TOKENS
+--- a/hooks/bash-hot-path-dispatcher.sh
++++ b/hooks/bash-hot-path-dispatcher.sh
+@@ -7,7 +7,10 @@
+ # destructive shell, git boundaries, release paths, dependency mutations, and
+ # commit-time governance. Full profile still projects the exhaustive hook mesh.
+ #
+-# Exit: 0 allow, non-zero/2 propagates the first blocking child gate.
++# Exit: propagates the first non-zero child exit code verbatim. Only exit 2
++# blocks the tool call; a child exiting 1 surfaces as a non-blocking hook
++# error and the command still runs. Child gates that mean to block must
++# exit 2 — passing through this dispatcher does not upgrade 1 into a block.
+ 
+ set -uo pipefail
+ 

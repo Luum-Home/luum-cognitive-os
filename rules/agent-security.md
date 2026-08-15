@@ -8,7 +8,7 @@ Every agent gets ONLY the access needed for its specific task. No broad permissi
 
 ## Permission System
 
-Use `lib/agent_permissions.py` to manage agent access. The orchestrator MUST grant scoped permissions before launching any sub-agent and revoke them on task completion.
+Use `cos_lib/agent_permissions.py` to manage agent access. The orchestrator MUST grant scoped permissions before launching any sub-agent and revoke them on task completion.
 
 ### Permission Levels
 
@@ -44,7 +44,7 @@ These paths are NEVER accessible regardless of permission level or profile:
 secrets/*, **/credentials*, **/password*, .git/config
 ```
 
-Even ADMIN-level agents cannot read or write these paths. Agents requiring secrets MUST use `lib/secret_ref.py` (SecretRef) to resolve values from environment variables at runtime.
+Even ADMIN-level agents cannot read or write these paths. Agents requiring secrets MUST use `cos_lib/secret_ref.py` (SecretRef) to resolve values from environment variables at runtime.
 
 ## Monotonic Attenuation
 
@@ -64,7 +64,7 @@ Every access check is logged to `.cognitive-os/metrics/access-audit.jsonl` with:
 
 - NEVER pass plaintext secrets in agent prompts or config
 - Use `SecretRef` objects: `{"source": "env", "id": "API_KEY"}`
-- Resolve at runtime via `lib/secret_ref.py`
+- Resolve at runtime via `cos_lib/secret_ref.py`
 - Mask resolved values in logs via `mask_secrets()`
 
 ## Post-Task Cleanup

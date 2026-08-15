@@ -302,7 +302,7 @@ Ring classifications follow the Technology Radar model:
 
 ## 2026-04-30: Tier-0 learning-loop closure
 
-**ADR:** [ADR-074](adrs/ADR-074-tier-0-learning-loop-closure.md)  
+**ADR:** [ADR-074](../../02-Decisions/adrs/ADR-074-tier-0-learning-loop-closure.md)  
 **Effort:** ~1 hour  
 
 A 4-agent audit earlier today (Engram: `cos-learning-loop-wiring-audit`) found that
@@ -335,7 +335,7 @@ deployment paths only (documented in ADR-074 § Action 3).
 
 ## 2026-04-30: Stage 2 selective expansion (Tier 1 #4 from ADR-074)
 
-**ADR**: [ADR-075](adrs/ADR-075-stage2-selective-expansion.md)
+**ADR**: [ADR-075](../../02-Decisions/adrs/ADR-075-stage2-selective-expansion.md)
 
 ### Measured token impact
 
@@ -383,7 +383,7 @@ full 85% reduction must explicitly set `expansion.tier_filter: [0]` in
 
 ## 2026-04-30: Mid-task memory tool (Tier 1 #5)
 
-**ADR**: [ADR-078](adrs/ADR-078-mid-task-memory-tool.md)
+**ADR**: [ADR-078](../../02-Decisions/adrs/ADR-078-mid-task-memory-tool.md)
 
 Closed the Hermes "mid-task memory scan as a tool" gap identified in ADR-074's
 Tier-1 backlog. The Hermes design has agents invoke memory scanning mid-task as a
@@ -441,7 +441,7 @@ opt-in env var for developers who need full symlink set. Fixed
 
 ## 2026-04-30: SessionStart deep audit (self-host vs client)
 
-Full measurement doc: [`docs/06-Daily/measurements/sessionstart-baseline.md`](measurements/sessionstart-baseline.md)
+Full measurement doc: [`docs/06-Daily/measurements/sessionstart-baseline.md`](../../06-Daily/measurements/sessionstart-baseline.md)
 
 Component-by-component audit of what gets loaded at SessionStart for this self-hosted repo
 versus a fresh client install. Both modes use `efficiency.profile: default` after ADR-079.

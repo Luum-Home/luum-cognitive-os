@@ -61,7 +61,7 @@ C) ADR-027 Phase 1 primary deliverable created:
   Before: resolves targeted tests, saves baseline.
   After: re-runs same tests, emits MetricEvent, exits 1 with BLOCKER
   if delta_failed > 0. Graceful on missing deps (skip, not block).
-- tests/contracts/test_global_verify.py: 4 tests, all pass.
+- tests/contracts/test_global_verify.py: 4 tests, all passing on 2026-04-20.
 - Registered in apply-efficiency-profile.sh + set-security-profile.sh.
 - Replaces WS11 anti-confirmation-bias per ADR-028a §1.
 - Unblocks ADR-027 Phase 1, ws9-test-errors, smoke-test-e2e.
@@ -118,7 +118,7 @@ C) ADR-027 Phase 1 primary deliverable created:
   Before: resolves targeted tests, saves baseline.
   After: re-runs same tests, emits MetricEvent, exits 1 with BLOCKER
   if delta_failed > 0. Graceful on missing deps (skip, not block).
-- tests/contracts/test_global_verify.py: 4 tests, all pass.
+- tests/contracts/test_global_verify.py: 4 tests, all passing on 2026-04-20.
 - Registered in apply-efficiency-profile.sh + set-security-profile.sh.
 - Replaces WS11 anti-confirmation-bias per ADR-028a §1.
 - Unblocks ADR-027 Phase 1, ws9-test-errors, smoke-test-e2e.

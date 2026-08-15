@@ -12,14 +12,14 @@ Day-to-day running of the system: incidents, releases, capabilities, ops referen
 
 - [`docs/07-Capabilities/capabilities/`](../capabilities/) — capability catalogue (what the OS can do)
 - [`docs/07-Capabilities/acc/`](../acc/) — Aspirational/Concrete/Confirmed reality classification, latest snapshot at `docs/07-Capabilities/acc/latest.json`
-- [`docs/07-Capabilities/root/agent-capability-coverage.md`](../agent-capability-coverage.md)
-- [ADR-189 Harness implementation coverage](../adrs/ADR-189-harness-implementation-coverage.md)
+- [`docs/07-Capabilities/root/agent-capability-coverage.md`](../07-Capabilities/root/agent-capability-coverage.md)
+- [ADR-189 Harness implementation coverage](../02-Decisions/adrs/ADR-189-harness-implementation-coverage.md)
 - Run `/component-reality-check` (or `scripts/aspirational_audit.py`) for REAL/DORMANT/ASPIRATIONAL classification.
 
 ## Releases
 
 - [`docs/01-Build-Log/release/`](../release/) — release notes, version bumps, changelog
-- [ADR-246 Release transaction freeze](../adrs/ADR-246-release-transaction-freeze.md)
+- [ADR-246 Release transaction freeze](../02-Decisions/adrs/ADR-246-release-transaction-freeze.md)
 - Skills: `bump-version`, `tag-release`, `push-release`, `generate-changelog`, `validate-release`
 - Go binary releases: `cmd/cos` + the `cos release` subcommand
 
@@ -32,9 +32,9 @@ Day-to-day running of the system: incidents, releases, capabilities, ops referen
 
 ## Cost governance
 
-- [`docs/07-Capabilities/root/agent-efficiency-strategy.md`](../agent-efficiency-strategy.md) — model routing rules
+- [`docs/07-Capabilities/root/agent-efficiency-strategy.md`](../07-Capabilities/root/agent-efficiency-strategy.md) — model routing rules
 - [ADR-049 LLM dispatch](../adrs/) — Qwen-primary preserves Claude Max; kill-switches via `COS_DISABLE_LLM_FALLBACK=1`
-- [ADR-059 SO existential validation (KPI ledger)](../adrs/ADR-059-so-existential-validation.md)
+- [ADR-059 SO existential validation (KPI ledger)](../02-Decisions/adrs/ADR-059-so-existential-validation.md)
 - Skill: `cost-predictor` (`/cost-predict`)
 
 ## Observability
@@ -53,7 +53,7 @@ Day-to-day running of the system: incidents, releases, capabilities, ops referen
 ## Pending-truth & closure primitives (ADR-273/274/275)
 
 Day-to-day "what's pending and how do I close it" surface. See the
-4-layer map at [`docs/04-Concepts/architecture/pending-truth-architecture.md`](../architecture/pending-truth-architecture.md)
+4-layer map at [`docs/04-Concepts/architecture/pending-truth-architecture.md`](../04-Concepts/architecture/pending-truth-architecture.md)
 for the full system.
 
 **Obtain (read side)** — aggregators walking source surfaces into ledgers:
@@ -72,7 +72,7 @@ for the full system.
 - `scripts/cos-adr-close` — closes DECISION records (ADR lifecycle)
 - Closure trail: `.cognitive-os/audit/closure-trail.jsonl`
 - `scripts/cos-closure-trust-signal.py` — HIGH|MEDIUM|LOW|ZERO trust signal
-- Canonical status vocabulary: [`docs/02-Decisions/adrs/STATUS-TAXONOMY.md`](../adrs/STATUS-TAXONOMY.md)
+- Canonical status vocabulary: [`docs/02-Decisions/adrs/STATUS-TAXONOMY.md`](../02-Decisions/adrs/STATUS-TAXONOMY.md)
 
 **Prevent drift** — advisory hooks (active in maintainer profile):
 - `hooks/pending-truth-drift-detector.sh` — PostToolUse Edit/Write nudge

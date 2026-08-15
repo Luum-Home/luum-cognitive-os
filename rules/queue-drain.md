@@ -129,9 +129,9 @@ for full step-by-step instructions.
 | Primitive | Role |
 |-----------|------|
 | `hooks/dispatch-gate.sh` | Enqueues blocked launches (PreToolUse) |
-| `lib/queue_drainer.py` | Queue management: enqueue, get_ready, mark_dispatched, remove_completed |
-| `lib/scheduled_drain.py` | Combined drain + health report; CronCreate spec helper |
-| `lib/dispatch_helper.py` | Slot availability check (active task count vs max_parallel_agents) |
+| `cos_lib/queue_drainer.py` | Queue management: enqueue, get_ready, mark_dispatched, remove_completed |
+| `cos_lib/scheduled_drain.py` | Combined drain + health report; CronCreate spec helper |
+| `cos_lib/dispatch_helper.py` | Slot availability check (active task count vs max_parallel_agents) |
 | `skills/queue-drain/SKILL.md` | Instructions for the CronCreate session |
 | `.cognitive-os/tasks/dispatch-queue.json` | Persistent queue file |
 

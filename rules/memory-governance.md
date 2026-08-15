@@ -4,7 +4,7 @@
 **Trigger:** `[memory-governance]`
 **ADR:** [ADR-261](../docs/02-Decisions/adrs/ADR-261-memory-governance-v2.md)
 **Related:** ADR-071 (Ebbinghaus lifecycle decay), ADR-078 (Mid-Task Memory Tool)
-**Single source of truth for policy values:** `lib/memory_governance.py` — `_POLICY_TABLE`
+**Single source of truth for policy values:** `cos_lib/memory_governance.py` — `_POLICY_TABLE`
 
 ## Purpose
 
@@ -104,7 +104,7 @@ existing recall behaviour.
 
 To add a new type to the governance table:
 
-1. Open `lib/memory_governance.py` and add an entry to `_POLICY_TABLE`.
+1. Open `cos_lib/memory_governance.py` and add an entry to `_POLICY_TABLE`.
 2. Update the table in this file (`rules/memory-governance.md`) to match.
 3. Add unit tests in `tests/unit/test_memory_governance.py` covering:
    - `get_policy` returns the correct policy values.
@@ -114,14 +114,14 @@ To add a new type to the governance table:
    override path in v1 -- see ADR-261 §Alternatives for rationale).
 
 NEVER hard-code type strings in implementation code.  Always use
-`get_policy(type_name)` from `lib/memory_governance.py` as the single
+`get_policy(type_name)` from `cos_lib/memory_governance.py` as the single
 source of truth.
 
 ---
 
 ## Integration Points
 
-### `lib/memory_retriever.py` -- Recall-time scoring
+### `cos_lib/memory_retriever.py` -- Recall-time scoring
 
 When the optional `governance` parameter is passed to `MemoryRetriever.search()`:
 
@@ -130,7 +130,7 @@ When the optional `governance` parameter is passed to `MemoryRetriever.search()`
 3. Hard-stale results (`state="stale"` + `staleness="hard"`) are suppressed.
 4. `freshness_note` and `governance_reasons` are attached to each `RetrievalResult`.
 
-### `lib/engram_lifecycle.py` -- Write-time decay
+### `cos_lib/engram_lifecycle.py` -- Write-time decay
 
 After computing `decay_class`, `get_policy(type)` is called:
 

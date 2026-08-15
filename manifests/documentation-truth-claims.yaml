@@ -15,10 +15,33 @@ source_reports:
   primitive_authority:
     path: docs/06-Daily/reports/primitive-authority-latest.json
     required: true
+  volatile_numbers:
+    path: docs/06-Daily/reports/volatile-numbers-latest.json
+    required: false
   acc:
     path: docs/07-Capabilities/acc/latest.json
     required: false
 claims:
+  volatile_number_prose:
+    severity: medium
+    description: >-
+      Documentation prose must not publish primitive census counts (hooks, rules,
+      skills, ADRs, lib modules, tests) as current state. A census count belongs to
+      the command that produces it or to a declared claim; hardcoded in prose it is
+      wrong the day after it is written. Historical observations (date-anchored),
+      contract constants, third-party counts and quoted samples are exempt.
+    facts:
+      detector: scripts/volatile_number_audit.py
+      baseline: manifests/volatile-number-baseline.json
+      ratchet: baseline may only shrink; raising it to silence a red is prohibited
+    source_reports:
+      - docs/06-Daily/reports/volatile-numbers-latest.json
+    required_docs:
+      - docs/06-Daily/reports/numeros-volatiles-2026-08-15.md
+    required_phrases:
+      - The prose says how to know it, not how many
+    forbidden_phrases:
+      - "Component counts: 57 hooks, 55 rules, 72 skills"
   consumer_projection_harnesses:
     severity: high
     description: Consumer projection docs must describe current implemented native and structural harnesses, not the old Claude/Codex-only boundary.
@@ -167,3 +190,53 @@ claims:
       doc: docs/02-Decisions/adrs/ADR-278-subprocess-run-timeout-discipline.md
       marker: subprocess_timeout_discipline
       required: false
+  payload_canary_determinism:
+    severity: medium
+    description: >-
+      The payload field canary runs in the test suite against an in-repo
+      redacted corpus, with a ratchet on phantom field dependencies. Docs must
+      not keep claiming it can only run against live transcripts.
+    facts:
+      corpus: tests/fixtures/payload-corpus/harness-payloads.jsonl
+      capture_command: scripts/capture_payload_corpus.py
+      canary_command: scripts/audit_payload_field_contracts.py --canary
+      ratchet_test: tests/audit/test_payload_field_contracts.py
+    required_docs:
+      - docs/06-Daily/reports/payload-contract-architecture-2026-08-15.md
+      - tests/fixtures/payload-corpus/README.md
+    required_phrases:
+      - tests/fixtures/payload-corpus
+      - --canary --live
+    forbidden_phrases:
+      - necesita transcripts, no corre en CI
+      - el canario no puede ser determinista
+  cos_init_flag_surface:
+    severity: medium
+    description: >-
+      Install documentation must describe cos-init.sh flags as the parser
+      actually implements them: --default and --full are the only two effective
+      profiles, and --minimal/--standard/--lean parse successfully but remap to
+      --default (ADR-093). Two failure modes are forbidden — claiming the legacy
+      flags are unparsed or nonexistent (they parse), and presenting them as
+      three distinct profiles (there are two). The claim exists because both the
+      commit message of 958845a18 and the first version of the carga-cognitiva
+      report asserted the flags did not parse, on the strength of a grep against
+      scripts/cos-init.sh, which is a 15-line shim; the parser is in
+      scripts/cos_init.py.
+    facts:
+      shim: scripts/cos-init.sh
+      parser: scripts/cos_init.py
+      verify_command: bash scripts/cos-init.sh --help
+      effective_profiles: "--default, --full"
+      legacy_aliases: "--minimal, --standard, --lean -> --default"
+    required_docs:
+      - docs/00-MOCs/entrypoints/getting-started.md
+      - docs/00-MOCs/entrypoints/quickstart.md
+      - docs/06-Daily/reports/install-doors-forensics-2026-08-15.md
+    required_phrases:
+      - remap to `--default`
+      - Two install profiles exist, not three
+    forbidden_phrases:
+      - parses no such flags
+      - flags scripts/cos-init.sh does not parse
+      - Esos flags no

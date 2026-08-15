@@ -27,7 +27,7 @@ The `claim-validator.sh` PostToolUse hook runs on every Agent completion:
 
 ### Cross-Verification
 
-For large/critical tasks, a second model independently verifies the primary model's output via `lib/cross_verifier.py`. The verifier does NOT see the original model's trust score.
+For large/critical tasks, a second model independently verifies the primary model's output via `cos_lib/cross_verifier.py`. The verifier does NOT see the original model's trust score.
 
 | Task Complexity | Cross-Verification Required? |
 |----------------|----------------------------|
@@ -38,7 +38,7 @@ For large/critical tasks, a second model independently verifies the primary mode
 
 ### Ground Truth Library
 
-`lib/ground_truth.py` provides programmatic claim extraction and verification:
+`cos_lib/ground_truth.py` provides programmatic claim extraction and verification:
 - `extract_claims(output)` -- find verifiable claims in text
 - `verify_all_claims(output, project_root)` -- check claims against filesystem
 - `format_verification_report(results)` -- markdown report with hallucination score

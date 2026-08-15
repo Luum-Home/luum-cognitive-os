@@ -8,6 +8,12 @@ deepwiki_url: https://deepwiki.com/MemPalace/mempalace
 engram_id: pending
 ---
 
+> **Estado 2026-08-15 — veredicto superado.** El veredicto tecnico ADOPT es del
+> 2026-05-06. El 2026-05-11 el operador congelo toda adopcion externa por decision
+> comercial/legal, y nada de este repo llego al codigo: unico hit fuera de docs/ es un string en un test fixture.
+> Descongelar exige revision legal de IP, busquedas USPTO + TESS y firma del operador.
+> Ver `manifests/external-tool-adoption-freeze.yaml` y ADR-267.
+
 ## Repository Evaluation: MemPalace/mempalace
 
 ### Classification: ADOPT

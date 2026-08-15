@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 from pathlib import Path
 
 from scripts import cos_process_loop
@@ -182,3 +183,56 @@ def test_fresh_review_command_mode_records_blocking_findings(tmp_path: Path) -> 
     state = json.loads((tmp_path / ".cognitive-os/process-loops/process-a/state.json").read_text(encoding="utf-8"))
     assert state["review_findings"]["blocking_open"] == 1
     assert state["next_recommended"]["action"] == "fix-review-findings"
+
+
+def _git(repo: Path, *args: str) -> None:
+    subprocess.run(["git", *args], cwd=repo, check=True, capture_output=True, text=True)
+
+
+def test_pass_verdict_freezes_a_content_bound_approval(tmp_path: Path) -> None:
+    """A genuine PASS deterministically freezes the approved tree (upstream gate half)."""
+    _git(tmp_path, "init", "-q")
+    _git(tmp_path, "config", "user.email", "t@t.com")
+    _git(tmp_path, "config", "user.name", "t")
+    _git(tmp_path, "checkout", "-q", "-b", "feature/loop")
+    (tmp_path / "src.py").write_text("v = 1\n", encoding="utf-8")
+    _git(tmp_path, "add", "src.py")
+    _git(tmp_path, "commit", "-q", "-m", "base")
+
+    contract = write_contract(tmp_path)
+    assert cos_process_loop.main(["process-loop", "init", "--project-dir", str(tmp_path), "--contract", str(contract), "--json"]) == 0
+    assert cos_process_loop.main(["apply-progress", "--project-dir", str(tmp_path), "--process-id", "process-a", "--task-id", "T1", "--title", "impl", "--status", "done", "--evidence", "ut", "--json"]) == 0
+    assert cos_process_loop.main(["verify-report", "--project-dir", str(tmp_path), "--process-id", "process-a", "--json"]) == 0
+    # Genuine PASS: no blockers → verdict passed → freeze fires.
+    assert cos_process_loop.main(["process-loop", "verdict", "--project-dir", str(tmp_path), "--process-id", "process-a", "--status", "passed", "--summary", "done", "--json"]) == 0
+
+    approval = tmp_path / ".cognitive-os/receipts/review-approvals/feature_loop.json"
+    assert approval.is_file(), "PASS verdict must freeze a content-bound approval receipt"
+    receipt = json.loads(approval.read_text(encoding="utf-8"))
+    assert receipt["event_type"] == "vcs.review.approved"
+    assert receipt["tree_hash"], "the frozen approval must carry the approved tree hash"
+
+    # The freeze outcome is recorded in the trace, not silent.
+    trace = (tmp_path / ".cognitive-os/process-loops/process-a/trace.jsonl").read_text(encoding="utf-8")
+    assert "review.approval.freeze" in trace
+    assert '"frozen": true' in trace
+
+
+def test_blocked_verdict_does_not_freeze_an_approval(tmp_path: Path) -> None:
+    """A blocked verdict must NOT freeze — you cannot approve content that failed."""
+    _git(tmp_path, "init", "-q")
+    _git(tmp_path, "config", "user.email", "t@t.com")
+    _git(tmp_path, "config", "user.name", "t")
+    _git(tmp_path, "checkout", "-q", "-b", "feature/blocked")
+    (tmp_path / "src.py").write_text("v = 1\n", encoding="utf-8")
+    _git(tmp_path, "add", "src.py")
+    _git(tmp_path, "commit", "-q", "-m", "base")
+
+    contract = write_contract(tmp_path, command="python3 -c 'raise SystemExit(1)'")
+    assert cos_process_loop.main(["process-loop", "init", "--project-dir", str(tmp_path), "--contract", str(contract)]) == 0
+    cos_process_loop.main(["verify-report", "--project-dir", str(tmp_path), "--process-id", "process-a", "--json"])
+    # verification failed → verdict blocked → no approval.
+    assert cos_process_loop.main(["process-loop", "verdict", "--project-dir", str(tmp_path), "--process-id", "process-a", "--status", "passed", "--json"]) == 2
+
+    approval = tmp_path / ".cognitive-os/receipts/review-approvals/feature_blocked.json"
+    assert not approval.exists(), "a blocked verdict must not produce an approval"

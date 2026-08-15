@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-16T14:50:14+00:00",
+  "generated_at": "2026-08-15T18:15:29+00:00",
   "manifest": "manifests/documentation-truth-claims.yaml",
   "rows": [
     {
@@ -207,6 +207,174 @@
       "status": "pass"
     },
     {
+      "check": "required_doc_exists",
+      "claim_id": "cos_init_flag_surface",
+      "doc": "docs/00-MOCs/entrypoints/getting-started.md",
+      "evidence": [
+        "docs/00-MOCs/entrypoints/getting-started.md"
+      ],
+      "message": "Required documentation surface exists",
+      "next_action": "keep doc linked",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "cos_init_flag_surface",
+      "doc": "docs/00-MOCs/entrypoints/getting-started.md",
+      "evidence": [
+        "parses no such flags"
+      ],
+      "message": "Forbidden stale phrase absent: parses no such flags",
+      "next_action": "remove stale or contradictory prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "cos_init_flag_surface",
+      "doc": "docs/00-MOCs/entrypoints/getting-started.md",
+      "evidence": [
+        "flags scripts/cos-init.sh does not parse"
+      ],
+      "message": "Forbidden stale phrase absent: flags scripts/cos-init.sh does not parse",
+      "next_action": "remove stale or contradictory prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "cos_init_flag_surface",
+      "doc": "docs/00-MOCs/entrypoints/getting-started.md",
+      "evidence": [
+        "Esos flags no"
+      ],
+      "message": "Forbidden stale phrase absent: Esos flags no",
+      "next_action": "remove stale or contradictory prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "required_doc_exists",
+      "claim_id": "cos_init_flag_surface",
+      "doc": "docs/00-MOCs/entrypoints/quickstart.md",
+      "evidence": [
+        "docs/00-MOCs/entrypoints/quickstart.md"
+      ],
+      "message": "Required documentation surface exists",
+      "next_action": "keep doc linked",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "cos_init_flag_surface",
+      "doc": "docs/00-MOCs/entrypoints/quickstart.md",
+      "evidence": [
+        "parses no such flags"
+      ],
+      "message": "Forbidden stale phrase absent: parses no such flags",
+      "next_action": "remove stale or contradictory prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "cos_init_flag_surface",
+      "doc": "docs/00-MOCs/entrypoints/quickstart.md",
+      "evidence": [
+        "flags scripts/cos-init.sh does not parse"
+      ],
+      "message": "Forbidden stale phrase absent: flags scripts/cos-init.sh does not parse",
+      "next_action": "remove stale or contradictory prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "cos_init_flag_surface",
+      "doc": "docs/00-MOCs/entrypoints/quickstart.md",
+      "evidence": [
+        "Esos flags no"
+      ],
+      "message": "Forbidden stale phrase absent: Esos flags no",
+      "next_action": "remove stale or contradictory prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "required_doc_exists",
+      "claim_id": "cos_init_flag_surface",
+      "doc": "docs/06-Daily/reports/install-doors-forensics-2026-08-15.md",
+      "evidence": [
+        "docs/06-Daily/reports/install-doors-forensics-2026-08-15.md"
+      ],
+      "message": "Required documentation surface exists",
+      "next_action": "keep doc linked",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "cos_init_flag_surface",
+      "doc": "docs/06-Daily/reports/install-doors-forensics-2026-08-15.md",
+      "evidence": [
+        "parses no such flags"
+      ],
+      "message": "Forbidden stale phrase absent: parses no such flags",
+      "next_action": "remove stale or contradictory prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "cos_init_flag_surface",
+      "doc": "docs/06-Daily/reports/install-doors-forensics-2026-08-15.md",
+      "evidence": [
+        "flags scripts/cos-init.sh does not parse"
+      ],
+      "message": "Forbidden stale phrase absent: flags scripts/cos-init.sh does not parse",
+      "next_action": "remove stale or contradictory prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "cos_init_flag_surface",
+      "doc": "docs/06-Daily/reports/install-doors-forensics-2026-08-15.md",
+      "evidence": [
+        "Esos flags no"
+      ],
+      "message": "Forbidden stale phrase absent: Esos flags no",
+      "next_action": "remove stale or contradictory prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "required_phrase",
+      "claim_id": "cos_init_flag_surface",
+      "doc": null,
+      "evidence": [
+        "remap to `--default`"
+      ],
+      "message": "Required phrase present: remap to `--default`",
+      "next_action": "add or regenerate current-truth prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "required_phrase",
+      "claim_id": "cos_init_flag_surface",
+      "doc": null,
+      "evidence": [
+        "Two install profiles exist, not three"
+      ],
+      "message": "Required phrase present: Two install profiles exist, not three",
+      "next_action": "add or regenerate current-truth prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
       "check": "source_report_self",
       "claim_id": "documentation_truth_control",
       "doc": "docs/06-Daily/reports/documentation-truth-latest.json",
@@ -299,6 +467,102 @@
       ],
       "message": "Generated truth block matches current facts",
       "next_action": "keep block generated",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "required_doc_exists",
+      "claim_id": "payload_canary_determinism",
+      "doc": "docs/06-Daily/reports/payload-contract-architecture-2026-08-15.md",
+      "evidence": [
+        "docs/06-Daily/reports/payload-contract-architecture-2026-08-15.md"
+      ],
+      "message": "Required documentation surface exists",
+      "next_action": "keep doc linked",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "payload_canary_determinism",
+      "doc": "docs/06-Daily/reports/payload-contract-architecture-2026-08-15.md",
+      "evidence": [
+        "necesita transcripts, no corre en CI"
+      ],
+      "message": "Forbidden stale phrase absent: necesita transcripts, no corre en CI",
+      "next_action": "remove stale or contradictory prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "payload_canary_determinism",
+      "doc": "docs/06-Daily/reports/payload-contract-architecture-2026-08-15.md",
+      "evidence": [
+        "el canario no puede ser determinista"
+      ],
+      "message": "Forbidden stale phrase absent: el canario no puede ser determinista",
+      "next_action": "remove stale or contradictory prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "required_doc_exists",
+      "claim_id": "payload_canary_determinism",
+      "doc": "tests/fixtures/payload-corpus/README.md",
+      "evidence": [
+        "tests/fixtures/payload-corpus/README.md"
+      ],
+      "message": "Required documentation surface exists",
+      "next_action": "keep doc linked",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "payload_canary_determinism",
+      "doc": "tests/fixtures/payload-corpus/README.md",
+      "evidence": [
+        "necesita transcripts, no corre en CI"
+      ],
+      "message": "Forbidden stale phrase absent: necesita transcripts, no corre en CI",
+      "next_action": "remove stale or contradictory prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "payload_canary_determinism",
+      "doc": "tests/fixtures/payload-corpus/README.md",
+      "evidence": [
+        "el canario no puede ser determinista"
+      ],
+      "message": "Forbidden stale phrase absent: el canario no puede ser determinista",
+      "next_action": "remove stale or contradictory prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "required_phrase",
+      "claim_id": "payload_canary_determinism",
+      "doc": null,
+      "evidence": [
+        "tests/fixtures/payload-corpus"
+      ],
+      "message": "Required phrase present: tests/fixtures/payload-corpus",
+      "next_action": "add or regenerate current-truth prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "required_phrase",
+      "claim_id": "payload_canary_determinism",
+      "doc": null,
+      "evidence": [
+        "--canary --live"
+      ],
+      "message": "Required phrase present: --canary --live",
+      "next_action": "add or regenerate current-truth prose",
       "severity": "medium",
       "status": "pass"
     },
@@ -1513,6 +1777,54 @@
       "next_action": "add or regenerate current-truth prose",
       "severity": "medium",
       "status": "pass"
+    },
+    {
+      "check": "source_report_exists",
+      "claim_id": "volatile_number_prose",
+      "doc": "docs/06-Daily/reports/volatile-numbers-latest.json",
+      "evidence": [
+        "docs/06-Daily/reports/volatile-numbers-latest.json"
+      ],
+      "message": "Required source report exists",
+      "next_action": "keep report generated",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "required_doc_exists",
+      "claim_id": "volatile_number_prose",
+      "doc": "docs/06-Daily/reports/numeros-volatiles-2026-08-15.md",
+      "evidence": [
+        "docs/06-Daily/reports/numeros-volatiles-2026-08-15.md"
+      ],
+      "message": "Required documentation surface exists",
+      "next_action": "keep doc linked",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "volatile_number_prose",
+      "doc": "docs/06-Daily/reports/numeros-volatiles-2026-08-15.md",
+      "evidence": [
+        "Component counts: 57 hooks, 55 rules, 72 skills"
+      ],
+      "message": "Forbidden stale phrase absent: Component counts: 57 hooks, 55 rules, 72 skills",
+      "next_action": "remove stale or contradictory prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "required_phrase",
+      "claim_id": "volatile_number_prose",
+      "doc": null,
+      "evidence": [
+        "The prose says how to know it, not how many"
+      ],
+      "message": "Required phrase present: The prose says how to know it, not how many",
+      "next_action": "add or regenerate current-truth prose",
+      "severity": "medium",
+      "status": "pass"
     }
   ],
   "schema_version": "documentation-truth-audit.v1",
@@ -1523,7 +1835,13 @@
       "consumer_projection_harnesses": {
         "pass": 17
       },
+      "cos_init_flag_surface": {
+        "pass": 14
+      },
       "documentation_truth_control": {
+        "pass": 8
+      },
+      "payload_canary_determinism": {
         "pass": 8
       },
       "primitive_authority_write_effects": {
@@ -1534,11 +1852,14 @@
       },
       "subprocess_timeout_discipline": {
         "pass": 10
+      },
+      "volatile_number_prose": {
+        "pass": 4
       }
     },
     "by_status": {
-      "pass": 126
+      "pass": 152
     },
-    "rows": 126
+    "rows": 152
   }
 }

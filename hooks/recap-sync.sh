@@ -40,6 +40,24 @@ fi
 command -v python3 >/dev/null 2>&1 || exit 0
 
 # Run the adapter. Suppress any stderr — the recap path must never block exit.
+#
+# DELIBERATELY LEFT MUTE (2026-08-15). The other two silenced call-sites in this
+# family were converted; this one was not, for two reasons that are specific to
+# it and do not generalise:
+#
+#   1. Its failure is already visible to the person, in the artifact they are
+#      reading. The other helpers fail into a void — a session that starts with
+#      no user model, or an agent planning without the queue state, looks
+#      identical to a healthy one. Here the user typed /recap and is looking at
+#      the output: the COS section is either in it or it is not. Announcing an
+#      absence the reader can already see is noise, not observability.
+#   2. This is a Stop hook, and stderr is the channel the Stop contract uses to
+#      tell the model why a stop was refused. Today `|| true` pins the exit code
+#      at 0 so stderr is inert, but wiring adapter diagnostics into that stream
+#      leaves the hook one exit-code edit away from turning an adapter traceback
+#      into a stop-refusal reason. The blast radius is the whole session ending.
+#
+# If this ever needs a diagnosis channel, it should be a metrics row, not stderr.
 python3 "$ADAPTER" 2>/dev/null || true
 
 exit 0
