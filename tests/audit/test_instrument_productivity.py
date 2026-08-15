@@ -17,8 +17,11 @@ Two jobs:
 from __future__ import annotations
 
 import importlib.util
+import json
+import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 import pytest
@@ -120,32 +123,121 @@ def test_script_runs_and_uses_documented_exit_codes() -> None:
 EXIT_CODE_HOOKS = {
     "hooks/error-pipeline.sh": ".exit_code // \"0\"",
     "hooks/error-learning.sh": "stdin_field '.exit_code' '0'",
+    "packages/skill-governance/hooks/skill-tracker.sh": ".exit_code // \"0\"",
 }
 
+# The measured contract. Reproduce every number here with
+#   docs/05-Methodology/runbooks/error-pipeline-type-contract-2026-08-15/verify_type_contract.py
+# over 57 harness transcripts:
+#   1,962 Bash results — 1,837 objects, 125 strings (50 "Error: Exit code N",
+#   75 other "Error: ..."), and ZERO occurrences of `exit_code` at any nesting
+#   level for any tool.
+TERNARY_PAYLOADS = [
+    # (payload, expected TOOL_OUTCOME, note)
+    ({"tool_response": {"stdout": "ok\n", "stderr": "", "interrupted": False,
+                        "isImage": False, "noOutputExpected": False}},
+     "ok", "success is an OBJECT — 1,837 of 1,962 real Bash results"),
+    ({"tool_response": "Error: Exit code 1"},
+     "failed", "the command RAN and exited non-zero — 50 real results"),
+    ({"tool_response": "Error: Exit code 127"},
+     "failed", "same class, different code"),
+    ({"tool_response": 'Error: PreToolUse:Bash hook error: [bash "..."]: BLOCK'},
+     "blocked", "a gate of THIS OS refused it — 75 real results, the "
+                "single largest failure class, and not a command failure"),
+    ({"tool_response": "Error: Permission for this action was denied"},
+     "blocked", "permission denial — the command never ran either"),
+    ({"tool_response": None}, "absent", "contract drift, and drift is NOT ok"),
+    ({}, "absent", "no tool_response at all — drift, not success"),
+]
 
-@pytest.mark.parametrize("rel,marker", sorted(EXIT_CODE_HOOKS.items()))
-def test_exit_code_defect_is_still_present(rel: str, marker: str) -> None:
-    """These hooks read a top-level .exit_code the harness does not send.
 
-    The documented payload nests it (see
-    docs/04-Concepts/architecture/agentic-mastery-operations.md):
-        {"tool_response": {"content": "...", "exit_code": 1}}
+def _classify(payload: dict, tree: Path | None = None) -> str:
+    """Run the real shell classifier over a payload and return TOOL_OUTCOME."""
+    lib = (tree or REPO) / "hooks" / "_lib" / "tool-outcome.sh"
+    proc = subprocess.run(
+        ["bash", "-c", f'set -uo pipefail; source "{lib}"; '
+                       'classify_tool_outcome "$(cat)"; '
+                       'printf "%s|%s" "$TOOL_OUTCOME" "$TOOL_EXIT_CODE"'],
+        input=json.dumps(payload), capture_output=True, text=True, timeout=60,
+    )
+    assert proc.returncode == 0, proc.stderr
+    return proc.stdout.split("|")[0]
 
-    So EXIT_CODE always falls back to "0" and the hook exits immediately:
-    21,046 invocations against 11 recorded rows.
 
-    FIX (needs protected-config-write-guard review):
-        jq -r '.tool_response.exit_code // .exit_code // "0"'
+def _patched_tree() -> Path | None:
+    """Materialise the runbook patch into a temp tree, or None if already applied."""
+    if (REPO / "hooks" / "_lib" / "tool-outcome.sh").exists():
+        return None  # the patch has landed; test the repo itself
+    patch = (REPO / "docs" / "05-Methodology" / "runbooks"
+             / "error-pipeline-type-contract-2026-08-15"
+             / "error-pipeline-type-contract.patch")
+    if not patch.exists():
+        pytest.skip("neither the fix nor its patch is present")
+    tmp = Path(tempfile.mkdtemp(prefix="tool-outcome-"))
+    shutil.copytree(REPO / "hooks", tmp / "hooks", symlinks=True)
+    (tmp / "packages" / "skill-governance").mkdir(parents=True)
+    shutil.copytree(REPO / "packages" / "skill-governance" / "hooks",
+                    tmp / "packages" / "skill-governance" / "hooks", symlinks=True)
+    proc = subprocess.run(["git", "apply", "-p1", str(patch)],
+                          cwd=tmp, capture_output=True, text=True)
+    assert proc.returncode == 0, f"runbook patch no longer applies: {proc.stderr}"
+    return tmp
 
-    When applied, flip this test to assert `.tool_response.exit_code`.
+
+@pytest.mark.parametrize("payload,expected,note",
+                         TERNARY_PAYLOADS,
+                         ids=[p[2].split("—")[0].strip()[:40] for p in TERNARY_PAYLOADS])
+def test_tool_outcome_is_ternary_plus_drift(payload: dict, expected: str, note: str) -> None:
+    """Success, command-failure and gate-block must classify differently.
+
+    This replaces a characterization test that pinned the old hooks to
+    `.exit_code`. That test was wrong on its own terms: it cited a documented
+    payload `{"tool_response": {"content": ..., "exit_code": 1}}` that does not
+    occur once in 2,686 real tool results, and it prescribed a "fix" that moved
+    the read from one field the harness never sends to another field the harness
+    never sends. Applying that fix would have flipped the test green while the
+    hooks stayed exactly as dead as before — a test passing for the wrong
+    reason, which is worse than a test failing.
+
+    So this asserts the property instead of the defect: the classifier must
+    separate the three real outcomes, and must never read absence as success.
     """
+    tree = _patched_tree()
+    assert _classify(payload, tree) == expected, note
+
+
+def test_gate_blocks_are_not_command_failures() -> None:
+    """The 75 largest "failures" are this OS blocking itself. Keep them apart.
+
+    A PreToolUse gate refusing a command produces no exit code, no stdout and no
+    stderr, because the command never ran. Bucketing it with real failures feeds
+    the auto-repair loop our own guardrails and teaches the improvement loop from
+    our own refusals.
+    """
+    tree = _patched_tree()
+    gate = {"tool_response": 'Error: PreToolUse:Bash hook error: [bash "x"]: BLOCK'}
+    real = {"tool_response": "Error: Exit code 2"}
+    assert _classify(gate, tree) != _classify(real, tree)
+
+
+@pytest.mark.parametrize("rel", sorted(EXIT_CODE_HOOKS))
+def test_no_hook_reads_the_phantom_exit_code(rel: str) -> None:
+    """Once the patch lands, no hook may go back to reading `.exit_code`.
+
+    `exit_code` is absent from the payload at every nesting level, for every
+    tool, in all 2,686 measured results. A permissive default on an absent field
+    (`// "0"`) cannot tell "everything is fine" from "the field is gone", which
+    is how these hooks logged 11 rows across 5,335 invocations each.
+    """
+    if not (REPO / "hooks" / "_lib" / "tool-outcome.sh").exists():
+        pytest.skip("patch not applied yet; the ratchet arms on landing")
     src = (REPO / rel).read_text()
-    if ".tool_response.exit_code" in src:
-        pytest.fail(
-            f"{rel} now reads .tool_response.exit_code — the lote-34 fix "
-            "landed. Update this test to assert the fixed form."
+    for phantom in (".exit_code //", "stdin_field '.exit_code'",
+                    ".tool_response.exit_code"):
+        assert phantom not in src, (
+            f"{rel} reads the phantom field via {phantom!r}. "
+            "Classify on the type of tool_response — see hooks/_lib/tool-outcome.sh."
         )
-    assert marker in src, f"{rel} changed shape; re-verify the lote-34 finding"
 
 
 def test_doc_sync_detector_filter_still_excludes_repo_languages() -> None:
