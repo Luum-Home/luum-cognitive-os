@@ -21,7 +21,7 @@ cd my-api
 
 This creates a Go project with COS pre-configured:
 - 14 core quality rules (always active)
-- 24 hooks (standard security profile)
+- the standard security profile's hook set (`ls hooks/*.sh | wc -l` for the full catalog)
 - Engram persistent memory
 - Auto skill selection
 

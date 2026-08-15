@@ -4,7 +4,7 @@ Everything ADR-related. Read this MOC when you're about to write a new ADR, supe
 
 ## Start here
 
-1. [`docs/02-Decisions/adrs/INDEX.md`](../adrs/INDEX.md) — full status table for 280 ADRs (sorted: Active, Proposed, Exploration, Resolved, Superseded, Tombstone)
+1. [`docs/02-Decisions/adrs/INDEX.md`](../adrs/INDEX.md) — full status table for every ADR, count via `ls docs/02-Decisions/adrs/ADR-*.md | wc -l` (sorted: Active, Proposed, Exploration, Resolved, Superseded, Tombstone)
 2. [`docs/02-Decisions/adrs/STATUS-TAXONOMY.md`](../02-Decisions/adrs/STATUS-TAXONOMY.md) — canonical status values + when to use each
 3. [`docs/02-Decisions/adrs/README.md`](../adrs/README.md) — naming convention, frontmatter schema
 
@@ -26,7 +26,7 @@ Everything ADR-related. Read this MOC when you're about to write a new ADR, supe
 
 - [ADR-007 Cognitive OS rebrand](../02-Decisions/adrs/ADR-007-cognitive-os-rebrand.md) — naming and scope
 - [ADR-008 Multi-tool support](../02-Decisions/adrs/ADR-008-multi-tool-support.md) — vendor-agnostic posture
-- [ADR-009 Package architecture (375 primitives)](../02-Decisions/adrs/ADR-009-package-architecture.md)
+- [ADR-009 Package architecture](../02-Decisions/adrs/ADR-009-package-architecture.md)
 - [ADR-010 Hook architecture v2](../02-Decisions/adrs/ADR-010-hook-architecture-v2.md)
 - [ADR-087 ADR namespace consolidation](../02-Decisions/adrs/ADR-087-adr-namespace-consolidation.md) — why ADRs live in `docs/02-Decisions/adrs/`
 

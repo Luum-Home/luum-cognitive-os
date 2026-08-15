@@ -839,7 +839,9 @@ KPIs suben -> loop cerrado
 
 ### Phase 1 — Dev-time Cognitive OS (DONE)
 
-What exists today as the Cognitive OS ecosystem (all 13 components operational):
+What Phase 1 delivered, as recorded at that milestone (the lists below are the
+Phase 1 inventory, not the current one -- measure current counts with
+`ls hooks/*.sh | wc -l`, `ls rules/*.md | wc -l`, `ls -d skills/*/ | wc -l`):
 
 - Engram persistent memory (port 7437)
 - SDD (Spec-Driven Development) workflow with 8 core phases plus optional init/bootstrap

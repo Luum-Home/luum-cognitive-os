@@ -15,10 +15,33 @@ source_reports:
   primitive_authority:
     path: docs/06-Daily/reports/primitive-authority-latest.json
     required: true
+  volatile_numbers:
+    path: docs/06-Daily/reports/volatile-numbers-latest.json
+    required: false
   acc:
     path: docs/07-Capabilities/acc/latest.json
     required: false
 claims:
+  volatile_number_prose:
+    severity: medium
+    description: >-
+      Documentation prose must not publish primitive census counts (hooks, rules,
+      skills, ADRs, lib modules, tests) as current state. A census count belongs to
+      the command that produces it or to a declared claim; hardcoded in prose it is
+      wrong the day after it is written. Historical observations (date-anchored),
+      contract constants, third-party counts and quoted samples are exempt.
+    facts:
+      detector: scripts/volatile_number_audit.py
+      baseline: manifests/volatile-number-baseline.json
+      ratchet: baseline may only shrink; raising it to silence a red is prohibited
+    source_reports:
+      - docs/06-Daily/reports/volatile-numbers-latest.json
+    required_docs:
+      - docs/06-Daily/reports/numeros-volatiles-2026-08-15.md
+    required_phrases:
+      - The prose says how to know it, not how many
+    forbidden_phrases:
+      - "Component counts: 57 hooks, 55 rules, 72 skills"
   consumer_projection_harnesses:
     severity: high
     description: Consumer projection docs must describe current implemented native and structural harnesses, not the old Claude/Codex-only boundary.

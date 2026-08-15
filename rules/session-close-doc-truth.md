@@ -33,7 +33,7 @@ Any of:
 - Stale phrase describing a now-implemented feature as missing/pending
   (e.g., "no atomic close primitive exists" — when ADR-275 shipped one)
 - Outdated harness/coverage claim (e.g., "Claude/Codex-only" — when
-  structural projection already handles 4 harnesses)
+  structural projection already handles the harnesses in `manifests/harness-projection.yaml`)
 - Generated truth block out of sync with its source report
 - ADR `implementation_status: implemented` with no implementation_files
   pointing to actual code

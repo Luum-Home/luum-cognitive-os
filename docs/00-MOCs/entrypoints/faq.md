@@ -1,7 +1,16 @@
 # Cognitive OS -- Frequently Asked Questions
 
-> 65 questions. Every answer is a capability you did not know existed.
-> Component counts: 57 hooks, 55 rules, 72 skills, 22 lib modules, 1714 tests.
+> Every answer is a capability you did not know existed.
+> Component counts are not published here — they drift daily and prose does not
+> follow. Measure them:
+>
+> ```bash
+> ls hooks/*.sh | wc -l          # hook scripts on disk
+> ls rules/*.md | wc -l          # rule files
+> ls -d skills/*/ | wc -l        # skills
+> ls cos_lib/*.py | wc -l        # library modules
+> python3 -m pytest --collect-only -q | tail -1   # tests
+> ```
 
 ---
 
@@ -9,15 +18,15 @@
 
 ### What is Cognitive OS?
 
-An operating system for AI coding agents. It wraps Claude Code with 57 hooks, 55 rules, 72 skills, 22 Python library modules, and a persistent memory layer -- turning a general-purpose LLM into a governed, self-correcting, self-improving engineering organization that remembers everything across sessions and learns from every failure.
+An operating system for AI coding agents. It wraps Claude Code with a hook layer, a rule set, a skill catalog, a Python library layer, and a persistent memory layer -- turning a general-purpose LLM into a governed, self-correcting, self-improving engineering organization that remembers everything across sessions and learns from every failure. For the current size of each layer, run the census commands at the top of this document.
 
 ### What problem does it solve?
 
-Without structure, AI agents do the minimum viable work, forget everything between sessions, ship incomplete features, and repeat the same mistakes. Cognitive OS fixes every one of these with mandatory acceptance criteria on every prompt, adversarial reviews that prohibit "looks good," persistent memory via Engram, error learning that captures every failure to JSONL, trust scoring that forces agents to admit uncertainty, and a self-correcting loop that retries failures up to 3 times before escalating to a human. The system is validated by 1714 automated tests across 64 test files.
+Without structure, AI agents do the minimum viable work, forget everything between sessions, ship incomplete features, and repeat the same mistakes. Cognitive OS fixes every one of these with mandatory acceptance criteria on every prompt, adversarial reviews that prohibit "looks good," persistent memory via Engram, error learning that captures every failure to JSONL, trust scoring that forces agents to admit uncertainty, and a self-correcting loop that retries failures up to 3 times before escalating to a human. The system is validated by the automated suite (`python3 -m pytest --collect-only -q | tail -1`).
 
 ### How is it different from just using Claude Code?
 
-Claude Code is a runtime. Cognitive OS is the kernel, filesystem, and application layer running on top of it. Without Cognitive OS, Claude Code has no memory between sessions, no quality enforcement, no cost tracking, no structured pipeline, and no way to learn from its mistakes. Cognitive OS adds 57 hooks that intercept every single tool call, 55 rules that constrain behavior in real time, 72 skills that encode domain knowledge, and Engram for persistent memory that survives across sessions and context compactions.
+Claude Code is a runtime. Cognitive OS is the kernel, filesystem, and application layer running on top of it. Without Cognitive OS, Claude Code has no memory between sessions, no quality enforcement, no cost tracking, no structured pipeline, and no way to learn from its mistakes. Cognitive OS adds a hook layer that intercepts every single tool call, a rule set that constrains behavior in real time, a skill catalog that encodes domain knowledge, and Engram for persistent memory that survives across sessions and context compactions.
 
 ### Can I use it with any project?
 
@@ -28,7 +37,7 @@ Yes. The core system is language-agnostic and framework-agnostic. Run `/cognitiv
 
 ### What does "agent operating system" mean?
 
-Traditional OS: process management, file systems, device drivers. Cognitive OS: session management (57 hooks), persistent memory (Engram with SQLite WAL), and skills (device drivers for domains). Hooks are the kernel intercepting every tool call. Rules are security policies enforced in real time. Skills are installed programs. Engram is the filesystem that persists across reboots. Metrics are the system logs.
+Traditional OS: process management, file systems, device drivers. Cognitive OS: session management (the hook layer), persistent memory (Engram with SQLite WAL), and skills (device drivers for domains). Hooks are the kernel intercepting every tool call. Rules are security policies enforced in real time. Skills are installed programs. Engram is the filesystem that persists across reboots. Metrics are the system logs.
 
 ---
 
@@ -196,7 +205,7 @@ The `/harness-audit` skill performs periodic self-assessment of Cognitive OS its
 
 ### What are the project phases and how do they change behavior?
 
-Four lifecycle phases alter all agent behavior globally. **Reconstruction**: rewrite over patch, break backwards compatibility freely, auto-remediate architecture violations as blockers. **Stabilization**: standards enforced strictly, remaining issues cleaned up. **Production**: feature flags required, no breaking changes, human approval for risky operations, auto-repair restricted to infrastructure-only. **Maintenance**: bug fixes and security patches only, every change requires human approval. Set in `cognitive-os.yaml` under `project.phase`. One config value, 55 rules respond.
+Four lifecycle phases alter all agent behavior globally. **Reconstruction**: rewrite over patch, break backwards compatibility freely, auto-remediate architecture violations as blockers. **Stabilization**: standards enforced strictly, remaining issues cleaned up. **Production**: feature flags required, no breaking changes, human approval for risky operations, auto-repair restricted to infrastructure-only. **Maintenance**: bug fixes and security patches only, every change requires human approval. Set in `cognitive-os.yaml` under `project.phase`. One config value, and every rule in `rules/` responds.
 
 ### What is the readiness check?
 
@@ -212,7 +221,7 @@ Closed loop: `error-learning.sh` captures every failure -> `error-pattern-detect
 
 ### What is dogfooding?
 
-Cognitive OS uses itself to build itself. The `luum-agent-os` repo is self-hosted: `.claude/rules/` symlinks to `rules/`, all 57 hooks run on this project, and every substantial change goes through the SDD pipeline. The `self-install.sh` hook runs at every session start, syncing all 55 rules and 57 hooks automatically. The first dogfooded change (`quinotospec-patterns`) found 3 real bugs in the pipeline -- sub-agent tool access, skill path resolution, and JSON corruption from shell arithmetic -- all fixed during the verify-apply retry loop.
+Cognitive OS uses itself to build itself. The `luum-agent-os` repo is self-hosted: `.claude/rules/` symlinks to `rules/`, every hook in `hooks/` runs on this project, and every substantial change goes through the SDD pipeline. The `self-install.sh` hook runs at every session start, syncing every rule and hook automatically. The first dogfooded change (`quinotospec-patterns`) found 3 real bugs in the pipeline -- sub-agent tool access, skill path resolution, and JSON corruption from shell arithmetic -- all fixed during the verify-apply retry loop.
 
 ### What is skill adaptation?
 
@@ -240,7 +249,17 @@ Calculated at session end and on demand via `/agent-kpis`. Six OKR categories: q
 
 ### How many tests exist?
 
-1714 tests across 64 test files in 4 categories. Unit tests (698 tests, 22 files): pure functions, state machines, parsers. Behavior tests (926 tests, 28 files): hook contracts, skill structures, protocol logic. Integration tests (62 tests, 8 files): real Docker services via testcontainers. System tests (25 tests, 5 files): configuration and runtime consistency. The behavior layer carries the majority because it validates contracts without Docker overhead, keeping the feedback loop fast.
+The suite is organised in 4 categories. Unit tests: pure functions, state machines, parsers. Behavior tests: hook contracts, skill structures, protocol logic. Integration tests: real Docker services via testcontainers. System tests: configuration and runtime consistency. The behavior layer carries the majority because it validates contracts without Docker overhead, keeping the feedback loop fast.
+
+Counts drift with every commit, so measure instead of quoting:
+
+```bash
+python3 -m pytest --collect-only -q | tail -1            # total
+for d in unit behavior integration system; do
+  printf '%s: ' "$d"
+  python3 -m pytest tests/$d --collect-only -q 2>/dev/null | tail -1
+done
+```
 
 ### What is cos-test?
 
@@ -312,7 +331,7 @@ One command: `curl -fsSL https://raw.githubusercontent.com/luum-home/luum-cognit
 
 ### What happens on first session?
 
-Six hooks fire automatically: `self-install.sh` syncs rules and hooks (in dogfooding repos), `session-init.sh` creates a unique session ID, `session-resume.sh` checks for incomplete tasks, `stack-detector.sh` identifies project languages and frameworks, `inject-phase-context.sh` loads phase-specific behavior rules, and `engram-auto-import.sh` loads persistent memory. A status line confirms health: "Self-hosting: OK (55 rules, 57 hooks synced)." Your session starts with full context from all previous sessions.
+Six hooks fire automatically: `self-install.sh` syncs rules and hooks (in dogfooding repos), `session-init.sh` creates a unique session ID, `session-resume.sh` checks for incomplete tasks, `stack-detector.sh` identifies project languages and frameworks, `inject-phase-context.sh` loads phase-specific behavior rules, and `engram-auto-import.sh` loads persistent memory. A status line confirms health: "Self-hosting: OK (rules and hooks synced)." Your session starts with full context from all previous sessions.
 
 ### How do I run my first pipeline?
 
