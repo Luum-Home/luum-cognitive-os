@@ -64,6 +64,17 @@ PLACEHOLDER_USER_SEGMENTS = {
     "USER",
 }
 
+# Home segments allocated to a MACHINE rather than to a person. Same set, same
+# reasoning, same parity note as CI_MACHINE_SEGMENTS in check-local-privacy.sh
+# and hooks/research-compliance-guard.sh, where the bar for adding an entry is
+# written out in full.
+#
+# Distinct from _describes_a_username() below, and neither implies the other:
+# that one covers segments that cannot be account names at all, while `runner`
+# is a legal account name that simply never denotes a person here. The
+# 2026-08-15 fix added only the first to this file.
+CI_MACHINE_SEGMENTS = {"runner"}
+
 ALLOWED_POSIX_PREFIXES = {
     # Container paths, not developer host-home paths.
     LINUX_HOME_PREFIX + "jovyan/",
@@ -143,7 +154,11 @@ def _is_allowed_match(match: str) -> bool:
         return True
     if match.startswith(MAC_HOME_PREFIX) or match.startswith(LINUX_HOME_PREFIX):
         segment = _posix_user_segment(match)
-        return segment in PLACEHOLDER_USER_SEGMENTS or _describes_a_username(segment)
+        return (
+            segment in PLACEHOLDER_USER_SEGMENTS
+            or segment in CI_MACHINE_SEGMENTS
+            or _describes_a_username(segment)
+        )
     return False
 
 

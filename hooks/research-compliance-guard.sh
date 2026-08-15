@@ -63,6 +63,78 @@ failures=()
 MAC_HOME_SEG='/'"Users"
 LINUX_HOME_SEG='/'"home"
 HOME_PATH_RE="(^|[^A-Za-z0-9_.-])((${MAC_HOME_SEG}|${LINUX_HOME_SEG})/[A-Za-z0-9._-]+|${MAC_HOME_SEG}/[^.][^/[:space:]]+/Projects/)"
+# Wider token, used ONLY to classify a hit that HOME_PATH_RE already produced —
+# never to create one. HOME_PATH_RE stops at the first character illegal in an
+# account name, so the user segment it captures is truncated exactly where the
+# evidence needed to judge it begins. Detection semantics are unchanged: the
+# classification below can only remove a finding, never add one.
+HOME_TOKEN_RE="(${MAC_HOME_SEG}|${LINUX_HOME_SEG})/[^/[:space:]]+"
+
+# User segments that are not a personal home by construction.
+#
+# `runner` is the fixed home of a GitHub Actions runner: identical on every
+# runner in the world, published in the runner image, allocated to a machine
+# rather than to a person. The bar for adding an entry here is that question
+# and only that question — *does this string identify a person on some
+# machine?* If the answer is "it depends", it does not belong. A username that
+# merely happens to be common (admin, dev, ubuntu) does NOT qualify: somewhere
+# it is someone's actual account.
+#
+# Observed 2026-08-15: a report auditing home-path leakage blocked its own
+# commit on four matches, all of them the CI runner path, which the report
+# itself classified as CI before concluding zero leaks.
+CI_MACHINE_SEGMENTS=" runner "
+
+# Placeholder segments, kept in parity with PLACEHOLDER_USERS in
+# scripts/check-local-privacy.sh and PLACEHOLDER_USER_SEGMENTS in
+# scripts/check_absolute_paths.py.
+PLACEHOLDER_SEGMENTS=' <user> {user} $USER ${USER} USER ... '
+
+# True when the segment is a pattern *matching* usernames rather than being
+# one. Same discriminator as `describes_a_username` in
+# scripts/check-local-privacy.sh (commit 3a6e737b): none of []()*+?\|^$ is
+# legal in a POSIX or macOS account name, so a segment containing one is
+# describing usernames by construction. Exact, not heuristic — it cannot mask
+# an accidental commit of a real path, only a deliberately obfuscated one,
+# which this guard never caught.
+_describes_a_username() {
+  case "$1" in
+    *'['*|*']'*|*'('*|*')'*|*'*'*|*'+'*|*'?'*|*'\'*|*'|'*|*'^'*|*'$'*) return 0 ;;
+  esac
+  return 1
+}
+
+_is_exempt_home_segment() {
+  local seg="$1"
+  [ -n "$seg" ] || return 1
+  case "$CI_MACHINE_SEGMENTS" in *" $seg "*) return 0 ;; esac
+  case "$PLACEHOLDER_SEGMENTS" in *" $seg "*) return 0 ;; esac
+  _describes_a_username "$seg"
+}
+
+# True when EVERY home-path token in the file is provably not a personal home.
+# Fail-closed on purpose: a file with no extractable token is not exempt, so a
+# hit shape this function cannot parse keeps blocking instead of slipping past.
+_home_paths_all_exempt() {
+  local file="$1" token seg found=0
+  while IFS= read -r token; do
+    [ -z "$token" ] && continue
+    seg="${token#*/}"
+    seg="${seg#*/}"
+    # Only tokens whose segment opens with a character legal in an account
+    # name can have produced a HOME_PATH_RE hit in the first place. A segment
+    # opening with a quote or a backtick is the tail of a shell snippet that
+    # merely mentions the home root — HOME_PATH_RE never fired on it, so it
+    # must not be allowed to deny an exemption either.
+    case "$seg" in
+      [A-Za-z0-9._-]*) ;;
+      *) continue ;;
+    esac
+    found=1
+    _is_exempt_home_segment "$seg" || return 1
+  done < <(grep -oE "$HOME_TOKEN_RE" "$file" 2>/dev/null)
+  [ "$found" -eq 1 ]
+}
 
 add_failure() {
   failures+=("$1")
@@ -92,7 +164,7 @@ while IFS= read -r rel; do
   size="$(wc -c < "$abs" 2>/dev/null || echo 0)"
   [ "${size:-0}" -gt 1048576 ] && continue
 
-  if grep -Eq "$HOME_PATH_RE" "$abs" 2>/dev/null; then
+  if grep -Eq "$HOME_PATH_RE" "$abs" 2>/dev/null && ! _home_paths_all_exempt "$abs"; then
     add_failure "$rel: contains a personal absolute home path; use repo-local or redacted paths"
   fi
 

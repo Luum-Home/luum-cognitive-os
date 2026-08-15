@@ -7,10 +7,12 @@ creep back into agent startup.
 from __future__ import annotations
 
 import json
+import re
 import subprocess
 from pathlib import Path
 
 import pytest
+import yaml
 
 
 pytestmark = pytest.mark.contract
@@ -115,6 +117,25 @@ def test_generated_codex_projection_preserves_hook_exit_codes() -> None:
 
 
 def test_generated_codex_projection_uses_supported_native_surface() -> None:
+    """The generated projection must sit inside the surface Codex publishes.
+
+    The expected surface is read from ``manifests/codex-hooks-schema.yaml`` (the
+    transcribed upstream contract, with its source URLs and verification date)
+    rather than hard-coded here.  A previous version of this test hard-coded the
+    pre-2026-08-15 driver output — event keys at the root with no ``hooks``
+    namespace, ``matcher: "prompt"`` on UserPromptSubmit, ``matcher: "shutdown"``
+    on Stop, and Bash-only tool matchers.  All four are schema violations, so the
+    test was pinning the defect instead of catching it.
+    """
+
+    schema = yaml.safe_load(
+        (PROJECT_ROOT / "manifests" / "codex-hooks-schema.yaml").read_text()
+    )
+    events = schema["events"]
+    published_tools = {
+        entry["name"] for entry in schema["tool_names"] if "name" in entry
+    }
+
     result = subprocess.run(
         [
             "bash",
@@ -130,18 +151,44 @@ def test_generated_codex_projection_uses_supported_native_surface() -> None:
 
     assert result.returncode == 0, result.stderr
     settings = json.loads(result.stdout)
-    assert set(settings) == {
-        "SessionStart",
-        "UserPromptSubmit",
-        "PreToolUse",
-        "PostToolUse",
-        "Stop",
-    }
-    assert {group["matcher"] for group in settings["SessionStart"]} <= {"startup"}
-    assert {group["matcher"] for group in settings["UserPromptSubmit"]} <= {"prompt"}
-    assert {group["matcher"] for group in settings["Stop"]} <= {"shutdown"}
-    assert {group["matcher"] for group in settings["PreToolUse"]} <= {"bash"}
-    assert {group["matcher"] for group in settings["PostToolUse"]} <= {"bash"}
+
+    # The `hooks` namespace is mandatory: event keys at the root are not parsed
+    # as hooks at all, which makes the whole registration inert.
+    root_key = schema["file"]["root_key"]
+    assert schema["file"]["root_key_required"] is True
+    assert set(settings) == {root_key}, (
+        f"projection must nest events under {root_key!r}, got {sorted(settings)}"
+    )
+    hooks = settings[root_key]
+    assert hooks, "projection emitted no events"
+
+    unknown = set(hooks) - set(events)
+    assert not unknown, f"events absent from the published schema: {sorted(unknown)}"
+
+    for event, groups in hooks.items():
+        support = events[event]["matcher"]
+        matchers = [group.get("matcher") for group in groups]
+
+        if support == "unsupported":
+            assert all(matcher is None for matcher in matchers), (
+                f"{event} does not accept a matcher; emitting one is a schema "
+                f"violation, got {matchers}"
+            )
+            continue
+
+        if support == "required":
+            assert all(matcher is not None for matcher in matchers), event
+
+        present = [matcher for matcher in matchers if matcher is not None]
+        semantics = events[event].get("matcher_semantics")
+        if semantics == "enum":
+            allowed = set(events[event]["matcher_values"])
+            assert set(present) <= allowed, f"{event}: {present} not in {sorted(allowed)}"
+        elif semantics == "tool_name_regex":
+            for matcher in present:
+                assert any(
+                    re.search(matcher, tool) for tool in published_tools
+                ), f"{event}: matcher {matcher!r} matches no published tool name"
 
 
 def test_session_start_does_not_run_pytest_inventory_or_full_suite() -> None:
