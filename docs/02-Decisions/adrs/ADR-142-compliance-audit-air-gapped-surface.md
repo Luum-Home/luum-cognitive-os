@@ -179,7 +179,7 @@ audit_class: access_control|change_management|availability|processing_integrity|
 - [ADR-139](ADR-139-account-agnostic-multi-provider-runtime.md) — credential and billing audit rows; `processing_integrity` class.
 - [ADR-141](ADR-141-engram-cloud-cross-instance-replication.md) — Engram sync audit rows; `sync` class.
 - `hooks/git-commit-scope-guard.sh` — confirms `.cognitive-os/runtime/agent-audit-trail.jsonl` as the canonical audit file.
-- [`dx-cloud-flow-bootstrap-plan.md`](../architecture/dx-cloud-flow-bootstrap-plan.md) — the plan whose audit-trail signal this ADR formalises.
+- [`dx-cloud-flow-bootstrap-plan.md`](../../04-Concepts/architecture/dx-cloud-flow-bootstrap-plan.md) — the plan whose audit-trail signal this ADR formalises.
 
 ## Operational Guide
 

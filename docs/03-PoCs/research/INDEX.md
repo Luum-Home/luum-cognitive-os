@@ -59,8 +59,8 @@
 | [sandbox-primitives-integration.md](orchestration-gaps/sandbox-primitives-integration.md) | Bubblewrap/Seatbelt/E2B/Daytona/Modal/ConTree |
 | [tool-discovery-dynamic-registration.md](orchestration-gaps/tool-discovery-dynamic-registration.md) | Deferred loading + ToolSearch (Anthropic-native) |
 
-**Companion**: [`manifests/orchestration-research-evaluation.yaml`](../../manifests/orchestration-research-evaluation.yaml) — canonical C1–C4 contract.
-**Validator**: [`scripts/validate_substrate_consumers.py`](../../scripts/validate_substrate_consumers.py) — 14/14 PASS on 2026-05-07.
+**Companion**: [`manifests/orchestration-research-evaluation.yaml`](../../../manifests/orchestration-research-evaluation.yaml) — canonical C1–C4 contract.
+**Validator**: [`scripts/validate_substrate_consumers.py`](../../../scripts/validate_substrate_consumers.py) — 14/14 PASS on 2026-05-07.
 
 ---
 
@@ -251,116 +251,116 @@
 
 ### 4.1 Repeated audits (multi-edition, valuable for trend)
 
-- **Aspirational claims audit** (5 editions): [2026-04-20](../reports/aspirational-audit-2026-04-20.md) · [2026-05-02](../reports/aspirational-audit-2026-05-02.md) · [2026-05-03](../reports/aspirational-audit-2026-05-03.md) · [2026-05-05](../reports/aspirational-audit-2026-05-05.md) · [2026-05-06](../reports/aspirational-audit-2026-05-06.md)
-- **External tools radar** (5): [inventory](../reports/external-tools-inventory-2026-05-06.md) · [comparative-matrix](../reports/external-tools-comparative-matrix-2026-05-06.md) · [radar](../reports/external-tools-radar-2026-05-06.md) · [radar-deep](../reports/external-tools-radar-deep-2026-05-06.md) · [radar-deep-tier2](../reports/external-tools-radar-deep-tier2-2026-05-06.md) · [monitor-followup](../reports/external-tools-radar-monitor-followup-2026-05-06.md)
-- **Targeted 2026-05-09 additions**: [EvoSkill deep evaluation](repo-scout/deep/sentient-agi__EvoSkill-2026-05-09.md) · [EvoSkill radar addendum](../reports/external-tools-radar-evoskill-addendum-2026-05-09.md) · [Langflow deep evaluation](repo-scout/deep/langflow-ai__langflow-2026-05-09.md) · [Langflow radar addendum](../reports/external-tools-radar-langflow-addendum-2026-05-09.md) · [OpenSage deep evaluation](repo-scout/deep/opensage-agent__opensage-adk-2026-05-09.md) · [OpenSage radar addendum](../reports/external-tools-radar-opensage-addendum-2026-05-09.md) · [TaskingAI deep evaluation](repo-scout/deep/TaskingAI__TaskingAI-2026-05-09.md) · [TaskingAI radar addendum](../reports/external-tools-radar-taskingai-addendum-2026-05-09.md)
-- **Primitive readiness ledgers** (5 families, all `-latest.md`): [hooks](../reports/primitive-readiness-ledger-hooks-latest.md) · [rules](../reports/primitive-readiness-ledger-rules-latest.md) · [scripts](../reports/primitive-readiness-ledger-scripts-latest.md) · [skills](../reports/primitive-readiness-ledger-skills-latest.md) · [templates](../reports/primitive-readiness-ledger-templates-latest.md)
-- **Primitive gap matrix**: [latest](../reports/primitive-gap-latest.md) · [matrix-2026-04](../reports/primitive-gap-matrix-2026-04.md) · [regressions](../reports/primitive-gap-regressions.md)
-- **Primitive lifecycle**: [lifecycle-backlog-scripts](../reports/primitive-readiness-lifecycle-backlog-scripts-latest.md) · [readiness-review-2026-05-04](../reports/primitive-readiness-review-2026-05-04.md) · [primitive-row-audit-latest](../reports/primitive-row-audit-latest.md) · [surface-coverage-session-2026-05-06](../reports/primitive-surface-coverage-session-2026-05-06.md) · [surface-reduction-latest](../reports/primitive-surface-reduction-latest.md) · [usage-map-latest](../reports/primitive-usage-map-latest.md)
+- **Aspirational claims audit** (5 editions): [2026-04-20](../../06-Daily/reports/aspirational-audit-2026-04-20.md) · [2026-05-02](../../06-Daily/reports/aspirational-audit-2026-05-02.md) · [2026-05-03](../../06-Daily/reports/aspirational-audit-2026-05-03.md) · [2026-05-05](../../06-Daily/reports/aspirational-audit-2026-05-05.md) · [2026-05-06](../../06-Daily/reports/aspirational-audit-2026-05-06.md)
+- **External tools radar** (5): [inventory](../../06-Daily/reports/external-tools-inventory-2026-05-06.md) · [comparative-matrix](../../06-Daily/reports/external-tools-comparative-matrix-2026-05-06.md) · [radar](../../06-Daily/reports/external-tools-radar-2026-05-06.md) · [radar-deep](../../06-Daily/reports/external-tools-radar-deep-2026-05-06.md) · [radar-deep-tier2](../../06-Daily/reports/external-tools-radar-deep-tier2-2026-05-06.md) · [monitor-followup](../../06-Daily/reports/external-tools-radar-monitor-followup-2026-05-06.md)
+- **Targeted 2026-05-09 additions**: [EvoSkill deep evaluation](repo-scout/deep/sentient-agi__EvoSkill-2026-05-09.md) · [EvoSkill radar addendum](../../06-Daily/reports/external-tools-radar-evoskill-addendum-2026-05-09.md) · [Langflow deep evaluation](repo-scout/deep/langflow-ai__langflow-2026-05-09.md) · [Langflow radar addendum](../../06-Daily/reports/external-tools-radar-langflow-addendum-2026-05-09.md) · [OpenSage deep evaluation](repo-scout/deep/opensage-agent__opensage-adk-2026-05-09.md) · [OpenSage radar addendum](../../06-Daily/reports/external-tools-radar-opensage-addendum-2026-05-09.md) · [TaskingAI deep evaluation](repo-scout/deep/TaskingAI__TaskingAI-2026-05-09.md) · [TaskingAI radar addendum](../../06-Daily/reports/external-tools-radar-taskingai-addendum-2026-05-09.md)
+- **Primitive readiness ledgers** (5 families, all `-latest.md`): [hooks](../reports/primitive-readiness-ledger-hooks-latest.md) · [rules](../../06-Daily/reports/primitive-readiness-ledger-rules-latest.md) · [scripts](../reports/primitive-readiness-ledger-scripts-latest.md) · [skills](../reports/primitive-readiness-ledger-skills-latest.md) · [templates](../../06-Daily/reports/primitive-readiness-ledger-templates-latest.md)
+- **Primitive gap matrix**: [latest](../../06-Daily/reports/primitive-gap-latest.md) · [matrix-2026-04](../../06-Daily/reports/primitive-gap-matrix-2026-04.md) · [regressions](../../06-Daily/reports/primitive-gap-regressions.md)
+- **Primitive lifecycle**: [lifecycle-backlog-scripts](../../06-Daily/reports/primitive-readiness-lifecycle-backlog-scripts-latest.md) · [readiness-review-2026-05-04](../../06-Daily/reports/primitive-readiness-review-2026-05-04.md) · [primitive-row-audit-latest](../../06-Daily/reports/primitive-row-audit-latest.md) · [surface-coverage-session-2026-05-06](../../06-Daily/reports/primitive-surface-coverage-session-2026-05-06.md) · [surface-reduction-latest](../../06-Daily/reports/primitive-surface-reduction-latest.md) · [usage-map-latest](../../06-Daily/reports/primitive-usage-map-latest.md)
 
 ### 4.2 Self-bite / state retention forensics
 
-- [session-self-bite-pattern-2026-05-06.md](../reports/session-self-bite-pattern-2026-05-06.md) — original bug
-- [state-retention-controller-postmortem-2026-05-06.md](../reports/state-retention-controller-postmortem-2026-05-06.md)
-- [stash-hidden-wip-postmortem-2026-05-06.md](../reports/stash-hidden-wip-postmortem-2026-05-06.md)
-- [validation-worktree-mutation-postmortem-2026-05-02.md](../reports/validation-worktree-mutation-postmortem-2026-05-02.md)
-- [tool-discovery-preuse-self-bite-2026-05-06.md](../reports/tool-discovery-preuse-self-bite-2026-05-06.md)
+- [session-self-bite-pattern-2026-05-06.md](../../06-Daily/reports/session-self-bite-pattern-2026-05-06.md) — original bug
+- [state-retention-controller-postmortem-2026-05-06.md](../../06-Daily/reports/state-retention-controller-postmortem-2026-05-06.md)
+- [stash-hidden-wip-postmortem-2026-05-06.md](../../06-Daily/reports/stash-hidden-wip-postmortem-2026-05-06.md)
+- [validation-worktree-mutation-postmortem-2026-05-02.md](../../06-Daily/reports/validation-worktree-mutation-postmortem-2026-05-02.md)
+- [tool-discovery-preuse-self-bite-2026-05-06.md](../../06-Daily/reports/tool-discovery-preuse-self-bite-2026-05-06.md)
 - [stash-{intake-2026-05-06, resolution-2026-05-01, review-license-switch-2026-05-06}](../reports/) — 3
-- [git-state-cleanup-20260506T220040Z.md](../reports/git-state-cleanup-20260506T220040Z.md)
-- [worktree-intake-session50-2026-05-06.md](../reports/worktree-intake-session50-2026-05-06.md)
-- [bug2-reset-cascade-forensics-2026-04-20.md](../reports/bug2-reset-cascade-forensics-2026-04-20.md)
-- [d01-git-reset-forensics-2026-04-20.md](../reports/d01-git-reset-forensics-2026-04-20.md)
-- [auto-rollback-router-trigger-forensics-2026-05-06.md](../reports/auto-rollback-router-trigger-forensics-2026-05-06.md)
+- [git-state-cleanup-20260506T220040Z.md](../../06-Daily/reports/git-state-cleanup-20260506T220040Z.md)
+- [worktree-intake-session50-2026-05-06.md](../../06-Daily/reports/worktree-intake-session50-2026-05-06.md)
+- [bug2-reset-cascade-forensics-2026-04-20.md](../../06-Daily/reports/bug2-reset-cascade-forensics-2026-04-20.md)
+- [d01-git-reset-forensics-2026-04-20.md](../../06-Daily/reports/d01-git-reset-forensics-2026-04-20.md)
+- [auto-rollback-router-trigger-forensics-2026-05-06.md](../../06-Daily/reports/auto-rollback-router-trigger-forensics-2026-05-06.md)
 
 ### 4.3 ADR implementation tracking
 
-- [adr-067-phase-2-2026-04-24.md](../reports/adr-067-phase-2-2026-04-24.md)
-- [adr-137-plus-implementation-review-2026-05-04.md](../reports/adr-137-plus-implementation-review-2026-05-04.md)
-- [adr-200-plus-closure-inventory-2026-05-06.md](../reports/adr-200-plus-closure-inventory-2026-05-06.md)
-- [adr-implementation-reconciliation-2026-05-05.md](../reports/adr-implementation-reconciliation-2026-05-05.md)
+- [adr-067-phase-2-2026-04-24.md](../../06-Daily/reports/adr-067-phase-2-2026-04-24.md)
+- [adr-137-plus-implementation-review-2026-05-04.md](../../06-Daily/reports/adr-137-plus-implementation-review-2026-05-04.md)
+- [adr-200-plus-closure-inventory-2026-05-06.md](../../06-Daily/reports/adr-200-plus-closure-inventory-2026-05-06.md)
+- [adr-implementation-reconciliation-2026-05-05.md](../../06-Daily/reports/adr-implementation-reconciliation-2026-05-05.md)
 
 ### 4.4 AI agent harness landscape
 
-- [ai-agent-harness-landscape-2026-05-04.md](../reports/ai-agent-harness-landscape-2026-05-04.md)
-- [multi-provider-agent-delegation-research-2026-05-05.md](../reports/multi-provider-agent-delegation-research-2026-05-05.md)
-- [kiro-lifecycle-hook-investigation-2026-05-05.md](../reports/kiro-lifecycle-hook-investigation-2026-05-05.md)
-- [harness-docs-currentness-audit-2026-05-05.md](../reports/harness-docs-currentness-audit-2026-05-05.md)
+- [ai-agent-harness-landscape-2026-05-04.md](../../06-Daily/reports/ai-agent-harness-landscape-2026-05-04.md)
+- [multi-provider-agent-delegation-research-2026-05-05.md](../../06-Daily/reports/multi-provider-agent-delegation-research-2026-05-05.md)
+- [kiro-lifecycle-hook-investigation-2026-05-05.md](../../06-Daily/reports/kiro-lifecycle-hook-investigation-2026-05-05.md)
+- [harness-docs-currentness-audit-2026-05-05.md](../../06-Daily/reports/harness-docs-currentness-audit-2026-05-05.md)
 
 ### 4.5 Security / supply chain
 
-- [secret-audit-release-readiness-2026-05-06.md](../reports/secret-audit-release-readiness-2026-05-06.md)
-- [secret-protection-effectiveness-2026-05-06.md](../reports/secret-protection-effectiveness-2026-05-06.md)
-- [dependencies-license-audit-2026-05-06.md](../reports/dependencies-license-audit-2026-05-06.md)
-- [cross-stack-license-audit-tools-2026-05-06.md](../reports/cross-stack-license-audit-tools-2026-05-06.md)
-- [confidentiality-enforcer-gitignored-downgrade-2026-05-06.md](../reports/confidentiality-enforcer-gitignored-downgrade-2026-05-06.md)
+- [secret-audit-release-readiness-2026-05-06.md](../../06-Daily/reports/secret-audit-release-readiness-2026-05-06.md)
+- [secret-protection-effectiveness-2026-05-06.md](../../06-Daily/reports/secret-protection-effectiveness-2026-05-06.md)
+- [dependencies-license-audit-2026-05-06.md](../../06-Daily/reports/dependencies-license-audit-2026-05-06.md)
+- [cross-stack-license-audit-tools-2026-05-06.md](../../06-Daily/reports/cross-stack-license-audit-tools-2026-05-06.md)
+- [confidentiality-enforcer-gitignored-downgrade-2026-05-06.md](../../06-Daily/reports/confidentiality-enforcer-gitignored-downgrade-2026-05-06.md)
 
 ### 4.6 Skill / router
 
-- [skill-router-false-positive-cluster-2026-05-06.md](../reports/skill-router-false-positive-cluster-2026-05-06.md)
-- [skill-router-primitive-routing-postmortem-2026-05-05.md](../reports/skill-router-primitive-routing-postmortem-2026-05-05.md)
-- [skill-side-dormant-2026-05-02.md](../reports/skill-side-dormant-2026-05-02.md)
-- [self-improvement-auto-repair-primitive-loop-audit-2026-05-05.md](../reports/self-improvement-auto-repair-primitive-loop-audit-2026-05-05.md)
-- [self-improvement-maintainer-agent-gap-2026-05-06.md](../reports/self-improvement-maintainer-agent-gap-2026-05-06.md)
+- [skill-router-false-positive-cluster-2026-05-06.md](../../06-Daily/reports/skill-router-false-positive-cluster-2026-05-06.md)
+- [skill-router-primitive-routing-postmortem-2026-05-05.md](../../06-Daily/reports/skill-router-primitive-routing-postmortem-2026-05-05.md)
+- [skill-side-dormant-2026-05-02.md](../../06-Daily/reports/skill-side-dormant-2026-05-02.md)
+- [self-improvement-auto-repair-primitive-loop-audit-2026-05-05.md](../../06-Daily/reports/self-improvement-auto-repair-primitive-loop-audit-2026-05-05.md)
+- [self-improvement-maintainer-agent-gap-2026-05-06.md](../../06-Daily/reports/self-improvement-maintainer-agent-gap-2026-05-06.md)
 
 ### 4.7 Capability / portability gaps
 
-- [private-content-portability-gap-2026-05-06.md](../reports/private-content-portability-gap-2026-05-06.md)
-- [subagent-capability-contract-gap-2026-05-06.md](../reports/subagent-capability-contract-gap-2026-05-06.md)
-- [lifecycle-promotion-gap-2026-05-05.md](../reports/lifecycle-promotion-gap-2026-05-05.md)
-- [lifecycle-demotion-task-completed-2026-05-03.md](../reports/lifecycle-demotion-task-completed-2026-05-03.md)
-- [demotion-loop-audit-bite-verification-2026-05-03.md](../reports/demotion-loop-audit-bite-verification-2026-05-03.md)
-- [second-demotion-candidate-resolution-2026-05-03.md](../reports/second-demotion-candidate-resolution-2026-05-03.md)
-- [dormant-b1-batch-2026-05-02.md](../reports/dormant-b1-batch-2026-05-02.md)
+- [private-content-portability-gap-2026-05-06.md](../../06-Daily/reports/private-content-portability-gap-2026-05-06.md)
+- [subagent-capability-contract-gap-2026-05-06.md](../../06-Daily/reports/subagent-capability-contract-gap-2026-05-06.md)
+- [lifecycle-promotion-gap-2026-05-05.md](../../06-Daily/reports/lifecycle-promotion-gap-2026-05-05.md)
+- [lifecycle-demotion-task-completed-2026-05-03.md](../../06-Daily/reports/lifecycle-demotion-task-completed-2026-05-03.md)
+- [demotion-loop-audit-bite-verification-2026-05-03.md](../../06-Daily/reports/demotion-loop-audit-bite-verification-2026-05-03.md)
+- [second-demotion-candidate-resolution-2026-05-03.md](../../06-Daily/reports/second-demotion-candidate-resolution-2026-05-03.md)
+- [dormant-b1-batch-2026-05-02.md](../../06-Daily/reports/dormant-b1-batch-2026-05-02.md)
 
 ### 4.8 Test / CI / quality
 
-- [test-suite-repair-ledger-2026-04-24.md](../reports/test-suite-repair-ledger-2026-04-24.md)
-- [full-suite-validation-2026-04-23.md](../reports/full-suite-validation-2026-04-23.md)
-- [test-quality-audit-2026-04-20.md](../reports/test-quality-audit-2026-04-20.md)
-- [agentic-mastery-validation-2026-05-02.md](../reports/agentic-mastery-validation-2026-05-02.md)
-- [boring-reliability-audit-2026-05-03.md](../reports/boring-reliability-audit-2026-05-03.md)
-- [dx-assessment-2026-05-02.md](../reports/dx-assessment-2026-05-02.md)
-- Python deps: [bumps-2026-04-24](../reports/python-major-bumps-2026-04-24.md) · [deps-review-2026-05-04](../reports/python-major-deps-review-2026-05-04.md) · [followup-2026-05-04](../reports/python-major-followup-2026-05-04.md) · [lane-resolution-2026-05-04](../reports/python-major-lane-resolution-2026-05-04.md)
+- [test-suite-repair-ledger-2026-04-24.md](../../06-Daily/reports/test-suite-repair-ledger-2026-04-24.md)
+- [full-suite-validation-2026-04-23.md](../../06-Daily/reports/full-suite-validation-2026-04-23.md)
+- [test-quality-audit-2026-04-20.md](../../06-Daily/reports/test-quality-audit-2026-04-20.md)
+- [agentic-mastery-validation-2026-05-02.md](../../06-Daily/reports/agentic-mastery-validation-2026-05-02.md)
+- [boring-reliability-audit-2026-05-03.md](../../06-Daily/reports/boring-reliability-audit-2026-05-03.md)
+- [dx-assessment-2026-05-02.md](../../06-Daily/reports/dx-assessment-2026-05-02.md)
+- Python deps: [bumps-2026-04-24](../../06-Daily/reports/python-major-bumps-2026-04-24.md) · [deps-review-2026-05-04](../../06-Daily/reports/python-major-deps-review-2026-05-04.md) · [followup-2026-05-04](../../06-Daily/reports/python-major-followup-2026-05-04.md) · [lane-resolution-2026-05-04](../../06-Daily/reports/python-major-lane-resolution-2026-05-04.md)
 
 ### 4.9 Sessions / handoffs / claims
 
-- [session-close-2026-04-20.md](../reports/session-close-2026-04-20.md), [session-close-lethal-receipts-2026-05-06.md](../reports/session-close-lethal-receipts-2026-05-06.md)
-- [session-state-forensics-2026-05-05.md](../reports/session-state-forensics-2026-05-05.md)
-- [task-and-plan-reconciliation-2026-05-05.md](../reports/task-and-plan-reconciliation-2026-05-05.md)
-- [claim-boundary-resolution-2026-05-04.md](../reports/claim-boundary-resolution-2026-05-04.md), [claim-proof-latest.md](../reports/claim-proof-latest.md)
-- [proof-drill-opt-in-run-2026-05-05.md](../reports/proof-drill-opt-in-run-2026-05-05.md)
-- [redteam-consumer-rehearsal-2026-05-02.md](../reports/redteam-consumer-rehearsal-2026-05-02.md)
-- [swarm-stress-2026-05-02.md](../reports/swarm-stress-2026-05-02.md)
-- [implement-tier1-2026-05-02.md](../reports/implement-tier1-2026-05-02.md)
-- [robustness-hardening-session-2026-05-06.md](../reports/robustness-hardening-session-2026-05-06.md)
-- [primitive-surface-coverage-session-2026-05-06.md](../reports/primitive-surface-coverage-session-2026-05-06.md)
+- [session-close-2026-04-20.md](../../06-Daily/reports/session-close-2026-04-20.md), [session-close-lethal-receipts-2026-05-06.md](../../06-Daily/reports/session-close-lethal-receipts-2026-05-06.md)
+- [session-state-forensics-2026-05-05.md](../../06-Daily/reports/session-state-forensics-2026-05-05.md)
+- [task-and-plan-reconciliation-2026-05-05.md](../../06-Daily/reports/task-and-plan-reconciliation-2026-05-05.md)
+- [claim-boundary-resolution-2026-05-04.md](../../06-Daily/reports/claim-boundary-resolution-2026-05-04.md), [claim-proof-latest.md](../../06-Daily/reports/claim-proof-latest.md)
+- [proof-drill-opt-in-run-2026-05-05.md](../../06-Daily/reports/proof-drill-opt-in-run-2026-05-05.md)
+- [redteam-consumer-rehearsal-2026-05-02.md](../../06-Daily/reports/redteam-consumer-rehearsal-2026-05-02.md)
+- [swarm-stress-2026-05-02.md](../../06-Daily/reports/swarm-stress-2026-05-02.md)
+- [implement-tier1-2026-05-02.md](../../06-Daily/reports/implement-tier1-2026-05-02.md)
+- [robustness-hardening-session-2026-05-06.md](../../06-Daily/reports/robustness-hardening-session-2026-05-06.md)
+- [primitive-surface-coverage-session-2026-05-06.md](../../06-Daily/reports/primitive-surface-coverage-session-2026-05-06.md)
 
 ### 4.10 Other
 
-- [alternatives-comparison-2026-04.md](../reports/alternatives-comparison-2026-04.md)
-- [metrics-census.md](../reports/metrics-census.md)
+- [alternatives-comparison-2026-04.md](../../06-Daily/reports/alternatives-comparison-2026-04.md)
+- [metrics-census.md](../../06-Daily/reports/metrics-census.md)
 - [hook-{audit-2026-04, registration-classification-2026-05-04}](../reports/) — 2
-- [docker-image-review-2026-05-04.md](../reports/docker-image-review-2026-05-04.md)
-- [merge-readiness-master-plan-2026-04-23.md](../reports/merge-readiness-master-plan-2026-04-23.md)
-- [cos-init-migration-2026-04-24.md](../reports/cos-init-migration-2026-04-24.md)
-- [cos-self-observability-deep-review-2026-05-05.md](../reports/cos-self-observability-deep-review-2026-05-05.md), [cos-side-deep-rebuttal-2026-05-05.md](../reports/cos-side-deep-rebuttal-2026-05-05.md)
-- [cli-anything-deep-audit-2026-05-05.md](../reports/cli-anything-deep-audit-2026-05-05.md), [cli-anything-opus-deep-audit-2026-05-05.md](../reports/cli-anything-opus-deep-audit-2026-05-05.md)
-- [bidirectional-agent-channel-investigation-2026-05-05.md](../reports/bidirectional-agent-channel-investigation-2026-05-05.md)
-- [cross-instance-consumer-e2e-2026-05-03.md](../reports/cross-instance-consumer-e2e-2026-05-03.md)
-- [remote-control-plane-alternatives-2026-05-05.md](../reports/remote-control-plane-alternatives-2026-05-05.md)
-- [surface-5-tui-ui-candidates-2026-05-05.md](../reports/surface-5-tui-ui-candidates-2026-05-05.md)
+- [docker-image-review-2026-05-04.md](../../06-Daily/reports/docker-image-review-2026-05-04.md)
+- [merge-readiness-master-plan-2026-04-23.md](../../06-Daily/reports/merge-readiness-master-plan-2026-04-23.md)
+- [cos-init-migration-2026-04-24.md](../../06-Daily/reports/cos-init-migration-2026-04-24.md)
+- [cos-self-observability-deep-review-2026-05-05.md](../../06-Daily/reports/cos-self-observability-deep-review-2026-05-05.md), [cos-side-deep-rebuttal-2026-05-05.md](../../06-Daily/reports/cos-side-deep-rebuttal-2026-05-05.md)
+- [cli-anything-deep-audit-2026-05-05.md](../../06-Daily/reports/cli-anything-deep-audit-2026-05-05.md), [cli-anything-opus-deep-audit-2026-05-05.md](../../06-Daily/reports/cli-anything-opus-deep-audit-2026-05-05.md)
+- [bidirectional-agent-channel-investigation-2026-05-05.md](../../06-Daily/reports/bidirectional-agent-channel-investigation-2026-05-05.md)
+- [cross-instance-consumer-e2e-2026-05-03.md](../../06-Daily/reports/cross-instance-consumer-e2e-2026-05-03.md)
+- [remote-control-plane-alternatives-2026-05-05.md](../../06-Daily/reports/remote-control-plane-alternatives-2026-05-05.md)
+- [surface-5-tui-ui-candidates-2026-05-05.md](../../06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md)
 - [audit-{contract-serial-reversal-investigation-2026-05-01, corpus-revalidation-2026-05-05}](../reports/) — 2
-- [primitives-and-tools-audit-2026-05-05.md](../reports/primitives-and-tools-audit-2026-05-05.md)
+- [primitives-and-tools-audit-2026-05-05.md](../../06-Daily/reports/primitives-and-tools-audit-2026-05-05.md)
 - [punch-list-{hooks, lib, rules, skills}](../reports/) — 4
-- [reduction-backlog-latest.md](../reports/reduction-backlog-latest.md)
-- [debt-register-2026-04-20.md](../reports/debt-register-2026-04-20.md)
-- [reconciliation-audit-2026-04-20.md](../reports/reconciliation-audit-2026-04-20.md), [global-verify-validation-2026-04-20.md](../reports/global-verify-validation-2026-04-20.md), [artifact-verification-2026-04-20.md](../reports/artifact-verification-2026-04-20.md)
-- [sub-agent-context-trim-2026-04-20.md](../reports/sub-agent-context-trim-2026-04-20.md)
-- [install-timing-baseline-2026-05-01.md](../reports/install-timing-baseline-2026-05-01.md), [prune-triage-2026-05-01.md](../reports/prune-triage-2026-05-01.md)
+- [reduction-backlog-latest.md](../../06-Daily/reports/reduction-backlog-latest.md)
+- [debt-register-2026-04-20.md](../../06-Daily/reports/debt-register-2026-04-20.md)
+- [reconciliation-audit-2026-04-20.md](../../06-Daily/reports/reconciliation-audit-2026-04-20.md), [global-verify-validation-2026-04-20.md](../../06-Daily/reports/global-verify-validation-2026-04-20.md), [artifact-verification-2026-04-20.md](../../06-Daily/reports/artifact-verification-2026-04-20.md)
+- [sub-agent-context-trim-2026-04-20.md](../../06-Daily/reports/sub-agent-context-trim-2026-04-20.md)
+- [install-timing-baseline-2026-05-01.md](../../06-Daily/reports/install-timing-baseline-2026-05-01.md), [prune-triage-2026-05-01.md](../../06-Daily/reports/prune-triage-2026-05-01.md)
 - [docs-{duplicate-latest, execution-latest}](../reports/) — 2
-- [d1b-clients-todo.md](../reports/d1b-clients-todo.md)
+- [d1b-clients-todo.md](../../06-Daily/reports/d1b-clients-todo.md)
 - [primitive-harness-{coverage-latest, partials-latest}](../reports/) — 2
-- [file-by-file-review-2026-05-05.md](../reports/file-by-file-review-2026-05-05.md)
+- [file-by-file-review-2026-05-05.md](../../06-Daily/reports/file-by-file-review-2026-05-05.md)
 
 ---
 
@@ -370,26 +370,26 @@ Research-flavored architecture docs in `docs/04-Concepts/architecture/`.
 
 | File | Topic |
 |---|---|
-| [cloud-worker-runtime-tooling-research-2026-05.md](../architecture/cloud-worker-runtime-tooling-research-2026-05.md) | Cloud workers |
-| [cross-tool-landscape.md](../architecture/cross-tool-landscape.md) | Cross-tool landscape |
-| [cross-tool-task-recovery-research-2026-05.md](../architecture/cross-tool-task-recovery-research-2026-05.md) | Task recovery cross-tool |
-| [observability-backend-evaluation-2026-04-24.md](../architecture/observability-backend-evaluation-2026-04-24.md) | Phoenix vs Langfuse vs Arize |
-| [primitive-coverage-backend-benchmark-2026-05.md](../architecture/primitive-coverage-backend-benchmark-2026-05.md) | Primitive coverage backends |
-| [primitive-coverage-tooling-research-2026-04.md](../architecture/primitive-coverage-tooling-research-2026-04.md) | Primitive coverage tools |
-| [primitive-fitness-evaluation-contract.md](../architecture/primitive-fitness-evaluation-contract.md) | Primitive fitness contract |
-| [runtime-benchmark-mvp.md](../architecture/runtime-benchmark-mvp.md) | Runtime benchmark MVP |
-| [service-control-plane-research-2026-05-04.md](../architecture/service-control-plane-research-2026-05-04.md) | Service control plane |
-| [functional-audit/startup-baseline-2026-04-20.md](../architecture/functional-audit/startup-baseline-2026-04-20.md) | Startup baseline |
+| [cloud-worker-runtime-tooling-research-2026-05.md](../../04-Concepts/architecture/cloud-worker-runtime-tooling-research-2026-05.md) | Cloud workers |
+| [cross-tool-landscape.md](../../04-Concepts/architecture/cross-tool-landscape.md) | Cross-tool landscape |
+| [cross-tool-task-recovery-research-2026-05.md](../../04-Concepts/architecture/cross-tool-task-recovery-research-2026-05.md) | Task recovery cross-tool |
+| [observability-backend-evaluation-2026-04-24.md](../../04-Concepts/architecture/observability-backend-evaluation-2026-04-24.md) | Phoenix vs Langfuse vs Arize |
+| [primitive-coverage-backend-benchmark-2026-05.md](../../04-Concepts/architecture/primitive-coverage-backend-benchmark-2026-05.md) | Primitive coverage backends |
+| [primitive-coverage-tooling-research-2026-04.md](../../04-Concepts/architecture/primitive-coverage-tooling-research-2026-04.md) | Primitive coverage tools |
+| [primitive-fitness-evaluation-contract.md](../../04-Concepts/architecture/primitive-fitness-evaluation-contract.md) | Primitive fitness contract |
+| [runtime-benchmark-mvp.md](../../04-Concepts/architecture/runtime-benchmark-mvp.md) | Runtime benchmark MVP |
+| [service-control-plane-research-2026-05-04.md](../../04-Concepts/architecture/service-control-plane-research-2026-05-04.md) | Service control plane |
+| [functional-audit/startup-baseline-2026-04-20.md](../../04-Concepts/architecture/functional-audit/startup-baseline-2026-04-20.md) | Startup baseline |
 
 Plus topic-audits:
-[claim-signature-audit](../architecture/claim-signature-audit.md) ·
-[core-vs-extensions-audit-2026-04-20](../architecture/core-vs-extensions-audit-2026-04-20.md) ·
-[multi-session-orchestration-audit-2026-05-02](../architecture/multi-session-orchestration-audit-2026-05-02.md) ·
-[parser-coverage-audit-2026-04-24](../architecture/parser-coverage-audit-2026-04-24.md) ·
+[claim-signature-audit](../../04-Concepts/architecture/claim-signature-audit.md) ·
+[core-vs-extensions-audit-2026-04-20](../../04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md) ·
+[multi-session-orchestration-audit-2026-05-02](../../04-Concepts/architecture/multi-session-orchestration-audit-2026-05-02.md) ·
+[parser-coverage-audit-2026-04-24](../../04-Concepts/architecture/parser-coverage-audit-2026-04-24.md) ·
 [primitive-duplication-audit](../architecture/primitive-duplication-audit.md) +
-[primitive-duplication-audit-implementation-plan](../architecture/primitive-duplication-audit-implementation-plan.md) ·
-[documentation-execution-audit](../architecture/documentation-execution-audit.md) ·
-[reality-audit](../architecture/reality-audit.md)
+[primitive-duplication-audit-implementation-plan](../../04-Concepts/architecture/primitive-duplication-audit-implementation-plan.md) ·
+[documentation-execution-audit](../../04-Concepts/architecture/documentation-execution-audit.md) ·
+[reality-audit](../../04-Concepts/architecture/reality-audit.md)
 
 ---
 
@@ -399,10 +399,10 @@ Research-flavored business docs in `docs/08-References/business/`.
 
 | File | Type |
 |---|---|
-| [competitive-reassessment-openclaw-hermes-2026-04.md](../business/competitive-reassessment-openclaw-hermes-2026-04.md) | Competitive re-assessment |
-| [conversation-reality-audit-2026-04-30.md](../business/conversation-reality-audit-2026-04-30.md) | Reality audit |
-| [feature-reality-audit.md](../business/feature-reality-audit.md) | Feature reality |
-| [cos-vs-vanilla-dx-review.md](../business/cos-vs-vanilla-dx-review.md) | DX review |
+| [competitive-reassessment-openclaw-hermes-2026-04.md](../../08-References/business/competitive-reassessment-openclaw-hermes-2026-04.md) | Competitive re-assessment |
+| [conversation-reality-audit-2026-04-30.md](../../08-References/business/conversation-reality-audit-2026-04-30.md) | Reality audit |
+| [feature-reality-audit.md](../../08-References/business/feature-reality-audit.md) | Feature reality |
+| [cos-vs-vanilla-dx-review.md](../../08-References/business/cos-vs-vanilla-dx-review.md) | DX review |
 
 ---
 
@@ -432,13 +432,13 @@ Plus 6 raw scanner artifacts (`audit/*.json`, `audit/*.csv`, `audit/secrets-and-
 
 | File | Type |
 |---|---|
-| [docs/06-Daily/root/component-audit.md](../component-audit.md) | Component audit |
-| [docs/06-Daily/root/complexity-audit.md](../complexity-audit.md) | Complexity audit |
-| [docs/06-Daily/root/self-usage-audit.md](../self-usage-audit.md) | Self-usage audit |
-| [docs/06-Daily/measurements/cos-duplication-audit-2026-04-30.md](../measurements/cos-duplication-audit-2026-04-30.md) | Duplication audit |
-| [docs/06-Daily/measurements/cos-adr-namespace-audit-2026-04-30.md](../measurements/cos-adr-namespace-audit-2026-04-30.md) | ADR namespace audit |
+| [docs/06-Daily/root/component-audit.md](../../06-Daily/root/component-audit.md) | Component audit |
+| [docs/06-Daily/root/complexity-audit.md](../../06-Daily/root/complexity-audit.md) | Complexity audit |
+| [docs/06-Daily/root/self-usage-audit.md](../../06-Daily/root/self-usage-audit.md) | Self-usage audit |
+| [docs/06-Daily/measurements/cos-duplication-audit-2026-04-30.md](../../06-Daily/measurements/cos-duplication-audit-2026-04-30.md) | Duplication audit |
+| [docs/06-Daily/measurements/cos-adr-namespace-audit-2026-04-30.md](../../06-Daily/measurements/cos-adr-namespace-audit-2026-04-30.md) | ADR namespace audit |
 | [docs/09-Quality/manual-tests/primitive-duplication-audit.md](../manual-tests/primitive-duplication-audit.md) | Manual primitive dup audit |
-| [docs/09-Quality/manual-tests/cross-stack-license-audit-cli.md](../manual-tests/cross-stack-license-audit-cli.md) | CLI license audit manual test |
+| [docs/09-Quality/manual-tests/cross-stack-license-audit-cli.md](../../09-Quality/manual-tests/cross-stack-license-audit-cli.md) | CLI license audit manual test |
 
 ---
 

@@ -117,8 +117,8 @@ The product promise is portability with evidence, not matching JSON counts.
 
 - [Bootstrap Portability](bootstrap-portability.md)
 - [Cross-Harness Authoring](cross-harness-authoring.md)
-- [ADR-057: Cross-Harness Authoring and Driver Projection](../adrs/ADR-057-cross-harness-authoring-and-driver-projection.md)
-- [ADR-064: Harness-Agnostic Cognitive OS](../adrs/ADR-064-harness-agnostic-cognitive-os.md)
+- [ADR-057: Cross-Harness Authoring and Driver Projection](../../02-Decisions/adrs/ADR-057-cross-harness-authoring-and-driver-projection.md)
+- [ADR-064: Harness-Agnostic Cognitive OS](../../02-Decisions/adrs/ADR-064-harness-agnostic-cognitive-os.md)
 
 ## Governed Fallback Layer
 

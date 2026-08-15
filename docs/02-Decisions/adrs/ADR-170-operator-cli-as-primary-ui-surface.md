@@ -103,7 +103,7 @@ This decision **does not** prevent a future UI. It declares the **default** is C
 **Negative / trade-offs.**
 
 - **No graphical demo.** A pitch that depends on a screen-share of moving parts has to use terminal output. Reduces visual appeal in some sales contexts. Mitigated by the strength of the markdown artefacts (case study, audits, ADRs).
-- **Higher onboarding bar for non-CLI users.** A buyer expecting Notion/Linear/Jira-style UI gets terminal output. The runbook ([`docs/05-Methodology/runbooks/run-cos-in-docker.md`](../runbooks/run-cos-in-docker.md)) is the first softener; the CLI surface itself is the second.
+- **Higher onboarding bar for non-CLI users.** A buyer expecting Notion/Linear/Jira-style UI gets terminal output. The runbook ([`docs/05-Methodology/runbooks/run-cos-in-docker.md`](../../05-Methodology/runbooks/run-cos-in-docker.md)) is the first softener; the CLI surface itself is the second.
 
 ## Alternatives rejected
 
@@ -124,8 +124,8 @@ If conditions 1-3 hold for one calendar year, the decision is judged correct and
 
 - [ADR-058](ADR-058-observability-migration-langfuse-to-phoenix.md) — Phoenix as LLM trace surface; unchanged by this ADR.
 - [ADR-132](ADR-132-solo-swarm-vs-multi-maintainer-fork.md) — Shape A/B fork criteria; "buyer requires UI" is a Shape B trigger.
-- [`docs/04-Concepts/architecture/boring-reliability-control-plane.md`](../architecture/boring-reliability-control-plane.md) — the operating doctrine the CLI surface enacts.
-- [`docs/04-Concepts/architecture/cognitive-prosthesis.md`](../architecture/cognitive-prosthesis.md) — the rationale layer; the CLI-first decision is consistent with *"Subtraction + maturity-driven"*.
+- [`docs/04-Concepts/architecture/boring-reliability-control-plane.md`](../../04-Concepts/architecture/boring-reliability-control-plane.md) — the operating doctrine the CLI surface enacts.
+- [`docs/04-Concepts/architecture/cognitive-prosthesis.md`](../../04-Concepts/architecture/cognitive-prosthesis.md) — the rationale layer; the CLI-first decision is consistent with *"Subtraction + maturity-driven"*.
 
 ---
 

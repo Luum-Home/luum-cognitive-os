@@ -166,7 +166,7 @@ Additional services available in the `full` profile:
 
 These are optional. Cognitive OS works without them — they add observability and cost control.
 
-For the current UI doctrine, see [ADR-172](adrs/ADR-172-multi-surface-ui-architecture.md).
+For the current UI doctrine, see [ADR-172](../../02-Decisions/adrs/ADR-172-multi-surface-ui-architecture.md).
 The four supported surfaces are: Surface 1 (always-on CLI), Surface 2 Phoenix
 (`bash scripts/dependency-lane.sh install observability && uv run phoenix serve`), Surface 3 Engram Cloud
 (opt-in, BYOK per ADR-139), and Surface 4 any markdown reader pointed at `docs/`.
@@ -548,7 +548,7 @@ Other IDEs receive the **rules layer only** -- behavioral contracts that tell th
 | SDD pipeline automation | Skills are readable but not enforceable without hooks |
 | Trust scores | Requires PostToolUse validation hooks |
 
-For the full compatibility matrix, see [ide-compatibility.md](ide-compatibility.md).
+For the full compatibility matrix, see [ide-compatibility.md](../../04-Concepts/root/ide-compatibility.md).
 
 ---
 
@@ -572,7 +572,7 @@ DISPATCH GATE: Skill 'flaky-parser' is DISABLED by consequence engine.
   Run /optimize-skill flaky-parser to fix it.
 ```
 
-For the full guide — including every message you'll see, how to monitor the metrics files, and how to intervene — read [Self-Repair System Guide](self-repair-guide.md).
+For the full guide — including every message you'll see, how to monitor the metrics files, and how to intervene — read [Self-Repair System Guide](../../05-Methodology/root/self-repair-guide.md).
 
 ---
 
@@ -586,7 +586,7 @@ bash scripts/cos-cloud-worker-bootstrap.sh self-test
 
 This builds and runs `luum-cognitive-os-worker:local`, exercises the hook layer against a harmless event, and writes a compliance-shaped entry to `.cognitive-os/runtime/agent-audit-trail.jsonl`. No shell-profile assumptions, no host credential pickup, no IDE integration.
 
-For the full operator walkthrough (BYOK env vars, engram-cloud profile, audit trail, troubleshooting), see [`runbooks/run-cos-in-docker.md`](runbooks/run-cos-in-docker.md).
+For the full operator walkthrough (BYOK env vars, engram-cloud profile, audit trail, troubleshooting), see [`runbooks/run-cos-in-docker.md`](../../05-Methodology/runbooks/run-cos-in-docker.md).
 
 When to choose which path:
 
@@ -601,5 +601,5 @@ When to choose which path:
 
 - Read the [FAQ](faq.md) for answers to common questions
 - Read the [Architecture Overview](architecture.md) for the full system diagram
-- Read [How to Extend](how-to-extend.md) to add hooks, rules, and skills
+- Read [How to Extend](../../05-Methodology/root/how-to-extend.md) to add hooks, rules, and skills
 - Read [Overview](overview.md) for the complete component inventory

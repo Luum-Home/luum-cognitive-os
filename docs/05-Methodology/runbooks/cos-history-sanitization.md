@@ -1,9 +1,9 @@
 # Runbook: ADR-218 history sanitization
 
 > Status: operator-driven, destructive, irreversible without backup mirror.
-> Reference policy: [ADR-218](../adrs/ADR-218-history-sanitization-toolchain.md).
-> Reference manifest: [`manifests/history-sanitization.yaml`](../../manifests/history-sanitization.yaml).
-> Smoke script: [`scripts/cos-history-sanitization-smoke.sh`](../../scripts/cos-history-sanitization-smoke.sh).
+> Reference policy: [ADR-218](../../02-Decisions/adrs/ADR-218-history-sanitization-toolchain.md).
+> Reference manifest: [`manifests/history-sanitization.yaml`](../../../manifests/history-sanitization.yaml).
+> Smoke script: [`scripts/cos-history-sanitization-smoke.sh`](../../../scripts/cos-history-sanitization-smoke.sh).
 
 This runbook is the canonical post-execute procedure for the ADR-218
 toolchain. It replaces ad-hoc operator notes from the M4 audit and is the

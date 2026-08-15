@@ -7,9 +7,9 @@
 **Audience:** repository operator (single-person action; do not delegate).
 **Prerequisites:**
 
-- Readiness checklist closed: [`docs/09-Quality/legal/pre-public-readiness-checklist.md`](../legal/pre-public-readiness-checklist.md) (14/14)
-- Transparency door published: [`TRANSPARENCY.md`](../../TRANSPARENCY.md)
-- History sanitization narrative published: [`docs/01-Build-Log/history/HISTORY-SANITIZATION-2026-05-08.md`](../history/HISTORY-SANITIZATION-2026-05-08.md)
+- Readiness checklist closed: [`docs/09-Quality/legal/pre-public-readiness-checklist.md`](../../09-Quality/legal/pre-public-readiness-checklist.md) (14/14)
+- Transparency door published: [`TRANSPARENCY.md`](../../../TRANSPARENCY.md)
+- History sanitization narrative published: [`docs/01-Build-Log/history/HISTORY-SANITIZATION-2026-05-08.md`](../../01-Build-Log/history/HISTORY-SANITIZATION-2026-05-08.md)
 - Recovery mirror present off-repo at the operator's recovery directory
 - Local working tree clean (`git status` is empty)
 - **`node` available in PATH** (via `fnm`, `nvm`, or system install). Required by `scripts/cos-opencode-primitive-adapter-smoke` in the release-confidence bundle. Verify: `command -v node && node --version`. If missing, install before proceeding (e.g. `fnm install --lts && fnm use lts-latest`).
@@ -26,12 +26,12 @@ Open the repo in a browser incognito window logged in as the operator.
 Walk the following surface:
 
 - [ ] `README.md` renders, all top badges resolve (no broken images)
-- [ ] [`TRANSPARENCY.md`](../../TRANSPARENCY.md) link from README is visible above the badges
+- [ ] [`TRANSPARENCY.md`](../../../TRANSPARENCY.md) link from README is visible above the badges
 - [ ] [`LICENSE`](../../LICENSE) renders as `FSL-1.1-MIT`
 - [ ] [`CONTRIBUTING.md`](../../CONTRIBUTING.md) renders, AI-authorship section is intact
-- [ ] [`docs/09-Quality/legal/license-faq.md`](../legal/license-faq.md) renders
+- [ ] [`docs/09-Quality/legal/license-faq.md`](../../09-Quality/legal/license-faq.md) renders
 - [ ] [`docs/01-Build-Log/history/`](../history/) directory listing shows all four files
-- [ ] [`sbom.json`](../../sbom.json) is browsable (raw view)
+- [ ] [`sbom.json`](../../../sbom.json) is browsable (raw view)
 
 ### 2. Click-test critical links
 
@@ -133,7 +133,7 @@ Take a screenshot for the launch record:
 
 ### 3. Cut signed annotated tag
 
-Per [`docs/09-Quality/security/release-signing.md`](../security/release-signing.md).
+Per [`docs/09-Quality/security/release-signing.md`](../../09-Quality/security/release-signing.md).
 The first public tag is `v1.0.0` (or whichever public version is decided
 at flip time):
 
@@ -144,7 +144,7 @@ git tag -v v1.0.0    # MUST succeed
 
 If the maintainer signing material is not yet published, fall back to
 the disclosed-gap path: cut an annotated (unsigned) tag and update
-[`docs/09-Quality/security/release-signing.md`](../security/release-signing.md) §1
+[`docs/09-Quality/security/release-signing.md`](../../09-Quality/security/release-signing.md) §1
 within 24 hours to reflect the new tag in the unsigned-tags table.
 
 ### 4. Publish tag
@@ -209,11 +209,11 @@ If a rollback is triggered by a leaked-content discovery (e.g. a
 sanitization gap shipped):
 
 1. Flip back to non-public immediately.
-2. File a security advisory per [TRANSPARENCY.md §7](../../TRANSPARENCY.md#7-contact--responsible-disclosure).
+2. File a security advisory per [TRANSPARENCY.md §7](../../../TRANSPARENCY.md#7-contact--responsible-disclosure).
 3. Treat the leaked content as compromised and follow the operator
    data-handling procedure for that data class.
 4. Do not force-publish a corrected history while the repo is public —
    that breaks every consumer's clone and is itself a hostile-auditor
    signal. Cut a new sanitization-cycle proposal under
-   [ADR-218](../adrs/ADR-218-history-sanitization-toolchain.md), then
+   [ADR-218](../../02-Decisions/adrs/ADR-218-history-sanitization-toolchain.md), then
    re-flip on the next launch window.

@@ -2,8 +2,8 @@
 
 **Date**: 2026-04-27
 **Author**: Architecture review (Software Architect agent)
-**ADR**: [`docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md`](../adrs/ADR-071-engram-lifecycle-evolution.md)
-**Plan**: [`.cognitive-os/plans/features/engram-lifecycle-evolution.md`](../../.cognitive-os/plans/features/engram-lifecycle-evolution.md)
+**ADR**: [`docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md`](../../02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md)
+**Plan**: [`.cognitive-os/plans/features/engram-lifecycle-evolution.md`](../../../.cognitive-os/plans/features/engram-lifecycle-evolution.md)
 
 ---
 
@@ -156,4 +156,4 @@ Once Phases 1–3 are stable, implement an export hook that renders engram obser
 - The Phase 1 caveat ("engram CLI lacks `get`/`update` so `reinforce()` returns False") was **wrong**. Engram's HTTP API at port 7437 exposes both. Discovered on 2026-04-27 after a PATCH probe accidentally overwrote a real observation (#13283); now governed by `rules/engram-api-safety.md`.
 - The engram `cloud` branch is BEHIND `main` (10 commits) — cloud sync is already merged. The lifecycle trailer survives sync because it lives in `content`, but cross-device reinforcement aggregation is **not** implemented (each device reinforces locally only).
 
-For honest limitations of the shipped implementation (heuristic synthesis without LLM, `mem_judge` supersedes not written, threshold tuning unvalidated, hooks dormant until profile re-applied), see the **Honest Limitations** section in [ADR-071](../adrs/ADR-071-engram-lifecycle-evolution.md).
+For honest limitations of the shipped implementation (heuristic synthesis without LLM, `mem_judge` supersedes not written, threshold tuning unvalidated, hooks dormant until profile re-applied), see the **Honest Limitations** section in [ADR-071](../../02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md).

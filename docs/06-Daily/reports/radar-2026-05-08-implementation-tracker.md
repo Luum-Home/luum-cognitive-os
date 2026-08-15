@@ -2,7 +2,7 @@
 
 **Scope**: items derived from [`external-tools-radar-2026-05-08.md`](external-tools-radar-2026-05-08.md) §2 (Adoption Plan). The radar itself is an immutable snapshot of the 2026-05-08 decision; this tracker records execution progress against it without mutating the snapshot.
 
-Mirrors the pattern of [`docs/03-PoCs/research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md`](../research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md).
+Mirrors the pattern of [`docs/03-PoCs/research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md`](../../03-PoCs/research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md).
 
 ## Status legend
 
@@ -15,7 +15,7 @@ Mirrors the pattern of [`docs/03-PoCs/research/orchestration-gaps/IMPLEMENTATION
 
 | # | Topic | Status | Commit / evidence | Source |
 |---|---|---:|---|---|
-| H1 | ADR-253 tombstone for squads | ✅ | `e7ed3c6b` — [`docs/02-Decisions/adrs/ADR-253-tombstone-squads.md`](../adrs/ADR-253-tombstone-squads.md), `Superseded-by: ADR-251` | C §🔍3 |
+| H1 | ADR-253 tombstone for squads | ✅ | `e7ed3c6b` — [`docs/02-Decisions/adrs/ADR-253-tombstone-squads.md`](../../02-Decisions/adrs/ADR-253-tombstone-squads.md), `Superseded-by: ADR-251` | C §🔍3 |
 | H2 | README hook count: "11+3" → "12+2" | ✅ | `b5062d0f` — [README.md:26](../../README.md) | E auditoría |
 | H3 | Trust Report claim → match hook reality (advisory + log) | ✅ | `b5062d0f` — [README.md:36-38](../../README.md). `trust-score-validator.sh` validates + logs to `.cognitive-os/metrics/trust-scores.jsonl`; does not block task closure | E DEBT-1 |
 | H4 | Bubblewrap policy hardening | ✅ partial | `b5062d0f` — [`packages/agent-lifecycle/lib/sandbox_adapter.py`](../../packages/agent-lifecycle/lib/sandbox_adapter.py). Added `--die-with-parent`, `--unshare-pid/uts/ipc`, `--unshare-cgroup-try`, `--new-session`. **Seccomp BPF profile pending** (>>1-2h budget; tracked as T-H4-seccomp). `--ro-bind /` retained intentionally (no equivalent without breaking process startup). | B §🔍4 |
@@ -25,7 +25,7 @@ Mirrors the pattern of [`docs/03-PoCs/research/orchestration-gaps/IMPLEMENTATION
 **Wave 1 progress: 5/6 implemented or documented, 1 implementation pending.** Closed work landed on `main` through `e7ed3c6b`, `b5062d0f`, `b55f2fb8`, and `c0e899c2`.
 
 ### H4 follow-ups (tracked, out of Wave 1 scope)
-- **T-H4-seccomp**: BPF syscall filter profile for bwrap. Threat model drafted in [`docs/09-Quality/security/bwrap-seccomp-threat-model.md`](../security/bwrap-seccomp-threat-model.md); BPF implementation remains opt-in/pending workload smokes.
+- **T-H4-seccomp**: BPF syscall filter profile for bwrap. Threat model drafted in [`docs/09-Quality/security/bwrap-seccomp-threat-model.md`](../../09-Quality/security/bwrap-seccomp-threat-model.md); BPF implementation remains opt-in/pending workload smokes.
 
 ### H5 follow-ups (tracked, out of Wave 1 scope)
 - **T-H5-local-metrics**: ✅ implemented local ToolSearch token-delta estimates in `lib/deferred_tool_loading.py`, dispatch metrics at `.cognitive-os/metrics/toolsearch-token-delta.jsonl`, CLI `scripts/cos-deferred-tool-plan --token-delta`, and unit/behavior/integration tests.
@@ -67,7 +67,7 @@ Mirrors the pattern of [`docs/03-PoCs/research/orchestration-gaps/IMPLEMENTATION
 
 Candidate change name: `memory-layer-evolution`. Bundled because the four items share a single schema migration; splitting would force two parallel schema bumps.
 
-**SDD status**: Slice 0 benchmark implemented 2026-05-08. Executable plan: [`.cognitive-os/plans/architecture/memory-layer-evolution-wave2.md`](../../.cognitive-os/plans/architecture/memory-layer-evolution-wave2.md). No Engram schema/retrieval default changes landed in Slice 0; Slice 1 must preserve `strategy=current` compatibility and pass `scripts/cos-memory-benchmark`.
+**SDD status**: Slice 0 benchmark implemented 2026-05-08. Executable plan: [`.cognitive-os/plans/architecture/memory-layer-evolution-wave2.md`](../../../.cognitive-os/plans/architecture/memory-layer-evolution-wave2.md). No Engram schema/retrieval default changes landed in Slice 0; Slice 1 must preserve `strategy=current` compatibility and pass `scripts/cos-memory-benchmark`.
 
 | # | Topic | Status | Source | License |
 |---|---|---:|---|---|

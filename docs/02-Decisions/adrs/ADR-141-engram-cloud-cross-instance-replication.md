@@ -35,7 +35,7 @@ The upstream Engram project (Gentleman-Programming) shipped the `engram cloud` f
 
 The [ADR-136](ADR-136-cross-instance-learning-runway.md) runway already introduced `cos-engram-bundle` and `cos-engram-import-propose` as portable evidence primitives. The `engram cloud` feature is the live-sync complement: bundle/import handles async evidence; cloud sync handles near-real-time worker↔central replication.
 
-The [DX-first cloud flow bootstrap plan](../architecture/dx-cloud-flow-bootstrap-plan.md) requires cross-machine Engram daemon discovery as a named prerequisite for promoting a flow beyond `lab`. This ADR is the mechanism that satisfies that prerequisite.
+The [DX-first cloud flow bootstrap plan](../../04-Concepts/architecture/dx-cloud-flow-bootstrap-plan.md) requires cross-machine Engram daemon discovery as a named prerequisite for promoting a flow beyond `lab`. This ADR is the mechanism that satisfies that prerequisite.
 
 ## Decision
 
@@ -189,7 +189,7 @@ air_gapped_compatible: true|false  # can the flow operate in local-only mode?
 - `lib/engram_client.py`, `lib/engram_http_client.py` — existing Engram wrappers.
 - `packages/engram-sync/` — existing git-jsonl sync package; hooks modified additively.
 - `scripts/engram-sync.sh` — existing sync script; unchanged except `--cloud` passthrough.
-- [`dx-cloud-flow-bootstrap-plan.md`](../architecture/dx-cloud-flow-bootstrap-plan.md) — cross-machine Engram discovery prerequisite this ADR satisfies.
+- [`dx-cloud-flow-bootstrap-plan.md`](../../04-Concepts/architecture/dx-cloud-flow-bootstrap-plan.md) — cross-machine Engram discovery prerequisite this ADR satisfies.
 
 ## Operational Guide
 

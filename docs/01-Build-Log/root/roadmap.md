@@ -29,7 +29,7 @@
 
 **Target: Q2 2026 (April -- June)**
 
-Building on the existing LiteLLM proxy and model-routing infrastructure to support any LLM provider, plus local model execution for zero-cost development cycles. See [multi-model-factory.md](multi-model-factory.md) for the full 3-layer factory architecture (Strategic/Execution/Worker) that drives this phase.
+Building on the existing LiteLLM proxy and model-routing infrastructure to support any LLM provider, plus local model execution for zero-cost development cycles. See [multi-model-factory.md](../../04-Concepts/root/multi-model-factory.md) for the full 3-layer factory architecture (Strategic/Execution/Worker) that drives this phase.
 
 ### Multi-model support via LiteLLM
 

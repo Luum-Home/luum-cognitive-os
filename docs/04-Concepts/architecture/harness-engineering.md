@@ -162,11 +162,11 @@ and ADRs:
   comparison.
 - [Skills and Rules Portability Gap](skills-rules-portability-gap.md) — remaining
   `.claude/` gravity and canonicalization work.
-- [ADR-036: Sprint Orchestration Primitives](../adrs/ADR-036-sprint-orchestration-primitives.md)
+- [ADR-036: Sprint Orchestration Primitives](../../02-Decisions/adrs/ADR-036-sprint-orchestration-primitives.md)
   — durable multi-agent sprint artifacts.
-- [ADR-057: Cross-Harness Authoring and Driver Projection](../adrs/ADR-057-cross-harness-authoring-and-driver-projection.md)
+- [ADR-057: Cross-Harness Authoring and Driver Projection](../../02-Decisions/adrs/ADR-057-cross-harness-authoring-and-driver-projection.md)
   — accepted authoring discipline.
-- [ADR-064: Harness-Agnostic Cognitive OS](../adrs/ADR-064-harness-agnostic-cognitive-os.md)
+- [ADR-064: Harness-Agnostic Cognitive OS](../../02-Decisions/adrs/ADR-064-harness-agnostic-cognitive-os.md)
   — accepted harness abstraction surfaces.
 
 ## External Evidence

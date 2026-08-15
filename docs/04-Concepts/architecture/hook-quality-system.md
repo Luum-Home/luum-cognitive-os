@@ -111,6 +111,6 @@ that are allowed to run automatically.
 
 ## Related
 
-- [ADR-114 — Hook Quality System](../adrs/ADR-114-hook-quality-system.md)
+- [ADR-114 — Hook Quality System](../../02-Decisions/adrs/ADR-114-hook-quality-system.md)
 - [Harness Driver Parity](harness-driver-parity.md)
 - [Codex Governed Tool Layer](codex-governed-tool-layer.md)

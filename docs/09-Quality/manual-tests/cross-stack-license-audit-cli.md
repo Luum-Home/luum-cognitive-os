@@ -2,7 +2,7 @@
 
 **Primitive**: `cos license audit`  
 **Canonical command**: `scripts/cos license audit --json`  
-**ADR**: [ADR-212: Cross-Stack License Audit Toolchain](../adrs/ADR-212-cross-stack-license-audit-toolchain.md)  
+**ADR**: [ADR-212: Cross-Stack License Audit Toolchain](../../02-Decisions/adrs/ADR-212-cross-stack-license-audit-toolchain.md)  
 **Manifest**: `manifests/cross-stack-license-audit.yaml`  
 **Implementation**: `lib/cross_stack_license_audit.py`, `scripts/cos-cross-stack-license-audit`, `scripts/cos`
 

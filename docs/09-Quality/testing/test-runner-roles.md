@@ -77,4 +77,4 @@ not be presented as competing default entry points.
 
 ## Validation nervous system
 
-For the full Cognitive OS maintainer doctrine, see [Validation Nervous System](../architecture/validation-nervous-system.md).
+For the full Cognitive OS maintainer doctrine, see [Validation Nervous System](../../04-Concepts/architecture/validation-nervous-system.md).

@@ -5,7 +5,7 @@ Everything ADR-related. Read this MOC when you're about to write a new ADR, supe
 ## Start here
 
 1. [`docs/02-Decisions/adrs/INDEX.md`](../adrs/INDEX.md) — full status table for 280 ADRs (sorted: Active, Proposed, Exploration, Resolved, Superseded, Tombstone)
-2. [`docs/02-Decisions/adrs/STATUS-TAXONOMY.md`](../adrs/STATUS-TAXONOMY.md) — canonical status values + when to use each
+2. [`docs/02-Decisions/adrs/STATUS-TAXONOMY.md`](../02-Decisions/adrs/STATUS-TAXONOMY.md) — canonical status values + when to use each
 3. [`docs/02-Decisions/adrs/README.md`](../adrs/README.md) — naming convention, frontmatter schema
 
 ## Conventions
@@ -20,15 +20,15 @@ Everything ADR-related. Read this MOC when you're about to write a new ADR, supe
 - **Write a new ADR**: copy structure from the most recent `docs/02-Decisions/adrs/ADR-NNN-*.md`, increment NNN, fill frontmatter, add to relationship graph if it supersedes/extends another.
 - **Supersede an existing ADR**: new ADR sets `supersedes: [NNN]`; old ADR sets `status: superseded` and `superseded_by: NNN`.
 - **Tombstone a slot**: set `status: tombstone`. See `ADR-003-tombstone.md` family for examples.
-- **Migrate a status**: see [`docs/06-Daily/reports/adr-status-triage-2026-05-12.md`](../reports/adr-status-triage-2026-05-12.md) for the 2026-05-12 normalization pass.
+- **Migrate a status**: see [`docs/06-Daily/reports/adr-status-triage-2026-05-12.md`](../06-Daily/reports/adr-status-triage-2026-05-12.md) for the 2026-05-12 normalization pass.
 
 ## Key foundational ADRs (anchor citations)
 
-- [ADR-007 Cognitive OS rebrand](../adrs/ADR-007-cognitive-os-rebrand.md) — naming and scope
-- [ADR-008 Multi-tool support](../adrs/ADR-008-multi-tool-support.md) — vendor-agnostic posture
-- [ADR-009 Package architecture (375 primitives)](../adrs/ADR-009-package-architecture.md)
-- [ADR-010 Hook architecture v2](../adrs/ADR-010-hook-architecture-v2.md)
-- [ADR-087 ADR namespace consolidation](../adrs/ADR-087-adr-namespace-consolidation.md) — why ADRs live in `docs/02-Decisions/adrs/`
+- [ADR-007 Cognitive OS rebrand](../02-Decisions/adrs/ADR-007-cognitive-os-rebrand.md) — naming and scope
+- [ADR-008 Multi-tool support](../02-Decisions/adrs/ADR-008-multi-tool-support.md) — vendor-agnostic posture
+- [ADR-009 Package architecture (375 primitives)](../02-Decisions/adrs/ADR-009-package-architecture.md)
+- [ADR-010 Hook architecture v2](../02-Decisions/adrs/ADR-010-hook-architecture-v2.md)
+- [ADR-087 ADR namespace consolidation](../02-Decisions/adrs/ADR-087-adr-namespace-consolidation.md) — why ADRs live in `docs/02-Decisions/adrs/`
 
 ## Tooling
 

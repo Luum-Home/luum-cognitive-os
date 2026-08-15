@@ -2,7 +2,7 @@
 
 **Date**: 2026-05-06
 **Status**: Active — ranks ADR-worthy proposals from 11 parallel research reports
-**Constraints**: Honors C1 (permissive licenses), C2 (footprint discipline), C3 (test tiers T1–T10), C4 (verdict block format) — promoted from prose into the canonical contract at [`manifests/orchestration-research-evaluation.yaml`](../../../manifests/orchestration-research-evaluation.yaml). The gap-analysis prose at [`../orchestration-coverage-gap-analysis-2026-05-06.md`](../orchestration-coverage-gap-analysis-2026-05-06.md) remains the human-readable rationale; the manifest is the normative source.
+**Constraints**: Honors C1 (permissive licenses), C2 (footprint discipline), C3 (test tiers T1–T10), C4 (verdict block format) — promoted from prose into the canonical contract at [`manifests/orchestration-research-evaluation.yaml`](../../../../manifests/orchestration-research-evaluation.yaml). The gap-analysis prose at [`../orchestration-coverage-gap-analysis-2026-05-06.md`](../orchestration-coverage-gap-analysis-2026-05-06.md) remains the human-readable rationale; the manifest is the normative source.
 **Inputs**: 11 reports under `docs/03-PoCs/research/orchestration-gaps/`, ~42,000 words combined, ~230 sources cited
 **Note on numbers below**: LOC and timeline estimates are reported by the underlying research agents and intentionally optimistic. Treat them as direction, not commitment. Per C3, T6 budgets are *measured first* — see the ADR-226 patch — rather than asserted up front.
 

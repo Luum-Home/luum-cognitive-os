@@ -21,7 +21,7 @@ worker surfaces. Local harness installation (pip, direct clone) is unchanged.
 
 ## Context
 
-[ADR-137](ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md) commits to Framing A: a COS runtime that travels with the agent into cloud instances, CI runners, and ephemeral containers. The [`dx-cloud-flow-bootstrap-plan.md`](../architecture/dx-cloud-flow-bootstrap-plan.md) names cross-harness portability and the absence of `~/.claude/`-assumption as prerequisites for the first cloud-worker flow.
+[ADR-137](ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md) commits to Framing A: a COS runtime that travels with the agent into cloud instances, CI runners, and ephemeral containers. The [`dx-cloud-flow-bootstrap-plan.md`](../../04-Concepts/architecture/dx-cloud-flow-bootstrap-plan.md) names cross-harness portability and the absence of `~/.claude/`-assumption as prerequisites for the first cloud-worker flow.
 
 The current install path (`pip install cognitive-os`, direct hook wiring) is designed for a developer machine and makes several platform-specific assumptions:
 
@@ -134,9 +134,9 @@ Windows-native Docker (without WSL2) is not a supported target. The invariant is
 - [ADR-137](ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md) — trajectory commitment; Compose stack is the portability vehicle for Framing A worker surfaces.
 - [ADR-139](ADR-139-account-agnostic-multi-provider-runtime.md) — credential posture; env var naming conventions apply to the Compose file.
 - [ADR-141](ADR-141-engram-cloud-cross-instance-replication.md) — Engram cloud sidecar defined as a Compose service.
-- [`dx-cloud-flow-bootstrap-plan.md`](../architecture/dx-cloud-flow-bootstrap-plan.md) — the plan whose `cos-cloud-worker-bootstrap.sh` entry point this ADR specifies.
-- [`bootstrap-portability.md`](../architecture/bootstrap-portability.md) — portability gate; the Compose stack satisfies it for worker surfaces.
-- [`cloud-worker-runtime-tooling-research-2026-05.md`](../architecture/cloud-worker-runtime-tooling-research-2026-05.md) — research baseline for Phase 1 no-broker constraint.
+- [`dx-cloud-flow-bootstrap-plan.md`](../../04-Concepts/architecture/dx-cloud-flow-bootstrap-plan.md) — the plan whose `cos-cloud-worker-bootstrap.sh` entry point this ADR specifies.
+- [`bootstrap-portability.md`](../../04-Concepts/architecture/bootstrap-portability.md) — portability gate; the Compose stack satisfies it for worker surfaces.
+- [`cloud-worker-runtime-tooling-research-2026-05.md`](../../04-Concepts/architecture/cloud-worker-runtime-tooling-research-2026-05.md) — research baseline for Phase 1 no-broker constraint.
 
 ## Alternatives rejected
 

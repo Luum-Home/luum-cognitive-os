@@ -53,8 +53,8 @@ Everything else should default to one of these zones:
 
 The boundary already started in:
 
-- [docs/04-Concepts/root/kernel-contract.md](../kernel-contract.md)
-- [manifests/kernel-contract.yaml](../../manifests/kernel-contract.yaml)
+- [docs/04-Concepts/root/kernel-contract.md](../../04-Concepts/root/kernel-contract.md)
+- [manifests/kernel-contract.yaml](../../../manifests/kernel-contract.yaml)
 
 The next step is to make that boundary enforceable across more of the runtime.
 

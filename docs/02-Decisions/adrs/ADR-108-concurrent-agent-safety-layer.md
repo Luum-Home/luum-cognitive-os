@@ -19,7 +19,7 @@ classification_basis: explicit accepted/implemented status
 **Status**: Accepted — implemented through safety mesh, worktree isolation, release freeze, and control-plane audits
 **Date**: 2026-05-02
 **Author**: Maintainer + Cognitive OS
-**Related**: ADR-088 (provenance markers), ADR-089 (multi-session git coordination), ADR-098 (multi-agent file coordination), ADR-105 (bilateral claim verification), ADR-106 (multi-session safety primitives), [Concurrent Agent Safety Master](../architecture/concurrent-agent-safety-master.md), [Concurrent Agent Scenario Test Matrix](../architecture/concurrent-agent-scenario-test-matrix.md), [Concurrent Agent Safety Testbed Plan](../../.cognitive-os/plans/architecture/concurrent-agent-safety-testbed-plan.md)
+**Related**: ADR-088 (provenance markers), ADR-089 (multi-session git coordination), ADR-098 (multi-agent file coordination), ADR-105 (bilateral claim verification), ADR-106 (multi-session safety primitives), [Concurrent Agent Safety Master](../../04-Concepts/architecture/concurrent-agent-safety-master.md), [Concurrent Agent Scenario Test Matrix](../../04-Concepts/architecture/concurrent-agent-scenario-test-matrix.md), [Concurrent Agent Safety Testbed Plan](../../../.cognitive-os/plans/architecture/concurrent-agent-safety-testbed-plan.md)
 
 ## Status
 
@@ -172,7 +172,7 @@ The first implementation slice is fixed:
 2. False done in plan.
 3. Stash leak.
 
-The scenario matrix is canonicalized in [Concurrent Agent Scenario Test Matrix](../architecture/concurrent-agent-scenario-test-matrix.md).
+The scenario matrix is canonicalized in [Concurrent Agent Scenario Test Matrix](../../04-Concepts/architecture/concurrent-agent-scenario-test-matrix.md).
 
 ## Consequences
 
@@ -223,9 +223,9 @@ python3 -m pytest tests/behavior/test_cos_doctor_concurrency.py -v
 
 ## References
 
-- [Concurrent Agent Safety Master](../architecture/concurrent-agent-safety-master.md)
-- [Concurrent Agent Scenario Test Matrix](../architecture/concurrent-agent-scenario-test-matrix.md)
-- [Concurrent Agent Safety Testbed Plan](../../.cognitive-os/plans/architecture/concurrent-agent-safety-testbed-plan.md)
+- [Concurrent Agent Safety Master](../../04-Concepts/architecture/concurrent-agent-safety-master.md)
+- [Concurrent Agent Scenario Test Matrix](../../04-Concepts/architecture/concurrent-agent-scenario-test-matrix.md)
+- [Concurrent Agent Safety Testbed Plan](../../../.cognitive-os/plans/architecture/concurrent-agent-safety-testbed-plan.md)
 - ADR-089 — Multi-Session Git Coordination
 - ADR-098 — Multi-Agent File Coordination
 - ADR-105 — Bilateral Claim Verification Contract

@@ -95,4 +95,4 @@ Edit `cognitive-os.yaml` in your project root:
 
 - [Available skills](../skills/CATALOG.md)
 - [Rules reference](../rules/RULES-COMPACT.md)
-- [Security stack](security-stack.md)
+- [Security stack](../../04-Concepts/root/security-stack.md)

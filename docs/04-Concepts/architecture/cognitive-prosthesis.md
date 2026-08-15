@@ -3,7 +3,7 @@
 > **Multi-surface note (2026-05-05):** The "Subtraction + maturity-driven"
 > doctrine described in this document is the rationale for adopting the
 > multi-surface UI architecture defined in
-> [ADR-172](../adrs/ADR-172-multi-surface-ui-architecture.md) instead of a
+> [ADR-172](../../02-Decisions/adrs/ADR-172-multi-surface-ui-architecture.md) instead of a
 > net-new in-tree dashboard. When candidate UI surfaces are evaluated against
 > this doctrine, they must prove they exist as real, working artefacts; otherwise
 > building them is addition without evidence of need. ADR-172 formalises that
@@ -139,7 +139,7 @@ above. For any other person, those quantities are pure overload.
 
 This is not a defect; it is a deliberate scope. The cost — that
 the system fits like a glove made to measure — is named explicitly
-in [ADR-132](../adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md).
+in [ADR-132](../../02-Decisions/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md).
 That ADR also names the trigger conditions that would warrant
 re-shaping the system for a wider audience: a sustained second
 contributor, or a specific external organisation requesting
@@ -184,7 +184,7 @@ The mechanisms that materialise stage 2 in this repository, none of
 them decorative:
 
 - **Demotion as a first-class operation**
-  ([ADR-126](../adrs/ADR-126-agentic-primitive-lifecycle-governor.md))
+  ([ADR-126](../../02-Decisions/adrs/ADR-126-agentic-primitive-lifecycle-governor.md))
   — every primitive in `lifecycle_state: demoted` carries a
   `demotion_evidence` block and `sunset_criteria`. The first executed
   demotion (`hooks/task-completed.sh`) was deliberately small to
@@ -208,8 +208,8 @@ them decorative:
   enough is a candidate for demotion, not for tighter rules around
   it.
 - **Propose-only as enforced default**
-  ([ADR-134](../adrs/ADR-134-headless-self-improvement-proposer.md),
-  [ADR-135](../adrs/ADR-135-self-evolving-doctrine-proposals.md)) —
+  ([ADR-134](../../02-Decisions/adrs/ADR-134-headless-self-improvement-proposer.md),
+  [ADR-135](../../02-Decisions/adrs/ADR-135-self-evolving-doctrine-proposals.md)) —
   the self-improvement loop and the doctrine proposer generate
   proposals from live audit data; neither can apply them.
   `human_approval_required: true` is hardcoded; the blocked-actions
@@ -224,7 +224,7 @@ them decorative:
   own output as adoption signal — the schema applied recursively to
   its first artefact.
 - **Runway with observable triggers, not speculative federation**
-  ([ADR-136](../adrs/ADR-136-cross-instance-learning-runway.md)) —
+  ([ADR-136](../../02-Decisions/adrs/ADR-136-cross-instance-learning-runway.md)) —
   the Shape B infrastructure (registry locks, evidence exchange,
   Engram bundles) is built and rehearsed via
   `cos-cross-instance-drill`; Shape B itself is not activated. Six
@@ -261,10 +261,10 @@ The companion documents to read alongside, in order:
 1. [`boring-reliability-control-plane.md`](boring-reliability-control-plane.md)
    — what the doctrine says.
 2. This document — why the doctrine looks the way it does.
-3. [ADR-132](../adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md)
+3. [ADR-132](../../02-Decisions/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md)
    — the maintainer-topology question the system has not yet
    answered (Shape A vs Shape B).
-4. [ADR-137](../adrs/ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md)
+4. [ADR-137](../../02-Decisions/adrs/ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md)
    — the runtime-topology question the system has answered
    (Framing B → Framing A), orthogonal to ADR-132.
 5. [`dx-cloud-flow-bootstrap-plan.md`](dx-cloud-flow-bootstrap-plan.md)
