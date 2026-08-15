@@ -6,7 +6,17 @@
 
 Prevents token flooding, excessive tool usage, runaway shell loops, and operator starvation by enforcing token-bucket flow control on hook actions.
 
-The rate limiter is active by default for Bash, Agent, Edit, and Write tool activity through `hooks/rate-limiter.sh`.
+> **Estado real, verificado 2026-08-15: el limitador NO está activo.**
+> `hooks/rate-limiter.sh` existe pero **no está registrado en
+> `.claude/settings.json`** — `grep -c 'rate-limiter' .claude/settings.json`
+> devuelve `0`, y el hook tiene **0 disparos en 37.424 filas** de telemetría.
+> Todo lo que sigue describe el mecanismo tal como está implementado, no un
+> control que esté corriendo. Registrarlo es una decisión pendiente del
+> operador, no un olvido de documentación.
+
+El limitador está implementado para actividad de Bash, Agent, Edit y Write a
+través de `hooks/rate-limiter.sh`; ése es el comportamiento que tendría si se
+registrara.
 
 ## Default Refill Limits
 
@@ -85,7 +95,8 @@ security:
 
 ## Integration
 
-- **Hook**: `hooks/rate-limiter.sh` (PreToolUse on Bash, Agent, Edit, Write)
+- **Hook**: `hooks/rate-limiter.sh` — implementado para PreToolUse sobre Bash,
+  Agent, Edit y Write. **Sin registrar en `.claude/settings.json` al 2026-08-15.**
 - **Library**: `lib/rate_limiter.py` — token bucket, warnings, priority lane, diversity penalty, queue API
 - **State**: `.cognitive-os/rate-limit-state.json` — counters, buckets, signatures, cost
 - **Queue**: `.cognitive-os/rate-limit-queue.jsonl` — queued retries
@@ -109,4 +120,6 @@ DISABLE_HOOK_RATE_LIMITER=true claude
 
 ## Contextual Trigger
 
-This rule is always active. It applies to rate limiting, token buckets, cooldowns, retry queues, operator priority, and repeated tool-call loops.
+Esta regla describe un mecanismo **implementado pero no registrado**. Aplica a
+rate limiting, token buckets, cooldowns, colas de reintento, prioridad de
+operador y loops de tool-calls repetidos — el día que el hook se registre.
