@@ -1,321 +1,427 @@
 {
-  "SessionStart": [
-    {
-      "hooks": [
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/self-install.sh\" ]; then bash \"$PWD/hooks/self-install.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-init.sh\" ]; then bash \"$PWD/hooks/session-init.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/host-tool-doctor.sh\" ]; then bash \"$PWD/hooks/host-tool-doctor.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/profile-drift-autoapply.sh\" ]; then bash \"$PWD/hooks/profile-drift-autoapply.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/reaper-daemon-launcher.sh\" ]; then bash \"$PWD/hooks/reaper-daemon-launcher.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-watchdog-launcher.sh\" ]; then bash \"$PWD/hooks/session-watchdog-launcher.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/docker-drift-detector.sh\" ]; then bash \"$PWD/hooks/docker-drift-detector.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/cos-executor-daemon-launcher.sh\" ]; then bash \"$PWD/hooks/cos-executor-daemon-launcher.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/engram-daemon-launcher.sh\" ]; then bash \"$PWD/hooks/engram-daemon-launcher.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/crash-recovery.sh\" ]; then bash \"$PWD/hooks/crash-recovery.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-resume.sh\" ]; then bash \"$PWD/hooks/session-resume.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-sanity.sh\" ]; then bash \"$PWD/hooks/session-sanity.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/validation-lock-cleanup.sh\" ]; then bash \"$PWD/hooks/validation-lock-cleanup.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/infra-health.sh\" ]; then bash \"$PWD/hooks/infra-health.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/aspirational-audit-weekly.sh\" ]; then bash \"$PWD/hooks/aspirational-audit-weekly.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/self-knowledge-refresh.sh\" ]; then bash \"$PWD/hooks/self-knowledge-refresh.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-start-worktree-nudge.sh\" ]; then bash \"$PWD/hooks/session-start-worktree-nudge.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-start-stash-reapply.sh\" ]; then bash \"$PWD/hooks/session-start-stash-reapply.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-startup-protocol.sh\" ]; then bash \"$PWD/hooks/session-startup-protocol.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/mcp-scan.sh\" ]; then bash \"$PWD/hooks/mcp-scan.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/dangerous-env-flag-detector.sh\" ]; then bash \"$PWD/hooks/dangerous-env-flag-detector.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/promotion-proposer-weekly.sh\" ]; then bash \"$PWD/hooks/promotion-proposer-weekly.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/validator-soak-weekly.sh\" ]; then bash \"$PWD/hooks/validator-soak-weekly.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/history-rewrite-documented.sh\" ]; then bash \"$PWD/hooks/history-rewrite-documented.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/cos-session-start-projector.sh\" ]; then bash \"$PWD/hooks/cos-session-start-projector.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/skill-drift-detector.sh\" ]; then bash \"$PWD/hooks/skill-drift-detector.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-start-stack-recommend.sh\" ]; then bash \"$PWD/hooks/session-start-stack-recommend.sh\"; fi"
-        }
-      ],
-      "matcher": "startup"
-    }
-  ],
-  "UserPromptSubmit": [
-    {
-      "hooks": [
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/user-prompt-capture.sh\" ]; then bash \"$PWD/hooks/user-prompt-capture.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-wrapup-trigger.sh\" ]; then bash \"$PWD/hooks/session-wrapup-trigger.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-heartbeat.sh\" ]; then bash \"$PWD/hooks/session-heartbeat.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/memory-prefetch.sh\" ]; then bash \"$PWD/hooks/memory-prefetch.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/edit-lock-process-negotiations.sh\" ]; then bash \"$PWD/hooks/edit-lock-process-negotiations.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/stash-budget-warn.sh\" ]; then bash \"$PWD/hooks/stash-budget-warn.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/concurrent-write-guard-codex-proxy.sh\" ]; then bash \"$PWD/hooks/concurrent-write-guard-codex-proxy.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/cross-session-peer-context.sh\" ]; then bash \"$PWD/hooks/cross-session-peer-context.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/agent-message-inbox-context.sh\" ]; then bash \"$PWD/hooks/agent-message-inbox-context.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/rule-router-prompt-suggest.sh\" ]; then bash \"$PWD/hooks/rule-router-prompt-suggest.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/adr-relevance-suggest.sh\" ]; then bash \"$PWD/hooks/adr-relevance-suggest.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/context-budget-meter.sh\" ]; then bash \"$PWD/hooks/context-budget-meter.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/skill-router-prompt-suggest.sh\" ]; then bash \"$PWD/hooks/skill-router-prompt-suggest.sh\"; fi"
-        }
-      ],
-      "matcher": "prompt"
-    }
-  ],
-  "PreToolUse": [
-    {
-      "hooks": [
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/bash-hot-path-dispatcher.sh\" ]; then bash \"$PWD/hooks/bash-hot-path-dispatcher.sh\"; fi"
-        }
-      ],
-      "matcher": "bash"
-    }
-  ],
-  "PostToolUse": [
-    {
-      "hooks": [
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/error-pipeline.sh\" ]; then bash \"$PWD/hooks/error-pipeline.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/error-learning.sh\" ]; then bash \"$PWD/hooks/error-learning.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/result-truncator.sh\" ]; then bash \"$PWD/hooks/result-truncator.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/rate-limit-drain.sh\" ]; then bash \"$PWD/hooks/rate-limit-drain.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/audit-id-enricher.sh\" ]; then bash \"$PWD/hooks/audit-id-enricher.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/post-git-orphan-notifier.sh\" ]; then bash \"$PWD/hooks/post-git-orphan-notifier.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/cross-session-event-emit.sh\" ]; then bash \"$PWD/hooks/cross-session-event-emit.sh\"; fi"
-        }
-      ],
-      "matcher": "bash"
-    }
-  ],
-  "Stop": [
-    {
-      "hooks": [
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-summary-reminder.sh\" ]; then bash \"$PWD/hooks/session-summary-reminder.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-learning.sh\" ]; then bash \"$PWD/hooks/session-learning.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-cleanup.sh\" ]; then bash \"$PWD/hooks/session-cleanup.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/edit-lock-session-end.sh\" ]; then bash \"$PWD/hooks/edit-lock-session-end.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/git-context-capture.sh\" ]; then bash \"$PWD/hooks/git-context-capture.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-changelog.sh\" ]; then bash \"$PWD/hooks/session-changelog.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/skill-failure-monitor.sh\" ]; then bash \"$PWD/hooks/skill-failure-monitor.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/control-plane-audit-hourly.sh\" ]; then bash \"$PWD/hooks/control-plane-audit-hourly.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/quality-duplicates.sh\" ]; then bash \"$PWD/hooks/quality-duplicates.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/so-impact-eval-trigger.sh\" ]; then bash \"$PWD/hooks/so-impact-eval-trigger.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/skill-synthesis-scanner.sh\" ]; then bash \"$PWD/hooks/skill-synthesis-scanner.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/kpi-trigger.sh\" ]; then bash \"$PWD/hooks/kpi-trigger.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/engram-crystallize-on-session-end.sh\" ]; then bash \"$PWD/hooks/engram-crystallize-on-session-end.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/engram-obsidian-export-on-stop.sh\" ]; then bash \"$PWD/hooks/engram-obsidian-export-on-stop.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-end-reap.sh\" ]; then bash \"$PWD/hooks/session-end-reap.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/goal-stop-gate.sh\" ]; then bash \"$PWD/hooks/goal-stop-gate.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/eas-validation-gate.sh\" ]; then bash \"$PWD/hooks/eas-validation-gate.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-quality-close-gate.sh\" ]; then bash \"$PWD/hooks/session-quality-close-gate.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/cross-session-event-emit.sh\" ]; then bash \"$PWD/hooks/cross-session-event-emit.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/branch-ownership-release.sh\" ]; then bash \"$PWD/hooks/branch-ownership-release.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/pending-truth-verify-weekly.sh\" ]; then bash \"$PWD/hooks/pending-truth-verify-weekly.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/pyrefly-typecheck-advisory.sh\" ]; then bash \"$PWD/hooks/pyrefly-typecheck-advisory.sh\"; fi"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-token-aggregator.sh\" ]; then bash \"$PWD/hooks/session-token-aggregator.sh\"; fi"
-        }
-      ],
-      "matcher": "shutdown"
-    }
-  ]
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/self-install.sh\" ]; then bash \"$PWD/hooks/self-install.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-init.sh\" ]; then bash \"$PWD/hooks/session-init.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/host-tool-doctor.sh\" ]; then bash \"$PWD/hooks/host-tool-doctor.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/profile-drift-autoapply.sh\" ]; then bash \"$PWD/hooks/profile-drift-autoapply.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/reaper-daemon-launcher.sh\" ]; then bash \"$PWD/hooks/reaper-daemon-launcher.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-watchdog-launcher.sh\" ]; then bash \"$PWD/hooks/session-watchdog-launcher.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/docker-drift-detector.sh\" ]; then bash \"$PWD/hooks/docker-drift-detector.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/cos-executor-daemon-launcher.sh\" ]; then bash \"$PWD/hooks/cos-executor-daemon-launcher.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/engram-daemon-launcher.sh\" ]; then bash \"$PWD/hooks/engram-daemon-launcher.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/crash-recovery.sh\" ]; then bash \"$PWD/hooks/crash-recovery.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-resume.sh\" ]; then bash \"$PWD/hooks/session-resume.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-sanity.sh\" ]; then bash \"$PWD/hooks/session-sanity.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/validation-lock-cleanup.sh\" ]; then bash \"$PWD/hooks/validation-lock-cleanup.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/infra-health.sh\" ]; then bash \"$PWD/hooks/infra-health.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/aspirational-audit-weekly.sh\" ]; then bash \"$PWD/hooks/aspirational-audit-weekly.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/self-knowledge-refresh.sh\" ]; then bash \"$PWD/hooks/self-knowledge-refresh.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-start-worktree-nudge.sh\" ]; then bash \"$PWD/hooks/session-start-worktree-nudge.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-start-stash-reapply.sh\" ]; then bash \"$PWD/hooks/session-start-stash-reapply.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-startup-protocol.sh\" ]; then bash \"$PWD/hooks/session-startup-protocol.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/mcp-scan.sh\" ]; then bash \"$PWD/hooks/mcp-scan.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/dangerous-env-flag-detector.sh\" ]; then bash \"$PWD/hooks/dangerous-env-flag-detector.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/promotion-proposer-weekly.sh\" ]; then bash \"$PWD/hooks/promotion-proposer-weekly.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/validator-soak-weekly.sh\" ]; then bash \"$PWD/hooks/validator-soak-weekly.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/history-rewrite-documented.sh\" ]; then bash \"$PWD/hooks/history-rewrite-documented.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/cos-session-start-projector.sh\" ]; then bash \"$PWD/hooks/cos-session-start-projector.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/skill-drift-detector.sh\" ]; then bash \"$PWD/hooks/skill-drift-detector.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-start-stack-recommend.sh\" ]; then bash \"$PWD/hooks/session-start-stack-recommend.sh\"; fi"
+          }
+        ],
+        "matcher": "startup"
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/user-prompt-capture.sh\" ]; then bash \"$PWD/hooks/user-prompt-capture.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-wrapup-trigger.sh\" ]; then bash \"$PWD/hooks/session-wrapup-trigger.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-heartbeat.sh\" ]; then bash \"$PWD/hooks/session-heartbeat.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/memory-prefetch.sh\" ]; then bash \"$PWD/hooks/memory-prefetch.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/edit-lock-process-negotiations.sh\" ]; then bash \"$PWD/hooks/edit-lock-process-negotiations.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/stash-budget-warn.sh\" ]; then bash \"$PWD/hooks/stash-budget-warn.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/concurrent-write-guard-codex-proxy.sh\" ]; then bash \"$PWD/hooks/concurrent-write-guard-codex-proxy.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/cross-session-peer-context.sh\" ]; then bash \"$PWD/hooks/cross-session-peer-context.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/agent-message-inbox-context.sh\" ]; then bash \"$PWD/hooks/agent-message-inbox-context.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/rule-router-prompt-suggest.sh\" ]; then bash \"$PWD/hooks/rule-router-prompt-suggest.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/adr-relevance-suggest.sh\" ]; then bash \"$PWD/hooks/adr-relevance-suggest.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/context-budget-meter.sh\" ]; then bash \"$PWD/hooks/context-budget-meter.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/skill-router-prompt-suggest.sh\" ]; then bash \"$PWD/hooks/skill-router-prompt-suggest.sh\"; fi"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/bash-hot-path-dispatcher.sh\" ]; then bash \"$PWD/hooks/bash-hot-path-dispatcher.sh\"; fi"
+          }
+        ],
+        "matcher": "^Bash$"
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/provenance-scan.sh\" ]; then bash \"$PWD/hooks/provenance-scan.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/secret-detector.sh\" ]; then bash \"$PWD/hooks/secret-detector.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/project-docs-convention.sh\" ]; then bash \"$PWD/hooks/project-docs-convention.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/edit-lock-pre-tool.sh\" ]; then bash \"$PWD/hooks/edit-lock-pre-tool.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/concurrent-write-guard.sh\" ]; then bash \"$PWD/hooks/concurrent-write-guard.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/plan-claim-validator.sh\" ]; then bash \"$PWD/hooks/plan-claim-validator.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/control-plane-audit.sh\" ]; then bash \"$PWD/hooks/control-plane-audit.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/skill-md-routing-validator.sh\" ]; then bash \"$PWD/hooks/skill-md-routing-validator.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/cross-session-event-emit.sh\" ]; then bash \"$PWD/hooks/cross-session-event-emit.sh\"; fi"
+          }
+        ],
+        "matcher": "^apply_patch$"
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/scope-creep-detector.sh\" ]; then bash \"$PWD/hooks/scope-creep-detector.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/auto-checkpoint.sh\" ]; then bash \"$PWD/hooks/auto-checkpoint.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/content-policy.sh\" ]; then bash \"$PWD/hooks/content-policy.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/skill-frontmatter-validator.sh\" ]; then bash \"$PWD/hooks/skill-frontmatter-validator.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/rule-frontmatter-validator.sh\" ]; then bash \"$PWD/hooks/rule-frontmatter-validator.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/hook-header-validator.sh\" ]; then bash \"$PWD/hooks/hook-header-validator.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/adr-section-validator.sh\" ]; then bash \"$PWD/hooks/adr-section-validator.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/confidentiality-enforcer.sh\" ]; then bash \"$PWD/hooks/confidentiality-enforcer.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/surface-fix-detector.sh\" ]; then bash \"$PWD/hooks/surface-fix-detector.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/doc-sync-detector.sh\" ]; then bash \"$PWD/hooks/doc-sync-detector.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/edit-lock-drain-parked.sh\" ]; then bash \"$PWD/hooks/edit-lock-drain-parked.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/research-quality-validator.sh\" ]; then bash \"$PWD/hooks/research-quality-validator.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/rule-md-routing-validator.sh\" ]; then bash \"$PWD/hooks/rule-md-routing-validator.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/pending-truth-drift-detector.sh\" ]; then bash \"$PWD/hooks/pending-truth-drift-detector.sh\"; fi"
+          }
+        ],
+        "matcher": "^apply_patch$"
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/error-pipeline.sh\" ]; then bash \"$PWD/hooks/error-pipeline.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/error-learning.sh\" ]; then bash \"$PWD/hooks/error-learning.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/result-truncator.sh\" ]; then bash \"$PWD/hooks/result-truncator.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/rate-limit-drain.sh\" ]; then bash \"$PWD/hooks/rate-limit-drain.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/audit-id-enricher.sh\" ]; then bash \"$PWD/hooks/audit-id-enricher.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/post-git-orphan-notifier.sh\" ]; then bash \"$PWD/hooks/post-git-orphan-notifier.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/auto-checkpoint.sh\" ]; then bash \"$PWD/hooks/auto-checkpoint.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/cross-session-event-emit.sh\" ]; then bash \"$PWD/hooks/cross-session-event-emit.sh\"; fi"
+          }
+        ],
+        "matcher": "^Bash$"
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-summary-reminder.sh\" ]; then bash \"$PWD/hooks/session-summary-reminder.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-learning.sh\" ]; then bash \"$PWD/hooks/session-learning.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-cleanup.sh\" ]; then bash \"$PWD/hooks/session-cleanup.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/edit-lock-session-end.sh\" ]; then bash \"$PWD/hooks/edit-lock-session-end.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/git-context-capture.sh\" ]; then bash \"$PWD/hooks/git-context-capture.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-changelog.sh\" ]; then bash \"$PWD/hooks/session-changelog.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/skill-failure-monitor.sh\" ]; then bash \"$PWD/hooks/skill-failure-monitor.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/control-plane-audit-hourly.sh\" ]; then bash \"$PWD/hooks/control-plane-audit-hourly.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/quality-duplicates.sh\" ]; then bash \"$PWD/hooks/quality-duplicates.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/so-impact-eval-trigger.sh\" ]; then bash \"$PWD/hooks/so-impact-eval-trigger.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/skill-synthesis-scanner.sh\" ]; then bash \"$PWD/hooks/skill-synthesis-scanner.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/kpi-trigger.sh\" ]; then bash \"$PWD/hooks/kpi-trigger.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/engram-crystallize-on-session-end.sh\" ]; then bash \"$PWD/hooks/engram-crystallize-on-session-end.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/engram-obsidian-export-on-stop.sh\" ]; then bash \"$PWD/hooks/engram-obsidian-export-on-stop.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-end-reap.sh\" ]; then bash \"$PWD/hooks/session-end-reap.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/goal-stop-gate.sh\" ]; then bash \"$PWD/hooks/goal-stop-gate.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/eas-validation-gate.sh\" ]; then bash \"$PWD/hooks/eas-validation-gate.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-quality-close-gate.sh\" ]; then bash \"$PWD/hooks/session-quality-close-gate.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/cross-session-event-emit.sh\" ]; then bash \"$PWD/hooks/cross-session-event-emit.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/branch-ownership-release.sh\" ]; then bash \"$PWD/hooks/branch-ownership-release.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/pending-truth-verify-weekly.sh\" ]; then bash \"$PWD/hooks/pending-truth-verify-weekly.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/pyrefly-typecheck-advisory.sh\" ]; then bash \"$PWD/hooks/pyrefly-typecheck-advisory.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-token-aggregator.sh\" ]; then bash \"$PWD/hooks/session-token-aggregator.sh\"; fi"
+          }
+        ]
+      }
+    ]
+  }
 }

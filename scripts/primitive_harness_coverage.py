@@ -266,6 +266,10 @@ def _claude_wiring(root: Path) -> dict[str, dict[str, list[str]]]:
 
 def _codex_wiring(root: Path) -> dict[str, dict[str, list[str]]]:
     data = _load_json(root / ".codex" / "hooks.json") or {}
+    # Codex nests every event under the mandatory top-level "hooks" namespace
+    # (manifests/codex-hooks-schema.yaml). Tolerate the older flat shape too.
+    if isinstance(data, dict) and isinstance(data.get("hooks"), dict):
+        data = data["hooks"]
     wiring: dict[str, dict[str, list[str]]] = {}
     for event, entries in data.items() if isinstance(data, dict) else []:
         for entry in entries if isinstance(entries, list) else []:
