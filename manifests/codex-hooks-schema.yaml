@@ -1,0 +1,178 @@
+schema_version: 1
+harness: codex
+description: >
+  Published hook schema of the Codex harness, transcribed from upstream
+  documentation. This manifest is the EXTERNAL contract: it records what Codex
+  itself accepts, independent of what the Cognitive OS driver happens to emit.
+  The conformance test validates driver output against THIS file, so a driver
+  that agrees only with itself cannot pass.
+
+  Companion manifest: manifests/harness-driver-capabilities.yaml records what
+  the COS driver chooses to project (internal policy). When the two disagree,
+  this file wins and the driver is the bug.
+
+sources:
+  - url: https://learn.chatgpt.com/docs
+    what: Codex hooks reference — event list, matcher support, stdin payload,
+      exit-code semantics, handler fields, trust requirement.
+    verified: 2026-08-15
+  - url: https://github.com/openai/codex/blob/main/docs/config.md
+    what: hooks.json file shape and handler field reference.
+    verified: 2026-08-15
+  - note: >
+      Both sources were read by the operator on 2026-08-15 and transcribed here.
+      Re-verify on the dates above before trusting a claim in a later session;
+      when Codex changes, this file is the single place to update.
+
+# ── File shape ────────────────────────────────────────────────────────────────
+file:
+  path: .codex/hooks.json
+  # The top-level `hooks` namespace is MANDATORY. A file whose event keys sit at
+  # the root is not parsed as hooks at all — the whole registration is inert.
+  root_key: hooks
+  root_key_required: true
+  example: |
+    {
+      "hooks": {
+        "PreToolUse": [
+          {
+            "matcher": "^Bash$",
+            "hooks": [
+              { "type": "command", "command": "...", "timeout": 30 }
+            ]
+          }
+        ]
+      }
+    }
+
+# ── Events ────────────────────────────────────────────────────────────────────
+# matcher: required | optional | unsupported
+#   unsupported  → emitting a "matcher" key for this event is a schema violation
+#   matcher_semantics:
+#     tool_name_regex  → regex evaluated against the tool name (Bash, apply_patch, mcp__*)
+#     enum             → matcher must be one of `matcher_values`
+#     subagent_type    → free-form subagent type name
+events:
+  SessionStart:
+    matcher: optional
+    matcher_semantics: enum
+    matcher_values: [startup, resume, clear, compact]
+    can_block: false
+  SubagentStart:
+    matcher: optional
+    matcher_semantics: subagent_type
+    can_block: false
+  UserPromptSubmit:
+    matcher: unsupported
+    can_block: true
+  PreToolUse:
+    matcher: optional
+    matcher_semantics: tool_name_regex
+    can_block: true
+    payload_extra: [tool_name, tool_use_id, tool_input]
+  PermissionRequest:
+    matcher: optional
+    matcher_semantics: tool_name_regex
+    can_block: true
+    payload_extra: [tool_name, tool_use_id, tool_input]
+  PostToolUse:
+    matcher: optional
+    matcher_semantics: tool_name_regex
+    # `block` does NOT undo the tool call: it replaces the result with feedback.
+    can_block: true
+    block_semantics: replaces_result_with_feedback
+    payload_extra: [tool_name, tool_use_id, tool_input]
+  PreCompact:
+    matcher: optional
+    matcher_semantics: enum
+    matcher_values: [manual, auto]
+    can_block: false
+  PostCompact:
+    matcher: optional
+    matcher_semantics: enum
+    matcher_values: [manual, auto]
+    can_block: false
+  SubagentStop:
+    matcher: optional
+    matcher_semantics: subagent_type
+    can_block: false
+  Stop:
+    matcher: unsupported
+    can_block: true
+
+# ── Handler object fields ─────────────────────────────────────────────────────
+handler:
+  required_fields: [type, command]
+  allowed_fields: [type, command, commandWindows, timeout, statusMessage, async]
+  type_values: [command]           # only "command" actually runs
+  timeout:
+    unit: seconds
+    default: 600
+  async:
+    supported: false
+    note: >
+      Parsed by Codex but NOT honoured — a handler marked async runs
+      synchronously anyway. Emitting it is a false promise of non-blocking
+      behaviour, so the COS driver does not emit it.
+
+# ── Tool names reachable by a tool_name_regex matcher ─────────────────────────
+tool_names:
+  - name: Bash
+    tool_input_field: command
+  - name: apply_patch
+    tool_input_field: command
+    note: >
+      Codex's single file-mutation tool. It is the ONLY route to write-side
+      guards; the Claude Code matchers Edit / Write / MultiEdit have no Codex
+      equivalent and must be mapped here or write coverage is zero.
+  - name_pattern: "mcp__*"
+    note: MCP tools are matchable by the same regex mechanism.
+
+# ── stdin payload delivered to every hook ─────────────────────────────────────
+stdin_payload:
+  always: [session_id, transcript_path, cwd, hook_event_name, model, permission_mode]
+  turn_scoped_extra: [turn_id]
+
+# ── Blocking contract ─────────────────────────────────────────────────────────
+blocking:
+  exit_code: 2
+  exit_code_feedback_stream: stderr
+  json_stdout_alternative:
+    hookSpecificOutput:
+      hookEventName: "<event>"
+      permissionDecision: deny
+      permissionDecisionReason: "<reason>"
+
+# ── Trust gate ────────────────────────────────────────────────────────────────
+trust:
+  required: true
+  # Upstream wording: non-managed command hooks require trust before running.
+  applies_to: non_managed_command_hooks
+  operator_action: "/hooks"
+  effect_until_trusted: hooks_do_not_run
+  managed_exception:
+    file: requirements.toml
+    note: Managed hooks declared via requirements.toml are trusted automatically.
+  installer_obligation: >
+    Any installer that writes .codex/hooks.json MUST tell the operator that the
+    hooks are inert until the .codex/ layer is trusted. A silent install that
+    leaves every guard off is worse than not installing.
+
+# ── Known COS projection gaps (driver-side, not schema-side) ──────────────────
+# Recorded here so they are visible next to the contract they fall short of.
+known_projection_gaps:
+  - id: session-start-matcher-startup-only
+    detail: >
+      The driver emits matcher "startup" for SessionStart, so resumed, cleared
+      and compacted sessions get no SessionStart hooks. Widening this is an
+      operator decision, not a bug fix — it changes how often ~27 hooks fire.
+  - id: no-permission-request-projection
+    detail: PermissionRequest is a valid Codex event with no COS hook mapped to it.
+  - id: no-compact-projection
+    detail: >
+      PreCompact exists in the canonical registry but is not projected to Codex;
+      PostCompact has no COS equivalent event at all.
+  - id: no-subagent-projection
+    detail: >
+      SubagentStart / SubagentStop are valid Codex events; the COS registry has
+      one SubagentStart hook that is not projected.

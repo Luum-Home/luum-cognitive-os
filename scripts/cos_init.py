@@ -1620,6 +1620,28 @@ def _apply_harness_settings(
         # No generator or no jq — fallback to direct copy
         _fallback_settings(cos_source, settings_path)
 
+    if harness == "codex":
+        _print_codex_trust_notice(settings_label)
+
+
+def _print_codex_trust_notice(settings_label: str) -> None:
+    """Tell the operator the projected Codex hooks are inert until trusted.
+
+    Codex does not run non-managed command hooks until the operator trusts the
+    layer that declares them. Writing the file is therefore not the same as
+    enabling it: an install that stays silent here hands back a project whose
+    every guard is off while the file on disk says otherwise.
+
+    Contract: manifests/codex-hooks-schema.yaml > trust.
+    """
+    print("")
+    print(f"NOTE: Codex hooks were written to {settings_label} but are NOT active yet.")
+    print("      Codex requires trust before it runs non-managed command hooks.")
+    print("      Run /hooks inside Codex and trust this project's .codex/ layer,")
+    print("      otherwise every projected COS guard stays inert.")
+    print("      Verify: /hooks should list the COS entries as trusted.")
+    print("")
+
 
 def _fallback_settings(cos_source: Path, settings_path: Path) -> None:
     """Direct copy fallback for settings.json (cos-init.sh lines 614-619)."""
