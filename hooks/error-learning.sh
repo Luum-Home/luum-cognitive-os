@@ -11,20 +11,42 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 _HOOK_NAME="error-learning"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
 source "$(dirname "$0")/_lib/common.sh"
+source "$(dirname "$0")/_lib/tool-outcome.sh"
 
 check_private_mode
 read_stdin_json
 
-EXIT_CODE=$(stdin_field '.exit_code' '0')
 COMMAND=$(stdin_field '.tool_input.command' '')
+
+# No exit_code is ever sent. Failure is a change of type on tool_response, and
+# there are four outcomes, not two. See hooks/_lib/tool-outcome.sh.
+classify_tool_outcome "$_STDIN_JSON"
+EXIT_CODE="$TOOL_EXIT_CODE"
 # tool_response may be a plain string (stdout) or an object with stdout/stderr fields.
 # Use direct jq with type-checking to handle both formats.
 STDOUT=$(echo "$_STDIN_JSON" | jq -r 'if (.tool_response | type) == "object" then .tool_response.stdout // "" else .tool_response // "" end' 2>/dev/null || true)
 STDERR=$(echo "$_STDIN_JSON" | jq -r 'if (.tool_response | type) == "object" then .tool_response.stderr // "" else "" end' 2>/dev/null || true)
 
-# Only process failures
-[ "$EXIT_CODE" = "0" ] || [ "$EXIT_CODE" = "" ] && exit 0
-[ "$EXIT_CODE" = "null" ] && exit 0
+# Only process commands that actually ran and failed.
+#
+# The line this replaces was `[ A ] || [ B ] && exit 0`, which by left
+# associativity meant `(A || B) && exit 0`. With EXIT_CODE hardwired to the
+# literal "0" by the phantom-field default, condition A was always true, so the
+# hook exited unconditionally on every one of its 5,335 invocations.
+case "$TOOL_OUTCOME" in
+  ok)
+    exit 0
+    ;;
+  absent)
+    record_payload_contract_drift "$(_resolve_metrics_dir)" "error-learning"
+    exit 0
+    ;;
+  blocked)
+    # Command never ran (PreToolUse gate / permission / model unavailable).
+    # error-pipeline owns the gate-blocks.jsonl stream; do not double-log.
+    exit 0
+    ;;
+esac
 
 COMBINED="$STDOUT $STDERR"
 
@@ -71,7 +93,9 @@ fi
 # Extract service name from command path
 SERVICE=$(echo "$COMMAND" | grep -oE 'internal/[a-z_-]+' | head -1 | tr '/' '-' || echo "unknown")
 
+# TOOL_EXIT_CODE is "" when the failure carried no numeric code; emit null, not
+# a bare empty token that would make the row unparseable for all ten consumers.
 safe_jsonl_append "$ERROR_LOG" \
-  "{\"timestamp\":\"$TIMESTAMP\",\"timestamp_epoch\":$NOW_EPOCH,\"type\":\"$ERROR_TYPE\",\"service\":\"$SERVICE\",\"fingerprint\":\"$FINGERPRINT\",\"command\":$(echo "$COMMAND" | jq -Rs '.'),\"exit_code\":$EXIT_CODE}"
+  "{\"timestamp\":\"$TIMESTAMP\",\"timestamp_epoch\":$NOW_EPOCH,\"type\":\"$ERROR_TYPE\",\"service\":\"$SERVICE\",\"fingerprint\":\"$FINGERPRINT\",\"command\":$(echo "$COMMAND" | jq -Rs '.'),\"exit_code\":${EXIT_CODE:-null}}"
 
 exit 0
