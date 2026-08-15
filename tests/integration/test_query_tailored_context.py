@@ -25,7 +25,6 @@ from cos_lib.context_injector import (  # noqa: E402
     build_context,
     _task_hash,
     _cache_path,
-    _prefer_synthesis,
 )
 
 # ---------------------------------------------------------------------------
@@ -253,27 +252,32 @@ def kb_root(tmp_path: Path) -> Path:
     return tmp_path
 
 
-def test_non_adr_doc_serves_synthesis_sibling(kb_root: Path) -> None:
-    """A query matching a 04-Concepts source doc must serve its
-    .synthesis.md sibling, not the raw .md."""
+def test_non_adr_doc_serves_source_when_synthesis_also_exists(kb_root: Path) -> None:
+    """The property under test: when BOTH a source doc and its .synthesis.md
+    sibling exist, the injector serves the SOURCE.
+
+    Synthesis pages are unverified single-pass derivatives that freeze figures
+    copied from their source, so serving them makes the injector a drift
+    channel. This asserts the source-of-truth invariant, and fails against the
+    pre-2026-08-15 `_prefer_synthesis` remap.
+    """
     ctx = build_context(
         "cryptographic receipt ledger for harness tool invocation provenance",
         project_root=kb_root,
         use_cache=False,
     )
     assert ctx, f"Expected non-empty context, got: {ctx!r}"
-    assert "harness-action-receipts.synthesis.md" in ctx, (
-        f"Expected synthesis sibling to be served, got:\n{ctx}"
+    assert "`docs/04-Concepts/architecture/harness-action-receipts.md`" in ctx, (
+        f"Expected the SOURCE doc to be served, got:\n{ctx}"
     )
-    # The raw doc must NOT be surfaced directly when a synthesis page exists.
-    assert "harness-action-receipts.md`" not in ctx.replace(".synthesis.md`", ""), (
-        f"Raw doc surfaced instead of synthesis page:\n{ctx}"
+    assert ".synthesis.md" not in ctx, (
+        f"A synthesis page was served in place of its source:\n{ctx}"
     )
 
 
-def test_non_adr_doc_raw_fallback_when_no_synthesis(kb_root: Path) -> None:
-    """A query matching a 05-Methodology doc with no synthesis sibling must
-    serve the raw .md (fallback)."""
+def test_non_adr_doc_serves_source_when_no_synthesis(kb_root: Path) -> None:
+    """A doc with no synthesis sibling is served as itself — same as any other
+    source doc now that the remap is gone."""
     ctx = build_context(
         "estimation calibration planning-poker fibonacci story point voting squad",
         project_root=kb_root,
@@ -281,41 +285,57 @@ def test_non_adr_doc_raw_fallback_when_no_synthesis(kb_root: Path) -> None:
     )
     assert ctx, f"Expected non-empty context, got: {ctx!r}"
     assert "planning-poker-cadence.md" in ctx, (
-        f"Expected raw doc served as fallback, got:\n{ctx}"
+        f"Expected source doc served, got:\n{ctx}"
     )
+    assert ".synthesis.md" not in ctx, f"Unexpected synthesis page served:\n{ctx}"
 
 
-def test_adr_synthesis_behavior_unchanged(isolated_root: Path) -> None:
-    """ADR remap must still serve ADR-NNN.synthesis.md when present and fall
-    back to the raw ADR otherwise (no regression from the shared helper)."""
+def test_adr_serves_source_when_canonical_synthesis_exists(isolated_root: Path) -> None:
+    """Same invariant on the ADR path: a canonical ADR-NNN.synthesis.md must
+    never displace the ADR it was derived from."""
     adrs = isolated_root / "docs" / "02-Decisions" / "adrs"
-    # Add a canonical synthesis page for ADR-028.
     (adrs / "ADR-028.synthesis.md").write_text(
         "# ADR-028 — Rate Limiter (synthesis)\n\nCurated per-minute quota summary.\n"
     )
     ctx = build_context("refactor rate limiter", project_root=isolated_root, use_cache=False)
-    assert "ADR-028.synthesis.md" in ctx, (
-        f"Expected ADR-028 synthesis to be served, got:\n{ctx}"
+    assert "ADR-028-rate-limiter.md" in ctx, (
+        f"Expected the source ADR to be served, got:\n{ctx}"
     )
-    # ADR-040 has no synthesis page → raw ADR path must still be reachable via helper.
-    served = _prefer_synthesis(adrs / "ADR-040-query-tailored-context-injection.md")
-    assert served.name == "ADR-040-query-tailored-context-injection.md", (
-        f"Expected raw ADR fallback, got: {served}"
+    assert ".synthesis.md" not in ctx, (
+        f"ADR synthesis page served in place of the ADR:\n{ctx}"
     )
 
 
-def test_prefer_synthesis_helper(kb_root: Path) -> None:
-    """Direct unit coverage of the shared _prefer_synthesis remap helper."""
+def test_adr_serves_source_when_slugged_synthesis_exists(isolated_root: Path) -> None:
+    """The old remap had a second fallback — the slugged ADR-NNN-<slug>.synthesis.md
+    variant. That path must not resurface either."""
+    adrs = isolated_root / "docs" / "02-Decisions" / "adrs"
+    (adrs / "ADR-028-rate-limiter.synthesis.md").write_text(
+        "# ADR-028 — Rate Limiter (slugged synthesis)\n\nStale quota summary.\n"
+    )
+    ctx = build_context("refactor rate limiter", project_root=isolated_root, use_cache=False)
+    assert "ADR-028-rate-limiter.md" in ctx, (
+        f"Expected the source ADR to be served, got:\n{ctx}"
+    )
+    assert ".synthesis.md" not in ctx, (
+        f"Slugged ADR synthesis page served in place of the ADR:\n{ctx}"
+    )
+
+
+def test_synthesis_pages_are_never_scored_as_documents(kb_root: Path) -> None:
+    """Excluding synthesis pages from serving must not turn them into
+    independently scored documents — they stay out of the injector entirely."""
     concepts = kb_root / "docs" / "04-Concepts" / "architecture"
-    method = kb_root / "docs" / "05-Methodology"
-    # (a) general doc with synthesis sibling → synthesis served.
-    assert _prefer_synthesis(concepts / "harness-action-receipts.md").name == (
-        "harness-action-receipts.synthesis.md"
+    # A synthesis page whose text is the ONLY place these tokens appear.
+    (concepts / "orphan-topic.synthesis.md").write_text(
+        "# Orphan Topic (synthesis)\n\n"
+        "Quasistellar bathysphere fandango zeppelin marmalade cryptogram.\n"
     )
-    # (b) general doc without sibling → raw returned.
-    assert _prefer_synthesis(method / "planning-poker-cadence.md").name == (
-        "planning-poker-cadence.md"
+    ctx = build_context(
+        "quasistellar bathysphere fandango zeppelin marmalade cryptogram",
+        project_root=kb_root,
+        use_cache=False,
     )
-    # (c) a synthesis page is idempotent (returns itself, never double-mapped).
-    syn = concepts / "harness-action-receipts.synthesis.md"
-    assert _prefer_synthesis(syn) == syn
+    assert "orphan-topic.synthesis.md" not in ctx, (
+        f"A synthesis page was scored and served on its own:\n{ctx}"
+    )
