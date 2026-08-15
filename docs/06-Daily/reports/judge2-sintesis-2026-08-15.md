@@ -1,32 +1,36 @@
 # Síntesis del panel de jueces — 2026-08-15
 
-> Cinco jueces independientes, read-only, sobre `luum-agent-os` @ `8602ddc70` (main).
-> Cada uno escribió su propio informe; este consolida y resuelve los desacuerdos.
-> Todo número acá lleva su informe de origen. Lo que no se midió, se declara.
+> Dieciséis jueces independientes, read-only, sobre `luum-agent-os` @ `8602ddc70`.
+> Cada uno escribió su informe; este consolida, resuelve los desacuerdos y corrige
+> las cifras que no reprodujeron — incluidas varias que este documento publicó en
+> su primera versión.
 
-**Pregunta del operador:** ¿vale la pena, la documentación es consistente, funciona todo?
-
----
-
-## Veredicto en tres líneas
-
-1. **¿Vale la pena?** Sí, pero **podando** — hay dos consumidores reales y valor medible, sobre 8x más superficie de la que se entrega.
-2. **¿La documentación es consistente?** No. 30/100. Pero es deuda **mecánica**, no mentira: se renombró un directorio y no se barrió.
-3. **¿Funciona todo?** Compila y arranca. **Instala mal.** La suite de tests quedó **sin medir** (máquina saturada) — no estimada: sin medir.
+**Preguntas del operador:** ¿vale la pena? ¿la documentación es consistente?
+¿funciona todo? ¿reinventamos mecanismos que ya son estándar?
 
 ---
 
-## El hilo que une los cinco informes
+## Veredicto en cuatro líneas
 
-**Acá la ausencia no falla: se traga.** Es un solo mecanismo, repetido en cinco capas distintas:
+1. **¿Vale la pena?** Sí, **podando** — dos consumidores reales y valor medible, sobre 8x más superficie de la que se entrega. Criterio fechado al 2026-09-15.
+2. **¿La documentación es consistente?** No. 30/100. Deuda **mecánica**: el 93,8% de los links rotos apunta a un archivo cuyo basename existe.
+3. **¿Funciona todo?** Compila y arranca. **Instala mal.** La suite se corrió recién al cierre de la sesión (ver §Estado final).
+4. **¿Reinventamos?** **No.** El repo proyecta hacia AGENTS.md, Agent Skills y MCP. Lo propio cubre la única familia sin estándar (hooks). El riesgo real es otro: **la abstracción no está validada**.
 
-| Capa | Forma que toma | Fuente |
-|---|---|---|
-| Imports | **61** `try` con import cuyos handlers son todos `pass`, en 42 archivos sobre 3037 `.py` (ver §Correcciones — el 439 del informe de costo-gobernanza **no reproduce**) | recuento propio por AST |
-| Shell | `\|\| true` en el wrapper de timing: telemetría a `/.cognitive-os/metrics/`, silencio | funcionamiento |
-| Auditores | `cos_doc_path_audit.py` → 2733 findings, `exit 0`. `check_entrypoint_adr_links.py` → 96 links rotos, imprime `ok` | vigencia + docs |
-| Instalador | envía un subconjunto y **nunca valida que satisfaga sus propios imports** | funcionamiento |
-| Configuración | `phase: reconstruction` desde el commit inicial ⇒ 3 de 4 capas bloqueantes inalcanzables | costo-gobernanza |
+---
+
+## El hilo que une los dieciséis informes
+
+**Acá la ausencia no falla: se traga.** Un solo mecanismo, en seis capas:
+
+| Capa | Forma que toma |
+|---|---|
+| Imports | **61** `try` con import cuyos handlers son todos `pass`, en 42 archivos |
+| Shell | `\|\| true` en el wrapper de timing: telemetría a `/`, silencio |
+| Auditores | `cos_doc_path_audit.py` → 2733 findings, `exit 0` · `cos-scope-projection-audit --strict` → `projection_total: 0` |
+| Instalador | envía un subconjunto y **nunca valida que satisfaga sus propios imports** |
+| Configuración | `phase: reconstruction` desde el commit inicial ⇒ 3 de 4 capas bloqueantes inalcanzables |
+| Tests | **62,6% de 922 proofs** cambian el `cwd`, no el árbol de archivos: prueban lo que no importa |
 
 Un sistema que se anuncia como *governance layer* y cuyo modo de falla dominante es **fallar en silencio con rc=0** tiene un problema de tesis, no de bugs.
 
@@ -34,149 +38,137 @@ Un sistema que se anuncia como *governance layer* y cuyo modo de falla dominante
 
 ## Los números que deciden
 
-### Costo (confirma la acusación del operador)
+**Costo:** $3.005,18 en 38 sesiones · $0,739/turno · **374.047 tokens de contexto releídos por turno** (96,5% cache read) · ~22 procesos de hook por tool call · piso 3,1 s, `Stop` 25 s.
 
-| Métrica | Valor | Fuente |
-|---|---|---|
-| Gasto acumulado | **$3.005,18 / 38 sesiones** | costo-gobernanza |
-| Por turno | $0,739 | ídem |
-| Contexto releído por turno | **374.047 tokens** (96,5% cache read) | ídem |
-| Procesos de hook por tool call | ~22 · piso ~3,1 s · `Stop` 25 s | ídem |
-| Impuesto fijo por sesión | ~14.749 tokens | ídem |
+**Gobernanza:** 14 declarados / 9 registrados / 9 disparados / **0 que bloquearon**. 29 `exit 2` en 30.515 invocaciones, **ninguno del mesh de 14 capas**. Los cinco hooks que sí gobiernan no pertenecen al mesh anunciado.
 
-El OS **sí mide su propio costo** (`cost-events.jsonl`, `is_estimate: false`). El problema no es ceguera: el número está, con cuatro sesiones arriba de $575, y nadie lo mira.
+**Entrega:** 257 en disco → 155 registrados → 78 proyectados → 44 cableados → 31 dispararon = **12%**. Análogos: `cos_lib` 39/369 · skills 10/197 · scripts 0/741.
 
-### Gobernanza (confirma la segunda acusación)
+**Primitivas:** skills 192 existen, 192 alcanzables, **2 invocadas alguna vez**. workflows 7, **0 cableados**. agents 1, **0**. squads 1, **0**. De 32 muestreadas contra su documentación: 13 hacen lo que dicen, 10 hacen menos, 6 hacen otra cosa, **8 no hacen nada**.
 
-**14 declarados / 9 registrados / 9 disparados / 0 que bloquearon.**
-29 `exit 2` en 30.515 invocaciones (0,095%), **ninguno del mesh de 14 capas**.
+**Documentación:** link rot **1744/3095 = 56,3%** · 6 archivos concentran 1197 · **9268** citas a rutas inexistentes en 48,6% de los `.md` · **1020 (42,9%)** commiteados una sola vez.
 
-Los cinco hooks que **sí** gobiernan no pertenecen al mesh anunciado. `subagent-budget-enforcer` explica 16 de los 29 bloqueos y produjo dos más durante esta misma auditoría.
+**Conformidad:** **189 de 194** SKILL.md usan vocabulario que ninguna spec reconoce · 128 descripciones no dicen cuándo usarlas · el repo define 1 subagente y el harness carga **0**.
 
-### Entrega
+**Remediación:** **0 de 41** hallazgos del panel del 2026-07-28, porque `git log --all --since=2026-07-29` devolvía **0 commits**. El repo se había detenido — diagnóstico distinto de ignorar los hallazgos.
 
-Cadena medida, origen → consumidor: **257** en disco → **155** registrados → **78** proyectados → **44** cableados → **31** dispararon. **12%.**
-Análogos: `cos_lib` 39/369 · skills 10/197 · scripts 0/741.
+---
 
-### Documentación
+## La respuesta sobre reinvención
 
-Link rot **1744/3095 = 56,3%** · **6 archivos concentran 1197 de los rotos** · **9268** citas a rutas inexistentes en 48,6% de los `.md` · **1020 `.md` (42,9%)** commiteados una sola vez.
+| Familia | ¿Hay estándar? | ¿Se usa? | ¿Como lo dicta? |
+|---|---|---|---|
+| Instrucciones | AGENTS.md (AAIF/Linux Foundation) | Sí | **Sí** |
+| Skills | Agent Skills / SKILL.md | Sí | **No** — 6 desvíos duros |
+| Hooks | **no existe** | — | Extensión legítima |
+| Herramientas | MCP | Sí | Sí, hasta donde se leyó |
 
-### Remediación
+**`SCOPE:` no es reinvención pura: es híbrido.** Lo nativo no tiene marca de audiencia por archivo, pero resuelve el mismo problema con otra granularidad — **el plugin es la unidad de distribución**, y ahí el cierre de dependencias es estructural en vez de declarativo. ADR-019 rechazó partir directorios "porque rompería imports y symlinks", y esa decisión es la causa directa de las 18 violaciones de hoy. El ADR **nunca evaluó un mecanismo nativo**: comparó tres alternativas propias entre sí.
 
-**0 de 41 hallazgos del panel del 2026-07-28.** Causa: `git log --all --since=2026-07-29` → **0 commits en 18 días**. No es desidia frente a los hallazgos; el repo se detuvo.
+**La abstracción multi-harness es el riesgo real:** 27 harnesses registrados, **2** con ciclo de vida nativo, 1 con wrapper, **19 con prueba solo estructural compartiendo un único archivo de test**, y `external-adoption-evidence.yaml` con `reports: []` — **cero instalaciones de terceros**.
+
+**Y el desvío que más cuesta:** `opencode.json > instructions` cargaba los SKILL.md como instrucciones siempre activas — anula el progressive disclosure y duplica, porque OpenCode además descubre `.claude/skills/` nativamente. **Corregido hoy.**
 
 ---
 
 ## Bugs concretos, con archivo y línea
 
-1. **`--help/`** la creó `scripts/context_budget_meter_fast.py`: `:53` `Path(argv[1]).resolve()` sin `argparse` ni validación → `:72` arma `project/.cognitive-os/metrics` → `:46` `mkdir(parents=True)`. Reproducido en dir vacío: rc=0 y el mismo árbol. **La creó el propio panel anterior** durante su barrido de `--help`, el 2026-07-28 22:41.
-2. **`cos-root` no llega al destino.** `hook-timing-wrapper.sh:65` lo invoca; el instalador re-ubica el wrapper sin su dependencia. `PROJECT_DIR` vacío → telemetría a `/.cognitive-os/metrics/` → `|| true`. **36 de 36 hooks** instalados pasan por ahí. Matiz que corrige al consumidor y a este mismo informe en su primera versión: **el timing funcionó y dejó de funcionar** — 141.679 registros hasta el 2026-07-19. "Nunca funcionó" es más fuerte que los datos.
-3. **5 módulos no llegan** (`harness_environment`, `record_completion`, `dispatch_model_advisor`, `user_model`, `project_profile_bootstrap`). Dos **sin guarda**: `ModuleNotFoundError` ejecutado, no inferido. Medido aparte sobre `luum-talent` (instalación prístina, no FinOpenPOS): **4 módulos que los hooks importan nunca se empaquetaron** — `capability_levels`, `context_budget`, `performance_monitor`, `process_registry` — y los cuatro fallan callados por `except Exception: pass` en `common.sh:143` y `2>/dev/null || true` en `timing.sh:60`. **19 hooks sourcean `common.sh`.**
-4. **`confidentiality-enforcer` falla abierto 2.408 veces en agosto** entre los dos consumidores (`ModuleNotFoundError: cos_lib` → `exit=0`). 26 días de control muerto, con el evento en el propio directorio de métricas.
-5. **`check_entrypoint_adr_links.py` normaliza el bug que debería detectar** — resuelve contra `docs/02-Decisions/adrs/` en vez del directorio del archivo. Arreglo de **una línea**.
-6. **`safety-mesh.md` se contradice tres veces sobre el mismo número** (capa 11 / 10 / 9 para `auto-rollback-trigger.sh`), se titula "14-Layer" y documenta 12.
-7. **`protected-config-write-guard.sh`** hace substring match sobre el texto del comando, no sobre el destino: bloqueó una escritura al scratchpad por contener `hooks/cos/_lib`. Falso positivo.
+1. **`--help/`** la creó `scripts/context_budget_meter_fast.py`: `:53` `Path(argv[1]).resolve()` sin validar → `:72` arma `project/.cognitive-os/metrics` → `:46` `mkdir(parents=True)`. La creó el propio panel anterior el 2026-07-28 22:41.
+2. **`cos-root` no llega al destino.** `hook-timing-wrapper.sh:65` lo invoca; el instalador re-ubica el wrapper sin su dependencia. **36 de 36 hooks** instalados pasan por ahí. Matiz: el timing **funcionó y dejó de funcionar** — 141.679 registros hasta el 2026-07-19.
+3. **`record_completion` → `learning_pipeline` (os-only), a nivel de módulo** → `ImportError` en todo consumidor, tragado por un `except` compartido con `CircuitBreaker`. **El circuit breaker estuvo muerto en toda instalación. Arreglado hoy.**
+4. **`confidentiality-enforcer` falló abierto 2.408 veces en agosto** en dos consumidores. 26 días de control muerto.
+5. **`manifests/provenance-scan.yaml`** es la denylist de confidencialidad y para funcionar nombra proyectos privados. Se copia con `shutil.copy2` **sin `scope_allows`** (`cos_init.py:1436-1440`), está **trackeada en git** y presente en **16 de 16 instalaciones**, incluidas organizaciones distintas. **Sin resolver.**
+6. **`check_entrypoint_adr_links.py`** resuelve contra `docs/02-Decisions/adrs/` en vez del directorio del archivo. Arreglo de una línea.
+7. **`safety-mesh.md` se contradice tres veces** sobre la capa de `auto-rollback-trigger.sh` (11 / 10 / 9) y documenta 12 capas bajo un título de 14.
+8. **`settings-driver-claude-code.sh`** declara canónico a `cognitive-os.yaml > harness.hooks`, asigna `CONFIG_FILE` y **nunca lo usa**: 184 literales hardcodeados, **36 hooks del YAML nunca se ejecutan**, y su `--check` se compara contra su propio emit.
+9. **`lib_closure.py:92-96`** descarta `from cos_lib import x` entero — 6 módulos, 16 usos. Produce imports colgantes en consumidores.
+10. **13 call-sites de copiado saltean `scope_allows`**, no 3.
 
 ---
 
 ## Correcciones a este mismo panel
 
-Dos números que este panel publicó **no reproducen**, y se corrigen acá con el comando que los mide:
+Un panel que no se corrige a sí mismo no verificó nada. Lo que no reprodujo:
 
-| Publicado | Medido | Comando |
+| Publicado | Medido | Por qué falló |
 |---|---|---|
-| "439 `try/except: pass`" (costo-gobernanza) | **61**, en 42 archivos sobre 3037 `.py` | recuento por AST: `ast.Try` cuyo `body` contiene `Import`/`ImportFrom` y **todos** sus handlers son exactamente `pass` (`scratchpad/recount.py`) |
-| "433 referencias a `lib/*.py`, cero resuelven" (costo-gobernanza) | depende del patrón: `rules/` **96**, `docs/` **6580** | `/usr/bin/grep -rEoh 'lib/[a-z_0-9]+\.py' rules/ \| wc -l` |
+| 439 `try/except: pass` | **61** | patrón laxo, sin AST |
+| 433 refs a `lib/*.py` | `rules/` 96 · `docs/` 6580 | depende del patrón |
+| 20 violaciones de scope | **18 archivos / 20 aristas** | symlinks sin resolver |
+| ~75 archivos sin marcador | **70** en `cos_lib` · **144** que aterrizan | dos preguntas distintas |
+| ~8 módulos no enviados | **5** (instalación nueva) · **9** (parque instalado) | dos preguntas distintas |
+| 8 archivos con `# scope:` minúscula | riesgo **cero** | los 106 tienen mayúscula en la línea 1 |
+| 1018/1097 con marcador | **915/990** | symlinks |
+| `cos_lib.providers` dangling | **existe**, 13 importadores | — |
+| `5ba9de934` fue verde barato | **las dos cosas** | ver abajo |
 
-El fenómeno es real en los dos casos; la cifra publicada no. Un panel cuyo argumento central es *"un número sin comando es opinión con dígitos"* tiene que aceptar el corolario: **un número con comando que no reproduce es peor que uno sin comando**, porque compra credibilidad que no tiene. Mismo defecto que este panel le señaló al del 2026-07-28 (tres off-by-one con cero commits de por medio).
+**Sobre `5ba9de934`:** dos jueces lo declararon corrección legítima, uno dijo ambas cosas. Desempata `cos_init.py:1888-1893`, que **sintetiza un `__init__.py` vacío** si el fuente no está — así que "Python necesita su `__init__.py`" justifica que exista un archivo en el destino, no que se copie el fuente. El gate en rojo lee el marcador en las primeras 8 líneas de lo instalado: editar la línea 1 es la acción más corta que lo apaga sin cambiar lo que viaja.
 
-**Corrección a la sesión consumidora:** `cos_lib.providers` **no es dangling**. Existe como paquete (`cos_lib/providers/__init__.py`, `claude_sdk.py`) con 13 importadores. El resto de su triaje de imports no se auditó.
-
----
-
-## Riesgo destructivo — leer antes de reinstalar
-
-`install.sh:416` y `install.sh:425` hacen **`rm -rf "$TARGET_DIR"`** en el camino `--force` y en el interactivo-sí. **Verificado en este repo.** Borra `.cognitive-os/` completo: `metrics/`, `sessions/`, `runtime/`, `cache/`, `reports/` y cualquier agregado local. Con 16 instalaciones y la telemetría viviendo ahí adentro, un `--force` destruye la única evidencia sobre la que se apoya toda esta auditoría.
-
-Antes de cualquier reinstalación: `cp -R .cognitive-os .cognitive-os.bak`. FinOpenPOS última y a mano — tiene ~19 rutas untracked ahí adentro.
-
----
-
-## Cobertura de matchers: el control se rodea sin romperlo
-
-Los matchers registrados en `.claude/settings.json` son:
-
-`Agent` · `Bash` · `Bash|Edit|Write` · `Edit|Write` · `Edit|Write|MultiEdit` · `Read` · `Read|Grep|Glob|LS` · `Skill` · `TodoWrite` · dos de engram · uno vacío.
-
-**No hay matcher para `Monitor`, `Task`, `WebFetch`, `WebSearch` ni para el resto de MCP.** La sesión consumidora reportó haber esquivado sin querer su propio rate limiter corriendo trabajo por `Monitor`, que ningún matcher cubre. No derrotaron el control: lo rodearon. Cuarta instancia de la misma familia — **un control cuyo modo de falla es el silencio**.
+**El corolario, que vale más que el caso:** un número con comando que no reproduce es peor que uno sin comando, porque compra credibilidad que no tiene.
 
 ---
 
-## Desacuerdos del panel, resueltos
+## Lo que se arregló hoy
 
-| Cuestión | Resolución |
+| Commit | Qué |
 |---|---|
-| ¿Cuántos ADRs? | **351 ADRs reales.** Los 501 son archivos `ADR-*.md`, de los cuales 150 son `.synthesis.md`. Los 505 incluyen INDEX/README/STATUS-TAXONOMY/templates. Vigencia midió 350; la diferencia de uno no se arbitró. |
-| ¿`confidentiality.yaml` sin `git add`? | **No.** Está ignorado por diseño (`.gitignore:8` → `.cognitive-os/*`). El defecto es que el scanner depende de config que vive donde el contrato dice que nada viaja. Cambia el arreglo. |
-| ¿Registraciones fantasma en el origen? | **No.** 162 entradas, 324 refs, **324 resuelven, 0 fantasmas, 0 duplicados**. El defecto está en la traducción de layout al instalar. |
-| ¿Todos los auto-auditores son gates falsos? | **No.** `documentation_truth_audit.py` sí está gateado con `--fail-on-block`. Los otros dos no. |
-| Caso peor de los imports | **Los dos son reales y son defectos distintos.** El juez de funcionamiento reportó que `circuit_breaker`/`record_completion` "no tiene la forma descrita" y **se equivocó**: el bloque está en `hooks/_lib/dispatch_gate_check.py:172-182`, copia única (verificado con `find` + `readlink -f`, sin symlinks), con los dos imports consecutivos en un solo `try`, `cb.can_launch()` dentro del mismo bloque y un `except` que acumula el error en un string que nadie lee. `record_completion.py` no se envía ⇒ la línea 174 aborta el bloque y el breaker nunca se evalúa. `harness_environment` es peor en severidad —import **sin guarda**, revienta el hook entero— pero no lo reemplaza. |
-| ¿`check_test_ratchet.py --help` cuelga? | **Sin arbitrar.** Un juez dice que cuelga a los 20s, otro que ejecuta con exit 0. |
+| `05a852f7a` | esquema de confidencialidad atado a su parser · plantilla versionada · test de contrato |
+| `6bb75a580` | circuit breaker revivido · `cb_evaluated` · gate de clausura de scope |
+| `3682bd75a` | tres superficies dejan de afirmar comportamiento que no tienen |
+| `f03f7d319` | 19 informes de jueces, incluidos 6 que llevaban 18 días sin commitear |
+| `3a6e737ba` | los dos guards de rutas distinguen una fuga de un documento sobre fugas |
+| `e8f8e725b` | el gate caza imports colgantes y deja de crashear con clases nuevas |
+
+Más: 125 symlinks absolutos convertidos a relativos, y ~21,9K tokens de carga fija por prompt eliminados de `opencode.json`.
 
 ---
 
 ## Lo que NO se midió
 
-- **La suite de tests.** Swap 37,6 GB de 38,9 · load 21,27. Correrla habría sido irresponsable. Queda pendiente.
-- **El mecanismo de duplicación de registraciones** (98 donde debería haber 36–47). Se localizó el driver `scripts/_lib/settings-driver-claude-code.sh` (614 líneas); no se leyó.
-- **Si los 214 hooks podables están rotos o solo no se gatillaron.**
+- **El mecanismo de duplicación de registraciones** (98 donde debería haber 36–47). Localizado el driver, no leído.
+- **Si `forbidden_terms` viaja poblada** en las otras 15 instalaciones. Es un `grep -c` y decide la severidad del hallazgo 5.
+- **Los 19 harnesses estructurales** en runtime.
 - **Si los consumidores hubieran avanzado igual sin el OS.** Decide el ROI real y ningún comando la contesta.
 
 ---
 
 ## Orden de trabajo
 
-**Hoy, irreversible si no se hace:** `git push origin main` — 4 commits sin pushear hace 26 días; la última feature existe en una sola máquina.
+**Antes de podar** — podar sobre una cadena de entrega que no se sabe medir borra primitivas que nunca dispararon *porque nunca llegaron*:
 
-**Antes de podar** (podar sobre una cadena de entrega que no se sabe medir borra primitivas que nunca dispararon *porque nunca llegaron*):
-
-1. Un self-check de cierre de imports en el instalador — falla el install si un módulo enviado no puede satisfacer sus imports en destino.
-2. `cos-root` viaja con su wrapper.
+1. Self-check de clausura de imports en el instalador, que **falle la instalación**.
+2. `cos-root` viaja con su wrapper, o la dependencia se elimina.
 3. Alertar sobre cualquier `*_fail_open`.
 
-**Barato y de alto retorno:**
+**Barato y de alto retorno:** `lib/` → `cos_lib/` en `rules/` (129 archivos, es el corpus que entra al contexto de todo agente) · prefijo de los 6 índices peores (liquida 1197 de 1744 links rotos) · superficie pública en un commit · bajar el número de harnesses de la portada de 22 a 3.
 
-4. `lib/` → `cos_lib/` en `rules/` (129 archivos, sustitución literal). Es el corpus que entra al contexto de todo agente.
-5. Prefijo de los 6 índices peores → liquida 1197 de 1744 links rotos.
-6. Superficie pública en un commit: `VERSION`/badge/`package.json`, los 4 badges con `<org>/<repo>`, `npm test`, el hash de `TRANSPARENCY.md`, las 21 entradas falsas del CHANGELOG.
-
-**Decisión del operador, no bug:** elegir la fase, o sacarles el condicional de fase a las capas bloqueantes. Mientras siga en `reconstruction`, el mesh no puede bloquear nada.
-
-**Después:** la poda (216 hooks, 330 módulos, 187 skills, instalaciones inertes) y retención de checkpoints — `aisotropy` tiene 11G en `.cognitive-os`, 440x lo versionado del OS entero (25M).
+**Decisión del operador, no bug:** elegir la fase. Mientras siga en `reconstruction`, el mesh no puede bloquear nada.
 
 ---
 
 ## Criterio de go/no-go, fechado
 
-Al **2026-09-15**, tres condiciones con comando:
+Al **2026-09-15**, cuatro condiciones con comando:
 
 - `hooks/*.sh` ≤ 60 — hoy 257
-- `scan_error_fail_open` de los últimos 7 días == 0 en ambos consumidores — hoy 126
+- `scan_error_fail_open` de 7 días == 0 en ambos consumidores — hoy > 0
 - un tag con fecha ≥ 2026-08-16 — hoy el último es del 2026-07-20
+- clausura de imports en cero sobre una instalación que no sea FinOpenPOS — hoy 4
 
-**Si la segunda sigue > 0 al 2026-09-15, pasa a CONGELAR.** Sin discusión.
+**Si la segunda o la cuarta siguen > 0 al 2026-09-15, pasa a CONGELAR.** Sin prórroga.
 
-Dato que abarata cualquier decisión drástica: **archivar este repo no rompe a los consumidores.** Sus `settings.json` apuntan a su propio `.cognitive-os/`, nunca acá.
+Dato que abarata cualquier decisión drástica: **archivar este repo no rompe a los consumidores.** Sus `settings.json` apuntan a su propio `.cognitive-os/`.
 
 ---
 
 ## Informes de origen
 
-- [judge2-sentido-2026-08-15.md](judge2-sentido-2026-08-15.md) — go/no-go
-- [judge2-vigencia-2026-08-15.md](judge2-vigencia-2026-08-15.md) — vigencia de los hallazgos del 2026-07-28
-- [judge2-costo-gobernanza-2026-08-15.md](judge2-costo-gobernanza-2026-08-15.md) — costo y gates
-- [judge2-docs-2026-08-15.md](judge2-docs-2026-08-15.md) — consistencia documental
-- [judge2-funcionamiento-2026-08-15.md](judge2-funcionamiento-2026-08-15.md) — instalación, compilación, entrypoints
+**Panel 1 (2026-07-28):** `judge-{adversarial,codigo,documentacion,funcionamiento,primitivas,vale-la-pena}-2026-07-28.md`
 
-Panel anterior, sin commitear, del 2026-07-28: `judge-*-2026-07-28.md` (6 informes).
+**Panel 2 — vigencia y estado:** [sentido](judge2-sentido-2026-08-15.md) · [vigencia](judge2-vigencia-2026-08-15.md) · [costo-gobernanza](judge2-costo-gobernanza-2026-08-15.md) · [docs](judge2-docs-2026-08-15.md) · [funcionamiento](judge2-funcionamiento-2026-08-15.md)
+
+**Panel 3 — primitivas y estándares:** [primitivas](judge3-primitivas-2026-08-15.md) · [scope-reinvención](judge3-scope-reinvencion-2026-08-15.md) · [harness-reinvención](judge3-harness-reinvencion-2026-08-15.md) · [conformidad](judge3-conformidad-2026-08-15.md)
+
+**Panel 4 — la fuga de los sin marcador:** [censo](judge4-fuga-censo-2026-08-15.md) · [triaje](judge4-fuga-triaje-2026-08-15.md) · [default](judge4-fuga-default-2026-08-15.md)
+
+**Panel 5 — verde barato:** [forense](judge5-verde-barato-forense-2026-08-15.md) · [patrón](judge5-verde-barato-patron-2026-08-15.md) · [arreglo](judge5-verde-barato-arreglo-2026-08-15.md)
