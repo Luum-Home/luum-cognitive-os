@@ -103,7 +103,7 @@ DEFAULT_HOOKS = (
     "user-prompt-capture session-wrapup-trigger session-heartbeat memory-prefetch "
     "clarification-gate blast-radius scope-proportionality bash-hot-path-dispatcher provenance-scan orchestrator-claim-gate "
     "error-pattern-detector auto-refine auto-verify dod-gate "
-    "trust-score-validator skill-metrics-tracker inject-phase-context stack-detector "
+    "trust-score-validator inject-phase-context stack-detector "
     "pre-compaction-flush rate-limiter large-file-advisor secret-detector content-policy "
     "research-compliance-guard "
     "doc-sync-detector auto-checkpoint claim-validator completion-gate "
