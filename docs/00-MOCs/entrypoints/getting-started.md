@@ -1,6 +1,81 @@
 # Getting Started with Cognitive OS
 
 > From zero to a fully managed AI agent operating system in your project.
+>
+> **This is the single install door.** `quickstart.md` and
+> `getting-started-quick.md` now point here; everything they covered lives in
+> this page.
+
+**Pick your question:**
+
+| You want to | Go to |
+|-------------|-------|
+| Install it in under a minute | [Fast path](#fast-path-one-minute) below |
+| Understand what to install first | [Prerequisites](#prerequisites) |
+| Install into an existing project without breaking `.claude/` | [Coexistence](#coexistence-with-existing-claude-config) |
+| Know what works without Docker | [What Works Without Docker?](#what-works-without-docker) |
+| Update or remove it | [Upgrade and uninstall](#upgrade-and-uninstall) |
+| Know if a hook actually runs | [What Happens at Session Start](#what-happens-at-session-start) |
+| Add a hook, rule, or skill | [How to Extend](../../05-Methodology/root/how-to-extend.md) |
+
+---
+
+## Fast path (one minute)
+
+If you just want it running and will read the rest later.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Luum-Home/luum-cognitive-os/main/scripts/install-cos.sh | bash
+```
+
+Or with Go:
+
+```bash
+go install github.com/Luum-Home/luum-cognitive-os/cmd/cos@latest
+```
+
+Then, for a new project:
+
+```bash
+cos new my-api --template go   # templates: go, typescript, python, minimal
+cd my-api
+```
+
+Or for a project you already have:
+
+```bash
+cd your-project
+cos init                       # interactive wizard, detects your stack
+```
+
+### Use it
+
+Open Claude Code and talk normally:
+
+| You say | COS does |
+|---------|----------|
+| "add JWT auth" | Runs the SDD pipeline (propose, spec, design, apply, verify) |
+| "fix the login bug" | Auto-selects plan-bug + systematic-debugging |
+| "run the tests" | Detects your framework, runs with coverage |
+| "check security" | Runs security-audit with Semgrep + aguara |
+
+### Essential commands
+
+```bash
+cos status              # check COS health
+cos search <query>      # find packages
+cos install <package>   # install a package
+cos version             # show versions
+```
+
+### Configuration
+
+Edit `cognitive-os.yaml` in your project root:
+
+- `project.phase` — enforcement strictness
+- `efficiency.profile` — hook overhead (lean/standard/full)
+- `resources.budget` — cost limits
+- `model_capability.level` — safety net depth
 
 ---
 
@@ -512,7 +587,39 @@ Most of Cognitive OS runs with zero external dependencies. Here is what each fea
 | Langfuse/Opik | Yes | No | No |
 | Agent Bus (Valkey) | Yes | Yes | No |
 
-For a faster start, see the [Quickstart](quickstart.md) guide.
+For a faster start, see the [Fast path](#fast-path-one-minute) above.
+
+---
+
+## Upgrade and uninstall
+
+If you installed from a local clone of the source (`scripts/cos-init.sh`), the
+same clone carries the upgrade and uninstall scripts:
+
+```bash
+bash /path/to/luum-cognitive-os/scripts/upgrade.sh
+bash /path/to/luum-cognitive-os/scripts/uninstall.sh
+```
+
+To update a project from the OS repo instead:
+
+```bash
+# In the COS repo — a release auto-updates every registered project:
+cos release --patch
+
+# Or update one project by hand:
+cd /path/to/your-project
+COS_SOURCE_DIR=/path/to/luum-cognitive-os cos setup --non-interactive --preset team
+```
+
+Projects register themselves during `cos setup`. Check registration with:
+
+```bash
+cat ~/.cognitive-os/installations.json
+```
+
+To remove COS by hand without touching your own project config, see
+[Coexistence](#coexistence-with-existing-claude-config).
 
 ---
 

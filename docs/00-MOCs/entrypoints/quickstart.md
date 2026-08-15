@@ -1,56 +1,30 @@
-# Cognitive OS -- 5 Minute Quickstart
+# Cognitive OS — Quickstart
 
-## Install
+**This page moved.** The install instructions live in one place now:
+**[getting-started.md](getting-started.md)**.
 
-```bash
-# Clone the Cognitive OS source (one-time)
-git clone https://github.com/luum-home/luum-agent-os.git ~/.cognitive-os-src
+- Under a minute → [Fast path](getting-started.md#fast-path-one-minute)
+- Without Docker → [What Works Without Docker?](getting-started.md#what-works-without-docker)
+- Update or remove → [Upgrade and uninstall](getting-started.md#upgrade-and-uninstall)
 
-# cd into YOUR PROJECT, then run the installer
-cd /path/to/your/project
-bash ~/.cognitive-os-src/scripts/cos-init.sh
-```
+This file is kept as a redirect because other documents still link to it.
 
-> The installer installs into the **current directory**. Always `cd` into your project first.
+---
 
-## That's it. Start coding.
+## Why this page no longer carries its own commands
 
-The AI already knows about:
-- **Quality gates** -- verifies its own work before claiming done
-- **Error learning** -- captures mistakes, warns on repeat patterns
-- **Safe operations** -- won't delete what it shouldn't
+It had drifted away from the repository it was describing (verified 2026-08-15):
 
-No Docker, Python, or Go required for core features.
+- It cloned `github.com/luum-home/luum-agent-os`. The actual remote is
+  `github.com/Luum-Home/luum-cognitive-os` (`git remote -v`), so the documented
+  clone did not resolve.
+- It offered `cos-init.sh --full` / `--minimal` / `--standard`. `scripts/cos-init.sh`
+  parses no such flags (`grep -nE 'minimal|standard|full' scripts/cos-init.sh`
+  returns nothing).
 
-## Want more?
+Its "what works without Docker" table was a subset of the one in
+`getting-started.md`, which additionally covers the `cos` CLI row. Nothing
+unique was lost in the merge.
 
-```bash
-bash ~/.cognitive-os-src/scripts/cos-init.sh --full  # or --minimal / --standard
-```
-
-## What works without Docker?
-
-| Feature | Docker? | Python? | Go? |
-|---------|---------|---------|-----|
-| Core rules + hooks | No | No | No |
-| SDD pipeline | No | No | No |
-| Safety mesh | No | No | No |
-| Error learning | No | No | No |
-| cos-test TUI | No | No | Yes |
-| Performance monitor | No | Yes | No |
-| Cost dashboard | No | Yes | No |
-| Testcontainers | Yes | Yes | No |
-| Langfuse/Opik | Yes | No | No |
-| Agent Bus (Valkey) | Yes | Yes | No |
-
-## Upgrade
-
-```bash
-bash ~/.cognitive-os-src/scripts/upgrade.sh
-```
-
-## Uninstall
-
-```bash
-bash ~/.cognitive-os-src/scripts/uninstall.sh
-```
+If you install from a local clone of the source, that path still works and is
+documented in [Upgrade and uninstall](getting-started.md#upgrade-and-uninstall).
