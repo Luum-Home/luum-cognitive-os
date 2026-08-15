@@ -14,8 +14,18 @@ Two halves:
 * ``--lint`` (default): static scan of every registered hook for payload reads
   and classification of their defaults.
 * ``--canary``: compares the payload fields hooks depend on against the fields
-  actually observed in harness transcripts.  Fires when the harness moves a
-  field, before the hook silently rots.
+  the harness actually sent.  Fires when the harness moves a field, before the
+  hook silently rots.
+
+The canary reads payloads from one of three sources, in this order of
+determinism:
+
+1. the in-repo corpus (default) — ``tests/fixtures/payload-corpus/``, redacted
+   keys-and-types captured by ``scripts/capture_payload_corpus.py``.  Same
+   answer on every machine, so this is the source a test can gate on.
+2. ``--live`` — this machine's harness transcripts, auto-detected.  Answers the
+   question the corpus cannot: *did the harness change since we captured?*
+3. ``--transcripts <dir>`` — an explicit directory of transcripts.
 
 Read-only.  Deterministic.  Restores nothing because it changes nothing.
 
@@ -25,6 +35,7 @@ Usage:
     scripts/audit_payload_field_contracts.py
     scripts/audit_payload_field_contracts.py --json
     scripts/audit_payload_field_contracts.py --canary
+    scripts/audit_payload_field_contracts.py --canary --live
     scripts/audit_payload_field_contracts.py --canary --transcripts <dir>
 """
 
@@ -204,6 +215,30 @@ TRANSCRIPT_MAP = {
     "tool_response": "toolUseResult",
 }
 
+# In-repo corpus: transcript-shaped records with every value redacted, so the
+# canary runs the same code path on fixtures as on live transcripts.
+CORPUS_DIR = ROOT / "tests" / "fixtures" / "payload-corpus"
+
+# A tool result reaches a hook in one of three states, all three observed in
+# real transcripts.  Kept in sync with scripts/capture_payload_corpus.py by
+# tests/audit/test_payload_field_contracts.py.
+_EXIT_CODE_RE = re.compile(r"^Error: Exit code (\d+)")
+
+
+def result_state(value: object) -> str:
+    """Classify a tool result into the state a hook would have to handle."""
+    if isinstance(value, str):
+        if _EXIT_CODE_RE.match(value):
+            return "error_w_code"
+        if value.startswith("Error:"):
+            return "error_no_code"
+        return "string"
+    if isinstance(value, list):
+        return "list"
+    if isinstance(value, dict):
+        return "object"
+    return type(value).__name__
+
 
 def _default_transcript_dir() -> Path | None:
     base = Path.home() / ".claude" / "projects"
@@ -220,7 +255,7 @@ def _default_transcript_dir() -> Path | None:
 
 def observed_fields(tdir: Path) -> tuple[dict[str, set[str]], int]:
     """Field names observed per top-level payload area, plus rows scanned."""
-    seen: dict[str, set[str]] = {"toolUseResult": set(), "_types": set()}
+    seen: dict[str, set[str]] = {"toolUseResult": set(), "_types": set(), "_states": set()}
     rows = 0
     for tf in sorted(tdir.glob("*.jsonl")):
         try:
@@ -238,6 +273,7 @@ def observed_fields(tdir: Path) -> tuple[dict[str, set[str]], int]:
                         continue
                     rows += 1
                     seen["_types"].add(type(tur).__name__)
+                    seen["_states"].add(result_state(tur))
                     if isinstance(tur, dict):
                         seen["toolUseResult"].update(tur.keys())
         except OSError:
@@ -269,6 +305,11 @@ def main() -> int:
     ap.add_argument("--json", action="store_true", help="machine-readable output")
     ap.add_argument("--canary", action="store_true", help="check fields against real payloads")
     ap.add_argument("--transcripts", help="directory of harness transcripts")
+    ap.add_argument(
+        "--live",
+        action="store_true",
+        help="use this machine's transcripts instead of the in-repo corpus",
+    )
     ap.add_argument("--all", action="store_true", help="show GUARDED/INERT rows too")
     args = ap.parse_args()
 
@@ -283,10 +324,19 @@ def main() -> int:
     canary_missing: list[dict] = []
     canary_rows = 0
     canary_schema: dict = {}
+    source = "none"
     if args.canary:
-        tdir = Path(args.transcripts) if args.transcripts else _default_transcript_dir()
+        if args.transcripts:
+            tdir = Path(args.transcripts)
+            source = "transcripts"
+        elif args.live:
+            tdir = _default_transcript_dir()
+            source = "live"
+        else:
+            tdir = CORPUS_DIR
+            source = "corpus"
         if tdir is None or not tdir.is_dir():
-            print("ERROR: no transcript directory found; pass --transcripts", file=sys.stderr)
+            print("ERROR: no payload source found; pass --transcripts", file=sys.stderr)
             return 2
         canary_missing, canary_rows, canary_schema = canary(tdir, findings)
 
@@ -303,6 +353,7 @@ def main() -> int:
                     "rows": findings if args.all else blind,
                     "canary": {
                         "enabled": args.canary,
+                        "source": source,
                         "payloads_scanned": canary_rows,
                         "observed": canary_schema,
                         "missing": canary_missing,
@@ -326,7 +377,7 @@ def main() -> int:
                 print(f"  {r['file']}:{r['line']}  {r['field']} // {r['default']!r}  [{r['verdict']}]")
         if args.canary:
             print()
-            print(f"canary: {canary_rows} real payloads scanned")
+            print(f"canary [{source}]: {canary_rows} payloads scanned")
             if canary_missing:
                 print("FIELDS HOOKS DEPEND ON THAT NO PAYLOAD EVER CARRIED:")
                 for r in canary_missing:

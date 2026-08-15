@@ -384,8 +384,17 @@ campo, sin que nadie tenga que acordarse de actualizar nada.
 1. **Lint (`BLIND` = 0)** — barato, corre sin telemetría, se puede clavar en CI
    hoy con `exit 1`. Impide que vuelva a nacer un default permisivo sobre un
    veredicto.
-2. **Canario (`--canary`)** — necesita transcripts, así que va a `session-wrapup`
-   o a la cadencia diaria, no a CI. Detecta drift del harness.
+2. **Canario (`--canary`)** — detecta drift del harness. *Actualizado
+   2026-08-15: ya corre en la suite.* La premisa de que "necesita transcripts,
+   así que no puede ir a CI" resultó falsa: lo que el canario consume son claves
+   y tipos, no valores, y eso se congela. `scripts/capture_payload_corpus.py`
+   captura un corpus redactado a `tests/fixtures/payload-corpus/` (52 registros,
+   uno por tool × estado × forma) y el canario lo usa como fuente por defecto.
+   Sobre ese corpus da el mismo veredicto que sobre 2686 payloads vivos: 9
+   dependencias fantasma, ratcheteadas en
+   `tests/audit/test_payload_field_contracts.py`. El modo vivo sigue existiendo
+   como `--canary --live`, que es lo único que contesta "¿el harness cambió
+   desde que capturamos?".
 3. **Tercer estado en el código** — el arreglo estructural: `ok` / `failed` /
    `absent`, donde `absent` emite una fila de drift en vez de comportarse como
    `ok`. Es lo que `dispatch-gate.sh:116` ya hizo para su propio caso, agregando
@@ -526,7 +535,7 @@ completa, y el estado `absent` queda reservado para el día que el harness cambi
 | 1 | Aplicar §5.1 y §5.2 (requiere revisión humana por `protected-config-write-guard`) | P1 | pedido explícito del operador; el parche del lote 34 no sirve |
 | 2 | Reescribir los 12 characterization tests de `tests/audit/test_instrument_productivity.py` | P1 | fijan el defecto contra `.exit_code`, campo que no existe; van a pasar a verde por el motivo equivocado |
 | 3 | Clavar `audit_payload_field_contracts.py` (lint) en CI con `exit 1` | P1 | control barato, BLIND ya está en 3 y son remediables |
-| 4 | Sumar `--canary` a `session-wrapup` | P2 | necesita transcripts, no corre en CI |
+| 4 | ~~Sumar `--canary` a `session-wrapup`~~ — **hecho 2026-08-15, por otra vía**: corre en la suite contra un corpus de fixtures redactado (`tests/fixtures/payload-corpus/`), con ratchet en 9 dependencias fantasma | P2 | la premisa de que sólo podía correr sobre transcripts vivos era falsa: el canario consume claves y tipos, no valores, y eso se congela |
 | 5 | `post-bash-dispatcher.sh` para `PostToolUse:Bash` | P2 | 206 min de cadena; blast radius alto, merece ADR propio |
 | 6 | Medir y parchear `skill-tracker.sh` sobre payloads de `Agent` | P2 | mismo defecto, distinta forma de payload |
 | 7 | Regla en `rules/` sobre defaults permisivos en campos de veredicto | P2 | generaliza lo que `dispatch-gate` ya descubrió y no propagó |

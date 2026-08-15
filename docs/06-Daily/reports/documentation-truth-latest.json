@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-16T14:50:14+00:00",
+  "generated_at": "2026-08-15T17:37:12+00:00",
   "manifest": "manifests/documentation-truth-claims.yaml",
   "rows": [
     {
@@ -299,6 +299,102 @@
       ],
       "message": "Generated truth block matches current facts",
       "next_action": "keep block generated",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "required_doc_exists",
+      "claim_id": "payload_canary_determinism",
+      "doc": "docs/06-Daily/reports/payload-contract-architecture-2026-08-15.md",
+      "evidence": [
+        "docs/06-Daily/reports/payload-contract-architecture-2026-08-15.md"
+      ],
+      "message": "Required documentation surface exists",
+      "next_action": "keep doc linked",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "payload_canary_determinism",
+      "doc": "docs/06-Daily/reports/payload-contract-architecture-2026-08-15.md",
+      "evidence": [
+        "necesita transcripts, no corre en CI"
+      ],
+      "message": "Forbidden stale phrase absent: necesita transcripts, no corre en CI",
+      "next_action": "remove stale or contradictory prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "payload_canary_determinism",
+      "doc": "docs/06-Daily/reports/payload-contract-architecture-2026-08-15.md",
+      "evidence": [
+        "el canario no puede ser determinista"
+      ],
+      "message": "Forbidden stale phrase absent: el canario no puede ser determinista",
+      "next_action": "remove stale or contradictory prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "required_doc_exists",
+      "claim_id": "payload_canary_determinism",
+      "doc": "tests/fixtures/payload-corpus/README.md",
+      "evidence": [
+        "tests/fixtures/payload-corpus/README.md"
+      ],
+      "message": "Required documentation surface exists",
+      "next_action": "keep doc linked",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "payload_canary_determinism",
+      "doc": "tests/fixtures/payload-corpus/README.md",
+      "evidence": [
+        "necesita transcripts, no corre en CI"
+      ],
+      "message": "Forbidden stale phrase absent: necesita transcripts, no corre en CI",
+      "next_action": "remove stale or contradictory prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "payload_canary_determinism",
+      "doc": "tests/fixtures/payload-corpus/README.md",
+      "evidence": [
+        "el canario no puede ser determinista"
+      ],
+      "message": "Forbidden stale phrase absent: el canario no puede ser determinista",
+      "next_action": "remove stale or contradictory prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "required_phrase",
+      "claim_id": "payload_canary_determinism",
+      "doc": null,
+      "evidence": [
+        "tests/fixtures/payload-corpus"
+      ],
+      "message": "Required phrase present: tests/fixtures/payload-corpus",
+      "next_action": "add or regenerate current-truth prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "required_phrase",
+      "claim_id": "payload_canary_determinism",
+      "doc": null,
+      "evidence": [
+        "--canary --live"
+      ],
+      "message": "Required phrase present: --canary --live",
+      "next_action": "add or regenerate current-truth prose",
       "severity": "medium",
       "status": "pass"
     },
@@ -1526,6 +1622,9 @@
       "documentation_truth_control": {
         "pass": 8
       },
+      "payload_canary_determinism": {
+        "pass": 8
+      },
       "primitive_authority_write_effects": {
         "pass": 16
       },
@@ -1537,8 +1636,8 @@
       }
     },
     "by_status": {
-      "pass": 126
+      "pass": 134
     },
-    "rows": 126
+    "rows": 134
   }
 }
