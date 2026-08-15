@@ -1,0 +1,277 @@
+schema_version: 1
+harness: opencode
+description: >
+  Published plugin/config contract of the OpenCode harness, transcribed from
+  upstream documentation and from the upstream `Hooks` TypeScript interface.
+  This manifest is the EXTERNAL contract: it records what OpenCode itself
+  accepts, independent of what the Cognitive OS driver happens to emit. The
+  conformance test validates driver + plugin output against THIS file, so a
+  driver that agrees only with itself cannot pass.
+
+  Companion manifest: manifests/harness-driver-capabilities.yaml records what
+  the COS driver chooses to project (internal policy). When the two disagree,
+  this file wins and the driver is the bug.
+
+  Sibling: manifests/codex-hooks-schema.yaml (same role, Codex harness).
+
+sources:
+  - url: https://opencode.ai/docs/plugins/
+    what: >
+      Plugin hook list, event-type catalogue, local plugin auto-load directory,
+      and the documented way to deny a tool call (throw from
+      tool.execute.before).
+    verified: 2026-08-15
+  - url: https://github.com/sst/opencode/blob/dev/packages/plugin/src/index.ts
+    what: >
+      Verbatim `Hooks` interface — which names are real hook KEYS (as opposed to
+      event types routed through the generic `event` hook) and their signatures,
+      including the permission.ask deny contract.
+    verified: 2026-08-15
+  - url: https://opencode.ai/config.json
+    what: >
+      Published JSON Schema for opencode.json. Authority for allowed top-level
+      keys and, critically, for `experimental` being a CLOSED object
+      (additionalProperties: false).
+    verified: 2026-08-15
+  - url: https://opencode.ai/docs/tools/
+    what: >
+      Built-in tool identifiers as seen by plugins in `input.tool`. Source of the
+      explicit upstream note that the patch tool is matched as `apply_patch`.
+    verified: 2026-08-15
+  - note: >
+      Unlike the Codex manifest, several claims here were MEASURED against a
+      locally installed opencode (1.16.2) via `opencode debug config`, not only
+      transcribed. Rows carrying `evidence: measured` were observed; rows
+      carrying `evidence: documented` were read. Re-verify on the dates above.
+
+runtime_probe:
+  binary_version_observed: "1.16.2"
+  command: opencode debug config
+  note: >
+    `opencode debug config` prints the RESOLVED configuration. Keys that OpenCode
+    does not recognise are silently dropped from that output — absence there is a
+    measurement that the key is inert, not merely unvalidated.
+
+# ── Config file shape ─────────────────────────────────────────────────────────
+config_file:
+  path: opencode.json
+  schema_url: https://opencode.ai/config.json
+  root_key: null            # unlike Codex, event keys do NOT hang off a namespace
+  additional_properties: false
+  # Only the keys the COS driver emits are enumerated; the published schema has 36.
+  allowed_top_level_keys_used_by_cos:
+    - $schema
+    - instructions
+    - mcp
+    - permission
+    - plugin
+    - experimental
+  experimental:
+    # additionalProperties: false. Any other key is stripped at load time.
+    closed: true
+    allowed_keys:
+      - disable_paste_summary
+      - batch_tool
+      - openTelemetry
+      - primary_tools
+      - continue_loop_on_deny
+      - mcp_timeout
+      - policies
+    evidence: measured
+  permission:
+    # keys are TOOL names, values are "ask" | "allow" | "deny" (rule config)
+    allowed_keys:
+      [read, edit, glob, grep, list, bash, task, external_directory, todowrite, question]
+  plugin:
+    type: array_of_strings
+    documented_intent: npm package specifiers
+    local_file_paths_accepted: true
+    evidence: measured
+    note: >
+      The docs describe `plugin` as the npm-package list and say local plugins
+      are auto-loaded from the plugin directory with no config entry. Measured
+      behaviour on 1.16.2 is more forgiving: a relative path resolves to a
+      file:// URL, and listing an already-auto-loaded file does NOT duplicate it.
+      So the COS entry is redundant, not broken.
+
+plugin_directory:
+  project: .opencode/plugins/
+  auto_loaded: true
+  evidence: measured
+  note: >
+    A plugin file placed here is loaded even when opencode.json contains no
+    `plugin` key at all.
+
+# ── Surfaces ──────────────────────────────────────────────────────────────────
+# kind:
+#   hook_key    → a key of the `Hooks` interface; the plugin subscribes directly
+#   event_type  → an Event.type value delivered through the generic `event` hook
+# usable_as:
+#   lifecycle   → a legitimate COS lifecycle projection target
+#   none        → published, but NOT a lifecycle signal; projecting onto it is a
+#                 category error even though the identifier exists
+surfaces:
+  event:
+    kind: hook_key
+    usable_as: dispatcher
+    can_block: false
+    note: generic dispatcher; switch on input.event.type
+
+  session.created:
+    kind: event_type
+    usable_as: lifecycle
+    cos_event: SessionStart
+    can_block: false
+
+  session.idle:
+    kind: event_type
+    usable_as: lifecycle
+    cos_event: Stop
+    can_block: false
+
+  session.compacted:
+    kind: event_type
+    usable_as: lifecycle
+    cos_event: PreCompact
+    can_block: false
+    note: fires AFTER compaction; it is the post-, not pre-, signal.
+
+  experimental.session.compacting:
+    kind: hook_key
+    usable_as: lifecycle
+    cos_event: PreCompact
+    can_block: false
+    signature: "(input: {sessionID}, output: {context: string[], prompt?: string})"
+    note: >
+      This is the real pre-compaction surface and it is a HOOK KEY, not an event
+      type. manifests/harness-driver-capabilities.yaml has the relationship
+      inverted (it calls session.compacted current and this one legacy); they are
+      two different surfaces at two different moments, not two generations.
+
+  chat.message:
+    kind: hook_key
+    usable_as: lifecycle
+    cos_event: UserPromptSubmit
+    can_block: false
+    signature: "(input: {sessionID, agent?, model?, messageID?, variant?}, output: {message, parts})"
+    note: >
+      Closest published equivalent of UserPromptSubmit. Returns Promise<void> and
+      exposes no decision output, so governance here is ADVISORY ONLY.
+
+  tui.prompt.append:
+    kind: event_type
+    usable_as: none
+    can_block: false
+    note: >
+      A TUI event in the same family as tui.command.execute and tui.toast.show —
+      it describes text being appended to the prompt INPUT WIDGET, not a user
+      submitting a prompt. It is not a lifecycle signal and no COS event may be
+      projected onto it.
+
+  tool.execute.before:
+    kind: hook_key
+    usable_as: lifecycle
+    cos_event: PreToolUse
+    can_block: true
+    block_mechanism: throw
+    signature: "(input: {tool, sessionID, callID}, output: {args})"
+    note: >
+      The documented deny path is throwing from the handler. `input` carries NO
+      args on this hook — the mutable args live on `output.args`.
+
+  tool.execute.after:
+    kind: hook_key
+    usable_as: lifecycle
+    cos_event: PostToolUse
+    can_block: false
+    signature: "(input: {tool, sessionID, callID, args}, output: {title, output, metadata})"
+
+  permission.ask:
+    kind: hook_key
+    usable_as: lifecycle
+    cos_event: null
+    can_block: true
+    block_mechanism: "output.status = \"deny\""
+    signature: "(input: Permission, output: {status: \"ask\" | \"deny\" | \"allow\"})"
+    note: >
+      The only NON-THROWING deny contract OpenCode publishes. No COS event is
+      mapped to it; a plugin that only throws from tool.execute.before surfaces
+      every block as a crash-shaped error instead of a permission denial.
+
+# ── Tools reachable from tool.execute.before / after ──────────────────────────
+tools:
+  published_ids:
+    [bash, edit, write, read, grep, glob, list, lsp, apply_patch, skill,
+     todowrite, webfetch, websearch, question, task]
+  file_mutating:
+    - id: edit
+    - id: write
+    - id: apply_patch
+      note: >
+        Upstream docs carry an explicit warning to match `apply_patch`, not
+        `patch`. Any write-side guard that enumerates only edit/write has a hole
+        exactly the size of this tool.
+  subagent:
+    - id: task
+      note: >
+        OpenCode's subagent tool. There is NO tool named `agent`; a classifier
+        keyed on `agent` is unreachable code.
+  not_tools:
+    # Names that look plausible and are NOT OpenCode tools. Listed so a test can
+    # fail on them instead of a human having to notice.
+    [agent, multiedit, patch, MultiEdit, Task, Agent]
+
+# ── COS projection file (internal, but its bucket names must be real) ─────────
+projection_file:
+  path: .opencode/cos-hooks.json
+  generated_by: scripts/_lib/settings-driver-opencode.sh
+  consumed_by: packages/opencode-adapter/plugins/cos-primitive-guard.js
+  rule: >
+    Every key under `events` must be a surface published above AND must have
+    usable_as != none. A bucket named after a surface nothing subscribes to is a
+    silent no-op.
+
+# ── Known COS projection gaps (driver/plugin-side, not schema-side) ───────────
+# Each id is referenced by an xfail in
+# tests/contracts/test_opencode_hooks_schema_conformance.py, so the gap cannot be
+# closed — or forgotten — without this file moving.
+known_projection_gaps:
+  - id: experimental-cognitive-os-hooks-stripped
+    detail: >
+      The driver emits experimental.cognitive_os_hooks. `experimental` is a
+      closed object in the published schema and OpenCode 1.16.2 resolves it to
+      {} — the pointer is silently dropped. Harmless today only because the
+      plugin reads .opencode/cos-hooks.json directly from disk; the declared
+      wiring is decorative.
+    evidence: measured
+
+  - id: user-prompt-submit-mapped-to-tui-event
+    detail: >
+      The driver declares UserPromptSubmit → tui.prompt.append and buckets 13
+      hooks under that name. Nothing subscribes to tui.prompt.append: the plugin
+      feeds that bucket from `chat.message`. The bucket name is fiction that
+      happens to be consistent with itself.
+
+  - id: no-write-coverage-on-apply-patch
+    detail: >
+      cos-primitive-guard.js gates writes on ["write", "edit", "multiedit"].
+      `apply_patch` is a published file-mutating tool and is unguarded;
+      `multiedit` does not exist. Same shape as the Codex apply_patch hole.
+
+  - id: agent-family-classifiers-unreachable
+    detail: >
+      Nine signed primitives (reinvention-check, adr-relevance-suggest,
+      claim-validator, confidence-gate, dispatch-gate, private-mode-gate,
+      trust-score-validator, prompt-quality-llm, scope-creep-detector) are gated
+      on toolName === "agent". OpenCode's subagent tool is `task`. None of them
+      can fire.
+
+  - id: permission-ask-unused
+    detail: >
+      permission.ask is the published non-throwing deny contract and no COS
+      surface uses it. Every block is delivered as a thrown Error instead.
+
+  - id: no-subagent-budget-enforcer
+    detail: >
+      subagent-budget-enforcer runs on Claude Code PostToolUse and has no
+      counterpart in the plugin or in SIGNED_PRIMITIVES.
