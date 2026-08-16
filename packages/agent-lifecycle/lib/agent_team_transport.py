@@ -86,7 +86,12 @@ def transport_plan(*, team_name: str, backend: str = "file") -> TransportPlan:
             "events": "A2A event stream: team.events",
             "handoffs": "A2A message part carrying handoff-envelope/v1",
         },
-        compatibility={"maps_from_file_ipc": True, "ordering": "conversation/thread order", "requires_daemon": False},
+        compatibility={
+            "maps_from_file_ipc": True,
+            "ordering": "conversation/thread order",
+            "requires_daemon": False,
+            "conformance": "none - COS ships no A2A-conformant adapter (no JSON-RPC, no agent card); ADR-230 rejected adopting A2A directly. This mapping is a migration target, not an implementation.",
+        },
     )
 
 
@@ -154,12 +159,20 @@ class NatsAgentTeamTransport:
         return TransportSendResult(SCHEMA_VERSION, "nats", subject, True)
 
 
-class A2AHttpAgentTeamTransport:
-    """Minimal HTTP JSON adapter for A2A-style agent messages.
+class HttpJsonAgentTeamTransport:
+    """Minimal HTTP adapter that POSTs the COS team envelope as JSON.
 
-    It sends a schema-versioned message envelope to an operator-provided A2A
-    endpoint. This keeps default COS dependency-free while making the transport
-    executable against any HTTP A2A bridge/gateway.
+    This is NOT an A2A implementation and must not be named as one. It speaks a
+    COS-private envelope (``schema_version``/``transport``/``team_name``/
+    ``recipient``/``message_part``) over plain HTTP POST. A2A requires JSON-RPC
+    2.0 framing, an agent card at ``/.well-known/agent-card.json`` and a
+    ``Message`` with ``messageId``/``role``/``parts``/``contextId``/``taskId`` —
+    none of which exist here. ADR-230 rejected adopting A2A directly ("adopt the
+    ``referenceTaskIds`` shape; skip the rest"), so the gap is a decision, not a
+    bug; reaching an A2A peer needs a translating bridge on the other end.
+
+    It keeps the default COS install dependency-free while staying executable
+    against any HTTP endpoint the operator provides.
     """
 
     def __init__(self, *, team_name: str, endpoint: str, timeout_seconds: float = 5.0) -> None:
@@ -173,7 +186,7 @@ class A2AHttpAgentTeamTransport:
     def send_inbox(self, *, session_id: str, payload: dict[str, Any]) -> TransportSendResult:
         body = {
             "schema_version": SCHEMA_VERSION,
-            "transport": "a2a-http",
+            "transport": "http-json",
             "team_name": self.team_name,
             "recipient": session_id,
             "message_part": payload,
@@ -187,4 +200,4 @@ class A2AHttpAgentTeamTransport:
         with urllib.request.urlopen(req, timeout=self.timeout_seconds) as response:  # noqa: S310 - operator-provided endpoint
             status = getattr(response, "status", 200)
             detail = response.read().decode("utf-8", errors="replace")[-500:]
-        return TransportSendResult(SCHEMA_VERSION, "a2a", self.endpoint, 200 <= int(status) < 300, detail)
+        return TransportSendResult(SCHEMA_VERSION, "http-json", self.endpoint, 200 <= int(status) < 300, detail)

@@ -19,7 +19,7 @@ if str(ROOT) not in sys.path:
 from cos_lib.agent_team import AgentTeam, AgentTeamError  # noqa: E402
 from cos_lib.handoff_dispatcher import HandoffDispatchError, HandoffDispatcher  # noqa: E402
 from cos_lib.handoff_envelope import HandoffEnvelope  # noqa: E402
-from cos_lib.agent_team_transport import A2AHttpAgentTeamTransport, NatsAgentTeamTransport, transport_plan  # noqa: E402
+from cos_lib.agent_team_transport import HttpJsonAgentTeamTransport, NatsAgentTeamTransport, transport_plan  # noqa: E402
 
 
 def _json_default(value: Any) -> Any:
@@ -237,10 +237,10 @@ def cmd_transport_plan(args: argparse.Namespace) -> int:
 
 def cmd_transport_send(args: argparse.Namespace) -> int:
     payload = {"schema_version": "agent-team-message/v1", "text": args.text, "sender": args.sender}
-    if args.backend == "a2a":
+    if args.backend == "http-json":
         if not args.endpoint:
-            raise ValueError("--endpoint is required for a2a transport-send")
-        result = A2AHttpAgentTeamTransport(team_name=args.team, endpoint=args.endpoint).send_inbox(session_id=args.session_id, payload=payload)
+            raise ValueError("--endpoint is required for http-json transport-send")
+        result = HttpJsonAgentTeamTransport(team_name=args.team, endpoint=args.endpoint).send_inbox(session_id=args.session_id, payload=payload)
     else:
         if not args.allow_missing_nats:
             raise ValueError("NATS transport-send requires a NATS client/server; use --allow-missing-nats only for dry-run planning")
@@ -338,18 +338,18 @@ def build_parser() -> argparse.ArgumentParser:
     handoff_receive.add_argument("--strict", action="store_true")
     handoff_receive.set_defaults(func=cmd_handoff_receive)
 
-    transport = sub.add_parser("transport-plan", help="Print ADR-233 file/NATS/A2A transport mapping")
+    transport = sub.add_parser("transport-plan", help="Print ADR-233 file/NATS/A2A transport mapping (a2a is a declared migration target; COS ships no A2A-conformant adapter)")
     transport.add_argument("--team", required=True)
     transport.add_argument("--backend", choices=["file", "nats", "a2a"], default="file")
     transport.set_defaults(func=cmd_transport_plan)
 
     transport_send = sub.add_parser("transport-send", help="Send one ADR-233 message through an external transport adapter")
     transport_send.add_argument("--team", required=True)
-    transport_send.add_argument("--backend", choices=["nats", "a2a"], required=True)
+    transport_send.add_argument("--backend", choices=["nats", "http-json"], required=True)
     transport_send.add_argument("--session-id", required=True)
     transport_send.add_argument("--sender", required=True)
     transport_send.add_argument("--text", required=True)
-    transport_send.add_argument("--endpoint", help="A2A HTTP endpoint")
+    transport_send.add_argument("--endpoint", help="HTTP endpoint for the http-json backend (COS envelope, not A2A)")
     transport_send.add_argument("--allow-missing-nats", action="store_true", help="Return a NATS dry-run plan when no client is configured")
     transport_send.set_defaults(func=cmd_transport_send)
 

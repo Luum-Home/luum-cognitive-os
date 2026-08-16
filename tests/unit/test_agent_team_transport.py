@@ -19,6 +19,7 @@ def test_nats_and_a2a_are_opt_in_upgrade_targets_without_default_deps() -> None:
     assert nats["status"] == "upgrade_target"
     assert "opt-in-only" in nats["dependency_policy"]
     assert a2a["subject_mapping"]["handoffs"] == "A2A message part carrying handoff-envelope/v1"
+    assert a2a["compatibility"]["conformance"].startswith("none")
 
 
 def test_transport_plan_rejects_unsafe_team_name() -> None:
@@ -29,7 +30,7 @@ import json
 import threading
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
-from cos_lib.agent_team_transport import A2AHttpAgentTeamTransport, NatsAgentTeamTransport
+from cos_lib.agent_team_transport import HttpJsonAgentTeamTransport, NatsAgentTeamTransport
 
 
 class FakeNatsClient:
@@ -51,7 +52,7 @@ def test_nats_transport_publishes_to_session_inbox_subject() -> None:
     assert json.loads(client.published[0][1])["type"] == "handoff"
 
 
-def test_a2a_http_transport_posts_message_envelope() -> None:
+def test_http_json_transport_posts_cos_envelope_not_a2a() -> None:
     received: dict[str, object] = {}
 
     class Handler(BaseHTTPRequestHandler):
@@ -69,8 +70,8 @@ def test_a2a_http_transport_posts_message_envelope() -> None:
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
     try:
-        endpoint = f"http://127.0.0.1:{server.server_port}/a2a"
-        result = A2AHttpAgentTeamTransport(team_name="release", endpoint=endpoint).send_inbox(
+        endpoint = f"http://127.0.0.1:{server.server_port}/inbox"
+        result = HttpJsonAgentTeamTransport(team_name="release", endpoint=endpoint).send_inbox(
             session_id="worker",
             payload={"type": "handoff", "id": "h1"},
         )
@@ -79,6 +80,10 @@ def test_a2a_http_transport_posts_message_envelope() -> None:
         thread.join(timeout=2)
 
     assert result.delivered is True
-    assert received["transport"] == "a2a-http"
+    assert received["transport"] == "http-json"
     assert received["recipient"] == "worker"
     assert received["message_part"] == {"type": "handoff", "id": "h1"}
+    # Guard against the name lying again: this envelope is COS-private, not A2A.
+    # A2A Message requires messageId/role/parts and JSON-RPC framing (spec Message).
+    assert not {"messageId", "role", "parts", "contextId", "jsonrpc"} & set(received)
+    assert result.backend == "http-json"

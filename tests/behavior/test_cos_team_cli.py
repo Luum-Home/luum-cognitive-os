@@ -267,7 +267,7 @@ def test_cos_team_transport_plan_cli_exposes_nats_upgrade_mapping(tmp_path: Path
     assert result["transport_plan"]["subject_mapping"]["handoffs"] == "cos.teams.release.handoffs.<session_id>"
 
 @pytest.mark.behavior
-def test_cos_team_transport_send_a2a_http_posts_message(tmp_path: Path) -> None:
+def test_cos_team_transport_send_http_json_posts_message(tmp_path: Path) -> None:
     import threading
     from http.server import BaseHTTPRequestHandler, HTTPServer
 
@@ -295,11 +295,11 @@ def test_cos_team_transport_send_a2a_http_posts_message(tmp_path: Path) -> None:
             "--project-dir", str(project),
             "transport-send",
             "--team", "release",
-            "--backend", "a2a",
+            "--backend", "http-json",
             "--session-id", "worker",
             "--sender", "lead",
-            "--text", "hello a2a",
-            "--endpoint", f"http://127.0.0.1:{server.server_port}/a2a",
+            "--text", "hello http-json",
+            "--endpoint", f"http://127.0.0.1:{server.server_port}/inbox",
         )
     finally:
         server.shutdown()
@@ -307,7 +307,8 @@ def test_cos_team_transport_send_a2a_http_posts_message(tmp_path: Path) -> None:
 
     assert result["status"] == "sent"
     assert received["recipient"] == "worker"
-    assert received["message_part"]["text"] == "hello a2a"
+    assert received["message_part"]["text"] == "hello http-json"
+    assert received["transport"] == "http-json"
 
 
 @pytest.mark.behavior
