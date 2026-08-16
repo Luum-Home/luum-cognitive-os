@@ -170,8 +170,11 @@ class TestChannelNames:
 
 class TestIsValkeyAvailable:
     def test_available_returns_true(self, mock_redis_module):
+        # AGENT_BUS_ENABLED must be ON: reachability alone is not consent to
+        # use the Valkey transport.
         mock_redis, _, _ = mock_redis_module
-        with patch.dict("sys.modules", {"redis": mock_redis}):
+        with _bus_env(AGENT_BUS_ENABLED="true"), \
+             patch.dict("sys.modules", {"redis": mock_redis}):
             assert is_valkey_available() is True
 
     def test_unavailable_returns_false(self):
@@ -1016,7 +1019,8 @@ class TestSmartInfraIntegration:
         ]
         mock_redis_cls.from_url.return_value = mock_client
 
-        with patch.dict("sys.modules", {"redis": MagicMock(Redis=mock_redis_cls)}), \
+        with _bus_env(AGENT_BUS_ENABLED="true"), \
+             patch.dict("sys.modules", {"redis": MagicMock(Redis=mock_redis_cls)}), \
              patch("cos_lib.agent_bus._ensure_valkey_via_smart_infra", return_value=True) as mock_ensure:
             pub = AgentPublisher("test-agent", fallback_dir=tmp_fallback_dir)
             mock_ensure.assert_called_once()
@@ -1029,7 +1033,8 @@ class TestSmartInfraIntegration:
         mock_client.ping.return_value = True
         mock_redis_cls.from_url.return_value = mock_client
 
-        with patch.dict("sys.modules", {"redis": MagicMock(Redis=mock_redis_cls)}), \
+        with _bus_env(AGENT_BUS_ENABLED="true"), \
+             patch.dict("sys.modules", {"redis": MagicMock(Redis=mock_redis_cls)}), \
              patch("cos_lib.agent_bus._ensure_valkey_via_smart_infra") as mock_ensure:
             pub = AgentPublisher("test-agent", fallback_dir=tmp_fallback_dir)
             mock_ensure.assert_not_called()
@@ -1060,7 +1065,8 @@ class TestSmartInfraIntegration:
         mock_client.pubsub.return_value = MagicMock()
         mock_redis_cls.from_url.return_value = mock_client
 
-        with patch.dict("sys.modules", {"redis": MagicMock(Redis=mock_redis_cls)}), \
+        with _bus_env(AGENT_BUS_ENABLED="true"), \
+             patch.dict("sys.modules", {"redis": MagicMock(Redis=mock_redis_cls)}), \
              patch("cos_lib.agent_bus._ensure_valkey_via_smart_infra", return_value=True) as mock_ensure:
             sub = OrchestratorSubscriber(fallback_dir=tmp_fallback_dir)
             mock_ensure.assert_called_once()
@@ -1078,7 +1084,8 @@ class TestSmartInfraIntegration:
         ]
         mock_redis_mod.Redis.from_url.return_value = mock_client
 
-        with patch.dict("sys.modules", {"redis": mock_redis_mod}), \
+        with _bus_env(AGENT_BUS_ENABLED="true"), \
+             patch.dict("sys.modules", {"redis": mock_redis_mod}), \
              patch("cos_lib.agent_bus._ensure_valkey_via_smart_infra", return_value=True) as mock_ensure:
             result = is_valkey_available()
             mock_ensure.assert_called_once()
@@ -1314,3 +1321,200 @@ def test_agent_publisher_poll_control_drains_valkey_pending_before_files(tmp_pat
 
     assert pub.poll_control() == "pause"
     assert pub.poll_control() == "resume"
+
+
+# ---------------------------------------------------------------------------
+# Strict reading of AGENT_BUS_ENABLED: the flag gates the TRANSPORT
+# ---------------------------------------------------------------------------
+
+
+class TestValkeyTransportGate:
+    """With the flag off, Valkey is not used -- not even a reachable one.
+
+    Every assertion here rides a spy on `_ping_url`, the single observable
+    "did we try to talk to Valkey at all". Asserting on log text would let a
+    future change silence the message and keep the connection, which is the
+    cheap green this class exists to block. The inverse direction (flag ON,
+    Valkey reachable -> transport used) is covered too: a change that turns
+    Valkey off unconditionally breaks the feature instead of fixing it.
+    """
+
+    @staticmethod
+    def _ping_spy(reachable=True):
+        return MagicMock(return_value=reachable)
+
+    # -- flag OFF: no contact with Valkey ---------------------------------
+
+    def test_no_probe_when_flag_off(self):
+        from cos_lib import agent_bus as ab
+
+        spy = self._ping_spy()
+        with _bus_env(), patch.object(ab, "_ping_url", spy):
+            assert ab._resolve_valkey_url() is None
+        assert spy.call_args_list == [], "probed Valkey with the transport disabled"
+
+    def test_no_probe_with_explicit_url_when_flag_off(self):
+        """An explicit URL selects a server; it is not an opt-in."""
+        from cos_lib import agent_bus as ab
+
+        spy = self._ping_spy()
+        with _bus_env(), patch.object(ab, "_ping_url", spy):
+            assert ab._resolve_valkey_url("redis://valkey.example:6379") is None
+        assert spy.call_args_list == []
+
+    def test_local_daemon_not_probed_when_flag_off(self):
+        """ADR-042's 6380/6379 sweep is part of the transport, so it is gated too."""
+        from cos_lib import agent_bus as ab
+
+        spy = self._ping_spy()
+        with _bus_env(), patch.object(ab, "_ping_url", spy):
+            ab._resolve_valkey_url("redis://localhost:1")
+        probed = [c.args[0] for c in spy.call_args_list]
+        assert probed == [], "local daemon probed while the transport was disabled"
+
+    def test_is_valkey_available_false_when_flag_off_and_server_reachable(self):
+        from cos_lib import agent_bus as ab
+
+        spy = self._ping_spy(reachable=True)
+        with _bus_env(), patch.object(ab, "_ping_url", spy):
+            assert ab.is_valkey_available() is False
+        assert spy.call_args_list == []
+
+    def test_publisher_uses_file_transport_when_flag_off(self, tmp_fallback_dir):
+        from cos_lib import agent_bus as ab
+
+        spy = self._ping_spy(reachable=True)
+        with _bus_env(), patch.object(ab, "_ping_url", spy):
+            pub = AgentPublisher("gate-agent", fallback_dir=tmp_fallback_dir)
+        assert pub._use_valkey is False
+        assert spy.call_args_list == []
+
+    def test_subscriber_uses_file_transport_when_flag_off(self, tmp_fallback_dir):
+        from cos_lib import agent_bus as ab
+
+        spy = self._ping_spy(reachable=True)
+        with _bus_env(), patch.object(ab, "_ping_url", spy):
+            sub = OrchestratorSubscriber(fallback_dir=tmp_fallback_dir)
+        assert sub._use_valkey is False
+        assert spy.call_args_list == []
+
+    def test_bus_still_delivers_when_flag_off(self, tmp_fallback_dir):
+        """The non-negotiable: gating the transport must not stop delivery."""
+        from cos_lib import agent_bus as ab
+
+        spy = self._ping_spy(reachable=True)
+        with _bus_env(), patch.object(ab, "_ping_url", spy):
+            rx = AgentPublisher(
+                "gate-rx",
+                valkey_url="redis://127.0.0.1:1",
+                fallback_dir=tmp_fallback_dir,
+            )
+            tx = _FileFallback(tmp_fallback_dir)
+            tx.publish(_channel("gate-rx", "control"), {"command": "pause"})
+            assert rx.poll_control() == "pause"
+
+    # -- flag ON: the transport must still work ---------------------------
+
+    def test_probe_happens_when_flag_on(self):
+        from cos_lib import agent_bus as ab
+
+        spy = self._ping_spy(reachable=True)
+        with _bus_env(AGENT_BUS_ENABLED="true"), patch.object(ab, "_ping_url", spy):
+            assert ab._resolve_valkey_url("redis://localhost:6379") == "redis://localhost:6379"
+        assert spy.call_args_list, "flag ON must still probe Valkey"
+
+    def test_local_daemon_probed_when_flag_on(self):
+        """ADR-042: 6380 is still reached when the primary URL is dead."""
+        from cos_lib import agent_bus as ab
+
+        def fake_ping(url, timeout=1.0):
+            return url == "redis://localhost:6380"
+
+        spy = MagicMock(side_effect=fake_ping)
+        with _bus_env(AGENT_BUS_ENABLED="true"), \
+             patch.object(ab, "_ping_url", spy), \
+             patch.object(ab, "_emit_local_daemon_metric"):
+            resolved = ab._resolve_valkey_url("redis://localhost:1")
+        assert resolved == "redis://localhost:6380"
+
+    def test_is_valkey_available_true_when_flag_on(self):
+        from cos_lib import agent_bus as ab
+
+        spy = self._ping_spy(reachable=True)
+        with _bus_env(AGENT_BUS_ENABLED="true"), patch.object(ab, "_ping_url", spy):
+            assert ab.is_valkey_available() is True
+
+    def test_publisher_uses_valkey_when_flag_on(self, tmp_fallback_dir, mock_redis_module):
+        from cos_lib import agent_bus as ab
+
+        mock_redis, _, _ = mock_redis_module
+        spy = self._ping_spy(reachable=True)
+        with _bus_env(AGENT_BUS_ENABLED="true"), \
+             patch.object(ab, "_ping_url", spy), \
+             patch.dict("sys.modules", {"redis": mock_redis}):
+            pub = AgentPublisher("gate-agent", fallback_dir=tmp_fallback_dir)
+        assert pub._use_valkey is True
+
+    def test_subscriber_uses_valkey_when_flag_on(self, tmp_fallback_dir, mock_redis_module):
+        from cos_lib import agent_bus as ab
+
+        mock_redis, _, _ = mock_redis_module
+        spy = self._ping_spy(reachable=True)
+        with _bus_env(AGENT_BUS_ENABLED="true"), \
+             patch.object(ab, "_ping_url", spy), \
+             patch.dict("sys.modules", {"redis": mock_redis}):
+            sub = OrchestratorSubscriber(fallback_dir=tmp_fallback_dir)
+        assert sub._use_valkey is True
+
+    # -- precedence -------------------------------------------------------
+
+    def test_force_fallback_beats_flag_on(self):
+        from cos_lib import agent_bus as ab
+
+        spy = self._ping_spy(reachable=True)
+        with _bus_env(AGENT_BUS_ENABLED="true", COS_AGENT_BUS_FORCE_FALLBACK="1"), \
+             patch.object(ab, "_ping_url", spy):
+            assert ab._resolve_valkey_url() is None
+        assert spy.call_args_list == []
+
+    def test_force_fallback_beats_explicit_url(self):
+        from cos_lib import agent_bus as ab
+
+        spy = self._ping_spy(reachable=True)
+        with _bus_env(AGENT_BUS_ENABLED="true", COS_AGENT_BUS_FORCE_FALLBACK="1"), \
+             patch.object(ab, "_ping_url", spy):
+            assert ab._resolve_valkey_url("redis://valkey.example:6379") is None
+        assert spy.call_args_list == []
+
+
+class TestValkeyTransportDisabledReason:
+    """The loud-failure seam. These reference a symbol the old code lacks."""
+
+    def test_reason_is_none_when_transport_enabled(self):
+        from cos_lib.agent_bus import valkey_transport_disabled_reason
+
+        with _bus_env(AGENT_BUS_ENABLED="true"):
+            assert valkey_transport_disabled_reason() is None
+
+    def test_reason_names_the_flag_when_off(self):
+        from cos_lib.agent_bus import valkey_transport_disabled_reason
+
+        with _bus_env():
+            reason = valkey_transport_disabled_reason()
+        assert reason is not None and "AGENT_BUS_ENABLED" in reason
+
+    def test_force_fallback_reported_before_the_flag(self):
+        """Precedence must be observable, not just documented."""
+        from cos_lib.agent_bus import valkey_transport_disabled_reason
+
+        with _bus_env(COS_AGENT_BUS_FORCE_FALLBACK="1"):
+            reason = valkey_transport_disabled_reason()
+        assert reason is not None and "COS_AGENT_BUS_FORCE_FALLBACK" in reason
+
+    def test_explicit_url_is_called_out_not_honoured(self):
+        from cos_lib.agent_bus import valkey_transport_disabled_reason
+
+        with _bus_env():
+            reason = valkey_transport_disabled_reason("redis://valkey.example:6379")
+        assert reason is not None
+        assert "redis://valkey.example:6379" in reason

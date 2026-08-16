@@ -197,7 +197,23 @@ class AgentDashboard:
 
     def run(self) -> None:
         """Run the dashboard in a loop."""
-        from cos_lib.agent_bus import OrchestratorSubscriber, is_valkey_available
+        from cos_lib.agent_bus import (
+            OrchestratorSubscriber,
+            is_valkey_available,
+            valkey_transport_disabled_reason,
+        )
+
+        # A dashboard that quietly watched the file transport while the operator
+        # believed it was watching Valkey would be worse than one that refuses
+        # to start. `--url` selects a server; it is not an opt-in to the
+        # transport, so say so out loud instead of degrading.
+        disabled = valkey_transport_disabled_reason(self.valkey_url)
+        if disabled is not None:
+            print("ERROR: the Valkey transport is disabled, so --url %s is ignored." % self.valkey_url)
+            print("  Reason: %s" % disabled)
+            print("  Agents are still exchanging messages over the file transport")
+            print("  under .cognitive-os/agent-bus/ -- this dashboard cannot show those.")
+            sys.exit(2)
 
         if not is_valkey_available(self.valkey_url):
             print("ERROR: Valkey is not available at %s" % self.valkey_url)
