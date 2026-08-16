@@ -49,7 +49,8 @@ hooks:
     scope: both
     script: hooks/adaptive-bypass.sh
   adoption-freeze-gate:
-    behavior_tests: []
+    behavior_tests:
+    - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     bypass_policy: not_required_observe_only
     criticality: standard
     event: PreToolUse
@@ -212,6 +213,7 @@ hooks:
   agent-message-inbox-guard:
     behavior_tests:
     - tests/unit/test_agent_message_hooks.py
+    - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     bypass_policy: not_required_warning_only
     criticality: coordination
     event: PreToolUse
@@ -310,7 +312,8 @@ hooks:
     scope: both
     script: hooks/assumption-tracker.sh
   attribution-completeness-validator:
-    behavior_tests: []
+    behavior_tests:
+    - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     bypass_policy: not_required_warning_only
     criticality: quality
     event: PreToolUse
@@ -494,6 +497,7 @@ hooks:
     - tests/contracts/test_orchestrator_claim_gate.py
     - tests/contracts/test_orphan_hooks.py
     - tests/contracts/test_primitive_closure_ratchet.py
+    - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_bash_hot_path_dispatcher_projection.py
     - tests/unit/test_conflict_marker_guard.py
     - tests/unit/test_harness_hook_projection_policy.py
@@ -549,6 +553,7 @@ hooks:
   branch-ownership-lock:
     behavior_tests:
     - tests/contracts/test_branch_ownership_lock.py
+    - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_primitive_scope_classifier.py
     bypass_policy: not_required_warning_only
     criticality: coordination
@@ -786,6 +791,7 @@ hooks:
     script: hooks/confidentiality-enforcer.sh
   conflict-marker-guard:
     behavior_tests:
+    - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_conflict_marker_guard.py
     - tests/unit/test_cross_cli_ide_projection.py
     bypass_policy: not_required_observe_only
@@ -1055,6 +1061,7 @@ hooks:
     script: hooks/crash-recovery.sh
   cross-session-coordination-guard:
     behavior_tests:
+    - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_behavior_evidence_remaining_hooks.py
     bypass_policy: not_required_observe_only
     criticality: lifecycle
@@ -1195,7 +1202,8 @@ hooks:
     scope: os-only
     script: hooks/decision-depth-gate.sh
   dependency-license-classifier:
-    behavior_tests: []
+    behavior_tests:
+    - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     bypass_policy: not_required_observe_only
     criticality: standard
     event: PreToolUse
@@ -1244,6 +1252,7 @@ hooks:
     - tests/contracts/test_primitive_contract_registry.py
     - tests/contracts/test_primitive_intervention_ledger.py
     - tests/contracts/test_primitive_projection_fidelity.py
+    - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_bash_hot_path_dispatcher_projection.py
     - tests/unit/test_cos_governance_roi.py
     - tests/unit/test_cos_graphify_preload_matrix.py
@@ -1303,6 +1312,7 @@ hooks:
     - tests/contracts/test_opencode_native_adapter_design.py
     - tests/contracts/test_primitive_contract_registry.py
     - tests/unit/test_active_primitive_index.py
+    - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_direct_main_guard.py
     - tests/unit/test_merge_queue.py
     bypass_policy: not_required_observe_only
@@ -1669,7 +1679,8 @@ hooks:
     scope: os-only
     script: hooks/error-pipeline.sh
   external-cache-content-leak:
-    behavior_tests: []
+    behavior_tests:
+    - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     bypass_policy: not_required_observe_only
     criticality: standard
     event: PreToolUse
@@ -1684,7 +1695,8 @@ hooks:
     scope: os-only
     script: hooks/external-cache-content-leak.sh
   external-pattern-cleanroom-gate:
-    behavior_tests: []
+    behavior_tests:
+    - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     bypass_policy: not_required_observe_only
     criticality: standard
     event: PreToolUse
@@ -1700,6 +1712,7 @@ hooks:
     script: hooks/external-pattern-cleanroom-gate.sh
   git-commit-scope-guard:
     behavior_tests:
+    - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_git_commit_scope_guard_amend.py
     - tests/unit/test_projected_hook_gap_behaviors.py
     bypass_policy: not_required_observe_only
@@ -1883,7 +1896,8 @@ hooks:
     scope: os-only
     script: hooks/large-file-advisor.sh
   legal-review-required-on-runtime-import:
-    behavior_tests: []
+    behavior_tests:
+    - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     bypass_policy: not_required_warning_only
     criticality: quality
     event: PreToolUse
@@ -1916,7 +1930,8 @@ hooks:
     scope: os-only
     script: hooks/lethal-trifecta-gate.sh
   lib-symlink-divergence-detector:
-    behavior_tests: []
+    behavior_tests:
+    - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     bypass_policy: not_required_observe_only
     criticality: standard
     event: PreToolUse
@@ -2000,6 +2015,7 @@ hooks:
     behavior_tests:
     - tests/contracts/test_opencode_native_adapter_design.py
     - tests/contracts/test_primitive_contract_registry.py
+    - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_governance_policy_hook_adoption.py
     - tests/unit/test_primitive_scope_classifier.py
     bypass_policy: not_required_observe_only
@@ -2019,6 +2035,7 @@ hooks:
     behavior_tests:
     - tests/chaos/test_multi_ide_swarm_safety.py
     - tests/contracts/test_orchestrator_claim_gate.py
+    - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_concurrent_agent_safety_status.py
     - tests/unit/test_gate_runner.py
     - tests/unit/test_primitive_scope_classifier.py
@@ -2055,6 +2072,7 @@ hooks:
     behavior_tests:
     - tests/contracts/test_primitive_closure_ratchet.py
     - tests/contracts/test_skill_invocation_gate.py
+    - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_bash_hot_path_dispatcher_projection.py
     - tests/unit/test_primitive_coherence_audit.py
     - tests/unit/test_research_quality_advisor.py
@@ -2075,6 +2093,7 @@ hooks:
     behavior_tests:
     - tests/contracts/test_primitive_closure_ratchet.py
     - tests/contracts/test_skill_invocation_gate.py
+    - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_bash_hot_path_dispatcher_projection.py
     - tests/unit/test_primitive_coherence_audit.py
     - tests/unit/test_research_quality_advisor.py
@@ -2107,7 +2126,8 @@ hooks:
     scope: both
     script: hooks/pending-truth-drift-detector.sh
   pending-truth-staleness-gate:
-    behavior_tests: []
+    behavior_tests:
+    - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     bypass_policy: not_required_observe_only
     criticality: standard
     event: PreToolUse
@@ -2232,6 +2252,7 @@ hooks:
     script: hooks/pre-agent-snapshot.sh
   pre-commit-content-hash-dedupe:
     behavior_tests:
+    - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_precommit_content_hash.py
     bypass_policy: not_required_observe_only
     criticality: standard
@@ -2412,6 +2433,8 @@ hooks:
     script: hooks/protected-config-write-guard.sh
   provenance-scan:
     behavior_tests:
+    - tests/behavior/test_provenance_scan_commit_scope.py
+    - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_cos_init_py.py
     - tests/unit/test_provenance_scan.py
     bypass_policy: not_required_observe_only
@@ -2624,6 +2647,7 @@ hooks:
   release-guard:
     behavior_tests:
     - tests/chaos/test_release_guard_exercised.py
+    - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_chaos_template.py
     - tests/unit/test_coverage_classifier.py
     - tests/unit/test_governance_policy_hook_adoption.py
@@ -2644,6 +2668,7 @@ hooks:
     behavior_tests:
     - tests/behavior/test_install_core_boundary.py
     - tests/behavior/test_research_compliance_guard.py
+    - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_guard_false_positives.py
     bypass_policy: not_required_observe_only
     criticality: standard
@@ -2675,7 +2700,8 @@ hooks:
     scope: os-only
     script: hooks/research-quality-validator.sh
   research-to-runtime-firewall:
-    behavior_tests: []
+    behavior_tests:
+    - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     bypass_policy: not_required_observe_only
     criticality: standard
     event: PreToolUse
@@ -2795,6 +2821,7 @@ hooks:
   scope-marker-portability-gate:
     behavior_tests:
     - tests/contracts/test_redteam_portability_coverage.py
+    - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_bash_hot_path_dispatcher_projection.py
     - tests/unit/test_gate_runner.py
     - tests/unit/test_primitive_scope_classifier.py
@@ -3458,7 +3485,8 @@ hooks:
     scope: both
     script: hooks/so-impact-eval-trigger.sh
   spdx-header-required:
-    behavior_tests: []
+    behavior_tests:
+    - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     bypass_policy: not_required_observe_only
     criticality: standard
     event: PreToolUse
@@ -3691,6 +3719,7 @@ hooks:
   untracked-work-preservation-guard:
     behavior_tests:
     - tests/contracts/test_p95_hook_latency.py
+    - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_delete_intent.py
     - tests/unit/test_profile_resolver.py
     bypass_policy: not_required_observe_only
