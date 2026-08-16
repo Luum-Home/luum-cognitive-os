@@ -76,8 +76,9 @@ Implemented Slice D:
 Implemented Slice E:
 
 - `NatsAgentTeamTransport` publishes ADR-233 inbox payloads to NATS subjects using an injected/optional `nats-py` client. `connect()` is opt-in and raises a clear install error if `nats-py` is absent.
-- `A2AHttpAgentTeamTransport` POSTs schema-versioned A2A-style JSON message envelopes to an operator-provided HTTP endpoint using stdlib `urllib`.
-- `cos team transport-send` exposes A2A HTTP send and NATS dry-run planning; NATS live clients are consumed through the Python adapter to avoid a default dependency.
+- `HttpJsonAgentTeamTransport` POSTs schema-versioned COS message envelopes to an operator-provided HTTP endpoint using stdlib `urllib`. It is **not** an A2A implementation: no JSON-RPC framing, no agent card, and the envelope fields (`transport`/`team_name`/`recipient`/`message_part`) are COS-private, not A2A's `messageId`/`role`/`parts`. Renamed 2026-08-15 — it was `A2AHttpAgentTeamTransport`, a name that promised conformance the body never had (see `docs/06-Daily/reports/nombres-que-prometen-protocolo-2026-08-15.md`).
+- `cos team transport-send --backend http-json` sends over HTTP; `--backend nats` does dry-run planning. The backend value was `a2a` until 2026-08-15 and was renamed with the class. NATS live clients are consumed through the Python adapter to avoid a default dependency.
+- `transport-plan --backend a2a` stays: it is a declared *migration target* (`status: upgrade_target`), and its `compatibility.conformance` field now says in-band that COS ships no conformant adapter. ADR-230 rejected adopting A2A directly ("adopt the `referenceTaskIds` shape; skip the rest").
 
 ## Hard rules
 
