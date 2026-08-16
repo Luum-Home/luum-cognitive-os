@@ -69,6 +69,15 @@ HOME_PATH_RE="(^|[^A-Za-z0-9_.-])((${MAC_HOME_SEG}|${LINUX_HOME_SEG})/[A-Za-z0-9
 # evidence needed to judge it begins. Detection semantics are unchanged: the
 # classification below can only remove a finding, never add one.
 HOME_TOKEN_RE="(${MAC_HOME_SEG}|${LINUX_HOME_SEG})/[^/[:space:]]+"
+# Companion token for HOME_PATH_RE's SECOND branch. That branch opens its user
+# segment with [^.], not with the account-name class, so it fires on segments
+# beginning with a regex metacharacter — `[a-z0-9._-]+/Projects/` inside a
+# quoted git grep, for one. HOME_TOKEN_RE stops at the first `/`, so those hits
+# survive extraction but are then discarded by the account-name filter in
+# _home_paths_all_exempt(), leaving the file with zero classifiable tokens and
+# no way to earn an exemption. Same classification-only contract as
+# HOME_TOKEN_RE: this can remove a finding, never create one.
+HOME_PROJECTS_TOKEN_RE="${MAC_HOME_SEG}/[^.][^/[:space:]]+/Projects/"
 
 # User segments that are not a personal home by construction.
 #
@@ -117,15 +126,18 @@ _is_exempt_home_segment() {
 # hit shape this function cannot parse keeps blocking instead of slipping past.
 _home_paths_all_exempt() {
   local file="$1" token seg found=0
+
+  # Branch 1 of HOME_PATH_RE: home root + account segment.
   while IFS= read -r token; do
     [ -z "$token" ] && continue
     seg="${token#*/}"
     seg="${seg#*/}"
     # Only tokens whose segment opens with a character legal in an account
-    # name can have produced a HOME_PATH_RE hit in the first place. A segment
-    # opening with a quote or a backtick is the tail of a shell snippet that
-    # merely mentions the home root — HOME_PATH_RE never fired on it, so it
-    # must not be allowed to deny an exemption either.
+    # name can have produced a BRANCH-1 hit. A segment opening with a quote or
+    # a backtick is the tail of a shell snippet that merely mentions the home
+    # root — branch 1 never fired on it, so it must not be allowed to deny an
+    # exemption either. Branch 2 is a different question and is asked below;
+    # applying this filter to it was the defect.
     case "$seg" in
       [A-Za-z0-9._-]*) ;;
       *) continue ;;
@@ -133,6 +145,26 @@ _home_paths_all_exempt() {
     found=1
     _is_exempt_home_segment "$seg" || return 1
   done < <(grep -oE "$HOME_TOKEN_RE" "$file" 2>/dev/null)
+
+  # Branch 2 of HOME_PATH_RE: macOS home root + segment + /Projects/. Measured
+  # 2026-08-15: a document describing the leak pattern was refused on the line
+  # `git grep -nI -E '<mac home>/[a-z0-9._-]+/Projects/' -- '*.md'`. Branch 1
+  # was silent on it, branch 2 fired, and the loop above dropped the only token
+  # in the file because its segment opens with `[`. found stayed 0, so the
+  # function reported "not exempt" — not because the segment failed the
+  # exemption test, but because it was never asked.
+  while IFS= read -r token; do
+    [ -z "$token" ] && continue
+    seg="${token#*/}"
+    seg="${seg#*/}"
+    seg="${seg%%/*}"
+    [ -n "$seg" ] || continue
+    found=1
+    _is_exempt_home_segment "$seg" || return 1
+  done < <(grep -oE "$HOME_PROJECTS_TOKEN_RE" "$file" 2>/dev/null)
+
+  # Still fail-closed: a hit shape neither loop can parse leaves found=0 and
+  # keeps blocking instead of slipping past.
   [ "$found" -eq 1 ]
 }
 
