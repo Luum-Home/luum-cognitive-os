@@ -433,6 +433,24 @@ candidates:
   official_sources:
   - https://docs.devin.ai/work-with-devin/devin-mcp
   next_action: Define Devin settings/rules/MCP projection driver and temp-project proof.
+- id: windsurf
+  display_name: Windsurf
+  category: ide
+  status: deprecated-candidate
+  proof_level: none
+  availability_boundary: local-project
+  projection_surface:
+  - .windsurfrules
+  - .windsurf
+  official_sources:
+  - https://devin.ai/blog/windsurf-is-now-devin-desktop
+  - https://cognition.com/blog/windsurf
+  next_action: Cognition AI rebranded Windsurf to Devin Desktop (2026-06-02); docs.windsurf.com
+    now 307-redirects to docs.devin.ai. Do not implement under the Windsurf name —
+    the local-IDE projection surface (.windsurfrules/.windsurf, already referenced
+    in scripts/cos_efficiency_primitives.py and scripts/audit_gate_registration.py)
+    belongs under the existing `devin` entry once its desktop/local surface is
+    scoped separately from the hosted-agent surface.
 - id: replit-agent
   display_name: Replit Agent
   category: hosted-agent
