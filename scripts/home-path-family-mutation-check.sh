@@ -16,6 +16,7 @@
 #
 #   ci        a machine-allocated path alone            -> must PASS
 #   describes a path pattern that MATCHES home paths    -> must PASS
+#   image     an image-allocated container home alone    -> must PASS
 #   personal  an operator home path alone               -> must BLOCK
 #   mixed     all three in one file                     -> must BLOCK,
 #             and for members that report matched text, the report must name
@@ -63,6 +64,15 @@ CI_TOKEN="${LINUX_HOME}/runner/work/luum-agent-os/build/out.log"
 # account name.
 DESCRIBES_TOKEN="${MAC_HOME}/[a-z0-9._-]+/Projects/"
 PERSONAL_TOKEN="${MAC_HOME}/${PROBE_USER}/Projects/luum/luum-agent-os/build/out.log"
+# Image-allocated account: the fixed home of the jupyter/docker-stacks images.
+# Same admission bar as the CI token, different allocator (an image, not a CI
+# provider), and it is the token that exposed a parity gap on 2026-08-15 —
+# three members exempted it, hooks/research-compliance-guard.sh did not.
+# Written with a SUBDIRECTORY on purpose: three members express the exemption
+# as a `/`-anchored prefix, so the bare home of the account is still blocked
+# there. A case built on the bare home would fail for a reason unrelated to
+# the gap it is meant to guard.
+IMAGE_TOKEN="${LINUX_HOME}/jovyan/work/luum-agent-os/build/out.log"
 
 MEMBERS=(
   "hooks/research-compliance-guard.sh"
@@ -132,6 +142,7 @@ check() {
 echo "=== per-token mutation check: home-path-leak family ==="
 echo "    ci        = ${LINUX_HOME}/runner/...                 (machine-allocated)"
 echo "    describes = ${DESCRIBES_TOKEN}          (pattern, not instance)"
+echo "    image     = ${LINUX_HOME}/jovyan/work/...          (image-allocated)"
 echo "    personal  = ${MAC_HOME}/${PROBE_USER}/Projects/...   (synthetic operator home)"
 echo
 
@@ -145,6 +156,10 @@ Hunt for leaked home paths in markdown with:
 
     git grep -nI -E '${DESCRIBES_TOKEN}' -- '*.md'"
 
+IMAGE_ONLY="# Image only
+
+The notebook wrote its output to ${IMAGE_TOKEN}"
+
 PERSONAL_ONLY="# Personal only
 
 The build wrote its output to ${PERSONAL_TOKEN}"
@@ -152,6 +167,7 @@ The build wrote its output to ${PERSONAL_TOKEN}"
 MIXED="# Mixed
 
 The job wrote its log to ${CI_TOKEN} before uploading.
+The notebook wrote its output to ${IMAGE_TOKEN}
 Audit command: git grep -nI -E '${DESCRIBES_TOKEN}' -- '*.md'
 The build wrote its output to ${PERSONAL_TOKEN}"
 
@@ -159,13 +175,14 @@ for member in "${MEMBERS[@]}"; do
   echo "  $member"
   check "$member" "ci"        "$CI_ONLY"        "PASS"
   check "$member" "describes" "$DESCRIBES_ONLY" "PASS"
+  check "$member" "image"     "$IMAGE_ONLY"     "PASS"
   check "$member" "personal"  "$PERSONAL_ONLY"  "BLOCK"
   check "$member" "mixed"     "$MIXED"          "BLOCK"
   echo
 done
 
 if [ "$violations" -eq 0 ]; then
-  echo "OK: ${#MEMBERS[@]} members, 4 mutations each, no violations."
+  echo "OK: ${#MEMBERS[@]} members, 5 mutations each, no violations."
   exit 0
 fi
 echo "FAIL: $violations violation(s)." >&2
