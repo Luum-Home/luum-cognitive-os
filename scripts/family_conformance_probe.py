@@ -83,6 +83,7 @@ import argparse
 import json
 import os
 import shutil
+import signal
 import subprocess
 import sys
 import tempfile
@@ -181,6 +182,27 @@ def build_sandbox(root: Path, rel_path: str, content: str) -> None:
         subprocess.run(cmd, cwd=root, env=env, capture_output=True, check=False)
 
 
+def _kill_candidate_tree(proc: subprocess.Popen) -> None:
+    """SIGKILL the candidate's whole process group, not just the process we spawned.
+
+    ``subprocess.run(timeout=...)`` only kills the direct child. Candidates that
+    screen in as spawners -- the ACC pipeline wrappers, this probe itself -- have
+    already forked their own multi-minute subprocess chains by the time the 10s
+    guard fires. Killing the parent alone reparents that entire subtree to init,
+    where it keeps running against the real repo for minutes. Running each
+    candidate in its own session (``start_new_session=True``) makes the candidate
+    a process-group leader, so one ``killpg`` reaches everything it started.
+    """
+    try:
+        pgid = os.getpgid(proc.pid)
+    except (ProcessLookupError, PermissionError):
+        return
+    try:
+        os.killpg(pgid, signal.SIGKILL)
+    except (ProcessLookupError, PermissionError):
+        pass
+
+
 def run_candidate(
     candidate: Path, source: Path, argv: list[str], sandbox: Path, rel_path: str, stdin: str
 ) -> tuple[str, str]:
@@ -205,26 +227,38 @@ def run_candidate(
     interpreter = ["python3"] if source.suffix == ".py" else ["bash"]
     cmd = [*interpreter, str(candidate), *argv]
     try:
-        proc = subprocess.run(
+        proc = subprocess.Popen(
             cmd,
             cwd=sandbox,
             env=env,
-            input=stdin,
-            capture_output=True,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
             text=True,
-            timeout=TIMEOUT_S,
+            # Own session/process group, so the timeout below can reach the
+            # candidate's descendants instead of orphaning them onto init.
+            start_new_session=True,
         )
-    except subprocess.TimeoutExpired:
-        return UNMEASURABLE, "timeout"
     except OSError as exc:  # pragma: no cover - execution environment
         return UNMEASURABLE, f"exec-error: {exc}"
 
-    out = (proc.stdout or "") + (proc.stderr or "")
+    with proc:
+        try:
+            stdout, stderr = proc.communicate(input=stdin, timeout=TIMEOUT_S)
+        except subprocess.TimeoutExpired:
+            _kill_candidate_tree(proc)
+            try:
+                proc.communicate(timeout=TIMEOUT_S)
+            except subprocess.TimeoutExpired:  # pragma: no cover - group kill failed
+                pass
+            return UNMEASURABLE, "timeout"
+
+    out = (stdout or "") + (stderr or "")
     if proc.returncode >= 126:
         return UNMEASURABLE, f"exit={proc.returncode}"
     if proc.returncode != 0:
         return BLOCKED, f"exit={proc.returncode}"
-    if any(marker in (proc.stdout or "") for marker in BLOCK_MARKERS):
+    if any(marker in (stdout or "") for marker in BLOCK_MARKERS):
         return BLOCKED, "block-payload"
     return SILENT, f"exit=0 out={len(out)}b"
 
