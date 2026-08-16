@@ -70,16 +70,41 @@ _matches() {
 ' "$COMMAND" | grep -Eq "$1"
 }
 
+# Git accepts global options BETWEEN `git` and its subcommand
+# (`git -C <dir> commit`, `git --no-pager tag`, `git -c user.email=x commit`).
+# Requiring literal adjacency let every one of those shapes skip the whole
+# battery this dispatcher exists to run. Same option set and same regex shape
+# as hooks/git-commit-scope-guard.sh: two parsers of the same command that
+# disagree are worse than the bug they each fix.
+_GIT_GLOBAL_OPTS='(-C|-c|-P|--no-pager|--paginate|--git-dir|--work-tree|--namespace|--exec-path|--bare|--literal-pathspecs|--no-replace-objects|--no-optional-locks)'
+
+# Hot-path budget: the second grep only runs for commands that actually carry
+# a dashed option right after `git`. This prefilter is a bash glob, not a
+# subprocess, so `ls -la` and `git commit -m x` cost exactly what they cost
+# before this change.
+_HAS_GIT_GLOBAL_OPTS=0
+case "$COMMAND" in
+  *"git -"*) _HAS_GIT_GLOBAL_OPTS=1 ;;
+esac
+
+# Matches `git <sub>` and `git <global opts...> <sub>`.
+_is_git_subcommand() {
+  local subs="$1"
+  _matches "(^|[[:space:];|&()])git[[:space:]]+($subs)($|[[:space:];|&()])" && return 0
+  [ "$_HAS_GIT_GLOBAL_OPTS" = "1" ] || return 1
+  _matches "(^|[[:space:];|&()])git[[:space:]]+${_GIT_GLOBAL_OPTS}[^;|&]*[[:space:]]($subs)($|[[:space:];|&()])"
+}
+
 _is_git_boundary() {
-  _matches '(^|[[:space:];|&()])git[[:space:]]+(add|commit|push|pull|checkout|switch|merge|rebase|reset|tag|stash|worktree|branch|restore|rm|mv)($|[[:space:];|&()])'
+  _is_git_subcommand 'add|commit|push|pull|checkout|switch|merge|rebase|reset|tag|stash|worktree|branch|restore|rm|mv'
 }
 
 _is_git_commit() {
-  _matches '(^|[[:space:];|&()])git[[:space:]]+commit($|[[:space:];|&()])'
+  _is_git_subcommand 'commit'
 }
 
 _is_release_boundary() {
-  _matches '(^|[[:space:];|&()])git[[:space:]]+tag($|[[:space:];|&()])' || \
+  _is_git_subcommand 'tag' || \
   _matches '(^|[[:space:];|&()])(echo|printf|sed|perl)[^;&|]*[>[:space:]]VERSION($|[[:space:];|&()])'
 }
 
@@ -90,7 +115,7 @@ _is_fs_mutation() {
 
 _is_network_boundary() {
   _matches '(^|[[:space:];|&()])(curl|wget|nc|ncat|ssh|scp|rsync)[[:space:]]' || \
-  _matches '(^|[[:space:];|&()])git[[:space:]]+(clone|fetch|pull|push)[[:space:]]'
+  _is_git_subcommand 'clone|fetch|pull|push'
 }
 
 _is_dependency_mutation() {
