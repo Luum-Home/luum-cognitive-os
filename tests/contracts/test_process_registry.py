@@ -170,10 +170,11 @@ class TestAtomicWrite:
 class TestDetectOrphans:
     """detect_orphans returns empty when no matching ps entries exist."""
 
-    def test_no_matching_commands_returns_empty(self, tmp_project: Path) -> None:
+    def test_no_repo_owned_orphans_returns_empty(self, tmp_project: Path) -> None:
+        """Ownership is by project root, not by an enumerated basename list."""
         reg = _import_registry(tmp_project)
-        # Use a basename that will never appear in a real ps output
-        result = reg.detect_orphans(["__nonexistent_hook_xyz_abc__.sh"])
+        # tmp_project is an empty throwaway root: no live process references it.
+        result = reg.detect_orphans(project_root=tmp_project)
         assert result == []
 
     def test_registered_pid_not_reported_as_orphan(self, tmp_project: Path) -> None:

@@ -16,6 +16,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from cos_lib.metric_event import MetricEvent, append_event
+from cos_lib.orphan_process_audit import DAEMON_MARKERS
 
 VALID_KINDS = {"short_lived", "detached_daemon"}
 
@@ -187,38 +188,69 @@ def cleanup_expired(dry_run: bool = False) -> List[ProcessRecord]:
     return expired
 
 
-def detect_orphans(hook_basenames: List[str]) -> List[Dict[str, Any]]:
-    """Scan ``ps`` output for hook processes that are NOT in the live registry.
+def detect_orphans(
+    hook_basenames: Optional[List[str]] = None,
+    *,
+    ps_output: Optional[str] = None,
+    project_root: Optional[Path] = None,
+) -> List[Dict[str, Any]]:
+    """Report processes owned by this repo that lost their parent.
 
-    Phase A policy: logs ``orphan_detected`` MetricEvents but does NOT kill.
-    Auto-kill is gated behind ``runtime.reaper.autokill_orphans: true``.
+    Membership is decided by BEHAVIOUR, not by an enumerated name list. A row
+    is an orphan when all of these hold:
+
+      * argv references the project root — it is ours;
+      * ``ppid == 1`` — it was reparented to init because its spawner died;
+      * argv carries no daemon marker — a process that declared itself
+        detached (``so_session_watchdog.py --daemon``) has ``ppid=1`` by
+        design and is not a leak;
+      * the PID is not in the live registry — nobody declared it.
+
+    The previous predicate matched command substrings against ``hooks/*.sh``
+    basenames supplied by the caller. Every orphan measured on 2026-08-15 was a
+    ``scripts/*.py``, so the detector was blind by construction: enumerating a
+    behaviour-defined family by filename. *hook_basenames* is still accepted so
+    existing callers keep working, but it is now purely additive and optional.
+
+    Policy: log-only. This function emits ``orphan_detected`` MetricEvents and
+    never signals a process. Killing an orphan requires an explicit, separate
+    call to ``cleanup_expired`` (registered PIDs only) or to the ADR-279 audit
+    with ``--kill``; there is no configuration flag that makes this function
+    kill (the previous docstring advertised ``runtime.reaper.autokill_orphans``,
+    which no code reads).
 
     Args:
-        hook_basenames: Substrings to match against process command strings
-            (typically hook filenames, e.g. ``["session-end-reap.sh"]``).
+        hook_basenames: Optional extra command substrings to treat as ours.
+        ps_output: Injected ``ps -eo pid,ppid,command`` text. Used by tests so
+            detection can be exercised without a live process table.
+        project_root: Ownership root. Defaults to the project directory.
 
     Returns:
-        List of ``{pid, ppid, command}`` dicts for every detected orphan.
+        List of ``{pid, ppid, command, reason}`` dicts, one per orphan.
     """
     import subprocess  # noqa: PLC0415 — lazy import to keep module light
 
-    try:
-        result = subprocess.run(
-            ["ps", "-eo", "pid,ppid,command"],
-            capture_output=True,
-            text=True,
-            timeout=10,
-        )
-    except (subprocess.TimeoutExpired, FileNotFoundError):
-        return []
+    if ps_output is None:
+        try:
+            result = subprocess.run(
+                ["ps", "-eo", "pid,ppid,command"],
+                capture_output=True,
+                text=True,
+                timeout=10,
+            )
+        except (subprocess.TimeoutExpired, FileNotFoundError):
+            return []
+        if result.returncode != 0:
+            return []
+        ps_output = result.stdout
 
-    if result.returncode != 0:
-        return []
-
+    root = str(Path(project_root) if project_root is not None else _project_root())
+    extra = [b for b in (hook_basenames or []) if b]
     registered_pids = {r.pid for r in _load_live()}
+    self_pid = os.getpid()
     orphans: List[Dict[str, Any]] = []
 
-    for line in result.stdout.splitlines()[1:]:
+    for line in ps_output.splitlines()[1:]:
         parts = line.strip().split(None, 2)
         if len(parts) < 3:
             continue
@@ -229,15 +261,25 @@ def detect_orphans(hook_basenames: List[str]) -> List[Dict[str, Any]]:
             continue
         command = parts[2]
 
-        if any(b in command for b in hook_basenames) and pid not in registered_pids:
-            orphans.append({"pid": pid, "ppid": ppid, "command": command})
-            event = MetricEvent(
-                source="process_registry",
-                event_type="orphan_detected",
-                severity="warn",
-                payload={"pid": pid, "ppid": ppid, "command": command[:200]},
-            )
-            append_event(str(_processes_jsonl()), event)
+        if pid == self_pid or pid in registered_pids:
+            continue
+        if ppid != 1:
+            continue  # has a live parent — owned, not orphaned
+        if any(marker in command for marker in DAEMON_MARKERS):
+            continue  # declared detached on purpose
+        if root not in command and not any(b in command for b in extra):
+            continue  # not ours
+
+        orphans.append(
+            {"pid": pid, "ppid": ppid, "command": command, "reason": "orphan-root"}
+        )
+        event = MetricEvent(
+            source="process_registry",
+            event_type="orphan_detected",
+            severity="warn",
+            payload={"pid": pid, "ppid": ppid, "command": command[:200]},
+        )
+        append_event(str(_processes_jsonl()), event)
 
     return orphans
 
