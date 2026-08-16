@@ -19,6 +19,18 @@ Valkey is **OFF by default**. Enable it only for profiles that provision Valkey:
 export AGENT_BUS_ENABLED=true
 ```
 
+The flag gates the **transport**, not just provisioning: with it off the bus neither starts Valkey nor connects to one that is already running. A reachable server is not consent.
+
+Three controls govern the same decision. Precedence is a single linear order — the first one that applies wins, and nothing later revives the transport:
+
+| # | Control | Effect |
+|---|---------|--------|
+| 1 | `COS_AGENT_BUS_FORCE_FALLBACK=1` | Filesystem transport, always. Beats everything. |
+| 2 | `AGENT_BUS_ENABLED` off (default) | Filesystem transport. No probing (including the ADR-042 local daemon on 6380/6379), no provisioning. Beats an explicit URL. |
+| 3 | Explicit URL (`VALKEY_URL`, `COS_VALKEY_URL`, `--url`, `valkey_url=`) | Chooses *which* server, never *whether*. Consulted only when (1) is unset and (2) is on. |
+
+`valkey_transport_disabled_reason()` in `agent_bus.py` is this table in code; both gates call it, so the order cannot drift between them.
+
 When Valkey is disabled, control and clarification paths still write durable fallback artifacts. They are not silent no-ops unless both Valkey and filesystem I/O fail.
 
 ## Channel and Artifact Naming
@@ -124,7 +136,8 @@ Messages are capped at 256KB. Larger messages have their `content` field truncat
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `AGENT_BUS_ENABLED` | `false` | Enable Valkey pub/sub transport. |
+| `AGENT_BUS_ENABLED` | `false` | Enable the Valkey pub/sub transport. Read by `_agent_bus_enabled()` in `agent_bus.py`; gates probing, connecting and provisioning. |
+| `COS_AGENT_BUS_FORCE_FALLBACK` | unset | `1` pins the filesystem transport; beats `AGENT_BUS_ENABLED`. |
 | `VALKEY_HOST` | `localhost` | Valkey server host. |
 | `VALKEY_PORT` | `6379` | Valkey server port. |
 
@@ -135,6 +148,8 @@ python cos_lib/agent_dashboard.py
 python cos_lib/agent_dashboard.py --url redis://valkey:6379
 python cos_lib/agent_dashboard.py --refresh 2
 ```
+
+`--url` selects a server; it is not an opt-in to the transport. With `AGENT_BUS_ENABLED` off the dashboard **exits 2** naming the flag instead of quietly showing something other than the Valkey bus (`exit 1` still means "Valkey unreachable").
 
 ## Contextual Trigger
 
