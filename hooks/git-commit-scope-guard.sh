@@ -10,15 +10,28 @@
 # BLOCKS (exit 2):
 #   git commit -m "..."           — no pathspec, no -a/--all, no --only
 #   git commit --no-edit          — same problem
-#   git commit --amend            — without explicit pathspec
+#   git commit --amend            — no pathspec AND the index has staged files
 #
 # ALLOWS:
 #   git commit --only -- path/to/file ...
 #   git commit -a / --all         — explicit "commit everything modified"
 #   git commit path/to/file       — bare pathspec (git commit <path> form)
 #   git commit -- path/to/file    — double-dash pathspec form
+#   git commit --amend -- path    — pathspec IS honoured by --amend (measured)
+#   git commit --amend (clean index) — cannot absorb anyone else's work
 #   COS_BYPASS_COMMIT_GUARD=1     — emergency bypass (logged)
 #   git commit --no-verify ...    — allowed only when paired with a scope flag
+#
+# WHY --amend GETS ITS OWN VERDICT (measured 2026-08-15, see
+# docs/06-Daily/reports/amend-en-checkout-compartido-2026-08-15.md):
+#   `git commit --amend -- <path>` DOES honour the pathspec — it is safe.
+#   `git commit --amend` with no pathspec rewrites the tip using the ENTIRE
+#   index, so in a checkout shared with concurrent agents it silently absorbs
+#   whatever they had staged (this is how 3506e1481 swallowed five files
+#   belonging to three other agents).  The mechanical discriminator is the
+#   index: with nothing staged, a bare --amend can only rewrite the message
+#   of the existing commit and cannot co-opt anyone.  That is the escape —
+#   no env var needed for the legitimate "fix my own message" case.
 #
 # LATENCY TARGET: < 50 ms (no external process other than optional jq)
 #
@@ -97,8 +110,12 @@ PY
 
 # ── Only act on git commit invocations ───────────────────────────────────────
 
-# Match `git commit` anywhere in the command (handles pipes, &&, etc.)
-if ! printf '%s' "$COMMAND" | grep -qE '(^|[|&;[:space:]])git[[:space:]]+commit([[:space:]]|$)'; then
+# Match `git commit` anywhere in the command (handles pipes, &&, etc.).
+# Also match global options between `git` and `commit` (`git -C <dir> commit`,
+# `git --no-pager commit`), which the previous literal-adjacency regex let
+# through untouched.  This is only a cheap prefilter — the Python analyzer
+# below is authoritative about which invocation is actually unscoped.
+if ! printf '%s' "$COMMAND" | grep -qE '(^|[|&;[:space:]])git[[:space:]]+(commit([[:space:]]|$)|(-C|-c|-P|--no-pager|--paginate|--git-dir|--work-tree|--namespace|--exec-path)[^|&;]*[[:space:]]commit([[:space:]]|$))'; then
   exit 0
 fi
 
@@ -117,98 +134,201 @@ if type cos_bypass_allows >/dev/null 2>&1 && cos_bypass_allows commit_guard; the
 fi
 
 # ── Scope analysis ────────────────────────────────────────────────────────────
-# We extract only the git commit portion for analysis.
-# Strategy: look for the first `git commit` occurrence and examine what follows.
-
 # Accepted scope indicators:
 #   --only      — explicit scoped commit (preferred form)
 #   -a / --all  — "commit all modified" (explicit intent)
 #   -- <path>   — double-dash pathspec separator
 #   <path>      — bare positional pathspec after flags
-#                 (heuristic: any non-flag token that looks like a path or glob)
-
-# Extract the portion starting from "git commit"
-GIT_COMMIT_PART=$(printf '%s' "$COMMAND" | grep -oE 'git[[:space:]]+commit.*' | head -1)
-
-# Use Python for reliable scope analysis (works on macOS and Linux without
-# dependency on GNU sed extensions or jq).  Python 3 is always available
-# in COS environments.  Falls back to conservative "has scope" if python3 is
-# absent (never block when uncertain).
-has_scope=0
+#
+# The analyzer tokenizes the WHOLE command with shlex (quote-aware) and splits
+# it into shell segments, so that:
+#   * every `git commit` in a compound command is judged on its own — a scoped
+#     first commit no longer launders an unscoped `--amend` after `&&`;
+#   * a commit MESSAGE that happens to contain `&&` or `git commit` cannot
+#     create a phantom segment and cause a false block.
+#
+# Verdicts: OK | BLOCK_UNSCOPED | BLOCK_AMEND (plus the -C directory, if any).
+# Falls back to "allow" if python3 is absent (never false-positive block).
+VERDICT="OK"
+CDIR=""
 if command -v python3 >/dev/null 2>&1; then
-  has_scope=$(python3 - "$GIT_COMMIT_PART" <<'PYEOF'
+  ANALYSIS=$(python3 - "$COMMAND" <<'PYEOF'
 import sys, re, shlex
 
-def has_explicit_scope(cmd: str) -> bool:
-    """Return True if git commit has an explicit scope indicator."""
-    # Check for explicit scope flags (fast path — no tokenization needed)
-    if re.search(r'\s--only(\s|$)', cmd):
-        return True
-    if re.search(r'\s(-a|--all)(\s|$)', cmd):
-        return True
-    # Double-dash pathspec separator: -- <non-empty>
-    if re.search(r'\s--\s+\S', cmd):
-        return True
+SEPARATORS = {'&&', '||', ';', '|', '&', '\n'}
+VALUE_FLAGS = {
+    '-m', '--message', '-C', '--reuse-message', '-F', '--file',
+    '--author', '--date', '--trailer', '--cleanup', '--squash',
+    '--fixup', '--pathspec-from-file', '-e', '--edit',
+    '--allow-empty', '--allow-empty-message',
+}
+BOOL_FLAGS = {
+    '--no-edit', '--amend', '--no-verify', '--signoff', '-s',
+    '--verbose', '-v', '--quiet', '-q', '--dry-run', '-n',
+    '--reset-author', '--no-gpg-sign', '--no-status',
+    '--pathspec-file-nul', '--only', '--all', '-a',
+    '--include', '-i', '--patch', '-p',
+}
+# git global options that may sit between `git` and `commit`.
+GLOBAL_VALUE_OPTS = {'-C', '-c', '--git-dir', '--work-tree', '--namespace', '--exec-path'}
+GLOBAL_BOOL_OPTS = {'--no-pager', '-P', '--paginate', '--bare', '--literal-pathspecs',
+                    '--no-replace-objects', '--no-optional-locks'}
 
-    # Check for bare positional pathspec by stripping all known flags+args.
-    # Flags that take a value argument (next token or =value):
-    VALUE_FLAGS = {
-        '-m', '--message', '-C', '--reuse-message', '-F', '--file',
-        '--author', '--date', '--trailer', '--cleanup', '--squash',
-        '--fixup', '--pathspec-from-file', '-e', '--edit',
-        '--allow-empty', '--allow-empty-message',
-    }
-    # Boolean flags (take no argument):
-    BOOL_FLAGS = {
-        '--no-edit', '--amend', '--no-verify', '--signoff', '-s',
-        '--verbose', '-v', '--quiet', '-q', '--dry-run', '-n',
-        '--reset-author', '--no-gpg-sign', '--no-status',
-        '--pathspec-file-nul', '--only', '--all', '-a',
-        '--include', '-i', '--patch', '-p',
-    }
 
-    # Strip "git commit" prefix and tokenize
-    body = re.sub(r'^git\s+commit\s*', '', cmd.strip())
-    try:
-        tokens = shlex.split(body)
-    except ValueError:
-        # Unbalanced quotes — conservative: assume no scope
-        return False
-
+def scope_of(args):
+    """Given the token list AFTER `commit`, report (has_scope, is_amend)."""
+    is_amend = '--amend' in args
+    if '--only' in args or '-a' in args or '--all' in args:
+        return True, is_amend
     remaining = []
     skip_next = False
-    for tok in tokens:
+    saw_ddash = False
+    for tok in args:
         if skip_next:
             skip_next = False
+            continue
+        if tok == '--':
+            saw_ddash = True
+            continue
+        if saw_ddash:
+            remaining.append(tok)
             continue
         if tok in BOOL_FLAGS:
             continue
         if tok in VALUE_FLAGS:
             skip_next = True
             continue
-        # Flags with embedded = (e.g. --message="msg", --gpg-sign=KEY, -S<key>)
         if re.match(r'^(--[\w-]+=.*|-S.+|-C.+)', tok):
             continue
-        # Short combined flags that don't look like paths (e.g. -sv, -nq)
         if re.match(r'^-[a-zA-Z]{2,}$', tok):
             continue
         remaining.append(tok)
+    return bool(remaining), is_amend
 
-    return bool(remaining)
+
+def segments(tokens):
+    cur = []
+    for tok in tokens:
+        if tok in SEPARATORS:
+            if cur:
+                yield cur
+            cur = []
+        else:
+            cur.append(tok)
+    if cur:
+        yield cur
+
+
+def find_commit(seg):
+    """Locate `git [globals] commit` in a segment.
+
+    Returns (args_after_commit, cdir) or None.
+    """
+    for i, tok in enumerate(seg):
+        if tok != 'git' and not tok.endswith('/git'):
+            continue
+        j = i + 1
+        cdir = ''
+        while j < len(seg):
+            t = seg[j]
+            if t in GLOBAL_VALUE_OPTS:
+                if t == '-C' and j + 1 < len(seg):
+                    cdir = seg[j + 1]
+                j += 2
+                continue
+            if t in GLOBAL_BOOL_OPTS:
+                j += 1
+                continue
+            if re.match(r'^--(git-dir|work-tree|namespace|exec-path)=', t):
+                j += 1
+                continue
+            break
+        if j < len(seg) and seg[j] == 'commit':
+            return seg[j + 1:], cdir
+    return None
+
+
+def analyze(cmd):
+    """Return (verdict, cdir). Verdict: OK | BLOCK_UNSCOPED | BLOCK_AMEND."""
+    try:
+        tokens = shlex.split(cmd, posix=True)
+    except ValueError:
+        # Unbalanced quotes — fall back to the conservative single-occurrence
+        # regex path rather than guessing at segment boundaries.
+        body = re.sub(r'^.*?git\s+commit\s*', '', cmd.strip(), flags=re.S)
+        try:
+            args = shlex.split(body)
+        except ValueError:
+            return 'BLOCK_UNSCOPED', ''
+        has_scope, is_amend = scope_of(args)
+        if has_scope:
+            return 'OK', ''
+        return ('BLOCK_AMEND' if is_amend else 'BLOCK_UNSCOPED'), ''
+
+    for seg in segments(tokens):
+        found = find_commit(seg)
+        if not found:
+            continue
+        args, cdir = found
+        has_scope, is_amend = scope_of(args)
+        if has_scope:
+            continue
+        return ('BLOCK_AMEND' if is_amend else 'BLOCK_UNSCOPED'), cdir
+    return 'OK', ''
+
 
 cmd = sys.argv[1] if len(sys.argv) > 1 else ''
-print('1' if has_explicit_scope(cmd) else '0')
+verdict, cdir = analyze(cmd)
+print(verdict + '\t' + cdir)
 PYEOF
   )
-else
-  # No python3 — cannot analyze safely; allow through (never false-positive block)
-  has_scope=1
+  VERDICT="${ANALYSIS%%	*}"
+  CDIR="${ANALYSIS#*	}"
+  [ "$CDIR" = "$VERDICT" ] && CDIR=""
 fi
 
 # ── Decision ──────────────────────────────────────────────────────────────────
 
-if [ "$has_scope" -eq 1 ]; then
+if [ "$VERDICT" = "OK" ]; then
   exit 0
+fi
+
+# --amend without a pathspec: the danger is not the amend itself, it is the
+# index.  With nothing staged, the rewrite cannot absorb another session's
+# work, so the common "fix my own commit message" case is allowed through.
+# Anything uncertain (git failure, no repo, detached state) keeps the previous
+# behaviour and blocks.
+if [ "$VERDICT" = "BLOCK_AMEND" ]; then
+  INDEX_REPO="${CDIR:-$PROJECT_DIR}"
+  if git -C "$INDEX_REPO" diff --cached --quiet >/dev/null 2>&1; then
+    _emit_commit_receipt "amend-clean-index-allowed"
+    exit 0
+  fi
+  STAGED=$(git -C "$INDEX_REPO" diff --cached --name-only 2>/dev/null | head -20)
+  {
+    echo "[git-commit-scope-guard] BLOCKED: \`git commit --amend\` without a pathspec, with a non-empty index."
+    echo
+    echo "--amend rewrites the tip commit using the ENTIRE index, so it will"
+    echo "absorb every file staged right now — including files staged by the"
+    echo "other sessions sharing this checkout. That is exactly how commit"
+    echo "3506e1481 ended up with five files belonging to three other agents"
+    echo "under a message that describes none of them."
+    echo
+    echo "Currently staged (would be swallowed):"
+    printf '%s\n' "$STAGED" | sed 's/^/  /'
+    echo
+    echo "INSTEAD — do not rewrite shared history (see rules/merge-sobre-rebase):"
+    echo "  git commit --only -m \"...\" -- path/to/file    (new corrective commit)"
+    echo "  git commit --amend -m \"...\" -- path/to/file   (amend, pathspec IS honoured)"
+    echo
+    echo "A bare --amend is allowed automatically once the index is clean:"
+    echo "  git restore --staged <other-agents-paths>   then retry"
+    echo
+    echo "EMERGENCY BYPASS (logs to agent-audit-trail.jsonl):"
+    echo "  COS_BYPASS_COMMIT_GUARD=1 git commit --amend --no-edit"
+  } >&2
+  _emit_commit_receipt "amend-dirty-index-blocked"
+  exit 2
 fi
 
 # No scope detected — block.
