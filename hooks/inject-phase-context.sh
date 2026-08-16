@@ -195,13 +195,13 @@ if [[ -n "$AGENT_PROMPT" ]]; then
   # lib/ symlink trap
   if echo "$AGENT_PROMPT" | grep -qiE 'lib/|packages/.*lib|duplicate.*lib|dedup'; then
     GOTCHAS="${GOTCHAS}
-NOTE: SOME lib/*.py (~22%, 68 of 314) are SYMLINKS to packages/*/lib/*.py. Most are real files. Verify per file with: ls -la lib/<file>.py. If <file>.py exists in BOTH lib/ AND packages/*/lib/, run scripts/cos-lib-symlink-invariant-audit.py to detect silent drift (3 confirmed drifts as of 2026-05-11 — see ADR-267 §Layer 1 Hook #7). Check symlink direction before replacing files in packages/*/lib/."
+NOTE: there is no lib/ at the repo root — the package dir is cos_lib/. SOME cos_lib/*.py are SYMLINKS to packages/*/lib/*.py; most are real files (70 of 369 = 19.0% on 2026-08-15 — recount, do not cite: find cos_lib -name '*.py' -type l | wc -l ; find cos_lib -name '*.py' | wc -l). Verify per file with: ls -la cos_lib/<file>.py. Three whole directories are symlinks too: cos_lib/harness_adapter, cos_lib/event_projections, cos_lib/providers. If <file>.py exists in BOTH cos_lib/ AND packages/*/lib/, run python3 scripts/cos_lib_symlink_invariant_audit.py to detect silent drift (3 confirmed drifts as of 2026-05-11 — see ADR-267 §Layer 1 Hook #7). Check symlink direction before replacing files in packages/*/lib/."
   fi
 
   # settings.json trap
   if echo "$AGENT_PROMPT" | grep -qiE 'settings\.json|wire.*hook|add.*hook.*settings'; then
     GOTCHAS="${GOTCHAS}
-NOTE: .claude/settings.json is GENERATED (ADR-064): the canonical hook registry is cognitive-os.yaml > harness.hooks ({script, event, async, scope} entries), projected by scripts/_lib/settings-driver-claude-code.sh (apply-efficiency-profile.sh merely delegates). Register in cognitive-os.yaml, then run: bash scripts/apply-efficiency-profile.sh standard"
+NOTE: .claude/settings.json is GENERATED (ADR-064): the canonical hook registry is cognitive-os.yaml > harness.hooks ({script, event, async, scope} entries), projected by scripts/_lib/settings-driver-claude-code.sh (apply-efficiency-profile.sh merely delegates). Register in cognitive-os.yaml, then run: bash scripts/apply-efficiency-profile.sh default"
   fi
 
   # Hook creation trap
