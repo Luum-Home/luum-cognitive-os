@@ -35,17 +35,12 @@ if [ "${ENABLED:-true}" = "false" ]; then
     exit 0
 fi
 
-# ── Collect hook basenames for orphan detection ────────────────────────────
-HOOK_BASENAMES=""
-if [ -d "$PROJECT_DIR/hooks" ]; then
-    # shellcheck disable=SC2012
-    HOOK_BASENAMES=$(ls "$PROJECT_DIR/hooks/"*.sh 2>/dev/null \
-        | xargs -n1 basename 2>/dev/null \
-        | tr '\n' ',' \
-        | sed 's/,$//' || true)
-fi
-
 # ── Run registry cleanup + orphan detection ────────────────────────────────
+# No basename list is collected any more. Orphan membership is decided by
+# behaviour inside detect_orphans() — argv references the project root, ppid=1,
+# no daemon marker, not in the registry. Feeding it `ls hooks/*.sh` enumerated a
+# behaviour-defined family by filename and made every orphaned scripts/*.py
+# invisible (measured 2026-08-15: 47 of them, 0 detected).
 python3 - <<PYEOF 2>&1 | head -40
 import sys
 sys.path.insert(0, "$PROJECT_DIR")
@@ -53,9 +48,10 @@ from cos_lib.process_registry import cleanup_expired, detect_orphans
 
 expired = cleanup_expired(dry_run=False)
 
-hooks_raw = "$HOOK_BASENAMES"
-hooks = [h.strip() for h in hooks_raw.split(",") if h.strip()]
-orphans = detect_orphans(hooks)
+# Log-only by design: detect_orphans never signals. The 2026-08-15 census
+# measured 95% of orphans collected on their own within 288 s, so autokilling
+# what this now sees would terminate live work.
+orphans = detect_orphans(project_root="$PROJECT_DIR")
 
 print(f"[so-reaper] expired={len(expired)} orphans_logged={len(orphans)}")
 if expired:
