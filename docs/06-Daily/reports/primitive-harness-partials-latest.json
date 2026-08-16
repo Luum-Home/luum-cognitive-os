@@ -51,16 +51,6 @@
       "scope": "both"
     },
     {
-      "coverage": "acc-report+claude+dashboard+tui",
-      "family": "hooks",
-      "gap": "scope=both but missing projected/wired support for: codex",
-      "gap_policy": "codex-adapter-needed",
-      "gap_severity": "medium",
-      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
-      "primitive": "hooks/doc-sync-detector.sh",
-      "scope": "both"
-    },
-    {
       "coverage": "acc-report+dashboard+tui",
       "family": "hooks",
       "gap": "scope=both but missing projected/wired support for: claude, codex",
@@ -68,26 +58,6 @@
       "gap_severity": "medium",
       "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
       "primitive": "hooks/dod-gate.sh",
-      "scope": "both"
-    },
-    {
-      "coverage": "acc-report+claude+dashboard+tui",
-      "family": "hooks",
-      "gap": "scope=both but missing projected/wired support for: codex",
-      "gap_policy": "codex-adapter-needed",
-      "gap_severity": "medium",
-      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
-      "primitive": "hooks/edit-lock-drain-parked.sh",
-      "scope": "both"
-    },
-    {
-      "coverage": "acc-report+claude+dashboard+tui",
-      "family": "hooks",
-      "gap": "scope=both but missing projected/wired support for: codex",
-      "gap_policy": "codex-adapter-needed",
-      "gap_severity": "medium",
-      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
-      "primitive": "hooks/edit-lock-pre-tool.sh",
       "scope": "both"
     },
     {
@@ -197,26 +167,6 @@
       "gap_policy": "codex-adapter-needed",
       "gap_severity": "medium",
       "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
-      "primitive": "hooks/pending-truth-drift-detector.sh",
-      "scope": "both"
-    },
-    {
-      "coverage": "acc-report+claude+dashboard+tui",
-      "family": "hooks",
-      "gap": "scope=both but missing projected/wired support for: codex",
-      "gap_policy": "codex-adapter-needed",
-      "gap_severity": "medium",
-      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
-      "primitive": "hooks/plan-claim-validator.sh",
-      "scope": "both"
-    },
-    {
-      "coverage": "acc-report+claude+dashboard+tui",
-      "family": "hooks",
-      "gap": "scope=both but missing projected/wired support for: codex",
-      "gap_policy": "codex-adapter-needed",
-      "gap_severity": "medium",
-      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
       "primitive": "hooks/post-agent-verify.sh",
       "scope": "both"
     },
@@ -268,16 +218,6 @@
       "gap_severity": "medium",
       "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
       "primitive": "hooks/private-mode-metrics-gate.sh",
-      "scope": "both"
-    },
-    {
-      "coverage": "acc-report+claude+dashboard+tui",
-      "family": "hooks",
-      "gap": "scope=both but missing projected/wired support for: codex",
-      "gap_policy": "codex-adapter-needed",
-      "gap_severity": "medium",
-      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
-      "primitive": "hooks/project-docs-convention.sh",
       "scope": "both"
     },
     {
@@ -341,16 +281,6 @@
       "scope": "both"
     },
     {
-      "coverage": "acc-report+claude+dashboard+tui",
-      "family": "hooks",
-      "gap": "scope=both but missing projected/wired support for: codex",
-      "gap_policy": "codex-adapter-needed",
-      "gap_severity": "medium",
-      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
-      "primitive": "hooks/research-quality-validator.sh",
-      "scope": "both"
-    },
-    {
       "coverage": "acc-report+dashboard+tui",
       "family": "hooks",
       "gap": "scope=both but missing projected/wired support for: claude, codex",
@@ -358,16 +288,6 @@
       "gap_severity": "medium",
       "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
       "primitive": "hooks/resource-check.sh",
-      "scope": "both"
-    },
-    {
-      "coverage": "acc-report+claude+dashboard+tui",
-      "family": "hooks",
-      "gap": "scope=both but missing projected/wired support for: codex",
-      "gap_policy": "codex-adapter-needed",
-      "gap_severity": "medium",
-      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
-      "primitive": "hooks/scope-creep-detector.sh",
       "scope": "both"
     },
     {
@@ -391,16 +311,6 @@
       "scope": "both"
     },
     {
-      "coverage": "acc-report+claude+dashboard+tui",
-      "family": "hooks",
-      "gap": "scope=both but missing projected/wired support for: codex",
-      "gap_policy": "codex-adapter-needed",
-      "gap_severity": "medium",
-      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
-      "primitive": "hooks/secret-detector.sh",
-      "scope": "both"
-    },
-    {
       "coverage": "acc-report+dashboard+tui",
       "family": "hooks",
       "gap": "scope=both but missing projected/wired support for: claude, codex",
@@ -421,16 +331,6 @@
       "scope": "both"
     },
     {
-      "coverage": "acc-report+claude+dashboard+tui",
-      "family": "hooks",
-      "gap": "scope=both but missing projected/wired support for: codex",
-      "gap_policy": "codex-adapter-needed",
-      "gap_severity": "medium",
-      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
-      "primitive": "hooks/skill-frontmatter-validator.sh",
-      "scope": "both"
-    },
-    {
       "coverage": "acc-report+dashboard+tui",
       "family": "hooks",
       "gap": "scope=both but missing projected/wired support for: claude, codex",
@@ -448,16 +348,6 @@
       "gap_severity": "medium",
       "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
       "primitive": "hooks/subagent-capability-preflight.sh",
-      "scope": "both"
-    },
-    {
-      "coverage": "acc-report+claude+dashboard+tui",
-      "family": "hooks",
-      "gap": "scope=both but missing projected/wired support for: codex",
-      "gap_policy": "codex-adapter-needed",
-      "gap_severity": "medium",
-      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
-      "primitive": "hooks/surface-fix-detector.sh",
       "scope": "both"
     },
     {
@@ -529,19 +419,30 @@
       "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
       "primitive": "hooks/worktree-submodule-fix.sh",
       "scope": "both"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "scripts",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "projectable-needs-driver",
+      "gap_severity": "medium",
+      "next_action": "Add a consumer projection driver or demote from projectable scope.",
+      "primitive": "scripts/check_codebase_memory_readiness.py",
+      "scope": "project"
     }
   ],
   "schema_version": "primitive-harness-partials.v1",
   "source_schema_version": "primitive-harness-coverage.v1",
   "summary": {
     "by_policy": {
-      "codex-adapter-needed": 53
+      "codex-adapter-needed": 42,
+      "projectable-needs-driver": 1
     },
     "by_severity": {
-      "medium": 53
+      "medium": 43
     },
-    "partial_count": 53,
-    "total_gaps": 364,
+    "partial_count": 43,
+    "total_gaps": 369,
     "unclassified_gaps": 0
   }
 }

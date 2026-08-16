@@ -7,7 +7,7 @@ Consumer accessibility: lifecycle-declared-maintainer:19, projected-consumer-sur
 | Path | Role | Source | Confidence | Consumer Access | Lifecycle | Consumers | Next action |
 |---|---|---|---|---|---|---:|---|
 | `templates/adr-template.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 5 | keep maintainer-only or add explicit export path |
-| `templates/agent-mandatory-rules.md` | quality-gate | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 24 | keep maintainer-only or add explicit export path |
+| `templates/agent-mandatory-rules.md` | quality-gate | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 26 | keep maintainer-only or add explicit export path |
 | `templates/agent-planning.md` | agent-preamble | heuristic:text | medium | so-local-only |  | 6 | add lifecycle/package/projection metadata or keep SO-local |
 | `templates/agent-preamble.md` | agent-preamble | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 68 | keep maintainer-only or add explicit export path |
 | `templates/agent-research-only.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 12 | keep maintainer-only or add explicit export path |
@@ -26,7 +26,7 @@ Consumer accessibility: lifecycle-declared-maintainer:19, projected-consumer-sur
 | `templates/prompt-hooks/clarification-gate-prompt.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 4 | keep maintainer-only or add explicit export path |
 | `templates/prompt-hooks/prompt-quality-prompt.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 4 | keep maintainer-only or add explicit export path |
 | `templates/prompt-hooks/scope-creep-prompt.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 4 | keep maintainer-only or add explicit export path |
-| `templates/quality-gates.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 44 | keep maintainer-only or add explicit export path |
+| `templates/quality-gates.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 46 | keep maintainer-only or add explicit export path |
 | `templates/rebranding-checklist.md` | recovery | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 13 | keep maintainer-only or add explicit export path |
 | `templates/rule-template.md` | prompt-composition | default | medium | lifecycle-declared-maintainer | advisory | 9 | keep maintainer-only or add explicit export path |
 | `templates/skill-template.md` | prompt-composition | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 7 | keep maintainer-only or add explicit export path |
