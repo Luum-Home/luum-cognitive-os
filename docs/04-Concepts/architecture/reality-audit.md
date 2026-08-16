@@ -7,6 +7,16 @@
 
 ## CRITICAL: lib/ Architecture
 
+> **Corrección 2026-08-15.** Este documento es una foto de abril 2026 y quedó
+> con dos datos falsos que siguen circulando. Primero: **`lib/` ya no existe en
+> el root** — el directorio es `cos_lib/` (`ls -d lib` → "No such file or
+> directory"). Segundo: **no todos** los `.py` son symlinks — 70 de 369 lo son,
+> 19,0%, o sea que el caso por default es un archivo real:
+> `find cos_lib -name '*.py' -type l | wc -l` / `find cos_lib -name '*.py' | wc -l`.
+> Leé lo que sigue con `lib/` → `cos_lib/` y "los archivos son symlinks" → "algunos
+> lo son, verificá con `ls -la` por archivo". El índice vigente está en
+> `templates/project-gotchas.md`.
+
 **lib/*.py files are SYMLINKS to packages/*/lib/*.py — NOT duplicates.**
 
 ```
