@@ -42,13 +42,21 @@ FALLBACK_TRAPS = [
     ),
     (
         r"cos_lib/[a-zA-Z0-9_]+\.py",
-        "SOME lib/*.py (~22%) are SYMLINKS to packages/*/lib/*.py — most are real files. Always check with ls -la per file. Run scripts/cos-lib-symlink-invariant-audit.py if a same-named file exists in both. "
-        "Verify: ls -la lib/<file>.py",
+        "There is no lib/ at the repo root — the package dir is cos_lib/. SOME cos_lib/*.py are "
+        "SYMLINKS to packages/*/lib/*.py; most are real files (70 of 369 = 19.0% on 2026-08-15 — "
+        "recount with: find cos_lib -name '*.py' -type l | wc -l; find cos_lib -name '*.py' | wc -l). "
+        "Always check with ls -la per file. Run python3 scripts/cos_lib_symlink_invariant_audit.py "
+        "if a same-named file exists in both. "
+        "Verify: ls -la cos_lib/<file>.py",
     ),
     (
         r"packages/",
-        "SOME lib/*.py (~22%) are SYMLINKS to packages/*/lib/*.py — most are real files. Always check with ls -la per file. Run scripts/cos-lib-symlink-invariant-audit.py if a same-named file exists in both. "
-        "Verify symlinks first: ls -la lib/",
+        "There is no lib/ at the repo root — the package dir is cos_lib/. SOME cos_lib/*.py are "
+        "SYMLINKS to packages/*/lib/*.py; most are real files (70 of 369 = 19.0% on 2026-08-15 — "
+        "recount with: find cos_lib -name '*.py' -type l | wc -l; find cos_lib -name '*.py' | wc -l). "
+        "Three whole directories are symlinks too: cos_lib/harness_adapter, cos_lib/event_projections, "
+        "cos_lib/providers. "
+        "Verify symlinks first: ls -la cos_lib/",
     ),
     (
         r"efficiency[\s_-]?profile",
