@@ -286,6 +286,36 @@ Lo que sí amerita decisión del operador, en este orden:
   antes de escribir nada y no mide nada de esto. Reinventé el censo a propósito
   recién después de comprobarlo.
 
+## Incidente de concurrencia durante este trabajo (para el operador)
+
+Dos errores propios, ambos por escritores concurrentes sobre el mismo checkout.
+Van escritos porque el repo no debe mentir sobre cómo llegó a este estado.
+
+1. **Nombre de archivo compartido en el scratchpad.** Escribí el mensaje de
+   commit en `<scratchpad>/msg.txt` y una sesión hermana sobrescribió ese mismo
+   path entre mi `cat >` y mi `git commit -F`. El commit salió con el mensaje de
+   otro (`docs(research): investigar A2A e interop…`). Lección concreta: los
+   archivos del scratchpad de sesión también compiten — el nombre tiene que ser
+   único por tarea, no genérico.
+2. **`git commit --amend` no respeta el pathspec.** Al corregir el mensaje,
+   `--amend` commiteó el **índice entero** y se llevó cinco archivos que otra
+   sesión tenía staged (`censo-terminologia-arneses-2026-08-15.md`,
+   `familia-rutas-cierre-2026-08-15.md`, `forense-procesos-huerfanos-2026-08-15.md`,
+   `scripts/home-path-family-mutation-check.sh`,
+   `tests/audit/test_family_probe_no_orphans.py`). Quedaron dentro del commit
+   `3506e1481`, que lleva mi mensaje.
+
+**Nada se perdió** — los cinco archivos están íntegros en el árbol y la sesión
+dueña commiteó encima (`4488b58ae`). No intenté deshacerlo: para cuando fui a
+reparar, HEAD ya era de otra sesión, y reescribir historia sobre la que otro ya
+construyó es peor que el problema. `git reset --soft` quedó además bloqueado por
+`destructive-git-blocker` (ADR-055b), correctamente.
+
+Vale como dato para la norma de escritores concurrentes: `git commit --only --
+<paths>` sí respeta el alcance, **`git commit --amend` no tiene equivalente**.
+Bajo sesiones concurrentes, amend es una operación de índice completo y no
+debería usarse en un checkout compartido.
+
 ## Límite conocido de la medición
 
 `scripts/audit_hanging_processes.py` clasifica por comportamiento, no por
