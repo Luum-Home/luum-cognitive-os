@@ -97,19 +97,85 @@ def _now_epoch() -> float:
     return time.time()
 
 
+_TRUTHY = frozenset({"1", "true", "yes", "on"})
+
+# Process-lifetime memo for the Docker provisioning attempt. `None` means
+# "not attempted yet". A `docker compose up` that failed once will fail again
+# in the same process, so the result is cached instead of retried at each of
+# the three call sites.
+_VALKEY_PROVISION_ATTEMPTED: Optional[bool] = None
+
+
+def _force_fallback_enabled() -> bool:
+    """Return True when COS_AGENT_BUS_FORCE_FALLBACK=1 forces the file transport."""
+    return os.environ.get("COS_AGENT_BUS_FORCE_FALLBACK", "").strip() == "1"
+
+
+def _agent_bus_enabled() -> bool:
+    """Return True when the operator opted into the Valkey transport.
+
+    `AGENT_BUS_ENABLED` defaults to OFF per `rules/agent-communication.md`.
+    While it is off, the bus must never try to *provision* Valkey: starting
+    Docker is a side effect the policy did not authorise. An already-running
+    Valkey is still probed and used opportunistically -- probing is read-only.
+    """
+    return os.environ.get("AGENT_BUS_ENABLED", "").strip().lower() in _TRUTHY
+
+
+def _reset_valkey_provision_cache() -> None:
+    """Clear the provisioning memo. Test seam -- env changes mid-process."""
+    global _VALKEY_PROVISION_ATTEMPTED
+    _VALKEY_PROVISION_ATTEMPTED = None
+
+
 def _ensure_valkey_via_smart_infra() -> bool:
     """Attempt to start the Valkey service via smart_infra.
 
     Returns True if the service was ensured successfully, False otherwise.
     This is a best-effort operation that never raises.
+
+    Two gates run before any Docker work, because both are documented escapes
+    that previously did not escape:
+
+      1. `COS_AGENT_BUS_FORCE_FALLBACK=1` -- forcing the file fallback must
+         also skip provisioning, not just URL resolution.
+      2. `AGENT_BUS_ENABLED` unset/false -- the documented default is OFF, so
+         provisioning a service the policy declares disabled is a bug.
+
+    The result is memoised for the process lifetime: the three call sites
+    otherwise re-run a `docker compose up` that already failed.
     """
+    global _VALKEY_PROVISION_ATTEMPTED
+
+    if _force_fallback_enabled():
+        logger.debug(
+            "agent_bus: COS_AGENT_BUS_FORCE_FALLBACK=1, skipping Valkey provisioning"
+        )
+        return False
+
+    if not _agent_bus_enabled():
+        logger.debug(
+            "agent_bus: AGENT_BUS_ENABLED is off (default), skipping Valkey provisioning"
+        )
+        return False
+
+    if _VALKEY_PROVISION_ATTEMPTED is not None:
+        logger.debug(
+            "agent_bus: reusing memoised Valkey provisioning result (%s)",
+            _VALKEY_PROVISION_ATTEMPTED,
+        )
+        return _VALKEY_PROVISION_ATTEMPTED
+
     try:
         from cos_lib.smart_infra import ensure_service
 
-        return ensure_service("valkey")
+        result = bool(ensure_service("valkey"))
     except Exception as exc:
         logger.debug("smart_infra.ensure_service('valkey') failed: %s", exc)
-        return False
+        result = False
+
+    _VALKEY_PROVISION_ATTEMPTED = result
+    return result
 
 
 def _ping_url(url: str, timeout: float = 1.0) -> bool:
@@ -135,7 +201,7 @@ def _resolve_valkey_url(primary_url: str = _DEFAULT_VALKEY_URL) -> Optional[str]
 
     Returns the URL string if reachable, None if nothing responds.
     """
-    if os.environ.get("COS_AGENT_BUS_FORCE_FALLBACK", "").strip() == "1":
+    if _force_fallback_enabled():
         return None
 
     if _ping_url(primary_url):
@@ -193,7 +259,8 @@ def is_valkey_available(valkey_url: str = _DEFAULT_VALKEY_URL) -> bool:
     Resolution order (ADR-042):
       1. Primary URL (env-configured or default localhost:6379)
       2. Local daemon fallback: localhost:6380 / localhost:6379
-      3. smart_infra Docker start, then re-probe (1) + (2)
+      3. smart_infra Docker start, then re-probe (1) + (2) -- only when
+         `AGENT_BUS_ENABLED` is on and force-fallback is off.
 
     Args:
         valkey_url: Redis-compatible connection URL.

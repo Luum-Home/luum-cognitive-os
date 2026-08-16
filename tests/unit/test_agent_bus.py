@@ -7,6 +7,7 @@ so no actual Valkey/Redis server is needed.
 Run with: pytest tests/unit/test_agent_bus.py -v
 """
 
+import contextlib
 import json
 import os
 import threading
@@ -1084,13 +1085,193 @@ class TestSmartInfraIntegration:
             assert result is True
 
     def test_ensure_valkey_via_smart_infra_graceful_on_import_error(self):
-        """_ensure_valkey_via_smart_infra returns False on import error."""
+        """_ensure_valkey_via_smart_infra returns False on import error.
+
+        AGENT_BUS_ENABLED must be ON here: with the flag off the function
+        short-circuits before the import and this test would pass without
+        ever exercising the error path it claims to cover.
+        """
         from cos_lib.agent_bus import _ensure_valkey_via_smart_infra
 
         # Simulate smart_infra not being importable
-        with patch.dict("sys.modules", {"cos_lib.smart_infra": None}):
+        with _bus_env(AGENT_BUS_ENABLED="true"), \
+             patch.dict("sys.modules", {"cos_lib.smart_infra": None}):
             result = _ensure_valkey_via_smart_infra()
             assert result is False
+
+
+# ---------------------------------------------------------------------------
+# Valkey provisioning gates (AGENT_BUS_ENABLED / force-fallback / memoisation)
+# ---------------------------------------------------------------------------
+
+
+@contextlib.contextmanager
+def _bus_env(**overrides):
+    """Set agent-bus env vars and clear the provisioning memo around the block."""
+    from cos_lib import agent_bus as ab
+
+    keys = ("AGENT_BUS_ENABLED", "COS_AGENT_BUS_FORCE_FALLBACK")
+    env = {k: None for k in keys}
+    env.update(overrides)
+    with patch.dict(os.environ, {k: v for k, v in env.items() if v is not None}):
+        for key, value in env.items():
+            if value is None:
+                os.environ.pop(key, None)
+        ab._reset_valkey_provision_cache()
+        try:
+            yield
+        finally:
+            ab._reset_valkey_provision_cache()
+
+
+class TestValkeyProvisioningGates:
+    """The two documented escapes must actually escape, and Docker must not rerun.
+
+    Every test patches `cos_lib.smart_infra.ensure_service` with a counting
+    spy: the assertion is on whether `docker compose` would have been invoked,
+    not on log text. Silencing the message is the cheap green this guards.
+    """
+
+    @staticmethod
+    def _spy():
+        spy = MagicMock(return_value=False)
+        return spy, patch.dict(
+            "sys.modules", {"cos_lib.smart_infra": MagicMock(ensure_service=spy)}
+        )
+
+    def test_provisioning_skipped_when_agent_bus_disabled(self):
+        """Default (flag unset): no provisioning attempt at all."""
+        from cos_lib.agent_bus import _ensure_valkey_via_smart_infra
+
+        spy, mod = self._spy()
+        with _bus_env(), mod:
+            assert _ensure_valkey_via_smart_infra() is False
+        assert spy.call_count == 0
+
+    @pytest.mark.parametrize("value", ["false", "0", "no", "off", ""])
+    def test_provisioning_skipped_for_falsey_flag_values(self, value):
+        from cos_lib.agent_bus import _ensure_valkey_via_smart_infra
+
+        spy, mod = self._spy()
+        with _bus_env(AGENT_BUS_ENABLED=value), mod:
+            assert _ensure_valkey_via_smart_infra() is False
+        assert spy.call_count == 0
+
+    @pytest.mark.parametrize("value", ["true", "TRUE", "1", "yes", "on", " true "])
+    def test_provisioning_attempted_when_agent_bus_enabled(self, value):
+        """Reverse path: with Valkey enabled the Docker attempt MUST still run.
+
+        A fix that never provisions has broken the feature, not fixed it.
+        """
+        from cos_lib.agent_bus import _ensure_valkey_via_smart_infra
+
+        spy, mod = self._spy()
+        with _bus_env(AGENT_BUS_ENABLED=value), mod:
+            _ensure_valkey_via_smart_infra()
+        assert spy.call_count == 1
+        spy.assert_called_once_with("valkey")
+
+    def test_provisioning_returns_true_when_service_starts(self):
+        from cos_lib.agent_bus import _ensure_valkey_via_smart_infra
+
+        spy = MagicMock(return_value=True)
+        with _bus_env(AGENT_BUS_ENABLED="true"), \
+             patch.dict("sys.modules", {"cos_lib.smart_infra": MagicMock(ensure_service=spy)}):
+            assert _ensure_valkey_via_smart_infra() is True
+
+    def test_force_fallback_blocks_provisioning_even_when_enabled(self):
+        """COS_AGENT_BUS_FORCE_FALLBACK=1 must beat AGENT_BUS_ENABLED=true.
+
+        Regression: force-fallback only short-circuited URL resolution, so
+        `docker compose up` still ran behind the documented escape hatch.
+        """
+        from cos_lib.agent_bus import _ensure_valkey_via_smart_infra
+
+        spy, mod = self._spy()
+        with _bus_env(AGENT_BUS_ENABLED="true", COS_AGENT_BUS_FORCE_FALLBACK="1"), mod:
+            assert _ensure_valkey_via_smart_infra() is False
+        assert spy.call_count == 0
+
+    def test_provisioning_failure_is_memoised(self):
+        """A failed `docker compose up` is not retried within the process."""
+        from cos_lib.agent_bus import _ensure_valkey_via_smart_infra
+
+        spy, mod = self._spy()
+        with _bus_env(AGENT_BUS_ENABLED="true"), mod:
+            results = [_ensure_valkey_via_smart_infra() for _ in range(5)]
+        assert results == [False] * 5
+        assert spy.call_count == 1
+
+    def test_provisioning_success_is_memoised(self):
+        from cos_lib.agent_bus import _ensure_valkey_via_smart_infra
+
+        spy = MagicMock(return_value=True)
+        with _bus_env(AGENT_BUS_ENABLED="true"), \
+             patch.dict("sys.modules", {"cos_lib.smart_infra": MagicMock(ensure_service=spy)}):
+            assert [_ensure_valkey_via_smart_infra() for _ in range(3)] == [True] * 3
+        assert spy.call_count == 1
+
+    def test_publisher_construction_does_not_provision_by_default(self, tmp_fallback_dir):
+        """The reported symptom: building a publisher started Docker.
+
+        Unreachable URL, flag off -> zero provisioning attempts, and the
+        publisher still lands on the working file fallback.
+        """
+        from cos_lib.agent_bus import AgentPublisher
+
+        spy, mod = self._spy()
+        with _bus_env(), mod:
+            pub = AgentPublisher(
+                "gate-agent", valkey_url="redis://127.0.0.1:1", fallback_dir=tmp_fallback_dir
+            )
+        assert spy.call_count == 0
+        assert pub._use_valkey is False
+
+    def test_subscriber_construction_does_not_provision_by_default(self, tmp_fallback_dir):
+        from cos_lib.agent_bus import OrchestratorSubscriber
+
+        spy, mod = self._spy()
+        with _bus_env(), mod:
+            sub = OrchestratorSubscriber(
+                valkey_url="redis://127.0.0.1:1", fallback_dir=tmp_fallback_dir
+            )
+        assert spy.call_count == 0
+        assert sub._use_valkey is False
+
+    def test_is_valkey_available_does_not_provision_by_default(self):
+        from cos_lib.agent_bus import is_valkey_available
+
+        spy, mod = self._spy()
+        with _bus_env(), mod:
+            assert is_valkey_available("redis://127.0.0.1:1") is False
+        assert spy.call_count == 0
+
+    def test_publisher_provisions_when_enabled(self, tmp_fallback_dir):
+        """Reverse path at the construction site: flag on -> Docker attempted."""
+        from cos_lib.agent_bus import AgentPublisher
+
+        spy, mod = self._spy()
+        with _bus_env(AGENT_BUS_ENABLED="true"), mod:
+            AgentPublisher(
+                "gate-agent", valkey_url="redis://127.0.0.1:1", fallback_dir=tmp_fallback_dir
+            )
+        assert spy.call_count == 1
+
+    def test_bus_still_delivers_with_provisioning_gated_off(self, tmp_fallback_dir):
+        """Delivery is the criterion: gating provisioning must not break the bus."""
+        from cos_lib.agent_bus import AgentPublisher, _FileFallback, _channel
+
+        spy, mod = self._spy()
+        with _bus_env(), mod:
+            rx = AgentPublisher(
+                "receptor", valkey_url="redis://127.0.0.1:1", fallback_dir=tmp_fallback_dir
+            )
+            tx = _FileFallback(tmp_fallback_dir)
+            tx.publish(_channel("receptor", "control"), {"command": "pause"})
+            assert rx.poll_control() == "pause"
+            tx.publish(_channel("receptor", "control"), {"command": "resume"})
+            assert rx.poll_control() == "resume"
+        assert spy.call_count == 0
 
 
 def test_send_control_fallback_writes_interrupt_sentinel(tmp_path):
