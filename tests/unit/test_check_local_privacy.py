@@ -24,7 +24,50 @@ def init_git_repo(path: Path) -> None:
     subprocess.run(["git", "config", "user.name", "Test User"], cwd=path, check=True)
 
 
-def run_guard(root: Path, *args: str, env: dict[str, str] | None = None) -> subprocess.CompletedProcess[str]:
+# Every test but one runs the guard against a throwaway repository holding a
+# handful of files, where 20s is orders of magnitude above the real cost and
+# only a hang could reach it.
+SANDBOX_TIMEOUT_S = 20
+
+# The whole-repo scan is the exception, and its number is derived rather than
+# guessed. These timeouts exist to catch a HANG — a wedged git subprocess, a
+# lock wait, a runaway loop — not to impose a performance budget on the guard.
+#
+# Measured 2026-08-15 on 8526 tracked files, same command, same commit, twice:
+#
+#   load avg 11.77 (12 cores)  ->  1.87s user, 0.29s sys,  2.3-4.5s wall
+#   load avg 180.56 (12 cores) ->  2.19s user, 0.50s sys, 32.8s wall,  8% CPU
+#
+# The work is a stable ~2s of CPU. The 8% CPU figure is the whole finding: at
+# 32.8s wall the scan was waiting for a core, not scanning. A 2026-08-15 report
+# recorded 41s wall for the same scan and read it as the scan being slow; it is
+# the machine being oversubscribed by concurrent agent sessions. Making the scan
+# faster cannot fix this — halving 2s of work still costs ~16s wall at 8% CPU.
+#
+# So the number is a hang detector, and 120s is ~60x the measured CPU cost: no
+# realistic contention reaches it, and a genuine hang still fails in bounded
+# time. Do not raise it again without re-measuring `user` time. If user time —
+# not wall — has grown toward this number, the scan itself regressed and the
+# fix belongs in the scan.
+#
+# The subprocess timeout is NOT the only ceiling, and raising it alone is worse
+# than useless. pytest.ini sets `timeout = 30` per test, and tests/conftest.py
+# caps any explicit subprocess timeout to that budget. With only the change
+# above, this test stopped failing at 20s with a readable TimeoutExpired and
+# started dying at 30s under pytest-timeout, whose thread-method dump aborts the
+# whole session instead of one test. Hence the @pytest.mark.timeout(180) below:
+# the pytest budget must sit ABOVE the subprocess timeout so the inner timer
+# fires first and reports which command hung.
+REPO_SCAN_TIMEOUT_S = 120
+REPO_SCAN_PYTEST_BUDGET_S = 180
+
+
+def run_guard(
+    root: Path,
+    *args: str,
+    env: dict[str, str] | None = None,
+    timeout: float = SANDBOX_TIMEOUT_S,
+) -> subprocess.CompletedProcess[str]:
     merged_env = os.environ.copy()
     if env:
         merged_env.update(env)
@@ -34,7 +77,7 @@ def run_guard(root: Path, *args: str, env: dict[str, str] | None = None) -> subp
         capture_output=True,
         cwd=root,
         env=merged_env,
-        timeout=20,
+        timeout=timeout,
         check=False,
     )
 
@@ -102,8 +145,13 @@ def test_allow_marker_permits_fictional_fixture(tmp_path: Path) -> None:
     assert result.stdout.strip() == "privacy-guard-ok"
 
 
+@pytest.mark.timeout(REPO_SCAN_PYTEST_BUDGET_S)
 def test_repo_all_scan_passes() -> None:
-    result = run_guard(PROJECT_ROOT, "--all")
+    # `--all` is not the pre-commit path (.githooks/pre-commit invokes the
+    # guard with --staged); the whole-repo scan runs in scripts/cos-patch-release.
+    # Nobody waits on this interactively, so its cost is not a UX budget and
+    # REPO_SCAN_TIMEOUT_S is a hang detector. See the constant for the numbers.
+    result = run_guard(PROJECT_ROOT, "--all", timeout=REPO_SCAN_TIMEOUT_S)
 
     assert result.returncode == 0, result.stderr
     assert result.stdout.strip() == "privacy-guard-ok"
