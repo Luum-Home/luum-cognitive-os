@@ -32,15 +32,28 @@ load-bearing: ``templates/agent-preamble.md`` ships the literal ``Phase:
 {{phase}}``, and only the hook substitutes it. Finding the interpolated form in
 a transcript means the hook's output reached that sub-agent.
 
-Two false-positive sources are filtered, both observed on 2026-08-15:
+Where the marker actually lands (measured 2026-08-15, 165 transcripts). This
+harness does NOT deliver the payload as a system-reminder inside a user turn;
+it writes two top-level ``type: attachment`` records per sub-agent:
+
+  ``attachment.type == "hook_success"``             hook exited 0, stdout captured
+  ``attachment.type == "hook_additional_context"``  host merged it into context
+
+Only the second is arrival. The first is emission — it is precisely the record
+an ``async: true`` registration kept producing while nothing reached any
+sub-agent, so accepting it would rebuild the false green this check exists to
+prevent. The system-reminder form is still accepted, for harness builds that
+deliver that way.
+
+Four false-positive sources are filtered, all observed on 2026-08-15:
 
   1. A brief that QUOTES the marker (an orchestrator pasting this very check
      into a sub-agent prompt). Counted as a mention, not an arrival.
   2. An assistant turn that WRITES the marker (an agent reporting on the
      template). Also a mention.
-
-An arrival only counts when the marker appears in a system-reminder / injected
-context block, not in a user prompt or an assistant message.
+  3. A ``hook_success`` attachment — emission, see above.
+  4. A ``tool_result`` block carrying the marker: an agent that RAN this script
+     and read its output back. Also a mention.
 
 Exit codes
 ----------
@@ -51,6 +64,12 @@ Exit codes
 Usage
 -----
     python3 scripts/check_subagent_context_arrival.py [--project-dir PATH] [-v]
+    python3 scripts/check_subagent_context_arrival.py --until 2026-08-15T21:58:00Z
+    python3 scripts/check_subagent_context_arrival.py --since 2026-08-15T21:58:00Z
+
+The --since/--until window filters on each transcript's first record. It exists
+so a fix can be shown to have taken effect on the real corpus: red before, green
+after. A change that only produces the green half has not been demonstrated.
 """
 
 from __future__ import annotations
@@ -102,6 +121,35 @@ def _expected_marker(project_dir: Path) -> str | None:
     return f"Phase: `{phase}`"
 
 
+def _is_arrival_attachment(record: dict, marker: str) -> bool:
+    """True when the host MERGED the hook payload into this sub-agent's context.
+
+    Claude Code records the SubagentStart hook twice, and the two records mean
+    different things — telling them apart is the whole point of this check:
+
+      ``hook_success``            the hook exited 0 and its stdout is captured
+                                  verbatim. EMISSION. An ``async: true``
+                                  registration produced exactly this record and
+                                  nothing else: the bytes existed, the sub-agent
+                                  never saw them.
+      ``hook_additional_context`` the host took ``additionalContext`` and merged
+                                  it into the sub-agent's context window.
+                                  ARRIVAL. This is the only record that proves
+                                  delivery.
+
+    So ``hook_success`` is deliberately NOT accepted here. Accepting it would
+    re-create the pre-fix false green.
+    """
+    attachment = record.get("attachment") or {}
+    if attachment.get("type") != "hook_additional_context":
+        return False
+    if attachment.get("hookEvent") != "SubagentStart":
+        return False
+    content = attachment.get("content")
+    parts = content if isinstance(content, list) else [content]
+    return any(marker in str(part) for part in parts)
+
+
 def _classify(path: Path, marker: str) -> str:
     """Return 'arrival', 'mention', or 'absent' for one transcript."""
     saw_mention = False
@@ -114,18 +162,37 @@ def _classify(path: Path, marker: str) -> str:
             saw_mention = True
             continue
 
+        # Form 1 (this harness, measured 2026-08-15): the injected context is a
+        # top-level ``type: attachment`` record, not a message. The original
+        # check only knew form 2 and therefore reported 0 arrivals on a channel
+        # that was in fact delivering.
+        if record.get("type") == "attachment":
+            if _is_arrival_attachment(record, marker):
+                return "arrival"
+            saw_mention = True
+            continue
+
         message = record.get("message") or {}
         role = message.get("role")
         content = message.get("content")
         blocks = content if isinstance(content, list) else [{"text": str(content)}]
 
         for block in blocks:
-            text = block.get("text", "") if isinstance(block, dict) else str(block)
+            if isinstance(block, dict):
+                # A tool_result carrying the marker is this very script's own
+                # output being read back by an agent. Never an arrival.
+                if block.get("type") == "tool_result":
+                    saw_mention = True
+                    continue
+                text = block.get("text", "")
+            else:
+                text = str(block)
             if marker not in text:
                 continue
-            # An injected additionalContext is wrapped by the host in a system
-            # reminder. A user prompt quoting the marker, or an assistant turn
-            # writing it, is not arrival.
+            # Form 2 (other harness builds): the injected additionalContext is
+            # wrapped by the host in a system reminder inside a user turn. A
+            # user prompt quoting the marker, or an assistant turn writing it,
+            # is not arrival.
             if "<system-reminder>" in text and role != "assistant":
                 return "arrival"
             saw_mention = True
@@ -133,9 +200,42 @@ def _classify(path: Path, marker: str) -> str:
     return "mention" if saw_mention else "absent"
 
 
+def _first_timestamp(path: Path) -> str:
+    """ISO timestamp of the transcript's first record ('' when unreadable).
+
+    Used only by the --since/--until window, which exists so a fix can be shown
+    to have taken effect: green over transcripts after it, red over transcripts
+    before it. Both halves, on the same real corpus.
+    """
+    try:
+        with path.open(encoding="utf-8", errors="ignore") as handle:
+            for line in handle:
+                try:
+                    stamp = json.loads(line).get("timestamp")
+                except json.JSONDecodeError:
+                    continue
+                if stamp:
+                    return str(stamp)
+    except OSError:
+        pass
+    return ""
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--project-dir", type=Path, default=REPO_ROOT)
+    parser.add_argument(
+        "--since",
+        default=None,
+        metavar="ISO",
+        help="only transcripts whose first record is at or after this UTC ISO timestamp",
+    )
+    parser.add_argument(
+        "--until",
+        default=None,
+        metavar="ISO",
+        help="only transcripts whose first record is before this UTC ISO timestamp",
+    )
     parser.add_argument("-v", "--verbose", action="store_true")
     args = parser.parse_args()
 
@@ -152,6 +252,14 @@ def main() -> int:
 
     root = Path(os.path.expanduser("~/.claude/projects")) / _slug(project_dir)
     transcripts = sorted(root.glob("*/subagents/*.jsonl"))
+    if args.since or args.until:
+        transcripts = [
+            path
+            for path in transcripts
+            if (stamp := _first_timestamp(path))
+            and (not args.since or stamp >= args.since)
+            and (not args.until or stamp < args.until)
+        ]
     if not transcripts:
         print(f"ERROR: no sub-agent transcripts under {root}", file=sys.stderr)
         return 2
