@@ -1,0 +1,28 @@
+# Acknowledged exceptions for scripts/cos_install_selfcheck.py.
+#
+# EMPTY IS THE CORRECT DEFAULT. Every entry here is a shipped entry point that
+# is allowed to reference something the install does not contain — i.e. a
+# feature that is knowingly dark in consumer installs.
+#
+# Rules:
+#   - A reason is MANDATORY. An entry with a blank reason is ignored by the
+#     checker, which means the finding comes back. That is deliberate: the
+#     cheap way to silence this gate must not be the easy way.
+#   - Add an entry only after deciding the dependency SHOULD NOT ship. If it
+#     should ship, fix the installer instead. Moving a name into this file to
+#     turn the gate green is the failure mode this whole change exists to stop.
+#
+# Key formats:
+#   missing_shipped:<module>   module exists in source, consumer-scoped
+#   scope_conflict:<module>    module exists in source, SCOPE: os-only
+#   dangling:<module>          module does not exist in source
+#   module:<module>            any of the above, for this module
+#   sibling:<filename>         a $SCRIPT_DIR/<filename> shell dependency
+#
+# Example (commented out — do not enable without a real decision):
+#   exceptions:
+#     scope_conflict:some_maintainer_only_module: "Maintainer-only telemetry;
+#       the consumer path degrades cleanly and ADR-019 forbids leaking os-only
+#       modules into consumer installs."
+
+exceptions: {}

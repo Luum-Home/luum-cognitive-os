@@ -1,0 +1,41 @@
+# SCOPE: both
+# Confidentiality configuration for the confidentiality-enforcer hook.
+#
+# This file is read by cos_lib/confidentiality_scanner.py::load_protected_terms
+# on every Edit/Write that the confidentiality-enforcer hook scans.
+#
+# IMPORTANT — the four keys below are the ONLY keys the scanner reads. Any other
+# key is silently ignored. Do not rename them.
+#
+# All four are optional and default to empty. An empty file is valid and leaves
+# only the built-in external-path detection active; the three list-driven
+# detection categories (protected_term, repo_url, attribution_phrase) stay dark
+# until you populate the lists below.
+#
+# Every entry is a plain string. Matching is literal and case-insensitive.
+# Populate these yourself: the installer ships this file empty on purpose,
+# because only the operator knows which names are confidential.
+
+# Internal or codenamed projects that must never appear in generated output.
+# Feeds the `protected_term` and `attribution_phrase` detectors.
+#   project_names:
+#     - "project-codename"
+project_names: []
+
+# Client or customer names that must never appear in generated output.
+# Feeds the `protected_term` and `attribution_phrase` detectors.
+#   client_names:
+#     - "client-company"
+client_names: []
+
+# Repository slugs ("<org>/<repo>") that must never be referenced.
+# Feeds the `repo_url` detector.
+#   repo_urls:
+#     - "some-org/some-private-repo"
+repo_urls: []
+
+# Source-forge organizations whose repositories must not be referenced.
+# Feeds the `repo_url` and `attribution_phrase` detectors.
+#   org_names:
+#     - "some-private-org"
+org_names: []
