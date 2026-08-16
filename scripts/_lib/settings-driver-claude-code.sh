@@ -184,8 +184,20 @@ cc_driver_emit() {
   )
 
   local subagent_start
+  # async MUST stay false. SubagentStart inserts context before the sub-agent's
+  # first prompt; async output is delivered on the NEXT conversation turn, which
+  # for a sub-agent never comes. Registered "true", this hook emitted a correct
+  # 10 KB payload that reached 0 of 149 sub-agent transcripts (2026-08-15).
+  # Verify with: python3 scripts/check_subagent_context_arrival.py
+  #
+  # The flag lives here, not in cognitive-os.yaml. Setting async: false there and
+  # stopping is the trap this comment exists to close: the yaml entry is not read
+  # for this field, so the fix looks landed, survives review, and is undone by the
+  # next run of this driver. Measured 39ms per invocation, so if it is ever
+  # perceived as slow the answer is to make it faster -- async is precisely the
+  # setting that guarantees non-arrival.
   subagent_start=$(_cc_hook_group "SubagentStart" "" \
-    "hooks/subagent-context-injector.sh" "true" \
+    "hooks/subagent-context-injector.sh" "false" \
   )
 
   local pre_compact

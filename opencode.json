@@ -6,7 +6,8 @@
   "instructions": [
     "AGENTS.md",
     ".cognitive-os/rules/cos/RULES-COMPACT.md",
-    ".cognitive-os/rules/cos/*.md"
+    ".cognitive-os/rules/cos/*.md",
+    ".cognitive-os/skills/cos/*/SKILL.md"
   ],
   "mcp": {},
   "permission": {

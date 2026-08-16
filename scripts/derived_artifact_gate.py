@@ -37,8 +37,25 @@ DERIVED_BY_CONFIG = {
 }
 
 
+# Wall-clock ceiling for a child of this gate. It exists to catch a HANG, not to
+# impose a performance budget, so it has to survive a loaded machine.
+#
+# The previous 30s could not. On 2026-08-15 this gate blocked a merge-queue
+# landing by timing out on `hook_quality_audit.py --check`, a command that costs
+# 4.1s of CPU and took 34.0s of wall clock at load average 279 — 12% of one core.
+# It was not slow; it was waiting for a core. The audit itself exits 0. Measure
+# both numbers before touching this again: `user` is the work, `wall` is the
+# machine, and only the first belongs in a budget.
+#
+# Raising it does not weaken the gate. Anything that genuinely hangs still trips
+# it, and the failure still names the command, which is the whole point.
+CHILD_TIMEOUT_S = 300
+
+
 def run(cmd: list[str]) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(cmd, cwd=ROOT, text=True, capture_output=True, check=False, timeout=30)
+    return subprocess.run(
+        cmd, cwd=ROOT, text=True, capture_output=True, check=False, timeout=CHILD_TIMEOUT_S
+    )
 
 
 def changed_staged() -> set[str]:
