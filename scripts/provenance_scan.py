@@ -24,6 +24,27 @@ SLASH = "/"
 USER_HOME_PATTERN = SLASH + "Users" + SLASH
 LINUX_HOME_PATTERN = SLASH + "home" + SLASH
 PROJECTS_SEGMENT_PATTERN = "Projects" + SLASH
+
+# Home segments allocated to a MACHINE rather than to a person. Same set, same
+# reasoning, same parity note as CI_MACHINE_SEGMENTS in check-local-privacy.sh,
+# check_absolute_paths.py and hooks/research-compliance-guard.sh.
+#
+# The bar for adding an entry is one question and only that question: *does
+# this string identify a person on some machine?* If the answer is "it
+# depends", it does not belong. `runner` is the fixed home of a GitHub Actions
+# runner, identical on every runner in the world and published in the runner
+# image. A username that merely happens to be common (admin, dev, ubuntu) does
+# NOT qualify: somewhere it is someone's actual account.
+CI_MACHINE_SEGMENTS = {"runner"}
+
+# Container paths, not developer host-home paths. Mirrors
+# ALLOWED_POSIX_PREFIXES in scripts/check_absolute_paths.py.
+DEFAULT_ALLOWED_ABSOLUTE_PATHS = (
+    "/tmp/",
+    "/var/folders/",
+    "/private/var/folders/",
+    LINUX_HOME_PATTERN + "jovyan" + SLASH,
+)
 CONFIG_CANDIDATES = (
     "manifests/provenance-scan.yaml",
     ".cognitive-os/provenance-scan.yaml",
@@ -48,7 +69,22 @@ DEFAULT_EXCLUDED_SUFFIXES = {
 }
 DEFAULT_FORBIDDEN_PATH_PATTERNS = [
     USER_HOME_PATTERN + r"[^\s`'\"<>)]*",
-    LINUX_HOME_PATTERN + r"(?!jovyan/)[^\s`'\"<>)]*",
+    # The `jovyan` container account used to be exempted by a `(?!jovyan/)`
+    # lookahead right here, inside the DETECTION pattern. It now lives in
+    # DEFAULT_ALLOWED_ABSOLUTE_PATHS, in parity with ALLOWED_POSIX_PREFIXES in
+    # scripts/check_absolute_paths.py. An exemption baked into detection
+    # produces no match at all, so nothing downstream can report or audit it,
+    # and it applied asymmetrically: the lookahead required a trailing slash,
+    # so the container work directory was exempt while the bare home was not.
+    # Classification is where an exemption belongs.
+    #
+    # That asymmetry survives the move, because allowed_by_prefix() is also
+    # slash-anchored — the same shape as ALLOWED_POSIX_PREFIXES in
+    # check_absolute_paths.py, which flags the bare form for the same reason.
+    # Left as-is deliberately: it is a family-wide property of prefix
+    # exemptions, not a defect of this scanner, and changing it here alone
+    # would put this member out of parity with the other three.
+    LINUX_HOME_PATTERN + r"[^\s`'\"<>)]*",
     r"[A-Za-z]:\\Users\\[^\s`'\"<>)]*",
     r"(?:^|[\s`'\"(])" + PROJECTS_SEGMENT_PATTERN + r"[A-Za-z0-9._/-]+",
 ]
@@ -141,7 +177,7 @@ def build_policy(root: Path, config_path: Path | None) -> Policy:
         forbidden_terms=as_tuple(section.get("forbidden_terms")),
         forbidden_paths=tuple(DEFAULT_FORBIDDEN_PATH_PATTERNS) + as_tuple(section.get("forbidden_paths")),
         provenance_language=tuple(DEFAULT_PROVENANCE_LANGUAGE_PATTERNS) + as_tuple(section.get("forbidden_provenance_language")),
-        allowed_absolute_paths=("/tmp/", "/var/folders/", "/private/var/folders/") + as_tuple(section.get("allowed_absolute_paths")),
+        allowed_absolute_paths=DEFAULT_ALLOWED_ABSOLUTE_PATHS + as_tuple(section.get("allowed_absolute_paths")),
         allowed_domains=as_tuple(section.get("allowed_domains")),
         allowed_import_roots=roots_map(section.get("allowed_import_roots")),
         forbidden_import_roots=roots_map(section.get("forbidden_import_roots")),
@@ -288,8 +324,36 @@ def import_findings(path: Path, root: Path, line_no: int, line: str, policy: Pol
     return findings
 
 
+def _home_user_segment(value: str) -> str:
+    """The account segment right after a POSIX home root, or "" if not one."""
+    for prefix in (USER_HOME_PATTERN, LINUX_HOME_PATTERN):  # cos-allow-provenance-scan
+        if value.startswith(prefix):
+            return value[len(prefix):].split(SLASH, 1)[0]
+    return ""
+
+
+def _describes_a_username(segment: str) -> bool:
+    """True when the segment is a pattern *matching* usernames, not one itself.
+
+    Sibling copy of `_describes_a_username` in check_absolute_paths.py and
+    `describes_a_username` in check-local-privacy.sh (commit 3a6e737b), kept
+    independent for the same reason they are: these guards are deliberately
+    self-contained.
+
+    Exact, not heuristic: none of these characters is legal in a POSIX or
+    macOS account name, so a segment containing one is describing usernames by
+    construction — the shape of a quoted `git grep` command inside a report.
+    It cannot mask an accidental commit of a real path, only a deliberately
+    obfuscated one, which this scanner never caught.
+    """
+    return any(ch in segment for ch in "[]()*+?\\|^$")
+
+
 def allowed_path_match(match: str, policy: Policy) -> bool:
     normalized = match.strip()
+    segment = _home_user_segment(normalized)
+    if segment and (segment in CI_MACHINE_SEGMENTS or _describes_a_username(segment)):
+        return True
     if normalized in {USER_HOME_PATTERN, LINUX_HOME_PATTERN, "C:" + "\\" + "Users" + "\\"}:  # cos-allow-absolute-path cos-allow-local-privacy-pattern: scanner pattern literal
         return True
     if normalized.startswith((USER_HOME_PATTERN + "...", LINUX_HOME_PATTERN + "...")):  # cos-allow-absolute-path cos-allow-local-privacy-pattern: scanner pattern literal
