@@ -191,6 +191,7 @@ hooks:
     script: hooks/agent-launch-confirmed.sh
   agent-message-inbox-context:
     behavior_tests:
+    - tests/contracts/test_claude_code_hooks_schema_conformance.py
     - tests/contracts/test_context_budget_enforcement.py
     - tests/contracts/test_context_budget_hook_wiring.py
     - tests/contracts/test_cross_session_event_taxonomy.py
@@ -1142,6 +1143,7 @@ hooks:
     script: hooks/cross-session-event-emit.sh
   cross-session-peer-context:
     behavior_tests:
+    - tests/contracts/test_claude_code_hooks_schema_conformance.py
     - tests/contracts/test_context_budget_enforcement.py
     - tests/contracts/test_context_budget_hook_wiring.py
     - tests/contracts/test_cross_session_event_taxonomy.py
@@ -1248,6 +1250,7 @@ hooks:
     - tests/unit/test_destructive_git_block.py
     - tests/unit/test_dogfood_scorer.py
     - tests/unit/test_governance_policy_hook_adoption.py
+    - tests/unit/test_guard_false_positives.py
     - tests/unit/test_primitive_behavior_audit.py
     - tests/unit/test_profile_resolver.py
     - tests/unit/test_validation_lane_recommender.py
@@ -1418,6 +1421,7 @@ hooks:
     script: hooks/dod-gate.sh
   eas-validation-gate:
     behavior_tests:
+    - tests/contracts/test_claude_code_hooks_schema_conformance.py
     - tests/unit/test_bash_hot_path_dispatcher_projection.py
     bypass_policy: not_required_observe_only
     criticality: standard
@@ -1594,6 +1598,7 @@ hooks:
     - tests/unit/test_error_classifier.py
     - tests/unit/test_error_learning_behavior.py
     - tests/unit/test_error_pattern_detector.py
+    - tests/unit/test_evolve_task_queue.py
     - tests/unit/test_governed_self_improvement.py
     - tests/unit/test_homeostasis.py
     - tests/unit/test_hook_behavioral.py
@@ -1695,6 +1700,7 @@ hooks:
     script: hooks/external-pattern-cleanroom-gate.sh
   git-commit-scope-guard:
     behavior_tests:
+    - tests/unit/test_git_commit_scope_guard_amend.py
     - tests/unit/test_projected_hook_gap_behaviors.py
     bypass_policy: not_required_observe_only
     criticality: standard
@@ -2638,6 +2644,7 @@ hooks:
     behavior_tests:
     - tests/behavior/test_install_core_boundary.py
     - tests/behavior/test_research_compliance_guard.py
+    - tests/unit/test_guard_false_positives.py
     bypass_policy: not_required_observe_only
     criticality: standard
     event: PreToolUse
@@ -3318,6 +3325,7 @@ hooks:
     script: hooks/skill-invocation-logger.sh
   skill-md-routing-validator:
     behavior_tests:
+    - tests/contracts/test_claude_code_hooks_schema_conformance.py
     - tests/contracts/test_validator_promotion_trigger.py
     bypass_policy: not_required_warning_only
     criticality: quality
@@ -3520,6 +3528,7 @@ hooks:
     script: hooks/subagent-budget-enforcer.sh
   subagent-context-injector:
     behavior_tests:
+    - tests/contracts/test_claude_code_hooks_schema_conformance.py
     - tests/contracts/test_context_budget_hook_wiring.py
     - tests/unit/test_agent_spawn_benchmark.py
     - tests/unit/test_inject_phase_context_native.py
@@ -3534,7 +3543,7 @@ hooks:
       codex: unsupported
     matcher: ''
     maturity: warn
-    max_runtime_ms: 2500
+    max_runtime_ms: 1000
     safe_degradation: warn_and_continue_unless_exit_2
     scope: os-only
     script: hooks/subagent-context-injector.sh
