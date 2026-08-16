@@ -92,7 +92,26 @@ HOME_PROJECTS_TOKEN_RE="${MAC_HOME_SEG}/[^.][^/[:space:]]+/Projects/"
 # Observed 2026-08-15: a report auditing home-path leakage blocked its own
 # commit on four matches, all of them the CI runner path, which the report
 # itself classified as CI before concluding zero leaks.
-CI_MACHINE_SEGMENTS=" runner "
+#
+# `jovyan` clears the same bar for the same reason: it is the fixed home
+# account of the jupyter/docker-stacks images, a coined word (from "jovian",
+# of Jupiter) chosen by that project precisely so it would never collide with
+# a person's account. It is allocated to an IMAGE, identical in every
+# container built from it, and published in the image documentation. Nobody is
+# named jovyan on any machine, so the question "does this string identify a
+# person?" has a clean no, not an "it depends".
+#
+# Parity note, and a real behavioural difference worth knowing: the other
+# three members express this same exemption as a `/`-ANCHORED PREFIX
+# (ALLOWED_POSIX_PREFIXES in scripts/check-local-privacy.sh,
+# DEFAULT_ALLOWED_ABSOLUTE_PATHS in scripts/provenance_scan.py,
+# ALLOWED_POSIX_PREFIXES in scripts/check_absolute_paths.py), so for them the
+# bare home directory of the account still blocks while a subdirectory of it
+# passes. This guard has no prefix mechanism, only segments, so here both
+# forms pass. The divergence goes in the direction the 2026-08-15 family
+# report already recorded as the siblings' open defect (finding #1: prefix
+# exemptions anchored to the slash), not toward leniency about persons.
+CI_MACHINE_SEGMENTS=" runner jovyan "
 
 # Placeholder segments, kept in parity with PLACEHOLDER_USERS in
 # scripts/check-local-privacy.sh and PLACEHOLDER_USER_SEGMENTS in
