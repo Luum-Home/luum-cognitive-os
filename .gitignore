@@ -62,6 +62,13 @@ rate-limit-state.json
 .claude/skills/*
 !.claude/skills/install-skill
 !.claude/skills/install-hook
+# Same class, same reason: cos_init.py projects the codex harness into
+# .agents/skills as symlinks back into .cognitive-os/skills/cos. It was missing
+# from this list, so it sat untracked-and-unignored and read as an oversight
+# rather than the policy it is. What is on disk here predates the symlink
+# projection — real copied directories from 2026-07-30 — and the installer no
+# longer produces that shape, so it is stale in a format nothing regenerates.
+.agents/skills/*
 
 # ── Claude Code local settings (machine-specific, not shared) ───────────────
 .claude/settings.local.json
