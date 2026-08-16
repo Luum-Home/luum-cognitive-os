@@ -48,8 +48,19 @@ def _append(path: Path, row: dict[str, Any]) -> None:
         fh.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n")
 
 
+USAGE = "usage: context_budget_meter_fast.py <project_dir> [session_id]   (reads the hook payload on stdin)"
+
+
 def main(argv: list[str]) -> int:
     start = time.perf_counter()
+    if len(argv) < 2 or argv[1] in {"-h", "--help"}:
+        # Without this, `--help` was taken as the project directory: _append()
+        # mkdir -p'd it and wrote two telemetry files, so asking a hook for its
+        # usage left a directory literally named --help in the caller's cwd.
+        # Found in this repo's own root on 2026-08-15, holding
+        # ai-resource-ledger.jsonl and context-budget.jsonl.
+        print(USAGE, file=sys.stderr)
+        return 0 if len(argv) >= 2 else 2
     project = Path(argv[1]).resolve()
     session_id = argv[2] if len(argv) > 2 else "unknown"
     raw = sys.stdin.read()
