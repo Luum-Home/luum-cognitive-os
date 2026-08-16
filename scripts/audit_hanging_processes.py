@@ -35,9 +35,13 @@ import sys
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 # argv markers that mean "this process was born detached on purpose".
-DAEMON_MARKERS = ("--daemon", "--serve", "daemon-launcher")
+# Canonical definition lives in cos_lib so the census, the ADR-279 audit and
+# the reaper's detector cannot drift apart on what counts as a daemon.
+from cos_lib.orphan_process_audit import DAEMON_MARKERS  # noqa: E402
 
 _ETIME = re.compile(r"^(?:(?:(\d+)-)?(\d+):)?(\d+):(\d+)$")
 

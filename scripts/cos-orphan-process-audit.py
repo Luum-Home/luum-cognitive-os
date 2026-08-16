@@ -15,6 +15,7 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from cos_lib.orphan_process_audit import (  # noqa: E402
     DEFAULT_OLDER_THAN_SECONDS,
+    KILL_MIN_AGE_SECONDS,
     append_metric,
     build_report,
     collect_processes,
@@ -42,6 +43,18 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--ps-fixture", default=None, help="Read ps output from a fixture file instead of the live process table.")
     parser.add_argument("--no-metric", action="store_true")
     args = parser.parse_args(argv)
+
+    # Guard runs before the process table is read: a bad threshold must not be
+    # able to reach a live PID. The 2026-08-15 census measured orphans dying on
+    # their own inside ~505 s, so a lower threshold kills working processes.
+    if args.kill and args.older_than_seconds < KILL_MIN_AGE_SECONDS:
+        print(
+            f"refusing --kill with --older-than-seconds={args.older_than_seconds}: "
+            f"minimum is {KILL_MIN_AGE_SECONDS}s (measured natural orphan lifetime "
+            "ceiling is ~505s; below the floor this terminates live work)",
+            file=sys.stderr,
+        )
+        return 2
 
     if args.ps_fixture:
         rows = parse_ps_output(Path(args.ps_fixture).read_text(encoding="utf-8"))

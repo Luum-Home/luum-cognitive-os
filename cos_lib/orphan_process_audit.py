@@ -20,17 +20,28 @@ from typing import Iterable, Sequence
 
 SCHEMA_VERSION = "orphan-process-audit/v1"
 DEFAULT_OLDER_THAN_SECONDS = 60 * 60
+REPO_ROOT = Path(__file__).resolve().parents[1]
+
+# Repo-relative path fragments. They are matched on path-component boundaries,
+# never as bare substrings: an unanchored ``.codex`` also matches the vendor
+# namespace ``com.openai.codex`` and made this primitive point SIGTERM at
+# another product's updater (measured 2026-08-15).
 SAFE_SCAN_TOKENS = (".cognitive-os", ".codex", "docs/04-Concepts/architecture", "docs/99-Archive/archived", "docs/99-Archive/archive")
-SAFE_EXECUTABLE_PATTERNS = (
-    "ugrep",
-    "grep",
-    "find",
-    "rg",
-    "ripgrep",
-    "zsh -c source",
-    "bash -c source",
-)
+SAFE_EXECUTABLE_NAMES = ("ugrep", "grep", "find", "rg", "ripgrep")
+SAFE_SHELL_SOURCE_PATTERNS = ("zsh -c source", "bash -c source")
 CLAUDE_SNAPSHOT_MARKER = "/.claude/shell-snapshots/snapshot-zsh-"
+
+# argv markers meaning "this process was born detached on purpose". ``ppid=1``
+# is only evidence of a leak when the process did NOT declare itself a daemon.
+# Canonical source, shared with scripts/audit_hanging_processes.py.
+DAEMON_MARKERS = ("--daemon", "--serve", "daemon-launcher")
+
+# Floor for --kill. The 2026-08-15 census measured a natural orphan lifetime
+# ceiling of 505 s with 95% collected inside 288 s, so anything below this is
+# killing processes that are still doing work.
+KILL_MIN_AGE_SECONDS = 600
+
+_SAFE_EXECUTABLE_RE = re.compile(r"\b(?:" + "|".join(SAFE_EXECUTABLE_NAMES) + r")\b")
 
 
 @dataclass(frozen=True)
@@ -118,19 +129,53 @@ def collect_processes() -> list[ProcessRow]:
     return parse_ps_output(result.stdout)
 
 
-def _command_matches_safe_scanner(command: str, safe_tokens: Sequence[str]) -> str | None:
+def _token_present(command: str, token: str) -> bool:
+    """True when *token* appears as a path component, not as a bare substring.
+
+    ``.codex`` must match ``/.codex/`` and `` .codex`` but NOT the vendor
+    namespace ``com.openai.codex``: the character before the token may not be a
+    word, dot or dash character.
+    """
+    pattern = r"(?<![\w.\-])" + re.escape(token) + r"(?![\w\-])"
+    return re.search(pattern, command, flags=re.IGNORECASE) is not None
+
+
+def _is_scanner_shaped(command: str) -> bool:
     lowered = command.lower()
-    has_scan_token = any(token.lower() in lowered for token in safe_tokens)
-    if not has_scan_token:
+    first_token = lowered.split(None, 1)[0] if lowered.split(None, 1) else lowered
+    if Path(first_token).name in set(SAFE_EXECUTABLE_NAMES):
+        return True
+    if any(p in lowered for p in SAFE_SHELL_SOURCE_PATTERNS):
+        return True
+    # Word-boundary match: an unanchored "rg" also matches "org.sparkle-project".
+    return _SAFE_EXECUTABLE_RE.search(lowered) is not None
+
+
+def _classify(command: str, safe_tokens: Sequence[str], project_root: Path) -> str | None:
+    """Return the finding reason, or None when the process is not ours to touch.
+
+    Ownership is required first: a process is a candidate only when its argv
+    references this repository. Without that check the primitive classified
+    foreign processes purely on a shared substring.
+    """
+    if any(marker in command for marker in DAEMON_MARKERS):
+        return None  # declared detached on purpose — ppid=1 is expected here
+
+    root_referenced = str(project_root) in command
+    token_referenced = any(_token_present(command, token) for token in safe_tokens)
+    if not (root_referenced or token_referenced):
         return None
 
-    if CLAUDE_SNAPSHOT_MARKER in command and re.search(r"\b(grep|ugrep|rg|find)\b", lowered):
+    scanner = _is_scanner_shaped(command)
+    if scanner and CLAUDE_SNAPSHOT_MARKER in command:
         return "claude-shell-snapshot-repo-scan"
-
-    first_token = lowered.split(None, 1)[0] if lowered.split(None, 1) else lowered
-    executable = Path(first_token).name
-    if executable in {"ugrep", "grep", "find", "rg"} or any(p in lowered for p in SAFE_EXECUTABLE_PATTERNS):
+    if scanner:
         return "orphaned-repo-scan-process"
+    # Non-scanner processes need the strong ownership signal: the absolute repo
+    # path in argv. This is the family the audit used to miss entirely — every
+    # orphan measured on 2026-08-15 was a `scripts/*.py`, not a grep pipeline.
+    if root_referenced:
+        return "orphaned-repo-process"
     return None
 
 
@@ -140,9 +185,19 @@ def find_orphan_scan_processes(
     older_than_seconds: int = DEFAULT_OLDER_THAN_SECONDS,
     safe_tokens: Sequence[str] = SAFE_SCAN_TOKENS,
     current_pid: int | None = None,
+    project_root: Path | str | None = None,
 ) -> list[OrphanFinding]:
-    """Return PPID=1 safe scanner processes older than the threshold."""
+    """Return orphaned processes owned by this repo, older than the threshold.
+
+    A row is a candidate when all of these hold:
+      * ``ppid == 1`` — reparented to init;
+      * argv carries no daemon marker (see ``DAEMON_MARKERS``);
+      * argv references this repository (absolute root, or a repo path token
+        matched on component boundaries);
+      * it is older than *older_than_seconds*.
+    """
     current = os.getpid() if current_pid is None else current_pid
+    root = Path(project_root).resolve() if project_root else REPO_ROOT
     findings: list[OrphanFinding] = []
     for row in rows:
         if row.pid == current:
@@ -151,7 +206,7 @@ def find_orphan_scan_processes(
             continue
         if row.etime_seconds < older_than_seconds:
             continue
-        reason = _command_matches_safe_scanner(row.command, safe_tokens)
+        reason = _classify(row.command, safe_tokens, root)
         if not reason:
             continue
         findings.append(
