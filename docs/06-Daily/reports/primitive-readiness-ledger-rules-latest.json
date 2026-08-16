@@ -13,7 +13,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 6,
+        "config": 7,
         "doc": 25,
         "hook": 4,
         "rule": 2,
@@ -44,6 +44,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/volatile-number-baseline.json"
         },
         {
           "family": "doc",
@@ -206,7 +210,7 @@
         "script_consumers:3",
         "test_consumers:4",
         "doc_consumers:25",
-        "config_consumers:6"
+        "config_consumers:7"
       ],
       "family": "rules",
       "lifecycle_id": "rules/ROADMAP.md",
@@ -218,7 +222,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 44
+      "total_consumers": 45
     },
     {
       "confidence": "high",
@@ -228,8 +232,8 @@
         "config": 10,
         "doc": 138,
         "hook": 5,
-        "rule": 7,
-        "script": 17,
+        "rule": 8,
+        "script": 18,
         "skill": 5,
         "test": 34
       },
@@ -285,10 +289,6 @@
         {
           "family": "doc",
           "path": "docs/00-MOCs/entrypoints/AGENTS.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/00-MOCs/entrypoints/getting-started-quick.md"
         },
         {
           "family": "doc",
@@ -684,6 +684,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/05-Methodology/runbooks/codebase-memory-directive-2026-08-15/README.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/05-Methodology/usage/cos-status.md"
         },
         {
@@ -856,6 +860,10 @@
         },
         {
           "family": "rule",
+          "path": "rules/encargo-refutable.md"
+        },
+        {
+          "family": "rule",
           "path": "rules/goal-loop.md"
         },
         {
@@ -881,6 +889,10 @@
         {
           "family": "script",
           "path": "scripts/aspirational_audit.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/audit_adr_path_reality.py"
         },
         {
           "family": "script",
@@ -1104,8 +1116,8 @@
         "lifecycle",
         "skill_consumers:5",
         "hook_consumers:5",
-        "rule_consumers:7",
-        "script_consumers:17",
+        "rule_consumers:8",
+        "script_consumers:18",
         "test_consumers:34",
         "doc_consumers:138",
         "config_consumers:10"
@@ -1122,7 +1134,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 216
+      "total_consumers": 218
     },
     {
       "confidence": "high",
@@ -3825,6 +3837,7 @@
         "doc": 12,
         "hook": 1,
         "rule": 1,
+        "script": 1,
         "test": 5
       },
       "consumers": [
@@ -3897,6 +3910,10 @@
           "path": "rules/RULES-COMPACT.md"
         },
         {
+          "family": "script",
+          "path": "scripts/volatile_number_audit.py"
+        },
+        {
           "family": "test",
           "path": "tests/audit/test_rules_enforcement.py"
         },
@@ -3922,6 +3939,7 @@
         "lifecycle",
         "hook_consumers:1",
         "rule_consumers:1",
+        "script_consumers:1",
         "test_consumers:5",
         "doc_consumers:12",
         "config_consumers:3"
@@ -3938,7 +3956,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 22
+      "total_consumers": 23
     },
     {
       "confidence": "high",
@@ -4070,7 +4088,7 @@
         "config": 5,
         "doc": 20,
         "hook": 1,
-        "rule": 1,
+        "rule": 2,
         "script": 2,
         "test": 1
       },
@@ -4184,6 +4202,10 @@
           "path": "rules/RULES-COMPACT.md"
         },
         {
+          "family": "rule",
+          "path": "rules/encargo-refutable.md"
+        },
+        {
           "family": "script",
           "path": "scripts/create-release.sh"
         },
@@ -4200,7 +4222,7 @@
       "evidence": [
         "lifecycle",
         "hook_consumers:1",
-        "rule_consumers:1",
+        "rule_consumers:2",
         "script_consumers:2",
         "test_consumers:1",
         "doc_consumers:20",
@@ -4218,7 +4240,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 30
+      "total_consumers": 31
     },
     {
       "confidence": "high",
@@ -4686,11 +4708,11 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 15,
-        "doc": 62,
-        "hook": 8,
+        "doc": 63,
+        "hook": 9,
         "rule": 2,
         "script": 7,
-        "test": 13
+        "test": 14
       },
       "consumers": [
         {
@@ -4943,6 +4965,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/05-Methodology/runbooks/error-pipeline-type-contract-2026-08-15/README.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/06-Daily/measurements/hook-timing-runbook.md"
         },
         {
@@ -5015,6 +5041,10 @@
         },
         {
           "family": "hook",
+          "path": "hooks/_lib/tool-outcome.sh"
+        },
+        {
+          "family": "hook",
           "path": "hooks/auto-repair-dispatcher.sh"
         },
         {
@@ -5068,6 +5098,10 @@
         {
           "family": "script",
           "path": "scripts/set-security-profile.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_instrument_productivity.py"
         },
         {
           "family": "test",
@@ -5125,11 +5159,11 @@
       "distribution": "lab",
       "evidence": [
         "lifecycle",
-        "hook_consumers:8",
+        "hook_consumers:9",
         "rule_consumers:2",
         "script_consumers:7",
-        "test_consumers:13",
-        "doc_consumers:62",
+        "test_consumers:14",
+        "doc_consumers:63",
         "config_consumers:15"
       ],
       "family": "rules",
@@ -5144,7 +5178,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 107
+      "total_consumers": 110
     },
     {
       "confidence": "high",
@@ -7723,6 +7757,43 @@
       "total_consumers": 74
     },
     {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 2,
+        "rule": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-343-codebase-memory-mcp-recommend-only-and-conditional-discovery-directive.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/runbooks/codebase-memory-directive-2026-08-15/README.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/RULES-COMPACT.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "rule_consumers:1",
+        "doc_consumers:2"
+      ],
+      "family": "rules",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "rules/codebase-memory-directive.md",
+      "role": "driver-specific",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 3
+    },
+    {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
@@ -7833,7 +7904,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 13,
+        "config": 14,
         "doc": 40,
         "hook": 4,
         "rule": 6,
@@ -7872,6 +7943,10 @@
         {
           "family": "config",
           "path": "manifests/hook-registration-classification.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/opencode-hooks-schema.yaml"
         },
         {
           "family": "config",
@@ -8198,7 +8273,7 @@
         "script_consumers:9",
         "test_consumers:15",
         "doc_consumers:40",
-        "config_consumers:13"
+        "config_consumers:14"
       ],
       "family": "rules",
       "lifecycle_id": "rules/confidence-gate.md",
@@ -8212,7 +8287,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 87
+      "total_consumers": 88
     },
     {
       "confidence": "high",
@@ -8437,7 +8512,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 15,
+        "config": 16,
         "doc": 57,
         "hook": 3,
         "rule": 9,
@@ -8453,6 +8528,10 @@
         {
           "family": "config",
           "path": ".claude/settings.local.json"
+        },
+        {
+          "family": "config",
+          "path": ".codex/hooks.json"
         },
         {
           "family": "config",
@@ -8952,7 +9031,7 @@
         "script_consumers:12",
         "test_consumers:25",
         "doc_consumers:57",
-        "config_consumers:15"
+        "config_consumers:16"
       ],
       "family": "rules",
       "lifecycle_id": "rules/content-policy.md",
@@ -8966,7 +9045,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 124
+      "total_consumers": 125
     },
     {
       "confidence": "high",
@@ -10463,9 +10542,9 @@
         "doc": 3,
         "hook": 3,
         "rule": 1,
-        "script": 3,
+        "script": 5,
         "skill": 1,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -10534,11 +10613,23 @@
         },
         {
           "family": "script",
+          "path": "scripts/classify_ambiguous_hooks.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/hook_behavior.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/set-security-profile.sh"
         },
         {
           "family": "skill",
           "path": "skills/invariant-check/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_hook_behavior_classifier.py"
         },
         {
           "family": "test",
@@ -10559,8 +10650,8 @@
         "skill_consumers:1",
         "hook_consumers:3",
         "rule_consumers:1",
-        "script_consumers:3",
-        "test_consumers:3",
+        "script_consumers:5",
+        "test_consumers:4",
         "doc_consumers:3",
         "config_consumers:7"
       ],
@@ -10576,7 +10667,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 21
+      "total_consumers": 24
     },
     {
       "confidence": "high",
@@ -11065,17 +11156,21 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 13,
+        "config": 14,
         "doc": 24,
         "hook": 2,
         "rule": 4,
         "script": 9,
-        "test": 15
+        "test": 16
       },
       "consumers": [
         {
           "family": "config",
           "path": ".claude/settings.json"
+        },
+        {
+          "family": "config",
+          "path": ".codex/hooks.json"
         },
         {
           "family": "config",
@@ -11283,6 +11378,10 @@
         },
         {
           "family": "test",
+          "path": "tests/audit/test_instrument_productivity.py"
+        },
+        {
+          "family": "test",
           "path": "tests/audit/test_rules_enforcement.py"
         },
         {
@@ -11348,9 +11447,9 @@
         "hook_consumers:2",
         "rule_consumers:4",
         "script_consumers:9",
-        "test_consumers:15",
+        "test_consumers:16",
         "doc_consumers:24",
-        "config_consumers:13"
+        "config_consumers:14"
       ],
       "family": "rules",
       "lifecycle_id": "rules/doc-sync.md",
@@ -11364,7 +11463,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 67
+      "total_consumers": 69
     },
     {
       "confidence": "high",
@@ -11375,7 +11474,7 @@
         "doc": 135,
         "hook": 8,
         "rule": 3,
-        "script": 82,
+        "script": 83,
         "skill": 19,
         "test": 71
       },
@@ -12353,6 +12452,10 @@
           "path": "scripts/validate_tier_filter.py"
         },
         {
+          "family": "script",
+          "path": "scripts/verify_claims.py"
+        },
+        {
           "family": "skill",
           "path": ".codex/skills/branch-worktree-closure/SKILL.md"
         },
@@ -12719,7 +12822,7 @@
         "skill_consumers:19",
         "hook_consumers:8",
         "rule_consumers:3",
-        "script_consumers:82",
+        "script_consumers:83",
         "test_consumers:71",
         "doc_consumers:135",
         "config_consumers:15"
@@ -12736,7 +12839,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 333
+      "total_consumers": 334
     },
     {
       "confidence": "high",
@@ -13021,6 +13124,45 @@
       "total_consumers": 12
     },
     {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 1,
+        "rule": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-342-existence-criterion-for-primitives.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/hooks/test_encargo_refutable_delivery.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "rule_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:1"
+      ],
+      "family": "rules",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "rules/encargo-refutable.md",
+      "role": "driver-specific",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 3
+    },
+    {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
@@ -13260,12 +13402,12 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 15,
-        "doc": 92,
-        "hook": 12,
+        "doc": 93,
+        "hook": 13,
         "rule": 10,
-        "script": 7,
+        "script": 8,
         "skill": 3,
-        "test": 43
+        "test": 45
       },
       "consumers": [
         {
@@ -13634,6 +13776,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/05-Methodology/runbooks/error-pipeline-type-contract-2026-08-15/README.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/06-Daily/measurements/stage2-expansion-baseline.md"
         },
         {
@@ -13699,6 +13845,10 @@
         {
           "family": "hook",
           "path": "hooks/_lib/singularity-suggestion.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/_lib/tool-outcome.sh"
         },
         {
           "family": "hook",
@@ -13794,6 +13944,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/audit_payload_field_contracts.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-init-global.sh"
         },
         {
@@ -13831,6 +13985,14 @@
         {
           "family": "test",
           "path": "tests/audit/test_hooks_contracts.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_instrument_productivity.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_payload_field_contracts.py"
         },
         {
           "family": "test",
@@ -14001,11 +14163,11 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:3",
-        "hook_consumers:12",
+        "hook_consumers:13",
         "rule_consumers:10",
-        "script_consumers:7",
-        "test_consumers:43",
-        "doc_consumers:92",
+        "script_consumers:8",
+        "test_consumers:45",
+        "doc_consumers:93",
         "config_consumers:15"
       ],
       "family": "rules",
@@ -14020,7 +14182,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 182
+      "total_consumers": 187
     },
     {
       "confidence": "high",
@@ -14561,7 +14723,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 4,
+        "config": 5,
         "doc": 16,
         "hook": 1,
         "rule": 1,
@@ -14583,6 +14745,10 @@
         {
           "family": "config",
           "path": "manifests/runtime-env-flags.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/volatile-number-baseline.json"
         },
         {
           "family": "doc",
@@ -14672,7 +14838,7 @@
         "rule_consumers:1",
         "test_consumers:2",
         "doc_consumers:16",
-        "config_consumers:4"
+        "config_consumers:5"
       ],
       "family": "rules",
       "lifecycle_id": "rules/hook-security-profiles.md",
@@ -14686,7 +14852,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 24
+      "total_consumers": 25
     },
     {
       "confidence": "high",
@@ -15405,7 +15571,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 7,
-        "doc": 67,
+        "doc": 68,
         "hook": 2,
         "rule": 2,
         "script": 2,
@@ -15508,6 +15674,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-298-routing-model-benchmark-harness.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-343-codebase-memory-mcp-recommend-only-and-conditional-discovery-directive.md"
         },
         {
           "family": "doc",
@@ -15766,7 +15936,7 @@
         "rule_consumers:2",
         "script_consumers:2",
         "test_consumers:4",
-        "doc_consumers:67",
+        "doc_consumers:68",
         "config_consumers:7"
       ],
       "family": "rules",
@@ -15781,7 +15951,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 86
+      "total_consumers": 87
     },
     {
       "confidence": "high",
@@ -16885,7 +17055,7 @@
       "consumer_families": {
         "config": 17,
         "doc": 150,
-        "hook": 13,
+        "hook": 15,
         "rule": 3,
         "script": 11,
         "skill": 5,
@@ -17562,6 +17732,10 @@
         },
         {
           "family": "hook",
+          "path": "hooks/_lib/tool-outcome.sh"
+        },
+        {
+          "family": "hook",
           "path": "hooks/error-pipeline.sh"
         },
         {
@@ -17575,6 +17749,10 @@
         {
           "family": "hook",
           "path": "hooks/orchestrator-decision-trace.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/recap-sync.sh"
         },
         {
           "family": "hook",
@@ -17797,7 +17975,7 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:5",
-        "hook_consumers:13",
+        "hook_consumers:15",
         "rule_consumers:3",
         "script_consumers:11",
         "test_consumers:26",
@@ -17816,7 +17994,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 225
+      "total_consumers": 227
     },
     {
       "confidence": "high",
@@ -19019,7 +19197,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 8,
+        "config": 9,
         "doc": 17,
         "hook": 16,
         "rule": 1,
@@ -19042,6 +19220,10 @@
         {
           "family": "config",
           "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/opencode-hooks-schema.yaml"
         },
         {
           "family": "config",
@@ -19304,7 +19486,7 @@
         "script_consumers:8",
         "test_consumers:17",
         "doc_consumers:17",
-        "config_consumers:8"
+        "config_consumers:9"
       ],
       "family": "rules",
       "lifecycle_id": "rules/private-mode.md",
@@ -19318,7 +19500,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 67
+      "total_consumers": 68
     },
     {
       "confidence": "high",
@@ -19455,7 +19637,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 11,
+        "config": 12,
         "doc": 30,
         "hook": 2,
         "rule": 1,
@@ -19486,6 +19668,10 @@
         {
           "family": "config",
           "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/opencode-hooks-schema.yaml"
         },
         {
           "family": "config",
@@ -19704,7 +19890,7 @@
         "script_consumers:7",
         "test_consumers:7",
         "doc_consumers:30",
-        "config_consumers:11"
+        "config_consumers:12"
       ],
       "family": "rules",
       "lifecycle_id": "rules/prompt-quality.md",
@@ -19718,7 +19904,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 58
+      "total_consumers": 59
     },
     {
       "confidence": "high",
@@ -22052,7 +22238,7 @@
         "config": 4,
         "doc": 8,
         "hook": 1,
-        "rule": 1,
+        "rule": 2,
         "script": 1,
         "test": 3
       },
@@ -22114,6 +22300,10 @@
           "path": "rules/RULES-COMPACT.md"
         },
         {
+          "family": "rule",
+          "path": "rules/encargo-refutable.md"
+        },
+        {
           "family": "script",
           "path": "scripts/validate_tier_filter.py"
         },
@@ -22134,7 +22324,7 @@
       "evidence": [
         "lifecycle",
         "hook_consumers:1",
-        "rule_consumers:1",
+        "rule_consumers:2",
         "script_consumers:1",
         "test_consumers:3",
         "doc_consumers:8",
@@ -22152,7 +22342,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 18
+      "total_consumers": 19
     },
     {
       "confidence": "high",
@@ -23029,10 +23219,10 @@
       "consumer_families": {
         "config": 8,
         "doc": 51,
-        "hook": 5,
+        "hook": 6,
         "rule": 3,
         "script": 1,
-        "test": 11
+        "test": 12
       },
       "consumers": [
         {
@@ -23292,6 +23482,10 @@
           "path": "hooks/singularity-check.sh"
         },
         {
+          "family": "hook",
+          "path": "hooks/skill-tracker.sh"
+        },
+        {
           "family": "rule",
           "path": "rules/RULES-COMPACT.md"
         },
@@ -23310,6 +23504,10 @@
         {
           "family": "test",
           "path": "tests/audit/test_hooks_contracts.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_instrument_productivity.py"
         },
         {
           "family": "test",
@@ -23355,10 +23553,10 @@
       "distribution": "lab",
       "evidence": [
         "lifecycle",
-        "hook_consumers:5",
+        "hook_consumers:6",
         "rule_consumers:3",
         "script_consumers:1",
-        "test_consumers:11",
+        "test_consumers:12",
         "doc_consumers:51",
         "config_consumers:8"
       ],
@@ -23374,7 +23572,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 79
+      "total_consumers": 81
     },
     {
       "confidence": "high",
@@ -25105,7 +25303,7 @@
       "consumer_access_next_action": "keep install/profile/harness proof current",
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
-        "config": 16,
+        "config": 17,
         "doc": 105,
         "hook": 3,
         "rule": 15,
@@ -25149,6 +25347,10 @@
         {
           "family": "config",
           "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/opencode-hooks-schema.yaml"
         },
         {
           "family": "config",
@@ -25896,7 +26098,7 @@
         "script_consumers:16",
         "test_consumers:32",
         "doc_consumers:105",
-        "config_consumers:16"
+        "config_consumers:17"
       ],
       "family": "rules",
       "lifecycle_id": "rules/trust-score.md",
@@ -25911,7 +26113,7 @@
         "shell",
         "generic-doc"
       ],
-      "total_consumers": 193
+      "total_consumers": 194
     },
     {
       "confidence": "high",
@@ -26294,22 +26496,22 @@
   "summary": {
     "confidence": {
       "high": 104,
-      "medium": 25
+      "medium": 27
     },
     "consumer_accessibility": {
       "lifecycle-declared-maintainer": 117,
       "projected-consumer-surface": 5,
-      "so-local-only": 7
+      "so-local-only": 9
     },
     "roles": {
       "context-only": 2,
-      "driver-specific": 16,
+      "driver-specific": 18,
       "hook-enforced": 7,
       "lab": 104
     },
-    "total": 129,
+    "total": 131,
     "without_consumers": 0,
-    "without_lifecycle": 7
+    "without_lifecycle": 9
   },
   "target_family": "rules"
 }

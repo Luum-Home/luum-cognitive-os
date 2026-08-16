@@ -483,7 +483,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 5,
+        "config": 7,
         "doc": 11,
         "script": 1,
         "test": 4
@@ -492,6 +492,14 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/external-tool-adoption-freeze.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/external-tool-licenses.yaml"
         },
         {
           "family": "config",
@@ -579,7 +587,7 @@
         "script_consumers:1",
         "test_consumers:4",
         "doc_consumers:11",
-        "config_consumers:5"
+        "config_consumers:7"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -589,7 +597,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 21
+      "total_consumers": 23
     },
     {
       "confidence": "high",
@@ -4334,7 +4342,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 10,
-        "doc": 52,
+        "doc": 53,
         "hook": 1,
         "script": 12,
         "test": 17,
@@ -4480,6 +4488,10 @@
         {
           "family": "doc",
           "path": "docs/05-Methodology/onboarding/walkthrough.synthesis.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/runbooks/origin-install-selfcheck-2026-08-15/README.md"
         },
         {
           "family": "doc",
@@ -4720,7 +4732,7 @@
         "hook_consumers:1",
         "script_consumers:12",
         "test_consumers:17",
-        "doc_consumers:52",
+        "doc_consumers:53",
         "config_consumers:10",
         "workflow_consumers:1"
       ],
@@ -4736,7 +4748,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 93
+      "total_consumers": 94
     },
     {
       "confidence": "high",
@@ -5837,13 +5849,13 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 8,
+        "config": 9,
         "doc": 47,
         "hook": 1,
         "rule": 1,
         "script": 4,
         "skill": 4,
-        "test": 9
+        "test": 10
       },
       "consumers": [
         {
@@ -5853,6 +5865,10 @@
         {
           "family": "config",
           "path": "manifests/harness-driver-capabilities.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/opencode-hooks-schema.yaml"
         },
         {
           "family": "config",
@@ -6112,6 +6128,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_opencode_hooks_schema_conformance.py"
+        },
+        {
+          "family": "test",
           "path": "tests/contracts/test_product_zones.py"
         },
         {
@@ -6150,9 +6170,9 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "script_consumers:4",
-        "test_consumers:9",
+        "test_consumers:10",
         "doc_consumers:47",
-        "config_consumers:8"
+        "config_consumers:9"
       ],
       "family": "skills",
       "lifecycle_id": "skills/experimental/SKILL.md",
@@ -6166,7 +6186,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 74
+      "total_consumers": 76
     },
     {
       "confidence": "high",
@@ -6541,10 +6561,11 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 9,
-        "doc": 22,
-        "script": 12,
-        "test": 19
+        "config": 11,
+        "doc": 27,
+        "hook": 1,
+        "script": 18,
+        "test": 23
       },
       "consumers": [
         {
@@ -6558,6 +6579,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/external-tool-adoption-freeze.yaml"
         },
         {
           "family": "config",
@@ -6582,6 +6607,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/volatile-number-baseline.json"
         },
         {
           "family": "doc",
@@ -6641,6 +6670,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-342-existence-criterion-for-primitives.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/designs/hook-lib-projection-contract.md"
         },
         {
@@ -6650,6 +6683,18 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/dx-cloud-flow-bootstrap-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/runbooks/error-pipeline-type-contract-2026-08-15/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/runbooks/origin-install-selfcheck-2026-08-15/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/runbooks/skill-routing-gaps-instrument-2026-08-15/README.md"
         },
         {
           "family": "doc",
@@ -6665,6 +6710,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/08-References/root/adoption-tiers.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/09-Quality/manual-tests/claude-code-startup-hang-regression.md"
         },
         {
@@ -6672,8 +6721,32 @@
           "path": "docs/09-Quality/manual-tests/claude-code-startup-hang-regression.synthesis.md"
         },
         {
+          "family": "hook",
+          "path": "hooks/session-init.sh"
+        },
+        {
           "family": "script",
           "path": "scripts/_lib/settings-driver-claude-code.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/audit_gate_liveness.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/audit_gate_registration.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/audit_instrument_productivity.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/classify_ambiguous_hooks.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/context_injection_report.py"
         },
         {
           "family": "script",
@@ -6701,6 +6774,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/hook-io-overhead-bench.sh"
+        },
+        {
+          "family": "script",
           "path": "scripts/hook-stream-statusline.sh"
         },
         {
@@ -6718,6 +6795,10 @@
         {
           "family": "script",
           "path": "scripts/session_start_budget.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_gate_liveness_classifier.py"
         },
         {
           "family": "test",
@@ -6749,6 +6830,14 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_hook_timing_wrapper_io_bytes.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_subagent_budget_enforcer_modes.py"
+        },
+        {
+          "family": "test",
           "path": "tests/e2e/test_session_startup_smoke.py"
         },
         {
@@ -6766,6 +6855,10 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_os_only_scope_family.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_context_injection_report.py"
         },
         {
           "family": "test",
@@ -6799,10 +6892,11 @@
       "distribution": "maintainer",
       "evidence": [
         "lifecycle",
-        "script_consumers:12",
-        "test_consumers:19",
-        "doc_consumers:22",
-        "config_consumers:9"
+        "hook_consumers:1",
+        "script_consumers:18",
+        "test_consumers:23",
+        "doc_consumers:27",
+        "config_consumers:11"
       ],
       "family": "skills",
       "lifecycle_id": "skills/hook-timing/SKILL.md",
@@ -6814,7 +6908,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 62
+      "total_consumers": 80
     },
     {
       "confidence": "high",
@@ -8763,7 +8857,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 8,
+        "config": 9,
         "doc": 22,
         "script": 3,
         "skill": 1,
@@ -8801,6 +8895,10 @@
         {
           "family": "config",
           "path": "manifests/routing-benchmark-corpus.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/volatile-number-baseline.json"
         },
         {
           "family": "doc",
@@ -8950,7 +9048,7 @@
         "script_consumers:3",
         "test_consumers:9",
         "doc_consumers:22",
-        "config_consumers:8"
+        "config_consumers:9"
       ],
       "family": "skills",
       "lifecycle_id": "skills/product-answer/SKILL.md",
@@ -8964,7 +9062,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 43
+      "total_consumers": 44
     },
     {
       "confidence": "high",
@@ -9772,7 +9870,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 9,
+        "config": 10,
         "doc": 58,
         "hook": 1,
         "rule": 3,
@@ -9816,6 +9914,10 @@
         {
           "family": "config",
           "path": "manifests/security-red-team.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/volatile-number-baseline.json"
         },
         {
           "family": "doc",
@@ -10187,7 +10289,7 @@
         "script_consumers:11",
         "test_consumers:11",
         "doc_consumers:58",
-        "config_consumers:9"
+        "config_consumers:10"
       ],
       "family": "skills",
       "lifecycle_id": "skills/red-team/SKILL.md",
@@ -10201,7 +10303,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 99
+      "total_consumers": 100
     },
     {
       "confidence": "high",
@@ -11469,10 +11571,10 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 8,
-        "doc": 112,
+        "doc": 113,
         "hook": 1,
         "rule": 9,
-        "script": 2,
+        "script": 3,
         "skill": 7,
         "test": 16
       },
@@ -11935,6 +12037,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/05-Methodology/runbooks/gate-exit-code-contract-2026-08-15/README.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/06-Daily/root/component-audit.md"
         },
         {
@@ -11996,6 +12102,10 @@
         {
           "family": "rule",
           "path": "rules/skill-management.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/audit_adopt_verdict_linkage.py"
         },
         {
           "family": "script",
@@ -12104,9 +12214,9 @@
         "skill_consumers:7",
         "hook_consumers:1",
         "rule_consumers:9",
-        "script_consumers:2",
+        "script_consumers:3",
         "test_consumers:16",
-        "doc_consumers:112",
+        "doc_consumers:113",
         "config_consumers:8"
       ],
       "family": "skills",
@@ -12121,7 +12231,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 155
+      "total_consumers": 157
     },
     {
       "confidence": "high",
@@ -12133,7 +12243,7 @@
         "hook": 6,
         "rule": 14,
         "skill": 2,
-        "test": 37
+        "test": 38
       },
       "consumers": [
         {
@@ -12470,6 +12580,10 @@
         },
         {
           "family": "test",
+          "path": "tests/hooks/test_encargo_refutable_delivery.py"
+        },
+        {
+          "family": "test",
           "path": "tests/integration/test_auto_update_flow.py"
         },
         {
@@ -12591,7 +12705,7 @@
         "skill_consumers:2",
         "hook_consumers:6",
         "rule_consumers:14",
-        "test_consumers:37",
+        "test_consumers:38",
         "doc_consumers:49",
         "config_consumers:4"
       ],
@@ -12607,7 +12721,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 112
+      "total_consumers": 113
     },
     {
       "confidence": "high",
@@ -12718,7 +12832,7 @@
       "consumer_families": {
         "config": 3,
         "doc": 17,
-        "hook": 3,
+        "hook": 2,
         "rule": 5,
         "skill": 2,
         "test": 10
@@ -12813,10 +12927,6 @@
           "path": "hooks/notify.sh"
         },
         {
-          "family": "hook",
-          "path": "hooks/skill-tracker.sh"
-        },
-        {
           "family": "rule",
           "path": "rules/model-routing.md"
         },
@@ -12889,7 +12999,7 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:2",
-        "hook_consumers:3",
+        "hook_consumers:2",
         "rule_consumers:5",
         "test_consumers:10",
         "doc_consumers:17",
@@ -12907,7 +13017,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 40
+      "total_consumers": 39
     },
     {
       "confidence": "high",
@@ -13356,9 +13466,9 @@
         "doc": 41,
         "hook": 4,
         "rule": 11,
-        "script": 1,
+        "script": 2,
         "skill": 5,
-        "test": 27
+        "test": 28
       },
       "consumers": [
         {
@@ -13606,6 +13716,10 @@
           "path": "scripts/cos-dspy-pilot"
         },
         {
+          "family": "script",
+          "path": "scripts/cos-review-approve"
+        },
+        {
           "family": "skill",
           "path": "skills/code-review/SKILL.md"
         },
@@ -13628,6 +13742,10 @@
         {
           "family": "test",
           "path": "tests/behavior/test_clarification_gate.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_review_approval_gate.py"
         },
         {
           "family": "test",
@@ -13740,8 +13858,8 @@
         "skill_consumers:5",
         "hook_consumers:4",
         "rule_consumers:11",
-        "script_consumers:1",
-        "test_consumers:27",
+        "script_consumers:2",
+        "test_consumers:28",
         "doc_consumers:41",
         "config_consumers:4"
       ],
@@ -13757,7 +13875,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 93
+      "total_consumers": 95
     },
     {
       "confidence": "high",
@@ -14055,7 +14173,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 6,
+        "config": 7,
         "doc": 24,
         "hook": 1,
         "rule": 1,
@@ -14087,6 +14205,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/volatile-number-baseline.json"
         },
         {
           "family": "doc",
@@ -14278,7 +14400,7 @@
         "script_consumers:3",
         "test_consumers:14",
         "doc_consumers:24",
-        "config_consumers:6"
+        "config_consumers:7"
       ],
       "family": "skills",
       "lifecycle_id": "skills/session-backlog/SKILL.md",
@@ -14292,7 +14414,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 51
+      "total_consumers": 52
     },
     {
       "confidence": "high",
