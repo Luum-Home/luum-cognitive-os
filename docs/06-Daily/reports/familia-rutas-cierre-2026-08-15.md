@@ -126,7 +126,7 @@ Motivos, en orden de peso:
    aguas abajo puede reportarla ni auditarla. Es el caso que la regla de
    "gates sin trampa" llama supresor invisible: no se lo ve disparar nunca.
 2. **La forma de los hermanos ya existía en este archivo.** El manifiesto
-   `manifests/provenance-scan.yaml` ya lista `/home/jovyan/` en
+   `manifests/provenance-scan.yaml` ya lista `<LINUX>/jovyan/` en
    `allowed_absolute_paths`, o sea que el lookahead era redundante *en este
    repo*. Se lo movió al default del código para no romper a los consumidores
    que no tienen ese manifiesto.
@@ -135,7 +135,7 @@ Motivos, en orden de peso:
 
 **Lo que NO se tocó, a propósito**: `allowed_by_prefix()` está anclado a la
 barra, así que el home pelado de `jovyan` (sin `/` final) se sigue marcando
-mientras que `/home/jovyan/work` no. Esa asimetría es idéntica en
+mientras que `<LINUX>/jovyan/work` no. Esa asimetría es idéntica en
 `check_absolute_paths.py`, es una propiedad de la familia de exenciones por
 prefijo, y arreglarla sólo acá sacaría a este miembro de paridad. Queda
 anotada en el código y reportada abajo como hallazgo abierto.
