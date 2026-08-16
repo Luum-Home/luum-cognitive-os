@@ -5991,7 +5991,7 @@
         "config": 1,
         "doc": 1,
         "hook": 1,
-        "script": 2
+        "script": 3
       },
       "consumers": [
         {
@@ -6008,6 +6008,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/_lib/settings-driver-claude-code.sh"
+        },
+        {
+          "family": "script",
           "path": "scripts/check_memory_retrieval_arrival.py"
         },
         {
@@ -6020,7 +6024,7 @@
         "hook_consumers:1",
         "doc_consumers:1",
         "config_consumers:1",
-        "script_consumers:2"
+        "script_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -6034,7 +6038,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": null
     },
     {
@@ -7120,7 +7124,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 94,
-        "doc": 1130,
+        "doc": 1133,
         "hook": 192,
         "rule": 75,
         "script": 616,
@@ -11072,6 +11076,18 @@
         {
           "family": "doc",
           "path": "docs/05-Methodology/runbooks/hooks-additional-context-shape-2026-08-15.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/runbooks/installer-selfcheck-2026-08-15/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/runbooks/installer-selfcheck-2026-08-15/VERIFICACION-2026-08-16.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/runbooks/installer-selfcheck-2026-08-15/edits.md"
         },
         {
           "family": "doc",
@@ -21398,7 +21414,7 @@
         "test_consumers:1342",
         "hook_consumers:192",
         "workflow_consumers:2",
-        "doc_consumers:1130",
+        "doc_consumers:1133",
         "rule_consumers:75",
         "config_consumers:94",
         "script_consumers:616"
@@ -21417,7 +21433,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 3565,
+      "total_consumers": 3568,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -33608,7 +33624,7 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 11,
-        "doc": 33,
+        "doc": 34,
         "script": 6,
         "skill": 1,
         "test": 13
@@ -33791,6 +33807,10 @@
           "path": "docs/04-Concepts/root/onboarding-wizard-design.synthesis.md"
         },
         {
+          "family": "doc",
+          "path": "docs/05-Methodology/runbooks/installer-selfcheck-2026-08-15/edits.md"
+        },
+        {
           "family": "script",
           "path": "scripts/auto-update-projects.sh"
         },
@@ -33878,7 +33898,7 @@
         "wrapper_for:scripts/cos_init.py",
         "skill_consumers:1",
         "test_consumers:13",
-        "doc_consumers:33",
+        "doc_consumers:34",
         "config_consumers:11",
         "script_consumers:6"
       ],
@@ -33896,7 +33916,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 64,
+      "total_consumers": 65,
       "wrapper_for": "scripts/cos_init.py"
     },
     {
@@ -41279,7 +41299,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 1,
-        "doc": 4,
+        "doc": 7,
         "rule": 1,
         "script": 23,
         "test": 4
@@ -41296,6 +41316,18 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/surface-5-and-secure-cosd-roadmap.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/runbooks/installer-selfcheck-2026-08-15/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/runbooks/installer-selfcheck-2026-08-15/VERIFICACION-2026-08-16.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/runbooks/installer-selfcheck-2026-08-15/edits.md"
         },
         {
           "family": "doc",
@@ -41421,7 +41453,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:4",
-        "doc_consumers:4",
+        "doc_consumers:7",
         "rule_consumers:1",
         "config_consumers:1",
         "script_consumers:23"
@@ -41438,7 +41470,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 33,
+      "total_consumers": 36,
       "wrapper_for": null
     },
     {
@@ -52583,7 +52615,7 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 12,
-        "doc": 66,
+        "doc": 67,
         "script": 14,
         "skill": 1,
         "test": 21
@@ -52808,6 +52840,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/standalone-agent-runtime-adapter-options.synthesis.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/runbooks/installer-selfcheck-2026-08-15/edits.md"
         },
         {
           "family": "doc",
@@ -53053,7 +53089,7 @@
         "wrapper_for:scripts/cos-init.sh",
         "skill_consumers:1",
         "test_consumers:21",
-        "doc_consumers:66",
+        "doc_consumers:67",
         "config_consumers:12",
         "script_consumers:14"
       ],
@@ -53071,7 +53107,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 114,
+      "total_consumers": 115,
       "wrapper_for": "scripts/cos-init.sh"
     },
     {
@@ -61147,7 +61183,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 6,
-        "doc": 13,
+        "doc": 14,
         "hook": 1,
         "script": 7,
         "skill": 1,
@@ -61213,6 +61249,10 @@
         {
           "family": "doc",
           "path": "docs/03-PoCs/root/research-log.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/runbooks/installer-selfcheck-2026-08-15/edits.md"
         },
         {
           "family": "doc",
@@ -61309,7 +61349,7 @@
         "skill_consumers:1",
         "test_consumers:9",
         "hook_consumers:1",
-        "doc_consumers:13",
+        "doc_consumers:14",
         "config_consumers:6",
         "script_consumers:7"
       ],
@@ -61327,7 +61367,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 37,
+      "total_consumers": 38,
       "wrapper_for": null
     },
     {
@@ -63262,7 +63302,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 1,
-        "doc": 2,
+        "doc": 3,
         "script": 2,
         "test": 3
       },
@@ -63274,6 +63314,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/designs/hook-lib-projection-contract.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/runbooks/installer-selfcheck-2026-08-15/edits.md"
         },
         {
           "family": "doc",
@@ -63303,7 +63347,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:3",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:1",
         "script_consumers:2"
       ],
@@ -63319,7 +63363,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 8,
+      "total_consumers": 9,
       "wrapper_for": null
     },
     {
