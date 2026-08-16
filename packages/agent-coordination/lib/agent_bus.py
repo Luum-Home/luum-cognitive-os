@@ -114,12 +114,45 @@ def _force_fallback_enabled() -> bool:
 def _agent_bus_enabled() -> bool:
     """Return True when the operator opted into the Valkey transport.
 
-    `AGENT_BUS_ENABLED` defaults to OFF per `rules/agent-communication.md`.
-    While it is off, the bus must never try to *provision* Valkey: starting
-    Docker is a side effect the policy did not authorise. An already-running
-    Valkey is still probed and used opportunistically -- probing is read-only.
+    `AGENT_BUS_ENABLED` defaults to OFF per `rules/agent-communication.md`,
+    whose wording is the strict one: the flag enables *the transport*, not
+    merely its provisioning. While it is off the bus neither starts Valkey nor
+    talks to one that is already running -- a reachable server is not consent.
     """
     return os.environ.get("AGENT_BUS_ENABLED", "").strip().lower() in _TRUTHY
+
+
+def valkey_transport_disabled_reason(
+    primary_url: Optional[str] = None,
+) -> Optional[str]:
+    """Return why the Valkey transport is off, or None when it is authorised.
+
+    Precedence is a single linear order; the first hit wins and no later
+    control can revive the transport:
+
+      1. `COS_AGENT_BUS_FORCE_FALLBACK=1` -- pins the filesystem transport.
+      2. `AGENT_BUS_ENABLED` unset/false  -- the documented default is OFF.
+      3. An explicit URL (`VALKEY_URL`, `COS_VALKEY_URL`, `--url`,
+         `valkey_url=`) chooses *which* server, never *whether*. It is not an
+         opt-in and cannot outrank (1) or (2).
+
+    Callers that face an operator (the dashboard) use this to fail loudly
+    instead of degrading to the file transport behind their back.
+    """
+    if _force_fallback_enabled():
+        return (
+            "COS_AGENT_BUS_FORCE_FALLBACK=1 pins the filesystem transport "
+            "(unset it to allow Valkey)"
+        )
+    if not _agent_bus_enabled():
+        detail = (
+            "AGENT_BUS_ENABLED is off (default); the Valkey transport is "
+            "disabled, so a running Valkey is not used"
+        )
+        if primary_url is not None and primary_url != _DEFAULT_VALKEY_URL:
+            detail += " -- the explicit URL %s is not an opt-in" % primary_url
+        return detail + " (export AGENT_BUS_ENABLED=true to enable it)"
+    return None
 
 
 def _reset_valkey_provision_cache() -> None:
@@ -134,29 +167,19 @@ def _ensure_valkey_via_smart_infra() -> bool:
     Returns True if the service was ensured successfully, False otherwise.
     This is a best-effort operation that never raises.
 
-    Two gates run before any Docker work, because both are documented escapes
-    that previously did not escape:
-
-      1. `COS_AGENT_BUS_FORCE_FALLBACK=1` -- forcing the file fallback must
-         also skip provisioning, not just URL resolution.
-      2. `AGENT_BUS_ENABLED` unset/false -- the documented default is OFF, so
-         provisioning a service the policy declares disabled is a bug.
+    The transport gate runs before any Docker work -- see
+    `valkey_transport_disabled_reason()` for the precedence order. Provisioning
+    a service the policy declares disabled is a bug, and both documented
+    escapes previously failed to escape this path.
 
     The result is memoised for the process lifetime: the three call sites
     otherwise re-run a `docker compose up` that already failed.
     """
     global _VALKEY_PROVISION_ATTEMPTED
 
-    if _force_fallback_enabled():
-        logger.debug(
-            "agent_bus: COS_AGENT_BUS_FORCE_FALLBACK=1, skipping Valkey provisioning"
-        )
-        return False
-
-    if not _agent_bus_enabled():
-        logger.debug(
-            "agent_bus: AGENT_BUS_ENABLED is off (default), skipping Valkey provisioning"
-        )
+    disabled = valkey_transport_disabled_reason()
+    if disabled is not None:
+        logger.debug("agent_bus: skipping Valkey provisioning -- %s", disabled)
         return False
 
     if _VALKEY_PROVISION_ATTEMPTED is not None:
@@ -192,8 +215,15 @@ def _ping_url(url: str, timeout: float = 1.0) -> bool:
 def _resolve_valkey_url(primary_url: str = _DEFAULT_VALKEY_URL) -> Optional[str]:
     """Return the first reachable Valkey/Redis URL from a prioritised list.
 
+    This is the single choke point for the Valkey transport: `is_valkey_available`,
+    `AgentPublisher._connect` and `OrchestratorSubscriber._connect` all decide
+    through it, so the transport gate lives here and nowhere else.
+
     Resolution order (ADR-042):
-      0. If COS_AGENT_BUS_FORCE_FALLBACK=1, skip Valkey entirely.
+      0. If the transport is disabled -- force-fallback, or `AGENT_BUS_ENABLED`
+         off -- skip Valkey entirely, including the local-daemon probe. Not
+         probing is the point: under the strict reading of the flag a reachable
+         server must not be used just because it answers.
       1. *primary_url* (from env var or default localhost:6379)
       2. Local daemon candidates: localhost:6380, localhost:6379
          — covers the case where cos-valkey-local.sh started on 6380 because
@@ -201,7 +231,16 @@ def _resolve_valkey_url(primary_url: str = _DEFAULT_VALKEY_URL) -> Optional[str]
 
     Returns the URL string if reachable, None if nothing responds.
     """
-    if _force_fallback_enabled():
+    disabled = valkey_transport_disabled_reason(primary_url)
+    if disabled is not None:
+        # An operator who typed a URL gets a warning, not silence; a caller
+        # riding the default gets debug. The heuristic only sets the volume --
+        # it never changes the outcome, because "explicit" is not reliably
+        # observable here (callers forward the default as a keyword argument).
+        if primary_url != _DEFAULT_VALKEY_URL:
+            logger.warning("agent_bus: Valkey transport not used -- %s", disabled)
+        else:
+            logger.debug("agent_bus: Valkey transport not used -- %s", disabled)
         return None
 
     if _ping_url(primary_url):
@@ -256,11 +295,14 @@ def _emit_local_daemon_metric(url: str) -> None:
 def is_valkey_available(valkey_url: str = _DEFAULT_VALKEY_URL) -> bool:
     """Check if Valkey/Redis is reachable.
 
-    Resolution order (ADR-042):
+    Returns False without touching the network whenever the transport is
+    disabled (`valkey_transport_disabled_reason()`), so "is Valkey up?" and
+    "may we use Valkey?" give the same answer to every caller.
+
+    Resolution order (ADR-042), all of it gated on the transport being enabled:
       1. Primary URL (env-configured or default localhost:6379)
       2. Local daemon fallback: localhost:6380 / localhost:6379
-      3. smart_infra Docker start, then re-probe (1) + (2) -- only when
-         `AGENT_BUS_ENABLED` is on and force-fallback is off.
+      3. smart_infra Docker start, then re-probe (1) + (2)
 
     Args:
         valkey_url: Redis-compatible connection URL.

@@ -22,6 +22,7 @@ import subprocess
 import sys
 import time
 from pathlib import Path
+from unittest import mock
 
 import pytest
 
@@ -247,9 +248,13 @@ class TestAgentBusIntegration:
             import cos_lib.agent_bus as ab
             importlib.reload(ab)
 
-            # Point primary URL directly at the daemon's port
+            # Point primary URL directly at the daemon's port.
+            # AGENT_BUS_ENABLED must be ON: the flag gates the transport, so
+            # with it off _resolve_valkey_url returns None even for a daemon
+            # that is up and answering. Discovery is opt-in, not automatic.
             url = f"redis://localhost:{port}"
-            resolved = ab._resolve_valkey_url(url)
+            with mock.patch.dict(os.environ, {"AGENT_BUS_ENABLED": "true"}):
+                resolved = ab._resolve_valkey_url(url)
             assert resolved is not None, "_resolve_valkey_url returned None for running daemon"
             assert str(port) in resolved, f"Resolved URL {resolved!r} does not contain port {port}"
         finally:
