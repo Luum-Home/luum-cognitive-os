@@ -31,6 +31,8 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 _HOOK_NAME="post-git-orphan-notifier"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
+# shellcheck source=hooks/_lib/git-command-parse.sh
+source "$(dirname "$0")/_lib/git-command-parse.sh"
 
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}}}"
 
@@ -73,7 +75,10 @@ _is_trigger_command() {
     while IFS= read -r segment; do
         [ -z "$segment" ] && continue
         trimmed="${segment#"${segment%%[![:space:]]*}"}"
-        if echo "$trimmed" | grep -Eq "$TRIGGER_PATTERN"; then
+        if echo "$trimmed" | grep -Eq "$TRIGGER_PATTERN" \
+           || cos_git_matches_subcommand "$trimmed" 'rebase|reset' \
+           || { cos_git_matches_subcommand "$trimmed" 'pull' \
+                && echo "$trimmed" | grep -Eq -- '--rebase([[:space:]]|$)'; }; then
             return 0
         fi
     done <<< "$(echo "$cmd" | tr '|&;' '\n')"
@@ -86,11 +91,12 @@ fi
 
 # ── Determine trigger label for the JSONL record ─────────────────────────────
 TRIGGER_LABEL="post-git"
-if echo "$COMMAND" | grep -Eq 'git[[:space:]]+rebase'; then
+if cos_git_matches_subcommand "$COMMAND" 'rebase'; then
     TRIGGER_LABEL="post-rebase"
-elif echo "$COMMAND" | grep -Eq 'git[[:space:]]+pull[[:space:]].*--rebase'; then
+elif cos_git_matches_subcommand "$COMMAND" 'pull' \
+     && echo "$COMMAND" | grep -Eq -- '--rebase([[:space:]]|$)'; then
     TRIGGER_LABEL="post-pull-rebase"
-elif echo "$COMMAND" | grep -Eq 'git[[:space:]]+reset'; then
+elif cos_git_matches_subcommand "$COMMAND" 'reset'; then
     TRIGGER_LABEL="post-reset"
 fi
 

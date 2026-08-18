@@ -19,6 +19,8 @@ _HOOK_NAME="scope-marker-portability-gate"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=hooks/_lib/common.sh
 source "$SCRIPT_DIR/_lib/common.sh"
+# shellcheck source=hooks/_lib/git-command-parse.sh
+source "$SCRIPT_DIR/_lib/git-command-parse.sh"
 
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}}}"
 METRICS_DIR="${COS_METRICS_DIR:-$PROJECT_DIR/.cognitive-os/metrics}"
@@ -58,7 +60,7 @@ TOOL_NAME="$(printf '%s' "$INPUT" | python3 -c 'import json,sys; d=json.loads(sy
 COMMAND="$(printf '%s' "$INPUT" | python3 -c 'import json,sys; d=json.loads(sys.stdin.read() or "{}"); print((d.get("tool_input") or {}).get("command", ""))' 2>/dev/null || true)"
 [ -n "$COMMAND" ] || exit 0
 
-if ! printf '%s\n' "$COMMAND" | grep -Eq '(^|[;&|[:space:]])git[[:space:]]+commit([[:space:]]|$)'; then
+if ! cos_git_matches_subcommand "$COMMAND" 'commit'; then
   exit 0
 fi
 
