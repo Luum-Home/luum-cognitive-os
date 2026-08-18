@@ -221,21 +221,48 @@ class TestTokenBudgets:
             f"CLAUDE.md is ~{tokens:.0f} tokens, exceeds 3,500 budget"
         )
 
-    def test_total_always_loaded_budget(self):
-        """RULES-COMPACT.md + CLAUDE.md combined must be under 7,000 tokens."""
+    def test_repo_always_loaded_budget(self):
+        """The repo's own always-loaded corpus, checked unconditionally.
+
+        Split out of the old combined assertion, which added the repo's compact
+        rules index to the operator's personal ~/.claude/CLAUDE.md and skipped the
+        whole thing when that file was absent. In CI it always is, so the repo
+        half -- the only half this repository owns and ships to consumers -- was
+        never evaluated. A budget that skips wherever it would bite is not a
+        budget.
+
+        3,500 against ~3,022 tokens measured 2026-08-18. Recount, do not cite:
+        cat rules/RULES-COMPACT.md | wc -c
+        """
+        compact_path = PROJECT_ROOT / "rules" / "RULES-COMPACT.md"
+        compact_tokens = estimate_tokens(compact_path.read_text())
+        assert compact_tokens < 3500, (
+            f"The compact rules index is ~{compact_tokens:.0f} tokens, exceeds "
+            "3,500. It loads on every session of every consumer install, so each "
+            "token here is taken from the work."
+        )
+
+    def test_combined_always_loaded_budget_local_only(self):
+        """Advisory: repo corpus plus the operator's personal CLAUDE.md.
+
+        Skips on purpose when the personal file is absent, and on purpose does NOT
+        gate the repo half above. It measures one machine's total context cost and
+        cannot be a CI gate, because that file belongs to the operator rather than
+        to this repository -- scripts/uninstall.sh says so in as many words.
+        """
         compact_path = PROJECT_ROOT / "rules" / "RULES-COMPACT.md"
         claude_path = Path.home() / ".claude" / "CLAUDE.md"
         if not claude_path.exists():
-            pytest.skip("No global CLAUDE.md found")
+            pytest.skip("no personal CLAUDE.md on this machine — advisory only")
 
         compact_tokens = estimate_tokens(compact_path.read_text())
         claude_tokens = estimate_tokens(claude_path.read_text())
         total = compact_tokens + claude_tokens
 
         assert total < 7000, (
-            f"Combined always-loaded budget is ~{total:.0f} tokens "
-            f"(RULES-COMPACT ~{compact_tokens:.0f} + CLAUDE.md ~{claude_tokens:.0f}), "
-            f"exceeds 7,000"
+            f"Combined always-loaded budget on this machine is ~{total:.0f} tokens "
+            f"(repo index ~{compact_tokens:.0f} + personal CLAUDE.md "
+            f"~{claude_tokens:.0f}), exceeds 7,000"
         )
 
 
