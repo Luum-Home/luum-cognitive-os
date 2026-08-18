@@ -95,7 +95,9 @@ class TestManifestSchema:
         "copyright", "attribution", "cos_files", "annex_f",
     }
 
-    ALLOWED_STATUSES = {"ALLOWED", "BLOCKED", "HOLD", "TRIAL-PATTERNS", "PATTERN-ONLY"}
+    # Status vocabulary is owned by the generator (KNOWN_STATUSES), not
+    # duplicated here: a manifest status the generator cannot render as a badge
+    # is exactly the drift these tests must catch.
 
     def _load_manifest(self, gen) -> dict[str, Any]:
         return gen._parse_yaml_manifest(_MANIFEST_PATH)
@@ -129,10 +131,11 @@ class TestManifestSchema:
             )
 
     def test_all_statuses_are_known(self, gen):
+        """Every manifest status must be one the generator can render."""
         manifest = self._load_manifest(gen)
         for entry in manifest["entries"]:
             status = entry.get("status", "")
-            assert status in self.ALLOWED_STATUSES, (
+            assert status in gen.KNOWN_STATUSES, (
                 f"Entry '{entry.get('name')}' has unexpected status: {status!r}"
             )
 
