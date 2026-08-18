@@ -260,7 +260,7 @@
         "doc": 29,
         "hook": 3,
         "rule": 5,
-        "script": 2,
+        "script": 3,
         "skill": 1,
         "test": 24
       },
@@ -431,6 +431,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/check_subagent_context_arrival.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_work_inventory.py"
         },
         {
@@ -544,7 +548,7 @@
         "skill_consumers:1",
         "hook_consumers:3",
         "rule_consumers:5",
-        "script_consumers:2",
+        "script_consumers:3",
         "test_consumers:24",
         "doc_consumers:29",
         "config_consumers:4"
@@ -561,7 +565,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 68
+      "total_consumers": 69
     },
     {
       "confidence": "high",
@@ -1477,7 +1481,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 4,
-        "doc": 12,
+        "doc": 13,
         "hook": 1,
         "rule": 1,
         "script": 1,
@@ -1549,6 +1553,10 @@
           "path": "docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.synthesis.md"
         },
         {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/reality-audit.md"
+        },
+        {
           "family": "hook",
           "path": "hooks/inject-phase-context.sh"
         },
@@ -1591,7 +1599,7 @@
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:6",
-        "doc_consumers:12",
+        "doc_consumers:13",
         "config_consumers:4"
       ],
       "family": "templates",
@@ -1602,7 +1610,7 @@
       "role": "quality-gate",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 25
+      "total_consumers": 26
     },
     {
       "confidence": "high",

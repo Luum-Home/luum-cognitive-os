@@ -230,7 +230,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 10,
-        "doc": 138,
+        "doc": 139,
         "hook": 5,
         "rule": 8,
         "script": 18,
@@ -688,6 +688,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/05-Methodology/runbooks/hooks-additional-context-shape-2026-08-15.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/05-Methodology/usage/cos-status.md"
         },
         {
@@ -1119,7 +1123,7 @@
         "rule_consumers:8",
         "script_consumers:18",
         "test_consumers:34",
-        "doc_consumers:138",
+        "doc_consumers:139",
         "config_consumers:10"
       ],
       "family": "rules",
@@ -1134,7 +1138,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 218
+      "total_consumers": 219
     },
     {
       "confidence": "high",
@@ -7762,7 +7766,8 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "doc": 2,
-        "rule": 1
+        "rule": 1,
+        "test": 1
       },
       "consumers": [
         {
@@ -7776,11 +7781,16 @@
         {
           "family": "rule",
           "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_codebase-memory-directive.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "rule_consumers:1",
+        "test_consumers:1",
         "doc_consumers:2"
       ],
       "family": "rules",
@@ -7791,7 +7801,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 3
+      "total_consumers": 4
     },
     {
       "confidence": "high",
@@ -11472,7 +11482,7 @@
       "consumer_families": {
         "config": 15,
         "doc": 135,
-        "hook": 8,
+        "hook": 9,
         "rule": 3,
         "script": 83,
         "skill": 19,
@@ -12098,6 +12108,10 @@
         {
           "family": "hook",
           "path": "hooks/git-commit-scope-guard.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/provenance-scan.sh"
         },
         {
           "family": "hook",
@@ -12820,7 +12834,7 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:19",
-        "hook_consumers:8",
+        "hook_consumers:9",
         "rule_consumers:3",
         "script_consumers:83",
         "test_consumers:71",
@@ -12839,7 +12853,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 334
+      "total_consumers": 335
     },
     {
       "confidence": "high",
@@ -13405,9 +13419,9 @@
         "doc": 93,
         "hook": 13,
         "rule": 10,
-        "script": 8,
+        "script": 9,
         "skill": 3,
-        "test": 45
+        "test": 47
       },
       "consumers": [
         {
@@ -13960,6 +13974,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/migrate_error_learning_orphan.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/primitive_scope_classifier.py"
         },
         {
@@ -13981,6 +13999,10 @@
         {
           "family": "test",
           "path": "tests/audit/test_agent_training_harness_claims.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_error_learning_single_path.py"
         },
         {
           "family": "test",
@@ -14108,6 +14130,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_evolve_task_queue.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_governed_self_improvement.py"
         },
         {
@@ -14165,8 +14191,8 @@
         "skill_consumers:3",
         "hook_consumers:13",
         "rule_consumers:10",
-        "script_consumers:8",
-        "test_consumers:45",
+        "script_consumers:9",
+        "test_consumers:47",
         "doc_consumers:93",
         "config_consumers:15"
       ],
@@ -14182,7 +14208,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 187
+      "total_consumers": 190
     },
     {
       "confidence": "high",
@@ -17054,8 +17080,8 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 17,
-        "doc": 150,
-        "hook": 15,
+        "doc": 151,
+        "hook": 16,
         "rule": 3,
         "script": 11,
         "skill": 5,
@@ -17604,6 +17630,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/05-Methodology/runbooks/installer-selfcheck-2026-08-15/edits.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/05-Methodology/runbooks/run-cos-in-docker.synthesis.md"
         },
         {
@@ -17733,6 +17763,10 @@
         {
           "family": "hook",
           "path": "hooks/_lib/tool-outcome.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/engram-reinforce-on-access.sh"
         },
         {
           "family": "hook",
@@ -17975,11 +18009,11 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:5",
-        "hook_consumers:15",
+        "hook_consumers:16",
         "rule_consumers:3",
         "script_consumers:11",
         "test_consumers:26",
-        "doc_consumers:150",
+        "doc_consumers:151",
         "config_consumers:17"
       ],
       "family": "rules",
@@ -17994,7 +18028,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 227
+      "total_consumers": 229
     },
     {
       "confidence": "high",
@@ -23222,7 +23256,7 @@
         "hook": 6,
         "rule": 3,
         "script": 1,
-        "test": 12
+        "test": 13
       },
       "consumers": [
         {
@@ -23539,6 +23573,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_evolve_task_queue.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_metric_event_migration.py"
         },
         {
@@ -23556,7 +23594,7 @@
         "hook_consumers:6",
         "rule_consumers:3",
         "script_consumers:1",
-        "test_consumers:12",
+        "test_consumers:13",
         "doc_consumers:51",
         "config_consumers:8"
       ],
@@ -23572,7 +23610,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 81
+      "total_consumers": 82
     },
     {
       "confidence": "high",

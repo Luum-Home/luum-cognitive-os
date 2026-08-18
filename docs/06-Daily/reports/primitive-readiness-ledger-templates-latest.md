@@ -9,7 +9,7 @@ Consumer accessibility: lifecycle-declared-maintainer:19, projected-consumer-sur
 | `templates/adr-template.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 5 | keep maintainer-only or add explicit export path |
 | `templates/agent-mandatory-rules.md` | quality-gate | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 26 | keep maintainer-only or add explicit export path |
 | `templates/agent-planning.md` | agent-preamble | heuristic:text | medium | so-local-only |  | 6 | add lifecycle/package/projection metadata or keep SO-local |
-| `templates/agent-preamble.md` | agent-preamble | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 68 | keep maintainer-only or add explicit export path |
+| `templates/agent-preamble.md` | agent-preamble | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 69 | keep maintainer-only or add explicit export path |
 | `templates/agent-research-only.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 12 | keep maintainer-only or add explicit export path |
 | `templates/counsel-outreach/clean-room-permission.md` | prompt-composition | default | medium | lifecycle-declared-maintainer | advisory | 9 | keep maintainer-only or add explicit export path |
 | `templates/counsel-outreach/license-clarification.md` | prompt-composition | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 8 | keep maintainer-only or add explicit export path |
@@ -21,7 +21,7 @@ Consumer accessibility: lifecycle-declared-maintainer:19, projected-consumer-sur
 | `templates/fintech-gates.md` | quality-gate | heuristic:text | medium | so-local-only |  | 8 | add lifecycle/package/projection metadata or keep SO-local |
 | `templates/generator-validator-pair.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 5 | keep maintainer-only or add explicit export path |
 | `templates/go-service-context.md` | prompt-composition | heuristic:text | medium | so-local-only |  | 7 | add lifecycle/package/projection metadata or keep SO-local |
-| `templates/project-gotchas.md` | quality-gate | heuristic:text | medium | so-local-only |  | 25 | add lifecycle/package/projection metadata or keep SO-local |
+| `templates/project-gotchas.md` | quality-gate | heuristic:text | medium | so-local-only |  | 26 | add lifecycle/package/projection metadata or keep SO-local |
 | `templates/prompt-hooks/assumption-tracker-prompt.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 4 | keep maintainer-only or add explicit export path |
 | `templates/prompt-hooks/clarification-gate-prompt.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 4 | keep maintainer-only or add explicit export path |
 | `templates/prompt-hooks/prompt-quality-prompt.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 4 | keep maintainer-only or add explicit export path |

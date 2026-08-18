@@ -6562,8 +6562,8 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 11,
-        "doc": 27,
-        "hook": 1,
+        "doc": 28,
+        "hook": 2,
         "script": 18,
         "test": 23
       },
@@ -6690,6 +6690,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/05-Methodology/runbooks/installer-selfcheck-2026-08-15/edits.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/05-Methodology/runbooks/origin-install-selfcheck-2026-08-15/README.md"
         },
         {
@@ -6719,6 +6723,10 @@
         {
           "family": "doc",
           "path": "docs/09-Quality/manual-tests/claude-code-startup-hang-regression.synthesis.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/provenance-scan.sh"
         },
         {
           "family": "hook",
@@ -6892,10 +6900,10 @@
       "distribution": "maintainer",
       "evidence": [
         "lifecycle",
-        "hook_consumers:1",
+        "hook_consumers:2",
         "script_consumers:18",
         "test_consumers:23",
-        "doc_consumers:27",
+        "doc_consumers:28",
         "config_consumers:11"
       ],
       "family": "skills",
@@ -6908,7 +6916,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 80
+      "total_consumers": 82
     },
     {
       "confidence": "high",
@@ -7484,6 +7492,7 @@
         "config": 4,
         "doc": 1,
         "rule": 1,
+        "script": 1,
         "test": 2
       },
       "consumers": [
@@ -7512,6 +7521,10 @@
           "path": "rules/python-naming.md"
         },
         {
+          "family": "script",
+          "path": "scripts/hook-io-overhead-bench.sh"
+        },
+        {
           "family": "test",
           "path": "tests/audit/test_rules_enforcement.py"
         },
@@ -7524,6 +7537,7 @@
       "evidence": [
         "lifecycle",
         "rule_consumers:1",
+        "script_consumers:1",
         "test_consumers:2",
         "doc_consumers:1",
         "config_consumers:4"
@@ -7539,7 +7553,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 8
+      "total_consumers": 9
     },
     {
       "confidence": "high",
@@ -7616,7 +7630,7 @@
         "doc": 1,
         "rule": 1,
         "script": 1,
-        "test": 5,
+        "test": 6,
         "workflow": 1
       },
       "consumers": [
@@ -7662,6 +7676,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_check_local_privacy.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_cos_patch_release.py"
         },
         {
@@ -7673,7 +7691,7 @@
       "evidence": [
         "rule_consumers:1",
         "script_consumers:1",
-        "test_consumers:5",
+        "test_consumers:6",
         "doc_consumers:1",
         "config_consumers:3",
         "workflow_consumers:1"
@@ -7686,7 +7704,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 12
+      "total_consumers": 13
     },
     {
       "confidence": "high",

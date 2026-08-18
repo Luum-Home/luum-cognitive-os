@@ -7125,7 +7125,7 @@
       "consumer_families": {
         "config": 94,
         "doc": 1133,
-        "hook": 192,
+        "hook": 195,
         "rule": 75,
         "script": 616,
         "skill": 114,
@@ -12063,6 +12063,10 @@
         },
         {
           "family": "hook",
+          "path": "hooks/_lib/git-command-parse.sh"
+        },
+        {
+          "family": "hook",
           "path": "hooks/_lib/governance-policy.sh"
         },
         {
@@ -12435,6 +12439,10 @@
         },
         {
           "family": "hook",
+          "path": "hooks/post-git-orphan-notifier.sh"
+        },
+        {
+          "family": "hook",
           "path": "hooks/pre-agent-snapshot.sh"
         },
         {
@@ -12536,6 +12544,10 @@
         {
           "family": "hook",
           "path": "hooks/rule-router-prompt-suggest.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/scope-marker-portability-gate.sh"
         },
         {
           "family": "hook",
@@ -21412,7 +21424,7 @@
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:114",
         "test_consumers:1342",
-        "hook_consumers:192",
+        "hook_consumers:195",
         "workflow_consumers:2",
         "doc_consumers:1133",
         "rule_consumers:75",
@@ -21433,7 +21445,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 3568,
+      "total_consumers": 3571,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -69364,6 +69376,29 @@
       "wrapper_for": null
     },
     {
+      "confidence": "low",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {},
+      "consumers": [],
+      "distribution": null,
+      "evidence": [],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/probe-hook-git-adjacency.sh",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "default",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 0,
+      "wrapper_for": null
+    },
+    {
       "confidence": "high",
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
@@ -70019,9 +70054,9 @@
       "consumer_families": {
         "config": 9,
         "doc": 1,
-        "hook": 2,
+        "hook": 3,
         "script": 5,
-        "test": 4
+        "test": 6
       },
       "consumers": [
         {
@@ -70070,6 +70105,10 @@
         },
         {
           "family": "hook",
+          "path": "hooks/destructive-git-blocker.sh"
+        },
+        {
+          "family": "hook",
           "path": "hooks/provenance-scan.sh"
         },
         {
@@ -70094,11 +70133,19 @@
         },
         {
           "family": "test",
+          "path": "tests/behavior/test_provenance_scan_commit_scope.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_provenance-scan.py"
         },
         {
           "family": "test",
           "path": "tests/red_team/portability/test_provenance_scan.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py"
         },
         {
           "family": "test",
@@ -70112,8 +70159,8 @@
       "distribution": null,
       "evidence": [
         "wrapper_for:scripts/provenance_scan.py",
-        "test_consumers:4",
-        "hook_consumers:2",
+        "test_consumers:6",
+        "hook_consumers:3",
         "doc_consumers:1",
         "config_consumers:9",
         "script_consumers:5"
@@ -70130,7 +70177,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 21,
+      "total_consumers": 24,
       "wrapper_for": "scripts/provenance_scan.py"
     },
     {
@@ -77589,7 +77636,7 @@
     "agentic_primitives_without_lifecycle": 0,
     "confidence": {
       "high": 411,
-      "low": 2,
+      "low": 3,
       "medium": 353
     },
     "consumer_accessibility": {
@@ -77597,19 +77644,19 @@
       "lifecycle-declared-consumer-candidate": 169,
       "lifecycle-declared-maintainer": 204,
       "skill-referenced-not-projectable": 3,
-      "so-local-only": 371
+      "so-local-only": 372
     },
-    "low_confidence_rows": 2,
+    "low_confidence_rows": 3,
     "roles": {
       "agentic-primitive": 273,
       "archive": 12,
       "driver-specific": 14,
       "lab": 99,
-      "maintainer-tool": 352,
+      "maintainer-tool": 353,
       "migration-only": 16
     },
-    "total_scripts": 766,
-    "without_consumers": 2
+    "total_scripts": 767,
+    "without_consumers": 3
   },
   "target_family": "scripts"
 }
