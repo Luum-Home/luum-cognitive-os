@@ -220,3 +220,143 @@ def test_auto_safe_execute_sets_cooldown_and_skips_second_run(git_repo: Path) ->
     assert second_payload["cooldown_skipped"] is True
     assert second_payload["reap"] == []
     assert json.loads(claims_path.read_text(encoding="utf-8"))["claims"][0]["task_id"] == "cool2"
+
+
+# --- global budget (tree ceiling vs per-surface caps) -----------------------
+#
+# Regression guard for the defect where every surface was inside its own cap,
+# the audit reported findings=0, and the tree was over the .cognitive-os
+# ceiling anyway. The audit checked each surface and never summed them.
+
+MIB = 1024 * 1024
+
+
+def _write_mib(path: Path, mib: float) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(b"x" * int(mib * MIB))
+
+
+def _budget_manifest(tmp_path: Path, *, ceiling_mib: float, unregistered_cap_mib: float | None = None) -> Path:
+    """Manifest with two byte-capped surfaces; caller controls the tree ceiling."""
+    def surface(sid: str, glob: str) -> dict:
+        return {
+            "id": sid, "kind": "artifact-pool", "path": glob,
+            "max_age": "P7D", "max_count": 100, "max_total_mib": 2,
+            "reaper": "manual", "retention_mode": "observe",
+            "tombstone": "none-recovery-artifact", "owner_pid": False,
+            "owner_files": ["scripts/state_retention_audit.py"],
+            "documentation": ["docs/04-Concepts/architecture/state-retention.md"],
+        }
+
+    budget: dict = {
+        "path": ".cognitive-os", "max_total_mib": ceiling_mib,
+        "measurement": "allocated-blocks", "env_override": "COS_VITALS_DISK_CEILING_MIB",
+    }
+    if unregistered_cap_mib is not None:
+        budget["max_unregistered_mib"] = unregistered_cap_mib
+    data = {
+        "schema_version": "state-retention.v1",
+        "global_budget": budget,
+        "surfaces": [
+            surface("pool-a", ".cognitive-os/pool-a/*"),
+            surface("pool-b", ".cognitive-os/pool-b/*"),
+        ],
+    }
+    manifest = tmp_path / "budget-manifest.yaml"
+    manifest.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")
+    return manifest
+
+
+def _budget_tree(tmp_path: Path) -> Path:
+    """Every surface at 1.5 MiB — inside its own 2 MiB cap, 3.0 MiB together."""
+    project = tmp_path / "project"
+    _write_mib(project / ".cognitive-os" / "pool-a" / "entry-1", 1.5)
+    _write_mib(project / ".cognitive-os" / "pool-b" / "entry-1", 1.5)
+    return project
+
+
+def _global_row(payload: dict) -> dict:
+    rows = [row for row in payload["surfaces"] if row.get("kind") == "budget"]
+    assert len(rows) == 1, f"expected exactly one global budget row, got {rows}"
+    return rows[0]
+
+
+def test_global_budget_flags_tree_over_ceiling_when_every_surface_is_within_cap(tmp_path: Path) -> None:
+    project = _budget_tree(tmp_path)
+    manifest = _budget_manifest(tmp_path, ceiling_mib=2)
+    payload = parse_json(run_audit(project, "--json", "--no-metrics", manifest=manifest))
+
+    # Premise of the defect: nobody is individually at fault.
+    per_surface = [row for row in payload["surfaces"] if row.get("kind") != "budget"]
+    assert len(per_surface) == 2
+    assert all(row["findings"] == [] for row in per_surface), per_surface
+
+    row = _global_row(payload)
+    assert row["total_mib"] >= 3.0, row
+    codes = [f["code"] for f in row["findings"]]
+    assert codes == ["global-budget-exceeded"], row["findings"]
+    finding = row["findings"][0]
+    assert finding["level"] == "BLOCK"
+    assert finding["max_total_mib"] == 2.0
+    assert finding["over_by_mib"] > 0
+    # No surface to blame must be stated, not implied.
+    assert finding["attributable_surfaces"] == []
+    assert "no single surface is at fault" in finding["message"]
+    # Both real exits are offered, and neither is "lower a cap below usage".
+    assert len(finding["remedies"]) == 2
+    assert any("max_total_mib" in r for r in finding["remedies"])
+    # The finding is counted like any other, not sidelined.
+    assert payload["summary"]["finding_count"] == 1
+    # Surface count still names surfaces only.
+    assert payload["summary"]["surface_count"] == 2
+
+
+def test_global_budget_silent_when_tree_is_under_ceiling(tmp_path: Path) -> None:
+    project = _budget_tree(tmp_path)
+    manifest = _budget_manifest(tmp_path, ceiling_mib=50)
+    payload = parse_json(run_audit(project, "--json", "--no-metrics", manifest=manifest))
+
+    row = _global_row(payload)
+    assert row["findings"] == [], row
+    assert payload["summary"]["finding_count"] == 0
+    assert row["registered_mib"] >= 3.0
+    assert row["unregistered_mib"] == 0.0
+
+
+def test_global_budget_reports_bytes_no_registered_surface_owns(tmp_path: Path) -> None:
+    project = _budget_tree(tmp_path)
+    _write_mib(project / ".cognitive-os" / "orphan-area" / "blob", 1.0)
+    manifest = _budget_manifest(tmp_path, ceiling_mib=50, unregistered_cap_mib=0.5)
+    payload = parse_json(run_audit(project, "--json", "--no-metrics", manifest=manifest))
+
+    row = _global_row(payload)
+    assert row["unregistered_mib"] >= 1.0, row
+    codes = [f["code"] for f in row["findings"]]
+    assert codes == ["global-unregistered-bytes"], row["findings"]
+    assert row["findings"][0]["top_areas"][0]["area"].startswith("orphan-area")
+
+
+def test_global_budget_ceiling_comes_from_the_manifest_not_the_script(tmp_path: Path) -> None:
+    """The number has one source; the env override moves it for both consumers."""
+    project = _budget_tree(tmp_path)
+    manifest = _budget_manifest(tmp_path, ceiling_mib=2)
+    payload = parse_json(run_audit(project, "--json", "--no-metrics", manifest=manifest))
+    assert _global_row(payload)["max_total_mib"] == 2.0
+
+    override = run_cmd(
+        [sys.executable, str(SCRIPT), "--project-dir", str(project), "--manifest", str(manifest), "--json", "--no-metrics"],
+        ROOT,
+        env={"COS_VITALS_DISK_CEILING_MIB": "500"},
+    )
+    row = _global_row(parse_json(override))
+    assert row["max_total_mib"] == 500.0
+    assert row["findings"] == []
+
+
+def test_repo_manifest_declares_the_global_budget_the_ram_ceiling_test_reads() -> None:
+    data = yaml.safe_load(MANIFEST.read_text(encoding="utf-8"))
+    budget = data.get("global_budget")
+    assert budget, "manifests/state-retention.yaml must declare global_budget"
+    assert budget["path"] == ".cognitive-os"
+    assert float(budget["max_total_mib"]) > 0
+    assert budget["env_override"] == "COS_VITALS_DISK_CEILING_MIB"
