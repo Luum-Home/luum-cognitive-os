@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-15T18:15:29+00:00",
+  "generated_at": "2026-08-18T20:22:36+00:00",
   "manifest": "manifests/documentation-truth-claims.yaml",
   "rows": [
     {
@@ -371,6 +371,18 @@
       ],
       "message": "Required phrase present: Two install profiles exist, not three",
       "next_action": "add or regenerate current-truth prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "required_doc_exists",
+      "claim_id": "disk_ceiling_single_source",
+      "doc": "docs/06-Daily/reports/retention-techo-global-2026-08-18.md",
+      "evidence": [
+        "docs/06-Daily/reports/retention-techo-global-2026-08-18.md"
+      ],
+      "message": "Required documentation surface exists",
+      "next_action": "keep doc linked",
       "severity": "medium",
       "status": "pass"
     },
@@ -1838,6 +1850,9 @@
       "cos_init_flag_surface": {
         "pass": 14
       },
+      "disk_ceiling_single_source": {
+        "pass": 1
+      },
       "documentation_truth_control": {
         "pass": 8
       },
@@ -1858,8 +1873,8 @@
       }
     },
     "by_status": {
-      "pass": 152
+      "pass": 153
     },
-    "rows": 152
+    "rows": 153
   }
 }
