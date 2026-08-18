@@ -76,6 +76,15 @@ prefilter_says_skip() {
   # \u escape would hide a protected path from it while jq still hands the
   # analyzer the decoded path. Any escape at all: decline and analyse.
   case "$INPUT" in *'\u'*) return 1 ;; esac
+  # A patch applier takes its destinations from the patch, not from the command,
+  # so a payload free of every protected literal can still write one. The
+  # prefilter only ever sees the payload text, so it cannot rule that out:
+  # decline and let the analyzer open the patch. This costs one python start on
+  # any payload carrying the substring (dispatch, *.patch, prose about patches);
+  # correctness over a subprocess, and the analyzer's verdict is unchanged.
+  case "$INPUT" in
+    *patch*|*"git apply"*|*"git am"*) return 1 ;;
+  esac
   while IFS= read -r line || [ -n "$line" ]; do
     case "$line" in
       protected_globs:*) in_globs=1; continue ;;
@@ -205,9 +214,9 @@ GIT_SAFE={'log','show','diff','status','blame','grep','ls-files','ls-tree','cat-
           'add','commit','push','fetch','ls-remote','check-ignore','stripspace'}
 GIT_OPT_VALUE={'-C','-c','--git-dir','--work-tree','--exec-path','--namespace'}
 
-def veto_git(ws):
+def git_subcommand(ws):
     # The first non-option word is the subcommand. Global options come before it
-    # and must not be mistaken for it.
+    # and must not be mistaken for it; a few of them take a value.
     i=0
     while i < len(ws):
         t=ws[i]
@@ -215,8 +224,12 @@ def veto_git(ws):
             i+=2; continue
         if t.startswith('-'):
             i+=1; continue
-        return t not in GIT_SAFE
-    return True
+        return t, ws[i+1:]
+    return None, []
+
+def veto_git(ws):
+    sub, _ = git_subcommand(ws)
+    return sub is None or sub not in GIT_SAFE
 
 VETOED={'sed':veto_sed,'awk':veto_awk,'gawk':veto_awk,'mawk':veto_awk,
         'find':veto_find,'sort':veto_sort,'yq':veto_yq,'git':veto_git,
@@ -240,7 +253,10 @@ def strip_heredocs(cmd):
     # it IS the program, so it is returned separately and scanned for paths.
     # Either way the header line stays, so a heredoc aimed at a protected path
     # is still caught by redirection.
-    lines=cmd.split('\n'); out=[]; programs=[]; i=0
+    # The (header, body) pairs are returned as well: a heredoc fed to a patch
+    # applier is neither data nor program, it is the patch, and the segment that
+    # consumes it has to be able to find its own body.
+    lines=cmd.split('\n'); out=[]; programs=[]; docs=[]; i=0
     while i < len(lines):
         line=lines[i]; out.append(line)
         terms=[m.group(2) for m in HEREDOC.finditer(line)]
@@ -255,9 +271,11 @@ def strip_heredocs(cmd):
                 body.append(lines[i]); i+=1
             if i < len(lines):
                 i+=1
+            body='\n'.join(body)
+            docs.append((line, body))
             if body_is_program:
-                programs.append('\n'.join(body))
-    return '\n'.join(out), '\n'.join(programs)
+                programs.append(body)
+    return '\n'.join(out), '\n'.join(programs), docs
 
 SEPS=set(';\n&|')
 
@@ -359,6 +377,181 @@ def body_can_write(body):
     return any(tok in body for tok in WRITE_PRIMITIVES)
 
 
+# --- Patch appliers: the destinations are inside the patch -------------------
+# `git apply x.patch` names exactly one path in its text -- the patch -- while
+# the paths it WRITES are two lines per hunk inside that file. Judging the
+# command text alone meant any protected path could be written by a command
+# whose text mentioned none; measured 2026-08-18, that was the path four
+# authorised writes to hooks/** actually took, each disclosed only by choice.
+#
+# Deliberately not a diff parser. Three line shapes carry destinations:
+#   `+++ b/PATH`   where the patch writes
+#   `--- a/PATH`   where a deletion names its victim (and where -R writes)
+#   `diff --git a/OLD b/NEW`  where a pure rename names both and no hunk exists
+# Anything that does not carry at least one of them is not a patch we can read,
+# and an unreadable patch is a block, not a guess.
+
+# One house rule for everything below: every line inside this heredoc must
+# carry an EVEN number of single and of double quotes. /bin/bash 3.2, which is
+# what macOS ships and what this hook runs under, parses the body of a heredoc
+# nested in a command substitution while looking for matching quotes, so an
+# apostrophe in a comment is a syntax error at the END of the file -- and
+# `bash -n` under a modern bash reports the file as clean. Hence QUOTE_CHARS
+# below instead of the obvious literal.
+QUOTE_CHARS=chr(34)+chr(39)
+
+PATCH_APPLIERS={'patch','gpatch'}
+PATCH_OPT_VALUE={'-i','--input','-o','--output','-d','--directory','-D','--ifdef',
+                 '-r','--reject-file','-B','--prefix','-Y','--basename-prefix',
+                 '-z','--suffix','-p','--strip','-F','--fuzz','-g','--get'}
+PATCH_STDIN_ARGS={'-','/dev/stdin'}
+# Double-quoted outer, escaped double quotes inside, exactly like HEREDOC
+# above: a backslash does not escape anything inside single quotes, so a
+# single-quoted pattern carrying \' flips the quote state of the whole heredoc
+# for bash 3.2 and the command substitution never closes.
+DIFF_HEADER=re.compile(r"^diff --git ['\"]?a/(.+?)['\"]? ['\"]?b/(.+?)['\"]?$")
+# Plain stdin redirection only. A doubled marker is a heredoc, handled above,
+# and a marker followed by an open paren is a process substitution, whose
+# content is not on disk to be opened; the character class rejects both instead
+# of matching them and discarding the result afterwards. It also carries an open
+# AND a close paren, because of the same house rule as the quotes: parentheses
+# inside this heredoc must balance or bash 3.2 loses the command substitution.
+STDIN_REDIRECT=re.compile(r"(?<![<>])<(?!<)\s*(['\"]?)([^\s'\"<>&;|()]+)\1")
+
+# Fail-closed findings that no glob can express: a patch we could not read, or
+# text that is not a diff. They block on their own, with the reason attached.
+FORCED_BLOCKS=[]
+
+def patch_paths(text):
+    """(paths, looks_like_a_unified_diff). Both sides, because -R writes the other."""
+    paths=[]; seen=False
+    for line in text.split('\n'):
+        m=DIFF_HEADER.match(line.strip())
+        if m:
+            seen=True
+            paths.extend([m.group(1), m.group(2)])
+            continue
+        if line.startswith('+++ ') or line.startswith('--- '):
+            seen=True
+            raw=line[4:].split('\t')[0].strip().strip(QUOTE_CHARS)
+            if not raw or raw=='/dev/null':
+                continue
+            paths.append(raw)
+            # -p1 is the default, so a/ and b/ are strip prefixes; -p0 keeps
+            # them. Both readings are kept: an extra candidate can only add a
+            # block, never remove one, and guessing the -p level would.
+            if raw[:2] in ('a/','b/'):
+                paths.append(raw[2:])
+    return paths, seen
+
+REDIR_OPS={'<','>','>>','>|','&>','&>>','2>','2>>','1>','1>>','<>'}
+
+def positional_args(ws, opt_value=frozenset()):
+    out=[]; i=0
+    while i < len(ws):
+        t=ws[i]
+        if t in opt_value:
+            i+=2; continue
+        # A redirection is not an argument. Counting it as one is how
+        # `patch -p1 < evil.patch` read the bare < as the file being patched and
+        # concluded the destination was already named in the command.
+        if t in REDIR_OPS:
+            i+=2; continue
+        if t and t[0] in '<>':
+            i+=1; continue
+        if t.startswith('-') and t != '-':
+            i+=1; continue
+        out.append(t); i+=1
+    return out
+
+def opt_value_of(ws, names):
+    for i, t in enumerate(ws):
+        for n in names:
+            if t == n and i+1 < len(ws):
+                return ws[i+1]
+            if t.startswith(n+'='):
+                return t[len(n)+1:]
+    return None
+
+def heredoc_body_for(seg, heredocs):
+    for hline, body in heredocs:
+        h=hline.strip()
+        if h and h in seg:
+            return body
+    return None
+
+def read_patch(label):
+    p=Path(label) if os.path.isabs(label) else project/label
+    try:
+        return p.read_text(errors='replace')
+    except Exception:
+        FORCED_BLOCKS.append('unreadable patch source: %s' % label)
+        return None
+
+def patch_segment_targets(exe, rest, seg, heredocs):
+    """Paths a patch-applying segment writes, read out of the patch itself."""
+    if exe == 'git':
+        sub, args = git_subcommand(rest)
+        if sub not in ('apply','am'):
+            return []
+        if '--check' in args:
+            # The documented dry run: it parses the patch and reports whether it
+            # would apply, touching neither the working tree, the index, nor the
+            # targets of the patch. It is allowed because it is the question an
+            # operator asks BEFORE requesting approval, and a guard that blocks
+            # the rehearsal is a guard people route around. -R/--reverse gets no
+            # such pass -- reverting writes -- and needs no special case, because
+            # both sides of every hunk are read anyway.
+            return []
+        sources=[a for a in positional_args(args) if a not in PATCH_STDIN_ARGS]
+    elif exe in PATCH_APPLIERS:
+        pos=positional_args(rest, PATCH_OPT_VALUE)
+        if pos:
+            # `patch ORIGINAL [patchfile]` writes ORIGINAL and nothing else, and
+            # ORIGINAL is a word in the command, already judged by the ordinary
+            # path. Only the form that takes its destinations from the patch
+            # needs the patch opened.
+            return []
+        explicit=opt_value_of(rest, ('-i','--input'))
+        sources=[explicit] if explicit else []
+    else:
+        return []
+
+    texts=[]
+    if sources:
+        for f in sources:
+            text=read_patch(f)
+            if text is not None:
+                texts.append((f, text))
+    else:
+        body=heredoc_body_for(seg, heredocs)
+        if body is not None:
+            texts.append(('<<heredoc', body))
+        else:
+            redir=stdin_redirect_target(seg)
+            if redir:
+                text=read_patch(redir)
+                if text is not None:
+                    texts.append((redir, text))
+            else:
+                # A pipe, a process substitution, or nothing: the content is not
+                # on disk, so the destinations cannot be known and the command
+                # is not allowed to proceed on the strength of that ignorance.
+                FORCED_BLOCKS.append(
+                    'patch source not inspectable: %s' % ' '.join([exe]+rest)[:80])
+    out=[]
+    for label, text in texts:
+        paths, looks_like_patch = patch_paths(text)
+        if not looks_like_patch:
+            FORCED_BLOCKS.append('not a unified diff: %s' % label)
+            continue
+        out.extend(paths)
+    return out
+
+def stdin_redirect_target(seg):
+    m=STDIN_REDIRECT.search(seg)
+    return m.group(2) if m else None
+
 def resolve_exe(ws):
     i=0
     while i < len(ws):
@@ -374,7 +567,7 @@ def resolve_exe(ws):
 def bash_write_targets(command):
     if not isinstance(command, str) or not command.strip():
         return []
-    cmd, program_body = strip_heredocs(command)
+    cmd, program_body, heredocs = strip_heredocs(command)
     cmd, substituted = lift_substitutions(cmd)
     targets=[]
     for match in REDIRECT.finditer(cmd):
@@ -391,6 +584,10 @@ def bash_write_targets(command):
         exe, rest = resolve_exe(ws)
         if exe is None:
             continue
+        # Out-of-band destinations first: a patch applier writes targets that
+        # are not among the words of this segment at all, so `hits` stays empty
+        # and the segment gets waved through on the strength of naming nothing.
+        targets.extend(patch_segment_targets(exe, rest, seg, heredocs))
         hits=[]
         for tok in rest:
             for cand in TOKEN_PATHS.findall(tok):
@@ -428,6 +625,7 @@ for raw in paths:
             continue
     if is_protected(rel, raw):
         blocked.append(rel)
+blocked.extend(FORCED_BLOCKS)
 seen=[]
 for b in blocked:
     if b not in seen: seen.append(b)
