@@ -39,6 +39,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import functools
 import gzip
 import json
 import os
@@ -220,12 +221,35 @@ def artifacts_for(body: str) -> tuple[list[str], list[str]]:
     return writes, [r for r in reads if r not in writes]
 
 
+@functools.lru_cache(maxsize=None)
+def _cognitive_os_index() -> dict[str, str]:
+    """basename -> first matching path under .cognitive-os, walked ONCE.
+
+    The previous form ran `REPO.glob(".cognitive-os/**/{base}")` per lookup.
+    A miss walks the whole tree, and most lookups miss: 68 of 122 in the
+    2026-08-18 measurement, over 10,342 files, for 12.0s of the 29.3s run.
+    One walk answers every lookup. `sorted` keeps the pick deterministic
+    where two directories hold the same basename — `glob` did not.
+    """
+    index: dict[str, str] = {}
+    root = REPO / ".cognitive-os"
+    if not root.is_dir():
+        return index
+    for dirpath, _dirs, files in os.walk(root):
+        for fn in files:
+            full = os.path.join(dirpath, fn)
+            prev = index.get(fn)
+            index[fn] = full if prev is None else min(prev, full)
+    return index
+
+
+@functools.lru_cache(maxsize=None)
 def artifact_stat(base: str) -> dict:
     p = METRICS / base
     if not p.is_file():
-        for cand in REPO.glob(f".cognitive-os/**/{base}"):
-            p = cand
-            break
+        hit = _cognitive_os_index().get(base)
+        if hit:
+            p = Path(hit)
     if not p.is_file():
         return {"file": base, "exists": False, "rows": 0, "mtime": None}
     rows = 0
@@ -245,11 +269,21 @@ def artifact_stat(base: str) -> dict:
     }
 
 
+@functools.lru_cache(maxsize=None)
+def _referencing_files(base: str) -> tuple[str, ...]:
+    """`git grep` hits for one artifact basename. Depends ONLY on the basename.
+
+    Distinct from `consumers` on purpose: the producer filter is per hook, the
+    grep is not. Hooks share artifacts, so the uncached form re-ran identical
+    greps — 54 spawns for 38 distinct basenames, at ~0.25s each.
+    """
+    out = sh(f"git grep -l -F -- {base!r} -- ':!.cognitive-os' | head -40")
+    return tuple(h for h in out.splitlines() if h.strip())
+
+
 def consumers(base: str, producer_real: str) -> list[str]:
     """Files that reference the artifact but are not the producing hook itself."""
-    out = sh(f"git grep -l -F -- {base!r} -- ':!.cognitive-os' | head -40")
-    hits = [h for h in out.splitlines() if h.strip()]
-    return [h for h in hits if os.path.relpath(
+    return [h for h in _referencing_files(base) if os.path.relpath(
         os.path.realpath(REPO / h), REPO) != producer_real]
 
 
