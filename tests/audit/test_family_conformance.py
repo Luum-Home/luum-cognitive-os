@@ -38,18 +38,19 @@ PROBE = REPO / "scripts" / "family_conformance_probe.py"
 #
 # Compared exactly. Remove an entry the day it is repaired.
 KNOWN_DEFECTIVE: dict[str, str] = {
-    "hooks/research-compliance-guard.sh": (
-        "Blocks a documented git grep whose quoted regex is <home>/<charclass>/Projects/. A repair "
-        "was in flight in the working tree on 2026-08-15 (it added the "
-        "describes_a_username discriminator from 3a6e737b) and this branch of the "
-        "pattern was still blocking after it. Owned by that change, not by the probe."
-    ),
-    "scripts/provenance_scan.py": (
-        "Fourth member of the family, found by this probe and never reported before. "
-        "Carries the same defect 3a6e737b fixed in check-local-privacy.sh and "
-        "check_absolute_paths.py: it reads a quoted regex in a documented command as a "
-        "real home path. It reports the quoted character class as a forbidden path."
-    ),
+    # Empty on purpose, and it should stay that way.
+    #
+    # It held two entries until 2026-08-16: research-compliance-guard.sh and
+    # provenance_scan.py, the third and fourth members this probe found. Both are
+    # repaired, the probe reports all four members conforming, and this test went
+    # red to say so -- which is the behaviour worth keeping.
+    #
+    # An entry naming a defect nobody can still reproduce is a suppressor that
+    # suppresses nothing: it reads as coverage while covering nothing, and it
+    # leaves a familiar-looking list waiting for one more entry.
+    #
+    # Add one only with its reason and date, and only while the repair is genuinely
+    # owned by another change in flight. Delete it the day the probe disagrees.
 }
 
 FAMILY = "home-path-leak"
