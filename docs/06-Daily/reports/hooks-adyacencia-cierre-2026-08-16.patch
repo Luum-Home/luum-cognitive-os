@@ -1,0 +1,248 @@
+diff -ruN base/hooks/_lib/git-command-parse.sh tree/hooks/_lib/git-command-parse.sh
+--- base/hooks/_lib/git-command-parse.sh	1969-12-31 21:00:00
++++ tree/hooks/_lib/git-command-parse.sh	2026-08-18 07:51:32
+@@ -0,0 +1,50 @@
++#!/usr/bin/env bash
++# SCOPE: both
++# Canonical parse of a `git` invocation that carries global options.
++#
++# Why this file exists: `git -C <dir> commit`, `git --no-pager commit` and
++# `git --git-dir=X --work-tree=Y commit` are the same operation as
++# `git commit`, but a regex that demands literal adjacency between `git` and
++# the subcommand sees none of them. That defect was closed once inside
++# hooks/bash-hot-path-dispatcher.sh (f44556c48); the gates below it kept the
++# same defect in their own regexes, so the dispatcher now reaches them and they
++# exit early on their own account.
++#
++# Rather than copy the option list into each gate -- the repo already had three
++# parsers of this grammar and a written expectation that they would diverge --
++# the list and the matcher live here, once.
++#
++# Two consumers, one source of truth:
++#   - bash gates                 -> cos_git_matches_subcommand
++#   - gates with inline python   -> read $COS_GIT_GLOBAL_OPTS from the env.
++#     The alternation is deliberately free of POSIX classes such as
++#     [[:space:]], which python's `re` does not support, so the same string is
++#     valid in both engines.
++#
++# Known limit, inherited from the dispatcher on purpose: the option run is
++# matched as `[^|&;]*`, not parsed, so `git -C /r log --grep commit` matches the
++# `commit` alternation. It over-matches (a gate runs that need not have), it
++# never under-matches. Anyone who needs exactness should reuse the shlex
++# tokenizer in hooks/destructive-git-blocker.sh instead of widening this.
++
++# Git global options that may sit between `git` and the subcommand.
++# Ported from hooks/git-commit-scope-guard.sh (3045f71f8) by way of
++# hooks/bash-hot-path-dispatcher.sh (f44556c48); this is now the canonical copy.
++COS_GIT_GLOBAL_OPTS='-C|-c|-P|--no-pager|--paginate|--git-dir|--work-tree|--namespace|--exec-path|--bare|--literal-pathspecs|--no-replace-objects|--no-optional-locks'
++export COS_GIT_GLOBAL_OPTS
++
++# cos_git_matches_subcommand <command> <subcommand-alternation>
++# Returns 0 when <command> invokes `git <sub>`, with or without global options.
++cos_git_matches_subcommand() {
++  local cmd="$1" subs="$2"
++  printf '%s' "$cmd" \
++    | grep -Eq "(^|[|&;[:space:]])git[[:space:]]+($subs)([[:space:]]|$)" && return 0
++  # Hot path: the second grep is only paid by a command that has a dash glued
++  # to `git`. `ls -la`, `echo`, `git status` and `git commit -m x` never do.
++  case "$cmd" in
++    *"git -"*) ;;
++    *) return 1 ;;
++  esac
++  printf '%s' "$cmd" \
++    | grep -Eq "(^|[|&;[:space:]])git[[:space:]]+(${COS_GIT_GLOBAL_OPTS})[^|&;]*[[:space:]]($subs)([[:space:]]|$)"
++}
+File base/hooks/adaptive-bypass.sh is a unknown type while file tree/hooks/adaptive-bypass.sh is a unknown type
+File base/hooks/agent-bus-monitor.sh is a unknown type while file tree/hooks/agent-bus-monitor.sh is a unknown type
+File base/hooks/agent-checkpoint.sh is a unknown type while file tree/hooks/agent-checkpoint.sh is a unknown type
+diff -ruN base/hooks/agent-message-inbox-guard.sh tree/hooks/agent-message-inbox-guard.sh
+--- base/hooks/agent-message-inbox-guard.sh	2026-05-15 22:23:23
++++ tree/hooks/agent-message-inbox-guard.sh	2026-08-18 07:51:32
+@@ -7,6 +7,8 @@
+ PROJECT_DIR="${CLAUDE_PROJECT_DIR:-${PROJECT_DIR:-${COGNITIVE_OS_PROJECT_DIR:-$(pwd)}}}"
+ HOOK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ COS_ROOT="$(cd "$HOOK_DIR/.." && pwd)"
++# shellcheck source=hooks/_lib/git-command-parse.sh
++source "$HOOK_DIR/_lib/git-command-parse.sh"
+ SCRIPT="$COS_ROOT/scripts/cos_agent_message.py"
+ [ -f "$SCRIPT" ] || exit 0
+ 
+@@ -20,7 +22,7 @@
+ # payload, keep the historical behavior and check anyway.
+ if [ -n "$INPUT" ] && command -v python3 >/dev/null 2>&1; then
+   SHOULD_CHECK="$(python3 - "$INPUT" <<'PY' 2>/dev/null || echo yes
+-import json, re, sys
++import json, os, re, sys
+ try:
+     data=json.loads(sys.argv[1]) if sys.argv[1].strip() else {}
+ except Exception:
+@@ -30,7 +32,15 @@
+ cmd=str(tool_input.get('command') or data.get('command') or '')
+ if name and name != 'Bash':
+     print('no'); raise SystemExit
+-risk = bool(re.search(r'(^|&&|;)\s*git\s+(commit|push|merge|rebase|cherry-pick|reset\s+--hard|stash\s+(apply|pop)|worktree\s+(add|remove)|branch\s+-D)\b', cmd))
++# Global options (`git -C <dir> commit`) sit between `git` and the
++# subcommand; the option alternation comes from hooks/_lib/git-command-parse.sh
++# via the environment so there is one list, not two.
++_SUBS = r'(commit|push|merge|rebase|cherry-pick|reset\s+--hard|stash\s+(apply|pop)|worktree\s+(add|remove)|branch\s+-D)'
++_OPTS = os.environ.get('COS_GIT_GLOBAL_OPTS') or r'-C|-c|--git-dir|--work-tree'
++risk = bool(
++    re.search(r'(^|&&|;)\s*git\s+' + _SUBS + r'\b', cmd)
++    or re.search(r'(^|&&|;)\s*git\s+(' + _OPTS + r')[^|&;]*\s' + _SUBS + r'\b', cmd)
++)
+ print('yes' if risk or not cmd else 'no')
+ PY
+ )"
+File base/hooks/agent-prelaunch.sh is a unknown type while file tree/hooks/agent-prelaunch.sh is a unknown type
+File base/hooks/agnix-lint.sh is a unknown type while file tree/hooks/agnix-lint.sh is a unknown type
+File base/hooks/architecture-compliance.sh is a unknown type while file tree/hooks/architecture-compliance.sh is a unknown type
+File base/hooks/assumption-tracker.sh is a unknown type while file tree/hooks/assumption-tracker.sh is a unknown type
+File base/hooks/auto-rollback-trigger.sh is a unknown type while file tree/hooks/auto-rollback-trigger.sh is a unknown type
+File base/hooks/auto-skill-generator.sh is a unknown type while file tree/hooks/auto-skill-generator.sh is a unknown type
+File base/hooks/blast-radius.sh is a unknown type while file tree/hooks/blast-radius.sh is a unknown type
+diff -ruN base/hooks/branch-ownership-lock.sh tree/hooks/branch-ownership-lock.sh
+--- base/hooks/branch-ownership-lock.sh	2026-07-10 10:53:27
++++ tree/hooks/branch-ownership-lock.sh	2026-08-18 07:51:32
+@@ -15,6 +15,8 @@
+ PROJECT_DIR="${CLAUDE_PROJECT_DIR:-${COGNITIVE_OS_PROJECT_DIR:-$(pwd)}}"
+ HOOK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ COS_ROOT="$(cd "$HOOK_DIR/.." && pwd)"
++# shellcheck source=hooks/_lib/git-command-parse.sh
++source "$HOOK_DIR/_lib/git-command-parse.sh"
+ SESSION_ID="${COGNITIVE_OS_SESSION_ID:-${CODEX_SESSION_ID:-${CLAUDE_SESSION_ID:-unknown}}}"
+ INPUT="$(cat 2>/dev/null || true)"
+ 
+@@ -42,7 +44,15 @@
+ cmd = str(tool_input.get("command") or data.get("command") or "")
+ if tool and tool != "Bash":
+     raise SystemExit(0)
+-if cmd and not re.search(r"(^|&&|;)\s*git\s+(commit|push|merge|rebase|cherry-pick|reset\s+--hard|stash\s+(apply|pop)|worktree\s+(add|remove)|branch\s+-D)\b", cmd):
++# Global options (`git -C <dir> commit`) sit between `git` and the
++# subcommand; the option alternation comes from hooks/_lib/git-command-parse.sh
++# via the environment so there is one list, not two.
++_SUBS = r"(commit|push|merge|rebase|cherry-pick|reset\s+--hard|stash\s+(apply|pop)|worktree\s+(add|remove)|branch\s+-D)"
++_OPTS = os.environ.get("COS_GIT_GLOBAL_OPTS") or r"-C|-c|--git-dir|--work-tree"
++if cmd and not (
++    re.search(r"(^|&&|;)\s*git\s+" + _SUBS + r"\b", cmd)
++    or re.search(r"(^|&&|;)\s*git\s+(" + _OPTS + r")[^|&;]*\s" + _SUBS + r"\b", cmd)
++):
+     raise SystemExit(0)
+ 
+ sys.path.insert(0, str(cos_root))
+File base/hooks/claim-validator.sh is a unknown type while file tree/hooks/claim-validator.sh is a unknown type
+File base/hooks/clarification-gate.sh is a unknown type while file tree/hooks/clarification-gate.sh is a unknown type
+File base/hooks/clarification-interceptor.sh is a unknown type while file tree/hooks/clarification-interceptor.sh is a unknown type
+File base/hooks/completeness-check-llm.sh is a unknown type while file tree/hooks/completeness-check-llm.sh is a unknown type
+File base/hooks/completion-gate.sh is a unknown type while file tree/hooks/completion-gate.sh is a unknown type
+File base/hooks/confidence-gate-llm.sh is a unknown type while file tree/hooks/confidence-gate-llm.sh is a unknown type
+File base/hooks/confidence-gate.sh is a unknown type while file tree/hooks/confidence-gate.sh is a unknown type
+File base/hooks/consequence-evaluator.sh is a unknown type while file tree/hooks/consequence-evaluator.sh is a unknown type
+File base/hooks/contextual-rule-loader.sh is a unknown type while file tree/hooks/contextual-rule-loader.sh is a unknown type
+File base/hooks/doc-sync-detector.sh is a unknown type while file tree/hooks/doc-sync-detector.sh is a unknown type
+File base/hooks/dry-run-preview.sh is a unknown type while file tree/hooks/dry-run-preview.sh is a unknown type
+File base/hooks/engram-auto-import.sh is a unknown type while file tree/hooks/engram-auto-import.sh is a unknown type
+File base/hooks/engram-auto-sync.sh is a unknown type while file tree/hooks/engram-auto-sync.sh is a unknown type
+File base/hooks/epic-task-detector.sh is a unknown type while file tree/hooks/epic-task-detector.sh is a unknown type
+File base/hooks/idle-service-cleanup.sh is a unknown type while file tree/hooks/idle-service-cleanup.sh is a unknown type
+File base/hooks/kpi-trigger.sh is a unknown type while file tree/hooks/kpi-trigger.sh is a unknown type
+File base/hooks/memu-sync.sh is a unknown type while file tree/hooks/memu-sync.sh is a unknown type
+File base/hooks/metrics-calibrator-trigger.sh is a unknown type while file tree/hooks/metrics-calibrator-trigger.sh is a unknown type
+File base/hooks/metrics-rotation.sh is a unknown type while file tree/hooks/metrics-rotation.sh is a unknown type
+diff -ruN base/hooks/post-git-orphan-notifier.sh tree/hooks/post-git-orphan-notifier.sh
+--- base/hooks/post-git-orphan-notifier.sh	2026-05-15 22:23:23
++++ tree/hooks/post-git-orphan-notifier.sh	2026-08-18 07:51:32
+@@ -31,6 +31,8 @@
+ 
+ _HOOK_NAME="post-git-orphan-notifier"
+ source "$(dirname "$0")/_lib/safe-jsonl.sh"
++# shellcheck source=hooks/_lib/git-command-parse.sh
++source "$(dirname "$0")/_lib/git-command-parse.sh"
+ 
+ PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}}}"
+ 
+@@ -73,7 +75,10 @@
+     while IFS= read -r segment; do
+         [ -z "$segment" ] && continue
+         trimmed="${segment#"${segment%%[![:space:]]*}"}"
+-        if echo "$trimmed" | grep -Eq "$TRIGGER_PATTERN"; then
++        if echo "$trimmed" | grep -Eq "$TRIGGER_PATTERN" \
++           || cos_git_matches_subcommand "$trimmed" 'rebase|reset' \
++           || { cos_git_matches_subcommand "$trimmed" 'pull' \
++                && echo "$trimmed" | grep -Eq -- '--rebase([[:space:]]|$)'; }; then
+             return 0
+         fi
+     done <<< "$(echo "$cmd" | tr '|&;' '\n')"
+@@ -86,11 +91,12 @@
+ 
+ # ── Determine trigger label for the JSONL record ─────────────────────────────
+ TRIGGER_LABEL="post-git"
+-if echo "$COMMAND" | grep -Eq 'git[[:space:]]+rebase'; then
++if cos_git_matches_subcommand "$COMMAND" 'rebase'; then
+     TRIGGER_LABEL="post-rebase"
+-elif echo "$COMMAND" | grep -Eq 'git[[:space:]]+pull[[:space:]].*--rebase'; then
++elif cos_git_matches_subcommand "$COMMAND" 'pull' \
++     && echo "$COMMAND" | grep -Eq -- '--rebase([[:space:]]|$)'; then
+     TRIGGER_LABEL="post-pull-rebase"
+-elif echo "$COMMAND" | grep -Eq 'git[[:space:]]+reset'; then
++elif cos_git_matches_subcommand "$COMMAND" 'reset'; then
+     TRIGGER_LABEL="post-reset"
+ fi
+ 
+File base/hooks/prompt-quality-llm.sh is a unknown type while file tree/hooks/prompt-quality-llm.sh is a unknown type
+diff -ruN base/hooks/release-guard.sh tree/hooks/release-guard.sh
+--- base/hooks/release-guard.sh	2026-05-20 13:22:50
++++ tree/hooks/release-guard.sh	2026-08-18 07:51:32
+@@ -15,6 +15,8 @@
+ # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
+ [ -f "$(dirname "${BASH_SOURCE[0]}")/_lib/governance-policy.sh" ] && source "$(dirname "${BASH_SOURCE[0]}")/_lib/governance-policy.sh"
++# shellcheck source=hooks/_lib/git-command-parse.sh
++source "$(dirname "${BASH_SOURCE[0]}")/_lib/git-command-parse.sh"
+ PROJECT_DIR="${CLAUDE_PROJECT_DIR:-${COGNITIVE_OS_PROJECT_DIR:-$(pwd)}}"
+ 
+ # Read tool input from stdin
+@@ -44,7 +46,12 @@
+ # ── Pattern 2: Manual git tag with version pattern ──────────────────
+ # Matches: git tag v0.3.4, git tag 1.0.0, etc.
+ # Does NOT match: git tag -d, git tag -l, or tags inside commit messages.
+-if echo "$first_line" | grep -qE '^git\s+tag\s+v?[0-9]+\.[0-9]+'; then
++# Two halves on purpose: the first says "this is a `git tag` invocation"
++# (global options and `cd x && ` included), the second keeps the original
++# qualifier that a version-shaped argument follows `tag`, which is what
++# still lets `git tag -d` and `git tag -l` through.
++if cos_git_matches_subcommand "$first_line" 'tag' \
++   && echo "$first_line" | grep -qE '[[:space:]]tag[[:space:]]+v?[0-9]+\.[0-9]+'; then
+   if type cos_governance_policy_allows_block >/dev/null 2>&1 && ! cos_governance_policy_allows_block release; then
+     cos_governance_policy_advisory_message "release-guard" "release"
+     exit 0
+File base/hooks/result-truncator.sh is a unknown type while file tree/hooks/result-truncator.sh is a unknown type
+File base/hooks/review-spawner.sh is a unknown type while file tree/hooks/review-spawner.sh is a unknown type
+File base/hooks/scope-creep-detector.sh is a unknown type while file tree/hooks/scope-creep-detector.sh is a unknown type
+diff -ruN base/hooks/scope-marker-portability-gate.sh tree/hooks/scope-marker-portability-gate.sh
+--- base/hooks/scope-marker-portability-gate.sh	2026-05-15 22:23:23
++++ tree/hooks/scope-marker-portability-gate.sh	2026-08-18 07:51:32
+@@ -19,6 +19,8 @@
+ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ # shellcheck source=hooks/_lib/common.sh
+ source "$SCRIPT_DIR/_lib/common.sh"
++# shellcheck source=hooks/_lib/git-command-parse.sh
++source "$SCRIPT_DIR/_lib/git-command-parse.sh"
+ 
+ PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}}}"
+ METRICS_DIR="${COS_METRICS_DIR:-$PROJECT_DIR/.cognitive-os/metrics}"
+@@ -58,7 +60,7 @@
+ COMMAND="$(printf '%s' "$INPUT" | python3 -c 'import json,sys; d=json.loads(sys.stdin.read() or "{}"); print((d.get("tool_input") or {}).get("command", ""))' 2>/dev/null || true)"
+ [ -n "$COMMAND" ] || exit 0
+ 
+-if ! printf '%s\n' "$COMMAND" | grep -Eq '(^|[;&|[:space:]])git[[:space:]]+commit([[:space:]]|$)'; then
++if ! cos_git_matches_subcommand "$COMMAND" 'commit'; then
+   exit 0
+ fi
+ 
+File base/hooks/scope-proportionality.sh is a unknown type while file tree/hooks/scope-proportionality.sh is a unknown type
+File base/hooks/session-start-stash-reapply.sh is a unknown type while file tree/hooks/session-start-stash-reapply.sh is a unknown type
+File base/hooks/skill-tracker.sh is a unknown type while file tree/hooks/skill-tracker.sh is a unknown type
+File base/hooks/sync-to-repo.sh is a unknown type while file tree/hooks/sync-to-repo.sh is a unknown type
+File base/hooks/task-recorder.sh is a unknown type while file tree/hooks/task-recorder.sh is a unknown type
+File base/hooks/tool-loop-detector.sh is a unknown type while file tree/hooks/tool-loop-detector.sh is a unknown type
+File base/hooks/trust-score-validator.sh is a unknown type while file tree/hooks/trust-score-validator.sh is a unknown type
