@@ -229,3 +229,30 @@ def test_dedicated_write_tools_stay_blocked(payload: dict) -> None:
     )
     assert proc.returncode == BLOCK
     assert "PROTECTED CONFIG WRITE GUARD" in proc.stderr
+
+
+def test_json_unicode_escape_does_not_evade_the_prefilter() -> None:
+    """The fast path matches the raw payload; jq decodes it afterwards.
+
+    A path spelled with a JSON \\u escape must not slip past the prefilter,
+    because the analyzer downstream would have seen the decoded path.
+    """
+    command = f"cp {SRC} {PROTECTED}"
+    plain = json.dumps({"tool_name": "Bash", "tool_input": {"command": command}})
+    escaped = plain.replace("hooks", "\\u0068ooks", 1)
+    assert json.loads(escaped)["tool_input"]["command"] == command
+    proc = subprocess.run(
+        ["bash", str(HOOK)],
+        input=escaped,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        env={
+            "PATH": "/usr/bin:/bin:/usr/local/bin:/opt/homebrew/bin",
+            "HOME": os.environ.get("HOME", ""),
+            "CLAUDE_PROJECT_DIR": str(REPO),
+        },
+        cwd=str(REPO),
+        check=False,
+    )
+    assert proc.returncode == BLOCK
