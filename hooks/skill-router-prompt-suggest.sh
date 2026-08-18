@@ -16,7 +16,14 @@
 #
 # Killswitch env: DISABLE_HOOK_SKILL_ROUTER_PROMPT_SUGGEST=1
 #
-# Latency budget: <150ms (Python import ~50ms, routing ~10ms, I/O ~20ms).
+# Latency budget: ~0.5s CPU (~0.85s wall) on a 427-SKILL.md tree.
+# Cost is dominated by SkillRouter() building the routing table, which YAML-parses
+# every SKILL.md once. Matching itself is <10ms.
+# Measured 2026-08-18 (docs/06-Daily/reports/skill-router-timeout-2026-08-18.md).
+# The previous <150ms claim in this header was never met: hook-timing.jsonl
+# recorded p50 1767ms / p95 11315ms over 29 samples before the memoization fix
+# in cos_lib/skill_router.py (_read_skill_md_cached), which cut the per-build
+# YAML parses from 1049 to 427 and the CPU from 0.90s to 0.39s.
 
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 _HOOK_NAME="skill-router-prompt-suggest"

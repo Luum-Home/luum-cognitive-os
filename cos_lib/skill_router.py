@@ -166,6 +166,18 @@ def _parse_frontmatter(text: str) -> Dict[str, Any]:
     sufficient for the simple key: value / list structures used in SKILL.md.
     Falls back to PyYAML if available for full correctness.
     """
+    return _parse_frontmatter_ex(text)[0]
+
+
+def _parse_frontmatter_ex(text: str) -> Tuple[Dict[str, Any], bool]:
+    """Like :func:`_parse_frontmatter` but also report parser provenance.
+
+    Returns ``(frontmatter, yaml_backed)`` where *yaml_backed* is True only when
+    PyYAML was importable and parsed the block without raising. Callers that
+    need nested structures (``routing_patterns`` entries are lists of mappings,
+    which the minimal inline fallback cannot represent) use the flag to decide
+    whether to fall back to their own regex scan.
+    """
     lines = text.splitlines()
     # Skip optional HTML comment (<!-- SCOPE: ... -->) before frontmatter
     start = 0
@@ -177,10 +189,10 @@ def _parse_frontmatter(text: str) -> Dict[str, Any]:
         if stripped.startswith("<!--") or stripped == "":
             continue
         # Non-comment, non-empty, non-dashes before first --- → no frontmatter
-        return {}
+        return {}, True
 
     if start >= len(lines) or lines[start].strip() != "---":
-        return {}
+        return {}, True
 
     end = None
     for i in range(start + 1, len(lines)):
@@ -189,12 +201,12 @@ def _parse_frontmatter(text: str) -> Dict[str, Any]:
             break
 
     if end is None:
-        return {}
+        return {}, True
 
     yaml_block = "\n".join(lines[start + 1:end])
     try:
         import yaml  # type: ignore[import]
-        return yaml.safe_load(yaml_block) or {}
+        return (yaml.safe_load(yaml_block) or {}), True
     except Exception:
         pass
 
@@ -237,7 +249,51 @@ def _parse_frontmatter(text: str) -> Dict[str, Any]:
             existing = result.get(current_key, "")
             result[current_key] = (existing + " " + line.strip()).strip()
 
-    return result
+    return result, False
+
+
+# ---------------------------------------------------------------------------
+# SKILL.md read/parse memoization
+# ---------------------------------------------------------------------------
+# Building the routing table visits every SKILL.md three times: once for
+# routing_patterns, once for routing_intents, once for name/invoke. Each visit
+# re-read the file from disk and re-ran yaml.safe_load over the same
+# frontmatter block, so a 427-file tree cost 1049 YAML parses (~0.9s of CPU) on
+# every construction — and SkillRouter() is constructed fresh by the
+# UserPromptSubmit hook on every single user prompt.
+_SKILL_MD_CACHE: Dict[str, Tuple[Tuple[int, int], str, Dict[str, Any], bool]] = {}
+
+
+def _read_skill_md_cached(skill_md_path: Path) -> Optional[Tuple[str, Dict[str, Any], bool]]:
+    """Return ``(text, frontmatter, yaml_backed)``, memoized per file.
+
+    The cache key is ``(st_mtime_ns, st_size)`` so a SKILL.md edited while the
+    process is alive is re-read rather than served stale. Returns None when the
+    file cannot be stat'd or read.
+    """
+    key = str(skill_md_path)
+    try:
+        st = skill_md_path.stat()
+    except OSError:
+        _SKILL_MD_CACHE.pop(key, None)
+        return None
+    stamp = (st.st_mtime_ns, st.st_size)
+    cached = _SKILL_MD_CACHE.get(key)
+    if cached is not None and cached[0] == stamp:
+        return cached[1], cached[2], cached[3]
+    try:
+        text = skill_md_path.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        _SKILL_MD_CACHE.pop(key, None)
+        return None
+    frontmatter, yaml_backed = _parse_frontmatter_ex(text)
+    _SKILL_MD_CACHE[key] = (stamp, text, frontmatter, yaml_backed)
+    return text, frontmatter, yaml_backed
+
+
+def _clear_skill_md_cache() -> None:
+    """Drop the memoized SKILL.md parses (test / ad-hoc invalidation helper)."""
+    _SKILL_MD_CACHE.clear()
 
 
 def _parse_routing_patterns_block(skill_md_path: Path) -> Optional[List[Tuple[str, float]]]:
@@ -246,52 +302,34 @@ def _parse_routing_patterns_block(skill_md_path: Path) -> Optional[List[Tuple[st
     Returns a list of (pattern_str, confidence) or None if not defined.
     Never raises — returns None on any parse error.
     """
-    try:
-        text = skill_md_path.read_text(encoding="utf-8", errors="replace")
-    except OSError:
+    cached = _read_skill_md_cached(skill_md_path)
+    if cached is None:
         return None
+    text, data, yaml_backed = cached
 
     # Fast path: skip files that don't even mention routing_patterns
     if "routing_patterns" not in text:
         return None
 
-    # Use PyYAML for accurate parsing when available
-    try:
-        import yaml  # type: ignore[import]
-        lines = text.splitlines()
-        start = None
-        for i, line in enumerate(lines):
-            if line.strip() == "---":
-                start = i
-                break
-            if line.strip().startswith("<!--") or line.strip() == "":
-                continue
-            break
-        if start is None:
-            return None
-        end = None
-        for i in range(start + 1, len(lines)):
-            if lines[i].strip() == "---":
-                end = i
-                break
-        if end is None:
-            return None
-        yaml_block = "\n".join(lines[start + 1:end])
-        data = yaml.safe_load(yaml_block) or {}
-        metadata = data.get("metadata") if isinstance(data.get("metadata"), dict) else {}
-        raw = data.get("routing_patterns") or metadata.get("routing_patterns")
-        if not raw or not isinstance(raw, list):
-            return None
-        result = []
-        for entry in raw:
-            if isinstance(entry, dict):
-                pat = entry.get("pattern", "")
-                conf = float(entry.get("confidence", 0.80))
-                if pat:
-                    result.append((str(pat), conf))
-        return result if result else None
-    except Exception:
-        pass
+    # Frontmatter path — only trustworthy when PyYAML actually parsed the block.
+    # routing_patterns entries are mappings, which the minimal inline fallback
+    # parser cannot represent, so a non-yaml parse must use the regex scan below.
+    if yaml_backed:
+        try:
+            metadata = data.get("metadata") if isinstance(data.get("metadata"), dict) else {}
+            raw = data.get("routing_patterns") or metadata.get("routing_patterns")
+            if not raw or not isinstance(raw, list):
+                return None
+            result = []
+            for entry in raw:
+                if isinstance(entry, dict):
+                    pat = entry.get("pattern", "")
+                    conf = float(entry.get("confidence", 0.80))
+                    if pat:
+                        result.append((str(pat), conf))
+            return result if result else None
+        except Exception:
+            pass
 
     # Minimal regex-based fallback for when PyYAML is unavailable
     import re as _re
@@ -319,13 +357,12 @@ def _parse_routing_intents_block(skill_md_path: Path) -> Optional[List[RoutingIn
     ``routing_intents`` are semantic descriptions of user intent. They are not
     regexes and are intended to be evaluated by the semantic fallback layer.
     """
-    try:
-        text = skill_md_path.read_text(encoding="utf-8", errors="replace")
-    except OSError:
+    cached = _read_skill_md_cached(skill_md_path)
+    if cached is None:
         return None
+    text, fm, _yaml_backed = cached
     if "routing_intents" not in text:
         return None
-    fm = _parse_frontmatter(text)
     metadata = fm.get("metadata") if isinstance(fm.get("metadata"), dict) else {}
     raw = fm.get("routing_intents") or metadata.get("routing_intents")
     if not raw or not isinstance(raw, list):
@@ -364,8 +401,8 @@ def _skill_md_to_routing_entry(skill_md: Path) -> Optional[_RoutingEntry]:
     # Determine skill name: prefer frontmatter 'name', fallback to directory name
     skill_name = skill_md.parent.name
     try:
-        text = skill_md.read_text(encoding="utf-8", errors="replace")
-        fm = _parse_frontmatter(text)
+        cached = _read_skill_md_cached(skill_md)
+        fm = cached[1] if cached is not None else {}
         if fm.get("name"):
             skill_name = str(fm["name"]).strip()
         invoke_cmd = fm.get("invoke", f"/{skill_name}")
