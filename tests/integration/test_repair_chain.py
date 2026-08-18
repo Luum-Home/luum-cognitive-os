@@ -57,12 +57,34 @@ def repair_env(tmp_path, project_root):
     }
 
 
-def _build_hook_input(tmp_path, cmd: str, resp: str, exit_code: str) -> str:
-    """Build a JSON input file for hook stdin."""
+def _build_hook_input(tmp_path, cmd: str, resp: str, exit_code: int = 1) -> str:
+    """Write a PostToolUse payload for a command that RAN AND FAILED.
+
+    The chain under test (error-learning -> auto-repair-dispatcher) only engages
+    on a failure, and the harness signals failure by a CHANGE OF TYPE on
+    ``tool_response``, never by a field:
+
+        object  {stdout, stderr, ...}   the command ran and returned normally
+        string  "Error: Exit code N\n…" the command ran and exited N
+        string  "Error: …" (no code)    the command NEVER ran (gate/permission)
+
+    Frozen shape, 50 real occurrences, in
+    ``tests/fixtures/payload-corpus/harness-payloads.jsonl``::
+
+        {"_corpus": {"tool": "Bash", "state": "error_w_code", "seen": 50},
+         "toolUseResult": "Error: Exit code 1\n<str>"}
+
+    The previous version of this helper passed ``resp`` as a bare string with no
+    ``Error:`` prefix and added a top-level ``"exit_code": "1"``. That field is
+    in no payload the harness sends, and the un-prefixed string classifies as a
+    SUCCESS under ``hooks/_lib/tool-outcome.sh`` — so the hooks correctly exited
+    0 and the chain never ran. Restoring the ``Error: Exit code N`` prefix is
+    what makes these tests exercise the chain instead of its early exit.
+    """
     data = {
+        "tool_name": "Bash",
         "tool_input": {"command": cmd},
-        "tool_response": resp,
-        "exit_code": exit_code,
+        "tool_response": f"Error: Exit code {exit_code}\n{resp}",
     }
     input_file = tmp_path / "input.json"
     input_file.write_text(json.dumps(data))
@@ -82,7 +104,6 @@ class TestRepairChain:
             tmp_path,
             "npm run build",
             "ERROR: cannot find module foo-bar. SyntaxError: Unexpected token. compilation failed",
-            "1",
         )
 
         subprocess.run(
@@ -114,7 +135,6 @@ class TestRepairChain:
             tmp_path,
             "go build ./...",
             "ERROR: cannot find module foo. compilation failed with exit status 1",
-            "1",
         )
 
         result = subprocess.run(
@@ -164,7 +184,6 @@ class TestRepairChain:
             tmp_path,
             "npm run build",
             f"{error_msg}. compilation failed",
-            "1",
         )
 
         chain_result = subprocess.run(
@@ -205,7 +224,6 @@ class TestRepairChain:
             tmp_path,
             "jest --runInBand",
             "FAIL: Test suite failed. Error: expect(received).toBe(expected). Expected: 42 Received: 0",
-            "1",
         )
 
         subprocess.run(
