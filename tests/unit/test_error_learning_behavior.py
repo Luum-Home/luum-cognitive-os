@@ -4,6 +4,11 @@ Verifies deduplication logic:
 - A duplicate error within 60 s is NOT written a second time
 - The same error after the 60-second window IS written again
 - Two errors from different services with the same message text ARE each written
+
+Plus the precondition all three depend on: that a FAILED Bash payload is
+recognised as a failure at all, and a SUCCESSFUL one is not. See
+``_make_failed_stdin`` for why that is a matter of ``tool_response``'s type and
+never of an ``exit_code`` field.
 """
 
 import json
@@ -25,25 +30,58 @@ HOOK_PATH = HOOKS_DIR / "error-learning.sh"
 # ---------------------------------------------------------------------------
 
 
-def _make_stdin(
+def _make_failed_stdin(
     command: str = "go test ./...",
     stdout: str = "FAILED",
     stderr: str = "",
     exit_code: int = 1,
 ) -> str:
-    """Build a JSON string representing a PostToolUse Bash event.
+    """Build a PostToolUse Bash payload for a command that RAN AND FAILED.
 
-    Claude Code PostToolUse format: exit_code is at the top level,
-    tool_response contains the stdout/stderr output as an object or string.
+    The shape is not invented here. It is the one the harness actually sends,
+    frozen in ``tests/fixtures/payload-corpus/harness-payloads.jsonl``::
+
+        {"_corpus": {"tool": "Bash", "state": "error_w_code", "seen": 50},
+         "toolUseResult": "Error: Exit code 1\n<str>"}
+
+    Two consequences, both load-bearing for these tests:
+
+    * **There is no ``exit_code`` field.** Not at the top level, not nested.
+      The earlier version of this helper set ``"exit_code": 1`` at the root and
+      called it "Claude Code PostToolUse format"; that field exists nowhere in
+      the corpus and nowhere in ``manifests/claude-code-hooks-schema.yaml``. It
+      was the phantom that ``hooks/_lib/tool-outcome.sh`` was written to remove,
+      and a fixture that keeps sending it pins the removed defect.
+    * **Failure is a CHANGE OF TYPE, not a field.** ``tool_response`` is an
+      OBJECT with ``stdout``/``stderr`` when the command SUCCEEDS, and a STRING
+      prefixed ``"Error: Exit code N"`` when it fails. The old fixture sent the
+      object form, i.e. a success — which is why the hook correctly exited 0 and
+      wrote nothing, and why these three tests were red.
+
+    ``stdout`` and ``stderr`` are merged into that one string because the string
+    form carries a single blob; the hook reads it whole (``COMBINED``).
     """
+    body = "\n".join(part for part in (stdout, stderr) if part)
+    payload = {
+        "tool_name": "Bash",
+        "tool_input": {"command": command},
+        "tool_response": f"Error: Exit code {exit_code}\n{body}",
+    }
+    return json.dumps(payload)
+
+
+def _make_ok_stdin(command: str = "go test ./...", stdout: str = "ok") -> str:
+    """The success shape: ``tool_response`` as an object. Nothing to learn from."""
     payload = {
         "tool_name": "Bash",
         "tool_input": {"command": command},
         "tool_response": {
             "stdout": stdout,
-            "stderr": stderr,
+            "stderr": "",
+            "interrupted": False,
+            "isImage": False,
+            "noOutputExpected": False,
         },
-        "exit_code": exit_code,
     }
     return json.dumps(payload)
 
@@ -90,11 +128,48 @@ def _count_entries(log: Path) -> int:
 # ---------------------------------------------------------------------------
 
 
+class TestErrorLearningOutcomeClassification:
+    """The hook must tell a failure from a success by tool_response's TYPE.
+
+    Without this pair, the three dedup tests below could not distinguish "the
+    hook classified correctly" from "the hook logs every Bash call it sees".
+    """
+
+    def test_successful_command_writes_nothing(self, tmp_path):
+        (tmp_path / ".cognitive-os" / "metrics").mkdir(parents=True, exist_ok=True)
+
+        _run_hook(tmp_path, _make_ok_stdin(stdout="ok  0.4s"))
+
+        assert _count_entries(_error_log(tmp_path)) == 0, (
+            "an object-shaped tool_response is a SUCCESS and must not be learned from"
+        )
+
+    def test_failed_command_records_the_exit_code_it_carried(self, tmp_path):
+        (tmp_path / ".cognitive-os" / "metrics").mkdir(parents=True, exist_ok=True)
+
+        _run_hook(
+            tmp_path,
+            _make_failed_stdin(
+                command="go test ./internal/billing/...",
+                stdout="--- FAIL: TestCharge",
+                exit_code=2,
+            ),
+        )
+
+        log = _error_log(tmp_path)
+        assert _count_entries(log) == 1, "a failed command must produce one row"
+        row = json.loads(log.read_text().splitlines()[0])
+        # Parsed out of "Error: Exit code 2", the only place the code exists.
+        assert row["exit_code"] == 2
+        assert row["type"] == "TEST_FAILURE"
+        assert row["service"] == "internal-billing"
+
+
 class TestErrorLearningDeduplication:
     def test_duplicate_within_60s_not_written_twice(self, tmp_path):
         """Running the hook twice with the same error within 60 s writes only 1 entry."""
         (tmp_path / ".cognitive-os" / "metrics").mkdir(parents=True, exist_ok=True)
-        stdin = _make_stdin(stdout="FAILED test", stderr="assertion error")
+        stdin = _make_failed_stdin(stdout="FAILED test", stderr="assertion error")
 
         _run_hook(tmp_path, stdin)
         _run_hook(tmp_path, stdin)
@@ -114,7 +189,7 @@ class TestErrorLearningDeduplication:
         metrics_dir = tmp_path / ".cognitive-os" / "metrics"
         metrics_dir.mkdir(parents=True, exist_ok=True)
 
-        stdin = _make_stdin(stdout="assertion error xyz", stderr="")
+        stdin = _make_failed_stdin(stdout="assertion error xyz", stderr="")
 
         # First run — writes entry N
         _run_hook(tmp_path, stdin)
@@ -146,11 +221,11 @@ class TestErrorLearningDeduplication:
         (tmp_path / ".cognitive-os" / "metrics").mkdir(parents=True, exist_ok=True)
 
         # Two commands with distinct error text to ensure distinct fingerprints
-        stdin_a = _make_stdin(
+        stdin_a = _make_failed_stdin(
             command="go test ./internal/users/...",
             stdout="FAILED users panic goroutine",
         )
-        stdin_b = _make_stdin(
+        stdin_b = _make_failed_stdin(
             command="go test ./internal/payments/...",
             stdout="FAILED payments nil pointer deref",
         )
