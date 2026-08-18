@@ -270,6 +270,52 @@ TOKEN_PATHS=re.compile(r"[A-Za-z0-9_.~/-]+")
 # command word.
 REDIRECT=re.compile(r"(?:&|\d+)?>>?\|?\s*(['\"]?)([^\s'\"<>&;|]+)\1")
 
+SUBST=re.compile(r'\$\(([^()]*)\)')
+
+def lift_substitutions(cmd):
+    """Return (outer, [inner...]) with $(...) bodies lifted out.
+
+    resolve_exe() skips a leading VAR= token so that `FOO=1 cmd` resolves to cmd.
+    That is right for a value, and wrong for a substitution: in `n=$(wc -c < p)`
+    the token is `n=$(wc`, which matches the assignment pattern, so the real
+    command word is discarded and the next word (`-c`) is resolved as the
+    executable. Not being a reader, the whole thing was judged a write -- which is
+    how counting the bytes of a protected file came to be blocked as writing to it.
+
+    Lifting the body out gives it its own segment, where `wc` resolves normally.
+    Fails closed: an unbalanced or nested substitution is left in the outer text
+    and still reaches the reader check as before.
+    """
+    inner = [m.group(1) for m in SUBST.finditer(cmd)]
+    return SUBST.sub(' ', cmd), inner
+
+
+WRITE_PRIMITIVES = (
+    "open(", "write_text", "write_bytes", "writelines", ".write(", "os.replace",
+    "os.rename", "os.remove", "os.unlink", "shutil.copy", "shutil.move",
+    "shutil.rmtree", "mkdir", "touch", "truncate", "rmdir", "symlink_to",
+    "chmod", "unlink(", "fdopen", "NamedTemporary",
+)
+# Deliberately absent: print() and >>. Both write to a stream rather than to a
+# path, and a redirection of that stream into a protected file is already caught
+# by REDIRECT on the header line. Including them made a heredoc that only prints
+# -- the exact legitimate case this rule exists to admit -- block anyway.
+
+
+def body_can_write(body):
+    """True unless the program provably contains no write primitive.
+
+    An interpreter can do anything, so naming a protected path inside one is a
+    write we cannot rule out -- that is the right default and it stays. But a body
+    with no write primitive at all cannot write, and the common legitimate case is
+    exactly that: authoring a file under tests/ or docs/ whose text happens to
+    mention a protected path. This is a property of the program, not a guess about
+    intent, so it is checkable rather than heuristic. `print(` counts as a write
+    because stdout can be redirected by the caller.
+    """
+    return any(tok in body for tok in WRITE_PRIMITIVES)
+
+
 def resolve_exe(ws):
     i=0
     while i < len(ws):
@@ -286,16 +332,18 @@ def bash_write_targets(command):
     if not isinstance(command, str) or not command.strip():
         return []
     cmd, program_body = strip_heredocs(command)
+    cmd, substituted = lift_substitutions(cmd)
     targets=[]
     for match in REDIRECT.finditer(cmd):
         targets.append(match.group(2))
     # A heredoc handed to an interpreter is code that runs with full authority;
     # any protected path named inside it is a write we cannot rule out.
-    for tok in program_body.split():
-        for cand in TOKEN_PATHS.findall(tok):
-            if is_protected(normalize(cand), cand):
-                targets.append(cand)
-    for seg in split_segments(cmd):
+    if body_can_write(program_body):
+        for tok in program_body.split():
+            for cand in TOKEN_PATHS.findall(tok):
+                if is_protected(normalize(cand), cand):
+                    targets.append(cand)
+    for seg in list(split_segments(cmd)) + substituted:
         ws=split_words(seg)
         exe, rest = resolve_exe(ws)
         if exe is None:
