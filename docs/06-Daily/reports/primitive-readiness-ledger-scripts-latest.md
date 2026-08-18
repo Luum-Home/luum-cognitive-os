@@ -1,8 +1,8 @@
 # Primitive Readiness Ledger — Scripts
 
-Total scripts: 766
-Roles: agentic-primitive:273, archive:12, driver-specific:14, lab:99, maintainer-tool:352, migration-only:16
-Low confidence rows: 2
+Total scripts: 767
+Roles: agentic-primitive:273, archive:12, driver-specific:14, lab:99, maintainer-tool:353, migration-only:16
+Low confidence rows: 3
 Agentic primitives without lifecycle metadata: 0
 
 | Script | Role | Source | Confidence | Consumer Access | Lifecycle | Harnesses | Consumers | Next action |
@@ -93,7 +93,7 @@ Agentic primitives without lifecycle metadata: 0
 | `scripts/compose_agent_prompt.py` | maintainer-tool | override | high | lifecycle-declared-maintainer | advisory | claude, codex, shell | 11 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/context_budget_meter_fast.py` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 4 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/context_injection_report.py` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 2 | keep out of default user surface unless promoted through lifecycle metadata |
-| `scripts/cos` | lab | lifecycle | high | lifecycle-declared-consumer-candidate | sandbox | shell | 3568 | keep non-default until tests and operator value justify promotion |
+| `scripts/cos` | lab | lifecycle | high | lifecycle-declared-consumer-candidate | sandbox | shell | 3571 | keep non-default until tests and operator value justify promotion |
 | `scripts/cos-action-receipt` | lab | lifecycle | high | lifecycle-declared-consumer-candidate | sandbox | shell | 17 | keep non-default until tests and operator value justify promotion |
 | `scripts/cos-active-primitive-index` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | shell | 11 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos-adapter-capabilities` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | candidate | codex, claude, shell | 6 | keep lifecycle evidence and supported harness declarations current |
@@ -672,6 +672,7 @@ Agentic primitives without lifecycle metadata: 0
 | `scripts/primitive_surface_reduce.py` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | active | shell | 14 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/primitive_usage_map.py` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | active | shell | 16 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/private_content_audit.py` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 8 | keep out of default user surface unless promoted through lifecycle metadata |
+| `scripts/probe-hook-git-adjacency.sh` | maintainer-tool | default | low | so-local-only |  |  | 0 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/project_scaffold.py` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | shell | 15 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/project_shell_ci.py` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 22 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/promote_lifecycle_primitives_to_contracts.py` | maintainer-tool | override | high | lifecycle-declared-maintainer | advisory | shell | 6 | keep out of default user surface unless promoted through lifecycle metadata |
@@ -680,7 +681,7 @@ Agentic primitives without lifecycle metadata: 0
 | `scripts/proof-drill-select` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | shell | 13 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/proof_drill_evidence_record.py` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | shell | 9 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/proof_drill_select.py` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 10 | keep out of default user surface unless promoted through lifecycle metadata |
-| `scripts/provenance-scan` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 21 | keep out of default user surface unless promoted through lifecycle metadata |
+| `scripts/provenance-scan` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 24 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/provenance_scan.py` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 12 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/provider_spoof_audit.py` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 10 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/push_collision_detect.py` | lab | lifecycle | high | lifecycle-declared-consumer-candidate | sandbox | shell | 14 | keep non-default until tests and operator value justify promotion |
