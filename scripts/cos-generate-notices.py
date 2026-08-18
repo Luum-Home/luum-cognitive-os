@@ -235,16 +235,30 @@ def _warn_pip_licenses_missing(extra: str = "") -> None:
 # NOTICE.md generator
 # ---------------------------------------------------------------------------
 
+# Canonical status vocabulary for manifests/external-tool-licenses.yaml.
+# Single source of truth: the manifest schema note, the NOTICE badge table and
+# the schema test all read this set instead of repeating their own literal.
+# INVENTORIED-PENDING-REVIEW is deliberately NOT a verdict: it records that an
+# adoption is on the list with form/files/date established and that nobody has
+# assessed its legal posture yet (manifest header note, 2026-08-15).
+STATUS_BADGES = {
+    "ALLOWED": "![ALLOWED](https://img.shields.io/badge/status-ALLOWED-green)",
+    "PATTERN-ONLY": "![PATTERN-ONLY](https://img.shields.io/badge/status-PATTERN--ONLY-blue)",
+    "TRIAL-PATTERNS": "![TRIAL-PATTERNS](https://img.shields.io/badge/status-TRIAL--PATTERNS-yellow)",
+    "HOLD": "![HOLD](https://img.shields.io/badge/status-HOLD-orange)",
+    "BLOCKED": "![BLOCKED](https://img.shields.io/badge/status-BLOCKED-red)",
+    "INVENTORIED-PENDING-REVIEW": (
+        "![INVENTORIED-PENDING-REVIEW]"
+        "(https://img.shields.io/badge/status-INVENTORIED--PENDING--REVIEW-lightgrey)"
+    ),
+}
+
+KNOWN_STATUSES = frozenset(STATUS_BADGES)
+
+
 def _status_badge(status: str) -> str:
     """Return a short Markdown inline badge for compliance status."""
-    badges = {
-        "ALLOWED": "![ALLOWED](https://img.shields.io/badge/status-ALLOWED-green)",
-        "PATTERN-ONLY": "![PATTERN-ONLY](https://img.shields.io/badge/status-PATTERN--ONLY-blue)",
-        "TRIAL-PATTERNS": "![TRIAL-PATTERNS](https://img.shields.io/badge/status-TRIAL--PATTERNS-yellow)",
-        "HOLD": "![HOLD](https://img.shields.io/badge/status-HOLD-orange)",
-        "BLOCKED": "![BLOCKED](https://img.shields.io/badge/status-BLOCKED-red)",
-    }
-    return badges.get(status.upper(), f"`{status}`")
+    return STATUS_BADGES.get(status.upper(), f"`{status}`")
 
 
 def _is_copyleft(spdx: str) -> bool:
