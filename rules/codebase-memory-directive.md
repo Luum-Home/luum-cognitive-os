@@ -59,7 +59,7 @@ nothing. Reproduce with the command above.
   own multi-harness installer (`codebase-memory-mcp install`, which auto-detects
   the supported agents). The Cognitive OS does not reimplement that contract.
 
-## Contextual trigger
+## Contextual Trigger
 
 Structural code questions — "who calls this", "trace the call chain", "what
 depends on", "impact analysis", "dead code", "explore the architecture" — and

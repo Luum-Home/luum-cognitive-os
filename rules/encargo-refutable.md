@@ -106,3 +106,13 @@ Declarar `both` seria afirmar una entrega que no ocurre. Para cambiarlo hace fal
 que el instalador proyecte el template y que exista una prueba de portabilidad que
 lo verifique **en el destino** — no una que cambie el directorio de trabajo y mida
 el origen, que es el defecto documentado en `judge5-verde-barato-patron-2026-08-15.md`.
+
+## Contextual Trigger
+
+Applies before writing a sub-agent's prompt, before splitting work across several
+agents, and before handing one agent the findings of another.
+
+The last one is the case that gets missed. A finding travels as a fact once it has
+been written down twice, and the agent who receives it cannot tell a measurement
+from a recollection unless the brief says which it is. Pass the command, not the
+conclusion.
