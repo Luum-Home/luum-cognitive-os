@@ -5,6 +5,17 @@
 # If any KPI is below threshold, flags self-improvement for next session.
 # Designed to be fast (<3s) and non-blocking.
 
+# bc returns ".7000" with no leading zero and printf is locale-sensitive: both
+# produce invalid JSON downstream ("first_pass_success_rate":0,001.0 was written
+# for months). `cmd || echo fallback` does not replace when cmd already wrote to
+# stdout -- it concatenates, which is where the 0,00 and the 1.0 met. Normalise
+# once, here, instead of at every call site.
+_num() {  # _num <bc-output> <default>
+  local raw="${1:-}" def="$2" out
+  out=$(LC_ALL=C printf '%.2f' "${raw:-0}" 2>/dev/null) || out="$def"
+  printf '%s' "$out"
+}
+
 set -uo pipefail
 # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
@@ -58,7 +69,7 @@ if [ -f "$SKILL_METRICS" ]; then
   if [ "$TOTAL_TASKS" -gt 0 ]; then
     SUCCESSFUL_TASKS=$(grep -c '"success":\s*true\|"success": true' "$SKILL_METRICS" 2>/dev/null || echo "0")
     if [ "$TOTAL_TASKS" -gt 0 ]; then
-      FIRST_PASS_SUCCESS=$(printf '%.2f' "$(echo "scale=4; $SUCCESSFUL_TASKS / $TOTAL_TASKS" | bc 2>/dev/null)" 2>/dev/null || echo "1.0")
+      FIRST_PASS_SUCCESS=$(_num "$(echo "scale=4; $SUCCESSFUL_TASKS / $TOTAL_TASKS" | bc 2>/dev/null)" "1.0")
     fi
   fi
 fi
@@ -79,7 +90,7 @@ if [ -f "$ARCH_FILE" ]; then
 fi
 ARCH_COMPLIANCE=1.0
 if [ "$ARCH_VIOLATIONS" -gt 0 ] && [ "$TOTAL_TASKS" -gt 0 ]; then
-  ARCH_COMPLIANCE=$(echo "scale=2; 1 - ($ARCH_VIOLATIONS / $TOTAL_TASKS)" | bc 2>/dev/null || echo "0.8")
+  ARCH_COMPLIANCE=$(_num "$(echo "scale=2; 1 - ($ARCH_VIOLATIONS / $TOTAL_TASKS)" | bc 2>/dev/null)" "0.80")
 fi
 
 # 4. Average iterations from auto-refine data
@@ -96,7 +107,7 @@ if [ -d "$REFINE_DIR" ]; then
       REFINE_COUNT=$((REFINE_COUNT + 1))
     done
     if [ "$REFINE_COUNT" -gt 0 ]; then
-      AVG_ITERATIONS=$(echo "scale=1; $TOTAL_ITERS / $REFINE_COUNT" | bc 2>/dev/null || echo "1")
+      AVG_ITERATIONS=$(_num "$(echo "scale=1; $TOTAL_ITERS / $REFINE_COUNT" | bc 2>/dev/null)" "1.00")
     fi
   fi
 fi
