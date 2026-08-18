@@ -1,11 +1,35 @@
 #!/usr/bin/env python3
 # SCOPE: os-only
-"""Scaffold paired red-team portability proofs for SCOPE: both artifacts."""
+"""Scaffold paired red-team portability proofs for SCOPE: both artifacts.
+
+Design contract (ADR-less, learned the hard way on 2026-08-18):
+
+A generated proof must be able to *fail for the right reason*. The previous
+single template emitted ``[str(ARTIFACT), "--help"]`` for everything that was
+neither ``.py`` nor a skill, so for a Markdown rule it tried to *execute* the
+Markdown and died with ``PermissionError`` -- a proof that could never pass, and
+alongside it a ``test_..._artifact_exists`` that could never fail. Coverage
+shaped like debt.
+
+So there is no single template any more. There is one branch per artifact
+family, each of which exercises a claim the artifact actually makes, and there
+is an explicit refusal for families whose portability cannot be exercised. A
+refusal is the correct output: a hand-written proof beats a generated false
+green.
+
+Executable families are *probed* before a template is chosen (run twice from a
+foreign cwd, bounded), because the two things that decide the template --
+whether ``--help`` is a real contract and whether stdout is deterministic --
+cannot be read off the source reliably. ``--no-probe`` disables that, and then
+the executable families refuse rather than guess.
+"""
 
 from __future__ import annotations
 
 import argparse
+import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 REPO_IMPORT_ROOT = Path(__file__).resolve().parents[1]
@@ -13,6 +37,18 @@ if str(REPO_IMPORT_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_IMPORT_ROOT))
 
 from cos_lib.portability_proof_paths import suggested_test_path
+
+REFUSAL_EXIT = 3
+DEFAULT_PROBE_TIMEOUT = 30
+
+
+class Unprovable(Exception):
+    """The artifact admits no honest generated portability proof."""
+
+    def __init__(self, reason: str, hint: str) -> None:
+        super().__init__(reason)
+        self.reason = reason
+        self.hint = hint
 
 
 def _repo_root() -> Path:
@@ -38,42 +74,531 @@ def _module_name(rel: str) -> str:
     return stem.replace('-', '_')
 
 
-def _template(rel: str) -> str:
-    module = _module_name(rel)
-    artifact_literal = repr(rel)
-    title = f"Portability proof for {rel}."
-    if rel.startswith('hooks/') and rel.endswith('.sh'):
-        probe = f'''def test_runs_from_arbitrary_project_root(tmp_path: Path) -> None:\n    \"\"\"Falsification probe: must not depend on OS repo cwd.\"\"\"\n    payload = {{\"tool_name\": \"Bash\", \"tool_input\": {{\"command\": \"echo portability-probe\"}}}}\n    env = os.environ.copy()\n    env.update({{\n        \"COGNITIVE_OS_PROJECT_DIR\": str(tmp_path),\n        \"CODEX_PROJECT_DIR\": str(tmp_path),\n        \"COS_METRICS_DIR\": str(tmp_path / \".cognitive-os\" / \"metrics\"),\n    }})\n    result = subprocess.run(\n        [\"bash\", str(ARTIFACT)],\n        input=json.dumps(payload),\n        text=True,\n        capture_output=True,\n        cwd=tmp_path,\n        env=env,\n        timeout=20,\n        check=False,\n    )\n    assert result.returncode == 0, result.stderr\n'''
-    elif rel.startswith('skills/') and rel.endswith('/SKILL.md'):
-        probe = f'''def test_loads_from_arbitrary_project_root(tmp_path: Path) -> None:\n    \"\"\"Falsification probe: skill metadata must be usable outside the OS repo cwd.\"\"\"\n    target = tmp_path / \".codex\" / \"skills\" / ARTIFACT.parent.parent.name\n    target.mkdir(parents=True)\n    copied = target / \"SKILL.md\"\n    copied.write_text(ARTIFACT.read_text(encoding=\"utf-8\"), encoding=\"utf-8\")\n\n    text = copied.read_text(encoding=\"utf-8\")\n    assert \"name:\" in text\n    assert str(REPO_ROOT) not in text\n'''
+def _launcher(repo: Path, rel: str) -> list[str]:
+    """Return the interpreter-explicit launch prefix for an executable artifact.
+
+    Never ``[str(artifact)]``: several shipped artifacts are mode 644 on purpose
+    (``scripts/hook-io-overhead-bench.sh``, ``scripts/verify_claims.py``), and a
+    direct exec of those returns 126 while their own headers document the
+    ``bash scripts/...`` / ``python scripts/...`` route. Naming the interpreter
+    makes the file mode irrelevant to the proof.
+    """
+    target = str(repo / rel)
+    if rel.endswith('.py'):
+        return [sys.executable, target]
+    return ['bash', target]
+
+
+# --------------------------------------------------------------------------
+# probing
+# --------------------------------------------------------------------------
+
+
+def _probe_run(command: list[str], cwd: str, timeout: int):
+    return subprocess.run(
+        command,
+        cwd=cwd,
+        text=True,
+        capture_output=True,
+        timeout=timeout,
+        check=False,
+    )
+
+
+def _classify_executable(repo: Path, rel: str, timeout: int) -> dict:
+    """Decide, by measurement, which executable template fits.
+
+    Returns a dict with ``mode`` in {"help", "noargs"} and ``normalise`` bool.
+    Raises Unprovable when no honest generated template exists.
+    """
+    launcher = _launcher(repo, rel)
+    with tempfile.TemporaryDirectory(prefix='portability-probe-') as foreign:
+        try:
+            helped = _probe_run(launcher + ['--help'], foreign, timeout)
+        except subprocess.TimeoutExpired:
+            raise Unprovable(
+                f"`--help` did not terminate within {timeout}s from a foreign cwd",
+                "hand-write a streaming proof: start the artifact from a foreign root, "
+                "read until its first header line, then terminate it -- see "
+                "tests/red_team/portability/test_hook-io-overhead-bench.py",
+            ) from None
+        except OSError as exc:
+            raise Unprovable(
+                f"artifact could not be launched ({exc.__class__.__name__}: {exc})",
+                "check the artifact is really executable content, or hand-write the proof",
+            ) from None
+
+        # `--help` is a real contract only when it exits 0 AND prints a usage
+        # banner. Scripts without argparse happily run their whole audit under
+        # `--help` and exit 1; asserting `--help -> 0` on those proves nothing.
+        if helped.returncode == 0 and 'usage' in helped.stdout.lower():
+            return {'mode': 'help', 'normalise': False, 'observed_drift': False}
+
+        try:
+            first = _probe_run(launcher, foreign, timeout)
+            second = _probe_run(launcher, foreign, timeout)
+        except subprocess.TimeoutExpired:
+            raise Unprovable(
+                f"the artifact did not terminate within {timeout}s from a foreign cwd",
+                "hand-write a streaming proof (read to the first header, then terminate) "
+                "-- see tests/red_team/portability/test_hook-io-overhead-bench.py",
+            ) from None
+
+        import re as _re
+
+        def mask(text: str) -> str:
+            return _re.sub(r"\d+", "#", text)
+
+        if first.stdout == second.stdout and first.returncode == second.returncode:
+            # Stable in *this* window. That is not the same as stable forever: a
+            # probe two seconds wide cannot prove a telemetry counter will not
+            # advance between the proof's two runs a week from now. Measured
+            # 2026-08-18: scripts/classify_ambiguous_hooks.py probed identical
+            # here while its hand-written proof had measured it drifting. So any
+            # output carrying digits gets the mask; only digit-free output --
+            # where nothing can drift -- earns the strict byte comparison.
+            drifty = any(ch.isdigit() for ch in first.stdout)
+            return {'mode': 'noargs', 'normalise': drifty, 'observed_drift': False}
+        if mask(first.stdout) == mask(second.stdout) and first.returncode == second.returncode:
+            return {'mode': 'noargs', 'normalise': True, 'observed_drift': True}
+
+        raise Unprovable(
+            "two consecutive runs at the SAME cwd disagree even after digit masking",
+            "the artifact's output is nondeterministic beyond counters; hand-write a proof "
+            "that asserts the stable subset (paths, verdicts, headers) instead of stdout",
+        )
+
+
+# --------------------------------------------------------------------------
+# templates
+# --------------------------------------------------------------------------
+
+_HEADER = """# SCOPE: os-only
+\"\"\"Paired portability proof for {rel}.
+
+{rationale}
+\"\"\"
+
+from __future__ import annotations
+
+{imports}
+REPO_ROOT = Path(__file__).resolve().parents[3]
+ARTIFACT = REPO_ROOT / {literal}
+"""
+
+_CWD_RATIONALE = (
+    "Falsification probe: the artifact resolves its own repo root from ``__file__``/\n"
+    "``BASH_SOURCE``, never from the process cwd. Running it from a foreign cwd must\n"
+    "produce the same behaviour. An artifact anchored on ``Path.cwd()`` fails this\n"
+    "test instead of silently misbehaving in a consumer checkout."
+)
+
+_NORMALISE_HEAD = """
+
+def _normalise(text: str) -> str:
+    \"\"\"Blank out volatile counters so only cwd-dependent drift can fail this.
+
+"""
+
+_NORMALISE_TAIL = """
+    Asserting those digits would make this proof flaky without making it
+    stronger, so they are masked while every path, name, verdict and column
+    position stays under assertion.
+    \"\"\"
+    return re.sub(r"\\d+", "#", text)
+"""
+
+_DRIFT_OBSERVED = """    Measured, not assumed: the scaffold ran this artifact twice from the SAME
+    foreign cwd and the two stdouts differed only in digits (live telemetry
+    columns).
+"""
+
+_DRIFT_POSSIBLE = """    The scaffold's probe found this artifact's output stable across two
+    consecutive runs, but the output carries digits and a two-second probe
+    cannot prove a counter will not advance between this proof's two runs. The
+    mask is the conservative reading of an undersampled measurement.
+"""
+
+
+def _launcher_literal(rel: str) -> str:
+    if rel.endswith('.py'):
+        return '[sys.executable, str(ARTIFACT)]'
+    return '["bash", str(ARTIFACT)]'
+
+
+def _executable_template(rel: str, plan: dict) -> str:
+    literal = repr(rel)
+    launcher = _launcher_literal(rel)
+    normalise = plan['normalise']
+    imports = 'import re\nimport subprocess\n'
+    if rel.endswith('.py'):
+        imports += 'import sys\n'
+    imports += 'from pathlib import Path\n\n'
+    if not normalise:
+        imports = imports.replace('import re\n', '')
+
+    body = _HEADER.format(rel=rel, rationale=_CWD_RATIONALE, imports=imports, literal=literal)
+    if normalise:
+        drift = _DRIFT_OBSERVED if plan.get('observed_drift') else _DRIFT_POSSIBLE
+        body += _NORMALISE_HEAD + drift + _NORMALISE_TAIL
+
+    args = ' + ["--help"]' if plan['mode'] == 'help' else ''
+    body += f'''
+
+def _run(cwd: Path) -> "subprocess.CompletedProcess[str]":
+    return subprocess.run(
+        {launcher}{args},
+        cwd=str(cwd),
+        text=True,
+        capture_output=True,
+        timeout=25,
+        check=False,
+    )
+'''
+
+    if plan['mode'] == 'help':
+        body += '''
+
+def test_help_succeeds_from_arbitrary_project_root(tmp_path: Path) -> None:
+    """`--help` is a measured contract here: it exits 0 and prints usage."""
+    result = _run(tmp_path)
+    assert result.returncode == 0, result.stderr or result.stdout
+    assert "usage" in result.stdout.lower(), result.stdout
+'''
     else:
-        probe = f'''def test_runs_from_arbitrary_project_root(tmp_path: Path) -> None:\n    \"\"\"Falsification probe: must not depend on OS repo cwd.\"\"\"\n    command = [sys.executable, str(ARTIFACT), \"--help\"] if ARTIFACT.suffix == \".py\" else [str(ARTIFACT), \"--help\"]\n    result = subprocess.run(\n        command,\n        text=True,\n        capture_output=True,\n        cwd=tmp_path,\n        timeout=20,\n        check=False,\n    )\n    assert result.returncode == 0, result.stderr or result.stdout\n'''
-    imports = "import json\nimport os\nimport subprocess\nimport sys\n" if rel.startswith('hooks/') or not rel.startswith('skills/') else ""
-    if rel.startswith('skills/'):
-        imports = ""
-    return f'''# SCOPE: os-only\n\"\"\"{title}\"\"\"\n\nfrom __future__ import annotations\n\n{imports}from pathlib import Path\n\nREPO_ROOT = Path(__file__).resolve().parents[3]\nARTIFACT = REPO_ROOT / {artifact_literal}\n\n\ndef test_{module}_artifact_exists() -> None:\n    assert ARTIFACT.exists()\n\n\n{probe}'''
+        body += '''
+
+def test_runs_whole_from_arbitrary_project_root(tmp_path: Path) -> None:
+    """This artifact has no `--help` contract, so it is run whole and must speak."""
+    result = _run(tmp_path)
+    assert result.stdout.strip(), result.stderr or "artifact produced no output from a foreign cwd"
+'''
+
+    compare = '_normalise(from_foreign.stdout) == _normalise(from_repo.stdout)' if normalise else 'from_foreign.stdout == from_repo.stdout'
+    body += f'''
+
+def test_runs_from_arbitrary_project_root(tmp_path: Path) -> None:
+    """cwd-invariance: same exit code and same output from repo root and elsewhere."""
+    from_repo = _run(REPO_ROOT)
+    from_foreign = _run(tmp_path)
+    assert from_foreign.returncode == from_repo.returncode, from_foreign.stderr
+    assert {compare}
+    assert str(tmp_path) not in from_foreign.stdout
+'''
+    return body
 
 
-def scaffold(repo: Path, artifact: str, force: bool = False) -> Path:
+_HOOK_RATIONALE = (
+    "Falsification probe: the hook must resolve the OS repo from ``BASH_SOURCE``, not\n"
+    "from the caller's cwd. It is fed one payload from a foreign project root and once\n"
+    "from this repo, and both invocations must agree. Note the verdict is *compared*,\n"
+    "not asserted to be 0: a blocking gate that correctly blocks would fail an\n"
+    "``exit 0`` assertion, and that assertion would be about the gate's policy rather\n"
+    "than about its portability."
+)
+
+
+def _hook_template(rel: str) -> str:
+    literal = repr(rel)
+    imports = 'import json\nimport os\nimport subprocess\nfrom pathlib import Path\n\n'
+    body = _HEADER.format(rel=rel, rationale=_HOOK_RATIONALE, imports=imports, literal=literal)
+    body += '''
+PAYLOAD = {"tool_name": "Bash", "tool_input": {"command": "echo portability-probe"}}
+
+
+def _run(project_dir: Path) -> "subprocess.CompletedProcess[str]":
+    env = os.environ.copy()
+    env.update({
+        "COGNITIVE_OS_PROJECT_DIR": str(project_dir),
+        "CODEX_PROJECT_DIR": str(project_dir),
+        "CLAUDE_PROJECT_DIR": str(project_dir),
+        "COS_METRICS_DIR": str(project_dir / ".cognitive-os" / "metrics"),
+    })
+    return subprocess.run(
+        ["bash", str(ARTIFACT)],
+        input=json.dumps(PAYLOAD),
+        text=True,
+        capture_output=True,
+        cwd=str(project_dir),
+        env=env,
+        timeout=25,
+        check=False,
+    )
+
+
+def test_runs_from_arbitrary_project_root(tmp_path: Path) -> None:
+    """cwd-invariance: the hook reaches the same verdict from a foreign project root."""
+    from_foreign = _run(tmp_path)
+    from_repo = _run(REPO_ROOT)
+    assert from_foreign.returncode == from_repo.returncode, from_foreign.stderr
+    assert str(tmp_path) not in from_foreign.stdout
+'''
+    return body
+
+
+_DOC_RATIONALE = (
+    "A document is not an executable, so \"runs from an arbitrary root\" is the wrong\n"
+    "probe -- trying to exec Markdown only ever produces ``PermissionError``. The\n"
+    "portable claim a document makes is: it carries no absolute path into this\n"
+    "checkout, and the machine-readable contract it declares still resolves after the\n"
+    "file is relocated to a foreign project root."
+)
+
+
+def _frontmatter_keys(text: str) -> list[str]:
+    if not text.lstrip().startswith('---'):
+        # HTML-comment scope markers are common above skill frontmatter.
+        head, _, rest = text.partition('---\n')
+        if '\n' in head and len(head) > 400:
+            return []
+        text = '---\n' + rest if rest else ''
+        if not text.strip():
+            return []
+    _, _, after = text.partition('---\n')
+    front, sep, _ = after.partition('\n---')
+    if not sep:
+        return []
+    try:
+        import yaml
+    except ModuleNotFoundError:  # pragma: no cover - yaml ships with the OS venv
+        return []
+    try:
+        meta = yaml.safe_load(front)
+    except Exception:
+        return []
+    return sorted(meta) if isinstance(meta, dict) and meta else []
+
+
+def _documented_scripts(repo: Path, text: str) -> list[str]:
+    import re
+
+    found: list[str] = []
+    for match in re.findall(r"\b(?:scripts|hooks)/[A-Za-z0-9._/-]+\.(?:py|sh)\b", text):
+        if (repo / match).exists() and match not in found:
+            found.append(match)
+    return found
+
+
+def _doc_template(repo: Path, rel: str) -> str:
+    literal = repr(rel)
+    text = (repo / rel).read_text(encoding='utf-8', errors='replace')
+    keys = _frontmatter_keys(text)
+    scripts = _documented_scripts(repo, text)
+
+    if not keys and not scripts:
+        raise Unprovable(
+            "the document declares no frontmatter and names no existing gate script",
+            "there is nothing here a generated proof could exercise without collapsing "
+            "into a file-exists assertion; hand-write a proof against whatever contract "
+            "the document actually makes (a delivery template that must carry it, a "
+            "command it documents, an exit-code table it promises)",
+        )
+
+    imports = 'import importlib.util\nimport sys\n'
+    if scripts:
+        imports += 'import subprocess\n'
+    imports += 'from pathlib import Path\n\n'
+    body = _HEADER.format(rel=rel, rationale=_DOC_RATIONALE, imports=imports, literal=literal)
+    slug = _module_name(rel)
+    body += f'''
+
+def _load_health():
+    """Reuse the OS's own absolute-path detector rather than re-inventing a regex."""
+    path = REPO_ROOT / "scripts" / "primitive_scope_health.py"
+    spec = importlib.util.spec_from_file_location("scope_health_{slug}", path)
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_carries_no_absolute_source_path() -> None:
+    """Falsification probe: a document naming this checkout cannot travel."""
+    health = _load_health()
+    assert not health.SOURCE_PATH_RE.search(ARTIFACT.read_text(encoding="utf-8"))
+'''
+
+    if keys:
+        key_asserts = '\n'.join(f'    assert {key!r} in meta, "frontmatter lost {key} after relocation"' for key in keys)
+        body += f'''
+
+def test_frontmatter_parses_from_arbitrary_project_root(tmp_path: Path) -> None:
+    """The declared contract must survive relocation to a foreign project root."""
+    import yaml
+
+    relocated = tmp_path / Path({literal}).name
+    relocated.write_text(ARTIFACT.read_text(encoding="utf-8"), encoding="utf-8")
+
+    _, _, after = relocated.read_text(encoding="utf-8").partition("---\\n")
+    front, sep, _ = after.partition("\\n---")
+    assert sep, "document lost its frontmatter block after relocation"
+
+    meta = yaml.safe_load(front)
+{key_asserts}
+'''
+
+    if scripts:
+        gate = scripts[0]
+        body += f'''
+
+DOCUMENTED_GATE = REPO_ROOT / {gate!r}
+
+
+def test_documented_gate_runs_from_arbitrary_project_root(tmp_path: Path) -> None:
+    """The command this document names must still run from a consumer checkout.
+
+    A document travels with the commands it prescribes. If {gate} only works
+    when cwd happens to be this repo, the document is unportable even though its
+    own bytes are.
+    """
+    assert DOCUMENTED_GATE.exists(), "documented gate vanished: the document is stale"
+    launcher = [sys.executable] if DOCUMENTED_GATE.suffix == ".py" else ["bash"]
+    from_foreign = subprocess.run(
+        launcher + [str(DOCUMENTED_GATE)],
+        cwd=str(tmp_path),
+        text=True,
+        capture_output=True,
+        timeout=25,
+        check=False,
+    )
+    from_repo = subprocess.run(
+        launcher + [str(DOCUMENTED_GATE)],
+        cwd=str(REPO_ROOT),
+        text=True,
+        capture_output=True,
+        timeout=25,
+        check=False,
+    )
+    assert from_foreign.returncode == from_repo.returncode, from_foreign.stderr
+    assert str(tmp_path) not in from_foreign.stdout
+'''
+    return body
+
+
+_DATA_RATIONALE = (
+    "A shipped data file is not an executable. What it must survive is *relocation*:\n"
+    "installed under a foreign project root it has to parse to the same structure, and\n"
+    "it must not have baked an absolute path to this checkout into its values."
+)
+
+
+def _data_template(repo: Path, rel: str) -> str:
+    literal = repr(rel)
+    suffix = Path(rel).suffix.lower()
+    parser = 'yaml.safe_load' if suffix in {'.yaml', '.yml'} else 'json.loads'
+    imports = 'import importlib.util\nimport sys\n'
+    imports += 'import yaml\n' if parser.startswith('yaml') else 'import json\n'
+    imports += 'from pathlib import Path\n\n'
+    body = _HEADER.format(rel=rel, rationale=_DATA_RATIONALE, imports=imports, literal=literal)
+    slug = _module_name(rel)
+    body += f'''
+
+def _load_health():
+    path = REPO_ROOT / "scripts" / "primitive_scope_health.py"
+    spec = importlib.util.spec_from_file_location("scope_health_{slug}", path)
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_carries_no_absolute_source_path() -> None:
+    """Falsification probe: a value naming this checkout cannot travel."""
+    health = _load_health()
+    assert not health.SOURCE_PATH_RE.search(ARTIFACT.read_text(encoding="utf-8"))
+
+
+def test_parses_identically_from_arbitrary_project_root(tmp_path: Path) -> None:
+    """Installed under a foreign root, the file must parse to the same structure."""
+    installed = tmp_path / ".cognitive-os" / Path({literal}).name
+    installed.parent.mkdir(parents=True)
+    installed.write_text(ARTIFACT.read_text(encoding="utf-8"), encoding="utf-8")
+
+    relocated = {parser}(installed.read_text(encoding="utf-8"))
+    original = {parser}(ARTIFACT.read_text(encoding="utf-8"))
+    assert relocated == original
+    assert relocated, "file parsed to an empty structure: nothing is under assertion"
+'''
+    return body
+
+
+EXECUTABLE_SUFFIXES = {'.py', '.sh'}
+DOC_SUFFIXES = {'.md'}
+DATA_SUFFIXES = {'.yaml', '.yml', '.json'}
+
+
+def build_template(repo: Path, rel: str, probe: bool = True, timeout: int = DEFAULT_PROBE_TIMEOUT) -> str:
+    """Return the proof source for ``rel``, or raise Unprovable."""
+    suffix = Path(rel).suffix.lower()
+
+    if rel.startswith('hooks/') and suffix == '.sh':
+        return _hook_template(rel)
+    if suffix in DOC_SUFFIXES:
+        return _doc_template(repo, rel)
+    if suffix in DATA_SUFFIXES:
+        return _data_template(repo, rel)
+
+    is_executable_family = suffix in EXECUTABLE_SUFFIXES or suffix == ''
+    if not is_executable_family:
+        raise Unprovable(
+            f"no branch handles the {suffix or 'extension-less non-script'} family",
+            "hand-write a proof that exercises whatever contract this artifact makes, "
+            "or extend build_template() with a branch for the family",
+        )
+
+    if not probe:
+        raise Unprovable(
+            "--no-probe was requested and this family cannot be classified statically",
+            "whether `--help` is a real contract and whether stdout is deterministic are "
+            "measurements, not greps; drop --no-probe or hand-write the proof",
+        )
+    plan = _classify_executable(repo, rel, timeout)
+    return _executable_template(rel, plan)
+
+
+def scaffold(
+    repo: Path,
+    artifact: str,
+    force: bool = False,
+    probe: bool = True,
+    timeout: int = DEFAULT_PROBE_TIMEOUT,
+) -> Path:
     rel = _artifact_rel(repo, artifact)
     target = repo / suggested_test_path(rel)
     if target.exists() and not force:
         raise SystemExit(f"refusing to overwrite existing proof: {target.relative_to(repo).as_posix()}")
+    source = build_template(repo, rel, probe=probe, timeout=timeout)
     target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(_template(rel), encoding='utf-8')
+    target.write_text(source, encoding='utf-8')
     return target
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(description="Scaffold paired red-team portability proofs.")
     parser.add_argument('--repo-root', type=Path, default=_repo_root())
     parser.add_argument('--artifact', required=True, help='SCOPE: both artifact path, relative to repo root')
     parser.add_argument('--force', action='store_true', help='Overwrite an existing scaffold')
     parser.add_argument('--print-path', action='store_true', help='Print only the created path')
+    parser.add_argument('--no-probe', action='store_true', help='Never execute the artifact; refuse families that need measuring')
+    parser.add_argument('--probe-timeout', type=int, default=DEFAULT_PROBE_TIMEOUT, help='Seconds allowed per probe run')
     args = parser.parse_args(argv)
 
     repo = args.repo_root.resolve()
-    target = scaffold(repo, args.artifact, force=args.force)
+    try:
+        target = scaffold(
+            repo,
+            args.artifact,
+            force=args.force,
+            probe=not args.no_probe,
+            timeout=args.probe_timeout,
+        )
+    except Unprovable as exc:
+        print(f"[portability-proof-scaffold] REFUSING to generate a proof for {args.artifact}", file=sys.stderr)
+        print(f"  reason: {exc.reason}", file=sys.stderr)
+        print(f"  a generated proof here would be a false green. Instead: {exc.hint}", file=sys.stderr)
+        return REFUSAL_EXIT
     rel = target.relative_to(repo).as_posix()
     if args.print_path:
         print(rel)
