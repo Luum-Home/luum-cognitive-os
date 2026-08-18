@@ -51,6 +51,7 @@ hooks:
   adoption-freeze-gate:
     behavior_tests:
     - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
+    - tests/unit/test_primitive_behavior_depth_audit.py
     bypass_policy: not_required_observe_only
     criticality: standard
     event: PreToolUse
@@ -713,6 +714,7 @@ hooks:
     - tests/contracts/test_primitive_harness_partials_contract.py
     - tests/unit/test_concurrent_agent_safety_status.py
     - tests/unit/test_concurrent_write_guard_behavior.py
+    - tests/unit/test_primitive_behavior_depth_audit.py
     - tests/unit/test_primitive_harness_coverage.py
     bypass_policy: not_required_observe_only
     criticality: standard
@@ -2875,6 +2877,7 @@ hooks:
     - tests/unit/test_cos_governance_roi.py
     - tests/unit/test_coverage_classifier.py
     - tests/unit/test_exercised_coverage.py
+    - tests/unit/test_primitive_behavior_depth_audit.py
     - tests/unit/test_primitive_scope_classifier.py
     - tests/unit/test_primitive_scope_health.py
     - tests/unit/test_profile_resolver.py
