@@ -15,7 +15,50 @@ APPROVAL_ENV="COS_ALLOW_PROTECTED_CONFIG_WRITE"
 INPUT="$(cat 2>/dev/null || true)"
 [ -z "$INPUT" ] && exit 0
 
-if [ "${COS_ALLOW_PROTECTED_CONFIG_WRITE:-0}" = "1" ]; then
+BYPASS_LOG="$PROJECT_DIR/.cognitive-os/metrics/protected-config-bypass.jsonl"
+
+# ── Approval, and why it is readable from the command text ───────────────────
+# The variable alone was unreachable from inside a session: this is a PreToolUse
+# hook, so it runs in the harness environment, not the one a Bash command sets.
+# `COS_ALLOW_PROTECTED_CONFIG_WRITE=1 <cmd>` set the variable for <cmd> and never
+# for the hook that had already decided. The message below told operators to do
+# something that could not be done, and the practical consequence was worse than
+# a permissive gate: every authorised change went through `git apply`, which this
+# guard does not inspect and which leaves no trace unless the author volunteers
+# one. Measured 2026-08-18: four such writes in one session, each disclosed only
+# by choice.
+#
+# So the token is now honoured in the command text as well, matching what
+# destructive-git-blocker already does with --allow-destructive, and every grant
+# is appended to BYPASS_LOG. This does not widen the hole; it replaces an
+# invisible bypass with a recorded one. A determined agent could already write
+# through git apply, and nothing here changes that -- what changes is that the
+# ordinary, authorised path now leaves a row behind.
+_approval_granted() {
+  [ "${COS_ALLOW_PROTECTED_CONFIG_WRITE:-0}" = "1" ] && { printf 'env'; return 0; }
+  # Prefix position only, matched against the COMMAND rather than the payload.
+  # Anywhere-in-the-text was the first attempt and it was wrong the same way this
+  # guard's other defects were wrong: `echo COS_ALLOW_..._WRITE=1 note > hooks/x`
+  # granted itself approval, so writing a report ABOUT the variable authorised a
+  # write. An env assignment only means anything where the shell reads it as one.
+  # Matching the raw payload was the second mistake -- there the command is nested
+  # inside a JSON string, so a token at the true start of the command is preceded
+  # by a quote and never matches its own anchor.
+  local _cmd
+  _cmd="$(printf '%s' "$INPUT" | jq -r '.tool_input.command // empty' 2>/dev/null)" || _cmd=""
+  [ -n "$_cmd" ] \
+    && printf '%s' "$_cmd" \
+      | grep -Eq '(^|[;&|(]|&&|\|\|)[[:space:]]*COS_ALLOW_PROTECTED_CONFIG_WRITE=1[[:space:]]' \
+    && { printf 'command-token'; return 0; }
+  return 1
+}
+
+if _APPROVAL_SOURCE="$(_approval_granted)"; then
+  _TOOL="$(printf '%s' "$INPUT" | jq -r '.tool_name // "unknown"' 2>/dev/null || echo unknown)"
+  if declare -f safe_jsonl_append >/dev/null 2>&1; then
+    safe_jsonl_append "$BYPASS_LOG" "$(printf '{"timestamp":"%s","source":"%s","tool":"%s","session":"%s"}' \
+      "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$_APPROVAL_SOURCE" "$_TOOL" "${CLAUDE_SESSION_ID:-unknown}")" 2>/dev/null || true
+  fi
   exit 0
 fi
 
@@ -398,7 +441,9 @@ if [ -n "$BLOCKED" ]; then
   # that changes agent permissions/hooks/settings.
   echo "=== PROTECTED CONFIG WRITE GUARD: BLOCKED ===" >&2
   echo "Protected control-plane path(s): $BLOCKED" >&2
-  echo "Set $APPROVAL_ENV=1 only after explicit human review." >&2
+  echo "Approve, only after explicit human review, with either:" >&2
+  echo "  $APPROVAL_ENV=1 <command>        (recorded in ${BYPASS_LOG#"$PROJECT_DIR"/})" >&2
+  echo "  export $APPROVAL_ENV=1           (before launching the harness)" >&2
   if type primitive_intervention_emit >/dev/null 2>&1; then
     primitive_intervention_emit "protected-config-write-guard" "hooks/protected-config-write-guard.sh" "block" "protected_config_write" "protected-config" ".cognitive-os/metrics/protected-config-write-blocks.jsonl" "$TOOL_NAME" || true
   fi
