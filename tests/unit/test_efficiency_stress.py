@@ -8,6 +8,7 @@ after the efficiency optimization pass.
 import json
 import os
 import re
+import resource
 import subprocess
 import time
 from pathlib import Path
@@ -104,6 +105,31 @@ def run_hook(hook_path: Path, stdin_data: str = "", env_extra: dict = None,
         env=env,
         cwd=str(PROJECT_ROOT),
     )
+
+
+def children_cpu_ms() -> float:
+    """CPU milliseconds consumed by reaped child processes so far.
+
+    Hook cost is CPU, not wall clock.  Wall clock measures how long this
+    machine made us wait for a core, so on a loaded host (xdist workers, a
+    parallel suite, a concurrent build) it inflates without the hooks doing
+    anything different.  Measured on this repo 2026-08-16, 12 cores, the same
+    PostToolUse chains:
+
+        idle        Bash  CPU  690 ms / wall  774 ms
+                    Agent CPU 2447 ms / wall 2758 ms
+        saturated   Bash  CPU 1112 ms / wall 1653 ms (peak wall 2165 ms)
+                    Agent CPU 3716 ms / wall 5169 ms (peak wall 5499 ms)
+
+    Under saturation peak wall crossed the 2000 ms Bash budget while CPU
+    stayed at 56 % of it: budgeting on wall turns these tests into machine-load
+    detectors that fail for reasons no hook change can fix.
+
+    POSIX only (``resource`` is unavailable on Windows); the suite already
+    requires a POSIX shell to run the hooks at all, so no fallback is needed.
+    """
+    usage = resource.getrusage(resource.RUSAGE_CHILDREN)
+    return (usage.ru_utime + usage.ru_stime) * 1000
 
 
 # ===========================================================================
@@ -374,18 +400,28 @@ class TestHookPerformance:
             "tool_output": "hello\n"
         })
 
-        total_ms = 0
+        cpu_before = children_cpu_ms()
+        wall_before = time.time()
+        timed_out = []
         for hook_path in bash_hooks:
-            start = time.time()
             try:
                 run_hook(hook_path, stdin_data=input_json, timeout=5)
             except subprocess.TimeoutExpired:
-                total_ms += 5000
-                continue
-            total_ms += (time.time() - start) * 1000
+                timed_out.append(hook_path.name)
+        total_ms = children_cpu_ms() - cpu_before
+        wall_ms = (time.time() - wall_before) * 1000
 
+        # A hook that blocks on I/O burns no CPU, so a hang would slip past a
+        # CPU budget.  Fail on it directly instead of charging phantom
+        # milliseconds the way the wall-clock version did.
+        assert not timed_out, f"Bash hooks exceeded their 5s timeout: {timed_out}"
+
+        # Budget is CPU (2000ms), unchanged from the wall-clock version.
+        # Wall is reported only to corroborate; it is not portable across
+        # machines or load levels and is deliberately not asserted on.
         assert total_ms < 2000, (
-            f"Bash hook chain took {total_ms:.0f}ms, budget is 2000ms. "
+            f"Bash hook chain used {total_ms:.0f}ms CPU, budget is 2000ms "
+            f"(wall {wall_ms:.0f}ms, not portable, not asserted). "
             f"Hooks tested: {[h.name for h in bash_hooks]}"
         )
 
@@ -402,22 +438,30 @@ class TestHookPerformance:
             "tool_output": "Agent completed successfully.\nTRUST REPORT:\n  Score: 85/100"
         })
 
-        total_ms = 0
+        cpu_before = children_cpu_ms()
+        wall_before = time.time()
+        timed_out = []
         for hook_path in agent_hooks:
-            start = time.time()
             try:
                 run_hook(hook_path, stdin_data=input_json, timeout=10)
             except subprocess.TimeoutExpired:
-                total_ms += 10000
-                continue
-            total_ms += (time.time() - start) * 1000
+                timed_out.append(hook_path.name)
+        total_ms = children_cpu_ms() - cpu_before
+        wall_ms = (time.time() - wall_before) * 1000
 
-        # 6000ms budget: ~2000ms serial baseline × 3x parallel-load headroom.
-        # The xdist_group("hook-chain-perf") marker serialises this test with
-        # other hook-subprocess tests on one worker, but other xdist workers
-        # still compete for CPU, so 3x headroom is warranted.
+        assert not timed_out, f"Agent hooks exceeded their 10s timeout: {timed_out}"
+
+        # Budget is CPU (6000ms), the same number the wall-clock version used.
+        # That number was originally "~2000ms serial baseline x 3x parallel-load
+        # headroom" -- headroom bought to absorb wall-clock contention. Measuring
+        # CPU removes the contention, so the headroom is now slack rather than
+        # necessity: measured CPU is 2447ms idle / 3716ms under full saturation.
+        # The number is left where it was rather than tightened here, because
+        # ratcheting it down is an operator decision, not a side effect of a
+        # measurement fix.
         assert total_ms < 6000, (
-            f"Agent hook chain took {total_ms:.0f}ms, budget is 6000ms. "
+            f"Agent hook chain used {total_ms:.0f}ms CPU, budget is 6000ms "
+            f"(wall {wall_ms:.0f}ms, not portable, not asserted). "
             f"Hooks tested: {[h.name for h in agent_hooks]}"
         )
 
