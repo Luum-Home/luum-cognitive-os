@@ -180,6 +180,250 @@ _strip_commit_message_args() {
   echo "$stripped"
 }
 
+# ── Quote-aware command segmentation (false-positive fix 2026-08-16) ─────────
+# WHY THIS EXISTS
+#   The previous reader split the raw command with `tr '|&;' '\n'`, i.e. at the
+#   CHARACTER level, with no idea whether a separator was shell syntax or text
+#   inside quotes. Measured on this hook: `echo "texto con && git stash pop"`
+#   exited 2. Nothing in that command runs a git op — the `&&` inside the
+#   string manufactured a segment that began with `git`, and the ^-anchored
+#   DESTRUCTIVE_PATTERN then matched it. Commenting an op, documenting one in
+#   a commit-message body, or printing one was enough to block the command.
+#
+#   The verdict layer had the mirror-image defect: _semantic_git_match located
+#   `git` ANYWHERE in the token list, so `ls -la  # never run git stash pop`
+#   blocked too, with no separator involved at all.
+#
+# WHAT IT DOES
+#   Tokenises the whole command with shlex (quote-aware), splits on real shell
+#   operators, drops heredoc BODIES (stdin data, never commands — unless the
+#   reader is an interpreter), recurses into `bash -c` / `eval` so a genuinely
+#   executed op cannot hide inside a quoted argument, and strips leading
+#   VAR=VAL assignments and wrapper words (`sudo`, `env`, …) so the caller can
+#   anchor its verdict at the command word.
+#
+# DETECTION IS NOT REDUCED
+#   Every op that used to block still blocks; only text that was never going
+#   to be executed stops blocking. On unbalanced quotes the analyzer refuses
+#   to guess and exits 3, and the caller falls back to the legacy
+#   character-level split — which over-blocks. Uncertainty keeps blocking.
+#
+# PORTED FROM hooks/git-commit-scope-guard.sh (commit 3045f71f8), which grew
+# the same shlex-tokenise-then-segment analyzer for the same class of bug.
+# This is the SECOND copy of that grammar; hooks/provenance-scan.sh records
+# the same divergence risk. Extracting one parser to hooks/_lib/ is the right
+# end state — see docs/06-Daily/reports/guards-quoting-ciego-2026-08-16.md.
+_segment_command() {
+  command -v python3 >/dev/null || return 3
+  python3 - "$1" <<'SEGPY'
+from __future__ import annotations
+
+import re
+import shlex
+import sys
+
+# Shell control operators that end one command and begin another. `\n` is in
+# the set because a newline separates commands exactly like `;` does — and
+# because a newline INSIDE a quoted `-m` message must NOT, which is precisely
+# what a character-level split cannot tell apart.
+SEPARATORS = {"&&", "||", ";", "|", "&", "\n", "(", ")"}
+
+# Command words whose ARGUMENT is itself a command. Without these the
+# anchoring below would stop seeing `bash -c 'git reset --hard'`, which is a
+# real execution and must keep blocking.
+INTERPRETERS = {"bash", "sh", "zsh", "ksh", "dash", "eval", "xargs"}
+
+# Prefix words that precede the real command word without being one.
+WRAPPERS = {"sudo", "env", "command", "nohup", "time", "exec", "builtin",
+            "doas", "nice", "ionice", "stdbuf", "setsid"}
+
+
+def _strip_comments(cmd: str) -> str:
+    """Remove `#` comments, keeping the newline that terminates each one.
+
+    shlex's own commenter calls readline(), which swallows the newline along
+    with the comment. That newline is a command separator: with it gone,
+    `ls  # <op>\n<op>` collapsed into ONE segment whose command word was `ls`,
+    and the real op on the next line stopped being seen. Measured while
+    building this fix — a detection loss, not a false positive, which is why
+    comments are stripped here instead.
+
+    A `#` only opens a comment when unquoted and at the start of a word.
+    """
+    out = []
+    quote = ""
+    prev = ""
+    i = 0
+    while i < len(cmd):
+        ch = cmd[i]
+        if quote:
+            out.append(ch)
+            if ch == quote and (quote == "'" or prev != "\\"):
+                quote = ""
+            prev = ch
+            i += 1
+            continue
+        if ch in "\"'" and prev != "\\":
+            quote = ch
+            out.append(ch)
+            prev = ch
+            i += 1
+            continue
+        if ch == "#" and (prev == "" or prev in " \t\r\n;&|()"):
+            while i < len(cmd) and cmd[i] != "\n":
+                i += 1
+            prev = ""
+            continue
+        out.append(ch)
+        prev = ch
+        i += 1
+    return "".join(out)
+
+
+def _lex(cmd: str) -> list[str]:
+    """Quote-aware tokenisation. Raises ValueError on unbalanced quotes."""
+    lx = shlex.shlex(_strip_comments(cmd), posix=True, punctuation_chars="();<>|&\n")
+    lx.whitespace_split = True
+    lx.whitespace = " \t\r"
+    lx.commenters = ""
+    return list(lx)
+
+
+def _command_word(seg: list[str]) -> tuple[str, int]:
+    """Return (command word, its index) skipping VAR=VAL and wrapper words."""
+    for i, tok in enumerate(seg):
+        if "=" in tok and not tok.startswith("-") and tok.split("=", 1)[0].isidentifier():
+            continue
+        if tok in WRAPPERS:
+            continue
+        return tok, i
+    return "", -1
+
+
+def _drop_heredocs(tokens: list[str]) -> list[str]:
+    """Remove heredoc BODIES from the token stream.
+
+    A heredoc body is data on stdin, never commands — unless the reader is an
+    interpreter, in which case it is left in place. Dropping it is what stops
+    a documented command inside `cat <<EOF ... EOF` from being judged as one.
+    """
+    out: list[str] = []
+    line: list[str] = []
+    pending: list[str] = []
+    i = 0
+    while i < len(tokens):
+        tok = tokens[i]
+        if tok == "\n":
+            out.extend(line)
+            out.append(tok)
+            if pending:
+                word, _ = _command_word(line)
+                i += 1
+                if word in INTERPRETERS:
+                    pending = []
+                    line = []
+                    continue
+                # Skip forward to the terminator line.
+                delims = set(pending)
+                pending = []
+                while i < len(tokens):
+                    if tokens[i] in delims and (i + 1 >= len(tokens) or tokens[i + 1] == "\n"):
+                        i += 1
+                        break
+                    i += 1
+            else:
+                i += 1
+            line = []
+            continue
+        if tok in ("<<", "<<-") and i + 1 < len(tokens):
+            pending.append(tokens[i + 1])
+            i += 2
+            continue
+        line.append(tok)
+        i += 1
+    out.extend(line)
+    return out
+
+
+def segments(cmd: str, _depth: int = 0) -> list[list[str]]:
+    """Split a command into shell segments, honouring quotes.
+
+    Recurses into `bash -c "..."` / `eval "..."` so anchoring the verdict to a
+    segment's command word cannot lose an op that is genuinely executed.
+    """
+    tokens = _drop_heredocs(_lex(cmd))
+    segs: list[list[str]] = []
+    cur: list[str] = []
+    for tok in tokens:
+        if tok in SEPARATORS:
+            if cur:
+                segs.append(cur)
+            cur = []
+        else:
+            cur.append(tok)
+    if cur:
+        segs.append(cur)
+
+    if _depth >= 3:
+        return segs
+    expanded: list[list[str]] = []
+    for seg in segs:
+        expanded.append(seg)
+        word, idx = _command_word(seg)
+        if word not in INTERPRETERS:
+            continue
+        rest = seg[idx + 1:]
+        inner = ""
+        if word == "eval":
+            inner = " ".join(rest)
+        elif "-c" in rest:
+            j = rest.index("-c")
+            if j + 1 < len(rest):
+                inner = rest[j + 1]
+        if inner:
+            try:
+                expanded.extend(segments(inner, _depth + 1))
+            except ValueError:
+                # Unparseable inner command: hand the raw text back as a
+                # segment so the caller still judges it. Uncertainty blocks.
+                expanded.append(inner.split())
+    return expanded
+
+
+def normalized(cmd: str) -> list[str]:
+    """One printable line per segment, command word first.
+
+    Leading VAR=VAL assignments and wrapper words are dropped so that the
+    caller can anchor its verdict at the command word — `sudo git reset` and
+    `FOO=1 git reset` must keep blocking. Embedded newlines/tabs (a quoted
+    multi-line `-m` body) are folded to spaces so one segment stays one line
+    for the shell reader downstream.
+    """
+    out = []
+    for seg in segments(cmd):
+        _, idx = _command_word(seg)
+        if idx > 0:
+            seg = seg[idx:]
+        line = " ".join(seg)
+        line = re.sub(r"[\n\t\r]+", " ", line).strip()
+        if line:
+            out.append(line)
+    return out
+
+
+if __name__ == "__main__":
+    try:
+        segs = normalized(sys.argv[1] if len(sys.argv) > 1 else "")
+    except ValueError:
+        # Unbalanced quotes: refuse to guess at boundaries. Exit 3 tells the
+        # caller to fall back to the legacy character-level split, which
+        # over-blocks. Uncertainty must keep blocking, never start allowing.
+        sys.exit(3)
+    for seg in segs:
+        sys.stdout.write(seg + "\n")
+SEGPY
+}
+
 _semantic_git_match() {
   command -v python3 >/dev/null || return 1
   python3 - "$1" <<'PY'
@@ -194,10 +438,16 @@ try:
 except ValueError:
     sys.exit(1)
 
-try:
-    git_idx = next(i for i, token in enumerate(parts) if token == "git" or Path(token).name == "git")
-except StopIteration:
+# Anchored at the COMMAND WORD, not "anywhere in the token list". The old
+# `next(i for i, token in ...)` form matched `git` wherever it appeared, so a
+# segment that merely MENTIONED an op — a trailing `# comment`, a message
+# body, an argument to another program — was judged as if it ran one.
+# Callers pass segments produced by _segment_command(), which has already
+# removed leading VAR=VAL assignments and wrapper words, so position 0 is the
+# command word. `sudo git reset` and `FOO=1 git reset` therefore still block.
+if not parts or not (parts[0] == "git" or Path(parts[0]).name == "git"):
     sys.exit(1)
+git_idx = 0
 
 i = git_idx + 1
 while i < len(parts):
@@ -283,8 +533,25 @@ sys.exit(1)
 PY
 }
 
-# Apply commit-message stripping before pattern scanning
-COMMAND_SCAN=$(_strip_commit_message_args "$COMMAND")
+# Build the segment list. Quote-aware analyzer first; on unbalanced quotes
+# (exit 3) fall back to commit-message stripping plus the legacy
+# character-level split, which over-blocks rather than under-blocks.
+# Every verdict this hook can reach requires the word `git` somewhere in the
+# command. Commands without it are the overwhelming majority of PreToolUse
+# traffic, and this test costs no subprocess at all — it is what keeps the
+# quote-aware analyzer off the hot path for `ls`, `cat`, `pytest`, and friends.
+if ! printf '%s' "$COMMAND" | grep -q 'git'; then
+  exit 0
+fi
+
+COMMAND_SCAN="$COMMAND"
+SEGMENT_SOURCE="quote-aware"
+SEGMENTS=$(_segment_command "$COMMAND")
+if [ $? -ne 0 ]; then
+  SEGMENT_SOURCE="legacy-split"
+  COMMAND_SCAN=$(_strip_commit_message_args "$COMMAND")
+  SEGMENTS=$(echo "$COMMAND_SCAN" | tr '|&;' '\n')
+fi
 
 # Test first line (commands may be multiline or pipelined — we inspect each sub-command
 # crudely by splitting on shell separators).
@@ -300,7 +567,13 @@ while IFS= read -r segment; do
   [ -z "$segment" ] && continue
   # strip leading whitespace
   trimmed="${segment#"${segment%%[![:space:]]*}"}"
-  semantic_hit=$(_semantic_git_match "$trimmed" || true)
+  # _semantic_git_match spawns python3 (~40 ms CPU). It can only return a
+  # verdict for a segment whose command word is git, so ask that question in
+  # bash first and spend the process only when the answer is yes.
+  semantic_hit=""
+  case "$trimmed" in
+    git|git\ *|*/git|*/git\ *) semantic_hit=$(_semantic_git_match "$trimmed" || true) ;;
+  esac
   if [ -n "$semantic_hit" ]; then
     # An index_only verdict means the parser proved the segment touches the
     # index and nothing else (unstage forms). Skip the whole segment rather
@@ -344,7 +617,7 @@ while IFS= read -r segment; do
       break
     fi
   fi
-done <<< "$(echo "$COMMAND_SCAN" | tr '|&;' '\n')"
+done <<< "$SEGMENTS"
 
 # ADR-116 P3.2: detect fetch+reset --hard origin/<branch> chained form.
 # This form bypasses the per-segment loop above because neither segment alone
