@@ -15,6 +15,8 @@ set -euo pipefail
 # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 [ -f "$(dirname "${BASH_SOURCE[0]}")/_lib/governance-policy.sh" ] && source "$(dirname "${BASH_SOURCE[0]}")/_lib/governance-policy.sh"
+# shellcheck source=hooks/_lib/git-command-parse.sh
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/git-command-parse.sh"
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-${COGNITIVE_OS_PROJECT_DIR:-$(pwd)}}"
 
 # Read tool input from stdin
@@ -44,7 +46,12 @@ fi
 # ── Pattern 2: Manual git tag with version pattern ──────────────────
 # Matches: git tag v0.3.4, git tag 1.0.0, etc.
 # Does NOT match: git tag -d, git tag -l, or tags inside commit messages.
-if echo "$first_line" | grep -qE '^git\s+tag\s+v?[0-9]+\.[0-9]+'; then
+# Two halves on purpose: the first says "this is a `git tag` invocation"
+# (global options and `cd x && ` included), the second keeps the original
+# qualifier that a version-shaped argument follows `tag`, which is what
+# still lets `git tag -d` and `git tag -l` through.
+if cos_git_matches_subcommand "$first_line" 'tag' \
+   && echo "$first_line" | grep -qE '[[:space:]]tag[[:space:]]+v?[0-9]+\.[0-9]+'; then
   if type cos_governance_policy_allows_block >/dev/null 2>&1 && ! cos_governance_policy_allows_block release; then
     cos_governance_policy_advisory_message "release-guard" "release"
     exit 0

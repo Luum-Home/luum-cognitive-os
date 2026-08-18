@@ -15,6 +15,8 @@ fi
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-${COGNITIVE_OS_PROJECT_DIR:-$(pwd)}}"
 HOOK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 COS_ROOT="$(cd "$HOOK_DIR/.." && pwd)"
+# shellcheck source=hooks/_lib/git-command-parse.sh
+source "$HOOK_DIR/_lib/git-command-parse.sh"
 SESSION_ID="${COGNITIVE_OS_SESSION_ID:-${CODEX_SESSION_ID:-${CLAUDE_SESSION_ID:-unknown}}}"
 INPUT="$(cat 2>/dev/null || true)"
 
@@ -42,7 +44,15 @@ tool_input = data.get("tool_input") if isinstance(data.get("tool_input"), dict) 
 cmd = str(tool_input.get("command") or data.get("command") or "")
 if tool and tool != "Bash":
     raise SystemExit(0)
-if cmd and not re.search(r"(^|&&|;)\s*git\s+(commit|push|merge|rebase|cherry-pick|reset\s+--hard|stash\s+(apply|pop)|worktree\s+(add|remove)|branch\s+-D)\b", cmd):
+# Global options (`git -C <dir> commit`) sit between `git` and the
+# subcommand; the option alternation comes from hooks/_lib/git-command-parse.sh
+# via the environment so there is one list, not two.
+_SUBS = r"(commit|push|merge|rebase|cherry-pick|reset\s+--hard|stash\s+(apply|pop)|worktree\s+(add|remove)|branch\s+-D)"
+_OPTS = os.environ.get("COS_GIT_GLOBAL_OPTS") or r"-C|-c|--git-dir|--work-tree"
+if cmd and not (
+    re.search(r"(^|&&|;)\s*git\s+" + _SUBS + r"\b", cmd)
+    or re.search(r"(^|&&|;)\s*git\s+(" + _OPTS + r")[^|&;]*\s" + _SUBS + r"\b", cmd)
+):
     raise SystemExit(0)
 
 sys.path.insert(0, str(cos_root))
