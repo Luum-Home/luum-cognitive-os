@@ -1237,6 +1237,7 @@ hooks:
   destructive-git-blocker:
     behavior_tests:
     - tests/behavior/test_destructive_git_blocker.py
+    - tests/behavior/test_destructive_git_blocker_quoting.py
     - tests/behavior/test_external_review_readiness_items.py
     - tests/chaos/test_destructive_rm_blocker.py
     - tests/chaos/test_multi_ide_swarm_safety.py
