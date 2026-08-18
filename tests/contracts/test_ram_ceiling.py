@@ -8,7 +8,13 @@ high-water RSS environment-dependent.
 
 Thresholds are conservative and configurable via env:
   COS_RAM_CEILING_MIB          default 500  (OS self RSS)
-  COS_VITALS_DISK_CEILING_MIB  default 200  (.cognitive-os disk usage)
+  COS_VITALS_DISK_CEILING_MIB  overrides the .cognitive-os disk ceiling
+
+The disk ceiling itself is NOT defined here. It lives in
+manifests/state-retention.yaml under `global_budget.max_total_mib`, because
+scripts/state_retention_audit.py enforces the same number against the same
+tree; two hardcoded copies would drift. This test reads the manifest value and
+keeps COS_VITALS_DISK_CEILING_MIB as the override that moves both consumers.
 
 Platform: macOS + Linux. `resource.getrusage` behaves differently on
 each (Linux=KiB, Mac=bytes); we normalise below.
@@ -22,10 +28,28 @@ import subprocess
 import sys
 from pathlib import Path
 
+import yaml
+
 
 _ROOT = Path(__file__).resolve().parent.parent.parent
 _RAM_CEILING_MIB = int(os.environ.get("COS_RAM_CEILING_MIB", "500"))
-_DISK_CEILING_MIB = int(os.environ.get("COS_VITALS_DISK_CEILING_MIB", "400"))
+
+
+def _manifest_disk_ceiling_mib() -> float:
+    """Single source of the .cognitive-os ceiling: the state-retention manifest."""
+    manifest = _ROOT / "manifests" / "state-retention.yaml"
+    data = yaml.safe_load(manifest.read_text(encoding="utf-8")) or {}
+    ceiling = (data.get("global_budget") or {}).get("max_total_mib")
+    assert ceiling is not None, (
+        f"{manifest} must declare global_budget.max_total_mib — it is the single "
+        "source shared with scripts/state_retention_audit.py"
+    )
+    return float(ceiling)
+
+
+_DISK_CEILING_MIB = float(
+    os.environ.get("COS_VITALS_DISK_CEILING_MIB") or _manifest_disk_ceiling_mib()
+)
 
 
 def _self_rss_mib() -> float:

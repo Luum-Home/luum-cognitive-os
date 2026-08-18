@@ -236,6 +236,120 @@ def audit_surface(project: Path, surface: dict[str, Any]) -> dict[str, Any]:
     if p.endswith(".json"): return audit_json_ledger(project,surface)
     return audit_glob(project,surface)
 
+def allocated_bytes(path: Path) -> int:
+    """Allocated (not apparent) bytes for one file.
+
+    ``du -sk`` counts allocated blocks, and that is what scripts/so-vitals.sh
+    reports as ``disk_mib`` and what tests/contracts/test_ram_ceiling.py
+    asserts. Apparent size (``st_size``, what path_bytes uses for per-surface
+    max_total_mib) reads ~10% lower on this tree, so the global check would
+    disagree with the gate it enforces over the same commit.
+    """
+    try: return path.lstat().st_blocks * 512
+    except (OSError, AttributeError): return 0
+
+
+def surface_disk_paths(project: Path, surface: dict[str, Any]) -> list[Path]:
+    """Filesystem paths a surface claims. git: pseudo-paths claim no disk."""
+    p = str(surface.get("path", ""))
+    if not p or p.startswith("git:"): return []
+    return sorted(project.glob(p))
+
+
+def claimed_files(project: Path, surfaces: list[dict[str, Any]]) -> set[str]:
+    """Real paths of every file covered by some registered surface."""
+    claimed: set[str] = set()
+    for surface in surfaces:
+        for entry in surface_disk_paths(project, surface):
+            if entry.is_dir():
+                for root, _dirs, files in os.walk(entry):
+                    for name in files:
+                        claimed.add(os.path.realpath(os.path.join(root, name)))
+            else:
+                claimed.add(os.path.realpath(entry))
+    return claimed
+
+
+def global_ceiling_mib(budget: dict[str, Any]) -> float | None:
+    """Ceiling in MiB. Manifest is the source; env override moves both consumers."""
+    env_name = str(budget.get("env_override") or "")
+    raw = os.environ.get(env_name) if env_name else None
+    if raw is None: raw = budget.get("max_total_mib")
+    try: return float(raw)
+    except (TypeError, ValueError): return None
+
+
+def audit_global_budget(project: Path, manifest: dict[str, Any], surfaces: list[dict[str, Any]], audits: list[dict[str, Any]]) -> dict[str, Any] | None:
+    """Sum the measured tree and compare it against the declared global ceiling.
+
+    Per-surface caps never add up to a bound: most surfaces declare no byte
+    budget at all, so every surface can sit inside its own cap while the tree
+    is over the ceiling with nobody at fault. Summing declared caps instead of
+    measured usage would only compare the manifest against itself.
+    """
+    budget = manifest.get("global_budget")
+    if not isinstance(budget, dict): return None
+    base = project / str(budget.get("path") or ".cognitive-os")
+    if not base.is_dir(): return None
+
+    claimed = claimed_files(project, surfaces)
+    total = registered = 0
+    unregistered_by_area: dict[str, int] = {}
+    for root, _dirs, files in os.walk(base):
+        for name in files:
+            entry = Path(root) / name
+            size = allocated_bytes(entry)
+            total += size
+            if os.path.realpath(entry) in claimed:
+                registered += size
+                continue
+            parts = entry.relative_to(base).parts
+            area = "/".join(parts[:2]) if len(parts) > 1 else parts[0]
+            unregistered_by_area[area] = unregistered_by_area.get(area, 0) + size
+    unregistered = total - registered
+
+    def mib(value: int | float) -> float: return round(value / 1024 / 1024, 1)
+
+    ceiling = global_ceiling_mib(budget)
+    unregistered_cap = budget.get("max_unregistered_mib")
+    # Surfaces that already have someone to blame: their own cap is violated.
+    attributable = sorted({a["surface"] for a in audits if a.get("findings")})
+    findings: list[dict[str, Any]] = []
+    if ceiling is not None and mib(total) > ceiling:
+        finding: dict[str, Any] = {
+            "level": "BLOCK", "code": "global-budget-exceeded",
+            "total_mib": mib(total), "max_total_mib": ceiling,
+            "over_by_mib": round(mib(total) - ceiling, 1),
+            "registered_mib": mib(registered), "unregistered_mib": mib(unregistered),
+            "attributable_surfaces": attributable,
+            "remedies": [
+                "reconcile per-surface retention against MEASURED usage so the tree fits (lowering a cap below current usage does not reclaim anything, it only hands the next reaper run real work to delete)",
+                f"raise global_budget.max_total_mib in the manifest with the reason written into its rationale (currently {ceiling} MiB)",
+            ],
+        }
+        finding["message"] = (
+            "tree over the global ceiling while every registered surface is inside its own cap: "
+            "no single surface is at fault, so this is a manifest-level decision"
+        ) if not attributable else (
+            "tree over the global ceiling; surfaces already over their own cap: " + ", ".join(attributable)
+        )
+        findings.append(finding)
+    if unregistered_cap is not None and mib(unregistered) > float(unregistered_cap):
+        findings.append({
+            "level": "WARN", "code": "global-unregistered-bytes",
+            "unregistered_mib": mib(unregistered), "max_unregistered_mib": unregistered_cap,
+            "top_areas": [{"area": a, "mib": mib(b)} for a, b in sorted(unregistered_by_area.items(), key=lambda kv: -kv[1])[:5]],
+            "message": "bytes under the ceiling that belong to no registered surface: no reaper owns them",
+        })
+    return {
+        "surface": "global-budget", "kind": "budget", "path": str(budget.get("path") or ".cognitive-os"),
+        "measurement": "allocated-blocks", "total_mib": mib(total), "max_total_mib": ceiling,
+        "registered_mib": mib(registered), "unregistered_mib": mib(unregistered),
+        "top_unregistered_areas": [{"area": a, "mib": mib(b)} for a, b in sorted(unregistered_by_area.items(), key=lambda kv: -kv[1])[:5]],
+        "findings": findings,
+    }
+
+
 def archive_stash(project: Path, entry: dict[str, Any], archive: Path, index: int, execute: bool) -> dict[str, Any]:
     ref_name=f"refs/cos-preserved-stash/{archive.name}-{index}"; patch=archive/f"stash-{index}.patch"; ns=archive/f"stash-{index}.name-status.txt"; meta=archive/f"stash-{index}.json"
     if execute:
@@ -400,6 +514,12 @@ def main(argv: Sequence[str] | None=None) -> int:
                 cooldown_skipped = True
 
     audits=[audit_surface(project,s) for s in surfaces if not REQUIRED-set(s)]
+    # The global budget is a property of the whole tree, so it is only meaningful for a
+    # full audit; --surface/--auto-safe/--repair-before-block select reap subsets, and a
+    # tree-wide BLOCK raised from a repair path would fail a preflight it cannot repair.
+    if not wanted and not args.auto_safe and not args.repair_before_block:
+        global_row=audit_global_budget(project,manifest,all_surfaces,audits)
+        if global_row is not None: audits.append(global_row)
     reaped=[]
     if args.reap and not cooldown_skipped:
         for s in surfaces:
@@ -412,11 +532,15 @@ def main(argv: Sequence[str] | None=None) -> int:
         fcntl.flock(lock_fh, fcntl.LOCK_UN)
         lock_fh.close()
     count=len(mf)+sum(len(a.get("findings",[])) for a in audits)
-    payload={"schema_version":"state-retention-audit.v1","project_dir":str(project),"execute":bool(args.execute),"mode":mode,"cooldown_skipped":cooldown_skipped,"cooldown_remaining_seconds":cooldown_remaining,"manifest_findings":mf,"surfaces":audits,"reap":reaped,"summary":{"surface_count":len(audits),"finding_count":count}}
+    surface_count=len([a for a in audits if a.get("kind")!="budget"])
+    payload={"schema_version":"state-retention-audit.v1","project_dir":str(project),"execute":bool(args.execute),"mode":mode,"cooldown_skipped":cooldown_skipped,"cooldown_remaining_seconds":cooldown_remaining,"manifest_findings":mf,"surfaces":audits,"reap":reaped,"summary":{"surface_count":surface_count,"finding_count":count}}
     if not args.no_metrics: write_metrics(project,{"summary":payload["summary"],"execute":bool(args.execute),"mode":mode,"cooldown_skipped":cooldown_skipped})
     if args.json: print(json.dumps(payload,indent=2,sort_keys=True))
     else:
-        print(f"State retention: surfaces={len(audits)} findings={count} execute={bool(args.execute)} mode={mode}")
+        print(f"State retention: surfaces={surface_count} findings={count} execute={bool(args.execute)} mode={mode}")
+        for a in audits:
+            if a.get("kind")=="budget":
+                print(f"- global budget {a['path']}: {a['total_mib']} MiB used / {a['max_total_mib']} MiB ceiling ({a['registered_mib']} MiB registered, {a['unregistered_mib']} MiB unregistered, {a['measurement']})")
         if cooldown_skipped: print(f"- skipped: retention controller cooldown/lock active ({cooldown_remaining}s remaining)")
         for a in audits:
             if a.get("findings"): print(f"- {a['surface']}: {a['findings']}")

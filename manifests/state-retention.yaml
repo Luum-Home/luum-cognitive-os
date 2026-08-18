@@ -40,6 +40,35 @@ retention_modes:
   observe: Audit-only; never selected by automatic execute paths.
   repair-safe: Mature archive-first cleanup allowed in session-end auto-safe mode.
   repair-before-block: Mature archive-first cleanup allowed once before an otherwise blocking preflight.
+global_budget:
+  path: .cognitive-os
+  max_total_mib: 400
+  max_unregistered_mib: 210
+  env_override: COS_VITALS_DISK_CEILING_MIB
+  measurement: allocated-blocks
+  rationale: >
+    Single source for the .cognitive-os disk ceiling. Per-surface caps do not
+    add up to a bound: only two surfaces declare max_total_mib at all, so a
+    manifest where every surface is inside its own cap can still sit above the
+    tree ceiling with nobody at fault. state_retention_audit.py therefore sums
+    the MEASURED tree — not the sum of declared caps, which would only compare
+    the manifest against itself — and compares it here.
+    Measurement is allocated blocks (st_blocks*512), which is what `du -sk`
+    counts and therefore what scripts/so-vitals.sh reports as disk_mib and what
+    tests/contracts/test_ram_ceiling.py asserts; apparent file size reads about
+    10% lower on this tree and would make the audit disagree with the gate over
+    the same commit. tests/contracts/test_ram_ceiling.py reads max_total_mib
+    from here; COS_VITALS_DISK_CEILING_MIB overrides both, so operator and gate
+    move together.
+    max_unregistered_mib is a ratchet set at measured reality (208.2 MiB on
+    2026-08-18, `scripts/state_retention_audit.py --json`) rather than a cushion.
+    more than half of .cognitive-os belongs to no registered surface
+    (artifacts/aci, tasks/*.jsonl, reports/test-runs, external-source-cache),
+    so the ceiling is partly spent on state no reaper owns. The intended
+    response when this fires is registering those surfaces and lowering the
+    number, not raising it; raising either number requires the reason written
+    into this block.
+
 surfaces:
   - id: auto-pre-agent-stashes
     kind: artifact-pool
