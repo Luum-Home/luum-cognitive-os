@@ -240,3 +240,40 @@ claims:
       - parses no such flags
       - flags scripts/cos-init.sh does not parse
       - Esos flags no
+
+  disk_ceiling_single_source:
+    severity: medium
+    description: >-
+      The .cognitive-os disk ceiling has exactly one source of truth, the
+      global_budget block in manifests/state-retention.yaml, and every consumer
+      reads it rather than restating the number. Two failure modes are forbidden:
+      hardcoding the figure in a test or script, and describing a ceiling that
+      nothing measures the total against.
+
+      The claim exists because both happened at once. tests/contracts/test_ram_ceiling.py
+      hardcoded 400 while its own docstring said "default 200" -- the file
+      contradicted itself, and neither figure was derived from anything. And
+      state_retention_audit.py reported findings=0 while the tree was over the
+      ceiling, because it checked each surface against its own cap and never summed
+      them against the global one it documented. A ceiling nothing sums to is prose,
+      not a budget.
+
+      Two properties are load-bearing and easy to lose. The total covers ALL of
+      .cognitive-os, not only registered surfaces: summing the 14 registered ones
+      gives 183 MiB against 400, a permanent green that would hide the 208 MiB
+      living outside any surface. And the measurement is allocated blocks, matching
+      what the gate reads; apparent size differed by 39 MiB on 2026-08-18, about
+      10% of the ceiling, which is enough for the audit to pass a commit the gate
+      fails.
+    facts:
+      source_of_truth: manifests/state-retention.yaml
+      key: global_budget.max_total_mib
+      env_override: COS_VITALS_DISK_CEILING_MIB
+      measurement: allocated-blocks
+      auditor: scripts/state_retention_audit.py
+      gate: tests/contracts/test_ram_ceiling.py
+      verify_command: python3 scripts/state_retention_audit.py
+      observed_2026_08_18: 392.1 MiB used of 400.0 (183.6 registered, 208.5 unregistered)
+    required_docs:
+      - docs/06-Daily/reports/retention-techo-global-2026-08-18.md
+

@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-06-18T23:01:46+00:00'
+generated_at: '2026-08-18T20:20:58+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: .claude/skills/artifact-workflow/SKILL.md
@@ -160,6 +160,16 @@ primitives:
   - .cognitive-os/skills/skill-optimization/SKILL.md
   - .claude/skills/skill-optimization/SKILL.md
   sha256: 3f118f99e26708b9fd3b980f36dd7f2193d1a1deec3b0f5bb90b39a6acdfb6c7
+- id: cos_lib/adapter_compile.py
+  kind: library
+  owner_adr: ADR-258
+  lifecycle_state: active
+  maturity: advisory
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - cos_lib/adapter_compile.py
+  sha256: 5e8a971f8f7a5587b478f80041e33660b61c2dd2f777c404eed3d233b8974571
 - id: hooks/_lib/agent-context.sh
   kind: hook
   owner_adr: ADR-149
@@ -480,6 +490,16 @@ primitives:
   projection_targets:
   - hooks/_lib/timing.sh
   sha256: 3a479a065bebc016c5722a4a4aebcc9bee7318580c1b90edee13ced340061b1f
+- id: hooks/_lib/tool-outcome.sh
+  kind: script-lib
+  owner_adr: ADR-126
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: core
+  runtime_projection: true
+  projection_targets:
+  - hooks/_lib/tool-outcome.sh
+  sha256: c0a24438697a1483afc230b360251596c1eb1e84fc8dff00ceec15e9963a8920
 - id: hooks/_lib/tuning.sh
   kind: script-lib
   owner_adr: ADR-314
@@ -3164,16 +3184,6 @@ primitives:
   projection_targets:
   - hooks/worktree-submodule-fix.sh
   sha256: 51e77a00c2090077f0b927193207784c35058e139de8f5a252a298a2bb96bf33
-- id: cos_lib/adapter_compile.py
-  kind: library
-  owner_adr: ADR-258
-  lifecycle_state: active
-  maturity: advisory
-  distribution: team
-  runtime_projection: false
-  projection_targets:
-  - cos_lib/adapter_compile.py
-  sha256: 6a3d039b4f6a8713115d7f81b9f95fd8b4f0d30355bb3cc97aaa21cd4c39cb95
 - id: manifests/primitive-behavior-evidence.yaml
   kind: manifest
   owner_adr: ADR-189
@@ -5444,7 +5454,7 @@ primitives:
   projection_targets:
   - scripts/cos-adapter-compile
   - cos_lib/adapter_compile.py
-  sha256: 8593bddbf1f7dab6f2b0752890e4fb573571291f95ceb2e078b5fb91c4bab414
+  sha256: 61fc8659ace8771419e98399e7fea77689e17df5664d3a60221d34920ff180e6
 - id: scripts/cos-adapters
   kind: script
   owner_adr: ADR-258
@@ -5521,7 +5531,7 @@ primitives:
   - cos_lib/agent_daemon.py
   - cos_lib/agent_lifecycle.py
   - cos_lib/agent_team.py
-  sha256: 3b69ec1501a0f6f3849dad3f659cda1109ee57e69762c1eb37df1b617e05b721
+  sha256: 2da94d188f43d9053a24bd249685f94c96a5bcac0d24c48a97524329041ee52e
 - id: scripts/cos-agent-flicker-report
   kind: script
   owner_adr: ADR-146
@@ -5758,7 +5768,7 @@ primitives:
   - scripts/cos_consumer_fleet_audit.py
   - cos_lib/consumer_fleet_audit.py
   - docs/04-Concepts/architecture/consumer-fleet-audit.md
-  sha256: 23e351a9c27a8160bf100f610ebf36483b404f0fb0fc8b8f161701ffd2ef9aab
+  sha256: 0b3caca936f01dba2ad1b0a99e7d66c0bcd5f9256ea0a6ae8e4bdfefbc4879cf
 - id: scripts/cos-context-plan
   kind: script
   owner_adr: ADR-339
@@ -5825,7 +5835,7 @@ primitives:
   - scripts/cos_cross_instance_drill.py
   - cos_lib/cross_instance_learning.py
   - docs/04-Concepts/architecture/cross-instance-learning-runway.md
-  sha256: 298b47a18439d77c7574ccbe9358abf281d741b4438d2ce7366deb26b1833f7a
+  sha256: d7279f63388e5dbcecdbf947ab91168f2e093d338d0b2e609761ff27c9ae94d0
 - id: scripts/cos-demotion-loop-audit
   kind: script
   owner_adr: ADR-126
@@ -5946,7 +5956,7 @@ primitives:
   - scripts/cos_doctrine_proposer.py
   - cos_lib/doctrine_proposer.py
   - docs/02-Decisions/adrs/ADR-135-self-evolving-doctrine-proposals.md
-  sha256: f17dda9d774aabab0f94fdb764098479e0c2424c6fc3701a683b64cb5ded0e61
+  sha256: 67d6c785d2f92f61fafaa54acef34a45a82a64f7329a53ea0d2b311f0e2c2784
 - id: scripts/cos-document-ingest
   kind: script
   owner_adr: ADR-146
@@ -5979,7 +5989,7 @@ primitives:
   - scripts/cos-engram-import-propose
   - scripts/cos_cross_instance_learning.py
   - cos_lib/cross_instance_learning.py
-  sha256: d7004c32e3943fe34075d66f92d7eabe6e67adde2ee2b178695abf7de1eaffbd
+  sha256: f3f406bb128cef392235abffd6803c55f90df91c3094bd5e0f03aa9b61e68197
 - id: scripts/cos-engram-cloud-docker-smoke
   kind: script
   owner_adr: ADR-136
@@ -6003,7 +6013,7 @@ primitives:
   - scripts/cos-engram-import-propose
   - scripts/cos_cross_instance_learning.py
   - cos_lib/cross_instance_learning.py
-  sha256: f70d8c2911609c030e00a637b35bd60a0058f918a5e26f89902a06adcf972fe1
+  sha256: e4700b23f9d1681e49ae48813b1a59f1eeb16ec1af98969d22ff8e5c1517340f
 - id: scripts/cos-evidence-rank
   kind: script
   owner_adr: ADR-337
@@ -6027,7 +6037,7 @@ primitives:
   - scripts/cos_cross_instance_learning.py
   - cos_lib/cross_instance_learning.py
   - manifests/external-adoption-evidence.yaml
-  sha256: 655a642b267e3b1dea230b383d91b7458cfbb77b8207a2b51e4385bc3632d06c
+  sha256: c650b544fe38e9eddac5a52d34e8151187477d05f693cd955e1108c64561c0c8
 - id: scripts/cos-export-consumer-improvement-proposals
   kind: script
   owner_adr: ADR-146
@@ -6050,7 +6060,7 @@ primitives:
   - scripts/cos_cross_instance_learning.py
   - cos_lib/cross_instance_learning.py
   - manifests/federation-triggers.yaml
-  sha256: d7fcec9d8752be217e27b07f6b80081cad7f6d823fa1f5930a477971430017f0
+  sha256: ba3a5bd3c3ee08309e0ff8d4690098769ded4ad405f00c5932b486b031728e25
 - id: scripts/cos-fingerprint.sh
   kind: script
   owner_adr: ADR-146
@@ -6312,7 +6322,7 @@ primitives:
   - scripts/cos_cross_instance_learning.py
   - cos_lib/cross_instance_learning.py
   - manifests/external-adoption-evidence.yaml
-  sha256: e2e8535cadb5df441bb49ebcb02722fa3fd2b8f3476e95b0cabdbb345ee0bec9
+  sha256: 58d066a65cfa8790479035128588baf40cf3543ac846efbcb3137f4f0abe9f8e
 - id: scripts/cos-import-consumer-improvement-proposals
   kind: script
   owner_adr: ADR-146
@@ -6968,7 +6978,7 @@ primitives:
   - cos_lib/cross_instance_learning.py
   - manifests/agentic-primitive-registry.lock.yaml
   - skills/REGISTRY.lock
-  sha256: 964ad9aa79dd1c937f6b94140a4eeb903f3b837d8d15291f15f8d62c37416904
+  sha256: 4fd615fec5150dc10f5204a6b94cb3b5c8d39b156241781567534b5c5f43e827
 - id: scripts/cos-release-check.sh
   kind: script
   owner_adr: ADR-146
@@ -7119,7 +7129,7 @@ primitives:
   - scripts/cos_self_improvement_loop.py
   - cos_lib/self_improvement_loop.py
   - docs/02-Decisions/adrs/ADR-134-headless-self-improvement-proposer.md
-  sha256: c14ec74ebcb12735124131164816721904f54400d8de9b3f4d48dc81a0f6fb63
+  sha256: 89006db28f68965a00aad781f691292f6b982854779a81b4a7a62a4edc6975d8
 - id: scripts/cos-service-readiness-gate
   kind: script
   owner_adr: ADR-211
@@ -7643,7 +7653,7 @@ primitives:
   projection_targets:
   - scripts/cos_agent_message.py
   - cos_lib/agent_message_bus.py
-  sha256: abb27ab61e46c814b693b6c8823595746b9275e8a27baaafac863adf76c2f61f
+  sha256: ded808678dd1ae8d51ed27416f387b58093b9ce68799867292d0c58497c0d970
 - id: scripts/cos_agent_supervision.py
   kind: script-lib
   owner_adr: ADR-337
@@ -8627,7 +8637,7 @@ primitives:
   - scripts/orchestrator.py
   - packages/agent-coordination/lib/agent_bus.py
   - cos_lib/agent_bus_metrics.py
-  sha256: 4d1b68c54e4d2e8199baa099213c0cb4522d83b77d92ce9a2db05de0ce74ce17
+  sha256: fcd00f4d849ae13fba84feb81ec89cdc570d79a42fe2fc002deb18a3f1c005d8
 - id: scripts/orchestrator_claim_gate.py
   kind: script
   owner_adr: ADR-146

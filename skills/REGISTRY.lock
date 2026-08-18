@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-06-18T23:01:46+00:00'
+generated_at: '2026-08-18T20:20:58+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 skills:
 - path: skills/__contracts__/SKILL.md
@@ -11,21 +11,21 @@ skills:
 - path: skills/add-rule/SKILL.md
   sha256: f08ba3d7e45a7e857f0fd80f9ab39c592bc330c8bf89d62b02a7e1370da2ed35
 - path: skills/add-skill/SKILL.md
-  sha256: b08438df3513887deea42093b233c6bc9730b8acdd05f01f00e2aff8004bac5e
+  sha256: 4674c17416a6e503c9bde0ffc272f69d44df59b59a13ea718bee9e5ff9b9deb9
 - path: skills/adr-tombstone/SKILL.md
   sha256: 0a7237ce7ddd3112b94bad5865f92efdb159b3ae8f5762457bb3159240c06fbe
 - path: skills/agent-control/SKILL.md
   sha256: 8f5ffc917cee8a57959c3a61e43c6881e46f0c6a9c15fbb490774345be3f1529
 - path: skills/agent-dashboard/SKILL.md
-  sha256: 01aee162746af28fe1596c1554a6fcbf9f428ce86fdc3d4c26b74970fad6d116
+  sha256: c612f23801995d37b7e99afd1b6c2a1ff76ab67a218e4e477700721dd88669d3
 - path: skills/agent-kpis/SKILL.md
   sha256: 5bfff03da4dfd8d01049388b1991c6683517883ee87eada84bfd2b3e11d9afd4
 - path: skills/agent-run-supervision/SKILL.md
   sha256: f41e353d7dc47999be5c95595972b7a6bb65189f73082c103b4c64040ca1b5e4
 - path: skills/agent-stress-test/SKILL.md
-  sha256: fe45aba36ba2d9aa9c516bd481dc939ee8a65697f5e09fad7239e80e17907627
+  sha256: 07a424a270fd2442686b99cd8bf05d66e4805f1d934523a6e94c243453b7ae66
 - path: skills/analyze-improvements/SKILL.md
-  sha256: 0a3b107f917536f15e14215d4aef99142e87fce91fbd588a92758e4f08cce3ae
+  sha256: a5014b2b5077432f7d46a7d6bb004edb1aed79688a223a40108e0fca23af139f
 - path: skills/apply-improvements/SKILL.md
   sha256: 2795717fb6266679a596fb1bbb5a1d7353d7baecdf01600817b5eb99a7370ef5
 - path: skills/architecture-map-answer/SKILL.md
@@ -49,7 +49,7 @@ skills:
 - path: skills/branch-worktree-closure/SKILL.md
   sha256: 9c4abe050cf3d0fb76139116f587c5136480738a4afdf0e839986d0ff6efcdf0
 - path: skills/browser-task/SKILL.md
-  sha256: 9f17acf98fa7f1216eb57e324e6de9202a8713953330fc64d1fad5f033cc2753
+  sha256: 206b3c128b3229115cf43308110cc53b5973c7975dbb4d15f6d46249235050d2
 - path: skills/bump-version/SKILL.md
   sha256: 7fe93652e96e2773d1201c20d572d566ea415be3fae52d1c44ccc3ce1dbd4927
 - path: skills/capability-snapshot/SKILL.md
@@ -61,11 +61,11 @@ skills:
 - path: skills/caveman-compress/SKILL.md
   sha256: 80f7a8ac48f6a7f6f2129dc39e5342f9915b8db7cd9732903ffb0a6682a823ec
 - path: skills/code-review/SKILL.md
-  sha256: 152a2d98f54b9dc699ca08b7847e677cf3b1728074f67bca36abd92c262de50e
+  sha256: 1129ee4fda0b83514d08722f3c850218a404e3966fd63c9d24267c4be9b9b36c
 - path: skills/cognee-integration/SKILL.md
   sha256: a438f52ef4b8b77b9af906104aa68619989955fc20fcf96f824ff3c78751fe9e
 - path: skills/cognee-search/SKILL.md
-  sha256: 3d3aefc76369f2bfeefea32fda2249183f33f74654aa417bf9331b2ea869c9a0
+  sha256: 3b77839bdf893ace1a3c27ce7077c9bb3a9a3c7d946d94f8cae3b7fed796e111
 - path: skills/cognitive-os-benchmark/SKILL.md
   sha256: 65db1413f5be3a48ec5912e0b9aaf5ed06737b6727343139eea6ea82a299f67d
 - path: skills/cognitive-os-init/SKILL.md
@@ -111,7 +111,7 @@ skills:
 - path: skills/deps-update/SKILL.md
   sha256: 23ee9a521655b88532797d5f595ec47da64439eed2c3b8f6a0c4879dea97083c
 - path: skills/detect-patterns/SKILL.md
-  sha256: 032fd60c796c1725000c3085efbf54c63a0aa0884d097789a43276d0000a1516
+  sha256: d440dc54da99b5917ef72c6f8d0c75cd17ac4d59f35df10f01d9f76920174eb5
 - path: skills/detect-stack/SKILL.md
   sha256: 2246cd150965575a29bcf97899a862e9bbb0ec1191e95533e1f49d89a4b6400e
 - path: skills/devbox-checkpoint/SKILL.md
@@ -155,17 +155,17 @@ skills:
 - path: skills/hook-timing/SKILL.md
   sha256: 0296d69dd0a36a66f331a1b74bf103ddecaa2c40990b8d9f890f5a1d3d6c1594
 - path: skills/impact-analysis/SKILL.md
-  sha256: 99946c3d6178d507422be96016c1089c15e3014ff8027eda1c88a773d2916e3f
+  sha256: c7fa5232e9c4a882ce498526d251e0a31a96179c15b5180a6a71e4d3e86361f2
 - path: skills/install-hook/SKILL.md
   sha256: df397ee5f9f40ce038d5e2001335774cfe0e8bc8604f448d05ccaa4b124e5a84
 - path: skills/install-recommended/SKILL.md
-  sha256: 5227ae803e3a2da4402d2a80f6c2df0c8b41975dfcf799372add666d2b4d458b
+  sha256: 74efb6aabd20f57cc5cca8db20f77a2d5766322c9d926a7fc7b9f6fd893e1e31
 - path: skills/install-skill/SKILL.md
   sha256: f7e3568b62c28eb12c2d16288bb5d068040ddf7719a9d8551a1ad403ca364bd5
 - path: skills/invariant-check/SKILL.md
-  sha256: d46fb2dbc8b246aed5983a86f1afebfbd25ac53866aa92ea6512dd24dfb13104
+  sha256: 6deeafd26cfccb22f2e676c6a2e6c61a3d054cdd32057b5de52921db45bccabf
 - path: skills/issue-pipeline/SKILL.md
-  sha256: 535bc60079e02f8ce0d06539e2d2407e1b05b7732450c3be6c50e76af9d7e25a
+  sha256: c49c2201c19c1c51ba2d4753954c19cd52e971f230e37c654c14a51365461f92
 - path: skills/jupyter-execute/SKILL.md
   sha256: 93cbcc41d8b0a4766493f1110544dcd3803aeabc4ee2d440556540ad720bfc59
 - path: skills/lean-code/SKILL.md
@@ -173,7 +173,7 @@ skills:
 - path: skills/llm-status/SKILL.md
   sha256: cb688b5bbba8de376828b1be54b1b52ecc5e6f1d852d0c2e7aa23eb3017c3250
 - path: skills/memory-scan/SKILL.md
-  sha256: ea2bdde25f0ce5d17087e45dd60314a9eb46cd45881a239fb4139811e764897d
+  sha256: c378dca1c26a3af0a8630e574a6bc25d5f9768dffe5cb50703b1dd1931339fa3
 - path: skills/memu-context/SKILL.md
   sha256: 764461e89f32e7ea39167b353b78696a0a35cd1aadc41200abe6a1acfe6d78c4
 - path: skills/metrics-calibrator/SKILL.md
@@ -189,11 +189,11 @@ skills:
 - path: skills/os-session-wrapup/SKILL.md
   sha256: 18360399c50dcbe9400dc5b45c44cfae8ce7412faf5dbc1dc704315e4cf94a5d
 - path: skills/patch-release/SKILL.md
-  sha256: bc1ba0f1fd8363c7db57f6119857daf0613e00b7ceff492e6c49419b6a0cb1fa
+  sha256: 09c6d765681856134b3bc793e7befbce8b35982cfee8596aae77f52b8baf7008
 - path: skills/pattern-audit/SKILL.md
   sha256: 5591400fb1cadaece452755e59347c82043e47a1fdce8f8dab18f281f6256a81
 - path: skills/peer-card/SKILL.md
-  sha256: 6aefe9a4c715e14710917d4b26978aa427c0616c0be4cba15bac527ba2295eac
+  sha256: eac4d644845adcdcb9e57138df79394252582837ab85aa7c32433072622c7ed9
 - path: skills/pentest-self/SKILL.md
   sha256: 0a74ef53c02fb300266f1010ce54e27d1119025cada480521e31019f94a4ba38
 - path: skills/persistent-agent/SKILL.md
@@ -207,9 +207,9 @@ skills:
 - path: skills/plan-feature/SKILL.md
   sha256: f4386473a5618175895b5616d0a19b1da5cddfa2f2c2fc9e47f3f88bcdae4ebe
 - path: skills/planning-poker/SKILL.md
-  sha256: 50b5be30c9fc3f3ae68fb9f43f7222244188779481830fdebb259226716dfd78
+  sha256: 4627e2b7f6da4ff30a306c5069eeff7dba8f45283e7b268be46fc1b1ffb16dd8
 - path: skills/pr-review/SKILL.md
-  sha256: 032e975379bef84acd472b9c86f1a45ab2ada089b66e35f023bb9cb0f5a5d1c3
+  sha256: ff585f9a4a1acd5d25a2aedfe0b13e5d6a13d4ea724776ede861f65b9ddcb427
 - path: skills/preserved-wip-cleanup/SKILL.md
   sha256: 3454b919db535b000d45a418619173e66de5de0ec82891158ad3ad83811d7f9e
 - path: skills/primitive-authoring/SKILL.md
@@ -237,7 +237,7 @@ skills:
 - path: skills/pyrefly-typecheck/SKILL.md
   sha256: 891145eafde1ca8a931d32db2c9a3682df82c4908ade5c2b0a934933d01bff98
 - path: skills/queue-drain/SKILL.md
-  sha256: 4f65639164e71da4c4ba046a6eb887cfa32b1282576a17de616badfbbacaab7d
+  sha256: 41db7ecf1053dc96d0bc03bef2fffa65504465d9b2fcf865324e917122f5f2bc
 - path: skills/radar-update/SKILL.md
   sha256: 326c493b3237311e9634587350eb8b77c053f1889209d43642aaa40a8025463d
 - path: skills/ragas-integration/SKILL.md
@@ -259,7 +259,7 @@ skills:
 - path: skills/repair-status/SKILL.md
   sha256: f05ec1e32f454b80f88389a2e97d0e60a57f126d6b23bdc4c25d3b4d43b23fd4
 - path: skills/repo-forensics/SKILL.md
-  sha256: df662a366fa5fbd21ee59968e630907338c88abb377ffe554b3e4ee293e4f039
+  sha256: d6e5d3999a67d622720816f0d1d0546501ec781cd402509a16c9029615f62a1d
 - path: skills/repo-scout/SKILL.md
   sha256: 1b2e38b93ad95b7b565db566264a1f2da0c4e797a19f062549846cc539974b7a
 - path: skills/research-protocol/SKILL.md
@@ -273,15 +273,15 @@ skills:
 - path: skills/retrospective/SKILL.md
   sha256: 4533fb1ddc9a03a53ad48e7eec174e9a5d034061c0065ec1d6fa0e82f3158cbb
 - path: skills/reverse-engineer/SKILL.md
-  sha256: bc326dc78c829f3f26c04139834bcd645f931e95e5716973472f9dc22ecec332
+  sha256: 30a7817dba3101dc36df2ca2d5c5e5b09091ebd8a4822778b04ba2600ce1b593
 - path: skills/review-output/SKILL.md
-  sha256: 4553fd3729464973829609d6da768b355cbc746a4c0f16fc627b50aa05ac5a31
+  sha256: 78c84963ba86bff4d0029ed1cb424c3640693c8ef21da056029dabbbe74063cd
 - path: skills/risk-register/SKILL.md
   sha256: a1b24c965c912760bf8d3c0b38a2eb34e5862daebfc932769155c2ff288b3470
 - path: skills/rules-export/SKILL.md
   sha256: 215ec0b5312c8e5527ac79c2f53ce62ca4105241292ee52cc98aa2445affc8cc
 - path: skills/run-tests/SKILL.md
-  sha256: 36728b6b876066ec9b2f1a2bd903dec19e466570da0d1e2837b28f32f1b80bc2
+  sha256: ae5f40093825c35ef92299a4b3aff5cb297a2de9be84703b28b5b9e6ac67dce2
 - path: skills/sandbox-sample/SKILL.md
   sha256: ca74f81ffdd74a0d3acbddf1fdb969a1178f515ea4151af2a8a73865a39f2399
 - path: skills/scaffold-project/SKILL.md
@@ -297,7 +297,7 @@ skills:
 - path: skills/sdd-explore/SKILL.md
   sha256: ba6b4238bc900c636c687881ae55df2bb2bce34c85a3882aa3722d2d7e12dedb
 - path: skills/sdd-resume/SKILL.md
-  sha256: d64693bfffb45e3a1fb0160675a046ac67f9e863a2d381a03dd024455f529f65
+  sha256: 82ad1198a6d27f6c783acd51d8f4d3ac69c5d88e2248e7a804fe19e767c1112d
 - path: skills/sdd-spec/SKILL.md
   sha256: b4144ffa39061290ad0c59d90410ad6576fdbf9d73ea63fb5886ee81fd306c79
 - path: skills/sdd-tasks/SKILL.md
@@ -319,7 +319,7 @@ skills:
 - path: skills/semgrep-scan/SKILL.md
   sha256: 259fbf7d44bb8eaa22f4260bd767b9852fe41a9865e4119050e2d50f39c21506
 - path: skills/session-backlog/SKILL.md
-  sha256: 67720f8f0ec3ec604001606aab01bf2111e012ed2ab0cc2aa1acb2fd326380fd
+  sha256: 779e3e850046084fc3dc3f3208d45854130d7f109e6489fab758460b3edabb53
 - path: skills/session-manager/SKILL.md
   sha256: f111961a3cedc4e4dbc6e0c9d8ef95251f743bd4889bc64f37badcad500be6bf
 - path: skills/session-pending-brief/SKILL.md
@@ -329,7 +329,7 @@ skills:
 - path: skills/session-report-executive/SKILL.md
   sha256: 87d156ca1477d3e3629a66e59bf5e1a6558b90d902eb6b267633675942eaced6
 - path: skills/session-wrapup/SKILL.md
-  sha256: ce04a3f1b335df3ce9092c1a57afe4061c7f33b44cdb4a4dd24301d261b7a150
+  sha256: 79dfc9d3d8d9d0436d081bdfc750ff0a1c83bfbd842bc1659752dad0545e350a
 - path: skills/simulation-arena/SKILL.md
   sha256: b0fd38a68035c4dd16905d0c19b35714850a0f29988ba8668823e4be258a7471
 - path: skills/singularity/SKILL.md
@@ -355,7 +355,7 @@ skills:
 - path: skills/strands-evals-integration/SKILL.md
   sha256: 2ef6451fdca0eaffdb7601d7c89d8dbf6cbd50dfbbfcdd86c638785e675436a6
 - path: skills/synthesize-skill/SKILL.md
-  sha256: 7a53e90461f490e415a7e44a8d4592b87466e82d1402f72d164b2072a5b35be3
+  sha256: 00c9335ca9454441a45b0df1e3387d9c995562064421facee0893619e7fa673b
 - path: skills/systematic-debugging/SKILL.md
   sha256: badde5e8e0b2dedeacb702bf403a8e8727f4282e226bd00dc610186e182368f7
 - path: skills/tag-release/SKILL.md
@@ -379,10 +379,10 @@ skills:
 - path: skills/vulnerability-scan/SKILL.md
   sha256: 81d65d9842046d73457a7c9ffb79e4c3643614be94b15375563a45e57d53c7fb
 - path: skills/web-crawler/SKILL.md
-  sha256: cb6a7bf910f2562a98a4a02ae86d2378193277c7926e379f3df4da65bf48ea30
+  sha256: a36181fbf2f421d7873b56787fcbb7c3fd95ee51ce2e2ce594c82e7571c774cd
 - path: skills/webhook-trigger/SKILL.md
-  sha256: 0db0ee54ce2d28e584d4ce974f62b9de7eb925a6bd4114c0895c540da4e30c8d
+  sha256: 2b26ac73aa491a89e1a8271605ff53cb9c0bc76289a5def47ca0af4d89d4acd5
 - path: skills/wiki-ingest/SKILL.md
-  sha256: d5ec92793088453909053e8b6d0e8a0257bfc704e1a0ab0475298d719b2b6e49
+  sha256: e570124d20a860204b6515964d1196385213f9e544d3ec85a62a9536d1c3ad88
 - path: skills/worktree-triage/SKILL.md
   sha256: c8bbf4259542f7abe809fcf246d43a8b3a5a6e71b91f08665dca077f589cbdc9
