@@ -307,6 +307,8 @@ def test_main_json_output_is_valid_json(tmp_claude_dir, capsys):
          patch("shutil.which", return_value="/opt/homebrew/bin/engram"), \
          patch.object(cms, "get_binary_version", return_value="1.14.5"), \
          patch.object(cms, "is_process_running", return_value=True), \
+         patch.object(cms, "CODEX_CONFIG", tmp_claude_dir / "missing.toml"), \
+         patch.object(cms, "PROJECT_ROOT", tmp_claude_dir / "project"), \
          patch("sys.argv", ["check_mcp_servers.py", "--json"]):
 
         exit_code = cms.main()
