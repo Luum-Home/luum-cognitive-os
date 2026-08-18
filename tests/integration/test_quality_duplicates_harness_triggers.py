@@ -51,8 +51,14 @@ def test_codex_projects_get_quality_duplicate_shutdown_hook(tmp_path: Path) -> N
     project = tmp_path / "codex-consumer"
     run_init(project, "codex")
 
-    hooks = json.loads((project / ".codex" / "hooks.json").read_text())
-    shutdown = hooks.get("Stop") or hooks.get("shutdown") or hooks.get("SessionEnd") or []
+    payload = json.loads((project / ".codex" / "hooks.json").read_text())
+    assert "hooks" in payload, (
+        "Codex hooks.json must carry the mandatory top-level 'hooks' namespace "
+        "(manifests/codex-hooks-schema.yaml: root_key_required)"
+    )
+    # Codex's session-termination event is `Stop` (see manifests/codex-hooks-schema.yaml
+    # `events`); `shutdown`/`SessionEnd` are not Codex events.
+    shutdown = payload["hooks"].get("Stop", [])
     encoded = json.dumps(shutdown)
     assert "quality-duplicates.sh" in encoded
     assert "so-impact-eval-trigger.sh" in encoded
