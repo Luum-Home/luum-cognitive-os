@@ -63,12 +63,21 @@ KNOWN_ROOT_LEVEL_VIOLATIONS = {
     "hooks/agent-message-inbox-context.sh",
 }
 
-# `.claude/settings.json` registers these with `async: true` while their own
-# `# Async:` header claims the opposite. Same exact-match discipline as above:
-# the patch in the runbook empties this list, it never grows to absorb a
-# regression.
+# A hook whose `# Async:` header disagrees with its registration in
+# `.claude/settings.json`. An OMITTED `async` key IS a registration of
+# `async: false` — that is the host default, and it is what the `registrations`
+# fixture below reads via `bool(handler.get("async", False))`. So "no key" and
+# an explicit `"async": false` are the same registration for this test, and
+# neither contradicts a `# Async: false` header.
+#
+# Same exact-match discipline as above: the list shrinks when a hook is fixed,
+# it never grows to absorb a regression.
+#
+# `subagent-context-injector.sh` left this set on 2026-08-16, when its
+# SubagentStart registration stopped carrying `async: true`. Header and
+# registration now both say false. Nothing was loosened — the ratchet itself
+# demanded the removal by failing on the leftover entry.
 KNOWN_ASYNC_HEADER_MISMATCHES = {
-    "subagent-context-injector.sh",   # header says false, registered true
     "skill-md-routing-validator.sh",  # header says true, registered false
 }
 
@@ -79,13 +88,26 @@ KNOWN_MISSING_HOOK_EVENT_NAME = {
     "hooks/eas-validation-gate.sh",
 }
 
-# The injector emits the right shape on the right event and is still registered
-# `async: true`, which is the single reason its context never reaches a
-# sub-agent. Baselined rather than silently tolerated: this is THE defect the
-# runbook patch exists to fix.
-KNOWN_ASYNC_ON_CONTEXT_EMITTER = {
-    "subagent-context-injector.sh on SubagentStart",
-}
+# Empty, and the emptiness IS the assertion: no context-emitting hook is
+# registered `async: true` on an event whose insertion point precedes the first
+# prompt.
+#
+# It carried exactly one entry until 2026-08-16 —
+# `subagent-context-injector.sh on SubagentStart` — and that entry was THE
+# defect. An async SubagentStart hook still produces an
+# `attachment.type == "hook_success"` record (emission) but never a
+# `hook_additional_context` one (arrival): async output is delivered on the next
+# conversation turn, and a sub-agent has no next turn. Dropping `async` from the
+# registration is what turned emission into arrival. Reproduce the arrival side
+# of that claim with:
+#
+#     python3 scripts/check_subagent_context_arrival.py -v
+#
+# (2026-08-16 on this machine: 179 transcripts, 31 genuine arrivals, exit 0.)
+#
+# Kept as an empty set rather than deleted: a future re-registration has to fail
+# here instead of quietly reintroducing the silent drop.
+KNOWN_ASYNC_ON_CONTEXT_EMITTER: set[str] = set()
 
 # SubagentStart is context-only, so `permissionDecision: "allow"` is inert.
 # Harmless at runtime; kept visible because it records an author who believed
