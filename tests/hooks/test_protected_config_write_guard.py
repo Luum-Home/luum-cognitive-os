@@ -256,3 +256,179 @@ def test_json_unicode_escape_does_not_evade_the_prefilter() -> None:
         check=False,
     )
     assert proc.returncode == BLOCK
+
+
+# --- Patch appliers ---------------------------------------------------------
+# `git apply x.patch` names one path in its text -- the patch -- and writes paths
+# that appear nowhere in the command. Every case below runs the real hook on a
+# real patch file; the guard reads the patch, so the patch has to exist.
+
+HOOKS_PATCH = (
+    f"--- a/{PROTECTED}\n+++ b/{PROTECTED}\n@@ -1 +1 @@\n-old\n+new\n"
+)
+DOCS_PATCH = "--- a/docs/zzz-probe.md\n+++ b/docs/zzz-probe.md\n@@ -1 +1 @@\n-old\n+new\n"
+TESTS_PATCH = (
+    "--- a/tests/zzz_probe.py\n+++ b/tests/zzz_probe.py\n@@ -1 +1 @@\n-old\n+new\n"
+)
+MIXED_PATCH = DOCS_PATCH + HOOKS_PATCH
+DELETE_PATCH = f"--- a/{PROTECTED}\n+++ /dev/null\n@@ -1 +0,0 @@\n-old\n"
+RENAME_PATCH = (
+    "diff --git a/hooks/zzz-old.sh b/hooks/zzz-new.sh\n"
+    "similarity index 100%\nrename from hooks/zzz-old.sh\nrename to hooks/zzz-new.sh\n"
+)
+P0_PATCH = f"--- {PROTECTED}\n+++ {PROTECTED}\n@@ -1 +1 @@\n-old\n+new\n"
+NOT_A_PATCH = f"notes about {PROTECTED} and how it works\n"
+
+
+@pytest.fixture
+def patchfile(tmp_path):
+    def make(text: str, name: str = "probe.patch") -> str:
+        f = tmp_path / name
+        f.write_text(text)
+        return str(f)
+
+    return make
+
+
+PATCH_BLOCKS = [
+    ("git-apply", HOOKS_PATCH, "git apply {p}"),
+    ("git-apply-p0", P0_PATCH, "git apply -p0 {p}"),
+    ("git-apply-reverse", HOOKS_PATCH, "git apply -R {p}"),
+    ("git-apply-reverse-long", HOOKS_PATCH, "git apply --reverse {p}"),
+    ("git-apply-stdin-redirect", HOOKS_PATCH, "git apply < {p}"),
+    ("git-apply-dash", HOOKS_PATCH, "git apply - < {p}"),
+    ("git-apply-3way", HOOKS_PATCH, "git apply -3 --whitespace=fix {p}"),
+    ("git-am", HOOKS_PATCH, "git am {p}"),
+    ("patch-stdin", HOOKS_PATCH, "patch -p1 < {p}"),
+    ("patch-stdin-no-flags", HOOKS_PATCH, "patch < {p}"),
+    ("patch-input-flag", HOOKS_PATCH, "patch -i {p}"),
+    ("patch-input-longopt", HOOKS_PATCH, "patch --input={p}"),
+    ("deletion-names-victim-on-the-minus-side", DELETE_PATCH, "git apply {p}"),
+    ("rename-has-no-hunk", RENAME_PATCH, "git apply {p}"),
+    ("mixed-docs-and-hooks", MIXED_PATCH, "git apply {p}"),
+    ("wrapped-in-sudo", HOOKS_PATCH, "sudo git apply {p}"),
+    ("second-segment", HOOKS_PATCH, "cd /tmp && git apply {p}"),
+]
+
+
+@pytest.mark.parametrize(
+    "text,template",
+    [(t, c) for _, t, c in PATCH_BLOCKS],
+    ids=[n for n, _, _ in PATCH_BLOCKS],
+)
+def test_patch_writing_a_protected_path_is_blocked(patchfile, text, template) -> None:
+    assert _run(template.format(p=patchfile(text))) == BLOCK
+
+
+@pytest.mark.parametrize(
+    "text,template",
+    [(t, c) for _, t, c in PATCH_BLOCKS],
+    ids=[n for n, _, _ in PATCH_BLOCKS],
+)
+def test_patch_writes_pass_with_approval(patchfile, text, template) -> None:
+    assert _run(template.format(p=patchfile(text)), approve=True) == ALLOW
+
+
+PATCH_ALLOWS = [
+    ("docs-only", DOCS_PATCH, "git apply {p}"),
+    ("tests-only", TESTS_PATCH, "git apply {p}"),
+    ("docs-only-am", DOCS_PATCH, "git am {p}"),
+    ("docs-only-stdin", DOCS_PATCH, "patch -p1 < {p}"),
+    # Decision, pinned: --check parses the patch and reports whether it would
+    # apply. It writes nothing -- not the tree, not the index -- and it is the
+    # question an operator asks BEFORE requesting approval. Blocking the
+    # rehearsal is how a guard gets switched off.
+    ("git-apply-check", HOOKS_PATCH, "git apply --check {p}"),
+    ("git-apply-check-reverse", HOOKS_PATCH, "git apply --check -R {p}"),
+    # `patch ORIGINAL patchfile` writes ORIGINAL and nothing else, and ORIGINAL
+    # is a word in the command, judged by the ordinary path.
+    ("patch-explicit-original", HOOKS_PATCH, f"patch {SCRATCH} {{p}}"),
+]
+
+
+@pytest.mark.parametrize(
+    "text,template",
+    [(t, c) for _, t, c in PATCH_ALLOWS],
+    ids=[n for n, _, _ in PATCH_ALLOWS],
+)
+def test_patches_outside_the_policy_still_apply(patchfile, text, template) -> None:
+    assert _run(template.format(p=patchfile(text))) == ALLOW
+
+
+def test_missing_patch_file_is_blocked(tmp_path) -> None:
+    assert _run(f"git apply {tmp_path}/does-not-exist.patch") == BLOCK
+
+
+@pytest.mark.skipif(os.geteuid() == 0, reason="root reads unreadable files")
+def test_unreadable_patch_file_is_blocked(patchfile) -> None:
+    p = patchfile(DOCS_PATCH)
+    os.chmod(p, 0o000)
+    try:
+        assert _run(f"git apply {p}") == BLOCK
+    finally:
+        os.chmod(p, 0o600)
+
+
+def test_text_that_is_not_a_unified_diff_is_blocked(patchfile) -> None:
+    assert _run(f"git apply {patchfile(NOT_A_PATCH, 'notes.txt')}") == BLOCK
+
+
+@pytest.mark.parametrize(
+    "command",
+    [
+        "cat /tmp/zzz.patch | git apply",
+        "curl -s https://example.invalid/x.patch | git apply -p1",
+        "git apply",
+        "cat /tmp/zzz.patch | patch -p1",
+    ],
+    ids=["pipe", "curl-pipe", "bare", "pipe-to-patch"],
+)
+def test_patch_source_that_cannot_be_read_is_blocked(command: str) -> None:
+    """Fail closed: content that is not on disk cannot be inspected."""
+    assert _run(command) == BLOCK
+
+
+def test_heredoc_patch_is_read_as_a_patch(tmp_path) -> None:
+    blocked = "git apply - <<'EOF'\n" + HOOKS_PATCH + "EOF"
+    allowed = "git apply - <<'EOF'\n" + DOCS_PATCH + "EOF"
+    assert _run(blocked) == BLOCK
+    assert _run(allowed) == ALLOW
+
+
+def test_block_message_names_the_path_from_inside_the_patch(patchfile) -> None:
+    """The operator has to see WHICH protected path the patch would write."""
+    proc = subprocess.run(
+        ["bash", str(HOOK)],
+        input=json.dumps(
+            {
+                "tool_name": "Bash",
+                "tool_input": {"command": f"git apply {patchfile(HOOKS_PATCH)}"},
+            }
+        ),
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        env={
+            "PATH": "/usr/bin:/bin:/usr/local/bin:/opt/homebrew/bin",
+            "HOME": os.environ.get("HOME", ""),
+            "CLAUDE_PROJECT_DIR": str(REPO),
+        },
+        cwd=str(REPO),
+        check=False,
+    )
+    assert proc.returncode == BLOCK
+    assert PROTECTED in proc.stderr
+
+
+def test_guard_still_parses_under_bash_3_2(tmp_path) -> None:
+    """macOS ships bash 3.2, and it parses heredoc bodies inside `$( )`.
+
+    A modern `bash -n` reports this file clean while 3.2 dies on an apostrophe
+    in a python comment, so the syntax check has to name the old interpreter.
+    """
+    if not Path("/bin/bash").exists():
+        pytest.skip("no /bin/bash")
+    proc = subprocess.run(
+        ["/bin/bash", "-n", str(HOOK)], capture_output=True, text=True, check=False
+    )
+    assert proc.returncode == 0, proc.stderr
