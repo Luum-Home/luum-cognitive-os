@@ -29,6 +29,10 @@ fi
 prefilter_says_skip() {
   local line item in_globs=0 found=0
   [ -r "$POLICY" ] || return 1
+  # The prefilter matches the RAW payload, before jq decodes it, so a JSON
+  # \u escape would hide a protected path from it while jq still hands the
+  # analyzer the decoded path. Any escape at all: decline and analyse.
+  case "$INPUT" in *'\u'*) return 1 ;; esac
   while IFS= read -r line || [ -n "$line" ]; do
     case "$line" in
       protected_globs:*) in_globs=1; continue ;;
