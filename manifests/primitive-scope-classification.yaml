@@ -80,17 +80,16 @@ behavior_depth_policy:
     os-only: structural
   max_by_depth:
     none: 0
-    # 2026-08-16: 472 -> 473, exactly +1, no cushion. The new row is
-    # scripts/check_codebase_memory_readiness.py, whose paired proof
-    # tests/red_team/portability/test_check_codebase_memory_readiness.py is a
-    # cwd-invariance probe -- projection depth by what it does. _test_depth()
-    # files it as structural only because STRUCTURAL_RE matches the token
-    # "readiness" leaking in from the ARTIFACT's own stem, not from anything
-    # about the test. Same false positive already hits test_pentesting-readiness.py,
-    # test_cos-architecture-readiness.py and test_cos-service-readiness-gate.py.
-    # Fixing the classifier moves several rows out of structural at once, so it
-    # is a separate change; this +1 keeps the ratchet at reality meanwhile.
-    structural: 473
+    # 2026-08-18: 473 -> 457. Reconciled DOWN against a corrected measurement,
+    # not loosened: _test_depth() now subtracts the artifact's own stem from the
+    # paired test's name before matching, so tokens like "readiness" and "ledger"
+    # stop leaking out of the ARTIFACT name into a claim about the TEST. Sixteen
+    # rows whose only proof is a cwd-invariance probe moved structural ->
+    # projection, which is what those probes actually exercise. The +1 booked
+    # here on 2026-08-16 as a provisional measure is absorbed by that fix.
+    # Full movement table (47 rows, both directions) and the command that
+    # reproduces it: docs/06-Daily/reports/clasificador-profundidad-2026-08-18.md
+    structural: 457
 families:
   hooks:
     marker: '# SCOPE: <scope>'
