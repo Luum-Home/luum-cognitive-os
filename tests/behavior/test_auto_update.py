@@ -536,8 +536,13 @@ class TestAutoUpdate:
 
         assert result.returncode == 0, result.stderr
         hooks_path = project_dir / ".codex" / "hooks.json"
-        hooks_data = json.loads(hooks_path.read_text())
-        assert "hooks" not in hooks_data, "Codex auto-update must preserve native hook shape"
+        payload = json.loads(hooks_path.read_text())
+        assert "hooks" in payload, (
+            "Codex hooks.json must keep the mandatory top-level 'hooks' namespace "
+            "(manifests/codex-hooks-schema.yaml: root_key_required); without it "
+            "Codex never parses the file as a hook registry"
+        )
+        hooks_data = payload["hooks"]
         commands = [
             hook["command"]
             for groups in hooks_data.values()
