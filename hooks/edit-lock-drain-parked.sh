@@ -18,7 +18,29 @@
 #
 # Bypass: COS_BYPASS_EDIT_LOCK=1 suppresses this hook too.
 set -uo pipefail
-source "$(dirname "$0")/../scripts/_lib/session-id.sh"
+# The lib lives under scripts/_lib/, which primitive-scope-overrides.yaml
+# classifies os-only ("Internal maintainer/runtime helper library") and which no
+# installer copies -- while this hook's own header says SCOPE: both, and it does
+# ship. Sourcing it unguarded fired on EVERY UserPromptSubmit in a consumer
+# install: two error lines, cos_session_id undefined, and -- worse -- an empty
+# session id, which collapsed the inbox path from <negotiations>/<my-session>/
+# to the negotiations ROOT. Reproduced 2026-08-19 against a tree carrying only
+# this hook. The header above already promised "missing primitive -> exit 0";
+# this is that promise kept, using the same guarded-source idiom
+# scripts/edit-coop.sh has carried all along.
+_SESSION_ID_LIB="$(dirname "$0")/../scripts/_lib/session-id.sh"
+if [ -f "$_SESSION_ID_LIB" ]; then
+  # shellcheck source=/dev/null
+  source "$_SESSION_ID_LIB"
+else
+  # Same resolution order as the lib, deliberately kept in step with it.
+  cos_session_id() {
+    if [ -n "${COGNITIVE_OS_SESSION_ID:-}" ]; then printf '%s' "$COGNITIVE_OS_SESSION_ID"; return; fi
+    if [ -n "${CODEX_SESSION_ID:-}" ]; then        printf '%s' "$CODEX_SESSION_ID";        return; fi
+    if [ -n "${CLAUDE_SESSION_ID:-}" ]; then       printf '%s' "$CLAUDE_SESSION_ID";       return; fi
+    printf 'shell-%s' "${PPID:-$$}"
+  }
+fi
 
 [ "${COS_BYPASS_EDIT_LOCK:-}" = "1" ] && exit 0
 
@@ -41,6 +63,9 @@ PENDING_ROOT="$RUNTIME/parked-edits-pending"
 [ -d "$PARKED_ROOT" ] || exit 0   # nothing parked → nothing to drain
 
 ME="$(_session_id)"
+# An empty identity is not a session with no inbox: it resolves the inbox path
+# to the negotiations ROOT, i.e. every other session's directory. Refuse it.
+[ -n "$ME" ] || exit 0
 
 # ── Determine which file(s) were just edited ──────────────────────────────────
 # PostToolUse receives the tool result JSON on stdin. We try to extract the

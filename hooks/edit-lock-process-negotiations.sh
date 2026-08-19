@@ -16,7 +16,29 @@
 # Idempotent: already-seen requests (seen_at present) are skipped silently.
 # Graceful: missing dirs / missing primitive → exit 0.
 set -uo pipefail
-source "$(dirname "$0")/../scripts/_lib/session-id.sh"
+# The lib lives under scripts/_lib/, which primitive-scope-overrides.yaml
+# classifies os-only ("Internal maintainer/runtime helper library") and which no
+# installer copies -- while this hook's own header says SCOPE: both, and it does
+# ship. Sourcing it unguarded fired on EVERY UserPromptSubmit in a consumer
+# install: two error lines, cos_session_id undefined, and -- worse -- an empty
+# session id, which collapsed the inbox path from <negotiations>/<my-session>/
+# to the negotiations ROOT. Reproduced 2026-08-19 against a tree carrying only
+# this hook. The header above already promised "missing primitive -> exit 0";
+# this is that promise kept, using the same guarded-source idiom
+# scripts/edit-coop.sh has carried all along.
+_SESSION_ID_LIB="$(dirname "$0")/../scripts/_lib/session-id.sh"
+if [ -f "$_SESSION_ID_LIB" ]; then
+  # shellcheck source=/dev/null
+  source "$_SESSION_ID_LIB"
+else
+  # Same resolution order as the lib, deliberately kept in step with it.
+  cos_session_id() {
+    if [ -n "${COGNITIVE_OS_SESSION_ID:-}" ]; then printf '%s' "$COGNITIVE_OS_SESSION_ID"; return; fi
+    if [ -n "${CODEX_SESSION_ID:-}" ]; then        printf '%s' "$CODEX_SESSION_ID";        return; fi
+    if [ -n "${CLAUDE_SESSION_ID:-}" ]; then       printf '%s' "$CLAUDE_SESSION_ID";       return; fi
+    printf 'shell-%s' "${PPID:-$$}"
+  }
+fi
 
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}"
 
@@ -33,6 +55,9 @@ _iso8601() {
 RUNTIME="$PROJECT_DIR/.cognitive-os/runtime"
 NEGOTIATIONS_ROOT="$RUNTIME/edit-negotiations"
 ME="$(_session_id)"
+# An empty identity is not a session with no inbox: it resolves the inbox path
+# to the negotiations ROOT, i.e. every other session's directory. Refuse it.
+[ -n "$ME" ] || exit 0
 MY_INBOX="$NEGOTIATIONS_ROOT/$ME"
 
 [ -d "$MY_INBOX" ] || exit 0   # no inbox → nothing to process
