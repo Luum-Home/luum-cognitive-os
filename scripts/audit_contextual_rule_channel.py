@@ -127,12 +127,38 @@ def match(prompt: str, reachable: list[tuple[str, str]], cap: int) -> list[str]:
     return out
 
 
+
+def default_transcript_glob() -> str:
+    """El glob de transcripts, derivado de donde esta el repo AHORA.
+
+    Estuvo hardcodeado como ``-Users-*-Projects-luum-luum-agent-os``, que es el
+    nombre del proyecto de una maquina concreta escrito a mano dentro del
+    codigo. Dos consecuencias, y la segunda es peor que la primera: el script
+    solo funcionaba en un checkout con ese nombre, y --al fallar el glob-- el
+    corpus de replay quedaba VACIO en cualquier otro, o sea que el script
+    reportaba "0 reglas nombradas en la practica" sin distinguirlo de "no
+    encontre un solo transcript que leer". Un cero por corpus vacio es
+    exactamente la lectura falsa que este repo persigue.
+
+    Claude Code guarda los transcripts bajo ~/.claude/projects/<slug>/, donde
+    <slug> es la ruta absoluta del proyecto con las barras vueltas guiones. Se
+    calcula, no se adivina.
+    """
+    # Claude Code sustituye por guion TANTO las barras COMO los puntos, asi que
+    # un username con puntos (nombre.apellido) se vuelve nombre-apellido en el
+    # slug. Cambiar solo las barras daba un directorio inexistente, glob vacio,
+    # y el script reportaba "0 reglas nombradas en la practica" sobre un corpus
+    # de cero transcripts -- indistinguible de haber mirado y no encontrado.
+    slug = str(REPO).replace("/", "-").replace(".", "-")
+    return f"~/.claude/projects/{slug}/*.jsonl"
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument(
         "--transcripts",
-        default="~/.claude/projects/-Users-*-Projects-luum-luum-agent-os/*.jsonl",
-        help="glob for Claude Code session transcripts (replay corpus)",
+        default=default_transcript_glob(),
+        help="glob for Claude Code session transcripts (replay corpus); "
+             "por defecto se deriva de la ruta real del repo",
     )
     ap.add_argument("--json", action="store_true", help="emit JSON instead of prose")
     args = ap.parse_args()
