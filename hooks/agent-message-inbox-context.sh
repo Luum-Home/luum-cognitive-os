@@ -39,7 +39,14 @@ for row in rows:
     body = str(row.get("body") or "")[:160]
     lines.append(f"- {mid} [{sev}] from={sender} target={target}: {body}")
 lines.append("After applying or triaging a message, acknowledge it with scripts/cos-agent-message ack.")
-print(json.dumps({"additionalContext": "\n".join(lines)}, ensure_ascii=False))
+# Claude Code reads additionalContext ONLY from inside hookSpecificOutput,
+# alongside hookEventName. The root-level form is valid JSON, so the host
+# parses it, finds no recognized field, and drops it without a word.
+# Contract: manifests/claude-code-hooks-schema.yaml
+print(json.dumps({"hookSpecificOutput": {
+    "hookEventName": "UserPromptSubmit",
+    "additionalContext": "\n".join(lines),
+}}, ensure_ascii=False))
 PY
 )"
 if [ -n "$CONTEXT_JSON" ]; then

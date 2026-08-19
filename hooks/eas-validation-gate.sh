@@ -125,6 +125,8 @@ payload = {
     "decision": "block",
     "reason": summary,
     "hookSpecificOutput": {
+        # hookEventName is required by the host to route hookSpecificOutput.
+        "hookEventName": "Stop",
         "additionalContext": (
             f"EAS Validation Gate blocked stop for review surface '{surface}'.\n\n"
             f"{details}\n\n"

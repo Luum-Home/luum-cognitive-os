@@ -9,7 +9,7 @@
 #
 # Event:    PreToolUse Write
 # Type:     command
-# Async:    true  (NEVER blocks writes)
+# Async:    false (blocking registration; always exits 0, so it never denies)
 # Exit:     always 0 (non-blocking — this hook is advisory only)
 # Latency:  <100ms (pure bash, no Python subprocess)
 #
