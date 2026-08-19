@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # Shared settings-driver helpers for shell tooling.
 # Bash 3.x compatible.
 
