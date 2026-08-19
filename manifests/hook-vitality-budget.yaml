@@ -1,0 +1,62 @@
+schema_version: 1
+id: governance/hook-vitality
+kind: governance-primitive
+owner_adr: ADR-328
+status: active
+purpose: >-
+  Keep the count of hooks whose blocking capability is unproven from growing
+  silently. A guard that never blocks reads as "nothing to catch" and can
+  equally mean "cannot catch any more"; rules/gates-sin-trampa calls that
+  silence a bug. Measured by scripts/hook_vitality_audit.py --check-budget.
+
+# HOW TO READ THESE NUMBERS
+#   Ratchets. They may only go DOWN. Set at measured reality on 2026-08-19 with
+#   NO cushion: a budget one above reality leaves a free slot in which decay
+#   lands while the gate still reports zero, which is the "baseline above
+#   reality" pattern these budgets exist to refuse. The audit therefore fails on
+#   a cushion as loudly as on an overrun.
+#
+#   Reproduce:
+#     python3 scripts/hook_vitality_audit.py --json
+#   Enforce:
+#     python3 scripts/hook_vitality_audit.py --check-budget
+#
+# MEASUREMENT NOTE — READ BEFORE TRUSTING ANY NUMBER HERE
+#   .cognitive-os/metrics/hook-timing.jsonl is ROTATED into
+#   .cognitive-os/metrics/.archive/hook-timing-*.jsonl.gz. The live file has
+#   held as little as ~3.6 hours. These budgets are measured across live +
+#   archives. `--live-only` reproduces the archive-blind view and inflates every
+#   count; it exists for comparison, never for setting a budget.
+
+hook_vitality_budget:
+  # Hooks that ran, never emitted exit 2, and whose source still contains a
+  # blocking path. Telemetry cannot separate "no occasion" from "no capacity",
+  # so every one of these is an open question, not a pass.
+  #
+  # 2026-08-19: measured 35 of 154 registered hook scripts. Of those, 12 signal
+  # decisions through stdout JSON (permissionDecision / hookSpecificOutput),
+  # which the timing wrapper does not record — it logs stdout_bytes, never
+  # stdout content. Their capability is UNOBSERVABLE from this telemetry rather
+  # than merely unproven, and closing them needs a wrapper change or a
+  # dedicated firing test, not more waiting.
+  #
+  # The way this number goes down is a test that makes a guard actually block,
+  # not a longer observation window.
+  max_unproven_guards: 35
+
+  # Hooks registered on an event this harness never emits. Dead by harness, not
+  # by bug: the hook body is fine and would run if the event existed.
+  #
+  # 2026-08-19: 2 — task-created (TaskCreated) and teammate-idle (TeammateIdle).
+  # Across 225941 observed rows the only events ever seen are PostToolUse,
+  # PreToolUse, Stop, UserPromptSubmit, SessionStart, SubagentStart, PreCompact.
+  # TaskCreated, TeammateIdle and TaskCompleted have never appeared.
+  max_event_absent_hooks: 2
+
+  # Hooks whose event IS emitted but whose matcher never matched. This is the
+  # bucket that needs eyes: it is where a typo'd matcher hides.
+  #
+  # 2026-08-19: 0. It was 3 under an archive-blind read
+  # (engram-reinforce-on-access, skill-invocation-logger, skill-usage-tracker);
+  # all three have observed rows in the rotated archives and are alive.
+  max_no_occasion_hooks: 0
