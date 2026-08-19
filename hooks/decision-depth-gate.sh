@@ -25,7 +25,21 @@ PROJECT_DIR="$_PROJECT_DIR"
 METRICS_DIR="$PROJECT_DIR/.cognitive-os/metrics"
 LOG_FILE="$METRICS_DIR/decision-depth-gate.jsonl"
 
-AGENT_OUTPUT=$(echo "$INPUT" | jq -r '.tool_result // .output // empty' 2>/dev/null)
+# Claude Code delivers the agent result under `.tool_response`, and for the Agent
+# tool that value is an OBJECT: {status, agentType, content:[{type,text}],
+# totalDurationMs, totalTokens, totalToolUseCount, ...} — shape confirmed over
+# 226 real Agent results in ~/.claude/projects transcripts (2026-08-19).
+# Reading only `.tool_result` made this gate blind in the harness it runs in:
+# 182 recorded invocations, log file 0 bytes since 2026-05-23. `.tool_result`
+# and `.output` are kept for the Kiro/Devin payload shapes.
+AGENT_OUTPUT=$(echo "$INPUT" | jq -r '
+  (.tool_response // .tool_result // .output // empty) as $r
+  | if ($r | type) == "object" then
+      ([ ($r.content // [])[]? | (.text? // "") ] | join("\n")) as $t
+      | (if ($t | length) > 0 then $t else ($r | tostring) end)
+    elif ($r | type) == "string" then $r
+    else ($r | tostring)
+    end' 2>/dev/null)
 if [[ -z "$AGENT_OUTPUT" ]]; then
   exit 0
 fi
@@ -62,7 +76,7 @@ if [[ "$HAS_INVESTIGATION" == "false" ]]; then
   echo "Rule: rules/decision-depth-gate.md — before resolving with 'I'll document the difference', verify the relationship."
   echo "Ask: Why does this divergence exist? What invariant connects these? Did I trace it to root?"
   echo ""
-  ENTRY=$(jq -n \
+  ENTRY=$(jq -nc \
     --arg ts "$TIMESTAMP" \
     '{timestamp:$ts, hook:"decision-depth-gate", severity:"shallow_resolution", doc_resolution:true, investigated:false}')
   safe_jsonl_append "$LOG_FILE" "$ENTRY"
@@ -70,7 +84,7 @@ if [[ "$HAS_INVESTIGATION" == "false" ]]; then
     primitive_intervention_emit "decision-depth-gate" "hooks/decision-depth-gate.sh" "warn" "shallow_resolution" "agent-output" ".cognitive-os/metrics/decision-depth-gate.jsonl" "Agent" || true
   fi
 else
-  ENTRY=$(jq -n \
+  ENTRY=$(jq -nc \
     --arg ts "$TIMESTAMP" \
     '{timestamp:$ts, hook:"decision-depth-gate", severity:"pass", doc_resolution:true, investigated:true}')
   safe_jsonl_append "$LOG_FILE" "$ENTRY"

@@ -100,15 +100,12 @@ elif cos_git_matches_subcommand "$COMMAND" 'reset'; then
     TRIGGER_LABEL="post-reset"
 fi
 
-# ── Check exit code of the tool output (best-effort, don't block) ────────────
-# Only scan if the prior command appears to have succeeded or we can't tell.
-# (A failed rebase --continue still might have moved some refs.)
-TOOL_EXIT_CODE=""
-if [ -n "$INPUT" ] && command -v jq >/dev/null 2>&1; then
-    TOOL_EXIT_CODE=$(echo "$INPUT" | jq -r '.tool_response.exit_code // empty' 2>/dev/null || true)
-fi
-# If we know the command failed (non-zero exit), still run the scan —
-# a partial rebase can still create dangling commits.
+# NOTE: there is deliberately no exit-code gate here. The harness never sends
+# `exit_code` — not at the top level and not under `tool_response` (see
+# hooks/_lib/tool-outcome.sh for the measurement). The removed read of
+# `.tool_response.exit_code` was a phantom-field read that always yielded "".
+# It is moot anyway: a rebase that FAILS can still leave dangling commits, so
+# the scan must run either way.
 
 # ── Invoke the scanner ───────────────────────────────────────────────────────
 SCANNER="$PROJECT_DIR/scripts/orphan_commit_scan.py"
@@ -122,13 +119,19 @@ if ! command -v python3 >/dev/null 2>&1; then
 fi
 
 # Run the scanner; capture its output
-SCAN_OUTPUT=$(python3 "$SCANNER" \
+# `$?` after `|| true` is the exit code of `true`, not of the scanner. Capturing
+# it that way pinned SCAN_EXIT at 0 forever and made the operator alert below
+# unreachable across 8508 recorded invocations. The if/else form keeps the
+# "never abort the hook" property while preserving the real code.
+if SCAN_OUTPUT=$(python3 "$SCANNER" \
     --since "1 hour ago" \
     --trigger "$TRIGGER_LABEL" \
     --project-dir "$PROJECT_DIR" \
-    2>/dev/null) || true
-
-SCAN_EXIT=$?
+    2>/dev/null); then
+    SCAN_EXIT=0
+else
+    SCAN_EXIT=$?
+fi
 
 # ── Emit human-readable alert on stderr if orphans were found ────────────────
 if [ "$SCAN_EXIT" -eq 1 ] && [ -n "$SCAN_OUTPUT" ]; then

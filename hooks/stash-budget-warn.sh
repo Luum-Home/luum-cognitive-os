@@ -41,8 +41,21 @@ THRESHOLD="${COS_STASH_BUDGET_WARN_THRESHOLD:-3}"
 
 # ── Count matching stashes ─────────────────────────────────────────────────────
 # Patterns: auto-pre-agent-* and auto-checkpoint-*
+# `grep -c` ALREADY prints "0" and exits 1 when nothing matches, so the old
+# `|| echo "0"` appended a SECOND "0": STASH_COUNT became the two-line string
+# "0\n0". `[ "0\n0" -le 3 ]` then errors with "integer expression expected" and
+# the guard falls THROUGH to the warning — the hook announced "BUDGET EXCEEDED"
+# with zero stashes, and then died inside `printf %d` via the ERR trap before
+# writing either the cooldown file or the metrics row. 335 recorded runs, 0
+# rows in .cognitive-os/metrics/stash-budget.jsonl. `|| true` keeps the ERR
+# trap from firing on grep's no-match exit; the case guard makes a non-numeric
+# count impossible to reach the arithmetic below.
 STASH_COUNT=$(git -C "$PROJECT_DIR" stash list 2>/dev/null \
-  | grep -c -E 'auto-pre-agent-|auto-checkpoint-' || echo "0")
+  | grep -c -E 'auto-pre-agent-|auto-checkpoint-' || true)
+STASH_COUNT="${STASH_COUNT%%[!0-9]*}"
+case "$STASH_COUNT" in
+  ''|*[!0-9]*) STASH_COUNT=0 ;;
+esac
 
 # Exit early if under threshold
 if [ "$STASH_COUNT" -le "$THRESHOLD" ]; then
