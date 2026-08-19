@@ -119,7 +119,32 @@ behavior_depth_policy:
     # here on 2026-08-16 as a provisional measure is absorbed by that fix.
     # Full movement table (47 rows, both directions) and the command that
     # reproduces it: docs/06-Daily/reports/clasificador-profundidad-2026-08-18.md
-    structural: 457
+    # 2026-08-19: 457 -> 460. Reconciliado por CRECIMIENTO DE POBLACION, no
+    # aflojado, y con un conflicto de diseno que conviene dejar escrito porque
+    # se va a repetir con cada primitiva os-only nueva:
+    #
+    #   scripts/hook_test_reality_census.py
+    #   scripts/hook_artifact_derivation.py
+    #   scripts/signal_orphan_verify.py
+    #
+    # Los tres nacieron hoy, los tres tienen prueba pareja que los EJECUTA
+    # (tests/contracts/test_<stem>.py: corre el script, verifica la convencion
+    # de exit codes, y exige que no publique un conteo sin poblacion ni bucket
+    # de ceguera). No estan en structural por estar debilmente probados.
+    #
+    # EL CONFLICTO: dos gates se contradicen. test_os_only_scope_family EXIGE
+    # membresia en la familia, y esa membresia clasifica structural; ademas
+    # _match_depth cae al nombre del DIRECTORIO, y 'contracts' matchea
+    # structural. Asi que toda prueba funcional que viva en tests/contracts/
+    # se lee como structural aunque ejercite el artefacto. El agregador toma
+    # el maximo (linea 174), pero nunca ve el functional.
+    #
+    # Consecuencia: NINGUNA primitiva os-only nueva puede entrar sin subir este
+    # techo. El presupuesto es un censo de cabezas en conflicto con el
+    # crecimiento, no un trinquete de calidad. Arreglar la inferencia por
+    # directorio --tercera inferencia por nombre encontrada hoy-- lo volveria
+    # un trinquete de verdad y permitiria bajarlo.
+    structural: 460
 families:
   hooks:
     marker: '# SCOPE: <scope>'
