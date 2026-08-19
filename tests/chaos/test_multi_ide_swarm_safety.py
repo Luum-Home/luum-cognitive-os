@@ -351,7 +351,7 @@ def test_agent_b_fix_overwrite_incident_reset_is_blocked(scratch_project: Path) 
     assert (scratch_project / "target.txt").read_text(encoding="utf-8") == "agent-b regex fix\n"
 
 
-def test_cross_ide_parity_marks_shared_gates_and_known_matcher_gaps() -> None:
+def test_cross_ide_parity_covers_bash_and_write_side_gates() -> None:
     claude = json.loads((ROOT / ".claude" / "settings.json").read_text(encoding="utf-8"))
     codex = json.loads((ROOT / ".codex" / "hooks.json").read_text(encoding="utf-8"))
     claude_text = json.dumps(claude)
@@ -365,8 +365,30 @@ def test_cross_ide_parity_marks_shared_gates_and_known_matcher_gaps() -> None:
         assert shared_hook in claude_text or bash_dispatcher in claude_text
         assert shared_hook in codex_text or bash_dispatcher in codex_text
 
+    # Write-side parity. This assertion used to read `not in codex_text`: back
+    # then the Codex projection dropped Edit/Write/MultiEdit on the floor, so
+    # write-side guard coverage for Codex was exactly zero and the test pinned
+    # that gap. 5ba5ab18f closed it by mapping those three tools onto
+    # apply_patch, Codex's only file-mutation tool — so the gap is gone and the
+    # assertion is inverted rather than deleted: parity between harnesses is
+    # precisely what this test exists to protect.
+    #
+    # Checked structurally, not by substring: presence in the JSON text would
+    # also be satisfied by a registration under some matcher that never fires
+    # on a write, which is coverage on paper only.
     assert "concurrent-write-guard.sh" in claude_text
-    assert "concurrent-write-guard.sh" not in codex_text
+    codex_write_matchers = {
+        group.get("matcher")
+        for groups in codex["hooks"].values()
+        for group in groups
+        for entry in group.get("hooks", [])
+        if "concurrent-write-guard.sh" in entry.get("command", "")
+    }
+    assert "^apply_patch$" in codex_write_matchers, (
+        "concurrent-write-guard.sh must be registered for Codex under the "
+        "apply_patch matcher (the Edit/Write/MultiEdit equivalent). Found "
+        f"matchers: {sorted(m for m in codex_write_matchers if m)}"
+    )
 
 
 @pytest.mark.parametrize("harness", ["claude", "codex"])
