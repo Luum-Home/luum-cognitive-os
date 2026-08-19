@@ -64,7 +64,8 @@
       "consumer_families": {
         "config": 5,
         "hook": 2,
-        "script": 1
+        "script": 1,
+        "test": 2
       },
       "consumers": [
         {
@@ -98,11 +99,20 @@
         {
           "family": "script",
           "path": "scripts/edit-coop.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_edit-lock-drain-parked.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_edit-lock-process-negotiations.py"
         }
       ],
       "distribution": "maintainer",
       "evidence": [
         "lifecycle",
+        "test_consumers:2",
         "hook_consumers:2",
         "config_consumers:5",
         "script_consumers:1"
@@ -122,7 +132,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 8,
+      "total_consumers": 10,
       "wrapper_for": null
     },
     {
@@ -7285,7 +7295,7 @@
         "rule": 75,
         "script": 618,
         "skill": 114,
-        "test": 1347,
+        "test": 1349,
         "workflow": 2
       },
       "consumers": [
@@ -18755,6 +18765,14 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_edit-lock-drain-parked.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_edit-lock-process-negotiations.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_engram_bundle_exporter.py"
         },
         {
@@ -21615,7 +21633,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:114",
-        "test_consumers:1347",
+        "test_consumers:1349",
         "hook_consumers:197",
         "workflow_consumers:2",
         "doc_consumers:1133",
@@ -21637,7 +21655,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 3580,
+      "total_consumers": 3582,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -52877,7 +52895,7 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 12,
+        "config": 13,
         "doc": 67,
         "hook": 2,
         "script": 14,
@@ -52908,6 +52926,10 @@
         {
           "family": "config",
           "path": "manifests/pending-truth.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
         },
         {
           "family": "config",
@@ -53363,7 +53385,7 @@
         "test_consumers:21",
         "hook_consumers:2",
         "doc_consumers:67",
-        "config_consumers:12",
+        "config_consumers:13",
         "script_consumers:14"
       ],
       "install_surface": "bootstrap",
@@ -53380,7 +53402,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 117,
+      "total_consumers": 118,
       "wrapper_for": "scripts/cos-init.sh"
     },
     {
@@ -59989,7 +60011,7 @@
       "consumer_families": {
         "config": 5,
         "doc": 8,
-        "hook": 3,
+        "hook": 4,
         "script": 4,
         "skill": 1,
         "test": 9
@@ -60046,6 +60068,10 @@
         {
           "family": "doc",
           "path": "docs/07-Capabilities/acc/latest.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/edit-lock-drain-parked.sh"
         },
         {
           "family": "hook",
@@ -60121,7 +60147,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:9",
-        "hook_consumers:3",
+        "hook_consumers:4",
         "doc_consumers:8",
         "config_consumers:5",
         "script_consumers:4"
@@ -60140,7 +60166,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 30,
+      "total_consumers": 31,
       "wrapper_for": null
     },
     {
