@@ -21064,7 +21064,7 @@
         "hook": 1,
         "rule": 1,
         "script": 1,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -21157,6 +21157,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_research-first-protocol.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_adr_router.py"
         }
       ],
@@ -21166,7 +21170,7 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "script_consumers:1",
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:10",
         "config_consumers:7"
       ],
@@ -21180,7 +21184,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 23
+      "total_consumers": 24
     },
     {
       "confidence": "high",
