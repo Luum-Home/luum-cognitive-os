@@ -245,6 +245,38 @@ def is_reader(exe, rest):
 
 HEREDOC=re.compile(r"<<-?\s*(['\"]?)([A-Za-z_][A-Za-z0-9_]*)\1")
 
+# Commands that consume a heredoc as DATA even though they can write. tee and dd
+# copy stdin to the files named in their own arguments; neither ever interprets
+# it. Those arguments are still judged by the ordinary segment scan, so
+# `tee hooks/y.sh <<EOF` still blocks -- what stops is reading the prose of a
+# report authored with `tee docs/r.md <<MD` as a program because it mentions a
+# protected path. This set is used ONLY to classify a heredoc body; adding these
+# to the readers list would have allowed the write itself.
+HEREDOC_DATA_CONSUMERS={'tee','dd'}
+
+
+def heredoc_terms_of(line):
+    """[(terminator, body_is_program)] for one line, left to right.
+
+    A heredoc belongs to the SEGMENT carrying its << , not to the first word of
+    the LINE. `mkdir -p d && cat > d/f <<MD` feeds cat, and resolving the whole
+    line resolved mkdir -- so a report authored that way had its prose read as a
+    program, and every protected path it mentioned became a write. The same
+    mistake ran the other way and cost more: `cat f && python3 <<PY` resolved to
+    cat, so a real program was read as inert data and its writes were invisible.
+    """
+    out=[]
+    for seg in split_segments(line):
+        sexe, srest = resolve_exe(split_words(seg))
+        seg_is_program = not (
+            sexe is not None
+            and (is_reader(sexe, srest) or sexe in HEREDOC_DATA_CONSUMERS)
+        )
+        for m in HEREDOC.finditer(seg):
+            out.append((m.group(2), seg_is_program))
+    return out
+
+
 def strip_heredocs(cmd):
     # Whether a heredoc body is data or program depends on who is being fed.
     # Fed to a reader it is data, and reading it as commands turns the most
@@ -259,13 +291,11 @@ def strip_heredocs(cmd):
     lines=cmd.split('\n'); out=[]; programs=[]; docs=[]; i=0
     while i < len(lines):
         line=lines[i]; out.append(line)
-        terms=[m.group(2) for m in HEREDOC.finditer(line)]
+        terms=heredoc_terms_of(line)
         i+=1
         if not terms:
             continue
-        exe, rest = resolve_exe(split_words(line))
-        body_is_program = not (exe is not None and is_reader(exe, rest))
-        for term in terms:
+        for term, body_is_program in terms:
             body=[]
             while i < len(lines) and lines[i].strip() != term:
                 body.append(lines[i]); i+=1
@@ -332,6 +362,12 @@ TOKEN_PATHS=re.compile(r"[A-Za-z0-9_.~/-]+")
 REDIRECT=re.compile(r"(?:&|\d+)?>>?\|?\s*(['\"]?)([^\s'\"<>&;|]+)\1")
 
 SUBST=re.compile(r'\$\(([^()]*)\)')
+# Process substitution is a command too, and it was never analysed. In
+# `diff <(sed -i s/a/b/ hooks/x.sh) f` the outer word is diff -- a reader -- so
+# the segment was waved through while sed rewrote a protected file. Measured
+# 2026-08-19: two such forms passed the guard. Lifted into its own segment,
+# exactly like $(...), the inner command is judged on its own merits.
+PROCSUB=re.compile(r'[<>]\(([^()]*)\)')
 
 def lift_substitutions(cmd):
     """Return (outer, [inner...]) with $(...) bodies lifted out.
@@ -348,11 +384,14 @@ def lift_substitutions(cmd):
     and still reaches the reader check as before.
     """
     inner = [m.group(1) for m in SUBST.finditer(cmd)]
-    return SUBST.sub(' ', cmd), inner
+    cmd = SUBST.sub(' ', cmd)
+    inner += [m.group(1) for m in PROCSUB.finditer(cmd)]
+    cmd = PROCSUB.sub(' ', cmd)
+    return cmd, inner
 
 
 WRITE_PRIMITIVES = (
-    "open(", "write_text", "write_bytes", "writelines", ".write(", "os.replace",
+    "write_text", "write_bytes", "writelines", ".write(", "os.replace",
     "os.rename", "os.remove", "os.unlink", "shutil.copy", "shutil.move",
     "shutil.rmtree", "mkdir", "touch", "truncate", "rmdir", "symlink_to",
     "chmod", "unlink(", "fdopen", "NamedTemporary",
@@ -361,6 +400,105 @@ WRITE_PRIMITIVES = (
 # path, and a redirection of that stream into a protected file is already caught
 # by REDIRECT on the header line. Including them made a heredoc that only prints
 # -- the exact legitimate case this rule exists to admit -- block anyway.
+
+
+_PAREN_OPEN=chr(40)
+_GROUP_OPEN=chr(40)+chr(91)+chr(123)
+_GROUP_CLOSE=chr(41)+chr(93)+chr(125)
+_QUOTES=chr(34)+chr(39)
+OPEN_CALL=re.compile(r'\bopen\s*' + re.escape(_PAREN_OPEN))
+READ_ONLY_MODE=re.compile(r'^[rbtU]+$')
+KWARG=re.compile(r'^[A-Za-z_][A-Za-z0-9_]*\s*=[^=]')
+
+
+def _balanced_args(text, start):
+    """Argument text of the call whose opening bracket sits at `start`.
+
+    None when the brackets do not balance, which the caller reads as a write:
+    text this scanner cannot parse is not text it may clear.
+    """
+    depth=0; q=None; i=start; n=len(text)
+    while i < n:
+        c=text[i]
+        if q is not None:
+            if c=='\\':
+                i+=2; continue
+            if c==q:
+                q=None
+            i+=1; continue
+        if c in _QUOTES:
+            q=c; i+=1; continue
+        if c in _GROUP_OPEN:
+            depth+=1
+        elif c in _GROUP_CLOSE:
+            depth-=1
+            if depth==0:
+                return text[start+1:i]
+        i+=1
+    return None
+
+
+def _split_top_level(argtext):
+    """Split an argument list on commas that are not nested and not quoted."""
+    out=[]; cur=[]; depth=0; q=None; i=0; n=len(argtext)
+    while i < n:
+        c=argtext[i]
+        if q is not None:
+            cur.append(c)
+            if c=='\\' and i+1 < n:
+                cur.append(argtext[i+1]); i+=2; continue
+            if c==q:
+                q=None
+            i+=1; continue
+        if c in _QUOTES:
+            q=c; cur.append(c); i+=1; continue
+        if c in _GROUP_OPEN:
+            depth+=1
+        elif c in _GROUP_CLOSE:
+            depth-=1
+        elif c==',' and depth==0:
+            out.append(''.join(cur)); cur=[]; i+=1; continue
+        cur.append(c); i+=1
+    out.append(''.join(cur))
+    return [a.strip() for a in out]
+
+
+def _open_can_write(body):
+    """False only when every open call in `body` provably opens for reading.
+
+    Python's open defaults to mode r, and a mode built only from r, b, t and U
+    cannot write. That is a property of the call, checkable rather than a guess
+    about intent. Everything else is a write: a mode carrying w, a, x or + , a
+    mode that is a variable or an expression, an os.open flag word, or a call
+    whose brackets this scanner cannot balance.
+
+    Before this, the bare substring open( counted as a write wherever it
+    appeared, so json.load(open(SETTINGS)) -- reading the very file the guard
+    exists to protect -- was blocked as writing to it. Measured 2026-08-19 over
+    the session transcripts: that shape accounted for the largest single family
+    of blocks on read-only work.
+    """
+    for m in OPEN_CALL.finditer(body):
+        args=_balanced_args(body, m.end()-1)
+        if args is None:
+            return True
+        parts=_split_top_level(args)
+        mode=None
+        if len(parts) >= 2 and not KWARG.match(parts[1]):
+            mode=parts[1]
+        for p in parts:
+            if p.startswith('mode='):
+                mode=p[5:].strip()
+        if mode is None:
+            if not args.strip():
+                return True
+            continue
+        if len(mode) >= 2 and mode[0] in _QUOTES and mode[-1] == mode[0]:
+            inner=mode[1:-1]
+            if inner and READ_ONLY_MODE.match(inner):
+                continue
+        return True
+    return False
 
 
 def body_can_write(body):
@@ -374,7 +512,9 @@ def body_can_write(body):
     intent, so it is checkable rather than heuristic. `print(` counts as a write
     because stdout can be redirected by the caller.
     """
-    return any(tok in body for tok in WRITE_PRIMITIVES)
+    if any(tok in body for tok in WRITE_PRIMITIVES):
+        return True
+    return _open_can_write(body)
 
 
 # --- Patch appliers: the destinations are inside the patch -------------------
