@@ -8,6 +8,8 @@ fails the test with a file-named diagnostic.
 from __future__ import annotations
 
 import hashlib
+import os
+import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -85,6 +87,71 @@ def restore_source_mutations(root: Path, snapshot: dict[Path, SourceSnapshot]) -
         path.unlink()
         mutations.append(SourceMutation("added-removed", rel_path.as_posix()))
     return mutations
+
+
+def _uncommitted_protected_paths(root: Path) -> list[str]:
+    """Paths under the protected dirs that carry uncommitted work right now."""
+    try:
+        proc = subprocess.run(
+            ["git", "-C", str(root), "status", "--porcelain", "--untracked-files=all", "--", *PROTECTED_DIRS],
+            capture_output=True, text=True, timeout=30, check=False,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return []          # not a git checkout, or git unavailable: nothing to assert against
+    if proc.returncode != 0:
+        return []
+    return [line[3:].strip() for line in proc.stdout.splitlines() if line.strip()]
+
+
+@pytest.fixture(scope="session", autouse=True)
+def chaos_requires_clean_protected_tree():
+    """Refuse to run the chaos lane over uncommitted work in the protected dirs.
+
+    The restore below cannot tell WHO changed a file: it compares bytes against a
+    snapshot and rewrites anything that differs. Under one process that is exactly
+    right -- the only writer is the test. Under concurrency it is exactly wrong,
+    and it destroys the other writer's work silently, because the file comes back
+    byte-identical to HEAD and `git status` on it is empty afterwards.
+
+    Measured 2026-08-19: three separate uncommitted edits to
+    scripts/detect_runner_capacity.py and scripts/pytest-with-summary.sh vanished
+    while chaos tests ran in another process. The teardown named the file in its
+    own failure message and nobody was reading that output -- the work simply was
+    not there any more. A fourth loss missed the runner patches by 35 seconds.
+
+    The irony is the point: ADR-245 exists BECAUSE of concurrency. Its context
+    records "a concurrent agent reading the same checkout observed an inconsistent
+    module body". The guard written to protect concurrent agents was eating their
+    work.
+
+    This precondition does not weaken ADR-245 -- snapshot-and-revert stays exactly
+    as decided. It makes the decision's own assumption true by construction: with
+    the protected dirs clean at session start, anything dirty at teardown WAS the
+    test. Committing or stashing first costs seconds; the alternative costs work
+    that leaves no trace.
+
+    CI is unaffected: a fresh checkout has nothing uncommitted. Escape hatch for a
+    deliberate local run: COS_ALLOW_CHAOS_DIRTY_TREE=1.
+    """
+    if os.environ.get("COS_ALLOW_CHAOS_DIRTY_TREE") == "1":
+        yield
+        return
+
+    dirty = _uncommitted_protected_paths(_repo_root())
+    if dirty:
+        shown = "\n  ".join(dirty[:20])
+        more = f"\n  ... and {len(dirty) - 20} more" if len(dirty) > 20 else ""
+        pytest.fail(
+            "ADR-245: the chaos lane restores every file under "
+            f"{', '.join(PROTECTED_DIRS)} to its pre-test bytes, and cannot tell "
+            "your uncommitted work from a test's mutation. It would be reverted "
+            "silently, with no trace left in git status.\n\n"
+            f"Uncommitted right now:\n  {shown}{more}\n\n"
+            "Commit or stash these first. To run anyway, accepting that they may "
+            "be reverted: COS_ALLOW_CHAOS_DIRTY_TREE=1",
+            pytrace=False,
+        )
+    yield
 
 
 @pytest.fixture(autouse=True)
