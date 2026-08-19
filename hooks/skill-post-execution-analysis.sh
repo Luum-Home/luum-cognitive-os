@@ -44,6 +44,7 @@ fi
 # tests should not pay that cost.
 case "$PAYLOAD" in
   *'"tool_name"'*'"Agent"'*|*'"tool_name":"Agent"'*|*'"skill_name"'*) ;;
+  *'"tool_name"'*'"Skill"'*|*'"tool_name":"Skill"'*) ;;
   *) exit 0 ;;
 esac
 
@@ -72,14 +73,26 @@ if isinstance(tool_resp, str):
     except Exception:
         tool_resp = {}
 
+# No payload of this harness carries 'skill_name'; that field was the reason
+# skill_store.db stayed at 0 bytes across 182 recorded invocations. The real
+# Agent tool_response — shape confirmed over 226 real results in the
+# ~/.claude/projects transcripts (2026-08-19) — carries agentType,
+# totalToolUseCount and totalDurationMs. The Skill tool carries the name under
+# tool_input.skill (same field hooks/skill-usage-tracker.sh reads).
+tool_input = payload.get('tool_input') or {}
+if not isinstance(tool_input, dict):
+    tool_input = {}
 skill_name = (
     payload.get('skill_name') or
     tool_resp.get('skill_name') or
-    payload.get('tool_input', {}).get('skill') or
+    tool_resp.get('agentType') or
+    tool_input.get('subagent_type') or
+    tool_input.get('skill') or
+    tool_input.get('name') or
     ''
 )
-tool_count = int(tool_resp.get('tool_count', 0) or 0)
-duration_ms = int(tool_resp.get('duration_ms', 0) or 0)
+tool_count = int(tool_resp.get('totalToolUseCount', tool_resp.get('tool_count', 0)) or 0)
+duration_ms = int(tool_resp.get('totalDurationMs', tool_resp.get('duration_ms', 0)) or 0)
 status = str(tool_resp.get('status', tool_resp.get('exit_code', 'unknown')) or 'unknown')
 agent_session_id = payload.get('session_id', os.environ.get('CLAUDE_SESSION_ID', ''))
 
