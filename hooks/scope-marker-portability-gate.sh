@@ -59,6 +59,45 @@ is_registry_path() {
   esac
 }
 
+# A primitive declares its scope in the form its own family uses.
+#
+# hooks/, rules/, scripts/ and templates/ carry a `# SCOPE:` comment in the
+# first three lines. Skills do not. Measured 2026-08-19 on this repo: of the
+# 194 source SKILL.md files in the registry, ZERO carry that comment and 190
+# declare `audience:` -- the field cos_init.py::skill_scope_allows actually
+# reads to decide projection. That reader prefers `<!-- SCOPE: -->` within the
+# first EIGHT lines, i.e. after the frontmatter, and falls back to
+# `audience:`/`scope:` anywhere in the file (project/both/adopters/human ship;
+# os/os-dev/os-only do not).
+#
+# Demanding the comment therefore reported 190 artifacts as undeclared when
+# they declare their scope and are projected accordingly, and blocked every NEW
+# skill for lacking a marker that no skill in this repo has. Wrong field, not
+# missing debt.
+#
+# The `audience:` scan is deliberately as loose as cos_init's: a gate that
+# disagrees with the projector about what counts as a declaration is worse than
+# one that is slightly permissive, because the projector is what actually ships.
+declares_scope() {
+  local abs="$1" rel="$2"
+  if head -3 "$abs" 2>/dev/null \
+      | grep -Eq '^[[:space:]]*(#|<!--|//)[[:space:]]*SCOPE:[[:space:]]*[A-Za-z]'; then
+    return 0
+  fi
+  case "$rel" in
+    */SKILL.md)
+      if head -8 "$abs" 2>/dev/null \
+          | grep -Eq '<!--[[:space:]]*SCOPE:[[:space:]]*[A-Za-z]'; then
+        return 0
+      fi
+      if grep -Eq '^[[:space:]]*(audience|scope):[[:space:]]*[A-Za-z]' "$abs" 2>/dev/null; then
+        return 0
+      fi
+      ;;
+  esac
+  return 1
+}
+
 # Resolve staged primitives that have no paired portability proof.
 # The here-document lives in a function because bash 3.2 cannot parse a
 # here-document nested inside a command substitution.
@@ -187,7 +226,7 @@ while IFS= read -r rel; do
   abs="$PROJECT_DIR/$rel"
   [ -f "$abs" ] || continue
 
-  if head -3 "$abs" 2>/dev/null | grep -Eq '^[[:space:]]*(#|<!--|//)[[:space:]]*SCOPE:[[:space:]]*[A-Za-z]'; then
+  if declares_scope "$abs" "$rel"; then
     marked_paths="$marked_paths$rel
 "
     marked_list[${#marked_list[@]}]="$rel"

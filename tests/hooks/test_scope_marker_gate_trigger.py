@@ -172,3 +172,54 @@ def test_allows_commit_without_primitives(repo: Path) -> None:
     _git(repo, "add", "README.md")
     result = run_hook(repo)
     assert result.returncode == 0, result.stdout + result.stderr
+
+
+# 5. Skills declare scope in frontmatter, not in a comment marker.
+#
+# Measured 2026-08-19 on this repo: of the 194 source SKILL.md files in the
+# primitive registry, ZERO carry a `# SCOPE:` / `<!-- SCOPE: -->` comment and
+# 190 declare `audience:` -- the field cos_init.py::skill_scope_allows actually
+# reads to decide projection (project/both/adopters/human ship, os/os-dev/
+# os-only do not). A gate that demands the comment therefore reports 190
+# artifacts as undeclared when they declare their scope and are projected
+# accordingly, and blocks every NEW skill for lacking a marker that no skill in
+# the repo has. That is the wrong field, not missing debt.
+
+SKILL_REL = "skills/probe-skill/SKILL.md"
+SKILL_PROOF = "tests/red_team/portability/test_skill_probe_skill.py"
+SKILL_BODY = "---\nname: probe-skill\naudience: {audience}\n---\n\n# probe-skill\n"
+SKILL_NO_AUDIENCE = "---\nname: probe-skill\nversion: 1.0.0\n---\n\n# probe-skill\n"
+
+
+@pytest.mark.parametrize("audience", ["project", "both", "os-dev", "os-only"])
+def test_allows_new_skill_declaring_scope_via_audience(repo: Path, audience: str) -> None:
+    write(repo, SKILL_REL, SKILL_BODY.format(audience=audience))
+    write(repo, SKILL_PROOF, PROOF_BODY)
+    _git(repo, "add", SKILL_REL, SKILL_PROOF)
+    result = run_hook(repo)
+    assert result.returncode == 0, result.stdout + result.stderr
+
+
+def test_allows_new_skill_declaring_scope_via_html_marker(repo: Path) -> None:
+    """cos_init reads `<!-- SCOPE: -->` within the first EIGHT lines, after the
+    frontmatter. Checking only three lines cannot see it."""
+    body = "---\nname: probe-skill\nversion: 1.0.0\ndescription: x\n---\n<!-- SCOPE: both -->\n"
+    write(repo, SKILL_REL, body)
+    write(repo, SKILL_PROOF, PROOF_BODY)
+    _git(repo, "add", SKILL_REL, SKILL_PROOF)
+    result = run_hook(repo)
+    assert result.returncode == 0, result.stdout + result.stderr
+
+
+def test_blocks_new_skill_that_declares_no_scope_at_all(repo: Path) -> None:
+    """The null control: recognising `audience:` must not exempt skills wholesale.
+
+    Without it the two tests above would also pass if the fix simply stopped
+    looking at SKILL.md, which retires the check instead of correcting it.
+    """
+    write(repo, SKILL_REL, SKILL_NO_AUDIENCE)
+    write(repo, SKILL_PROOF, PROOF_BODY)
+    _git(repo, "add", SKILL_REL, SKILL_PROOF)
+    result = run_hook(repo)
+    assert result.returncode == 2, result.stdout + result.stderr
+    assert "no SCOPE marker" in result.stderr
