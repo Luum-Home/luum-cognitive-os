@@ -2074,6 +2074,7 @@ hooks:
   orchestrator-skill-invocation-gate-agent:
     behavior_tests:
     - tests/contracts/test_primitive_closure_ratchet.py
+    - tests/contracts/test_skill_adherence_loop.py
     - tests/contracts/test_skill_invocation_gate.py
     - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_bash_hot_path_dispatcher_projection.py
@@ -2095,6 +2096,7 @@ hooks:
   orchestrator-skill-invocation-gate-bash:
     behavior_tests:
     - tests/contracts/test_primitive_closure_ratchet.py
+    - tests/contracts/test_skill_adherence_loop.py
     - tests/contracts/test_skill_invocation_gate.py
     - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_bash_hot_path_dispatcher_projection.py
@@ -2671,6 +2673,7 @@ hooks:
     behavior_tests:
     - tests/behavior/test_install_core_boundary.py
     - tests/behavior/test_research_compliance_guard.py
+    - tests/behavior/test_skill_feedback_tracker_skill_name.py
     - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_guard_false_positives.py
     bypass_policy: not_required_observe_only
@@ -3306,6 +3309,7 @@ hooks:
     script: hooks/skill-failure-monitor.sh
   skill-feedback-tracker:
     behavior_tests:
+    - tests/behavior/test_skill_feedback_tracker_skill_name.py
     - tests/unit/test_codex_guard_layer.py
     bypass_policy: not_required_observe_only
     criticality: standard
@@ -3339,6 +3343,7 @@ hooks:
     script: hooks/skill-frontmatter-validator.sh
   skill-invocation-logger:
     behavior_tests:
+    - tests/contracts/test_skill_adherence_loop.py
     - tests/unit/test_performance_ledger_rollups.py
     - tests/unit/test_skill_lifecycle_promoter.py
     bypass_policy: not_required_observe_only
@@ -3408,6 +3413,7 @@ hooks:
   skill-router-prompt-suggest:
     behavior_tests:
     - tests/contracts/test_context_budget_hook_wiring.py
+    - tests/contracts/test_skill_adherence_loop.py
     - tests/unit/test_context_budget_monitor.py
     - tests/unit/test_primitive_scope_classifier.py
     - tests/unit/test_skill_router_prompt_suggest_hook.py
