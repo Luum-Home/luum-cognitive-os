@@ -8,24 +8,35 @@ que es una pregunta distinta —y mas facil de contestar que si— a "hay un tes
 que lo corre". Este script separa las dos, en un escalon de tres niveles:
 
     EXERCISED   el nombre viaja como argumento dentro de un nodo ``Call``:
-                algo lo invoca, lo alimenta o lo parametriza.
+                algo lo invoca, lo alimenta o lo parametriza. Vale tanto si el
+                literal esta escrito en el argumento como si llega ahi a traves
+                del nombre al que esta ligado (``HOOK = ...`` / ``run(HOOK)``).
     NAMED_ONLY  el nombre existe como literal string en el test y no se le pasa
                 a nada. Es una mencion, no una ejecucion.
     NO_TEST     ningun test lo nombra siquiera.
 
 POR QUE HAY UNA CUARTA CUBETA Y NO TRES
 ---------------------------------------
-La tecnica de arriba tiene un punto ciego conocido y no lo puede tapar: la
-INDIRECCION. Un test que escribe
+El punto ciego de la tecnica es la INDIRECCION: el literal esta ligado a un
+nombre y el uso vive en otra linea, atras de ese nombre. Buena parte de esa
+ceguera se resuelve siguiendo el nombre (``_NameFlow``, mas abajo): si el
+nombre entra como argumento de un ``Call``, el literal que transporta esta
+siendo pasado a algo y eso es EXERCISED; si todos sus usos mueren en la
+sentencia que lo lee (``assert BATERIA <= despachados``), es una mencion.
+
+Lo que NO se resuelve es cuando el valor se escapa por una via que este
+instrumento no sigue:
 
     CASES = ["hooks/x.sh", "hooks/y.sh"]
     ...
-    run(CASES[0])
+    run(CASES[0])              # ¿cual de los dos?
 
-nombra el hook en un literal que NO es argumento de ningun ``Call``, y sin
-embargo lo ejercita. Clasificarlo ``NAMED_ONLY`` seria acusar de mencion vacia
-a un test que corre el hook. Un archivo de test que no parsea es el mismo caso
-por otra via: el instrumento no puede leerlo.
+    faltantes = BATERIA - despachados   # el valor se muda a otro nombre
+
+Ahi no se puede afirmar ni que se ejercita ni que no. Clasificarlo
+``NAMED_ONLY`` seria acusar de mencion vacia a un test que quiza corre el hook;
+clasificarlo ``EXERCISED`` seria inventar. Un archivo de test que no parsea es
+el mismo caso por otra via: el instrumento no puede leerlo.
 
 Los dos caen en ``UNCLASSIFIABLE``, que no es un nivel de calidad sino una
 declaracion sobre el instrumento: *esto no lo puedo juzgar*. Los porcentajes se
@@ -54,6 +65,11 @@ SESGOS CONOCIDOS DE LA TECNICA (declarados, no escondidos)
     medicion la subestima antes que inflarla.
   - Optimista: ``Path("hooks/x.sh")`` cuenta como ``EXERCISED`` aunque solo
     construya una ruta. Es un ``Call`` con el nombre adentro.
+  - El seguimiento del nombre es de un salto y cobarde: subscript, alias,
+    ``return``, desempaquetado y comprension cortan con ceguera en vez de con
+    una conclusion. Seguir el alias de ``faltantes = BATERIA - despachados``,
+    por ejemplo, terminaria en el ``sorted(faltantes)`` del MENSAJE del assert
+    y devolveria EXERCISED por un texto de error.
   - Los tests censo (``HOOK_QUALITY_COVERAGE = "census"``) NO se cuentan como
     cobertura de ningun hook en particular —los excluye ``discover_behavior_tests``
     a proposito— pero se reportan aparte para que no parezcan inexistentes.
@@ -133,6 +149,150 @@ def _string_constants(node: ast.AST) -> list[int]:
     ]
 
 
+# --------------------------------------------------------------------------- #
+# Flujo de un literal a traves del nombre al que esta ligado
+# --------------------------------------------------------------------------- #
+# Clases de uso de un nombre, de mas a menos evidencia:
+#   ARG       algun uso del nombre viaja como argumento de un Call. El literal
+#             que ese nombre transporta ESTA siendo pasado a algo.
+#   ESCAPE    el nombre se lee, pero el valor se va por una via que este
+#             instrumento no sigue (subscript, return, alias, comprension).
+#             No se puede afirmar ni que se pasa ni que no: es ceguera.
+#   TERMINAL  todos los usos del nombre mueren en la sentencia que lo lee
+#             (compare, assert, receptor de un metodo). El literal existe y no
+#             se le pasa a nada: es una mencion.
+#   NONE      nadie lee el nombre. Constante muerta = mencion, no cobertura.
+_ARG = "arg"
+_ESCAPE = "escape"
+_TERMINAL = "terminal"
+_NONE = "none"
+_USE_RANK = {_ARG: 3, _ESCAPE: 2, _TERMINAL: 1, _NONE: 0}
+
+# Un `for a in B: for c in a: run(c)` son dos saltos. Mas que eso deja de ser
+# seguimiento y empieza a ser adivinanza: se corta y se declara ceguera.
+_MAX_HOPS = 3
+
+
+def _binding_targets(target: ast.AST) -> list[str] | None:
+    """Nombres que liga un ``for ... in``. ``None`` si no es un Name simple.
+
+    Un desempaquetado (``for a, b in PAIRS``) reparte partes del elemento entre
+    varios nombres y este instrumento no sabe cual parte lleva el literal.
+    Devolver ``None`` es lo que hace que ese caso termine en ceguera y no en
+    una afirmacion inventada.
+    """
+    if isinstance(target, ast.Name):
+        return [target.id]
+    return None
+
+
+class _NameFlow:
+    """Responde: ¿lo que este nombre transporta se le pasa a algun Call?
+
+    Camina hacia ARRIBA desde cada lectura del nombre hasta encontrar un nodo
+    que decida. Es deliberadamente cobarde: cualquier via por la que el valor
+    pueda escaparse sin que se vea (subscript, return, alias, comprension) corta
+    el analisis con ``ESCAPE``, no con una conclusion.
+    """
+
+    def __init__(self, tree: ast.AST) -> None:
+        self._parent: dict[int, ast.AST] = {}
+        self._loads: dict[str, list[ast.Name]] = {}
+        self.bindings: list[tuple[list[str] | None, ast.AST]] = []
+        for node in ast.walk(tree):
+            for child in ast.iter_child_nodes(node):
+                self._parent[id(child)] = node
+            if isinstance(node, ast.Name) and isinstance(node.ctx, ast.Load):
+                self._loads.setdefault(node.id, []).append(node)
+            elif isinstance(node, ast.Assign):
+                targets = [t.id for t in node.targets if isinstance(t, ast.Name)]
+                if targets and node.value is not None:
+                    self.bindings.append((targets, node.value))
+            elif isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name):
+                if node.value is not None:
+                    self.bindings.append(([node.target.id], node.value))
+            elif isinstance(node, (ast.For, ast.AsyncFor, ast.comprehension)):
+                # Coleccion ANONIMA: un `for h in (<literal>, <literal>): run(h)`
+                # liga cada literal a la variable del loop sin pasar por ningun
+                # nombre de modulo. Sin esto el literal cae en `plain` y el hook
+                # se reporta como mencion vacia cuando el test lo esta corriendo
+                # —un falso NAMED_ONLY, tan mentira como un falso EXERCISED.
+                self.bindings.append((_binding_targets(node.target), node.iter))
+        self._cache: dict[str, str] = {}
+
+    # -- posicion de UNA lectura ------------------------------------------- #
+    def _position(self, node: ast.AST) -> tuple[str, list[str] | None]:
+        """Clase de esta lectura. El segundo campo son los nombres del salto."""
+        cur = node
+        for _ in range(64):  # cota dura: un arbol no anida tanto
+            parent = self._parent.get(id(cur))
+            if parent is None:
+                return _TERMINAL, None
+            if isinstance(parent, ast.Subscript) and parent.value is cur:
+                # `CASES[0]` elige UN elemento y no se sabe cual. Afirmar que
+                # todos los literales de CASES se ejercitan seria inventar.
+                return _ESCAPE, None
+            if isinstance(parent, ast.Call):
+                if cur is not parent.func:
+                    return _ARG, None
+                # Posicion ``func``: `X.issubset(y)` no pasa X a nadie. Pero el
+                # RESULTADO puede escaparse (`p = X.resolve()`), asi que se
+                # sigue subiendo en vez de cerrar en TERMINAL.
+            elif isinstance(parent, (ast.For, ast.AsyncFor)) and parent.iter is cur:
+                return "iter", _binding_targets(parent.target)
+            elif isinstance(parent, ast.comprehension) and parent.iter is cur:
+                return "iter", _binding_targets(parent.target)
+            elif isinstance(parent, (ast.Return, ast.Yield, ast.YieldFrom, ast.Await)):
+                return _ESCAPE, None
+            elif isinstance(parent, (ast.Assign, ast.AugAssign, ast.AnnAssign)):
+                return _ESCAPE, None
+            elif isinstance(parent, ast.Lambda) and parent.body is cur:
+                return _ESCAPE, None
+            elif isinstance(parent, (ast.ListComp, ast.SetComp, ast.GeneratorExp)):
+                if parent.elt is cur:
+                    return _ESCAPE, None
+            elif isinstance(parent, ast.DictComp):
+                if parent.key is cur or parent.value is cur:
+                    return _ESCAPE, None
+            elif isinstance(parent, ast.withitem):
+                return _ESCAPE, None
+            elif isinstance(parent, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef, ast.Module)):
+                return _TERMINAL, None
+            cur = parent
+        return _ESCAPE, None
+
+    # -- clase de UN nombre ------------------------------------------------- #
+    def use_class(self, name: str, _hops: int = 0, _seen: frozenset[str] = frozenset()) -> str:
+        if _hops == 0 and name in self._cache:
+            return self._cache[name]
+        if name in _seen or _hops > _MAX_HOPS:
+            return _ESCAPE
+        loads = self._loads.get(name)
+        if not loads:
+            return _NONE
+        best = _TERMINAL
+        for load in loads:
+            kind, targets = self._position(load)
+            if kind == "iter":
+                if targets is None:
+                    kind = _ESCAPE
+                else:
+                    hopped = [
+                        self.use_class(t, _hops + 1, _seen | {name}) for t in targets
+                    ]
+                    # Un nombre de loop que nadie lee no transporta nada: el
+                    # literal sigue sin pasarsele a nadie -> mencion.
+                    hopped = [_TERMINAL if h == _NONE else h for h in hopped]
+                    kind = max(hopped, key=lambda k: _USE_RANK[k])
+            if _USE_RANK[kind] > _USE_RANK[best]:
+                best = kind
+            if best == _ARG:
+                break
+        if _hops == 0:
+            self._cache[name] = best
+        return best
+
+
 def file_evidence(path: Path, text: str) -> dict[str, Any]:
     """Parte el archivo en tres bolsas de texto, una por nivel de evidencia.
 
@@ -147,8 +307,11 @@ def file_evidence(path: Path, text: str) -> dict[str, Any]:
     coincida con el de ``discover_behavior_tests``, y hay un test que lo prueba
     sobre el corpus real en vez de confiar en la lectura del codigo.
 
-    Un solo recorrido del arbol: el corpus son ~1000 archivos y cada recorrido
-    extra se paga mil veces.
+    El corpus son ~1300 archivos y cada recorrido extra se paga mil veces: el
+    arbol se recorre una vez para las constantes y los Call, y otra para armar
+    el mapa de padres y las lecturas de cada nombre. Las clases de uso se
+    cachean por nombre dentro del archivo, asi que una constante leida en
+    veinte lugares se resuelve una sola vez.
     """
     try:
         tree = ast.parse(text)
@@ -158,35 +321,40 @@ def file_evidence(path: Path, text: str) -> dict[str, Any]:
     excluded = _excluded_constant_ids(tree)
 
     call_ids: set[int] = set()
-    assignments: list[tuple[list[str], ast.AST]] = []
-    loaded: set[str] = set()
     constants: list[tuple[int, str]] = []
 
     for node in ast.walk(tree):
         if isinstance(node, ast.Constant) and isinstance(node.value, str):
             constants.append((id(node), node.value))
-        elif isinstance(node, ast.Name) and isinstance(node.ctx, ast.Load):
-            loaded.add(node.id)
         elif isinstance(node, ast.Call):
             # Argumentos y keywords, nunca ``func``: `{...}.issubset(x)` menciona
             # el hook adentro del subarbol del Call pero no se lo pasa a nadie.
             for arg in list(node.args) + [kw.value for kw in node.keywords]:
                 call_ids.update(_string_constants(arg))
-        elif isinstance(node, ast.Assign):
-            targets = [t.id for t in node.targets if isinstance(t, ast.Name)]
-            if targets and node.value is not None:
-                assignments.append((targets, node.value))
-        elif isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name):
-            if node.value is not None:
-                assignments.append(([node.target.id], node.value))
 
-    # Indireccion: el literal esta ligado a un nombre que despues SE LEE, y el uso
-    # vive en otra linea atras de ese nombre. Si nadie lee el nombre, el literal
-    # esta muerto y no hay indireccion que resolver.
-    indirect_ids: set[int] = set()
-    for targets, value in assignments:
-        if any(name in loaded for name in targets):
-            indirect_ids.update(_string_constants(value))
+    # Indireccion: el literal esta ligado a un nombre y el uso vive atras de ese
+    # nombre, en otra linea. La clase de uso del nombre decide en cual de las
+    # tres bolsas cae el literal; ``_NameFlow`` solo devuelve ``_ARG`` cuando
+    # ve el nombre entrar como argumento de un Call, y ante cualquier via que no
+    # sabe seguir devuelve ``_ESCAPE``, que es la bolsa ciega.
+    flow = _NameFlow(tree)
+    literal_class: dict[int, str] = {}
+    for targets, value in flow.bindings:
+        if targets is None:
+            # Desempaquetado (`for a, b in PAIRS`): no se sabe que parte del
+            # elemento lleva el literal. Ceguera declarada, no conclusion.
+            cls = _ESCAPE
+        else:
+            cls = max(
+                (flow.use_class(name) for name in targets),
+                key=lambda k: _USE_RANK[k],
+                default=_NONE,
+            )
+        if cls == _NONE:
+            continue
+        for lit in _string_constants(value):
+            if _USE_RANK[cls] > _USE_RANK[literal_class.get(lit, _NONE)]:
+                literal_class[lit] = cls
 
     call: list[str] = []
     indirect: list[str] = []
@@ -194,9 +362,10 @@ def file_evidence(path: Path, text: str) -> dict[str, Any]:
     for node_id, value in constants:
         if node_id in excluded:
             continue
-        if node_id in call_ids:
+        cls = literal_class.get(node_id, _NONE)
+        if node_id in call_ids or cls == _ARG:
             call.append(value)
-        elif node_id in indirect_ids:
+        elif cls == _ESCAPE:
             indirect.append(value)
         else:
             plain.append(value)
