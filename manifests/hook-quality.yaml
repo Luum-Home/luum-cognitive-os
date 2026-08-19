@@ -31,6 +31,9 @@ hooks:
     - tests/behavior/test_self_install.py
     - tests/behavior/test_telemetry.py
     - tests/contracts/test_primitive_harness_partials_contract.py
+    - tests/integration/test_auto_update_flow.py
+    - tests/integration/test_auto_update_safety.py
+    - tests/integration/test_inject_phase_context_expansion.py
     - tests/unit/test_boring_reliability_tools.py
     - tests/unit/test_cos_init_py.py
     - tests/unit/test_primitive_parser.py
@@ -92,6 +95,7 @@ hooks:
     script: hooks/adr-relevance-suggest.sh
   adr-section-validator:
     behavior_tests:
+    - tests/audit/test_hooks_contracts.py
     - tests/contracts/test_opencode_native_adapter_design.py
     - tests/contracts/test_primitive_contract_registry.py
     - tests/unit/test_codex_guard_layer.py
@@ -110,7 +114,8 @@ hooks:
     scope: os-only
     script: hooks/adr-section-validator.sh
   adversarial-review-gate:
-    behavior_tests: []
+    behavior_tests:
+    - tests/hooks/test_adversarial_review_gate.py
     bypass_policy: not_required_warning_only
     census_tests: *id001
     criticality: quality
@@ -129,6 +134,8 @@ hooks:
     behavior_tests:
     - tests/contracts/test_opencode_native_adapter_design.py
     - tests/contracts/test_primitive_contract_registry.py
+    - tests/integration/test_cwd_enforcer_rewrite.py
+    - tests/integration/test_cwd_enforcer_warns.py
     bypass_policy: not_required_warning_only
     census_tests: *id001
     criticality: coordination
@@ -168,6 +175,7 @@ hooks:
     - tests/contracts/test_agent_control_primitive_lifecycle.py
     - tests/contracts/test_opencode_native_adapter_design.py
     - tests/contracts/test_primitive_contract_registry.py
+    - tests/integration/test_agent_control_inbound_guard.py
     - tests/unit/test_primitive_coherence_audit.py
     bypass_policy: not_required_warning_only
     census_tests: *id001
@@ -185,6 +193,7 @@ hooks:
     script: hooks/agent-control-inbound-guard.sh
   agent-launch-confirmed:
     behavior_tests:
+    - tests/audit/test_pre_agent_hook_ordering.py
     - tests/behavior/test_post_agent_verify.py
     - tests/behavior/test_pre_agent_blocked_preflight_no_orphan.py
     bypass_policy: not_required_warning_only
@@ -241,6 +250,7 @@ hooks:
     script: hooks/agent-message-inbox-guard.sh
   agent-prelaunch:
     behavior_tests:
+    - tests/audit/test_pre_agent_hook_ordering.py
     - tests/behavior/test_adr108_ledger_hook_wiring.py
     - tests/behavior/test_agent_blocked_preflight_no_stash.py
     - tests/behavior/test_agent_lifecycle_worktree_mode.py
@@ -249,6 +259,7 @@ hooks:
     - tests/behavior/test_hooks_batch1.py
     - tests/behavior/test_state_retention_controller_flow.py
     - tests/contracts/test_primitive_harness_partials_contract.py
+    - tests/hooks/test_branch_per_task_prelaunch.py
     - tests/unit/test_agent_hook_order.py
     - tests/unit/test_codex_guard_layer.py
     - tests/unit/test_control_plane_hook_wiring.py
@@ -273,6 +284,9 @@ hooks:
   agent-working-dir-inject:
     behavior_tests:
     - tests/contracts/test_primitive_harness_partials_contract.py
+    - tests/integration/test_agent_working_dir_inject.py
+    - tests/integration/test_cwd_enforcement_end_to_end.py
+    - tests/integration/test_cwd_inject_explicit_git_c.py
     - tests/unit/test_codex_guard_layer.py
     - tests/unit/test_cross_platform_discipline.py
     bypass_policy: not_required_warning_only
@@ -291,6 +305,7 @@ hooks:
     script: hooks/agent-working-dir-inject.sh
   aspirational-audit-weekly:
     behavior_tests:
+    - tests/hooks/test_aspirational_audit_weekly.py
     - tests/unit/test_session_start_budget.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
@@ -308,6 +323,7 @@ hooks:
     script: hooks/aspirational-audit-weekly.sh
   assumption-tracker:
     behavior_tests:
+    - tests/audit/test_hook_disable_env.py
     - tests/behavior/test_safety_mesh.py
     - tests/behavior/test_safety_mesh_integration.py
     - tests/contracts/test_primitive_harness_partials_contract.py
@@ -382,6 +398,11 @@ hooks:
     behavior_tests:
     - tests/behavior/test_crash_recovery.py
     - tests/contracts/test_primitive_harness_partials_contract.py
+    - tests/hooks/test_hook_basics.py
+    - tests/integration/test_auto_checkpoint_named_stash.py
+    - tests/integration/test_stash_budget_warn.py
+    - tests/integration/test_stash_lock_hook_wiring.py
+    - tests/smoke/test_stash_quarantine_smoke.py
     - tests/unit/test_auto_checkpoint_behavior.py
     - tests/unit/test_codex_guard_layer.py
     bypass_policy: not_required_observe_only
@@ -406,6 +427,9 @@ hooks:
     - tests/behavior/test_self_improvement.py
     - tests/chaos/test_auto_refine_exercised.py
     - tests/contracts/test_primitive_harness_partials_contract.py
+    - tests/integration/test_auto_update_flow.py
+    - tests/integration/test_auto_update_safety.py
+    - tests/integration/test_fresh_install_canary.py
     - tests/unit/test_chaos_template.py
     - tests/unit/test_cos_init_py.py
     - tests/unit/test_coverage_classifier.py
@@ -427,6 +451,7 @@ hooks:
   auto-repair-dispatcher:
     behavior_tests:
     - tests/contracts/test_primitive_harness_partials_contract.py
+    - tests/integration/test_repair_chain.py
     - tests/unit/test_codex_guard_layer.py
     bypass_policy: not_required_warning_only
     census_tests: *id001
@@ -470,6 +495,7 @@ hooks:
     script: hooks/auto-rollback-trigger.sh
   auto-skill-generator:
     behavior_tests:
+    - tests/audit/test_hook_disable_env.py
     - tests/behavior/test_hooks_batch2.py
     - tests/unit/test_auto_skill_generator_routing.py
     - tests/unit/test_capability_level5.py
@@ -489,12 +515,17 @@ hooks:
     script: hooks/auto-skill-generator.sh
   auto-verify:
     behavior_tests:
+    - tests/audit/test_test_architecture_inventory.py
+    - tests/audit/test_test_runner_role_taxonomy.py
     - tests/chaos/test_auto_verify_exercised.py
     - tests/chaos/test_killswitch_exercise.py
     - tests/contracts/test_harness_engineering_docs.py
     - tests/contracts/test_opencode_native_adapter_design.py
     - tests/contracts/test_primitive_contract_registry.py
     - tests/contracts/test_primitive_harness_partials_contract.py
+    - tests/hooks/test_bounded_verification.py
+    - tests/integration/test_auto_update_flow.py
+    - tests/integration/test_auto_update_safety.py
     - tests/unit/test_chaos_template.py
     - tests/unit/test_governance_artifact_consumption.py
     - tests/unit/test_reinvention_embeddings.py
@@ -516,6 +547,9 @@ hooks:
     script: hooks/auto-verify.sh
   bash-hot-path-dispatcher:
     behavior_tests:
+    - tests/audit/test_hook_enforced_exclusions.py
+    - tests/audit/test_hook_registration_classification.py
+    - tests/audit/test_hooks_contracts.py
     - tests/chaos/test_multi_ide_swarm_safety.py
     - tests/contracts/test_orchestrator_claim_gate.py
     - tests/contracts/test_orphan_hooks.py
@@ -542,12 +576,19 @@ hooks:
     script: hooks/bash-hot-path-dispatcher.sh
   blast-radius:
     behavior_tests:
+    - tests/audit/test_hook_disable_env.py
+    - tests/audit/test_hook_pipe.py
     - tests/behavior/test_cos_init_parity_2_3.py
     - tests/behavior/test_safety_mesh.py
     - tests/behavior/test_safety_mesh_integration.py
     - tests/chaos/test_killswitch_exercise.py
     - tests/contracts/test_p95_hook_latency.py
     - tests/contracts/test_primitive_harness_partials_contract.py
+    - tests/hooks/test_hook_basics.py
+    - tests/hooks/test_hook_graceful_degradation.py
+    - tests/integration/test_auto_update_flow.py
+    - tests/integration/test_auto_update_safety.py
+    - tests/integration/test_project_settings_generation.py
     - tests/unit/test_blast_radius_additional_context.py
     - tests/unit/test_capability_levels.py
     - tests/unit/test_codex_guard_layer.py
@@ -613,6 +654,8 @@ hooks:
     script: hooks/branch-ownership-release.sh
   claim-validator:
     behavior_tests:
+    - tests/audit/test_adr_contracts.py
+    - tests/audit/test_hook_disable_env.py
     - tests/behavior/test_adr108_ledger_hook_wiring.py
     - tests/behavior/test_claim_validator.py
     - tests/contracts/test_opencode_native_adapter_design.py
@@ -621,6 +664,8 @@ hooks:
     - tests/contracts/test_primitive_harness_partials_contract.py
     - tests/contracts/test_red_team_harness_primitives.py
     - tests/contracts/test_redteam_portability_coverage.py
+    - tests/hooks/test_hook_basics.py
+    - tests/hooks/test_hook_graceful_degradation.py
     - tests/unit/test_capability_level5.py
     - tests/unit/test_codex_guard_layer.py
     - tests/unit/test_concurrent_agent_safety_status.py
@@ -641,6 +686,8 @@ hooks:
     script: hooks/claim-validator.sh
   clarification-gate:
     behavior_tests:
+    - tests/audit/test_hook_disable_env.py
+    - tests/audit/test_hook_pipe.py
     - tests/behavior/test_clarification_gate.py
     - tests/behavior/test_hook_architecture.py
     - tests/behavior/test_pentest_self.py
@@ -648,6 +695,11 @@ hooks:
     - tests/behavior/test_safety_mesh_integration.py
     - tests/contracts/test_p95_hook_latency.py
     - tests/contracts/test_primitive_harness_partials_contract.py
+    - tests/hooks/test_hook_basics.py
+    - tests/hooks/test_hook_graceful_degradation.py
+    - tests/integration/test_auto_update_flow.py
+    - tests/integration/test_auto_update_safety.py
+    - tests/integration/test_project_settings_generation.py
     - tests/unit/test_capability_levels.py
     - tests/unit/test_codex_guard_layer.py
     - tests/unit/test_efficiency_optimization.py
@@ -693,6 +745,10 @@ hooks:
     - tests/behavior/test_hooks_batch1.py
     - tests/contracts/test_orchestrator_verify.py
     - tests/contracts/test_primitive_harness_partials_contract.py
+    - tests/hooks/test_hook_basics.py
+    - tests/hooks/test_hook_graceful_degradation.py
+    - tests/integration/test_auto_update_flow.py
+    - tests/integration/test_auto_update_safety.py
     - tests/unit/test_capability_level5.py
     - tests/unit/test_codex_guard_layer.py
     - tests/unit/test_prompt_hooks.py
@@ -717,6 +773,7 @@ hooks:
     - tests/behavior/test_hook_architecture.py
     - tests/behavior/test_hooks_batch1.py
     - tests/contracts/test_primitive_harness_partials_contract.py
+    - tests/hooks/test_bounded_verification.py
     - tests/unit/test_codex_guard_layer.py
     - tests/unit/test_completion_gate_perf.py
     - tests/unit/test_return_contract_parser.py
@@ -742,6 +799,7 @@ hooks:
     - tests/chaos/test_multi_ide_swarm_safety.py
     - tests/contracts/test_primitive_harness_coverage_contract.py
     - tests/contracts/test_primitive_harness_partials_contract.py
+    - tests/integration/test_compaction_resilience.py
     - tests/unit/test_concurrent_agent_safety_status.py
     - tests/unit/test_concurrent_write_guard_behavior.py
     - tests/unit/test_primitive_behavior_depth_audit.py
@@ -780,6 +838,8 @@ hooks:
     script: hooks/concurrent-write-guard-codex-proxy.sh
   confidence-gate:
     behavior_tests:
+    - tests/audit/test_hook_disable_env.py
+    - tests/audit/test_rules_enforcement.py
     - tests/behavior/test_safety_mesh_2.py
     - tests/contracts/test_opencode_native_adapter_design.py
     - tests/contracts/test_p95_hook_latency.py
@@ -806,6 +866,7 @@ hooks:
     script: hooks/confidence-gate.sh
   confidentiality-enforcer:
     behavior_tests:
+    - tests/audit/test_hook_lib_projection.py
     - tests/behavior/test_confidentiality_enforcer.py
     - tests/contracts/test_opencode_native_adapter_design.py
     - tests/contracts/test_primitive_contract_registry.py
@@ -827,6 +888,7 @@ hooks:
     script: hooks/confidentiality-enforcer.sh
   conflict-marker-guard:
     behavior_tests:
+    - tests/audit/test_payload_field_contracts.py
     - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_conflict_marker_guard.py
     - tests/unit/test_cross_cli_ide_projection.py
@@ -846,6 +908,7 @@ hooks:
     script: hooks/conflict-marker-guard.sh
   consequence-evaluator:
     behavior_tests:
+    - tests/audit/test_hook_disable_env.py
     - tests/contracts/test_primitive_harness_partials_contract.py
     - tests/unit/test_capability_level5.py
     bypass_policy: not_required_observe_only
@@ -864,6 +927,7 @@ hooks:
     script: hooks/consequence-evaluator.sh
   content-policy:
     behavior_tests:
+    - tests/audit/test_rules_enforcement.py
     - tests/behavior/test_coexistence.py
     - tests/behavior/test_content_policy.py
     - tests/behavior/test_cos_index_and_global_init.py
@@ -872,6 +936,11 @@ hooks:
     - tests/contracts/test_opencode_native_adapter_design.py
     - tests/contracts/test_primitive_contract_registry.py
     - tests/contracts/test_primitive_harness_partials_contract.py
+    - tests/hooks/test_hook_basics.py
+    - tests/hooks/test_hook_graceful_degradation.py
+    - tests/hooks/test_hook_security.py
+    - tests/integration/test_auto_update_flow.py
+    - tests/integration/test_auto_update_safety.py
     - tests/unit/test_capability_level5.py
     - tests/unit/test_chaos_template.py
     - tests/unit/test_codex_guard_layer.py
@@ -934,6 +1003,7 @@ hooks:
     script: hooks/context-diet.sh
   context-watchdog:
     behavior_tests:
+    - tests/audit/test_demotion_loop_audit.py
     - tests/behavior/test_compaction_protection.py
     - tests/contracts/test_context_budget_hook_wiring.py
     - tests/contracts/test_opencode_native_adapter_design.py
@@ -955,6 +1025,8 @@ hooks:
     script: hooks/context-watchdog.sh
   control-plane-audit-agent:
     behavior_tests:
+    - tests/audit/test_plan_locations.py
+    - tests/behavior/test_control_plane_audit_hourly_cooldown.py
     - tests/unit/test_adr_partial_audit.py
     - tests/unit/test_control_plane_audit.py
     - tests/unit/test_control_plane_hook_triggers.py
@@ -977,6 +1049,8 @@ hooks:
     script: hooks/control-plane-audit.sh
   control-plane-audit-bash:
     behavior_tests:
+    - tests/audit/test_plan_locations.py
+    - tests/behavior/test_control_plane_audit_hourly_cooldown.py
     - tests/unit/test_adr_partial_audit.py
     - tests/unit/test_control_plane_audit.py
     - tests/unit/test_control_plane_hook_triggers.py
@@ -999,6 +1073,8 @@ hooks:
     script: hooks/control-plane-audit.sh
   control-plane-audit-edit:
     behavior_tests:
+    - tests/audit/test_plan_locations.py
+    - tests/behavior/test_control_plane_audit_hourly_cooldown.py
     - tests/unit/test_adr_partial_audit.py
     - tests/unit/test_control_plane_audit.py
     - tests/unit/test_control_plane_hook_triggers.py
@@ -1020,7 +1096,8 @@ hooks:
     scope: both
     script: hooks/control-plane-audit.sh
   control-plane-audit-hourly:
-    behavior_tests: []
+    behavior_tests:
+    - tests/behavior/test_control_plane_audit_hourly_cooldown.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
     criticality: standard
@@ -1074,6 +1151,7 @@ hooks:
     - tests/contracts/test_cosd_auth_primitives.py
     - tests/contracts/test_opencode_native_adapter_design.py
     - tests/contracts/test_primitive_contract_registry.py
+    - tests/integration/test_cosd_auth_guard_hook.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
     criticality: standard
@@ -1093,6 +1171,7 @@ hooks:
     - tests/behavior/test_agent_resilience.py
     - tests/behavior/test_crash_recovery.py
     - tests/behavior/test_state_heartbeat.py
+    - tests/hooks/test_hook_graceful_degradation.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
     criticality: standard
@@ -1241,7 +1320,9 @@ hooks:
     scope: os-only
     script: hooks/dangerous-env-flag-detector.sh
   decision-depth-gate:
-    behavior_tests: []
+    behavior_tests:
+    - tests/audit/test_hook_behavior_classifier.py
+    - tests/audit/test_rules_enforcement.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
     criticality: standard
@@ -1336,6 +1417,7 @@ hooks:
     script: hooks/destructive-git-blocker.sh
   destructive-rm-blocker:
     behavior_tests:
+    - tests/audit/test_hook_behavior_classifier.py
     - tests/chaos/test_destructive_rm_blocker.py
     - tests/chaos/test_safety_drill.py
     - tests/contracts/test_killswitch.py
@@ -1365,6 +1447,7 @@ hooks:
     script: hooks/destructive-rm-blocker.sh
   direct-main-guard:
     behavior_tests:
+    - tests/audit/test_guard_maturity.py
     - tests/behavior/test_cos_friction_report.py
     - tests/behavior/test_external_review_readiness_items.py
     - tests/behavior/test_merge_queue_validation_lane.py
@@ -1390,6 +1473,7 @@ hooks:
     script: hooks/direct-main-guard.sh
   dispatch-gate:
     behavior_tests:
+    - tests/audit/test_hook_disable_env.py
     - tests/behavior/test_agent_resilience.py
     - tests/behavior/test_hook_architecture.py
     - tests/behavior/test_run_flight_recorder.py
@@ -1418,6 +1502,7 @@ hooks:
     script: hooks/dispatch-gate.sh
   doc-sync-detector:
     behavior_tests:
+    - tests/audit/test_instrument_productivity.py
     - tests/behavior/test_cos_friction_report.py
     - tests/behavior/test_hooks_batch1.py
     - tests/contracts/test_opencode_native_adapter_design.py
@@ -1458,6 +1543,7 @@ hooks:
   document-ingest-guard:
     behavior_tests:
     - tests/contracts/test_context_budget_hook_wiring.py
+    - tests/hooks/test_document_ingest_guard.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
     criticality: standard
@@ -1474,6 +1560,9 @@ hooks:
     script: hooks/document-ingest-guard.sh
   dod-gate:
     behavior_tests:
+    - tests/audit/test_test_runner_role_taxonomy.py
+    - tests/integration/test_auto_update_flow.py
+    - tests/integration/test_auto_update_safety.py
     - tests/unit/test_cos_init_py.py
     - tests/unit/test_dod_gate_behavior.py
     - tests/unit/test_governance_artifact_consumption.py
@@ -1493,6 +1582,7 @@ hooks:
     script: hooks/dod-gate.sh
   eas-validation-gate:
     behavior_tests:
+    - tests/hooks/test_eas_validation_gate.py
     - tests/unit/test_bash_hot_path_dispatcher_projection.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
@@ -1528,6 +1618,7 @@ hooks:
     script: hooks/edit-lock-drain-parked.sh
   edit-lock-pre-tool:
     behavior_tests:
+    - tests/integration/test_edit_lock_live_conflict.py
     - tests/unit/test_codex_guard_layer.py
     - tests/unit/test_primitive_scope_classifier.py
     - tests/unit/test_projected_hook_gap_behaviors.py
@@ -1564,6 +1655,7 @@ hooks:
     script: hooks/edit-lock-process-negotiations.sh
   edit-lock-session-end:
     behavior_tests:
+    - tests/integration/test_edit_lock_live_conflict.py
     - tests/unit/test_projected_hook_gap_behaviors.py
     bypass_policy: not_required_warning_only
     census_tests: *id001
@@ -1622,6 +1714,7 @@ hooks:
   engram-obsidian-export-on-stop:
     behavior_tests:
     - tests/behavior/test_engram_obsidian_export_hook.py
+    - tests/integration/test_project_settings_generation.py
     - tests/unit/test_primitive_scope_classifier.py
     - tests/unit/test_runtime_hook_reality.py
     bypass_policy: not_required_observe_only
@@ -1658,6 +1751,10 @@ hooks:
     script: hooks/engram-reinforce-on-access.sh
   error-learning:
     behavior_tests:
+    - tests/audit/test_agent_training_harness_claims.py
+    - tests/audit/test_error_learning_single_path.py
+    - tests/audit/test_instrument_productivity.py
+    - tests/audit/test_rules_enforcement.py
     - tests/behavior/test_claude_md_diet.py
     - tests/behavior/test_cos_index_and_global_init.py
     - tests/behavior/test_cos_init_parity_2_3.py
@@ -1669,6 +1766,12 @@ hooks:
     - tests/chaos/test_error_learning_exercised.py
     - tests/chaos/test_error_pipeline_exercised.py
     - tests/chaos/test_killswitch_exercise.py
+    - tests/integration/test_auto_update_flow.py
+    - tests/integration/test_auto_update_safety.py
+    - tests/integration/test_data_pipeline.py
+    - tests/integration/test_e2e_self_repair.py
+    - tests/integration/test_feedback_loops.py
+    - tests/integration/test_repair_chain.py
     - tests/unit/test_capability_level5.py
     - tests/unit/test_chaos_template.py
     - tests/unit/test_consumer_improvement_proposals.py
@@ -1708,7 +1811,11 @@ hooks:
     script: hooks/error-learning.sh
   error-pattern-detector:
     behavior_tests:
+    - tests/audit/test_hook_disable_env.py
     - tests/behavior/test_hooks_batch1.py
+    - tests/integration/test_auto_update_flow.py
+    - tests/integration/test_auto_update_safety.py
+    - tests/integration/test_project_settings_generation.py
     - tests/unit/test_codex_guard_layer.py
     - tests/unit/test_cross_platform_discipline.py
     - tests/unit/test_error_pattern_detector.py
@@ -1728,10 +1835,13 @@ hooks:
     script: hooks/error-pattern-detector.sh
   error-pipeline:
     behavior_tests:
+    - tests/audit/test_instrument_productivity.py
     - tests/behavior/test_coexistence.py
     - tests/behavior/test_error_pipeline_service_detection.py
     - tests/behavior/test_hook_architecture.py
     - tests/chaos/test_error_pipeline_exercised.py
+    - tests/hooks/test_hook_basics.py
+    - tests/hooks/test_hook_graceful_degradation.py
     - tests/unit/test_cross_platform_discipline.py
     - tests/unit/test_hook_behavioral.py
     - tests/unit/test_malformed_hook_input.py
@@ -1787,6 +1897,7 @@ hooks:
     script: hooks/external-pattern-cleanroom-gate.sh
   git-commit-scope-guard:
     behavior_tests:
+    - tests/audit/test_adr_140_cos_worker_compose.py
     - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_git_commit_scope_guard_amend.py
     - tests/unit/test_projected_hook_gap_behaviors.py
@@ -1863,6 +1974,7 @@ hooks:
     script: hooks/history-rewrite-documented.sh
   hook-header-validator:
     behavior_tests:
+    - tests/audit/test_hooks_contracts.py
     - tests/unit/test_codex_guard_layer.py
     bypass_policy: not_required_warning_only
     census_tests: *id001
@@ -1883,6 +1995,7 @@ hooks:
     - tests/behavior/test_efficiency_profiles.py
     - tests/behavior/test_host_tool_doctor_hook.py
     - tests/contracts/test_session_start_tooling_contract.py
+    - tests/integration/test_project_settings_generation.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
     criticality: standard
@@ -1899,8 +2012,10 @@ hooks:
     script: hooks/host-tool-doctor.sh
   infra-health:
     behavior_tests:
+    - tests/audit/test_rules_enforcement.py
     - tests/behavior/test_efficiency_profiles.py
     - tests/behavior/test_safety_mesh.py
+    - tests/hooks/test_hook_graceful_degradation.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
     criticality: standard
@@ -1920,6 +2035,9 @@ hooks:
     - tests/behavior/test_gotcha_injection.py
     - tests/behavior/test_hook_triggers.py
     - tests/behavior/test_phase_system.py
+    - tests/integration/test_auto_update_flow.py
+    - tests/integration/test_auto_update_safety.py
+    - tests/integration/test_inject_phase_context_expansion.py
     - tests/unit/test_codex_guard_layer.py
     - tests/unit/test_inject_phase_context_native.py
     bypass_policy: not_required_observe_only
@@ -1938,6 +2056,7 @@ hooks:
     script: hooks/inject-phase-context.sh
   kpi-trigger:
     behavior_tests:
+    - tests/audit/test_agent_training_harness_claims.py
     - tests/behavior/test_self_improvement.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
@@ -1964,6 +2083,8 @@ hooks:
     - tests/contracts/test_primitive_contract_registry.py
     - tests/contracts/test_primitive_intervention_ledger.py
     - tests/contracts/test_primitive_projection_fidelity.py
+    - tests/hooks/test_hook_basics.py
+    - tests/hooks/test_hook_graceful_degradation.py
     - tests/unit/test_dogfood_scorer.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
@@ -2036,6 +2157,7 @@ hooks:
     behavior_tests:
     - tests/behavior/test_security_integrations.py
     - tests/contracts/test_projectable_script_surface_evidence.py
+    - tests/hooks/test_hook_graceful_degradation.py
     bypass_policy: not_required_warning_only
     census_tests: *id001
     criticality: security
@@ -2070,6 +2192,7 @@ hooks:
     script: hooks/memory-prefetch.sh
   native-agent-heartbeat-post:
     behavior_tests:
+    - tests/integration/test_native_agent_heartbeat.py
     - tests/unit/test_codex_guard_layer.py
     bypass_policy: not_required_warning_only
     census_tests: *id001
@@ -2087,6 +2210,7 @@ hooks:
     script: hooks/native-agent-heartbeat.sh
   native-agent-heartbeat-pre:
     behavior_tests:
+    - tests/integration/test_native_agent_heartbeat.py
     - tests/unit/test_codex_guard_layer.py
     bypass_policy: not_required_warning_only
     census_tests: *id001
@@ -2106,6 +2230,7 @@ hooks:
     behavior_tests:
     - tests/contracts/test_opencode_native_adapter_design.py
     - tests/contracts/test_primitive_contract_registry.py
+    - tests/security/test_boundary_enforcement_p0.py
     - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_governance_policy_hook_adoption.py
     - tests/unit/test_primitive_scope_classifier.py
@@ -2125,6 +2250,7 @@ hooks:
     script: hooks/network-egress-guard.sh
   orchestrator-claim-gate:
     behavior_tests:
+    - tests/audit/test_adr_contracts.py
     - tests/chaos/test_multi_ide_swarm_safety.py
     - tests/contracts/test_orchestrator_claim_gate.py
     - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
@@ -2166,6 +2292,7 @@ hooks:
     behavior_tests:
     - tests/contracts/test_primitive_closure_ratchet.py
     - tests/contracts/test_skill_invocation_gate.py
+    - tests/hooks/test_skill_invocation_gate_audit.py
     - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_bash_hot_path_dispatcher_projection.py
     - tests/unit/test_primitive_coherence_audit.py
@@ -2188,6 +2315,7 @@ hooks:
     behavior_tests:
     - tests/contracts/test_primitive_closure_ratchet.py
     - tests/contracts/test_skill_invocation_gate.py
+    - tests/hooks/test_skill_invocation_gate_audit.py
     - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_bash_hot_path_dispatcher_projection.py
     - tests/unit/test_primitive_coherence_audit.py
@@ -2207,7 +2335,8 @@ hooks:
     scope: both
     script: hooks/orchestrator-skill-invocation-gate.sh
   pending-truth-drift-detector:
-    behavior_tests: []
+    behavior_tests:
+    - tests/behavior/test_pending_truth_drift_detector_nudge.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
     criticality: standard
@@ -2257,6 +2386,7 @@ hooks:
     script: hooks/pending-truth-verify-weekly.sh
   plan-claim-validator:
     behavior_tests:
+    - tests/audit/test_adr_contracts.py
     - tests/contracts/test_red_team_harness_primitives.py
     - tests/contracts/test_redteam_portability_coverage.py
     - tests/unit/test_concurrent_agent_safety_status.py
@@ -2278,6 +2408,8 @@ hooks:
   post-agent-snapshot-restore:
     behavior_tests:
     - tests/behavior/test_pre_agent_blocked_preflight_no_orphan.py
+    - tests/integration/test_post_agent_snapshot_restore.py
+    - tests/integration/test_stash_lock_hook_wiring.py
     - tests/unit/test_codex_guard_layer.py
     bypass_policy: not_required_warning_only
     census_tests: *id001
@@ -2328,11 +2460,15 @@ hooks:
     script: hooks/post-git-orphan-notifier.sh
   pre-agent-snapshot:
     behavior_tests:
+    - tests/audit/test_pre_agent_hook_ordering.py
     - tests/behavior/test_agent_blocked_preflight_no_stash.py
     - tests/behavior/test_agent_lifecycle_worktree_mode.py
     - tests/behavior/test_post_agent_verify.py
     - tests/behavior/test_pre_agent_blocked_preflight_no_orphan.py
     - tests/behavior/test_pre_agent_snapshot.py
+    - tests/integration/test_post_agent_snapshot_restore.py
+    - tests/integration/test_pre_agent_snapshot_border_cases.py
+    - tests/integration/test_stash_lock_hook_wiring.py
     - tests/unit/test_agent_hook_order.py
     - tests/unit/test_codex_guard_layer.py
     - tests/unit/test_cos_governance_roi.py
@@ -2380,6 +2516,9 @@ hooks:
     - tests/contracts/test_memory_lifecycle_docs.py
     - tests/contracts/test_memory_lifecycle_portability.py
     - tests/contracts/test_primitive_harness_coverage_contract.py
+    - tests/hooks/test_hook_graceful_degradation.py
+    - tests/integration/test_auto_update_flow.py
+    - tests/integration/test_auto_update_safety.py
     - tests/unit/test_anchored_summarizer.py
     - tests/unit/test_compaction_behavior.py
     - tests/unit/test_primitive_harness_coverage.py
@@ -2452,6 +2591,7 @@ hooks:
     script: hooks/private-mode-metrics-gate.sh
   profile-drift-autoapply:
     behavior_tests:
+    - tests/integration/test_profile_drift_autoapply_flock.py
     - tests/unit/test_registered_hook_behaviors.py
     - tests/unit/test_validation_capsule.py
     bypass_policy: not_required_observe_only
@@ -2529,6 +2669,9 @@ hooks:
     - tests/contracts/test_opencode_hooks_schema_conformance.py
     - tests/contracts/test_opencode_native_adapter_design.py
     - tests/contracts/test_primitive_contract_registry.py
+    - tests/hooks/test_protected_config_guard_read_vs_write.py
+    - tests/hooks/test_protected_config_write_guard.py
+    - tests/security/test_boundary_enforcement_p0.py
     - tests/unit/test_governance_policy_hook_adoption.py
     - tests/unit/test_primitive_scope_classifier.py
     bypass_policy: not_required_observe_only
@@ -2604,6 +2747,8 @@ hooks:
   quality-duplicates:
     behavior_tests:
     - tests/behavior/test_cos_quality_duplicates_cli.py
+    - tests/integration/test_install_quality_duplicates_primitive.py
+    - tests/integration/test_quality_duplicates_harness_triggers.py
     - tests/unit/test_cos_quality_duplicates.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
@@ -2622,6 +2767,7 @@ hooks:
   query-tailored-context-inject:
     behavior_tests:
     - tests/contracts/test_context_budget_hook_wiring.py
+    - tests/integration/test_query_tailored_context.py
     - tests/unit/test_codex_guard_layer.py
     - tests/unit/test_projected_hook_gap_behaviors.py
     bypass_policy: not_required_observe_only
@@ -2660,7 +2806,11 @@ hooks:
     script: hooks/rate-limit-detector.sh
   rate-limit-drain:
     behavior_tests:
+    - tests/audit/test_instrument_productivity.py
     - tests/behavior/test_pentest_self.py
+    - tests/hooks/test_dispatch_queue_drain_tick.py
+    - tests/integration/test_rate_limit_drainer_executes.py
+    - tests/integration/test_rate_limiter_hook_retry_flow.py
     - tests/unit/test_rate_limiter_edge_matrix.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
@@ -2677,7 +2827,11 @@ hooks:
     scope: os-only
     script: hooks/rate-limit-drain.sh
   rate-limit-precheck:
-    behavior_tests: []
+    behavior_tests:
+    - tests/e2e/test_cos_smoke.py
+    - tests/hooks/test_rate_limit_precheck.py
+    - tests/integration/test_query_tailored_context.py
+    - tests/integration/test_rate_limit_precheck_lift.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
     criticality: standard
@@ -2694,8 +2848,14 @@ hooks:
     script: hooks/rate-limit-precheck.sh
   rate-limiter:
     behavior_tests:
+    - tests/audit/test_hook_disable_env.py
     - tests/behavior/test_hook_architecture.py
     - tests/behavior/test_pentest_self.py
+    - tests/hooks/test_hook_graceful_degradation.py
+    - tests/hooks/test_hook_security.py
+    - tests/integration/test_fresh_install_canary.py
+    - tests/integration/test_query_tailored_context.py
+    - tests/integration/test_rate_limiter_hook_retry_flow.py
     - tests/unit/test_confidentiality_scanner.py
     - tests/unit/test_malformed_hook_input.py
     - tests/unit/test_promote_from_telemetry_phase2.py
@@ -2768,6 +2928,7 @@ hooks:
   release-guard:
     behavior_tests:
     - tests/chaos/test_release_guard_exercised.py
+    - tests/integration/test_project_settings_generation.py
     - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_chaos_template.py
     - tests/unit/test_coverage_classifier.py
@@ -2881,6 +3042,7 @@ hooks:
     script: hooks/review-spawner.sh
   rule-frontmatter-validator:
     behavior_tests:
+    - tests/audit/test_hooks_contracts.py
     - tests/unit/test_codex_guard_layer.py
     bypass_policy: not_required_warning_only
     census_tests: *id001
@@ -2952,6 +3114,7 @@ hooks:
     script: hooks/scope-creep-detector.sh
   scope-marker-portability-gate:
     behavior_tests:
+    - tests/hooks/test_scope_marker_gate_trigger.py
     - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_bash_hot_path_dispatcher_projection.py
     - tests/unit/test_gate_runner.py
@@ -2972,8 +3135,11 @@ hooks:
     script: hooks/scope-marker-portability-gate.sh
   scope-proportionality:
     behavior_tests:
+    - tests/audit/test_hook_disable_env.py
     - tests/behavior/test_pentest_self.py
     - tests/behavior/test_scope_proportionality.py
+    - tests/integration/test_auto_update_flow.py
+    - tests/integration/test_auto_update_safety.py
     - tests/unit/test_capability_level5.py
     - tests/unit/test_validate_tier_filter.py
     bypass_policy: not_required_observe_only
@@ -2992,6 +3158,7 @@ hooks:
     script: hooks/scope-proportionality.sh
   secret-detector:
     behavior_tests:
+    - tests/audit/test_hook_behavior_classifier.py
     - tests/behavior/test_hook_architecture.py
     - tests/behavior/test_hooks_batch1.py
     - tests/behavior/test_pentest_self.py
@@ -3001,6 +3168,9 @@ hooks:
     - tests/contracts/test_opencode_native_adapter_design.py
     - tests/contracts/test_p95_hook_latency.py
     - tests/contracts/test_primitive_contract_registry.py
+    - tests/hooks/test_hook_graceful_degradation.py
+    - tests/hooks/test_hook_security.py
+    - tests/hooks/test_secret_detector.py
     - tests/unit/test_capability_level5.py
     - tests/unit/test_chaos_template.py
     - tests/unit/test_codex_guard_layer.py
@@ -3029,6 +3199,9 @@ hooks:
     script: hooks/secret-detector.sh
   self-install:
     behavior_tests:
+    - tests/audit/test_hook_enforced_exclusions.py
+    - tests/audit/test_install_scripts.py
+    - tests/audit/test_rules_enforcement.py
     - tests/behavior/test_claude_md_diet.py
     - tests/behavior/test_coexistence.py
     - tests/behavior/test_cos_status.py
@@ -3036,6 +3209,10 @@ hooks:
     - tests/behavior/test_registration_check.py
     - tests/behavior/test_self_install.py
     - tests/contracts/test_self_install_no_container_spawn.py
+    - tests/hooks/test_hook_graceful_degradation.py
+    - tests/integration/test_auto_update_safety.py
+    - tests/integration/test_consolidation_external.py
+    - tests/integration/test_project_settings_generation.py
     - tests/unit/test_cos_config_audit.py
     - tests/unit/test_efficiency_optimization.py
     - tests/unit/test_efficiency_stress.py
@@ -3055,7 +3232,8 @@ hooks:
     scope: os-only
     script: hooks/self-install.sh
   self-knowledge-refresh:
-    behavior_tests: []
+    behavior_tests:
+    - tests/integration/test_self_knowledge_refresh.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
     criticality: standard
@@ -3098,6 +3276,10 @@ hooks:
     - tests/behavior/test_cos_status.py
     - tests/behavior/test_hook_architecture.py
     - tests/behavior/test_hooks_batch2.py
+    - tests/hooks/test_hook_graceful_degradation.py
+    - tests/integration/test_auto_update_flow.py
+    - tests/integration/test_auto_update_safety.py
+    - tests/integration/test_project_settings_generation.py
     - tests/unit/test_agent_timeout.py
     - tests/unit/test_capability_level5.py
     - tests/unit/test_session_lifecycle.py
@@ -3137,6 +3319,7 @@ hooks:
     behavior_tests:
     - tests/behavior/test_cos_friction_report.py
     - tests/chaos/test_session_heartbeat_exercised.py
+    - tests/e2e/test_session_startup_smoke.py
     - tests/unit/test_codex_guard_layer.py
     bypass_policy: not_required_warning_only
     census_tests: *id001
@@ -3156,6 +3339,7 @@ hooks:
     behavior_tests:
     - tests/behavior/test_cos_friction_report.py
     - tests/chaos/test_session_heartbeat_exercised.py
+    - tests/e2e/test_session_startup_smoke.py
     - tests/unit/test_codex_guard_layer.py
     bypass_policy: not_required_warning_only
     census_tests: *id001
@@ -3173,6 +3357,7 @@ hooks:
     script: hooks/session-heartbeat.sh
   session-init:
     behavior_tests:
+    - tests/audit/test_hook_behavior_classifier.py
     - tests/behavior/test_agent_resilience.py
     - tests/behavior/test_coexistence.py
     - tests/behavior/test_compaction_protection.py
@@ -3185,6 +3370,16 @@ hooks:
     - tests/contracts/test_harness_engineering_docs.py
     - tests/contracts/test_harness_transparency_status_docs.py
     - tests/contracts/test_primitive_harness_coverage_contract.py
+    - tests/e2e/test_cos_smoke.py
+    - tests/hooks/test_hook_graceful_degradation.py
+    - tests/hooks/test_session_init_nudge.py
+    - tests/integration/test_auto_update_flow.py
+    - tests/integration/test_auto_update_safety.py
+    - tests/integration/test_compaction_resilience.py
+    - tests/integration/test_installer.py
+    - tests/integration/test_lazy_catalog_end_to_end.py
+    - tests/integration/test_post_commit_banner.py
+    - tests/integration/test_project_settings_generation.py
     - tests/unit/test_capability_level5.py
     - tests/unit/test_catalog_loading.py
     - tests/unit/test_cos_init_py.py
@@ -3211,12 +3406,14 @@ hooks:
     script: hooks/session-init.sh
   session-learning:
     behavior_tests:
+    - tests/audit/test_agent_training_harness_claims.py
     - tests/behavior/test_cos_doctor_tools.py
     - tests/behavior/test_self_improvement.py
     - tests/contracts/test_harness_engineering_docs.py
     - tests/contracts/test_harness_transparency_status_docs.py
     - tests/contracts/test_memory_lifecycle_docs.py
     - tests/contracts/test_memory_lifecycle_portability.py
+    - tests/hooks/test_hook_graceful_degradation.py
     - tests/unit/test_governed_self_improvement.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
@@ -3308,6 +3505,7 @@ hooks:
   session-start-stash-reapply:
     behavior_tests:
     - tests/behavior/test_efficiency_profiles.py
+    - tests/integration/test_stash_reapply.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
     criticality: lifecycle
@@ -3323,7 +3521,9 @@ hooks:
     scope: both
     script: hooks/session-start-stash-reapply.sh
   session-start-worktree-nudge:
-    behavior_tests: []
+    behavior_tests:
+    - tests/e2e/test_cos_smoke.py
+    - tests/integration/test_session_start_worktree_nudge.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
     criticality: lifecycle
@@ -3391,6 +3591,7 @@ hooks:
   session-watchdog-launcher:
     behavior_tests:
     - tests/contracts/test_self_install_no_container_spawn.py
+    - tests/e2e/test_session_startup_smoke.py
     - tests/unit/test_session_start_budget.py
     - tests/unit/test_session_watchdog_launcher.py
     bypass_policy: not_required_observe_only
@@ -3408,7 +3609,10 @@ hooks:
     scope: os-only
     script: hooks/session-watchdog-launcher.sh
   session-wrapup-trigger:
-    behavior_tests: []
+    behavior_tests:
+    - tests/hooks/test_os_session_wrapup_addendum_trigger.py
+    - tests/hooks/test_session_wrapup_trigger.py
+    - tests/integration/test_auto_trigger_honoured.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
     criticality: lifecycle
@@ -3424,7 +3628,8 @@ hooks:
     scope: os-only
     script: hooks/session-wrapup-trigger.sh
   skill-drift-detector:
-    behavior_tests: []
+    behavior_tests:
+    - tests/behavior/test_skill_drift_detector_warn_path.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
     criticality: standard
@@ -3495,6 +3700,7 @@ hooks:
   skill-invocation-logger:
     behavior_tests:
     - tests/contracts/test_skill_adherence_loop.py
+    - tests/integration/test_auto_trigger_honoured.py
     - tests/unit/test_performance_ledger_rollups.py
     - tests/unit/test_skill_lifecycle_promoter.py
     bypass_policy: not_required_observe_only
@@ -3529,7 +3735,8 @@ hooks:
     scope: os-only
     script: hooks/skill-md-routing-validator.sh
   skill-post-execution-analysis:
-    behavior_tests: []
+    behavior_tests:
+    - tests/integration/test_skill_post_execution_hook.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
     criticality: standard
@@ -3603,6 +3810,7 @@ hooks:
     script: hooks/skill-synthesis-scanner.sh
   skill-tracker:
     behavior_tests:
+    - tests/audit/test_instrument_productivity.py
     - tests/behavior/test_hooks_batch1.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
@@ -3637,6 +3845,7 @@ hooks:
     script: hooks/skill-usage-tracker.sh
   so-impact-eval-trigger:
     behavior_tests:
+    - tests/integration/test_quality_duplicates_harness_triggers.py
     - tests/unit/test_so_impact_eval_trigger_hook.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
@@ -3670,7 +3879,8 @@ hooks:
     scope: os-only
     script: hooks/spdx-header-required.sh
   stash-budget-warn:
-    behavior_tests: []
+    behavior_tests:
+    - tests/integration/test_stash_budget_warn.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
     criticality: standard
@@ -3729,6 +3939,9 @@ hooks:
   subagent-context-injector:
     behavior_tests:
     - tests/contracts/test_context_budget_hook_wiring.py
+    - tests/hooks/test_encargo_refutable_delivery.py
+    - tests/hooks/test_hook_graceful_degradation.py
+    - tests/hooks/test_subagent_context_injector.py
     - tests/unit/test_agent_spawn_benchmark.py
     - tests/unit/test_telemetry_aggregator.py
     - tests/unit/test_telemetry_self_tuning_proposer.py
@@ -3765,7 +3978,9 @@ hooks:
     scope: os-only
     script: hooks/surface-fix-detector.sh
   symlink-mutation-guard:
-    behavior_tests: []
+    behavior_tests:
+    - tests/hooks/test_symlink_mutation_guard.py
+    - tests/security/test_adversarial_p1_p2.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
     criticality: standard
@@ -3782,6 +3997,9 @@ hooks:
     script: hooks/symlink-mutation-guard.sh
   task-completed:
     behavior_tests:
+    - tests/audit/test_demotion_loop_audit.py
+    - tests/hooks/test_agent_team_file_ipc_hooks.py
+    - tests/hooks/test_agent_teams_hooks.py
     - tests/unit/test_cos_claim_signature_audit.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
@@ -3799,6 +4017,8 @@ hooks:
     script: hooks/task-completed.sh
   task-created:
     behavior_tests:
+    - tests/hooks/test_agent_team_file_ipc_hooks.py
+    - tests/hooks/test_agent_teams_hooks.py
     - tests/unit/test_primitive_scope_classifier.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
@@ -3815,7 +4035,9 @@ hooks:
     scope: os-only
     script: hooks/task-created.sh
   teammate-idle:
-    behavior_tests: []
+    behavior_tests:
+    - tests/hooks/test_agent_team_file_ipc_hooks.py
+    - tests/hooks/test_agent_teams_hooks.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
     criticality: standard
@@ -3835,6 +4057,8 @@ hooks:
     - tests/chaos/test_token_budget_monitor_exercised.py
     - tests/contracts/test_opencode_native_adapter_design.py
     - tests/contracts/test_primitive_contract_registry.py
+    - tests/hooks/test_hook_basics.py
+    - tests/hooks/test_hook_graceful_degradation.py
     - tests/unit/test_cross_platform_discipline.py
     - tests/unit/test_rate_limit_protection.py
     bypass_policy: not_required_observe_only
@@ -3853,6 +4077,7 @@ hooks:
     script: hooks/token-budget-monitor.sh
   tool-sequence-capture:
     behavior_tests:
+    - tests/audit/test_hook_behavior_classifier.py
     - tests/unit/test_codex_guard_layer.py
     - tests/unit/test_tool_sequence_capture.py
     bypass_policy: not_required_observe_only
@@ -3871,11 +4096,16 @@ hooks:
     script: hooks/tool-sequence-capture.sh
   trust-score-validator:
     behavior_tests:
+    - tests/audit/test_hook_disable_env.py
+    - tests/audit/test_rules_enforcement.py
     - tests/behavior/test_hooks_batch1.py
     - tests/behavior/test_safety_mesh_integration.py
     - tests/contracts/test_opencode_native_adapter_design.py
     - tests/contracts/test_p95_hook_latency.py
     - tests/contracts/test_primitive_contract_registry.py
+    - tests/hooks/test_trust_score_validator.py
+    - tests/integration/test_auto_update_flow.py
+    - tests/integration/test_auto_update_safety.py
     - tests/unit/test_capability_level5.py
     - tests/unit/test_codex_guard_layer.py
     - tests/unit/test_cos_architecture_readiness.py
@@ -3917,11 +4147,13 @@ hooks:
     script: hooks/untracked-work-preservation-guard.sh
   user-prompt-capture:
     behavior_tests:
+    - tests/audit/test_rules_enforcement.py
     - tests/behavior/test_cos_doctor_tools.py
     - tests/chaos/test_user_prompt_capture_exercised.py
     - tests/contracts/test_harness_transparency_status_docs.py
     - tests/contracts/test_memory_lifecycle_docs.py
     - tests/contracts/test_memory_lifecycle_portability.py
+    - tests/hooks/test_hook_graceful_degradation.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
     criticality: standard
