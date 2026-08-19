@@ -204,11 +204,32 @@ se tomó acá, porque tomarla desde adentro sería justamente reducir la medici�
 ```bash
 # los tres de latencia bajo saturación real: sin la saturación pasaban ya antes
 # del arreglo, así que la carga es parte del experimento, no ruido
-for i in $(seq 1 12); do (while :; do :; done) & done
+# VERIFICADO el 2026-08-19: 24 de estos loops estaban vivos con ppid=1 y mas de
+# un dia de etime, y su linea de comando es literalmente el `for` de esta receta.
+# La maquina estaba a load 466 sobre 12 CPUs; el barrido `cos-test broad` de ese
+# dia dio 13 workers de pytest crasheados y 83 rojos fantasma, todos artefactos
+# de esa saturacion (los mismos tests pasan aislados).
+#
+# NO VERIFICADO: por que exactamente no corrio el `kill` final. Se intento
+# reproducir la fuga con la forma vieja y NO se reprodujo -- en una sonda local
+# los hijos mueren con su subshell. El camino real pasa por el wrapper de shell
+# del arnes, que no se pudo simular.
+#
+# El trap se agrega igual, y el motivo no depende de esa reproduccion: un kill
+# posicional en la ultima linea no corre si algo corta antes, y la norma de
+# evidencia ejecutable del repo pide que un script que cambia contexto lo
+# restaure SIEMPRE, no solo en el camino feliz.
+carga_pids=""
+trap 'kill $carga_pids 2>/dev/null || true' EXIT INT TERM
+for i in $(seq 1 12); do (while :; do :; done) & carga_pids="$carga_pids $!"; done
 .venv/bin/python -m pytest \
   "tests/unit/test_efficiency_stress.py::TestHookPerformance::test_hook_chain_latency_per_bash" \
   "tests/unit/test_efficiency_stress.py::TestHookPerformance::test_hook_chain_latency_per_agent" \
   "tests/unit/test_efficiency_optimization.py::test_contextual_rule_loader_fast" \
   -p no:randomly -q
-kill $(jobs -p)
+kill $carga_pids 2>/dev/null || true
+
+# Si ya te quedaron huerfanos de una corrida anterior, aparecen asi:
+#   ps -Ao pid,ppid,etime,pcpu,command | grep 'while :; do :; done' | grep -v grep
+# Se reconocen por ppid=1 y un etime de horas o dias.
 ```
