@@ -77,12 +77,28 @@ if [ -f "$PID_FILE" ]; then
 fi
 
 # ── Orphan cleanup: kill stray watchdog processes not matching pidfile ──────
+# The match below must be the full script path, not the basename. Matching
+# "so_session_watchdog.py" alone finds every watchdog on the machine, so a
+# launcher run here killed the operator's watchdog in every other project --
+# and running the e2e suite, which invokes this launcher against a fake tree,
+# killed the real one. That is how "0 watchdogs running" was measured on
+# 2026-08-19 and misread as "nobody starts sessions".
+#
+# pgrep still casts the wide net, because -f patterns match loosely and a narrow
+# one can miss; the argv check is what decides. A candidate whose argv cannot be
+# read is left alone: killing on unreadable state is how this defect comes back.
 TRACKED_PID=$(cat "$PID_FILE" 2>/dev/null || echo "")
 if command -v pgrep &>/dev/null; then
     while IFS= read -r candidate_pid; do
         [ -z "$candidate_pid" ] && continue
         [ "$candidate_pid" = "$$" ] && continue
         [ -n "$TRACKED_PID" ] && [ "$candidate_pid" = "$TRACKED_PID" ] && continue
+        candidate_args=$(ps -p "$candidate_pid" -o args= 2>/dev/null || true)
+        [ -z "$candidate_args" ] && continue
+        case "$candidate_args" in
+            *"$WATCHDOG"*) ;;
+            *) continue ;;
+        esac
         if kill -0 "$candidate_pid" 2>/dev/null; then
             kill "$candidate_pid" 2>/dev/null || true
         fi
