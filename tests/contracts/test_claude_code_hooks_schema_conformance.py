@@ -41,6 +41,11 @@ from pathlib import Path
 import pytest
 import yaml
 
+# Read by scripts/hook_quality_audit.py. This file builds its corpus from
+# _hook_sources(), a walk of hooks/, so it covers every hook without naming
+# one; name matching would credit it to nobody.
+HOOK_QUALITY_COVERAGE = "census"
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 MANIFEST = REPO_ROOT / "manifests" / "claude-code-hooks-schema.yaml"
 SETTINGS = REPO_ROOT / ".claude" / "settings.json"
@@ -102,6 +107,30 @@ KNOWN_MISSING_HOOK_EVENT_NAME: set[str] = set()
 # here instead of quietly reintroducing the silent drop.
 KNOWN_ASYNC_ON_CONTEXT_EMITTER: set[str] = set()
 
+# Same emptiness, one category over. The set above covers events whose insertion
+# point PRECEDES the first prompt; this one covers the event whose insertion
+# point is ALONGSIDE the prompt being submitted — UserPromptSubmit.
+#
+# The distinction is why the older assertion did not catch six live offenders
+# for as long as it existed: `contra` was read from
+# `handler_fields.async.contraindicated_for`, which names SubagentStart and
+# SessionStart only, so every async context emitter on UserPromptSubmit passed
+# by falling outside the question. The category is different, the consequence is
+# not — async output is delivered "on the next conversation turn", so a
+# UserPromptSubmit emitter hands the model context for a prompt that has already
+# been answered.
+#
+# Emptied 2026-08-19 by dropping `async` from six registrations
+# (session-wrapup-trigger, cross-session-peer-context,
+# agent-message-inbox-context, rule-router-prompt-suggest, adr-relevance-suggest,
+# skill-router-prompt-suggest). Blocking cost measured before the change: the six
+# run 0.83-0.90s wall-clock in parallel, against the 3s ceiling the injector test
+# asserts. See docs/06-Daily/reports/async-context-emitters-2026-08-19.md.
+#
+# Exact-match, like every other baseline in this file: a new entry here is a
+# regression to fix, never slack to spend.
+KNOWN_ASYNC_ON_PROMPT_COUPLED_EMITTER: set[str] = set()
+
 # SubagentStart is context-only, so `permissionDecision: "allow"` is inert.
 # Harmless at runtime; kept visible because it records an author who believed
 # the event could gate.
@@ -151,6 +180,23 @@ def registrations() -> dict[str, list[dict]]:
 
 def _hook_sources() -> list[Path]:
     return sorted(p for p in HOOKS_DIR.rglob("*") if p.suffix in {".sh", ".py"})
+
+
+def _context_emitting_hooks() -> set[str]:
+    """Basenames of hooks that mention additionalContext at all.
+
+    Scope guard shared by both async assertions. `async` is the RIGHT setting
+    for a hook with side effects only — the SessionStart daemon launchers, the
+    drift detectors, the prompt capture — and flagging those would be a gate
+    firing on files it has nothing to say about. The conflict exists only
+    between "runs in the background" and "must be in the context window at a
+    particular moment", so it exists only for hooks that emit context.
+    """
+    return {
+        path.name
+        for path in _hook_sources()
+        if "additionalContext" in path.read_text(encoding="utf-8", errors="ignore")
+    }
 
 
 # ── The rule the manifest exists to state ────────────────────────────────────
@@ -303,11 +349,7 @@ def test_async_not_used_on_prompt_preceding_context_events(schema, registrations
     # gate firing on files it has nothing to say about. The conflict is only
     # between "runs in the background" and "must be in the context window
     # before the first prompt", so it exists only for hooks that emit context.
-    emitters = {
-        path.name
-        for path in _hook_sources()
-        if "additionalContext" in path.read_text(encoding="utf-8", errors="ignore")
-    }
+    emitters = _context_emitting_hooks()
 
     offenders = [
         f"{name} on {reg['event']}"
@@ -329,6 +371,69 @@ def test_async_not_used_on_prompt_preceding_context_events(schema, registrations
     assert not stale, (
         f"Fixed registration(s) still baselined: {sorted(stale)}. "
         "Remove them from KNOWN_ASYNC_ON_CONTEXT_EMITTER."
+    )
+
+
+def test_async_not_used_on_prompt_coupled_context_events(schema, registrations):
+    """async on UserPromptSubmit delivers the context one prompt late.
+
+    Sibling of the test above, and the reason it exists separately: that one
+    asks about events whose insertion point PRECEDES the first prompt, so
+    `UserPromptSubmit` — which inserts ALONGSIDE the prompt — was never in its
+    question. Six context emitters sat registered `async: true` on this event
+    while the suite was green.
+
+    The manifest records this as CONTRA-INDICATED by inference, same as the
+    other two events: upstream says async output arrives "on the next
+    conversation turn", and this event's additionalContext is only useful
+    attached to the prompt that produced it. A suggestion about prompt N read
+    while answering prompt N+1 is not a late suggestion, it is a wrong one.
+
+    Scope is the same as the sibling: only hooks that EMIT additionalContext.
+    `user-prompt-capture.sh`, `memory-prefetch.sh` and `stash-budget-warn.sh`
+    are async on this event on purpose — they have side effects and no payload,
+    so there is no arrival to lose.
+    """
+    contra = {
+        entry["event"]
+        for entry in schema["handler_fields"]["async"][
+            "contraindicated_for_prompt_coupled_context"
+        ]
+    }
+    assert contra, (
+        "manifest declares no prompt-coupled contraindication; the assertion "
+        "below would pass by vacuity"
+    )
+
+    emitters = _context_emitting_hooks()
+    assert emitters, "no hook emits additionalContext — census is broken"
+
+    offenders = [
+        f"{name} on {reg['event']}"
+        for name, regs in registrations.items()
+        for reg in regs
+        if reg["async"] and reg["event"] in contra and name in emitters
+    ]
+
+    unexpected = set(offenders) - KNOWN_ASYNC_ON_PROMPT_COUPLED_EMITTER
+    assert not unexpected, (
+        "Hooks registered async:true on UserPromptSubmit while emitting "
+        f"additionalContext: {sorted(unexpected)}. Async output is delivered on "
+        "the next conversation turn, so the context arrives attached to a prompt "
+        "that did not produce it. Drop `async` from the registration — and note "
+        "that .claude/settings.json is GENERATED: the flag lives in "
+        "scripts/_lib/settings-driver-claude-code.sh (mirror it in "
+        "cognitive-os.yaml > harness.hooks so the two agree), then re-run "
+        "`bash scripts/apply-efficiency-profile.sh default`. If the hook is too "
+        "slow to block on, make it faster — async is the setting that guarantees "
+        "the context is never read in time. See "
+        "docs/06-Daily/reports/async-context-emitters-2026-08-19.md."
+    )
+
+    stale = KNOWN_ASYNC_ON_PROMPT_COUPLED_EMITTER - set(offenders)
+    assert not stale, (
+        f"Fixed registration(s) still baselined: {sorted(stale)}. "
+        "Remove them from KNOWN_ASYNC_ON_PROMPT_COUPLED_EMITTER."
     )
 
 

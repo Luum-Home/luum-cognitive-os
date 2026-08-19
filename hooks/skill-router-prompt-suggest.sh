@@ -8,7 +8,8 @@
 #
 # Event:  UserPromptSubmit
 # Type:   command
-# Async:  true (does not block user input)
+# Async:  false (UserPromptSubmit inserts additionalContext alongside the
+#          prompt; async output lands on the NEXT turn, one prompt late)
 # Exit:   advisory 0
 #
 # Logs every evaluation to .cognitive-os/metrics/skill-suggestion.jsonl
@@ -103,14 +104,66 @@ log_file = os.path.join(metrics_dir, "skill-suggestion.jsonl")
 with open(log_file, "a") as f:
     f.write(json.dumps(entry) + "\n")
 
+def _skill_card(name):
+    """(one-line summary, ~token cost) for a skill, read from its own SKILL.md.
+
+    The old suggestion named the skill and stopped there. That asymmetry is why
+    a suggestion loses to bespoke work: the cost of doing it by hand is known,
+    the cost and the payload of the skill are not. Both numbers come from the
+    file the skill already ships.
+    """
+    try:
+        from cos_lib.skill_router import _detect_skill_md_paths, _read_skill_md_cached
+        from pathlib import Path as _P
+
+        path = _detect_skill_md_paths(_P(project)).get(name)
+        if path is None:
+            return "", 0
+        cached = _read_skill_md_cached(path)
+        if cached is None:
+            return "", 0
+        text, fm, _ = cached
+        desc = str(fm.get("description") or fm.get("whenToUse") or "").strip()
+        desc = " ".join(desc.split())
+        # Boilerplate the generator prepends to every COS skill: pure cost here.
+        noise = "Use when you need this Cognitive OS skill:"
+        if desc.startswith(noise):
+            desc = desc[len(noise):].lstrip()
+        # First sentence, hard-capped: this rides on every matching prompt.
+        head = desc.split(". ")[0].rstrip(".")
+        if len(head) > 110:
+            head = head[:107].rstrip() + "..."
+        return head, max(1, round(len(text) / 4 / 100) * 100)
+    except Exception:
+        return "", 0
+
+
 if threshold_met:
+    summary, cost = _skill_card(match.skill_name)
+    if not summary:
+        does = ""
+    elif summary[:9].lower() == "use when ":
+        does = f" Applies when {summary[9:]}."
+    else:
+        does = f" It: {summary}."
+    price = f" Loading it costs ~{cost} tokens." if cost else ""
+    if match.confidence >= 0.90:
+        verdict = (
+            f" ADR-188 binds a match at 0.90+: the session invokes it, invokes a "
+            f"strictly stronger skill, or records `SKILL_BYPASS: "
+            f"{match.skill_name} confidence={match.confidence:.2f} reason=<why>`."
+        )
+    else:
+        verdict = (
+            " Under the ADR-188 0.90 threshold, so advisory: the skill is the "
+            "cheaper path wherever its workflow already covers the request."
+        )
     output = {
         "hookSpecificOutput": {
             "hookEventName": "UserPromptSubmit",
             "additionalContext": (
-                f"Skill router suggests `{match.invoke_command}` "
-                f"(confidence {match.confidence:.2f}) for this prompt. "
-                f"Invoke it when the workflow fits better than a bespoke prompt."
+                f"Skill router: `{match.invoke_command}` matches this prompt at "
+                f"{match.confidence:.2f}.{does}{price}{verdict}"
             ),
         }
     }

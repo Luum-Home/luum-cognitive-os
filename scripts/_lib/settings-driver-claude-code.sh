@@ -227,18 +227,36 @@ cc_driver_emit() {
   fi
 
   local user_prompt_submit
+  # The six context EMITTERS below carry async=false on purpose (2026-08-19).
+  # UserPromptSubmit inserts additionalContext alongside the prompt being sent;
+  # async output is delivered on the NEXT conversation turn, so an async emitter
+  # hands the model context for a prompt that is already answered. Same failure
+  # class as subagent-context-injector below, one category over: there the
+  # insertion point PRECEDES the first prompt and nothing arrives at all, here it
+  # is ALONGSIDE the prompt and everything arrives one turn late.
+  #
+  # Cost of blocking, measured 2026-08-19 on this tree (5 distinct prompts, cold
+  # session ids): the six run in 0.83-0.90s wall-clock in parallel, paced by
+  # skill-router-prompt-suggest at 0.73-0.92s. Ceiling is the 3s the conformance
+  # suite asserts for the injector. Reproduce with the probe in
+  # docs/06-Daily/reports/async-context-emitters-2026-08-19.md.
+  #
+  # The pure side-effect hooks (user-prompt-capture, memory-prefetch,
+  # stash-budget-warn) stay async: they emit no additionalContext, so there is no
+  # arrival to lose. tests/contracts/test_claude_code_hooks_schema_conformance.py
+  # ::test_async_not_used_on_context_emitting_events fails on a regression here.
   user_prompt_submit=$(_cc_hook_group "UserPromptSubmit" "" \
     "hooks/user-prompt-capture.sh"                "true"  \
-    "hooks/session-wrapup-trigger.sh"             "true"  \
+    "hooks/session-wrapup-trigger.sh"             "false"  \
     "hooks/session-heartbeat.sh"                  "false" \
     "hooks/memory-prefetch.sh"                    "true"  \
     "hooks/edit-lock-process-negotiations.sh"     "false" \
     "hooks/stash-budget-warn.sh"                  "true"  \
-    "hooks/cross-session-peer-context.sh"          "true"  \
-    "hooks/agent-message-inbox-context.sh"         "true"  \
-    "hooks/rule-router-prompt-suggest.sh"         "true"  \
-    "hooks/adr-relevance-suggest.sh"              "true"  \
-    "hooks/skill-router-prompt-suggest.sh"        "true"  \
+    "hooks/cross-session-peer-context.sh"          "false"  \
+    "hooks/agent-message-inbox-context.sh"         "false"  \
+    "hooks/rule-router-prompt-suggest.sh"         "false"  \
+    "hooks/adr-relevance-suggest.sh"              "false"  \
+    "hooks/skill-router-prompt-suggest.sh"        "false"  \
     "hooks/context-budget-meter.sh"              "false" \
   )
 
