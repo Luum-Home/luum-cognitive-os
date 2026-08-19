@@ -57,9 +57,23 @@ items:
   rationale: Manual scope calibration batch 002 confirmed project-only downstream
     writer/scaffolder surface.
 - path: scripts/edit-coop.sh
-  status: shared-surface
-  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project
-    surface; keep lifecycle/proof evidence aligned.
+  status: projectable-needs-driver
+  rationale: >-
+    Iteration 029/batch 002 classified this subsystem shared on concept:
+    concurrent-edit safety is generic.
+    The concept holds; the delivery does not.
+    Measured 2026-08-19: scripts/edit-coop.sh, the primitive all four hooks
+    call, is copied by no installer -- neither cos_init.py nor install.sh
+    names it, and scripts/ is not copied wholesale -- so the subsystem cannot
+    function in a consumer install.
+    Reclassified to the status this manifest already defines for exactly that
+    state rather than to maintainer-only, which would overturn the shared
+    intent recorded in four places (these entries, the five SCOPE headers,
+    the shared-concurrent-edit-safety rule in
+    cos_lib/primitive_scope_classifier.py, and its test).
+    Closing it means projecting edit-coop.sh and scripts/_lib/session-id.sh,
+    which activates a PreToolUse gate that exits 2 on conflict in third-party
+    projects: an operator decision, not a classification one.
 - path: scripts/generate_compact_catalog.py
   status: maintainer-only
   rationale: Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog
@@ -2166,21 +2180,77 @@ items:
   rationale: 'Manual scope review iteration 029: unclean shutdown detection and recovery
     guidance is generic agent-session safety.'
 - path: hooks/edit-lock-drain-parked.sh
-  status: shared-surface
-  rationale: 'Manual scope review iteration 029: parked edit-lock drain notification
-    is generic concurrent-edit safety.'
+  status: projectable-needs-driver
+  rationale: >-
+    Iteration 029/batch 002 classified this subsystem shared on concept:
+    concurrent-edit safety is generic.
+    The concept holds; the delivery does not.
+    Measured 2026-08-19: scripts/edit-coop.sh, the primitive all four hooks
+    call, is copied by no installer -- neither cos_init.py nor install.sh
+    names it, and scripts/ is not copied wholesale -- so the subsystem cannot
+    function in a consumer install.
+    Reclassified to the status this manifest already defines for exactly that
+    state rather than to maintainer-only, which would overturn the shared
+    intent recorded in four places (these entries, the five SCOPE headers,
+    the shared-concurrent-edit-safety rule in
+    cos_lib/primitive_scope_classifier.py, and its test).
+    Closing it means projecting edit-coop.sh and scripts/_lib/session-id.sh,
+    which activates a PreToolUse gate that exits 2 on conflict in third-party
+    projects: an operator decision, not a classification one.
 - path: hooks/edit-lock-pre-tool.sh
-  status: shared-surface
-  rationale: 'Manual scope review iteration 029: Edit/Write file lock negotiation
-    is generic concurrent-edit safety.'
+  status: projectable-needs-driver
+  rationale: >-
+    Iteration 029/batch 002 classified this subsystem shared on concept:
+    concurrent-edit safety is generic.
+    The concept holds; the delivery does not.
+    Measured 2026-08-19: scripts/edit-coop.sh, the primitive all four hooks
+    call, is copied by no installer -- neither cos_init.py nor install.sh
+    names it, and scripts/ is not copied wholesale -- so the subsystem cannot
+    function in a consumer install.
+    Reclassified to the status this manifest already defines for exactly that
+    state rather than to maintainer-only, which would overturn the shared
+    intent recorded in four places (these entries, the five SCOPE headers,
+    the shared-concurrent-edit-safety rule in
+    cos_lib/primitive_scope_classifier.py, and its test).
+    Closing it means projecting edit-coop.sh and scripts/_lib/session-id.sh,
+    which activates a PreToolUse gate that exits 2 on conflict in third-party
+    projects: an operator decision, not a classification one.
 - path: hooks/edit-lock-process-negotiations.sh
-  status: shared-surface
-  rationale: 'Manual scope review iteration 029: incoming edit-lock negotiation surfacing
-    is generic concurrent-edit safety.'
+  status: projectable-needs-driver
+  rationale: >-
+    Iteration 029/batch 002 classified this subsystem shared on concept:
+    concurrent-edit safety is generic.
+    The concept holds; the delivery does not.
+    Measured 2026-08-19: scripts/edit-coop.sh, the primitive all four hooks
+    call, is copied by no installer -- neither cos_init.py nor install.sh
+    names it, and scripts/ is not copied wholesale -- so the subsystem cannot
+    function in a consumer install.
+    Reclassified to the status this manifest already defines for exactly that
+    state rather than to maintainer-only, which would overturn the shared
+    intent recorded in four places (these entries, the five SCOPE headers,
+    the shared-concurrent-edit-safety rule in
+    cos_lib/primitive_scope_classifier.py, and its test).
+    Closing it means projecting edit-coop.sh and scripts/_lib/session-id.sh,
+    which activates a PreToolUse gate that exits 2 on conflict in third-party
+    projects: an operator decision, not a classification one.
 - path: hooks/edit-lock-session-end.sh
-  status: shared-surface
-  rationale: 'Manual scope review iteration 029: releasing edit locks on Stop is generic
-    concurrent-edit safety.'
+  status: projectable-needs-driver
+  rationale: >-
+    Iteration 029/batch 002 classified this subsystem shared on concept:
+    concurrent-edit safety is generic.
+    The concept holds; the delivery does not.
+    Measured 2026-08-19: scripts/edit-coop.sh, the primitive all four hooks
+    call, is copied by no installer -- neither cos_init.py nor install.sh
+    names it, and scripts/ is not copied wholesale -- so the subsystem cannot
+    function in a consumer install.
+    Reclassified to the status this manifest already defines for exactly that
+    state rather than to maintainer-only, which would overturn the shared
+    intent recorded in four places (these entries, the five SCOPE headers,
+    the shared-concurrent-edit-safety rule in
+    cos_lib/primitive_scope_classifier.py, and its test).
+    Closing it means projecting edit-coop.sh and scripts/_lib/session-id.sh,
+    which activates a PreToolUse gate that exits 2 on conflict in third-party
+    projects: an operator decision, not a classification one.
 - path: hooks/post-agent-verify.sh
   status: shared-surface
   rationale: 'Manual scope review iteration 029: verifying an agent stayed inside
