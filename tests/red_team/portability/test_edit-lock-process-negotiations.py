@@ -102,10 +102,17 @@ def test_exit_code_alone_cannot_see_this_class(tmp_path: Path) -> None:
     changed and the stderr assertions above became load-bearing for a different
     reason than the one written here."""
     shipped = _consumer_tree(tmp_path, with_lib=False)
-    broken = shipped.read_text(encoding="utf-8").replace(
-        '_SESSION_ID_LIB="$(dirname "$0")/../scripts/_lib/session-id.sh"',
+    original = shipped.read_text(encoding="utf-8")
+    broken = original.replace(
+        '_SESSION_ID_LIB="$PROJECT_DIR/scripts/_lib/session-id.sh"',
         '_SESSION_ID_LIB="/nonexistent/session-id.sh"; source "$_SESSION_ID_LIB"',
     )
+    # Without this the probe rots into a no-op the day the hook is edited: on
+    # 2026-08-19 the resolution line changed to consult both install layouts,
+    # the old replacement stopped matching, and this test failed asking why
+    # stderr was empty -- which is the correct failure, but only because the
+    # assertion below existed to notice.
+    assert broken != original, "the mutation no longer matches the hook source"
     shipped.write_text(broken, encoding="utf-8")
     result = _run(shipped, tmp_path)
 

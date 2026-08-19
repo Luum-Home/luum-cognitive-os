@@ -57,23 +57,24 @@ items:
   rationale: Manual scope calibration batch 002 confirmed project-only downstream
     writer/scaffolder surface.
 - path: scripts/edit-coop.sh
-  status: projectable-needs-driver
+  status: shared-surface
   rationale: >-
-    Iteration 029/batch 002 classified this subsystem shared on concept:
-    concurrent-edit safety is generic.
-    The concept holds; the delivery does not.
-    Measured 2026-08-19: scripts/edit-coop.sh, the primitive all four hooks
-    call, is copied by no installer -- neither cos_init.py nor install.sh
-    names it, and scripts/ is not copied wholesale -- so the subsystem cannot
-    function in a consumer install.
-    Reclassified to the status this manifest already defines for exactly that
-    state rather than to maintainer-only, which would overturn the shared
-    intent recorded in four places (these entries, the five SCOPE headers,
-    the shared-concurrent-edit-safety rule in
-    cos_lib/primitive_scope_classifier.py, and its test).
-    Closing it means projecting edit-coop.sh and scripts/_lib/session-id.sh,
-    which activates a PreToolUse gate that exits 2 on conflict in third-party
-    projects: an operator decision, not a classification one.
+    Iteration 029/batch 002 classified this subsystem shared on concept.
+    The concept was right and the delivery was missing: scripts/edit-coop.sh,
+    the primitive all four hooks call, was copied by no installer, so the
+    hooks projected under --full and sat inert.
+    Closed 2026-08-19 -- cos_init._install_edit_lock_primitive projects the
+    CLI to .cognitive-os/bin/edit-coop.sh and its identity lib to
+    .cognitive-os/bin/_lib/session-id.sh, and the four hooks resolve both
+    layouts.
+    The lib travels on purpose: without it the script falls back to
+    default-session and the hooks to shell-$PPID, so a lock taken by one
+    would be invisible to the other.
+    Proof: the acquire/release cycle runs through the hooks against an
+    install built by cos_init itself, in
+    tests/red_team/portability/test_edit-lock-pre-tool.py and
+    tests/red_team/portability/test_edit-coop.py, each with a null control
+    for the un-projected state.
 - path: scripts/generate_compact_catalog.py
   status: maintainer-only
   rationale: Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog
@@ -2180,77 +2181,81 @@ items:
   rationale: 'Manual scope review iteration 029: unclean shutdown detection and recovery
     guidance is generic agent-session safety.'
 - path: hooks/edit-lock-drain-parked.sh
-  status: projectable-needs-driver
+  status: shared-surface
   rationale: >-
-    Iteration 029/batch 002 classified this subsystem shared on concept:
-    concurrent-edit safety is generic.
-    The concept holds; the delivery does not.
-    Measured 2026-08-19: scripts/edit-coop.sh, the primitive all four hooks
-    call, is copied by no installer -- neither cos_init.py nor install.sh
-    names it, and scripts/ is not copied wholesale -- so the subsystem cannot
-    function in a consumer install.
-    Reclassified to the status this manifest already defines for exactly that
-    state rather than to maintainer-only, which would overturn the shared
-    intent recorded in four places (these entries, the five SCOPE headers,
-    the shared-concurrent-edit-safety rule in
-    cos_lib/primitive_scope_classifier.py, and its test).
-    Closing it means projecting edit-coop.sh and scripts/_lib/session-id.sh,
-    which activates a PreToolUse gate that exits 2 on conflict in third-party
-    projects: an operator decision, not a classification one.
+    Iteration 029/batch 002 classified this subsystem shared on concept.
+    The concept was right and the delivery was missing: scripts/edit-coop.sh,
+    the primitive all four hooks call, was copied by no installer, so the
+    hooks projected under --full and sat inert.
+    Closed 2026-08-19 -- cos_init._install_edit_lock_primitive projects the
+    CLI to .cognitive-os/bin/edit-coop.sh and its identity lib to
+    .cognitive-os/bin/_lib/session-id.sh, and the four hooks resolve both
+    layouts.
+    The lib travels on purpose: without it the script falls back to
+    default-session and the hooks to shell-$PPID, so a lock taken by one
+    would be invisible to the other.
+    Proof: the acquire/release cycle runs through the hooks against an
+    install built by cos_init itself, in
+    tests/red_team/portability/test_edit-lock-pre-tool.py and
+    tests/red_team/portability/test_edit-coop.py, each with a null control
+    for the un-projected state.
 - path: hooks/edit-lock-pre-tool.sh
-  status: projectable-needs-driver
+  status: shared-surface
   rationale: >-
-    Iteration 029/batch 002 classified this subsystem shared on concept:
-    concurrent-edit safety is generic.
-    The concept holds; the delivery does not.
-    Measured 2026-08-19: scripts/edit-coop.sh, the primitive all four hooks
-    call, is copied by no installer -- neither cos_init.py nor install.sh
-    names it, and scripts/ is not copied wholesale -- so the subsystem cannot
-    function in a consumer install.
-    Reclassified to the status this manifest already defines for exactly that
-    state rather than to maintainer-only, which would overturn the shared
-    intent recorded in four places (these entries, the five SCOPE headers,
-    the shared-concurrent-edit-safety rule in
-    cos_lib/primitive_scope_classifier.py, and its test).
-    Closing it means projecting edit-coop.sh and scripts/_lib/session-id.sh,
-    which activates a PreToolUse gate that exits 2 on conflict in third-party
-    projects: an operator decision, not a classification one.
+    Iteration 029/batch 002 classified this subsystem shared on concept.
+    The concept was right and the delivery was missing: scripts/edit-coop.sh,
+    the primitive all four hooks call, was copied by no installer, so the
+    hooks projected under --full and sat inert.
+    Closed 2026-08-19 -- cos_init._install_edit_lock_primitive projects the
+    CLI to .cognitive-os/bin/edit-coop.sh and its identity lib to
+    .cognitive-os/bin/_lib/session-id.sh, and the four hooks resolve both
+    layouts.
+    The lib travels on purpose: without it the script falls back to
+    default-session and the hooks to shell-$PPID, so a lock taken by one
+    would be invisible to the other.
+    Proof: the acquire/release cycle runs through the hooks against an
+    install built by cos_init itself, in
+    tests/red_team/portability/test_edit-lock-pre-tool.py and
+    tests/red_team/portability/test_edit-coop.py, each with a null control
+    for the un-projected state.
 - path: hooks/edit-lock-process-negotiations.sh
-  status: projectable-needs-driver
+  status: shared-surface
   rationale: >-
-    Iteration 029/batch 002 classified this subsystem shared on concept:
-    concurrent-edit safety is generic.
-    The concept holds; the delivery does not.
-    Measured 2026-08-19: scripts/edit-coop.sh, the primitive all four hooks
-    call, is copied by no installer -- neither cos_init.py nor install.sh
-    names it, and scripts/ is not copied wholesale -- so the subsystem cannot
-    function in a consumer install.
-    Reclassified to the status this manifest already defines for exactly that
-    state rather than to maintainer-only, which would overturn the shared
-    intent recorded in four places (these entries, the five SCOPE headers,
-    the shared-concurrent-edit-safety rule in
-    cos_lib/primitive_scope_classifier.py, and its test).
-    Closing it means projecting edit-coop.sh and scripts/_lib/session-id.sh,
-    which activates a PreToolUse gate that exits 2 on conflict in third-party
-    projects: an operator decision, not a classification one.
+    Iteration 029/batch 002 classified this subsystem shared on concept.
+    The concept was right and the delivery was missing: scripts/edit-coop.sh,
+    the primitive all four hooks call, was copied by no installer, so the
+    hooks projected under --full and sat inert.
+    Closed 2026-08-19 -- cos_init._install_edit_lock_primitive projects the
+    CLI to .cognitive-os/bin/edit-coop.sh and its identity lib to
+    .cognitive-os/bin/_lib/session-id.sh, and the four hooks resolve both
+    layouts.
+    The lib travels on purpose: without it the script falls back to
+    default-session and the hooks to shell-$PPID, so a lock taken by one
+    would be invisible to the other.
+    Proof: the acquire/release cycle runs through the hooks against an
+    install built by cos_init itself, in
+    tests/red_team/portability/test_edit-lock-pre-tool.py and
+    tests/red_team/portability/test_edit-coop.py, each with a null control
+    for the un-projected state.
 - path: hooks/edit-lock-session-end.sh
-  status: projectable-needs-driver
+  status: shared-surface
   rationale: >-
-    Iteration 029/batch 002 classified this subsystem shared on concept:
-    concurrent-edit safety is generic.
-    The concept holds; the delivery does not.
-    Measured 2026-08-19: scripts/edit-coop.sh, the primitive all four hooks
-    call, is copied by no installer -- neither cos_init.py nor install.sh
-    names it, and scripts/ is not copied wholesale -- so the subsystem cannot
-    function in a consumer install.
-    Reclassified to the status this manifest already defines for exactly that
-    state rather than to maintainer-only, which would overturn the shared
-    intent recorded in four places (these entries, the five SCOPE headers,
-    the shared-concurrent-edit-safety rule in
-    cos_lib/primitive_scope_classifier.py, and its test).
-    Closing it means projecting edit-coop.sh and scripts/_lib/session-id.sh,
-    which activates a PreToolUse gate that exits 2 on conflict in third-party
-    projects: an operator decision, not a classification one.
+    Iteration 029/batch 002 classified this subsystem shared on concept.
+    The concept was right and the delivery was missing: scripts/edit-coop.sh,
+    the primitive all four hooks call, was copied by no installer, so the
+    hooks projected under --full and sat inert.
+    Closed 2026-08-19 -- cos_init._install_edit_lock_primitive projects the
+    CLI to .cognitive-os/bin/edit-coop.sh and its identity lib to
+    .cognitive-os/bin/_lib/session-id.sh, and the four hooks resolve both
+    layouts.
+    The lib travels on purpose: without it the script falls back to
+    default-session and the hooks to shell-$PPID, so a lock taken by one
+    would be invisible to the other.
+    Proof: the acquire/release cycle runs through the hooks against an
+    install built by cos_init itself, in
+    tests/red_team/portability/test_edit-lock-pre-tool.py and
+    tests/red_team/portability/test_edit-coop.py, each with a null control
+    for the un-projected state.
 - path: hooks/post-agent-verify.sh
   status: shared-surface
   rationale: 'Manual scope review iteration 029: verifying an agent stayed inside

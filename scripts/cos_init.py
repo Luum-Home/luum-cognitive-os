@@ -1470,6 +1470,42 @@ def _install_quality_duplicates_primitive(project_dir: Path, cos_source: Path) -
     return copied
 
 
+def _install_edit_lock_primitive(project_dir: Path, cos_source: Path) -> bool:
+    """Install the ADR-098 edit-coordination primitive next to the hooks that call it.
+
+    The four hooks/edit-lock-*.sh hooks ship (SCOPE: both, projected by --full
+    installs) and every one of them delegates to scripts/edit-coop.sh, which no
+    installer copied. Measured 2026-08-19: the subsystem was registered and inert
+    in every consumer install, and primitive-consumer-availability.yaml declared
+    it a shared surface it never delivered.
+
+    session-id.sh travels beside it, in _lib/, because edit-coop.sh resolves it as
+    `$(dirname "${BASH_SOURCE[0]}")/_lib/session-id.sh`. Shipping the CLI alone
+    would leave each participant on its own fallback identity -- `default-session`
+    inside edit-coop.sh, `shell-$PPID` inside the hooks -- so a lock taken by one
+    would be invisible to the other. One identity source, or no locking.
+    """
+    bin_dir = project_dir / ".cognitive-os" / "bin"
+    lib_dir = bin_dir / "_lib"
+    install_scope = os.environ.get("COS_INSTALL_SCOPE", "both")
+    copied = False
+
+    coop_src = cos_source / "scripts" / "edit-coop.sh"
+    if coop_src.is_file() and scope_allows(str(coop_src), install_scope):
+        bin_dir.mkdir(parents=True, exist_ok=True)
+        coop_dest = bin_dir / "edit-coop.sh"
+        shutil.copy2(str(coop_src), str(coop_dest))
+        coop_dest.chmod(coop_dest.stat().st_mode | 0o111)
+        copied = True
+
+        sid_src = cos_source / "scripts" / "_lib" / "session-id.sh"
+        if sid_src.is_file() and scope_allows(str(sid_src), install_scope):
+            lib_dir.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(str(sid_src), str(lib_dir / "session-id.sh"))
+
+    return copied
+
+
 def _install_so_impact_eval_primitive(project_dir: Path, cos_source: Path) -> bool:
     """Install the project-local SO impact smoke runner and fixture capsule."""
     bin_dir = project_dir / ".cognitive-os" / "bin"
@@ -2003,6 +2039,7 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
     provenance_scan_installed = _install_provenance_scan_guardrail(project_dir, cos_source)
     quality_duplicates_installed = _install_quality_duplicates_primitive(project_dir, cos_source)
     so_impact_eval_installed = _install_so_impact_eval_primitive(project_dir, cos_source)
+    edit_lock_installed = _install_edit_lock_primitive(project_dir, cos_source)
     task_closure_gate_installed = _install_task_closure_gate_primitive(project_dir, cos_source)
 
     # ── 8. Create cognitive-os.yaml ──────────────────────────────────
