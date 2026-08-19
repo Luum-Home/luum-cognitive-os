@@ -60,16 +60,22 @@ def test_accounted_context_hook_logs_before_emitting(tmp_path: Path) -> None:
     assert rows[-1]["source"] == "cross-session-peer-context"
 
 
-def test_accounted_context_hook_skips_when_static_budget_blocks(tmp_path: Path) -> None:
+def test_accounted_context_hook_drops_with_a_trace_when_static_budget_blocks(tmp_path: Path) -> None:
+    """End-to-end: the hook's context is suppressed, but the drop is announced and logged."""
     (tmp_path / "cognitive-os.yaml").write_text("context_budget:\n  static_max_tokens: 1\n", encoding="utf-8")
     send_message(tmp_path, from_session="auditor", to_session="me", message_type="audit_finding", severity="warn", body="x" * 100)
     env = {**os.environ, "CLAUDE_PROJECT_DIR": str(tmp_path), "COGNITIVE_OS_SESSION_ID": "me"}
     res = subprocess.run(["bash", str(INBOX)], text=True, capture_output=True, env=env, timeout=10)
     assert res.returncode == 0
-    assert res.stdout.strip() == ""
+    assert res.stdout.strip(), "the hook's payload vanished with no output at all"
+    emitted = json.loads(res.stdout)["hookSpecificOutput"]["additionalContext"]
+    assert emitted.startswith("[context-budget] DROPPED")
+    assert "x" * 100 not in emitted
     log = tmp_path / ".cognitive-os" / "metrics" / "context-budget.jsonl"
     rows = [json.loads(line) for line in log.read_text().splitlines()]
     assert rows[-1]["verdict"] == "BLOCK"
+    assert rows[-1]["dropped"] is True
+    assert rows[-1]["dropped_sha256"]
 
 
 def test_meter_block_override_allows_and_logs_override(tmp_path: Path) -> None:
