@@ -22,6 +22,10 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 source "$(dirname "$0")/_lib/common.sh"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 COGNITIVE_OS_HOOK_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+# Exported on purpose: the python3 -c block below reads it from os.environ.
+# Without the export it raises KeyError, the lookup is swallowed by 2>/dev/null
+# and the hook silently stops draining the queue (found 2026-08-19).
+export COGNITIVE_OS_HOOK_ROOT
 
 check_private_mode
 
