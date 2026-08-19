@@ -124,9 +124,26 @@ fi
 DAEMON_PID=$(cat "$RUNTIME_DIR/.watchdog-spawn-pid" 2>/dev/null || echo "")
 rm -f "$RUNTIME_DIR/.watchdog-spawn-pid"
 
+# ── Confirm the daemon outlived its own import before claiming success ──────
+# nohup hands back a PID the instant the process is forked, so a daemon that
+# dies inside `import` still yields one. Writing it straight to the pidfile made
+# the hook print "daemon ensured" for a process that was already gone; the next
+# SessionStart then found the pidfile stale, cleared it and spawned again. A
+# crash-looping daemon reported success at every session and never once ran.
+#
+# The wait is a fixed window, not a poll: returning as soon as the process is
+# alive would return BEFORE the import that kills it, which is the whole failure
+# mode. It costs nothing on the session's critical path -- this launcher is
+# registered `async: true` on SessionStart, a contract asserted by
+# tests/unit/test_session_start_budget.py.
 if [ -n "$DAEMON_PID" ]; then
-    echo "$DAEMON_PID" > "$PID_FILE"
-    echo "[session-watchdog] daemon ensured (PID=$DAEMON_PID)" >&2
+    sleep "${COS_SESSION_WATCHDOG_STARTUP_GRACE:-0.5}"
+    if kill -0 "$DAEMON_PID" 2>/dev/null; then
+        echo "$DAEMON_PID" > "$PID_FILE"
+        echo "[session-watchdog] daemon ensured (PID=$DAEMON_PID)" >&2
+    else
+        echo "[session-watchdog] WARNING: daemon exited during startup (PID=$DAEMON_PID); see $RUNTIME_DIR/session-watchdog.log" >&2
+    fi
 fi
 
 exit 0
