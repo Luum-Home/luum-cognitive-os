@@ -65,7 +65,7 @@
         "config": 5,
         "hook": 2,
         "script": 2,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -115,12 +115,16 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_edit-lock-process-negotiations.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_session-id.py"
         }
       ],
       "distribution": "maintainer",
       "evidence": [
         "lifecycle",
-        "test_consumers:3",
+        "test_consumers:4",
         "hook_consumers:2",
         "config_consumers:5",
         "script_consumers:2"
@@ -140,7 +144,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 12,
+      "total_consumers": 13,
       "wrapper_for": null
     },
     {
@@ -7303,7 +7307,7 @@
         "rule": 75,
         "script": 618,
         "skill": 114,
-        "test": 1351,
+        "test": 1352,
         "workflow": 2
       },
       "consumers": [
@@ -19281,6 +19285,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_session-id.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_session_budget.py"
         },
         {
@@ -21657,7 +21665,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:114",
-        "test_consumers:1351",
+        "test_consumers:1352",
         "hook_consumers:199",
         "workflow_consumers:2",
         "doc_consumers:1133",
@@ -21679,7 +21687,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 3586,
+      "total_consumers": 3587,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -60034,7 +60042,7 @@
         "hook": 4,
         "script": 6,
         "skill": 1,
-        "test": 10
+        "test": 11
       },
       "consumers": [
         {
@@ -60155,6 +60163,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_session-id.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_cos_session_spawn.py"
         },
         {
@@ -60178,7 +60190,7 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
-        "test_consumers:10",
+        "test_consumers:11",
         "hook_consumers:4",
         "doc_consumers:8",
         "config_consumers:5",
@@ -60198,7 +60210,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 34,
+      "total_consumers": 35,
       "wrapper_for": null
     },
     {
