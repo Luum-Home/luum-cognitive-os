@@ -30,6 +30,28 @@ sources:
       Fetched and grepped locally rather than summarized, because the HTML page
       truncates under WebFetch and three separate summarization passes each
       lost the additionalContext placement rule.
+  - url: https://code.claude.com/docs/en/hooks.md
+    what: >
+      Same reference, RE-FETCHED 2026-08-19 and diffed against the 2026-08-15
+      transcription. The document had changed: 277223 bytes vs the 272682
+      recorded above. Sections newly transcribed into this manifest —
+      "Common fields" (the `if`, `statusMessage` and `once` handler fields),
+      "Command hook fields" (`args`, `asyncRewake`, `shell`),
+      "Exec form and shell form", "Bash `if` matching", plus the per-event
+      blocks for PreCompact, TaskCreated and TeammateIdle, which this repo
+      REGISTERS and this manifest had not transcribed.
+    verified: 2026-08-19
+    how: >
+      curl -sSL https://code.claude.com/docs/en/hooks.md -o /tmp/hooks.md
+      (HTTP 200, 277223 bytes, no redirect), then, on the local copy:
+      grep -n '"if"\|"args"\|"shell"\|asyncRewake\|statusMessage\|"once"' /tmp/hooks.md
+      sed -n '400,600p' /tmp/hooks.md          # "Hook handler fields"
+      sed -n '822,862p' /tmp/hooks.md          # "Exit code 2 behavior per event"
+      sed -n '978,1000p' /tmp/hooks.md         # "Decision control" table
+      Byte count from the curl `-w '%{size_download}'` write-out. Six of six
+      hypothesised fields exist; none is invented. `once` returns 0 hits when
+      grepped WITH quotes ('"once"') and 1 hit unquoted — the field is real and
+      a quoted grep alone would have produced a false refutation.
   - url: https://code.claude.com/docs/en/agent-sdk/hooks
     what: >
       Agent SDK hooks page. Used for the sentence distinguishing
@@ -141,8 +163,30 @@ universal_fields:
       Anything outside the allowlist makes the field ignored.
 
 # ── Per-event decision control ────────────────────────────────────────────────
-# Only the events this repo actually registers are transcribed in full. The
-# "context only" group is the one that matters for the injector family.
+# SCOPE RULE: every event this repo actually registers is transcribed in full.
+# The "context only" group is the one that matters for the injector family.
+#
+# 2026-08-19: the rule above was stated here since 2026-08-15 and was NOT true.
+# The repo registers ten events; six were transcribed. PreCompact, TaskCreated
+# and TeammateIdle were registered in .claude/settings.json and absent from this
+# file, so the conformance test could not check the hooks sitting on them. They
+# are transcribed below. Measured with:
+#   COS_ALLOW_PROTECTED_CONFIG_WRITE=1 python3 -c "import json;d=json.load(open('.claude/settings.json'));[print(k,sum(len(g.get('hooks',[])) for g in v)) for k,v in sorted(d['hooks'].items())]"
+# -> PostToolUse 57, PreToolUse 39, SessionStart 27, Stop 23, UserPromptSubmit 12,
+#    PreCompact 1, SubagentStart 1, TaskCreated 1, TeammateIdle 1, TaskCompleted 0.
+#
+# Events NOT transcribed in full, and why — recorded so the next reader does not
+# re-derive it. This repo registers no handler on any of them (same command):
+#   ConfigChange, Setup, InstructionsLoaded, UserPromptExpansion, MessageDisplay,
+#   PermissionRequest, PostToolUseFailure, PostToolBatch, PermissionDenied,
+#   Notification, SubagentStop, StopFailure, CwdChanged, DirectoryAdded,
+#   FileChanged, WorktreeCreate, WorktreeRemove, PostCompact, SessionEnd,
+#   Elicitation, ElicitationResult.
+# ConfigChange is called out by name because it is the one with real blocking
+# power we deliberately leave unused: it can block a settings change from taking
+# effect, and a repo that guards .claude/settings.json with a PreToolUse write
+# guard has an obvious reason to want it. Not registering it is a decision, not
+# an oversight, so it stays out of the transcription and in this list.
 events:
   SubagentStart:
     fires_when: "A Claude Code subagent is spawned via the Agent tool."
@@ -209,10 +253,157 @@ events:
     decision_pattern: "top-level decision"
     output_fields_allowed: [additionalContext]
 
+  # ── Registered here since before 2026-08-15, transcribed 2026-08-19 ──────────
+  PreCompact:
+    fires_when: "Before Claude Code runs a compact operation."
+    registered_hook: hooks/pre-compaction-flush.sh
+    matcher_supported: true
+    matcher_values: [manual, auto]
+    matcher_semantics: >
+      "manual" fires on /compact; "auto" on auto-compact when the context
+      window fills.
+    can_block: true
+    exit_2_behavior: "Blocks compaction."
+    decision_pattern: "top-level decision"
+    decision_fields: [decision, reason]
+    output_fields_ignored: [systemMessage, continue]
+    blocking_side_effects: >
+      Blocking a PROACTIVE auto-compact skips it and the conversation continues
+      uncompacted. Blocking a compaction triggered to RECOVER from a
+      context-limit error the API already returned surfaces that error and the
+      current request fails. Two different outcomes behind one decision.
+    quote: >
+      "Exit with code 2 to block compaction. [...] Claude Code discards a
+      PreCompact hook's `systemMessage` and `continue` fields." — hooks.md,
+      section "PreCompact".
+
+  TaskCreated:
+    fires_when: "A task is being created via the TaskCreate tool."
+    registered_hook: hooks/task-created.sh
+    matcher_supported: false
+    matcher_semantics: >
+      "TaskCreated hooks don't support matchers and fire on every occurrence."
+      A matcher written here is not honoured.
+    does_not_fire_when: >
+      The session has no Task tools available.
+    can_block: true
+    exit_2_behavior: "Rolls back the task creation; stderr is returned to Claude as the tool error."
+    decision_pattern: "exit code or top-level decision"
+    decision_fields: [decision, reason]
+    output_fields_ignored: [continue]
+    note_on_continue: >
+      "Claude Code ignores `continue: false` from this event and Claude keeps
+      working." A hook that tries to halt the session from here fails silently.
+    stdin_fields:
+      required: [session_id, transcript_path, cwd, hook_event_name, task_id, task_subject]
+      optional: [task_description, teammate_name, team_name]
+      deprecated: [team_name]
+
+  TeammateIdle:
+    fires_when: "A teammate is about to go idle."
+    registered_hook: hooks/teammate-idle.sh
+    can_block: true
+    exit_2_behavior: "Prevents the teammate from going idle, so it continues working."
+    decision_pattern: "exit code or continue: false"
+    decision_fields: [continue, stopReason]
+    note: >
+      Unlike the top-level-decision family, this event does NOT take
+      `decision: "block"`. It takes exit code 2, or JSON
+      {"continue": false, "stopReason": "..."} which stops the teammate
+      entirely, matching Stop-hook behaviour. Writing `decision: "block"` here
+      is inert.
+
+  # Declared in cognitive-os.yaml with default_projection: false, therefore NOT
+  # in .claude/settings.json (0 handlers, verified 2026-08-19). Transcribed
+  # anyway because the declaration exists and flipping the projection flag is a
+  # one-line change that should not require re-reading the host docs.
+  TaskCompleted:
+    fires_when: >
+      A task is marked completed through TaskUpdate, or an agent-teams teammate
+      finishes its turn with in-progress tasks.
+    declared_hook: hooks/task-completed.sh
+    projected_to_settings: false
+    can_block: true
+    exit_2_behavior: "Prevents the task from being marked as completed."
+    decision_pattern: "exit code or continue: false"
+    decision_fields: [continue, stopReason]
+
 # ── Handler configuration fields ──────────────────────────────────────────────
 handler_fields:
   type:
     values: [command, http, mcp_tool, prompt, agent]
+  # ── `if` — the field that silently disables a hook ──────────────────────────
+  # Verified 2026-08-19. THE TRAP: `if` is only evaluated on TOOL events. On any
+  # other event a handler that declares `if` NEVER RUNS. There is no error and no
+  # warning: the hook is simply absent. Same silent-discard family as root-level
+  # additionalContext above, one level up — there the OUTPUT is dropped, here the
+  # whole HANDLER is.
+  if:
+    applies_to: all hook types
+    evaluated_only_on: [PreToolUse, PostToolUse, PostToolUseFailure, PermissionRequest, PermissionDenied]
+    on_other_events: >
+      The handler never runs. Not an error, not a warning — silent.
+    quote: >
+      "Only evaluated on tool events: PreToolUse, PostToolUse,
+      PostToolUseFailure, PermissionRequest, and PermissionDenied. On other
+      events, a hook with `if` set never runs." — hooks.md, "Common fields".
+    syntax: >
+      Exactly ONE permission rule, e.g. "Bash(git *)" or "Edit(*.ts)". No &&,
+      no ||, no list form. Multiple conditions require multiple handlers.
+    fails_open: >
+      When the Bash command cannot be parsed the filter runs the hook anyway.
+      Also, a pattern naming more than the command name ("Bash(git push *)")
+      runs the hook on any $(), backtick or $VAR command.
+    not_an_enforcement_mechanism: >
+      "Because the `if` filter is best-effort, use the permission system rather
+      than a hook to enforce a hard allow or deny." — hooks.md, "Common fields".
+      SCOPE, because this sentence is easy to over-read: it argues against
+      relying on `if` for gating, NOT against hooks in general. Hook-based
+      denial via PreToolUse permissionDecision is documented and unqualified.
+  args:
+    applies_to: 'type: "command" only'
+    effect: >
+      Presence of `args` switches the handler to EXEC form: `command` is
+      resolved as an executable on PATH and spawned directly with `args` as the
+      argument vector. No shell — so no pipes, no &&, no globbing, and special
+      characters pass through verbatim.
+    absent_means: >
+      Shell form. `command` goes to `sh -c` (macOS/Linux), Git Bash, or
+      PowerShell.
+    guidance: >
+      The doc recommends exec form for any hook referencing a path placeholder
+      (${CLAUDE_PROJECT_DIR}, ${CLAUDE_PLUGIN_ROOT}, ${CLAUDE_PLUGIN_DATA}),
+      because each args element is passed as one argument with no quoting.
+  shell:
+    applies_to: 'type: "command" only'
+    values: [bash, powershell]
+    default: >
+      "bash"; "powershell" on Windows when Git Bash is absent.
+    ignored_when: args is set
+  asyncRewake:
+    applies_to: 'type: "command" only'
+    implies: async
+    effect: >
+      Runs in the background and WAKES Claude on exit code 2, even when the
+      session is idle. The hook's stderr — or stdout when stderr is empty — is
+      shown to Claude as a system reminder.
+    relation_to_async: >
+      Plain `async` output waits for the next conversation turn; asyncRewake
+      exit-2 is the documented exception to that wait.
+  statusMessage:
+    applies_to: all hook types
+    effect: Custom spinner message shown to the USER while the hook runs.
+    note: >
+      Cosmetic. Does not reach the model, so it cannot substitute for
+      additionalContext.
+  once:
+    effect: "If true, runs once per session then is removed."
+    honored_only_in: skill frontmatter
+    ignored_in: [settings.json, settings.local.json, agent frontmatter]
+    note: >
+      Recorded precisely because the ignore is silent. This repo declares no
+      hooks in skill frontmatter (verified 2026-08-19), so `once` has nowhere
+      to be honoured here today.
   command:
     note: "Shell command. Only `type: command` supports `async`."
   timeout:
@@ -288,6 +479,27 @@ prohibited_in_this_repo:
       A hook's "# Async:" header comment must agree with its registration in
       .claude/settings.json.
     detect: tests/contracts/test_claude_code_hooks_schema_conformance.py
+  - id: if-field-on-non-tool-event
+    rule: >
+      No handler may declare `if` on an event outside
+      [PreToolUse, PostToolUse, PostToolUseFailure, PermissionRequest,
+      PermissionDenied]. The host silently never runs it, producing a hook that
+      exists in settings, exists on disk, and has zero telemetry rows — which
+      reads as "dormant" rather than "misconfigured".
+    current_state: >
+      Zero handlers in this repo use `if` at all. Verified 2026-08-19 over the
+      162 handlers in .claude/settings.json and the 200 entries in
+      cognitive-os.yaml > harness.hooks; the only keys in use are
+      type/command/async and script/event/scope/async/matcher/*_projection.
+      This rule is therefore preventive, not remedial.
+    detect: tests/contracts/test_claude_code_hooks_schema_conformance.py
+    severity: advisory
+  - id: once-field-in-settings
+    rule: >
+      `once: true` is ignored outside skill frontmatter. Writing it in
+      .claude/settings.json or in agent frontmatter yields a hook that runs
+      every time while its author believes it runs once.
+    severity: advisory
   - id: decision-fields-on-context-only-events
     rule: >
       SubagentStart, SessionStart and Setup are context-only. Emitting
