@@ -180,6 +180,18 @@ for _arg in "$@"; do
   esac
 done
 
+# --dist: los pins pytest.mark.xdist_group son inertes bajo el default de xdist
+# (--dist load). Solo se inyecta loadgroup si el llamador no eligio un modo.
+_has_dist_flag=0
+for _arg in "$@"; do
+  case "$_arg" in
+    --dist | --dist=*)
+      _has_dist_flag=1
+      break
+      ;;
+  esac
+done
+
 if [ "$_has_n_flag" -eq 0 ]; then
   if [ -n "$_caller_workers" ] && [ "$_caller_workers" != "auto" ]; then
     # Caller (e.g. cos-test) passed an explicit COUNT.  Skip all detection.
@@ -310,14 +322,19 @@ PYLANE
   fi  # end caller-supplied vs adaptive
 
   if [ "$_workers" != "0" ] && [ -n "$_workers" ]; then
-    set -- -n "$_workers" "$@"
-    echo "[pytest-with-summary] Injected: -n $_workers (use explicit -n or --workers N or COS_PYTEST_WORKERS to override)"
+    if [ "$_has_dist_flag" -eq 0 ]; then
+      set -- -n "$_workers" --dist loadgroup "$@"
+      echo "[pytest-with-summary] Injected: -n $_workers --dist loadgroup (xdist_group pins need loadgroup; pass --dist to override)"
+    else
+      set -- -n "$_workers" "$@"
+      echo "[pytest-with-summary] Injected: -n $_workers (caller chose --dist)"
+    fi
   else
     echo "[pytest-with-summary] Injected: serial (workers=0)"
   fi
 fi
 _effective_workers="${_workers:-}"
-unset _has_n_flag _caller_workers _workers _lane_parallel _lane_name _lane_result _LANES_YAML 2>/dev/null || true
+unset _has_n_flag _has_dist_flag _caller_workers _workers _lane_parallel _lane_name _lane_result _LANES_YAML 2>/dev/null || true
 # --- end adaptive worker injection ---
 
 timestamp="$(date -u +"%Y%m%dT%H%M%SZ")"

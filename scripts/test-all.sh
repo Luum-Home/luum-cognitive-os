@@ -73,7 +73,8 @@ echo ""
 # Check for pytest-xdist
 XDIST_FLAG=""
 if python3 -c "import xdist" 2>/dev/null; then
-  XDIST_FLAG="-n $PARALLEL"
+  # --dist loadgroup: sin esto los pins pytest.mark.xdist_group son inertes.
+  XDIST_FLAG="-n $PARALLEL --dist loadgroup"
   echo -e "  ${GREEN}pytest-xdist detected${NC} — parallel execution enabled (workers: $PARALLEL)"
 else
   echo -e "  ${YELLOW}pytest-xdist not found${NC} — running sequentially"
