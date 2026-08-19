@@ -260,6 +260,17 @@ handler_fields:
           next conversation turn". Inference, not a quoted rule.
       - event: SessionStart
         reason: Same conflict — insertion point precedes the first prompt.
+    contraindicated_for_prompt_coupled_context:
+      - event: UserPromptSubmit
+        reason: >
+          Insertion point is "alongside the prompt being submitted"; async
+          delivery is "the next conversation turn". A different category from
+          the two entries above — there the insertion point PRECEDES the first
+          prompt and nothing arrives at all — with the same consequence for the
+          reader: the context lands one prompt late, attached to a turn that did
+          not produce it. Applies only to hooks that emit additionalContext; a
+          UserPromptSubmit hook with side effects only (capture, prefetch,
+          budget warnings) is correctly async. Inference, not a quoted rule.
     self_documenting_requirement: >
       A hook's header comment stating "Async: false" while settings.json
       registers it with "async": true is a contract contradiction in the repo

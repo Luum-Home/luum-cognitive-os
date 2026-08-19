@@ -1014,7 +1014,7 @@ harness:
     session-wrapup-trigger:
       script: hooks/session-wrapup-trigger.sh
       event: UserPromptSubmit
-      async: true
+      async: false
       scope: os-only
 
     session-heartbeat-on-prompt:
@@ -1948,25 +1948,25 @@ harness:
     cross-session-peer-context:
       script: hooks/cross-session-peer-context.sh
       event: UserPromptSubmit
-      async: true
+      async: false
       scope: os-only
 
     agent-message-inbox-context:
       script: hooks/agent-message-inbox-context.sh
       event: UserPromptSubmit
-      async: true
+      async: false
       scope: os-only
 
     rule-router-prompt-suggest:
       script: hooks/rule-router-prompt-suggest.sh
       event: UserPromptSubmit
-      async: true
+      async: false
       scope: os-only
 
     adr-relevance-suggest:
       script: hooks/adr-relevance-suggest.sh
       event: UserPromptSubmit
-      async: true
+      async: false
       scope: os-only
 
     context-budget-meter:
@@ -1977,7 +1977,7 @@ harness:
     skill-router-prompt-suggest:
       script: hooks/skill-router-prompt-suggest.sh
       event: UserPromptSubmit
-      async: true
+      async: false
       scope: both
 
     orchestrator-decision-trace:

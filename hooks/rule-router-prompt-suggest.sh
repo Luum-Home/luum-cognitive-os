@@ -8,7 +8,8 @@
 #
 # Event:  UserPromptSubmit
 # Type:   command
-# Async:  true (does not block user input)
+# Async:  false (UserPromptSubmit inserts additionalContext alongside the
+#          prompt; async output lands on the NEXT turn, one prompt late)
 # Exit:   advisory 0
 #
 # Logs every evaluation to .cognitive-os/metrics/rule-suggestion.jsonl.
