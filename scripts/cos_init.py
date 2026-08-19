@@ -116,26 +116,6 @@ DEFAULT_SKILLS = (
     "verification-before-completion plan-feature session-backlog resource-governor "
 ).split()
 
-# Core rules kept after efficiency-profile filtering (default tier)
-COS_INIT_CORE_RULES = [
-    "RULES-COMPACT.md",
-    "adaptive-bypass.md",
-    "acceptance-criteria.md",
-    "agent-quality.md",
-    "trust-score.md",
-    "definition-of-done.md",
-    "phase-aware-agents.md",
-    "closed-loop-prompts.md",
-    "token-economy.md",
-    "responsiveness.md",
-    "agent-security.md",
-    "credential-management.md",
-    "content-policy.md",
-    "license-policy.md",
-    "research-first-protocol.md",
-    "error-learning.md",
-]
-
 INSTALL_BOUNDARY_MANIFEST = COS_SOURCE_DIR / "manifests" / "primitive-install-boundary.yaml"
 
 
@@ -194,6 +174,36 @@ def _boundary_names(boundary: dict[str, object], kind: str, fallback: tuple[str,
             else:
                 names.append(path.name)
     return names or list(fallback)
+
+
+def default_rule_names() -> list[str]:
+    """Rule stems the `default` profile is allowed to project.
+
+    Derived from `manifests/primitive-install-boundary.yaml` (the census), so a
+    rule added there is copied AND kept without editing this file. Falls back to
+    DEFAULT_RULES only when the manifest is unreadable.
+    """
+    return _boundary_names(_load_install_boundary("--default"), "rules", DEFAULT_RULES)
+
+
+def default_rule_files() -> set[str]:
+    """Filenames kept by the efficiency-profile filter in `default` mode.
+
+    RULES-COMPACT.md is added unconditionally: it is installed outside the
+    boundary loop (compact index, ADR-074) and must never be filtered out even
+    if the manifest fallback path is taken.
+    """
+    files = {f"{name}.md" for name in default_rule_names()}
+    files.add("RULES-COMPACT.md")
+    return files
+
+
+def _default_mode_summary() -> str:
+    """Human-readable inventory of what `--default` installs, derived from the manifest."""
+    boundary = _load_install_boundary("--default")
+    skills = len(_boundary_names(boundary, "skills", DEFAULT_SKILLS))
+    hooks = len(_boundary_names(boundary, "hooks", DEFAULT_HOOKS))
+    return f"{skills} curated skills, {hooks} standard hooks, {len(default_rule_files())} core rules"
 
 
 # ── Migrated functions ───────────────────────────────────────────────
@@ -579,7 +589,7 @@ def _build_parser() -> argparse.ArgumentParser:
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=(
             "Modes:\n"
-            "  --default  10 curated skills, ~29 standard hooks, 14 core rules (~8K tokens/session)\n"
+            f"  --default  {_default_mode_summary()} (~8K tokens/session)\n"
             "  --full     Everything (~142K tokens/session)\n\n"
             "Legacy flags --minimal, --standard, --lean are remapped to --default.\n"
         ),
@@ -968,13 +978,13 @@ def _apply_efficiency_profile(
             pass
 
     if efficiency_profile == "default":
+        core_rule_files = default_rule_files()
         for rules_dir in rule_dests:
             rdir = Path(rules_dir)
             if not rdir.is_dir():
                 continue
             for rule_path in sorted(rdir.glob("*.md")):
-                base = rule_path.name
-                if base not in COS_INIT_CORE_RULES:
+                if rule_path.name not in core_rule_files:
                     rule_path.unlink(missing_ok=True)
 
     # Recount: use the driver dest (first writable dest is fine; use the cos driver)
@@ -1713,7 +1723,10 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
     if mode not in ("--default", "--full"):
         print(f"Usage: cos_init.py [--default|--full]", file=sys.stderr)
         print("", file=sys.stderr)
-        print("  --default  10 curated skills, ~29 standard hooks, 14 core rules (~8K tokens/session)", file=sys.stderr)
+        print(
+            f"  --default  {_default_mode_summary()} (~8K tokens/session)",
+            file=sys.stderr,
+        )
         print("  --full     Everything (~142K tokens/session)", file=sys.stderr)
         return 1
 
