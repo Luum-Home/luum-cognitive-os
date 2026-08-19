@@ -199,7 +199,7 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:24, lifecycle-decl
 | `hooks/prompt-quality-llm.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 29 | keep maintainer-only or add explicit export path |
 | `hooks/protected-config-write-guard.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | blocking | 61 | keep maintainer-only or add explicit export path |
 | `hooks/provenance-scan.sh` | observability | lifecycle | high | projected-consumer-surface | blocking | 23 | keep lifecycle, tests, and harness proof current |
-| `hooks/publication-safety.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 15 | add lifecycle/package/projection metadata or keep SO-local |
+| `hooks/publication-safety.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 16 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/pyrefly-typecheck-advisory.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 13 | keep maintainer-only or add explicit export path |
 | `hooks/quality-duplicates.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | advisory | 26 | keep lifecycle, tests, and harness proof current |
 | `hooks/query-tailored-context-inject.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 22 | keep maintainer-only or add explicit export path |
