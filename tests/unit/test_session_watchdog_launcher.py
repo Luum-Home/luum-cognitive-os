@@ -58,8 +58,10 @@ def _make_project(tmp_path: Path, *, yaml_enabled: bool | None = True,
             import os, sys, time, pathlib
             marker = pathlib.Path(os.environ.get("COGNITIVE_OS_PROJECT_DIR", ".")) / ".cognitive-os" / "runtime" / "spawned.flag"
             marker.write_text(" ".join(sys.argv))
-            # Sleep briefly so the parent can observe the PID alive, then exit.
-            time.sleep(0.5)
+            # Outlive the launcher's startup-grace window (0.5s) so the parent
+            # observes a live PID. At exactly 0.5 this raced the check and the
+            # daemon was scored dead about half the time.
+            time.sleep(5)
             sys.exit(0)
         """)
         script_path = tmp_path / "scripts" / "so_session_watchdog.py"
@@ -311,3 +313,41 @@ def test_orphan_cleanup_still_kills_a_stray_of_this_project(tmp_path):
     finally:
         _cleanup_spawned(project)
         _reap(stray)
+
+
+def test_pidfile_is_not_written_when_the_daemon_dies_on_startup(tmp_path):
+    """A daemon that dies inside `import` still yields a PID from nohup.
+
+    Written straight to the pidfile it made the hook announce "daemon ensured"
+    for a process already gone; the next SessionStart found the pidfile stale,
+    cleared it and spawned again, so a crash-looping daemon reported success at
+    every session and never ran once.
+    """
+    project = _make_project(tmp_path)
+    (project / "scripts" / "so_session_watchdog.py").write_text(
+        "import sys\nsys.exit(3)\n"
+    )
+    result = _run_launcher(project)
+
+    assert result.returncode == 0, "the launcher must never block session start"
+    pid_file = project / ".cognitive-os" / "runtime" / "session-watchdog.pid"
+    assert not pid_file.exists(), "a dead daemon must not be recorded as live"
+    assert "exited during startup" in result.stderr
+    assert "daemon ensured" not in result.stderr
+
+
+def test_pidfile_is_written_when_the_daemon_survives_startup(tmp_path):
+    """Null control: the check must not condemn a healthy daemon.
+
+    Without it the test above passes for free if the launcher simply stopped
+    writing the pidfile at all.
+    """
+    project = _make_project(tmp_path)
+    try:
+        result = _run_launcher(project)
+        assert result.returncode == 0
+        pid_file = project / ".cognitive-os" / "runtime" / "session-watchdog.pid"
+        assert pid_file.exists(), "a live daemon must still be recorded"
+        assert "daemon ensured" in result.stderr
+    finally:
+        _cleanup_spawned(project)
