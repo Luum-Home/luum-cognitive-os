@@ -142,7 +142,6 @@ prompt-quality-llm.sh
 rate-limit-detector.sh
 rate-limit-drain.sh
 rate-limit-precheck.sh
-rate-limit-protection.sh
 reaper-daemon-launcher.sh
 reaper-heartbeat.sh
 recap-sync.sh
