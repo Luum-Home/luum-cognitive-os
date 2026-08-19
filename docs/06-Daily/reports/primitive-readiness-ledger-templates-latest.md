@@ -7,7 +7,7 @@ Consumer accessibility: lifecycle-declared-maintainer:19, projected-consumer-sur
 | Path | Role | Source | Confidence | Consumer Access | Lifecycle | Consumers | Next action |
 |---|---|---|---|---|---|---:|---|
 | `templates/adr-template.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 5 | keep maintainer-only or add explicit export path |
-| `templates/agent-mandatory-rules.md` | quality-gate | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 26 | keep maintainer-only or add explicit export path |
+| `templates/agent-mandatory-rules.md` | quality-gate | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 27 | keep maintainer-only or add explicit export path |
 | `templates/agent-planning.md` | agent-preamble | heuristic:text | medium | so-local-only |  | 6 | add lifecycle/package/projection metadata or keep SO-local |
 | `templates/agent-preamble.md` | agent-preamble | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 69 | keep maintainer-only or add explicit export path |
 | `templates/agent-research-only.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 12 | keep maintainer-only or add explicit export path |

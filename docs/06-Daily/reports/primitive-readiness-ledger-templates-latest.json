@@ -69,7 +69,7 @@
         "doc": 13,
         "hook": 1,
         "rule": 3,
-        "test": 5
+        "test": 6
       },
       "consumers": [
         {
@@ -166,6 +166,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_encargo-refutable.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_os_only_scope_family.py"
         },
         {
@@ -182,7 +186,7 @@
         "lifecycle",
         "hook_consumers:1",
         "rule_consumers:3",
-        "test_consumers:5",
+        "test_consumers:6",
         "doc_consumers:13",
         "config_consumers:4"
       ],
@@ -198,7 +202,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 26
+      "total_consumers": 27
     },
     {
       "confidence": "medium",

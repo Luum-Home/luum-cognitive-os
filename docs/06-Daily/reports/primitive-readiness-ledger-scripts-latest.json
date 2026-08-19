@@ -3820,7 +3820,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -3830,12 +3830,16 @@
         {
           "family": "test",
           "path": "tests/audit/test_audit_ratchet_contracts.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_audit_adopt_verdict_linkage.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "wrapper_for:scripts/audit_decision_backing.py",
-        "test_consumers:1",
+        "test_consumers:2",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -3850,7 +3854,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 2,
+      "total_consumers": 3,
       "wrapper_for": "scripts/audit_decision_backing.py"
     },
     {
@@ -3859,7 +3863,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "doc": 2,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -3873,11 +3877,15 @@
         {
           "family": "test",
           "path": "tests/audit/test_audit_ratchet_contracts.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_audit_adr_path_reality.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:2"
       ],
       "install_surface": null,
@@ -3892,7 +3900,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 3,
+      "total_consumers": 4,
       "wrapper_for": null
     },
     {
@@ -3901,7 +3909,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "doc": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -3911,12 +3919,16 @@
         {
           "family": "test",
           "path": "tests/contracts/test_adr_status_links.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_audit_adr_status_links.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "wrapper_for:scripts/audit_adrs.py",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:1"
       ],
       "install_surface": null,
@@ -3931,7 +3943,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 2,
+      "total_consumers": 3,
       "wrapper_for": "scripts/audit_adrs.py"
     },
     {
@@ -4014,7 +4026,7 @@
         "config": 1,
         "doc": 1,
         "script": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -4032,12 +4044,16 @@
         {
           "family": "test",
           "path": "tests/audit/test_audit_ratchet_contracts.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_audit_decision_backing.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "wrapper_for:scripts/audit_gate_registration.py",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:1",
         "config_consumers:1",
         "script_consumers:1"
@@ -4054,7 +4070,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 4,
+      "total_consumers": 5,
       "wrapper_for": "scripts/audit_gate_registration.py"
     },
     {
@@ -4112,7 +4128,7 @@
       "consumer_families": {
         "doc": 2,
         "script": 2,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -4134,12 +4150,16 @@
         {
           "family": "test",
           "path": "tests/audit/test_gate_liveness_classifier.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_audit_gate_liveness.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "wrapper_for:scripts/generate-project-settings.sh",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:2",
         "script_consumers:2"
       ],
@@ -4155,7 +4175,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": "scripts/generate-project-settings.sh"
     },
     {
@@ -4166,7 +4186,7 @@
         "config": 1,
         "doc": 3,
         "script": 5,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -4208,12 +4228,16 @@
         {
           "family": "test",
           "path": "tests/audit/test_instrument_productivity.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_audit_gate_registration.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "wrapper_for:scripts/hook_behavior.py",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:3",
         "config_consumers:1",
         "script_consumers:5"
@@ -4230,7 +4254,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 10,
+      "total_consumers": 11,
       "wrapper_for": "scripts/hook_behavior.py"
     },
     {
@@ -4271,7 +4295,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "script": 2,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -4285,12 +4309,16 @@
         {
           "family": "test",
           "path": "tests/audit/test_instrument_productivity.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_audit_instrument_productivity.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "wrapper_for:scripts/hook_behavior.py",
-        "test_consumers:1",
+        "test_consumers:2",
         "script_consumers:2"
       ],
       "install_surface": null,
@@ -4305,7 +4333,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 3,
+      "total_consumers": 4,
       "wrapper_for": "scripts/hook_behavior.py"
     },
     {
@@ -4316,7 +4344,7 @@
         "config": 1,
         "doc": 2,
         "script": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -4338,12 +4366,16 @@
         {
           "family": "test",
           "path": "tests/audit/test_payload_field_contracts.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_audit_payload_field_contracts.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "wrapper_for:scripts/capture_payload_corpus.py",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:2",
         "config_consumers:1",
         "script_consumers:1"
@@ -4360,7 +4392,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": "scripts/capture_payload_corpus.py"
     },
     {
@@ -4914,7 +4946,7 @@
       "consumer_families": {
         "config": 1,
         "script": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -4928,11 +4960,15 @@
         {
           "family": "test",
           "path": "tests/audit/test_payload_field_contracts.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_capture_payload_corpus.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:1",
+        "test_consumers:2",
         "config_consumers:1",
         "script_consumers:1"
       ],
@@ -4948,7 +4984,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 3,
+      "total_consumers": 4,
       "wrapper_for": null
     },
     {
@@ -5497,7 +5533,9 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "doc": 2,
-        "rule": 2
+        "rule": 2,
+        "script": 1,
+        "test": 3
       },
       "consumers": [
         {
@@ -5515,12 +5553,30 @@
         {
           "family": "rule",
           "path": "rules/codebase-memory-directive.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/primitive_behavior_depth_audit.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_check_codebase_memory_readiness.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_codebase-memory-directive.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_behavior_depth_audit.py"
         }
       ],
       "distribution": null,
       "evidence": [
+        "test_consumers:3",
         "doc_consumers:2",
-        "rule_consumers:2"
+        "rule_consumers:2",
+        "script_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -5534,7 +5590,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 4,
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -5955,17 +6011,27 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "hook": 1
+        "hook": 1,
+        "test": 2
       },
       "consumers": [
         {
           "family": "hook",
           "path": "hooks/engram-reinforce-on-access.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_engram_reinforce_hook.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_check_memory_retrieval_arrival.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "wrapper_for:scripts/check_subagent_context_arrival.py",
+        "test_consumers:2",
         "hook_consumers:1"
       ],
       "install_surface": null,
@@ -5980,7 +6046,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 1,
+      "total_consumers": 3,
       "wrapper_for": "scripts/check_subagent_context_arrival.py"
     },
     {
@@ -5991,7 +6057,8 @@
         "config": 1,
         "doc": 1,
         "hook": 1,
-        "script": 3
+        "script": 3,
+        "test": 2
       },
       "consumers": [
         {
@@ -6017,10 +6084,19 @@
         {
           "family": "script",
           "path": "scripts/family_conformance_probe.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_claude_code_hooks_schema_conformance.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_check_subagent_context_arrival.py"
         }
       ],
       "distribution": null,
       "evidence": [
+        "test_consumers:2",
         "hook_consumers:1",
         "doc_consumers:1",
         "config_consumers:1",
@@ -6038,7 +6114,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 6,
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -6652,8 +6728,8 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "script": 2,
-        "test": 1
+        "script": 3,
+        "test": 2
       },
       "consumers": [
         {
@@ -6662,18 +6738,26 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-portability-proof-scaffold"
+        },
+        {
+          "family": "script",
           "path": "scripts/hook_behavior.py"
         },
         {
           "family": "test",
           "path": "tests/audit/test_classify_ambiguous_hooks.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_classify_ambiguous_hooks.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "wrapper_for:scripts/hook_behavior.py",
-        "test_consumers:1",
-        "script_consumers:2"
+        "test_consumers:2",
+        "script_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -6687,7 +6771,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 3,
+      "total_consumers": 5,
       "wrapper_for": "scripts/hook_behavior.py"
     },
     {
@@ -6827,9 +6911,13 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "test": 1
+        "test": 2
       },
       "consumers": [
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_compare_claim_runs.py"
+        },
         {
           "family": "test",
           "path": "tests/unit/test_compare_claim_runs.py"
@@ -6838,7 +6926,7 @@
       "distribution": null,
       "evidence": [
         "wrapper_for:scripts/verify_claims.py",
-        "test_consumers:1"
+        "test_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -6852,7 +6940,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 1,
+      "total_consumers": 2,
       "wrapper_for": "scripts/verify_claims.py"
     },
     {
@@ -7085,12 +7173,16 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "script": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
           "family": "script",
           "path": "scripts/hook-io-overhead-bench.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_context_injection_report.py"
         },
         {
           "family": "test",
@@ -7100,7 +7192,7 @@
       "distribution": null,
       "evidence": [
         "wrapper_for:scripts/hook-timing-wrapper.sh",
-        "test_consumers:1",
+        "test_consumers:2",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -7115,7 +7207,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 2,
+      "total_consumers": 3,
       "wrapper_for": "scripts/hook-timing-wrapper.sh"
     },
     {
@@ -7127,9 +7219,9 @@
         "doc": 1133,
         "hook": 195,
         "rule": 75,
-        "script": 616,
+        "script": 617,
         "skill": 114,
-        "test": 1342,
+        "test": 1345,
         "workflow": 2
       },
       "consumers": [
@@ -15103,6 +15195,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/measure_skill_router_cost.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/merge-settings.sh"
         },
         {
@@ -17683,6 +17779,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_confidentiality.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_confidentiality_scanner.py"
         },
         {
@@ -18708,6 +18808,10 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_homeostasis.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_hook-io-overhead-bench.py"
         },
         {
           "family": "test",
@@ -20579,6 +20683,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_portability_proof_scaffold_families.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_portable_sh.py"
         },
         {
@@ -21423,13 +21531,13 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:114",
-        "test_consumers:1342",
+        "test_consumers:1345",
         "hook_consumers:195",
         "workflow_consumers:2",
         "doc_consumers:1133",
         "rule_consumers:75",
         "config_consumers:94",
-        "script_consumers:616"
+        "script_consumers:617"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -21445,7 +21553,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 3571,
+      "total_consumers": 3575,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -23276,7 +23384,7 @@
         "config": 5,
         "doc": 1,
         "script": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -23314,12 +23422,16 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_cos-architecture-readiness.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_behavior_depth_audit.py"
         }
       ],
       "distribution": "maintainer",
       "evidence": [
         "lifecycle",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:1",
         "config_consumers:5",
         "script_consumers:1"
@@ -23338,7 +23450,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 9,
+      "total_consumers": 10,
       "wrapper_for": null
     },
     {
@@ -30896,7 +31008,7 @@
         "hook": 1,
         "rule": 1,
         "script": 3,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -30950,13 +31062,17 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_os_only_missing_proof_smoke.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_behavior_depth_audit.py"
         }
       ],
       "distribution": "maintainer",
       "evidence": [
         "lifecycle",
         "wrapper_for:scripts/cos_goal.py",
-        "test_consumers:2",
+        "test_consumers:3",
         "hook_consumers:1",
         "doc_consumers:3",
         "rule_consumers:1",
@@ -30979,7 +31095,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 13,
+      "total_consumers": 14,
       "wrapper_for": "scripts/cos_goal.py"
     },
     {
@@ -37337,7 +37453,7 @@
       "consumer_families": {
         "config": 3,
         "skill": 4,
-        "test": 4
+        "test": 5
       },
       "consumers": [
         {
@@ -37383,13 +37499,18 @@
         {
           "family": "test",
           "path": "tests/unit/test_portability_proof_scaffold.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_portability_proof_scaffold_families.py"
         }
       ],
       "distribution": "maintainer",
       "evidence": [
         "lifecycle",
+        "wrapper_for:scripts/hook-io-overhead-bench.sh",
         "skill_consumers:4",
-        "test_consumers:4",
+        "test_consumers:5",
         "config_consumers:3"
       ],
       "install_surface": null,
@@ -37406,8 +37527,8 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 11,
-      "wrapper_for": null
+      "total_consumers": 12,
+      "wrapper_for": "scripts/hook-io-overhead-bench.sh"
     },
     {
       "confidence": "high",
@@ -40303,7 +40424,7 @@
       "consumer_families": {
         "config": 6,
         "doc": 4,
-        "script": 5,
+        "script": 6,
         "test": 2
       },
       "consumers": [
@@ -40368,6 +40489,10 @@
           "path": "scripts/cos_primitive_closure_check.py"
         },
         {
+          "family": "script",
+          "path": "scripts/primitive_behavior_depth_audit.py"
+        },
+        {
           "family": "test",
           "path": "tests/contracts/test_control_plane_primitives.py"
         },
@@ -40383,7 +40508,7 @@
         "test_consumers:2",
         "doc_consumers:4",
         "config_consumers:6",
-        "script_consumers:5"
+        "script_consumers:6"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -40399,7 +40524,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 17,
+      "total_consumers": 18,
       "wrapper_for": null
     },
     {
@@ -42833,7 +42958,7 @@
         "doc": 5,
         "script": 1,
         "skill": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -42883,13 +43008,17 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_cos-service-readiness-gate.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_behavior_depth_audit.py"
         }
       ],
       "distribution": "team",
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:5",
         "config_consumers:4",
         "script_consumers:1"
@@ -42908,7 +43037,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 12,
+      "total_consumers": 13,
       "wrapper_for": null
     },
     {
@@ -58875,17 +59004,21 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
           "family": "test",
           "path": "tests/audit/test_docs_reader_audit.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_docs_reader_audit.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:1"
+        "test_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -58899,7 +59032,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 1,
+      "total_consumers": 2,
       "wrapper_for": null
     },
     {
@@ -60230,7 +60363,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "script": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -60244,12 +60377,16 @@
         {
           "family": "test",
           "path": "tests/audit/test_family_probe_no_orphans.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_family_conformance_probe.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "wrapper_for:scripts/check_subagent_context_arrival.py",
-        "test_consumers:2",
+        "test_consumers:3",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -60264,7 +60401,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 3,
+      "total_consumers": 4,
       "wrapper_for": "scripts/check_subagent_context_arrival.py"
     },
     {
@@ -61069,14 +61206,22 @@
       "wrapper_for": "scripts/hook-timing-wrapper.sh"
     },
     {
-      "confidence": "low",
+      "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
-      "consumer_families": {},
-      "consumers": [],
+      "consumer_families": {
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_home-path-family-mutation-check.py"
+        }
+      ],
       "distribution": null,
       "evidence": [
-        "wrapper_for:scripts/family_conformance_probe.py"
+        "wrapper_for:scripts/family_conformance_probe.py",
+        "test_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -61087,21 +61232,39 @@
       "path": "scripts/home-path-family-mutation-check.sh",
       "protected_install_surface": false,
       "role": "maintainer-tool",
-      "role_source": "default",
+      "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 0,
+      "total_consumers": 1,
       "wrapper_for": "scripts/family_conformance_probe.py"
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
-      "consumer_families": {},
-      "consumers": [],
+      "consumer_families": {
+        "script": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "script",
+          "path": "scripts/cos-portability-proof-scaffold"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_hook-io-overhead-bench.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_portability_proof_scaffold_families.py"
+        }
+      ],
       "distribution": null,
       "evidence": [
-        "wrapper_for:scripts/hook-timing-wrapper.sh"
+        "wrapper_for:scripts/hook-timing-wrapper.sh",
+        "test_consumers:2",
+        "script_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -61115,7 +61278,7 @@
       "role_source": "heuristic:path",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 0,
+      "total_consumers": 3,
       "wrapper_for": "scripts/hook-timing-wrapper.sh"
     },
     {
@@ -61389,7 +61552,7 @@
       "consumer_families": {
         "doc": 1,
         "script": 4,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -61415,12 +61578,16 @@
         {
           "family": "test",
           "path": "tests/audit/test_hook_behavior_classifier.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_hook_behavior.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "wrapper_for:scripts/audit_gate_registration.py",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:1",
         "script_consumers:4"
       ],
@@ -61436,7 +61603,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": "scripts/audit_gate_registration.py"
     },
     {
@@ -64016,6 +64183,29 @@
       "wrapper_for": null
     },
     {
+      "confidence": "low",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {},
+      "consumers": [],
+      "distribution": null,
+      "evidence": [],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/measure_skill_router_cost.py",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "default",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 0,
+      "wrapper_for": null
+    },
+    {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
@@ -64396,17 +64586,21 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
           "family": "test",
           "path": "tests/audit/test_error_learning_single_path.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_migrate_error_learning_orphan.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:1"
+        "test_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -64420,7 +64614,7 @@
       "role_source": "heuristic:path",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 1,
+      "total_consumers": 2,
       "wrapper_for": null
     },
     {
@@ -64786,7 +64980,7 @@
         "config": 5,
         "rule": 1,
         "skill": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -64824,13 +65018,17 @@
         {
           "family": "test",
           "path": "tests/unit/test_ops_runbook.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_behavior_depth_audit.py"
         }
       ],
       "distribution": "team",
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
-        "test_consumers:2",
+        "test_consumers:3",
         "rule_consumers:1",
         "config_consumers:5"
       ],
@@ -64848,7 +65046,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 9,
+      "total_consumers": 10,
       "wrapper_for": null
     },
     {
@@ -67168,6 +67366,7 @@
       ],
       "distribution": null,
       "evidence": [
+        "wrapper_for:scripts/primitive_scope_health.py",
         "test_consumers:2",
         "doc_consumers:1",
         "config_consumers:3",
@@ -67186,7 +67385,7 @@
       "skill_consumers": 0,
       "supported_harnesses": [],
       "total_consumers": 7,
-      "wrapper_for": null
+      "wrapper_for": "scripts/primitive_scope_health.py"
     },
     {
       "confidence": "medium",
@@ -67568,7 +67767,7 @@
         "config": 5,
         "doc": 1,
         "script": 2,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -67609,13 +67808,17 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_primitive_behavior_depth_audit.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_primitive_fitness_ledger.py"
         }
       ],
       "distribution": "maintainer",
       "evidence": [
         "lifecycle",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:1",
         "config_consumers:5",
         "script_consumers:2"
@@ -67636,7 +67839,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 10,
+      "total_consumers": 11,
       "wrapper_for": null
     },
     {
@@ -68462,7 +68665,7 @@
         "rule": 2,
         "script": 6,
         "skill": 8,
-        "test": 23,
+        "test": 24,
         "workflow": 1
       },
       "consumers": [
@@ -68680,6 +68883,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_portability_proof_scaffold_families.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_primitive_scope_classifier.py"
         },
         {
@@ -68695,7 +68902,7 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:8",
-        "test_consumers:23",
+        "test_consumers:24",
         "workflow_consumers:1",
         "doc_consumers:9",
         "rule_consumers:2",
@@ -68717,7 +68924,7 @@
         "shell",
         "github-actions"
       ],
-      "total_consumers": 56,
+      "total_consumers": 57,
       "wrapper_for": null
     },
     {
@@ -68781,8 +68988,8 @@
       "consumer_families": {
         "config": 2,
         "doc": 2,
-        "script": 7,
-        "test": 3,
+        "script": 8,
+        "test": 6,
         "workflow": 1
       },
       "consumers": [
@@ -68801,6 +69008,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-321.synthesis.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-portability-proof-scaffold"
         },
         {
           "family": "script",
@@ -68832,11 +69043,23 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_codebase-memory-directive.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_encargo-refutable.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_os_only_scope_family.py"
         },
         {
           "family": "test",
           "path": "tests/red_team/portability/test_project_scope_family.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_portability_proof_scaffold_families.py"
         },
         {
           "family": "test",
@@ -68849,11 +69072,11 @@
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:3",
+        "test_consumers:6",
         "workflow_consumers:1",
         "doc_consumers:2",
         "config_consumers:2",
-        "script_consumers:7"
+        "script_consumers:8"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -68867,7 +69090,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 15,
+      "total_consumers": 19,
       "wrapper_for": null
     },
     {
@@ -69376,13 +69599,22 @@
       "wrapper_for": null
     },
     {
-      "confidence": "low",
+      "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
-      "consumer_families": {},
-      "consumers": [],
+      "consumer_families": {
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_probe-hook-git-adjacency.py"
+        }
+      ],
       "distribution": null,
-      "evidence": [],
+      "evidence": [
+        "test_consumers:1"
+      ],
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": null,
@@ -69392,10 +69624,10 @@
       "path": "scripts/probe-hook-git-adjacency.sh",
       "protected_install_surface": false,
       "role": "maintainer-tool",
-      "role_source": "default",
+      "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 0,
+      "total_consumers": 1,
       "wrapper_for": null
     },
     {
@@ -71506,9 +71738,13 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "test": 1
+        "test": 2
       },
       "consumers": [
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_revision_probe.py"
+        },
         {
           "family": "test",
           "path": "tests/unit/test_revision_probe.py"
@@ -71516,7 +71752,7 @@
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:1"
+        "test_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -71530,7 +71766,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 1,
+      "total_consumers": 2,
       "wrapper_for": null
     },
     {
@@ -72435,7 +72671,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -72445,12 +72681,16 @@
         {
           "family": "test",
           "path": "tests/audit/test_audit_ratchet_contracts.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_scope_closure_gate.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "wrapper_for:scripts/lib_closure.py",
-        "test_consumers:1",
+        "test_consumers:2",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -72465,7 +72705,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 2,
+      "total_consumers": 3,
       "wrapper_for": "scripts/lib_closure.py"
     },
     {
@@ -72617,7 +72857,7 @@
         "doc": 12,
         "script": 1,
         "skill": 1,
-        "test": 5
+        "test": 6
       },
       "consumers": [
         {
@@ -72719,6 +72959,10 @@
         {
           "family": "test",
           "path": "tests/security/test_security_red_team_runner.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_behavior_depth_audit.py"
         }
       ],
       "distribution": "maintainer",
@@ -72726,7 +72970,7 @@
         "lifecycle",
         "wrapper_for:scripts/security_red_team.py",
         "skill_consumers:1",
-        "test_consumers:5",
+        "test_consumers:6",
         "doc_consumers:12",
         "config_consumers:6",
         "script_consumers:1"
@@ -72745,7 +72989,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 25,
+      "total_consumers": 26,
       "wrapper_for": "scripts/security_red_team.py"
     },
     {
@@ -72837,7 +73081,7 @@
         "config": 8,
         "script": 1,
         "skill": 1,
-        "test": 5
+        "test": 6
       },
       "consumers": [
         {
@@ -72898,6 +73142,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_primitive_behavior_depth_audit.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_primitive_scope_classifier.py"
         }
       ],
@@ -72906,7 +73154,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos_credential_safe_run.py",
         "skill_consumers:1",
-        "test_consumers:5",
+        "test_consumers:6",
         "config_consumers:8",
         "script_consumers:1"
       ],
@@ -72924,7 +73172,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 15,
+      "total_consumers": 16,
       "wrapper_for": "scripts/cos_credential_safe_run.py"
     },
     {
@@ -74979,9 +75227,10 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 4,
+        "config": 5,
         "doc": 10,
         "rule": 1,
+        "script": 1,
         "test": 4
       },
       "consumers": [
@@ -75000,6 +75249,10 @@
         {
           "family": "config",
           "path": "manifests/script-exposure-dispositions.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/state-retention.yaml"
         },
         {
           "family": "doc",
@@ -75046,6 +75299,10 @@
           "path": "rules/so-slo.md"
         },
         {
+          "family": "script",
+          "path": "scripts/state_retention_audit.py"
+        },
+        {
           "family": "test",
           "path": "tests/chaos/test_fd_exhaustion.py"
         },
@@ -75068,7 +75325,8 @@
         "test_consumers:4",
         "doc_consumers:10",
         "rule_consumers:1",
-        "config_consumers:4"
+        "config_consumers:5",
+        "script_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -75084,7 +75342,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 19,
+      "total_consumers": 21,
       "wrapper_for": null
     },
     {
@@ -75587,16 +75845,20 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 7,
+        "config": 8,
         "doc": 2,
         "hook": 3,
         "script": 2,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/documentation-truth-claims.yaml"
         },
         {
           "family": "config",
@@ -75656,6 +75918,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_ram_ceiling.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_state_retention_audit.py"
         },
         {
@@ -75666,10 +75932,11 @@
       "distribution": "maintainer",
       "evidence": [
         "lifecycle",
-        "test_consumers:3",
+        "wrapper_for:scripts/so-vitals.sh",
+        "test_consumers:4",
         "hook_consumers:3",
         "doc_consumers:2",
-        "config_consumers:7",
+        "config_consumers:8",
         "script_consumers:2"
       ],
       "install_surface": null,
@@ -75686,8 +75953,8 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 17,
-      "wrapper_for": null
+      "total_consumers": 19,
+      "wrapper_for": "scripts/so-vitals.sh"
     },
     {
       "confidence": "high",
@@ -76501,7 +76768,7 @@
         "config": 7,
         "doc": 19,
         "skill": 1,
-        "test": 4
+        "test": 5
       },
       "consumers": [
         {
@@ -76627,6 +76894,10 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_os_only_scope_family.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_efficiency_stress.py"
         }
       ],
       "distribution": "maintainer",
@@ -76635,7 +76906,7 @@
         "protected_install_surface:uninstall",
         "wrapper_for:scripts/cos-registry.sh",
         "skill_consumers:1",
-        "test_consumers:4",
+        "test_consumers:5",
         "doc_consumers:19",
         "config_consumers:7"
       ],
@@ -76653,7 +76924,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 31,
+      "total_consumers": 32,
       "wrapper_for": "scripts/cos-registry.sh"
     },
     {
@@ -77121,13 +77392,21 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "script": 1,
-        "test": 1
+        "script": 2,
+        "test": 2
       },
       "consumers": [
         {
           "family": "script",
           "path": "scripts/compare_claim_runs.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-portability-proof-scaffold"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_verify_claims.py"
         },
         {
           "family": "test",
@@ -77136,8 +77415,8 @@
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:1",
-        "script_consumers:1"
+        "test_consumers:2",
+        "script_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -77151,7 +77430,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 2,
+      "total_consumers": 4,
       "wrapper_for": null
     },
     {
@@ -77327,7 +77606,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -77341,11 +77620,15 @@
         {
           "family": "test",
           "path": "tests/audit/test_audit_ratchet_contracts.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_volatile_number_audit.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:1",
+        "test_consumers:2",
         "config_consumers:2"
       ],
       "install_surface": null,
@@ -77360,7 +77643,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 3,
+      "total_consumers": 4,
       "wrapper_for": null
     },
     {
@@ -77636,27 +77919,27 @@
     "agentic_primitives_without_lifecycle": 0,
     "confidence": {
       "high": 411,
-      "low": 3,
-      "medium": 353
+      "low": 2,
+      "medium": 355
     },
     "consumer_accessibility": {
       "install-profile-managed": 19,
       "lifecycle-declared-consumer-candidate": 169,
       "lifecycle-declared-maintainer": 204,
       "skill-referenced-not-projectable": 3,
-      "so-local-only": 372
+      "so-local-only": 373
     },
-    "low_confidence_rows": 3,
+    "low_confidence_rows": 2,
     "roles": {
       "agentic-primitive": 273,
       "archive": 12,
       "driver-specific": 14,
       "lab": 99,
-      "maintainer-tool": 353,
+      "maintainer-tool": 354,
       "migration-only": 16
     },
-    "total_scripts": 767,
-    "without_consumers": 3
+    "total_scripts": 768,
+    "without_consumers": 1
   },
   "target_family": "scripts"
 }

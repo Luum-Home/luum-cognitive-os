@@ -2,10 +2,10 @@
 
 This report lists classified-but-unresolved primitive surface coverage debt. It intentionally excludes aligned gaps.
 
-Partial count: 43
-Total gaps in source report: 374
+Partial count: 42
+Total gaps in source report: 355
 Unclassified gaps: 0
-By policy: {'codex-adapter-needed': 42, 'projectable-needs-driver': 1}
+By policy: {'codex-adapter-needed': 42}
 
 ## Priority order
 
@@ -59,4 +59,3 @@ By policy: {'codex-adapter-needed': 42, 'projectable-needs-driver': 1}
 | 40 | `hooks/trust-score-validator.sh` | hooks | both | codex-adapter-needed | medium | acc-report+claude+dashboard+tui | scope=both but missing projected/wired support for: codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
 | 41 | `hooks/valkey-ensure.sh` | hooks | both | codex-adapter-needed | medium | acc-report+dashboard+tui | scope=both but missing projected/wired support for: claude, codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
 | 42 | `hooks/worktree-submodule-fix.sh` | hooks | both | codex-adapter-needed | medium | acc-report+dashboard+tui | scope=both but missing projected/wired support for: claude, codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
-| 43 | `scripts/check_codebase_memory_readiness.py` | scripts | project | projectable-needs-driver | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add a consumer projection driver or demote from projectable scope. |
