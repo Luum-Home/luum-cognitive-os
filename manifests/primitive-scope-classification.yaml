@@ -94,7 +94,15 @@ proof_execution_budget:
   # The intended response when this fires is writing a proof that runs the
   # primitive and lowering the number. Raising it requires the reason written
   # into this block, same contract as state-retention's max_unregistered_mib.
-  max_rows_without_execution: 890
+  #
+  # 2026-08-19: 890 -> 889, spent DOWN, not loosened. The edit-lock work of that
+  # day added tests/red_team/portability/test_session-id.py, which executes the
+  # lib it proves, so one row left the non-executing set. The anti-cushion test
+  # caught the gap the same hour: with reality at 889 and the budget at 890 a
+  # synthetic non-executing row did NOT break the ratchet, which is the
+  # "baseline above reality" pattern this budget exists to refuse. One free slot
+  # is still a cushion.
+  max_rows_without_execution: 889
 behavior_depth_policy:
   minimum_by_scope:
     both: structural
