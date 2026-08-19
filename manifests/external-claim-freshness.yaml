@@ -1,0 +1,68 @@
+schema_version: external-claim-freshness.v1
+purpose: >
+  Umbrales de caducidad para AFIRMACIONES PERECEDERAS: las que este repo hace
+  sobre un sistema AJENO (versiones de arneses, capacidades soportadas,
+  contratos de API, esquemas de hooks de un host, licencias de terceros,
+  disponibilidad de una herramienta).
+
+  La distincion que ordena el archivo: una afirmacion sobre NUESTRO arbol se
+  puede derivar y verificar cuando uno quiera; una sobre un sistema ajeno solo
+  se puede FECHAR, porque el sistema ajeno cambia sin avisarnos. Solo las
+  segundas viven aca.
+
+  Consumido por scripts/external_claim_freshness_audit.py.
+
+# ── El default y de donde sale ───────────────────────────────────────────────
+# 30 dias. NO es una constante elegida para que hoy de verde: hoy da rojo con
+# cualquier valor, porque la ceguera (afirmaciones sin fecha declarada) domina
+# el censo y el script se niega a reportar verde bajo ceguera alta.
+#
+# De donde sale el numero, con lo unico medible que hay hoy en el repo:
+#
+#   - Unico intervalo observado en que una afirmacion sobre un arnes externo
+#     quedo divergente de la realidad sin que nadie lo notara:
+#     manifests/harness-driver-capabilities.yaml, ultimo commit 2026-07-10,
+#     revisado 2026-08-19 -> 40 dias.
+#     Comando: git log -1 --format=%ad --date=short -- manifests/harness-driver-capabilities.yaml
+#   - Unica practica correcta ya existente en el repo: los tres
+#     *-hooks-schema.yaml llevan `verified: 2026-08-15`, o sea que el habito,
+#     cuando se ejerce, produce afirmaciones de 4 dias.
+#     Comando: grep -rn '^\s*verified:' manifests/
+#
+# 30 es la ventana redonda mas grande estrictamente por debajo del unico
+# intervalo en que una afirmacion externa se sabe que envejecio mal aca. Es un
+# PLACEHOLDER declarado, no una medicion de cadencia: la cadencia real de
+# releases de cada sistema afirmado no esta en este repo todavia. Cuando
+# llegue, cada sistema entra en `systems:` con su cadencia y su comando, y el
+# default deja de aplicarle.
+default_max_age_days: 30
+default_rationale: >
+  Placeholder derivado del unico intervalo de envejecimiento observado en el
+  repo (40 dias), no de la cadencia de releases del sistema afirmado. Sustituir
+  por sistema en cuanto haya dato de cadencia.
+
+# Umbral de ceguera: por encima de esta fraccion de afirmaciones sin fecha, un
+# cero de "vencidas" deja de ser un hallazgo y pasa a ser una no-observacion.
+# Espeja cos_lib.measurement.BLIND_WARNING_THRESHOLD a proposito: el script no
+# puede aflojarlo sin que se vea en este archivo.
+blind_ratio_threshold: 0.20
+
+# ── Umbrales por sistema ─────────────────────────────────────────────────────
+# Clave = host de la URL que ancla la afirmacion (o el id del sistema).
+# Cada entrada DEBE traer `cadence_evidence`: como se supo esa cadencia. Una
+# entrada sin evidencia de cadencia es un umbral inventado con formato de dato.
+# VACIO A PROPOSITO: no inventar entradas. Los agentes de investigacion del
+# ecosistema traen la cadencia; hasta entonces todo cae en el default.
+systems: {}
+
+# ── Prosa ────────────────────────────────────────────────────────────────────
+# Documentos vigentes que citan un sistema externo. El instrumento NO puede
+# localizar la afirmacion adentro de la prosa: solo puede decir si el documento
+# declara o no una marca de verificacion. Los reportes diarios y los ADR quedan
+# fuera del juicio: estan fechados por construccion (nombre de archivo y fecha
+# de decision), asi que no son afirmaciones vigentes sino registros historicos.
+prose:
+  roots: [docs, rules]
+  dated_by_construction_globs:
+    - docs/06-Daily/**
+    - "**/adrs/**"
