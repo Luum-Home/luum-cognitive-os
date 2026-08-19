@@ -114,6 +114,7 @@ OS_ONLY_PRIMITIVE_PROOF_BASELINE = [
     'scripts/aspirational_audit.py',
     'scripts/audit-consumer-dependence.sh',
     'scripts/audit_adrs.py',
+    'scripts/audit_contextual_rule_channel.py',
     'scripts/audit_engram_topic_keys.py',
     'scripts/auto-tune-routing',
     'scripts/auto-update-projects.sh',

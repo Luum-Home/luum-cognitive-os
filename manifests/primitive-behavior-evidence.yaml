@@ -4008,6 +4008,11 @@ evidence:
   - tests/red_team/portability/test_os_only_scope_family.py
   rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane
     classification for internal COS primitives.
+- primitive: scripts/audit_contextual_rule_channel.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
 - primitive: scripts/primitive_coverage.py
   harnesses:
   - shell-ci

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Audit the observability channel that hooks/contextual-rule-loader.sh would open.
 
 Answers, with numbers instead of recollection:
