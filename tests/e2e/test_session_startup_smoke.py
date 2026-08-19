@@ -127,8 +127,14 @@ def _make_fake_project(tmp_path: Path, repo_root: Path) -> Path:
     """Set up a fake COS project root that lets real hooks/scripts execute.
 
     Strategy:
-        * Symlink `scripts/` and `lib/` from the real repo (so the watchdog
-          entry-point is reachable at the path the launcher expects).
+        * Symlink the packages the watchdog imports from the real repo, so the
+          entry-point is reachable at the path the launcher expects.
+          `so_session_watchdog.py` puts `COGNITIVE_OS_PROJECT_DIR` (i.e. this
+          fake root) on `sys.path` and then imports `cos_lib.*` — so the fake
+          root MUST expose `cos_lib/`, not the pre-rename `lib/` (renamed in
+          785ced2f3). A dangling symlink here does not fail the fixture; it
+          fails the daemon at import time, which then looks exactly like a
+          broken singleton. Hence the hard existence check below.
         * Create empty `.cognitive-os/runtime/`.
         * Do NOT copy `cognitive-os.yaml` — absence means "feature flag
           proceeds by default" per the launcher's awk logic.
@@ -136,9 +142,29 @@ def _make_fake_project(tmp_path: Path, repo_root: Path) -> Path:
     fake = tmp_path / "fake_project"
     fake.mkdir()
     (fake / ".cognitive-os" / "runtime").mkdir(parents=True)
-    (fake / "scripts").symlink_to(repo_root / "scripts")
-    (fake / "lib").symlink_to(repo_root / "lib")
+    for name in ("scripts", "cos_lib"):
+        source = repo_root / name
+        assert source.is_dir(), (
+            f"fake-project fixture is stale: {source} does not exist. The "
+            f"watchdog daemon imports it; a dangling symlink crashes the "
+            f"daemon at startup and masquerades as a singleton/idempotency "
+            f"failure."
+        )
+        (fake / name).symlink_to(source)
     return fake
+
+
+def _watchdog_log(fake_project: Path) -> str:
+    """Daemon stderr/stdout, for failure messages.
+
+    Without this, a daemon that dies during startup (bad import, missing
+    dependency) is indistinguishable from a launcher that fails to hold the
+    singleton: both show up only as "the pidfile changed".
+    """
+    log = fake_project / ".cognitive-os" / "runtime" / "session-watchdog.log"
+    if not log.is_file():
+        return "<no session-watchdog.log>"
+    return log.read_text(errors="replace").strip() or "<empty>"
 
 
 def _run_launcher(
@@ -287,7 +313,14 @@ def test_watchdog_launcher_singleton_second_invocation(
             time.sleep(0.05)
         assert pidfile.exists()
         first_pid = int(pidfile.read_text().strip())
-        assert _is_alive(first_pid)
+        # Distinguish "daemon died at startup" from "launcher lost the
+        # singleton" BEFORE the second launch — otherwise both surface as a
+        # changed pidfile and the diagnosis lands on the wrong component.
+        assert _is_alive(first_pid), (
+            f"daemon PID {first_pid} died before the second launch; the "
+            f"singleton was never exercised. Daemon log:\n"
+            f"{_watchdog_log(fake)}"
+        )
 
         # Second launch — should be a no-op (singleton).
         r2 = _run_launcher(repo_root, fake)
@@ -295,7 +328,8 @@ def test_watchdog_launcher_singleton_second_invocation(
         # Pidfile content unchanged.
         second_pid = int(pidfile.read_text().strip())
         assert second_pid == first_pid, (
-            f"Singleton broken: pidfile changed {first_pid}->{second_pid}"
+            f"Singleton broken: pidfile changed {first_pid}->{second_pid}. "
+            f"Daemon log:\n{_watchdog_log(fake)}"
         )
         # Only ONE watchdog process belongs to this fake project tree. Because
         # other test runs might have siblings, we don't count global pgrep —
@@ -453,6 +487,10 @@ def test_startup_simulation_idempotent(tmp_path: Path, repo_root: Path):
         assert pidfile.exists()
         pid1 = int(pidfile.read_text().strip())
         spawned_pid = pid1
+        assert _is_alive(pid1), (
+            f"daemon PID {pid1} died before round 2; idempotency was never "
+            f"exercised. Daemon log:\n{_watchdog_log(fake)}"
+        )
 
         # Round 2 — same invocation.
         _run_launcher(repo_root, fake)
@@ -460,7 +498,8 @@ def test_startup_simulation_idempotent(tmp_path: Path, repo_root: Path):
 
         assert pid1 == pid2, (
             f"Idempotency violated: pidfile changed across identical "
-            f"startup simulations ({pid1} -> {pid2})"
+            f"startup simulations ({pid1} -> {pid2}). Daemon log:\n"
+            f"{_watchdog_log(fake)}"
         )
         assert _is_alive(pid1), "Daemon died between idempotent invocations"
     finally:
