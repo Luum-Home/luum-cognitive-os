@@ -18,6 +18,7 @@ import os
 import shutil
 import signal
 import subprocess
+import sys
 import textwrap
 import time
 from pathlib import Path
@@ -226,3 +227,87 @@ def test_spawns_if_pid_stale(tmp_path):
         assert (runtime / "spawned.flag").exists()
     finally:
         _cleanup_spawned(project)
+
+
+# ---------------------------------------------------------------------------
+# Orphan cleanup must be scoped to THIS project (regression, 2026-08-19)
+# ---------------------------------------------------------------------------
+
+
+def _spawn_longlived(script: Path) -> subprocess.Popen:
+    """A process whose argv carries `script`, the shape the launcher spawns."""
+    script.write_text("import time\ntime.sleep(300)\n")
+    return subprocess.Popen(
+        [sys.executable, str(script), "--daemon", "--interval", "60"],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+
+
+def _reap(proc: subprocess.Popen) -> None:
+    if proc.poll() is None:
+        proc.kill()
+        proc.wait()
+
+
+def test_orphan_cleanup_spares_watchdogs_of_other_projects(tmp_path):
+    """The cleanup matched the basename, so it reached across the whole machine.
+
+    `pgrep -f so_session_watchdog.py` finds every watchdog on the host, not this
+    project's. One launcher run here killed the operator's watchdog in every
+    other checkout -- and tests/e2e/test_session_startup_smoke.py, which runs the
+    launcher against a throwaway tree, killed the real one. That is why a count
+    of "0 watchdogs running" taken after the suite says nothing about steady
+    state: the suite produced the zero it was being read as evidence of.
+    """
+    (tmp_path / "mine").mkdir()
+    (tmp_path / "other").mkdir()
+    mine = _make_project(tmp_path / "mine")
+    other = _make_project(tmp_path / "other")
+
+    foreign = _spawn_longlived(other / "scripts" / "so_session_watchdog.py")
+    try:
+        time.sleep(1.0)
+        # Null control. Without this the test passes for the wrong reason: if
+        # the basename predicate does not select the process, surviving proves
+        # nothing about the narrowing.
+        hits = subprocess.run(
+            ["pgrep", "-f", "so_session_watchdog.py"],
+            capture_output=True, text=True,
+        ).stdout.split()
+        assert str(foreign.pid) in hits, (
+            "control failed: the old basename predicate did not select the "
+            "foreign watchdog, so this test cannot discriminate"
+        )
+
+        _run_launcher(mine)
+        time.sleep(1.0)
+        assert foreign.poll() is None, (
+            "the launcher for one project killed another project's watchdog"
+        )
+    finally:
+        _cleanup_spawned(mine)
+        _reap(foreign)
+
+
+def test_orphan_cleanup_still_kills_a_stray_of_this_project(tmp_path):
+    """Narrowing the match must not castrate the feature.
+
+    Reached only when no live daemon is tracked: with one, the launcher returns
+    at the single-instance guard and the cleanup block never executes.
+    """
+    project = _make_project(tmp_path)
+    pid_file = project / ".cognitive-os" / "runtime" / "session-watchdog.pid"
+    assert not pid_file.exists(), "precondition: no tracked daemon"
+
+    stray = _spawn_longlived(project / "scripts" / "so_session_watchdog.py")
+    try:
+        time.sleep(1.0)
+        _run_launcher(project)
+        time.sleep(1.0)
+        assert stray.poll() is not None, (
+            "an untracked watchdog of this project survived orphan cleanup"
+        )
+    finally:
+        _cleanup_spawned(project)
+        _reap(stray)
