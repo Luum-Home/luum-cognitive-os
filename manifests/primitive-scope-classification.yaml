@@ -73,6 +73,28 @@ proof_level_budgets:
     both: 0
     project: 0
     os-only: 0
+proof_execution_budget:
+  # Ratchet, may only go DOWN. Set at measured reality on HEAD (2026-08-18),
+  # no cushion: `python3 scripts/primitive_proof_execution_audit.py
+  # --project-dir <git archive HEAD extraction>` reported
+  # rows_without_execution: 890 out of 1441 rows.
+  #
+  # What it counts: registry rows whose paired portability proof never EXECUTES
+  # the primitive. Unlike proof_level_budgets (which reads the test's FILE NAME)
+  # and behavior_depth_policy (which reads name tokens too), this one reads the
+  # test's SOURCE and looks for an execution site that references the artifact.
+  # Both of the older metrics measure the manifest against itself; this one does
+  # not, which is why 890 rows sit under a proof_level that reports no problem.
+  #
+  # Composition of the 890 on 2026-08-18: 515 `not-executed` (the artifact is
+  # runnable and no proof runs it) + 375 `non-executable-artifact` (.md/.yaml
+  # and friends: nothing to execute, the honest ceiling is parse-level proof).
+  # 632 of the 890 hang off `family` proofs, 476 of those off a single test.
+  #
+  # The intended response when this fires is writing a proof that runs the
+  # primitive and lowering the number. Raising it requires the reason written
+  # into this block, same contract as state-retention's max_unregistered_mib.
+  max_rows_without_execution: 890
 behavior_depth_policy:
   minimum_by_scope:
     both: structural
