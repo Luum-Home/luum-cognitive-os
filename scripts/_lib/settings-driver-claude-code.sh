@@ -21,9 +21,24 @@
 # hooks/publication-safety.sh -- declared PreToolUse on Bash with scope: both
 # and no `default_projection: false`, absent from this driver, absent from
 # .claude/settings.json, absent from bash-hot-path-dispatcher.sh, 0 firings in
-# 16660 rows of hook-timing.jsonl. The other five absences are explained: three
-# are archived .bak hooks, one is codex-only, one declares
-# `default_projection: false`.
+# hook-timing.jsonl -- and note that file ROTATES into
+# .cognitive-os/metrics/.archive/, so any count taken from the live file alone is
+# a few hours, not history.
+#
+# The other five absences are declared, and the first version of this paragraph
+# got them wrong, which is why they are now named one by one instead of counted:
+#   auto-refine.sh, auto-verify.sh, dod-gate.sh  -> default_projection: false AND
+#     claude_projection: false, with a projection_note in the yaml: superseded by
+#     hooks/completion-gate.sh. These are LIVE .sh files. The identically named
+#     .bak files under hooks/_archived/ are different files, and confusing the two
+#     is exactly what produced the wrong claim.
+#   task-completed.sh                            -> default_projection: false
+#   concurrent-write-guard-codex-proxy.sh        -> claude_projection: false
+# So four opt out via default_projection, not one, and none of the six is an
+# archived backup. Omission is declared through at least five distinct mechanisms
+# (default_projection, per-harness *_projection, the harness capability matrix,
+# the ADR-311 hot-path collapse, and profiles); classifying by default_projection
+# alone misreads five of these six. The count is what let the error hide.
 #
 # Reproduce it. Note the two things the naive version of this check got wrong,
 # both found by running it: the yaml declares the same script under more than
