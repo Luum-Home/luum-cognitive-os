@@ -89,6 +89,35 @@ def _unique_branch(project: Path, base: str) -> str:
     raise AgentLifecycleError(f"could not allocate branch for {base}")
 
 
+def _reject_unsafe_target(project: Path, root: Path, target: Path) -> None:
+    """Refuse a worktree target that could redirect the agent into the operator checkout.
+
+    ADR-223 hands the agent a path and tells it to work there. If that path is a
+    symlink — or resolves inside the operator checkout — the agent believes it is
+    isolated while writing into the very tree the isolation exists to protect.
+    Only components at or below `root` are screened: `root` itself is resolved
+    first, so platform-level symlinks such as macOS `/var -> /private/var` are
+    not treated as an attack.
+    """
+    if any(part in {".", ".."} for part in target.parts):
+        raise AgentLifecycleError(f"refusing worktree target with relative segments: {target}")
+
+    probe = root
+    for part in target.relative_to(root).parts:
+        probe = probe / part
+        if probe.is_symlink():
+            raise AgentLifecycleError(
+                f"refusing worktree target that passes through a symlink: {probe}"
+            )
+
+    resolved = target.resolve() if target.exists() else (root.resolve() / target.relative_to(root))
+    project_resolved = project.resolve()
+    if resolved == project_resolved or project_resolved in resolved.parents:
+        raise AgentLifecycleError(
+            f"refusing worktree target inside the operator checkout: {resolved}"
+        )
+
+
 @contextmanager
 def _worktree_add_lock(project: Path) -> Iterator[None]:
     runtime = project / ".cognitive-os" / "runtime"
@@ -118,6 +147,7 @@ def prepare_agent_worktree(
     task_slug = slugify(task_id)
     root = Path(worktree_root).resolve() if worktree_root else default_worktree_root(project)
     target = root / task_slug
+    _reject_unsafe_target(project, root, target)
     manifest_dir = project / ".cognitive-os" / "runtime" / "agent-worktrees"
     manifest_dir.mkdir(parents=True, exist_ok=True)
     manifest_path = manifest_dir / f"{task_slug}.json"

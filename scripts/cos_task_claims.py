@@ -132,6 +132,24 @@ def task_fingerprint(task: dict[str, Any], expected_files: Sequence[str] | None 
     return hashlib.sha256(json.dumps(parts, sort_keys=True, ensure_ascii=False).encode("utf-8")).hexdigest()[:24]
 
 
+# Hash de una tarea sin ningun campo de contenido. Es constante, asi que dos
+# claims que lo compartan NO prueban que sea el mismo trabajo: solo prueban que
+# quien reclamo no lleno titulo, descripcion ni deliverable. Tratarlo como
+# evidencia bloquea trabajo no relacionado entre sesiones (ADR-116, regresion
+# observada el 2026-08-19 con 64/64 filas compartiendo este hash).
+CONTENTLESS_FINGERPRINT = "ad863ddeda113b35ccb28498"
+
+
+def duplicate_work_blocks() -> bool:
+    """Si el trabajo duplicado dentro de una misma sesion debe bloquear.
+
+    Por defecto avisa y deja pasar: encenderlo cambia el comportamiento de los
+    sub-agentes en vuelo y es una decision del operador.
+    """
+    raw = str(os.environ.get("COS_CLAIM_DUPLICATE_WORK_BLOCK", "")).strip().lower()
+    return raw in {"1", "true", "yes", "on"}
+
+
 def extract_expected_files(task: dict[str, Any]) -> list[str]:
     for key in ("expected_files", "files", "target_files"):
         value = task.get(key)
@@ -227,11 +245,19 @@ def claim_task(
     with lock.open("w", encoding="utf-8") as lock_fh:
         fcntl.flock(lock_fh, fcntl.LOCK_EX)
         data = prune_claims(project, normalize_claims(read_json(path, {"claims": []})))
+        duplicates: list[str] = []
         for existing in data["claims"]:
             if existing.get("status", "active") != "active":
                 continue
-            same_work = existing.get("fingerprint") == fingerprint or existing.get("task_id") == task_id
-            if same_work and existing.get("session_id") != session:
+            same_task = existing.get("task_id") == task_id
+            # Un fingerprint sin contenido no distingue trabajo: se ignora.
+            same_work = (
+                fingerprint != CONTENTLESS_FINGERPRINT
+                and existing.get("fingerprint") == fingerprint
+            )
+            if not (same_task or same_work):
+                continue
+            if existing.get("session_id") != session:
                 payload = {
                     "task_id": task_id,
                     "fingerprint": fingerprint,
@@ -242,6 +268,28 @@ def claim_task(
                 append_event(project, "conflict", session, payload)
                 atomic_write_json(path, data)
                 return False, {"status": "conflict", **payload}
+            if same_work and not same_task:
+                duplicates.append(str(existing.get("task_id")))
+        if duplicates:
+            dup_payload = {
+                "task_id": task_id,
+                "fingerprint": fingerprint,
+                "held_by": session,
+                "held_by_task_id": duplicates[0],
+                "duplicate_of": duplicates,
+                "expected_files": expected,
+            }
+            append_event(project, "duplicate-work", session, dup_payload)
+            if duplicate_work_blocks():
+                atomic_write_json(path, data)
+                return False, {"status": "duplicate-work", **dup_payload}
+            print(
+                "COS DUPLICATE WORK WARNING: task "
+                f"{task_id} repite el trabajo ya reclamado por {', '.join(duplicates)} "
+                f"en la sesion {session}. Revisar antes de seguir "
+                "(scripts/cos_task_claims.py status).",
+                file=sys.stderr,
+            )
         ttl = ttl_seconds if ttl_seconds and ttl_seconds > 0 else claim_ttl_seconds()
         now_epoch = _time.time()
         claim: dict[str, Any] = {
@@ -265,7 +313,10 @@ def claim_task(
         data["claims"].append(claim)
         atomic_write_json(path, data)
         append_event(project, "claim", session, claim)
-        return True, {"status": "claimed", **claim}
+        result: dict[str, Any] = {"status": "claimed", **claim}
+        if duplicates:
+            result["duplicate_of"] = duplicates
+        return True, result
 
 
 def complete_task(project: Path, task_id: str, session: str | None = None) -> dict[str, Any]:
@@ -422,6 +473,24 @@ def cmd_status(args: argparse.Namespace) -> int:
         print(f"Task claims: {len(active)} active / {len(data.get('claims', []))} total")
         for claim in active:
             print(f"- {claim.get('task_id')} session={claim.get('session_id')} files={','.join(claim.get('expected_files') or []) or '-'}")
+        groups: dict[str, list[str]] = {}
+        for claim in active:
+            fp = str(claim.get("fingerprint") or "")
+            if not fp or fp == CONTENTLESS_FINGERPRINT:
+                continue
+            groups.setdefault(fp, []).append(str(claim.get("task_id")))
+        dupes = {fp: ids for fp, ids in groups.items() if len(ids) > 1}
+        if dupes:
+            print(f"DUPLICATE WORK: {len(dupes)} grupo(s) de claims activos con el mismo fingerprint")
+            for fp, ids in sorted(dupes.items()):
+                print(f"- {fp}: {', '.join(sorted(ids))}")
+        blind = sum(1 for c in active if str(c.get("fingerprint") or "") == CONTENTLESS_FINGERPRINT)
+        if blind:
+            print(
+                f"WARNING: {blind}/{len(active)} claims activos tienen fingerprint sin contenido "
+                "({CONTENTLESS_FINGERPRINT}); no se puede detectar trabajo duplicado sobre ellos."
+                .replace("{CONTENTLESS_FINGERPRINT}", CONTENTLESS_FINGERPRINT)
+            )
     if data != normalize_claims(read_json(claims_path(project), {"claims": []})):
         atomic_write_json(claims_path(project), data)
     return 0
