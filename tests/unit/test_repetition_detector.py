@@ -31,7 +31,7 @@ def _seq_entries(n: int = 3) -> list[dict]:
     """n entries all sharing the same tool_calls sequence."""
     return [
         {
-            "skill_name": f"run-{i}",
+            "skill": f"run-{i}",
             "tool_calls": REPEATED_SEQUENCE,
             "tokens": 4000,
             "duration_ms": 1000,
@@ -83,7 +83,7 @@ class TestEdgeCases:
 
     def test_no_patterns_no_repetition(self, tmp_path):
         entries = [
-            {"skill_name": f"sk-{i}", "tool_calls": ["Grep", f"tool-{i}"], "tokens": 1000}
+            {"skill": f"sk-{i}", "tool_calls": ["Grep", f"tool-{i}"], "tokens": 1000}
             for i in range(10)
         ]
         det = _write_metrics(tmp_path, entries)
@@ -106,9 +106,9 @@ class TestEdgeCases:
 class TestSkillChainDetection:
     def test_skill_chain_detection(self, tmp_path):
         entries = [
-            {"skill_name": "detect-stack", "tool_calls": ["Read"], "tokens": 500},
-            {"skill_name": "generate-config", "tool_calls": ["Write"], "tokens": 500},
-            {"skill_name": "scaffold-project", "tool_calls": ["Bash"], "tokens": 500},
+            {"skill": "detect-stack", "tool_calls": ["Read"], "tokens": 500},
+            {"skill": "generate-config", "tool_calls": ["Write"], "tokens": 500},
+            {"skill": "scaffold-project", "tool_calls": ["Bash"], "tokens": 500},
         ] * 4  # repeat the triplet 4 times
         det = _write_metrics(tmp_path, entries)
         chains = det.analyze_skill_chains(min_occurrences=3)
@@ -118,8 +118,8 @@ class TestSkillChainDetection:
 
     def test_skill_chain_suggestion_text(self, tmp_path):
         entries = [
-            {"skill_name": "a", "tool_calls": [], "tokens": 100},
-            {"skill_name": "b", "tool_calls": [], "tokens": 100},
+            {"skill": "a", "tool_calls": [], "tokens": 100},
+            {"skill": "b", "tool_calls": [], "tokens": 100},
         ] * 3
         det = _write_metrics(tmp_path, entries)
         chains = det.analyze_skill_chains(min_occurrences=3)
@@ -166,9 +166,16 @@ class TestFormatReport:
         assert "Repeated Skill Chains" in report
 
     def test_format_report_empty(self, tmp_path):
+        """Sin corpus, "(none detected)" seria mentira: no se busco nada.
+
+        Antes este test fijaba esa frase sobre un directorio vacio. Es el caso
+        exacto que el arreglo del 2026-08-19 separa: cero-por-ausencia-de-fuente
+        no es cero-por-ausencia-de-hallazgos.
+        """
         det = RepetitionDetector(str(tmp_path))
         report = det.format_report([], [])
-        assert "(none detected)" in report
+        assert "NO DATA SOURCE" in report
+        assert "(none detected)" not in report
 
 
 class TestSuggestSkillNames:
@@ -188,3 +195,71 @@ class TestSuggestSkillNames:
         pattern = {"sequence": ["Bash", "Read"], "occurrences": 3, "example_context": ""}
         names = det.suggest_skill_names(pattern)
         assert len(names) >= 1
+
+
+# ── A zero that is not emitted is a hole, not a zero ─────────────────────────
+# Measured 2026-08-19: this module read `skill_name` and `tool_calls`; the
+# producer writes `skill` and nothing in the repo writes `tool_calls` at all.
+# Both analyses returned [] on all 257 rows and format_report printed
+# "(none detected)", which reads as "we looked and found nothing". Falco ships
+# `include_empty_values: false` by default and thereby manufactures the same
+# blindness; Gatekeeper truncates the detail but never the counter. These tests
+# pin the distinction in both directions.
+
+def _write(tmp_path, rows):
+    d = tmp_path / ".cognitive-os" / "metrics"
+    d.mkdir(parents=True, exist_ok=True)
+    (d / "skill-metrics.jsonl").write_text(
+        "\n".join(__import__("json").dumps(r) for r in rows) + "\n", encoding="utf-8"
+    )
+    return str(d)
+
+
+def test_absent_field_reports_no_source_not_an_empty_result(tmp_path):
+    """The real corpus shape: rows exist, `tool_calls` never does."""
+    from cos_lib.repetition_detector import RepetitionDetector
+
+    det = RepetitionDetector(_write(tmp_path, [
+        {"skill": "unknown-agent", "tokens": 900, "success": True},
+        {"skill": "unknown-agent", "tokens": 800, "success": True},
+    ]))
+    st = det.source_status()
+    assert st["rows"] == 2
+    assert st["sequences_measurable"] is False
+    assert st["chains_measurable"] is False, "the sentinel is not a skill name"
+
+    report = det.format_report(det.analyze_tool_sequences(), det.analyze_skill_chains())
+    assert "NO DATA SOURCE" in report
+    assert "(none detected)" not in report
+
+
+def test_present_field_with_no_match_still_reports_none_detected(tmp_path):
+    """Null control: with a real source and nothing repeated, zero IS a zero.
+
+    Without this the fix would pass just as well if it printed NO DATA SOURCE
+    unconditionally, which would trade one false statement for another.
+    """
+    from cos_lib.repetition_detector import RepetitionDetector
+
+    det = RepetitionDetector(_write(tmp_path, [
+        {"skill": "run-tests", "tool_calls": ["Read"], "tokens": 900, "success": True},
+    ]))
+    st = det.source_status()
+    assert st["sequences_measurable"] is True
+    assert st["chains_measurable"] is True
+
+    report = det.format_report(det.analyze_tool_sequences(), det.analyze_skill_chains())
+    assert "(none detected)" in report
+    assert "NO DATA SOURCE" not in report
+
+
+def test_reads_the_field_the_producer_actually_writes(tmp_path):
+    """`skill`, not `skill_name` -- the rename that made this module blind."""
+    from cos_lib.repetition_detector import RepetitionDetector
+
+    det = RepetitionDetector(_write(tmp_path, [
+        {"skill_name": "ghost", "tokens": 900, "success": True},   # el campo VIEJO, a proposito
+    ]))
+    assert det.source_status()["rows_with_named_skill"] == 0, (
+        "skill_name is not a field any producer writes; reading it is the bug"
+    )
