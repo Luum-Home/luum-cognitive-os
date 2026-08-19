@@ -12,7 +12,23 @@ import yaml
 REPO = Path(__file__).resolve().parents[1]
 QUALITY_MANIFEST = REPO / "manifests" / "hook-quality.yaml"
 CONFIG = REPO / "cognitive-os.yaml"
-TEST_ROOTS = [REPO / "tests" / n for n in ("unit", "behavior", "contracts", "chaos")]
+# `hooks` was missing until 2026-08-19, which made the canonical home of
+# hook behaviour tests invisible to this audit: a hook could have a test that
+# runs it as a subprocess and asserts on its exit code, and still be reported as
+# having no behavior_tests. Measured impact of adding it: 182 -> 187 covered
+# hooks, every one credited by a file named after the hook it exercises (no
+# enumeration-style file in tests/hooks names hooks as literals, so nothing is
+# credited wholesale).
+# Censo de TODOS los directorios de test, no una lista curada. Hasta 2026-08-19
+# miraba solo unit/behavior/contracts/chaos y era ciego a 1159 archivos en
+# integration, e2e, audit y red_team — mas de la mitad del corpus. Un hook
+# probado solo en tests/integration figuraba como sin cobertura, y toda
+# medicion derivada de aca salia mal. Se deriva del arbol para que un
+# directorio de tests nuevo entre solo.
+TEST_ROOTS = sorted(
+    d for d in (REPO / "tests").iterdir()
+    if d.is_dir() and not d.name.startswith((".", "__"))
+)
 _TEST_TEXT_INDEX: list[tuple[Path, str]] | None = None
 REQUIRED_BEHAVIOR_COVERAGE = ["secret-detector", "dispatch-gate", "clarification-gate", "blast-radius", "completion-gate", "claim-validator", "trust-score-validator", "confidence-gate", "auto-rollback-trigger", "content-policy"]
 SECURITY_TERMS = ("secret", "confidential", "content-policy", "lethal", "destructive", "private-mode", "semgrep", "mcp-scan")
