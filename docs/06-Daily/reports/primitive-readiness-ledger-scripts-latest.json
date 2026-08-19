@@ -64,8 +64,8 @@
       "consumer_families": {
         "config": 5,
         "hook": 2,
-        "script": 1,
-        "test": 2
+        "script": 2,
+        "test": 3
       },
       "consumers": [
         {
@@ -98,7 +98,15 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_init.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/edit-coop.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_edit-coop.py"
         },
         {
           "family": "test",
@@ -112,10 +120,10 @@
       "distribution": "maintainer",
       "evidence": [
         "lifecycle",
-        "test_consumers:2",
+        "test_consumers:3",
         "hook_consumers:2",
         "config_consumers:5",
-        "script_consumers:1"
+        "script_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -132,7 +140,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 10,
+      "total_consumers": 12,
       "wrapper_for": null
     },
     {
@@ -7291,11 +7299,11 @@
       "consumer_families": {
         "config": 94,
         "doc": 1133,
-        "hook": 197,
+        "hook": 199,
         "rule": 75,
         "script": 618,
         "skill": 114,
-        "test": 1349,
+        "test": 1351,
         "workflow": 2
       },
       "consumers": [
@@ -12485,7 +12493,15 @@
         },
         {
           "family": "hook",
+          "path": "hooks/edit-lock-pre-tool.sh"
+        },
+        {
+          "family": "hook",
           "path": "hooks/edit-lock-process-negotiations.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/edit-lock-session-end.sh"
         },
         {
           "family": "hook",
@@ -18765,7 +18781,15 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_edit-coop.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_edit-lock-drain-parked.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_edit-lock-pre-tool.py"
         },
         {
           "family": "test",
@@ -21633,8 +21657,8 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:114",
-        "test_consumers:1349",
-        "hook_consumers:197",
+        "test_consumers:1351",
+        "hook_consumers:199",
         "workflow_consumers:2",
         "doc_consumers:1133",
         "rule_consumers:75",
@@ -21655,7 +21679,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 3582,
+      "total_consumers": 3586,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -52895,7 +52919,7 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 13,
+        "config": 12,
         "doc": 67,
         "hook": 2,
         "script": 14,
@@ -52926,10 +52950,6 @@
         {
           "family": "config",
           "path": "manifests/pending-truth.yaml"
-        },
-        {
-          "family": "config",
-          "path": "manifests/primitive-consumer-availability.yaml"
         },
         {
           "family": "config",
@@ -53385,7 +53405,7 @@
         "test_consumers:21",
         "hook_consumers:2",
         "doc_consumers:67",
-        "config_consumers:13",
+        "config_consumers:12",
         "script_consumers:14"
       ],
       "install_surface": "bootstrap",
@@ -53402,7 +53422,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 118,
+      "total_consumers": 117,
       "wrapper_for": "scripts/cos-init.sh"
     },
     {
@@ -60012,9 +60032,9 @@
         "config": 5,
         "doc": 8,
         "hook": 4,
-        "script": 4,
+        "script": 6,
         "skill": 1,
-        "test": 9
+        "test": 10
       },
       "consumers": [
         {
@@ -60087,6 +60107,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/_lib/session-id.sh"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-doctor-concurrency.sh"
         },
         {
@@ -60096,6 +60120,10 @@
         {
           "family": "script",
           "path": "scripts/cos-session-spawn.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_init.py"
         },
         {
           "family": "script",
@@ -60123,6 +60151,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_edit-lock-pre-tool.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_cos_session_spawn.py"
         },
         {
@@ -60146,11 +60178,11 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
-        "test_consumers:9",
+        "test_consumers:10",
         "hook_consumers:4",
         "doc_consumers:8",
         "config_consumers:5",
-        "script_consumers:4"
+        "script_consumers:6"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -60166,7 +60198,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 31,
+      "total_consumers": 34,
       "wrapper_for": null
     },
     {

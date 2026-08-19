@@ -28064,7 +28064,7 @@
         "config": 10,
         "hook": 1,
         "script": 2,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -28125,6 +28125,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_edit-lock-pre-tool.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_edit-lock-session-end.py"
         },
         {
@@ -28137,7 +28141,7 @@
         "lifecycle",
         "hook_consumers:1",
         "script_consumers:2",
-        "test_consumers:3",
+        "test_consumers:4",
         "config_consumers:10"
       ],
       "family": "hooks",
@@ -28150,7 +28154,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 16
+      "total_consumers": 17
     },
     {
       "confidence": "high",
