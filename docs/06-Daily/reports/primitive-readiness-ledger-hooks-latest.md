@@ -131,7 +131,7 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:24, lifecycle-decl
 | `hooks/edit-lock-drain-parked.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 14 | keep maintainer-only or add explicit export path |
 | `hooks/edit-lock-pre-tool.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | blocking | 22 | keep lifecycle, tests, and harness proof current |
 | `hooks/edit-lock-process-negotiations.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 14 | keep maintainer-only or add explicit export path |
-| `hooks/edit-lock-session-end.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 16 | keep maintainer-only or add explicit export path |
+| `hooks/edit-lock-session-end.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 17 | keep maintainer-only or add explicit export path |
 | `hooks/engram-auto-import.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 21 | keep maintainer-only or add explicit export path |
 | `hooks/engram-auto-sync.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 24 | keep maintainer-only or add explicit export path |
 | `hooks/engram-crystallize-on-session-end.sh` | lab | lifecycle | high | projected-consumer-surface | sandbox | 27 | keep lifecycle, tests, and harness proof current |
