@@ -1,68 +1,98 @@
-# La prueba de portabilidad de 416 primitivas no ejecuta ninguna
+# La familia os-only: qué era hallazgo y qué era yo redescubriendo lo ya decidido
 
 **Fecha:** 2026-08-19
-**Estado:** hallazgo medido, **decisión pendiente del operador**. No se cambió nada.
+**Estado:** **corregido el mismo día.** La primera versión de este informe recomendaba
+construir un ratchet que ya existe, y encuadraba como engaño algo que el sistema
+declara en voz alta. Se deja el error escrito porque el error es el hallazgo.
 
-## Qué se encontró
+## Lo que afirmé, y por qué estaba mal
 
-`manifests/primitive-behavior-evidence.yaml` registra
-`tests/red_team/portability/test_os_only_scope_family.py` como evidencia de
-comportamiento de un conjunto grande de primitivas. Ese archivo tiene tres
-tests y **ninguno ejecuta una primitiva**:
+Afirmé que `tests/red_team/portability/test_os_only_scope_family.py` es la única
+prueba de 416 primitivas, que no ejecuta ninguna, y que por lo tanto **416
+primitivas figuran "probadas" sin que nadie las haya corrido nunca**. Los números
+son correctos. **El encuadre no**: el sistema nunca afirmó eso.
 
-| test | qué verifica |
-|---|---|
-| `..._has_maintainer_metadata_and_non_user_plane` | que el `scope`, `consumer_surface` y `plane` **declarados** de cada fila sean los esperados |
-| `..._is_registered_as_behavior_evidence` | que el manifiesto apunte a este mismo archivo — **circular**: afirma la condición que convierte a esas primitivas en "probadas" |
-| `..._none_budget_is_zero_after_family_proof` | corre `scripts/primitive_scope_health.py --strict`, que clasifica leyendo **metadatos de archivo** (no tiene `subprocess` ni `exec`) |
+**ADR-323 — Primitive Behavior Depth Ratchet** (accepted, implemented, 2026-05-15)
+separa explícitamente las dos preguntas:
 
-O sea: las cuatro respuestas del criterio de existencia de ADR-342 salen de la
-declaración de la propia primitiva. Es exactamente lo que el criterio prohíbe.
+- `proof_level` responde *¿está cubierta por una prueba pareada o de familia?*
+- `behavior_depth` responde *¿qué tipo de comportamiento ejercita esa prueba?*
 
-## Los números
+Y dice, textual, en sus consecuencias: *no es todavía correcto decir que todas las
+primitivas tienen tests funcionales individuales profundos.* El ADR además trata a
+`tests/red_team/portability/*` como `projection` por defecto, y **no** como
+adversarial por el solo nombre.
 
-| | |
-|---|---:|
-| entradas en el manifiesto | 713 |
-| citan este archivo como evidencia | 478 |
-| **lo citan como su ÚNICA prueba** | **416** |
-| filas en el `BASELINE` del archivo | 459 |
-| **lo citan sin figurar en su lista** | **19** |
+El estado real, medido hoy:
 
-Las 19 son el caso más nítido: su prueba de portabilidad ni siquiera las nombra.
+```
+by_proof_level : {family: 658, primitive-specific: 784}
+by_behavior_depth: {structural: 457, projection: 806, functional: 145,
+                    adversarial: 32, smoke: 2}
+findings: 0
+```
 
-## Qué sí prueba
+O sea que el sistema **cuenta 658 primitivas como cubiertas a nivel familia** y
+**457 a profundidad estructural**, y lo dice en un contador propio. No hay número
+mintiendo: hay un número que yo leí como si dijera otra cosa.
 
-El archivo no es inútil: prueba **consistencia de metadatos de scope** —que lo
-declarado sea coherente y que el reporte de salud no tenga hallazgos—. El
-problema no es que no sirva, es que está **catalogado como otra cosa**. Un
-chequeo de declaraciones registrado como evidencia de comportamiento hace que
-416 primitivas figuren probadas sin que nadie las haya corrido nunca.
+## Y el ratchet que recomendé ya está puesto, más ajustado
 
-## La decisión, con su consecuencia
+Recomendé "reclasificar con presupuesto que solo baja". Existe:
+`behavior_depth_policy.max_by_depth.structural` en
+`manifests/primitive-scope-classification.yaml`. Y no tiene colchón:
 
-Sacarlo del manifiesto como evidencia de comportamiento deja **416 primitivas
-sin prueba pareada**, y el `scope-marker-portability-gate` las bloquea en
-cuanto alguien las toque. Es la deuda hecha visible de golpe: honesto, pero
-disruptivo. Por eso no se hizo acá — es una decisión de diseño, no una
-corrección mecánica.
+```
+structural: 457      # y la medición real da 457
+```
 
-Las opciones, sin recomendación encubierta:
+Fue **reconciliado hacia abajo** el 2026-08-18, de 473 a 457, contra una medición
+corregida —no aflojado—. Cero lugares libres. El patrón "baseline por encima de la
+realidad" que buscaba, acá no está.
 
-1. **Reclasificar y absorber el rojo.** Correcto de raíz, 416 bloqueos hasta
-   que cada familia tenga prueba real.
-2. **Reclasificar con ratchet.** Igual que arriba pero con presupuesto que solo
-   baja, como ya se hizo con `primitive_proof_execution_audit`.
-3. **Dejarlo y anotarlo.** Barato hoy; el costo es que el conteo de primitivas
-   probadas sigue diciendo algo que no es.
+Más aún: el propio manifiesto ya registra el hallazgo, en un comentario del
+2026-08-18, antes de que yo lo "encontrara":
 
-Las 19 que no están en la lista se pueden arreglar aparte y sin discusión: o se
-agregan al `BASELINE`, o se les saca la cita.
+> *632 of the 890 hang off `family` proofs, 476 of those off a single test.*
+
+## Qué sí sobrevive como hallazgo
+
+**19 primitivas citan el archivo como su evidencia sin figurar en su `BASELINE`.**
+Su prueba de portabilidad ni siquiera las nombra. Eso no está cubierto por ADR-323
+ni por el comentario del manifiesto: es un dato mal puesto, y tiene arreglo sin
+decisión de por medio —o se agregan a la lista, o se les saca la cita—.
+
+## La lección, que es el motivo de dejar esto escrito
+
+Un número que parece una mentira suele ser un número que **no leí con su
+definición al lado**. `proof_level: family` no significa "probada": significa
+"cubierta a nivel familia", y hay un ADR aceptado que lo dice. Antes de proponer
+reclasificar 416 filas convenía leer el ADR cuyo título es exactamente el
+mecanismo que estaba por proponer.
+
+El operador frenó esto con *"me da miedo, por algo está"*. Tenía razón, y el costo
+de haber seguido era tocar 416 entradas del manifiesto para construir algo que ya
+estaba construido.
 
 ## Reproducir
 
+Los números de profundidad y cobertura:
+
 ```bash
-python3 - <<'PY'
+.venv/bin/python scripts/primitive_behavior_depth_audit.py --project-dir . --json
+```
+
+El presupuesto vigente (el del texto de ADR-323 dice 471 y está desactualizado; la
+autoridad es el manifiesto):
+
+```bash
+grep -A12 'max_by_depth' manifests/primitive-scope-classification.yaml
+```
+
+Las 19 huérfanas:
+
+```bash
+.venv/bin/python - <<'PY'
 import importlib.util, yaml, sys
 spec = importlib.util.spec_from_file_location("fam", "tests/red_team/portability/test_os_only_scope_family.py")
 m = importlib.util.module_from_spec(spec); sys.modules["fam"] = m; spec.loader.exec_module(m)
@@ -70,18 +100,13 @@ base = set(m.OS_ONLY_PRIMITIVE_PROOF_BASELINE)
 F = "tests/red_team/portability/test_os_only_scope_family.py"
 ev = yaml.safe_load(open("manifests/primitive-behavior-evidence.yaml", encoding="utf-8"))["evidence"]
 cite = {i["primitive"] for i in ev if F in (i.get("tests") or [])}
-only = {i["primitive"] for i in ev if (i.get("tests") or []) == [F]}
-print("baseline", len(base), "| citan", len(cite), "| unica prueba", len(only),
-      "| citan sin estar en la lista", len(cite - base))
+print("baseline", len(base), "| citan", len(cite), "| huerfanas", len(cite - base))
 PY
 ```
 
-Y para el otro lado del hallazgo, que el módulo de salud no ejecuta nada:
+## Deriva documental detectada de paso
 
-```bash
-grep -c "subprocess\|exec(\|runpy" scripts/primitive_scope_health.py
-```
-
-Devuelve `0` **con exit code 1**: el cero es el resultado, el 1 es `grep`
-diciendo "no hubo coincidencias". Un lector que solo mire el exit code lee
-un fallo donde hay un hallazgo.
+El texto de ADR-323 declara `structural: 471`; el manifiesto vigente dice `457`.
+El ADR es el registro de la decisión, el manifiesto es la autoridad operativa, y
+hoy discrepan. Queda anotado, sin tocar: cambiar un ADR aceptado es decisión del
+operador.
