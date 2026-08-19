@@ -62,18 +62,30 @@ is_registry_path() {
 # A primitive declares its scope in the form its own family uses.
 #
 # hooks/, rules/, scripts/ and templates/ carry a `# SCOPE:` comment in the
-# first three lines. Skills do not. Measured 2026-08-19 on this repo: of the
-# 194 source SKILL.md files in the registry, ZERO carry that comment and 190
-# declare `audience:` -- the field cos_init.py::skill_scope_allows actually
-# reads to decide projection. That reader prefers `<!-- SCOPE: -->` within the
-# first EIGHT lines, i.e. after the frontmatter, and falls back to
-# `audience:`/`scope:` anywhere in the file (project/both/adopters/human ship;
-# os/os-dev/os-only do not).
+# first three lines. Skills carry `<!-- SCOPE: -->` too, but far lower in the
+# file, after the frontmatter and the routing block.
 #
-# Demanding the comment therefore reported 190 artifacts as undeclared when
-# they declare their scope and are projected accordingly, and blocked every NEW
-# skill for lacking a marker that no skill in this repo has. Wrong field, not
-# missing debt.
+# CORRECTION, same day. The first version of this comment claimed that "of the
+# 194 source SKILL.md files, ZERO carry that comment". That was false, and the
+# way it was false is the point: the measurement read the first EIGHT lines,
+# copied from cos_init.py::skill_scope_allows, and every one of the 194 skills
+# declares its marker BELOW that window -- the earliest sits on line 18, the
+# deepest on line 71. Looking through the projector's own window inherited the
+# projector's own blind spot and turned "all of them" into "none of them".
+#
+# That blind spot is not cosmetic in cos_init: its docstring says the canonical
+# `<!-- SCOPE: -->` marker takes precedence over legacy `audience:` frontmatter
+# precisely so maintainer skills stop leaking into consumer installs. With the
+# eight-line window the precedence NEVER applies, and 8 skills that declare
+# `<!-- SCOPE: os-only -->` install into consumer projects on the strength of
+# an `audience:` that says otherwise. Reproduce with skill_scope_allows() over
+# skills/*/SKILL.md. Fixing that reader changes what consumers receive, so it
+# is an operator decision and is not made here.
+#
+# This gate scans the whole file for both forms, which is strictly safer: it
+# can only recognise MORE declarations, never fewer. It deliberately keeps
+# agreeing with the projector about what a declaration MEANS, while refusing to
+# copy where the projector stops LOOKING.
 #
 # The `audience:` scan is deliberately as loose as cos_init's: a gate that
 # disagrees with the projector about what counts as a declaration is worse than
@@ -86,8 +98,7 @@ declares_scope() {
   fi
   case "$rel" in
     */SKILL.md)
-      if head -8 "$abs" 2>/dev/null \
-          | grep -Eq '<!--[[:space:]]*SCOPE:[[:space:]]*[A-Za-z]'; then
+      if grep -Eq '<!--[[:space:]]*SCOPE:[[:space:]]*[A-Za-z]' "$abs" 2>/dev/null; then
         return 0
       fi
       if grep -Eq '^[[:space:]]*(audience|scope):[[:space:]]*[A-Za-z]' "$abs" 2>/dev/null; then
