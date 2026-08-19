@@ -181,14 +181,42 @@ for _arg in "$@"; do
 done
 
 if [ "$_has_n_flag" -eq 0 ]; then
-  if [ -n "$_caller_workers" ]; then
-    # Caller (e.g. cos-test) passed --workers explicitly.  Skip all detection.
+  if [ -n "$_caller_workers" ] && [ "$_caller_workers" != "auto" ]; then
+    # Caller (e.g. cos-test) passed an explicit COUNT.  Skip all detection.
     # Per ADR-069 polyglot boundary: cos-test reads test-lanes.yaml; bash receives scalars.
     _workers="$_caller_workers"
     if [ -n "$_caller_lane" ]; then
       echo "[pytest-with-summary] Lane: $_caller_lane | workers: $_workers (caller-supplied)"
     else
       echo "[pytest-with-summary] Workers: $_workers (caller-supplied)"
+    fi
+  elif [ "$_caller_workers" = "auto" ]; then
+    # "auto" is a DELEGATION, not a count. cos-test emits it for every lane whose
+    # registry entry says parallel: true -- but `parallel` is a statement about
+    # test SAFETY, not about how many workers this machine can carry right now.
+    # Passing it straight through made xdist expand it to os.cpu_count(), which
+    # is precisely the failure ADR-068's own docstring was written against:
+    # "xdist's 'auto' expands to os.cpu_count(), which on an 8-core laptop
+    # saturates CPU and starves the host".
+    #
+    # Measured 2026-08-19: `cos-test broad` sent --workers auto on six lanes to a
+    # machine at load 466/12 cores. Result: 13 crashed xdist workers and 83
+    # failures that all pass in isolation. The heuristic table that would have
+    # answered "1" was reachable only on the no --workers path, which cos-test
+    # never takes -- so ADR-068 was accepted, implemented, and unreachable.
+    #
+    # The polyglot boundary of ADR-069 is intact: cos-test still owns the YAML
+    # and still hands bash a scalar. It just hands over a token that means
+    # "you decide" instead of one that means "use every core".
+    _workers="$("$PYTHON_BIN" "$PROJECT_DIR/scripts/detect_runner_capacity.py" 2>/dev/null || echo auto)"
+    case "$_workers" in
+      auto|0|[1-9]*) : ;;
+      *) _workers="auto" ;;
+    esac
+    if [ -n "$_caller_lane" ]; then
+      echo "[pytest-with-summary] Lane: $_caller_lane | workers: $_workers (adaptive, caller said auto)"
+    else
+      echo "[pytest-with-summary] Workers: $_workers (adaptive, caller said auto)"
     fi
   else
     # No --workers flag: run adaptive detection (ADR-068 Phase 1).
