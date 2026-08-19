@@ -7,10 +7,11 @@ evidence:
   - claude
   - codex
   tests:
-  - tests/red_team/portability/test_os_only_scope_family.py
   - tests/behavior/test_aggregate_session_tokens.py
   rationale: Stop-hook wrapper delegates to aggregate_session_tokens and is covered
-    by synthetic transcript behavior tests.
+    by synthetic transcript behavior tests. primitive_scope_health.build_rows reports
+    scope=both/consumer_surface=shared for this hook, so it does not belong to the
+    os-only portability family proof.
 - primitive: scripts/aggregate_session_tokens.py
   harnesses:
   - shell-ci
@@ -2159,9 +2160,13 @@ evidence:
   harnesses:
   - shell-ci
   tests:
-  - tests/red_team/portability/test_os_only_scope_family.py
-  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane
-    classification for internal COS primitives.
+  - tests/behavior/test_install_core_boundary.py
+  rationale: primitive_scope_health.build_rows reports scope=both/consumer_surface=shared
+    for this rule (it is part of the core rules boundary projected into consumer
+    projects), so the os-only family proof does not name it. test_install_core_boundary.py::test_install_profile_core_keeps_default_consumer_boundary
+    runs a real core install and asserts this file lands under
+    .cognitive-os/rules/cos/, which is the actual portability behavior this rule
+    exercises.
 - primitive: scripts/adr100_live_headroom_check.py
   harnesses:
   - shell-ci
@@ -5395,7 +5400,52 @@ evidence:
   - shell-ci
   tests: *cos_iroh_tests
   rationale: Shared implementation is covered for key parsing, config defaults, self-test connectivity, allowlists, and safe writes.
-
+- primitive: scripts/_lib/settings-driver.sh
+  harnesses:
+  - claude
+  - codex
+  - opencode
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_settings_driver_projection.py
+  - tests/behavior/test_cos_init_parity_2_1.py
+  rationale: Harness detection and per-harness projection-path resolution are executed
+    over real project fixtures - on-disk markers, install-meta.json precedence, env
+    override and unknown-id fallback - instead of being asserted from the script text.
+- primitive: scripts/_lib/settings-driver-claude-code.sh
+  harnesses:
+  - claude
+  tests:
+  - tests/red_team/portability/test_settings_driver_projection.py
+  - tests/unit/test_harness_hook_projection_policy.py
+  rationale: The driver is run with --emit against a temporary project and the generated
+    settings JSON is asserted, including the SubagentStart async=false contract, whose
+    falsification probe re-runs the same check against a mutated copy of the driver.
+- primitive: scripts/_lib/settings-driver-codex.sh
+  harnesses:
+  - codex
+  tests:
+  - tests/red_team/portability/test_settings_driver_projection.py
+  - tests/unit/test_bash_hot_path_dispatcher_projection.py
+  rationale: The driver is executed over a synthetic hook registry and the emitted JSON
+    is asserted for tool-name matcher translation, matcherless events, both arms of the
+    PROFILE Bash hot-path branch, and the absence of async / SubagentStart / PreCompact.
+- primitive: scripts/_lib/settings-driver-bare.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_settings_driver_projection.py
+  rationale: The driver is executed over a synthetic hook registry and the emitted
+    cos-runner-hooks JSON is asserted for the five bare-CLI events and for the drop set
+    (SubagentStart, PreCompact, script-less entries).
+- primitive: scripts/_lib/settings-driver-opencode.sh
+  harnesses:
+  - opencode
+  tests:
+  - tests/red_team/portability/test_settings_driver_projection.py
+  rationale: The driver is executed over a synthetic hook registry and the emitted
+    cos-hooks JSON is asserted for the OpenCode event vocabulary, the empty tool-call
+    events, the legacy session.compacted alias and the forced-async launcher rule.
 patterns:
 - pattern: tests/**
   behavior_proven: true
