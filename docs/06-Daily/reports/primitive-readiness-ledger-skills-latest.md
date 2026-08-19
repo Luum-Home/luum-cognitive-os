@@ -65,15 +65,15 @@ Consumer accessibility: lifecycle-declared-maintainer:105, projected-consumer-su
 | `skills/generate-changelog/SKILL.md` | so-maintainer | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 15 | keep maintainer-only or add explicit export path |
 | `skills/generate-config/SKILL.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 14 | keep maintainer-only or add explicit export path |
 | `skills/graphify-query/SKILL.md` | compatibility-wrapper | usage:script-hook | high | lifecycle-declared-maintainer | candidate | 19 | keep maintainer-only or add explicit export path |
-| `skills/hook-timing/SKILL.md` | compatibility-wrapper | usage:script-hook | high | lifecycle-declared-maintainer | advisory | 82 | keep maintainer-only or add explicit export path |
-| `skills/install-hook/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 12 | add lifecycle/package/projection metadata or keep SO-local |
+| `skills/hook-timing/SKILL.md` | compatibility-wrapper | usage:script-hook | high | lifecycle-declared-maintainer | advisory | 83 | keep maintainer-only or add explicit export path |
+| `skills/install-hook/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 13 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/install-recommended/SKILL.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 8 | keep maintainer-only or add explicit export path |
 | `skills/install-skill/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 12 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/invariant-check/SKILL.md` | lab | lifecycle | high | lifecycle-declared-maintainer | active | 13 | keep maintainer-only or add explicit export path |
 | `skills/lean-code/SKILL.md` | compatibility-wrapper | usage:script-hook | high | lifecycle-declared-maintainer | candidate | 7 | keep maintainer-only or add explicit export path |
 | `skills/llm-status/SKILL.md` | lab | lifecycle | high | lifecycle-declared-maintainer | active | 16 | keep maintainer-only or add explicit export path |
 | `skills/memory-scan/SKILL.md` | compatibility-wrapper | usage:script-hook | high | lifecycle-declared-maintainer | advisory | 14 | keep maintainer-only or add explicit export path |
-| `skills/ops-runbook/SKILL.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 9 | keep maintainer-only or add explicit export path |
+| `skills/ops-runbook/SKILL.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 10 | keep maintainer-only or add explicit export path |
 | `skills/os-session-wrapup/SKILL.md` | compatibility-wrapper | usage:script-hook | high | lifecycle-declared-maintainer | advisory | 8 | keep maintainer-only or add explicit export path |
 | `skills/patch-release/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 13 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/pattern-audit/SKILL.md` | shared-agent-tool | lifecycle | high | projected-consumer-surface | advisory | 22 | keep lifecycle, tests, and harness proof current |
@@ -93,11 +93,11 @@ Consumer accessibility: lifecycle-declared-maintainer:105, projected-consumer-su
 | `skills/pyrefly-typecheck/SKILL.md` | compatibility-wrapper | usage:script-hook | high | lifecycle-declared-maintainer | advisory | 13 | keep maintainer-only or add explicit export path |
 | `skills/queue-drain/SKILL.md` | project-extension | default | medium | lifecycle-declared-maintainer | advisory | 43 | keep maintainer-only or add explicit export path |
 | `skills/radar-update/SKILL.md` | compatibility-wrapper | usage:script-hook | high | lifecycle-declared-maintainer | advisory | 17 | keep maintainer-only or add explicit export path |
-| `skills/red-team/SKILL.md` | lab | lifecycle | high | lifecycle-declared-maintainer | active | 100 | keep maintainer-only or add explicit export path |
+| `skills/red-team/SKILL.md` | lab | lifecycle | high | lifecycle-declared-maintainer | active | 101 | keep maintainer-only or add explicit export path |
 | `skills/redteam-harness/SKILL.md` | compatibility-wrapper | usage:script-hook | high | lifecycle-declared-maintainer | candidate | 26 | keep maintainer-only or add explicit export path |
 | `skills/release-os/SKILL.md` | compatibility-wrapper | usage:script-hook | high | lifecycle-declared-maintainer | advisory | 18 | keep maintainer-only or add explicit export path |
 | `skills/repair-skill/SKILL.md` | compatibility-wrapper | usage:script-hook | high | lifecycle-declared-maintainer | advisory | 8 | keep maintainer-only or add explicit export path |
-| `skills/repo-forensics/SKILL.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 37 | keep maintainer-only or add explicit export path |
+| `skills/repo-forensics/SKILL.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 38 | keep maintainer-only or add explicit export path |
 | `skills/resource-governor/SKILL.md` | lab | lifecycle | high | lifecycle-declared-maintainer | active | 34 | keep maintainer-only or add explicit export path |
 | `skills/reverse-engineer/SKILL.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 20 | keep maintainer-only or add explicit export path |
 | `skills/risk-register/SKILL.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 10 | keep maintainer-only or add explicit export path |
@@ -112,7 +112,7 @@ Consumer accessibility: lifecycle-declared-maintainer:105, projected-consumer-su
 | `skills/sdd-spec/SKILL.md` | shared-agent-tool | lifecycle | high | projected-consumer-surface | advisory | 33 | keep lifecycle, tests, and harness proof current |
 | `skills/sdd-tasks/SKILL.md` | compatibility-wrapper | usage:script-hook | high | projected-consumer-surface | advisory | 36 | keep lifecycle, tests, and harness proof current |
 | `skills/sdd-verify/SKILL.md` | compatibility-wrapper | usage:script-hook | high | projected-consumer-surface | advisory | 95 | keep lifecycle, tests, and harness proof current |
-| `skills/security-red-team/SKILL.md` | compatibility-wrapper | usage:script-hook | high | lifecycle-declared-maintainer | candidate | 24 | keep maintainer-only or add explicit export path |
+| `skills/security-red-team/SKILL.md` | compatibility-wrapper | usage:script-hook | high | lifecycle-declared-maintainer | candidate | 25 | keep maintainer-only or add explicit export path |
 | `skills/self-improvement-loop/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 33 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/session-backlog/SKILL.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 52 | keep maintainer-only or add explicit export path |
 | `skills/session-manager/SKILL.md` | lab | lifecycle | high | lifecycle-declared-maintainer | active | 14 | keep maintainer-only or add explicit export path |

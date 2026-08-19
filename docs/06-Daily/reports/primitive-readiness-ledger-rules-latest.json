@@ -13144,7 +13144,7 @@
       "consumer_families": {
         "doc": 1,
         "rule": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -13158,12 +13158,16 @@
         {
           "family": "test",
           "path": "tests/hooks/test_encargo_refutable_delivery.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_encargo-refutable.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "rule_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:1"
       ],
       "family": "rules",
@@ -13174,7 +13178,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 3
+      "total_consumers": 4
     },
     {
       "confidence": "high",
@@ -14512,7 +14516,7 @@
         "hook": 1,
         "rule": 1,
         "script": 3,
-        "test": 4
+        "test": 5
       },
       "consumers": [
         {
@@ -14578,6 +14582,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_agent_flicker_report.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_behavior_depth_audit.py"
         }
       ],
       "distribution": null,
@@ -14585,7 +14593,7 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "script_consumers:3",
-        "test_consumers:4",
+        "test_consumers:5",
         "doc_consumers:3",
         "config_consumers:4"
       ],
@@ -14597,7 +14605,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 16
+      "total_consumers": 17
     },
     {
       "confidence": "high",
@@ -18400,7 +18408,7 @@
         "hook": 1,
         "rule": 2,
         "skill": 1,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -18482,6 +18490,10 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_pentesting-readiness.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_behavior_depth_audit.py"
         }
       ],
       "distribution": "lab",
@@ -18490,7 +18502,7 @@
         "skill_consumers:1",
         "hook_consumers:1",
         "rule_consumers:2",
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:9",
         "config_consumers:4"
       ],
@@ -18506,7 +18518,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 20
+      "total_consumers": 21
     },
     {
       "confidence": "high",

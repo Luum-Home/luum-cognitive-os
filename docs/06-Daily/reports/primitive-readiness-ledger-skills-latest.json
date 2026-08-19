@@ -6563,7 +6563,7 @@
       "consumer_families": {
         "config": 11,
         "doc": 28,
-        "hook": 2,
+        "hook": 3,
         "script": 18,
         "test": 23
       },
@@ -6733,6 +6733,10 @@
           "path": "hooks/session-init.sh"
         },
         {
+          "family": "hook",
+          "path": "hooks/skill-router-prompt-suggest.sh"
+        },
+        {
           "family": "script",
           "path": "scripts/_lib/settings-driver-claude-code.sh"
         },
@@ -6900,7 +6904,7 @@
       "distribution": "maintainer",
       "evidence": [
         "lifecycle",
-        "hook_consumers:2",
+        "hook_consumers:3",
         "script_consumers:18",
         "test_consumers:23",
         "doc_consumers:28",
@@ -6916,7 +6920,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 82
+      "total_consumers": 83
     },
     {
       "confidence": "high",
@@ -6927,7 +6931,7 @@
         "doc": 2,
         "script": 1,
         "skill": 1,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -6977,13 +6981,17 @@
         {
           "family": "test",
           "path": "tests/unit/test_install_skill_skill.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_behavior_depth_audit.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "skill_consumers:1",
         "script_consumers:1",
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:2",
         "config_consumers:5"
       ],
@@ -6995,7 +7003,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 12
+      "total_consumers": 13
     },
     {
       "confidence": "high",
@@ -7493,7 +7501,7 @@
         "doc": 1,
         "rule": 1,
         "script": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -7531,6 +7539,10 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_skill_ops_runbook.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_behavior_depth_audit.py"
         }
       ],
       "distribution": "lab",
@@ -7538,7 +7550,7 @@
         "lifecycle",
         "rule_consumers:1",
         "script_consumers:1",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:1",
         "config_consumers:4"
       ],
@@ -7553,7 +7565,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "high",
@@ -9894,7 +9906,7 @@
         "rule": 3,
         "script": 11,
         "skill": 6,
-        "test": 11
+        "test": 12
       },
       "consumers": [
         {
@@ -10295,6 +10307,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_primitive_behavior_depth_audit.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_skill_router.py"
         }
       ],
@@ -10305,7 +10321,7 @@
         "hook_consumers:1",
         "rule_consumers:3",
         "script_consumers:11",
-        "test_consumers:11",
+        "test_consumers:12",
         "doc_consumers:58",
         "config_consumers:10"
       ],
@@ -10321,7 +10337,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 100
+      "total_consumers": 101
     },
     {
       "confidence": "high",
@@ -10643,6 +10659,7 @@
         "config": 8,
         "doc": 16,
         "rule": 1,
+        "script": 1,
         "skill": 2,
         "test": 10
       },
@@ -10748,6 +10765,10 @@
           "path": "rules/skill-management.md"
         },
         {
+          "family": "script",
+          "path": "scripts/measure_skill_router_cost.py"
+        },
+        {
           "family": "skill",
           "path": "skills/deep-tool-research/SKILL.md"
         },
@@ -10801,6 +10822,7 @@
         "lifecycle",
         "skill_consumers:2",
         "rule_consumers:1",
+        "script_consumers:1",
         "test_consumers:10",
         "doc_consumers:16",
         "config_consumers:8"
@@ -10817,7 +10839,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 37
+      "total_consumers": 38
     },
     {
       "confidence": "high",
@@ -13903,7 +13925,7 @@
         "config": 6,
         "doc": 12,
         "script": 1,
-        "test": 5
+        "test": 6
       },
       "consumers": [
         {
@@ -14001,13 +14023,17 @@
         {
           "family": "test",
           "path": "tests/security/test_security_red_team_runner.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_behavior_depth_audit.py"
         }
       ],
       "distribution": "maintainer",
       "evidence": [
         "lifecycle",
         "script_consumers:1",
-        "test_consumers:5",
+        "test_consumers:6",
         "doc_consumers:12",
         "config_consumers:6"
       ],
@@ -14023,7 +14049,7 @@
         "codex",
         "generic-cli"
       ],
-      "total_consumers": 24
+      "total_consumers": 25
     },
     {
       "confidence": "high",
