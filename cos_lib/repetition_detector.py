@@ -1,9 +1,28 @@
 # SCOPE: both
 """Repetition Detector -- finds repeated tool-call patterns for auto-skill generation.
 
-Reads skill-metrics.jsonl (fields: skill_name, tool_calls, tokens, duration_ms, success)
-and surfaces sequences worth converting into skills (~5K tokens saved per future call).
+Reads skill-metrics.jsonl and surfaces sequences worth converting into skills.
 Python 3.9+, stdlib only.
+
+FIELD REALITY, measured 2026-08-19. The producer (packages/skill-governance/
+hooks/skill-tracker.sh, PostToolUse matcher Agent) writes exactly:
+    timestamp, skill, success, duration_ms, tokens, model
+
+This module used to read `skill_name` and `tool_calls`. Neither is written by
+anyone: `skill_name` is spelled `skill`, and `tool_calls` has NO producer in the
+repo at all. Both readers therefore returned [] on every row of a 257-row file,
+and format_report printed "(none detected)" -- which reads as "we looked and
+found nothing" when the truth was "we never had the data". A zero that is not
+emitted is not a zero, it is a hole.
+
+`skill` also carries the sentinel "unknown-agent" on 98.4% of rows: a deliberate
+marker (commit bc04ff86b) meaning "an Agent run nobody can attribute to a skill".
+It is NOT a skill name and is excluded here; counting it as one would invent a
+skill called unknown-agent, which is the bug that filled skill-feedback.jsonl
+with 131 rows named after the operator.
+
+Call source_status() to learn which fields actually have data before trusting a
+zero from this module.
 """
 
 from __future__ import annotations
@@ -17,6 +36,24 @@ from typing import Any
 class RepetitionDetector:
     def __init__(self, metrics_dir: str = ".cognitive-os/metrics") -> None:
         self._file = Path(metrics_dir) / "skill-metrics.jsonl"
+
+    SENTINEL_SKILL = "unknown-agent"
+
+    def source_status(self) -> dict[str, Any]:
+        """Which required fields carry data. Read this before believing a zero."""
+        entries = self._load()
+        with_calls = sum(1 for e in entries if e.get("tool_calls"))
+        with_skill = sum(
+            1 for e in entries
+            if e.get("skill") and e.get("skill") != self.SENTINEL_SKILL
+        )
+        return {
+            "rows": len(entries),
+            "rows_with_tool_calls": with_calls,
+            "rows_with_named_skill": with_skill,
+            "sequences_measurable": with_calls > 0,
+            "chains_measurable": with_skill > 0,
+        }
 
     def _load(self) -> list[dict[str, Any]]:
         if not self._file.exists():
@@ -49,7 +86,7 @@ class RepetitionDetector:
             for n in range(min_length, len(calls) + 1):
                 for gram in self._ngrams(calls, n):
                     occ[gram].append({"tokens": e.get("tokens", 0),
-                                      "context": e.get("skill_name", "")})
+                                      "context": e.get("skill", "")})
 
         # Keep only sequences that meet threshold; drop sub-sequences of longer matches
         qualified = {g: v for g, v in occ.items() if len(v) >= min_occurrences}
@@ -83,7 +120,10 @@ class RepetitionDetector:
     def analyze_skill_chains(self, min_occurrences: int = 3) -> list[dict[str, Any]]:
         """Find repeated consecutive skill invocation chains."""
         entries = self._load()
-        skills = [e.get("skill_name", "") for e in entries if e.get("skill_name")]
+        skills = [
+            e.get("skill", "") for e in entries
+            if e.get("skill") and e.get("skill") != self.SENTINEL_SKILL
+        ]
         if not skills:
             return []
 
@@ -123,6 +163,7 @@ class RepetitionDetector:
     def format_report(self, patterns: list[dict], chains: list[dict]) -> str:
         """Human-readable report with savings summary."""
         s = self.estimate_savings(patterns)
+        status = self.source_status()
         lines = [
             "# Repetition Detector Report", "",
             "## Summary",
@@ -132,7 +173,11 @@ class RepetitionDetector:
             "", "## Repeated Tool Sequences",
         ]
         if not patterns:
-            lines.append("  (none detected)")
+            lines.append(
+                "  (none detected)" if status["sequences_measurable"]
+                else "  (NO DATA SOURCE: no row carries `tool_calls`; nothing "
+                     "in this repo writes that field, so this is not a zero)"
+            )
         for p in patterns:
             lines.append(f"  - {' → '.join(p['sequence'])} "
                          f"({p['occurrences']}x, saves ~{p['potential_savings']:,} tokens)")
@@ -140,7 +185,11 @@ class RepetitionDetector:
 
         lines += ["", "## Repeated Skill Chains"]
         if not chains:
-            lines.append("  (none detected)")
+            lines.append(
+                "  (none detected)" if status["chains_measurable"]
+                else "  (NO DATA SOURCE: every row's `skill` is the "
+                     "\"unknown-agent\" sentinel or absent)"
+            )
         for c in chains:
             lines.append(f"  - {' → '.join(c['chain'])} "
                          f"({c['occurrences']}x) — {c['suggestion']}")
