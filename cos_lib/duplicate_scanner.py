@@ -100,22 +100,62 @@ def lexical_pairs(
         relative = relpath(root, path)
         if ignore_markdown_primitives and path.suffix == ".md" and relative.startswith(("skills/", "rules/")):
             continue
-        text = read_text(path)
-        tokens = normalized_tokens(text, skip_fenced_blocks=skip_fenced_blocks)
+        # normalize_text is the expensive per-file step (several regex passes per
+        # line). It used to run twice per file: once inside normalized_tokens()
+        # and once again for the record body. One pass, identical result, since
+        # normalized_tokens() is exactly WORD_RE applied over normalize_text().
+        normalized = normalize_text(read_text(path), skip_fenced_blocks=skip_fenced_blocks)
+        tokens = WORD_RE.findall(normalized)
         if len(tokens) < min_tokens:
             continue
-        records.append((relative, normalize_text(text, skip_fenced_blocks=skip_fenced_blocks), len(tokens), token_shingles(tokens, shingle_size)))
-    pairs: list[LexicalPair] = []
-    for index, (left_path, left_normalized, left_count, left_shingles) in enumerate(records):
-        for right_path, right_normalized, right_count, right_shingles in records[index + 1:]:
+        records.append((relative, normalized, len(tokens), token_shingles(tokens, shingle_size)))
+
+    # Size blocking. Jaccard(A,B) = |A n B| / |A u B| >= threshold implies
+    # |A n B| >= threshold * |A u B|; since |A n B| <= min(|A|,|B|) and
+    # |A u B| >= max(|A|,|B|), every qualifying pair satisfies
+    #     min(|A|,|B|) >= threshold * max(|A|,|B|)
+    # over the SHINGLE SET SIZES. That is a necessary condition, so the pairs it
+    # skips could never have been reported; exact duplicates have identical sets
+    # and a ratio of 1.0, so they are never skipped either. Walking `records` in
+    # size order turns the all-pairs sweep into a sliding window that breaks as
+    # soon as the size ratio is exceeded. Before this, the scanner scored all
+    # n*(n-1)/2 pairs (19.7M on the COS tree) and cost minutes on every Stop.
+    order = sorted(range(len(records)), key=lambda index: len(records[index][3]))
+    scored: list[tuple[int, int, LexicalPair]] = []
+    total = len(order)
+    for position in range(total):
+        left_index = order[position]
+        _, left_normalized, left_count, left_shingles = records[left_index]
+        left_size = len(left_shingles)
+        max_size = left_size / threshold if threshold > 0 else float("inf")
+        for other in range(position + 1, total):
+            right_index = order[other]
+            _, right_normalized, right_count, right_shingles = records[right_index]
+            right_size = len(right_shingles)
+            if right_size > max_size:
+                break
             if min(left_count, right_count) / max(left_count, right_count) < 0.55:
                 continue
-            union = len(left_shingles | right_shingles)
-            similarity = round(len(left_shingles & right_shingles) / union, 4) if union else 0.0
-            exact = left_normalized == right_normalized
+            intersection = len(left_shingles & right_shingles)
+            union = left_size + right_size - intersection
+            similarity = round(intersection / union, 4) if union else 0.0
+            # Identical normalized bodies yield identical shingle sets and hence
+            # similarity 1.0, so below threshold (with a non-empty union) the
+            # string comparison can only be False. Skipping it there avoids
+            # comparing full file bodies on every surviving candidate.
+            exact = (
+                left_normalized == right_normalized
+                if union == 0 or similarity >= threshold
+                else False
+            )
             if exact or similarity >= threshold:
-                pairs.append(LexicalPair(left_path, right_path, 1.0 if exact else similarity, exact))
-    return pairs
+                first, second = sorted((left_index, right_index))
+                scored.append((first, second, LexicalPair(
+                    records[first][0], records[second][0], 1.0 if exact else similarity, exact,
+                )))
+    # Emission order matches the pre-blocking nested loop over `records`.
+    scored.sort(key=lambda item: (item[0], item[1]))
+    return [pair for _, _, pair in scored]
 
 
 def python_ast_function_repeats(root: Path, files: list[Path], *, min_dump_chars: int = 180, skip_trivial_main: bool = False) -> list[FunctionRepeat]:
