@@ -2,6 +2,7 @@
 """Context-budget accounting and verdicts for UserPromptSubmit/context hooks (ADR-186)."""
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import time
@@ -17,6 +18,11 @@ DEFAULT_BUDGETS = {
     "user": 12000,
     "cache": 32000,
 }
+
+# How much of a dropped payload is kept in the ledger so the drop stays
+# identifiable without re-inflating the metrics file with the payload itself.
+DROP_PREVIEW_CHARS = 400
+DROP_REASON = "budget_exceeded_context_dropped"
 
 
 @dataclass(frozen=True)
@@ -122,9 +128,25 @@ def record_usage(
     metadata: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Count, evaluate, and append one context-budget metric row."""
+    row = _measure(project_dir, source=source, layer=layer, text=text, session_id=session_id, model=model, metadata=metadata)
+    append_metric(project_dir, row)
+    return row
+
+
+def _measure(
+    project_dir: str | Path,
+    *,
+    source: str,
+    layer: str,
+    text: str,
+    session_id: str,
+    model: str = "heuristic",
+    metadata: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Build (but do not persist) one context-budget metric row."""
     used = count_tokens(text, model=model)
     verdict = evaluate(layer, used, read_budget(Path(project_dir) / "cognitive-os.yaml"))
-    row = {
+    return {
         "schema_version": 1,
         "timestamp_epoch": time.time(),
         "session_id": session_id,
@@ -139,8 +161,36 @@ def record_usage(
         "reason": verdict.reason,
         "metadata": metadata or {},
     }
-    append_metric(project_dir, row)
-    return row
+
+
+def _drop_notice(row: dict[str, Any], digest: str) -> str:
+    """One-line, bounded replacement for a payload the budget forced out.
+
+    Cheap on purpose: the consumer must learn that a hook spoke and was cut off,
+    without the notice itself becoming the next budget problem.
+    """
+    return (
+        f"[context-budget] DROPPED the additionalContext of hook `{row['source']}`: "
+        f"{row['tokens_estimate']} tokens over the {row['budget_token_max']}-token "
+        f"`{row['layer']}` budget (ratio {row['ratio_used']:.2f}x). That hook ran and "
+        f"produced output; none of it reached this turn. Recovering it: sha256 "
+        f"{digest[:12]} in .cognitive-os/metrics/context-budget.jsonl, reported by "
+        f"scripts/cos-context-budget-report. Re-run with "
+        f"COS_ALLOW_CONTEXT_BUDGET_OVERRUN=1 to let it through."
+    )
+
+
+def _replace_context(data: dict[str, Any], notice: str) -> str:
+    """Re-emit the hook envelope unchanged except for the replaced context."""
+    out = dict(data)
+    hso = out.get("hookSpecificOutput")
+    if isinstance(hso, dict):
+        replaced = dict(hso)
+        replaced["additionalContext"] = notice
+        out["hookSpecificOutput"] = replaced
+    else:
+        out["additionalContext"] = notice
+    return json.dumps(out, ensure_ascii=False)
 
 
 def filter_hook_output(
@@ -151,11 +201,18 @@ def filter_hook_output(
     session_id: str = "unknown",
     layer: str = "static",
 ) -> str:
-    """Return hook JSON unchanged if budget allows, else empty string after logging.
+    """Return hook JSON unchanged if the budget allows, else a traceable drop notice.
 
     The hook output shape is expected to contain
     hookSpecificOutput.additionalContext. Non-JSON or no-context outputs pass
     through unchanged.
+
+    Suppressing an over-budget payload is correct; suppressing it without a trace
+    is not. When the budget forces a discard, two things happen instead of
+    returning an empty string: the metric row records what was dropped (source,
+    size, sha256, bounded preview, reason) for `scripts/cos-context-budget-report`
+    to surface, and the hook envelope is re-emitted carrying a bounded notice so
+    the in-turn consumer learns that a hook spoke and was cut off.
     """
     if not hook_json.strip():
         return ""
@@ -172,7 +229,19 @@ def filter_hook_output(
             ctx = str(data.get("additionalContext") or "")
     if not ctx:
         return hook_json
-    row = record_usage(project_dir, source=source, layer=layer, text=ctx, session_id=session_id)
-    if row["verdict"] == "BLOCK" and not row["allowed"]:
-        return ""
-    return hook_json
+    row = _measure(project_dir, source=source, layer=layer, text=ctx, session_id=session_id)
+    dropped = row["verdict"] == "BLOCK" and not row["allowed"]
+    row["dropped"] = dropped
+    digest = ""
+    if dropped:
+        digest = hashlib.sha256(ctx.encode("utf-8", "replace")).hexdigest()
+        row["dropped_sha256"] = digest
+        row["dropped_chars"] = len(ctx)
+        row["dropped_tokens"] = row["tokens_estimate"]
+        row["dropped_preview"] = ctx[:DROP_PREVIEW_CHARS]
+        row["dropped_preview_truncated"] = len(ctx) > DROP_PREVIEW_CHARS
+        row["reason"] = DROP_REASON
+    append_metric(project_dir, row)
+    if not dropped:
+        return hook_json
+    return _replace_context(data, _drop_notice(row, digest))
