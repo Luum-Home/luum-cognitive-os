@@ -1,10 +1,25 @@
-"""Integration tests for hooks/skill-post-execution-analysis.sh — ADR-176.
+"""Integration tests for the skill post-execution analysis hook — ADR-176.
 
-Tests:
-  - synthetic PostToolUse JSON → hook fires → SkillStore row appears
-  - when candidate_for_evolution heuristic triggers → propose-only artifact written
-  - DISCIPLINE GATE: no SKILL.md is ever modified
-  - latency budget (soft check)
+PAYLOAD PROVENANCE (2026-08-19). These tests used to feed a payload shaped
+``{"skill_name": ..., "tool_response": {"tool_count", "duration_ms",
+"tool_issues"}}``. The Claude Code harness sends none of those field names, so
+the suite stayed green for 3.5 months over a hook that wrote nothing: 182
+recorded invocations, ``.cognitive-os/skill_store.db`` at 0 bytes since
+2026-05-06.
+
+The shape below is transcribed from 285 real Agent tool calls and 266 real
+results in ``~/.claude/projects/-Users-...-luum-agent-os/*.jsonl``:
+
+    tool_input   : description, subagent_type, model, prompt, run_in_background
+    tool_response: status, agentId, isAsync, description, resolvedModel, prompt,
+                   outputFile, canReadOutputFile  (+ agentType, content,
+                   totalDurationMs, totalTokens, totalToolUseCount, usage,
+                   toolStats on the 6/266 synchronous completions)
+    status values: async_launched (260) | completed (6)
+
+Do NOT re-derive this payload from the hook's own parser — that makes the test
+follow the hook's assumptions instead of the harness's, which is the exact bug
+this suite failed to catch.
 """
 
 from __future__ import annotations
@@ -27,23 +42,49 @@ def _sha(s: str) -> str:
 
 
 def _make_payload(
-    skill_name: str = "test-hook-skill",
-    status: str = "success",
+    subagent_type: str = "test-hook-skill",
+    status: str = "completed",
     tool_count: int = 2,
     duration_ms: int = 500,
-    tool_issues: list | None = None,
     session_id: str = "test-session-001",
+    *,
+    with_agent_type: bool = True,
 ) -> dict:
-    """Build a synthetic PostToolUse Agent payload."""
+    """Build a PostToolUse Agent payload in the shape the harness really sends.
+
+    Field names come from the transcripts (see module docstring), not from the
+    hook: ``totalToolUseCount`` / ``totalDurationMs`` / ``agentType``, never
+    ``tool_count`` / ``duration_ms`` / ``skill_name``.
+    """
+    tool_response = {
+        "status": status,
+        "agentId": "a" * 17,
+        "isAsync": False,
+        "description": "test agent run",
+        "resolvedModel": "claude-sonnet-4-5",
+        "prompt": "do the thing",
+        "outputFile": "/tmp/agent-output.jsonl",
+        "canReadOutputFile": True,
+        "content": [{"type": "text", "text": "done"}],
+        "totalDurationMs": duration_ms,
+        "totalTokens": 1234,
+        "totalToolUseCount": tool_count,
+    }
+    if with_agent_type:
+        tool_response["agentType"] = subagent_type
     return {
-        "skill_name": skill_name,
         "session_id": session_id,
-        "tool_response": {
-            "status": status,
-            "tool_count": tool_count,
-            "duration_ms": duration_ms,
-            "tool_issues": tool_issues or [],
+        "transcript_path": "/tmp/transcript.jsonl",
+        "cwd": "/tmp",
+        "hook_event_name": "PostToolUse",
+        "tool_name": "Agent",
+        "tool_input": {
+            "description": "test agent run",
+            "subagent_type": subagent_type,
+            "model": "sonnet",
+            "prompt": "do the thing",
         },
+        "tool_response": tool_response,
     }
 
 
@@ -124,9 +165,13 @@ class TestHookBasicExecution:
 
     def test_no_skill_name_exits_zero(self, tmp_path: Path) -> None:
         _setup_tmp_project(tmp_path)
-        payload = {"tool_response": {"status": "success"}}
+        # Real Agent payload with every name-bearing field stripped: the hook
+        # must degrade to exit 0 rather than write a nameless record.
+        payload = _make_payload(with_agent_type=False)
+        payload["tool_input"].pop("subagent_type")
         result = _run_hook(payload, tmp_path)
         assert result.returncode == 0
+        assert not (tmp_path / ".cognitive-os" / "skill_store.db").exists()
 
 
 # ---------------------------------------------------------------------------
@@ -137,7 +182,7 @@ class TestHookBasicExecution:
 class TestSkillStoreWrite:
     def test_writes_skill_record_to_db(self, tmp_path: Path) -> None:
         _setup_tmp_project(tmp_path)
-        payload = _make_payload("write-test-skill", status="success")
+        payload = _make_payload("write-test-skill")
         result = _run_hook(payload, tmp_path)
         assert result.returncode == 0
 
@@ -160,89 +205,21 @@ class TestSkillStoreWrite:
 
 
 class TestDisciplineGate:
-    def test_candidate_writes_proposal_file(self, tmp_path: Path) -> None:
-        """When candidate_for_evolution heuristic fires, a proposal file is written."""
-        _setup_tmp_project(tmp_path)
-        # Set up a fake SKILL.md to confirm it's NOT modified
-        skill_name = "evolution-candidate-skill"
-        fake_skill_dir = tmp_path / ".claude" / "skills"
-        fake_skill_dir.mkdir(parents=True, exist_ok=True)
-        fake_skill_md = fake_skill_dir / f"{skill_name}.md"
-        original_content = "# original SKILL.md content — must not be modified"
-        fake_skill_md.write_text(original_content)
+    """Only the structural gate survives.
 
-        # Set up docs/06-Daily/reports/skill-analysis-proposals
-        proposals_dir = tmp_path / "docs" / "06-Daily" / "reports" / "skill-analysis-proposals"
-        proposals_dir.mkdir(parents=True, exist_ok=True)
-
-        # Trigger candidate heuristic: 3+ tool issues
-        payload = _make_payload(
-            skill_name=skill_name,
-            status="error",
-            duration_ms=35000,
-            tool_issues=["issue1", "issue2", "issue3"],
-        )
-        result = _run_hook(payload, tmp_path)
-        assert result.returncode == 0
-
-        # Check proposal written
-        from datetime import date
-        date_dir = proposals_dir / date.today().isoformat()
-        assert date_dir.exists(), "Proposal directory should be created for evolution candidates"
-
-        proposal_files = list(date_dir.glob("*.md"))
-        assert len(proposal_files) >= 1, "Expected at least one proposal file"
-
-        # DISCIPLINE GATE: SKILL.md must be unchanged
-        assert fake_skill_md.read_text() == original_content, (
-            "DISCIPLINE GATE VIOLATION: SKILL.md was modified by the hook!"
-        )
-
-    def test_non_candidate_does_not_write_proposal(self, tmp_path: Path) -> None:
-        """When execution is clean, no proposal file is written."""
-        _setup_tmp_project(tmp_path)
-        proposals_dir = tmp_path / "docs" / "06-Daily" / "reports" / "skill-analysis-proposals"
-        proposals_dir.mkdir(parents=True, exist_ok=True)
-
-        payload = _make_payload("clean-skill", status="success", tool_count=2, duration_ms=100)
-        result = _run_hook(payload, tmp_path)
-        assert result.returncode == 0
-
-        # No proposal directories should be created
-        from datetime import date
-        date_dir = proposals_dir / date.today().isoformat()
-        if date_dir.exists():
-            proposal_files = list(date_dir.glob("*.md"))
-            # Should be empty or have no "clean-skill" proposals
-            assert not any("clean" in f.stem for f in proposal_files)
-
-    def test_proposal_contains_discipline_gate_marker(self, tmp_path: Path) -> None:
-        """Proposal file must contain ADR-176 discipline gate annotation."""
-        _setup_tmp_project(tmp_path)
-        proposals_dir = tmp_path / "docs" / "06-Daily" / "reports" / "skill-analysis-proposals"
-        proposals_dir.mkdir(parents=True, exist_ok=True)
-
-        payload = _make_payload(
-            skill_name="gate-marker-skill",
-            status="error",
-            duration_ms=40000,
-            tool_issues=["a", "b", "c"],
-        )
-        result = _run_hook(payload, tmp_path)
-        assert result.returncode == 0
-
-        from datetime import date
-        date_dir = proposals_dir / date.today().isoformat()
-        assert date_dir.exists(), "Proposal directory should be created for evolution candidates"
-
-        for proposal_file in date_dir.glob("*.md"):
-            content = proposal_file.read_text()
-            assert "propose_only" in content or "propose-only" in content, (
-                "Proposal file must contain discipline gate marker"
-            )
-            assert "SKILL.md" not in content.split("must be reviewed")[0].split("human")[0][:100] or True
-            # Key check: the word "DO NOT auto-apply" must appear
-            assert "DO NOT auto-apply" in content, "Proposal must contain DO NOT auto-apply warning"
+    DELETED 2026-08-19 — test_candidate_writes_proposal_file,
+    test_non_candidate_does_not_write_proposal and
+    test_proposal_contains_discipline_gate_marker. All three drove the
+    ``candidate_for_evolution`` heuristic, which fires on ``len(tool_issues)>=3``
+    or ``status in (error|fail|failed|1) and duration>30s``. The harness sends
+    no ``tool_issues`` field at all, and the only two ``status`` values it ever
+    emits for Agent are ``async_launched`` (260/266) and ``completed`` (6/266).
+    The heuristic is therefore unreachable in production, and the three tests
+    proved only that the hook agrees with its own invented payload. They also
+    carried a dead assertion (``assert ... or True``). Re-add real coverage when
+    ADR-176's candidate heuristic is redefined against fields the harness
+    actually sends; do not re-add it against fabricated ones.
+    """
 
     def test_no_live_skill_md_write_path_exists(self) -> None:
         """Structural: grep the hook for any write path to SKILL.md.

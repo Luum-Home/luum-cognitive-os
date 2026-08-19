@@ -6,6 +6,17 @@ Validates:
 - Cooldown: second invocation within 5 min does NOT re-warn
 - After cooldown expiry: next invocation warns again
 - Falsification: rubber-stamp hook (always silent) fails threshold-exceeded scenario
+- Zero matching stashes: the production case (see below)
+
+COVERAGE GAP CLOSED 2026-08-19. Every fixture below created at least two
+matching stashes. Production never did: this repo had zero stashes in 213 of
+334 recorded runs, and that untested path was where the bug lived —
+`grep -c` already prints "0" and exits 1 on no-match, so the old
+`|| echo "0"` made the count the two-line string "0\n0", `[ ... -le 3 ]`
+returned 2 (error, not false), and the guard fell THROUGH to print
+"BUDGET EXCEEDED" with zero stashes before dying inside printf via the ERR
+trap. Hence 0 rows in stash-budget.jsonl despite 213 stderr-emitting runs.
+test_zero_matching_stashes_is_silent_and_clean pins that path.
 """
 
 from __future__ import annotations
@@ -103,6 +114,31 @@ def test_below_threshold_no_warning(git_repo):
     assert "BUDGET EXCEEDED" not in result.stderr
 
     # No JSONL line should be written
+    metrics = git_repo / ".cognitive-os" / "metrics" / "stash-budget.jsonl"
+    assert not metrics.exists() or metrics.read_text().strip() == ""
+
+
+# ---------------------------------------------------------------------------
+# Test 1b: Zero matching stashes — the production case
+# ---------------------------------------------------------------------------
+
+def test_zero_matching_stashes_is_silent_and_clean(git_repo):
+    """No stashes at all: no warning, no JSONL, and no shell error on stderr.
+
+    This is what production looks like 213 runs out of 334. The stderr
+    assertion is the load-bearing one: the previous implementation reached
+    the warning banner here and then died in printf, so asserting only the
+    absence of a JSONL row would have passed over a broken hook.
+    """
+    result = _run_hook(git_repo)
+
+    assert result.returncode == 0
+    assert "BUDGET EXCEEDED" not in result.stderr
+    assert "integer expression expected" not in result.stderr
+    assert result.stderr.strip() == "", (
+        f"Hook must be silent with zero stashes; got stderr: {result.stderr!r}"
+    )
+
     metrics = git_repo / ".cognitive-os" / "metrics" / "stash-budget.jsonl"
     assert not metrics.exists() or metrics.read_text().strip() == ""
 
