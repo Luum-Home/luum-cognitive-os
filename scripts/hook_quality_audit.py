@@ -15,7 +15,6 @@ CONFIG = REPO / "cognitive-os.yaml"
 # `hooks` was missing until 2026-08-19, which made the canonical home of
 # hook behaviour tests invisible to this audit: a hook could have a test that
 # runs it as a subprocess and asserts on its exit code, and still be reported as
-# having no behavior_tests. Measured impact of adding it: 182 -> 187 covered
 # hooks, every one credited by a file named after the hook it exercises (no
 # enumeration-style file in tests/hooks names hooks as literals, so nothing is
 # credited wholesale).
