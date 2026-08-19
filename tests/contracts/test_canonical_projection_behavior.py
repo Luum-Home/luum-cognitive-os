@@ -21,7 +21,21 @@ from cos_lib.paths import preferred_rules_dirs
 from cos_lib.skill_routing import find_skill_md
 
 
-pytestmark = [pytest.mark.contract, pytest.mark.timeout(120)]
+pytestmark = [
+    pytest.mark.contract,
+    pytest.mark.timeout(120),
+    # ADR-072 follow-up: every test below runs the REAL cos-init.sh --full into a
+    # tmp_path target, and each install walks the live source tree the same way
+    # the install tests do. Concurrent xdist workers walking that tree are what
+    # forced the audit and contract lanes back to serial in 54439ea6; the fix was
+    # to pin install-touching tests to a single worker. Two files got that pin
+    # (tests/audit/test_install_scripts.py and
+    # tests/contracts/test_self_install_no_container_spawn.py), this one did not
+    # — so the contract lane's parallel-safety claim in
+    # .cognitive-os/test-lanes.yaml had a hole exactly the width of five full
+    # installs. Same xdist_group so ALL install-touching tests share one worker.
+    pytest.mark.xdist_group("self_install"),
+]
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 COS_INIT = PROJECT_ROOT / "scripts" / "cos-init.sh"
