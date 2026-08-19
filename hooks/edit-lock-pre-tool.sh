@@ -19,7 +19,12 @@ set -uo pipefail
 [ "${COS_BYPASS_EDIT_LOCK:-}" = "1" ] && exit 0
 
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}"
+# Two layouts, one primitive. In the OS repo it sits at scripts/edit-coop.sh; in
+# a consumer install cos_init._install_edit_lock_primitive puts it under
+# .cognitive-os/bin/. Looking only in the first place is why this subsystem was
+# registered and inert in every consumer install until 2026-08-19.
 COOP="$PROJECT_DIR/scripts/edit-coop.sh"
+[ -x "$COOP" ] || COOP="$PROJECT_DIR/.cognitive-os/bin/edit-coop.sh"
 [ -x "$COOP" ] || exit 0   # graceful: missing primitive → no enforcement
 
 # Read tool input JSON from stdin.

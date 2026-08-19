@@ -28,7 +28,13 @@ set -uo pipefail
 # this hook. The header above already promised "missing primitive -> exit 0";
 # this is that promise kept, using the same guarded-source idiom
 # scripts/edit-coop.sh has carried all along.
-_SESSION_ID_LIB="$(dirname "$0")/../scripts/_lib/session-id.sh"
+# PROJECT_DIR is resolved here, above its first use: the lib has two homes
+# too -- scripts/_lib/ in the OS repo, .cognitive-os/bin/_lib/ beside
+# edit-coop.sh in a consumer -- and a path relative to $0 can only ever
+# find the first one.
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}"
+_SESSION_ID_LIB="$PROJECT_DIR/scripts/_lib/session-id.sh"
+[ -f "$_SESSION_ID_LIB" ] || _SESSION_ID_LIB="$PROJECT_DIR/.cognitive-os/bin/_lib/session-id.sh"
 if [ -f "$_SESSION_ID_LIB" ]; then
   # shellcheck source=/dev/null
   source "$_SESSION_ID_LIB"
@@ -44,7 +50,6 @@ fi
 
 [ "${COS_BYPASS_EDIT_LOCK:-}" = "1" ] && exit 0
 
-PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}"
 
 # ── Identity helpers ──────────────────────────────────────────────────────────
 _session_id() {
