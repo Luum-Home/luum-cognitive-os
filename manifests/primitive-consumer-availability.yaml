@@ -2468,10 +2468,6 @@ items:
   status: shared-surface
   rationale: 'Manual scope review iteration 031: injecting query-relevant context
     into subagents is generic context quality.'
-- path: hooks/rate-limit-protection.sh
-  status: shared-surface
-  rationale: 'Manual scope review iteration 031: backward-compatible rate-limit protection
-    shim is shared runtime budget safety.'
 - path: hooks/research-quality-validator.sh
   status: shared-surface
   rationale: 'Manual scope review iteration 031: scoring research reports on evidence

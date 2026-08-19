@@ -165,7 +165,6 @@ kpi-trigger.sh | FUTURE: Stop hook in full profile; wires to kpi_collector
 mcp-scan.sh | CONDITIONAL: MCP server audit, fires on demand
 parry-scan.sh | CONDITIONAL: Parry security integration
 pre-compaction-flush.sh | CONDITIONAL: PreCompact event — registered in full profile only
-rate-limit-protection.sh | DEPRECATED: renamed to token-budget-monitor.sh; shim remains for back-compat
 scope-creep-detector.sh | FUTURE: PostToolUse Agent, planned but not wired
 scope-proportionality.sh | FUTURE: PostToolUse Agent, planned
 semgrep-scan.sh | MANUAL_TRIGGER: fires via /semgrep-scan skill on demand; not a global default hook — @on-demand

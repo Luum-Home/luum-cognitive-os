@@ -298,12 +298,6 @@
       "next_action": "Keep active in Codex projection and revisit cross-harness promotion after pyrefly dependency drift is resolved."
     },
     {
-      "path": "hooks/rate-limit-protection.sh",
-      "status": "deprecated",
-      "rationale": "Backward-compat shim for token-budget-monitor.",
-      "next_action": "Archive after external caller compatibility window."
-    },
-    {
       "path": "hooks/reaper-heartbeat.sh",
       "status": "deprecated",
       "rationale": "Compatibility alias for reaper-daemon-launcher; registering both duplicates scheduling.",
