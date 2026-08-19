@@ -4013,6 +4013,21 @@ evidence:
   - shell-ci
   tests:
   - tests/red_team/portability/test_os_only_scope_family.py
+- primitive: scripts/hook_artifact_derivation.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+- primitive: scripts/hook_test_reality_census.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+- primitive: scripts/signal_orphan_verify.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
 - primitive: scripts/primitive_coverage.py
   harnesses:
   - shell-ci
@@ -5451,6 +5466,20 @@ evidence:
   rationale: The driver is executed over a synthetic hook registry and the emitted
     cos-hooks JSON is asserted for the OpenCode event vocabulary, the empty tool-call
     events, the legacy session.compacted alias and the forced-async launcher rule.
+- primitive: scripts/external_claim_freshness_audit.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  - tests/contracts/test_external_claims_declare_verification.py
+  rationale: >-
+    Perishable-claim freshness census. os-only because the claims it audits live in
+    manifests/, a surface absent from manifests/primitive-install-boundary.yaml, so a
+    consumer install has no manifests to age and the audit would measure an empty
+    population there. The contract test executes collect_structured_claims over the
+    real tree and pins per-file undated-claim counts, and the audit was run in both
+    directions (a new undated claim reddens it, the same claim dated and with a
+    verification command greens it).
 patterns:
 - pattern: tests/**
   behavior_proven: true

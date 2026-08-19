@@ -148,18 +148,15 @@
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/skill-router-prompt-suggest.sh\"",
-            "async": true
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/skill-router-prompt-suggest.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/adr-relevance-suggest.sh\"",
-            "async": true
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/adr-relevance-suggest.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/rule-router-prompt-suggest.sh\"",
-            "async": true
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/rule-router-prompt-suggest.sh\""
           },
           {
             "type": "command",
@@ -174,8 +171,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/subagent-context-injector.sh\"",
-            "async": true
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/subagent-context-injector.sh\""
           }
         ]
       }
