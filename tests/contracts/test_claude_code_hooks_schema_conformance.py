@@ -58,10 +58,7 @@ INJECTOR = HOOKS_DIR / "subagent-context-injector.sh"
 # (docs/05-Methodology/runbooks/hooks-additional-context-shape-2026-08-15.md),
 # the census returns an empty set, this test fails on the leftover entries, and
 # emptying the list is the fix — not moving it.
-KNOWN_ROOT_LEVEL_VIOLATIONS = {
-    "hooks/cross-session-peer-context.sh",
-    "hooks/agent-message-inbox-context.sh",
-}
+KNOWN_ROOT_LEVEL_VIOLATIONS: set[str] = set()
 
 # A hook whose `# Async:` header disagrees with its registration in
 # `.claude/settings.json`. An OMITTED `async` key IS a registration of
@@ -77,16 +74,12 @@ KNOWN_ROOT_LEVEL_VIOLATIONS = {
 # SubagentStart registration stopped carrying `async: true`. Header and
 # registration now both say false. Nothing was loosened — the ratchet itself
 # demanded the removal by failing on the leftover entry.
-KNOWN_ASYNC_HEADER_MISMATCHES = {
-    "skill-md-routing-validator.sh",  # header says true, registered false
-}
+KNOWN_ASYNC_HEADER_MISMATCHES: set[str] = set()
 
 # `hookSpecificOutput` requires `hookEventName` ("It requires a hookEventName
 # field set to the event name" — hooks.md, "JSON output"). This hook nests
 # correctly but omits the event name.
-KNOWN_MISSING_HOOK_EVENT_NAME = {
-    "hooks/eas-validation-gate.sh",
-}
+KNOWN_MISSING_HOOK_EVENT_NAME: set[str] = set()
 
 # Empty, and the emptiness IS the assertion: no context-emitting hook is
 # registered `async: true` on an event whose insertion point precedes the first

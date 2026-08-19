@@ -37,7 +37,14 @@ for peer in items:
     branch = peer.branch or "unknown-branch"
     lines.append(f"- session {peer.session_id} on branch {branch}; recent writes: {writes}; topics: {topics}")
 lines.append("Coordinate before issuing conflicting ADR/path/policy changes.")
-print(json.dumps({"additionalContext": "\n".join(lines)}, ensure_ascii=False))
+# Claude Code reads additionalContext ONLY from inside hookSpecificOutput,
+# alongside hookEventName. The root-level form is valid JSON, so the host
+# parses it, finds no recognized field, and drops it without a word.
+# Contract: manifests/claude-code-hooks-schema.yaml
+print(json.dumps({"hookSpecificOutput": {
+    "hookEventName": "UserPromptSubmit",
+    "additionalContext": "\n".join(lines),
+}}, ensure_ascii=False))
 PY
 )"
 if [ -n "$CONTEXT_JSON" ]; then
