@@ -136,3 +136,38 @@ def test_force_with_lease_is_allowed(fixture_repo):
 
 def test_non_git_command_is_allowed(fixture_repo):
     assert verdict("ls -la", fixture_repo) == ALLOW
+
+
+# ── Approval tokens: text that MENTIONS one must not grant it ────────────────
+# Same asymmetry as the rest of this file, one layer up. The detection side
+# already knew a commit message is prose; the approval side scanned the raw
+# command, so a message that merely named the token authorised the operation.
+# Measured 2026-08-19: `git commit -m "docs: usar --allow-destructive con cuidado"` passed.
+
+APPROVE = "--allow-destructive"
+
+
+def test_approval_token_inside_a_commit_message_does_not_grant(fixture_repo):
+    """Writing ABOUT the flag is documentation, not authorisation."""
+    assert verdict(f'{HARD} HEAD~1 && git commit -m "docs: sobre {APPROVE} hoy"',
+                   fixture_repo) == BLOCK
+
+
+def test_approval_token_inside_a_quoted_string_does_not_grant(fixture_repo):
+    """An echoed token is text on stdout, not a decision by the operator."""
+    assert verdict(f'{HARD} HEAD~1 && echo "conviene {APPROVE} igual"',
+                   fixture_repo) == BLOCK
+    assert verdict(f"{HARD} HEAD~1 && echo 'conviene {APPROVE} igual'",
+                   fixture_repo) == BLOCK
+
+
+def test_approval_token_as_a_trailing_comment_still_grants(fixture_repo):
+    """The null control: without it the two tests above pass for free.
+
+    If the token stopped granting anywhere, "mentioning it does not grant"
+    would hold trivially and prove nothing. It must still work in the one form
+    that is usable -- a trailing shell comment. Passed as a real argument the
+    token reaches git, which rejects it with exit 129, so the comment is not a
+    workaround here: it is the interface.
+    """
+    assert verdict(f"{HARD} HEAD~1  # {APPROVE}", fixture_repo) == ALLOW

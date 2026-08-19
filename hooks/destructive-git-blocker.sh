@@ -34,12 +34,23 @@
 #     (false-positive fix: commit messages may document destructive ops without
 #      the hook treating them as if the ops themselves were executed)
 #
-# Override mechanisms (ADR-055b):
-#   - Per-command: append `--allow-destructive` token anywhere in the command
-#   - Per-command: append `--allow-force-push` token (force-push-specific bypass)
+# Override mechanisms (ADR-055b). The per-command token goes in a trailing
+# shell COMMENT, e.g.  git reset --hard HEAD~1  # --allow-destructive
+# Passed as a real argument it reaches git, which rejects it: measured
+# 2026-08-19, both `git commit -m x --allow-destructive` and this file's own
+# former example `git reset --hard HEAD~1 --allow-destructive` exit 129,
+# "unknown option" -- so the documented form could never be used. A comment is
+# addressed to this hook and invisible to git, which is the point.
+# The token must also sit OUTSIDE quotes: see _approval_scan_text below.
+#   - Per-command: `--allow-destructive` token (general bypass)
+#   - Per-command: `--allow-force-push` token (force-push-specific bypass)
+#   - Per-command: `--allow-main-branch` / `--allow-branch-switch` tokens
 #   - Per-session: export COS_ALLOW_DESTRUCTIVE_GIT=1
 #   - Protected branch write bypass: export COS_ALLOW_MAIN_BRANCH_WRITE=1
 #   - Branch context switch bypass: export COS_ALLOW_BRANCH_SWITCH=1
+# The env forms must be exported in the environment that LAUNCHES the harness.
+# A `VAR=1 <command>` prefix does not reach this hook: it runs as a separate
+# process and never sees the assignment.
 #
 # Bypass contexts (SO-internal — block does not apply):
 #   - CI=1 (CI environment)
@@ -784,23 +795,42 @@ if type cos_governance_policy_allows_block >/dev/null 2>&1 && ! cos_governance_p
 fi
 
 # ── Override / bypass detection (ADR-055b) ───────────────────────────────────
-# Per-command override: `--allow-destructive` token anywhere in the command
+# An approval token is a deliberate human act, so it must be BARE shell text --
+# in practice a trailing comment. Scanning the raw command instead let a commit
+# message grant the approval: measured 2026-08-19,
+#   git commit -m "docs: usar --allow-destructive con cuidado"
+# passed the guard. Writing ABOUT the flag authorised the operation, which is
+# the same false-positive class _strip_commit_message_args already handles on
+# the detection side -- only here it failed open instead of closed.
+#
+# Quoted spans are removed for the same reason: `echo "... --allow-destructive
+# ..."` is text, not an approval. Stripping can only remove grants, never
+# manufacture one, so the error direction is closed.
+_approval_scan_text() {
+  local text
+  text=$(_strip_commit_message_args "$COMMAND")
+  text=$(printf '%s' "$text" | sed 's/"[^"]*"//g')
+  text=$(printf '%s' "$text" | sed "s/'[^']*'//g")
+  printf '%s' "$text"
+}
+
+# Per-command override: `--allow-destructive` token, bare, outside quotes
 _has_allow_flag() {
   # Match --allow-destructive as a whole token (surrounded by whitespace or edges)
-  echo "$COMMAND" | grep -Eq '(^|[[:space:]])--allow-destructive($|[[:space:]])'
+  _approval_scan_text | grep -Eq '(^|[[:space:]])--allow-destructive($|[[:space:]])'
 }
 
 # Per-command override for force-push specifically: `--allow-force-push`
 _has_allow_force_push_flag() {
-  echo "$COMMAND" | grep -Eq '(^|[[:space:]])--allow-force-push($|[[:space:]])'
+  _approval_scan_text | grep -Eq '(^|[[:space:]])--allow-force-push($|[[:space:]])'
 }
 
 _has_allow_main_branch_flag() {
-  echo "$COMMAND" | grep -Eq '(^|[[:space:]])--allow-main-branch($|[[:space:]])'
+  _approval_scan_text | grep -Eq '(^|[[:space:]])--allow-main-branch($|[[:space:]])'
 }
 
 _has_allow_branch_switch_flag() {
-  echo "$COMMAND" | grep -Eq '(^|[[:space:]])--allow-branch-switch($|[[:space:]])'
+  _approval_scan_text | grep -Eq '(^|[[:space:]])--allow-branch-switch($|[[:space:]])'
 }
 
 # SO-internal bypass contexts (not user-initiated destructive ops)
@@ -1033,8 +1063,11 @@ _print_standard_block_report "user" "destructive_git_op"
 echo "Command: $COMMAND" >&2
 echo "" >&2
 echo "To proceed, use ONE of:" >&2
-echo "  1. Inline flag:   append --allow-destructive to the command" >&2
-echo "                    (e.g. 'git reset --hard HEAD~1 --allow-destructive')" >&2
+echo "  1. Inline token:  append it as a trailing shell COMMENT, outside quotes:" >&2
+echo "                      git reset --hard HEAD~1  # --allow-destructive" >&2
+echo "                    Passed as a real argument git rejects it (exit 129)," >&2
+echo "                    and one inside a -m message or any quoted string is" >&2
+echo "                    text, not approval: it does NOT grant." >&2
 if [ "$FIRST_HIT_TYPE" = "force_push" ]; then
   echo "     OR:           append --allow-force-push (force-push-specific bypass)" >&2
   echo "     SAFER:        use --force-with-lease instead of --force / -f" >&2
@@ -1047,7 +1080,9 @@ if [ "$FIRST_HIT_TYPE" = "branch_context_change" ]; then
   echo "     OR:           append --allow-branch-switch, or export COS_ALLOW_BRANCH_SWITCH=1" >&2
   echo "     SAFER:        announce previous branch, target branch, reason, and expected commit destination first" >&2
 fi
-echo "  2. Session env:   export COS_ALLOW_DESTRUCTIVE_GIT=1 (this shell only)" >&2
+echo "  2. Session env:   export COS_ALLOW_DESTRUCTIVE_GIT=1 in the environment" >&2
+echo "                    that LAUNCHES the harness. A VAR=1 <command> prefix" >&2
+echo "                    does not reach this hook -- it runs as its own process." >&2
 echo "" >&2
 echo "Reference: docs/02-Decisions/adrs/ADR-055b-destructive-git-block.md" >&2
 echo "" >&2
