@@ -31,6 +31,9 @@ def main(argv: list[str] | None = None) -> int:
         print(f"PASS={report.pass_rate:.1%} WARN={report.warn_rate:.1%} BLOCK={report.block_rate:.1%} OVERRIDE={report.override_rate:.1%}")
         if report.meter_p99_ms is not None:
             print(f"meter p99={report.meter_p99_ms:.1f}ms")
+        if report.dropped_count:
+            print(f"dropped payloads={report.dropped_count} " + " ".join(f"{name}={count}" for name, count in report.dropped_by_source.items()))
+            print("  recover with: grep '\"dropped\": true' .cognitive-os/metrics/context-budget.jsonl")
         if report.findings:
             print("Findings:")
             for finding in report.findings:

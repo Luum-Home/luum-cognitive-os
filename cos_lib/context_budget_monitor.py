@@ -27,6 +27,8 @@ class ContextBudgetReport:
     block_rate: float
     override_rate: float
     meter_p99_ms: float | None
+    dropped_count: int
+    dropped_by_source: dict[str, int]
     verdict_counts: dict[str, int]
     by_source: dict[str, dict[str, Any]]
     findings: list[str]
@@ -99,6 +101,8 @@ def build_report(
     total = len(rows)
     verdict_counts = Counter(str(row.get("verdict") or "UNKNOWN") for row in rows)
     overrides = sum(1 for row in rows if row.get("reason") == "override" or (row.get("verdict") == "BLOCK" and row.get("allowed") is True))
+    dropped_rows = [row for row in rows if row.get("dropped") is True]
+    dropped_by_source = dict(sorted(Counter(str(row.get("source") or "unknown") for row in dropped_rows).items()))
     meter_latencies = [float(row.get("latency_ms")) for row in rows if row.get("source") == "context-budget-meter" and row.get("latency_ms") is not None]
     meter_p99 = _percentile(meter_latencies, 99)
 
@@ -118,6 +122,9 @@ def build_report(
         findings.append(f"BLOCK rate {block_rate:.1%} above target {SLO_BLOCK_RATE_MAX:.0%}")
     if override_rate > SLO_OVERRIDE_RATE_MAX:
         findings.append(f"override rate {override_rate:.1%} above target {SLO_OVERRIDE_RATE_MAX:.0%}")
+    if dropped_rows:
+        detail = ", ".join(f"{name} x{count}" for name, count in dropped_by_source.items())
+        findings.append(f"{len(dropped_rows)} hook payload(s) dropped for exceeding budget: {detail}")
     if meter_p99 is not None and meter_p99 > SLO_METER_P99_MS:
         findings.append(f"context-budget-meter p99 {meter_p99:.1f}ms above target {SLO_METER_P99_MS:.0f}ms")
 
@@ -132,6 +139,8 @@ def build_report(
         block_rate=block_rate,
         override_rate=override_rate,
         meter_p99_ms=round(meter_p99, 3) if meter_p99 is not None else None,
+        dropped_count=len(dropped_rows),
+        dropped_by_source=dropped_by_source,
         verdict_counts=dict(verdict_counts),
         by_source=_source_summary(rows),
         findings=findings,
