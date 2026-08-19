@@ -10,6 +10,7 @@ hooks:
     bypass_policy: not_required_observe_only
     census_tests: &id001
     - tests/contracts/test_claude_code_hooks_schema_conformance.py
+    - tests/contracts/test_hook_header_registration_claims.py
     criticality: standard
     event: PostToolUse
     false_positive_tests: []
@@ -136,6 +137,7 @@ hooks:
     - tests/contracts/test_primitive_contract_registry.py
     - tests/integration/test_cwd_enforcer_rewrite.py
     - tests/integration/test_cwd_enforcer_warns.py
+    - tests/red_team/test_agent_worktree_isolation_escapes.py
     bypass_policy: not_required_warning_only
     census_tests: *id001
     criticality: coordination
@@ -1323,6 +1325,7 @@ hooks:
     behavior_tests:
     - tests/audit/test_hook_behavior_classifier.py
     - tests/audit/test_rules_enforcement.py
+    - tests/hooks/test_decision_depth_gate.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
     criticality: standard
@@ -2443,7 +2446,8 @@ hooks:
     scope: both
     script: hooks/post-agent-verify.sh
   post-git-orphan-notifier:
-    behavior_tests: []
+    behavior_tests:
+    - tests/hooks/test_post_git_orphan_notifier.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
     criticality: standard
@@ -3736,6 +3740,7 @@ hooks:
     script: hooks/skill-md-routing-validator.sh
   skill-post-execution-analysis:
     behavior_tests:
+    - tests/hooks/test_skill_post_execution_analysis.py
     - tests/integration/test_skill_post_execution_hook.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
@@ -3880,6 +3885,7 @@ hooks:
     script: hooks/spdx-header-required.sh
   stash-budget-warn:
     behavior_tests:
+    - tests/hooks/test_stash_budget_warn.py
     - tests/integration/test_stash_budget_warn.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
