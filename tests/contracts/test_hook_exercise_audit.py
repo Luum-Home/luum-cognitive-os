@@ -282,6 +282,219 @@ def test_two_hooks_in_one_file_are_classified_independently(tmp_path: Path) -> N
 
 
 # --------------------------------------------------------------------------- #
+# seguimiento del nombre al que esta ligado el literal
+# --------------------------------------------------------------------------- #
+# Estos son los casos que la tecnica del commit e168f2b1a declaraba ciegos y
+# que el seguimiento de constantes resuelve. Cada uno FALLA contra esa version:
+# ahi todos daban UNCLASSIFIABLE (salvo el del iterable anonimo, que daba el
+# peor error posible, NAMED_ONLY sobre un hook que el test SI corre).
+
+
+def test_module_constant_passed_to_a_call_is_exercised(tmp_path: Path) -> None:
+    """`HOOK = REPO / "..."` y despues `run([..., str(HOOK)])`.
+
+    Es la forma dominante del corpus real: 40 de los 54 hooks que la tecnica
+    anterior declaraba ciegos se resuelven por aca.
+    """
+    level, detail = _classify(
+        tmp_path,
+        QUOKKA,
+        {
+            "test_a.py": (
+                "import subprocess\n"
+                "from pathlib import Path\n"
+                f"HOOK = Path('.') / 'hooks/{QUOKKA}.sh'\n\n"
+                "def test_x():\n"
+                "    subprocess.run(['bash', str(HOOK)], check=False)\n"
+            )
+        },
+    )
+    assert level == hea.EXERCISED, detail
+
+
+def test_constant_list_fed_to_parametrize_is_exercised(tmp_path: Path) -> None:
+    level, detail = _classify(
+        tmp_path,
+        QUOKKA,
+        {
+            "test_a.py": (
+                "import pytest\n"
+                f"CASES = ['hooks/{QUOKKA}.sh']\n\n"
+                "@pytest.mark.parametrize('hook', CASES)\n"
+                "def test_x(hook):\n"
+                "    assert hook\n"
+            )
+        },
+    )
+    assert level == hea.EXERCISED, detail
+
+
+def test_constant_iterated_and_run_is_exercised(tmp_path: Path) -> None:
+    """`for h in CASES: run(h)`: el literal llega al Call por la variable."""
+    level, detail = _classify(
+        tmp_path,
+        QUOKKA,
+        {
+            "test_a.py": (
+                f"CASES = ['hooks/{QUOKKA}.sh']\n\n"
+                "def test_x():\n"
+                "    for hook in CASES:\n"
+                "        run(hook)\n"
+            )
+        },
+    )
+    assert level == hea.EXERCISED, detail
+
+
+def test_anonymous_tuple_iterated_and_run_is_exercised(tmp_path: Path) -> None:
+    """El falso NAMED_ONLY que encontro esta tanda, en su forma minima.
+
+    La coleccion no esta ligada a ningun nombre, asi que el seguimiento de
+    constantes no la ve; sin el salto desde el iterable anonimo el literal cae
+    en la bolsa ``plain`` y el hook se reporta como mencion vacia mientras el
+    test lo esta corriendo. Un falso NAMED_ONLY miente igual que un falso
+    EXERCISED, solo que hacia el otro lado.
+    """
+    level, detail = _classify(
+        tmp_path,
+        QUOKKA,
+        {
+            "test_a.py": (
+                "def test_x():\n"
+                f"    for hook in ('hooks/{QUOKKA}.sh', 'hooks/other.sh'):\n"
+                "        run_hook(hook, {})\n"
+            )
+        },
+    )
+    assert level == hea.EXERCISED, detail
+
+
+def test_constant_only_compared_is_named_only(tmp_path: Path) -> None:
+    """`assert BATERIA <= despachados`: verifica de verdad, pero no pasa nada.
+
+    Misma decision que ya toma el literal suelto (`assert 'x' in salida`), solo
+    que a traves de un nombre. La medicion se subestima antes que inflarse.
+    """
+    level, detail = _classify(
+        tmp_path,
+        QUOKKA,
+        {
+            "test_a.py": (
+                f"BATTERY = {{'hooks/{QUOKKA}.sh'}}\n\n"
+                "def test_x():\n"
+                "    assert BATTERY <= dispatched()\n"
+            )
+        },
+    )
+    assert level == hea.NAMED_ONLY, detail
+
+
+def test_constant_used_as_call_receiver_is_named_only(tmp_path: Path) -> None:
+    """`esperado.issubset(x)`: el nombre es el receptor, no el argumento."""
+    level, detail = _classify(
+        tmp_path,
+        QUOKKA,
+        {
+            "test_a.py": (
+                f"EXPECTED = {{'hooks/{QUOKKA}.sh'}}\n\n"
+                "def test_x():\n"
+                "    assert EXPECTED.issubset(listed())\n"
+            )
+        },
+    )
+    assert level == hea.NAMED_ONLY, detail
+
+
+# --------------------------------------------------------------------------- #
+# lo que TIENE que seguir siendo ciego
+# --------------------------------------------------------------------------- #
+# Sin este grupo la tecnica nueva no tiene freno: cualquier extension que
+# empiece a resolver de mas los rompe antes de llegar al reporte.
+
+
+def test_alias_of_a_constant_stays_unclassifiable(tmp_path: Path) -> None:
+    """`faltantes = BATERIA - despachados`: el valor se va a otro nombre.
+
+    Es la forma exacta de ``COMMIT_BATTERY`` en
+    ``tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py``, y la razon
+    de que 10 hooks sigan ciegos. Seguir el alias no seria mas honesto: el
+    unico Call que toca ``faltantes`` esta en el MENSAJE del assert
+    (``f"...{sorted(faltantes)}"``), asi que resolverlo daria EXERCISED por un
+    texto de error. Ciego es la respuesta correcta.
+    """
+    level, detail = _classify(
+        tmp_path,
+        QUOKKA,
+        {
+            "test_a.py": (
+                f"BATTERY = {{'hooks/{QUOKKA}.sh'}}\n\n"
+                "def test_x():\n"
+                "    missing = BATTERY - dispatched()\n"
+                "    assert not missing, f'faltan {sorted(missing)}'\n"
+            )
+        },
+    )
+    assert level == hea.UNCLASSIFIABLE, detail
+
+
+def test_constant_whose_read_result_is_reassigned_stays_unclassifiable(
+    tmp_path: Path,
+) -> None:
+    """`texto = HOOK.read_text()`: el nombre es receptor pero el valor escapa."""
+    level, detail = _classify(
+        tmp_path,
+        QUOKKA,
+        {
+            "test_a.py": (
+                "from pathlib import Path\n"
+                "ROOT = Path('.')\n"
+                f"HOOK = ROOT / 'hooks' / '{QUOKKA}.sh'\n\n"
+                "def test_x():\n"
+                "    text = HOOK.read_text()\n"
+                "    assert 'set -euo pipefail' in text\n"
+            )
+        },
+    )
+    assert level == hea.UNCLASSIFIABLE, detail
+
+
+def test_tuple_unpacking_in_the_loop_stays_unclassifiable(tmp_path: Path) -> None:
+    """`for a, b in PARES`: no se sabe que parte del elemento lleva el literal."""
+    level, detail = _classify(
+        tmp_path,
+        QUOKKA,
+        {
+            "test_a.py": (
+                "def test_x():\n"
+                f"    for hook, code in (('hooks/{QUOKKA}.sh', 0),):\n"
+                "        assert run(hook) == code\n"
+            )
+        },
+    )
+    assert level == hea.UNCLASSIFIABLE, detail
+
+
+def test_constant_read_only_from_an_unresolved_helper_stays_unclassifiable(
+    tmp_path: Path,
+) -> None:
+    """El nombre se devuelve desde un helper: el uso real vive en el llamador."""
+    level, detail = _classify(
+        tmp_path,
+        QUOKKA,
+        {
+            "test_a.py": (
+                f"HOOKS = ['hooks/{QUOKKA}.sh']\n\n"
+                "def _targets():\n"
+                "    return HOOKS\n\n"
+                "def test_x():\n"
+                "    assert _targets()\n"
+            )
+        },
+    )
+    assert level == hea.UNCLASSIFIABLE, detail
+
+
+# --------------------------------------------------------------------------- #
 # el reporte completo, sobre el repo real
 # --------------------------------------------------------------------------- #
 def _cli(*args: str) -> "subprocess.CompletedProcess[str]":
