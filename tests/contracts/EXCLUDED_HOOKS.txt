@@ -141,7 +141,7 @@ pyrefly-typecheck-advisory.sh | CONDITIONAL: Codex-only pyrefly advisory hook pr
 # ── Hooks discovered during initial audit run (not in earlier survey) ────────
 adr-detector.sh | FUTURE: detects ADR references in prompts; planned for UserPromptSubmit — not yet wired
 clean-room-ast-similarity-gate.sh | MANUAL_TRIGGER: ADR-271 AST-similarity Tier-2 clone detector; manual trigger pending soak period per ADR-271 §Phase 3
-contextual-rule-loader.sh | FUTURE: dynamically loads contextual rules; planned for SubagentStart — not yet wired
+contextual-rule-loader.sh | DEPRECATED: injects ~12KB of rule bodies per Agent launch into the ORCHESTRATOR context (PreToolUse lands next to the tool result) to obtain one telemetry row; subagents already get rules via subagent-context-injector.sh. The former "planned for SubagentStart" note was proven unreachable — require_tool + .tool_input.prompt both exit 0 on that event. Verdict and numbers: docs/06-Daily/reports/contextual-rule-loader-veredicto-2026-08-19.md; re-check with scripts/audit_contextual_rule_channel.py
 dry-run-preview.sh | FUTURE: previews destructive operations in dry-run mode; planned for PreToolUse Bash — not yet wired
 memu-sync.sh | FUTURE: syncs memu (memory/engram) state; planned for Stop or PostToolUse — not yet wired
 metrics-calibrator-trigger.sh | FUTURE: triggers metrics-calibrator skill; planned for Stop event — not yet wired
