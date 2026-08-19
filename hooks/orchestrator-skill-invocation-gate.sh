@@ -130,27 +130,56 @@ mkdir -p "$METRICS_DIR" "$RUNTIME_DIR" 2>/dev/null || true
 AUDIT_FILE="$METRICS_DIR/skill-bypass.jsonl"
 COUNTER_FILE="$RUNTIME_DIR/skill-bypass-counter-${SESSION_ID}"
 
+# Emite UNA fila de auditoria por decision evaluada. Una guarda que evalua y no
+# emite nada es indistinguible de una guarda rota: el consumidor
+# (scripts/skill_adherence_loop.py) no puede distinguir "nadie bypasseo" de "el
+# productor nunca escribio". Por eso escriben TODAS las ramas, incluida la
+# positiva.
+#
+# Contrato que consume load_bypasses() en scripts/skill_adherence_loop.py:
+#   ts | timestamp  -> ISO8601 parseable (si falta, la fila se descarta)
+#   suggested_skill -> nombre de la skill (si falta, la fila se descarta)
+#   reason          -> NO VACIO => audited=True  => aparea y cuenta BYPASSED
+#                      VACIO    => audited=False => la fila NO se aparea
+#   prompt_hash     -> aparea con la sugerencia sin depender de la ventana
+#   confidence, session_id, actor, outcome -> contexto
 _emit_audit() {
-  local reason="$1" actor="$2"
+  local reason="$1" actor="$2" outcome="$3"
   local ts
   ts="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-  python3 - "$AUDIT_FILE" "$ts" "$SESSION_ID" "$PROMPT_HASH" "$SKILL" "$CONF" "$reason" "$actor" <<'PYEOF' 2>/dev/null || true
+  python3 - "$AUDIT_FILE" "$ts" "$SESSION_ID" "$PROMPT_HASH" "$SKILL" "$CONF" "$reason" "$actor" "$outcome" <<'PYEOF' 2>/dev/null || true
 import json, sys
-path, ts, sid, ph, skill, conf, reason, actor = sys.argv[1:]
+path, ts, sid, ph, skill, conf, reason, actor, outcome = sys.argv[1:]
 entry = {"ts": ts, "session_id": sid, "prompt_hash": ph,
          "suggested_skill": skill, "confidence": float(conf or 0.0),
-         "reason": reason, "actor": actor}
+         "reason": reason, "actor": actor, "outcome": outcome}
 with open(path, "a") as fh:
     fh.write(json.dumps(entry) + "\n")
 PYEOF
 }
 
+# La rama positiva dispara en CADA tool call mientras la sugerencia siga viva.
+# Se deduplica por (sesion, prompt_hash, skill) para que el log registre la
+# decision una vez y no una por herramienta.
+_pass_marker_path() {
+  local ph="${PROMPT_HASH:-nohash}"
+  printf '%s/skill-gate-pass-%s' "$RUNTIME_DIR" \
+    "$(printf '%s-%s-%s' "$SESSION_ID" "$ph" "$SKILL" | tr -c 'A-Za-z0-9._-' '_')"
+}
+
 if [ "$INVOKED" = "1" ]; then
+  # Caso positivo: reason VACIO a proposito. El consumidor solo aparea filas
+  # con razon escrita, asi que un `pass` nunca se puede leer como un bypass.
+  PASS_MARKER="$(_pass_marker_path)"
+  if [ ! -f "$PASS_MARKER" ]; then
+    : > "$PASS_MARKER" 2>/dev/null || true
+    _emit_audit "" "gate" "invoked"
+  fi
   exit 0
 fi
 
 if [ "$ANNOTATED" = "1" ]; then
-  _emit_audit "${BYPASS_REASON:-annotated}" "orchestrator-annotation"
+  _emit_audit "${BYPASS_REASON:-annotated}" "orchestrator-annotation" "bypass-annotated"
   exit 0
 fi
 
@@ -160,7 +189,7 @@ if [ "${COS_ALLOW_SKILL_BYPASS:-0}" = "1" ]; then
     printf 'orchestrator-skill-invocation-gate: COS_ALLOW_SKILL_BYPASS=1 requires COS_SKILL_BYPASS_REASON=<text>\n' >&2
     exit 2
   fi
-  _emit_audit "env-override: $reason" "env-override"
+  _emit_audit "env-override: $reason" "env-override" "env-override"
   exit 0
 fi
 
@@ -173,9 +202,13 @@ count=$((count + 1))
 printf '%s' "$count" > "$COUNTER_FILE"
 
 if [ "$count" -ge 3 ]; then
+  _emit_audit "unannotated: BLOCK tras $count bypasses sin anotacion SKILL_BYPASS en la sesion" \
+    "gate" "blocked"
   printf 'orchestrator-skill-invocation-gate: BLOCK — high-confidence skill `%s` (conf=%s) bypassed %s times this session without annotation. Either invoke the skill, add `SKILL_BYPASS: %s confidence=%s reason=<short>` to the tool input, or set COS_ALLOW_SKILL_BYPASS=1 + COS_SKILL_BYPASS_REASON=<text>.\n' "$SKILL" "$CONF" "$count" "$SKILL" "$CONF" >&2
   exit 2
 fi
 
+_emit_audit "unannotated: skill de alta confianza no invocada y sin anotacion SKILL_BYPASS (aviso $count/3, tool permitido)" \
+  "gate" "bypass-unannotated"
 printf 'orchestrator-skill-invocation-gate: WARN — high-confidence skill `%s` (conf=%s) was suggested for this prompt but not invoked. (%s/3 before BLOCK)\n' "$SKILL" "$CONF" "$count" >&2
 exit 0
