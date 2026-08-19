@@ -51,9 +51,45 @@ blind_ratio_threshold: 0.20
 # Clave = host de la URL que ancla la afirmacion (o el id del sistema).
 # Cada entrada DEBE traer `cadence_evidence`: como se supo esa cadencia. Una
 # entrada sin evidencia de cadencia es un umbral inventado con formato de dato.
-# VACIO A PROPOSITO: no inventar entradas. Los agentes de investigacion del
-# ecosistema traen la cadencia; hasta entonces todo cae en el default.
-systems: {}
+# Los agentes de investigacion del ecosistema traen la cadencia; lo que no
+# tenga cadencia medida sigue cayendo en el default.
+systems:
+  learn.chatgpt.com:
+    max_age_days: 14
+    verified: 2026-08-19
+    how: >
+      curl -s https://registry.npmjs.org/@openai/codex (cadencia y version) y
+      curl -sL https://developers.openai.com/codex/hooks (308 ->
+      https://learn.chatgpt.com/docs/hooks) para el contrato de hooks. Comando
+      completo de cadencia en `cadence_evidence`.
+    applies_to: >
+      Afirmaciones de este repo sobre el arnes Codex de OpenAI: esquema de
+      hooks, eventos soportados, cobertura de herramientas, contrato de bloqueo
+      y version. Ancla: la URL de la doc oficial
+      (https://learn.chatgpt.com/docs/hooks).
+    cadence_evidence: >
+      Cadencia de releases medida sobre el registro de npm el 2026-08-19:
+      5.62 dias por minor en los ultimos 90 dias (17 minors) y 3.17 dias por
+      minor sobre los 129 minors estables publicados entre 2025-07-08 y
+      2026-08-18. Comando:
+      curl -s https://registry.npmjs.org/@openai/codex | python3 -c "
+      import json,sys,re,datetime as dt
+      t=json.load(sys.stdin)['time']
+      m={int(x.group(1)):v[:10] for v in t if (x:=re.fullmatch(r'0[.](\d+)[.]0',v))}
+      k=sorted(m); f=dt.date.fromisoformat
+      print(len(k),'minors', (f(m[k[-1]])-f(m[k[0]])).days/(len(k)-1),'d/minor')"
+      Evidencia de que la cadencia importa aca y no es trivia: el
+      version_baseline de Codex en manifests/harness-driver-capabilities.yaml
+      quedo en 0.126.0-alpha.8 mientras el estable ya iba en 0.148.0 (22
+      minors), y en ese intervalo cambio el contrato de hooks que este repo
+      afirma.
+    rationale: >
+      14 dias es la ventana redonda mas grande que mantiene la deriva esperada
+      por debajo de 3 minors (3 x 5.62 = 16.9 dias). El default de 30 admitiria
+      ~5.3 minors de deriva sobre el sistema externo de cadencia mas alta que
+      este repo afirma. Es una eleccion de politica declarada ENCIMA de una
+      cadencia medida, no un numero elegido para dar verde: hoy la unica
+      afirmacion anclada aca se verifico el 2026-08-19, edad 0.
 
 # ── Prosa ────────────────────────────────────────────────────────────────────
 # Documentos vigentes que citan un sistema externo. El instrumento NO puede
