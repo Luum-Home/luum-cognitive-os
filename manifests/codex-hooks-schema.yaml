@@ -12,10 +12,16 @@ description: >
   this file wins and the driver is the bug.
 
 sources:
-  - url: https://learn.chatgpt.com/docs
+  - url: https://learn.chatgpt.com/docs/hooks
     what: Codex hooks reference — event list, matcher support, stdin payload,
-      exit-code semantics, handler fields, trust requirement.
-    verified: 2026-08-15
+      exit-code semantics, handler fields, trust requirement, y que campos
+      estan "parsed but not supported yet".
+    verified: 2026-08-19
+    how: >
+      curl -sL https://developers.openai.com/codex/hooks -o /tmp/codex-hooks.html
+      (redirige 308 a https://learn.chatgpt.com/docs/hooks); el texto vive en el
+      HTML pre-renderizado:
+      grep -o 'permissionDecision[^<]*not supported yet[^<]*' /tmp/codex-hooks.html
   - url: https://github.com/openai/codex/blob/main/docs/config.md
     what: hooks.json file shape and handler field reference.
     verified: 2026-08-15
@@ -142,6 +148,47 @@ blocking:
       hookEventName: "<event>"
       permissionDecision: deny
       permissionDecisionReason: "<reason>"
+  legacy_block_shape:
+    decision: block
+    reason: "<reason>"
+    note: >
+      Codex acepta explicitamente esta forma vieja ademas de la de
+      hookSpecificOutput. Cita: "Codex also accepts this older block shape".
+
+  # ── Lo que Codex PARSEA PERO NO IMPLEMENTA ───────────────────────────────
+  # Esto no es un detalle de estilo: es el peor modo de falla de una guarda.
+  # Un hook que pide confirmacion NO frena nada; Codex marca la corrida como
+  # fallida, reporta el error y DEJA CORRER la tool call. El operador nunca ve
+  # la pregunta. Falla abierto, y en silencio.
+  parsed_but_not_supported_yet:
+    verified: 2026-08-19
+    source_url: https://learn.chatgpt.com/docs/hooks
+    how: >
+      grep -o 'permissionDecision[^<]*not supported yet[^<]*' sobre el HTML de
+      https://learn.chatgpt.com/docs/hooks (ver `sources`).
+    upstream_quote: >
+      permissionDecision: "ask", legacy decision: "approve", continue: false,
+      stopReason, and suppressOutput are parsed but not supported yet. Codex
+      marks the hook run as failed, reports the error, and continues the tool
+      call.
+    fields:
+      - permissionDecision: ask
+      - decision: approve
+      - continue: false
+      - stopReason
+      - suppressOutput
+    failure_mode: fail_open_silently
+    applies_to_events: [PreToolUse, PermissionRequest]
+    consequence_for_cos: >
+      Ninguna guarda de COS puede depender de `ask` para gobernar Codex. La
+      unica senal que Codex honra hoy es exit 2 + stderr, o
+      permissionDecision: deny / decision: block. `exit 2` SI bloquea: es la
+      via documentada ("You can also use exit code 2 and write the blocking
+      reason to stderr"), asi que las guardas que solo usan exit code NO estan
+      expuestas a este agujero.
+    post_tool_use_variant: >
+      En PostToolUse, `updatedMCPToolOutput` y `suppressOutput` tienen el mismo
+      trato: hook fallido + "continues normal processing of the tool result".
 
 # ── Trust gate ────────────────────────────────────────────────────────────────
 trust:

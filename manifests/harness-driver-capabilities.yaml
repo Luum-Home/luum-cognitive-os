@@ -35,11 +35,33 @@ drivers:
   codex:
     settings_path: .codex/hooks.json
     shape: native_lifecycle_keys
+    # version_baseline = la version de Codex contra la que COS tiene evidencia
+    # local (fixtures + adapter). NO es "la ultima version de Codex".
     version_baseline: "0.126.0-alpha.8"
+    upstream_version: "0.148.0"
+    upstream_version_note: >
+      Al 2026-08-19 el canal estable de Codex va en 0.148.0 (publicado
+      2026-08-18) y el alpha en 0.149.0-alpha.1. El baseline local esta 22
+      minors atras. Cadencia medida: 5.62 dias por minor en los ultimos 90
+      dias, 3.17 dias por minor sobre los 129 minors estables publicados.
+    docs_url: https://learn.chatgpt.com/docs/hooks
+    verified: 2026-08-19
+    how: >
+      version: curl -s https://registry.npmjs.org/@openai/codex | python3 -c
+      "import json,sys; print(json.load(sys.stdin)['dist-tags']['latest'])";
+      capacidades de hooks: curl -sL https://developers.openai.com/codex/hooks
+      (308 -> https://learn.chatgpt.com/docs/hooks) y leer la seccion
+      "Tool coverage".
+    upstream_hook_limitation: >
+      permissionDecision "ask" esta parseado pero NO implementado: Codex marca
+      la corrida del hook como fallida y CONTINUA la tool call. Una guarda que
+      pida confirmacion en Codex no protege nada. Detalle y cita textual en
+      manifests/codex-hooks-schema.yaml -> blocking.parsed_but_not_supported_yet.
     evidence:
       - tests/fixtures/codex-live-session/
       - cos_lib/harness_adapter/codex.py
       - internal/provider/codex.go
+      - docs/06-Daily/reports/codex-permiso-silencioso-2026-08-19.md
     supported_events:
       SessionStart:
         status: supported
@@ -57,11 +79,20 @@ drivers:
           - Edit
           - Write
         limitation: >
-          Codex tool hook coverage is treated as Bash-only until live local
-          payloads prove broader coverage. The adapter emits an explicit
-          codex_tool_coverage_gap parse error for non-Bash tool events.
-          Agent/Edit/Write chains can be executed through the governed COS
-          fallback runner instead of being projected as native Codex hooks.
+          POLITICA DEL DRIVER, NO LIMITE DE CODEX. Upstream documenta cobertura
+          para shell (Bash), unified exec (exec_command, tambien matcheable
+          como Bash), apply_patch (matcheable como apply_patch / Edit / Write),
+          herramientas MCP (mcp__*) y otras function tools locales; solo las
+          hosted tools (WebSearch) quedan fuera. COS igual trata la cobertura
+          como Bash-only hasta tener payloads locales que lo prueben, y el
+          adapter emite un codex_tool_coverage_gap para eventos no-Bash. Las
+          cadenas Agent/Edit/Write corren por el runner gobernado de COS en vez
+          de proyectarse como hooks nativos de Codex.
+          Verificado 2026-08-19 contra https://learn.chatgpt.com/docs/hooks
+          (seccion "Tool coverage"). Advertencia upstream textual: "Some
+          specialized tool paths can opt out of the default hook path. Treat
+          tool hooks as a useful guardrail, not a complete enforcement
+          boundary"
       PostToolUse:
         status: limited
         matcher_semantics: bash_only
@@ -72,15 +103,45 @@ drivers:
           - Edit
           - Write
         limitation: >
-          Codex tool hook coverage is treated as Bash-only until live local
-          payloads prove broader coverage. The adapter emits an explicit
-          codex_tool_coverage_gap parse error for non-Bash tool events.
-          Agent/Edit/Write chains can be executed through the governed COS
-          fallback runner instead of being projected as native Codex hooks.
+          POLITICA DEL DRIVER, NO LIMITE DE CODEX. Upstream documenta cobertura
+          para shell (Bash), unified exec (exec_command, tambien matcheable
+          como Bash), apply_patch (matcheable como apply_patch / Edit / Write),
+          herramientas MCP (mcp__*) y otras function tools locales; solo las
+          hosted tools (WebSearch) quedan fuera. COS igual trata la cobertura
+          como Bash-only hasta tener payloads locales que lo prueben, y el
+          adapter emite un codex_tool_coverage_gap para eventos no-Bash. Las
+          cadenas Agent/Edit/Write corren por el runner gobernado de COS en vez
+          de proyectarse como hooks nativos de Codex.
+          Verificado 2026-08-19 contra https://learn.chatgpt.com/docs/hooks
+          (seccion "Tool coverage"). Advertencia upstream textual: "Some
+          specialized tool paths can opt out of the default hook path. Treat
+          tool hooks as a useful guardrail, not a complete enforcement
+          boundary"
+      # `status` describe lo que ESTE DRIVER proyecta, no lo que el arnes
+      # soporta. Donde los dos difieren, `upstream_status` lo dice; moverlo a
+      # `limited` cambiaria el veredicto de scripts/harness_parity_audit.py y
+      # del ratchet de tests/red_team/portability/test_hook_projection_drift_audit.py,
+      # que solo baja. Reclasificarlos es decision del operador, no del que
+      # corrige la doc.
       SubagentStart:
         status: unsupported
+        upstream_status: supported
+        upstream_verified: 2026-08-19
+        limitation: >
+          Codex SI soporta SubagentStart (evento documentado, matcher = tipo de
+          subagente, acepta additionalContext; `continue: false` se parsea pero
+          no frena el subagente). El gap es de COS: el unico hook SubagentStart
+          del registro no se proyecta a Codex. Fuente:
+          https://learn.chatgpt.com/docs/hooks.
       PreCompact:
         status: unsupported
+        upstream_status: supported
+        upstream_verified: 2026-08-19
+        limitation: >
+          Codex SI soporta PreCompact y PostCompact (eventos documentados,
+          matcher enum manual|auto). El gap es de COS: PreCompact existe en el
+          registro canonico y no se proyecta, y PostCompact no tiene evento
+          equivalente en COS. Fuente: https://learn.chatgpt.com/docs/hooks.
       TeammateIdle:
         status: cognitive_os_extension
         projection: requires_cos_runner

@@ -55,7 +55,7 @@ KNOWN_UNDATED_EXTERNAL_CLAIMS: dict[str, int] = {
     "manifests/external-tool-licenses.yaml": 13,
     "manifests/external-tools-adoption.yaml": 35,
     "manifests/feature-tool-due-diligence.yaml": 18,
-    "manifests/harness-driver-capabilities.yaml": 3,
+    "manifests/harness-driver-capabilities.yaml": 2,  # 3 -> 2: el bloque codex fecho su afirmacion (2026-08-19)
     "manifests/harness-projection.yaml": 19,
     "manifests/opencode-hooks-schema.yaml": 1,
     "manifests/provider-profiles.yaml": 2,
@@ -75,7 +75,7 @@ KNOWN_UNDATED_EXTERNAL_CLAIMS: dict[str, int] = {
 # parece, y el baseline lo dice en vez de redondearlo.
 KNOWN_DATED_WITHOUT_METHOD: dict[str, int] = {
     "manifests/claude-code-hooks-schema.yaml": 1,
-    "manifests/codex-hooks-schema.yaml": 2,
+    "manifests/codex-hooks-schema.yaml": 1,  # 2 -> 1: la fuente learn.chatgpt.com ya trae `how`
     "manifests/opencode-hooks-schema.yaml": 4,
 }
 
