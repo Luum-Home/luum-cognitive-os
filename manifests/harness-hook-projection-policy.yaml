@@ -63,3 +63,39 @@ harnesses:
               - hooks/lib-symlink-divergence-detector.sh
               - hooks/legal-review-required-on-runtime-import.sh
               - hooks/pending-truth-staleness-gate.sh
+
+# ── Projection drift ratchet ─────────────────────────────────────────────────
+# Audit: scripts/hook_projection_drift_audit.py
+# Gate:  tests/red_team/portability/test_hook_projection_drift_audit.py
+#
+# A "lost" entry is one declared in cognitive-os.yaml > harness.hooks that
+# reaches no projection path for its harness AND has no declaration explaining
+# why -- no projection flag, no driver capability limit, no inactive profile.
+# It is the class of hook that is documented as active, believed active, and
+# never runs.
+#
+# The ceiling below is measured reality on HEAD 2026-08-19, with no cushion:
+#   COS_ALLOW_PROTECTED_CONFIG_WRITE=1 .venv/bin/python \
+#     scripts/hook_projection_drift_audit.py --json
+# -> claude 191 projected / 8 by-design / 1 LOST
+#    codex  128 projected / 72 by-design / 0 LOST
+#    opencode 68 projected / 132 by-design / 0 LOST
+#
+# The single lost entry is hooks/publication-safety.sh: declared PreToolUse on
+# Bash with scope: both, absent from settings-driver-claude-code.sh, from
+# .claude/settings.json, from hooks/bash-hot-path-dispatcher.sh and from the
+# `full` profile above. 0 firings against a hook-timing log where the dispatcher
+# fired 509 times, so the zero is the hook and not a dead logger. Codex answers
+# the same declaration through the ADR-311 hot-path collapse, which is why the
+# drift is Claude-only: three of the four drivers read the yaml, and the Claude
+# driver's registry is hand-synced shell literals.
+#
+# May only go DOWN. Lowering it means the hook was either wired or given a
+# declaration; raising it means accepting one more primitive that is believed
+# active and is not, and needs the reason written into this block.
+drift_budget:
+  max_lost_entries: 1
+  measured_on: "2026-08-19"
+  # Below this the audit is no longer reading the registry and a green result is
+  # a broken scan, not a clean one.
+  min_declared_entries: 150
