@@ -102,17 +102,14 @@ task-completed.sh
 task-created.sh
 task-recorder.sh
 teammate-idle.sh
-test-baseline-diff.sh
 tool-discovery-trigger.sh
 tool-loop-detector.sh
 user-prompt-capture.sh
 worktree-submodule-fix.sh
-agent-work-tracker.sh
 ecosystem-check.sh
 mlflow-sync.sh
 orchestrator-mode-detect.sh
 usage-health-check.sh
-wiring-check.sh
 completeness-check.sh
 
 # Master-plan canonical-first audit refresh (2026-04-23).
@@ -258,3 +255,10 @@ lib-symlink-divergence-detector.sh
 # Detects symbol-renamed clones of external-source-cache Python content.
 # Wiring deferred until Phase 3 soak confirms acceptable false-positive rate.
 clean-room-ast-similarity-gate.sh
+
+# Seats removed 2026-08-19 — the named .sh file no longer exists anywhere
+# under hooks/ or packages/*/hooks/, so the seat suppressed nothing:
+#   test-baseline-diff.sh   (no file in the tree; docs/CHANGELOG references only)
+#   agent-work-tracker.sh   (only archive/primitive-surface/hooks/, not a hook root)
+#   wiring-check.sh         (only archive/primitive-surface/hooks/, not a hook root)
+# Guarded by tests/audit/test_registration_allowlist_seats.py.
