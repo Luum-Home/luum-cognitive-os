@@ -24,7 +24,10 @@ PROJECT_DIR="$_PROJECT_DIR"
 METRICS_DIR="$PROJECT_DIR/.cognitive-os/metrics"
 LOG_FILE="$METRICS_DIR/adversarial-review-gate.jsonl"
 
-AGENT_OUTPUT=$(echo "$INPUT" | jq -r '.tool_result // .output // empty' 2>/dev/null)
+# .tool_response is what Claude Code actually sends on PostToolUse; the other
+# two are the Kiro/Devin shapes. Reading only .tool_result made the gate silent
+# across 176 recorded invocations (found 2026-08-19).
+AGENT_OUTPUT=$(echo "$INPUT" | jq -r '.tool_response // .tool_result // .output // empty' 2>/dev/null)
 TOOL_INPUT=$(echo "$INPUT" | jq -r '.tool_input // empty' 2>/dev/null)
 
 if [[ -z "$AGENT_OUTPUT" ]]; then
@@ -69,7 +72,9 @@ if [[ "$HAS_FINDING" == "false" ]]; then
     echo ""
     SEVERITY="no_findings"
   fi
-  ENTRY=$(jq -n \
+  # -c: safe_jsonl_append takes ONE line; pretty JSON broke every line-oriented
+  # reader of this .jsonl (found 2026-08-19).
+  ENTRY=$(jq -nc \
     --arg ts "$TIMESTAMP" \
     --arg sev "$SEVERITY" \
     --arg prohibited "$HAS_PROHIBITED_PHRASE" \
@@ -79,7 +84,9 @@ if [[ "$HAS_FINDING" == "false" ]]; then
     primitive_intervention_emit "adversarial-review-gate" "hooks/adversarial-review-gate.sh" "warn" "$SEVERITY" "agent-output" ".cognitive-os/metrics/adversarial-review-gate.jsonl" "Agent" || true
   fi
 else
-  ENTRY=$(jq -n \
+  # -c: safe_jsonl_append takes ONE line; pretty JSON broke every line-oriented
+  # reader of this .jsonl (found 2026-08-19).
+  ENTRY=$(jq -nc \
     --arg ts "$TIMESTAMP" \
     '{timestamp:$ts, hook:"adversarial-review-gate", severity:"pass", has_finding:true}')
   safe_jsonl_append "$LOG_FILE" "$ENTRY"
