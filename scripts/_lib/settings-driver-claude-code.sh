@@ -1,11 +1,53 @@
 #!/usr/bin/env bash
 # SCOPE: os-only
-# settings-driver-claude-code.sh — Project cognitive-os.yaml > harness.hooks
-# into .claude/settings.json for the Claude Code harness.
+# settings-driver-claude-code.sh — Emit the hooks block of
+# .claude/settings.json for the Claude Code harness.
 #
-# ADR-064: canonical hook registry lives in cognitive-os.yaml > harness.hooks.
-# This driver is the single path that writes .claude/settings.json hooks block.
-# apply-efficiency-profile.sh delegates to this driver for all CC projection.
+# THE HOOK REGISTRY LIVES IN THIS FILE, HARDCODED. It is NOT read from
+# cognitive-os.yaml. This header used to say the opposite -- "Project
+# cognitive-os.yaml > harness.hooks into .claude/settings.json" -- and it was
+# false: CONFIG_FILE was assigned and never read once, while the 225 hook paths
+# below are shell literals passed to _cc_hook_group. The assignment is gone;
+# this paragraph is what replaced it.
+#
+# The sibling drivers do read the yaml (bare, codex and opencode reference it
+# 6, 5 and 15 times). Claude Code is the exception, and the exception is the
+# thing worth knowing before editing anything here.
+#
+# WHAT THIS COSTS. cognitive-os.yaml > harness.hooks holds 200 entries naming
+# 190 distinct scripts, and 184 of those appear here: the two lists are kept in
+# step BY HAND. A hook added only to the yaml never reaches Claude Code, and
+# nothing reports it. Measured 2026-08-19, the live case is
+# hooks/publication-safety.sh -- declared PreToolUse on Bash with scope: both
+# and no `default_projection: false`, absent from this driver, absent from
+# .claude/settings.json, absent from bash-hot-path-dispatcher.sh, 0 firings in
+# 16660 rows of hook-timing.jsonl. The other five absences are explained: three
+# are archived .bak hooks, one is codex-only, one declares
+# `default_projection: false`.
+#
+# Reproduce it. Note the two things the naive version of this check got wrong,
+# both found by running it: the yaml declares the same script under more than
+# one entry, so the entry count is not the script count; and the comment you
+# are reading NAMES publication-safety.sh, so a substring test against the raw
+# file counts this documentation as implementation and reports it present.
+# Strip comment lines, and dedupe:
+#   .venv/bin/python -c "import yaml,pathlib,re; \
+#     h=(yaml.safe_load(open('cognitive-os.yaml')) or {}).get('harness',{}).get('hooks',{}); \
+#     d=sorted({v['script'] for v in h.values() if isinstance(v,dict) and v.get('script')}); \
+#     c='\n'.join(l for l in pathlib.Path('scripts/_lib/settings-driver-claude-code.sh') \
+#       .read_text().splitlines() if not re.match(r'\s*#', l)); \
+#     print(len(d), [s for s in d if s not in c])"
+#
+# ADR-064 states the canonical hook registry lives in cognitive-os.yaml >
+# harness.hooks. For this harness that is an intent, not a description of the
+# code. Reconciling them -- teaching this driver to read the yaml, or amending
+# the ADR -- is an operator decision and is deliberately NOT made here; what is
+# fixed is the header that claimed the reconciliation had already happened.
+#
+# What remains true from the old header: this driver is the single path that
+# writes the .claude/settings.json hooks block, and apply-efficiency-profile.sh
+# delegates to it for all CC projection (it reads cognitive-os.yaml itself, but
+# only for efficiency.profile -- never for the hook registry).
 #
 # Usage:
 #   bash scripts/_lib/settings-driver-claude-code.sh [--check|--emit] [--harness=claude-code]
@@ -36,7 +78,9 @@ if [ -z "${PROJECT_DIR:-}" ]; then
   fi
 fi
 
-CONFIG_FILE="$PROJECT_DIR/cognitive-os.yaml"
+# No CONFIG_FILE here on purpose: this driver does not read cognitive-os.yaml.
+# The assignment that used to sit on this line was never read, and it was the
+# only thing making the old header look true. See the note at the top.
 SETTINGS_FILE="$PROJECT_DIR/.claude/settings.json"
 
 # ── Parse flags ───────────────────────────────────────────────────────────────
