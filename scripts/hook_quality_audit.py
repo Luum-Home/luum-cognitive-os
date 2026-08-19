@@ -3,7 +3,8 @@
 """Hook Quality System audit and manifest synchronizer."""
 from __future__ import annotations
 
-import argparse, json, re, subprocess, sys
+import argparse
+import ast, json, re, subprocess, sys
 from pathlib import Path
 from typing import Any
 import yaml
@@ -117,20 +118,119 @@ def test_text_index() -> list[tuple[Path, str]]:
     return rows
 
 
+# ── What counts as a test covering a hook ────────────────────────────────────
+# This used to be a raw substring search of the hook name over the whole test
+# file. Three ways that was wrong, all of them measured on 2026-08-19:
+#
+#   1. A name inside a `KNOWN_*` debt baseline counted as coverage. Those sets
+#      list hooks that FAIL a test today, so the incentive ran exactly backwards:
+#      a hook stayed "covered" for precisely as long as it stayed broken, and
+#      fixing it deleted the coverage record. Emptying four baselines in
+#      test_claude_code_hooks_schema_conformance.py dropped that test from the
+#      behavior_tests of the four hooks it had just been proven to pass on.
+#   2. A name in a COMMENT counted. Comments are prose about a hook, not a test
+#      of it. AST parsing drops them for free.
+#   3. A test that walks hooks/ and names nobody was credited to nobody, even
+#      though it examines every hook. Inference cannot see enumeration, so that
+#      case is declared instead of guessed.
+#
+# Names in a debt baseline are evidence of a DEFECT. Names in a comment are
+# evidence of nothing.
+_DEBT_NAME_RE = re.compile(
+    r"^(KNOWN_|EXPECTED_FAIL|BASELINE|XFAIL|SKIP_|WAIVED|GRANDFATHER)", re.I
+)
+
+# Declared, not inferred — guessing is what produced the bug above.
+_CENSUS_RE = re.compile(
+    r"""^HOOK_QUALITY_COVERAGE\s*(?::\s*[^=\n]+)?=\s*['"]census['"]""", re.M
+)
+
+_COVERAGE_TEXT_CACHE: dict[Path, str] = {}
+
+
+def _excluded_constant_ids(tree: ast.AST) -> set[int]:
+    """String constants that must NOT be read as evidence of coverage."""
+    excluded: set[int] = set()
+    for node in ast.walk(tree):
+        targets: list[str] = []
+        if isinstance(node, ast.Assign):
+            targets = [t.id for t in node.targets if isinstance(t, ast.Name)]
+        elif isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name):
+            targets = [node.target.id]
+        if targets and any(_DEBT_NAME_RE.match(n) for n in targets) and node.value is not None:
+            for sub in ast.walk(node.value):
+                excluded.add(id(sub))
+    # Docstrings are prose, same as comments.
+    for node in ast.walk(tree):
+        body = getattr(node, "body", None)
+        if not isinstance(node, (ast.Module, ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            continue
+        if body and isinstance(body[0], ast.Expr) and isinstance(body[0].value, ast.Constant) \
+                and isinstance(body[0].value.value, str):
+            excluded.add(id(body[0].value))
+    return excluded
+
+
+def coverage_text(path: Path, text: str) -> str:
+    """The part of a test file that may testify to covering a hook.
+
+    String literals only, minus debt baselines and docstrings. On a file that
+    does not parse, fall back to the raw text: over-crediting one file is a far
+    smaller harm than a syntax error erasing every hook's recorded coverage.
+    """
+    if path in _COVERAGE_TEXT_CACHE:
+        return _COVERAGE_TEXT_CACHE[path]
+    try:
+        tree = ast.parse(text)
+    except SyntaxError:
+        _COVERAGE_TEXT_CACHE[path] = text
+        return text
+    excluded = _excluded_constant_ids(tree)
+    parts = [
+        node.value
+        for node in ast.walk(tree)
+        if isinstance(node, ast.Constant)
+        and isinstance(node.value, str)
+        and id(node) not in excluded
+    ]
+    joined = "\n".join(parts)
+    _COVERAGE_TEXT_CACHE[path] = joined
+    return joined
+
+
 def discover_behavior_tests(hook_id: str, script: str) -> list[str]:
     base = Path(script).name
     needles = {hook_id, base, base.removesuffix(".sh")}
     found: list[str] = []
     for path, text in test_text_index():
-        if any(n and n in text for n in needles):
+        if _CENSUS_RE.search(text):
+            continue  # accounted for in census_tests, deliberately not here
+        haystack = coverage_text(path, text)
+        if any(n and n in haystack for n in needles):
             found.append(str(path.relative_to(REPO)))
     return sorted(set(found))
+
+
+def discover_census_tests() -> list[str]:
+    """Tests that examine every registered hook by enumeration.
+
+    Kept OUT of ``behavior_tests`` on purpose. ``REQUIRED_BEHAVIOR_COVERAGE``
+    requires a critical hook to have a test that names it; crediting a census
+    test there would make that check unfailable — a gate that cannot go red is
+    not a gate.
+    """
+    return sorted(
+        str(path.relative_to(REPO))
+        for path, text in test_text_index()
+        if _CENSUS_RE.search(text)
+    )
 
 
 def desired_manifest(existing: dict[str, Any] | None = None) -> dict[str, Any]:
     existing = existing or {}
     old_hooks = existing.get("hooks") if isinstance(existing.get("hooks"), dict) else {}
     hooks: dict[str, Any] = {}
+    census_tests = discover_census_tests()
     for hook_id, entry in registered_hooks().items():
         criticality = classify_criticality(hook_id, entry["script"])
         old = old_hooks.get(hook_id, {}) if isinstance(old_hooks, dict) else {}
@@ -144,6 +244,7 @@ def desired_manifest(existing: dict[str, Any] | None = None) -> dict[str, Any]:
             "false_positive_tests": false_positive_tests if isinstance(false_positive_tests, list) else [],
             "harness_tiers": {"claude": claude_tier(entry["event"], entry["matcher"]), "codex": codex_tier(entry["event"], entry["matcher"])},
             "behavior_tests": discover_behavior_tests(hook_id, entry["script"]),
+            "census_tests": census_tests,
         }
         if isinstance(old, dict) and old.get("manual_tests"): hooks[hook_id]["manual_tests"] = old["manual_tests"]
         if isinstance(old, dict) and old.get("notes"): hooks[hook_id]["notes"] = old["notes"]
