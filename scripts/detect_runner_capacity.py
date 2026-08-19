@@ -33,23 +33,42 @@ def _get_metrics() -> dict:
     ci = os.environ.get("CI", "").lower() in ("true", "1", "yes")
 
     # --- psutil-dependent metrics ---
+    # ── Load average FIRST, and WITHOUT psutil ───────────────────────────────
+    # os.getloadavg() is stdlib and POSIX. It used to live INSIDE the psutil
+    # try-block below, so on a machine without psutil the ImportError fired
+    # before this line was ever reached and load_pct was fabricated as 0.0.
+    #
+    # Measured 2026-08-19: a machine sitting at load 466 across 12 cores -- 24
+    # orphaned busy-wait loops from a saturation recipe -- reported
+    # `load_pct: 0.0`, so the `load_high` row of the ADR-068 table could never
+    # fire. That is the worst shape a gate can take: not absent, but present and
+    # permanently green, so its silence reads as evidence of a healthy machine.
+    # Cost that day: a full `cos-test broad` with 13 crashed xdist workers and
+    # 83 phantom failures, every one of which passes in isolation.
+    #
+    # Degradation is NAMED now instead of silently substituted: whatever could
+    # not be measured is listed in `degraded`, so a caller can tell an assumed
+    # value from a real one.
+    degraded = []
+    load_pct = None
+    if sys.platform != "win32":
+        try:
+            load1, _, _ = os.getloadavg()
+            # Normalise to percentage relative to core count
+            load_pct = (load1 / max(cores, 1)) * 100.0
+        except (AttributeError, OSError):
+            load_pct = None
+
     try:
         import psutil  # type: ignore
 
         mem = psutil.virtual_memory()
         mem_available_gb = mem.available / (1024 ** 3)
 
-        # Load average: POSIX has os.getloadavg(); Windows needs psutil
-        if sys.platform == "win32":
+        if load_pct is None:
+            # Windows, or a POSIX box whose getloadavg refused.
             # cpu_percent with interval=1 blocks for 1 s but is the best we have
             load_pct = psutil.cpu_percent(interval=1)
-        else:
-            try:
-                load1, _, _ = os.getloadavg()
-                # Normalise to percentage relative to core count
-                load_pct = (load1 / max(cores, 1)) * 100.0
-            except (AttributeError, OSError):
-                load_pct = psutil.cpu_percent(interval=1)
 
         battery = psutil.sensors_battery()
         if battery is not None:
@@ -60,16 +79,24 @@ def _get_metrics() -> dict:
             on_ac = True  # assume desktop / always-on
 
     except ImportError:
-        # Soft warning — psutil not installed.  Fall through to safe defaults.
-        print(
-            "WARNING: psutil not installed — assuming 8 GB RAM, 0% load, no battery. "
-            "Install psutil for accurate capacity detection.",
-            file=sys.stderr,
-        )
+        # psutil absent: memory and battery cannot be measured, load STILL can
+        # (unless getloadavg also refused). Say exactly which is which.
         mem_available_gb = 8.0
-        load_pct = 0.0
+        degraded.append("mem_available_gb")
         battery_pct = None
         on_ac = True
+        degraded.append("battery")
+        if load_pct is None:
+            load_pct = 0.0
+            degraded.append("load_pct")
+            measured = "nothing could be measured"
+        else:
+            measured = f"load IS real ({load_pct:.0f}%, from os.getloadavg)"
+        print(
+            "WARNING: psutil not installed — assuming 8 GB RAM and no battery; "
+            f"{measured}. Install psutil for memory- and battery-aware sizing.",
+            file=sys.stderr,
+        )
 
     return {
         "cores": cores,
@@ -78,6 +105,7 @@ def _get_metrics() -> dict:
         "battery_pct": battery_pct,
         "on_ac": on_ac,
         "ci": ci,
+        "degraded": degraded,
     }
 
 
@@ -196,6 +224,11 @@ def detect() -> dict:
         "battery_pct": metrics["battery_pct"],
         "on_ac": metrics["on_ac"],
         "ci": metrics["ci"],
+        # Which metrics are ASSUMED rather than measured. Empty means every
+        # number above was read from the machine. Treating an assumed value as
+        # a measurement is exactly how a 0.0 load reading kept load_high from
+        # ever firing.
+        "degraded": metrics.get("degraded", []),
         "workers": workers,
         "rule_fired": rule,
     }
