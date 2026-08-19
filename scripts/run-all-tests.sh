@@ -45,7 +45,7 @@ echo "=== Python Tests ==="
 if [ "$QUICK" = true ]; then
   PYTEST_ARGS="-q --tb=line -x"
 elif [ "$PARALLEL" = true ]; then
-  PYTEST_ARGS="-q --tb=line -n auto"
+  PYTEST_ARGS="-q --tb=line -n auto --dist loadgroup"
 else
   PYTEST_ARGS="-q --tb=line"
 fi
