@@ -93,5 +93,19 @@ def test_settings_driver_wires_event_emitters_and_context_hooks() -> None:
     assert '"hooks/cross-session-event-emit.sh"      "true"' in text  # PreToolUse Write/Edit and Agent paths
     assert '"hooks/cross-session-event-emit.sh"     "true"' in text  # PostToolUse Bash path
     assert '"hooks/cross-session-event-emit.sh"        "true"' in text  # Stop path
-    assert '"hooks/cross-session-peer-context.sh"          "true"' in text
-    assert '"hooks/agent-message-inbox-context.sh"         "true"' in text
+    # Presencia, NO valor de async. Este test se llama "wires ... context hooks":
+    # su trabajo es que el driver los cablee, no que politica de async llevan.
+    #
+    # Hasta 2026-08-19 asertaba "true" sobre estos dos, y eso lo convirtio en
+    # DEFENSOR DE UN DEFECTO: async en UserPromptSubmit entrega el contexto en el
+    # turno siguiente, desacoplado del prompt que lo motivo, y estos dos hooks
+    # existen justamente para avisar EN el turno (sesiones pares en conflicto,
+    # mensajes dirigidos entre agentes). Al corregirse el async a false, este test
+    # se puso rojo defendiendo el bug -- tercer caso del mismo dia, despues de dos
+    # `assert ... == ""` que defendian el descarte silencioso de payloads.
+    #
+    # La asercion sobre async vive ahora donde corresponde, y sobre los CUATRO
+    # moldes del settings en vez de solo sobre este driver:
+    # tests/contracts/test_hook_header_registration_claims.py
+    assert '"hooks/cross-session-peer-context.sh"' in text
+    assert '"hooks/agent-message-inbox-context.sh"' in text
