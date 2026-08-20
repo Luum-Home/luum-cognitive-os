@@ -14,6 +14,7 @@
 #   portable_stat_size FILE                — size of FILE in bytes
 #   portable_readlines FILE VAR_NAME       — read FILE into array named VAR_NAME (bash 3.2 compat)
 #   portable_epoch_now                     — echo current Unix epoch seconds
+#   portable_timeout SECS CMD [ARGS...]    — run CMD with a wall-clock limit
 #
 # Detection strategy: feature-test rather than uname, for robustness.
 #   - date -v: BSD (macOS) only
@@ -60,10 +61,63 @@ elif stat -c %Y / >/dev/null 2>&1; then
   _PORTABLE_STAT_TYPE="gnu"
 fi
 
+
+# Detect a timeout(1) implementation. coreutils ships `timeout`; Homebrew's
+# coreutils on macOS ships it as `gtimeout`; stock macOS has neither.
+_PORTABLE_TIMEOUT_BIN=""
+if command -v timeout >/dev/null 2>&1; then
+  _PORTABLE_TIMEOUT_BIN="timeout"
+elif command -v gtimeout >/dev/null 2>&1; then
+  _PORTABLE_TIMEOUT_BIN="gtimeout"
+fi
+
 # ── portable_epoch_now ───────────────────────────────────────────────────────
 # date +%s is POSIX and works on both BSD and GNU.
 portable_epoch_now() {
   date +%s
+}
+
+
+# ── portable_timeout SECONDS CMD [ARGS...] ───────────────────────────────────
+# Run CMD with a wall-clock limit. Echoes nothing of its own; passes stdin,
+# stdout, stderr and the exit code straight through.
+#
+# Usage:
+#   portable_timeout 3 python3 -c 'print(1)'
+#   out=$(portable_timeout 0.4 some-probe) || :   # 124 == timed out
+#
+# Replaces: timeout N CMD   (coreutils; NOT present on macOS)
+#
+# `timeout` is coreutils. On stock macOS neither `timeout` nor `gtimeout`
+# exists, so a bare `timeout 3 python3 ...` exits 127 and the caller reads the
+# empty output as "the probe found nothing" instead of "the probe never ran".
+# Measured 2026-08-20 on Darwin 25.5: `command -v timeout` and
+# `command -v gtimeout` both empty.
+#
+# Fallback is python3 (the same dependency the rest of this file already
+# assumes). If python3 is missing too, the command runs UNBOUNDED and says so
+# on stderr — silently dropping the bound would trade a loud failure for a
+# quiet one, which is the bug this helper exists to remove.
+portable_timeout() {
+  local _pt_secs="$1"; shift
+  if [ -n "$_PORTABLE_TIMEOUT_BIN" ]; then
+    "$_PORTABLE_TIMEOUT_BIN" "$_pt_secs" "$@"
+    return $?
+  fi
+  if command -v python3 >/dev/null 2>&1; then
+    python3 -c '
+import subprocess, sys
+try:
+    sys.exit(subprocess.run(sys.argv[2:], timeout=float(sys.argv[1])).returncode)
+except subprocess.TimeoutExpired:
+    sys.exit(124)
+except FileNotFoundError:
+    sys.exit(127)
+' "$_pt_secs" "$@"
+    return $?
+  fi
+  echo "portable_timeout: no timeout(1) and no python3 — running '$1' UNBOUNDED" >&2
+  "$@"
 }
 
 # ── portable_date_minus DAYS [BASE_EPOCH] ────────────────────────────────────
