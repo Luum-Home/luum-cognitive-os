@@ -62,14 +62,25 @@ Sin baseline, sin allowlist, sin excepciones: el árbol está en cero exacto.
    reconstruir el árbol pre-fix hay que tomar `b2f9d877e^`, no el commit del
    día anterior. Los dos archivos de test cambiaron dos veces hoy.
 
-6. **Restricción del encargo, verificada y no asumida.** Me pediste no tocar
+6. **"Commiteá con `git commit -F <msg> -- <paths>`" no alcanzaba.** La premisa
+   omite dos guardas que este repo tiene puestas y que dispararon:
+   `destructive-git-blocker` bloquea cualquier commit sobre `main` (ADR-055b), y
+   `scope-marker-portability-gate` bloquea todo primitivo nuevo sin marcador
+   `# SCOPE:` y sin proof de portabilidad pareado. La primera propone crear una
+   rama de sesión; **no lo hice**, porque cambiar de rama en un checkout que
+   comparten cuatro agentes les mueve el árbol de trabajo a todos. Usé el token
+   documentado `# --allow-main-branch` como comentario final, que es la vía
+   prevista, y el commit quedó en `main` como el resto del día. La segunda la
+   cumplí de verdad: `tests/red_team/portability/test_audit_test_assertion_enums.py`.
+
+7. **Restricción del encargo, verificada y no asumida.** Me pediste no tocar
    `hooks/session-cleanup.sh` ni `hooks/protected-config-write-guard.sh`.
    `git status --short` muestra 54 rutas sucias de otras sesiones, ninguna de
    ellas es un archivo que yo escribí, y ninguno de los cuatro archivos de este
    commit aparecía en esa lista antes de crearlos. El `git add` fue por rutas
    explícitas.
 
-7. **Un número del encargo que no reproduje**: "199 tests verdes sobre 36 hooks
+8. **Un número del encargo que no reproduje**: "199 tests verdes sobre 36 hooks
    sin registrar" y "17 sobre dos hooks que en producción nunca escribieron una
    fila". No los recontré — quedan fuera del alcance de este gate por decisión
    (ver *Lo que NO hice*), así que no los cito como propios.
@@ -106,6 +117,12 @@ discusión con evidencia — no una heurística que hay que calibrar.
   el fuente de un hook, un docstring que describe el bug histórico— no es una
   afirmación y no se marca.
 - **Alcance**: `tests/**/*.py`, declarado en el registro.
+- **Proof de scope**: `tests/red_team/portability/test_audit_test_assertion_enums.py`.
+  Su sonda de falsificación no es la cwd-invariancia habitual sino la contraria:
+  el audit es root-relativo, así que el modo de falla peligroso no es que
+  explote sino que desde un directorio sin registro reporte «árbol limpio» y
+  salga 0. La sonda exige exit 2 y `registry not found` en stderr. Un gate que
+  certifica su propio vacío es el mismo bug un nivel más arriba.
 
 ### Corrida 1 — el bug reintroducido: el gate FALLA
 
@@ -171,7 +188,7 @@ $ .venv/bin/python3 -m pytest tests/audit/test_hook_behavior_classifier.py \
 
 Árbol restaurado: nada del árbol de trabajo se modificó para las corridas. Las
 reconstrucciones se hicieron en el scratchpad con `git show` y `git archive`, y
-los cuatro archivos de este commit son todos nuevos:
+los cinco archivos de este commit son todos nuevos:
 `git status --short -- tests/audit/test_assertion_enum_conformance.py scripts/audit_test_assertion_enums.py manifests/test-assertion-enums.yaml` no muestra
 ningún `M`.
 
