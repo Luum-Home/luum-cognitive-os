@@ -251,3 +251,181 @@ def test_forbidden_phrase_rows_report_the_file_count(tmp_path: Path) -> None:
     assert "checked against 3 files" in row["message"]
     assert "checked_files:3" in row["evidence"]
     assert report["summary"]["forbidden_phrase_scan"]["surface_files"] == 3
+
+
+# --- executable claims (the "you compared text, you never ran it" defect) ---
+#
+# Regression guard for 2026-08-20: a read-only judge verified 57 claims of the
+# channel injected into every sub-agent and found 15 false -- 6 of the 9 numbers
+# were stale, and every one of those failed by the passage of time, not by a
+# miscalculation. No phrase list can catch that: the sentence did not change,
+# the repo did. These tests pin the two families that CAN catch it -- a command
+# whose output must be the published sentence, and every quoted path resolving.
+
+
+def claim_fixture(root: Path, claim: dict, files: dict[str, str] | None = None) -> Path:
+    (root / "manifests").mkdir(parents=True, exist_ok=True)
+    for rel, body in (files or {}).items():
+        path = root / rel
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(body, encoding="utf-8")
+    manifest_path = root / "manifests" / "documentation-truth-claims.yaml"
+    manifest_path.write_text(
+        yaml.safe_dump({"schema_version": "documentation-truth-claims.v1", "claims": {"c": claim}}, sort_keys=False),
+        encoding="utf-8",
+    )
+    return manifest_path
+
+
+def rows_for(report: dict, check: str, status: str | None = None) -> list[dict]:
+    return [r for r in report["rows"] if r["check"] == check and (status is None or r["status"] == status)]
+
+
+def census_claim(expected_in: str = "docs/channel.md") -> dict:
+    return {
+        "severity": "high",
+        "executable_assertions": [
+            {
+                "id": "census",
+                "claim": "the doc publishes the symlink census",
+                "command": ["bash", "-c", "echo '42 of 256 hooks/*.sh'"],
+                "expect": {"stdout_phrase_in": [expected_in]},
+            }
+        ],
+    }
+
+
+def test_executable_assertion_passes_while_the_command_prints_the_sentence(tmp_path: Path) -> None:
+    manifest = claim_fixture(tmp_path, census_claim(), {"docs/channel.md": "symlinks (42 of 256 `hooks/*.sh`) here\n"})
+
+    report = documentation_truth_audit.build_report(tmp_path, manifest)
+
+    assert report["status"] == "pass"
+    assert rows_for(report, "executable_assertion", "pass")
+
+
+def test_executable_assertion_blocks_when_the_published_number_rots(tmp_path: Path) -> None:
+    # The doc was right the day it was written; the repo moved and it did not.
+    manifest = claim_fixture(tmp_path, census_claim(), {"docs/channel.md": "symlinks (41 of 256 `hooks/*.sh`) here\n"})
+
+    report = documentation_truth_audit.build_report(tmp_path, manifest)
+
+    assert report["status"] == "block"
+    blocked = rows_for(report, "executable_assertion", "block")
+    assert blocked, report["rows"]
+    # The measured value has to travel with the failure, or the next agent
+    # re-runs the investigation instead of editing one line.
+    assert "42 of 256" in blocked[0]["message"]
+
+
+def test_executable_assertion_blocks_when_output_is_empty(tmp_path: Path) -> None:
+    claim = {
+        "severity": "high",
+        "executable_assertions": [
+            {"id": "silent", "claim": "prints nothing", "command": ["bash", "-c", "true"], "expect": {"stdout_phrase_in": ["docs/channel.md"]}}
+        ],
+    }
+    manifest = claim_fixture(tmp_path, claim, {"docs/channel.md": "anything at all\n"})
+
+    report = documentation_truth_audit.build_report(tmp_path, manifest)
+
+    assert report["status"] == "block"
+    assert "EMPTY" in rows_for(report, "executable_assertion", "block")[0]["message"]
+
+
+def test_executable_assertion_blocks_on_a_dead_doc_surface(tmp_path: Path) -> None:
+    manifest = claim_fixture(tmp_path, census_claim(expected_in="docs/gone.md"), {"docs/channel.md": "42 of 256\n"})
+
+    report = documentation_truth_audit.build_report(tmp_path, manifest)
+
+    assert report["status"] == "block"
+    assert rows_for(report, "executable_assertion_surface", "block")
+
+
+def test_exit_code_assertion_without_a_live_surface_blocks(tmp_path: Path) -> None:
+    # An exit-code probe carries its own subject: with no declared surface the
+    # ledger cannot tell "checked and fine" from "found nothing to check".
+    claim = {
+        "severity": "high",
+        "executable_assertions": [
+            {"id": "green", "claim": "exits zero", "command": ["bash", "-c", "true"], "expect": {"exit_code": 0}}
+        ],
+    }
+    manifest = claim_fixture(tmp_path, claim)
+
+    report = documentation_truth_audit.build_report(tmp_path, manifest)
+
+    assert report["status"] == "block"
+    assert rows_for(report, "executable_assertion_surface", "block")
+
+
+def test_assertion_declaration_defects_block(tmp_path: Path) -> None:
+    claim = {
+        "severity": "high",
+        "executable_assertions": [
+            {"id": "unknown", "claim": "x", "command": ["bash", "-c", "echo hi"], "expect": {"stdout_looks_fine": True}},
+            {"id": "curl", "claim": "x", "command": ["curl", "https://example.com"], "expect": {"exit_code": 0}},
+            {"id": "", "claim": "", "command": ["bash", "-c", "true"], "expect": {"exit_code": 0}},
+            {"id": "stringy", "claim": "x", "command": "bash -c true", "expect": {"exit_code": 0}},
+        ],
+    }
+    manifest = claim_fixture(tmp_path, claim)
+
+    report = documentation_truth_audit.build_report(tmp_path, manifest)
+
+    assert report["status"] == "block"
+    assert len(rows_for(report, "executable_assertion_declaration", "block")) == 4
+
+
+def test_path_claim_blocks_a_quoted_path_that_never_existed(tmp_path: Path) -> None:
+    # The exact 2026-08-20 falsehood: the channel cited `lib/agent_output_extractor.py`
+    # while the file has always lived in cos_lib/.
+    claim = {"severity": "high", "path_claims": {"docs": ["docs/channel.md"]}}
+    files = {
+        "docs/channel.md": "read `lib/agent_output_extractor.py` and `rules/trust-score.md`\n",
+        "rules/trust-score.md": "x\n",
+    }
+    manifest = claim_fixture(tmp_path, claim, files)
+
+    report = documentation_truth_audit.build_report(tmp_path, manifest)
+
+    assert report["status"] == "block"
+    blocked = rows_for(report, "path_claim", "block")
+    assert "lib/agent_output_extractor.py" in blocked[0]["message"]
+    assert "checked 2" in blocked[0]["message"]
+
+
+def test_path_claim_follows_symlinks_and_globs(tmp_path: Path) -> None:
+    (tmp_path / "packages" / "p" / "hooks").mkdir(parents=True)
+    (tmp_path / "packages" / "p" / "hooks" / "real.sh").write_text("x", encoding="utf-8")
+    (tmp_path / "hooks").mkdir()
+    (tmp_path / "hooks" / "link.sh").symlink_to(tmp_path / "packages" / "p" / "hooks" / "real.sh")
+    claim = {"severity": "high", "path_claims": {"docs": ["docs/channel.md"]}}
+    manifest = claim_fixture(tmp_path, claim, {"docs/channel.md": "`hooks/link.sh` and `packages/*/hooks/`\n"})
+
+    report = documentation_truth_audit.build_report(tmp_path, manifest)
+
+    assert report["status"] == "pass", rows_for(report, "path_claim", "block")
+
+
+def test_path_claim_with_no_quotable_path_blocks(tmp_path: Path) -> None:
+    claim = {"severity": "high", "path_claims": {"docs": ["docs/channel.md"]}}
+    manifest = claim_fixture(tmp_path, claim, {"docs/channel.md": "prose with `no` paths at all\n"})
+
+    report = documentation_truth_audit.build_report(tmp_path, manifest)
+
+    assert report["status"] == "block"
+    assert rows_for(report, "path_claim_surface", "block")
+
+
+def test_path_claim_ignore_needs_a_written_reason(tmp_path: Path) -> None:
+    claim = {
+        "severity": "high",
+        "path_claims": {"docs": ["docs/channel.md"], "ignore": [{"token": "vendor/thing.py"}]},
+    }
+    manifest = claim_fixture(tmp_path, claim, {"docs/channel.md": "`vendor/thing.py` and `rules/x.md`\n", "rules/x.md": "x\n"})
+
+    report = documentation_truth_audit.build_report(tmp_path, manifest)
+
+    assert report["status"] == "block"
+    assert rows_for(report, "path_claim_ignore", "block")

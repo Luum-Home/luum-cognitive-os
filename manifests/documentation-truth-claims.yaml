@@ -448,3 +448,107 @@ claims:
       - una declaración de dependencias sin consumidor no es una dependencia faltante
     forbidden_phrases:
       - "pytest tests/ corre todos los tests versionados del repo"
+  agent_channel_facts:
+    severity: high
+    description: 'The two files the SubagentStart injector concatenates reach EVERY sub-agent before its
+      first tool call, unconditionally, so a false sentence there is read by 100% of agents. On 2026-08-20
+      a read-only judge verified 57 of the channel''s claims: 15 were false, 41 of the 42 correct ones were
+      verifiable by script, and zero were automated. Phrase lists cannot catch this family: ''42 of 256
+      hooks/*.sh are symlinks'' is not stale prose, it is a measurement the repo invalidates on its own.
+      The checks below run the command and compare its OUTPUT against the sentence -- the number is true
+      iff the command still prints it.'
+    facts:
+      channel: SubagentStart -> hooks/subagent-context-injector.sh
+      judged: docs/06-Daily/reports/juicio-lo-que-el-so-le-dicta-a-sus-agentes-2026-08-20.md
+      budget_gate: tests/contracts/test_canal_al_subagente_tiene_margen.py
+      not_covered: Channel B (hooks/inject-phase-context.sh) and B-prime (templates/project-gotchas.md)
+        are conditional on prompt keywords and their census numbers were measured stale on 2026-08-20 (C1,
+        C3, C10 of the judgement). Declaring them here today would either turn the gate red or force the
+        numbers to be laundered; they get their own assertions once the correcting pass lands.
+    path_claims:
+      reason: 'Three of the channel''s false sentences were never stale, they were never true: a quoted
+        path that does not exist (lib/agent_output_extractor.py). Every repo path the channel quotes must
+        resolve today, symlinks followed.'
+      docs:
+      - templates/agent-mandatory-rules.md
+      - templates/agent-preamble.md
+      ignore: []
+    executable_assertions:
+    - id: hook_symlink_census
+      claim: The channel tells every agent that 42 of 256 hooks/*.sh are symlinks.
+      command:
+      - bash
+      - -c
+      - n=0; t=0; for f in hooks/*.sh; do t=$((t+1)); [ -L "$f" ] && n=$((n+1)); done; echo "$n of $t hooks/*.sh"
+      expect:
+        stdout_phrase_in:
+        - templates/agent-mandatory-rules.md
+      next_action: recount and rewrite the sentence with the measured value, or replace the digits with
+        the command
+    - id: tests_symlink_census
+      claim: The channel tells every agent that tests/ has ZERO symlinks (the half of the sentence that
+        was false for months).
+      command:
+      - bash
+      - -c
+      - n=0; for f in tests/*; do [ -L "$f" ] && n=$((n+1)); done; if [ "$n" -eq 0 ]; then echo "tests/
+        has ZERO symlinks"; else echo "tests/ has $n symlinks"; fi
+      expect:
+        stdout_phrase_in:
+        - templates/agent-mandatory-rules.md
+      next_action: 'if tests/ gained a symlink the sentence is now a lie in every agent prompt: fix the
+        sentence'
+    - id: cited_rule_files_exist
+      claim: Every rule the channel orders the agent to obey exists as rules/<name>.md.
+      command:
+      - bash
+      - -c
+      - 'total=0; miss=""; for n in $(sed -n ''s/^- `\([a-z0-9-]*\)`.*/\1/p'' templates/agent-mandatory-rules.md);
+        do total=$((total+1)); [ -f "rules/$n.md" ] || miss="$miss $n"; done; [ "$total" -gt 0 ] || { echo
+        "no rule bullet found in the channel: nothing was checked"; exit 1; }; [ -z "$miss" ] || { echo
+        "cited rule files missing:$miss"; exit 1; }; echo "$total cited rule files exist"'
+      surface:
+      - templates/agent-mandatory-rules.md
+      expect:
+        exit_code: 0
+      next_action: restore the rule file or stop citing it in the channel
+    - id: cited_adrs_exist
+      claim: Every ADR the channel cites as authority exists under docs/02-Decisions/adrs/.
+      command:
+      - bash
+      - -c
+      - 'total=0; miss=""; for a in $(grep -ohE "ADR-[0-9]{3}" templates/agent-mandatory-rules.md templates/agent-preamble.md
+        | sort -u); do total=$((total+1)); ls docs/02-Decisions/adrs/$a-*.md >/dev/null 2>&1 || miss="$miss
+        $a"; done; [ "$total" -gt 0 ] || { echo "no ADR cited by the channel: nothing was checked"; exit
+        1; }; [ -z "$miss" ] || { echo "cited ADRs missing:$miss"; exit 1; }; echo "$total cited ADRs exist"'
+      surface:
+      - templates/agent-mandatory-rules.md
+      - templates/agent-preamble.md
+      expect:
+        exit_code: 0
+      next_action: fix the ADR number in the channel, or stop citing it
+    - id: channel_is_still_delivered
+      claim: The injector is registered on SubagentStart with an empty matcher, so the channel reaches every
+        sub-agent unconditionally.
+      command:
+      - python3
+      - -c
+      - 'import json,sys
+
+        groups=json.load(open(''.claude/settings.json'')).get(''hooks'',{}).get(''SubagentStart'',[])
+
+        live=[g for g in groups if any(''subagent-context-injector.sh'' in (h.get(''command'') or '''')
+        for h in g.get(''hooks'',[]))]
+
+        print(''SubagentStart groups carrying the injector:'', len(live), ''| matchers:'', [g.get(''matcher'','''')
+        for g in live])
+
+        sys.exit(0 if live and all((g.get(''matcher'') or '''')=='''' for g in live) else 1)
+
+        '
+      surface:
+      - .claude/settings.json
+      - hooks/subagent-context-injector.sh
+      expect:
+        exit_code: 0
+      next_action: re-register the injector, or delete this claim because the channel no longer exists
