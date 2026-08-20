@@ -21,6 +21,93 @@ source_reports:
   acc:
     path: docs/07-Capabilities/acc/latest.json
     required: false
+forbidden_phrase_scan:
+  purpose: >-
+    A forbidden phrase is searched across this declared surface, not inside the
+    claim's own required_docs. The old behaviour searched required_docs only, so
+    a claim without them checked ZERO files and passed: on 2026-08-19 the phrase
+    "the canonical hook registry is cognitive-os.yaml > harness.hooks" was
+    declared forbidden with no required_docs, the audit went green, and three
+    live copies kept shipping the lie into every sub-agent prompt (a .md, a .sh
+    and a .py docstring). Every forbidden_phrase row now reports the number of
+    files it was checked against, because N=0 was the defect.
+  matching: >-
+    Phrase, not substring. Atoms are matched literally, separated by whitespace
+    and by markdown/rst decoration (backticks, quotes, asterisks, underscores),
+    so the same sentence is caught bare, in `single backticks` and in ``double``
+    ones -- the declared phrase carried backticks and the two live copies did
+    not, so a literal match would have found neither. Boundaries reject
+    word-ish neighbours including hyphen and slash, so "plan-only Claude/Codex"
+    does not match the phrase "only Claude/Codex".
+  include_suffixes: [.md, .sh, .py, .yaml, .yml]
+  prune_dirs:
+    - .git
+    - .venv
+    - venv
+    - node_modules
+    - reference
+    - .cognitive-os
+    - __pycache__
+    - .pytest_cache
+    - .mypy_cache
+    - .ruff_cache
+    - dist
+    - build
+    - target
+    - .worktrees
+    - htmlcov
+  prune_reason: >-
+    Version-control internals, virtualenvs, vendored third-party trees
+    (reference/), build output, tool caches, and .cognitive-os runtime state
+    plus rotated telemetry. None of them is repo prose an agent or a reader is
+    served, and together they are most of the bytes on disk.
+  skip_date_anchored: true
+  historical_adr_statuses: [superseded, deprecated, rejected, withdrawn]
+  historical_reason: >-
+    A citation of a lie is not the lie. Any file whose NAME carries a YYYY-MM-DD
+    stamp is a dated record -- session reports, handoffs, checklists -- and
+    quotes the state of that day on purpose; flagging them would be a mass false
+    positive and the fastest way to get the gate switched off. Same for an ADR
+    whose frontmatter status is superseded/deprecated/rejected/withdrawn: a
+    superseded decision keeps its original prose by design.
+  exclude_globs:
+    - glob: docs/06-Daily/reports/**
+      reason: >-
+        Session reports (date-anchored) and the generated *-latest ledgers.
+        Historical record and machine output, not asserted current truth. A
+        report that a claim needs scanned anyway is opted back in by naming it
+        in that claim's required_docs, which are always scanned.
+    - glob: tests/**
+      reason: >-
+        The instrument's own fixtures and assertions. A stale-phrase test must
+        contain the phrase to assert its absence
+        (tests/contracts/test_primitive_authority_docs.py lists three of them).
+        The alternative is deforming test code so the auditor is not confused,
+        which is the tail wagging the dog.
+    - glob: packages/*/tests/**
+      reason: same as tests/**, reached through the package layout instead of the symlink.
+    - glob: .claude/plugins/**
+      reason: third-party plugin cache, vendored, not authored in this repo.
+    - glob: "**/archive/**"
+      reason: archived artifacts are a record of what was, not a claim about what is.
+    - glob: "**/archived/**"
+      reason: archived artifacts are a record of what was, not a claim about what is.
+    - glob: "**/CHANGELOG*.md"
+      reason: release history quotes the state of each release on purpose.
+    - glob: rules/session-close-doc-truth.md
+      reason: >-
+        The rule that DEFINES this discipline teaches it by quoting an example
+        forbidden phrase ("no atomic close primitive exists"). Self-reference,
+        same class as the claims manifest and the auditor -- both of which the
+        audit excludes in code rather than by configuration.
+  known_blind_spots: >-
+    Semantic inversion is invisible to phrase matching: "not only Claude/Codex"
+    contains "only Claude/Codex" and means the opposite. Today the only instance
+    lives in tests/, already excluded; a future one in live prose would be a
+    false positive and must be fixed by making the phrase more specific, never
+    by adding the file to exclude_globs. Growth of exclude_globs is itself the
+    smell to watch: it should change when a path CLASS changes, not when a false
+    positive appears.
 claims:
   volatile_number_prose:
     severity: medium
@@ -63,6 +150,10 @@ claims:
         scripts/_lib/settings-driver-claude-code.sh scripts/apply-efficiency-profile.sh
         templates/security-profiles/*.json -- a hook that fires is present in all six
       live_orphan: hooks/publication-safety.sh
+    required_docs:
+      - scripts/_lib/settings-driver-claude-code.sh
+      - hooks/inject-phase-context.sh
+      - templates/project-gotchas.md
     required_phrases:
       - Claude Code is the exception
     forbidden_phrases:
@@ -112,7 +203,17 @@ claims:
       - Known remaining gap
       - falta una capa explícita de authority/write-effects audit
       - no is documentado todavia
-      - not implemented yet
+      - phrase: not implemented yet
+        scope:
+          - docs/04-Concepts/architecture/primitive-authority-write-effects.md
+          - docs/02-Decisions/adrs/ADR-276-*.md
+        scope_reason: >-
+          Generic English, not a claim signature. Repo-wide it matches 14 places
+          that have nothing to do with authority/write-effects (ADR-225, ADR-234,
+          ADR-236, ADR-264, release-signing.md, scripts/audit_adrs.py...), where
+          it describes some other unrelated thing as pending. Coincidence, not
+          debt: a change in the authority audit should not force an edit to any
+          of them. Narrowed to the two surfaces this claim is about.
     generated_block:
       doc: docs/04-Concepts/architecture/primitive-authority-write-effects.md
       marker: primitive_authority_write_effects
