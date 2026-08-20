@@ -5509,6 +5509,17 @@ evidence:
     con COS_VERIFY_SEEDED_HOOK en el entorno; no es un ejecutable independiente. Se
     prueba a traves del verificador que lo usa, mas una asercion de que sigue siendo
     invocado, porque si dejara de serlo el control E imprimiria DETECTADO sin sembrar.
+- primitive: hooks/protected-config-write-detector.sh
+  harnesses:
+  - claude
+  - codex
+  tests:
+  - tests/red_team/portability/test_detect_protected_config_writes.py
+  rationale: Envoltorio fino del detector. Su prueba pareada afirma que DISCRIMINA en
+    tres ramas -- sin cambios, cambio sin aprobar, cambio aprobado -- y no que corra.
+    Los dos bugs de su primera version (huella sobre el conjunto de rutas en vez del
+    contenido, y un strip que mutilaba la ruta dejandolo ciego a todo .claude/)
+    pasaban cualquier prueba de humo y caen los dos con esas tres ramas.
 patterns:
 - pattern: tests/**
   behavior_proven: true
