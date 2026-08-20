@@ -117,6 +117,60 @@ def _write_forms(target: str) -> list[tuple[str, str]]:
             "python3 - <<'PY'\nfrom pathlib import Path\n"
             f"Path('{target}').write_text('x')\nPY",
         ),
+        # --- pairs for the 2026-08-20 relaxations ---------------------------
+        # Each of these has a twin in LEGIT_OPS with the SAME syntactic shape
+        # and a read where this one has a write. The pair is the whole point:
+        # an exemption that also lets the write through is a hole, not a fix.
+        #
+        # A substitution body carrying a parenthesis is now lifted and judged.
+        # Lifting must judge it, not excuse it.
+        ("substitution-with-parens", f"L=$(sed -i '' 's/a()/b/' {target})"),
+        (
+            "procsub-with-parens",
+            f"diff <(sed -i '' 's/a()/b/' {target}) /dev/null",
+        ),
+        # A string constant that IS a path stays a destination even when it is
+        # only bound to a name -- program_write_candidates resolves no binding,
+        # so it cannot know the name is never written, and refuses.
+        (
+            "heredoc-path-in-a-variable",
+            "python3 - <<'PY'\nfrom pathlib import Path\n"
+            f"p = '{target}'\nPath(p).write_text('x')\nPY",
+        ),
+        # A constant handed to a call is a destination whatever the call does.
+        (
+            "heredoc-subprocess-argv",
+            "python3 - <<'PY'\nimport subprocess\n"
+            f"subprocess.run(['cp', '{SRC}', '{target}'])\nPY",
+        ),
+        (
+            "heredoc-open-for-write",
+            f"python3 - <<'PY'\nopen('{target}', 'w').write('x')\nPY",
+        ),
+        # A program that does not parse is one whose string constants cannot be
+        # classified, so every protected token in it stays a destination. The
+        # write primitive is what makes this case reach that branch at all: a
+        # body with no write primitive is cleared upstream by body_can_write,
+        # and rightly so, since a program that does not compile never runs.
+        # Two valid programs concatenated by strip_heredocs are the real
+        # unparseable case, and this is its minimal stand-in.
+        (
+            "heredoc-unparseable-program",
+            "python3 - <<'PY'\nthis is not python (\n"
+            f"Path('{target}').write_text('x')\nPY",
+        ),
+        # Delegated writes: relaxing -c on the strength of "no write primitive"
+        # would clear both of these, which is why handing the work to another
+        # process counts as a write.
+        (
+            "python-c-os-system",
+            f"python3 -c \"import os; os.system('cp {SRC} {target}')\"",
+        ),
+        (
+            "python-c-subprocess",
+            "python3 -c \"import subprocess; "
+            f"subprocess.run(['cp', '{SRC}', '{target}'])\"",
+        ),
     ]
 
 
@@ -165,6 +219,37 @@ LEGIT_OPS: list[tuple[str, str]] = [
     (
         "heredoc-body-is-data",
         f"cat > /tmp/out.md <<'MD'\ncp {SRC} {PROTECTED}\ntee {PROTECTED}\nMD",
+    ),
+    # --- twins of the 2026-08-20 write forms ------------------------------
+    # Same syntactic shape as the entries added to _write_forms, with a read
+    # where those have a write. Both halves must hold: these pass, those block.
+    #
+    # A substitution body carrying a parenthesis. The old regex body was
+    # [^()]*, so nothing was lifted, `L=$(grep` read as an assignment, and the
+    # next word -- `-n` -- became the command word. Measured 2026-08-20: this
+    # is the shape that blocked a plain grep over the guard itself.
+    (
+        "substitution-body-with-parens",
+        f"L=$(grep -n 'body_can_write()' {PROTECTED} | head -1 | cut -d: -f1)",
+    ),
+    ("substitution-body-plain", f"n=$(wc -c < {PROTECTED})"),
+    ("procsub-read-with-parens", f"diff <(grep -c 'f()' {PROTECTED}) /dev/null"),
+    ("arith-substitution", f'sed -n "$((1)),$((1+5))p" {PROTECTED}'),
+    # The most recurrent legitimate shape in this repo: rewrite a file under
+    # tests/ whose new text quotes a protected path. The path lives in a
+    # content blob -- never a call argument, never a path on its own -- so it
+    # is not a destination. Measured 2026-08-20: 8 of the 19 live blocks.
+    (
+        "heredoc-writes-elsewhere-mentioning-protected",
+        "python3 - <<'PY'\nimport pathlib\n"
+        "p = pathlib.Path('tests/unit/test_zzz.py')\n"
+        "s = p.read_text()\n"
+        f"nuevo = '''se documenta {PROTECTED} en la prosa'''\n"
+        "p.write_text(s + nuevo)\nPY",
+    ),
+    (
+        "python-c-reads-settings",
+        f"python3 -c \"import json; json.load(open('{SETTINGS}'))\"",
     ),
 ]
 
