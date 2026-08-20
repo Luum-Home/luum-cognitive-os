@@ -315,10 +315,196 @@ def scope_files(files: list[str], scope: list[str]) -> list[str]:
     return [f for f in files if any(fnmatch(f, g) for g in scope)]
 
 
+# --- executable claims (the ledger stops comparing text and runs a command) --
+# A forbidden/required phrase can only compare prose against prose. A claim like
+# "42 of 256 hooks/*.sh are symlinks" is true only while the repo agrees, and no
+# phrase list can know that. The two check families below close that gap:
+#
+#   path_claims           every repo path the doc quotes must resolve today
+#   executable_assertions a declared command runs, and its OUTPUT must be the
+#                         prose the doc publishes ("the sentence is true iff
+#                         this command prints it")
+#
+# Anti-void discipline, same defect that shipped on 2026-08-19: a check with no
+# surface must BLOCK, never pass quietly. Zero docs, zero tokens, empty stdout
+# and an unknown expectation are all declaration errors, not green rows.
+
+DEFAULT_ASSERTION_POLICY: dict[str, Any] = {
+    "allowed_executables": ["bash", "sh", "python3", ".venv/bin/python3", "git", "grep"],
+    "timeout_seconds": 60,
+}
+PATH_SUFFIXES = (".py", ".sh", ".md", ".json", ".yaml", ".yml", ".txt", ".bats")
+CODE_FENCE_RE = re.compile(r"```[a-zA-Z0-9]*\n(.*?)```", re.S)
+INLINE_CODE_RE = re.compile(r"`([^`\n]+)`")
+GLOB_CHARS = ("*", "?", "[")
+
+
+def assertion_policy(manifest: dict[str, Any]) -> dict[str, Any]:
+    policy = dict(DEFAULT_ASSERTION_POLICY)
+    declared = manifest.get("executable_assertion_policy") or {}
+    for key in ("allowed_executables", "timeout_seconds"):
+        if key in declared:
+            policy[key] = declared[key]
+    return policy
+
+
+def path_tokens(text: str) -> list[str]:
+    """Repo paths a doc quotes, from inline code and from fenced blocks.
+
+    A token is a path candidate when it has no whitespace, carries no shell or
+    placeholder syntax, and either contains a slash or ends in a known suffix.
+    Placeholders (`<pid>`, `$h`) are not paths and are dropped here rather than
+    forcing every doc to declare them as ignores.
+    """
+    chunks = [(m, True) for m in INLINE_CODE_RE.findall(text)]
+    for block in CODE_FENCE_RE.findall(text):
+        # Fenced blocks carry commands AND output templates ("status:
+        # completed|failed|partial"). Only suffixed tokens are paths there;
+        # a bare slash inside a template is prose, not a file.
+        chunks.extend((tok, False) for tok in block.split())
+    out: list[str] = []
+    for raw, inline in chunks:
+        token = raw.strip().lstrip("([").rstrip(").,;:]")  # leading dot is part of .claude/
+        if not token or any(c in token for c in " \t<>$|\"'"):
+            continue
+        if token.startswith("#") or token.startswith("-"):
+            continue
+        if not token.endswith(PATH_SUFFIXES) and not (inline and "/" in token):
+            continue
+        if token.startswith(("http://", "https://")):
+            continue
+        out.append(token)
+    return sorted(set(out))
+
+
+def path_resolves(root: Path, token: str) -> bool:
+    if any(c in token for c in GLOB_CHARS):
+        return bool(list(root.glob(token)))
+    target = root / token
+    if token.endswith("/"):
+        return target.is_dir()
+    return target.exists()
+
+
+def path_claim_rows(root: Path, claim_id: str, claim: dict[str, Any], severity: str) -> list[TruthRow]:
+    spec = claim.get("path_claims") or {}
+    if not spec:
+        return []
+    rows: list[TruthRow] = []
+    docs = [str(d) for d in (spec.get("docs") or [])]
+    ignores: dict[str, str] = {}
+    for entry in spec.get("ignore") or []:
+        token = str((entry or {}).get("token") or "")
+        reason = str((entry or {}).get("reason") or "")
+        if not token:
+            continue
+        if not reason:
+            rows.append(TruthRow(claim_id, "path_claim_ignore", "block", severity, None, f"Ignored path token without a written reason: {token}", [token], "write why this token is not a repo path, or drop the ignore"))
+        ignores[token] = reason
+    if not docs:
+        rows.append(TruthRow(claim_id, "path_claim_surface", "block", severity, None, "path_claims declared with no docs to check", ["docs:0"], "declare the docs whose quoted paths must resolve"))
+        return rows
+    for doc in docs:
+        path = root / doc
+        if not path.exists():
+            rows.append(TruthRow(claim_id, "path_claim_surface", "block", severity, doc, "path_claims doc is missing", [doc], "fix the declared doc path"))
+            continue
+        tokens = [t for t in path_tokens(path.read_text(encoding="utf-8", errors="replace")) if t not in ignores]
+        if not tokens:
+            rows.append(TruthRow(claim_id, "path_claim_surface", "block", severity, doc, "path_claims doc quotes no repo path at all (0 tokens): the check would pass without checking anything", [doc, "tokens:0"], "point the claim at a doc that quotes paths, or drop it"))
+            continue
+        rows.append(TruthRow(claim_id, "path_claim_surface", "pass", severity, doc, f"path_claims doc quotes {len(tokens)} repo path(s)", [doc, f"tokens:{len(tokens)}"], "keep the doc declared"))
+        missing = [t for t in tokens if not path_resolves(root, t)]
+        if missing:
+            rows.append(TruthRow(claim_id, "path_claim", "block", severity, doc, f"{len(missing)} quoted path(s) do not resolve, checked {len(tokens)}: {', '.join(missing[:8])}", missing[:20] + [f"tokens:{len(tokens)}"], "fix the path in the doc (readlink -f), or declare it as an ignore with a reason"))
+        else:
+            rows.append(TruthRow(claim_id, "path_claim", "pass", severity, doc, f"all {len(tokens)} quoted path(s) resolve", [doc, f"tokens:{len(tokens)}"], "keep quoted paths real"))
+    return rows
+
+
+def run_assertion(root: Path, command: list[str], timeout: int) -> tuple[int, str, str]:
+    import subprocess
+
+    proc = subprocess.run(command, cwd=str(root), capture_output=True, text=True, timeout=timeout)
+    return proc.returncode, proc.stdout.strip(), proc.stderr.strip()[:400]
+
+
+def executable_assertion_rows(root: Path, claim_id: str, claim: dict[str, Any], severity: str, policy: dict[str, Any]) -> list[TruthRow]:
+    assertions = claim.get("executable_assertions") or []
+    if not assertions:
+        return []
+    rows: list[TruthRow] = []
+    allowed = {str(x) for x in policy.get("allowed_executables") or []}
+    default_timeout = int(policy.get("timeout_seconds") or 60)
+    for raw in assertions:
+        entry = raw if isinstance(raw, dict) else {}
+        aid = str(entry.get("id") or "")
+        label = f"{claim_id}/{aid or 'unnamed'}"
+        command = entry.get("command")
+        expect = entry.get("expect") or {}
+        if not aid or not str(entry.get("claim") or "").strip():
+            rows.append(TruthRow(claim_id, "executable_assertion_declaration", "block", severity, None, f"Assertion without id or without the prose claim it defends: {label}", [json.dumps(entry, sort_keys=True)[:200]], "give the assertion an id and write the sentence it keeps true"))
+            continue
+        if not isinstance(command, list) or not command or not all(isinstance(c, str) for c in command):
+            rows.append(TruthRow(claim_id, "executable_assertion_declaration", "block", severity, None, f"Assertion command must be a non-empty argv list: {label}", [str(command)[:200]], "declare command as a list of strings (no shell string)"))
+            continue
+        if command[0] not in allowed:
+            rows.append(TruthRow(claim_id, "executable_assertion_declaration", "block", severity, None, f"Assertion executable not allow-listed: {label} -> {command[0]}", [command[0]], "use an allow-listed executable or extend executable_assertion_policy with a reason"))
+            continue
+        known = {"exit_code", "stdout_phrase_in", "stdout_not_phrase_in"}
+        unknown = sorted(set(expect) - known)
+        if not expect or unknown:
+            rows.append(TruthRow(claim_id, "executable_assertion_declaration", "block", severity, None, f"Assertion has no usable expectation: {label} (unknown: {', '.join(unknown) or 'none declared'})", [json.dumps(expect, sort_keys=True)[:200]], f"declare one of: {', '.join(sorted(known))}"))
+            continue
+        doc_keys = [k for k in ("stdout_phrase_in", "stdout_not_phrase_in") if k in expect]
+        if "exit_code" in expect and not doc_keys:
+            # An exit-code probe carries its own subject, so the ledger cannot
+            # see what it is about. Naming the live files it reads is the only
+            # thing that stops "exit 0 because it found nothing to check".
+            surface = [str(d) for d in (entry.get("surface") or [])]
+            live = [d for d in surface if (root / d).exists()]
+            if not live:
+                rows.append(TruthRow(claim_id, "executable_assertion_surface", "block", severity, None, f"exit_code assertion without a live surface: {label} declares {len(surface)} file(s), {0} exist", [f"surface:{','.join(surface) or 'none'}"], "declare surface: the existing files this probe reads"))
+                continue
+            rows.append(TruthRow(claim_id, "executable_assertion_surface", "pass", severity, live[0], f"exit_code assertion reads {len(live)} live file(s): {label}", [f"surface:{','.join(live)}"], "keep the surface declared"))
+        docs = [str(d) for k in doc_keys for d in (expect.get(k) or [])]
+        existing_docs = [d for d in docs if (root / d).exists()]
+        if doc_keys and not existing_docs:
+            rows.append(TruthRow(claim_id, "executable_assertion_surface", "block", severity, None, f"Assertion compares command output against {len(docs)} doc(s), none of which exist: {label}", [f"docs:{len(docs)}", "existing:0"], "declare the live doc that carries the sentence"))
+            continue
+        if doc_keys:
+            rows.append(TruthRow(claim_id, "executable_assertion_surface", "pass", severity, existing_docs[0], f"Assertion has {len(existing_docs)} live doc surface(s): {label}", [f"existing:{len(existing_docs)}"], "keep the surface declared"))
+        try:
+            code, out, err = run_assertion(root, command, int(entry.get("timeout_seconds") or default_timeout))
+        except Exception as exc:  # noqa: BLE001 - a probe that cannot run is a blocker, not a pass
+            rows.append(TruthRow(claim_id, "executable_assertion", "block", severity, None, f"Assertion command failed to run: {label}: {type(exc).__name__}: {exc}", [" ".join(command)[:200]], "fix the command or the environment it needs"))
+            continue
+        evidence = [" ".join(command)[:200], f"exit:{code}", f"stdout:{out[:160]}"]
+        if err:
+            evidence.append(f"stderr:{err[:160]}")
+        if "exit_code" in expect:
+            want = int(expect["exit_code"])
+            status = "pass" if code == want else "block"
+            rows.append(TruthRow(claim_id, "executable_assertion", status, severity, None, f"Assertion {label}: exit {code}, expected {want} -- {entry['claim']}", evidence, str(entry.get("next_action") or "make the claim true again, or rewrite the sentence the assertion defends")))
+        for key in doc_keys:
+            atoms = [a for a in re.split(PHRASE_SEP, out) if a]
+            if not out or not atoms:
+                rows.append(TruthRow(claim_id, "executable_assertion", "block", severity, None, f"Assertion {label} compares an EMPTY command output against prose: it would match everything", evidence, "make the command print the sentence it defends"))
+                continue
+            pattern = phrase_pattern(out)
+            hit = next((d for d in existing_docs if pattern.search((root / d).read_text(encoding="utf-8", errors="replace"))), None)
+            wants_hit = key == "stdout_phrase_in"
+            status = "pass" if bool(hit) == wants_hit else "block"
+            verb = "must appear in" if wants_hit else "must be absent from"
+            rows.append(TruthRow(claim_id, "executable_assertion", status, severity, hit, f"Assertion {label}: command output {verb} the doc -- measured now: {out[:120]!r} -- {entry['claim']}", evidence + [f"docs:{','.join(existing_docs)}"], str(entry.get("next_action") or "update the sentence in the doc to the measured output, or drop the number")))
+    return rows
+
+
 def audit(root: Path, manifest_path: Path) -> tuple[list[TruthRow], dict[str, Any]]:
     manifest = read_yaml(manifest_path)
     claims = dict(sorted((manifest.get("claims") or {}).items()))
     cfg = scan_config(manifest)
+    policy = assertion_policy(manifest)
     try:
         manifest_rel = manifest_path.resolve().relative_to(root).as_posix()
     except ValueError:
@@ -420,6 +606,10 @@ def audit(root: Path, manifest_path: Path) -> tuple[list[TruthRow], dict[str, An
                     rows.append(TruthRow(claim_id, "generated_block", "block", severity, doc, "Generated truth block is stale", [marker], "run documentation_truth_audit.py --update-generated"))
                 else:
                     rows.append(TruthRow(claim_id, "generated_block", "pass", severity, doc, "Generated truth block matches current facts", [marker], "keep block generated"))
+        rows.extend(path_claim_rows(root, claim_id, claim, severity))
+        rows.extend(executable_assertion_rows(root, claim_id, claim, severity, policy))
+    scan_meta["executable_assertions"] = sum(1 for r in rows if r.check == "executable_assertion")
+    scan_meta["path_claim_tokens"] = sum(int(e.split(":", 1)[1]) for r in rows if r.check == "path_claim_surface" and r.status == "pass" for e in r.evidence if e.startswith("tokens:"))
     return rows, scan_meta
 
 
