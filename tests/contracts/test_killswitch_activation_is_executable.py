@@ -27,6 +27,7 @@ from __future__ import annotations
 import importlib.util
 import json
 import os
+import re
 import subprocess
 import shutil
 import sys
@@ -137,9 +138,52 @@ echo "BLOCKED. Bypass: export COS_ALLOW_DEMO_BYPASS=1 before launching the harne
 exit 2
 """
 
-_AMBIGUO = """#!/usr/bin/env bash
+# Texto EMITIDO que nombra la variable y ninguna vía. Quien lo lee está trabado
+# ahora y el nombre de una variable no es una instrucción.
+_INCOMPLETO = """#!/usr/bin/env bash
 if [ "${COS_ALLOW_DEMO_BYPASS:-0}" = "1" ]; then exit 0; fi
 echo "BLOCKED. Override only with COS_ALLOW_DEMO_BYPASS=1 and a written reason." >&2
+exit 2
+"""
+
+# El mismo texto en un COMENTARIO no es lo mismo: no hay nadie trabado leyéndolo,
+# es el inventario del archivo. Sin este par, "el instrumento distingue quién lee"
+# sería una afirmación sin control.
+_DECLARACION = """#!/usr/bin/env bash
+# Killswitch: COS_ALLOW_DEMO_BYPASS=1
+if [ "${COS_ALLOW_DEMO_BYPASS:-0}" = "1" ]; then exit 0; fi
+exit 2
+"""
+
+# EL PAR QUE IMPORTA. Los dos comentarios llevan el MISMO literal roto. El primero
+# lo ofrece; el segundo lo nombra para decir que no llega. Sin el segundo fixture,
+# "ahora distingue una oferta de la cita de una oferta" no está probado — y sin el
+# primero, la categoría `cita` sería un supresor que absuelve todo comentario.
+_OFERTA_EN_COMENTARIO = """#!/usr/bin/env bash
+# Bypass: COS_ALLOW_DEMO_BYPASS=1 git commit -m '...'
+if [ "${COS_ALLOW_DEMO_BYPASS:-0}" = "1" ]; then exit 0; fi
+exit 2
+"""
+
+_CITA_EN_COMENTARIO = """#!/usr/bin/env bash
+# Este mensaje ofrecía antes `COS_ALLOW_DEMO_BYPASS=1 git commit -m '...'` y esa
+# forma no llega: el hook es hijo del arnés, no del shell del Bash tool.
+if [ "${COS_ALLOW_DEMO_BYPASS:-0}" = "1" ]; then exit 0; fi
+exit 2
+"""
+
+# Cuarta vía: un token del comando. Honesto SOLO con la compensación; el control
+# es el mismo mensaje ofreciendo un flag que el hook no busca en ningún lado.
+_HONESTO_FLAG = """#!/usr/bin/env bash
+CMD="$(printf '%s' "$INPUT" | jq -r '.tool_input.command // empty')"
+printf '%s' "$CMD" | grep -Eq '(^|[[:space:]])--allow-demo($|[[:space:]])' && exit 0
+echo "BLOCKED. Override: set COS_ALLOW_DEMO_BYPASS=1 or append --allow-demo to the command." >&2
+exit 2
+"""
+
+_FLAG_SIN_COMPENSACION = """#!/usr/bin/env bash
+if [ "${COS_ALLOW_DEMO_BYPASS:-0}" = "1" ]; then exit 0; fi
+echo "BLOCKED. Override: set COS_ALLOW_DEMO_BYPASS=1 or append --allow-demo to the command." >&2
 exit 2
 """
 
@@ -147,7 +191,9 @@ exit 2
 def _veredicto(fuente: str) -> str:
     filas = [r for r in _AUDIT.classify_source("hooks/demo.sh", fuente) if r.verdict != "codigo"]
     assert filas, "el clasificador no vio la variable en el fixture"
-    orden = {"mentira": 0, "ambiguo": 1, "honesto": 2}
+    # Peor primero: una fixture que produjera una mentira y una honesta a la vez
+    # tiene que reportar la mentira.
+    orden = {"mentira": 0, "incompleto": 1, "declaracion": 2, "cita": 3, "honesto": 4}
     return sorted(filas, key=lambda r: orden[r.verdict])[0].verdict
 
 
@@ -157,12 +203,56 @@ def _veredicto(fuente: str) -> str:
         ("mentira", _MENTIRA, "mentira"),
         ("honesto_texto", _HONESTO_TEXTO, "honesto"),
         ("honesto_export", _HONESTO_EXPORT, "honesto"),
-        ("ambiguo", _AMBIGUO, "ambiguo"),
+        ("honesto_flag", _HONESTO_FLAG, "honesto"),
+        ("flag_sin_compensacion", _FLAG_SIN_COMPENSACION, "incompleto"),
+        ("incompleto", _INCOMPLETO, "incompleto"),
+        ("declaracion", _DECLARACION, "declaracion"),
+        ("oferta_en_comentario", _OFERTA_EN_COMENTARIO, "mentira"),
+        ("cita_en_comentario", _CITA_EN_COMENTARIO, "cita"),
     ],
 )
-def test_el_clasificador_distingue_las_cuatro_formas(nombre, fuente, esperado) -> None:
+def test_el_clasificador_distingue_las_nueve_formas(nombre, fuente, esperado) -> None:
     assert _veredicto(fuente) == esperado, (
         f"fixture `{nombre}`: se esperaba {esperado} y dio {_veredicto(fuente)}"
+    )
+
+
+def test_la_cita_no_absuelve_un_mensaje_emitido() -> None:
+    """El marcador de negación solo vale dentro de un comentario.
+
+    Si valiera en texto emitido, cualquier mensaje podría absolverse escribiendo
+    "esto no funciona" al lado de la forma rota — y el lector seguiría trabado.
+    Ése es el supresor que esta prueba mantiene cerrado.
+    """
+    fuente = """#!/usr/bin/env bash
+if [ "${COS_ALLOW_DEMO_BYPASS:-0}" = "1" ]; then exit 0; fi
+echo "BLOCKED. COS_ALLOW_DEMO_BYPASS=1 git commit no funciona pero probalo igual" >&2
+exit 2
+"""
+    assert _veredicto(fuente) == "mentira"
+
+
+def test_cada_categoria_tiene_al_menos_un_caso_real(censo) -> None:
+    """Una categoría sin ocurrencias en el árbol real es una rama muerta.
+
+    Mismo criterio que un supresor que no suprime nada: da sensación de
+    cobertura. Si una de estas cae a cero, o el árbol cambió o la rama del
+    clasificador dejó de ser alcanzable, y las dos merecen enterarse.
+    """
+    vistos = {r.verdict for r in censo}
+    faltan = {"honesto", "incompleto", "declaracion", "cita", "codigo"} - vistos
+    assert not faltan, (
+        f"{sorted(faltan)} no tiene ninguna ocurrencia en hooks/. Una categoría "
+        "inalcanzable no clasifica nada y sostiene un número que nadie produjo."
+    )
+
+
+def test_ninguna_ocurrencia_queda_sin_decidir(censo) -> None:
+    """`ambiguo` era 99 de 142 el 2026-08-19. No vuelve por la puerta de atrás."""
+    sin_decidir = [f"{r.file}:{r.line}" for r in censo if r.verdict == "ambiguo"]
+    assert not sin_decidir, (
+        f"{sin_decidir} volvió a caer en `ambiguo`. Un instrumento con la mayoría "
+        "de su población en «no sé» es una encuesta, no un instrumento."
     )
 
 
@@ -382,4 +472,84 @@ def test_ningun_mensaje_ofrece_cos_session_branch_con_switch() -> None:
         f"{ofensores} ofrecen `cos-session-branch.sh --switch` como salida. "
         "Mueve el HEAD de todas las sesiones del checkout; sin --switch la rama "
         "se crea igual y HEAD no se mueve."
+    )
+
+
+# ── La familia que el censo NO mira: los documentos ─────────────────────────
+# El censo empareja un mensaje con el hook que debería honrarlo, y un `.md` no
+# nombra a su hook: por eso los documentos no entran ahí. Pero la forma de
+# prefijo con `COS_BYPASS=` es decidible sin ese par — `cos_bypass_allows` lee el
+# entorno y `.cognitive-os/runtime/bypass.env`, nunca el texto del comando, así
+# que esa forma no llega a NINGÚN hook. Se gatea por ruta, que es lo proporcionado:
+# una regla de una línea en vez de un segundo censo.
+#
+# El cheatsheet es el documento que alguien abre justo cuando quedó trabado, así
+# que una mentira ahí cuesta más que en un hook: el hook al menos bloquea y se
+# nota; el cheatsheet manda a tipear algo inerte y devuelve al mismo lugar.
+
+_COS_BYPASS_PREFIJO_RE = re.compile(
+    r"(?<![A-Za-z0-9_])COS_BYPASS=[a-z_][a-z_,]*[ \t]+[A-Za-z./]"
+)
+# Misma regla que en el clasificador: nombrar la forma para decir que no funciona
+# no es ofrecerla. El marcador va en la MISMA línea, que en prosa es donde cabe.
+_NEGACION_RE = re.compile(
+    r"inert|does not work|doesn't work|no funciona|no llega|never reaches|← *inert",
+    re.I,
+)
+
+# Excepción declarada y acotada, con motivo: ADR-241 y ADR-243 son REGISTROS de
+# decisión, y reescribir el ejemplo dentro de un registro es una decisión de quien
+# lo firmó, no un arreglo de paso. Quedan adentro del gate a propósito —listados,
+# no excluidos por ruta— para que se vean, y con la prueba de abajo que impide que
+# el asiento sobreviva a su ocurrencia.
+_PREFIJO_EN_DOCS_PENDIENTE = {
+    "docs/02-Decisions/adrs/ADR-241-consolidated-cos-bypass-allowlist.md",
+    "docs/02-Decisions/adrs/ADR-243-post-rewrite-push-collision-exception.md",
+}
+
+
+def _docs_con_prefijo_cos_bypass() -> dict[str, list[str]]:
+    hallazgos: dict[str, list[str]] = {}
+    for raiz in ("docs", "rules"):
+        for md in sorted((REPO / raiz).rglob("*.md")):
+            rel = md.relative_to(REPO).as_posix()
+            for n, linea in enumerate(md.read_text(encoding="utf-8", errors="ignore").splitlines(), 1):
+                if _COS_BYPASS_PREFIJO_RE.search(linea) and not _NEGACION_RE.search(linea):
+                    hallazgos.setdefault(rel, []).append(f"{n}: {linea.strip()[:100]}")
+    return hallazgos
+
+
+def test_ningun_doc_ofrece_cos_bypass_como_prefijo() -> None:
+    """`COS_BYPASS=k <cmd>` no llega a ningún hook: el resolvedor no lee el texto."""
+    hallazgos = _docs_con_prefijo_cos_bypass()
+    nuevos = {k: v for k, v in hallazgos.items() if k not in _PREFIJO_EN_DOCS_PENDIENTE}
+    assert not nuevos, (
+        f"{nuevos} ofrece la forma de prefijo. `cos_bypass_allows` lee COS_BYPASS "
+        "del entorno y de .cognitive-os/runtime/bypass.env, nunca del comando: "
+        "quien la tipea sigue bloqueado. Usá el archivo runtime (a mitad de "
+        "sesión) o `export` antes de lanzar el arnés."
+    )
+
+
+def test_la_deuda_de_docs_no_tiene_asientos_fantasma() -> None:
+    """Un pendiente ya arreglado que sigue listado es un lugar libre.
+
+    Mismo criterio que `KNOWN_UNREACHABLE_KILLSWITCHES`: si el ADR se corrige y
+    la entrada queda, el próximo doc que caiga ahí entra sin que nadie se entere.
+    """
+    hallazgos = _docs_con_prefijo_cos_bypass()
+    fantasmas = _PREFIJO_EN_DOCS_PENDIENTE - set(hallazgos)
+    assert not fantasmas, (
+        f"{sorted(fantasmas)} ya no tiene la forma de prefijo: sacalo del "
+        "conjunto en vez de dejar el asiento abierto."
+    )
+
+
+def test_el_cheatsheet_nombra_la_via_de_mitad_de_sesion() -> None:
+    """Sin `bypass.env` el cheatsheet solo sirve para la PRÓXIMA sesión."""
+    texto = (REPO / "docs/09-Quality/security/bypass-cheatsheet.md").read_text(encoding="utf-8")
+    assert ".cognitive-os/runtime/bypass.env" in texto
+    assert "LAUNCHES the harness" in texto, (
+        "un `export COS_BYPASS=...` sin decir en qué shell es la misma promesa "
+        "vacía: adentro de la sesión ya lanzada no llega a ningún hook."
     )

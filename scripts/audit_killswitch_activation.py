@@ -19,15 +19,43 @@ entorno. Forzar a todos a leer del texto borraría esa distinción, así que el
 criterio no es "todos deben leer del texto" sino **el mensaje no debe prometer
 una vía que el hook no puede honrar**.
 
-TRES DESENLACES Y UNA CEGUERA:
+UNA OFERTA NO ES LA CITA DE UNA OFERTA. Distinción agregada el 2026-08-19,
+después de que un hook deformara su propio comentario para no ser contado: el
+comentario de ``destructive-git-blocker`` evitaba escribir el literal roto
+porque el instrumento lo habría leído como una promesa. Cuando el código se
+retuerce para no confundir a la herramienta, manda la herramienta. Ahora un
+comentario que nombra la forma rota **para decir que no funciona** es ``cita``,
+y el código puede volver a citarla.
 
-  mentira    — el mensaje ofrece la forma de prefijo en línea y el hook solo lee
-               del entorno. Es lo único que el gate rojea.
-  honesto    — ofrece prefijo en línea Y compensa leyendo el token del texto del
-               comando, o bien ofrece ``export`` / ``settings.json``.
-  ambiguo    — nombra la variable como salida sin nombrar ninguna vía ("set VAR=1",
-               "override with VAR=1"). No miente explícitamente; tampoco alcanza.
-               Va a ``blind``: el instrumento no puede decidirlo leyendo texto.
+Y una DECLARACIÓN no es una oferta. ``# Killswitch: DISABLE_HOOK_X=1`` en el
+encabezado le dice a quien lee el archivo que el switch existe; no le entrega
+una salida a nadie que esté bloqueado en este instante. Es inventario, no
+promesa: no se juzga como honesto ni como mentira, se declara fuera de la
+población de ofertas. Antes eran 99 casos en "no sé"; ahora están decididos.
+
+SEIS DESENLACES:
+
+  mentira     — el mensaje ofrece la forma de prefijo en línea y el hook solo lee
+                del entorno. Es lo único que el gate rojea.
+  honesto     — ofrece prefijo en línea Y compensa leyendo el token del texto del
+                comando, o bien ofrece ``export`` / ``settings.json`` / ``bypass.env``.
+  incompleto  — texto EMITIDO en tiempo de bloqueo que nombra la variable sin
+                nombrar ninguna vía ("set VAR=1"). Quien lo lee está trabado ahora
+                y no tiene con qué destrabarse: el nombre de la variable no es una
+                instrucción. No miente —la vía existe— pero no la dice. Se cuenta.
+  declaracion — COMENTARIO que nombra el switch sin mostrar forma de activación.
+                Inventario para quien lee el archivo. No es una oferta: a ``blind``.
+  cita        — COMENTARIO que muestra la forma rota dentro de una explicación de
+                por qué no funciona. Tampoco es una oferta: a ``blind``.
+  codigo      — la ocurrencia es una invocación real del hook, no texto para nadie.
+
+LO QUE ESTE INSTRUMENTO NO MIRA, dicho para que el alcance no se lea como
+cobertura: **solo hooks**. Un `.md` que ofrece ``COS_BYPASS=k <cmd>`` promete lo
+mismo y no entra acá, porque el veredicto de una oferta necesita el par
+*mensaje + hook que debería honrarlo*, y un documento no nombra a su hook. Esa
+familia se gatea aparte, por ruta y no por censo, en
+``tests/contracts/test_killswitch_activation_is_executable.py``
+(``test_ningun_doc_ofrece_cos_bypass_como_prefijo``).
 
 Uso:
     python3 scripts/audit_killswitch_activation.py            # resumen
@@ -83,6 +111,27 @@ _EXPORT_RE = re.compile(r"\bexport\b")
 # así que un agente puede escribirlo A MITAD DE SESIÓN y el próximo hook lo ve.
 _SETTINGS_RE = re.compile(r"settings\.json|bypass\.env|COS_BYPASS=")
 
+# Marcadores de CITA: el texto nombra la forma para decir que no llega. Se exigen
+# frases y no palabras sueltas ("antes" sola aparece en cualquier prosa), y solo
+# valen dentro de un COMENTARIO: un mensaje emitido que dice "esto no funciona"
+# igual se lo está mostrando a alguien trabado, así que ahí no absuelve. Ése es
+# el límite que impide usar esta categoría como supresor.
+_CITA_RE = re.compile(
+    r"no llega|nunca llega|no llegan|no funciona|no lo lee|no la lee|no puede leer"
+    r"|inejecutable|ofrec[íi]a antes|literal viejo|forma rota|no existe"
+    r"|never reaches|does not reach|doesn't reach|does not work|doesn't work"
+    r"|no longer|former example|was wrong|is broken",
+    re.I,
+)
+
+# Cuarta vía ejecutable, y la única que no es una variable: un TOKEN en el propio
+# comando (`--allow-destructive`). Vale como oferta honesta bajo la misma prueba
+# que el prefijo leído del texto — el literal tiene que aparecer en código del
+# hook, junto a un operador que compare texto. Sin esa prueba esto sería
+# ensanchar qué cuenta como honesto; con ella es reconocer una vía que el hook
+# demostrablemente honra y que el instrumento leía como "no nombra vía".
+_FLAG_OFFER_RE = re.compile(r"(?<![A-Za-z0-9_-])(--[a-z][a-z0-9-]{3,})")
+
 # El hook compensa si, cerca de la ocurrencia, tiene el texto del comando y un
 # operador que compara texto. Ventana y no línea: el patrón canónico
 # (protected-config-write-guard) parte el `printf | grep` en tres líneas.
@@ -122,14 +171,21 @@ def _hook_files() -> list[Path]:
     return out
 
 
-def _message_lines(lines: list[str]) -> set[int]:
-    """Índices (0-based) de líneas que son texto para una persona, no código.
+def _message_lines(lines: list[str]) -> tuple[set[int], set[int]]:
+    """Índices (0-based) de texto para una persona, y cuáles son COMENTARIO.
 
     Comentario, línea con echo/printf/>&2, o cuerpo de heredoc. Se excluye el
     código real porque `VAR=1 python3 - <<PY` dentro de un hook es una invocación
     legítima, no una promesa a nadie.
+
+    Se devuelven dos conjuntos porque los dos públicos son distintos y el
+    veredicto correcto también: un comentario lo lee quien abre el archivo, y un
+    `echo` lo lee quien está bloqueado en este instante. Nombrar un switch sin
+    vía es inventario en el primer caso y una salida que no se puede tomar en el
+    segundo. Mezclarlos era la razón por la que 99 casos quedaban en "no sé".
     """
     msg: set[int] = set()
+    comment: set[int] = set()
     terminator: str | None = None
     for i, raw in enumerate(lines):
         if terminator is not None:
@@ -141,12 +197,32 @@ def _message_lines(lines: list[str]) -> set[int]:
         stripped = raw.lstrip()
         if stripped.startswith("#"):
             msg.add(i)
+            comment.add(i)
         elif _OUTPUT_RE.search(raw) and not (_PIPED_RE.search(raw) or _CAPTURED_RE.search(raw)):
             msg.add(i)
         m = _HEREDOC_OPEN_RE.search(raw)
         if m:
             terminator = m.group(1)
-    return msg
+    return msg, comment
+
+
+def _is_citation(lines: list[str], comment_idx: set[int], i: int) -> bool:
+    """¿El comentario nombra la forma para decir que NO funciona?
+
+    La ventana es el bloque de comentarios contiguo que contiene la línea, no un
+    radio fijo: una explicación de por qué el prefijo no llega ocupa cuatro o
+    cinco líneas de `#` seguidas, y un radio fijo se comería el `echo` de al lado
+    —que sí es una oferta— dándole la absolución de su vecino.
+    """
+    if i not in comment_idx:
+        return False
+    lo = i
+    while lo - 1 >= 0 and lo - 1 in comment_idx:
+        lo -= 1
+    hi = i
+    while hi + 1 < len(lines) and hi + 1 in comment_idx:
+        hi += 1
+    return bool(_CITA_RE.search("\n".join(lines[lo : hi + 1])))
 
 
 def _reads_from_command_text(lines: list[str], msg_idx: set[int], var: str) -> bool:
@@ -168,6 +244,22 @@ def _reads_from_command_text(lines: list[str], msg_idx: set[int], var: str) -> b
         if _CMD_TEXT_RE.search(window) and _TEXT_MATCH_RE.search(window):
             return True
     return False
+
+
+def _offers_honored_command_flag(
+    lines: list[str], msg_idx: set[int], line: str
+) -> str | None:
+    """¿El mensaje ofrece un `--flag` que el hook busca en el texto del comando?"""
+    for flag in sorted(set(_FLAG_OFFER_RE.findall(line))):
+        for j, other in enumerate(lines):
+            if flag not in other or j in msg_idx:
+                continue
+            window = "\n".join(
+                lines[max(0, j - _WINDOW) : min(len(lines), j + _WINDOW + 1)]
+            )
+            if _TEXT_MATCH_RE.search(window):
+                return flag
+    return None
 
 
 def _next_token(line: str, end: int) -> str | None:
@@ -206,7 +298,7 @@ def classify_source(rel: str, text: str) -> list[Row]:
     """
     rows: list[Row] = []
     lines = text.splitlines()
-    msg_idx = _message_lines(lines)
+    msg_idx, comment_idx = _message_lines(lines)
     for i, line in enumerate(lines):
         for m in KILLSWITCH_RE.finditer(line):
             var = m.group(1)
@@ -216,8 +308,27 @@ def classify_source(rel: str, text: str) -> list[Row]:
                 verdict, reason = "honesto", "ofrece export / settings.json / bypass.env"
             elif _promises_launch_prefix(line, m.end()):
                 verdict, reason = "honesto", "prefijo sobre el lanzamiento del arnés"
+            elif (_flag := _offers_honored_command_flag(lines, msg_idx, line)) :
+                verdict, reason = (
+                    "honesto",
+                    f"ofrece el token `{_flag}`, que el hook lee del comando",
+                )
             elif not _promises_inline_prefix(line, m.end()):
-                verdict, reason = "ambiguo", "nombra la variable sin nombrar vía"
+                # No hay forma de activación escrita. Quién lo lee decide el
+                # veredicto: en un comentario es inventario, en un mensaje
+                # emitido es una salida que el lector no puede tomar.
+                if i in comment_idx:
+                    verdict, reason = (
+                        "declaracion",
+                        "comentario que declara el switch, sin ofrecer vía",
+                    )
+                else:
+                    verdict, reason = (
+                        "incompleto",
+                        "mensaje emitido que nombra la variable sin nombrar vía",
+                    )
+            elif _is_citation(lines, comment_idx, i):
+                verdict, reason = "cita", "comentario que nombra la forma rota para negarla"
             elif _reads_from_command_text(lines, msg_idx, var):
                 verdict, reason = "honesto", "ofrece prefijo y lo lee del texto"
             else:
@@ -241,17 +352,22 @@ def collect() -> list[Row]:
 def census(rows: list[Row]):
     from cos_lib.measurement import Census
 
-    counted = {"mentira": 0, "honesto": 0}
-    blind = {"ambiguo: nombra la variable sin nombrar vía": 0, "código, no mensaje": 0}
+    counted = {"mentira": 0, "honesto": 0, "incompleto": 0}
+    blind = {
+        "declaración en comentario: no es una oferta": 0,
+        "cita de una oferta: el comentario la niega": 0,
+        "código, no mensaje": 0,
+    }
+    _blind_key = {
+        "declaracion": "declaración en comentario: no es una oferta",
+        "cita": "cita de una oferta: el comentario la niega",
+        "codigo": "código, no mensaje",
+    }
     for r in rows:
-        if r.verdict == "mentira":
-            counted["mentira"] += 1
-        elif r.verdict == "honesto":
-            counted["honesto"] += 1
-        elif r.verdict == "ambiguo":
-            blind["ambiguo: nombra la variable sin nombrar vía"] += 1
+        if r.verdict in counted:
+            counted[r.verdict] += 1
         else:
-            blind["código, no mensaje"] += 1
+            blind[_blind_key[r.verdict]] += 1
     return Census(
         subject="kill-switches de hooks con vía de activación ejecutable",
         sources=("hooks/**/*.sh (rglob, symlinks resueltos, _lib y _archived incluidos)",),
@@ -261,8 +377,13 @@ def census(rows: list[Row]):
         notes=(
             "VAR=1 <cmd-de-adentro> no llega al hook: el hook es hijo del arnés",
             "VAR=1 claude (al LANZAR), export previo, settings.json y bypass.env sí funcionan",
-            "no distingue una oferta de la CITA de una oferta: un comentario que "
-            "documenta la forma rota cuenta como mentira. Cuenta de más, no de menos.",
+            "distingue oferta de CITA: un comentario que nombra la forma rota "
+            "DENTRO de una explicación de por qué no llega no es una promesa. "
+            "El marcador de negación solo absuelve dentro de un comentario.",
+            "cuarta vía: un token `--flag` en el comando cuenta como honesto solo "
+            "si el literal aparece en código del hook junto a un comparador de texto",
+            "solo mira hooks: un .md que ofrece COS_BYPASS=k <cmd> se gatea por "
+            "ruta en tests/contracts/test_killswitch_activation_is_executable.py",
         ),
     )
 
