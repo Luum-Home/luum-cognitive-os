@@ -45,5 +45,17 @@ def test_context_hook_emits_pending_messages(tmp_path: Path) -> None:
 
     assert res.returncode == 0
     out = json.loads(res.stdout)
-    assert "Pending directed agent messages" in out["additionalContext"]
-    assert "Check edge case" in out["additionalContext"]
+    # Claude Code reads additionalContext ONLY from inside hookSpecificOutput
+    # (contract: manifests/claude-code-hooks-schema.yaml). The root-level form
+    # is valid JSON, so the host parses it, recognises no field, and drops the
+    # context without a word. Asserting the root-level key -- as this test did
+    # until 5d9c1ee1b fixed the hook -- certifies exactly the defect that made
+    # the inbox invisible. Assert the delivered shape, and assert the discarded
+    # one is absent so this cannot silently regress back to it.
+    assert "additionalContext" not in out, (
+        "root-level additionalContext is dropped by the host; emitting it is the bug"
+    )
+    specific = out["hookSpecificOutput"]
+    assert specific["hookEventName"] == "UserPromptSubmit"
+    assert "Pending directed agent messages" in specific["additionalContext"]
+    assert "Check edge case" in specific["additionalContext"]
