@@ -73,7 +73,13 @@ cos_bypass_var() {
 # del archivo. Fail-silent: la auditoría no puede ser el motivo de un bloqueo.
 cos_bypass_audit() {
   local key="$1" hook="$2" reason="$3" dir
-  dir="$(_cos_bypass_project_dir)/.cognitive-os/metrics"
+  # COS_METRICS_DIR primero: sin esto, cualquier test que ejercite un bypass
+  # (con COS_METRICS_DIR apuntado a un temporal, como hace tests/conftest.py)
+  # igual escribia en la telemetria REAL del operador -- medido 2026-08-20,
+  # +231 bytes deterministas en .cognitive-os/metrics/bypass-activation.jsonl
+  # por cada invocacion, sin ninguna forma de redirigirlo. Ver
+  # tests/audit/test_metrics_isolation.py::test_bypass_audit_honors_cos_metrics_dir.
+  dir="${COS_METRICS_DIR:-$(_cos_bypass_project_dir)/.cognitive-os/metrics}"
   mkdir -p "$dir" 2>/dev/null || true
   python3 - "$dir/bypass-activation.jsonl" "$key" "$hook" "$reason" \
     "${COS_SESSION_ID:-${CLAUDE_SESSION_ID:-unknown}}" <<'PY_AUDIT' 2>/dev/null || true
