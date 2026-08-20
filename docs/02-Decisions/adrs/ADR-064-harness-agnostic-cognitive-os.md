@@ -10,7 +10,11 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: implementation evidence plus partial/deferred/future signal
-partial_remaining: Surfaces 2-4 and the Codex/Cursor adapter files were not yet implemented.
+partial_remaining: 'Surface 2 is unimplemented for the Claude Code harness only:
+  its settings driver keeps the hook registry as shell literals and has never read
+  cognitive-os.yaml > harness.hooks (measured 2026-08-20, see the verification note
+  of that date). The bare, codex and opencode drivers do read it. Surfaces 3-4 and
+  the Cursor adapter file remain outstanding.'
 remaining_in_scope: true
 partial_remaining_basis: explicit body remaining signal
 ---
@@ -159,6 +163,14 @@ harness:
 - `scripts/_lib/settings-driver-codex.sh` — projects into `.codex/config.toml` hook surface.
 - `scripts/_lib/settings-driver-cursor.sh` — projects into Cursor's rules/hooks format (best-effort).
 - `scripts/_lib/settings-driver-bare.sh` — projects into `cos-runner`'s hook registry file.
+
+> **Correction (2026-08-20): the Claude Code driver has never done this.**
+> `settings-driver-claude-code.sh` keeps its hook registry as shell literals and
+> does not read this block; the bare, codex and opencode drivers do read it. The
+> sentence above is the one false claim in this ADR — see the two verification
+> notes at the end, and `manifests/documentation-truth-claims.yaml >
+> claude_code_hook_registration` for the ledgered version.
+
 
 Hooks themselves (the `.sh` files) MUST stay harness-neutral: read canonical
 JSON from stdin (shape defined in ADR-033), write canonical events out. The
@@ -413,3 +425,104 @@ mentioned here.
 
 Reproduce the path half of this note over the whole ADR corpus with
 `python3 scripts/audit_adr_path_reality.py`.
+
+---
+
+## Verification note — 2026-08-20 (where the Surface 2 claim came from)
+
+Measured, not re-decided. This note **corrects the framing of the 2026-08-15
+note above** and sizes what is still open. The `status` field stays `accepted`:
+the decision was never withdrawn.
+
+**Correction to the note above.** It says this ADR "stopped describing the
+code". The git record says it never described it, for this one driver:
+
+```console
+$ git log --oneline -S"CONFIG_FILE" -- scripts/_lib/settings-driver-claude-code.sh
+c888aa1ba 2026-08-19 docs(driver): que la cabecera diga lo que el driver hace
+387c9fc56 2026-04-30 feat(adr-064): implement P0 Tasks 1-3 — canonical hook registry + settings drivers
+$ git show 387c9fc56:scripts/_lib/settings-driver-claude-code.sh | grep -c CONFIG_FILE
+1
+```
+
+`387c9fc56` is the commit that implemented this ADR. Its own message reads
+"Task 2: scripts/\_lib/settings-driver-claude-code.sh — Reads harness.hooks,
+projects to .claude/settings.json". In that file, at that commit, `CONFIG_FILE`
+is assigned on line 38 of 384 and never read. There was no later decision to
+stop reading the yaml; the read was never written. The dead assignment was taken
+for the implementation for **111 days** (2026-04-30 → 2026-08-19), and it was
+load-bearing: the same claim was injected into every sub-agent through
+`templates/project-gotchas.md` and `hooks/inject-phase-context.sh`.
+
+**What is false, precisely.** One sentence of Surface 2, for one harness: *"A
+settings driver per harness projects this canonical block into the
+harness-native config."* True of `settings-driver-bare.sh`,
+`settings-driver-codex.sh` and `settings-driver-opencode.sh` — all three call
+`yaml.safe_load`/`yq` on `cognitive-os.yaml`. False of
+`settings-driver-claude-code.sh`, which calls neither:
+
+```console
+$ for f in bare codex opencode claude-code; do printf "%-12s " "$f"; \
+    grep -vE '^\s*#' scripts/_lib/settings-driver-$f.sh \
+    | grep -cE 'yq |yaml\.safe_load|import yaml'; done
+bare         2
+codex        2
+opencode     2
+claude-code  0
+```
+
+Nothing else in this ADR is affected by it: the four surfaces, the
+replicate/do-not-replicate split, the phase estimate and the rejected
+alternatives all still stand as written.
+
+**Good decision, missing implementation — not an unviable decision.** Three
+sibling drivers implement exactly what Surface 2 describes, so the design is
+not the obstacle. And the canonical block is not a stub: it already carries the
+Claude Code registry almost in full. Measured 2026-08-20:
+
+```console
+$ .venv/bin/python -c "
+import yaml,pathlib,re
+h=(yaml.safe_load(open('cognitive-os.yaml')) or {}).get('harness',{}).get('hooks',{})
+scripts={v['script'] for v in h.values() if isinstance(v,dict) and v.get('script')}
+code='\n'.join(l for l in pathlib.Path('scripts/_lib/settings-driver-claude-code.sh').read_text().splitlines() if not re.match(r'\s*#',l))
+lit=set(re.findall(r'hooks/[A-Za-z0-9_.-]+\.sh', code))
+print(len(h), len(scripts), len(lit), sorted(s for s in scripts if s not in code), sorted(l for l in lit if l not in scripts))"
+202 192 186 ['hooks/auto-refine.sh', 'hooks/auto-verify.sh', 'hooks/concurrent-write-guard-codex-proxy.sh', 'hooks/dod-gate.sh', 'hooks/publication-safety.sh', 'hooks/task-completed.sh'] []
+```
+
+202 yaml entries over 192 distinct scripts; 186 of those scripts appear as shell
+literals in the driver; **zero** driver literals are absent from the yaml. The
+two registries do not disagree about content — they disagree about mechanism.
+The open debt is one read, plus three details the driver settles today that the
+yaml would have to settle instead. None of the three needs a new schema:
+
+1. **Profile gating written in bash.** `grep -n 'PROFILE" = "full"'` returns
+   driver lines 301, 408 and 445; the last two gate four hooks in a form no gate
+   can read, because no gate parses an `if`. The yaml already has `profiles:`
+   and 4 entries use it — the migration is moving those hooks onto the key and
+   deleting the conditionals.
+2. **Order inside each hook group.** Positional in the driver. A YAML mapping
+   loaded by PyYAML keeps document order, so it is expressible; what is missing
+   is anything asserting that the order is contractual rather than incidental.
+3. **The `async` flag.** `cognitive-os.yaml` already carries `async` on 42
+   entries (33 of them `true`) and this driver has its own
+   `_cc_hook_entry_async`. The yaml value simply has no reader on this lane —
+   and the driver's comment above `subagent_start` (line ~276) spells out the
+   consequence: setting `async: false` in the yaml *looks* like a landed fix,
+   survives review, and is undone by the next run of the driver.
+
+So the schema is close to sufficient and the missing piece is mostly the read
+plus a decision about (1). Cost estimate and the fifteen registration surfaces
+involved: `docs/06-Daily/reports/forense-superficie-de-registro-2026-08-20.md`.
+
+**Live consequence while it is open.** A hook declared only in
+`cognitive-os.yaml` never fires under Claude Code and nothing reports it. The
+standing example is `hooks/publication-safety.sh`. The gate for this is
+`scripts/audit_hook_registration.py` (`cos_lib/hook_registration_audit.py`),
+which audits the Claude Code lane specifically because it is the lane that
+drifts by hand.
+
+Full history of this finding:
+`docs/06-Daily/reports/adr-064-contra-la-realidad-2026-08-20.md`.
+
