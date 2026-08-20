@@ -486,18 +486,51 @@ claims:
       next_action: recount and rewrite the sentence with the measured value, or replace the digits with
         the command
     - id: tests_symlink_census
-      claim: The channel tells every agent that tests/ has ZERO symlinks (the half of the sentence that
-        was false for months).
+      claim: The channel tells every agent how many symlinks tests/ holds. Counted RECURSIVELY -- the
+        previous version of this assertion used `for f in tests/*`, which does not descend into tests/unit/,
+        so it certified "tests/ has ZERO symlinks" while two lived there. An instrument that reproduces
+        the measurement bug it is meant to catch is a cheap green, not a gate.
       command:
       - bash
       - -c
-      - n=0; for f in tests/*; do [ -L "$f" ] && n=$((n+1)); done; if [ "$n" -eq 0 ]; then echo "tests/
-        has ZERO symlinks"; else echo "tests/ has $n symlinks"; fi
+      - echo "tests/ has $(find tests -type l | wc -l | tr -d ' ') symlinks"
       expect:
         stdout_phrase_in:
         - templates/agent-mandatory-rules.md
-      next_action: 'if tests/ gained a symlink the sentence is now a lie in every agent prompt: fix the
-        sentence'
+      next_action: 'if tests/ gained or lost a symlink the sentence is now a lie in every agent prompt:
+        recount with `find tests -type l` and fix the sentence'
+    - id: blocking_hook_actually_blocks
+      claim: 'The channel tells every agent that `rm`+`ln -s` with a relative target under a directory
+        symlink IS blocked. A claim that a hook BLOCKS is only verifiable by running the hook: the 2026-08-20
+        judgement declared this sentence false on the strength of `grep -c symlink-mutation-guard .claude/settings.json`
+        returning 0, and the warning was deleted from the channel. The hook does block -- it runs from
+        hooks/bash-hot-path-dispatcher.sh, which is the registered entry. This probe feeds the incident
+        payload on stdin and demands exit 2, and feeds an innocent command and demands exit 0, so neither
+        half can rot unseen: a guard that stops blocking AND a guard that starts blocking everything both
+        turn this red.'
+      command:
+      - bash
+      - -c
+      - 'set -u; unset COS_ALLOW_SYMLINK_MUTATION COS_BYPASS COS_ALLOW_PROTECTED_CONFIG_WRITE; H=hooks/bash-hot-path-dispatcher.sh;
+        [ -x "$H" ] || { echo "dispatcher missing or not executable: $H"; exit 1; }; grep -q "bash-hot-path-dispatcher"
+        .claude/settings.json || { echo "dispatcher is not registered in .claude/settings.json"; exit 1;
+        }; mk() { printf ''{"hook_event_name":"PreToolUse","tool_name":"Bash","tool_input":{"command":"%s"},"cwd":"%s","session_id":"doc-truth-probe"}''
+        "$1" "$PWD"; }; BAD="rm cos_lib/harness_adapter/codex.py && ln -s ../../packages/agent-lifecycle/lib/harness_adapter/codex.py
+        cos_lib/harness_adapter/codex.py"; OK="ls -la cos_lib/harness_adapter/codex.py"; mk "$BAD" | bash
+        "$H" >/dev/null 2>&1; bad=$?; mk "$OK" | bash "$H" >/dev/null 2>&1; ok=$?; [ "$bad" -eq 2 ] || {
+        echo "incident payload was NOT blocked: dispatcher exit $bad, expected 2"; exit 1; }; [ "$ok" -eq
+        0 ] || { echo "innocent payload was blocked: dispatcher exit $ok, expected 0"; exit 1; }; echo
+        "symlink-mutation-guard blocks the incident payload (exit 2) and allows an innocent one (exit 0)"'
+      surface:
+      - templates/agent-mandatory-rules.md
+      - templates/project-gotchas.md
+      - hooks/bash-hot-path-dispatcher.sh
+      - hooks/symlink-mutation-guard.sh
+      expect:
+        exit_code: 0
+      next_action: 'run the hook before believing either verdict. If it stopped blocking, restore the wiring
+        in hooks/bash-hot-path-dispatcher.sh; if the guard was deliberately retired, delete the sentence
+        from the channel in the same commit -- never grep a registry to decide this'
     - id: cited_rule_files_exist
       claim: Every rule the channel orders the agent to obey exists as rules/<name>.md.
       command:
