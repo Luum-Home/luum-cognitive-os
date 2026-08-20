@@ -1,0 +1,125 @@
+{
+  "events": {
+    "PostToolUse": {
+      "cwd": "str",
+      "hook_event_name": "str",
+      "session_id": "str",
+      "tool_input": "object",
+      "tool_name": "str",
+      "tool_response": "object",
+      "transcript_path": "str"
+    },
+    "PreToolUse": {
+      "cwd": "str",
+      "hook_event_name": "str",
+      "session_id": "str",
+      "tool_input": "object",
+      "tool_name": "str",
+      "transcript_path": "str"
+    },
+    "UserPromptSubmit": {
+      "cwd": "str",
+      "hook_event_name": "str",
+      "permission_mode": "str",
+      "prompt": "str",
+      "session_id": "str",
+      "transcript_path": "str"
+    }
+  },
+  "observed": {
+    "PostToolUse": 2022,
+    "PreToolUse": 2013,
+    "UserPromptSubmit": 319
+  },
+  "schema_version": 1,
+  "source": "reconstructed from harness transcripts (values discarded, kinds kept)",
+  "tool_input_keys": {
+    "Agent": {
+      "description": "str",
+      "model": "str",
+      "prompt": "str",
+      "run_in_background": "bool",
+      "subagent_type": "str"
+    },
+    "AskUserQuestion": {
+      "questions": "list"
+    },
+    "Bash": {
+      "command": "str",
+      "description": "str",
+      "run_in_background": "bool",
+      "timeout": "int"
+    },
+    "Edit": {
+      "file_path": "str",
+      "new_string": "str",
+      "old_string": "str",
+      "replace_all": "bool"
+    },
+    "Read": {
+      "file_path": "str",
+      "limit": "int",
+      "offset": "int"
+    },
+    "SendMessage": {
+      "content": "str",
+      "message": "str",
+      "recipient": "str",
+      "summary": "str",
+      "to": "str",
+      "type": "str"
+    },
+    "Skill": {
+      "args": "str",
+      "skill": "str"
+    },
+    "TaskStop": {
+      "task_id": "str"
+    },
+    "ToolSearch": {
+      "max_results": "int",
+      "query": "str"
+    },
+    "WebFetch": {
+      "prompt": "str",
+      "url": "str"
+    },
+    "WebSearch": {
+      "query": "str"
+    },
+    "Workflow": {
+      "description": "str",
+      "script": "str"
+    },
+    "Write": {
+      "content": "str",
+      "file_path": "str"
+    },
+    "mcp__ccd_session__dismiss_task": {
+      "reason": "str",
+      "task_id": "str"
+    },
+    "mcp__ccd_session__mark_chapter": {
+      "summary": "str",
+      "title": "str"
+    },
+    "mcp__ccd_session__spawn_task": {
+      "cwd": "str",
+      "prompt": "str",
+      "title": "str",
+      "tldr": "str"
+    },
+    "mcp__plugin_engram_engram__mem_save": {
+      "content": "str",
+      "project": "str",
+      "title": "str",
+      "topic_key": "str",
+      "type": "str"
+    },
+    "mcp__plugin_engram_engram__mem_session_summary": {
+      "content": "str",
+      "project": "str",
+      "summary": "str"
+    }
+  }
+}
