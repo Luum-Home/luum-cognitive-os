@@ -172,7 +172,18 @@ def test_cos_metrics_dir_adoption_only_goes_up() -> None:
 
 def _run_gate(env_extra: dict, payload: dict, cwd: Path) -> subprocess.CompletedProcess:
     env = os.environ.copy()
-    for key in ("COGNITIVE_OS_SESSION_ID", "CLAUDE_SESSION_ID", "COS_ALLOW_SKILL_BYPASS"):
+    # La cadena COMPLETA de cos_session_id(), no las dos que uno recuerda.
+    # `CLAUDE_CODE_SESSION_ID` es la que el arnes exporta de verdad
+    # (env-vars.md:339); sin sacarla, este test hereda la sesion que CORRE la
+    # suite, el gate resuelve identidad y deja de probar el caso anonimo.
+    for key in (
+        "COGNITIVE_OS_SESSION_ID",
+        "CLAUDE_CODE_SESSION_ID",
+        "CLAUDE_CODE_HOST_SESSION_ID",
+        "CODEX_SESSION_ID",
+        "CLAUDE_SESSION_ID",
+        "COS_ALLOW_SKILL_BYPASS",
+    ):
         env.pop(key, None)
     env["DISABLE_HOOK_ORCHESTRATOR_SKILL_INVOCATION_GATE"] = "0"
     env.update(env_extra)
@@ -227,6 +238,21 @@ def test_the_fabricated_identity_is_gone_from_the_gate() -> None:
     """Nadie vuelve a poner `unknown` como clave: el verde barato de esta parte."""
     text = _code_only(GATE.read_text(encoding="utf-8"))
     assert '[ -z "$SESSION_ID" ] && SESSION_ID="unknown"' not in text
-    counter_line = [ln for ln in text.splitlines() if "skill-bypass-counter-" in ln and "=" in ln]
-    assert counter_line, "desaparecio el contador; revisar este test antes que el hook"
-    assert "unknown" not in counter_line[0]
+    assert 'SESSION_ID="unknown"' not in text
+    assert 'SESSION_ID:-unknown' not in text
+
+    # 2026-08-20 — el contador por sesion no "perdio el unknown": desaparecio.
+    # Sumaba +1 por tool call de por vida y sin reset, asi que llego a 143 contra
+    # un umbral de 3 y quedo latcheado desde el 2026-05-18. Lo reemplaza un
+    # contador de insistencia cuya CLAVE incluye el prompt_hash, que es lo que
+    # hace que el reset sea estructural: cambiar de prompt cambia el archivo.
+    assert "skill-bypass-counter-" not in text, (
+        "el contador de por vida volvio al codigo; era el mecanismo latcheado"
+    )
+    insist = [ln for ln in text.splitlines() if "skill-gate-insist-" in ln and "=" in ln]
+    assert insist, "desaparecio el contador de insistencia; revisar este test antes que el hook"
+    assert "_gate_key" in insist[0], (
+        "la clave del contador tiene que incluir el prompt_hash, o vuelve a ser "
+        "un acumulado por sesion con otro nombre"
+    )
+    assert "PROMPT_HASH" in text
