@@ -19,7 +19,9 @@
 #   git commit -- path/to/file    — double-dash pathspec form
 #   git commit --amend -- path    — pathspec IS honoured by --amend (measured)
 #   git commit --amend (clean index) — cannot absorb anyone else's work
-#   COS_BYPASS_COMMIT_GUARD=1     — emergency bypass (logged)
+#   COS_BYPASS=commit_guard in .cognitive-os/runtime/bypass.env (re-read on every
+#   invocation, so it works mid-session), or an exported COS_BYPASS_COMMIT_GUARD=1
+#   in the launching shell — both resolved by _lib/bypass-resolver.sh (ADR-241).
 #   git commit --no-verify ...    — allowed only when paired with a scope flag
 #
 # WHY --amend GETS ITS OWN VERDICT (measured 2026-08-15, see
@@ -40,6 +42,11 @@
 set -uo pipefail
 
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
+# ADR-241 shared bypass resolver: defines cos_bypass_allows. Without this the
+# `commit_guard` check below is inert -- `type cos_bypass_allows` fails, the
+# documented kill-switch silently does nothing, and the block message offers a
+# way out that cannot work.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/bypass-resolver.sh"
 
 # ── Read hook input ───────────────────────────────────────────────────────────
 
@@ -324,8 +331,12 @@ if [ "$VERDICT" = "BLOCK_AMEND" ]; then
     echo "A bare --amend is allowed automatically once the index is clean:"
     echo "  git restore --staged <other-agents-paths>   then retry"
     echo
-    echo "EMERGENCY BYPASS (logs to agent-audit-trail.jsonl):"
-    echo "  COS_BYPASS_COMMIT_GUARD=1 git commit --amend --no-edit"
+    echo "EMERGENCY BYPASS (ADR-241 key commit_guard; logs to agent-audit-trail.jsonl):"
+    echo "  printf 'COS_BYPASS=commit_guard\\n' >> .cognitive-os/runtime/bypass.env"
+    echo "  then retry. That file is re-read on every hook invocation, so it takes"
+    echo "  effect mid-session; delete the line when you are done. Putting"
+    echo "  COS_BYPASS_COMMIT_GUARD in front of the command does not reach this"
+    echo "  hook, which ran earlier as a child of the harness, in its own process."
   } >&2
   _emit_commit_receipt "amend-dirty-index-blocked"
   exit 2
@@ -348,8 +359,12 @@ NOT allowed:
   git commit -m "..."                              (commits entire staged index)
   git commit --no-edit                             (no explicit scope)
 
-EMERGENCY BYPASS (logs to agent-audit-trail.jsonl):
-  COS_BYPASS_COMMIT_GUARD=1 git commit -m "..."
+EMERGENCY BYPASS (ADR-241 key commit_guard; logs to agent-audit-trail.jsonl):
+  printf 'COS_BYPASS=commit_guard\n' >> .cognitive-os/runtime/bypass.env
+  then retry. That file is re-read on every hook invocation, so it takes effect
+  mid-session; delete the line when you are done. Putting COS_BYPASS_COMMIT_GUARD
+  in front of the command does not reach this hook, which ran earlier as a child
+  of the harness, in its own process.
 GUARD_ERROR
 
 _emit_commit_receipt "unscoped-commit-blocked"

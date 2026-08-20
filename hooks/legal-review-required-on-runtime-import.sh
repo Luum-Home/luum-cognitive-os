@@ -138,6 +138,9 @@ $(printf '%s' "$RESULT" | tail -n +2)
 
 Resolution:
   - Run cos-counsel-packet, get counsel review, then cos-legal-approve.
-  - Or bypass (logged): COS_ALLOW_PRE_LEGAL_REVIEW_IMPORT=1 git commit ...
+  - Or bypass (logged): export COS_ALLOW_PRE_LEGAL_REVIEW_IMPORT=1 in the shell
+    that LAUNCHES the harness, or in the env block of .claude/settings.json.
+    In front of the git commit command it is set for git, not for this hook,
+    which ran earlier as a child of the harness, in its own process.
 EOF
 exit 1

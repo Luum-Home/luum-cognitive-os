@@ -127,6 +127,10 @@ done
 echo "" >&2
 echo "Required header fields (first 30 lines): Source-Pattern, License, Clean-Room-Protocol." >&2
 echo "Code fences need '# from <path>' / '// from <path>' / 'Source:' / '**Source**' line." >&2
-echo "Bypass (logged): COS_ALLOW_INCOMPLETE_ATTRIBUTION=1 git commit ..." >&2
+echo "Bypass (logged): export COS_ALLOW_INCOMPLETE_ATTRIBUTION=1" >&2
+echo "  Read from the environment of the harness process: export it in the shell" >&2
+echo "  that LAUNCHES the harness, or add it to the env block of .claude/settings.json." >&2
+echo "  In front of the git commit command it is set for git, not for this hook, which" >&2
+echo "  ran earlier as a child of the harness, in its own process." >&2
 echo "Reference: docs/02-Decisions/adrs/ADR-267-license-compliance-enforcement-architecture.md" >&2
 exit 1

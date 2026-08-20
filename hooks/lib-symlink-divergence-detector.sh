@@ -181,7 +181,10 @@ echo "Full report:"
 echo "  python3 ${PROJECT_DIR}/scripts/cos_lib_symlink_invariant_audit.py --format markdown"
 echo ""
 echo "To bypass (emergency only -- will be logged):"
-echo "  COS_ALLOW_LIB_DIVERGENCE=1 git commit ..."
+echo "  export COS_ALLOW_LIB_DIVERGENCE=1 in the shell that LAUNCHES the harness,"
+echo "  or in the env block of .claude/settings.json. In front of the git commit"
+echo "  command it is set for git, not for this hook, which ran earlier as a"
+echo "  child of the harness, in its own process."
 echo ""
 
 exit 1
