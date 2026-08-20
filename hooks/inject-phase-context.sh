@@ -201,7 +201,7 @@ NOTE: there is no lib/ at the repo root — the package dir is cos_lib/. SOME co
   # settings.json trap
   if echo "$AGENT_PROMPT" | grep -qiE 'settings\.json|wire.*hook|add.*hook.*settings'; then
     GOTCHAS="${GOTCHAS}
-NOTE: .claude/settings.json is GENERATED — never hand-edit it. But the Claude Code driver does NOT read cognitive-os.yaml: scripts/_lib/settings-driver-claude-code.sh holds its registry HARDCODED as shell literals (its own header says so, after CONFIG_FILE was found assigned and never read). The bare/codex/opencode drivers do read the yaml; Claude Code is the exception. Registering a hook so it actually fires takes SIX surfaces, kept in step BY HAND: cognitive-os.yaml, that driver, scripts/apply-efficiency-profile.sh, and templates/security-profiles/{minimal,standard,paranoid}.json. Verify with: grep -c '<hook>' cognitive-os.yaml scripts/_lib/settings-driver-claude-code.sh scripts/apply-efficiency-profile.sh templates/security-profiles/*.json"
+NOTE: .claude/settings.json is GENERATED — never hand-edit it. But the Claude Code driver does NOT read cognitive-os.yaml: scripts/_lib/settings-driver-claude-code.sh holds its registry HARDCODED as shell literals (its own header says so, after CONFIG_FILE was found assigned and never read; strip the comments and ONE yaml reference survives, a [ -f ] to locate the root). The bare/codex/opencode drivers do read the yaml; Claude Code is the exception. A yaml entry alone does not make a hook fire. Do NOT count the surfaces by hand or trust a number in prose — run the audit: .venv/bin/python3 scripts/audit_hook_registration.py (exit 1 = a declared hook is unreachable, undeclared and never observed; it names the surfaces and the fix)."
   fi
 
   # Hook creation trap
