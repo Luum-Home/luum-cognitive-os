@@ -1,4 +1,4 @@
 {
-  "max_findings": 129,
+  "max_findings": 127,
   "note": "Measured, not chosen. Lower it when ADRs are fixed; raising it requires a written decision."
 }

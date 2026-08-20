@@ -48,7 +48,7 @@ manually decide what to do. That broke the autonomous-learning promise.
 
 ### Relationship to existing repair infrastructure
 
-`hooks/_lib/auto-repair-dispatcher.sh` handles *agent-level* auto-repair
+`hooks/auto-repair-dispatcher.sh` handles *agent-level* auto-repair
 (crashes, failed tool calls). It is distinct from skill-level repair: a skill
 failure is a degradation of the OS's skill catalog, not a transient tool
 error. The two systems coexist without overlap.
