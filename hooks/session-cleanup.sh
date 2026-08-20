@@ -39,18 +39,61 @@ if [ -f "$CONFIG_FILE" ]; then
   [ "$PARSED_MERGE" = "false" ] && MERGE_METRICS=false
 fi
 
+# --- _session_owner_alive ---------------------------------------------------
+# Devuelve 0 (viva) cuando el proceso duenio de la sesion sigue corriendo, o
+# cuando no hay evidencia para afirmar lo contrario. Conservador por diseno: sin
+# prueba de muerte, la sesion se considera viva y no se toca nada suyo.
+#
+# Existe porque este hook esta registrado en Stop, y Stop dispara UNA VEZ POR
+# TURNO, no al cerrar la sesion. Medido sobre 286.163 filas de telemetria
+# (.cognitive-os/metrics/hook-timing.jsonl mas .archive/hook-timing-*.jsonl.gz):
+# 335 disparos de session-cleanup contra 75 aperturas de sesion, con hasta 41
+# disparos DENTRO de una misma ventana SessionStart->SessionStart. "El turno
+# termino" no es evidencia de que "la sesion termino", y de esa confusion colgaba
+# todo el paso destructivo.
+_session_owner_alive() {
+  local meta="$SESSION_DIR/meta.json"
+  local pid=""
+  [ -f "$meta" ] || return 0
+  command -v jq >/dev/null 2>&1 || return 0
+  pid=$(jq -r '.pid' "$meta" 2>/dev/null)
+  case "$pid" in ''|null|*[!0-9]*) return 0 ;; esac
+  [ "$pid" -eq 0 ] && return 0
+  ps -p "$pid" >/dev/null 2>&1 && return 0
+  kill -0 "$pid" 2>/dev/null && return 0
+  return 1
+}
+
 # --- Step 1: Merge session metrics into global metrics ---
+# Merge INCREMENTAL. Antes era `cat "$metric_file" >> "$global_file"`: con Stop
+# disparando por turno, cada turno reapendaba el archivo ENTERO y el global
+# terminaba con N copias de las mismas filas. El offset por archivo hace el merge
+# idempotente, y reejecutarlo sin filas nuevas no cuesta nada.
 if [ "$MERGE_METRICS" = true ] && [ -d "$SESSION_DIR/metrics" ]; then
   mkdir -p "$GLOBAL_METRICS_DIR"
 
   MERGE_LOCK_DIR="$PROJECT_DIR/.cognitive-os/runtime/locks"
   mkdir -p "$MERGE_LOCK_DIR" 2>/dev/null || true
+  MERGE_OFFSET_DIR="$SESSION_DIR/.merge-offsets"
+  mkdir -p "$MERGE_OFFSET_DIR" 2>/dev/null || true
 
   for metric_file in "$SESSION_DIR/metrics"/*.jsonl; do
     [ ! -f "$metric_file" ] && continue
     basename_file=$(basename "$metric_file")
     global_file="$GLOBAL_METRICS_DIR/$basename_file"
     lockfile="$MERGE_LOCK_DIR/merge-${basename_file}.lock"
+    offset_file="$MERGE_OFFSET_DIR/$basename_file"
+
+    merged_bytes=0
+    if [ -f "$offset_file" ]; then
+      merged_bytes=$(tr -d '[:space:]' < "$offset_file" 2>/dev/null)
+      case "$merged_bytes" in ''|*[!0-9]*) merged_bytes=0 ;; esac
+    fi
+    current_bytes=$(wc -c < "$metric_file" 2>/dev/null | tr -d '[:space:]')
+    case "$current_bytes" in ''|*[!0-9]*) current_bytes=0 ;; esac
+    # Rotacion o truncado del archivo de sesion: el offset viejo ya no aplica.
+    [ "$current_bytes" -lt "$merged_bytes" ] && merged_bytes=0
+    [ "$current_bytes" -le "$merged_bytes" ] && continue
 
     # Acquire per-file exclusive lock with 30s timeout; fail-open on timeout
     if command -v flock >/dev/null 2>&1; then
@@ -59,7 +102,8 @@ if [ "$MERGE_METRICS" = true ] && [ -d "$SESSION_DIR/metrics" ]; then
           echo "[session-cleanup] WARN: lock timeout for $basename_file — skipping merge" >&2
           exit 1
         }
-        cat "$metric_file" >> "$global_file"
+        tail -c "+$((merged_bytes + 1))" "$metric_file" >> "$global_file"
+        printf '%s' "$current_bytes" > "$offset_file"
       ) 9>"$lockfile"; then
         continue
       fi
@@ -81,7 +125,8 @@ if [ "$MERGE_METRICS" = true ] && [ -d "$SESSION_DIR/metrics" ]; then
         echo "[session-cleanup] WARN: lock timeout (mkdir) for $basename_file — skipping merge" >&2
       fi
       if [ "$_lock_acquired" = true ]; then
-        cat "$metric_file" >> "$global_file"
+        tail -c "+$((merged_bytes + 1))" "$metric_file" >> "$global_file"
+        printf '%s' "$current_bytes" > "$offset_file"
         rmdir "$_lock_dir" 2>/dev/null || true
       else
         continue
@@ -108,21 +153,59 @@ _deregister_session() {
 
 _deregister_session
 
-# --- Step 3: Release any locks held by this session ---
+# --- Step 3: Release locks whose OWNING PROCESS is gone ---
+# Antes soltaba todo lock con el session_id de esta sesion. En un hook que
+# dispara por turno eso significa arrancarle el lock a un escritor VIVO de la
+# misma sesion: hooks/concurrent-write-guard.sh empezo a tomar locks reales el
+# 2026-08-19 (commit 82969b80f) tras 1.062 invocaciones sin tomar ninguno, asi
+# que a partir de hoy hay locks vivos que arrancar.
+#
+# Criterio nuevo: se suelta un lock solo cuando su .pid ya no existe. Es el mismo
+# test de obsolescencia que el guard aplica sobre si mismo
+# (hooks/concurrent-write-guard.sh: LOCK_AGE > LOCK_TIMEOUT o PID muerto), de
+# modo que este paso ya no puede quitar un lock que su duenio siga usando; en el
+# peor caso el guard lo recicla solo a los 300s.
 LOCKS_DIR="$SESSIONS_DIR/locks"
-if [ -d "$LOCKS_DIR" ]; then
+if [ -d "$LOCKS_DIR" ] && command -v jq >/dev/null 2>&1; then
   for lockfile in "$LOCKS_DIR"/*.lock; do
     [ ! -f "$lockfile" ] && continue
-    LOCK_SESSION=$(jq -r '.session_id // empty' "$lockfile" 2>/dev/null)
-    if [ "$LOCK_SESSION" = "$SESSION_ID" ]; then
-      rm -f "$lockfile"
-    fi
+    LOCK_SESSION=$(jq -r '.session_id' "$lockfile" 2>/dev/null)
+    [ "$LOCK_SESSION" = "$SESSION_ID" ] || continue
+    LOCK_PID=$(jq -r '.pid' "$lockfile" 2>/dev/null)
+    case "$LOCK_PID" in ''|null|*[!0-9]*) continue ;; esac
+    [ "$LOCK_PID" -eq 0 ] && continue
+    ps -p "$LOCK_PID" >/dev/null 2>&1 && continue
+    kill -0 "$LOCK_PID" 2>/dev/null && continue
+    rm -f "$lockfile"
   done
 fi
 
-# --- Step 4: Clean up session directory (if configured) ---
-if [ "$CLEANUP_ON_EXIT" = true ] && [ -d "$SESSION_DIR" ]; then
-  rm -rf "$SESSION_DIR"
+# --- Step 4: Retire the session directory (archive-first, never rm -rf) ---
+# Aca vivia `rm -rf "$SESSION_DIR"`, incondicional salvo por cleanup_on_exit. Dos
+# cosas lo hacian inaceptable:
+#
+#   1. Stop dispara por turno (ver _session_owner_alive), asi que el borrado caia
+#      sobre una sesion VIVA. Con la identidad resuelta al id del arnes, el
+#      objetivo habria sido .cognitive-os/sessions/$CLAUDE_CODE_SESSION_ID/, el
+#      directorio que hooks/subagent-budget-enforcer.sh:106 usa como estado vivo
+#      de presupuesto (210 contadores subagent-tool-calls-* al momento de medir).
+#   2. Contradice ADR-119 (Session Filesystem Reaper, status: implemented), que
+#      es el contrato escrito para este mismo directorio: archive-first, con
+#      estados KEEP_ACTIVE / KEEP_PENDING_CONTENT / KEEP_RECENT_GRACE y borrado
+#      recien en RM_ARCHIVED pasada la retencion. El reaper vive en
+#      hooks/_lib/session-fs-reap.sh, lo invoca scripts/so-reaper.sh:305 y su
+#      destino .cognitive-os/archive/sessions/ ya tenia 405 entradas.
+#
+# Un hook de Stop no puede decidir lo que ADR-119 decide con evidencia de PID,
+# contenido pendiente y ventana de gracia. Lo unico que puede afirmar barato es
+# "el duenio murio". Con eso: mueve el directorio al archivo del reaper, que se
+# encarga de la retencion. Sin eso: no toca nada.
+if [ "$CLEANUP_ON_EXIT" = true ] && [ -d "$SESSION_DIR" ] && ! _session_owner_alive; then
+  ARCHIVE_DIR="$PROJECT_DIR/.cognitive-os/archive/sessions"
+  mkdir -p "$ARCHIVE_DIR" 2>/dev/null || true
+  ARCHIVE_TARGET="$ARCHIVE_DIR/$SESSION_ID"
+  [ -e "$ARCHIVE_TARGET" ] && ARCHIVE_TARGET="$ARCHIVE_TARGET.$(date +%s)"
+  mv "$SESSION_DIR" "$ARCHIVE_TARGET" 2>/dev/null || true
 fi
 
 # Clean up PID-based session file
