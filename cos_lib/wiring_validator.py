@@ -2,18 +2,25 @@
 """WiringValidator — detects components that exist but are never registered/used.
 
 Validates three component types:
-  - Hooks: must appear in set-security-profile.sh AND in the efficiency registry.
-    The canonical hook registry is cognitive-os.yaml > harness.hooks (ADR-064);
-    apply-efficiency-profile.sh delegates projection to
-    scripts/_lib/settings-driver-claude-code.sh. This validator reads the canonical
-    registry as the primary efficiency signal and falls back to the profile-script
-    baseline text as a secondary signal.
+  - Hooks: structural triage — file exists, named in set-security-profile.sh,
+    declared in the canonical registry, and present in the active settings driver.
+
+    CAVEAT, MEASURED 2026-08-19: cognitive-os.yaml > harness.hooks is the
+    canonical DECLARATION (ADR-064) but it is NOT what registers a hook with
+    Claude Code. scripts/_lib/settings-driver-claude-code.sh holds that registry
+    as shell literals and never reads the yaml, so `in_efficiency_profile` is
+    True for hooks that Claude Code never runs — hooks/publication-safety.sh is
+    the live example. Do NOT read `wiring_score` as "this hook runs".
+    The authoritative orphan gate is cos_lib/hook_registration_audit.py
+    (scripts/audit_hook_registration.py); this validator stays the per-file
+    triage across hooks, libs and rules.
   - Libs:  must be imported by at least one other file
   - Rules: must appear in RULES-COMPACT.md or EXCLUDED_RULES in self-install.sh
 """
 
 from __future__ import annotations
 
+import json
 import re
 import os
 from pathlib import Path
@@ -76,14 +83,54 @@ class WiringValidator:
             self._registry_hooks_set = names
         return self._registry_hooks_set
 
+    @staticmethod
+    def _hook_command_text(path: Path) -> str:
+        """Return the JSON string values that can name a hook, minus permissions.
+
+        `.claude/settings.local.json` is gitignored, machine-specific, and holds
+        a `permissions` allowlist and no hooks block at all. Reading it as the
+        settings driver made `in_settings_json` a substring hit against permission
+        strings — 36 accidental Trues on this tree, and a signal that measures
+        something different in a clean clone or in CI. A candidate that yields no
+        hook-command text is skipped rather than believed.
+        """
+        try:
+            data = json.loads(path.read_text())
+        except (OSError, ValueError):
+            return ""
+        if isinstance(data, dict):
+            data = {k: v for k, v in data.items() if k != "permissions"}
+        chunks: list[str] = []
+
+        def walk(node: Any) -> None:
+            if isinstance(node, str):
+                chunks.append(node)
+            elif isinstance(node, dict):
+                for value in node.values():
+                    walk(value)
+            elif isinstance(node, list):
+                for value in node:
+                    walk(value)
+
+        walk(data)
+        return "\n".join(chunks)
+
     def _settings(self) -> str:
         if self._settings_content is None:
             self._settings_path = None
+            fallback: tuple[Path, str] | None = None
             for p in self._settings_candidates():
-                if p.exists():
+                if not p.exists():
+                    continue
+                text = self._hook_command_text(p)
+                if ".sh" in text:
                     self._settings_path = p
-                    self._settings_content = p.read_text()
+                    self._settings_content = text
                     break
+                if fallback is None:
+                    fallback = (p, text)
+            if self._settings_content is None and fallback is not None:
+                self._settings_path, self._settings_content = fallback
             if self._settings_content is None:
                 self._settings_content = ""
         return self._settings_content
@@ -98,7 +145,7 @@ class WiringValidator:
         if explicit == "codex":
             return (codex, claude_local, claude)
         if explicit == "claude":
-            return (claude_local, claude, codex)
+            return (claude, claude_local, codex)
 
         codex_hints = any(
             os.environ.get(name, "")
@@ -107,7 +154,7 @@ class WiringValidator:
         if codex_hints:
             return (codex, claude_local, claude)
 
-        return (claude_local, claude, codex)
+        return (claude, claude_local, codex)
 
     def _settings_label(self) -> str:
         """Return a human-readable label for the active settings driver."""
