@@ -860,9 +860,20 @@ llm_providers:
       haiku: claude-haiku-3-5
 
 # ── ADR-064: Canonical Hook Registry ─────────────────────────────────────────
-# Single source of truth for all hook registrations. Settings drivers
-# (scripts/_lib/settings-driver-claude-code.sh, settings-driver-codex.sh)
-# project this block into harness-native configs.
+# Canonical DECLARATION of every hook. The bare, codex and opencode settings
+# drivers read this block (yaml.safe_load / yq) and project it into their
+# harness-native configs.
+#
+# IT IS NOT THE REGISTRATION FOR CLAUDE CODE. Measured 2026-08-20:
+# scripts/_lib/settings-driver-claude-code.sh keeps its registry as shell
+# literals and has never read this block -- the header of that file says so, and
+# ADR-064's 2026-08-20 verification note has the git evidence. Verify with:
+#   grep -vE '^\s*#' scripts/_lib/settings-driver-claude-code.sh \
+#     | grep -cE 'yq |yaml\.safe_load'      # -> 0   (each sibling driver -> 2)
+# Consequence: a hook declared HERE ONLY exists, never fires under Claude Code,
+# and nothing reports it (live case: hooks/publication-safety.sh). Adding a hook
+# means editing that driver by hand as well; the orphan gate is
+# scripts/audit_hook_registration.py.
 #
 # Event name mapping (canonical → Claude Code native):
 #   SessionStart      → SessionStart

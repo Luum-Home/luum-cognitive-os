@@ -6,17 +6,22 @@
 # THE HOOK REGISTRY LIVES IN THIS FILE, HARDCODED. It is NOT read from
 # cognitive-os.yaml. This header used to say the opposite -- "Project
 # cognitive-os.yaml > harness.hooks into .claude/settings.json" -- and it was
-# false: CONFIG_FILE was assigned and never read once, while the 225 hook paths
-# below are shell literals passed to _cc_hook_group. The assignment is gone;
+# false: CONFIG_FILE was assigned and never read once, while every hook path
+# below is a shell literal passed to _cc_hook_group. The assignment is gone;
 # this paragraph is what replaced it.
 #
-# The sibling drivers do read the yaml (bare, codex and opencode reference it
-# 6, 5 and 15 times). Claude Code is the exception, and the exception is the
-# thing worth knowing before editing anything here.
+# The sibling drivers do read the yaml. Claude Code is the exception, and the
+# exception is the thing worth knowing before editing anything here. Verify:
+#   for f in bare codex opencode claude-code; do printf '%-12s ' "$f"; \
+#     grep -vE '^\s*#' scripts/_lib/settings-driver-$f.sh \
+#     | grep -cE 'yq |yaml\.safe_load'; done
+#   # bare 2 / codex 2 / opencode 2 / claude-code 0
 #
-# WHAT THIS COSTS. cognitive-os.yaml > harness.hooks holds 200 entries naming
-# 190 distinct scripts, and 184 of those appear here: the two lists are kept in
-# step BY HAND. A hook added only to the yaml never reaches Claude Code, and
+# WHAT THIS COSTS. cognitive-os.yaml > harness.hooks declares every hook this
+# driver registers, plus a handful it does not: the two lists are kept in step
+# BY HAND. The exact counts move week to week -- the snippet that reproduces
+# them lives in ADR-064's 2026-08-20 verification note, not in this header,
+# because the first version of this paragraph went stale in one day. A hook added only to the yaml never reaches Claude Code, and
 # nothing reports it. Measured 2026-08-19, the live case is
 # hooks/publication-safety.sh -- declared PreToolUse on Bash with scope: both
 # and no `default_projection: false`, absent from this driver, absent from

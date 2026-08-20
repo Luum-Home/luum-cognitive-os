@@ -250,12 +250,14 @@ class WiringValidator:
             fixes.append(f"Add '{name}' to set-security-profile.sh (standard + paranoid)")
         if not in_efficiency:
             issues.append(
-                "not registered in cognitive-os.yaml > harness.hooks "
-                "(canonical registry, ADR-064) nor in the apply-efficiency-profile.sh baseline"
+                "not declared in cognitive-os.yaml > harness.hooks "
+                "(canonical declaration, ADR-064) nor in the apply-efficiency-profile.sh baseline"
             )
             fixes.append(
-                f"Register '{name}' in cognitive-os.yaml > harness.hooks, then run: "
-                "bash scripts/apply-efficiency-profile.sh (ADR-064)"
+                f"Declare '{name}' in cognitive-os.yaml > harness.hooks AND add it by hand "
+                "to scripts/_lib/settings-driver-claude-code.sh -- that driver does not read "
+                "the yaml (ADR-064 verification note 2026-08-20) -- then run: "
+                "bash scripts/apply-efficiency-profile.sh"
             )
         if not in_settings:
             issues.append(f"not active in current {self._settings_label()}")
