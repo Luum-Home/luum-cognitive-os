@@ -318,3 +318,50 @@ n = len(sorted(p.name for p in Path("hooks").glob("*.sh") if p.is_file()))
 Es un conteo de la realidad, no un presupuesto: la línea dice cuántos archivos
 hay, y hay 254. La nota de la fila deja constancia de que el 257 anterior nunca
 cerró.
+
+## Contaminación del commit `376976744` — declarada, no disimulada
+
+El commit del borrado salió **dos veces**. La primera vez
+(`e34f5b8d1`) fue con pathspec explícito y contenía exactamente mis 20 archivos.
+Pero el mensaje quedó mal: el `cat > msg.txt` que lo generaba viajaba dentro de un
+comando que un guard bloqueó antes de ejecutarlo, y el `git commit -F` terminó
+leyendo un `msg.txt` que **otro agente hermano de esta misma sesión había escrito
+en el mismo scratchpad** — el scratchpad no está aislado por agente, solo por
+sesión. El commit quedó con el asunto de otro trabajo
+("chore(poda): borrar el shim rate-limit-protection…").
+
+Al corregirlo con `git commit --amend -F <mensaje correcto>` **sin repetir el
+pathspec**, el amend reconstruyó el commit desde el índice compartido — que en ese
+momento tenía staged el trabajo en vuelo de las otras dos sesiones. Resultado:
+`376976744` tiene 42 archivos, no 20. Los 22 que no son míos:
+
+```
+.claude/settings.json                     scripts/claim_proof_audit.py
+cognitive-os.yaml                         scripts/docs_execution_audit.py
+cos_lib/measurement.py                    scripts/external_claim_freshness_audit.py
+templates/security-profiles/minimal.json  scripts/hook_test_reality_census.py
+templates/security-profiles/standard.json scripts/primitive_row_audit.py
+templates/security-profiles/paranoid.json scripts/reduction_backlog.py
+scripts/apply-efficiency-profile.sh       docs/06-Daily/reports/primitive-row-audit-latest.{json,md}
+scripts/_lib/settings-driver-claude-code.sh  docs/06-Daily/reports/reduction-backlog-latest.{json,md}
+docs/06-Daily/reports/recorte-perfil-default-2026-08-19.md
+tests/contracts/test_emitted_counts_declare_provenance.py
+tests/red_team/portability/test_measurement.py
+tests/unit/test_measurement_census.py
+```
+
+**Ningún trabajo se perdió**: esos archivos están commiteados, con su contenido
+intacto; lo que está mal es la atribución, porque viajan bajo mi mensaje. No lo
+revierto: otra sesión ya commiteó encima (`05eec8b5f`), y reescribir historia
+compartida mientras dos agentes escriben en el mismo checkout hace más daño que
+un commit gordo. Queda escrito acá para que el `git log` no mienta sin aviso.
+
+**Dos lecciones operativas, para que no se repita:**
+
+1. **El scratchpad de sesión es compartido entre agentes hermanos.** Un nombre
+   genérico (`msg.txt`, `out.json`, `t.jsonl`) es una colisión esperándote.
+   Nombres únicos por tarea.
+2. **`git commit --amend` ignora el pathspec del commit original.** Bajo sesiones
+   concurrentes, amend sobre un índice compartido barre lo ajeno. Si hay que
+   corregir un mensaje en un checkout compartido, hay que repetir el pathspec
+   (`git commit --amend -F msg -- <paths>`) o no amendear.
