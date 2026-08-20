@@ -365,3 +365,38 @@ un commit gordo. Queda escrito acá para que el `git log` no mienta sin aviso.
    concurrentes, amend sobre un índice compartido barre lo ajeno. Si hay que
    corregir un mensaje en un checkout compartido, hay que repetir el pathspec
    (`git commit --amend -F msg -- <paths>`) o no amendear.
+
+## `tests/contracts/` completo: 4 fallos, 2 eran míos y están arreglados
+
+La corrida completa (`-q -p no:randomly --timeout=300`, 11m12s) dio
+**4 failed, 859 passed, 4 skipped, 16 xfailed**.
+
+**Míos, arreglados** (commit `6f9f78d74`):
+
+- `test_portable_ai_completion.py::test_adapter_manifests_are_generated_for_profiles`
+  — `assert 864 == 862`. Al sacar las entradas de `projected_primitives` de los
+  `adapter.json` dejé `projected_primitive_count` con el número viejo. Corregido a
+  862 y 827, que es `len(projected_primitives)`.
+- `test_portable_ai_overlay.py::test_portable_ai_overlay_is_generated_and_current`
+  — el overlay quedó stale en `context.json`, `profiles/claude.json` y
+  `profiles/codex.json`. Regenerado con `scripts/portable_ai_overlay.py`, que tocó
+  exactamente esos 5 archivos y ninguno ajeno. Los dos tests: **13 passed**.
+
+Es el mismo error dos veces, y vale anotarlo: **editar a mano un artefacto
+generado deja los contadores derivados apuntando al conteo viejo**. El asiento no
+es solo la fila; es la fila más todo lo que la cuenta.
+
+**No míos, quedan abiertos:**
+
+- `test_primitive_harness_partial_ratchets.py::test_primitive_harness_partial_debt_does_not_regress`
+  — falla en `assert coverage["summary"]["unclassified_gaps"] == 0` con **2**.
+  Un borrado solo puede **quitar** primitivas, no crear un gap sin clasificar para
+  otra; las dos candidatas son primitivas nuevas de las sesiones concurrentes
+  (`docs/06-Daily/reports/primitive-harness-{coverage,partials}-latest.*` ya
+  estaban dirty antes de que yo tocara nada). **No las clasifiqué en
+  `primitive-harness-gap-policy.yaml`**: clasificar la primitiva de otro para
+  apagar el rojo es exactamente el verde barato prohibido. Queda para quien las
+  agregó.
+- `test_ram_ceiling.py::test_so_vitals_reports_disk_under_ceiling` — `.cognitive-os/`
+  ocupa 407.8 MiB contra un techo de 400.0. Es estado de runtime, y el encargo me
+  prohíbe escribir o borrar bajo `.cognitive-os/`.
