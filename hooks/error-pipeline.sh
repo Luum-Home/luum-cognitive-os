@@ -315,7 +315,7 @@ if [ "$REPAIR_PATH" = "deterministic" ]; then
   fix_fingerprint=$(echo "$FIX_JSON" | jq -r '.fingerprint // empty')
   success=false
   case "$fix_type" in
-    command|restart|cache_clear) [ -n "$fix_command" ] && timeout 10 bash -c "$fix_command" >/dev/null 2>&1 && success=true ;;
+    command|restart|cache_clear) [ -n "$fix_command" ] && portable_timeout 10 bash -c "$fix_command" >/dev/null 2>&1 && success=true ;;
     code_change)
       if [ -n "$fix_diff" ] && [ "$ALLOW_CODE" = "true" ]; then
         decoded_diff=$(echo "$fix_diff" | base64 -d 2>/dev/null || echo "$fix_diff" | base64 --decode 2>/dev/null)

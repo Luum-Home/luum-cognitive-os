@@ -48,17 +48,21 @@ agent_name=""
 
 # Look for patterns like "SKILL: Load skills/xxx/SKILL.md" or "Identity: agent-name"
 if [ -n "$agent_prompt" ]; then
+  # POSIX ERE, no PCRE: BSD grep (macOS) no trae -P y devolvia vacio en
+  # silencio, asi que agent_name quedaba "" en CADA spawn de esta maquina y la
+  # busqueda de sidecar no se intentaba nunca. `\s`/`\S` tampoco existen en
+  # ERE: van como [[:space:]] / [^[:space:]].
   # Match "Identity: agent-name" pattern
-  agent_name=$(echo "$agent_prompt" | grep -oP 'Identity:\s*(\S+)' 2>/dev/null | head -1 | sed 's/Identity:\s*//' || true)
+  agent_name=$(echo "$agent_prompt" | sed -nE 's/.*Identity:[[:space:]]*([^[:space:]]+).*/\1/p' | head -1 || true)
 
   # Match skill invocation patterns
   if [ -z "$agent_name" ]; then
-    agent_name=$(echo "$agent_prompt" | grep -oP 'skills/([^/]+)/' 2>/dev/null | head -1 | sed 's|skills/||;s|/||' || true)
+    agent_name=$(echo "$agent_prompt" | sed -nE 's|.*skills/([^/]+)/.*|\1|p' | head -1 || true)
   fi
 
   # Match sdd phase names
   if [ -z "$agent_name" ]; then
-    agent_name=$(echo "$agent_prompt" | grep -oP 'sdd-(explore|propose|spec|design|tasks|apply|verify|archive|improve)' 2>/dev/null | head -1 || true)
+    agent_name=$(echo "$agent_prompt" | grep -oE 'sdd-(explore|propose|spec|design|tasks|apply|verify|archive|improve)' 2>/dev/null | head -1 || true)
   fi
 fi
 

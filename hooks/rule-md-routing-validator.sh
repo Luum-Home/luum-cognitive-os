@@ -15,7 +15,6 @@
 # Type:     command
 # Async:    true
 # Exit:     always 0
-# Latency:  <100ms (pure bash, optional python for JSON log)
 #
 # Killswitch: DISABLE_HOOK_RULE_MD_ROUTING_VALIDATOR=1
 # Allowlist:  hooks/_lib/registration-allowlist.txt
@@ -42,7 +41,11 @@ case "$FILE_PATH" in
   *) exit 0 ;;
 esac
 base="$(basename "$FILE_PATH")"
-case "${base^^}" in
+# La expansion de caso ${base^^} es bash 4: el bash del sistema en macOS
+# (3.2.57) corta con "bad substitution" y el hook entero muere ahi.
+# tr es POSIX y da lo mismo en los dos userlands.
+base_upper="$(printf '%s' "$base" | tr '[:lower:]' '[:upper:]')"
+case "$base_upper" in
   RULES-COMPACT.MD|ROADMAP.MD|README.MD) exit 0 ;;
 esac
 

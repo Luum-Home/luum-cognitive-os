@@ -229,7 +229,7 @@ if [[ -n "$AGENT_PROMPT" ]] && command -v python3 >/dev/null 2>&1; then
   # Extract key nouns from the prompt for Engram search
   SEARCH_TERMS=$(echo "$AGENT_PROMPT" | grep -oE '\b(lib|hook|settings|workflow|pipeline|packages|symlink|duplicate|profile|efficiency)\b' 2>/dev/null | sort -u | head -3 | tr '\n' ' ' || true)
   if [[ -n "$SEARCH_TERMS" ]]; then
-    ENGRAM_WARNINGS=$(timeout 3 python3 -c "
+    ENGRAM_WARNINGS=$(portable_timeout 3 python3 -c "
 import sys, json, subprocess
 try:
     # Search engram for discovery-type memories matching keywords
