@@ -3,7 +3,9 @@
 Sibling de ``test_claude_code_hooks_schema_conformance.py``, con una diferencia
 que es la razón de existir de este archivo: aquel test lee UNA fuente de
 registro, ``.claude/settings.json``. Ese archivo es GENERADO (ADR-064). El
-registro canónico es ``cognitive-os.yaml > harness.hooks``, y hay una tercera
+registro canónico es ``cognitive-os.yaml > harness.hooks`` -- canónico como
+DECLARACIÓN: el driver de Claude Code no lo lee, lleva su registro en literales
+de shell (ADR-064, nota de verificación 2026-08-20) -- y hay una tercera
 fuente que ninguno de los dos mira: ``templates/security-profiles/*.json``, que
 ``scripts/set-security-profile.sh`` **copia encima** de ``settings.json``
 ("Copy the profile JSON as the new settings.json", línea 87).

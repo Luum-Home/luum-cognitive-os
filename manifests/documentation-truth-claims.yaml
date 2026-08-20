@@ -141,7 +141,15 @@ claims:
       nothing reports it. The claim mattered enough to earn a ledger entry because
       it was injected into every sub-agent prompt through
       templates/project-gotchas.md, so every agent of 2026-08-19 was told the wrong
-      way to register a hook, and at least one followed it.
+      way to register a hook, and at least one followed it. Origin, established
+      2026-08-20: the driver never read the yaml. CONFIG_FILE was a dead
+      assignment in 387c9fc56, the very commit that implemented ADR-064 and whose
+      message claims "Reads harness.hooks" -- so the claim stood for 111 days
+      without a decision behind it. The first version of this claim declared a
+      single backticked literal as its forbidden phrase and matched nothing while
+      three live copies existed (cognitive-os.yaml's own block header,
+      cos_lib/wiring_validator.py's remediation text, ADR-064.synthesis.md); the
+      phrase list below is what those copies actually said.
     facts:
       driver: scripts/_lib/settings-driver-claude-code.sh
       surfaces_for_one_hook: 6
@@ -154,10 +162,19 @@ claims:
       - scripts/_lib/settings-driver-claude-code.sh
       - hooks/inject-phase-context.sh
       - templates/project-gotchas.md
+      - cognitive-os.yaml
+      - cos_lib/wiring_validator.py
+      - docs/02-Decisions/adrs/ADR-064-harness-agnostic-cognitive-os.md
+      - docs/02-Decisions/adrs/ADR-064.synthesis.md
     required_phrases:
       - Claude Code is the exception
+      - IT IS NOT THE REGISTRATION FOR CLAUDE CODE
+      - has never read this block
     forbidden_phrases:
       - "the canonical hook registry is `cognitive-os.yaml > harness.hooks`"
+      - Single source of truth for all hook registrations
+      - project this block into harness-native configs
+      - "in cognitive-os.yaml > harness.hooks, then run"
   consumer_projection_harnesses:
     severity: high
     description: Consumer projection docs must describe current implemented native and structural harnesses, not the old Claude/Codex-only boundary.
