@@ -28,16 +28,40 @@ fi
 
 SESSION_DIR="$SESSIONS_DIR/$SESSION_ID"
 
-# Read cleanup config from cognitive-os.yaml
+# --- Las dos perillas de este hook, y por que estaban muertas ---------------
+# El default vive aca, no en un archivo: si ninguna config existe, esto es lo
+# que rige. Escrito ARRIBA de la lectura para que se lea como default y no como
+# resultado de parsear algo.
 CLEANUP_ON_EXIT=true
 MERGE_METRICS=true
-CONFIG_FILE="$PROJECT_DIR/.cognitive-os/cognitive-os.yaml"
-if [ -f "$CONFIG_FILE" ]; then
-  PARSED_CLEANUP=$(grep 'cleanup_on_exit:' "$CONFIG_FILE" 2>/dev/null | head -1 | sed 's/.*cleanup_on_exit:[[:space:]]*//' | tr -d '[:space:]')
-  [ "$PARSED_CLEANUP" = "false" ] && CLEANUP_ON_EXIT=false
-  PARSED_MERGE=$(grep 'merge_metrics_on_exit:' "$CONFIG_FILE" 2>/dev/null | head -1 | sed 's/.*merge_metrics_on_exit:[[:space:]]*//' | tr -d '[:space:]')
-  [ "$PARSED_MERGE" = "false" ] && MERGE_METRICS=false
-fi
+
+# Se leia UN solo archivo, .cognitive-os/cognitive-os.yaml, que no existe en
+# ningun checkout de este repo. Consecuencia medida el 2026-08-19: las dos
+# perillas eran decorativas — poner `cleanup_on_exit: false` en el
+# cognitive-os.yaml de la raiz (linea 181, el canonico de ADR-064) no
+# desactivaba nada, y el `true` que regia salia del default de aca arriba.
+#
+# El segundo defecto vivia en el parseo, y solo se ve con el archivo presente:
+# la linea canonica es `cleanup_on_exit: true  # Remove session directory...`,
+# y el sed no cortaba el comentario. Con `false` escrito ahi, el valor parseado
+# habria sido `false#Removesessiondirectoryonexit`, que no compara igual a
+# `false`. O sea que conectar el archivo sin arreglar el parseo dejaba la
+# perilla igual de muerta, solo que mas dificil de ver.
+_read_knob() {
+  local key="$1" file raw value=""
+  # Orden de precedencia: canonico primero, override local despues — gana el
+  # ultimo valor no vacio.
+  for file in "$PROJECT_DIR/cognitive-os.yaml" "$PROJECT_DIR/.cognitive-os/cognitive-os.yaml"; do
+    [ -f "$file" ] || continue
+    raw=$(grep -E "^[[:space:]]*${key}:" "$file" 2>/dev/null | head -1 \
+      | sed -E "s/^[[:space:]]*${key}:[[:space:]]*//; s/#.*$//" | tr -d '[:space:]')
+    [ -n "$raw" ] && value="$raw"
+  done
+  printf '%s' "$value"
+}
+
+[ "$(_read_knob cleanup_on_exit)" = "false" ] && CLEANUP_ON_EXIT=false
+[ "$(_read_knob merge_metrics_on_exit)" = "false" ] && MERGE_METRICS=false
 
 # --- _session_owner_alive ---------------------------------------------------
 # Devuelve 0 (viva) cuando el proceso duenio de la sesion sigue corriendo, o
