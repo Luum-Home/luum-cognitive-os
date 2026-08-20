@@ -12,9 +12,11 @@ por separado, sobre dos poblaciones distintas a propósito.
   ahora **3 de 7**.
 - **Escape:** **19 guards bloquean y ofrecen bypass**; antes **5** tenían vía
   ejecutable a mitad de sesión, ahora **7**.
-- Se arreglaron dos: `scope-marker-portability-gate` (atribuye por el pathspec
-  del commit) y `subagent-budget-enforcer` (escape por `bypass.env`, con motivo
-  obligatorio y fila de auditoría).
+- Se arreglaron **cuatro**: `scope-marker-portability-gate` (atribuye por el
+  pathspec del commit), `subagent-budget-enforcer` (escape por `bypass.env`, con
+  motivo obligatorio y fila de auditoría), y los **dos gates de
+  `.githooks/pre-commit`** que auditaban el árbol entero — aparecieron porque
+  bloquearon este mismo commit por dos scripts sin trackear de otra sesión.
 - El arreglo de mayor rendimiento fue el que anticipaba el encargo: **`bypass.env`
   ahora transporta cualquier variable `COS_*`**, no sólo `COS_BYPASS`.
 - 7 pruebas en `tests/contracts/test_guards_attribute_to_their_trigger.py`; las 2
@@ -127,6 +129,36 @@ mensaje diga cuál de los dos archivos es del que dispara.
 No los toqué en esta tanda: el helper `cos_git_commit_pathspec` quedó en
 `hooks/_lib/git-command-parse.sh`, que es de donde ya se sirven, así que el
 cambio es de una línea cada uno. Lo dejo dicho como deuda con nombre.
+
+### El tercer y cuarto guard, encontrados porque bloquearon este commit
+
+No estaban en el censo de hooks porque no son hooks del arnés: son los gates 3g
+de `.githooks/pre-commit` (`core.hooksPath=.githooks`, así que ése es el vivo;
+`.git/hooks/pre-commit` es un residuo de mayo que git ignora).
+
+El encabezado del gate ya decía **"for staged primitive changes"** y calculaba
+`staged_primitives`… para usarlo únicamente como *disparador*. Después corría
+`cos-scope-both-portability-audit --strict` y `cos-scope-projection-audit
+--strict` sobre el **filesystem entero** — 358 y 1500 artefactos. La intención
+estaba escrita y la implementación no la cumplía.
+
+Lo que lo destapó: mi commit quedó bloqueado por
+`scripts/portability-two-way-proof.sh` y `scripts/portability_census.py`, dos
+archivos **sin trackear** (`??`, sin `git log`) que otra sesión dejó en el árbol
+compartido y que mi commit no tocaba. Es la forma más pura del defecto: no ya el
+índice compartido sino el árbol entero, donde ni siquiera hace falta que el
+vecino haya hecho `git add`.
+
+Ahora los dos gates intersectan sus hallazgos con las primitivas que realmente
+entran en el commit. **La auditoría completa sigue corriendo y sigue reportando
+los 2 faltantes**: no se excluyó estado compartido para tapar falsos positivos,
+cambió a quién bloquea. El barrido de todo el árbol sigue siendo autoridad en
+`scripts/cos-ci-local.sh quick`, donde no hay disparador a quien atribuirle nada
+y mirar todo es lo correcto.
+
+Un detalle que decidí a propósito: un hallazgo **sin artefacto** (violación del
+contrato global, no de un archivo) sigue bloqueando a cualquiera, porque no hay
+a quién atribuírselo y dejarlo pasar sería el verde barato.
 
 ## Escape ejecutable: quiénes lo tienen
 
