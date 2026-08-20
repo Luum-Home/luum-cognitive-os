@@ -403,13 +403,28 @@ cc_driver_emit() {
   )
 
   local post_all
-  # ADR-093 default-profile trim (2026-08-19): tool-sequence-capture.sh and
-  # aci-observation-capture.sh run on EVERY tool call and never block. Measured
-  # over 279,048 wrapper rows they cost 11,808 runs / 5,199.8 s and 11,807 runs /
-  # 3,255.9 s respectively. tool-sequences.jsonl feeds only cos_lib/skill_synthesizer.py
-  # (auto-skill proposal, a convenience); .cognitive-os/artifacts/aci has no
-  # programmatic reader at all outside manifests/state-retention.yaml, which is a
-  # retention policy and not a consumer. Both stay on in `full` for contributors.
+  # ADR-093 default-profile trim (2026-08-19): tool-sequence-capture.sh y
+  # aci-observation-capture.sh corren en CADA tool call y nunca bloquean. Medido
+  # sobre 279.048 filas del wrapper costaban 11.808 corridas / 5.199,8 s y 11.807
+  # corridas / 3.255,9 s respectivamente. Los dos salieron del perfil default.
+  #
+  # REVERTIDO PARA tool-sequence-capture EL 2026-08-20, por decision del operador.
+  #
+  # El analisis de consumidores del trim era correcto AL MOMENTO DE DECIDIR:
+  # tool-sequences.jsonl alimentaba solo cos_lib/skill_synthesizer.py, una
+  # comodidad. Lo que no podia verse entonces es que era tambien la UNICA
+  # telemetria que registra ejecucion de scripts -- esa auditoria no existia.
+  #
+  # Se descubrio al medir la conectividad de las 507 primitivas de scripts/: el
+  # censo quedaba sin su unica fuente de evidencia POSITIVA, la que rescata a un
+  # script que ninguna referencia estatica alcanza pero que igual se ejecuta. Sin
+  # eso, "no encontre quien lo llame" y "nadie lo llama" se vuelven la misma cosa,
+  # y la diferencia entre esos dos estados es la que decide un borrado.
+  #
+  # El costo se paga a sabiendas: ~5.200 s acumulados sobre 279.048 filas, o sea
+  # ~18,6 ms por tool call. aci-observation-capture NO vuelve: no tiene un solo
+  # lector programatico fuera de manifests/state-retention.yaml, que es politica
+  # de retencion y no consumidor.
   if [ "$PROFILE" = "full" ]; then
     post_all=$(_cc_hook_group "PostToolUse" "" \
       "hooks/context-watchdog.sh"       "false" \
@@ -423,6 +438,7 @@ cc_driver_emit() {
       "hooks/context-watchdog.sh"       "false" \
       "hooks/subagent-budget-enforcer.sh" "false" \
       "hooks/rate-limit-detector.sh"    "false" \
+      "hooks/tool-sequence-capture.sh"  "false" \
     )
   fi
 
