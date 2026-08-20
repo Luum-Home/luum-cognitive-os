@@ -35,7 +35,10 @@ _HOOK_EXIT_CODE=0
 # Cache project dir once at source time. Priority: env var > CLAUDE_PROJECT_DIR > cwd
 # git rev-parse only runs if no env var is set (rare in hook context)
 _SAFE_JSONL_PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}}"
-_SAFE_JSONL_METRICS_DIR="$_SAFE_JSONL_PROJECT_DIR/.cognitive-os/metrics"
+# COS_METRICS_DIR: override explicito de quien corre el proceso (la suite lo
+# apunta a un sandbox). Redirige la escritura sin tocar _SAFE_JSONL_PROJECT_DIR,
+# que otros consumidores usan para resolver rutas del repo. 0 subprocesos.
+_SAFE_JSONL_METRICS_DIR="${COS_METRICS_DIR:-$_SAFE_JSONL_PROJECT_DIR/.cognitive-os/metrics}"
 
 # Single date call at source time — reused by heartbeat for duration calc
 _HOOK_START_EPOCH=$(date +%s)

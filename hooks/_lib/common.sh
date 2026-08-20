@@ -163,7 +163,25 @@ cos_session_id() {
 # Compatibilidad: cuando COGNITIVE_OS_SESSION_ID viene seteado explicitamente
 # —la unica via que funcionaba antes de este cambio— la rama por sesion sigue
 # activa sin necesidad del switch, para no alterar comportamiento existente.
+#
+# COS_METRICS_DIR gana sobre TODO lo anterior, incluida la rama por sesion. No es
+# una tercera politica de ruteo: es el override explicito de quien corre el
+# proceso —la suite lo apunta a un sandbox en `conftest.py::pytest_configure`— y
+# ya es la convencion del repo (`bypass-resolver.sh:82`, `tuning.sh:31`,
+# `circuit-breaker.sh:27`, `remediation.sh:40`, `pre-commit-gate.sh:32`).
+# Va PRIMERO, no dentro del `else`: como fallback del global solo taparia el caso
+# con la segregacion apagada, y un test corriendo con COS_SESSION_SCOPED_METRICS=1
+# seguiria escribiendo bajo el `.cognitive-os/sessions/` del operador — el mismo
+# agujero, un nivel mas abajo. Sin la variable esta funcion se comporta
+# exactamente igual que antes: lo sostiene el control B de
+# `scripts/verify-metrics-dir-override.sh`.
 resolve_session_dir() {
+  if [ -n "${COS_METRICS_DIR:-}" ]; then
+    mkdir -p "$COS_METRICS_DIR" 2>/dev/null
+    echo "$COS_METRICS_DIR"
+    return 0
+  fi
+
   local metrics_dir="$_PROJECT_DIR/.cognitive-os/metrics"
   local session_id
   session_id="$(cos_session_id)"

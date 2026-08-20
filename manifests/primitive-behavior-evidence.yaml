@@ -5489,6 +5489,26 @@ evidence:
     ademas el env-pop de COS_ALLOW_PROTECTED_CONFIG_WRITE, sin el cual el subproceso
     hereda la aprobacion y se mide un guard que aprueba todo. os-only porque lee rutas
     de registro que solo existen en el propio SO.
+- primitive: scripts/verify-metrics-dir-override.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_verify-metrics-dir-override.py
+  rationale: Contrafactico doble del override de COS_METRICS_DIR en resolve_session_dir
+    (hooks/_lib/common.sh). Su prueba pareada no afirma que salga 0 -- eso lo cumple
+    un script vacio -- sino que EMITE sus cinco controles, o sea que ejercito las
+    ramas que dice ejercitar. Los controles B y C quedan verdes en las dos ramas del
+    contrafactico; si rojearan junto con el hallazgo, la sonda no discriminaria entre
+    que cayo el ruteo y que cayo todo.
+- primitive: scripts/verify_seeded_writer_detected.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_verify-metrics-dir-override.py
+  rationale: Helper de siembra del control E, invocado por verify-metrics-dir-override.sh
+    con COS_VERIFY_SEEDED_HOOK en el entorno; no es un ejecutable independiente. Se
+    prueba a traves del verificador que lo usa, mas una asercion de que sigue siendo
+    invocado, porque si dejara de serlo el control E imprimiria DETECTADO sin sembrar.
 patterns:
 - pattern: tests/**
   behavior_proven: true
