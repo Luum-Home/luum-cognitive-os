@@ -5466,6 +5466,17 @@ evidence:
     real tree and pins per-file undated-claim counts, and the audit was run in both
     directions (a new undated claim reddens it, the same claim dated and with a
     verification command greens it).
+- primitive: scripts/state_lifecycle_census.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_state_lifecycle_census.py
+  - tests/behavior/test_state_lifecycle_census.py
+  rationale: Censo forense read-only del estado de .cognitive-os. La prueba arma un
+    arbol falso y corre el clasificador real; el par gobierna-sin-reset / gobierna-con-ciclo
+    es la sonda de falsacion (mismo archivo, unico cambio el codigo de reset), y un
+    tercer caso mata la regresion del filtro por extension que perdia ejecutables con
+    shebang y sin sufijo. os-only porque solo lee rutas de .cognitive-os del propio SO.
 patterns:
 - pattern: tests/**
   behavior_proven: true
