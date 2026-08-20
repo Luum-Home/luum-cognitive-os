@@ -278,11 +278,17 @@ BLOCK". **El número 3 sobrevive; la unidad y el alcance no.**
 - **No purgué las 584 filas anónimas.** Dejan de obligar; siguen sirviendo para
   medir.
 - **No corrí la suite completa.** El lote ancho (`tests/unit/` + `tests/red_team/`)
-  pasó los 600 s y quedó en background. Corrí los cinco archivos que tocan este
-  gate, más el control de la corrida de mutación. **Queda pendiente**:
-  `.venv/bin/python -m pytest tests/unit/ tests/red_team/ -q` para descartar que
-  el TTL o el rechazo de sentinelas rompan algún otro consumidor de
-  `last_suggestion`.
+  pasó los 600 s y quedó en background. Sí corrí, acotado a los consumidores de
+  `last_suggestion` y del gate: `tests/unit/test_skill_router.py`,
+  `tests/red_team/portability/test_skill_router.py`,
+  `tests/contracts/test_skill_adherence_loop.py` y
+  `tests/audit/test_metrics_isolation.py` → **159 pasan**. Esa corrida encontró
+  dos tests más que medían otra cosa (`e568fafe6`): uno heredaba
+  `CLAUDE_CODE_SESSION_ID` del proceso que corre pytest y por eso el caso "sin
+  identidad" nunca entraba en la rama de abstención; el otro exigía que
+  siguiera existiendo el contador de por vida. **Queda pendiente** la corrida
+  ancha completa (`tests/unit/ tests/red_team/`) para descartar un consumidor
+  que no aparezca por `grep`.
 - **No medí insistencia real dentro de una sesión**, porque es imposible con los
   datos existentes: las 584 filas son anónimas y no se pueden segmentar. La tabla
   de N usa re-envíos de texto idéntico como proxy y hay que rehacerla con un mes
