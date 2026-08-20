@@ -96,6 +96,17 @@ READ_ONLY: list[tuple[str, str]] = [
     ("git-diff", f"git diff -- {PROTECTED}"),
     ("git-log", f"git log --oneline -- {PROTECTED}"),
     ("mention-writing-elsewhere", f'echo "{PROTECTED_DIR}" > /tmp/nota.txt'),
+    # Resolved 2026-08-20 by the `-c` fix (96367406e): `python3 -c` now gets its
+    # program parsed the way a heredoc always was, so a read-only program is
+    # read as one. Moved out of CONSERVATIVE_OVERBLOCKS in the same commit that
+    # observed it, per that list's own contract; the write shapes it could have
+    # let through are pinned in REAL_WRITES above.
+    (
+        "dash-c-read-only",
+        f"python3 -c \"import json; print(len(json.load(open('{SETTINGS}'))))\"",
+    ),
+    # cp FROM a protected path writes to its second operand, which is scratch.
+    ("cp-from-protected-to-scratch", f"cp {PROTECTED} /tmp/zzz-copy.sh"),
     ("command-substitution-reader", f"n=$(wc -c < {PROTECTED}); echo $n"),
     ("process-substitution-reader", f"diff <(cat {PROTECTED}) <(cat {PROTECTED})"),
     ("process-substitution-arg", f"grep foo <(cat {PROTECTED})"),
@@ -203,6 +214,20 @@ REAL_WRITES: list[tuple[str, str]] = [
         "heredoc-owner-is-second-segment",
         f"cat /etc/hostname && python3 <<'PY'\nopen('{PROTECTED}','w').write('x')\nPY",
     ),
+    # The fence for the 2026-08-20 widening: `-c` was taught to be read like a
+    # heredoc, so every write shape reachable through `-c` is pinned here. If a
+    # future widening trades these away, it fails here and not in a transcript.
+    ("dash-c-open-mode-w", f"python3 -c \"open('{PROTECTED}','w').write('x')\""),
+    (
+        "dash-c-write-text",
+        f"python3 -c \"import pathlib; pathlib.Path('{PROTECTED}').write_text('x')\"",
+    ),
+    (
+        "dash-c-os-open-flags",
+        f"python3 -c \"import os; os.open('{PROTECTED}', os.O_WRONLY)\"",
+    ),
+    # cp reads its first operand and writes its second: the direction matters.
+    ("cp-into-protected", f"cp /tmp/zzz-copy.sh {PROTECTED}"),
 ]
 
 
@@ -237,15 +262,14 @@ def test_real_writes_to_protected_paths_stay_blocked(command: str) -> None:
 # roughly a quarter of the read-only blocks in the session transcripts.
 # --------------------------------------------------------------------------
 CONSERVATIVE_OVERBLOCKS: list[tuple[str, str]] = [
-    (
-        "python-dash-c-read-only",
-        f"python3 -c \"import json; print(len(json.load(open('{SETTINGS}'))))\"",
-    ),
+    # A command word the guard cannot see inside. The script's argument is a
+    # string to the guard, and any protected path in it reads as an operand.
+    # Resolving this means executing or resolving the helper, which the guard
+    # must never do -- so this one is expected to stay.
     (
         "helper-script-with-protected-arg",
         f"/tmp/zzz-helper.sh 'grep -rn foo {PROTECTED_DIR}/'",
     ),
-    ("cp-from-protected-to-scratch", f"cp {PROTECTED} /tmp/zzz-copy.sh"),
 ]
 
 

@@ -45,7 +45,11 @@ def repo(tmp_path: Path) -> Path:
     (repo / "cos_lib").mkdir()
     (repo / "manifests").mkdir()
     shutil.copy(REPO_ROOT / HOOK_REL, repo / HOOK_REL)
-    for lib in ("common.sh", "git-command-parse.sh"):
+    # Every _lib the hook sources. A lib the fixture forgets does not fail
+    # loudly: bash prints "No such file or directory", keeps going, and the
+    # function it defined comes back "command not found" -- which reads as a
+    # false verdict, not as a broken fixture. See _assert_fixture_complete.
+    for lib in ("common.sh", "git-command-parse.sh", "bypass-resolver.sh"):
         shutil.copy(REPO_ROOT / "hooks" / "_lib" / lib, repo / "hooks" / "_lib" / lib)
     for mod in ("__init__.py", "portability_proof_paths.py"):
         shutil.copy(REPO_ROOT / "cos_lib" / mod, repo / "cos_lib" / mod)
@@ -62,7 +66,7 @@ def run_hook(repo: Path, **env_extra: str) -> subprocess.CompletedProcess:
     env.update(env_extra)
     # /bin/bash is 3.2 on macOS; the gate must parse and run there, not only
     # under whichever bash the PATH happens to expose.
-    return subprocess.run(
+    result = subprocess.run(
         ["/bin/bash", str(repo / HOOK_REL)],
         input=PAYLOAD,
         text=True,
@@ -70,6 +74,25 @@ def run_hook(repo: Path, **env_extra: str) -> subprocess.CompletedProcess:
         env=env,
         cwd=str(repo),
     )
+    _assert_fixture_complete(result)
+    return result
+
+
+def _assert_fixture_complete(result: subprocess.CompletedProcess) -> None:
+    """A missing dependency must fail as a broken fixture, not as a verdict.
+
+    When the fixture omits a `hooks/_lib` file the hook sources, bash reports it
+    on stderr and carries on; the helper it defined then resolves to "command
+    not found", returns non-zero, and the gate blocks. The exit code is the one
+    a real block produces, so a test asserting BLOCK goes green for the wrong
+    reason and only the ALLOW cases show it. This turns that silence into noise.
+    """
+    for tell in ("No such file or directory", "command not found"):
+        assert tell not in result.stderr, (
+            f"the fixture repo is missing something the hook needs ({tell!r}); "
+            "the exit code below is the fixture failing, not the gate deciding:\n"
+            + result.stderr
+        )
 
 
 def write(repo: Path, rel: str, text: str) -> None:
