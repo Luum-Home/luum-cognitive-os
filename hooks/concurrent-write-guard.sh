@@ -27,7 +27,22 @@ FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // .tool_input.path // 
 [ -z "$FILE_PATH" ] && exit 0
 
 # Resolve session ID
-SESSION_ID="${COGNITIVE_OS_SESSION_ID:-}"
+#
+# 2026-08-19: este bloque hacia que el guard NO TOMARA UN SOLO LOCK en 1.062
+# invocaciones. El settings no exporta COGNITIVE_OS_SESSION_ID, y el fallback era
+# imposible por construccion: leia .current-session-$$, donde $$ es el PID DEL
+# PROPIO HOOK -- un archivo que tendria que haberlo creado un proceso con ese
+# mismo PID. SESSION_ID quedaba vacio, el exit 0 de mas abajo cortaba, y el
+# mkdir de LOCKS_DIR nunca corria: por eso el directorio de locks ni existia.
+#
+# El harness manda session_id en el payload de todo evento (contrato en
+# manifests/claude-code-hooks-schema.yaml), y el idioma correcto YA ESTABA en
+# este repo: hooks/orchestrator-skill-invocation-gate.sh:36. No se invento nada.
+#
+# Contrafactual verificado antes del cambio: con la variable seteada a mano el
+# hook crea el lock al instante -- el resto de la logica siempre funciono, solo
+# faltaba llegar hasta ella.
+SESSION_ID="${COGNITIVE_OS_SESSION_ID:-${CLAUDE_SESSION_ID:-$(printf '%s' "$INPUT" | jq -r '.session_id // ""' 2>/dev/null)}}"
 if [ -z "$SESSION_ID" ]; then
   SESSION_FILE="$SESSIONS_DIR/.current-session-$$"
   if [ -f "$SESSION_FILE" ]; then
