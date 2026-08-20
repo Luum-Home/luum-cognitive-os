@@ -321,17 +321,76 @@ staged_primitives=$(git diff --cached --name-only --diff-filter=ACM -- \
   'hooks/*' 'scripts/*' 'lib/*' 'skills/*' 'rules/*' 'templates/*' 2>/dev/null || true)
 if [ -n "$staged_primitives" ]; then
   if [ -x "$COS_ROOT/scripts/cos-scope-both-portability-audit" ]; then
-    if ! python3 "$COS_ROOT/scripts/cos-scope-both-portability-audit" --repo-root "$COS_ROOT" --strict --json --no-write >/dev/null; then
+    # ATRIBUCION (2026-08-20). El encabezado de este gate ya decia "for staged
+    # primitive changes", pero la auditoria camina el FILESYSTEM entero: veia
+    # los 358 artefactos del arbol, incluidos los que otra sesion todavia no
+    # commiteo. Medido: dos scripts sin proof, sin trackear y de otra sesion,
+    # bloqueaban un commit que no los tocaba. `staged_primitives` se usaba solo
+    # como disparador; ahora tambien decide de que se hace cargo el commit.
+    #
+    # No es excluir estado compartido para tapar falsos positivos: la auditoria
+    # completa sigue corriendo y sigue reportando los 2 faltantes. Lo que cambia
+    # es a QUIEN bloquea. El barrido de todo el arbol sigue siendo autoridad en
+    # `scripts/cos-ci-local.sh quick`, donde no hay un disparador a quien
+    # atribuirle nada y mirar todo es lo correcto.
+    _portability_json="$(python3 "$COS_ROOT/scripts/cos-scope-both-portability-audit" \
+      --repo-root "$COS_ROOT" --strict --json --no-write 2>/dev/null || true)"
+    _portability_missing="$(printf '%s' "$_portability_json" | python3 -c '
+import json, sys
+
+raw = sys.stdin.read().strip()
+if not raw:
+    raise SystemExit(0)
+try:
+    rows = (json.loads(raw) or {}).get("rows") or []
+except Exception:
+    raise SystemExit(0)  # fail-open: un JSON ilegible no bloquea a nadie
+staged = {line.strip() for line in sys.argv[1].splitlines() if line.strip()}
+for row in rows:
+    if row.get("status") != "covered" and row.get("artifact") in staged:
+        print(row["artifact"], "->", row.get("suggested_test_path", "?"))
+' "$staged_primitives" 2>/dev/null || true)"
+    if [ -n "$_portability_missing" ]; then
       echo "BLOCKED: SCOPE: both artifact lacks a paired portability proof." >&2
-      echo "  Run: scripts/cos-scope-both-portability-audit --strict" >&2
+      printf '%s\n' "$_portability_missing" >&2
       echo "  Scaffold missing proof: scripts/cos-portability-proof-scaffold --artifact <path>" >&2
+      echo "  Solo se juzgan las primitivas que ENTRAN en este commit." >&2
+      echo "  Barrido completo del arbol: scripts/cos-scope-both-portability-audit --strict" >&2
       exit 1
     fi
   fi
   if [ -x "$COS_ROOT/scripts/cos-scope-projection-audit" ]; then
-    if ! python3 "$COS_ROOT/scripts/cos-scope-projection-audit" --repo-root "$COS_ROOT" --strict --json --no-write >/dev/null; then
+    # Misma atribucion que el gate de arriba, y por el mismo hallazgo: esta
+    # auditoria tambien camina el arbol entero (1500 artefactos) y bloqueaba por
+    # los mismos dos scripts sin trackear de otra sesion. Se juzga solo lo que
+    # entra en el commit; el barrido completo sigue en cos-ci-local.
+    _projection_json="$(python3 "$COS_ROOT/scripts/cos-scope-projection-audit" \
+      --repo-root "$COS_ROOT" --strict --json --no-write 2>/dev/null || true)"
+    _projection_bad="$(printf '%s' "$_projection_json" | python3 -c '
+import json, sys
+
+raw = sys.stdin.read().strip()
+if not raw:
+    raise SystemExit(0)
+try:
+    findings = (json.loads(raw) or {}).get("findings") or []
+except Exception:
+    raise SystemExit(0)  # fail-open: un JSON ilegible no bloquea a nadie
+staged = {line.strip() for line in sys.argv[1].splitlines() if line.strip()}
+for f in findings:
+    if f.get("severity") != "block":
+        continue
+    artifact = f.get("artifact")
+    # Un hallazgo sin artefacto es del contrato global, no de un archivo: no hay
+    # a quien atribuirselo y sigue bloqueando a quien pase.
+    if artifact is None or artifact in staged:
+        print(f"  {artifact or \"(contrato global)\"}: {f.get(\"message\", f.get(\"code\"))}")
+' "$staged_primitives" 2>/dev/null || true)"
+    if [ -n "$_projection_bad" ]; then
       echo "BLOCKED: primitive scope projection/source contract failed." >&2
-      echo "  Run: scripts/cos-scope-projection-audit --strict" >&2
+      printf '%s\n' "$_projection_bad" >&2
+      echo "  Solo se juzgan las primitivas que ENTRAN en este commit." >&2
+      echo "  Barrido completo del arbol: scripts/cos-scope-projection-audit --strict" >&2
       exit 1
     fi
   fi

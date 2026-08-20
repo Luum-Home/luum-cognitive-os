@@ -17,15 +17,80 @@ _cos_bypass_project_dir() {
   printf '%s' "${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
 }
 
+_cos_bypass_runtime_file() {
+  printf '%s/.cognitive-os/runtime/bypass.env' "$(_cos_bypass_project_dir)"
+}
+
+# Lee UNA variable del runtime file. Antes esto sabía leer solamente COS_BYPASS,
+# y esa limitación era el agujero: todo bypass que exige una variable compañera
+# --los `*_REASON` de direct_main, direct_push, skill y subagent-budget-- tenía
+# su clave en el resolvedor y aun así no había forma de activarlo a mitad de
+# sesión, porque la compañera no tenía por dónde viajar. El hook es hijo del
+# arnés: un prefijo `VAR=1 <cmd>` se lo come el shell del comando y el hook ya
+# decidió. Con el archivo transportando cualquier COS_*, la vía existe.
+#
+# Sólo se aceptan nombres COS_*: el archivo es una vía de activación de bypass,
+# no un mecanismo genérico para inyectar entorno en los hooks.
+_cos_bypass_runtime_var() {
+  local name="$1" runtime_file
+  case "$name" in
+    COS_*) ;;
+    *) return 1 ;;
+  esac
+  runtime_file="$(_cos_bypass_runtime_file)"
+  [ -f "$runtime_file" ] || return 1
+  grep -E "^${name}=" "$runtime_file" 2>/dev/null \
+    | tail -1 \
+    | sed "s/^${name}=//" \
+    | sed -e 's/^"//' -e 's/"$//' -e "s/^'//" -e "s/'\$//"
+}
+
 _cos_bypass_combined_list() {
-  local project_dir runtime_file runtime_value
-  project_dir="$(_cos_bypass_project_dir)"
-  runtime_file="$project_dir/.cognitive-os/runtime/bypass.env"
-  runtime_value=""
-  if [ -f "$runtime_file" ]; then
-    runtime_value="$(grep -E '^COS_BYPASS=' "$runtime_file" 2>/dev/null | tail -1 | sed 's/^COS_BYPASS=//' | tr -d '"' | tr -d "'")"
+  printf '%s,%s' "${COS_BYPASS:-}" "$(_cos_bypass_runtime_var COS_BYPASS || true)"
+}
+
+# cos_bypass_var <NOMBRE>  -> imprime el valor, entorno primero, archivo después.
+#
+# El entorno gana porque `export VAR=... ` antes de lanzar el arnés es la vía
+# deliberada del operador; el archivo es la vía de quien YA está bloqueado y no
+# puede relanzar nada. Devuelve 1 si no hay valor en ninguna de las dos.
+cos_bypass_var() {
+  local name="$1" value
+  [ -n "$name" ] || return 1
+  eval "value=\${$name:-}"
+  if [ -n "$value" ]; then
+    printf '%s' "$value"
+    return 0
   fi
-  printf '%s,%s' "${COS_BYPASS:-}" "$runtime_value"
+  value="$(_cos_bypass_runtime_var "$name" 2>/dev/null || true)"
+  [ -n "$value" ] || return 1
+  printf '%s' "$value"
+}
+
+# cos_bypass_audit <clave> <hook> <motivo>
+# Un escape sin constancia es un agujero; con constancia es una decisión con
+# dueño. Se registra SIEMPRE que un bypass destraba algo, venga del entorno o
+# del archivo. Fail-silent: la auditoría no puede ser el motivo de un bloqueo.
+cos_bypass_audit() {
+  local key="$1" hook="$2" reason="$3" dir
+  dir="$(_cos_bypass_project_dir)/.cognitive-os/metrics"
+  mkdir -p "$dir" 2>/dev/null || true
+  python3 - "$dir/bypass-activation.jsonl" "$key" "$hook" "$reason" \
+    "${COS_SESSION_ID:-${CLAUDE_SESSION_ID:-unknown}}" <<'PY_AUDIT' 2>/dev/null || true
+import json, os, sys, time
+path, key, hook, reason, session = sys.argv[1:6]
+row = {
+    "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+    "bypass_key": key,
+    "hook": hook,
+    "reason": reason,
+    "session_id": session,
+    "pid": os.getpid(),
+    "source": "env" if os.environ.get(key.upper()) else "bypass.env",
+}
+with open(path, "a", encoding="utf-8") as fh:
+    fh.write(json.dumps(row, sort_keys=True) + "\n")
+PY_AUDIT
 }
 
 _cos_bypass_list_contains() {
@@ -77,6 +142,9 @@ _cos_bypass_legacy_alias_allows() {
       ;;
     unproven_scope_both)
       _cos_bypass_truthy "${COS_ALLOW_UNPROVEN_SCOPE_BOTH:-}"
+      ;;
+    subagent_budget)
+      _cos_bypass_truthy "${COS_ALLOW_SUBAGENT_BUDGET_BYPASS:-}"
       ;;
     *) return 1 ;;
   esac

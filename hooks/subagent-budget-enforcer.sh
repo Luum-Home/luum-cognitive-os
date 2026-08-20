@@ -7,7 +7,20 @@
 # This turns the preamble's "50 tool calls" instruction into runtime evidence.
 #
 # Killswitch: DISABLE_HOOK_SUBAGENT_BUDGET_ENFORCER=1
-# Bypass: COS_ALLOW_SUBAGENT_BUDGET_BYPASS=1 + COS_SUBAGENT_BUDGET_BYPASS_REASON
+# Bypass, dos vías (ADR-241):
+#   - antes de lanzar el arnés: export COS_ALLOW_SUBAGENT_BUDGET_BYPASS=1
+#     + export COS_SUBAGENT_BUDGET_BYPASS_REASON=<texto>
+#   - a mitad de sesión, la única que sirve a quien YA está cortado:
+#     .cognitive-os/runtime/bypass.env con
+#         COS_BYPASS=subagent_budget
+#         COS_SUBAGENT_BUDGET_BYPASS_REASON=<texto>
+#
+# Por qué la segunda vía existe. Este hook es PostToolUse: hijo del arnés, no
+# del shell del Bash tool. Un prefijo `VAR=1 <comando>` le pone la variable al
+# comando y jamás al hook, que ya decidió antes de que ese shell existiera. El
+# agente cortado en el llamado 51 no puede exportar nada ni relanzar el arnés:
+# sin el archivo, el bloqueo no tenía salida ejecutable desde adentro. El motivo
+# sigue siendo obligatorio y ahora queda en bypass-activation.jsonl.
 # Exit codes: 0=allow/advisory, 2=BLOCK/escalate.
 
 set -uo pipefail
@@ -20,6 +33,8 @@ PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_D
 HOOK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 COS_ROOT="$(cd "$HOOK_DIR/.." && pwd)"
 INPUT="$(cat)"
+# shellcheck source=hooks/_lib/bypass-resolver.sh
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/_lib/bypass-resolver.sh"
 
 command -v python3 >/dev/null 2>&1 || exit 0
 
@@ -168,20 +183,21 @@ if [ "$ESCALATION_DECLARED" = "1" ]; then
   exit 0
 fi
 
-if [ "${COS_ALLOW_SUBAGENT_BUDGET_BYPASS:-0}" = "1" ]; then
-  reason="${COS_SUBAGENT_BUDGET_BYPASS_REASON:-}"
+if cos_bypass_allows subagent_budget; then
+  reason="$(cos_bypass_var COS_SUBAGENT_BUDGET_BYPASS_REASON || true)"
   if [ -z "$reason" ]; then
-    printf 'subagent-budget-enforcer: COS_ALLOW_SUBAGENT_BUDGET_BYPASS=1 requires COS_SUBAGENT_BUDGET_BYPASS_REASON=<text>\n' >&2
+    printf 'subagent-budget-enforcer: el bypass exige un motivo. Agregá COS_SUBAGENT_BUDGET_BYPASS_REASON=<texto> junto a COS_BYPASS=subagent_budget en .cognitive-os/runtime/bypass.env, o exportalo antes de lanzar el arnés.\n' >&2
     emit_metric "block" "missing_bypass_reason"
     exit 2
   fi
+  cos_bypass_audit subagent_budget subagent-budget-enforcer "$reason"
   emit_metric "allow" "bypass:$reason"
   exit 0
 fi
 
 if [ "$COUNT" -gt "$BUDGET" ]; then
   emit_metric "block" "budget_exceeded"
-  printf 'subagent-budget-enforcer: BLOCK — subagent `%s` reached %s tool calls, exceeding budget %s. Emit `ESCALATION:` with diagnosis, progress, files touched, and next safe action before more tool use. Override only with COS_ALLOW_SUBAGENT_BUDGET_BYPASS=1 and COS_SUBAGENT_BUDGET_BYPASS_REASON=<text>.\n' "$AGENT_ID" "$COUNT" "$BUDGET" >&2
+  printf 'subagent-budget-enforcer: BLOCK — subagent `%s` reached %s tool calls, exceeding budget %s. Emit `ESCALATION:` with diagnosis, progress, files touched, and next safe action before more tool use. Si necesitás seguir, escribí en .cognitive-os/runtime/bypass.env las dos líneas `COS_BYPASS=subagent_budget` y `COS_SUBAGENT_BUDGET_BYPASS_REASON=<motivo>` (se relee en cada llamado; queda registrado en metrics/bypass-activation.jsonl). Un prefijo VAR=1 en el comando NO sirve: este hook es hijo del arnés.\n' "$AGENT_ID" "$COUNT" "$BUDGET" >&2
   exit 2
 fi
 
