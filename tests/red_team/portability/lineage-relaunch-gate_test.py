@@ -117,3 +117,29 @@ def test_dry_run_arming_never_creates_a_child_log(tmp_path: Path) -> None:
     store.arm("g-1")
     _run(project, "S-root")
     assert not (store.base_dir / "child-logs").exists()
+
+
+def test_runtime_bypass_file_stops_it_mid_session(tmp_path: Path) -> None:
+    """The only switch that works without restarting the harness (ADR-241).
+
+    Written as a differential: the same armed project, same payload, run twice
+    -- once with the runtime file and once without. One decision row, not two,
+    is what proves the bypass matched. Asserting only the first run would pass
+    for a bypass that never fires, which is how the first draft of this hook
+    looked correct while keying on the wrong variable name.
+    """
+    project = _project(tmp_path)
+    _seed_goal(project)
+    store = LineageStore(project / ".cognitive-os" / "lineage")
+    store.arm("g-1")
+
+    runtime = project / ".cognitive-os" / "runtime"
+    runtime.mkdir(parents=True, exist_ok=True)
+    bypass = runtime / "bypass.env"
+    bypass.write_text("COS_BYPASS=autonomous_relaunch\n")
+    _run(project, "S-root")
+    assert store.decisions() == [], "runtime bypass did not stop the gate"
+
+    bypass.unlink()
+    _run(project, "S-root")
+    assert len(store.decisions()) == 1, "gate stayed silent even without the bypass"

@@ -52,6 +52,26 @@ if [ "${COS_DISABLE_AUTONOMOUS_RELAUNCH:-}" = "1" ]; then
   exit 0
 fi
 
+# ── Gate 0b: the switch the operator can flip WITHOUT restarting the harness.
+# The env var above is read from the harness environment, so flipping it means
+# ending the session -- exactly the moment you cannot afford to wait for. The
+# bypass resolver (ADR-241) re-reads .cognitive-os/runtime/bypass.env on every
+# invocation, which makes it the only activation route that works mid-run.
+# A line `COS_BYPASS=autonomous_relaunch` in that file stops the next decision
+# -- the variable inside the file is COS_BYPASS, not COS_BYPASS_HOOKS; the
+# first draft of this hook was verified against the wrong name and the probe
+# came back green-looking because a bypass that never matches never blocks.
+# Reused, not reimplemented.
+_BYPASS_LIB="$(dirname "${BASH_SOURCE[0]}")/_lib/bypass-resolver.sh"
+if [ -r "$_BYPASS_LIB" ]; then
+  # shellcheck source=/dev/null
+  source "$_BYPASS_LIB" 2>/dev/null || true
+  if declare -f cos_bypass_allows >/dev/null 2>&1 \
+     && cos_bypass_allows "autonomous_relaunch"; then
+    exit 0
+  fi
+fi
+
 command -v python3 >/dev/null 2>&1 || exit 0
 
 SESSION_ID=""
