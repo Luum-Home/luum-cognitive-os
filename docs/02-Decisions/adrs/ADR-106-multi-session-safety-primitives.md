@@ -214,5 +214,5 @@ Verified manually: orchestrator runs bilateral commands and documents exit codes
 - ADR-089: multi-session git coordination (git-index layer)
 - ADR-098: multi-agent file coordination (file-edit layer)
 - ADR-099: pre-agent snapshot copy-on-untracked (origin of auto-pre-agent stashes)
-- `scripts/pre-agent-snapshot.sh`: stash creation source
+- `hooks/pre-agent-snapshot.sh`: stash creation source
 - `.cognitive-os/runtime/`: runtime state directory for alarms, locks, logs

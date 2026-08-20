@@ -14,9 +14,13 @@ owner_report: docs/06-Daily/reports/adr-cobertura-inversa-2026-08-15.md
 
 max_unbacked:
   # Hooks that can deny an operator action and no ADR names them.
-  # Two of these ten actually block today (provenance-scan,
+  # Two of these nine actually block today (provenance-scan,
   # untracked-work-preservation-guard) — those are the priority.
-  blocking-gate: 10
+  # Bajado de 10 a 9 el 2026-08-20: la medicion daba 9 y el 10 era un colchon,
+  # un lugar libre con el gate diciendo "0 nuevas".
+  #   .venv/bin/python scripts/audit_decision_backing.py --json | \
+  #     .venv/bin/python -c "import json,sys;print(json.load(sys.stdin)['counts']['blocking-gate'])"
+  blocking-gate: 9
 
   # manifests/*.yaml whose top-level keys encode a policy (freeze, allowlist,
   # budget, scope, threshold, ratchet) and no ADR names them.

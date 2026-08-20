@@ -18,8 +18,14 @@
 # Uso:  bash scripts/proof-event-cadence-gate.sh
 set -uo pipefail
 
-REPO="$(git rev-parse --show-toplevel 2>/dev/null)"
-[ -n "$REPO" ] || { echo "no estoy dentro de un repo git" >&2; exit 2; }
+# Raiz por ubicacion del propio script: el gate corre igual en un checkout git,
+# en un worktree o en una instalacion desempaquetada de un tarball. Depender de
+# Resolver la raiz preguntandole a git hacia que el script muriera con exit 2
+# fuera de un checkout, que es exactamente lo que prohibe
+# tests/contracts/test_script_root_portability.py.
+_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)" || exit 2
+REPO="${COGNITIVE_OS_PROJECT_DIR:-$(cd "$_SCRIPT_DIR/.." && pwd)}"
+[ -d "$REPO/manifests" ] || { echo "no encuentro la raiz del OS desde $_SCRIPT_DIR" >&2; exit 2; }
 cd "$REPO" || exit 2
 PY="$REPO/.venv/bin/python3"
 [ -x "$PY" ] || { echo "falta .venv/bin/python3" >&2; exit 2; }
