@@ -21,6 +21,7 @@ sys.path.insert(0, str(REPO))
 from tests.utils.harness_payload import without  # noqa: E402
 HOOKS = sorted((REPO / "hooks").glob("*.sh"))
 GATE = REPO / "hooks" / "orchestrator-skill-invocation-gate.sh"
+SCOPE_GATE = REPO / "hooks" / "scope-marker-portability-gate.sh"
 
 
 def _root_conftest():
@@ -261,3 +262,75 @@ def test_the_fabricated_identity_is_gone_from_the_gate() -> None:
         "un acumulado por sesion con otro nombre"
     )
     assert "PROMPT_HASH" in text
+
+
+# ─── ADR-241: cos_bypass_audit y el directorio de metricas ──────────────────
+
+
+def _run_scope_gate_with_bypass(sandbox: Path) -> subprocess.CompletedProcess:
+    """Ejerce un bypass real via `scope-marker-portability-gate.sh`.
+
+    Este hook llama `cos_bypass_audit` (definida en `hooks/_lib/bypass-resolver.sh`)
+    cuando `unproven_scope_both` esta activo. Es el mismo camino que dispara
+    cualquier `git commit` real con el bypass prendido -- no un stub.
+    """
+    env = os.environ.copy()
+    env.pop("COS_BYPASS", None)
+    env["COS_METRICS_DIR"] = str(sandbox)
+    env["COS_ALLOW_UNPROVEN_SCOPE_BOTH"] = "1"
+    env["COS_UNPROVEN_SCOPE_REASON"] = "test_bypass_audit_honors_cos_metrics_dir"
+    payload = {"tool_name": "Bash", "tool_input": {"command": "git commit -m test"}}
+    return subprocess.run(
+        ["/bin/bash", str(SCOPE_GATE)],
+        input=json.dumps(payload),
+        text=True,
+        capture_output=True,
+        env=env,
+        cwd=str(REPO),
+        timeout=25,
+        check=False,
+    )
+
+
+def test_bypass_audit_honors_cos_metrics_dir(tmp_path: Path) -> None:
+    """`cos_bypass_audit` no puede tocar la telemetria REAL del operador.
+
+    Medido el 2026-08-20 antes del arreglo: ejercer este mismo bypass con
+    `COS_METRICS_DIR` apuntado a un temporal igual escribia +231 bytes
+    deterministas en `.cognitive-os/metrics/bypass-activation.jsonl` -- el
+    temporal quedaba con la metrica del hook (que si honra la variable) pero
+    NO con la auditoria del bypass, que `hooks/_lib/bypass-resolver.sh:76`
+    calculaba a mano con `_cos_bypass_project_dir()/.cognitive-os/metrics`.
+
+    La trampa a evitar: si este test derivara la ruta esperada con ese mismo
+    criterio (`_cos_bypass_project_dir()/.cognitive-os/metrics`), un bug en
+    ese calculo certificaria en verde exactamente lo que hay que vigilar. Por
+    eso la asercion viene de una fuente distinta: `conftest.fingerprint_metrics_dir`
+    mira el filesystem REAL de `.cognitive-os/metrics/` con `os.scandir` --
+    la misma capa 2 que ya prueba `test_guard_catches_a_hand_written_direct_append`
+    mas arriba -- sin pasar por ninguna funcion de `bypass-resolver.sh`.
+    """
+    conftest = _root_conftest()
+    operator_metrics = REPO / ".cognitive-os" / "metrics"
+    before = conftest.fingerprint_metrics_dir(operator_metrics)
+
+    sandbox = tmp_path / "sandboxed-metrics"
+    sandbox.mkdir()
+    result = _run_scope_gate_with_bypass(sandbox)
+    assert result.returncode == 0, f"el hook no corrio limpio: {result.stderr}"
+
+    after = conftest.fingerprint_metrics_dir(operator_metrics)
+    grew = conftest.diff_growth(before, after)
+    assert grew == [], (
+        "cos_bypass_audit escribio en la telemetria REAL del operador aunque "
+        f"COS_METRICS_DIR apuntaba a un sandbox: {grew}"
+    )
+
+    sandboxed_audit = sandbox / "bypass-activation.jsonl"
+    assert sandboxed_audit.exists(), (
+        "el bypass no dejo auditoria en NINGUN lado -- eso no prueba aislamiento, "
+        "prueba que cos_bypass_audit no corrio"
+    )
+    row = json.loads(sandboxed_audit.read_text(encoding="utf-8").strip().splitlines()[-1])
+    assert row["bypass_key"] == "unproven_scope_both"
+    assert row["hook"] == "scope-marker-portability-gate"
