@@ -1484,7 +1484,12 @@ harness:
     protected-config-write-detector:
       script: hooks/protected-config-write-detector.sh
       event: PostToolUse
-      matcher: "Bash"
+      # matcher "" y no "Bash": quedo registrado en el grupo post_all del driver, que
+      # corre despues de TODA herramienta. Es lo correcto para un detector de
+      # escrituras -- Edit y Write tambien escriben --, y ademas el yaml tiene que
+      # decir donde esta de verdad. Declararlo como "Bash" hacia que el gate de
+      # paridad lo reportara como deriva, con razon.
+      matcher: ""
       scope: os-only
 
     tool-sequence-capture:
@@ -1498,6 +1503,22 @@ harness:
       event: PostToolUse
       matcher: ""
       scope: os-only
+      # ADR-093 default-profile trim (2026-08-19): corre en CADA tool call, nunca
+      # bloquea, y costaba 11.807 corridas / 3.255,9 s sobre 279.048 filas del
+      # wrapper. Su artefacto (.cognitive-os/artifacts/aci) no tiene un solo lector
+      # programatico fuera de manifests/state-retention.yaml, que es politica de
+      # retencion y no consumidor. Queda solo en el perfil `full`.
+      #
+      # La decision estaba escrita en un comentario del driver -- una condicional de
+      # shell que ningun gate puede leer -- y por eso derived_artifact_gate.py la
+      # reportaba como DERIVA y bloqueaba la cola de merge. Verificado con el clean
+      # room contra origin/main (2f6ce427b): ya fallaba ahi, o sea que nadie podia
+      # landear por la via sancionada sin saltear la validacion.
+      #
+      # `default_projection: false` es el mecanismo que el gate YA soporta (cuatro
+      # entradas lo usan). No hacia falta ensenarle a parsear shell: hacia falta
+      # declarar la decision en la superficie que el gate si lee.
+      default_projection: false
 
     private-mode-metrics-gate:
       script: hooks/private-mode-metrics-gate.sh
@@ -1536,6 +1557,11 @@ harness:
       event: PostToolUse
       matcher: Bash
       scope: os-only
+      # Solo en el perfil `paranoid` (ver la condicional del driver). El gate lo
+      # reportaba como deriva porque esa condicional vive en shell y ningun gate
+      # puede leerla; `default_projection: false` es el mecanismo que el gate SI
+      # lee, y que cuatro entradas ya usaban.
+      default_projection: false
 
     audit-id-enricher-bash:
       script: hooks/audit-id-enricher.sh
@@ -1550,6 +1576,11 @@ harness:
       scope: both
       # ADR-116 P3.1: advisory orphan detector — fires after rebase/reset/pull --rebase;
       # never blocks (exit 0 always). Surfaces displaced commits before reflog expires.
+      # Solo en el perfil `paranoid` (ver la condicional del driver). El gate lo
+      # reportaba como deriva porque esa condicional vive en shell y ningun gate
+      # puede leerla; `default_projection: false` es el mecanismo que el gate SI
+      # lee, y que cuatro entradas ya usaban.
+      default_projection: false
 
     # ── PostToolUse — Bash|Edit|Write ─────────────────────────────────────────
     # Codex: OMITTED — Edit|Write matcher not supported by Codex v0.126.0-alpha.8
