@@ -17,8 +17,10 @@ from cos_lib.project_paths import relpath as rel
 
 import argparse
 import json
+import os as _os
 import re
 import sys
+from fnmatch import fnmatch
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -136,10 +138,220 @@ def update_block(root: Path, doc: str, claim_id: str, marker: str) -> bool:
     return True
 
 
-def audit(root: Path, manifest_path: Path) -> list[TruthRow]:
+# --- Forbidden-phrase scan surface (ADR-277 extension) --------------------
+# A forbidden phrase used to be searched only inside the claim's own
+# required_docs, so a claim without required_docs checked zero files and passed.
+# The surface below is declared in the manifest, reported in the output, and
+# covers prose AND code, because the live copies of 2026-08-19 lived in a .md,
+# a .sh and a .py docstring.
+
+DEFAULT_SCAN_CONFIG: dict[str, Any] = {
+    "include_suffixes": [".md", ".sh", ".py", ".yaml", ".yml"],
+    "prune_dirs": [
+        ".git", ".venv", "venv", "node_modules", "reference", ".cognitive-os",
+        "__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache",
+        "dist", "build", "target", ".worktrees", "htmlcov", ".egg-info",
+    ],
+    "exclude_globs": [],
+    "skip_date_anchored": True,
+    "historical_adr_statuses": ["superseded", "deprecated", "rejected", "withdrawn"],
+}
+DATE_ANCHOR_RE = re.compile(r"(?<!\d)(19|20)\d{2}-[01]\d-[0-3]\d(?!\d)")
+ADR_STATUS_RE = re.compile(r"^status:\s*['\"]?([A-Za-z_-]+)", re.M)
+# Characters that may sit between the words of a phrase without changing it:
+# whitespace plus the markdown/rst decoration that wraps identifiers.
+PHRASE_SEP = r"[\s`'\"*_]+"
+# A phrase is a phrase, not a substring: "plan-only Claude/Codex" must not
+# match the phrase "only Claude/Codex".
+PHRASE_LEFT = r"(?<![0-9A-Za-z_/-])"
+PHRASE_RIGHT = r"(?![0-9A-Za-z_/-])"
+_WORDISH = re.compile(r"[0-9A-Za-z_/-]")
+
+
+def scan_config(manifest: dict[str, Any]) -> dict[str, Any]:
+    cfg = dict(DEFAULT_SCAN_CONFIG)
+    declared = manifest.get("forbidden_phrase_scan") or {}
+    for key in ("include_suffixes", "prune_dirs", "skip_date_anchored", "historical_adr_statuses"):
+        if key in declared:
+            cfg[key] = declared[key]
+    cfg["exclude_globs"] = list(declared.get("exclude_globs") or [])
+    return cfg
+
+
+def phrase_pattern(phrase: str) -> re.Pattern[str]:
+    """Compile a phrase into a decoration-tolerant, boundary-aware pattern.
+
+    Backticks and quotes around an identifier are typography, not content: the
+    same lie shipped as ``cognitive-os.yaml`` in a Python docstring and bare in
+    a shell heredoc. Atoms are matched literally, separators are flexible.
+    """
+    atoms = [a for a in re.split(PHRASE_SEP, phrase.strip()) if a]
+    if not atoms:
+        return re.compile(r"(?!x)x")
+    body = PHRASE_SEP.join(re.escape(a) for a in atoms)
+    left = PHRASE_LEFT if _WORDISH.match(atoms[0][0]) else ""
+    right = PHRASE_RIGHT if _WORDISH.match(atoms[-1][-1]) else ""
+    return re.compile(left + body + right, re.I)
+
+
+def _is_historical(path: Path, rel_posix: str, cfg: dict[str, Any]) -> str | None:
+    if cfg.get("skip_date_anchored") and DATE_ANCHOR_RE.search(path.name):
+        return "date-anchored filename: historical record, cites old claims on purpose"
+    statuses = {str(s).lower() for s in cfg.get("historical_adr_statuses") or []}
+    if statuses and rel_posix.startswith("docs/02-Decisions/adrs/"):
+        try:
+            head = path.read_text(encoding="utf-8", errors="replace")[:1200]
+        except OSError:
+            return None
+        match = ADR_STATUS_RE.search(head)
+        if match and match.group(1).lower() in statuses:
+            return f"ADR status {match.group(1).lower()}: superseded decisions keep their original prose"
+    return None
+
+
+def collect_scan_surface(root: Path, cfg: dict[str, Any], always: list[str]) -> tuple[list[str], dict[str, int]]:
+    """Walk the repo once and return the declared scan surface.
+
+    Symlinks are resolved and de-duplicated by real path, so a hook reachable
+    both as hooks/x.sh and packages/*/hooks/x.sh is one file, not two.
+    """
+    prune = {str(d) for d in cfg.get("prune_dirs") or []}
+    suffixes = {str(s) for s in cfg.get("include_suffixes") or []}
+    excludes = [(str(e.get("glob")), str(e.get("reason") or "undeclared")) for e in cfg.get("exclude_globs") or [] if e.get("glob")]
+    excluded: dict[str, int] = {}
+    seen_real: set[Path] = set()
+    files: list[str] = []
+    for dirpath, dirnames, filenames in _os.walk(root):
+        dirnames[:] = sorted(d for d in dirnames if d not in prune)
+        base = Path(dirpath)
+        for name in sorted(filenames):
+            path = base / name
+            if path.suffix not in suffixes:
+                continue
+            rel_posix = path.relative_to(root).as_posix()
+            hit_glob = next((g for g, _ in excludes if fnmatch(rel_posix, g)), None)
+            if hit_glob is not None and rel_posix not in always:
+                reason = next(r for g, r in excludes if g == hit_glob)
+                excluded[f"{hit_glob} :: {reason}"] = excluded.get(f"{hit_glob} :: {reason}", 0) + 1
+                continue
+            try:
+                real = path.resolve()
+            except OSError:
+                continue
+            if real in seen_real:
+                continue
+            historical = _is_historical(path, rel_posix, cfg) if rel_posix not in always else None
+            if historical:
+                excluded[historical] = excluded.get(historical, 0) + 1
+                continue
+            seen_real.add(real)
+            files.append(rel_posix)
+    for rel_posix in always:
+        if rel_posix not in files and (root / rel_posix).exists():
+            files.append(rel_posix)
+    return sorted(set(files)), excluded
+
+
+def phrase_anchor(phrase: str) -> str:
+    """Longest literal atom of a phrase, used as a cheap per-file prefilter."""
+    atoms = [a for a in re.split(PHRASE_SEP, phrase.strip()) if a]
+    return max(atoms, key=len).lower() if atoms else phrase.lower()
+
+
+def scan_phrases(root: Path, files: list[str], patterns: dict[str, re.Pattern[str]]) -> tuple[dict[str, list[str]], int]:
+    """One pass over the surface for every declared phrase.
+
+    Cost control: a regex alternation over ~70 MB is seconds; a literal
+    substring prefilter is milliseconds. Each phrase contributes one anchor
+    (its longest atom); the regex only runs on files whose anchor is present.
+    """
+    hits: dict[str, list[str]] = {phrase: [] for phrase in patterns}
+    if not patterns:
+        return hits, 0
+    anchors = [(phrase, phrase_anchor(phrase)) for phrase in patterns]
+    total_bytes = 0
+    for rel_posix in files:
+        try:
+            text = (root / rel_posix).read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        total_bytes += len(text)
+        lowered = text.lower()
+        candidates = [phrase for phrase, anchor in anchors if anchor in lowered]
+        for phrase in candidates:
+            for match in patterns[phrase].finditer(text):
+                line = text.count("\n", 0, match.start()) + 1
+                hits[phrase].append(f"{rel_posix}:{line}")
+    return hits, total_bytes
+
+
+def normalize_phrase_entries(claim: dict[str, Any]) -> list[dict[str, Any]]:
+    entries: list[dict[str, Any]] = []
+    claim_scope = claim.get("scan_scope")
+    claim_reason = claim.get("scan_scope_reason")
+    for raw in claim.get("forbidden_phrases", []) or []:
+        if isinstance(raw, dict):
+            entry = {
+                "phrase": str(raw.get("phrase") or ""),
+                "scope": [str(g) for g in (raw.get("scope") or claim_scope or [])],
+                "scope_reason": str(raw.get("scope_reason") or claim_reason or ""),
+                "scoped": bool(raw.get("scope") or claim_scope),
+            }
+        else:
+            entry = {
+                "phrase": str(raw),
+                "scope": [str(g) for g in (claim_scope or [])],
+                "scope_reason": str(claim_reason or ""),
+                "scoped": bool(claim_scope),
+            }
+        if entry["phrase"]:
+            entries.append(entry)
+    return entries
+
+
+def scope_files(files: list[str], scope: list[str]) -> list[str]:
+    if not scope:
+        return files
+    return [f for f in files if any(fnmatch(f, g) for g in scope)]
+
+
+def audit(root: Path, manifest_path: Path) -> tuple[list[TruthRow], dict[str, Any]]:
     manifest = read_yaml(manifest_path)
+    claims = dict(sorted((manifest.get("claims") or {}).items()))
+    cfg = scan_config(manifest)
+    try:
+        manifest_rel = manifest_path.resolve().relative_to(root).as_posix()
+    except ValueError:
+        manifest_rel = None
+    # The claims manifest and this auditor quote every phrase by construction.
+    cfg["exclude_globs"] = list(cfg["exclude_globs"]) + [
+        {"glob": manifest_rel or DEFAULT_MANIFEST.as_posix(), "reason": "the claims manifest declares the phrases"},
+        {"glob": "scripts/documentation_truth_audit.py", "reason": "the auditor itself quotes phrase syntax"},
+    ]
+    # required_docs are operator-declared live surfaces: they are always scanned,
+    # even when a generic exclusion would otherwise drop them.
+    always = sorted({str(d) for claim in claims.values() for d in (claim.get("required_docs") or [])})
+    surface, excluded = collect_scan_surface(root, cfg, always)
+
+    entries_by_claim = {cid: normalize_phrase_entries(claim) for cid, claim in claims.items()}
+    patterns = {
+        entry["phrase"]: phrase_pattern(entry["phrase"])
+        for entries in entries_by_claim.values()
+        for entry in entries
+    }
+    hits, scanned_bytes = scan_phrases(root, surface, patterns)
+    scan_meta = {
+        "surface_files": len(surface),
+        "surface_bytes": scanned_bytes,
+        "include_suffixes": list(cfg.get("include_suffixes") or []),
+        "pruned_dirs": sorted(str(d) for d in cfg.get("prune_dirs") or []),
+        "excluded_by_reason": dict(sorted(excluded.items())),
+        "phrases": len(patterns),
+        "always_scanned_required_docs": len(always),
+    }
+
     rows: list[TruthRow] = []
-    for claim_id, claim in sorted((manifest.get("claims") or {}).items()):
+    for claim_id, claim in claims.items():
         severity = str(claim.get("severity") or "medium")
         source_reports = [str(p) for p in claim.get("source_reports", [])]
         required_docs = [str(p) for p in claim.get("required_docs", [])]
@@ -163,19 +375,35 @@ def audit(root: Path, manifest_path: Path) -> list[TruthRow]:
             if not path.exists():
                 rows.append(TruthRow(claim_id, "required_doc_exists", "block", severity, doc, "Required documentation surface is missing", [doc], "create or relink the canonical doc"))
                 continue
-            text = path.read_text(encoding="utf-8", errors="replace")
-            existing_doc_text[doc] = text
+            existing_doc_text[doc] = path.read_text(encoding="utf-8", errors="replace")
             rows.append(TruthRow(claim_id, "required_doc_exists", "pass", severity, doc, "Required documentation surface exists", [doc], "keep doc linked"))
-            lowered = text.lower()
-            for phrase in claim.get("forbidden_phrases", []) or []:
-                phrase = str(phrase)
-                status = "block" if phrase.lower() in lowered else "pass"
-                rows.append(TruthRow(claim_id, "forbidden_phrase", status, severity, doc, f"Forbidden stale phrase {'present' if status == 'block' else 'absent'}: {phrase}", [phrase], "remove stale or contradictory prose"))
+
+        # --- forbidden phrases: repo-wide declared surface, never zero files ---
+        for entry in entries_by_claim[claim_id]:
+            phrase = entry["phrase"]
+            scope = entry["scope"]
+            scoped_files = scope_files(surface, scope)
+            checked = len(scoped_files)
+            if entry["scoped"] and not entry["scope_reason"]:
+                rows.append(TruthRow(claim_id, "forbidden_phrase_scope", "block", severity, None, f"Narrowed scan scope without a written reason: {phrase}", [f"scope:{','.join(scope)}"], "add scan_scope_reason/scope_reason, or drop the narrowing"))
+            if checked == 0:
+                rows.append(TruthRow(claim_id, "forbidden_phrase_surface", "block", severity, None, f"Forbidden phrase declared with no surface to check it against (0 files): {phrase}", [f"scope:{','.join(scope) or 'repo-surface'}", "checked_files:0"], "widen or fix scan_scope so the phrase is checked against at least one existing file"))
+                continue
+            rows.append(TruthRow(claim_id, "forbidden_phrase_surface", "pass", severity, None, f"Forbidden phrase has a non-empty scan surface: {phrase}", [f"scope:{','.join(scope) or 'repo-surface'}", f"checked_files:{checked}"], "keep the surface declared"))
+            scoped_hits = [h for h in hits.get(phrase, []) if h.rsplit(":", 1)[0] in set(scoped_files)]
+            if scoped_hits:
+                rows.append(TruthRow(claim_id, "forbidden_phrase", "block", severity, scoped_hits[0].rsplit(":", 1)[0], f"Forbidden stale phrase present in {len(scoped_hits)} place(s), checked against {checked} files: {phrase}", scoped_hits[:20] + [f"checked_files:{checked}"], "remove stale or contradictory prose at the listed file:line"))
+            else:
+                rows.append(TruthRow(claim_id, "forbidden_phrase", "pass", severity, None, f"Forbidden stale phrase absent, checked against {checked} files: {phrase}", [phrase, f"checked_files:{checked}"], "keep the phrase out of the scanned surface"))
+
         joined_docs = "\n".join(existing_doc_text.values())
-        for phrase in claim.get("required_phrases", []) or []:
-            phrase = str(phrase)
-            status = "pass" if phrase in joined_docs else "block"
-            rows.append(TruthRow(claim_id, "required_phrase", status, severity, None, f"Required phrase {'present' if status == 'pass' else 'missing'}: {phrase}", [phrase], "add or regenerate current-truth prose"))
+        required_phrases = [str(p) for p in claim.get("required_phrases", []) or []]
+        if required_phrases and not existing_doc_text:
+            rows.append(TruthRow(claim_id, "required_phrase_surface", "block", severity, None, f"{len(required_phrases)} required phrase(s) declared with no existing required_docs to check them against", [f"required_docs:{len(required_docs)}"], "declare the required_docs that must carry the current-truth prose"))
+        else:
+            for phrase in required_phrases:
+                status = "pass" if phrase in joined_docs else "block"
+                rows.append(TruthRow(claim_id, "required_phrase", status, severity, None, f"Required phrase {'present' if status == 'pass' else 'missing'} in {len(existing_doc_text)} required doc(s): {phrase}", [phrase], "add or regenerate current-truth prose"))
         block = claim.get("generated_block") or {}
         if block.get("required"):
             doc = str(block.get("doc") or "")
@@ -192,7 +420,7 @@ def audit(root: Path, manifest_path: Path) -> list[TruthRow]:
                     rows.append(TruthRow(claim_id, "generated_block", "block", severity, doc, "Generated truth block is stale", [marker], "run documentation_truth_audit.py --update-generated"))
                 else:
                     rows.append(TruthRow(claim_id, "generated_block", "pass", severity, doc, "Generated truth block matches current facts", [marker], "keep block generated"))
-    return rows
+    return rows, scan_meta
 
 
 def summarize(rows: list[TruthRow]) -> dict[str, Any]:
@@ -208,8 +436,27 @@ def summarize(rows: list[TruthRow]) -> dict[str, Any]:
 def render_markdown(report: dict[str, Any]) -> str:
     PIPE = '\\|'
     lines = ["# Documentation Truth Audit — Latest", "", f"Generated: {report['generated_at']}", f"Status: `{report['status']}`", "", "## Summary", ""]
+    scan = report["summary"].get("forbidden_phrase_scan", {})
     for key, value in report["summary"].items():
+        if key == "forbidden_phrase_scan":
+            continue
         lines.append(f"- {key}: `{value}`")
+    if scan:
+        lines += [
+            "",
+            "## Forbidden-phrase scan surface",
+            "",
+            f"- Files checked: `{scan.get('surface_files', 0)}` ({scan.get('surface_bytes', 0)} bytes)",
+            f"- Declared phrases: `{scan.get('phrases', 0)}`",
+            f"- Suffixes: `{', '.join(scan.get('include_suffixes') or [])}`",
+            f"- Pruned dirs: `{', '.join(scan.get('pruned_dirs') or [])}`",
+            f"- required_docs always scanned: `{scan.get('always_scanned_required_docs', 0)}`",
+            "",
+            "| Files excluded | Reason |",
+            "|---|---|",
+        ]
+        for reason, count in (scan.get("excluded_by_reason") or {}).items():
+            lines.append(f"| `{count}` | {reason.replace('|', PIPE)} |")
     lines += ["", "## Blocking rows", "", "| Claim | Check | Doc | Message | Next action |", "|---|---|---|---|---|"]
     blockers = [row for row in report["rows"] if row["status"] == "block"]
     if not blockers:
@@ -219,14 +466,24 @@ def render_markdown(report: dict[str, Any]) -> str:
     return "\n".join(lines) + "\n"
 
 
+def _manifest_label(root: Path, manifest_path: Path) -> str:
+    """rel() raises when --manifest points outside --project-dir (e.g. a temp
+    manifest used to reproduce a claim). The label is cosmetic; do not crash."""
+    try:
+        return rel(root, manifest_path)
+    except ValueError:
+        return str(manifest_path)
+
+
 def build_report(root: Path, manifest_path: Path) -> dict[str, Any]:
-    rows = audit(root, manifest_path)
+    rows, scan_meta = audit(root, manifest_path)
     summary = summarize(rows)
+    summary["forbidden_phrase_scan"] = scan_meta
     return {
         "schema_version": SCHEMA_VERSION,
         "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
         "status": "block" if summary["block_count"] else "pass",
-        "manifest": rel(root, manifest_path),
+        "manifest": _manifest_label(root, manifest_path),
         "summary": summary,
         "rows": [asdict(row) for row in rows],
     }
