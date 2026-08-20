@@ -6,7 +6,8 @@
 #   Detects literal secret patterns in tool_input.command / .content / .new_string
 #   and REDACTS them in place via hookSpecificOutput.updatedInput, allowing the
 #   tool call to proceed (ADR-023). When redaction would render the command meaningless (e.g. the entire payload
-#   is one secret), emits a native hookSpecificOutput block instead.
+#   is one secret), denies the call: permissionDecision "deny" on stdout plus
+#   exit 2 as the backstop, since exit 2 blocks even when the JSON is rejected.
 #
 # PostToolUse mode (Edit | Write):
 #   Legacy behavior — scans the just-written file for env-var references that
@@ -86,7 +87,7 @@ redact_text() {
     while IFS= read -r match; do
       [ -z "$match" ] && continue
       hits+=("${match:0:8}…")
-    done < <(printf '%s' "$text" | grep -oE "$pattern" 2>/dev/null || true)
+    done < <(printf '%s' "$text" | grep -oE -- "$pattern" 2>/dev/null || true)
     # Replace via sed with extended regex.
     text="$(printf '%s' "$text" | sed -E "s#${pattern}#[REDACTED]#g")"
   done
@@ -122,7 +123,7 @@ pre_tool_use_redact() {
   # Quick pre-check — bail without doing JSON gymnastics if no pattern matches.
   local matched=0
   for pattern in "${SECRET_PATTERNS[@]}"; do
-    if printf '%s' "$concat" | grep -qE "$pattern" 2>/dev/null; then
+    if printf '%s' "$concat" | grep -qE -- "$pattern" 2>/dev/null; then
       matched=1
       break
     fi
@@ -169,8 +170,11 @@ pre_tool_use_redact() {
   ' 2>/dev/null | sed -E 's/\[REDACTED\]//g; s/[[:space:]]+//g')"
 
   if [ -z "$visible_after" ]; then
-    # Entire input was secrets — emit native hookSpecificOutput with
-    # permissionDecision: block instead of legacy exit 2.
+    # Entire input was secrets — deny the call. "deny" is the only denial value
+    # both harnesses accept (Claude Code: allow|deny|ask|defer; Codex: deny);
+    # the previous "block" failed schema validation, which on exit 0 is a
+    # non-blocking error and let the call through. exit 2 is the backstop that
+    # blocks even if the JSON is ever rejected again.
     local block_ctx
     block_ctx="SECURITY WARNING: tool input consisted entirely of secrets (${hits_dedup}). The call was suppressed. Refactor to read the secret from \$ENV or a config file instead of passing it as a literal argument."
     jq -c -n \
@@ -178,11 +182,12 @@ pre_tool_use_redact() {
       '{
         hookSpecificOutput: {
           hookEventName: "PreToolUse",
-          permissionDecision: "block",
-          additionalContext: $ctx
+          permissionDecision: "deny",
+          permissionDecisionReason: $ctx
         }
       }'
-    exit 0
+    printf '%s\n' "$block_ctx" >&2
+    exit 2
   fi
 
   # Log the redaction for auditability.
