@@ -53,59 +53,36 @@ This project uses symlinks extensively (hooks/ → packages/*/hooks/, tests/ →
 
 ### Critical Agent-Instruction Rules (read before claiming done)
 
-These rules are NOT hook-enforced for your work — you MUST read and follow them
-yourself. They live in `rules/` (or, for the orchestrator, in `.claude/rules/cos/`).
-This list was expanded in Sprint 2A (2026-04-16) to surface the highest-value
-rules that were previously indexed only in `RULES-COMPACT.md` without delivery.
+No hook enforces these for you. They live in `rules/`.
 
-- `rules/acceptance-criteria.md` — every task needs measurable, verifiable criteria
-  BEFORE you start. If you were not given criteria, define them and state them in
-  your first response.
-- `rules/trust-score.md` — end your work with a TRUST_REPORT header (evidence,
-  uncertainties, what the human should verify). At least one honest uncertainty is
-  REQUIRED; "100% confident" is a red flag.
-- `rules/adversarial-review.md` — if your task is verification/review, produce at
-  least one finding with a severity tier. "Looks good" is PROHIBITED.
-- `rules/definition-of-done.md` — classify complexity (trivial/small/medium/large/
-  critical) before starting; meet all DoD criteria for that tier before reporting
-  done.
-- `rules/phase-aware-agents.md` — current phase is `reconstruction`: REWRITE code
-  that doesn't follow standards, don't defer fixes as "future work".
-- `rules/agent-quality.md` — no TODO/FIXME in committed code, no stub
-  implementations, no commented-out code blocks, no "future work" without a
-  tracking reference.
-- `rules/responsiveness.md` — structure your output: 1-line start, PROGRESS
-  markers during, FILES_CREATED/MODIFIED lists, structured result.
-- `rules/agent-output-reading.md` — when reading sub-agent results, prefer
-  `<result>` first, then Engram, then `lib/agent_output_extractor.py`. NEVER Read
-  raw JSONL output files.
-- `rules/model-directive.md` — if the orchestrator specified a model, use exactly
-  that model. MODEL_DISABLED blocks the task until resolved.
+- `acceptance-criteria` — criterios medibles ANTES de empezar. Si no te los
+  dieron, definilos y decilos en tu primera respuesta.
+- `trust-score` — cerrá con TRUST_REPORT: evidencia, incertidumbres, qué debería
+  chequear un humano. **Al menos una incertidumbre honesta.** "100% seguro" es
+  una bandera roja.
+- `adversarial-review` — si tu tarea es verificar, producí al menos un hallazgo
+  con severidad. "Looks good" está prohibido.
+- `definition-of-done` — clasificá complejidad antes de empezar; cumplí el DoD de
+  ese nivel antes de decir listo.
+- `phase-aware-agents` — fase `reconstruction`: reescribí lo que no cumple, no
+  difieras como "future work".
+- `agent-quality` — sin TODO/FIXME, sin stubs, sin código comentado.
+- `responsiveness` — salida estructurada: arranque en una línea, marcas de
+  progreso, listas de archivos, resultado.
+- `agent-output-reading` — leé `<result>` primero, después Engram, después
+  `cos_lib/agent_output_extractor.py`. **Nunca** el JSONL crudo.
+- `model-directive` — si te dieron un modelo, usá exactamente ése.
 
-Rules you do NOT need to read inline (they are hook-enforced; violations
-auto-block):
-`anti-hallucination`, `assumption-tracking`, `blast-radius`, `clarification-gate`,
-`content-policy`, `prompt-quality`, `rate-limiting`, `rate-limit-protection` (now `token-budget-monitor`),
-`scope-creep-detection`, `scope-proportionality`, `consequence-system`,
-`trust-score` (validator portion), `crash-recovery`, `credential-management` (via
-secret-detector), `error-learning`, `result-management`, `user-prompt-capture`,
-`doc-sync`, `skill-rewrite`, `auto-skill-generation`, `auto-repair`.
-
-Registration is a fact about `.claude/settings.json`, not a fact you remember.
-The seven rules that `rules/ROADMAP.md` Section 1 once listed as unregistered
-(audit-trail, auto-rollback, confidence-gate, confidentiality-protection,
-agent-identity, pre-dev-readiness-gate, reinvention-prevention) are ALL
-registered as of 2026-08-20 — Section 1 marks each one RESOLVED, and this
-paragraph kept telling every sub-agent otherwise. A false "no hook will catch
-you" is the cheapest premise to publish and the most expensive to notice.
-
-Before treating any rule as agent-instruction-only, ask the file:
+Otras reglas SÍ están cableadas a hooks, pero **no memorices cuáles**: la lista
+en prosa envejece y esta misma sección publicó durante meses que siete reglas no
+estaban registradas cuando las ocho lo estaban. El registro es un hecho sobre
+`.claude/settings.json`, no un hecho que uno recuerda. Preguntáselo al archivo:
 
 ```bash
-python3 -c 'import json,re,sys; print(len(re.findall(re.escape(sys.argv[1]), \
-json.dumps(json.load(open(".claude/settings.json")).get("hooks",{})))))' <hook-name>.sh
+.venv/bin/python3 scripts/audit_hook_registration.py    # exit 1 = hay un declarado inalcanzable
 ```
 
-Zero means unregistered. Today that command returns zero for `rate-limiter.sh`
-and `session-end-cleanup.sh` (both deliberate operator decisions, see
-`rules/rate-limiting.md`) and non-zero for all seven above.
+Y para un hook puntual, `grep -c '<hook>.sh' .claude/settings.json`. Cero no
+siempre es un defecto: hay omisiones declaradas a propósito en
+`manifests/hook-registration-classification.yaml` y en
+`tests/contracts/EXCLUDED_HOOKS.txt`, que ese gate sí lee.
