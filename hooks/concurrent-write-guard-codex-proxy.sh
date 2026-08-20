@@ -55,8 +55,13 @@ LOCK_TIMEOUT=300
 CONFIG_FILE="$PROJECT_DIR/.cognitive-os/cognitive-os.yaml"
 [ -f "$CONFIG_FILE" ] || CONFIG_FILE="$PROJECT_DIR/cognitive-os.yaml"
 if [ -f "$CONFIG_FILE" ]; then
+  # El `s/#.*$//` corta el comentario de fin de linea ANTES del trim: la linea
+  # canonica es `lock_timeout_seconds: 300        # Lock auto-expires after 5 minutes`,
+  # y sin el corte el valor parseado era `300#Lockauto-expiresafter5minutes`,
+  # que no compara igual a nada. Misma forma que hooks/session-cleanup.sh
+  # (_read_knob). Medido con `python3 scripts/config_knob_census.py --prove`.
   PARSED_TIMEOUT=$(grep 'lock_timeout_seconds:' "$CONFIG_FILE" 2>/dev/null | head -1 \
-    | sed 's/.*lock_timeout_seconds:[[:space:]]*//' | tr -d '[:space:]')
+    | sed 's/.*lock_timeout_seconds:[[:space:]]*//; s/#.*$//' | tr -d '[:space:]')
   if [[ "${PARSED_TIMEOUT:-}" =~ ^[0-9]+$ ]]; then
     LOCK_TIMEOUT="$PARSED_TIMEOUT"
   fi

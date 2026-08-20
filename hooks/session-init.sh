@@ -161,7 +161,12 @@ _register_session() {
     MAX_CONCURRENT=10
     CONFIG_FILE="$PROJECT_DIR/.cognitive-os/cognitive-os.yaml"
     if [ -f "$CONFIG_FILE" ]; then
-      PARSED_MAX=$(grep 'max_concurrent:' "$CONFIG_FILE" 2>/dev/null | head -1 | sed 's/.*max_concurrent:[[:space:]]*//' | tr -d '[:space:]')
+      # El `s/#.*$//` corta el comentario de fin de linea ANTES del trim: la linea
+      # canonica es `max_concurrent: 10               # Maximum simultaneous sessions`,
+      # y sin el corte el valor parseado era `10#Maximumsimultaneoussessions`,
+      # que no compara igual a nada. Misma forma que hooks/session-cleanup.sh
+      # (_read_knob). Medido con `python3 scripts/config_knob_census.py --prove`.
+      PARSED_MAX=$(grep 'max_concurrent:' "$CONFIG_FILE" 2>/dev/null | head -1 | sed 's/.*max_concurrent:[[:space:]]*//; s/#.*$//' | tr -d '[:space:]')
       if [[ "$PARSED_MAX" =~ ^[0-9]+$ ]]; then
         MAX_CONCURRENT="$PARSED_MAX"
       fi

@@ -47,7 +47,12 @@ YAML_FILE="$PROJECT_DIR/cognitive-os.yaml"
 if [ -f "$YAML_FILE" ]; then
     PHASE_LINE=$(grep -m1 'phase:' "$YAML_FILE" 2>/dev/null || true)
     if [ -n "$PHASE_LINE" ]; then
-        PHASE=$(echo "$PHASE_LINE" | sed 's/.*phase:[[:space:]]*//' | tr -d '"' | tr -d "'" | tr -d ' ')
+        # El `s/#.*$//` corta el comentario de fin de linea ANTES del trim: la linea
+        # canonica es `phase: reconstruction     # reconstruction | stabilization | production | maintenance`,
+        # y sin el corte el valor parseado era `reconstruction#reconstruction|stabilization|production|maintenance`,
+        # que no compara igual a nada. Misma forma que hooks/session-cleanup.sh
+        # (_read_knob). Medido con `python3 scripts/config_knob_census.py --prove`.
+        PHASE=$(echo "$PHASE_LINE" | sed 's/.*phase:[[:space:]]*//; s/#.*$//' | tr -d '"' | tr -d "'" | tr -d ' ')
     fi
 fi
 
