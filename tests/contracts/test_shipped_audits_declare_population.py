@@ -31,7 +31,17 @@ import pytest
 REPO = Path(__file__).resolve().parents[2]
 SCRIPTS = REPO / "scripts"
 _SCOPE_RE = re.compile(r"^#\s*SCOPE:\s*(\S+)", re.M)
-_AUDIT_NAME_RE = re.compile(r"audit|_scan|verify|check")
+# `census` faltaba, y la ausencia era exquisita: este gate obliga a declarar
+# poblacion, y no veia OCHO scripts llamados *census* porque la palabra no
+# estaba en su propio selector de corpus. Un gate sobre censos, ciego a los
+# censos, invisible por su propio nombre. Medido el 2026-08-20: miraba 13 de 67
+# scripts con SCOPE, y 4 de los 8 censos no declaran poblacion — dos de ellos
+# commiteados ese mismo dia.
+#
+# `ledger` y `report` entran por la misma razon: nombran instrumentos que
+# publican conteos. Si un nombre nuevo vuelve a quedar afuera, el sintoma es
+# este mismo y la deteccion cuesta otro dia.
+_AUDIT_NAME_RE = re.compile(r"audit|_scan|verify|check|census|ledger|report")
 
 
 def _shipped_audit_scripts() -> list[Path]:
@@ -85,6 +95,23 @@ KNOWN_BARE_COUNT_AUDITS: set[str] = {
     "provenance_scan.py",
     "python_stdin_antipattern_audit.py",
     "stash_quarantine_audit.py",
+    # ── Ampliacion del corpus, 2026-08-20 ───────────────────────────────────
+    # Estos cinco NO son deuda nueva: son deuda que este gate no podia ver.
+    # Su selector de corpus era el regex `audit|_scan|verify|check`, asi que
+    # miraba 13 de 67 scripts con SCOPE — y no veia OCHO llamados *census*
+    # porque la palabra no estaba en su propio selector. Un gate sobre censos,
+    # ciego a los censos, invisible por su propio nombre.
+    #
+    # Al agregar `census|ledger|report` al selector cayeron estos cinco. Se
+    # declaran aca en vez de migrarlos en el mismo commit porque son cinco
+    # instrumentos y la migracion a Census cambia lo que cada uno publica: eso
+    # pide su propia prueba en las dos direcciones, no un renglon apurado.
+    # El baseline sigue siendo de igualdad exacta y solo puede bajar.
+    "adr_implementation_ledger.py",
+    "agent_work_ledger.py",
+    "approval_ledger.py",
+    "hook_timing_report.py",
+    "skip_absence_census.py",
 }
 
 

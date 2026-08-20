@@ -56,8 +56,16 @@ fi
 # ── collect files ─────────────────────────────────────────────────────────────
 # Use find with -not -path for cross-platform compatibility (no -prune portability issues)
 collect_files() {
-    # scripts/*.sh (one level — no subdirs needed)
-    find "${PROJECT_ROOT}/scripts" -maxdepth 1 -name "*.sh" -type f | sort
+    # scripts/**/*.sh — RECURSIVO. El comentario anterior decia "one level — no
+    # subdirs needed" y era una suposicion, no una medida: scripts/_lib/ tiene 7
+    # archivos que el gate nunca miro. Medido el 2026-08-20: la asignacion muerta
+    # de CONFIG_FILE en scripts/_lib/settings-driver-claude-code.sh la detectaba
+    # shellcheck de estanteria (SC2034) y sobrevivio 112 dias porque el corpus
+    # cortaba en el primer nivel. El bloque de hooks de abajo SI recursaba desde
+    # siempre; la asimetria no tenia motivo escrito.
+    find "${PROJECT_ROOT}/scripts" -name "*.sh" -type f \
+        | grep -v '/__pycache__/' \
+        | sort
 
     # hooks/**/*.sh excluding _archived
     find "${PROJECT_ROOT}/hooks" -name "*.sh" -type f \
