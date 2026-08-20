@@ -12,8 +12,9 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/context_budget_lib.sh"
 # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/portable.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/project-root.sh"
 
-PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}"
+PROJECT_DIR="$(cos_project_root)"
 
 # ── Strategy B: TTL cache (60s) ──────────────────────────────────────────────
 # inject-phase-context was hitting p95 ~3674ms (budget: 2000ms) because it ran

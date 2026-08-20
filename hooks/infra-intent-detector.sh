@@ -14,11 +14,12 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 _HOOK_NAME="infra-intent-detector"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
 source "$(dirname "$0")/_lib/common.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/project-root.sh"
 
 # Auto-disabled at capability level 5
 check_capability_level "infra-intent-detector"
 
-PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}"
+PROJECT_DIR="$(cos_project_root)"
 COGNITIVE_OS_DIR="$PROJECT_DIR/.cognitive-os"
 METRICS_LOG="$COGNITIVE_OS_DIR/metrics/infra-detections.jsonl"
 

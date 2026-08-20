@@ -24,6 +24,7 @@ set -uo pipefail
 
 # Respect killswitch (ADR-028 §584)
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/project-root.sh"
 
 _HOOK_NAME="goal-stop-gate"
 
@@ -32,7 +33,7 @@ if [ "${DISABLE_HOOK_GOAL_STOP_GATE:-}" = "true" ]; then
   exit 0
 fi
 
-PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}}}"
+PROJECT_DIR="$(cos_project_root)"
 WORKSPACE_THREAD_ID="${COS_WORKSPACE_THREAD_ID:-default}"
 
 # Read stdin once

@@ -11,8 +11,9 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 _HOOK_NAME="resource-check"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/project-root.sh"
 
-PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}"
+PROJECT_DIR="$(cos_project_root)"
 COGNITIVE_OS_DIR="$PROJECT_DIR/.cognitive-os"
 # Canonical config location is $PROJECT_DIR/cognitive-os.yaml; legacy path kept
 # as fallback for projects that used to nest it under .cognitive-os/.

@@ -6,11 +6,12 @@ set -euo pipefail
 # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/portable.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/project-root.sh"
 
 # Find docker binary (varies by OS/install)
 DOCKER="$(command -v docker 2>/dev/null || echo "/Applications/Docker.app/Contents/Resources/bin/docker")"
 
-PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}"
+PROJECT_DIR="$(cos_project_root)"
 AOS="$PROJECT_DIR/.cognitive-os"
 
 ok=0

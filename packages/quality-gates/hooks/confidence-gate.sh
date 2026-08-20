@@ -15,6 +15,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 _HOOK_NAME="confidence-gate"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
 source "$(dirname "$0")/_lib/common.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/project-root.sh"
 
 
 # Auto-disabled at capability level 4
@@ -22,7 +23,7 @@ check_capability_level "confidence-gate"
 # Runtime disable: DISABLE_HOOK_CONFIDENCE_GATE=true skips this hook for the session
 check_disabled_env "confidence-gate"
 
-PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}"
+PROJECT_DIR="$(cos_project_root)"
 METRICS_DIR="$(_resolve_metrics_dir)"
 GATE_LOG="$METRICS_DIR/confidence-gates.jsonl"
 

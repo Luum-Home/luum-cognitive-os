@@ -7,8 +7,9 @@
 set -euo pipefail
 # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/project-root.sh"
 
-PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}"
+PROJECT_DIR="$(cos_project_root)"
 EXPORT_DIR="$PROJECT_DIR/.engram/exports"
 SYNC_SCRIPT="$PROJECT_DIR/scripts/engram-sync.sh"
 
