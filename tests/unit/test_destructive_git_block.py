@@ -599,14 +599,47 @@ def test_today_incident_sequence_is_blocked(tmp_path: Path) -> None:
 
 
 def test_wip_block_message_lists_recovery_options(tmp_path: Path) -> None:
-    """WIP guard block message contains all three recovery paths."""
+    """El mensaje del guard de WIP tiene que ofrecer salidas EJECUTABLES.
+
+    Este test afirmaba tres literales, y dos de ellos eran la forma que no
+    funciona: `COS_ALLOW_RESET_OVER_WIP=1` y `COS_AUTO_STASH_BEFORE_RESET=1`
+    ofrecidas como prefijo del comando. Un prefijo `VAR=1 <comando>` NO llega
+    al hook — el hook es hijo del arnes, no del shell del Bash tool, y ya
+    decidio cuando ese shell nace. Cuando el 2026-08-19 se cambio la oferta por
+    la que si se puede ejecutar, este test se puso rojo DEFENDIENDO la rota.
+
+    Asi que ahora afirma el efecto —que haya una salida que el lector pueda
+    ejecutar— en vez de un literal, y ademas prohibe el regreso de la forma
+    inejecutable. Un literal se puede satisfacer imprimiendolo; una salida
+    ejecutable, no.
+    """
     _init_dirty_repo(tmp_path)
     result = _run("git pull --rebase origin main", tmp_path)
     assert result.returncode == 2
     stderr = result.stderr
-    assert "git stash" in stderr, "should suggest stash path"
-    assert "COS_ALLOW_RESET_OVER_WIP=1" in stderr, "should suggest bypass env var"
-    assert "COS_AUTO_STASH_BEFORE_RESET=1" in stderr, "should mention auto-stash option"
+    assert "git stash" in stderr, "tiene que ofrecer el camino del stash"
+
+    # Las dos vias que SI llegan al hook: el archivo de runtime, releido en cada
+    # invocacion (la unica accionable a mitad de sesion), y el export antes de
+    # lanzar el arnes.
+    ejecutable = ("bypass.env" in stderr) or ("export COS_BYPASS" in stderr)
+    assert ejecutable, (
+        "el mensaje no ofrece ninguna via de bypass ejecutable: ni el archivo "
+        "de runtime ni el export previo al arnes.\n" + stderr
+    )
+
+    # Y el control que impide volver atras: la forma de prefijo no puede
+    # reaparecer como oferta. Se busca la variable seguida de `=1 ` y un
+    # comando, que es la forma que miente; nombrarla en prosa no cuenta.
+    import re
+    # `export VAR=1` NO es la forma que miente: esa si llega, porque el arnes
+    # hereda el entorno del shell que lo lanzo. Lo que no llega es la asignacion
+    # como prefijo de un comando, asi que el lookbehind deja pasar el export.
+    miente = re.search(r"(?<!export )COS_[A-Z_]+=1\s+\S", stderr)
+    assert not miente, (
+        "el mensaje volvio a ofrecer un prefijo `VAR=1 <comando>`, que no llega "
+        f"a ningun hook: {miente.group(0) if miente else ''}\n" + stderr
+    )
 
 
 def test_cos_allow_reset_over_wip_bypasses_wip_guard(tmp_path: Path) -> None:

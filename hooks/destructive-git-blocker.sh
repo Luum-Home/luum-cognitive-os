@@ -999,7 +999,15 @@ if [ "$IS_WIP_GUARD_OP" = "1" ] && _has_wip; then
   echo "                    then retry: $COMMAND" >&2
   echo "     (o export COS_BYPASS=reset_over_wip antes de lanzar el arnés)" >&2
   echo "     (bypass is logged with the WIP file list to .cognitive-os/metrics/destructive-git-bypass.jsonl)" >&2
-  echo "  d) Auto-stash:    COS_AUTO_STASH_BEFORE_RESET=1 $COMMAND" >&2
+  # Esta ofrecia `COS_AUTO_STASH_BEFORE_RESET=1 $COMMAND`, y esa forma no llega:
+  # el hook es hijo del arnes, no del shell del Bash tool. A diferencia de la
+  # opcion c), esta NO recibe via en caliente a proposito: auto-stashear en un
+  # checkout compartido por varias sesiones mueve trabajo ajeno, asi que darle
+  # ruta desde adentro seria ensanchar la superficie justo donde mas duele.
+  # Queda la unica vehiculo honesto: decidirlo ANTES de lanzar el arnes.
+  echo "  d) Auto-stash:    export COS_AUTO_STASH_BEFORE_RESET=1, y relanzar el arnés" >&2
+  echo "     (no toma efecto a mitad de sesión, y en un checkout compartido" >&2
+  echo "      stashea también lo de las otras sesiones — preferí a) o b))" >&2
   echo "     (legacy opt-in; inspect the named stash and restore with explicit git stash apply <ref>)" >&2
   echo "" >&2
   echo "Reference: ADR-116 §P3.2, docs/06-Daily/reports/bug2-reset-cascade-forensics-2026-04-20.md" >&2
