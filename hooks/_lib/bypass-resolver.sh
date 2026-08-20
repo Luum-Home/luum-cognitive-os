@@ -17,8 +17,39 @@ _cos_bypass_project_dir() {
   printf '%s' "${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
 }
 
+# Identidad del agente que esta pidiendo el bypass, si la hay. El sub-agente la
+# recibe por entorno; la sesion del operador no tiene ninguna y eso es correcto:
+# el operador SI puede desactivar un guard para todo su proyecto, un sub-agente no.
+_cos_bypass_agent_id() {
+  printf '%s' "${COS_AGENT_ID:-${CLAUDE_AGENT_ID:-${CODEX_AGENT_ID:-}}}"
+}
+
+# Archivo de bypass, POR AGENTE cuando hay agente.
+#
+# Antes esto devolvia siempre `bypass.env` a secas, de alcance PROYECTO. El
+# agujero, medido el 2026-08-20: el bypass que escribia UN sub-agente destrababa
+# a TODOS los concurrentes, con el motivo de otro encargo. Un agente cansado de
+# que un guard le estorbe apagaba, sin saberlo, la misma defensa para sus cinco
+# hermanos -- y el motivo escrito en el archivo pertenecia a un trabajo que nada
+# tenia que ver con el de ellos.
+#
+# Ahora: si hay agente, su bypass vive en `bypass-<agente>.env` y no toca a
+# nadie mas. Si NO hay agente --sesion del operador-- se usa `bypass.env` como
+# siempre, porque desactivar un guard en tu propia maquina para tu propia sesion
+# es una decision legitima y con dueno visible.
+#
+# Compatibilidad: un `bypass.env` preexistente sigue funcionando para la sesion
+# del operador. Lo que deja de funcionar es que un sub-agente lo escriba y le
+# valga al vecino, que es exactamente el comportamiento que se quiere perder.
 _cos_bypass_runtime_file() {
-  printf '%s/.cognitive-os/runtime/bypass.env' "$(_cos_bypass_project_dir)"
+  local dir agent
+  dir="$(_cos_bypass_project_dir)/.cognitive-os/runtime"
+  agent="$(_cos_bypass_agent_id)"
+  if [ -n "$agent" ]; then
+    printf '%s/bypass-%s.env' "$dir" "$agent"
+  else
+    printf '%s/bypass.env' "$dir"
+  fi
 }
 
 # Lee UNA variable del runtime file. Antes esto sabía leer solamente COS_BYPASS,

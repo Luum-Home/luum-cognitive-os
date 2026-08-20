@@ -118,6 +118,40 @@ case "$BUDGET" in ''|*[!0-9]*) BUDGET=50 ;; esac
 WARN_AT="${COS_SUBAGENT_TOOL_CALL_WARN_AT:-$BUDGET}"
 case "$WARN_AT" in ''|*[!0-9]*) WARN_AT="$BUDGET" ;; esac
 
+# --- Concesion al reanudar: acotada, por agente, auditada -------------------
+# El contador es acumulativo por invocacion de sub-agente y NINGUNA reanudacion
+# lo resetea: un agente cortado en 51/50 vuelve con presupuesto CERO, asi que su
+# primer llamado al reanudar vuelve a chocar. Medido el 2026-08-20 sobre
+# .cognitive-os/metrics/subagent-budget-enforcer.jsonl: 58 de 93 agentes
+# bloqueados lo fueron MAS DE UNA VEZ (62%), y el peor acumulo 25 bloqueos.
+#
+# El efecto perverso: la instruccion CORRECTA ("para y reporta parcial") dejaba
+# el trabajo irrecuperable, mientras que el bypass -ilimitado y de alcance
+# PROYECTO, o sea que destraba a todos los agentes concurrentes- era la unica
+# salida. El agente que obedece quedaba peor que el que no. Incentivo al reves.
+#
+# La concesion invierte eso: la escribe el orquestador, vale para UN agente,
+# tiene techo duro y exige motivo escrito.
+GRANT_DIR="$PROJECT_DIR/.cognitive-os/runtime/budget-grants"
+GRANT_FILE="$GRANT_DIR/$AGENT_ID"
+GRANT=0
+GRANT_REASON=""
+if [ -f "$GRANT_FILE" ]; then
+  GRANT="$(grep -E '^GRANT=' "$GRANT_FILE" 2>/dev/null | tail -1 | sed -e 's/^GRANT=//' -e 's/[^0-9]//g')"
+  GRANT_REASON="$(grep -E '^REASON=' "$GRANT_FILE" 2>/dev/null | tail -1 | sed -e 's/^REASON=//' -e 's/^"//' -e 's/"$//')"
+fi
+case "$GRANT" in ''|*[!0-9]*) GRANT=0 ;; esac
+# Techo duro: una concesion jamas puede mas que duplicar el presupuesto base.
+GRANT_CEILING="${COS_SUBAGENT_BUDGET_GRANT_CEILING:-$BUDGET}"
+case "$GRANT_CEILING" in ''|*[!0-9]*) GRANT_CEILING="$BUDGET" ;; esac
+[ "$GRANT" -gt "$GRANT_CEILING" ] 2>/dev/null && GRANT="$GRANT_CEILING"
+# Sin motivo no hay concesion: un escape sin constancia es un agujero.
+if [ "$GRANT" -gt 0 ] && [ -z "$GRANT_REASON" ]; then
+  GRANT=0
+  GRANT_REASON="__missing__"
+fi
+EFFECTIVE_BUDGET=$((BUDGET + GRANT))
+
 RUNTIME_DIR="$PROJECT_DIR/.cognitive-os/sessions/$SESSION_ID"
 METRICS_DIR="$PROJECT_DIR/.cognitive-os/metrics"
 mkdir -p "$RUNTIME_DIR" "$METRICS_DIR" 2>/dev/null || true
@@ -195,12 +229,24 @@ if cos_bypass_allows subagent_budget; then
   exit 0
 fi
 
-if [ "$COUNT" -gt "$BUDGET" ]; then
+if [ "$GRANT" -gt 0 ] && [ "$COUNT" -gt "$BUDGET" ]; then
+  emit_metric "grant" "resume_grant:+$GRANT:$GRANT_REASON"
+fi
+
+if [ "$COUNT" -gt "$EFFECTIVE_BUDGET" ]; then
+  # Un llamado bloqueado NO consume presupuesto. Antes si, y por eso un agente
+  # cortado cavaba mas hondo con cada reintento: medido, un agente acumulo 25
+  # bloqueos y llevo el contador a 75 sin hacer nada util. Con el cobro apagado
+  # el contador queda estacionado en EFFECTIVE_BUDGET+1, y una concesion de N da
+  # exactamente N llamados usables -- no N menos lo que gasto chocando.
+  COUNT=$((EFFECTIVE_BUDGET + 1))
+  printf '%s' "$COUNT" > "$COUNTER_FILE" 2>/dev/null || true
   emit_metric "block" "budget_exceeded"
-  printf 'subagent-budget-enforcer: BLOCK — subagent `%s` reached %s tool calls, exceeding budget %s. Emit `ESCALATION:` with diagnosis, progress, files touched, and next safe action before more tool use. Si necesitás seguir, escribí en .cognitive-os/runtime/bypass.env las dos líneas `COS_BYPASS=subagent_budget` y `COS_SUBAGENT_BUDGET_BYPASS_REASON=<motivo>` (se relee en cada llamado; queda registrado en metrics/bypass-activation.jsonl). Un prefijo VAR=1 en el comando NO sirve: este hook es hijo del arnés.\n' "$AGENT_ID" "$COUNT" "$BUDGET" >&2
+  printf 'subagent-budget-enforcer: BLOCK — subagent `%s` reached %s tool calls, exceeding budget %s. Emit `ESCALATION:` with diagnosis, progress, files touched, and next safe action before more tool use. Si necesitás seguir, escribí en .cognitive-os/runtime/bypass.env las dos líneas `COS_BYPASS=subagent_budget` y `COS_SUBAGENT_BUDGET_BYPASS_REASON=<motivo>` (se relee en cada llamado; queda registrado en metrics/bypass-activation.jsonl). Un prefijo VAR=1 en el comando NO sirve: este hook es hijo del arnés. ESCRIBI PRIMERO el informe y los parches EXACTOS de lo que ya averiguaste: reanudarte NO te devuelve presupuesto por si solo. Para concederte presupuesto ACOTADO, el orquestador escribe %s con GRANT=<n> y REASON=<motivo> (techo %s, por agente, auditado).\n' "$AGENT_ID" "$COUNT" "$EFFECTIVE_BUDGET" "$GRANT_FILE" "$GRANT_CEILING" >&2
   exit 2
 fi
 
+[ "$GRANT" -gt 0 ] && WARN_AT="$EFFECTIVE_BUDGET"
 if [ "$COUNT" -ge "$WARN_AT" ]; then
   emit_metric "warn" "budget_reached"
   printf 'subagent-budget-enforcer: WARN — subagent `%s` reached %s/%s tool calls. Next tool call requires `ESCALATION:` or audited bypass.\n' "$AGENT_ID" "$COUNT" "$BUDGET" >&2
