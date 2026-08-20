@@ -17,6 +17,16 @@
 #     tests listed in manifests/primitive-behavior-evidence.yaml.
 #   - Fail-open: a resolver error allows the commit and logs a warn metric.
 #   - Bypass: COS_ALLOW_UNPROVEN_SCOPE_BOTH=1 (logs warning and allows).
+#
+# ATRIBUCIÓN (agregado 2026-08-20, después de medirlo). Este checkout lo comparten
+# varias sesiones y comparten un solo índice de git. La primera versión leía
+# `git diff --cached` ENTERO, así que un archivo que stageó el vecino bloqueaba
+# el commit de cualquier otro: pasó, y una de las sesiones bloqueadas era el
+# auditor de esta misma clase de defecto. `git commit -- <paths>` commitea
+# solamente esas rutas, y eso hace la atribución EXACTA y no heurística: se le
+# pasa el pathspec al propio git y se juzga únicamente lo que va a entrar. Sin
+# pathspec el commit sí se lleva el índice entero, y ahí mirarlo entero es lo
+# correcto: el gate no afloja, cambia de qué se hace cargo el disparador.
 
 set -uo pipefail
 
@@ -26,6 +36,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/_lib/common.sh"
 # shellcheck source=hooks/_lib/git-command-parse.sh
 source "$SCRIPT_DIR/_lib/git-command-parse.sh"
+# shellcheck source=hooks/_lib/bypass-resolver.sh
+source "$SCRIPT_DIR/_lib/bypass-resolver.sh"
 
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}}}"
 METRICS_DIR="${COS_METRICS_DIR:-$PROJECT_DIR/.cognitive-os/metrics}"
@@ -212,7 +224,8 @@ if ! cos_git_matches_subcommand "$COMMAND" 'commit'; then
   exit 0
 fi
 
-if [ "${COS_ALLOW_UNPROVEN_SCOPE_BOTH:-0}" = "1" ]; then
+if cos_bypass_allows unproven_scope_both; then
+  cos_bypass_audit unproven_scope_both scope-marker-portability-gate "$(cos_bypass_var COS_UNPROVEN_SCOPE_REASON || printf 'sin motivo declarado')"
   emit_metric "bypass" "$COMMAND"
   exit 0
 fi
@@ -222,10 +235,29 @@ if ! git -C "$PROJECT_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   exit 0
 fi
 
-# Let amend-only metadata commits proceed when no path content is staged.
-staged_files="$(git -C "$PROJECT_DIR" diff --cached --name-only --diff-filter=ACMRT 2>/dev/null || true)"
+# Alcance del commit: el pathspec cuando lo hay, el índice entero cuando no.
+# Las rutas se le entregan a git, que es quien sabe expandir un directorio o un
+# glob; reimplementar esa semántica acá sería la forma segura de equivocarse.
+COMMIT_PATHS=()
+scope_source="whole_index"
+while IFS= read -r _p; do
+  [ -n "$_p" ] || continue
+  COMMIT_PATHS[${#COMMIT_PATHS[@]}]="$_p"
+done <<EOF_PATHSPEC
+$(cos_git_commit_pathspec "$COMMAND" || true)
+EOF_PATHSPEC
+
+if [ ${#COMMIT_PATHS[@]} -gt 0 ]; then
+  scope_source="pathspec"
+  staged_files="$(git -C "$PROJECT_DIR" diff --cached --name-only --diff-filter=ACMRT -- "${COMMIT_PATHS[@]}" 2>/dev/null || true)"
+  added_files="$(git -C "$PROJECT_DIR" diff --cached --name-only --diff-filter=A -- "${COMMIT_PATHS[@]}" 2>/dev/null || true)"
+else
+  staged_files="$(git -C "$PROJECT_DIR" diff --cached --name-only --diff-filter=ACMRT 2>/dev/null || true)"
+  added_files="$(git -C "$PROJECT_DIR" diff --cached --name-only --diff-filter=A 2>/dev/null || true)"
+fi
+
+# Nada propio en el alcance: no hay de qué hacerse cargo.
 [ -n "$staged_files" ] || exit 0
-added_files="$(git -C "$PROJECT_DIR" diff --cached --name-only --diff-filter=A 2>/dev/null || true)"
 
 marked_paths=""
 marked_list=()
@@ -295,10 +327,15 @@ if [ -n "$missing_report" ] || [ -n "$undeclared_report" ]; then
 
 Every primitive must declare its scope in the first three lines (# SCOPE: os-only | both | project)
 and back that claim with a portability proof carrying at least one falsification probe.
-Bypass for an emergency only: COS_ALLOW_UNPROVEN_SCOPE_BOTH=1
+Alcance juzgado: $scope_source. Estos archivos entran en TU commit; si alguno no es tuyo,
+acotá el commit con \`git commit -F <msg> -- <tus rutas>\` y el gate mira solamente esas.
+
+Bypass sólo de emergencia, y deja constancia en metrics/bypass-activation.jsonl:
+  .cognitive-os/runtime/bypass.env  ->  COS_BYPASS=unproven_scope_both
+  (o export COS_ALLOW_UNPROVEN_SCOPE_BOTH=1 antes de lanzar el arnés)
 EOF_BLOCK
   exit 2
 fi
 
-emit_metric "allow" "all staged primitives declare scope and have portability proofs"
+emit_metric "allow" "scope=$scope_source; all in-scope primitives declare scope and have portability proofs"
 exit 0
