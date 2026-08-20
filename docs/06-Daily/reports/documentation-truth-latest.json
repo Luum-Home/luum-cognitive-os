@@ -1,7 +1,81 @@
 {
-  "generated_at": "2026-08-18T20:22:36+00:00",
+  "generated_at": "2026-08-20T03:26:54+00:00",
   "manifest": "manifests/documentation-truth-claims.yaml",
   "rows": [
+    {
+      "check": "required_doc_exists",
+      "claim_id": "claude_code_hook_registration",
+      "doc": "scripts/_lib/settings-driver-claude-code.sh",
+      "evidence": [
+        "scripts/_lib/settings-driver-claude-code.sh"
+      ],
+      "message": "Required documentation surface exists",
+      "next_action": "keep doc linked",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "required_doc_exists",
+      "claim_id": "claude_code_hook_registration",
+      "doc": "hooks/inject-phase-context.sh",
+      "evidence": [
+        "hooks/inject-phase-context.sh"
+      ],
+      "message": "Required documentation surface exists",
+      "next_action": "keep doc linked",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "required_doc_exists",
+      "claim_id": "claude_code_hook_registration",
+      "doc": "templates/project-gotchas.md",
+      "evidence": [
+        "templates/project-gotchas.md"
+      ],
+      "message": "Required documentation surface exists",
+      "next_action": "keep doc linked",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase_surface",
+      "claim_id": "claude_code_hook_registration",
+      "doc": null,
+      "evidence": [
+        "scope:repo-surface",
+        "checked_files:3233"
+      ],
+      "message": "Forbidden phrase has a non-empty scan surface: the canonical hook registry is `cognitive-os.yaml > harness.hooks`",
+      "next_action": "keep the surface declared",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "claude_code_hook_registration",
+      "doc": "cos_lib/wiring_validator.py",
+      "evidence": [
+        "cos_lib/wiring_validator.py:61",
+        "checked_files:3233"
+      ],
+      "message": "Forbidden stale phrase present in 1 place(s), checked against 3233 files: the canonical hook registry is `cognitive-os.yaml > harness.hooks`",
+      "next_action": "remove stale or contradictory prose at the listed file:line",
+      "severity": "high",
+      "status": "block"
+    },
+    {
+      "check": "required_phrase",
+      "claim_id": "claude_code_hook_registration",
+      "doc": null,
+      "evidence": [
+        "Claude Code is the exception"
+      ],
+      "message": "Required phrase present in 3 required doc(s): Claude Code is the exception",
+      "next_action": "add or regenerate current-truth prose",
+      "severity": "high",
+      "status": "pass"
+    },
     {
       "check": "source_report_exists",
       "claim_id": "consumer_projection_harnesses",
@@ -39,66 +113,6 @@
       "status": "pass"
     },
     {
-      "check": "forbidden_phrase",
-      "claim_id": "consumer_projection_harnesses",
-      "doc": "docs/04-Concepts/architecture/consumer-project-primitive-accessibility.md",
-      "evidence": [
-        "proof signs only Claude Code and OpenAI Codex default installs"
-      ],
-      "message": "Forbidden stale phrase absent: proof signs only Claude Code and OpenAI Codex default installs",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "consumer_projection_harnesses",
-      "doc": "docs/04-Concepts/architecture/consumer-project-primitive-accessibility.md",
-      "evidence": [
-        "automated for Claude/Codex default installs"
-      ],
-      "message": "Forbidden stale phrase absent: automated for Claude/Codex default installs",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "consumer_projection_harnesses",
-      "doc": "docs/04-Concepts/architecture/consumer-project-primitive-accessibility.md",
-      "evidence": [
-        "current Claude/Codex proof boundary"
-      ],
-      "message": "Forbidden stale phrase absent: current Claude/Codex proof boundary",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "consumer_projection_harnesses",
-      "doc": "docs/04-Concepts/architecture/consumer-project-primitive-accessibility.md",
-      "evidence": [
-        "solo Claude/Codex"
-      ],
-      "message": "Forbidden stale phrase absent: solo Claude/Codex",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "consumer_projection_harnesses",
-      "doc": "docs/04-Concepts/architecture/consumer-project-primitive-accessibility.md",
-      "evidence": [
-        "only Claude/Codex"
-      ],
-      "message": "Forbidden stale phrase absent: only Claude/Codex",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
       "check": "required_doc_exists",
       "claim_id": "consumer_projection_harnesses",
       "doc": "docs/02-Decisions/adrs/ADR-146-primitive-readiness-ledger.md",
@@ -111,62 +125,132 @@
       "status": "pass"
     },
     {
-      "check": "forbidden_phrase",
+      "check": "forbidden_phrase_surface",
       "claim_id": "consumer_projection_harnesses",
-      "doc": "docs/02-Decisions/adrs/ADR-146-primitive-readiness-ledger.md",
+      "doc": null,
       "evidence": [
-        "proof signs only Claude Code and OpenAI Codex default installs"
+        "scope:repo-surface",
+        "checked_files:3233"
       ],
-      "message": "Forbidden stale phrase absent: proof signs only Claude Code and OpenAI Codex default installs",
-      "next_action": "remove stale or contradictory prose",
+      "message": "Forbidden phrase has a non-empty scan surface: proof signs only Claude Code and OpenAI Codex default installs",
+      "next_action": "keep the surface declared",
       "severity": "high",
       "status": "pass"
     },
     {
       "check": "forbidden_phrase",
       "claim_id": "consumer_projection_harnesses",
-      "doc": "docs/02-Decisions/adrs/ADR-146-primitive-readiness-ledger.md",
+      "doc": null,
       "evidence": [
-        "automated for Claude/Codex default installs"
+        "proof signs only Claude Code and OpenAI Codex default installs",
+        "checked_files:3233"
       ],
-      "message": "Forbidden stale phrase absent: automated for Claude/Codex default installs",
-      "next_action": "remove stale or contradictory prose",
+      "message": "Forbidden stale phrase absent, checked against 3233 files: proof signs only Claude Code and OpenAI Codex default installs",
+      "next_action": "keep the phrase out of the scanned surface",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase_surface",
+      "claim_id": "consumer_projection_harnesses",
+      "doc": null,
+      "evidence": [
+        "scope:repo-surface",
+        "checked_files:3233"
+      ],
+      "message": "Forbidden phrase has a non-empty scan surface: automated for Claude/Codex default installs",
+      "next_action": "keep the surface declared",
       "severity": "high",
       "status": "pass"
     },
     {
       "check": "forbidden_phrase",
       "claim_id": "consumer_projection_harnesses",
-      "doc": "docs/02-Decisions/adrs/ADR-146-primitive-readiness-ledger.md",
+      "doc": null,
       "evidence": [
-        "current Claude/Codex proof boundary"
+        "automated for Claude/Codex default installs",
+        "checked_files:3233"
       ],
-      "message": "Forbidden stale phrase absent: current Claude/Codex proof boundary",
-      "next_action": "remove stale or contradictory prose",
+      "message": "Forbidden stale phrase absent, checked against 3233 files: automated for Claude/Codex default installs",
+      "next_action": "keep the phrase out of the scanned surface",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase_surface",
+      "claim_id": "consumer_projection_harnesses",
+      "doc": null,
+      "evidence": [
+        "scope:repo-surface",
+        "checked_files:3233"
+      ],
+      "message": "Forbidden phrase has a non-empty scan surface: current Claude/Codex proof boundary",
+      "next_action": "keep the surface declared",
       "severity": "high",
       "status": "pass"
     },
     {
       "check": "forbidden_phrase",
       "claim_id": "consumer_projection_harnesses",
-      "doc": "docs/02-Decisions/adrs/ADR-146-primitive-readiness-ledger.md",
+      "doc": null,
       "evidence": [
-        "solo Claude/Codex"
+        "current Claude/Codex proof boundary",
+        "checked_files:3233"
       ],
-      "message": "Forbidden stale phrase absent: solo Claude/Codex",
-      "next_action": "remove stale or contradictory prose",
+      "message": "Forbidden stale phrase absent, checked against 3233 files: current Claude/Codex proof boundary",
+      "next_action": "keep the phrase out of the scanned surface",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase_surface",
+      "claim_id": "consumer_projection_harnesses",
+      "doc": null,
+      "evidence": [
+        "scope:repo-surface",
+        "checked_files:3233"
+      ],
+      "message": "Forbidden phrase has a non-empty scan surface: solo Claude/Codex",
+      "next_action": "keep the surface declared",
       "severity": "high",
       "status": "pass"
     },
     {
       "check": "forbidden_phrase",
       "claim_id": "consumer_projection_harnesses",
-      "doc": "docs/02-Decisions/adrs/ADR-146-primitive-readiness-ledger.md",
+      "doc": null,
       "evidence": [
-        "only Claude/Codex"
+        "solo Claude/Codex",
+        "checked_files:3233"
       ],
-      "message": "Forbidden stale phrase absent: only Claude/Codex",
-      "next_action": "remove stale or contradictory prose",
+      "message": "Forbidden stale phrase absent, checked against 3233 files: solo Claude/Codex",
+      "next_action": "keep the phrase out of the scanned surface",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase_surface",
+      "claim_id": "consumer_projection_harnesses",
+      "doc": null,
+      "evidence": [
+        "scope:repo-surface",
+        "checked_files:3233"
+      ],
+      "message": "Forbidden phrase has a non-empty scan surface: only Claude/Codex",
+      "next_action": "keep the surface declared",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "consumer_projection_harnesses",
+      "doc": null,
+      "evidence": [
+        "only Claude/Codex",
+        "checked_files:3233"
+      ],
+      "message": "Forbidden stale phrase absent, checked against 3233 files: only Claude/Codex",
+      "next_action": "keep the phrase out of the scanned surface",
       "severity": "high",
       "status": "pass"
     },
@@ -177,7 +261,7 @@
       "evidence": [
         "Structural projection is not runtime enforcement"
       ],
-      "message": "Required phrase present: Structural projection is not runtime enforcement",
+      "message": "Required phrase present in 2 required doc(s): Structural projection is not runtime enforcement",
       "next_action": "add or regenerate current-truth prose",
       "severity": "high",
       "status": "pass"
@@ -189,7 +273,7 @@
       "evidence": [
         "implemented native and structural harnesses"
       ],
-      "message": "Required phrase present: implemented native and structural harnesses",
+      "message": "Required phrase present in 2 required doc(s): implemented native and structural harnesses",
       "next_action": "add or regenerate current-truth prose",
       "severity": "high",
       "status": "pass"
@@ -219,42 +303,6 @@
       "status": "pass"
     },
     {
-      "check": "forbidden_phrase",
-      "claim_id": "cos_init_flag_surface",
-      "doc": "docs/00-MOCs/entrypoints/getting-started.md",
-      "evidence": [
-        "parses no such flags"
-      ],
-      "message": "Forbidden stale phrase absent: parses no such flags",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "medium",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "cos_init_flag_surface",
-      "doc": "docs/00-MOCs/entrypoints/getting-started.md",
-      "evidence": [
-        "flags scripts/cos-init.sh does not parse"
-      ],
-      "message": "Forbidden stale phrase absent: flags scripts/cos-init.sh does not parse",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "medium",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "cos_init_flag_surface",
-      "doc": "docs/00-MOCs/entrypoints/getting-started.md",
-      "evidence": [
-        "Esos flags no"
-      ],
-      "message": "Forbidden stale phrase absent: Esos flags no",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "medium",
-      "status": "pass"
-    },
-    {
       "check": "required_doc_exists",
       "claim_id": "cos_init_flag_surface",
       "doc": "docs/00-MOCs/entrypoints/quickstart.md",
@@ -263,42 +311,6 @@
       ],
       "message": "Required documentation surface exists",
       "next_action": "keep doc linked",
-      "severity": "medium",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "cos_init_flag_surface",
-      "doc": "docs/00-MOCs/entrypoints/quickstart.md",
-      "evidence": [
-        "parses no such flags"
-      ],
-      "message": "Forbidden stale phrase absent: parses no such flags",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "medium",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "cos_init_flag_surface",
-      "doc": "docs/00-MOCs/entrypoints/quickstart.md",
-      "evidence": [
-        "flags scripts/cos-init.sh does not parse"
-      ],
-      "message": "Forbidden stale phrase absent: flags scripts/cos-init.sh does not parse",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "medium",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "cos_init_flag_surface",
-      "doc": "docs/00-MOCs/entrypoints/quickstart.md",
-      "evidence": [
-        "Esos flags no"
-      ],
-      "message": "Forbidden stale phrase absent: Esos flags no",
-      "next_action": "remove stale or contradictory prose",
       "severity": "medium",
       "status": "pass"
     },
@@ -315,38 +327,80 @@
       "status": "pass"
     },
     {
-      "check": "forbidden_phrase",
+      "check": "forbidden_phrase_surface",
       "claim_id": "cos_init_flag_surface",
-      "doc": "docs/06-Daily/reports/install-doors-forensics-2026-08-15.md",
+      "doc": null,
       "evidence": [
-        "parses no such flags"
+        "scope:repo-surface",
+        "checked_files:3233"
       ],
-      "message": "Forbidden stale phrase absent: parses no such flags",
-      "next_action": "remove stale or contradictory prose",
+      "message": "Forbidden phrase has a non-empty scan surface: parses no such flags",
+      "next_action": "keep the surface declared",
       "severity": "medium",
       "status": "pass"
     },
     {
       "check": "forbidden_phrase",
       "claim_id": "cos_init_flag_surface",
-      "doc": "docs/06-Daily/reports/install-doors-forensics-2026-08-15.md",
+      "doc": null,
       "evidence": [
-        "flags scripts/cos-init.sh does not parse"
+        "parses no such flags",
+        "checked_files:3233"
       ],
-      "message": "Forbidden stale phrase absent: flags scripts/cos-init.sh does not parse",
-      "next_action": "remove stale or contradictory prose",
+      "message": "Forbidden stale phrase absent, checked against 3233 files: parses no such flags",
+      "next_action": "keep the phrase out of the scanned surface",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase_surface",
+      "claim_id": "cos_init_flag_surface",
+      "doc": null,
+      "evidence": [
+        "scope:repo-surface",
+        "checked_files:3233"
+      ],
+      "message": "Forbidden phrase has a non-empty scan surface: flags scripts/cos-init.sh does not parse",
+      "next_action": "keep the surface declared",
       "severity": "medium",
       "status": "pass"
     },
     {
       "check": "forbidden_phrase",
       "claim_id": "cos_init_flag_surface",
-      "doc": "docs/06-Daily/reports/install-doors-forensics-2026-08-15.md",
+      "doc": null,
       "evidence": [
-        "Esos flags no"
+        "flags scripts/cos-init.sh does not parse",
+        "checked_files:3233"
       ],
-      "message": "Forbidden stale phrase absent: Esos flags no",
-      "next_action": "remove stale or contradictory prose",
+      "message": "Forbidden stale phrase absent, checked against 3233 files: flags scripts/cos-init.sh does not parse",
+      "next_action": "keep the phrase out of the scanned surface",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase_surface",
+      "claim_id": "cos_init_flag_surface",
+      "doc": null,
+      "evidence": [
+        "scope:repo-surface",
+        "checked_files:3233"
+      ],
+      "message": "Forbidden phrase has a non-empty scan surface: Esos flags no",
+      "next_action": "keep the surface declared",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "cos_init_flag_surface",
+      "doc": null,
+      "evidence": [
+        "Esos flags no",
+        "checked_files:3233"
+      ],
+      "message": "Forbidden stale phrase absent, checked against 3233 files: Esos flags no",
+      "next_action": "keep the phrase out of the scanned surface",
       "severity": "medium",
       "status": "pass"
     },
@@ -357,7 +411,7 @@
       "evidence": [
         "remap to `--default`"
       ],
-      "message": "Required phrase present: remap to `--default`",
+      "message": "Required phrase present in 3 required doc(s): remap to `--default`",
       "next_action": "add or regenerate current-truth prose",
       "severity": "medium",
       "status": "pass"
@@ -369,7 +423,7 @@
       "evidence": [
         "Two install profiles exist, not three"
       ],
-      "message": "Required phrase present: Two install profiles exist, not three",
+      "message": "Required phrase present in 3 required doc(s): Two install profiles exist, not three",
       "next_action": "add or regenerate current-truth prose",
       "severity": "medium",
       "status": "pass"
@@ -441,7 +495,7 @@
       "evidence": [
         "documentation_truth"
       ],
-      "message": "Required phrase present: documentation_truth",
+      "message": "Required phrase present in 3 required doc(s): documentation_truth",
       "next_action": "add or regenerate current-truth prose",
       "severity": "medium",
       "status": "pass"
@@ -453,7 +507,7 @@
       "evidence": [
         "documentation-truth-claims.yaml"
       ],
-      "message": "Required phrase present: documentation-truth-claims.yaml",
+      "message": "Required phrase present in 3 required doc(s): documentation-truth-claims.yaml",
       "next_action": "add or regenerate current-truth prose",
       "severity": "medium",
       "status": "pass"
@@ -465,7 +519,7 @@
       "evidence": [
         "documentation_truth_audit.py"
       ],
-      "message": "Required phrase present: documentation_truth_audit.py",
+      "message": "Required phrase present in 3 required doc(s): documentation_truth_audit.py",
       "next_action": "add or regenerate current-truth prose",
       "severity": "medium",
       "status": "pass"
@@ -495,30 +549,6 @@
       "status": "pass"
     },
     {
-      "check": "forbidden_phrase",
-      "claim_id": "payload_canary_determinism",
-      "doc": "docs/06-Daily/reports/payload-contract-architecture-2026-08-15.md",
-      "evidence": [
-        "necesita transcripts, no corre en CI"
-      ],
-      "message": "Forbidden stale phrase absent: necesita transcripts, no corre en CI",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "medium",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "payload_canary_determinism",
-      "doc": "docs/06-Daily/reports/payload-contract-architecture-2026-08-15.md",
-      "evidence": [
-        "el canario no puede ser determinista"
-      ],
-      "message": "Forbidden stale phrase absent: el canario no puede ser determinista",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "medium",
-      "status": "pass"
-    },
-    {
       "check": "required_doc_exists",
       "claim_id": "payload_canary_determinism",
       "doc": "tests/fixtures/payload-corpus/README.md",
@@ -531,26 +561,54 @@
       "status": "pass"
     },
     {
-      "check": "forbidden_phrase",
+      "check": "forbidden_phrase_surface",
       "claim_id": "payload_canary_determinism",
-      "doc": "tests/fixtures/payload-corpus/README.md",
+      "doc": null,
       "evidence": [
-        "necesita transcripts, no corre en CI"
+        "scope:repo-surface",
+        "checked_files:3233"
       ],
-      "message": "Forbidden stale phrase absent: necesita transcripts, no corre en CI",
-      "next_action": "remove stale or contradictory prose",
+      "message": "Forbidden phrase has a non-empty scan surface: necesita transcripts, no corre en CI",
+      "next_action": "keep the surface declared",
       "severity": "medium",
       "status": "pass"
     },
     {
       "check": "forbidden_phrase",
       "claim_id": "payload_canary_determinism",
-      "doc": "tests/fixtures/payload-corpus/README.md",
+      "doc": null,
       "evidence": [
-        "el canario no puede ser determinista"
+        "necesita transcripts, no corre en CI",
+        "checked_files:3233"
       ],
-      "message": "Forbidden stale phrase absent: el canario no puede ser determinista",
-      "next_action": "remove stale or contradictory prose",
+      "message": "Forbidden stale phrase absent, checked against 3233 files: necesita transcripts, no corre en CI",
+      "next_action": "keep the phrase out of the scanned surface",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase_surface",
+      "claim_id": "payload_canary_determinism",
+      "doc": null,
+      "evidence": [
+        "scope:repo-surface",
+        "checked_files:3233"
+      ],
+      "message": "Forbidden phrase has a non-empty scan surface: el canario no puede ser determinista",
+      "next_action": "keep the surface declared",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "payload_canary_determinism",
+      "doc": null,
+      "evidence": [
+        "el canario no puede ser determinista",
+        "checked_files:3233"
+      ],
+      "message": "Forbidden stale phrase absent, checked against 3233 files: el canario no puede ser determinista",
+      "next_action": "keep the phrase out of the scanned surface",
       "severity": "medium",
       "status": "pass"
     },
@@ -561,7 +619,7 @@
       "evidence": [
         "tests/fixtures/payload-corpus"
       ],
-      "message": "Required phrase present: tests/fixtures/payload-corpus",
+      "message": "Required phrase present in 2 required doc(s): tests/fixtures/payload-corpus",
       "next_action": "add or regenerate current-truth prose",
       "severity": "medium",
       "status": "pass"
@@ -573,7 +631,7 @@
       "evidence": [
         "--canary --live"
       ],
-      "message": "Required phrase present: --canary --live",
+      "message": "Required phrase present in 2 required doc(s): --canary --live",
       "next_action": "add or regenerate current-truth prose",
       "severity": "medium",
       "status": "pass"
@@ -603,54 +661,6 @@
       "status": "pass"
     },
     {
-      "check": "forbidden_phrase",
-      "claim_id": "primitive_authority_write_effects",
-      "doc": "docs/04-Concepts/architecture/primitive-authority-write-effects.md",
-      "evidence": [
-        "Known remaining gap"
-      ],
-      "message": "Forbidden stale phrase absent: Known remaining gap",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "primitive_authority_write_effects",
-      "doc": "docs/04-Concepts/architecture/primitive-authority-write-effects.md",
-      "evidence": [
-        "falta una capa expl\u00edcita de authority/write-effects audit"
-      ],
-      "message": "Forbidden stale phrase absent: falta una capa expl\u00edcita de authority/write-effects audit",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "primitive_authority_write_effects",
-      "doc": "docs/04-Concepts/architecture/primitive-authority-write-effects.md",
-      "evidence": [
-        "no is documentado todavia"
-      ],
-      "message": "Forbidden stale phrase absent: no is documentado todavia",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "primitive_authority_write_effects",
-      "doc": "docs/04-Concepts/architecture/primitive-authority-write-effects.md",
-      "evidence": [
-        "not implemented yet"
-      ],
-      "message": "Forbidden stale phrase absent: not implemented yet",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
       "check": "required_doc_exists",
       "claim_id": "primitive_authority_write_effects",
       "doc": "docs/02-Decisions/adrs/ADR-276-primitive-authority-write-effects.md",
@@ -663,50 +673,106 @@
       "status": "pass"
     },
     {
-      "check": "forbidden_phrase",
+      "check": "forbidden_phrase_surface",
       "claim_id": "primitive_authority_write_effects",
-      "doc": "docs/02-Decisions/adrs/ADR-276-primitive-authority-write-effects.md",
+      "doc": null,
       "evidence": [
-        "Known remaining gap"
+        "scope:repo-surface",
+        "checked_files:3233"
       ],
-      "message": "Forbidden stale phrase absent: Known remaining gap",
-      "next_action": "remove stale or contradictory prose",
+      "message": "Forbidden phrase has a non-empty scan surface: Known remaining gap",
+      "next_action": "keep the surface declared",
       "severity": "high",
       "status": "pass"
     },
     {
       "check": "forbidden_phrase",
       "claim_id": "primitive_authority_write_effects",
-      "doc": "docs/02-Decisions/adrs/ADR-276-primitive-authority-write-effects.md",
+      "doc": null,
       "evidence": [
-        "falta una capa expl\u00edcita de authority/write-effects audit"
+        "Known remaining gap",
+        "checked_files:3233"
       ],
-      "message": "Forbidden stale phrase absent: falta una capa expl\u00edcita de authority/write-effects audit",
-      "next_action": "remove stale or contradictory prose",
+      "message": "Forbidden stale phrase absent, checked against 3233 files: Known remaining gap",
+      "next_action": "keep the phrase out of the scanned surface",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase_surface",
+      "claim_id": "primitive_authority_write_effects",
+      "doc": null,
+      "evidence": [
+        "scope:repo-surface",
+        "checked_files:3233"
+      ],
+      "message": "Forbidden phrase has a non-empty scan surface: falta una capa expl\u00edcita de authority/write-effects audit",
+      "next_action": "keep the surface declared",
       "severity": "high",
       "status": "pass"
     },
     {
       "check": "forbidden_phrase",
       "claim_id": "primitive_authority_write_effects",
-      "doc": "docs/02-Decisions/adrs/ADR-276-primitive-authority-write-effects.md",
+      "doc": null,
       "evidence": [
-        "no is documentado todavia"
+        "falta una capa expl\u00edcita de authority/write-effects audit",
+        "checked_files:3233"
       ],
-      "message": "Forbidden stale phrase absent: no is documentado todavia",
-      "next_action": "remove stale or contradictory prose",
+      "message": "Forbidden stale phrase absent, checked against 3233 files: falta una capa expl\u00edcita de authority/write-effects audit",
+      "next_action": "keep the phrase out of the scanned surface",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase_surface",
+      "claim_id": "primitive_authority_write_effects",
+      "doc": null,
+      "evidence": [
+        "scope:repo-surface",
+        "checked_files:3233"
+      ],
+      "message": "Forbidden phrase has a non-empty scan surface: no is documentado todavia",
+      "next_action": "keep the surface declared",
       "severity": "high",
       "status": "pass"
     },
     {
       "check": "forbidden_phrase",
       "claim_id": "primitive_authority_write_effects",
-      "doc": "docs/02-Decisions/adrs/ADR-276-primitive-authority-write-effects.md",
+      "doc": null,
       "evidence": [
-        "not implemented yet"
+        "no is documentado todavia",
+        "checked_files:3233"
       ],
-      "message": "Forbidden stale phrase absent: not implemented yet",
-      "next_action": "remove stale or contradictory prose",
+      "message": "Forbidden stale phrase absent, checked against 3233 files: no is documentado todavia",
+      "next_action": "keep the phrase out of the scanned surface",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase_surface",
+      "claim_id": "primitive_authority_write_effects",
+      "doc": null,
+      "evidence": [
+        "scope:docs/04-Concepts/architecture/primitive-authority-write-effects.md,docs/02-Decisions/adrs/ADR-276-*.md",
+        "checked_files:2"
+      ],
+      "message": "Forbidden phrase has a non-empty scan surface: not implemented yet",
+      "next_action": "keep the surface declared",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "primitive_authority_write_effects",
+      "doc": null,
+      "evidence": [
+        "not implemented yet",
+        "checked_files:2"
+      ],
+      "message": "Forbidden stale phrase absent, checked against 2 files: not implemented yet",
+      "next_action": "keep the phrase out of the scanned surface",
       "severity": "high",
       "status": "pass"
     },
@@ -717,7 +783,7 @@
       "evidence": [
         "manifests/primitive-authority.yaml"
       ],
-      "message": "Required phrase present: manifests/primitive-authority.yaml",
+      "message": "Required phrase present in 2 required doc(s): manifests/primitive-authority.yaml",
       "next_action": "add or regenerate current-truth prose",
       "severity": "high",
       "status": "pass"
@@ -729,7 +795,7 @@
       "evidence": [
         "scripts/primitive_authority_audit.py"
       ],
-      "message": "Required phrase present: scripts/primitive_authority_audit.py",
+      "message": "Required phrase present in 2 required doc(s): scripts/primitive_authority_audit.py",
       "next_action": "add or regenerate current-truth prose",
       "severity": "high",
       "status": "pass"
@@ -741,7 +807,7 @@
       "evidence": [
         "authority_write_effects"
       ],
-      "message": "Required phrase present: authority_write_effects",
+      "message": "Required phrase present in 2 required doc(s): authority_write_effects",
       "next_action": "add or regenerate current-truth prose",
       "severity": "high",
       "status": "pass"
@@ -753,7 +819,7 @@
       "evidence": [
         "dynamic write-effects audit"
       ],
-      "message": "Required phrase present: dynamic write-effects audit",
+      "message": "Required phrase present in 2 required doc(s): dynamic write-effects audit",
       "next_action": "add or regenerate current-truth prose",
       "severity": "high",
       "status": "pass"
@@ -807,102 +873,6 @@
       "status": "pass"
     },
     {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/00-MOCs/operations.md",
-      "evidence": [
-        "read/write asymmetry remains unresolved"
-      ],
-      "message": "Forbidden stale phrase absent: read/write asymmetry remains unresolved",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/00-MOCs/operations.md",
-      "evidence": [
-        "no atomic close primitive exists"
-      ],
-      "message": "Forbidden stale phrase absent: no atomic close primitive exists",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/00-MOCs/operations.md",
-      "evidence": [
-        "manual closures are the only path"
-      ],
-      "message": "Forbidden stale phrase absent: manual closures are the only path",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/00-MOCs/operations.md",
-      "evidence": [
-        "session-start surfaces only Engram and plans"
-      ],
-      "message": "Forbidden stale phrase absent: session-start surfaces only Engram and plans",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/00-MOCs/operations.md",
-      "evidence": [
-        "projector is not yet wired into the harnesses"
-      ],
-      "message": "Forbidden stale phrase absent: projector is not yet wired into the harnesses",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/00-MOCs/operations.md",
-      "evidence": [
-        "cos-pending-truth-close does not exist"
-      ],
-      "message": "Forbidden stale phrase absent: cos-pending-truth-close does not exist",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/00-MOCs/operations.md",
-      "evidence": [
-        "cos-adr-close is a future follow-up"
-      ],
-      "message": "Forbidden stale phrase absent: cos-adr-close is a future follow-up",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/00-MOCs/operations.md",
-      "evidence": [
-        "closure-trail is not implemented"
-      ],
-      "message": "Forbidden stale phrase absent: closure-trail is not implemented",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
       "check": "required_doc_exists",
       "claim_id": "session_pending_protocol",
       "doc": "docs/04-Concepts/architecture/pending-truth-architecture.md",
@@ -911,102 +881,6 @@
       ],
       "message": "Required documentation surface exists",
       "next_action": "keep doc linked",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/04-Concepts/architecture/pending-truth-architecture.md",
-      "evidence": [
-        "read/write asymmetry remains unresolved"
-      ],
-      "message": "Forbidden stale phrase absent: read/write asymmetry remains unresolved",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/04-Concepts/architecture/pending-truth-architecture.md",
-      "evidence": [
-        "no atomic close primitive exists"
-      ],
-      "message": "Forbidden stale phrase absent: no atomic close primitive exists",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/04-Concepts/architecture/pending-truth-architecture.md",
-      "evidence": [
-        "manual closures are the only path"
-      ],
-      "message": "Forbidden stale phrase absent: manual closures are the only path",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/04-Concepts/architecture/pending-truth-architecture.md",
-      "evidence": [
-        "session-start surfaces only Engram and plans"
-      ],
-      "message": "Forbidden stale phrase absent: session-start surfaces only Engram and plans",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/04-Concepts/architecture/pending-truth-architecture.md",
-      "evidence": [
-        "projector is not yet wired into the harnesses"
-      ],
-      "message": "Forbidden stale phrase absent: projector is not yet wired into the harnesses",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/04-Concepts/architecture/pending-truth-architecture.md",
-      "evidence": [
-        "cos-pending-truth-close does not exist"
-      ],
-      "message": "Forbidden stale phrase absent: cos-pending-truth-close does not exist",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/04-Concepts/architecture/pending-truth-architecture.md",
-      "evidence": [
-        "cos-adr-close is a future follow-up"
-      ],
-      "message": "Forbidden stale phrase absent: cos-adr-close is a future follow-up",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/04-Concepts/architecture/pending-truth-architecture.md",
-      "evidence": [
-        "closure-trail is not implemented"
-      ],
-      "message": "Forbidden stale phrase absent: closure-trail is not implemented",
-      "next_action": "remove stale or contradictory prose",
       "severity": "high",
       "status": "pass"
     },
@@ -1023,102 +897,6 @@
       "status": "pass"
     },
     {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/02-Decisions/adrs/ADR-273-pending-truth-ledger-and-bilateral-verification.md",
-      "evidence": [
-        "read/write asymmetry remains unresolved"
-      ],
-      "message": "Forbidden stale phrase absent: read/write asymmetry remains unresolved",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/02-Decisions/adrs/ADR-273-pending-truth-ledger-and-bilateral-verification.md",
-      "evidence": [
-        "no atomic close primitive exists"
-      ],
-      "message": "Forbidden stale phrase absent: no atomic close primitive exists",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/02-Decisions/adrs/ADR-273-pending-truth-ledger-and-bilateral-verification.md",
-      "evidence": [
-        "manual closures are the only path"
-      ],
-      "message": "Forbidden stale phrase absent: manual closures are the only path",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/02-Decisions/adrs/ADR-273-pending-truth-ledger-and-bilateral-verification.md",
-      "evidence": [
-        "session-start surfaces only Engram and plans"
-      ],
-      "message": "Forbidden stale phrase absent: session-start surfaces only Engram and plans",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/02-Decisions/adrs/ADR-273-pending-truth-ledger-and-bilateral-verification.md",
-      "evidence": [
-        "projector is not yet wired into the harnesses"
-      ],
-      "message": "Forbidden stale phrase absent: projector is not yet wired into the harnesses",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/02-Decisions/adrs/ADR-273-pending-truth-ledger-and-bilateral-verification.md",
-      "evidence": [
-        "cos-pending-truth-close does not exist"
-      ],
-      "message": "Forbidden stale phrase absent: cos-pending-truth-close does not exist",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/02-Decisions/adrs/ADR-273-pending-truth-ledger-and-bilateral-verification.md",
-      "evidence": [
-        "cos-adr-close is a future follow-up"
-      ],
-      "message": "Forbidden stale phrase absent: cos-adr-close is a future follow-up",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/02-Decisions/adrs/ADR-273-pending-truth-ledger-and-bilateral-verification.md",
-      "evidence": [
-        "closure-trail is not implemented"
-      ],
-      "message": "Forbidden stale phrase absent: closure-trail is not implemented",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
       "check": "required_doc_exists",
       "claim_id": "session_pending_protocol",
       "doc": "docs/02-Decisions/adrs/ADR-274-operational-guide-required-for-capability-adrs.md",
@@ -1127,102 +905,6 @@
       ],
       "message": "Required documentation surface exists",
       "next_action": "keep doc linked",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/02-Decisions/adrs/ADR-274-operational-guide-required-for-capability-adrs.md",
-      "evidence": [
-        "read/write asymmetry remains unresolved"
-      ],
-      "message": "Forbidden stale phrase absent: read/write asymmetry remains unresolved",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/02-Decisions/adrs/ADR-274-operational-guide-required-for-capability-adrs.md",
-      "evidence": [
-        "no atomic close primitive exists"
-      ],
-      "message": "Forbidden stale phrase absent: no atomic close primitive exists",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/02-Decisions/adrs/ADR-274-operational-guide-required-for-capability-adrs.md",
-      "evidence": [
-        "manual closures are the only path"
-      ],
-      "message": "Forbidden stale phrase absent: manual closures are the only path",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/02-Decisions/adrs/ADR-274-operational-guide-required-for-capability-adrs.md",
-      "evidence": [
-        "session-start surfaces only Engram and plans"
-      ],
-      "message": "Forbidden stale phrase absent: session-start surfaces only Engram and plans",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/02-Decisions/adrs/ADR-274-operational-guide-required-for-capability-adrs.md",
-      "evidence": [
-        "projector is not yet wired into the harnesses"
-      ],
-      "message": "Forbidden stale phrase absent: projector is not yet wired into the harnesses",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/02-Decisions/adrs/ADR-274-operational-guide-required-for-capability-adrs.md",
-      "evidence": [
-        "cos-pending-truth-close does not exist"
-      ],
-      "message": "Forbidden stale phrase absent: cos-pending-truth-close does not exist",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/02-Decisions/adrs/ADR-274-operational-guide-required-for-capability-adrs.md",
-      "evidence": [
-        "cos-adr-close is a future follow-up"
-      ],
-      "message": "Forbidden stale phrase absent: cos-adr-close is a future follow-up",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/02-Decisions/adrs/ADR-274-operational-guide-required-for-capability-adrs.md",
-      "evidence": [
-        "closure-trail is not implemented"
-      ],
-      "message": "Forbidden stale phrase absent: closure-trail is not implemented",
-      "next_action": "remove stale or contradictory prose",
       "severity": "high",
       "status": "pass"
     },
@@ -1239,102 +921,6 @@
       "status": "pass"
     },
     {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/02-Decisions/adrs/ADR-275-closure-and-projection-primitives.md",
-      "evidence": [
-        "read/write asymmetry remains unresolved"
-      ],
-      "message": "Forbidden stale phrase absent: read/write asymmetry remains unresolved",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/02-Decisions/adrs/ADR-275-closure-and-projection-primitives.md",
-      "evidence": [
-        "no atomic close primitive exists"
-      ],
-      "message": "Forbidden stale phrase absent: no atomic close primitive exists",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/02-Decisions/adrs/ADR-275-closure-and-projection-primitives.md",
-      "evidence": [
-        "manual closures are the only path"
-      ],
-      "message": "Forbidden stale phrase absent: manual closures are the only path",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/02-Decisions/adrs/ADR-275-closure-and-projection-primitives.md",
-      "evidence": [
-        "session-start surfaces only Engram and plans"
-      ],
-      "message": "Forbidden stale phrase absent: session-start surfaces only Engram and plans",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/02-Decisions/adrs/ADR-275-closure-and-projection-primitives.md",
-      "evidence": [
-        "projector is not yet wired into the harnesses"
-      ],
-      "message": "Forbidden stale phrase absent: projector is not yet wired into the harnesses",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/02-Decisions/adrs/ADR-275-closure-and-projection-primitives.md",
-      "evidence": [
-        "cos-pending-truth-close does not exist"
-      ],
-      "message": "Forbidden stale phrase absent: cos-pending-truth-close does not exist",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/02-Decisions/adrs/ADR-275-closure-and-projection-primitives.md",
-      "evidence": [
-        "cos-adr-close is a future follow-up"
-      ],
-      "message": "Forbidden stale phrase absent: cos-adr-close is a future follow-up",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "docs/02-Decisions/adrs/ADR-275-closure-and-projection-primitives.md",
-      "evidence": [
-        "closure-trail is not implemented"
-      ],
-      "message": "Forbidden stale phrase absent: closure-trail is not implemented",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
       "check": "required_doc_exists",
       "claim_id": "session_pending_protocol",
       "doc": "skills/CATALOG.md",
@@ -1343,102 +929,6 @@
       ],
       "message": "Required documentation surface exists",
       "next_action": "keep doc linked",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "skills/CATALOG.md",
-      "evidence": [
-        "read/write asymmetry remains unresolved"
-      ],
-      "message": "Forbidden stale phrase absent: read/write asymmetry remains unresolved",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "skills/CATALOG.md",
-      "evidence": [
-        "no atomic close primitive exists"
-      ],
-      "message": "Forbidden stale phrase absent: no atomic close primitive exists",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "skills/CATALOG.md",
-      "evidence": [
-        "manual closures are the only path"
-      ],
-      "message": "Forbidden stale phrase absent: manual closures are the only path",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "skills/CATALOG.md",
-      "evidence": [
-        "session-start surfaces only Engram and plans"
-      ],
-      "message": "Forbidden stale phrase absent: session-start surfaces only Engram and plans",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "skills/CATALOG.md",
-      "evidence": [
-        "projector is not yet wired into the harnesses"
-      ],
-      "message": "Forbidden stale phrase absent: projector is not yet wired into the harnesses",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "skills/CATALOG.md",
-      "evidence": [
-        "cos-pending-truth-close does not exist"
-      ],
-      "message": "Forbidden stale phrase absent: cos-pending-truth-close does not exist",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "skills/CATALOG.md",
-      "evidence": [
-        "cos-adr-close is a future follow-up"
-      ],
-      "message": "Forbidden stale phrase absent: cos-adr-close is a future follow-up",
-      "next_action": "remove stale or contradictory prose",
-      "severity": "high",
-      "status": "pass"
-    },
-    {
-      "check": "forbidden_phrase",
-      "claim_id": "session_pending_protocol",
-      "doc": "skills/CATALOG.md",
-      "evidence": [
-        "closure-trail is not implemented"
-      ],
-      "message": "Forbidden stale phrase absent: closure-trail is not implemented",
-      "next_action": "remove stale or contradictory prose",
       "severity": "high",
       "status": "pass"
     },
@@ -1455,98 +945,210 @@
       "status": "pass"
     },
     {
-      "check": "forbidden_phrase",
+      "check": "forbidden_phrase_surface",
       "claim_id": "session_pending_protocol",
-      "doc": "skills/CATALOG-COMPACT.md",
+      "doc": null,
       "evidence": [
-        "read/write asymmetry remains unresolved"
+        "scope:repo-surface",
+        "checked_files:3233"
       ],
-      "message": "Forbidden stale phrase absent: read/write asymmetry remains unresolved",
-      "next_action": "remove stale or contradictory prose",
+      "message": "Forbidden phrase has a non-empty scan surface: read/write asymmetry remains unresolved",
+      "next_action": "keep the surface declared",
       "severity": "high",
       "status": "pass"
     },
     {
       "check": "forbidden_phrase",
       "claim_id": "session_pending_protocol",
-      "doc": "skills/CATALOG-COMPACT.md",
+      "doc": null,
       "evidence": [
-        "no atomic close primitive exists"
+        "read/write asymmetry remains unresolved",
+        "checked_files:3233"
       ],
-      "message": "Forbidden stale phrase absent: no atomic close primitive exists",
-      "next_action": "remove stale or contradictory prose",
+      "message": "Forbidden stale phrase absent, checked against 3233 files: read/write asymmetry remains unresolved",
+      "next_action": "keep the phrase out of the scanned surface",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase_surface",
+      "claim_id": "session_pending_protocol",
+      "doc": null,
+      "evidence": [
+        "scope:repo-surface",
+        "checked_files:3233"
+      ],
+      "message": "Forbidden phrase has a non-empty scan surface: no atomic close primitive exists",
+      "next_action": "keep the surface declared",
       "severity": "high",
       "status": "pass"
     },
     {
       "check": "forbidden_phrase",
       "claim_id": "session_pending_protocol",
-      "doc": "skills/CATALOG-COMPACT.md",
+      "doc": null,
       "evidence": [
-        "manual closures are the only path"
+        "no atomic close primitive exists",
+        "checked_files:3233"
       ],
-      "message": "Forbidden stale phrase absent: manual closures are the only path",
-      "next_action": "remove stale or contradictory prose",
+      "message": "Forbidden stale phrase absent, checked against 3233 files: no atomic close primitive exists",
+      "next_action": "keep the phrase out of the scanned surface",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase_surface",
+      "claim_id": "session_pending_protocol",
+      "doc": null,
+      "evidence": [
+        "scope:repo-surface",
+        "checked_files:3233"
+      ],
+      "message": "Forbidden phrase has a non-empty scan surface: manual closures are the only path",
+      "next_action": "keep the surface declared",
       "severity": "high",
       "status": "pass"
     },
     {
       "check": "forbidden_phrase",
       "claim_id": "session_pending_protocol",
-      "doc": "skills/CATALOG-COMPACT.md",
+      "doc": null,
       "evidence": [
-        "session-start surfaces only Engram and plans"
+        "manual closures are the only path",
+        "checked_files:3233"
       ],
-      "message": "Forbidden stale phrase absent: session-start surfaces only Engram and plans",
-      "next_action": "remove stale or contradictory prose",
+      "message": "Forbidden stale phrase absent, checked against 3233 files: manual closures are the only path",
+      "next_action": "keep the phrase out of the scanned surface",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase_surface",
+      "claim_id": "session_pending_protocol",
+      "doc": null,
+      "evidence": [
+        "scope:repo-surface",
+        "checked_files:3233"
+      ],
+      "message": "Forbidden phrase has a non-empty scan surface: session-start surfaces only Engram and plans",
+      "next_action": "keep the surface declared",
       "severity": "high",
       "status": "pass"
     },
     {
       "check": "forbidden_phrase",
       "claim_id": "session_pending_protocol",
-      "doc": "skills/CATALOG-COMPACT.md",
+      "doc": null,
       "evidence": [
-        "projector is not yet wired into the harnesses"
+        "session-start surfaces only Engram and plans",
+        "checked_files:3233"
       ],
-      "message": "Forbidden stale phrase absent: projector is not yet wired into the harnesses",
-      "next_action": "remove stale or contradictory prose",
+      "message": "Forbidden stale phrase absent, checked against 3233 files: session-start surfaces only Engram and plans",
+      "next_action": "keep the phrase out of the scanned surface",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase_surface",
+      "claim_id": "session_pending_protocol",
+      "doc": null,
+      "evidence": [
+        "scope:repo-surface",
+        "checked_files:3233"
+      ],
+      "message": "Forbidden phrase has a non-empty scan surface: projector is not yet wired into the harnesses",
+      "next_action": "keep the surface declared",
       "severity": "high",
       "status": "pass"
     },
     {
       "check": "forbidden_phrase",
       "claim_id": "session_pending_protocol",
-      "doc": "skills/CATALOG-COMPACT.md",
+      "doc": null,
       "evidence": [
-        "cos-pending-truth-close does not exist"
+        "projector is not yet wired into the harnesses",
+        "checked_files:3233"
       ],
-      "message": "Forbidden stale phrase absent: cos-pending-truth-close does not exist",
-      "next_action": "remove stale or contradictory prose",
+      "message": "Forbidden stale phrase absent, checked against 3233 files: projector is not yet wired into the harnesses",
+      "next_action": "keep the phrase out of the scanned surface",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase_surface",
+      "claim_id": "session_pending_protocol",
+      "doc": null,
+      "evidence": [
+        "scope:repo-surface",
+        "checked_files:3233"
+      ],
+      "message": "Forbidden phrase has a non-empty scan surface: cos-pending-truth-close does not exist",
+      "next_action": "keep the surface declared",
       "severity": "high",
       "status": "pass"
     },
     {
       "check": "forbidden_phrase",
       "claim_id": "session_pending_protocol",
-      "doc": "skills/CATALOG-COMPACT.md",
+      "doc": null,
       "evidence": [
-        "cos-adr-close is a future follow-up"
+        "cos-pending-truth-close does not exist",
+        "checked_files:3233"
       ],
-      "message": "Forbidden stale phrase absent: cos-adr-close is a future follow-up",
-      "next_action": "remove stale or contradictory prose",
+      "message": "Forbidden stale phrase absent, checked against 3233 files: cos-pending-truth-close does not exist",
+      "next_action": "keep the phrase out of the scanned surface",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase_surface",
+      "claim_id": "session_pending_protocol",
+      "doc": null,
+      "evidence": [
+        "scope:repo-surface",
+        "checked_files:3233"
+      ],
+      "message": "Forbidden phrase has a non-empty scan surface: cos-adr-close is a future follow-up",
+      "next_action": "keep the surface declared",
       "severity": "high",
       "status": "pass"
     },
     {
       "check": "forbidden_phrase",
       "claim_id": "session_pending_protocol",
-      "doc": "skills/CATALOG-COMPACT.md",
+      "doc": null,
       "evidence": [
-        "closure-trail is not implemented"
+        "cos-adr-close is a future follow-up",
+        "checked_files:3233"
       ],
-      "message": "Forbidden stale phrase absent: closure-trail is not implemented",
-      "next_action": "remove stale or contradictory prose",
+      "message": "Forbidden stale phrase absent, checked against 3233 files: cos-adr-close is a future follow-up",
+      "next_action": "keep the phrase out of the scanned surface",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase_surface",
+      "claim_id": "session_pending_protocol",
+      "doc": null,
+      "evidence": [
+        "scope:repo-surface",
+        "checked_files:3233"
+      ],
+      "message": "Forbidden phrase has a non-empty scan surface: closure-trail is not implemented",
+      "next_action": "keep the surface declared",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "session_pending_protocol",
+      "doc": null,
+      "evidence": [
+        "closure-trail is not implemented",
+        "checked_files:3233"
+      ],
+      "message": "Forbidden stale phrase absent, checked against 3233 files: closure-trail is not implemented",
+      "next_action": "keep the phrase out of the scanned surface",
       "severity": "high",
       "status": "pass"
     },
@@ -1557,7 +1159,7 @@
       "evidence": [
         "cos-pending-truth-aggregator"
       ],
-      "message": "Required phrase present: cos-pending-truth-aggregator",
+      "message": "Required phrase present in 7 required doc(s): cos-pending-truth-aggregator",
       "next_action": "add or regenerate current-truth prose",
       "severity": "high",
       "status": "pass"
@@ -1569,7 +1171,7 @@
       "evidence": [
         "cos-pending-truth-close"
       ],
-      "message": "Required phrase present: cos-pending-truth-close",
+      "message": "Required phrase present in 7 required doc(s): cos-pending-truth-close",
       "next_action": "add or regenerate current-truth prose",
       "severity": "high",
       "status": "pass"
@@ -1581,7 +1183,7 @@
       "evidence": [
         "cos-adr-close"
       ],
-      "message": "Required phrase present: cos-adr-close",
+      "message": "Required phrase present in 7 required doc(s): cos-adr-close",
       "next_action": "add or regenerate current-truth prose",
       "severity": "high",
       "status": "pass"
@@ -1593,7 +1195,7 @@
       "evidence": [
         "cos-session-start-projector"
       ],
-      "message": "Required phrase present: cos-session-start-projector",
+      "message": "Required phrase present in 7 required doc(s): cos-session-start-projector",
       "next_action": "add or regenerate current-truth prose",
       "severity": "high",
       "status": "pass"
@@ -1605,7 +1207,7 @@
       "evidence": [
         "cos-closure-trust-signal"
       ],
-      "message": "Required phrase present: cos-closure-trust-signal",
+      "message": "Required phrase present in 7 required doc(s): cos-closure-trust-signal",
       "next_action": "add or regenerate current-truth prose",
       "severity": "high",
       "status": "pass"
@@ -1617,7 +1219,7 @@
       "evidence": [
         "session-pending-brief"
       ],
-      "message": "Required phrase present: session-pending-brief",
+      "message": "Required phrase present in 7 required doc(s): session-pending-brief",
       "next_action": "add or regenerate current-truth prose",
       "severity": "high",
       "status": "pass"
@@ -1629,7 +1231,7 @@
       "evidence": [
         "session-pending-close"
       ],
-      "message": "Required phrase present: session-pending-close",
+      "message": "Required phrase present in 7 required doc(s): session-pending-close",
       "next_action": "add or regenerate current-truth prose",
       "severity": "high",
       "status": "pass"
@@ -1641,7 +1243,7 @@
       "evidence": [
         "STATUS-TAXONOMY"
       ],
-      "message": "Required phrase present: STATUS-TAXONOMY",
+      "message": "Required phrase present in 7 required doc(s): STATUS-TAXONOMY",
       "next_action": "add or regenerate current-truth prose",
       "severity": "high",
       "status": "pass"
@@ -1653,7 +1255,7 @@
       "evidence": [
         "pending-truth-architecture.md"
       ],
-      "message": "Required phrase present: pending-truth-architecture.md",
+      "message": "Required phrase present in 7 required doc(s): pending-truth-architecture.md",
       "next_action": "add or regenerate current-truth prose",
       "severity": "high",
       "status": "pass"
@@ -1665,7 +1267,7 @@
       "evidence": [
         "closure-trail.jsonl"
       ],
-      "message": "Required phrase present: closure-trail.jsonl",
+      "message": "Required phrase present in 7 required doc(s): closure-trail.jsonl",
       "next_action": "add or regenerate current-truth prose",
       "severity": "high",
       "status": "pass"
@@ -1695,38 +1297,80 @@
       "status": "pass"
     },
     {
-      "check": "forbidden_phrase",
+      "check": "forbidden_phrase_surface",
       "claim_id": "subprocess_timeout_discipline",
-      "doc": "docs/02-Decisions/adrs/ADR-278-subprocess-run-timeout-discipline.md",
+      "doc": null,
       "evidence": [
-        "untimed subprocess calls are harmless"
+        "scope:repo-surface",
+        "checked_files:3233"
       ],
-      "message": "Forbidden stale phrase absent: untimed subprocess calls are harmless",
-      "next_action": "remove stale or contradictory prose",
+      "message": "Forbidden phrase has a non-empty scan surface: untimed subprocess calls are harmless",
+      "next_action": "keep the surface declared",
       "severity": "medium",
       "status": "pass"
     },
     {
       "check": "forbidden_phrase",
       "claim_id": "subprocess_timeout_discipline",
-      "doc": "docs/02-Decisions/adrs/ADR-278-subprocess-run-timeout-discipline.md",
+      "doc": null,
       "evidence": [
-        "pytest-timeout always kills hung subprocesses"
+        "untimed subprocess calls are harmless",
+        "checked_files:3233"
       ],
-      "message": "Forbidden stale phrase absent: pytest-timeout always kills hung subprocesses",
-      "next_action": "remove stale or contradictory prose",
+      "message": "Forbidden stale phrase absent, checked against 3233 files: untimed subprocess calls are harmless",
+      "next_action": "keep the phrase out of the scanned surface",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase_surface",
+      "claim_id": "subprocess_timeout_discipline",
+      "doc": null,
+      "evidence": [
+        "scope:repo-surface",
+        "checked_files:3233"
+      ],
+      "message": "Forbidden phrase has a non-empty scan surface: pytest-timeout always kills hung subprocesses",
+      "next_action": "keep the surface declared",
       "severity": "medium",
       "status": "pass"
     },
     {
       "check": "forbidden_phrase",
       "claim_id": "subprocess_timeout_discipline",
-      "doc": "docs/02-Decisions/adrs/ADR-278-subprocess-run-timeout-discipline.md",
+      "doc": null,
       "evidence": [
-        "the timeout keyword is optional in production"
+        "pytest-timeout always kills hung subprocesses",
+        "checked_files:3233"
       ],
-      "message": "Forbidden stale phrase absent: the timeout keyword is optional in production",
-      "next_action": "remove stale or contradictory prose",
+      "message": "Forbidden stale phrase absent, checked against 3233 files: pytest-timeout always kills hung subprocesses",
+      "next_action": "keep the phrase out of the scanned surface",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase_surface",
+      "claim_id": "subprocess_timeout_discipline",
+      "doc": null,
+      "evidence": [
+        "scope:repo-surface",
+        "checked_files:3233"
+      ],
+      "message": "Forbidden phrase has a non-empty scan surface: the timeout keyword is optional in production",
+      "next_action": "keep the surface declared",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "subprocess_timeout_discipline",
+      "doc": null,
+      "evidence": [
+        "the timeout keyword is optional in production",
+        "checked_files:3233"
+      ],
+      "message": "Forbidden stale phrase absent, checked against 3233 files: the timeout keyword is optional in production",
+      "next_action": "keep the phrase out of the scanned surface",
       "severity": "medium",
       "status": "pass"
     },
@@ -1737,7 +1381,7 @@
       "evidence": [
         "cos-subprocess-timeout-audit.py"
       ],
-      "message": "Required phrase present: cos-subprocess-timeout-audit.py",
+      "message": "Required phrase present in 1 required doc(s): cos-subprocess-timeout-audit.py",
       "next_action": "add or regenerate current-truth prose",
       "severity": "medium",
       "status": "pass"
@@ -1749,7 +1393,7 @@
       "evidence": [
         "subprocess-timeout-allowlist.yaml"
       ],
-      "message": "Required phrase present: subprocess-timeout-allowlist.yaml",
+      "message": "Required phrase present in 1 required doc(s): subprocess-timeout-allowlist.yaml",
       "next_action": "add or regenerate current-truth prose",
       "severity": "medium",
       "status": "pass"
@@ -1761,7 +1405,7 @@
       "evidence": [
         "COS_TEST_SUBPROCESS_DEFAULT_TIMEOUT"
       ],
-      "message": "Required phrase present: COS_TEST_SUBPROCESS_DEFAULT_TIMEOUT",
+      "message": "Required phrase present in 1 required doc(s): COS_TEST_SUBPROCESS_DEFAULT_TIMEOUT",
       "next_action": "add or regenerate current-truth prose",
       "severity": "medium",
       "status": "pass"
@@ -1773,7 +1417,7 @@
       "evidence": [
         "subprocess.run"
       ],
-      "message": "Required phrase present: subprocess.run",
+      "message": "Required phrase present in 1 required doc(s): subprocess.run",
       "next_action": "add or regenerate current-truth prose",
       "severity": "medium",
       "status": "pass"
@@ -1785,7 +1429,7 @@
       "evidence": [
         "timeout="
       ],
-      "message": "Required phrase present: timeout=",
+      "message": "Required phrase present in 1 required doc(s): timeout=",
       "next_action": "add or regenerate current-truth prose",
       "severity": "medium",
       "status": "pass"
@@ -1815,14 +1459,28 @@
       "status": "pass"
     },
     {
+      "check": "forbidden_phrase_surface",
+      "claim_id": "volatile_number_prose",
+      "doc": null,
+      "evidence": [
+        "scope:repo-surface",
+        "checked_files:3233"
+      ],
+      "message": "Forbidden phrase has a non-empty scan surface: Component counts: 57 hooks, 55 rules, 72 skills",
+      "next_action": "keep the surface declared",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
       "check": "forbidden_phrase",
       "claim_id": "volatile_number_prose",
-      "doc": "docs/06-Daily/reports/numeros-volatiles-2026-08-15.md",
+      "doc": null,
       "evidence": [
-        "Component counts: 57 hooks, 55 rules, 72 skills"
+        "Component counts: 57 hooks, 55 rules, 72 skills",
+        "checked_files:3233"
       ],
-      "message": "Forbidden stale phrase absent: Component counts: 57 hooks, 55 rules, 72 skills",
-      "next_action": "remove stale or contradictory prose",
+      "message": "Forbidden stale phrase absent, checked against 3233 files: Component counts: 57 hooks, 55 rules, 72 skills",
+      "next_action": "keep the phrase out of the scanned surface",
       "severity": "medium",
       "status": "pass"
     },
@@ -1833,22 +1491,26 @@
       "evidence": [
         "The prose says how to know it, not how many"
       ],
-      "message": "Required phrase present: The prose says how to know it, not how many",
+      "message": "Required phrase present in 1 required doc(s): The prose says how to know it, not how many",
       "next_action": "add or regenerate current-truth prose",
       "severity": "medium",
       "status": "pass"
     }
   ],
   "schema_version": "documentation-truth-audit.v1",
-  "status": "pass",
+  "status": "block",
   "summary": {
-    "block_count": 0,
+    "block_count": 1,
     "by_claim": {
+      "claude_code_hook_registration": {
+        "block": 1,
+        "pass": 5
+      },
       "consumer_projection_harnesses": {
         "pass": 17
       },
       "cos_init_flag_surface": {
-        "pass": 14
+        "pass": 11
       },
       "disk_ceiling_single_source": {
         "pass": 1
@@ -1863,18 +1525,61 @@
         "pass": 16
       },
       "session_pending_protocol": {
-        "pass": 75
+        "pass": 35
       },
       "subprocess_timeout_discipline": {
-        "pass": 10
+        "pass": 13
       },
       "volatile_number_prose": {
-        "pass": 4
+        "pass": 5
       }
     },
     "by_status": {
-      "pass": 153
+      "block": 1,
+      "pass": 119
     },
-    "rows": 153
+    "forbidden_phrase_scan": {
+      "always_scanned_required_docs": 25,
+      "excluded_by_reason": {
+        "**/archive/** :: archived artifacts are a record of what was, not a claim about what is.": 11,
+        ".claude/plugins/** :: third-party plugin cache, vendored, not authored in this repo.": 1819,
+        "ADR status superseded: superseded decisions keep their original prose": 7,
+        "date-anchored filename: historical record, cites old claims on purpose": 240,
+        "docs/06-Daily/reports/** :: Session reports (date-anchored) and the generated *-latest ledgers. Historical record and machine output, not asserted current truth. A report that a claim needs scanned anyway is opted back in by naming it in that claim's required_docs, which are always scanned.": 502,
+        "manifests/documentation-truth-claims.yaml :: the claims manifest declares the phrases": 1,
+        "packages/*/tests/** :: same as tests/**, reached through the package layout instead of the symlink.": 10,
+        "rules/session-close-doc-truth.md :: The rule that DEFINES this discipline teaches it by quoting an example forbidden phrase (\"no atomic close primitive exists\"). Self-reference, same class as the claims manifest and the auditor -- both of which the audit excludes in code rather than by configuration.": 1,
+        "scripts/documentation_truth_audit.py :: the auditor itself quotes phrase syntax": 1,
+        "tests/** :: The instrument's own fixtures and assertions. A stale-phrase test must contain the phrase to assert its absence (tests/contracts/test_primitive_authority_docs.py lists three of them). The alternative is deforming test code so the auditor is not confused, which is the tail wagging the dog.": 2373
+      },
+      "include_suffixes": [
+        ".md",
+        ".sh",
+        ".py",
+        ".yaml",
+        ".yml"
+      ],
+      "phrases": 27,
+      "pruned_dirs": [
+        ".cognitive-os",
+        ".git",
+        ".mypy_cache",
+        ".pytest_cache",
+        ".ruff_cache",
+        ".venv",
+        ".worktrees",
+        "__pycache__",
+        "build",
+        "dist",
+        "htmlcov",
+        "node_modules",
+        "reference",
+        "target",
+        "venv"
+      ],
+      "surface_bytes": 27326789,
+      "surface_files": 3233
+    },
+    "rows": 120
   }
 }
