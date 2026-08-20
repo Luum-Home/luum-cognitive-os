@@ -278,19 +278,66 @@ PROOFS = (
         "var": "LOCK_TIMEOUT",
         "default": "300",
         "turned": "7",
+        "shipped": "300",
+        "canonical_comment": "        # Lock auto-expires after 5 minutes",
+    },
+    {
+        "hook": "hooks/concurrent-write-guard-codex-proxy.sh",
+        "knob": "lock_timeout_seconds",
+        "begin": "LOCK_TIMEOUT=300",
+        "var": "LOCK_TIMEOUT",
+        "default": "300",
+        "turned": "7",
+        "shipped": "300",
         "canonical_comment": "        # Lock auto-expires after 5 minutes",
     },
     {
         # Perilla invertida: el default del hook es "apagado" (variable vacía) y
-        # sólo enciende si el archivo inexistente dice true. Girarla no la
-        # enciende ni la apaga: el hook nunca la ve.
+        # sólo enciende si el archivo dice true. Antes del arreglo el hook nunca
+        # la veía; después la ve, y el valor que trae el canónico es `true`.
         "hook": "hooks/infra-health.sh",
         "knob": "smart_start",
         "begin": 'smart_start_enabled=""',
         "var": "smart_start_enabled",
         "default": "(vacío = apagado)",
         "turned": "true",
+        "shipped": "true",
         "canonical_comment": "              # Lazy-load Docker services when skills need them",
+    },
+    {
+        "hook": "hooks/session-init.sh",
+        "knob": "max_concurrent",
+        "begin": "MAX_CONCURRENT=10",
+        "var": "MAX_CONCURRENT",
+        "default": "10",
+        "turned": "3",
+        "shipped": "10",
+        "canonical_comment": "               # Maximum simultaneous sessions",
+    },
+    {
+        # Forma 3 pura: el archivo que lee es el canónico de la raíz, la clave
+        # está, y el comentario de fin de línea se pega al valor.
+        "hook": "hooks/predev-completeness-check.sh",
+        "knob": "phase",
+        "begin": 'PHASE="reconstruction"',
+        "var": "PHASE",
+        "default": "reconstruction",
+        "turned": "production",
+        "shipped": "reconstruction",
+        "canonical_comment": "     # reconstruction | stabilization | production | maintenance",
+    },
+    {
+        # Forma 3 pura, y con padre: el parseo hace `grep -A2 'parry:'`, así que
+        # la clave sólo existe bajo ese bloque.
+        "hook": "hooks/parry-scan.sh",
+        "knob": "enabled",
+        "parent": "parry",
+        "begin": "# Check if parry is enabled in config",
+        "var": "PARRY_ENABLED",
+        "default": "(vacío = no apaga)",
+        "turned": "false",
+        "shipped": "false",
+        "canonical_comment": "                   # Set to true after installing parry-guard",
     },
 )
 
@@ -342,12 +389,19 @@ def run_proof() -> list[dict[str, Any]]:
         # escritura protegida antes de medir para que no contamine la corrida.
         env = dict(os.environ)
         env.pop("COS_ALLOW_PROTECTED_CONFIG_WRITE", None)
+        parent = spec.get("parent", "session")
         line_c = f"  {spec['knob']}: {spec['turned']}{spec['canonical_comment']}"
         line_nc = f"  {spec['knob']}: {spec['turned']}"
+        line_ship = f"  {spec['knob']}: {spec['shipped']}{spec['canonical_comment']}"
         scenarios = {
             "A_canonico_raiz_como_en_la_realidad": {"cognitive-os.yaml": line_c},
             "B_dot_cognitive_os_con_comentario": {".cognitive-os/cognitive-os.yaml": line_c},
             "C_dot_cognitive_os_sin_comentario": {".cognitive-os/cognitive-os.yaml": line_nc},
+            # Las dos direcciones. D y E prueban que conectar la perilla no
+            # movió el default: D sin ningún archivo (rige el default escrito en
+            # el hook), E con el canónico tal como el repo lo versiona.
+            "D_sin_archivo_rige_el_default_del_hook": {},
+            "E_canonico_con_el_valor_que_el_repo_versiona": {"cognitive-os.yaml": line_ship},
         }
         obs = {}
         for name, files in scenarios.items():
@@ -356,22 +410,37 @@ def run_proof() -> list[dict[str, Any]]:
                 for rel, content in files.items():
                     fp = tmp / rel
                     fp.parent.mkdir(parents=True, exist_ok=True)
-                    fp.write_text(f"session:\n{content}\n")
-                script = f'PROJECT_DIR="{tmp}"\n{block}\necho "__VALUE__=${{{spec["var"]}}}"\n'
+                    fp.write_text(f"{parent}:\n{content}\n")
+                # Algunos hooks nombran la raíz `_PROJECT_DIR` (parry-scan) y
+                # otros `PROJECT_DIR`. Se definen las dos: la que el bloque no
+                # use queda inerte, y así el arnés no depende del nombre.
+                # Algunos bloques deciden y SALEN (parry-scan hace `exit 0`
+                # cuando la perilla dice false). Un `echo` al final del script
+                # nunca se ejecutaria y el arnes leeria vacio justo cuando la
+                # perilla FUNCIONA. El trap EXIT emite el valor por los dos
+                # caminos, y `salio_temprano` distingue uno del otro.
+                script = (f'PROJECT_DIR="{tmp}"\n_PROJECT_DIR="{tmp}"\n'
+                          f'trap \'echo "__VALUE__=${{{spec["var"]}}}"\' EXIT\n'
+                          f'{block}\necho "__REACHED_END__=1"\n')
                 r = subprocess.run(["bash", "-c", script], capture_output=True,
                                    text=True, env=env)
                 val = ""
+                reached_end = False
                 for ln in r.stdout.splitlines():
                     if ln.startswith("__VALUE__="):
                         val = ln.split("=", 1)[1]
-                obs[name] = val
+                    elif ln.startswith("__REACHED_END__="):
+                        reached_end = True
+                obs[name] = val if reached_end else f"{val} [salio_temprano]"
             finally:
                 shutil.rmtree(tmp, ignore_errors=True)
         results.append({
             "hook": spec["hook"], "knob": spec["knob"],
             "default_hardcodeado": spec["default"], "valor_girado": spec["turned"],
+            "valor_que_el_repo_versiona": spec["shipped"],
             "observado": obs,
             "perilla_conectada_en_la_realidad": obs.get("A_canonico_raiz_como_en_la_realidad") == spec["turned"],
+            "default_intacto": obs.get("E_canonico_con_el_valor_que_el_repo_versiona") == spec["shipped"],
         })
     return results
 

@@ -237,7 +237,12 @@ fi
 # ---- 8. Smart infrastructure (on-demand service management) ----
 smart_start_enabled=""
 if [ -f "$CONFIG_FILE" ]; then
-  smart_start_enabled=$(grep 'smart_start:' "$CONFIG_FILE" 2>/dev/null | head -1 | sed 's/.*smart_start:[[:space:]]*//' | tr -d '[:space:]' || true)
+  # El `s/#.*$//` corta el comentario de fin de linea ANTES del trim: la linea
+  # canonica es `smart_start: true              # Lazy-load Docker services when skills need them`,
+  # y sin el corte el valor parseado era `true#Lazy-loadDockerserviceswhenskillsneedthem`,
+  # que no compara igual a nada. Misma forma que hooks/session-cleanup.sh
+  # (_read_knob). Medido con `python3 scripts/config_knob_census.py --prove`.
+  smart_start_enabled=$(grep 'smart_start:' "$CONFIG_FILE" 2>/dev/null | head -1 | sed 's/.*smart_start:[[:space:]]*//; s/#.*$//' | tr -d '[:space:]' || true)
 fi
 
 if [ "$smart_start_enabled" = "true" ] && command -v python3 >/dev/null 2>&1 && [ -n "$expected_services" ]; then

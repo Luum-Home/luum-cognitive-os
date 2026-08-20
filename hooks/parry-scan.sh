@@ -23,8 +23,13 @@ fi
 CONFIG_FILE="$_PROJECT_DIR/cognitive-os.yaml"
 [ ! -f "$CONFIG_FILE" ] && CONFIG_FILE="$_PROJECT_DIR/.cognitive-os/cognitive-os.yaml"
 if [ -f "$CONFIG_FILE" ]; then
+  # El `s/#.*$//` corta el comentario de fin de linea ANTES del trim: la linea
+  # canonica es `enabled: false                   # Set to true after installing parry-guard`,
+  # y sin el corte el valor parseado era `false#Settotrueafterinstallingparry-guard`,
+  # que no compara igual a nada. Misma forma que hooks/session-cleanup.sh
+  # (_read_knob). Medido con `python3 scripts/config_knob_census.py --prove`.
   PARRY_ENABLED=$(grep -A2 'parry:' "$CONFIG_FILE" 2>/dev/null | grep 'enabled:' | head -1 \
-    | sed 's/.*enabled:[[:space:]]*//' | tr -d '[:space:]' || true)
+    | sed 's/.*enabled:[[:space:]]*//; s/#.*$//' | tr -d '[:space:]' || true)
   [ "$PARRY_ENABLED" = "false" ] && exit 0
 fi
 
