@@ -41,10 +41,18 @@ from __future__ import annotations
 import argparse
 import ast
 import json
+import re
 import sys
+import time
 import warnings
 from pathlib import Path
 from typing import Any
+
+# Importable from any cwd: the path is derived from __file__, never from the
+# process cwd, so the `--root` contract and the foreign-cwd probe both hold.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from cos_lib.measurement import Census  # noqa: E402
 
 try:
     import yaml
@@ -214,8 +222,51 @@ class _AssertionScanner(ast.NodeVisitor):
         self.generic_visit(node)
 
 
-def scan(root: Path, enums: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], int]:
-    """Return (findings, files_scanned)."""
+# --------------------------------------------------------------------------
+# Pre-filter.  NOT a sample: a NECESSARY condition checked on the raw bytes.
+#
+# The gate must keep looking at the whole corpus — a test that certifies a bug
+# can live in any file, and a gate that inspects a subset reports "0 violations"
+# about a population it never read.  What the pre-filter drops is not files, it
+# is the AST parse of files where the constant is PROVABLY absent.
+#
+# `_AssertionScanner` only ever fires on an ``ast.Constant`` whose value is
+# exactly a registered field name.  CPython builds such a constant from string
+# literal tokens and from nothing else (``ast.parse`` does not fold ``"a" + "b"``
+# — that stays a BinOp, and the scanner already ignores it).  So the constant
+# exists only if the source holds:
+#
+#   (a) the field name verbatim                     -> _mentions_field
+#   (b) a character-synthesising escape (\x, \u,
+#       \U, \N{, \0-7) that could spell it out     -> _ESCAPE_RE
+#   (c) implicit concatenation of adjacent literals,
+#       every piece of which is a non-empty
+#       substring of the field name                 -> _FRAGMENT scan
+#
+# A file matching none of the three cannot produce the constant.  Skipping its
+# parse loses no finding, which is why the census below books those files under
+# `sin_hallazgos` (judged) and not under `blind` (not judged).
+#
+# Measured on this repo 2026-08-20: 2.327 files in scope, ~130 parsed.
+_ESCAPE_RE = re.compile(r"\\(?:x|u|U|N\{|[0-7])")
+_LITERAL_RE = re.compile(r"'([^'\n\\]*)'|\"([^\"\n\\]*)\"")
+
+
+def _may_hold_constant(text: str, fields: set[str]) -> bool:
+    """True when `text` could parse to a Constant equal to one of `fields`."""
+    if any(field in text for field in fields):
+        return True
+    if _ESCAPE_RE.search(text):
+        return True
+    for match in _LITERAL_RE.finditer(text):
+        piece = match.group(1) if match.group(1) is not None else match.group(2)
+        if piece and any(piece in field for field in fields):
+            return True
+    return False
+
+
+def scan(root: Path, enums: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], dict[str, int]]:
+    """Return (findings, counts) where counts accounts for EVERY file in scope."""
     by_field = {e["field"]: e for e in enums}
     files: dict[Path, set[str]] = {}
     for entry in enums:
@@ -225,13 +276,21 @@ def scan(root: Path, enums: list[dict[str, Any]]) -> tuple[list[dict[str, Any]],
                     files.setdefault(path, set()).add(entry["field"])
 
     findings: list[dict[str, Any]] = []
+    parsed = 0
     for path, fields in sorted(files.items()):
+        try:
+            text = path.read_text(encoding="utf-8")
+        except UnicodeDecodeError as exc:
+            raise RegistryError(f"cannot read {path}: {exc}") from exc
+        if not _may_hold_constant(text, fields):
+            continue
+        parsed += 1
         try:
             with warnings.catch_warnings():
                 # A test file with a stray escape sequence is not this gate's business.
                 warnings.simplefilter("ignore", SyntaxWarning)
-                tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
-        except (SyntaxError, UnicodeDecodeError) as exc:
+                tree = ast.parse(text, filename=str(path))
+        except SyntaxError as exc:
             raise RegistryError(f"cannot parse {path}: {exc}") from exc
         scanner = _AssertionScanner(fields)
         scanner.visit(tree)
@@ -250,7 +309,40 @@ def scan(root: Path, enums: list[dict[str, Any]]) -> tuple[list[dict[str, Any]],
                     "source": f"{entry['source']}:{entry['pointer']}",
                 }
             )
-    return findings, len(files)
+    dirty = len({f["file"] for f in findings})
+    return findings, {
+        "files_in_scope": len(files),
+        "files_parsed": parsed,
+        "files_with_findings": dirty,
+        "files_clean": len(files) - dirty,
+    }
+
+
+def census_of(counts: dict[str, int], globs: tuple[str, ...]) -> Census:
+    """Publish the count with its population attached.
+
+    Buckets are outcomes the audit JUDGED. Every file in scope is judged: the
+    ones it parsed, and the ones it proved could not hold the constant. `blind`
+    is therefore an explicit zero and not an omission — the audit's real blind
+    spots are FIELDS, and they live in the registry's `not_registered` block.
+    """
+    return Census(
+        subject="test files judged against the registered closed enums",
+        sources=globs,
+        buckets={
+            "con_hallazgos": counts["files_with_findings"],
+            "sin_hallazgos": counts["files_clean"],
+        },
+        blind={"ninguna": 0},
+        how="scripts/audit_test_assertion_enums.py --json",
+        notes=(
+            f"{counts['files_parsed']} of {counts['files_in_scope']} files needed an AST "
+            "parse; the rest provably cannot hold the constant (no field name, no "
+            "character escape, no literal fragment of a field name).",
+            "Blind spots are fields, not files: see `not_registered` in "
+            "manifests/test-assertion-enums.yaml.",
+        ),
+    )
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -262,19 +354,30 @@ def main(argv: list[str] | None = None) -> int:
 
     root = Path(args.root).resolve()
     registry = Path(args.registry).resolve() if args.registry else None
+    started = time.perf_counter()
     try:
         enums = load_enums(root, registry)
-        findings, scanned = scan(root, enums)
+        findings, counts = scan(root, enums)
     except RegistryError as exc:
         print(f"audit_test_assertion_enums: {exc}", file=sys.stderr)
         return 2
+    elapsed = time.perf_counter() - started
+    globs = tuple(sorted({g for e in enums for g in e["scan_globs"]}))
+    census = census_of(counts, globs)
 
     if args.json:
         print(
             json.dumps(
                 {
                     "root": str(root),
-                    "files_scanned": scanned,
+                    "files_scanned": counts["files_in_scope"],
+                    "files_parsed": counts["files_parsed"],
+                    "census": {
+                        "population": census.population,
+                        "buckets": dict(census.buckets),
+                        "blind": dict(census.blind),
+                        "how": census.how,
+                    },
                     "enums": [{"id": e["id"], "field": e["field"], "values": e["values"]} for e in enums],
                     "findings": findings,
                 },
@@ -285,7 +388,9 @@ def main(argv: list[str] | None = None) -> int:
         return 1 if findings else 0
 
     header = ", ".join(f"{e['field']}={'|'.join(e['values'])}" for e in enums)
-    print(f"scanned {scanned} test file(s) for closed-enum assertions [{header}]")
+    print(f"scanned {counts['files_in_scope']} test file(s) for closed-enum assertions [{header}]")
+    print(f"  {census.describe('con_hallazgos')}; {counts['files_parsed']} needed an AST parse")
+    print(f"audit_test_assertion_enums: {elapsed:.2f}s wall", file=sys.stderr)
     if not findings:
         print("no test asserts a value outside a registered closed enum")
         return 0
