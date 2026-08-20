@@ -60,28 +60,123 @@ file:
 #     subagent_type    → free-form subagent type name
 events:
   SessionStart:
+    cadence:
+      fires_when: >-
+        Cuando arranca la sesion. La doc lo agrupa bajo 'When a session or
+        subagent starts', separado del grupo 'During a turn'.
+      per_session: exactly-1-per-session
+      evidence: documented
+      basis: [https://learn.chatgpt.com/docs/hooks]
+      doc_quote: >-
+        When a session or subagent starts SessionStart, SubagentStart
+      how: "curl -sSL https://learn.chatgpt.com/docs/hooks | grep -o 'When Hooks During a turn[^<]*'"
+      blind_reason: >-
+        Este repo NO corre sobre Codex: hay cero filas de telemetria propia de
+        este arnes (.cognitive-os/metrics/hook-timing.jsonl es del wrapper de
+        Claude Code). La clase sale de la tabla de ciclo de vida de la doc
+        upstream, no de una medicion nuestra, y asi queda escrito.
     matcher: optional
     matcher_semantics: enum
     matcher_values: [startup, resume, clear, compact]
     can_block: false
   SubagentStart:
+    cadence:
+      fires_when: >-
+        Cuando arranca un subagente. Mismo grupo de la doc que SessionStart, pero
+        la unidad es el SUBAGENTE: N por sesion.
+      per_session: 0-N-per-subagent
+      evidence: documented
+      basis: [https://learn.chatgpt.com/docs/hooks]
+      doc_quote: >-
+        When a session or subagent starts SessionStart, SubagentStart
+      how: "curl -sSL https://learn.chatgpt.com/docs/hooks | grep -o 'When Hooks During a turn[^<]*'"
+      blind_reason: >-
+        Este repo NO corre sobre Codex: hay cero filas de telemetria propia de
+        este arnes (.cognitive-os/metrics/hook-timing.jsonl es del wrapper de
+        Claude Code). La clase sale de la tabla de ciclo de vida de la doc
+        upstream, no de una medicion nuestra, y asi queda escrito.
     matcher: optional
     matcher_semantics: subagent_type
     can_block: false
   UserPromptSubmit:
+    cadence:
+      fires_when: >-
+        Cuando el usuario envia un prompt. La doc lo lista dentro del grupo
+        'During a turn', o sea una vez por turno.
+      per_session: 0-N-per-turn
+      evidence: documented
+      basis: [https://learn.chatgpt.com/docs/hooks]
+      doc_quote: >-
+        During a turn PreToolUse, PermissionRequest, PostToolUse, PreCompact,
+        PostCompact, UserPromptSubmit, SubagentStop, Stop
+      how: "curl -sSL https://learn.chatgpt.com/docs/hooks | grep -o 'When Hooks During a turn[^<]*'"
+      blind_reason: >-
+        Este repo NO corre sobre Codex: hay cero filas de telemetria propia de
+        este arnes (.cognitive-os/metrics/hook-timing.jsonl es del wrapper de
+        Claude Code). La clase sale de la tabla de ciclo de vida de la doc
+        upstream, no de una medicion nuestra, y asi queda escrito.
     matcher: unsupported
     can_block: true
   PreToolUse:
+    cadence:
+      fires_when: >-
+        Antes de cada llamada a herramienta, dentro del turno. Unidad: el
+        tool-call.
+      per_session: 0-N-per-tool-call
+      evidence: documented
+      basis: [https://learn.chatgpt.com/docs/hooks]
+      doc_quote: >-
+        During a turn PreToolUse, PermissionRequest, PostToolUse, PreCompact,
+        PostCompact, UserPromptSubmit, SubagentStop, Stop
+      how: "curl -sSL https://learn.chatgpt.com/docs/hooks | grep -o 'When Hooks During a turn[^<]*'"
+      blind_reason: >-
+        Este repo NO corre sobre Codex: hay cero filas de telemetria propia de
+        este arnes (.cognitive-os/metrics/hook-timing.jsonl es del wrapper de
+        Claude Code). La clase sale de la tabla de ciclo de vida de la doc
+        upstream, no de una medicion nuestra, y asi queda escrito.
     matcher: optional
     matcher_semantics: tool_name_regex
     can_block: true
     payload_extra: [tool_name, tool_use_id, tool_input]
   PermissionRequest:
+    cadence:
+      fires_when: >-
+        Cuando una llamada a herramienta necesita decision de permiso. Unidad: el
+        tool-call, y solo los que piden permiso — subconjunto estricto de
+        PreToolUse.
+      per_session: 0-N-per-tool-call
+      evidence: documented
+      basis: [https://learn.chatgpt.com/docs/hooks]
+      doc_quote: >-
+        During a turn PreToolUse, PermissionRequest, PostToolUse, PreCompact,
+        PostCompact, UserPromptSubmit, SubagentStop, Stop
+      how: "curl -sSL https://learn.chatgpt.com/docs/hooks | grep -o 'When Hooks During a turn[^<]*'"
+      blind_reason: >-
+        Este repo NO corre sobre Codex: hay cero filas de telemetria propia de
+        este arnes (.cognitive-os/metrics/hook-timing.jsonl es del wrapper de
+        Claude Code). La clase sale de la tabla de ciclo de vida de la doc
+        upstream, no de una medicion nuestra, y asi queda escrito.
     matcher: optional
     matcher_semantics: tool_name_regex
     can_block: true
     payload_extra: [tool_name, tool_use_id, tool_input]
   PostToolUse:
+    cadence:
+      fires_when: >-
+        Despues de cada llamada a herramienta, dentro del turno. Unidad: el
+        tool-call.
+      per_session: 0-N-per-tool-call
+      evidence: documented
+      basis: [https://learn.chatgpt.com/docs/hooks]
+      doc_quote: >-
+        During a turn PreToolUse, PermissionRequest, PostToolUse, PreCompact,
+        PostCompact, UserPromptSubmit, SubagentStop, Stop
+      how: "curl -sSL https://learn.chatgpt.com/docs/hooks | grep -o 'When Hooks During a turn[^<]*'"
+      blind_reason: >-
+        Este repo NO corre sobre Codex: hay cero filas de telemetria propia de
+        este arnes (.cognitive-os/metrics/hook-timing.jsonl es del wrapper de
+        Claude Code). La clase sale de la tabla de ciclo de vida de la doc
+        upstream, no de una medicion nuestra, y asi queda escrito.
     matcher: optional
     matcher_semantics: tool_name_regex
     # `block` does NOT undo the tool call: it replaces the result with feedback.
@@ -89,20 +184,91 @@ events:
     block_semantics: replaces_result_with_feedback
     payload_extra: [tool_name, tool_use_id, tool_input]
   PreCompact:
+    cadence:
+      fires_when: >-
+        Antes de compactar. Unidad: la compactacion; la mayoria de las sesiones no
+        compacta.
+      per_session: 0-N-per-compaction
+      evidence: documented
+      basis: [https://learn.chatgpt.com/docs/hooks]
+      doc_quote: >-
+        During a turn PreToolUse, PermissionRequest, PostToolUse, PreCompact,
+        PostCompact, UserPromptSubmit, SubagentStop, Stop
+      how: "curl -sSL https://learn.chatgpt.com/docs/hooks | grep -o 'When Hooks During a turn[^<]*'"
+      blind_reason: >-
+        Este repo NO corre sobre Codex: hay cero filas de telemetria propia de
+        este arnes (.cognitive-os/metrics/hook-timing.jsonl es del wrapper de
+        Claude Code). La clase sale de la tabla de ciclo de vida de la doc
+        upstream, no de una medicion nuestra, y asi queda escrito.
     matcher: optional
     matcher_semantics: enum
     matcher_values: [manual, auto]
     can_block: false
   PostCompact:
+    cadence:
+      fires_when: >-
+        Despues de compactar. Unidad: la compactacion. NO tiene equivalente en
+        Claude Code, que solo publica PreCompact.
+      per_session: 0-N-per-compaction
+      evidence: documented
+      basis: [https://learn.chatgpt.com/docs/hooks]
+      doc_quote: >-
+        During a turn PreToolUse, PermissionRequest, PostToolUse, PreCompact,
+        PostCompact, UserPromptSubmit, SubagentStop, Stop
+      how: "curl -sSL https://learn.chatgpt.com/docs/hooks | grep -o 'When Hooks During a turn[^<]*'"
+      blind_reason: >-
+        Este repo NO corre sobre Codex: hay cero filas de telemetria propia de
+        este arnes (.cognitive-os/metrics/hook-timing.jsonl es del wrapper de
+        Claude Code). La clase sale de la tabla de ciclo de vida de la doc
+        upstream, no de una medicion nuestra, y asi queda escrito.
     matcher: optional
     matcher_semantics: enum
     matcher_values: [manual, auto]
     can_block: false
   SubagentStop:
+    cadence:
+      fires_when: >-
+        Cuando TERMINA un subagente. Unidad: el subagente, no el turno ni la
+        sesion: N por sesion, uno por cada subagente que se haya lanzado.
+      per_session: 0-N-per-subagent
+      evidence: documented
+      basis: [https://learn.chatgpt.com/docs/hooks]
+      doc_quote: >-
+        During a turn PreToolUse, PermissionRequest, PostToolUse, PreCompact,
+        PostCompact, UserPromptSubmit, SubagentStop, Stop
+      how: "curl -sSL https://learn.chatgpt.com/docs/hooks | grep -o 'When Hooks During a turn[^<]*'"
+      blind_reason: >-
+        Este repo NO corre sobre Codex: hay cero filas de telemetria propia de
+        este arnes (.cognitive-os/metrics/hook-timing.jsonl es del wrapper de
+        Claude Code). La clase sale de la tabla de ciclo de vida de la doc
+        upstream, no de una medicion nuestra, y asi queda escrito.
     matcher: optional
     matcher_semantics: subagent_type
     can_block: false
   Stop:
+    cadence:
+      fires_when: >-
+        Cuando termina el TURNO del hilo principal — no la sesion. La doc lo
+        agrupa explicitamente bajo 'During a turn', y el payload lo confirma campo
+        por campo: turn_id es el id del turno activo y stop_hook_active dice si
+        ESTE turno ya fue continuado por un hook de Stop. El evento que si marca
+        fin de sesion en Codex es SessionEnd, que este repo NO proyecta.
+      per_session: 0-N-per-turn
+      evidence: documented
+      basis: [https://learn.chatgpt.com/docs/hooks]
+      doc_quote: >-
+        turn_id string Codex-specific extension. Active Codex turn id
+        stop_hook_active boolean Whether this turn was already continued by Stop
+      how: "curl -sSL https://learn.chatgpt.com/docs/hooks | grep -o 'When Hooks During a turn[^<]*'"
+      blind_reason: >-
+        Este repo NO corre sobre Codex: hay cero filas de telemetria propia de
+        este arnes (.cognitive-os/metrics/hook-timing.jsonl es del wrapper de
+        Claude Code). La clase sale de la tabla de ciclo de vida de la doc
+        upstream, no de una medicion nuestra, y asi queda escrito.
+      note: >-
+        Misma cadencia que Stop en Claude Code. La coincidencia se verifico, no se
+        asumio: la doc de Codex lo pone en el grupo 'During a turn' y le da un
+        turn_id propio.
     matcher: unsupported
     can_block: true
 
