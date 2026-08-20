@@ -232,3 +232,26 @@ $ .venv/bin/python -m pytest tests/unit/test_edit_coop.py -q
 - **No subí `global_budget.max_total_mib`** ni `max_unregistered_mib`, pese a que
   el audit da BLOCK. El rojo es anterior a este trabajo y sus dueños son otros
   (`artifacts/aci`, `tasks/control-plane-remediation.jsonl`).
+
+## Post scriptum: el árbol se vació solo, y no fui yo
+
+Entre la corrida de pruebas (1290 directorios, 13:0x) y el cierre de este
+informe, `.cognitive-os/runtime/edit-locks/` pasó a **40 directorios / 160 KB**.
+**No lo hizo el podador de este trabajo**: su única corrida registrada es
+
+```
+$ grep -c "reap-stale" .cognitive-os/runtime/reaper-daemon.log
+1
+[edit-coop] reap-stale: scanned=38 reaped=0 kept=38 grace=3600s
+```
+
+es decir, cuando el reaper corrió el árbol **ya estaba** en ~38 y **borró cero**.
+El barrido de los ~1250 lo hizo otra sesión concurrente, por una vía que no
+dejó rastro en ese log. Queda como incertidumbre abierta, no como logro propio.
+
+Lo que sí queda verificado de este trabajo: el árbol real estaba idéntico antes
+y después de mis corridas (`sha256(ls -la)` en la sección anterior), y de los 40
+sobrevivientes **19 están vencidos y 21 vigentes** — los 19 dentro del grace de
+una hora, o sea que el podador los dejará en su próximo ciclo y **ninguno de los
+19 bloquea a nadie**, que es exactamente el reparto que el arreglo busca:
+la vigencia la decide `expires_at`, la permanencia en disco la decide el grace.
