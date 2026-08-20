@@ -34,18 +34,61 @@ camino honesto sea el más corto, no que el deshonesto sea imposible.
 
 from __future__ import annotations
 
+import shlex
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any, Mapping
 
-__all__ = ["Census", "CensusError", "WindowMismatch"]
+__all__ = ["Census", "CensusError", "NotReproducible", "WindowMismatch", "looks_runnable"]
 
 # Por encima de esta fracción de ceguera, todo cero del censo se anota como no
 # observado en vez de como hallazgo.
 BLIND_WARNING_THRESHOLD = 0.20
 
 
+# Cabezas de comando que producen salida verificable. La lista es corta a
+# proposito: no busca ser exhaustiva, busca que una frase en prosa no pase por
+# comando. Un runner que falte se agrega; un token con `/` o con sufijo de
+# script ya alcanza sin tocar esta lista.
+RUNNERS = frozenset(
+    {
+        "awk", "bash", "cat", "comm", "curl", "diff", "docker", "find", "gh",
+        "git", "go", "grep", "head", "jq", "ls", "make", "node", "npm", "npx",
+        "pytest", "python", "python3", "rg", "sed", "sh", "sort", "sqlite3",
+        "tail", "uniq", "uv", "wc", "xargs", "yq", "zsh",
+    }
+)
+
+_SCRIPT_SUFFIXES = (".py", ".sh", ".bash", ".zsh", ".ts", ".js", ".go")
+
+
+def looks_runnable(command: str) -> bool:
+    """Forma de comando, no ejecutabilidad. Distingue orden de prosa.
+
+    Verdadero cuando la cabeza es un runner conocido, o cuando algun token
+    nombra una ruta (`/`) o un script. Lo que NO hace, dicho para que nadie se
+    confie: no corre nada, no chequea que el archivo exista (eso es del gate,
+    que si sabe donde esta el repo) y no verifica que el comando reproduzca el
+    numero. Es la barrera contra "lo verifique a mano", no contra un comando
+    equivocado.
+    """
+    try:
+        tokens = shlex.split(command)
+    except ValueError:
+        return False
+    if not tokens:
+        return False
+    if Path(tokens[0]).name in RUNNERS:
+        return True
+    return any("/" in t or t.endswith(_SCRIPT_SUFFIXES) for t in tokens)
+
+
 class CensusError(ValueError):
     """Un censo que perdería casos, o que no declara su ceguera."""
+
+
+class NotReproducible(CensusError):
+    """Un censo cuyo `how` no es un comando que otro pueda correr."""
 
 
 class WindowMismatch(CensusError):
@@ -61,12 +104,18 @@ class Census:
     tiene default a propósito: declarar qué no podés ver es parte de medir, y
     un instrumento que de verdad lo ve todo lo afirma escribiendo
     ``blind={"ninguna": 0}`` — que es una afirmación, no una omisión.
+
+    ``how`` es el comando que reproduce este censo. Va pegado al número por el
+    mismo motivo que ``sources``: leer el productor tiene que costar cero. Sin
+    él, verificar un conteo cuesta una búsqueda, y bajo varios hilos en paralelo
+    el camino barato —consumir el número y seguir— gana siempre.
     """
 
     subject: str
     sources: tuple[str, ...]
     buckets: Mapping[str, int]
     blind: Mapping[str, int]
+    how: str
     window: str | None = None
     notes: tuple[str, ...] = field(default_factory=tuple)
 
@@ -85,6 +134,18 @@ class Census:
             raise CensusError(
                 f"{self.subject}: falta declarar la ceguera. Si el instrumento ve "
                 'todos los casos, afirmalo con blind={"ninguna": 0}.'
+            )
+        if not self.how.strip():
+            raise NotReproducible(
+                f"{self.subject}: falta el comando que reproduce este censo. Un "
+                "conteo sin su comando obliga a quien lo lee a buscar el "
+                "instrumento, y bajo presión nadie lo busca: lo consume."
+            )
+        if not looks_runnable(self.how):
+            raise NotReproducible(
+                f"{self.subject}: how={self.how!r} no tiene forma de comando. "
+                "Se espera algo que otro pueda pegar en una terminal y obtener "
+                "el mismo número, no una descripción de lo que hiciste."
             )
         for name, counts in (("buckets", self.buckets), ("blind", self.blind)):
             for key, value in counts.items():
@@ -183,6 +244,7 @@ class Census:
         return {
             "subject": self.subject,
             "sources": list(self.sources),
+            "how": self.how,
             "window": self.window,
             "population": self.population,
             "measurable": self.measurable,
@@ -194,7 +256,11 @@ class Census:
         }
 
     def render(self) -> str:
-        out = [f"{self.subject}", f"  fuentes: {', '.join(self.sources)}"]
+        out = [
+            f"{self.subject}",
+            f"  fuentes: {', '.join(self.sources)}",
+            f"  reproducir: {self.how}",
+        ]
         if self.window:
             out.append(f"  ventana: {self.window}")
         out.append(f"  poblacion: {self.population}  medibles: {self.measurable}")

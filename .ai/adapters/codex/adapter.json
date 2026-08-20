@@ -837,13 +837,6 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
-      "portable_id": "hooks/singularity-check.sh",
-      "primitive_file": "primitives/hooks/hooks-singularity-check-sh-4b55b83197.json",
-      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
-    },
-    {
-      "claims_runtime_enforcement": false,
-      "fidelity": "documented-only",
       "portable_id": "hooks/skill-drift-detector.sh",
       "primitive_file": "primitives/hooks/hooks-skill-drift-detector-sh-818ec0f6fd.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"

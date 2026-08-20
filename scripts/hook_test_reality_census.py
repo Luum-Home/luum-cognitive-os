@@ -164,6 +164,7 @@ def main() -> int:
         sources=tuple(str(p.relative_to(REPO)) for p in sources[:3]) + (f"(+{max(0, len(sources) - 3)} rotados mas)",),
         buckets=dict(buckets) or {"ninguno": 0},
         blind=dict(blind) or {"ninguna": 0},
+        how=".venv/bin/python3 scripts/hook_test_reality_census.py",
         window="toda la telemetria retenida (viva + rotada)",
         notes=(
             "cero_silencioso_indeterminado NO es un hallazgo: la telemetria no "
@@ -178,6 +179,7 @@ def main() -> int:
     if args.json:
         print(json.dumps({
             "subject": census.subject, "sources": list(census.sources),
+            "how": census.how,
             "buckets": dict(census.buckets), "blind": dict(census.blind),
             "population": census.population, "blind_ratio": census.blind_ratio,
             "detail": {k: v for k, v in detail.items()},
@@ -185,6 +187,7 @@ def main() -> int:
     else:
         print(f"CENSO: {census.subject}")
         print(f"  fuentes    : {len(sources)} archivos de hook-timing (vivo + rotados)")
+        print(f"  reproducir : {census.how}")
         print(f"  poblacion  : {census.population} hooks con suite dedicada")
         print("  --- medible ---")
         for k, v in sorted(census.buckets.items()):

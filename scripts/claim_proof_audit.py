@@ -38,6 +38,12 @@ class ClaimRow:
     next_action: str
 
 
+
+# El numero no viaja sin el comando que lo reproduce. Quien lee este reporte
+# no tiene que salir a buscar el instrumento: leer el productor cuesta una
+# llamada y consumir el numero cuesta cero, y el camino barato siempre gana.
+REPRODUCE = ".venv/bin/python3 scripts/claim_proof_audit.py"
+
 def candidate_docs(root: Path) -> list[Path]:
     paths = [root / "README.md", root / "docs" / "README.md"]
     paths.extend(sorted((root / "docs" / "business").glob("*.md")) if (root / "docs" / "business").exists() else [])
@@ -126,7 +132,10 @@ def write_markdown(rows: list[ClaimRow], path: Path) -> None:
             claim = row.claim.replace("|", "\\|")
             lines.append(f"| {row.path} | {row.line} | {row.status} | {claim} | {row.evidence} | {row.next_action} |")
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    path.write_text(
+        "\n".join(lines[:1] + ["", f"> verify: {REPRODUCE}"] + lines[1:]) + "\n",
+        encoding="utf-8",
+    )
 
 
 def parse_args() -> argparse.Namespace:
@@ -142,7 +151,7 @@ def main() -> int:
     args = parse_args()
     root = Path(args.project_dir).resolve()
     rows = audit(root)
-    payload = {"rows": [asdict(row) for row in rows]}
+    payload = {"reproduce": REPRODUCE, "rows": [asdict(row) for row in rows]}
     json_path = root / args.json_out
     md_path = root / args.md_out
     json_path.parent.mkdir(parents=True, exist_ok=True)

@@ -305,6 +305,7 @@ def build_censuses(
 
     structured = Census(
         subject="afirmaciones perecederas estructuradas (manifests/**)",
+        how=f".venv/bin/python3 scripts/external_claim_freshness_audit.py --as-of {as_of.isoformat()}",
         sources=(f"{MANIFEST_DIR_REL}/**/*.{{yaml,yml,json}}", CONFIG_REL),
         window=f"as_of={as_of.isoformat()}",
         buckets={"fresca": fresh, "vencida": stale},
@@ -319,6 +320,7 @@ def build_censuses(
 
     method = Census(
         subject="metodo de verificacion reproducible declarado",
+        how=f".venv/bin/python3 scripts/external_claim_freshness_audit.py --as-of {as_of.isoformat()}",
         sources=(f"{MANIFEST_DIR_REL}/**/*.{{yaml,yml,json}}",),
         window=f"as_of={as_of.isoformat()}",
         buckets={"con_comando": with_how, "sin_comando": without_how},
@@ -330,6 +332,7 @@ def build_censuses(
     declares = sum(1 for rel in standing if _doc_declares_verification(repo, rel))
     prose = Census(
         subject="documentos vigentes en prosa que citan un sistema externo",
+        how=f".venv/bin/python3 scripts/external_claim_freshness_audit.py --as-of {as_of.isoformat()}",
         sources=("docs/**/*.md", "rules/**/*.md"),
         window=f"as_of={as_of.isoformat()}",
         buckets={"declara_verificacion": declares, "no_declara": len(standing) - declares},

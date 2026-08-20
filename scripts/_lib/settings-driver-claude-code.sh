@@ -397,13 +397,28 @@ cc_driver_emit() {
   )
 
   local post_all
-  post_all=$(_cc_hook_group "PostToolUse" "" \
-    "hooks/context-watchdog.sh"       "false" \
-    "hooks/subagent-budget-enforcer.sh" "false" \
-    "hooks/rate-limit-detector.sh"    "false" \
-    "hooks/tool-sequence-capture.sh"  "false" \
-    "hooks/aci-observation-capture.sh" "false" \
-  )
+  # ADR-093 default-profile trim (2026-08-19): tool-sequence-capture.sh and
+  # aci-observation-capture.sh run on EVERY tool call and never block. Measured
+  # over 279,048 wrapper rows they cost 11,808 runs / 5,199.8 s and 11,807 runs /
+  # 3,255.9 s respectively. tool-sequences.jsonl feeds only cos_lib/skill_synthesizer.py
+  # (auto-skill proposal, a convenience); .cognitive-os/artifacts/aci has no
+  # programmatic reader at all outside manifests/state-retention.yaml, which is a
+  # retention policy and not a consumer. Both stay on in `full` for contributors.
+  if [ "$PROFILE" = "full" ]; then
+    post_all=$(_cc_hook_group "PostToolUse" "" \
+      "hooks/context-watchdog.sh"       "false" \
+      "hooks/subagent-budget-enforcer.sh" "false" \
+      "hooks/rate-limit-detector.sh"    "false" \
+      "hooks/tool-sequence-capture.sh"  "false" \
+      "hooks/aci-observation-capture.sh" "false" \
+    )
+  else
+    post_all=$(_cc_hook_group "PostToolUse" "" \
+      "hooks/context-watchdog.sh"       "false" \
+      "hooks/subagent-budget-enforcer.sh" "false" \
+      "hooks/rate-limit-detector.sh"    "false" \
+    )
+  fi
 
   local post_codebase_itinerary
   post_codebase_itinerary=$(_cc_hook_group "PostToolUse" "Read|Grep|Glob|LS" \
@@ -416,15 +431,35 @@ cc_driver_emit() {
   )
 
   local post_bash
-  post_bash=$(_cc_hook_group "PostToolUse" "Bash" \
-    "hooks/error-pipeline.sh"              "false" \
-    "hooks/result-truncator.sh"            "false" \
-    "hooks/rate-limit-drain.sh"            "false" \
-    "hooks/audit-id-enricher.sh"           "false" \
-    "hooks/error-learning.sh"              "false" \
-    "hooks/post-git-orphan-notifier.sh"    "false" \
-    "hooks/cross-session-event-emit.sh"     "true"  \
-  )
+  # ADR-093 default-profile trim (2026-08-19), two removals from the Bash hot path:
+  #   rate-limit-drain.sh          — 9,513 runs / 4,112.7 s. It drains the queue
+  #     that hooks/rate-limiter.sh fills, and rate-limiter.sh is projected ONLY in
+  #     `full` (see pre_bash above). In `default` its producer is off, so the drain
+  #     pays 432 ms per Bash call to look at a queue nothing writes.
+  #   post-git-orphan-notifier.sh  — 9,513 runs / 4,541.1 s, advisory only (its own
+  #     header: "never blocks, exit 0 always"). The same detection runs on demand
+  #     via scripts/orphan_commit_scan.py, which reads git reflog and
+  #     `git fsck --unreachable` directly and does not depend on this hook's JSONL.
+  # Both stay on in `full`, where rate-limiter.sh is also projected.
+  if [ "$PROFILE" = "full" ]; then
+    post_bash=$(_cc_hook_group "PostToolUse" "Bash" \
+      "hooks/error-pipeline.sh"              "false" \
+      "hooks/result-truncator.sh"            "false" \
+      "hooks/rate-limit-drain.sh"            "false" \
+      "hooks/audit-id-enricher.sh"           "false" \
+      "hooks/error-learning.sh"              "false" \
+      "hooks/post-git-orphan-notifier.sh"    "false" \
+      "hooks/cross-session-event-emit.sh"     "true"  \
+    )
+  else
+    post_bash=$(_cc_hook_group "PostToolUse" "Bash" \
+      "hooks/error-pipeline.sh"              "false" \
+      "hooks/result-truncator.sh"            "false" \
+      "hooks/audit-id-enricher.sh"           "false" \
+      "hooks/error-learning.sh"              "false" \
+      "hooks/cross-session-event-emit.sh"     "true"  \
+    )
+  fi
 
   local post_bash_edit_write
   post_bash_edit_write=$(_cc_hook_group "PostToolUse" "Bash|Edit|Write" \

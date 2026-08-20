@@ -5887,29 +5887,6 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/<dynamic>.jsonl
-- id: hooks/session-state-save.sh
-  kind: hook
-  owner_adr: ADR-314
-  lifecycle_state: advisory
-  maturity: advisory
-  distribution: maintainer
-  governance_class: primitive-scope-calibration
-  risk_class: advisory
-  supported_harnesses:
-  - claude
-  projection_targets:
-  - hooks/session-state-save.sh
-  runtime_projection: false
-  behavior_evidence: Manual scope calibration batch 001 confirmed this primitive depends on Cognitive OS maintainer/runtime internals.
-  evidence_commands:
-  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/session-state-save.sh --fail-contradictions
-  rollback_or_repair_command: Reopen ADR-314 manual calibration ledger batch 001 and remove this metadata if consumer projection evidence is added.
-  sunset_criteria: Promote only if a generic project-facing primitive is split out and proved with consumer projection evidence.
-  docs_claim_level: advisory
-  exit_behavior: manual
-  metrics_file: "none"
-  consumer_accessibility: maintainer-only
-  consumer_access_next_action: Keep out of default consumer-project projection.
 - id: hooks/session-quality-close-gate.sh
   kind: hook
   owner_adr: ADR-324
@@ -6012,30 +5989,6 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/auto-trigger-events.jsonl
-- id: hooks/singularity-check.sh
-  kind: hook
-  owner_adr: ADR-314
-  lifecycle_state: advisory
-  maturity: advisory
-  distribution: maintainer
-  consumer_accessibility: lifecycle-declared-maintainer
-  governance_class: runtime-governance
-  risk_class: advisory
-  supported_harnesses:
-  - claude
-  - codex
-  - shell
-  projection_targets:
-  - hooks/singularity-check.sh
-  runtime_projection: true
-  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker made durable with lifecycle metadata.
-  evidence_commands:
-  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/singularity-check.sh
-  docs_claim_level: advisory
-  exit_behavior: exit_0
-  metrics_file: "none"
-  rollback_or_repair_command: Disable hooks/singularity-check.sh from runtime projection, regenerate harness settings, and rerun lifecycle/projection audits.
-  sunset_criteria: Revisit when hooks/singularity-check.sh is removed from runtime projection for 90 days or replaced by an equivalent primitive with tests.
 - id: hooks/skill-drift-detector.sh
   kind: hook
   owner_adr: ADR-311

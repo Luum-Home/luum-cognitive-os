@@ -487,11 +487,6 @@ items:
   rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
     Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
     primitive.
-- path: hooks/session-state-save.sh
-  status: maintainer-only
-  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
-    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
-    primitive.
 - path: hooks/sync-to-repo.sh
   status: maintainer-only
   rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
@@ -1262,10 +1257,6 @@ items:
   rationale: Manual scope calibration iteration 014 added metadata for existing os-only
     declaration; no consumer-project surface evidence.
 - path: hooks/registration-check.sh
-  status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
-- path: hooks/singularity-check.sh
   status: maintainer-only
   rationale: Manual scope calibration iteration 014 added metadata for existing os-only
     declaration; no consumer-project surface evidence.
