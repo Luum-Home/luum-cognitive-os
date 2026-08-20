@@ -130,6 +130,15 @@ Gate nuevo, por ruta y no por censo: `test_ningun_doc_ofrece_cos_bypass_como_pre
 recorre `docs/**` y `rules/**`. Probado por mutación: un `.md` con la forma de
 prefijo lo pone en rojo, y sin él vuelve a verde.
 
+El gate de docs nació con la misma ceguera que el clasificador, y se notó al
+primer uso: este mismo informe, al **citar** los tres ejemplos borrados, lo puso en
+rojo. La salida fácil era sacar la cita del informe — o sea, deformar el documento
+para no confundir a la herramienta, un nivel más arriba y con el mismo error. Lo
+que se cambió fue el gate: en markdown el contraejemplo va dentro de un bloque
+cercado y la negación vive en la prosa que lo rodea, así que la ventana es de seis
+líneas a cada lado en vez de la misma línea. Sigue exigiendo negación explícita
+ahí mismo; no alcanza con que el documento hable del tema.
+
 **Decisión sobre ampliar el clasificador a documentos: no.** El motivo, escrito
 para que el alcance angosto no se lea como cobertura: el veredicto de una oferta
 necesita el par *mensaje + hook que debería honrarlo*, y un `.md` no nombra a su

@@ -491,9 +491,20 @@ _COS_BYPASS_PREFIJO_RE = re.compile(
     r"(?<![A-Za-z0-9_])COS_BYPASS=[a-z_][a-z_,]*[ \t]+[A-Za-z./]"
 )
 # Misma regla que en el clasificador: nombrar la forma para decir que no funciona
-# no es ofrecerla. El marcador va en la MISMA línea, que en prosa es donde cabe.
+# no es ofrecerla. La diferencia con el clasificador es la ventana, y tiene motivo:
+# en bash la negación cabe en el comentario de al lado, pero en markdown el
+# contraejemplo va DENTRO de un bloque cercado y la explicación vive en la prosa
+# que lo rodea. Exigir el marcador en la misma línea obligaría a un documento a
+# no poder citar la forma que está desaconsejando — que es exactamente la
+# deformación que este trabajo vino a sacar del código, un nivel más arriba.
+#
+# Seis líneas a cada lado, no el archivo entero: un marcador en otra sección no
+# absuelve un ejemplo suelto. La regla sigue siendo "hay que negarla explícitamente
+# ahí mismo", no "alcanza con que el documento hable del tema".
+_NEGACION_VENTANA = 6
 _NEGACION_RE = re.compile(
-    r"inert|does not work|doesn't work|no funciona|no llega|never reaches|← *inert",
+    r"inert|does not work|doesn't work|not work|no funciona|no llega"
+    r"|ningun[ao]? +(?:de +l[ao]s +tres +)?llega|nunca|never reaches|← *inert",
     re.I,
 )
 
@@ -513,9 +524,15 @@ def _docs_con_prefijo_cos_bypass() -> dict[str, list[str]]:
     for raiz in ("docs", "rules"):
         for md in sorted((REPO / raiz).rglob("*.md")):
             rel = md.relative_to(REPO).as_posix()
-            for n, linea in enumerate(md.read_text(encoding="utf-8", errors="ignore").splitlines(), 1):
-                if _COS_BYPASS_PREFIJO_RE.search(linea) and not _NEGACION_RE.search(linea):
-                    hallazgos.setdefault(rel, []).append(f"{n}: {linea.strip()[:100]}")
+            lineas = md.read_text(encoding="utf-8", errors="ignore").splitlines()
+            for n, linea in enumerate(lineas, 1):
+                if not _COS_BYPASS_PREFIJO_RE.search(linea):
+                    continue
+                lo = max(0, n - 1 - _NEGACION_VENTANA)
+                hi = min(len(lineas), n + _NEGACION_VENTANA)
+                if _NEGACION_RE.search("\n".join(lineas[lo:hi])):
+                    continue
+                hallazgos.setdefault(rel, []).append(f"{n}: {linea.strip()[:100]}")
     return hallazgos
 
 
