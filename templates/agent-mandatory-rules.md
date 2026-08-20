@@ -25,12 +25,10 @@ Whoever wrote them — the orchestrator included — may have miscounted.
   (`## Correcciones a las premisas del encargo`). ZERO corrections is suspicious.
 
 ### Filesystem: Symlinks
-This project uses symlinks (42 of 256 `hooks/*.sh`, most of them to `packages/*/hooks/`). **`tests/` has ZERO symlinks** — that half of this sentence was false for months. Check before assuming: `ls -la <path>`.
-- ALWAYS use `readlink -f <path>` before classifying any file as missing
-- ALWAYS use `ls -la <path>` to verify symlinks before reporting absence
+This project uses symlinks: 42 of 256 `hooks/*.sh`, and tests/ has 2 symlinks (both under `tests/unit/`, into `packages/*/tests/`). Count with `find <dir> -type l` — a `for f in dir/*` loop does NOT recurse, and that is exactly how an audit once published "tests/ has ZERO". Check before assuming: `ls -la <path>`.
+- NEVER call a file 'missing' or 'ghost' without `readlink -f` + `ls -la` first — past audits published false absences exactly this way
 - Use `file_exists_strict()` from `hooks/_lib/file_checker.sh` for file checks
-- NEVER report a file as 'missing' or 'ghost' without verifying with readlink -f
-- Previous audits reported false 'missing' files due to naive checks — do NOT repeat this
+- Recreating a symlink with `rm`+`ln -s`, RELATIVE target, under a directory symlink IS blocked (exit 2) via `hooks/bash-hot-path-dispatcher.sh` — not as its own `.claude/settings.json` entry. A top-level dir symlink is NOT caught. Grepping that file proves nothing: run the hook.
 
 ### Auditing
 - When counting components, resolve symlinks first — a symlink and its target are ONE component
@@ -82,7 +80,7 @@ estaban registradas cuando las ocho lo estaban. El registro es un hecho sobre
 .venv/bin/python3 scripts/audit_hook_registration.py    # exit 1 = hay un declarado inalcanzable
 ```
 
-Y para un hook puntual, `grep -c '<hook>.sh' .claude/settings.json`. Cero no
-siempre es un defecto: hay omisiones declaradas a propósito en
-`manifests/hook-registration-classification.yaml` y en
-`tests/contracts/EXCLUDED_HOOKS.txt`, que ese gate sí lee.
+Para un hook puntual, `grep -c` sobre `.claude/settings.json` NO alcanza: puede
+correr detrás de `hooks/bash-hot-path-dispatcher.sh`, o estar omitido a propósito
+en `tests/contracts/EXCLUDED_HOOKS.txt` (lo único, además del yaml, que ese gate
+lee). Cero no prueba nada. Corré el hook con su payload por stdin.
