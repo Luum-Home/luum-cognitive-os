@@ -114,7 +114,14 @@ if [ -f "$LOCK_FILE" ]; then
     IS_STALE=true
   fi
 
-  # Check if locking PID is still running
+  # Check if locking PID is still running.
+  #
+  # El lock guarda $PPID -- el proceso del ARNES -- y no $$, que es el del hook.
+  # Medido el 2026-08-20: con $$ el PID moria milisegundos despues de escribirse,
+  # asi que TODO lock se leia como stale, se borraba, y la rama de contencion de
+  # abajo era inalcanzable. 1.292 corridas sin un solo bloqueo, y no por flock:
+  # por esto. Es tambien el mecanismo detras de los 1.295 de 1.314 edit-locks
+  # vencidos por su propio campo -- no era que nadie los liberara, nacian muertos.
   if [ "$LOCK_PID" -gt 0 ] && ! kill -0 "$LOCK_PID" 2>/dev/null; then
     IS_STALE=true
   fi
@@ -123,17 +130,51 @@ if [ -f "$LOCK_FILE" ]; then
     # Remove stale lock, proceed to acquire
     rm -f "$LOCK_FILE"
   else
+# mtime en segundos, portable: BSD (macOS) usa -f %m, GNU usa -c %Y.
+_cwg_mtime() {
+  stat -f %m "$1" 2>/dev/null || stat -c %Y "$1" 2>/dev/null || echo 0
+}
+
     # --- Cross-session contention: advisory warning + real blocking ---
     # Advisory message preserves the historical contract (matched by
     # tests/behavior/test_file_locking.py::test_cross_session_warning).
     echo "CONCURRENT WRITE WARNING: $FILE_PATH is being edited by session $LOCK_SESSION (${LOCK_AGE}s old)." >&2
-    if ! command -v flock >/dev/null 2>&1; then
-      echo "WRITE ADVISORY: flock unavailable; continuing without blocking serialization." >&2
-      exit 0
-    fi
+    # flock NO existe en macOS, que es donde corre este repo. Medido el 2026-08-20:
+    # `command -v flock` -> ausente, y por eso este guard llevaba 1.292 corridas
+    # detectando contencion, imprimiendo la advertencia, y saliendo 0. Nunca
+    # bloqueo, y nunca pudo. No era una regresion: nacio asi en cualquier maquina
+    # sin util-linux.
+    #
+    # El reemplazo portable es `mkdir`: crear un directorio es atomico en POSIX y
+    # falla si ya existe, que es exactamente la primitiva que hace falta. No
+    # necesita util-linux ni descriptores reservados.
     echo "WRITE QUEUED: Waiting up to 10s for lock release..." >&2
-    exec 200>"$LOCK_FILE.flock"
-    if ! flock -w 10 200; then
+    _cwg_lockdir="$LOCK_FILE.lockdir"
+    _cwg_got=0
+    _cwg_i=0
+    while [ "$_cwg_i" -lt 20 ]; do
+      if mkdir "$_cwg_lockdir" 2>/dev/null; then
+        _cwg_got=1
+        # Se libera al salir el proceso, pase lo que pase: sin esto un guard que
+        # muere a mitad deja el lock puesto y bloquea a todos los que vengan.
+        trap 'rmdir "$_cwg_lockdir" 2>/dev/null || true' EXIT INT TERM
+        break
+      fi
+      # Lock huerfano: si el directorio tiene mas de 60s, el que lo tomo ya no
+      # esta. Sin esta rama, un solo proceso muerto bloquea el archivo para siempre
+      # -- que es el modo de falla que hoy tiene el registro de edit-locks, con
+      # 1.295 de 1.314 vencidos por su propio campo y nadie leyendolo.
+      if [ -d "$_cwg_lockdir" ]; then
+        _cwg_age="$(( NOW - $(_cwg_mtime "$_cwg_lockdir") ))"
+        if [ "$_cwg_age" -gt 60 ] 2>/dev/null; then
+          rmdir "$_cwg_lockdir" 2>/dev/null || true
+          continue
+        fi
+      fi
+      sleep 0.5
+      _cwg_i=$((_cwg_i + 1))
+    done
+    if [ "$_cwg_got" -ne 1 ]; then
       echo "WRITE BLOCKED: Could not acquire lock for $FILE_PATH after 10s" >&2
       exit 2
     fi
@@ -149,7 +190,7 @@ fi
 
 jq -c -n \
   --arg sid "$SESSION_ID" \
-  --arg pid "$$" \
+  --arg pid "$PPID" \
   --arg path "$FILE_PATH" \
   --argjson epoch "$NOW" \
   --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
