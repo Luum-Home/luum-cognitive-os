@@ -20,7 +20,6 @@ check_capability_level "infra-intent-detector"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}"
 COGNITIVE_OS_DIR="$PROJECT_DIR/.cognitive-os"
-COGNITIVE_OS_YAML="$COGNITIVE_OS_DIR/cognitive-os.yaml"
 METRICS_LOG="$COGNITIVE_OS_DIR/metrics/infra-detections.jsonl"
 
 # Read tool input from stdin

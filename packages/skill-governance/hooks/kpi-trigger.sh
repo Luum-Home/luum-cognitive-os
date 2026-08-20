@@ -42,7 +42,13 @@ fi
 mkdir -p "$METRICS_DIR"
 
 # --- Read config thresholds from cognitive-os.yaml ---
-YAML="$PROJECT_DIR/.cognitive-os/cognitive-os.yaml"
+# Se leia SOLO `.cognitive-os/cognitive-os.yaml`, que no existe en ningun
+# checkout de este repo: el default de arriba regia siempre y la perilla era
+# decorativa. El canonico es el de la raiz; el de `.cognitive-os` queda como
+# fallback, misma forma que hooks/parry-scan.sh y session-start-worktree-nudge.sh.
+# Medido con `python3 scripts/config_knob_census.py --prove`.
+YAML="$PROJECT_DIR/cognitive-os.yaml"
+[ ! -f "$YAML" ] && YAML="$PROJECT_DIR/.cognitive-os/cognitive-os.yaml"
 FIRST_PASS_THRESHOLD=0.70
 ITERATION_THRESHOLD=3
 MAX_AUTO_IMPROVEMENTS=5
