@@ -307,6 +307,15 @@ if [ -f "$PROJECT_DIR/hooks/_lib/session-fs-reap.sh" ]; then
 fi
 
 
+# ── ADR-098 edit locks: drop locks past their own declared expires_at ──────
+# The acquire path clears an expired lock only when somebody re-acquires that
+# same file, so a lock on a file nobody touches again stayed on disk forever
+# (1316 dirs / 5.1 MiB measured 2026-08-20). This is hygiene only: since
+# _lock_is_stale honours expires_at, an expired lock no longer blocks anyone.
+if [ -f "$PROJECT_DIR/scripts/edit-coop.sh" ]; then
+  bash "$PROJECT_DIR/scripts/edit-coop.sh" reap-stale 2>&1 | head -5
+fi
+
 # ── ADR-199: State retention audit/reaper dry-run summary ───────────────────
 if [ -x "$PROJECT_DIR/scripts/state_retention_audit.py" ]; then
   python3 "$PROJECT_DIR/scripts/state_retention_audit.py" --project-dir "$PROJECT_DIR" --auto-safe --reap --execute 2>&1 | head -40 || true
