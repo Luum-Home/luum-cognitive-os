@@ -5477,6 +5477,18 @@ evidence:
     es la sonda de falsacion (mismo archivo, unico cambio el codigo de reset), y un
     tercer caso mata la regresion del filtro por extension que perdia ejecutables con
     shebang y sin sufijo. os-only porque solo lee rutas de .cognitive-os del propio SO.
+- primitive: scripts/hook_surface_census.py
+  harnesses: [shell-ci]
+  tests:
+  - tests/red_team/portability/test_hook_surface_census.py
+  - tests/behavior/test_hook_surface_census.py
+  rationale: Censo forense read-only de las superficies de registro de hooks. La prueba
+    corre el lector real del driver con los comentarios quitados, y la sonda de falsacion
+    es justamente el caso CON comentario — donde la cabecera que documenta una ausencia
+    se contaria como registro, que es el defecto vivo del instrumento hermano. Verifica
+    ademas el env-pop de COS_ALLOW_PROTECTED_CONFIG_WRITE, sin el cual el subproceso
+    hereda la aprobacion y se mide un guard que aprueba todo. os-only porque lee rutas
+    de registro que solo existen en el propio SO.
 patterns:
 - pattern: tests/**
   behavior_proven: true
