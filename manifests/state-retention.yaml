@@ -384,3 +384,40 @@ surfaces:
     rationale: >
       Preserved worktrees are intentional safety artifacts, but each must have
       an intake/cleanup path before it becomes dispatch friction.
+
+  - id: edit-locks
+    kind: lock
+    path: .cognitive-os/runtime/edit-locks/*
+    max_age: P1H
+    max_count: 200
+    max_total_mib: 8
+    reaper: session-end
+    retention_mode: observe
+    tombstone: drop-if-expired
+    owner_pid: true
+    owner_files:
+      - scripts/edit-coop.sh
+      - hooks/edit-lock-pre-tool.sh
+      - scripts/so-reaper.sh
+    documentation:
+      - docs/02-Decisions/adrs/ADR-098-multi-agent-file-coordination.md
+      - docs/06-Daily/reports/estado-que-gobierna-sin-ciclo-2026-08-20.md
+    rationale: >
+      One directory per file ever edited under an ADR-098 lock, and nothing
+      removed one until 2026-08-20: 1316 dirs / 5.1 MiB, of which 1296 were
+      past their own expires_at and the oldest by 96 days. The authoritative
+      deadline is not this manifest but the per-lock expires_at that
+      scripts/edit-coop.sh stamps on acquire and refreshes on heartbeat — a
+      30-minute TTL that max_age cannot express here (the parser accepts only
+      whole hours and days). max_age is therefore the REAP GRACE added on top
+      of that declared deadline, matching COS_EDIT_LOCK_REAP_GRACE.
+      retention_mode is observe rather than repair-safe on purpose:
+      state_retention_audit has no reaper implementation for lock-kind glob
+      surfaces, and the sweep runs from scripts/so-reaper.sh calling
+      `edit-coop.sh reap-stale` on the session-end path. Claiming repair-safe
+      here would advertise automation this tool does not perform — same reason
+      as copy-only-checkpoints. Promotion to repair-safe requires a reap
+      implementation in this script, not a change of this field.
+      Deleting an expired lock is hygiene, not safety: since the enforcement
+      predicate (_lock_is_stale) honours expires_at, an expired lock stopped
+      blocking anybody whether or not the sweep ever runs.
