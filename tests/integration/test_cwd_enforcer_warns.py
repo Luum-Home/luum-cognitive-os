@@ -19,13 +19,21 @@ import stat
 import subprocess
 from pathlib import Path
 
+from tests.utils.harness_payload import raw as harness_raw
+
 
 REPO_ROOT = Path(__file__).parent.parent.parent
 HOOK_PATH = REPO_ROOT / "hooks" / "agent-bash-cwd-enforcer.sh"
 
 
 def _bash_payload(command: str) -> str:
-    return json.dumps({"tool_name": "Bash", "tool_input": {"command": command}})
+    # Was a hand-built {"tool_name", "tool_input"} pair: two of the six fields
+    # the harness sends on PreToolUse. The enforcer never reads the other four
+    # — it takes the working directory from `pwd` and `git worktree list`, not
+    # from the payload's own `cwd` — so the verdicts below are unchanged by the
+    # migration. That is the point of migrating it: the field the hook ignores
+    # is the one the harness sends, and now the test says so.
+    return harness_raw("PreToolUse", tool_name="Bash", tool_input={"command": command})
 
 
 def _fake_git_shim(tmp_path: Path, main_path: str) -> Path:
