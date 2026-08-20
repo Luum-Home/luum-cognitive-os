@@ -94,29 +94,31 @@ class TestRedactableSecret:
 
 
 class TestAllSecretInput:
-    """Input that is *entirely* a secret should emit native block, not exit 2."""
+    """Input that is *entirely* a secret must be denied, on both signals."""
 
-    def test_entirely_secret_command_exits_zero(self) -> None:
+    def test_entirely_secret_command_exits_2(self) -> None:
         # A command that is only a secret value — nothing left after redaction.
         # We use a GitHub token pattern which the hook treats as a high-confidence secret.
         fake_gh_token = "ghp_" + "A" * 36
         rc, out, stderr = _run_hook("Bash", {"command": fake_gh_token})
-        assert rc == 0, (
-            f"Hook must exit 0 (native block), NOT exit 2. Got {rc}. stderr: {stderr}"
+        assert rc == 2, (
+            "Hook must block with exit 2 when the whole input is a secret. "
+            f"Got {rc}. stderr: {stderr}"
         )
 
-    def test_entirely_secret_command_emits_block_decision(self) -> None:
+    def test_entirely_secret_command_emits_deny_decision(self) -> None:
         fake_gh_token = "ghp_" + "B" * 36
         rc, out, stderr = _run_hook("Bash", {"command": fake_gh_token})
-        assert rc == 0
+        assert rc == 2
         hso = out.get("hookSpecificOutput", {})
-        if hso:
-            # When the whole input is a secret, hook should set block, not allow.
-            assert hso.get("permissionDecision") == "block", (
-                f"Expected permissionDecision=block, got: {hso}"
-            )
-            ctx = hso.get("additionalContext", "")
-            assert ctx, "additionalContext must be non-empty for blocked calls"
+        assert hso, f"the hook must emit its decision JSON, got stdout parsed as {out}"
+        # "deny" is the only denial value the host accepts; "block" is silently
+        # discarded, which turned this branch into a fail-open.
+        assert hso.get("permissionDecision") == "deny", (
+            f"Expected permissionDecision=deny, got: {hso}"
+        )
+        reason = hso.get("permissionDecisionReason", "")
+        assert reason, "permissionDecisionReason must be non-empty for denied calls"
 
 
 class TestPostToolUseMode:

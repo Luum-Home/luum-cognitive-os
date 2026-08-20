@@ -14,6 +14,7 @@ import subprocess
 from pathlib import Path
 
 import pytest
+import yaml
 
 pytestmark = [pytest.mark.unit, pytest.mark.behavior]
 
@@ -197,20 +198,90 @@ class TestSecretDetectorUpdatedInput:
             f"Expected silent allow, got stdout={result.stdout!r}"
         )
 
-    def test_meaningless_after_redaction_blocks_natively(self, tmp_path: Path) -> None:
+    def test_meaningless_after_redaction_denies_and_exits_2(self, tmp_path: Path) -> None:
         """Fallback contract: when the entire payload IS the secret, redaction
-        would leave nothing meaningful — the hook must emit a native
-        hookSpecificOutput block while exiting 0, not legacy exit 2."""
+        would leave nothing meaningful, so the call must be DENIED.
+
+        Regression guard. The branch used to emit permissionDecision "block" —
+        a value no harness accepts (Claude Code takes allow|deny|ask|defer,
+        Codex takes deny) — on exit 0 and with no backstop. Per the hooks
+        contract, JSON that fails schema validation on exit 0 is a non-blocking
+        error and the tool call proceeds: the guard failed open on every run.
+        Both signals are asserted because either one alone blocks, and exit 2
+        is the one that survives a future schema change."""
         payload = _pre_payload(
             "Bash",
             {"command": "AKIAIOSFODNN7EXAMPLE"},
         )
         result = _run(payload, env_extra={"CLAUDE_PROJECT_DIR": str(tmp_path)})
-        assert result.returncode == 0, (
-            "Hook must use native block output instead of legacy exit 2, "
-            f"got {result.returncode}"
+        assert result.returncode == 2, (
+            "Hook must block with exit 2 when the whole input is a secret, "
+            f"got {result.returncode} with stdout={result.stdout!r}"
         )
         data = json.loads(result.stdout.strip())
         hso = data["hookSpecificOutput"]
-        assert hso["permissionDecision"] == "block"
-        assert hso["additionalContext"]
+        assert hso["permissionDecision"] == "deny"
+        assert hso["permissionDecisionReason"]
+
+    def test_emitted_permission_decision_is_a_value_the_host_accepts(
+        self, tmp_path: Path
+    ) -> None:
+        """Every decision the hook emits must belong to the host's accepted
+        set, read from the transcribed contract instead of hardcoded here: the
+        defect this guards against was a decision string that looked plausible
+        and that the host silently discarded."""
+        schema = yaml.safe_load(
+            (PROJECT_ROOT / "manifests/claude-code-hooks-schema.yaml").read_text(
+                encoding="utf-8"
+            )
+        )
+        allowed = set(schema["events"]["PreToolUse"]["permission_decision_values"])
+        assert allowed, "the contract must enumerate the accepted decision values"
+
+        seen = []
+        for command in ("AKIAIOSFODNN7EXAMPLE", "echo AKIAIOSFODNN7EXAMPLE && echo ok"):
+            result = _run(
+                _pre_payload("Bash", {"command": command}),
+                env_extra={"CLAUDE_PROJECT_DIR": str(tmp_path)},
+            )
+            data = json.loads(result.stdout.strip())
+            decision = data["hookSpecificOutput"]["permissionDecision"]
+            seen.append(decision)
+            assert decision in allowed, (
+                f"{decision!r} is not one of {sorted(allowed)}; the host would "
+                "discard the decision and let the tool call through"
+            )
+        assert "deny" in seen and "allow" in seen, f"both paths must run, saw {seen}"
+
+    def test_private_key_in_content_is_redacted(self, tmp_path: Path) -> None:
+        """A PEM private key in Write content must be redacted.
+
+        Regression guard: the pattern starts with five dashes, so
+        `grep -oE "$pattern"` read it as an option string and failed with the
+        error swallowed by 2>/dev/null. The pre-check then saw no match and the
+        hook exited silently, letting the key reach disk verbatim. The fix is
+        the `--` end-of-options marker on both grep calls."""
+        pem = (
+            "-----BEGIN RSA PRIVATE KEY-----\n"
+            "MIIEowIBAAKCAQEAxSbJ0KEYBODYFORTESTONLY0123456789abcdef\n"
+            "-----END RSA PRIVATE KEY-----\n"
+        )
+        payload = _pre_payload(
+            "Write",
+            {"file_path": str(tmp_path / "id_rsa"), "content": pem + "trailing = 1\n"},
+        )
+        result = _run(payload, env_extra={"CLAUDE_PROJECT_DIR": str(tmp_path)})
+        assert result.returncode == 0, (
+            f"the redaction path must allow, got {result.returncode}"
+        )
+        assert result.stdout.strip(), (
+            "hook stayed silent on a PEM private key — the pattern is inert again"
+        )
+        data = json.loads(result.stdout.strip())
+        hso = data["hookSpecificOutput"]
+        assert hso["permissionDecision"] == "allow"
+        updated = hso["updatedInput"]["content"]
+        assert "-----BEGIN RSA PRIVATE KEY-----" not in updated
+        assert "[REDACTED]" in updated
+        # The rest of the file survives redaction.
+        assert "trailing = 1" in updated
