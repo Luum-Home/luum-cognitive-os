@@ -195,7 +195,7 @@ if [[ -n "$AGENT_PROMPT" ]]; then
   # lib/ symlink trap
   if echo "$AGENT_PROMPT" | grep -qiE 'lib/|packages/.*lib|duplicate.*lib|dedup'; then
     GOTCHAS="${GOTCHAS}
-NOTE: there is no lib/ at the repo root — the package dir is cos_lib/. SOME cos_lib/*.py are SYMLINKS to packages/*/lib/*.py; most are real files (70 of 369 = 19.0% on 2026-08-15 — recount, do not cite: find cos_lib -name '*.py' -type l | wc -l ; find cos_lib -name '*.py' | wc -l). Verify per file with: ls -la cos_lib/<file>.py. Three whole directories are symlinks too: cos_lib/harness_adapter, cos_lib/event_projections, cos_lib/providers. If <file>.py exists in BOTH cos_lib/ AND packages/*/lib/, run python3 scripts/cos_lib_symlink_invariant_audit.py to detect silent drift (3 confirmed drifts as of 2026-05-11 — see ADR-267 §Layer 1 Hook #7). Check symlink direction before replacing files in packages/*/lib/."
+NOTE: there is no lib/ at the repo root — the package dir is cos_lib/. SOME cos_lib/*.py are SYMLINKS to packages/*/lib/*.py; most are real files (recount, never cite a figure: find cos_lib -name '*.py' -type l | wc -l ; find cos_lib -name '*.py' | wc -l). Verify per file with: ls -la cos_lib/<file>.py. Three whole directories are symlinks too: cos_lib/harness_adapter, cos_lib/event_projections, cos_lib/providers. If <file>.py exists in BOTH cos_lib/ AND packages/*/lib/, run python3 scripts/cos_lib_symlink_invariant_audit.py to detect silent drift (exit 0 = none; it prints the count). Check symlink direction before replacing files in packages/*/lib/."
   fi
 
   # settings.json trap
@@ -207,7 +207,7 @@ NOTE: .claude/settings.json is GENERATED — never hand-edit it. But the Claude 
   # Hook creation trap
   if echo "$AGENT_PROMPT" | grep -qiE 'new hook|create hook|hooks/.*\.sh'; then
     GOTCHAS="${GOTCHAS}
-NOTE: A new hook added ONLY to cognitive-os.yaml never reaches Claude Code, and nothing reports it — Do NOT cite a live orphan from memory: measured 2026-08-20 there are ZERO hooks that are declared, unreachable AND undeclared. The gate reports 5 'lost', and all 5 are declared somewhere the gate does not read — four behind a profile conditional in the driver's own shell, and hooks/publication-safety.sh in manifests/hook-registration-classification.yaml since 2026-05-04 with status conditional_opt_in, a rationale and a next_action. So when the gate reports one, the question is not 'who forgot to register it' but 'which manifest declares the omission that this gate cannot see'. Several surfaces must name it, kept in step by hand, and the count is not worth memorising — run the gate: .venv/bin/python3 scripts/audit_hook_registration.py"
+NOTE: A new hook added ONLY to cognitive-os.yaml never reaches Claude Code, and nothing reports it — Do NOT cite a live orphan from memory, and do not cite a count of them either — run the gate. Most of what it reports as 'lost' is declared somewhere the gate does not read: a profile conditional in the driver's own shell, or manifests/hook-registration-classification.yaml with a status, a rationale and a next_action. So when the gate reports one, the question is not 'who forgot to register it' but 'which manifest declares the omission that this gate cannot see'. Several surfaces must name it, kept in step by hand, and the count is not worth memorising — run the gate: .venv/bin/python3 scripts/audit_hook_registration.py"
   fi
 
   # Workflow trap
@@ -219,7 +219,7 @@ NOTE: Workflow YAMLs in .cognitive-os/workflows/ follow the schema in docs/08-Re
   # Plans directory trap
   if echo "$AGENT_PROMPT" | grep -qiE 'plans/|plan.*directory'; then
     GOTCHAS="${GOTCHAS}
-WARNING: plans/ at root has structure but no content. Active plans are in .cognitive-os/plans/. Both exist intentionally."
+WARNING: plans/ at root holds only a README. Active plans are in .cognitive-os/plans/. Both exist intentionally."
   fi
 fi
 
