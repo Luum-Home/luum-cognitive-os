@@ -25,7 +25,7 @@ Whoever wrote them — the orchestrator included — may have miscounted.
   (`## Correcciones a las premisas del encargo`). ZERO corrections is suspicious.
 
 ### Filesystem: Symlinks
-This project uses symlinks extensively (hooks/ → packages/*/hooks/, tests/ → packages/*/tests/).
+This project uses symlinks (42 of 256 `hooks/*.sh`, most of them to `packages/*/hooks/`). **`tests/` has ZERO symlinks** — that half of this sentence was false for months. Check before assuming: `ls -la <path>`.
 - ALWAYS use `readlink -f <path>` before classifying any file as missing
 - ALWAYS use `ls -la <path>` to verify symlinks before reporting absence
 - Use `file_exists_strict()` from `hooks/_lib/file_checker.sh` for file checks
