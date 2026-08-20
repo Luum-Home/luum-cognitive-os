@@ -123,17 +123,29 @@ def materialise_tracked_tree(ref: str, dest: Path) -> None:
     share the object store and the ignore rules, which is exactly what this
     procedure must not inherit.
 
-    Correction, 2026-08-20: an earlier version of this docstring opened with
-    "`git worktree` is blocked in this repo (ADR-055b)". That is FALSE -- there
-    are worktrees alive right now (`git worktree list`). The claim came from the
-    orchestrating session, which was blocked once on a specific `git worktree
-    add` and generalised that single block into a rule, then dictated it in
-    three separate briefs. Nobody questioned it until an agent checked.
+    On `git worktree`, three versions of the same claim in one session, and only
+    the third came from a probe:
 
-    The correction is kept rather than silently deleted because the reason for
-    using `git archive` never depended on the false premise -- it is the second
-    half above, and it stands on its own. Removing only the wrong clause leaves
-    the argument intact and the mistake legible.
+      v1  "blocked in this repo (ADR-055b)"   -- generalised from ONE blocked
+                                                 `git worktree add`, then repeated
+                                                 in three separate briefs
+      v2  "not blocked, there are 16 alive"   -- inferred from `list` working and
+                                                 from worktrees existing. WRONG.
+      v3  measured, per operation:
+
+            git worktree list      passes    (read)
+            git worktree add       BLOCKED   destructive-git-blocker, ADR-055b
+            git worktree remove    BLOCKED
+            git worktree prune     BLOCKED
+
+    So v1 was right about the operation that matters and v2 over-corrected it.
+    Creating a worktree needs the documented approval token; the 16 that exist
+    were made with it or before the guard.
+
+    The history is kept instead of just the answer because the failure mode is
+    the interesting part: a single block became a rule, the rule was dictated to
+    three agents, one agent believed it and wrote it here, and the correction to
+    it was also wrong. Only the probe settled it.
     """
     dest.mkdir(parents=True, exist_ok=True)
     archive = subprocess.Popen(
