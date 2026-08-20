@@ -375,7 +375,12 @@ class TestSessionCleanup:
         if not session_dir.exists():
             pytest.skip("Session directory not found (may use different naming)")
 
-        # session-init.sh ya termino: el pid de su meta.json esta muerto.
+        # session-init.sh ya termino: el pid de su meta.json esta muerto. Pero
+        # ese PID es efimero por diseno, asi que no alcanza para declarar muerta
+        # a la sesion; el hook exige ademas que el directorio no se haya tocado
+        # dentro de la ventana de gracia. Se atrasa el mtime para representar una
+        # sesion realmente abandonada, que es lo que este test quiere probar.
+        os.utime(session_dir, (1, 1))
         _run_hook(CLEANUP_HOOK, tmp_path, session_id=session_id)
 
         assert not session_dir.exists(), (
@@ -570,6 +575,16 @@ def _make_session(project_dir: Path, session_id: str, owner_pid: int, lock_pid: 
     _active_sessions_file(project_dir).write_text(
         json.dumps({"sessions": [{"id": session_id, "pid": owner_pid}]})
     )
+    # El mtime del directorio se atrasa a proposito. "Duenio muerto" dejo de ser
+    # solo "el PID de meta.json no existe": ese PID es el del subproceso de
+    # session-init, que muere a los segundos, asi que por si solo declara muerta
+    # a cualquier sesion (las 10 en disco dan DEAD, una de ellas con su sesion
+    # abierta). El hook le suma una ventana de gracia por mtime, y un fixture
+    # recien escrito cae dentro de esa ventana. Atrasarlo es lo que hace que
+    # "probadamente muerto" signifique eso de verdad.
+    # No afecta a los casos de duenio VIVO: ahi gana el `ps -p` antes de mirar
+    # el mtime.
+    os.utime(session_dir, (1, 1))
     return session_dir
 
 
