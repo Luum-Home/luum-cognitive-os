@@ -83,6 +83,12 @@ def _run_hook(project_dir: Path, command: str) -> subprocess.CompletedProcess:
         }
     )
     env.pop("COS_ALLOW_SKILL_BYPASS", None)
+    # Higiene de entorno heredado: el conftest de la raiz redirige COS_METRICS_DIR
+    # a un sandbox para toda la suite. Este test mide el destino POR DEFECTO
+    # (derivado de PROJECT_DIR), asi que descarta el redirect igual que ya
+    # descarta COS_ALLOW_SKILL_BYPASS.
+    env.pop("COS_METRICS_DIR", None)
+    env.pop("COGNITIVE_OS_METRICS_DIR", None)
     payload = {
         "tool_name": "Bash",
         "session_id": SESSION,

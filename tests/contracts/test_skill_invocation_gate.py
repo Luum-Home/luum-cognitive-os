@@ -44,6 +44,12 @@ def _run_hook(workdir: Path, *, tool_name: str, tool_input: dict, env_extra=None
     env["COGNITIVE_OS_SESSION_ID"] = "test-session-188"
     # Disable any inherited overrides
     env.pop("COS_ALLOW_SKILL_BYPASS", None)
+    # Higiene de entorno heredado: el conftest de la raiz redirige COS_METRICS_DIR
+    # a un sandbox para toda la suite. Este test mide el destino POR DEFECTO
+    # (derivado de PROJECT_DIR), asi que descarta el redirect igual que ya
+    # descarta COS_ALLOW_SKILL_BYPASS.
+    env.pop("COS_METRICS_DIR", None)
+    env.pop("COGNITIVE_OS_METRICS_DIR", None)
     env.pop("COS_SKILL_BYPASS_REASON", None)
     env.pop("DISABLE_HOOK_ORCHESTRATOR_SKILL_INVOCATION_GATE", None)
     if env_extra:

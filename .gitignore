@@ -121,7 +121,11 @@ Thumbs.db
 *.swp
 *~
 mutants/
-conftest.py
+# `conftest.py` pelado vivia aca, entre los artefactos de mutacion, e
+# ignoraba TODO conftest en cualquier nivel del arbol — incluido el de la
+# raiz y el de packages/agent-service/tests/. Los 8 que estan trackeados
+# entraron con `add -f`, o sea que el sintoma se venia pagando caso por
+# caso. `mutants/` de arriba ya cubre lo que la linea queria cubrir.
 cos_mutation.sqlite
 .claude/worktrees/
 
