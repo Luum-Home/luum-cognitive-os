@@ -89,6 +89,15 @@ def restore_source_mutations(root: Path, snapshot: dict[Path, SourceSnapshot]) -
     return mutations
 
 
+class _ChaosPreconditionUnknown(RuntimeError):
+    """No se pudo establecer si el arbol protegido esta limpio.
+
+    Es un estado distinto de "esta limpio" y de "esta sucio", y no puede
+    colapsarse en ninguno de los dos: la lane restaura bytes, asi que correr sin
+    saber es apostar el trabajo sin commitear de otro proceso.
+    """
+
+
 def _uncommitted_protected_paths(root: Path) -> list[str]:
     """Paths under the protected dirs that carry uncommitted work right now."""
     try:
@@ -96,10 +105,25 @@ def _uncommitted_protected_paths(root: Path) -> list[str]:
             ["git", "-C", str(root), "status", "--porcelain", "--untracked-files=all", "--", *PROTECTED_DIRS],
             capture_output=True, text=True, timeout=30, check=False,
         )
-    except (OSError, subprocess.SubprocessError):
-        return []          # not a git checkout, or git unavailable: nothing to assert against
+    except (OSError, subprocess.SubprocessError) as exc:
+        # FALLA CERRADA. Antes esto devolvia [] con el comentario "nothing to
+        # assert against", y eso convertia "no pude preguntar" en "no hay nada
+        # sucio": el guard dejaba pasar y la lane restauraba archivos. En la
+        # unica direccion que destruye trabajo, y sin dejar rastro — que es
+        # exactamente el incidente que motivo ADR-245.
+        #
+        # "no hay" y "no pude" son estados distintos y tienen que producir
+        # acciones distintas. Si no se puede establecer que el arbol esta
+        # limpio, no se puede correr la lane.
+        raise _ChaosPreconditionUnknown(
+            f"no se pudo consultar git para saber si {', '.join(PROTECTED_DIRS)} "
+            f"tiene trabajo sin commitear: {exc}"
+        ) from exc
     if proc.returncode != 0:
-        return []
+        raise _ChaosPreconditionUnknown(
+            f"git status salio {proc.returncode} al consultar "
+            f"{', '.join(PROTECTED_DIRS)}: {proc.stderr.strip()[:200]}"
+        )
     return [line[3:].strip() for line in proc.stdout.splitlines() if line.strip()]
 
 
@@ -137,7 +161,18 @@ def chaos_requires_clean_protected_tree():
         yield
         return
 
-    dirty = _uncommitted_protected_paths(_repo_root())
+    try:
+        dirty = _uncommitted_protected_paths(_repo_root())
+    except _ChaosPreconditionUnknown as exc:
+        pytest.fail(
+            "ADR-245: no se pudo establecer si hay trabajo sin commitear bajo "
+            f"{', '.join(PROTECTED_DIRS)}, y la lane restaura bytes en esos "
+            "directorios. Correr sin saberlo puede borrar trabajo de otro "
+            "proceso sin dejar rastro en git status.\n\n"
+            f"Motivo: {exc}\n\n"
+            "Si sabes que no hay nada que perder: COS_ALLOW_CHAOS_DIRTY_TREE=1",
+            pytrace=False,
+        )
     if dirty:
         shown = "\n  ".join(dirty[:20])
         more = f"\n  ... and {len(dirty) - 20} more" if len(dirty) > 20 else ""
