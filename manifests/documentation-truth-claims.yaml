@@ -474,31 +474,37 @@ claims:
       - templates/agent-preamble.md
       ignore: []
     executable_assertions:
-    - id: hook_symlink_census
-      claim: The channel tells every agent that 42 of 256 hooks/*.sh are symlinks.
+    - id: hook_symlink_method
+      claim: The channel no longer publishes a symlink COUNT -- it publishes the METHOD, because a
+        figure rots on its own and a method does not. What must stay true is the premise of that method --
+        that `find -type l` recurses and a `for f in dir/*` loop does not. That premise is what made
+        an audit publish "tests/ has ZERO" while two lived under tests/unit/, and it is the only part
+        of the sentence that can become false.
       command:
       - bash
       - -c
-      - n=0; t=0; for f in hooks/*.sh; do t=$((t+1)); [ -L "$f" ] && n=$((n+1)); done; echo "$n of $t hooks/*.sh"
+      - 'r=$(find tests -type l | wc -l | tr -d " "); s=0; for f in tests/*; do [ -L "$f" ] && s=$((s+1)); done; [ "$r" -gt "$s" ] && echo "a \`for f in dir/*\` loop does NOT recurse" || echo "METHOD CLAIM BROKEN"'
       expect:
         stdout_phrase_in:
         - templates/agent-mandatory-rules.md
-      next_action: recount and rewrite the sentence with the measured value, or replace the digits with
-        the command
-    - id: tests_symlink_census
-      claim: The channel tells every agent how many symlinks tests/ holds. Counted RECURSIVELY -- the
-        previous version of this assertion used `for f in tests/*`, which does not descend into tests/unit/,
-        so it certified "tests/ has ZERO symlinks" while two lived there. An instrument that reproduces
-        the measurement bug it is meant to catch is a cheap green, not a gate.
+      next_action: if this breaks, the channel's advice about how to count symlinks is wrong and the
+        sentence must be rewritten -- not the assertion
+    - id: tests_symlink_locations
+      claim: The channel no longer publishes a symlink COUNT for tests/ -- it publishes WHERE they
+        live, "in hooks/ and under tests/unit/". Una cifra se pudre sola; una ubicacion solo cambia
+        si alguien mueve el archivo. La version anterior de esta asercion exigia el numero, y cuando
+        un agente reemplazo la cifra por el metodo la asercion quedo custodiando una frase que ya no
+        existia -- verde imposible, rojo permanente, y el instrumento acusando al canal de haber
+        mejorado. Lo que se verifica ahora es la ubicacion, que es lo que el canal afirma.
       command:
       - bash
       - -c
-      - echo "tests/ has $(find tests -type l | wc -l | tr -d ' ') symlinks"
+      - 'h=$(find hooks -maxdepth 1 -type l | wc -l | tr -d " "); u=$(find tests/unit -type l 2>/dev/null | wc -l | tr -d " "); [ "$h" -gt 0 ] && [ "$u" -gt 0 ] && echo "in \`hooks/\` and under \`tests/unit/\`" || echo "SYMLINK LOCATIONS CHANGED"'
       expect:
         stdout_phrase_in:
         - templates/agent-mandatory-rules.md
-      next_action: 'if tests/ gained or lost a symlink the sentence is now a lie in every agent prompt:
-        recount with `find tests -type l` and fix the sentence'
+      next_action: si esto rompe, los symlinks se movieron y la frase del canal quedo falsa para
+        todo agente. Reescribi la frase con las ubicaciones reales -- no la asercion.
     - id: blocking_hook_actually_blocks
       claim: 'The channel tells every agent that `rm`+`ln -s` with a relative target under a directory
         symlink IS blocked. A claim that a hook BLOCKS is only verifiable by running the hook: the 2026-08-20

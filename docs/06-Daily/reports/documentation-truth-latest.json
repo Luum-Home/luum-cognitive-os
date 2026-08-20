@@ -1,7 +1,373 @@
 {
-  "generated_at": "2026-08-20T03:26:54+00:00",
+  "generated_at": "2026-08-20T20:15:03+00:00",
   "manifest": "manifests/documentation-truth-claims.yaml",
   "rows": [
+    {
+      "check": "path_claim_surface",
+      "claim_id": "agent_channel_facts",
+      "doc": "templates/agent-mandatory-rules.md",
+      "evidence": [
+        "templates/agent-mandatory-rules.md",
+        "tokens:9"
+      ],
+      "message": "path_claims doc quotes 9 repo path(s)",
+      "next_action": "keep the doc declared",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "path_claim",
+      "claim_id": "agent_channel_facts",
+      "doc": "templates/agent-mandatory-rules.md",
+      "evidence": [
+        "templates/agent-mandatory-rules.md",
+        "tokens:9"
+      ],
+      "message": "all 9 quoted path(s) resolve",
+      "next_action": "keep quoted paths real",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "path_claim_surface",
+      "claim_id": "agent_channel_facts",
+      "doc": "templates/agent-preamble.md",
+      "evidence": [
+        "templates/agent-preamble.md",
+        "tokens:6"
+      ],
+      "message": "path_claims doc quotes 6 repo path(s)",
+      "next_action": "keep the doc declared",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "path_claim",
+      "claim_id": "agent_channel_facts",
+      "doc": "templates/agent-preamble.md",
+      "evidence": [
+        "templates/agent-preamble.md",
+        "tokens:6"
+      ],
+      "message": "all 6 quoted path(s) resolve",
+      "next_action": "keep quoted paths real",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "executable_assertion_surface",
+      "claim_id": "agent_channel_facts",
+      "doc": "templates/agent-mandatory-rules.md",
+      "evidence": [
+        "existing:1"
+      ],
+      "message": "Assertion has 1 live doc surface(s): agent_channel_facts/hook_symlink_method",
+      "next_action": "keep the surface declared",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "executable_assertion",
+      "claim_id": "agent_channel_facts",
+      "doc": "templates/agent-mandatory-rules.md",
+      "evidence": [
+        "bash -c r=$(find tests -type l | wc -l | tr -d \" \"); s=0; for f in tests/*; do [ -L \"$f\" ] && s=$((s+1)); done; [ \"$r\" -gt \"$s\" ] && echo \"a \\`for f in dir/*\\` loop does NOT recurse\" || echo \"METHOD C",
+        "exit:0",
+        "stdout:a `for f in dir/*` loop does NOT recurse",
+        "docs:templates/agent-mandatory-rules.md"
+      ],
+      "message": "Assertion agent_channel_facts/hook_symlink_method: command output must appear in the doc -- measured now: 'a `for f in dir/*` loop does NOT recurse' -- The channel no longer publishes a symlink COUNT -- it publishes the METHOD, because a figure rots on its own and a method does not. What must stay true is the premise of that method -- that `find -type l` recurses and a `for f in dir/*` loop does not. That premise is what made an audit publish \"tests/ has ZERO\" while two lived under tests/unit/, and it is the only part of the sentence that can become false.",
+      "next_action": "if this breaks, the channel's advice about how to count symlinks is wrong and the sentence must be rewritten -- not the assertion",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "executable_assertion_surface",
+      "claim_id": "agent_channel_facts",
+      "doc": "templates/agent-mandatory-rules.md",
+      "evidence": [
+        "existing:1"
+      ],
+      "message": "Assertion has 1 live doc surface(s): agent_channel_facts/tests_symlink_locations",
+      "next_action": "keep the surface declared",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "executable_assertion",
+      "claim_id": "agent_channel_facts",
+      "doc": "templates/agent-mandatory-rules.md",
+      "evidence": [
+        "bash -c h=$(find hooks -maxdepth 1 -type l | wc -l | tr -d \" \"); u=$(find tests/unit -type l 2>/dev/null | wc -l | tr -d \" \"); [ \"$h\" -gt 0 ] && [ \"$u\" -gt 0 ] && echo \"in \\`hooks/\\` and under \\`tests",
+        "exit:0",
+        "stdout:in `hooks/` and under `tests/unit/`",
+        "docs:templates/agent-mandatory-rules.md"
+      ],
+      "message": "Assertion agent_channel_facts/tests_symlink_locations: command output must appear in the doc -- measured now: 'in `hooks/` and under `tests/unit/`' -- The channel no longer publishes a symlink COUNT for tests/ -- it publishes WHERE they live, \"in hooks/ and under tests/unit/\". Una cifra se pudre sola; una ubicacion solo cambia si alguien mueve el archivo. La version anterior de esta asercion exigia el numero, y cuando un agente reemplazo la cifra por el metodo la asercion quedo custodiando una frase que ya no existia -- verde imposible, rojo permanente, y el instrumento acusando al canal de haber mejorado. Lo que se verifica ahora es la ubicacion, que es lo que el canal afirma.",
+      "next_action": "si esto rompe, los symlinks se movieron y la frase del canal quedo falsa para todo agente. Reescribi la frase con las ubicaciones reales -- no la asercion.",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "executable_assertion_surface",
+      "claim_id": "agent_channel_facts",
+      "doc": "templates/agent-mandatory-rules.md",
+      "evidence": [
+        "surface:templates/agent-mandatory-rules.md,templates/project-gotchas.md,hooks/bash-hot-path-dispatcher.sh,hooks/symlink-mutation-guard.sh"
+      ],
+      "message": "exit_code assertion reads 4 live file(s): agent_channel_facts/blocking_hook_actually_blocks",
+      "next_action": "keep the surface declared",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "executable_assertion",
+      "claim_id": "agent_channel_facts",
+      "doc": null,
+      "evidence": [
+        "bash -c set -u; unset COS_ALLOW_SYMLINK_MUTATION COS_BYPASS COS_ALLOW_PROTECTED_CONFIG_WRITE; H=hooks/bash-hot-path-dispatcher.sh; [ -x \"$H\" ] || { echo \"dispatcher missing or not executable: $H\"; exi",
+        "exit:0",
+        "stdout:symlink-mutation-guard blocks the incident payload (exit 2) and allows an innocent one (exit 0)"
+      ],
+      "message": "Assertion agent_channel_facts/blocking_hook_actually_blocks: exit 0, expected 0 -- The channel tells every agent that `rm`+`ln -s` with a relative target under a directory symlink IS blocked. A claim that a hook BLOCKS is only verifiable by running the hook: the 2026-08-20 judgement declared this sentence false on the strength of `grep -c symlink-mutation-guard .claude/settings.json` returning 0, and the warning was deleted from the channel. The hook does block -- it runs from hooks/bash-hot-path-dispatcher.sh, which is the registered entry. This probe feeds the incident payload on stdin and demands exit 2, and feeds an innocent command and demands exit 0, so neither half can rot unseen: a guard that stops blocking AND a guard that starts blocking everything both turn this red.",
+      "next_action": "run the hook before believing either verdict. If it stopped blocking, restore the wiring in hooks/bash-hot-path-dispatcher.sh; if the guard was deliberately retired, delete the sentence from the channel in the same commit -- never grep a registry to decide this",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "executable_assertion_surface",
+      "claim_id": "agent_channel_facts",
+      "doc": "templates/agent-mandatory-rules.md",
+      "evidence": [
+        "surface:templates/agent-mandatory-rules.md"
+      ],
+      "message": "exit_code assertion reads 1 live file(s): agent_channel_facts/cited_rule_files_exist",
+      "next_action": "keep the surface declared",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "executable_assertion",
+      "claim_id": "agent_channel_facts",
+      "doc": null,
+      "evidence": [
+        "bash -c total=0; miss=\"\"; for n in $(sed -n 's/^- `\\([a-z0-9-]*\\)`.*/\\1/p' templates/agent-mandatory-rules.md); do total=$((total+1)); [ -f \"rules/$n.md\" ] || miss=\"$miss $n\"; done; [ \"$total\" -gt 0 ]",
+        "exit:0",
+        "stdout:9 cited rule files exist"
+      ],
+      "message": "Assertion agent_channel_facts/cited_rule_files_exist: exit 0, expected 0 -- Every rule the channel orders the agent to obey exists as rules/<name>.md.",
+      "next_action": "restore the rule file or stop citing it in the channel",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "executable_assertion_surface",
+      "claim_id": "agent_channel_facts",
+      "doc": "templates/agent-mandatory-rules.md",
+      "evidence": [
+        "surface:templates/agent-mandatory-rules.md,templates/agent-preamble.md"
+      ],
+      "message": "exit_code assertion reads 2 live file(s): agent_channel_facts/cited_adrs_exist",
+      "next_action": "keep the surface declared",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "executable_assertion",
+      "claim_id": "agent_channel_facts",
+      "doc": null,
+      "evidence": [
+        "bash -c total=0; miss=\"\"; for a in $(grep -ohE \"ADR-[0-9]{3}\" templates/agent-mandatory-rules.md templates/agent-preamble.md | sort -u); do total=$((total+1)); ls docs/02-Decisions/adrs/$a-*.md >/dev/",
+        "exit:0",
+        "stdout:1 cited ADRs exist"
+      ],
+      "message": "Assertion agent_channel_facts/cited_adrs_exist: exit 0, expected 0 -- Every ADR the channel cites as authority exists under docs/02-Decisions/adrs/.",
+      "next_action": "fix the ADR number in the channel, or stop citing it",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "executable_assertion_surface",
+      "claim_id": "agent_channel_facts",
+      "doc": ".claude/settings.json",
+      "evidence": [
+        "surface:.claude/settings.json,hooks/subagent-context-injector.sh"
+      ],
+      "message": "exit_code assertion reads 2 live file(s): agent_channel_facts/channel_is_still_delivered",
+      "next_action": "keep the surface declared",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "executable_assertion",
+      "claim_id": "agent_channel_facts",
+      "doc": null,
+      "evidence": [
+        "python3 -c import json,sys\ngroups=json.load(open('.claude/settings.json')).get('hooks',{}).get('SubagentStart',[])\nlive=[g for g in groups if any('subagent-context-injector.sh' in (h.get('command') or",
+        "exit:0",
+        "stdout:SubagentStart groups carrying the injector: 1 | matchers: ['']"
+      ],
+      "message": "Assertion agent_channel_facts/channel_is_still_delivered: exit 0, expected 0 -- The injector is registered on SubagentStart with an empty matcher, so the channel reaches every sub-agent unconditionally.",
+      "next_action": "re-register the injector, or delete this claim because the channel no longer exists",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "executable_assertion_surface",
+      "claim_id": "agent_channel_facts",
+      "doc": "hooks/inject-phase-context.sh",
+      "evidence": [
+        "surface:hooks/inject-phase-context.sh,templates/project-gotchas.md,.claude/settings.json"
+      ],
+      "message": "exit_code assertion reads 3 live file(s): agent_channel_facts/gotchas_channel_delivers_the_file",
+      "next_action": "keep the surface declared",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "executable_assertion",
+      "claim_id": "agent_channel_facts",
+      "doc": null,
+      "evidence": [
+        "bash -c set -u\nunset COS_BYPASS COS_ALLOW_PROTECTED_CONFIG_WRITE\nH=hooks/inject-phase-context.sh; G=templates/project-gotchas.md\n[ -f \"$H\" ] || { echo \"channel hook missing: $H\"; exit 1; }\n[ -f \"$G\" ]",
+        "exit:0",
+        "stdout:channel B delivered templates/project-gotchas.md on a keyword prompt (9494 bytes) and withheld it on an unrelated one (834 bytes)"
+      ],
+      "message": "Assertion agent_channel_facts/gotchas_channel_delivers_the_file: exit 0, expected 0 -- Channel B (hooks/inject-phase-context.sh) really hands templates/project-gotchas.md to an agent whose prompt names hooks/ or settings.json, and withholds it otherwise. Every other assertion about that file defends text nobody may be reading: this one checks the delivery, by running the hook and looking for the file's own H1 in the emitted JSON. It pins the production condition -- CLAUDE_PROJECT_DIR set -- on purpose. Without it the hook resolves PROJECT_DIR to $(dirname $0)/../.., which for a hook at <repo>/hooks/ is the PARENT of the repo: the yaml, the phase, the project name and this whole file are lost in silence (measured 2026-08-20: 1636 bytes out and PROJECT: my-project, versus 8645 bytes with the variable set). The negative half matters as much: if the keyword gate ever stops filtering, the file lands in every prompt and the 10K additionalContext cap starts eating whatever follows it.",
+      "next_action": "if delivery broke, fix the keyword branch in hooks/inject-phase-context.sh; if the gate stopped filtering, restore it before the 10K cap silently truncates the rest of the prompt. Never conclude either from reading the hook -- run it",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "executable_assertion_surface",
+      "claim_id": "agent_channel_facts",
+      "doc": "templates/project-gotchas.md",
+      "evidence": [
+        "surface:templates/project-gotchas.md,hooks/inject-phase-context.sh"
+      ],
+      "message": "exit_code assertion reads 2 live file(s): agent_channel_facts/cos_lib_directory_symlinks_match_the_prose",
+      "next_action": "keep the surface declared",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "executable_assertion",
+      "claim_id": "agent_channel_facts",
+      "doc": null,
+      "evidence": [
+        "bash -c set -u\nG=templates/project-gotchas.md; H=hooks/inject-phase-context.sh\n[ -f \"$G\" ] && [ -f \"$H\" ] || { echo \"a channel file is missing\"; exit 1; }\nn=0; bad=\"\"\nfor l in $(find cos_lib -maxdepth",
+        "exit:0",
+        "stdout:3 cos_lib directory symlinks, each named with its target in both channel files"
+      ],
+      "message": "Assertion agent_channel_facts/cos_lib_directory_symlinks_match_the_prose: exit 0, expected 0 -- Both channels tell every agent that THREE whole cos_lib directories are symlinks, and name each one with its packages/ target. That is a census, not advice: a fourth one, or a retargeted one, makes the sentence false in every agent prompt on the day it lands. The probe reads the filesystem (readlink) and demands the prose describe what it found -- the opposite direction from the sentence, which was written by reading the prose.",
+      "next_action": "recount with `find cos_lib -maxdepth 1 -type l` and rewrite the sentence in BOTH channel files, or drop the digits and leave the command",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "executable_assertion_surface",
+      "claim_id": "agent_channel_facts",
+      "doc": "templates/project-gotchas.md",
+      "evidence": [
+        "surface:templates/project-gotchas.md,hooks/bash-hot-path-dispatcher.sh,hooks/symlink-mutation-guard.sh"
+      ],
+      "message": "exit_code assertion reads 3 live file(s): agent_channel_facts/toplevel_dir_symlink_is_not_caught",
+      "next_action": "keep the surface declared",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "executable_assertion",
+      "claim_id": "agent_channel_facts",
+      "doc": null,
+      "evidence": [
+        "bash -c set -u\nunset COS_ALLOW_SYMLINK_MUTATION COS_BYPASS COS_ALLOW_PROTECTED_CONFIG_WRITE\nH=hooks/bash-hot-path-dispatcher.sh\n[ -x \"$H\" ] || { echo \"dispatcher missing or not executable: $H\"; exit 1",
+        "exit:0",
+        "stdout:guard limit holds: nested relative target blocked (exit 2), top-level dir symlink allowed (exit 0)"
+      ],
+      "message": "Assertion agent_channel_facts/toplevel_dir_symlink_is_not_caught: exit 0, expected 0 -- The gotchas carries the guard's LIMIT as well as its reach: recreating a TOP-LEVEL directory symlink is not caught, only a relative target whose parent chain already contains a symlink. A limit is the half nobody re-tests, and it is the dangerous half -- an agent reading \"this is blocked\" without the limit believes the guard will stop it, and an agent reading a limit that silently closed wastes the session working around a guard that would have let it through. The probe feeds the top-level payload and demands exit 0, so it is the exact mirror of blocking_hook_actually_blocks: the two together say where the wall is.",
+      "next_action": "if the guard was widened to cover top-level directory symlinks, delete the limit clause from the gotchas in the same commit; if it was narrowed, blocking_hook_actually_blocks goes red first and that is the entry to fix",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "executable_assertion_surface",
+      "claim_id": "agent_channel_facts",
+      "doc": "templates/project-gotchas.md",
+      "evidence": [
+        "surface:templates/project-gotchas.md,scripts/apply-efficiency-profile.sh"
+      ],
+      "message": "exit_code assertion reads 2 live file(s): agent_channel_facts/efficiency_profile_tiers",
+      "next_action": "keep the surface declared",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "executable_assertion",
+      "claim_id": "agent_channel_facts",
+      "doc": null,
+      "evidence": [
+        "bash -c set -u\nS=scripts/apply-efficiency-profile.sh; G=templates/project-gotchas.md\n[ -f \"$S\" ] || { echo \"profile driver missing: $S\"; exit 1; }\nTIERS=$(awk '/^case \"\\$RAW_PROFILE\" in/{c=1} c&&/^[[:",
+        "exit:0",
+        "stdout:efficiency tiers resolved by scripts/apply-efficiency-profile.sh: core maintainer full -- and the gotchas says so"
+      ],
+      "message": "Assertion agent_channel_facts/efficiency_profile_tiers: exit 0, expected 0 -- The gotchas told every agent the efficiency profile is \"two-tier (default | full)\". It is not, and the sentence came from re-reading the comment in cognitive-os.yaml rather than from the script that resolves it: scripts/apply-efficiency-profile.sh accepts seven spellings and resolves them onto THREE tiers -- core, maintainer, full -- with `default` landing on `maintainer`. An agent told there are two tiers cannot reason about the one it is actually running under. The probe reads the tiers off the case arm that keeps the name it was given, so config prose can never be its own witness again.",
+      "next_action": "read the tiers off the case arm and rewrite the sentence in templates/project-gotchas.md to match; never copy the tier list out of the comment in cognitive-os.yaml, which is where the two-tier claim came from and which is still wrong",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "executable_assertion_surface",
+      "claim_id": "agent_channel_facts",
+      "doc": "templates/project-gotchas.md",
+      "evidence": [
+        "surface:templates/project-gotchas.md"
+      ],
+      "message": "exit_code assertion reads 1 live file(s): agent_channel_facts/named_symlink_examples_still_hold",
+      "next_action": "keep the surface declared",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "executable_assertion",
+      "claim_id": "agent_channel_facts",
+      "doc": null,
+      "evidence": [
+        "bash -c set -u\nG=templates/project-gotchas.md\nS=$(grep -m1 '; not a symlink: ' \"$G\" || true)\n[ -n \"$S\" ] || { echo \"the symlink-examples sentence is gone from $G: nothing was checked\"; exit 1; }\nPOS=$",
+        "exit:0",
+        "stdout:examples hold: 3 quoted symlink(s), 1 quoted regular file(s)"
+      ],
+      "message": "Assertion agent_channel_facts/named_symlink_examples_still_hold: exit 0, expected 0 -- The gotchas names concrete cos_lib/*.py files as symlinks and one as a regular file, so an agent can calibrate \"the DEFAULT case is a real file\" against something real. Those four labels are the fastest-rotting sentence in the file -- a single packaging move flips one. The probe reads the names out of the doc itself and asks the filesystem, so adding or renaming an example never leaves the check pointing at a stale hardcoded list.",
+      "next_action": "re-measure with `ls -la` and replace the examples in templates/project-gotchas.md with files that still have the property the sentence claims",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "executable_assertion_surface",
+      "claim_id": "agent_channel_facts",
+      "doc": "hooks/inject-phase-context.sh",
+      "evidence": [
+        "surface:hooks/inject-phase-context.sh,plans"
+      ],
+      "message": "exit_code assertion reads 2 live file(s): agent_channel_facts/plans_dir_split_still_holds",
+      "next_action": "keep the surface declared",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "executable_assertion",
+      "claim_id": "agent_channel_facts",
+      "doc": null,
+      "evidence": [
+        "bash -c set -u\nH=hooks/inject-phase-context.sh\ngrep -Fq 'plans/ at root holds only a README' \"$H\" || { echo \"the plans/ sentence is gone from $H: nothing was checked\"; exit 1; }\n[ -d plans ] || { echo",
+        "exit:0",
+        "stdout:plans/ holds only a README; .cognitive-os/plans holds 62 entr(y|ies)"
+      ],
+      "message": "Assertion agent_channel_facts/plans_dir_split_still_holds: exit 0, expected 0 -- Channel B tells every agent working on plans/ that the root plans/ holds only a README and the active plans live in .cognitive-os/plans/, and that both exist on purpose. That is the sentence that stops an agent \"fixing\" an apparently empty directory. It is a census of two directories and nothing else watches it.",
+      "next_action": "if plans/ gained real content the split is over -- rewrite the sentence in hooks/inject-phase-context.sh instead of deleting the file that made it true",
+      "severity": "high",
+      "status": "pass"
+    },
     {
       "check": "required_doc_exists",
       "claim_id": "claude_code_hook_registration",
@@ -39,12 +405,60 @@
       "status": "pass"
     },
     {
+      "check": "required_doc_exists",
+      "claim_id": "claude_code_hook_registration",
+      "doc": "cognitive-os.yaml",
+      "evidence": [
+        "cognitive-os.yaml"
+      ],
+      "message": "Required documentation surface exists",
+      "next_action": "keep doc linked",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "required_doc_exists",
+      "claim_id": "claude_code_hook_registration",
+      "doc": "cos_lib/wiring_validator.py",
+      "evidence": [
+        "cos_lib/wiring_validator.py"
+      ],
+      "message": "Required documentation surface exists",
+      "next_action": "keep doc linked",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "required_doc_exists",
+      "claim_id": "claude_code_hook_registration",
+      "doc": "docs/02-Decisions/adrs/ADR-064-harness-agnostic-cognitive-os.md",
+      "evidence": [
+        "docs/02-Decisions/adrs/ADR-064-harness-agnostic-cognitive-os.md"
+      ],
+      "message": "Required documentation surface exists",
+      "next_action": "keep doc linked",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "required_doc_exists",
+      "claim_id": "claude_code_hook_registration",
+      "doc": "docs/02-Decisions/adrs/ADR-064.synthesis.md",
+      "evidence": [
+        "docs/02-Decisions/adrs/ADR-064.synthesis.md"
+      ],
+      "message": "Required documentation surface exists",
+      "next_action": "keep doc linked",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
       "check": "forbidden_phrase_surface",
       "claim_id": "claude_code_hook_registration",
       "doc": null,
       "evidence": [
         "scope:repo-surface",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
       "message": "Forbidden phrase has a non-empty scan surface: the canonical hook registry is `cognitive-os.yaml > harness.hooks`",
       "next_action": "keep the surface declared",
@@ -54,15 +468,93 @@
     {
       "check": "forbidden_phrase",
       "claim_id": "claude_code_hook_registration",
-      "doc": "cos_lib/wiring_validator.py",
+      "doc": null,
       "evidence": [
-        "cos_lib/wiring_validator.py:61",
-        "checked_files:3233"
+        "the canonical hook registry is `cognitive-os.yaml > harness.hooks`",
+        "checked_files:3270"
       ],
-      "message": "Forbidden stale phrase present in 1 place(s), checked against 3233 files: the canonical hook registry is `cognitive-os.yaml > harness.hooks`",
-      "next_action": "remove stale or contradictory prose at the listed file:line",
+      "message": "Forbidden stale phrase absent, checked against 3270 files: the canonical hook registry is `cognitive-os.yaml > harness.hooks`",
+      "next_action": "keep the phrase out of the scanned surface",
       "severity": "high",
-      "status": "block"
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase_surface",
+      "claim_id": "claude_code_hook_registration",
+      "doc": null,
+      "evidence": [
+        "scope:repo-surface",
+        "checked_files:3270"
+      ],
+      "message": "Forbidden phrase has a non-empty scan surface: Single source of truth for all hook registrations",
+      "next_action": "keep the surface declared",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "claude_code_hook_registration",
+      "doc": null,
+      "evidence": [
+        "Single source of truth for all hook registrations",
+        "checked_files:3270"
+      ],
+      "message": "Forbidden stale phrase absent, checked against 3270 files: Single source of truth for all hook registrations",
+      "next_action": "keep the phrase out of the scanned surface",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase_surface",
+      "claim_id": "claude_code_hook_registration",
+      "doc": null,
+      "evidence": [
+        "scope:repo-surface",
+        "checked_files:3270"
+      ],
+      "message": "Forbidden phrase has a non-empty scan surface: project this block into harness-native configs",
+      "next_action": "keep the surface declared",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "claude_code_hook_registration",
+      "doc": null,
+      "evidence": [
+        "project this block into harness-native configs",
+        "checked_files:3270"
+      ],
+      "message": "Forbidden stale phrase absent, checked against 3270 files: project this block into harness-native configs",
+      "next_action": "keep the phrase out of the scanned surface",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase_surface",
+      "claim_id": "claude_code_hook_registration",
+      "doc": null,
+      "evidence": [
+        "scope:repo-surface",
+        "checked_files:3270"
+      ],
+      "message": "Forbidden phrase has a non-empty scan surface: in cognitive-os.yaml > harness.hooks, then run",
+      "next_action": "keep the surface declared",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "claude_code_hook_registration",
+      "doc": null,
+      "evidence": [
+        "in cognitive-os.yaml > harness.hooks, then run",
+        "checked_files:3270"
+      ],
+      "message": "Forbidden stale phrase absent, checked against 3270 files: in cognitive-os.yaml > harness.hooks, then run",
+      "next_action": "keep the phrase out of the scanned surface",
+      "severity": "high",
+      "status": "pass"
     },
     {
       "check": "required_phrase",
@@ -71,7 +563,31 @@
       "evidence": [
         "Claude Code is the exception"
       ],
-      "message": "Required phrase present in 3 required doc(s): Claude Code is the exception",
+      "message": "Required phrase present in 7 required doc(s): Claude Code is the exception",
+      "next_action": "add or regenerate current-truth prose",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "required_phrase",
+      "claim_id": "claude_code_hook_registration",
+      "doc": null,
+      "evidence": [
+        "IT IS NOT THE REGISTRATION FOR CLAUDE CODE"
+      ],
+      "message": "Required phrase present in 7 required doc(s): IT IS NOT THE REGISTRATION FOR CLAUDE CODE",
+      "next_action": "add or regenerate current-truth prose",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "required_phrase",
+      "claim_id": "claude_code_hook_registration",
+      "doc": null,
+      "evidence": [
+        "has never read this block"
+      ],
+      "message": "Required phrase present in 7 required doc(s): has never read this block",
       "next_action": "add or regenerate current-truth prose",
       "severity": "high",
       "status": "pass"
@@ -130,7 +646,7 @@
       "doc": null,
       "evidence": [
         "scope:repo-surface",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
       "message": "Forbidden phrase has a non-empty scan surface: proof signs only Claude Code and OpenAI Codex default installs",
       "next_action": "keep the surface declared",
@@ -143,9 +659,9 @@
       "doc": null,
       "evidence": [
         "proof signs only Claude Code and OpenAI Codex default installs",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
-      "message": "Forbidden stale phrase absent, checked against 3233 files: proof signs only Claude Code and OpenAI Codex default installs",
+      "message": "Forbidden stale phrase absent, checked against 3270 files: proof signs only Claude Code and OpenAI Codex default installs",
       "next_action": "keep the phrase out of the scanned surface",
       "severity": "high",
       "status": "pass"
@@ -156,7 +672,7 @@
       "doc": null,
       "evidence": [
         "scope:repo-surface",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
       "message": "Forbidden phrase has a non-empty scan surface: automated for Claude/Codex default installs",
       "next_action": "keep the surface declared",
@@ -169,9 +685,9 @@
       "doc": null,
       "evidence": [
         "automated for Claude/Codex default installs",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
-      "message": "Forbidden stale phrase absent, checked against 3233 files: automated for Claude/Codex default installs",
+      "message": "Forbidden stale phrase absent, checked against 3270 files: automated for Claude/Codex default installs",
       "next_action": "keep the phrase out of the scanned surface",
       "severity": "high",
       "status": "pass"
@@ -182,7 +698,7 @@
       "doc": null,
       "evidence": [
         "scope:repo-surface",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
       "message": "Forbidden phrase has a non-empty scan surface: current Claude/Codex proof boundary",
       "next_action": "keep the surface declared",
@@ -195,9 +711,9 @@
       "doc": null,
       "evidence": [
         "current Claude/Codex proof boundary",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
-      "message": "Forbidden stale phrase absent, checked against 3233 files: current Claude/Codex proof boundary",
+      "message": "Forbidden stale phrase absent, checked against 3270 files: current Claude/Codex proof boundary",
       "next_action": "keep the phrase out of the scanned surface",
       "severity": "high",
       "status": "pass"
@@ -208,7 +724,7 @@
       "doc": null,
       "evidence": [
         "scope:repo-surface",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
       "message": "Forbidden phrase has a non-empty scan surface: solo Claude/Codex",
       "next_action": "keep the surface declared",
@@ -221,9 +737,9 @@
       "doc": null,
       "evidence": [
         "solo Claude/Codex",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
-      "message": "Forbidden stale phrase absent, checked against 3233 files: solo Claude/Codex",
+      "message": "Forbidden stale phrase absent, checked against 3270 files: solo Claude/Codex",
       "next_action": "keep the phrase out of the scanned surface",
       "severity": "high",
       "status": "pass"
@@ -234,7 +750,7 @@
       "doc": null,
       "evidence": [
         "scope:repo-surface",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
       "message": "Forbidden phrase has a non-empty scan surface: only Claude/Codex",
       "next_action": "keep the surface declared",
@@ -247,9 +763,9 @@
       "doc": null,
       "evidence": [
         "only Claude/Codex",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
-      "message": "Forbidden stale phrase absent, checked against 3233 files: only Claude/Codex",
+      "message": "Forbidden stale phrase absent, checked against 3270 files: only Claude/Codex",
       "next_action": "keep the phrase out of the scanned surface",
       "severity": "high",
       "status": "pass"
@@ -332,7 +848,7 @@
       "doc": null,
       "evidence": [
         "scope:repo-surface",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
       "message": "Forbidden phrase has a non-empty scan surface: parses no such flags",
       "next_action": "keep the surface declared",
@@ -345,9 +861,9 @@
       "doc": null,
       "evidence": [
         "parses no such flags",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
-      "message": "Forbidden stale phrase absent, checked against 3233 files: parses no such flags",
+      "message": "Forbidden stale phrase absent, checked against 3270 files: parses no such flags",
       "next_action": "keep the phrase out of the scanned surface",
       "severity": "medium",
       "status": "pass"
@@ -358,7 +874,7 @@
       "doc": null,
       "evidence": [
         "scope:repo-surface",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
       "message": "Forbidden phrase has a non-empty scan surface: flags scripts/cos-init.sh does not parse",
       "next_action": "keep the surface declared",
@@ -371,9 +887,9 @@
       "doc": null,
       "evidence": [
         "flags scripts/cos-init.sh does not parse",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
-      "message": "Forbidden stale phrase absent, checked against 3233 files: flags scripts/cos-init.sh does not parse",
+      "message": "Forbidden stale phrase absent, checked against 3270 files: flags scripts/cos-init.sh does not parse",
       "next_action": "keep the phrase out of the scanned surface",
       "severity": "medium",
       "status": "pass"
@@ -384,7 +900,7 @@
       "doc": null,
       "evidence": [
         "scope:repo-surface",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
       "message": "Forbidden phrase has a non-empty scan surface: Esos flags no",
       "next_action": "keep the surface declared",
@@ -397,9 +913,9 @@
       "doc": null,
       "evidence": [
         "Esos flags no",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
-      "message": "Forbidden stale phrase absent, checked against 3233 files: Esos flags no",
+      "message": "Forbidden stale phrase absent, checked against 3270 files: Esos flags no",
       "next_action": "keep the phrase out of the scanned surface",
       "severity": "medium",
       "status": "pass"
@@ -566,7 +1082,7 @@
       "doc": null,
       "evidence": [
         "scope:repo-surface",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
       "message": "Forbidden phrase has a non-empty scan surface: necesita transcripts, no corre en CI",
       "next_action": "keep the surface declared",
@@ -579,9 +1095,9 @@
       "doc": null,
       "evidence": [
         "necesita transcripts, no corre en CI",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
-      "message": "Forbidden stale phrase absent, checked against 3233 files: necesita transcripts, no corre en CI",
+      "message": "Forbidden stale phrase absent, checked against 3270 files: necesita transcripts, no corre en CI",
       "next_action": "keep the phrase out of the scanned surface",
       "severity": "medium",
       "status": "pass"
@@ -592,7 +1108,7 @@
       "doc": null,
       "evidence": [
         "scope:repo-surface",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
       "message": "Forbidden phrase has a non-empty scan surface: el canario no puede ser determinista",
       "next_action": "keep the surface declared",
@@ -605,9 +1121,9 @@
       "doc": null,
       "evidence": [
         "el canario no puede ser determinista",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
-      "message": "Forbidden stale phrase absent, checked against 3233 files: el canario no puede ser determinista",
+      "message": "Forbidden stale phrase absent, checked against 3270 files: el canario no puede ser determinista",
       "next_action": "keep the phrase out of the scanned surface",
       "severity": "medium",
       "status": "pass"
@@ -678,7 +1194,7 @@
       "doc": null,
       "evidence": [
         "scope:repo-surface",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
       "message": "Forbidden phrase has a non-empty scan surface: Known remaining gap",
       "next_action": "keep the surface declared",
@@ -691,9 +1207,9 @@
       "doc": null,
       "evidence": [
         "Known remaining gap",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
-      "message": "Forbidden stale phrase absent, checked against 3233 files: Known remaining gap",
+      "message": "Forbidden stale phrase absent, checked against 3270 files: Known remaining gap",
       "next_action": "keep the phrase out of the scanned surface",
       "severity": "high",
       "status": "pass"
@@ -704,7 +1220,7 @@
       "doc": null,
       "evidence": [
         "scope:repo-surface",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
       "message": "Forbidden phrase has a non-empty scan surface: falta una capa expl\u00edcita de authority/write-effects audit",
       "next_action": "keep the surface declared",
@@ -717,9 +1233,9 @@
       "doc": null,
       "evidence": [
         "falta una capa expl\u00edcita de authority/write-effects audit",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
-      "message": "Forbidden stale phrase absent, checked against 3233 files: falta una capa expl\u00edcita de authority/write-effects audit",
+      "message": "Forbidden stale phrase absent, checked against 3270 files: falta una capa expl\u00edcita de authority/write-effects audit",
       "next_action": "keep the phrase out of the scanned surface",
       "severity": "high",
       "status": "pass"
@@ -730,7 +1246,7 @@
       "doc": null,
       "evidence": [
         "scope:repo-surface",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
       "message": "Forbidden phrase has a non-empty scan surface: no is documentado todavia",
       "next_action": "keep the surface declared",
@@ -743,9 +1259,9 @@
       "doc": null,
       "evidence": [
         "no is documentado todavia",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
-      "message": "Forbidden stale phrase absent, checked against 3233 files: no is documentado todavia",
+      "message": "Forbidden stale phrase absent, checked against 3270 files: no is documentado todavia",
       "next_action": "keep the phrase out of the scanned surface",
       "severity": "high",
       "status": "pass"
@@ -950,7 +1466,7 @@
       "doc": null,
       "evidence": [
         "scope:repo-surface",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
       "message": "Forbidden phrase has a non-empty scan surface: read/write asymmetry remains unresolved",
       "next_action": "keep the surface declared",
@@ -963,9 +1479,9 @@
       "doc": null,
       "evidence": [
         "read/write asymmetry remains unresolved",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
-      "message": "Forbidden stale phrase absent, checked against 3233 files: read/write asymmetry remains unresolved",
+      "message": "Forbidden stale phrase absent, checked against 3270 files: read/write asymmetry remains unresolved",
       "next_action": "keep the phrase out of the scanned surface",
       "severity": "high",
       "status": "pass"
@@ -976,7 +1492,7 @@
       "doc": null,
       "evidence": [
         "scope:repo-surface",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
       "message": "Forbidden phrase has a non-empty scan surface: no atomic close primitive exists",
       "next_action": "keep the surface declared",
@@ -989,9 +1505,9 @@
       "doc": null,
       "evidence": [
         "no atomic close primitive exists",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
-      "message": "Forbidden stale phrase absent, checked against 3233 files: no atomic close primitive exists",
+      "message": "Forbidden stale phrase absent, checked against 3270 files: no atomic close primitive exists",
       "next_action": "keep the phrase out of the scanned surface",
       "severity": "high",
       "status": "pass"
@@ -1002,7 +1518,7 @@
       "doc": null,
       "evidence": [
         "scope:repo-surface",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
       "message": "Forbidden phrase has a non-empty scan surface: manual closures are the only path",
       "next_action": "keep the surface declared",
@@ -1015,9 +1531,9 @@
       "doc": null,
       "evidence": [
         "manual closures are the only path",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
-      "message": "Forbidden stale phrase absent, checked against 3233 files: manual closures are the only path",
+      "message": "Forbidden stale phrase absent, checked against 3270 files: manual closures are the only path",
       "next_action": "keep the phrase out of the scanned surface",
       "severity": "high",
       "status": "pass"
@@ -1028,7 +1544,7 @@
       "doc": null,
       "evidence": [
         "scope:repo-surface",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
       "message": "Forbidden phrase has a non-empty scan surface: session-start surfaces only Engram and plans",
       "next_action": "keep the surface declared",
@@ -1041,9 +1557,9 @@
       "doc": null,
       "evidence": [
         "session-start surfaces only Engram and plans",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
-      "message": "Forbidden stale phrase absent, checked against 3233 files: session-start surfaces only Engram and plans",
+      "message": "Forbidden stale phrase absent, checked against 3270 files: session-start surfaces only Engram and plans",
       "next_action": "keep the phrase out of the scanned surface",
       "severity": "high",
       "status": "pass"
@@ -1054,7 +1570,7 @@
       "doc": null,
       "evidence": [
         "scope:repo-surface",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
       "message": "Forbidden phrase has a non-empty scan surface: projector is not yet wired into the harnesses",
       "next_action": "keep the surface declared",
@@ -1067,9 +1583,9 @@
       "doc": null,
       "evidence": [
         "projector is not yet wired into the harnesses",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
-      "message": "Forbidden stale phrase absent, checked against 3233 files: projector is not yet wired into the harnesses",
+      "message": "Forbidden stale phrase absent, checked against 3270 files: projector is not yet wired into the harnesses",
       "next_action": "keep the phrase out of the scanned surface",
       "severity": "high",
       "status": "pass"
@@ -1080,7 +1596,7 @@
       "doc": null,
       "evidence": [
         "scope:repo-surface",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
       "message": "Forbidden phrase has a non-empty scan surface: cos-pending-truth-close does not exist",
       "next_action": "keep the surface declared",
@@ -1093,9 +1609,9 @@
       "doc": null,
       "evidence": [
         "cos-pending-truth-close does not exist",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
-      "message": "Forbidden stale phrase absent, checked against 3233 files: cos-pending-truth-close does not exist",
+      "message": "Forbidden stale phrase absent, checked against 3270 files: cos-pending-truth-close does not exist",
       "next_action": "keep the phrase out of the scanned surface",
       "severity": "high",
       "status": "pass"
@@ -1106,7 +1622,7 @@
       "doc": null,
       "evidence": [
         "scope:repo-surface",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
       "message": "Forbidden phrase has a non-empty scan surface: cos-adr-close is a future follow-up",
       "next_action": "keep the surface declared",
@@ -1119,9 +1635,9 @@
       "doc": null,
       "evidence": [
         "cos-adr-close is a future follow-up",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
-      "message": "Forbidden stale phrase absent, checked against 3233 files: cos-adr-close is a future follow-up",
+      "message": "Forbidden stale phrase absent, checked against 3270 files: cos-adr-close is a future follow-up",
       "next_action": "keep the phrase out of the scanned surface",
       "severity": "high",
       "status": "pass"
@@ -1132,7 +1648,7 @@
       "doc": null,
       "evidence": [
         "scope:repo-surface",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
       "message": "Forbidden phrase has a non-empty scan surface: closure-trail is not implemented",
       "next_action": "keep the surface declared",
@@ -1145,9 +1661,9 @@
       "doc": null,
       "evidence": [
         "closure-trail is not implemented",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
-      "message": "Forbidden stale phrase absent, checked against 3233 files: closure-trail is not implemented",
+      "message": "Forbidden stale phrase absent, checked against 3270 files: closure-trail is not implemented",
       "next_action": "keep the phrase out of the scanned surface",
       "severity": "high",
       "status": "pass"
@@ -1302,7 +1818,7 @@
       "doc": null,
       "evidence": [
         "scope:repo-surface",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
       "message": "Forbidden phrase has a non-empty scan surface: untimed subprocess calls are harmless",
       "next_action": "keep the surface declared",
@@ -1315,9 +1831,9 @@
       "doc": null,
       "evidence": [
         "untimed subprocess calls are harmless",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
-      "message": "Forbidden stale phrase absent, checked against 3233 files: untimed subprocess calls are harmless",
+      "message": "Forbidden stale phrase absent, checked against 3270 files: untimed subprocess calls are harmless",
       "next_action": "keep the phrase out of the scanned surface",
       "severity": "medium",
       "status": "pass"
@@ -1328,7 +1844,7 @@
       "doc": null,
       "evidence": [
         "scope:repo-surface",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
       "message": "Forbidden phrase has a non-empty scan surface: pytest-timeout always kills hung subprocesses",
       "next_action": "keep the surface declared",
@@ -1341,9 +1857,9 @@
       "doc": null,
       "evidence": [
         "pytest-timeout always kills hung subprocesses",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
-      "message": "Forbidden stale phrase absent, checked against 3233 files: pytest-timeout always kills hung subprocesses",
+      "message": "Forbidden stale phrase absent, checked against 3270 files: pytest-timeout always kills hung subprocesses",
       "next_action": "keep the phrase out of the scanned surface",
       "severity": "medium",
       "status": "pass"
@@ -1354,7 +1870,7 @@
       "doc": null,
       "evidence": [
         "scope:repo-surface",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
       "message": "Forbidden phrase has a non-empty scan surface: the timeout keyword is optional in production",
       "next_action": "keep the surface declared",
@@ -1367,9 +1883,9 @@
       "doc": null,
       "evidence": [
         "the timeout keyword is optional in production",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
-      "message": "Forbidden stale phrase absent, checked against 3233 files: the timeout keyword is optional in production",
+      "message": "Forbidden stale phrase absent, checked against 3270 files: the timeout keyword is optional in production",
       "next_action": "keep the phrase out of the scanned surface",
       "severity": "medium",
       "status": "pass"
@@ -1435,6 +1951,68 @@
       "status": "pass"
     },
     {
+      "check": "required_doc_exists",
+      "claim_id": "test_environment_contract",
+      "doc": "docs/06-Daily/reports/tests-que-no-corren-donde-viven-2026-08-20.md",
+      "evidence": [
+        "docs/06-Daily/reports/tests-que-no-corren-donde-viven-2026-08-20.md"
+      ],
+      "message": "Required documentation surface exists",
+      "next_action": "keep doc linked",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "required_doc_exists",
+      "claim_id": "test_environment_contract",
+      "doc": "manifests/test-import-exceptions.yaml",
+      "evidence": [
+        "manifests/test-import-exceptions.yaml"
+      ],
+      "message": "Required documentation surface exists",
+      "next_action": "keep doc linked",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase_surface",
+      "claim_id": "test_environment_contract",
+      "doc": null,
+      "evidence": [
+        "scope:repo-surface",
+        "checked_files:3270"
+      ],
+      "message": "Forbidden phrase has a non-empty scan surface: pytest tests/ corre todos los tests versionados del repo",
+      "next_action": "keep the surface declared",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "test_environment_contract",
+      "doc": null,
+      "evidence": [
+        "pytest tests/ corre todos los tests versionados del repo",
+        "checked_files:3270"
+      ],
+      "message": "Forbidden stale phrase absent, checked against 3270 files: pytest tests/ corre todos los tests versionados del repo",
+      "next_action": "keep the phrase out of the scanned surface",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
+      "check": "required_phrase",
+      "claim_id": "test_environment_contract",
+      "doc": null,
+      "evidence": [
+        "una declaraci\u00f3n de dependencias sin consumidor no es una dependencia faltante"
+      ],
+      "message": "Required phrase present in 2 required doc(s): una declaraci\u00f3n de dependencias sin consumidor no es una dependencia faltante",
+      "next_action": "add or regenerate current-truth prose",
+      "severity": "high",
+      "status": "pass"
+    },
+    {
       "check": "source_report_exists",
       "claim_id": "volatile_number_prose",
       "doc": "docs/06-Daily/reports/volatile-numbers-latest.json",
@@ -1464,7 +2042,7 @@
       "doc": null,
       "evidence": [
         "scope:repo-surface",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
       "message": "Forbidden phrase has a non-empty scan surface: Component counts: 57 hooks, 55 rules, 72 skills",
       "next_action": "keep the surface declared",
@@ -1477,9 +2055,9 @@
       "doc": null,
       "evidence": [
         "Component counts: 57 hooks, 55 rules, 72 skills",
-        "checked_files:3233"
+        "checked_files:3270"
       ],
-      "message": "Forbidden stale phrase absent, checked against 3233 files: Component counts: 57 hooks, 55 rules, 72 skills",
+      "message": "Forbidden stale phrase absent, checked against 3270 files: Component counts: 57 hooks, 55 rules, 72 skills",
       "next_action": "keep the phrase out of the scanned surface",
       "severity": "medium",
       "status": "pass"
@@ -1498,13 +2076,15 @@
     }
   ],
   "schema_version": "documentation-truth-audit.v1",
-  "status": "block",
+  "status": "pass",
   "summary": {
-    "block_count": 1,
+    "block_count": 0,
     "by_claim": {
+      "agent_channel_facts": {
+        "pass": 28
+      },
       "claude_code_hook_registration": {
-        "block": 1,
-        "pass": 5
+        "pass": 18
       },
       "consumer_projection_harnesses": {
         "pass": 17
@@ -1530,28 +2110,31 @@
       "subprocess_timeout_discipline": {
         "pass": 13
       },
+      "test_environment_contract": {
+        "pass": 5
+      },
       "volatile_number_prose": {
         "pass": 5
       }
     },
     "by_status": {
-      "block": 1,
-      "pass": 119
+      "pass": 165
     },
     "forbidden_phrase_scan": {
-      "always_scanned_required_docs": 25,
+      "always_scanned_required_docs": 31,
       "excluded_by_reason": {
         "**/archive/** :: archived artifacts are a record of what was, not a claim about what is.": 11,
         ".claude/plugins/** :: third-party plugin cache, vendored, not authored in this repo.": 1819,
         "ADR status superseded: superseded decisions keep their original prose": 7,
         "date-anchored filename: historical record, cites old claims on purpose": 240,
-        "docs/06-Daily/reports/** :: Session reports (date-anchored) and the generated *-latest ledgers. Historical record and machine output, not asserted current truth. A report that a claim needs scanned anyway is opted back in by naming it in that claim's required_docs, which are always scanned.": 502,
+        "docs/06-Daily/reports/** :: Session reports (date-anchored) and the generated *-latest ledgers. Historical record and machine output, not asserted current truth. A report that a claim needs scanned anyway is opted back in by naming it in that claim's required_docs, which are always scanned.": 550,
         "manifests/documentation-truth-claims.yaml :: the claims manifest declares the phrases": 1,
         "packages/*/tests/** :: same as tests/**, reached through the package layout instead of the symlink.": 10,
         "rules/session-close-doc-truth.md :: The rule that DEFINES this discipline teaches it by quoting an example forbidden phrase (\"no atomic close primitive exists\"). Self-reference, same class as the claims manifest and the auditor -- both of which the audit excludes in code rather than by configuration.": 1,
         "scripts/documentation_truth_audit.py :: the auditor itself quotes phrase syntax": 1,
-        "tests/** :: The instrument's own fixtures and assertions. A stale-phrase test must contain the phrase to assert its absence (tests/contracts/test_primitive_authority_docs.py lists three of them). The alternative is deforming test code so the auditor is not confused, which is the tail wagging the dog.": 2373
+        "tests/** :: The instrument's own fixtures and assertions. A stale-phrase test must contain the phrase to assert its absence (tests/contracts/test_primitive_authority_docs.py lists three of them). The alternative is deforming test code so the auditor is not confused, which is the tail wagging the dog.": 2414
       },
+      "executable_assertions": 12,
       "include_suffixes": [
         ".md",
         ".sh",
@@ -1559,7 +2142,8 @@
         ".yaml",
         ".yml"
       ],
-      "phrases": 27,
+      "path_claim_tokens": 15,
+      "phrases": 31,
       "pruned_dirs": [
         ".cognitive-os",
         ".git",
@@ -1577,9 +2161,9 @@
         "target",
         "venv"
       ],
-      "surface_bytes": 27326789,
-      "surface_files": 3233
+      "surface_bytes": 27793012,
+      "surface_files": 3270
     },
-    "rows": 120
+    "rows": 165
   }
 }
