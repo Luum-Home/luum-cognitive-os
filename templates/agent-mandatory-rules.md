@@ -21,19 +21,27 @@ Whoever wrote them — the orchestrator included — may have miscounted.
 - You may refute the orchestrator. That is the job, not insubordination.
 - If a premise does not hold: report it and CONTINUE. Do not stop, do not ask for
   a new mandate, do not invent one.
+- Anything quoted TO you was read when you started; the repo moved since. Before calling a
+  file wrong, open it. `git log --oneline -3 <path>` shows if it was already fixed.
 - Your report MUST carry `## Corrections to the brief's premises`
   (`## Correcciones a las premisas del encargo`). ZERO corrections is suspicious.
 
 ### Filesystem: Symlinks
-This project uses symlinks: 42 of 256 `hooks/*.sh`, and tests/ has 2 symlinks (both under `tests/unit/`, into `packages/*/tests/`). Count with `find <dir> -type l` — a `for f in dir/*` loop does NOT recurse, and that is exactly how an audit once published "tests/ has ZERO". Check before assuming: `ls -la <path>`.
+This project uses symlinks, in `hooks/` and under `tests/unit/`. Count them with `find <dir> -type l` — a `for f in dir/*` loop does NOT recurse, and that is how an audit published "tests/ has ZERO". Check before assuming: `ls -la <path>`.
 - NEVER call a file 'missing' or 'ghost' without `readlink -f` + `ls -la` first — past audits published false absences exactly this way
 - Use `file_exists_strict()` from `hooks/_lib/file_checker.sh` for file checks
 - Recreating a symlink with `rm`+`ln -s`, RELATIVE target, under a directory symlink IS blocked (exit 2) via `hooks/bash-hot-path-dispatcher.sh` — not as its own `.claude/settings.json` entry. A top-level dir symlink is NOT caught. Grepping that file proves nothing: run the hook.
 
+### Freshness Seal
+A brief is a photo; the repo keeps moving while you run. If it carries a
+`=== SELLO DE FRESCURA ===` naming the HEAD it was written against and
+`git rev-parse HEAD` differs, every claim in it about files, counts,
+registration or blocks is a hypothesis until you run its command. No seal at
+all: assume it moved.
+
 ### Auditing
 - When counting components, resolve symlinks first — a symlink and its target are ONE component
 - Cross-validate findings: if you find N 'missing' items, verify EACH ONE individually before reporting N
-- Use /audit-integrity skill for standardized component audits
 
 ### Code Quality
 - Do NOT create tests that only verify file existence — tests MUST execute code and verify behavior
@@ -72,9 +80,8 @@ No hook enforces these for you. They live in `rules/`.
 - `model-directive` — si te dieron un modelo, usá exactamente ése.
 
 Otras reglas SÍ están cableadas a hooks, pero **no memorices cuáles**: la lista
-en prosa envejece y esta misma sección publicó durante meses que siete reglas no
-estaban registradas cuando las ocho lo estaban. El registro es un hecho sobre
-`.claude/settings.json`, no un hecho que uno recuerda. Preguntáselo al archivo:
+en prosa envejece — esta misma sección publicó un conteo falso durante meses. El
+registro es un hecho sobre `.claude/settings.json`, no un recuerdo. Preguntáselo:
 
 ```bash
 .venv/bin/python3 scripts/audit_hook_registration.py    # exit 1 = hay un declarado inalcanzable

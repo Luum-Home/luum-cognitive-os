@@ -116,6 +116,58 @@ After this ADR:
   --upgrade`, etc.) unless routed through `/deps-update` or
   `COS_ALLOW_SKILL_BYPASS=1`.
 
+### Terminologia: que significa "enforced" en este ADR, y que NO
+
+**Enmienda del 2026-08-20.** La decision de este ADR es correcta y no cambia. Lo que
+se agrega es la definicion de la palabra, porque su ausencia costo una jornada.
+
+En este contrato, **"hook-enforced" significa "el hook esta CABLEADO"** -- proyectado
+al registro del arnes y alcanzable. **NO significa "el hook BLOQUEA".** La seccion
+"Does not answer" de mas abajo ya lo decia, pero lo decia como una exclusion de
+alcance, no como una definicion, y nadie leyo la exclusion antes de hacer la
+inferencia.
+
+**Como se descubrio.** El 2026-08-20 se audito `EXCLUDED_RULES` bajo la premisa de que
+"un hook la hace cumplir" significaba bloqueo. Se verifico desde la fuente de cada
+hook citado -- no desde un artefacto derivado -- y aparecieron ONCE citas donde el
+hook no tiene ninguna ruta de bloqueo:
+
+    exit2=0  deny=0  permissionDecision=0   auto-rollback-trigger      272 corridas
+    exit2=0  deny=0  permissionDecision=0   git-context-capture        394
+    exit2=0  deny=0  permissionDecision=0   consequence-evaluator      272
+    exit2=0  deny=0  permissionDecision=0   auto-checkpoint         13.275
+    exit2=0  deny=0                         blast-radius               274
+
+Las once **CUMPLEN este contrato**: los hooks estan cableados. Lo que fallaba no era
+el codigo ni las exclusiones: era que el lector -- humano y agente -- infiere
+"bloquea" de la palabra "enforced", y nada lo desmentia en el lugar donde mira.
+
+`blast-radius.md` es el caso mas claro: su propia linea 5 dice "Advisory only (exit 0)
+-- does NOT block", y aun asi se lo citaba como enforcement. El archivo se
+contradecia con su propia cita y nadie lo noto durante meses.
+
+**Consecuencia practica para quien escriba una exclusion nueva.** Un comentario del
+tipo `# -> hook.sh` afirma PROYECCION, no gobierno. Si el comportamiento tiene que
+quedar gobernado de verdad, hace falta una de estas tres y hay que elegirla por
+escrito:
+
+  1. el hook gana una ruta de bloqueo (`exit 2`, `"deny"`, o `permissionDecision:
+     "deny"`), y un test que la ejercite con payload real -- no basta con que exista
+     en la fuente
+  2. la regla se queda en el contexto del agente y se gobierna por prosa
+  3. se acepta explicitamente que ese comportamiento NO esta gobernado, con motivo
+     escrito
+
+Lo que dejo de ser aceptable es la cuarta opcion, que era la de facto: excluir la
+regla del contexto citando un hook que solo observa. Ahi no llega la regla NI obliga
+el hook, y ademas la pregunta queda cerrada, que es peor que dejarla abierta.
+
+**Nota sobre el gate de este ADR.** `tests/audit/test_hook_enforced_exclusions.py`
+verifica las tres condiciones estructurales del contrato y por eso pasaba en verde
+con las once citas falsas vivas. No es un bug del test: es fiel al contrato. Su
+docstring, en cambio, prometia prevenir que una regla quedara "not enforced
+anywhere", que es una promesa que este contrato nunca hizo.
+
 ### What this answers (and what it doesn't)
 
 **Answers:**
