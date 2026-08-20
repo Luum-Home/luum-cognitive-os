@@ -733,7 +733,7 @@ _op_repair_command() {
     force_push)
       echo "git push --force-with-lease";;
     protected_branch_write)
-      echo "bash scripts/cos-session-branch.sh --slug <task> --switch";;
+      echo "bash scripts/cos-session-branch.sh --slug <task>";;
     branch_context_change)
       echo "announce current branch, target branch, reason, and rerun with --allow-branch-switch if approved";;
     *)
@@ -1084,7 +1084,11 @@ if [ "$FIRST_HIT_TYPE" = "force_push" ]; then
 fi
 if [ "$FIRST_HIT_TYPE" = "protected_branch_write" ]; then
   echo "     OR:           append --allow-main-branch, or export COS_ALLOW_MAIN_BRANCH_WRITE=1" >&2
-  echo "     SAFER:        bash scripts/cos-session-branch.sh --slug <task> --switch" >&2
+  echo "     SAFER:        bash scripts/cos-session-branch.sh --slug <task>" >&2
+  echo "                   Creates session/<id>-<task> without moving HEAD." >&2
+  echo "                   Do NOT add --switch on a checkout shared by several" >&2
+  echo "                   sessions: it runs git switch on the whole working" >&2
+  echo "                   tree, so every other session changes branch too." >&2
 fi
 if [ "$FIRST_HIT_TYPE" = "branch_context_change" ]; then
   echo "     OR:           append --allow-branch-switch, or export COS_ALLOW_BRANCH_SWITCH=1" >&2

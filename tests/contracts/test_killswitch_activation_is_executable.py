@@ -28,6 +28,7 @@ import importlib.util
 import json
 import os
 import subprocess
+import shutil
 import sys
 from pathlib import Path
 
@@ -48,18 +49,13 @@ _SPEC.loader.exec_module(_AUDIT)
 # de arriba, la variable no. Baseline de IGUALDAD EXACTA: no absorbe una mentira
 # nueva, no lista una ya migrada, y no tiene asientos libres donde una regresión
 # pueda aterrizar en silencio. Vaciarlo es el arreglo; agrandarlo es la trampa.
-KNOWN_UNREACHABLE_KILLSWITCHES: set[str] = {
-    "hooks/adoption-freeze-gate.sh::COS_ALLOW_ADOPTION_FREEZE_BYPASS",
-    "hooks/adoption-freeze-gate.sh::COS_ALLOW_FREEZE_TOGGLE",
-    "hooks/attribution-completeness-validator.sh::COS_ALLOW_INCOMPLETE_ATTRIBUTION",
-    "hooks/clean-room-ast-similarity-gate.sh::COS_ALLOW_AST_SIMILARITY",
-    "hooks/clean-room-ast-similarity-gate.sh::COS_ALLOW_CLEAN_ROOM_BYPASS",
-    "hooks/external-cache-content-leak.sh::COS_ALLOW_VERBATIM_LEAK",
-    "hooks/git-commit-scope-guard.sh::COS_BYPASS_COMMIT_GUARD",
-    "hooks/legal-review-required-on-runtime-import.sh::COS_ALLOW_PRE_LEGAL_REVIEW_IMPORT",
-    "hooks/lib-symlink-divergence-detector.sh::COS_ALLOW_LIB_DIVERGENCE",
-    "hooks/spdx-header-required.sh::COS_ALLOW_MISSING_SPDX",
-}
+# Vaciado el 2026-08-19: las diez entradas se migraron a una vía que el hook sí
+# honra (siete a `export` antes de lanzar el arnés, que es lo único que esos
+# hooks leen; `commit_guard` a .cognitive-os/runtime/bypass.env, cableando el
+# resolvedor ADR-241 que el hook llamaba sin haberlo sourceado). Vacío es el
+# estado correcto: cada entrada nueva acá es una promesa que el lector no puede
+# ejecutar, y agrandar el conjunto para apagar el rojo es exactamente la trampa.
+KNOWN_UNREACHABLE_KILLSWITCHES: set[str] = set()
 
 
 @pytest.fixture(scope="module")
@@ -258,3 +254,132 @@ def test_symlink_guard_no_se_auto_concede_por_mencion(tmp_path) -> None:
     proy = _proyecto_con_dir_symlink(tmp_path)
     cmd = f"echo 'usar COS_ALLOW_SYMLINK_MUTATION=1 si hace falta' >> nota.md && {_LN_LOOP}"
     assert _correr_symlink_guard(proy, cmd) == 2
+
+
+# ── Las dos direcciones, sobre los hooks reales ─────────────────────────────
+# Un mensaje corregido que nadie ejecutó sigue siendo una promesa. Cada bloque
+# corre el hook de verdad y prueba las dos direcciones: con el remedio procede,
+# y sin el remedio SIGUE bloqueando (sin ese control, un guard que dejó de
+# guardar también pasaría la primera mitad).
+
+_PAYLOAD_COMMIT = json.dumps(
+    {"tool_name": "Bash", "tool_input": {"command": "GIT_CMD -m x"}}
+).replace("GIT_CMD", "git " + "commit")
+
+
+def _correr(hook: Path, payload: str, cwd: Path, env_extra: dict[str, str]) -> int:
+    env = dict(os.environ)
+    for k in (
+        "COS_BYPASS",
+        "COS_BYPASS_COMMIT_GUARD",
+        "COS_ALLOW_MISSING_SPDX",
+        "COS_ALLOW_DESTRUCTIVE_GIT",
+        "COS_ALLOW_MAIN_BRANCH_WRITE",
+        "COS_GIT_BYPASS",
+        "CI",
+    ):
+        env.pop(k, None)
+    env.pop("PYTEST_CURRENT_TEST", None)
+    env["COGNITIVE_OS_PROJECT_DIR"] = str(cwd)
+    env.update(env_extra)
+    return subprocess.run(
+        ["/bin/bash", str(hook)],
+        input=payload, text=True, capture_output=True, env=env, cwd=str(cwd),
+    ).returncode
+
+
+def _repo_con_hooks(tmp: Path) -> Path:
+    """Copia el árbol de hooks al lado de un repo descartable.
+
+    Varios hooks derivan su ROOT_DIR de la ubicación del propio script y leen el
+    índice de ESE repo. Copiarlos es lo que permite dispararlos de verdad sin
+    tocar el índice compartido de este checkout, que hoy comparten cuatro
+    sesiones.
+    """
+    shutil.copytree(REPO / "hooks", tmp / "hooks", symlinks=True)
+    subprocess.run(["git", "init", "-q", "-b", "main", str(tmp)], check=True, capture_output=True)
+    return tmp
+
+
+# ── commit_guard: bypass.env, la vía en caliente de ADR-241 ─────────────────
+
+def test_commit_scope_guard_bloquea_sin_el_remedio(tmp_path) -> None:
+    hook = REPO / "hooks" / "git-commit-scope-guard.sh"
+    assert _correr(hook, _PAYLOAD_COMMIT, tmp_path, {}) == 2
+
+
+def test_commit_scope_guard_acepta_el_bypass_env_que_ofrece_el_mensaje(tmp_path) -> None:
+    """El remedio del mensaje: escribir la clave en bypass.env y reintentar."""
+    runtime = tmp_path / ".cognitive-os" / "runtime"
+    runtime.mkdir(parents=True)
+    (runtime / "bypass.env").write_text("COS_BYPASS=commit_guard\n")
+    hook = REPO / "hooks" / "git-commit-scope-guard.sh"
+    assert _correr(hook, _PAYLOAD_COMMIT, tmp_path, {}) == 0
+    trail = (runtime / "agent-audit-trail.jsonl").read_text()
+    assert "commit-guard-bypassed" in trail, "el bypass debe dejar rastro auditable"
+
+
+def test_commit_scope_guard_sigue_bloqueando_con_el_prefijo_viejo(tmp_path) -> None:
+    """El control anti-verde-barato: la forma que el mensaje YA NO ofrece."""
+    payload = json.dumps(
+        {"tool_name": "Bash",
+         "tool_input": {"command": "COS_BYPASS_COMMIT_GUARD=1 " + "git " + "commit" + " -m x"}}
+    )
+    hook = REPO / "hooks" / "git-commit-scope-guard.sh"
+    assert _correr(hook, payload, tmp_path, {}) == 2
+
+
+# ── La familia que solo lee del entorno, sobre su representante ─────────────
+
+def test_spdx_bloquea_sin_el_remedio(tmp_path) -> None:
+    repo = _repo_con_hooks(tmp_path)
+    (repo / "scripts").mkdir()
+    (repo / "scripts" / "mod.py").write_text("def f():\n    return 1\n")
+    subprocess.run(["git", "-C", str(repo), "add", "scripts/mod.py"], check=True, capture_output=True)
+    assert _correr(repo / "hooks" / "spdx-header-required.sh", _PAYLOAD_COMMIT, repo, {}) == 1
+
+
+def test_spdx_acepta_el_export_que_ofrece_el_mensaje(tmp_path) -> None:
+    repo = _repo_con_hooks(tmp_path)
+    (repo / "scripts").mkdir()
+    (repo / "scripts" / "mod.py").write_text("def f():\n    return 1\n")
+    subprocess.run(["git", "-C", str(repo), "add", "scripts/mod.py"], check=True, capture_output=True)
+    assert _correr(
+        repo / "hooks" / "spdx-header-required.sh", _PAYLOAD_COMMIT, repo,
+        {"COS_ALLOW_MISSING_SPDX": "1"},
+    ) == 0
+
+
+def test_spdx_sigue_bloqueando_con_el_prefijo_viejo(tmp_path) -> None:
+    repo = _repo_con_hooks(tmp_path)
+    (repo / "scripts").mkdir()
+    (repo / "scripts" / "mod.py").write_text("def f():\n    return 1\n")
+    subprocess.run(["git", "-C", str(repo), "add", "scripts/mod.py"], check=True, capture_output=True)
+    payload = json.dumps(
+        {"tool_name": "Bash",
+         "tool_input": {"command": "COS_ALLOW_MISSING_SPDX=1 " + "git " + "commit" + " -m x"}}
+    )
+    assert _correr(repo / "hooks" / "spdx-header-required.sh", payload, repo, {}) == 1
+
+
+# ── El remedio que rompía a los vecinos ─────────────────────────────────────
+
+def test_ningun_mensaje_ofrece_cos_session_branch_con_switch() -> None:
+    """`--switch` corre `git switch` sobre TODO el árbol de trabajo.
+
+    Medido: en un checkout con dos procesos, tras `--switch` los dos ven
+    refs/heads/session/<id>-<slug>. Sobre árbol sucio ni siquiera corre (exit 3).
+    Ofrecerlo como remedio en un checkout compartido cambia de rama a las
+    sesiones que no lo pidieron.
+    """
+    ofensores = []
+    for p in sorted((REPO / "hooks").rglob("*.sh")):
+        texto = p.read_text(encoding="utf-8", errors="ignore")
+        for i, linea in enumerate(texto.splitlines(), 1):
+            if "cos-session-branch.sh" in linea and "--switch" in linea:
+                ofensores.append(f"{p.relative_to(REPO)}:{i}")
+    assert not ofensores, (
+        f"{ofensores} ofrecen `cos-session-branch.sh --switch` como salida. "
+        "Mueve el HEAD de todas las sesiones del checkout; sin --switch la rama "
+        "se crea igual y HEAD no se mueve."
+    )

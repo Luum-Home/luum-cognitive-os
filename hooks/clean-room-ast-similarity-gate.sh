@@ -123,9 +123,13 @@ $MATCH_SUMMARY
        git add manifests/ast-similarity-baseline.yaml && git commit ...
   2. If this is a derivative work requiring documentation:
        Create/update the per-tool Annex F at docs/03-PoCs/research/<tool>-annex-f-*.md
-  3. Emergency bypass (creates audit trail):
-       COS_ALLOW_AST_SIMILARITY=1 git commit ...        (T2-specific bypass)
-       COS_ALLOW_CLEAN_ROOM_BYPASS=1 git commit ...     (shared T1+T2 bypass)
+  3. Emergency bypass (creates audit trail). Both are read from the environment
+     of the harness process, so set them in the shell that LAUNCHES the harness,
+     or in the env block of .claude/settings.json:
+       export COS_ALLOW_AST_SIMILARITY=1      (T2-specific bypass)
+       export COS_ALLOW_CLEAN_ROOM_BYPASS=1   (shared T1+T2 bypass)
+     In front of the git commit command they are set for git, not for this hook,
+     which ran earlier as a child of the harness, in its own process.
 
   Baseline: $BASELINE
   Audit log: $LOG_FILE

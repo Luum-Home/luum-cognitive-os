@@ -112,8 +112,13 @@ echo "Blocked gated paths:" >&2
 for f in "${BLOCKED[@]}"; do echo "  - $f" >&2; done
 echo "" >&2
 echo "Resolve via ONE of:" >&2
-echo "  1. Unfreeze: edit the freeze yaml (set frozen: false) with" >&2
-echo "     COS_ALLOW_FREEZE_TOGGLE=1 git commit ... (yaml alone)" >&2
-echo "  2. Bypass logged: COS_ALLOW_ADOPTION_FREEZE_BYPASS=1 git commit ..." >&2
+echo "  1. Unfreeze: edit the freeze yaml (set frozen: false) and commit it alone," >&2
+echo "     with export COS_ALLOW_FREEZE_TOGGLE=1 in the shell that LAUNCHES the" >&2
+echo "     harness, or in the env block of .claude/settings.json." >&2
+echo "  2. Bypass logged: same route, export COS_ALLOW_ADOPTION_FREEZE_BYPASS=1." >&2
+echo "  Read from the environment of the harness process: export it in the shell" >&2
+echo "  that LAUNCHES the harness, or add it to the env block of .claude/settings.json." >&2
+echo "  In front of the git commit command it is set for git, not for this hook, which" >&2
+echo "  ran earlier as a child of the harness, in its own process." >&2
 echo "Reference: docs/02-Decisions/adrs/ADR-267-license-compliance-enforcement-architecture.md" >&2
 exit 1

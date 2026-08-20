@@ -87,6 +87,10 @@ echo "  Python:    # SPDX-License-Identifier: Apache-2.0" >&2
 echo "  Shell:     # SPDX-License-Identifier: Apache-2.0" >&2
 echo "  JS/TS:     // SPDX-License-Identifier: Apache-2.0" >&2
 echo "" >&2
-echo "Bypass (logged): COS_ALLOW_MISSING_SPDX=1 git commit ..." >&2
+echo "Bypass (logged): export COS_ALLOW_MISSING_SPDX=1" >&2
+echo "  Read from the environment of the harness process: export it in the shell" >&2
+echo "  that LAUNCHES the harness, or add it to the env block of .claude/settings.json." >&2
+echo "  In front of the git commit command it is set for git, not for this hook, which" >&2
+echo "  ran earlier as a child of the harness, in its own process." >&2
 echo "Reference: docs/02-Decisions/adrs/ADR-267-license-compliance-enforcement-architecture.md" >&2
 exit 1

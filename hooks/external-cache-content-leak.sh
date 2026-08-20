@@ -115,7 +115,10 @@ echo "  2. Legitimate snippet (MIT-attributed, proper header)?" >&2
 echo "       python3 scripts/cos_verbatim_copy_detector.py --baseline" >&2
 echo "     Review manifests/verbatim-detection-baseline.yaml, then commit both." >&2
 echo "  3. Emergency bypass (audit-logged):" >&2
-echo "       COS_ALLOW_VERBATIM_LEAK=1 git commit ..." >&2
+echo "       export COS_ALLOW_VERBATIM_LEAK=1 in the shell that LAUNCHES the" >&2
+echo "       harness, or in the env block of .claude/settings.json. In front of" >&2
+echo "       the git commit command it is set for git, not for this hook, which" >&2
+echo "       ran earlier as a child of the harness, in its own process." >&2
 echo "" >&2
 echo "Reference: docs/02-Decisions/adrs/ADR-267-*.md §Layer 1 Hook #2" >&2
 exit 1
