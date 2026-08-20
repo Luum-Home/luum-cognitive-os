@@ -6,7 +6,7 @@
   "harness": "claude",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 864,
+  "projected_primitive_count": 862,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": true,
