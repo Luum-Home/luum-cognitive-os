@@ -20,6 +20,8 @@ proves it stays quiet has proven nothing:
 
 from __future__ import annotations
 
+import json
+import resource
 import subprocess
 import sys
 from pathlib import Path
@@ -33,6 +35,26 @@ REPO = Path(__file__).resolve().parents[2]
 AUDIT = REPO / "scripts" / "audit_test_assertion_enums.py"
 REGISTRY = REPO / "manifests" / "test-assertion-enums.yaml"
 SCHEMA = REPO / "manifests" / "claude-code-hooks-schema.yaml"
+
+# CPU seconds the whole-tree scan may spend. CPU, never wall: this gate is run
+# on boxes whose load average reaches the hundreds, where wall time measures the
+# neighbours. Budget set 2026-08-20 at ~2.3x the measured cost (0.65s CPU over
+# 2.328 files) so ordinary corpus growth does not trip it and a 3x regression
+# does. Raising this number to make a red go away is the forbidden move: the
+# whole failure this file exists to prevent is a gate that gets quietly
+# expensive until somebody drops it from the lane.
+TREE_SCAN_CPU_BUDGET_SECONDS = 1.5
+
+# Seconds the audit subprocess gets before THIS test kills it. Deliberately under
+# pytest-timeout's per-test budget (`timeout = 30` in pytest.ini) so an overlong
+# scan fails here, naming the audit, instead of tripping the watchdog: with
+# `timeout_method = thread` the watchdog cannot kill an OS subprocess, so it dumps
+# every thread stack and takes the whole pytest process down — which is how one
+# slow test stops a lane at 27% and gets read as "the suite hangs".
+#
+# NOT the scan's budget. The scan's budget is TREE_SCAN_CPU_BUDGET_SECONDS above,
+# it is measured, and it is the one that must not be raised to silence a red.
+AUDIT_SUBPROCESS_TIMEOUT_SECONDS = 25
 
 # Verbatim from tests/hooks/test_secret_detector.py at b2f9d877e^ — the test that
 # defended the fail-open. Kept as a literal so the gate is re-proven against the
@@ -95,13 +117,33 @@ def _make_root(tmp_path: Path, files: dict[str, str]) -> Path:
     return root
 
 
-def _audit(root: Path) -> subprocess.CompletedProcess[str]:
+def _audit(root: Path, *extra: str) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
-        [sys.executable, str(AUDIT), "--root", str(root)],
+        [sys.executable, str(AUDIT), "--root", str(root), *extra],
         capture_output=True,
         text=True,
-        timeout=120,
+        timeout=AUDIT_SUBPROCESS_TIMEOUT_SECONDS,
     )
+
+
+@pytest.fixture(scope="module")
+def repo_scan() -> tuple[subprocess.CompletedProcess[str], float]:
+    """Scan the whole tree ONCE, and hand back what it cost.
+
+    Three assertions below are about the same scan — that it is clean, that it
+    accounted for the whole corpus, and that it stayed inside its budget. Running
+    the scan once per assertion would make this file the very thing it guards
+    against: a gate whose own cost is the reason it gets dropped.
+
+    CPU is read from RUSAGE_CHILDREN, never from the wall clock: this repo is
+    worked by several sessions at once and the box reaches load ~300, where wall
+    time measures the neighbours instead of the gate.
+    """
+    before = resource.getrusage(resource.RUSAGE_CHILDREN)
+    result = _audit(REPO, "--json")
+    after = resource.getrusage(resource.RUSAGE_CHILDREN)
+    spent = (after.ru_utime - before.ru_utime) + (after.ru_stime - before.ru_stime)
+    return result, spent
 
 
 class TestGateFires:
@@ -179,11 +221,136 @@ class TestGateStaysQuiet:
         )
         assert _audit(with_fix).returncode == 0, "the honest test must also pass alone"
 
-    def test_repo_tree_is_clean(self) -> None:
+    def test_repo_tree_is_clean(self, repo_scan) -> None:
         """No baseline, no allowlist: the tree is at exactly zero violations."""
-        result = _audit(REPO)
+        result, _ = repo_scan
         assert result.returncode == 0, (
             "a test in this repo asserts a value outside a closed enum\n" + result.stdout
+        )
+
+
+class TestWholeTreeScanStaysHonestAndCheap:
+    """The scan covers the WHOLE corpus, and says out loud what it cost.
+
+    A gate that quietly gets more expensive is killed the same way a red one is,
+    only slower: it stops being run. So the cost is measured here, against a
+    written budget, instead of being discovered the day the lane starts timing
+    out and somebody deletes the test.
+    """
+
+    def test_scan_reports_the_whole_corpus_as_its_population(self, repo_scan) -> None:
+        """`files_parsed < files_scanned` is an optimisation, not a sample.
+
+        The audit skips the AST parse of files that provably cannot hold the
+        constant. It must still ACCOUNT for them: the published population is
+        every file the globs matched, and the census books zero blindness.
+        """
+        result, _ = repo_scan
+        assert result.returncode == 0, result.stdout + result.stderr
+        payload = json.loads(result.stdout)
+        scanned = payload["files_scanned"]
+        parsed = payload["files_parsed"]
+        census = payload["census"]
+        assert scanned > 1000, f"the corpus should be the whole tree, got {scanned}"
+        assert 0 < parsed < scanned, (
+            f"parsed={parsed} scanned={scanned}: the pre-filter either did nothing "
+            "or swallowed the corpus"
+        )
+        assert census["population"] == scanned, (
+            "the census must account for every file in scope, not only the parsed "
+            f"ones: population={census['population']} scanned={scanned}"
+        )
+        assert census["blind"] == {"ninguna": 0}, census["blind"]
+
+    def test_subprocess_timeout_fires_before_the_pytest_watchdog(self, pytestconfig) -> None:
+        """The two budgets must stay ordered, or the failure mode comes back.
+
+        `tests/conftest.py::_effective_subprocess_timeout` was written to enforce
+        exactly this ordering suite-wide, but it reads the budget from
+        `config.getoption("timeout")`, which is the COMMAND-LINE flag — the
+        `pytest.ini` value never reaches it, so the cap is inert on a normal run
+        and every call-site timeout is honoured in full. Until that is fixed, the
+        ordering is this file's own responsibility.
+        """
+        ini = float(pytestconfig.getini("timeout") or 0)
+        assert ini > 0, "pytest.ini no longer declares a per-test timeout budget"
+        assert AUDIT_SUBPROCESS_TIMEOUT_SECONDS < ini, (
+            f"the audit subprocess may run {AUDIT_SUBPROCESS_TIMEOUT_SECONDS}s but "
+            f"pytest-timeout kills the test at {ini}s. In that order the watchdog "
+            "wins, and with timeout_method=thread it aborts the whole pytest "
+            "process instead of failing this one test."
+        )
+
+    def test_whole_tree_scan_stays_within_its_cpu_budget(self, repo_scan) -> None:
+        """CPU, not wall: this box runs at load ~300 and wall measures neighbours."""
+        result, spent = repo_scan
+        assert result.returncode == 0, result.stdout
+        assert spent < TREE_SCAN_CPU_BUDGET_SECONDS, (
+            f"the whole-tree scan spent {spent:.2f}s CPU against a "
+            f"{TREE_SCAN_CPU_BUDGET_SECONDS}s budget. Raising the budget is the "
+            "forbidden repair: find what got expensive, or move the scan off the "
+            "lane with the reason written down."
+        )
+
+
+class TestPreFilterIsSoundNotASample:
+    """The pre-filter drops PARSES, never files — and here is the proof.
+
+    `_may_hold_constant` skips `ast.parse` when the source provably cannot yield
+    a Constant equal to a registered field. Three ways such a constant can exist,
+    three probes. A pre-filter that missed any of them would be a silent sample:
+    the gate would print "0 violations" over a corpus it never really read.
+    """
+
+    def test_field_name_synthesised_by_an_escape_is_still_flagged(self, tmp_path: Path) -> None:
+        """The name never appears verbatim — it is spelled with \\x70."""
+        body = 'def test_x(out):\n    assert out["\\x70ermissionDecision"] == "block"\n'
+        assert "permissionDecision" not in body, "the probe must not leak the name verbatim"
+        root = _make_root(tmp_path, {"tests/unit/test_escaped.py": body})
+        result = _audit(root)
+        assert result.returncode == 1, (
+            "an escaped key laundered the claim past the pre-filter\n"
+            + result.stdout
+            + result.stderr
+        )
+
+    def test_name_split_across_adjacent_literals_is_still_flagged(self, tmp_path: Path) -> None:
+        """Implicit concatenation is folded by the parser, so it must be parsed."""
+        body = 'def test_x(out):\n    assert out["permission" "Decision"] == "block"\n'
+        assert "permissionDecision" not in body, "the probe must not leak the name verbatim"
+        root = _make_root(tmp_path, {"tests/unit/test_split.py": body})
+        result = _audit(root)
+        assert result.returncode == 1, (
+            "a name split across adjacent literals laundered the claim\n"
+            + result.stdout
+            + result.stderr
+        )
+
+    def test_a_file_that_cannot_hold_the_constant_is_not_parsed(self, tmp_path: Path) -> None:
+        """The skip is real, and this is the declared cost of it.
+
+        A file with no field name, no character escape and no literal fragment
+        of the name is never handed to `ast.parse`, so a SYNTAX ERROR in such a
+        file no longer aborts the audit. That is a deliberate narrowing: this
+        gate reads assertions, it is not a syntax checker, and pytest collection
+        already fails on a test file that does not parse. A broken file that DOES
+        mention the field is still parsed, and still exits 2.
+        """
+        unparseable = "def test_x( :::\n"
+        root = _make_root(tmp_path, {"tests/unit/test_broken.py": unparseable})
+        result = _audit(root)
+        assert result.returncode == 0, (
+            "the pre-filter did not skip a file it should have proved harmless\n"
+            + result.stdout
+            + result.stderr
+        )
+
+        mentions = 'x = {"permissionDecision": 1}\ndef test_x( :::\n'
+        root2 = _make_root(tmp_path / "b", {"tests/unit/test_broken2.py": mentions})
+        result2 = _audit(root2)
+        assert result2.returncode == 2, (
+            "a syntactically broken file that mentions the field must still fail "
+            f"loud; got rc={result2.returncode}\n{result2.stdout}{result2.stderr}"
         )
 
 
