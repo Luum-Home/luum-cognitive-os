@@ -503,7 +503,15 @@ else
           else
             # Capture old and new digest for comparison
             OLD_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' "$image" 2>/dev/null || echo "not-pulled")
-            if ! docker pull "$image" 2>&1 | tail -3; then
+            # El estado del pipeline es el de `tail`, que sale 0 siempre: con
+            # `docker pull ... | tail -3` el `!` nunca era verdadero y este
+            # WARNING era inalcanzable — un pull fallado seguia como exitoso.
+            # Se captura la salida y se recorta despues, con el estado intacto.
+            PULL_OUT=""
+            if PULL_OUT=$(docker pull "$image" 2>&1); then
+              printf '%s\n' "$PULL_OUT" | tail -3
+            else
+              printf '%s\n' "$PULL_OUT" | tail -3
               _yellow "  WARNING: docker pull failed for $image — manual review required"
               echo ""
               DOCKER_CHANGED=$((DOCKER_CHANGED + 1))
