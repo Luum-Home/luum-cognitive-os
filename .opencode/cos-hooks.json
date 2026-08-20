@@ -206,6 +206,14 @@
         "scope": "os-only"
       },
       {
+        "id": "session-lineage-record",
+        "script": "hooks/session-lineage-record.sh",
+        "event": "SessionStart",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      },
+      {
         "id": "skill-drift-detector",
         "script": "hooks/skill-drift-detector.sh",
         "event": "SessionStart",
@@ -454,6 +462,14 @@
       {
         "id": "goal-stop-gate",
         "script": "hooks/goal-stop-gate.sh",
+        "event": "Stop",
+        "matcher": "",
+        "async": false,
+        "scope": "os-only"
+      },
+      {
+        "id": "lineage-relaunch-gate",
+        "script": "hooks/lineage-relaunch-gate.sh",
         "event": "Stop",
         "matcher": "",
         "async": false,

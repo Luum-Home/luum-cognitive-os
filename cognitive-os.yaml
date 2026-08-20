@@ -1481,6 +1481,12 @@ harness:
       matcher: ""
       scope: os-only
 
+    protected-config-write-detector:
+      script: hooks/protected-config-write-detector.sh
+      event: PostToolUse
+      matcher: "Bash"
+      scope: os-only
+
     tool-sequence-capture:
       script: hooks/tool-sequence-capture.sh
       event: PostToolUse
