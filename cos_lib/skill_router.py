@@ -20,6 +20,7 @@ Usage:
 from __future__ import annotations
 
 import hashlib
+import datetime as _dt
 import os
 import re
 import sys
@@ -1947,6 +1948,39 @@ def _project_root_for_runtime() -> Path:
     return Path(__file__).resolve().parents[1]
 
 
+# Sentinelas que NO son identidad. `unknown` encabeza la lista porque durante
+# 94 dias fue el unico valor que el productor escribio, y el consumidor lo
+# trataba como una sesion legitima.
+_ANON_SESSION_SENTINELS = frozenset({"", "unknown", "none", "null", "nil", "-"})
+
+# Vida util de una sugerencia, en segundos. Un turno de trabajo, no una era
+# geologica. Override para tests y para harnesses de sesion larga.
+_SUGGESTION_MAX_AGE_DEFAULT = 6 * 3600
+
+
+def _suggestion_max_age_seconds() -> int:
+    raw = os.environ.get("COS_SKILL_SUGGESTION_TTL_SECONDS", "")
+    try:
+        val = int(raw)
+    except (TypeError, ValueError):
+        return _SUGGESTION_MAX_AGE_DEFAULT
+    return val if val >= 0 else _SUGGESTION_MAX_AGE_DEFAULT
+
+
+def _suggestion_age_seconds(ts: Any) -> float:
+    """Edad de una fila en segundos. Una marca ilegible se considera vencida."""
+    if not ts or not isinstance(ts, str):
+        return float("inf")
+    raw = ts.strip().replace("Z", "+00:00")
+    try:
+        parsed = _dt.datetime.fromisoformat(raw)
+    except ValueError:
+        return float("inf")
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=_dt.timezone.utc)
+    return (_dt.datetime.now(_dt.timezone.utc) - parsed).total_seconds()
+
+
 def last_suggestion(
     session_id: str,
     *,
@@ -1968,10 +2002,14 @@ def last_suggestion(
 
     Returns ``{"skill", "confidence", "prompt_hash", "timestamp"}`` or None.
     """
-    if not session_id:
+    if not session_id or session_id.strip().lower() in _ANON_SESSION_SENTINELS:
+        # Una identidad sentinela no es una identidad. Si alguien pregunta por
+        # "unknown" la respuesta correcta es "no se quien sos", no el maximo
+        # historico del log.
         return None
 
     root = Path(project_root).resolve() if project_root else _project_root_for_runtime()
+    max_age = _suggestion_max_age_seconds()
 
     events_path = root / ".cognitive-os" / "sessions" / "events.jsonl"
     suggestions_path = root / ".cognitive-os" / "metrics" / "skill-suggestion.jsonl"
@@ -2003,7 +2041,7 @@ def last_suggestion(
     if not suggestions_path.exists():
         return None
 
-    best: Optional[Dict[str, Any]] = None
+    rows: list[Dict[str, Any]] = []
     try:
         with suggestions_path.open("r", encoding="utf-8", errors="replace") as fh:
             for line in fh:
@@ -2014,28 +2052,54 @@ def last_suggestion(
                     rec = __import__("json").loads(line)
                 except Exception:
                     continue
-                if rec.get("session_id") != session_id:
+                rec_sid = rec.get("session_id")
+                if not rec_sid or not isinstance(rec_sid, str):
+                    # Filas anonimas (session_id null). Son 584 filas historicas
+                    # que no se pueden reatribuir: no se borran, simplemente
+                    # dejan de aparear con ninguna sesion.
                     continue
-                if not rec.get("threshold_met"):
-                    # still consider matches: ADR-188 needs the highest-conf
-                    # suggestion regardless of soft-suggest threshold, but only
-                    # if there is a real skill name present.
-                    if not rec.get("skill_name"):
-                        continue
-                ts = rec.get("ts")
-                if anchor_ts and ts and ts < anchor_ts:
+                if rec_sid.strip().lower() in _ANON_SESSION_SENTINELS:
                     continue
-                conf = float(rec.get("confidence") or 0.0)
-                if best is None or conf > float(best.get("confidence") or 0.0):
-                    best = {
-                        "skill": rec.get("skill_name"),
-                        "confidence": conf,
-                        "prompt_hash": rec.get("prompt_hash") or "",
-                        "timestamp": ts or "",
-                    }
+                if rec_sid != session_id:
+                    continue
+                if not rec.get("skill_name"):
+                    continue
+                rows.append(rec)
     except Exception:
         return None
 
-    if best is None or not best.get("skill"):
+    if not rows:
         return None
-    return best
+
+    # Ventana. El bug de fondo no era solo la identidad: cuando no habia ancla
+    # el codigo trataba TODO el log como vigente y se quedaba con el maximo de
+    # confianza de la historia. Dos cortes independientes lo cierran:
+    #
+    #   1. Ancla del turno. Con ancla en events.jsonl se usa esa. SIN ancla, la
+    #      ventana ya no es "todo el log" sino la ULTIMA fila de la sesion — el
+    #      productor escribe exactamente una por UserPromptSubmit, asi que esa
+    #      fila ES el prompt actual. Esto no depende de que events.jsonl exista.
+    #   2. TTL absoluto. Aun con ancla, una sugerencia mas vieja que el TTL no
+    #      obliga: una skill sugerida hace 40 dias no describe lo que el
+    #      operador esta pidiendo ahora.
+    if anchor_ts:
+        rows = [r for r in rows if not r.get("ts") or str(r["ts"]) >= anchor_ts]
+    else:
+        newest = max((str(r.get("ts") or "") for r in rows), default="")
+        rows = [r for r in rows if str(r.get("ts") or "") == newest]
+
+    if max_age > 0:
+        rows = [r for r in rows if _suggestion_age_seconds(r.get("ts")) <= max_age]
+
+    if not rows:
+        return None
+
+    best = max(rows, key=lambda r: float(r.get("confidence") or 0.0))
+    if not best.get("skill_name"):
+        return None
+    return {
+        "skill": best.get("skill_name"),
+        "confidence": float(best.get("confidence") or 0.0),
+        "prompt_hash": best.get("prompt_hash") or "",
+        "timestamp": best.get("ts") or "",
+    }

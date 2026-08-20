@@ -58,8 +58,22 @@ if [ ! -f "$_PROJECT_DIR/cos_lib/skill_router.py" ]; then
   exit 0
 fi
 
-# Build session_id from env or fall back to "unknown"
-_SESSION_ID="${COGNITIVE_OS_SESSION_ID:-${CLAUDE_SESSION_ID:-unknown}}"
+# Identidad de sesion real, o vacia. Nunca "unknown".
+#
+# 2026-08-20 — por que cambio. `unknown` no era "sin identidad": era una CLAVE,
+# y una clave compartida por todo el que no dijo quien era. Medido sobre
+# .cognitive-os/metrics/skill-suggestion.jsonl: 584 filas, UN solo valor de
+# session_id (`jq -r .session_id ... | sort -u | wc -l` -> 1). El consumidor
+# (cos_lib.skill_router.last_suggestion) filtra por session_id, asi que con una
+# clave unica la sugerencia de cualquier prompt de cualquier dia obligaba a
+# cualquier sesion — y como no habia ancla para esa clave, ganaba el maximo de
+# confianza historico: una fila de julio exigida durante 48 dias.
+#
+# cos_session_id() (hooks/_lib/common.sh) resuelve env del harness -> payload ya
+# leido -> archivo de sesion, y devuelve vacio cuando no puede probar la
+# identidad. Vacio se serializa como `null`, no como sentinela: una sugerencia
+# sin identidad no obliga a nadie, en vez de obligar a todos.
+_SESSION_ID="$(cos_session_id 2>/dev/null || true)"
 
 # Pass prompt via env to avoid shell injection risks.
 # Note: PROJECT_DIR is used for metrics output path only.
@@ -74,7 +88,9 @@ import datetime
 project = os.environ.get("PROJECT_DIR", ".")
 sys.path.insert(0, project)
 
-session_id  = os.environ.get("_SRPS_SESSION", "unknown")
+# Vacio -> None -> `"session_id": null` en el JSONL. Ver la nota de arriba:
+# el sentinela era el bug, no el fallback.
+session_id  = os.environ.get("_SRPS_SESSION", "").strip() or None
 prompt_text = os.environ.get("_SRPS_PROMPT", "")
 
 try:
