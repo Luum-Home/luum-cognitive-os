@@ -42,6 +42,31 @@ claims:
       - The prose says how to know it, not how many
     forbidden_phrases:
       - "Component counts: 57 hooks, 55 rules, 72 skills"
+  claude_code_hook_registration:
+    severity: high
+    description: >-
+      Documentation must not claim that cognitive-os.yaml > harness.hooks is the
+      registry the Claude Code driver reads. It is not. The bare, codex and
+      opencode drivers do read the yaml; scripts/_lib/settings-driver-claude-code.sh
+      holds its registry hardcoded as shell literals, and its own header says so
+      after CONFIG_FILE was found assigned and never read once. The consequence is
+      not cosmetic: a hook registered only in the yaml exists, never fires, and
+      nothing reports it. The claim mattered enough to earn a ledger entry because
+      it was injected into every sub-agent prompt through
+      templates/project-gotchas.md, so every agent of 2026-08-19 was told the wrong
+      way to register a hook, and at least one followed it.
+    facts:
+      driver: scripts/_lib/settings-driver-claude-code.sh
+      surfaces_for_one_hook: 6
+      how_to_verify: >-
+        grep -c '<hook>' cognitive-os.yaml
+        scripts/_lib/settings-driver-claude-code.sh scripts/apply-efficiency-profile.sh
+        templates/security-profiles/*.json -- a hook that fires is present in all six
+      live_orphan: hooks/publication-safety.sh
+    required_phrases:
+      - Claude Code is the exception
+    forbidden_phrases:
+      - "the canonical hook registry is `cognitive-os.yaml > harness.hooks`"
   consumer_projection_harnesses:
     severity: high
     description: Consumer projection docs must describe current implemented native and structural harnesses, not the old Claude/Codex-only boundary.
