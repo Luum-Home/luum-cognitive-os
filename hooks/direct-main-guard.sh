@@ -247,8 +247,10 @@ if [ "$ACTION" = "push" ]; then
   echo "[direct-main-guard] BLOCK: direct push from $BRANCH bypasses ADR-116 merge queue." >&2
   echo "Land through scripts/cos-merge-queue.sh + scripts/cos-merge-queue-worker.sh or scripts/merge-to-main.sh." >&2
   echo "Emergency operator bypass requires BOTH:" >&2
-  echo "  COS_ALLOW_DIRECT_PUSH=1" >&2
-  echo "  COS_DIRECT_MAIN_BYPASS_REASON='<short audit reason>'" >&2
+  echo "  export COS_ALLOW_DIRECT_PUSH=1" >&2
+  echo "  export COS_DIRECT_MAIN_BYPASS_REASON='<short audit reason>'" >&2
+  echo "  Both in the shell that LAUNCHES the harness. A prefix on the blocked command never reaches this hook," >&2
+  echo "  and .cognitive-os/runtime/bypass.env does not cover it: that file carries COS_BYPASS only, never the reason." >&2
   _emit_vcs_receipt "vcs.push.blocked" "verified" "direct-main-guard" "direct-push-blocked"
   _emit_direct_main_intervention "block" "direct_main_push" "${BRANCH:-main}"
   exit 2
@@ -268,7 +270,7 @@ case "$actor" in
   agent|subagent|autonomous|worker)
     echo "[direct-main-guard] BLOCK: autonomous/session agents may not commit directly to $BRANCH." >&2
     echo "Use a session branch and land through the ADR-116 merge queue / protected remote path." >&2
-    echo "Bypass requires BOTH COS_ALLOW_DIRECT_MAIN=1 and COS_DIRECT_MAIN_BYPASS_REASON='<short audit reason>' for explicit operator emergencies." >&2
+    echo "Bypass requires BOTH, and both via export in the shell that LAUNCHES the harness: COS_ALLOW_DIRECT_MAIN=1 and COS_DIRECT_MAIN_BYPASS_REASON='<short audit reason>'." >&2
     _emit_vcs_receipt "vcs.commit" "verified" "direct-main-guard" "direct-main-commit-blocked"
     _emit_direct_main_intervention "block" "direct_main_commit" "${BRANCH:-main}"
     exit 2
@@ -280,7 +282,7 @@ case "$POLICY" in
   block)
     echo "[direct-main-guard] BLOCK: operator direct commit to $BRANCH is disabled by COS_OPERATOR_MAIN_POLICY=block." >&2
      _emit_direct_main_intervention "block" "operator_direct_main_block" "${BRANCH:-main}"
-    echo "Use a session branch and merge queue, or set BOTH COS_ALLOW_DIRECT_MAIN=1 and COS_DIRECT_MAIN_BYPASS_REASON='<short audit reason>' for a one-off emergency." >&2
+    echo "Use a session branch and merge queue, or export BOTH in the shell that LAUNCHES the harness: COS_ALLOW_DIRECT_MAIN=1 and COS_DIRECT_MAIN_BYPASS_REASON='<short audit reason>'." >&2
     exit 2
     ;;
   warn|*)

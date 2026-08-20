@@ -72,7 +72,9 @@ print(f"  branch: {branch}", file=sys.stderr)
 print(f"  held_by_session: {held.get('session_id')}", file=sys.stderr)
 print(f"  held_by_pid: {held.get('pid')}", file=sys.stderr)
 print(f"  held_by_worktree: {held.get('worktree')}", file=sys.stderr)
-print("  Override: COS_ALLOW_BRANCH_OWNERSHIP_OVERRIDE=1", file=sys.stderr)
+print("  Override (mid-session): printf 'COS_BYPASS=branch_ownership\\n' >> .cognitive-os/runtime/bypass.env", file=sys.stderr)
+print("            the resolver re-reads that file on every invocation, so the retry sees it", file=sys.stderr)
+print("  Override (next session): export COS_ALLOW_BRANCH_OWNERSHIP_OVERRIDE=1 in the shell that LAUNCHES the harness", file=sys.stderr)
 raise SystemExit(2)
 PY
 rc=$?

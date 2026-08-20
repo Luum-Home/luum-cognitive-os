@@ -990,11 +990,10 @@ if [ "$IS_WIP_GUARD_OP" = "1" ] && _has_wip; then
   # El bypass se resuelve por cos_bypass_allows, que lee COS_BYPASS del entorno Y
   # del archivo .cognitive-os/runtime/bypass.env en cada invocación. El archivo es
   # la única de las dos vías ejecutable a mitad de sesión: escribirlo y reintentar
-  # funciona. La forma que este mensaje ofrecía antes —la variable como prefijo del
-  # comando bloqueado— no: el hook es hijo del arnés y ya decidió cuando ese shell
-  # nace. Acá no se ensanchó nada; la vía ya existía y el mensaje apuntaba a la otra.
-  # (El literal viejo no se cita: scripts/audit_killswitch_activation.py no puede
-  # distinguir una oferta de la cita de una oferta, y cuenta de más a propósito.)
+  # funciona. Lo que este mensaje ofrecía antes era la variable como prefijo del
+  # comando bloqueado —`COS_ALLOW_RESET_OVER_WIP=1 $COMMAND`— y esa forma no llega:
+  # el hook es hijo del arnés y ya decidió cuando ese shell nace. Acá no se ensanchó
+  # nada; la vía ya existía y el mensaje apuntaba a la otra.
   echo "  c) Allow bypass:  printf 'COS_BYPASS=reset_over_wip\\n' >> .cognitive-os/runtime/bypass.env" >&2
   echo "                    then retry: $COMMAND" >&2
   echo "     (o export COS_BYPASS=reset_over_wip antes de lanzar el arnés)" >&2
