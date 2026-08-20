@@ -239,9 +239,47 @@ def is_reader(exe, rest):
     if exe in PURE_READERS:
         return True
     veto=VETOED.get(exe)
+    if veto is None and exe.startswith('python'):
+        veto=veto_python
     if veto is not None:
         return not veto(rest)
     return False
+
+
+# An interpreter handed a program IN THE COMMAND TEXT is the heredoc case one
+# line over, so the same checkable property decides it: a program carrying no
+# write primitive cannot write, whatever paths it names. Measured 2026-08-20 over
+# the session transcripts, seven blocks landed on -c programs that only read, a
+# json.load of settings.json and a read_text of a rules file among them -- the
+# largest family still standing after the 2026-08-19 heredoc fix.
+#
+# -m gets no such pass: the module body is not in the command text, so there is
+# nothing checkable about it. Neither does a program carrying a dollar sign or a
+# backtick: the shell would expand it and this scanner never does, so the text
+# judged here is not the text that would run.
+PY_SKIP_VALUE={'-W','-X','--check-hash-based-pycs'}
+UNEXPANDED=re.compile(r'[$`]')
+
+def veto_python(ws):
+    prog=None
+    i=0
+    while i < len(ws):
+        t=ws[i]
+        if t=='-c' and i+1 < len(ws):
+            prog=ws[i+1]; i+=2; continue
+        if t=='-m':
+            return True
+        if t in PY_SKIP_VALUE:
+            i+=2; continue
+        if t.startswith('-'):
+            i+=1; continue
+        # A positional before -c is a script file whose text is not here.
+        if prog is None:
+            return True
+        i+=1
+    if prog is None or UNEXPANDED.search(prog):
+        return True
+    return body_can_write(prog)
 
 HEREDOC=re.compile(r"<<-?\s*(['\"]?)([A-Za-z_][A-Za-z0-9_]*)\1")
 
@@ -392,9 +430,18 @@ def lift_substitutions(cmd):
 
 WRITE_PRIMITIVES = (
     "write_text", "write_bytes", "writelines", ".write(", "os.replace",
-    "os.rename", "os.remove", "os.unlink", "shutil.copy", "shutil.move",
-    "shutil.rmtree", "mkdir", "touch", "truncate", "rmdir", "symlink_to",
-    "chmod", "unlink(", "fdopen", "NamedTemporary",
+    "os.rename", "os.remove", "os.unlink", "shutil.", "mkdir", "touch",
+    "truncate", "rmdir", "symlink_to", "chmod", "unlink(", "fdopen",
+    "NamedTemporary",
+    # Handing the work to another process, or building the program at runtime,
+    # puts the write outside the text this scanner can read. The list above asks
+    # what the program does; these ask whether the question is answerable at all,
+    # and when it is not the answer is write. Without them
+    # `python3 -c "import os;os.system(...)"` had no write primitive, so a
+    # program whose entire purpose was to shell out read as inert.
+    "subprocess", "os.system", "os.popen", "popen(", "Popen",
+    "os.exec", "os.spawn", "pty.spawn", "eval(", "exec(", "compile(",
+    "__import__", "runpy", "importlib", "ctypes",
 )
 # Deliberately absent: print() and >>. Both write to a stream rather than to a
 # path, and a redirection of that stream into a protected file is already caught
@@ -604,6 +651,34 @@ def positional_args(ws, opt_value=frozenset()):
         out.append(t); i+=1
     return out
 
+# Argument grammar, not an allowlist. These commands READ every source they are
+# handed and WRITE exactly one destination: the last positional word, or the
+# value of -t, in which case every positional is a source. So a protected path
+# in a source position is a read, and that is a property of the grammar rather
+# than a guess about intent. Measured 2026-08-20:
+# `cp hooks/destructive-git-blocker.sh /tmp/dgb.sh` was blocked as a write to
+# the very file it was copying FROM.
+#
+# mv and ln are absent on purpose. mv REMOVES its source, so it mutates the
+# protected path even when the destination is harmless, and it must keep
+# failing closed on both words.
+COPY_LIKE={'cp','install','rsync'}
+COPY_OPT_VALUE={'-t','--target-directory','--suffix','-S','--backup',
+                '--exclude','--include','--files-from','--chown',
+                '-m','--mode','-o','--owner','-g','--group'}
+
+def copy_destinations(ws):
+    """Paths a copy-like segment writes, or None when the grammar is unclear."""
+    if any(t=='--remove-source-files' for t in ws):
+        return None
+    tgt=opt_value_of(ws, ('-t','--target-directory'))
+    if tgt is not None:
+        return [tgt]
+    pos=positional_args(ws, COPY_OPT_VALUE)
+    if len(pos) < 2:
+        return None
+    return [pos[-1]]
+
 def opt_value_of(ws, names):
     for i, t in enumerate(ws):
         for n in names:
@@ -733,6 +808,14 @@ def bash_write_targets(command):
             for cand in TOKEN_PATHS.findall(tok):
                 if is_protected(normalize(cand), cand):
                     hits.append(cand)
+        if exe in COPY_LIKE:
+            dests=copy_destinations(rest)
+            if dests is not None:
+                hits=[]
+                for d in dests:
+                    for cand in TOKEN_PATHS.findall(d):
+                        if is_protected(normalize(cand), cand):
+                            hits.append(cand)
         if not hits:
             continue
         if is_reader(exe, rest):
