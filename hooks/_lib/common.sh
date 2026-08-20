@@ -6,6 +6,7 @@
 #
 # Provides:
 #   require_tool <tool_name>        — exit 0 if TOOL_NAME doesn't match (gate)
+#   cos_session_id                  — echo this hook process session id (or empty)
 #   resolve_session_dir             — echo session-scoped metrics directory path
 #   get_phase                       — echo current project phase from cognitive-os.yaml
 #   check_private_mode              — exit 0 if private mode is active
@@ -55,21 +56,125 @@ require_tool() {
   exit 0
 }
 
-# ─── resolve_session_dir ─────────────────────────────────────────────────────
-# Echoes the session-scoped metrics directory if a session is active,
-# otherwise echoes the global metrics directory.
-# Creates the directory if it doesn't exist.
+# ─── cos_session_id ──────────────────────────────────────────────────────────
+# Echoes the id of the session this hook process belongs to, or the empty
+# string when it cannot be established. NEVER consumes stdin.
+#
+# 2026-08-19 — por que existe esta funcion. La resolucion de identidad vivia
+# inline dentro de resolve_session_dir() y su unico fallback era leer
+# `.current-session-$$`, un archivo que escribe hooks/session-init.sh:223 con
+# SU PROPIO PID. Como el PID del lector nunca es el del escritor, ningun
+# proceso distinto de session-init podia resolver la sesion: medido, 8.887
+# eventos de hooks que creen segregar cayeron al directorio global el
+# 2026-08-19 y 0 a los seis .cognitive-os/sessions/*/metrics/ (que existen
+# vacios solo porque session-init.sh:21 los crea con mkdir -p al abrir la
+# sesion). Mismo defecto y mismo dia que hooks/concurrent-write-guard.sh
+# (fix 82969b80f, 1.062 invocaciones sin tomar un lock).
+#
+# El orden replica scripts/_lib/session-id.sh —la primitiva que ya existia para
+# los locks de edicion— y le agrega el idioma del payload del harness, que ya
+# estaba en hooks/orchestrator-skill-invocation-gate.sh:36. No se inventa
+# mecanismo nuevo.
+#
+# Restriccion dura: los pasos 2 y 3 leen payload YA leido. resolve_session_dir
+# se llama ANTES del `cat` de stdin en packages/prompt-quality-gate/hooks/
+# prompt-quality.sh:27 y packages/verification-audit/hooks/result-truncator.sh:27;
+# si esta funcion llamara a read_stdin_json les vaciaria stdin y los romperia.
+cos_session_id() {
+  local sid=""
 
-resolve_session_dir() {
-  local metrics_dir="$_PROJECT_DIR/.cognitive-os/metrics"
-  local session_id="${COGNITIVE_OS_SESSION_ID:-}"
+  # 1. Env explicito: override canonico COS primero, despues cada harness.
+  #
+  # CLAUDE_CODE_SESSION_ID es la variable REAL y documentada del arnes
+  # (env-vars.md:339): "Set automatically to the current session ID in Bash and
+  # PowerShell tool subprocesses, hook command subprocesses ... this matches the
+  # session_id field in the hook JSON input". Verificada presente en el entorno:
+  #   env | grep CLAUDE_CODE_SESSION_ID   ->   93e6e34f-...  (2026-08-19)
+  #
+  # CLAUDE_SESSION_ID -sin CODE- NO EXISTE: 0 ocurrencias en env-vars.md. Se
+  # conserva ultima en la cadena solo porque el repo la nombra en ~101 lugares y
+  # sacarla de aca no arregla ninguno; nunca resuelve nada.
+  if [ -n "${COGNITIVE_OS_SESSION_ID:-}" ]; then printf '%s' "$COGNITIVE_OS_SESSION_ID"; return 0; fi
+  if [ -n "${CLAUDE_CODE_SESSION_ID:-}" ];  then printf '%s' "$CLAUDE_CODE_SESSION_ID";  return 0; fi
+  if [ -n "${CODEX_SESSION_ID:-}" ];        then printf '%s' "$CODEX_SESSION_ID";        return 0; fi
+  if [ -n "${CLAUDE_SESSION_ID:-}" ];       then printf '%s' "$CLAUDE_SESSION_ID";       return 0; fi
 
-  if [ -z "$session_id" ]; then
-    local session_file="$_PROJECT_DIR/.cognitive-os/sessions/.current-session-$$"
-    [ -f "$session_file" ] && session_id=$(cat "$session_file" 2>/dev/null)
+  if command -v jq >/dev/null 2>&1; then
+    # 2. Payload del harness ya cacheado por read_stdin_json (no consume stdin).
+    if [ "${_STDIN_READ:-false}" = "true" ] && [ -n "${_STDIN_JSON:-}" ]; then
+      sid=$(printf '%s' "$_STDIN_JSON" | jq -r '.session_id // empty' 2>/dev/null)
+      if [ -n "$sid" ]; then printf '%s' "$sid"; return 0; fi
+    fi
+    # 3. Hooks que hacen su propio INPUT="$(cat)" antes de llamar.
+    if [ -n "${INPUT:-}" ]; then
+      sid=$(printf '%s' "$INPUT" | jq -r '.session_id // empty' 2>/dev/null)
+      if [ -n "$sid" ]; then printf '%s' "$sid"; return 0; fi
+    fi
   fi
 
-  if [ -n "$session_id" ] && [ -d "$_PROJECT_DIR/.cognitive-os/sessions/$session_id" ]; then
+  # 4. Marcador legacy por PID. Solo resuelve dentro de session-init; se
+  #    conserva porque scripts/commit_provenance.py todavia lo lee.
+  local session_file="$_PROJECT_DIR/.cognitive-os/sessions/.current-session-$$"
+  if [ -f "$session_file" ]; then
+    sid=$(tr -d '\n' < "$session_file" 2>/dev/null)
+    if [ -n "$sid" ]; then printf '%s' "$sid"; return 0; fi
+  fi
+
+  printf ''
+  return 0
+}
+
+# ─── resolve_session_dir ─────────────────────────────────────────────────────
+# Echoes the session-scoped metrics directory if a session is active AND
+# per-session metrics are enabled, otherwise echoes the global metrics
+# directory. Creates the directory if it doesn't exist.
+#
+# COS_SESSION_SCOPED_METRICS=1 habilita la rama por sesion. Esta APAGADA por
+# defecto a proposito, y el motivo no es cautela generica: encender la
+# segregacion hoy pierde datos.
+#
+#   a) La ruta de merge esta muerta. hooks/session-cleanup.sh es quien devuelve
+#      las metricas de sesion al global (Step 1, merge_metrics_on_exit: true) y
+#      resuelve la sesion con el MISMO `.current-session-$$` imposible
+#      (session-cleanup.sh:18). Metricas por sesion + merge que nunca corre =
+#      13 archivos .jsonl que los consumidores del global dejan de ver
+#      (skill-metrics.jsonl tiene 45 referencias en el repo; truncation-events
+#      12; aci-observations 14).
+#   b) Arreglar ese merge tampoco es libre: session-cleanup esta registrado en
+#      Stop, que dispara UNA VEZ POR TURNO, y con cleanup_on_exit: true termina
+#      borrando el directorio de sesion (session-cleanup.sh:125) y soltando los
+#      locks de la sesion (:118). Hoy no destruye nada solo porque el mismo bug
+#      de identidad lo hace salir en el `exit 0` de la linea 26.
+#
+# Es decir: la identidad ya se resuelve bien (cos_session_id), y el redirect
+# queda detras del switch hasta que Stop-vs-SessionEnd este resuelto.
+#
+#   c) Hay DOS espacios de nombres de sesion conviviendo en
+#      .cognitive-os/sessions/. hooks/session-init.sh:17 se INVENTA un id
+#      (`$(date +%s)-$$-<rand>`, p.ej. 1787183298-51467-3fe05b4a) en vez de
+#      adoptar el del arnes, y por eso hacia falta un archivo marcador. Al lado,
+#      con el id real del arnes (CLAUDE_CODE_SESSION_ID), hay un directorio vivo
+#      -93e6e34f-a5b1-4921-a480-a36496b3c566, 209 entradas, escrito ahora mismo-
+#      que otro componente si usa. cos_session_id devuelve el del ARNES, que es
+#      el unico que todo proceso puede derivar solo. Reconciliar session-init
+#      con ese id es la continuacion natural de este arreglo y NO se hizo aca:
+#      mueve active-sessions.json, session-cleanup y commit_provenance.
+#
+# Compatibilidad: cuando COGNITIVE_OS_SESSION_ID viene seteado explicitamente
+# —la unica via que funcionaba antes de este cambio— la rama por sesion sigue
+# activa sin necesidad del switch, para no alterar comportamiento existente.
+resolve_session_dir() {
+  local metrics_dir="$_PROJECT_DIR/.cognitive-os/metrics"
+  local session_id
+  session_id="$(cos_session_id)"
+
+  local scoped="${COS_SESSION_SCOPED_METRICS:-}"
+  if [ -z "$scoped" ] && [ -n "${COGNITIVE_OS_SESSION_ID:-}" ]; then
+    scoped="1"
+  fi
+
+  if [ "$scoped" = "1" ] && [ -n "$session_id" ] \
+     && [ -d "$_PROJECT_DIR/.cognitive-os/sessions/$session_id" ]; then
     local session_metrics="$_PROJECT_DIR/.cognitive-os/sessions/$session_id/metrics"
     mkdir -p "$session_metrics" 2>/dev/null
     echo "$session_metrics"
