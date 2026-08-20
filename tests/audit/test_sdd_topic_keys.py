@@ -19,6 +19,14 @@ LEGACY_ALLOWED = {
     "docs/02-Decisions/adrs/ADR-128-data-layer-integrity-fixes.md",
     # MOC referencing legacy sdd/{change}/{phase} key format for human navigation
     "docs/00-MOCs/workflow.md",
+    # A dated daily report, not a living instruction. The match is inside a
+    # table cell CITING the Engram coupling of the sdd-* skills as the reason
+    # they are justified against spec-kit; the report records what was true on
+    # 2026-08-19. Editing it to satisfy this gate would falsify the record, and
+    # the gate exists so nobody is TAUGHT the legacy key, which a dated report
+    # does not do. Listed by name, not by directory: the next report that
+    # carries the pattern still has to be justified one by one.
+    "docs/06-Daily/reports/reinvencion-skills-rules-2026-08-19.md",
 }
 SCAN_ROOTS = ("skills", "docs", "rules")
 LEGACY_PATTERNS = ("sdd/{change-name}/", "sdd/{change}/")

@@ -1,5 +1,8 @@
 <!-- SCOPE: both -->
+<!-- TIER: 1 -->
 # Procedencia de los números
+
+## Rule
 
 > **Ningún número viaja sin el comando que lo produce.** No "lo verifiqué" — el
 > comando, tal que otro pueda correrlo y obtener el mismo número. Si no lo hay,
@@ -84,3 +87,11 @@ fuente, el mejor ejemplo del repo).
 Toda afirmación con un número. Especialmente las que sostienen una decisión:
 recortar, borrar, registrar, desregistrar, mover un presupuesto. Un número
 decorativo no la necesita; uno que decide algo, sí.
+
+## Contextual Trigger
+
+Aplica cada vez que una respuesta, informe, ticket o mensaje de commit vaya a
+llevar un número: cobertura, latencia, cantidad de hooks, filas de telemetría,
+costo, porcentaje. También al repetir un número que vino en un encargo: quien
+lo repite lo adopta. Y antes de reimplementar un conteo que ya tiene
+instrumento — lo que se pierde al reimplementarlo es la capa de incertidumbre.

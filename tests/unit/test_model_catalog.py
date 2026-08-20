@@ -328,7 +328,12 @@ class TestAllHardcodedModelsInCatalog:
     # Patterns that look like model IDs in Python source.
     _MODEL_ID_PATTERN = re.compile(
         r"""(?:"|')"""                          # opening quote
-        r"""(claude-[a-z0-9.-]+"""              # claude-*
+        # `claude-` alone is not a model ID: the repo also names harness
+        # surfaces that way (`claude-settings`, the key for .claude/settings.json).
+        # A real Claude ID always carries a family word or a version digit, so
+        # require one. Recall is pinned by the test below, which walks the
+        # catalog: narrowing this until a real ID stops matching fails there.
+        r"""(claude-(?=[a-z0-9.-]*(?:opus|sonnet|haiku|instant|\d))[a-z0-9.-]+"""
         r"""|gpt-4o"""                          # gpt-4o
         r"""|gemini-[\d.]+-pro"""               # gemini-*-pro
         r"""|deepseek-r1"""                     # deepseek-r1
@@ -340,6 +345,48 @@ class TestAllHardcodedModelsInCatalog:
         r""")"""
         r"""(?:"|')""",                         # closing quote
     )
+
+    # Found by the recall pin below, 2026-08-20: ModelCatalog carries an entry
+    # that is not a model. `claude-shell-snapshot-repo-scan` is declared at
+    # cos_lib/model_catalog.py:132 and consumed by cos_lib/orphan_process_audit.py
+    # as a PROCESS label, not as something anyone dispatches to. It is excluded
+    # here by name rather than by widening the pattern back out, so the pattern
+    # keeps rejecting `claude-settings` and the anomaly stays visible instead of
+    # being absorbed. Removing it from the catalog is a change to cos_lib and to
+    # the orphan audit that consumes it -- an operator call, not this test's.
+    _CATALOG_ENTRIES_THAT_ARE_NOT_MODELS = frozenset({
+        "claude-shell-snapshot-repo-scan",
+    })
+
+    def test_model_id_pattern_matches_every_claude_alias_in_the_catalog(self) -> None:
+        """Recall, so the narrowing above cannot quietly go blind.
+
+        The pattern was tightened to stop matching `claude-settings`. The way
+        that fix turns into a cheap green is by tightening until it matches
+        almost nothing, and no assertion here would have noticed. This walks the
+        catalog instead: every `claude-*` alias it knows must still be found.
+        """
+        aliases = [a for a in ModelCatalog.all_aliases() if a.startswith("claude-")]
+        assert aliases, "catalog exposes no claude-* alias; this test is vacuous"
+        missed = [
+            a for a in aliases
+            if a not in self._CATALOG_ENTRIES_THAT_ARE_NOT_MODELS
+            and not self._MODEL_ID_PATTERN.fullmatch(f'"{a}"')
+        ]
+        assert not missed, f"pattern no longer recognises real model IDs: {missed}"
+        # The exclusion has to keep naming something, or it is a free slot.
+        stale = [
+            a for a in self._CATALOG_ENTRIES_THAT_ARE_NOT_MODELS
+            if a not in ModelCatalog.all_aliases()
+        ]
+        assert not stale, f"listed as a non-model catalog entry but gone: {stale}"
+
+    def test_model_id_pattern_ignores_harness_surface_names(self) -> None:
+        """Precision, named. These are not models and never were."""
+        for surface in ("claude-settings", "claude-code", "claude-plugin"):
+            assert not self._MODEL_ID_PATTERN.fullmatch(f'"{surface}"'), (
+                f"{surface!r} is a harness surface, not a model ID"
+            )
 
     def test_all_lib_model_ids_in_catalog(self) -> None:
         lib_dir = Path(__file__).resolve().parent.parent.parent / "cos_lib"
