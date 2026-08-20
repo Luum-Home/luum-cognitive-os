@@ -72,6 +72,9 @@ _cos_bypass_legacy_alias_allows() {
     direct_main)
       _cos_bypass_truthy "${COS_ALLOW_DIRECT_MAIN:-}"
       ;;
+    research_compliance)
+      _cos_bypass_truthy "${COS_ALLOW_RESEARCH_COMPLIANCE_BYPASS:-}"
+      ;;
     unproven_scope_both)
       _cos_bypass_truthy "${COS_ALLOW_UNPROVEN_SCOPE_BOTH:-}"
       ;;

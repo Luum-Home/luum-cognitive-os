@@ -42,6 +42,10 @@ _log() {
 }
 
 INPUT="$(cat 2>/dev/null || true)"
+# ADR-241: resolvedor compartido de bypass. Tolerante a su ausencia — un
+# consumidor que shippea el hook sin _lib/ pierde la via 2, no el hook entero.
+[ -f "$(dirname "$0")/_lib/bypass-resolver.sh" ] && source "$(dirname "$0")/_lib/bypass-resolver.sh"
+
 CMD="$(printf '%s' "$INPUT" | python3 -c 'import json,sys
 try: print(json.load(sys.stdin).get("tool_input",{}).get("command", ""))
 except Exception: pass' 2>/dev/null || true)"
@@ -60,9 +64,36 @@ fi
 # Este guard tenia el texto del comando extraido en $CMD tres lineas mas arriba y
 # no lo consultaba. hooks/protected-config-write-guard.sh ya habia aprendido la
 # leccion y la documenta en su propia cabecera; esto la adopta.
-if [ "${COS_ALLOW_RESEARCH_COMPLIANCE_BYPASS:-0}" = "1" ] \
-   || [[ "$CMD" == *"COS_ALLOW_RESEARCH_COMPLIANCE_BYPASS=1"* ]]; then
-  _log "{\"timestamp\":\"$TS\",\"action\":\"bypass\",\"reason\":\"COS_ALLOW_RESEARCH_COMPLIANCE_BYPASS=1\"}"
+# Tres vias, y la del medio es la unica escribible A MITAD DE SESION:
+#
+#   1. `export COS_ALLOW_RESEARCH_COMPLIANCE_BYPASS=1` antes de lanzar el arnes.
+#   2. La clave `research_compliance` en COS_BYPASS o en el archivo de runtime
+#      .cognitive-os/runtime/bypass.env, via el resolvedor compartido de ADR-241
+#      (hooks/_lib/bypass-resolver.sh, releido en cada invocacion).
+#   3. El token en POSICION DE PREFIJO dentro del texto del comando.
+#
+# La 3 estaba escrita como `[[ "$CMD" == *"TOKEN"* ]]` — coincidencia en
+# cualquier parte — y eso SE AUTO-CONCEDE: `echo 'usar TOKEN=1' >> nota.md && <op>`
+# aprobaba la operacion por el solo hecho de escribir *sobre* la variable. Es
+# palabra por palabra el primer error que ya habia pagado
+# hooks/protected-config-write-guard.sh:40-46, y el comentario de arriba decia
+# "esto la adopta" habiendo adoptado la mitad: leer del texto, sin el ancla que
+# es lo que vuelve segura a esa lectura. El ancla de abajo es la suya.
+_research_bypass_granted() {
+  [ "${COS_ALLOW_RESEARCH_COMPLIANCE_BYPASS:-0}" = "1" ] && { printf 'env'; return 0; }
+  if declare -f cos_bypass_allows >/dev/null 2>&1 \
+     && cos_bypass_allows research_compliance; then
+    printf 'resolver'; return 0
+  fi
+  [ -n "$CMD" ] \
+    && printf '%s' "$CMD" \
+      | grep -Eq '(^|[;&|(]|&&|\|\|)[[:space:]]*COS_ALLOW_RESEARCH_COMPLIANCE_BYPASS=1[[:space:]]' \
+    && { printf 'command-token'; return 0; }
+  return 1
+}
+
+if _RESEARCH_BYPASS_SOURCE="$(_research_bypass_granted)"; then
+  _log "{\"timestamp\":\"$TS\",\"action\":\"bypass\",\"source\":\"$_RESEARCH_BYPASS_SOURCE\",\"reason\":\"COS_ALLOW_RESEARCH_COMPLIANCE_BYPASS=1\"}"
   exit 0
 fi
 
