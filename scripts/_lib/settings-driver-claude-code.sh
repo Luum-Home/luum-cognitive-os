@@ -439,6 +439,7 @@ cc_driver_emit() {
       "hooks/subagent-budget-enforcer.sh" "false" \
       "hooks/rate-limit-detector.sh"    "false" \
       "hooks/tool-sequence-capture.sh"  "false" \
+      "hooks/protected-config-write-detector.sh" "false" \
     )
   fi
 

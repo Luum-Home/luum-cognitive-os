@@ -1,7 +1,7 @@
 {
   "_profile": "standard",
   "_description": "Standard security profile \u2014 balanced safety and speed. Recommended for daily development.",
-  "_hook_count": 154,
+  "_hook_count": 155,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -476,6 +476,10 @@
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/cross-session-event-emit.sh\"",
             "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/protected-config-write-detector.sh\""
           }
         ]
       },
