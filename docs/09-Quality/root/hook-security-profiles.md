@@ -222,7 +222,6 @@ These hooks are excluded because they serve niche use cases or require explicit 
 | Hook | Why excluded |
 |------|-------------|
 | `mcp-scan.sh` | SessionStart -- requires mcp-scan installation, niche use case |
-| `singularity-check.sh` | SessionStart -- OFF by default, requires SINGULARITY_CHECK=true |
 | `agent-bus-monitor.sh` | SessionStart -- requires AGENT_BUS_ENABLED=true + Valkey |
 | `metrics-calibrator-trigger.sh` | SessionStart -- internal optimization, not security-relevant |
 | `tool-discovery-trigger.sh` | SessionStart -- internal optimization |

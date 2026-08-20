@@ -586,7 +586,7 @@ efficiency:
   profile: default               # default | full  (ADR-093: collapsed 3-tier system)
   profiles:
     default:
-      description: "10 curated core skills, ~29 standard hooks, 14 core rules. ADR-093 vanilla default."
+      description: "10 curated core skills, 158 projected hook commands (15 synchronous per Bash tool call), 14 core rules. ADR-093 vanilla default, trimmed 2026-08-19."
       rules_loading: core_rules
       hooks: default
       capability_level: 3

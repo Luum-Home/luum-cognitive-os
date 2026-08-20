@@ -27,7 +27,7 @@ _lib/normalize-stdin.sh | LIBRARY: stdin normalization helpers sourced by other 
 _lib/remediation.sh | LIBRARY: remediation helpers sourced by auto-repair-dispatcher.sh
 _lib/safe-jsonl.sh | LIBRARY: safe JSONL write helpers sourced by other hooks
 _lib/semantic-search.sh | LIBRARY: semantic search helpers sourced by other hooks
-_lib/singularity-suggestion.sh | LIBRARY: singularity suggestion helpers sourced by singularity-check.sh
+_lib/singularity-suggestion.sh | LIBRARY: singularity suggestion helpers sourced by session-init.sh
 _lib/timing.sh | LIBRARY: timing/latency helpers sourced by other hooks
 _lib/tuning.sh | LIBRARY: performance-tuning helpers sourced by other hooks
 
@@ -51,7 +51,6 @@ cognitive-os-health.sh | MANUAL_TRIGGER: health-check report for the full OS; ru
 usage-health-check.sh | MANUAL_TRIGGER: reports token/rate usage; invoked on demand, not on every event
 session-sanity.sh | CONDITIONAL: registered as SessionStart hook in .claude/settings.json, .codex/hooks.json, and cognitive-os.yaml; skipped when those harnesses are inactive
 session-hygiene.sh | MANUAL_TRIGGER: cleanup script for stale session artefacts; run on demand
-singularity-check.sh | MANUAL_TRIGGER: checks MAPE-K loop state; invoked by /singularity skill, not by Claude events
 
 # ── Future / unregistered gates (FUTURE) ────────────────────────────────────
 # NOTE: The following hooks were moved OUT of this section when registered (hook-sweep-2026-04-20):
@@ -87,7 +86,6 @@ confidence-gate-llm.sh | DEPRECATED: LLM-based variant; confidence-gate.sh (rule
 prompt-quality-llm.sh | DEPRECATED: LLM-based variant; prompt-quality.sh (rule-based) is the registered version
 
 # ── Infrastructure / setup scripts (INFRA) ──────────────────────────────────
-session-state-save.sh | INFRA: saves session state to disk; invoked by session-cleanup.sh or manually; not a standalone registered hook
 resource-check.sh | INFRA: checks resource limits before spawning; called programmatically by rate-limiter.sh, not registered as independent hook
 infra-intent-detector.sh | INFRA: detects infrastructure-intent in prompts; called by agent-prelaunch.sh, not registered independently
 
@@ -182,3 +180,6 @@ ai-provider-identity-guard.sh | CONDITIONAL: PostToolUse Edit/Write identity gua
 session-end-cleanup.sh | MANUAL_TRIGGER: session cleanup wrapper for cos-cleanup tier-1; invoked explicitly or by future Stop profile, not default matcher.
 subagent-input-schema-validator.sh | CONDITIONAL: ADR-038 Wave 2 input-schema validator is opt-in/profile-scoped until low false-positive rate is proven
 telemetry-budget-violator-detect.sh | MANUAL_TRIGGER: ADR-304 control-plane audit hook invoked by telemetry aggregate/hourly lanes, not a default Claude lifecycle matcher
+tool-sequence-capture.sh | CONDITIONAL: projected only under PROFILE=full (settings driver post_all) and in templates/security-profiles/paranoid.json; trimmed from default 2026-08-19 because tool-sequences.jsonl feeds only cos_lib/skill_synthesizer.py. Same category as aci-observation-capture.sh above.
+rate-limit-drain.sh | CONDITIONAL: projected only under PROFILE=full, where its producer (the rate limiter hook) is also projected; trimmed from default 2026-08-19 because in default that producer is off and the drain reads a queue nothing writes.
+post-git-orphan-notifier.sh | CONDITIONAL: projected only under PROFILE=full and in templates/security-profiles/paranoid.json; trimmed from default 2026-08-19. Advisory-only hook (never blocks); same detection on demand via scripts/orphan_commit_scan.py.

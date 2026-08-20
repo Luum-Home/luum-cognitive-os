@@ -1,3 +1,145 @@
 {
-  "items": []
+  "items": [
+    {
+      "action": "harden",
+      "item": "hooks:hooks/cos-session-start-projector.sh",
+      "priority": "P1",
+      "reason": "partial/high: events=SessionStart,projected; tested=False; emits_metric=False -> add behavioral test",
+      "source": "primitive-row-audit"
+    },
+    {
+      "action": "demote-or-archive",
+      "item": "hooks:packages/prompt-quality-gate/hooks/prompt-quality.sh",
+      "priority": "P2",
+      "reason": "aspirational/medium: events=unregistered; tested=False; emits_metric=True -> archive, wire, or delete",
+      "source": "primitive-row-audit"
+    },
+    {
+      "action": "demote-or-archive",
+      "item": "skills:.codex/skills/portability-work/SKILL.md",
+      "priority": "P2",
+      "reason": "aspirational/medium: frontmatter=True; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete",
+      "source": "primitive-row-audit"
+    },
+    {
+      "action": "demote-or-archive",
+      "item": "skills:.codex/skills/test-matrix/SKILL.md",
+      "priority": "P2",
+      "reason": "aspirational/medium: frontmatter=True; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete",
+      "source": "primitive-row-audit"
+    },
+    {
+      "action": "demote-or-archive",
+      "item": "metrics:.cognitive-os/metrics/adr-implementation.jsonl",
+      "priority": "P2",
+      "reason": "aspirational/medium: nonempty=False; mentioned=True -> delete, wire producer, or document owner",
+      "source": "primitive-row-audit"
+    },
+    {
+      "action": "demote-or-archive",
+      "item": "metrics:.cognitive-os/metrics/assumptions.jsonl",
+      "priority": "P2",
+      "reason": "aspirational/medium: nonempty=False; mentioned=True -> delete, wire producer, or document owner",
+      "source": "primitive-row-audit"
+    },
+    {
+      "action": "demote-or-archive",
+      "item": "metrics:.cognitive-os/metrics/backlog-reconciliation.jsonl",
+      "priority": "P2",
+      "reason": "aspirational/medium: nonempty=False; mentioned=True -> delete, wire producer, or document owner",
+      "source": "primitive-row-audit"
+    },
+    {
+      "action": "demote-or-archive",
+      "item": "metrics:.cognitive-os/metrics/chaos-weekly.jsonl",
+      "priority": "P2",
+      "reason": "aspirational/medium: nonempty=False; mentioned=False -> delete, wire producer, or document owner",
+      "source": "primitive-row-audit"
+    },
+    {
+      "action": "demote-or-archive",
+      "item": "metrics:.cognitive-os/metrics/decision-depth-gate.jsonl",
+      "priority": "P2",
+      "reason": "aspirational/medium: nonempty=False; mentioned=True -> delete, wire producer, or document owner",
+      "source": "primitive-row-audit"
+    },
+    {
+      "action": "demote-or-archive",
+      "item": "metrics:.cognitive-os/metrics/direct-main-bypass.jsonl",
+      "priority": "P2",
+      "reason": "aspirational/medium: nonempty=False; mentioned=True -> delete, wire producer, or document owner",
+      "source": "primitive-row-audit"
+    },
+    {
+      "action": "demote-or-archive",
+      "item": "metrics:.cognitive-os/metrics/graphify-context-replay-benchmark.jsonl",
+      "priority": "P2",
+      "reason": "aspirational/medium: nonempty=False; mentioned=False -> delete, wire producer, or document owner",
+      "source": "primitive-row-audit"
+    },
+    {
+      "action": "demote-or-archive",
+      "item": "metrics:.cognitive-os/metrics/graphify-token-reduction-smoke.jsonl",
+      "priority": "P2",
+      "reason": "aspirational/medium: nonempty=False; mentioned=False -> delete, wire producer, or document owner",
+      "source": "primitive-row-audit"
+    },
+    {
+      "action": "demote-or-archive",
+      "item": "metrics:.cognitive-os/metrics/install-timing.jsonl",
+      "priority": "P2",
+      "reason": "aspirational/medium: nonempty=False; mentioned=True -> delete, wire producer, or document owner",
+      "source": "primitive-row-audit"
+    },
+    {
+      "action": "demote-or-archive",
+      "item": "metrics:.cognitive-os/metrics/maintainer-decision-impact.jsonl",
+      "priority": "P2",
+      "reason": "aspirational/medium: nonempty=False; mentioned=True -> delete, wire producer, or document owner",
+      "source": "primitive-row-audit"
+    },
+    {
+      "action": "demote-or-archive",
+      "item": "metrics:.cognitive-os/metrics/plan-claim-validator.jsonl",
+      "priority": "P2",
+      "reason": "aspirational/medium: nonempty=False; mentioned=True -> delete, wire producer, or document owner",
+      "source": "primitive-row-audit"
+    },
+    {
+      "action": "demote-or-archive",
+      "item": "metrics:.cognitive-os/metrics/repair-dispatch.jsonl",
+      "priority": "P2",
+      "reason": "aspirational/medium: nonempty=False; mentioned=True -> delete, wire producer, or document owner",
+      "source": "primitive-row-audit"
+    },
+    {
+      "action": "demote-or-archive",
+      "item": "metrics:.cognitive-os/metrics/repair-outcomes.jsonl",
+      "priority": "P2",
+      "reason": "aspirational/medium: nonempty=False; mentioned=True -> delete, wire producer, or document owner",
+      "source": "primitive-row-audit"
+    },
+    {
+      "action": "demote-or-archive",
+      "item": "metrics:.cognitive-os/metrics/session-audit.jsonl",
+      "priority": "P2",
+      "reason": "aspirational/medium: nonempty=False; mentioned=True -> delete, wire producer, or document owner",
+      "source": "primitive-row-audit"
+    },
+    {
+      "action": "demote-or-archive",
+      "item": "metrics:.cognitive-os/metrics/so-impact-eval-trigger.jsonl",
+      "priority": "P2",
+      "reason": "aspirational/medium: nonempty=False; mentioned=True -> delete, wire producer, or document owner",
+      "source": "primitive-row-audit"
+    },
+    {
+      "action": "add-proof-link",
+      "item": "README.md:198",
+      "priority": "P2",
+      "reason": "- self-hosting for your own organization;",
+      "source": "claim-proof-audit"
+    }
+  ],
+  "reproduce": ".venv/bin/python3 scripts/reduction_backlog.py"
 }

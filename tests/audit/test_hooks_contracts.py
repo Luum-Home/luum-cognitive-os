@@ -127,8 +127,6 @@ KNOWN_ORPHANS = {
     "release-guard.sh",
     "resource-check.sh",
     "session-knowledge-extractor.sh",
-    "session-state-save.sh",
-    "singularity-check.sh",
     "skill-feedback-tracker.sh",
     "skill-tracker.sh",
     "sync-to-repo.sh",

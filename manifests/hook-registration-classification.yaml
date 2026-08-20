@@ -340,18 +340,6 @@
       "next_action": "Revisit after memory lifecycle consolidation."
     },
     {
-      "path": "hooks/session-state-save.sh",
-      "status": "future",
-      "rationale": "Session state checkpoint overlaps current session lifecycle/backlog files.",
-      "next_action": "Consolidate with session lifecycle before projection."
-    },
-    {
-      "path": "hooks/singularity-check.sh",
-      "status": "conditional_opt_in",
-      "rationale": "Explicitly disabled unless SINGULARITY_CHECK=true.",
-      "next_action": "Keep opt-in."
-    },
-    {
       "path": "hooks/sync-to-repo.sh",
       "status": "manual_trigger",
       "rationale": "Syncing .cognitive-os to another repo has git side effects and requires COGNITIVE_OS_REPO_PATH.",

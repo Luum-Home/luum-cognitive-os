@@ -2051,20 +2051,6 @@ evidence:
   - tests/red_team/portability/test_os_only_scope_family.py
   rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane
     classification for internal COS primitives.
-- primitive: hooks/session-state-save.sh
-  harnesses:
-  - shell-ci
-  tests:
-  - tests/red_team/portability/test_os_only_scope_family.py
-  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane
-    classification for internal COS primitives.
-- primitive: hooks/singularity-check.sh
-  harnesses:
-  - shell-ci
-  tests:
-  - tests/red_team/portability/test_os_only_scope_family.py
-  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane
-    classification for internal COS primitives.
 - primitive: hooks/skill-drift-detector.sh
   harnesses:
   - shell-ci

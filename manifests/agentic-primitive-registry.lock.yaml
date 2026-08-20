@@ -2691,16 +2691,6 @@ primitives:
   - .claude/settings.json
   - hooks/session-startup-protocol.sh
   sha256: b3b83dc6a2aa094233b6528451af906aa9d01ede851bbaa8a6bacd2891888159
-- id: hooks/session-state-save.sh
-  kind: hook
-  owner_adr: ADR-314
-  lifecycle_state: advisory
-  maturity: advisory
-  distribution: maintainer
-  runtime_projection: false
-  projection_targets:
-  - hooks/session-state-save.sh
-  sha256: 5fa49a1eaf29cd1c97fa6fa65212596a59c5059760d2e59ea72d2f8cc9b0c2a9
 - id: hooks/session-summary-reminder.sh
   kind: hook
   owner_adr: ADR-126
@@ -2745,16 +2735,6 @@ primitives:
   - .claude/settings.json
   - hooks/session-wrapup-trigger.sh
   sha256: cd3b1fe7ee07dfc0bb9f378468c314af4e15fe718db3b775ce8b148da550c1b9
-- id: hooks/singularity-check.sh
-  kind: hook
-  owner_adr: ADR-314
-  lifecycle_state: advisory
-  maturity: advisory
-  distribution: maintainer
-  runtime_projection: true
-  projection_targets:
-  - hooks/singularity-check.sh
-  sha256: 19db6a3efb76648b844d59ed0af5d056fd3af76381ef5fdbe4f790a7a19c5b5a
 - id: hooks/skill-drift-detector.sh
   kind: hook
   owner_adr: ADR-311

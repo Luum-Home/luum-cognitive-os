@@ -801,6 +801,7 @@ hooks:
     - tests/chaos/test_multi_ide_swarm_safety.py
     - tests/contracts/test_primitive_harness_coverage_contract.py
     - tests/contracts/test_primitive_harness_partials_contract.py
+    - tests/hooks/test_concurrent_write_guard_takes_a_lock.py
     - tests/integration/test_compaction_resilience.py
     - tests/unit/test_concurrent_agent_safety_status.py
     - tests/unit/test_concurrent_write_guard_behavior.py

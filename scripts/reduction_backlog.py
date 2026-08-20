@@ -25,6 +25,12 @@ class BacklogItem:
     reason: str
 
 
+
+# El numero no viaja sin el comando que lo reproduce. Quien lee este reporte
+# no tiene que salir a buscar el instrumento: leer el productor cuesta una
+# llamada y consumir el numero cuesta cero, y el camino barato siempre gana.
+REPRODUCE = ".venv/bin/python3 scripts/reduction_backlog.py"
+
 def build_backlog(row_audit: dict, claim_audit: dict) -> list[BacklogItem]:
     items: list[BacklogItem] = []
     for row in row_audit.get("rows", []):
@@ -80,7 +86,10 @@ def write_markdown(items: list[BacklogItem], path: Path) -> None:
         reason = item.reason.replace("|", "\\|")[:260]
         lines.append(f"| {item.priority} | {item.action} | {item.source} | `{item.item}` | {reason} |")
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    path.write_text(
+        "\n".join(lines[:1] + ["", f"> verify: {REPRODUCE}"] + lines[1:]) + "\n",
+        encoding="utf-8",
+    )
 
 
 def parse_args() -> argparse.Namespace:
@@ -102,7 +111,7 @@ def main() -> int:
     args = parse_args()
     root = Path(args.project_dir).resolve()
     items = build_backlog(load_json(root / args.row_audit), load_json(root / args.claim_audit))
-    payload = {"items": [asdict(item) for item in items]}
+    payload = {"reproduce": REPRODUCE, "items": [asdict(item) for item in items]}
     json_path = root / args.json_out
     md_path = root / args.md_out
     json_path.parent.mkdir(parents=True, exist_ok=True)

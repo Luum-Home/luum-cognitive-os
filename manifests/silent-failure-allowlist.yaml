@@ -2108,16 +2108,6 @@ entries:
   transferability_state: maintainer_cache
   shape_b_action: 'Shape B blocker: requires second-maintainer or external review
     before this allowlist entry can be treated as transferable.'
-- path: hooks/session-state-save.sh
-  max_occurrences: 1
-  degradation_class: legacy_audited
-  rationale: Legacy silent degradation remains audited but needs manual classification
-    before promotion.
-  owner: original-maintainer
-  reviewed_on: '2026-05-03'
-  transferability_state: maintainer_cache
-  shape_b_action: 'Shape B blocker: requires second-maintainer or external review
-    before this allowlist entry can be treated as transferable.'
 - path: hooks/session-summary-reminder.sh
   max_occurrences: 11
   degradation_class: probe_best_effort
@@ -2140,16 +2130,6 @@ entries:
     may re-review before owning this surface.'
 - path: hooks/session-wrapup-trigger.sh
   max_occurrences: 4
-  degradation_class: legacy_audited
-  rationale: Legacy silent degradation remains audited but needs manual classification
-    before promotion.
-  owner: original-maintainer
-  reviewed_on: '2026-05-03'
-  transferability_state: maintainer_cache
-  shape_b_action: 'Shape B blocker: requires second-maintainer or external review
-    before this allowlist entry can be treated as transferable.'
-- path: hooks/singularity-check.sh
-  max_occurrences: 2
   degradation_class: legacy_audited
   rationale: Legacy silent degradation remains audited but needs manual classification
     before promotion.

@@ -9,7 +9,12 @@ from __future__ import annotations
 
 import pytest
 
-from cos_lib.measurement import Census, CensusError, WindowMismatch
+from cos_lib.measurement import (
+    Census,
+    CensusError,
+    NotReproducible,
+    WindowMismatch,
+)
 
 
 def _censo(**kw):
@@ -18,6 +23,7 @@ def _censo(**kw):
         sources=("fuente",),
         buckets={"ok": 1},
         blind={"ninguna": 0},
+        how="python3 -m pytest tests/unit/test_measurement_census.py",
     )
     base.update(kw)
     return Census(**base)
@@ -56,6 +62,7 @@ def test_la_fraccion_es_sobre_lo_medible_no_sobre_la_poblacion() -> None:
         sources=("skill-suggestion.jsonl", "skill-invocations.jsonl"),
         buckets={"CLOSED": 2, "BYPASSED": 0, "UNTRACED": 10},
         blind={"instrumento mudo en la ventana": 90},
+        how="python3 -m pytest tests/unit/test_measurement_census.py",
     )
     assert c.population == 102
     assert c.measurable == 12
@@ -71,6 +78,7 @@ def test_un_cero_bajo_ceguera_alta_no_es_un_hallazgo() -> None:
         sources=("skill-bypass.jsonl",),
         buckets={"BYPASSED": 0},
         blind={"el productor nunca escribio": 90},
+        how="python3 -m pytest tests/unit/test_measurement_census.py",
     )
     assert c.count("BYPASSED") == 0
     assert c.is_a_finding("BYPASSED") is False
@@ -84,6 +92,7 @@ def test_un_cero_con_visibilidad_completa_si_es_un_hallazgo() -> None:
         sources=("censo completo",),
         buckets={"violaciones": 0},
         blind={"ninguna": 0},
+        how="python3 -m pytest tests/unit/test_measurement_census.py",
     )
     assert c.is_a_finding("violaciones") is True
     assert "no-observación" not in c.describe("violaciones")
@@ -96,6 +105,7 @@ def test_ningun_caso_se_pierde_entre_las_categorias() -> None:
         sources=("transcripts",),
         buckets={"bloqueos reales": 88},
         blind={"banner impreso por un cat, sin is_error": 13},
+        how="python3 -m pytest tests/unit/test_measurement_census.py",
     )
     assert c.population == c.measurable + c.blind_total == 101
 
@@ -121,7 +131,11 @@ def test_afirmar_visibilidad_total_es_una_declaracion_explicita() -> None:
 # ── None, nunca 0.0, cuando no hay nada que medir ───────────────────────────
 def test_poblacion_vacia_devuelve_none_y_no_cero() -> None:
     c = Census(
-        subject="vacio", sources=("f",), buckets={"ok": 0}, blind={"ninguna": 0}
+        subject="vacio",
+        sources=("f",),
+        buckets={"ok": 0},
+        blind={"ninguna": 0},
+        how="python3 -m pytest tests/unit/test_measurement_census.py",
     )
     assert c.blind_ratio is None
     assert c.share("ok") is None
@@ -143,3 +157,22 @@ def test_to_dict_lleva_poblacion_y_ceguera_para_el_consumidor_maquina() -> None:
     for clave in ("population", "measurable", "buckets", "blind", "blind_ratio", "sources"):
         assert clave in d, f"falta {clave}: un consumidor podria publicar el conteo pelado"
     assert d["population"] == 10
+
+
+# ── Procedencia: el numero no viaja sin el comando que lo reproduce ─────────
+def test_un_censo_sin_comando_de_reproduccion_no_se_puede_construir() -> None:
+    with pytest.raises(NotReproducible, match="falta el comando"):
+        _censo(how="   ")
+
+
+def test_una_descripcion_en_prosa_no_pasa_por_comando() -> None:
+    """El verde barato de esta familia: escribir "lo verifiqué" en el campo."""
+    for prosa in ("lo verifiqué a mano", "grepped the file locally", "ver el script"):
+        with pytest.raises(NotReproducible, match="no tiene forma de comando"):
+            _censo(how=prosa)
+
+
+def test_el_comando_viaja_en_la_salida_legible_y_en_la_maquina() -> None:
+    c = _censo(how="scripts/foo.py --json")
+    assert "reproducir: scripts/foo.py --json" in c.render()
+    assert c.to_dict()["how"] == "scripts/foo.py --json"

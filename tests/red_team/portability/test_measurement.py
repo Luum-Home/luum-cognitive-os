@@ -48,6 +48,7 @@ def test_measurement_funciona_desde_una_raiz_arbitraria(tmp_path: Path) -> None:
         sources=("un archivo del proyecto ajeno",),
         buckets={"ok": 1, "mal": 0},
         blind={"ninguna": 0},
+        how="python3 -m pytest tests/red_team/portability/test_measurement.py",
     )
     assert censo.population == 1
     assert censo.share("ok") == 1.0
@@ -72,7 +73,13 @@ def test_no_depende_del_repo_ni_de_su_cwd(tmp_path: Path, monkeypatch) -> None:
     # La garantia central tiene que sobrevivir el viaje: sin ceguera declarada,
     # no hay censo.
     try:
-        mod.Census(subject="x", sources=("f",), buckets={"a": 1}, blind={})
+        mod.Census(
+            subject="x",
+            sources=("f",),
+            buckets={"a": 1},
+            blind={},
+            how="python3 -m pytest tests/red_team/portability/test_measurement.py",
+        )
     except mod.CensusError:
         pass
     else:  # pragma: no cover
@@ -88,6 +95,7 @@ def test_la_ceguera_alta_sigue_avisando_en_el_proyecto_ajeno(tmp_path: Path) -> 
         sources=("telemetria local",),
         buckets={"hallazgos": 0},
         blind={"instrumento sin datos": 40},
+        how="python3 -m pytest tests/red_team/portability/test_measurement.py",
     )
     assert censo.is_a_finding("hallazgos") is False
     assert "no-observación" in censo.describe("hallazgos")
