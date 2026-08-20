@@ -402,4 +402,32 @@ claims:
       observed_2026_08_18: 392.1 MiB used of 400.0 (183.6 registered, 208.5 unregistered)
     required_docs:
       - docs/06-Daily/reports/retention-techo-global-2026-08-18.md
-
+  test_environment_contract:
+    severity: high
+    description: >-
+      A dependency declaration with no consumer is not a missing dependency. The
+      `testing` extra of packages/agent-service/pyproject.toml has declared httpx
+      since 2026-05-20; no install path in this repo reads that file (setup.sh and
+      cos-update.sh operate on the root, CI runs `uv sync --extra testing --locked`
+      on the root), and pytest.ini declares `testpaths = tests`, so those 7 tracked
+      files and their 36 test functions are never collected either. Two stacked
+      disconnections, discovered three months later as a collection-time
+      ModuleNotFoundError. Documentation must not state that running the tests
+      under `tests/` covers every versioned test in the repo: it covers the surface
+      declared in testpaths, and the census names the difference.
+    facts:
+      census: scripts/audit_test_import_resolvability.py
+      gate: tests/contracts/test_test_import_resolvability.py
+      exceptions: manifests/test-import-exceptions.yaml
+      verify_command: python3 scripts/audit_test_import_resolvability.py --gate
+      population_2026_08_20: 2319 tracked test files
+      module_level_unresolvable_2026_08_20: 1 file in 1 directory
+      declared_nowhere_2026_08_20: 0
+      blind_2026_08_20: 43 (40 first-party via sys.path, 3 function-body imports)
+    required_docs:
+      - docs/06-Daily/reports/tests-que-no-corren-donde-viven-2026-08-20.md
+      - manifests/test-import-exceptions.yaml
+    required_phrases:
+      - una declaración de dependencias sin consumidor no es una dependencia faltante
+    forbidden_phrases:
+      - "pytest tests/ corre todos los tests versionados del repo"

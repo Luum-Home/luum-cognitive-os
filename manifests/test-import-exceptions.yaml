@@ -1,0 +1,46 @@
+# SCOPE: os-only
+# Tests versionados cuyos imports de nivel de módulo el entorno del repo NO
+# resuelve, y cuya imposibilidad está ACEPTADA por escrito.
+#
+# Producido y verificado por:
+#   python3 scripts/audit_test_import_resolvability.py --gate
+#   pytest tests/contracts/test_test_import_resolvability.py
+#
+# Contrato: IGUALDAD EXACTA en las dos direcciones.
+#   - una ruta que el censo detecta y no está acá     -> el gate falla
+#   - una ruta que está acá y el censo ya no detecta  -> el gate falla
+# La segunda mitad es la que impide que esto se vuelva un colchón: una excepción
+# que ya no suprime nada es un bug, no una tolerancia.
+#
+# Criterio: una declaración de dependencias sin consumidor no es una dependencia faltante,
+# es un invariante escrito que nada ejecuta.
+#
+# Esto NO es una lista de tests para ignorar. Es la lista de inhabilidades
+# declaradas: cada entrada dice por qué el test no puede correr y cuál es el
+# consumidor que falta para que pueda.
+
+accepted:
+  - path: packages/agent-service/tests/conftest.py
+    missing: [httpx]
+    reason: >-
+      `httpx` SÍ está declarado, en
+      `packages/agent-service/pyproject.toml` -> [project.optional-dependencies]
+      testing. El defecto no es una dependencia faltante: es que esa declaración
+      no tiene ningún consumidor. Ningún camino de instalación del repo lee ese
+      pyproject — `scripts/setup.sh` hace `uv pip install -e ".[dev]"` sobre la
+      raíz, `scripts/cos-update.sh` hace `uv sync` sobre la raíz, y los
+      workflows de CI hacen `uv sync --extra testing --locked`, también sobre la
+      raíz. Verificable con:
+      `grep -rn "uv sync\|uv pip install" scripts/*.sh .github/workflows/*.yml`
+    aggravating: >-
+      `pytest.ini` declara `testpaths = tests`, así que `packages/agent-service/tests`
+      tampoco entra en la colección por defecto del repo. Son dos desconexiones
+      apiladas: instalar httpx a mano no haría correr estos tests igual.
+    consumer_missing: algo que lea los extras `testing` de packages/*/pyproject.toml
+    how_to_resolve: >-
+      Dos pasos, ninguno de los cuales es "instalalo en tu venv": (1) agregar
+      `httpx>=0.27` al extra `testing` de la raíz y re-lockear (`uv lock`), o
+      hacer que el install itere `packages/*/pyproject.toml`; (2) incorporar
+      `packages/*/tests` a `testpaths` o a una lane propia. Hasta que (1) y (2)
+      existan, esta entrada es la declaración de que estos 7 tests no corren.
+    since: 2026-08-20

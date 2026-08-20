@@ -39,7 +39,7 @@ ACC consumes the report through the `documentation_truth` adapter.
 
 <!-- GENERATED:documentation-truth:documentation_truth_control:start -->
 Generated documentation truth: documentation truth control.
-Declared truth claims (10): claude_code_hook_registration, consumer_projection_harnesses, cos_init_flag_surface, disk_ceiling_single_source, documentation_truth_control, payload_canary_determinism, primitive_authority_write_effects, session_pending_protocol, subprocess_timeout_discipline, volatile_number_prose.
+Declared truth claims (11): claude_code_hook_registration, consumer_projection_harnesses, cos_init_flag_surface, disk_ceiling_single_source, documentation_truth_control, payload_canary_determinism, primitive_authority_write_effects, session_pending_protocol, subprocess_timeout_discipline, test_environment_contract, volatile_number_prose.
 Contract surfaces: manifests/documentation-truth-claims.yaml; scripts/documentation_truth_audit.py; ACC adapter documentation_truth.
 Report surfaces: docs/06-Daily/reports/documentation-truth-latest.json; docs/06-Daily/reports/documentation-truth-latest.md.
 <!-- GENERATED:documentation-truth:documentation_truth_control:end -->
