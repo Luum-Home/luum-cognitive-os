@@ -55,7 +55,13 @@ fi
 
 # Read lock timeout from config (default 300 seconds = 5 minutes)
 LOCK_TIMEOUT=300
-CONFIG_FILE="$PROJECT_DIR/.cognitive-os/cognitive-os.yaml"
+# Se leia SOLO `.cognitive-os/cognitive-os.yaml`, que no existe en ningun
+# checkout de este repo: el default de arriba regia siempre y la perilla era
+# decorativa. El canonico es el de la raiz; el de `.cognitive-os` queda como
+# fallback, misma forma que hooks/parry-scan.sh y session-start-worktree-nudge.sh.
+# Medido con `python3 scripts/config_knob_census.py --prove`.
+CONFIG_FILE="$PROJECT_DIR/cognitive-os.yaml"
+[ ! -f "$CONFIG_FILE" ] && CONFIG_FILE="$PROJECT_DIR/.cognitive-os/cognitive-os.yaml"
 if [ -f "$CONFIG_FILE" ]; then
   # El `s/#.*$//` corta el comentario de fin de linea ANTES del trim: la linea
   # canonica es `lock_timeout_seconds: 300        # Lock auto-expires after 5 minutes`,

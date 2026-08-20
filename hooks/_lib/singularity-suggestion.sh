@@ -54,7 +54,13 @@ _singularity_suggestion() {
   fi
 
   # Check for user opt-out (config flag or sentinel file)
-  local config_file="$PROJECT_DIR/.cognitive-os/cognitive-os.yaml"
+  # Se leia SOLO `.cognitive-os/cognitive-os.yaml`, inexistente en todo checkout:
+  # el opt-out por config no podia dispararse nunca y solo quedaba el centinela
+  # `.singularity-suggestion-dismissed`. OJO: `singularity_suggestion` tampoco
+  # esta declarada en el cognitive-os.yaml canonico — conectar la lectura la
+  # vuelve escribible, no la declara. Ver el informe del 2026-08-20.
+  local config_file="$PROJECT_DIR/cognitive-os.yaml"
+  [ ! -f "$config_file" ] && config_file="$PROJECT_DIR/.cognitive-os/cognitive-os.yaml"
   if grep -q 'singularity_suggestion:[[:space:]]*false' "$config_file" 2>/dev/null; then
     return 0
   fi

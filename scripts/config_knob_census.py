@@ -196,7 +196,11 @@ CFG_ASSIGN = re.compile(
     r'^\s*(?:local\s+)?([A-Za-z_][A-Za-z0-9_]*)=(["\']?)([^"\'\n]*cognitive-os\.yaml)\2\s*$',
     re.M,
 )
-FALLBACK = re.compile(r'!\s*-f\s+"?\$\{?[A-Za-z_]', re.M)
+# Dos idiomas para el mismo fallback, y el segundo se descubrio el 2026-08-20
+# midiendo: concurrent-write-guard-codex-proxy.sh usa `[ -f "$X" ] || X=...`,
+# sin el `!`, y se contaba como "sin fallback" teniendo uno. Un censo que
+# reporta un falso positivo no mide, opina.
+FALLBACK = re.compile(r'(!\s*-f\s+"?\$\{?[A-Za-z_])|(\[\s*-f\s+"?\$\{?[A-Za-z_][^\]]*\]\s*\|\|)', re.M)
 
 
 def census_paths(corpus: dict[str, str]) -> tuple[Census, list[dict[str, Any]]]:
@@ -240,7 +244,11 @@ def census_paths(corpus: dict[str, str]) -> tuple[Census, list[dict[str, Any]]]:
     for rel, text in corpus.items():
         if bucket_of(rel) != "code" or not rel.endswith((".sh", ".bash")):
             continue
-        for line in text.splitlines():
+        # Un pipeline shell partido con `\` es UNA sentencia: el corte del
+        # comentario puede caer en la linea siguiente al sed. Medir por linea
+        # marcaba como rotos a hooks que cortan bien.
+        joined = re.sub(r"\\\n\s*", " ", text)
+        for line in joined.splitlines():
             mm = re.search(r"sed\s+'s/\.\*([a-z_]+):\[\[:space:\]\]\*//'", line)
             if not mm:
                 continue

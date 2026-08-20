@@ -10,7 +10,13 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/.." && pwd)}"
 COMPOSE_FILE="$PROJECT_DIR/docker-compose.cognitive-os.yml"
-CONFIG_FILE="$PROJECT_DIR/.cognitive-os/cognitive-os.yaml"
+# Se leia SOLO `.cognitive-os/cognitive-os.yaml`, que no existe en ningun
+# checkout de este repo: el default de arriba regia siempre y la perilla era
+# decorativa. El canonico es el de la raiz; el de `.cognitive-os` queda como
+# fallback, misma forma que hooks/parry-scan.sh y session-start-worktree-nudge.sh.
+# Medido con `python3 scripts/config_knob_census.py --prove`.
+CONFIG_FILE="$PROJECT_DIR/cognitive-os.yaml"
+[ ! -f "$CONFIG_FILE" ] && CONFIG_FILE="$PROJECT_DIR/.cognitive-os/cognitive-os.yaml"
 METRICS_DIR="$PROJECT_DIR/.cognitive-os/metrics"
 METRICS_FILE="$METRICS_DIR/infra-health.jsonl"
 INFRA_AUTO_START="${INFRA_AUTO_START:-false}"
