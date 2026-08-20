@@ -357,18 +357,34 @@ class TestSessionCleanup:
             f"stderr: {result.stderr}"
         )
 
-    def test_cleanup_removes_session_directory(self, tmp_path):
-        """Session directory must be removed after cleanup (cleanup_on_exit=true)."""
+    def test_cleanup_archives_dead_session_directory(self, tmp_path):
+        """Un directorio de sesion cuyo duenio murio se ARCHIVA, no se borra.
+
+        Reescrito 2026-08-19. La version anterior
+        (test_cleanup_removes_session_directory) solo exigia
+        ``not session_dir.exists()``, es decir: cualquier forma de hacer
+        desaparecer el directorio pasaba, incluido el ``rm -rf`` incondicional que
+        el hook tenia. Ese assert codificaba el defecto, no el contrato: ADR-119
+        (Session Filesystem Reaper, status: implemented) manda archive-first sobre
+        .cognitive-os/sessions/, con borrado recien tras la retencion. El test
+        ahora verifica el destino, no solo la ausencia.
+        """
         session_id = self._setup_session(tmp_path)
         session_dir = _sessions_dir(tmp_path) / session_id
 
         if not session_dir.exists():
             pytest.skip("Session directory not found (may use different naming)")
 
+        # session-init.sh ya termino: el pid de su meta.json esta muerto.
         _run_hook(CLEANUP_HOOK, tmp_path, session_id=session_id)
-        # With cleanup_on_exit=true (default), the directory should be gone
+
         assert not session_dir.exists(), (
             f"Session directory {session_dir} still exists after cleanup"
+        )
+        archived = tmp_path / ".cognitive-os" / "archive" / "sessions" / session_id
+        assert archived.exists(), (
+            "La sesion muerta desaparecio de sessions/ pero NO aparecio en "
+            f"{archived}: eso es borrado, y ADR-119 exige archivado."
         )
 
     def test_cleanup_merges_metrics_into_global(self, tmp_path):
@@ -512,4 +528,150 @@ class TestConcurrentInits:
         assert "flock" in source, (
             "session-init.sh does not contain 'flock' — concurrent registration "
             "is no longer protected. This is a regression."
+        )
+
+
+# ---------------------------------------------------------------------------
+# Camino destructivo de session-cleanup.sh (2026-08-19)
+#
+# session-cleanup.sh esta registrado en Stop, y Stop dispara UNA VEZ POR TURNO:
+# 335 disparos del hook contra 75 aperturas de sesion sobre 286.163 filas de
+# hook-timing.jsonl (+ .archive/*.gz), con hasta 41 disparos dentro de una misma
+# ventana SessionStart->SessionStart. Cualquier accion irreversible que el hook
+# tome cae, entonces, sobre una sesion VIVA.
+#
+# Estos tests corren EN LAS DOS DIRECCIONES a proposito. Uno que solo probara que
+# borra no detecta un cleanup que borra de mas, que es exactamente el riesgo.
+# ---------------------------------------------------------------------------
+
+
+def _dead_pid() -> int:
+    """Devuelve un PID que ya termino (proceso cosechado)."""
+    proc = subprocess.Popen(["true"])
+    proc.wait()
+    return proc.pid
+
+
+def _make_session(project_dir: Path, session_id: str, owner_pid: int, lock_pid: int) -> Path:
+    """Arma una sesion en disco con metrica, estado vivo de runtime y un lock."""
+    session_dir = _sessions_dir(project_dir) / session_id
+    (session_dir / "metrics").mkdir(parents=True, exist_ok=True)
+    (session_dir / "metrics" / "skill-metrics.jsonl").write_text('{"skill":"x"}\n')
+    # Estado vivo escrito por hooks/subagent-budget-enforcer.sh:109.
+    (session_dir / "subagent-tool-calls-agentX").write_text("7\n")
+    (session_dir / "meta.json").write_text(
+        json.dumps({"session_id": session_id, "pid": owner_pid, "start_time": "2026-01-01T00:00:00Z"})
+    )
+    locks_dir = _sessions_dir(project_dir) / "locks"
+    locks_dir.mkdir(parents=True, exist_ok=True)
+    (locks_dir / "aaa.lock").write_text(
+        json.dumps({"session_id": session_id, "pid": lock_pid, "file_path": "/x", "timestamp_epoch": 0})
+    )
+    _active_sessions_file(project_dir).write_text(
+        json.dumps({"sessions": [{"id": session_id, "pid": owner_pid}]})
+    )
+    return session_dir
+
+
+class TestCleanupDoesNotDestroyLiveSessions:
+    """El cleanup no puede destruir estado de una sesion que sigue viva."""
+
+    def test_live_session_directory_survives_cleanup(self, tmp_path):
+        """DIRECCION QUE IMPORTA: duenio vivo -> no se toca nada.
+
+        Este es el caso real de cada turno. Si el hook actua aca, cada Stop se
+        come el directorio de la sesion en curso.
+        """
+        sid = "sesion-viva"
+        session_dir = _make_session(tmp_path, sid, owner_pid=os.getpid(), lock_pid=os.getpid())
+
+        result = _run_hook(CLEANUP_HOOK, tmp_path, session_id=sid)
+
+        assert result.returncode == 0, result.stderr
+        assert session_dir.exists(), (
+            "El cleanup borro el directorio de una sesion VIVA: eso es lo que "
+            "pasaria en cada turno, porque Stop dispara por turno."
+        )
+        assert (session_dir / "subagent-tool-calls-agentX").read_text().strip() == "7", (
+            "Se perdio estado vivo de runtime (contador de presupuesto de subagentes)."
+        )
+        archived = tmp_path / ".cognitive-os" / "archive" / "sessions" / sid
+        assert not archived.exists(), "Una sesion viva no debe archivarse tampoco."
+
+    def test_live_lock_survives_cleanup(self, tmp_path):
+        """Un lock cuyo duenio sigue corriendo NO se suelta."""
+        sid = "sesion-con-lock-vivo"
+        _make_session(tmp_path, sid, owner_pid=os.getpid(), lock_pid=os.getpid())
+        lock = _sessions_dir(tmp_path) / "locks" / "aaa.lock"
+
+        _run_hook(CLEANUP_HOOK, tmp_path, session_id=sid)
+
+        assert lock.exists(), (
+            "Se solto un lock de un escritor VIVO. concurrent-write-guard.sh "
+            "empezo a tomar locks reales el 2026-08-19 (82969b80f); un lock "
+            "arrancado a mitad de sesion habilita la escritura concurrente que "
+            "el guard existe para impedir."
+        )
+
+    def test_stale_lock_is_released(self, tmp_path):
+        """DIRECCION CONTRARIA: lock de un PID muerto SI se suelta."""
+        sid = "sesion-con-lock-muerto"
+        _make_session(tmp_path, sid, owner_pid=os.getpid(), lock_pid=_dead_pid())
+        lock = _sessions_dir(tmp_path) / "locks" / "aaa.lock"
+
+        _run_hook(CLEANUP_HOOK, tmp_path, session_id=sid)
+
+        assert not lock.exists(), "Un lock cuyo PID ya no existe debe soltarse."
+
+    def test_dead_session_is_archived_not_deleted(self, tmp_path):
+        """DIRECCION CONTRARIA: duenio muerto -> archivado, con el contenido intacto."""
+        sid = "sesion-muerta"
+        session_dir = _make_session(tmp_path, sid, owner_pid=_dead_pid(), lock_pid=_dead_pid())
+
+        result = _run_hook(CLEANUP_HOOK, tmp_path, session_id=sid)
+
+        assert result.returncode == 0, result.stderr
+        assert not session_dir.exists(), "La sesion muerta deberia haberse retirado de sessions/."
+        archived = tmp_path / ".cognitive-os" / "archive" / "sessions" / sid
+        assert archived.exists(), f"No se archivo en {archived} (ADR-119: archive-first)."
+        assert (archived / "subagent-tool-calls-agentX").read_text().strip() == "7", (
+            "El archivado perdio contenido: tiene que ser un mv, no un borrado."
+        )
+
+    def test_metrics_merge_is_idempotent_across_turns(self, tmp_path):
+        """Stop dispara por turno: N corridas no pueden multiplicar las filas.
+
+        Antes el paso 1 hacia `cat archivo >> global` en cada disparo, asi que el
+        global acumulaba una copia entera por turno.
+        """
+        sid = "sesion-viva-merge"
+        session_dir = _make_session(tmp_path, sid, owner_pid=os.getpid(), lock_pid=os.getpid())
+        metric = session_dir / "metrics" / "skill-metrics.jsonl"
+        metric.write_text('{"skill":"a"}\n{"skill":"b"}\n')
+
+        for _ in range(3):
+            _run_hook(CLEANUP_HOOK, tmp_path, session_id=sid)
+
+        global_metric = tmp_path / ".cognitive-os" / "metrics" / "skill-metrics.jsonl"
+        assert global_metric.exists(), "El merge no corrio."
+        lines = [ln for ln in global_metric.read_text().splitlines() if ln.strip()]
+        assert len(lines) == 2, f"Merge duplicado: {len(lines)} filas para 2 originales -> {lines}"
+
+        # Filas nuevas del mismo archivo si tienen que llegar al global.
+        with metric.open("a") as fh:
+            fh.write('{"skill":"c"}\n')
+        _run_hook(CLEANUP_HOOK, tmp_path, session_id=sid)
+        lines = [ln for ln in global_metric.read_text().splitlines() if ln.strip()]
+        assert len(lines) == 3, f"El merge incremental no tomo la fila nueva: {lines}"
+
+    def test_hook_has_no_unconditional_recursive_delete(self):
+        """Guardarrail de regresion: no vuelve un rm -rf del directorio de sesion."""
+        code = [
+            ln for ln in CLEANUP_HOOK.read_text().splitlines()
+            if not ln.lstrip().startswith("#")
+        ]
+        offenders = [ln for ln in code if 'rm -rf "$SESSION_DIR"' in ln]
+        assert not offenders, (
+            "Volvio el borrado recursivo incondicional del directorio de sesion: "
+            f"{offenders}"
         )
