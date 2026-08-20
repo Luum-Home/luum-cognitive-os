@@ -115,13 +115,17 @@ def iter_blocks(tdir: Path):
                     yield guard, name, tin, f.stem
 
 
-def replay(command: str) -> tuple[int, str]:
+def replay(command: str, guard: Path = GUARD) -> tuple[int, str]:
+    # El env del hijo NO hereda la aprobacion. Con ella heredada el guard
+    # aprueba todo y la medicion describe un guard que nunca bloquea; a esta
+    # sesion le paso, y el pop es la unica razon por la que los numeros de abajo
+    # significan algo.
     payload = json.dumps({"tool_name": "Bash", "tool_input": {"command": command}})
     env = dict(os.environ)
     env.pop("COS_ALLOW_PROTECTED_CONFIG_WRITE", None)
     env["CLAUDE_PROJECT_DIR"] = str(REPO)
     proc = subprocess.run(
-        ["/bin/bash", str(GUARD)],
+        ["/bin/bash", str(guard)],
         input=payload,
         text=True,
         capture_output=True,
@@ -142,6 +146,13 @@ def main() -> int:
         "guard de hoy si bloquea (escrituras que se colaron en su momento)",
     )
     ap.add_argument("--since-days", type=float, default=3.0)
+    ap.add_argument(
+        "--guard",
+        type=Path,
+        default=GUARD,
+        help="guard a replayear; sirve para medir una version anterior "
+        "(git show HEAD:<ruta> > /tmp/base.sh) contra el MISMO corpus",
+    )
     args = ap.parse_args()
 
     tdir = transcript_dir(REPO)
@@ -162,7 +173,7 @@ def main() -> int:
                 continue
             seen.add(cmd)
             total += 1
-            rc, err = replay(cmd)
+            rc, err = replay(cmd, args.guard)
             if rc == 2:
                 leaked.append((err.splitlines()[1] if err else "", cmd))
         print(f"comandos Bash no bloqueados, distintos, ultimos {args.since_days}d: {total}")
@@ -185,7 +196,7 @@ def main() -> int:
             "command": cmd or "",
         }
         if cmd and not args.no_replay and guard == "protected-config-write-guard":
-            rc, err = replay(cmd)
+            rc, err = replay(cmd, args.guard)
             row["replay_rc"] = rc
             row["replay_blocked"] = rc == 2
             row["replay_paths"] = err.splitlines()[1] if rc == 2 and err else ""

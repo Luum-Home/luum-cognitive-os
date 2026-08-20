@@ -114,7 +114,7 @@ case "$TOOL_NAME" in
 esac
 
 RESULT="$({ PAYLOAD_JSON="$INPUT" PROJECT_DIR="$PROJECT_DIR" POLICY="$POLICY" python3 - <<'PY'
-import fnmatch, json, os, re, sys
+import ast, fnmatch, json, os, re, sys
 from pathlib import Path
 try:
     import yaml
@@ -399,16 +399,94 @@ TOKEN_PATHS=re.compile(r"[A-Za-z0-9_.~/-]+")
 # command word.
 REDIRECT=re.compile(r"(?:&|\d+)?>>?\|?\s*(['\"]?)([^\s'\"<>&;|]+)\1")
 
-SUBST=re.compile(r'\$\(([^()]*)\)')
-# Process substitution is a command too, and it was never analysed. In
-# `diff <(sed -i s/a/b/ hooks/x.sh) f` the outer word is diff -- a reader -- so
-# the segment was waved through while sed rewrote a protected file. Measured
-# 2026-08-19: two such forms passed the guard. Lifted into its own segment,
-# exactly like $(...), the inner command is judged on its own merits.
-PROCSUB=re.compile(r'[<>]\(([^()]*)\)')
+# Substitutions used to be found by regex, and a body had to be free of
+# parentheses to match. A grep pattern is enough to break that: in
+# `L=$(grep -n "body_can_write()" f)` the body carries two, so nothing was
+# lifted, `L=$(grep` matched the assignment pattern, resolve_exe discarded it as
+# a value, and the next word -- `-n` -- became the command word. Not a reader,
+# so reading a protected file through a substitution blocked as writing to it.
+# Measured 2026-08-20 over the session transcripts: that is the shape that
+# blocked a plain grep over this very file, and the reason a synthetic probe of
+# seven simpler forms failed to reproduce it.
+#
+# Process substitution is a command too. In `diff <(sed -i s/a/b/ hooks/x.sh) f`
+# the outer word is diff -- a reader -- so the segment was waved through while
+# sed rewrote a protected file. Measured 2026-08-19: two such forms passed.
+#
+# Balanced scanning is a property of the text; the character class was a guess
+# about it. Single-quoted regions are skipped because the shell substitutes
+# nothing inside them, so neither does this. Double-quoted regions are NOT
+# skipped, because the shell does substitute there, and skipping them would wave
+# through `echo "$(sed -i s/a/b/ hooks/x.sh)"`.
+_DOLLAR=chr(36)
+_LPAREN=chr(40)
+_RPAREN=chr(41)
+_SQUOTE=chr(39)
+_DQUOTE=chr(34)
+_BSLASH=chr(92)
+_SPACE=chr(32)
+_PROCSUB_LEAD=chr(60)+chr(62)
+
+
+def _balanced_paren(text, start):
+    """Body of the group whose opening parenthesis sits at `start`, or None.
+
+    Quote-aware, and counts parentheses only: brackets and braces are ordinary
+    characters to the shell here, so counting them would make a plain glob look
+    unbalanced and cost the lift. None means the scanner could not read the
+    group; the caller then leaves that text where it is, which is the
+    fail-closed reading -- an unlifted substitution still reaches the reader
+    check exactly as it did before.
+    """
+    depth=0; q=None; i=start; n=len(text)
+    while i < n:
+        c=text[i]
+        if c==_BSLASH and q != _SQUOTE and i+1 < n:
+            i+=2; continue
+        if q is not None:
+            if c==q:
+                q=None
+            i+=1; continue
+        if c==_SQUOTE or c==_DQUOTE:
+            q=c; i+=1; continue
+        if c==_LPAREN:
+            depth+=1
+        elif c==_RPAREN:
+            depth-=1
+            if depth==0:
+                return text[start+1:i]
+        i+=1
+    return None
+
+
+def _lift_pass(cmd):
+    """One pass: (text with substitution bodies blanked, [bodies lifted])."""
+    out=[]; found=[]; i=0; n=len(cmd); q=None
+    while i < n:
+        c=cmd[i]
+        if c==_BSLASH and q != _SQUOTE and i+1 < n:
+            out.append(c); out.append(cmd[i+1]); i+=2; continue
+        starts = (
+            (q != _SQUOTE and c==_DOLLAR)
+            or (q is None and c in _PROCSUB_LEAD)
+        )
+        if starts and i+1 < n and cmd[i+1]==_LPAREN:
+            body=_balanced_paren(cmd, i+1)
+            if body is not None:
+                found.append(body)
+                out.append(_SPACE)
+                i += len(body) + 3
+                continue
+        if q is None and (c==_SQUOTE or c==_DQUOTE):
+            q=c; out.append(c); i+=1; continue
+        if q is not None and c==q:
+            q=None; out.append(c); i+=1; continue
+        out.append(c); i+=1
+    return ''.join(out), found
+
 
 def lift_substitutions(cmd):
-    """Return (outer, [inner...]) with $(...) bodies lifted out.
+    """Return (outer, [inner...]) with substitution bodies lifted out.
 
     resolve_exe() skips a leading VAR= token so that `FOO=1 cmd` resolves to cmd.
     That is right for a value, and wrong for a substitution: in `n=$(wc -c < p)`
@@ -418,14 +496,24 @@ def lift_substitutions(cmd):
     how counting the bytes of a protected file came to be blocked as writing to it.
 
     Lifting the body out gives it its own segment, where `wc` resolves normally.
-    Fails closed: an unbalanced or nested substitution is left in the outer text
-    and still reaches the reader check as before.
+    Nesting is lifted too, to a bounded depth: `$(($(wc -l < f)+1))` leaves an
+    inner segment whose first word is a fragment otherwise, and a fragment is
+    never a reader. Past the bound the body is returned whole and still fails
+    closed.
     """
-    inner = [m.group(1) for m in SUBST.finditer(cmd)]
-    cmd = SUBST.sub(' ', cmd)
-    inner += [m.group(1) for m in PROCSUB.finditer(cmd)]
-    cmd = PROCSUB.sub(' ', cmd)
-    return cmd, inner
+    outer, pending = _lift_pass(cmd)
+    inner=[]
+    rounds=0
+    while pending and rounds < 8:
+        rounds+=1
+        nxt=[]
+        for body in pending:
+            stripped, more = _lift_pass(body)
+            inner.append(stripped)
+            nxt.extend(more)
+        pending=nxt
+    inner.extend(pending)
+    return outer, inner
 
 
 WRITE_PRIMITIVES = (
@@ -562,6 +650,85 @@ def body_can_write(body):
     if any(tok in body for tok in WRITE_PRIMITIVES):
         return True
     return _open_can_write(body)
+
+
+# --- Which of the paths a program names could be a path at all ---------------
+# body_can_write answers whether the program can write. It does not answer WHERE,
+# and the path collection under it never asked: every protected-looking token in
+# the program text became a target, including tokens sitting in the middle of a
+# content blob. That is the single most recurrent legitimate shape in this repo
+# -- rewriting a file under tests/ whose new text quotes a protected path -- and
+# it blocked every time.
+#
+# The property below needs no flow analysis, and deliberately resolves no
+# binding. A string constant that is never handed to a call, and is not itself a
+# path, cannot be a destination: it is content. Everything else stays a target.
+# So a program that says Path("hooks/x.sh") still blocks (the constant IS a
+# path), subprocess.run(["bash", "hooks/x.sh"]) still blocks (the constant is an
+# argument), and a program this scanner cannot parse blocks on every token it
+# finds, exactly as before.
+#
+# Measured 2026-08-20 over the session transcripts, before and after: see
+# scripts/audit_guard_mention_blocks.py --json.
+_NEWLINE=chr(10)
+_MAX_PATHLIKE=300
+
+
+def _string_constants(body):
+    """[(value, is_call_argument)] for every string constant, or None.
+
+    None means the program did not parse, and an unparseable program is one
+    whose tokens this scanner may not classify -- fail closed.
+    """
+    try:
+        tree=ast.parse(body)
+    except Exception:
+        return None
+    in_call=set()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Call):
+            args=list(node.args)+[k.value for k in node.keywords]
+            for arg in args:
+                for sub in ast.walk(arg):
+                    if isinstance(sub, ast.Constant) and isinstance(sub.value, str):
+                        in_call.add(id(sub))
+    out=[]
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Constant) and isinstance(node.value, str):
+            out.append((node.value, id(node) in in_call))
+    return out
+
+
+def _looks_like_a_path(text):
+    text=text.strip()
+    if not text or _NEWLINE in text or len(text) > _MAX_PATHLIKE:
+        return False
+    return is_protected(normalize(text), text)
+
+
+def program_write_candidates(body):
+    """Protected paths the program names in a position that could be a path."""
+    consts=_string_constants(body)
+    found=[]
+    for tok in body.split():
+        for cand in TOKEN_PATHS.findall(tok):
+            if not is_protected(normalize(cand), cand):
+                continue
+            if consts is None:
+                found.append(cand)
+                continue
+            inert=False
+            forced=False
+            for value, is_arg in consts:
+                if cand not in value:
+                    continue
+                if is_arg or _looks_like_a_path(value):
+                    forced=True
+                    break
+                inert=True
+            if forced or not inert:
+                found.append(cand)
+    return found
 
 
 # --- Patch appliers: the destinations are inside the patch -------------------
@@ -790,10 +957,7 @@ def bash_write_targets(command):
     # A heredoc handed to an interpreter is code that runs with full authority;
     # any protected path named inside it is a write we cannot rule out.
     if body_can_write(program_body):
-        for tok in program_body.split():
-            for cand in TOKEN_PATHS.findall(tok):
-                if is_protected(normalize(cand), cand):
-                    targets.append(cand)
+        targets.extend(program_write_candidates(program_body))
     for seg in list(split_segments(cmd)) + substituted:
         ws=split_words(seg)
         exe, rest = resolve_exe(ws)
