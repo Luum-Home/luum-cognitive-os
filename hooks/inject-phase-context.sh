@@ -201,13 +201,13 @@ NOTE: there is no lib/ at the repo root — the package dir is cos_lib/. SOME co
   # settings.json trap
   if echo "$AGENT_PROMPT" | grep -qiE 'settings\.json|wire.*hook|add.*hook.*settings'; then
     GOTCHAS="${GOTCHAS}
-NOTE: .claude/settings.json is GENERATED (ADR-064): the canonical hook registry is cognitive-os.yaml > harness.hooks ({script, event, async, scope} entries), projected by scripts/_lib/settings-driver-claude-code.sh (apply-efficiency-profile.sh merely delegates). Register in cognitive-os.yaml, then run: bash scripts/apply-efficiency-profile.sh default"
+NOTE: .claude/settings.json is GENERATED — never hand-edit it. But the Claude Code driver does NOT read cognitive-os.yaml: scripts/_lib/settings-driver-claude-code.sh holds its registry HARDCODED as shell literals (its own header says so, after CONFIG_FILE was found assigned and never read). The bare/codex/opencode drivers do read the yaml; Claude Code is the exception. Registering a hook so it actually fires takes SIX surfaces, kept in step BY HAND: cognitive-os.yaml, that driver, scripts/apply-efficiency-profile.sh, and templates/security-profiles/{minimal,standard,paranoid}.json. Verify with: grep -c '<hook>' cognitive-os.yaml scripts/_lib/settings-driver-claude-code.sh scripts/apply-efficiency-profile.sh templates/security-profiles/*.json"
   fi
 
   # Hook creation trap
   if echo "$AGENT_PROMPT" | grep -qiE 'new hook|create hook|hooks/.*\.sh'; then
     GOTCHAS="${GOTCHAS}
-NOTE: New hooks are registered in cognitive-os.yaml > harness.hooks as {script, event, async, scope} entries (ADR-064), then projected into .claude/settings.json by scripts/_lib/settings-driver-claude-code.sh — run bash scripts/apply-efficiency-profile.sh <profile> so they can fire."
+NOTE: A new hook added ONLY to cognitive-os.yaml never reaches Claude Code, and nothing reports it — the live case is hooks/publication-safety.sh: declared scope: both with no opt-out, absent from .claude/settings.json and from the dispatcher, 0 firings. Six surfaces must name it, kept in step by hand. See the settings.json note above for the list and the verify command."
   fi
 
   # Workflow trap
