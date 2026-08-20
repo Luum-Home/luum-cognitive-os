@@ -105,6 +105,10 @@
           },
           {
             "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-lineage-record.sh\" ]; then bash \"$PWD/hooks/session-lineage-record.sh\"; fi"
+          },
+          {
+            "type": "command",
             "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/skill-drift-detector.sh\" ]; then bash \"$PWD/hooks/skill-drift-detector.sh\"; fi"
           },
           {
@@ -391,6 +395,10 @@
           {
             "type": "command",
             "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/goal-stop-gate.sh\" ]; then bash \"$PWD/hooks/goal-stop-gate.sh\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/lineage-relaunch-gate.sh\" ]; then bash \"$PWD/hooks/lineage-relaunch-gate.sh\"; fi"
           },
           {
             "type": "command",
