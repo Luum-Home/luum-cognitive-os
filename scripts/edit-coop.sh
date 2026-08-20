@@ -123,7 +123,13 @@ _iso8601_plus() {
 }
 
 _pid_alive() {
-  kill -0 "$1" 2>/dev/null
+  # `kill -0` returns failure for BOTH "no such process" (ESRCH) and "not
+  # yours" (EPERM), and bash cannot tell them apart. On macOS every pid owned
+  # by another user — pid 1 included — therefore read as dead, and a LIVE
+  # lock held by another user's agent was cleared as stale. `ps -p` answers
+  # existence without permission to signal, so ask it before concluding death.
+  kill -0 "$1" 2>/dev/null && return 0
+  ps -p "$1" >/dev/null 2>&1
 }
 
 # ── Stale detection ─────────────────────────────────────────────────────────
@@ -134,10 +140,31 @@ _lock_is_stale() {
   meta_file="$(_meta_file_for "$file_path")"
   [ -f "$meta_file" ] || return 0
 
-  local pid timestamp_raw
+  local pid timestamp_raw expires_raw
   pid=$(sed -n 's/^pid: *\([0-9]*\)$/\1/p' "$meta_file" | head -1)
   timestamp_raw=$(sed -n 's/^heartbeat: *"\(.*\)"$/\1/p' "$meta_file" | head -1)
   [ -z "$timestamp_raw" ] && timestamp_raw=$(sed -n 's/^since: *"\(.*\)"$/\1/p' "$meta_file" | head -1)
+
+  # The writer stamps expires_at on every acquire and refreshes it on every
+  # heartbeat, so the lock already declares when it dies. Until 2026-08-20
+  # nothing read the field: it was written by the birth commit (bca8fb7c6) and
+  # never wired to a reader, so a lock that declared a 30-minute life kept
+  # producing EDIT-LOCK CONFLICT for months (measured: 1296 of 1316 locks past
+  # their own expires_at, the oldest by 96 days). Honour the declaration first
+  # — it beats any heuristic about age, because the owner wrote it.
+  # `status: "active"` is NOT consulted: it is stamped once and never updated,
+  # so every expired lock still claims to be active.
+  expires_raw=$(sed -n 's/^expires_at: *"\(.*\)"$/\1/p' "$meta_file" | head -1)
+  if [ -n "$expires_raw" ]; then
+    local now_epoch expires_epoch
+    now_epoch=$(date -u +%s)
+    expires_epoch=$(date -d "$expires_raw" +%s 2>/dev/null) \
+      || expires_epoch=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$expires_raw" +%s 2>/dev/null) \
+      || expires_epoch=""
+    if [ -n "$expires_epoch" ] && [ "$now_epoch" -gt "$expires_epoch" ]; then
+      return 0
+    fi
+  fi
 
   [ -z "$pid" ] && return 0
   # Skip PID liveness when explicitly disabled (used by unit tests where each
@@ -382,6 +409,157 @@ cmd_release_mine() {
   echo "[edit-coop] released $released own lock(s)" >&2
 }
 
+# ── Bulk hygiene reaper (ADR-098 + ADR-199 surface `edit-locks`) ───────────
+#
+# cmd_acquire clears an expired lock only when SOMEBODY RE-ACQUIRES THAT SAME
+# FILE. A lock on a file nobody touches again therefore stays on disk forever:
+# measured 2026-08-20, 1316 lock dirs / 5.1 MiB, 1296 of them past their own
+# expires_at. Nothing in the tree ever removed one.
+#
+# The reap criterion is the lock's OWN declared deadline — expires_at, written
+# by the acquirer and refreshed by `edit-coop.sh heartbeat` — plus a grace
+# window (COS_EDIT_LOCK_REAP_GRACE, default 3600s = 2x the 1800s TTL) so clock
+# skew and a session about to heartbeat are never raced.
+#
+# This is deliberately the SAME predicate the enforcement path now uses, which
+# is what makes bulk deletion safe: after _lock_is_stale honours expires_at, an
+# expired lock no longer blocks anybody, so removing it changes disk and not
+# semantics. Reaping is hygiene, not the fix.
+#
+# Sacrificed case: a long-lived session that never calls `heartbeat` loses its
+# lock directory. It had already lost the lock — the enforcement predicate frees
+# an expired lock whether or not this reaper runs — and the refresh path exists
+# precisely so a long session can keep its claim alive.
+#
+# Fallback when expires_at is absent or unparseable (no such lock exists today,
+# but old metas and half-written files are reachable states): require BOTH a
+# dead owner pid AND a heartbeat past grace. `status` is never consulted — it is
+# stamped once at acquire and never updated, so it reads "active" on every
+# corpse.
+#
+# Usage: edit-coop.sh reap-stale [--dry-run] [--json]
+cmd_reap_stale() {
+  local dry_run=0 as_json=0
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      --dry-run) dry_run=1 ;;
+      --json)    as_json=1 ;;
+      *) echo "[edit-coop] reap-stale: unknown option $1" >&2; return 64 ;;
+    esac
+    shift
+  done
+
+  local locks_root
+  locks_root="$(_locks_root)"
+  if [ ! -d "$locks_root" ]; then
+    [ "$as_json" -eq 1 ] && echo '{"dry_run":true,"kept":0,"reaped":0,"reaped_samples":[],"scanned":0}'
+    return 0
+  fi
+
+  # One python pass for the whole sweep: 1300+ lock dirs times sed/kill
+  # subprocesses would be thousands of spawns on a SessionEnd path.
+  LOCKS_ROOT="$locks_root" \
+  COS_EDIT_LOCK_REAP_GRACE="${COS_EDIT_LOCK_REAP_GRACE:-3600}" \
+  REAP_DRY_RUN="$dry_run" REAP_JSON="$as_json" \
+  python3 - <<'PYEOF'
+import json, os, re, shutil, time
+from datetime import datetime, timezone
+
+root = os.environ["LOCKS_ROOT"]
+grace = int(os.environ.get("COS_EDIT_LOCK_REAP_GRACE") or 3600)
+dry = os.environ.get("REAP_DRY_RUN") == "1"
+as_json = os.environ.get("REAP_JSON") == "1"
+
+PID_RE = re.compile(r'^pid: *(\d+)\s*$', re.M)
+EXP_RE = re.compile(r'^expires_at: *"(.*)"\s*$', re.M)
+HB_RE = re.compile(r'^heartbeat: *"(.*)"\s*$', re.M)
+SINCE_RE = re.compile(r'^since: *"(.*)"\s*$', re.M)
+now = time.time()
+
+
+def epoch_of(stamp):
+    try:
+        return datetime.strptime(stamp, "%Y-%m-%dT%H:%M:%SZ").replace(
+            tzinfo=timezone.utc).timestamp()
+    except (ValueError, TypeError):
+        return None
+
+
+def pid_alive(pid):
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True   # exists, owned by someone else
+    except OSError:
+        return True   # unknown -> assume alive, never reap on doubt
+    return True
+
+
+scanned = reaped = kept = 0
+samples = []
+try:
+    entries = sorted(os.scandir(root), key=lambda e: e.name)
+except OSError:
+    entries = []
+
+for entry in entries:
+    if not entry.is_dir(follow_symlinks=False):
+        continue
+    scanned += 1
+    meta_path = os.path.join(entry.path, "meta.yaml")
+    reason = None
+    if not os.path.isfile(meta_path):
+        # mkdir succeeded, meta write did not: no holder can ever release it.
+        try:
+            dir_age = now - entry.stat().st_mtime
+        except OSError:
+            dir_age = None
+        if dir_age is not None and dir_age > grace:
+            reason = "no-meta-past-grace"
+    else:
+        try:
+            text = open(meta_path, encoding="utf-8", errors="replace").read()
+        except OSError:
+            text = ""
+        m_exp = EXP_RE.search(text)
+        expires = epoch_of(m_exp.group(1)) if m_exp else None
+        if expires is not None:
+            if now > expires + grace:
+                reason = "expired-past-grace"
+        else:
+            m_pid = PID_RE.search(text)
+            m_hb = HB_RE.search(text) or SINCE_RE.search(text)
+            hb = epoch_of(m_hb.group(1)) if m_hb else None
+            owner_dead = (m_pid is None) or (not pid_alive(int(m_pid.group(1))))
+            if owner_dead and hb is not None and now - hb > grace:
+                reason = "no-expires-owner-dead-past-grace"
+
+    if reason is None:
+        kept += 1
+        continue
+    if not dry:
+        try:
+            shutil.rmtree(entry.path)
+        except OSError:
+            kept += 1
+            continue
+    reaped += 1
+    if len(samples) < 5:
+        samples.append({"lock": entry.name, "reason": reason})
+
+payload = {"scanned": scanned, "reaped": reaped, "kept": kept,
+           "dry_run": dry, "grace_seconds": grace, "reaped_samples": samples}
+if as_json:
+    print(json.dumps(payload, sort_keys=True))
+else:
+    verb = "would reap" if dry else "reaped"
+    print(f"[edit-coop] reap-stale: scanned={scanned} {verb}={reaped} "
+          f"kept={kept} grace={grace}s")
+PYEOF
+}
+
 # ── Entry point ─────────────────────────────────────────────────────────────
 
 cmd="${1:-}"
@@ -393,6 +571,7 @@ case "$cmd" in
   status)         cmd_status ;;
   heartbeat)      cmd_heartbeat "$@" ;;
   release-mine|release_mine) cmd_release_mine ;;
+  reap-stale|reap_stale) cmd_reap_stale "$@" ;;
   *)
     cat <<EOF >&2
 edit-coop.sh — file-level edit coordination (ADR-098)
@@ -403,6 +582,9 @@ Usage:
   edit-coop.sh status                (JSON of all active locks)
   edit-coop.sh heartbeat <file>      (refresh own lock TTL)
   edit-coop.sh release-mine          (release every lock owned by this session)
+  edit-coop.sh reap-stale [--dry-run] [--json]
+                                     (drop every lock past its own expires_at
+                                      by more than COS_EDIT_LOCK_REAP_GRACE)
 EOF
     exit 64
     ;;

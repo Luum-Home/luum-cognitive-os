@@ -260,3 +260,103 @@ def test_bypass_audit_log_is_append_only(fake_project):
     reasons = {_json.loads(l)["reason"] for l in lines}
     assert "first" in reasons
     assert "second" in reasons
+
+
+# ── expires_at: the lock declares its own death (2026-08-20) ────────────────
+# Every meta.yaml carried expires_at from the birth commit (bca8fb7c6) and no
+# reader ever compared it to the clock, so a lock that declared a 30-minute
+# life kept producing EDIT-LOCK CONFLICT for months: 1296 of 1316 locks in this
+# repo were past their own expires_at, the oldest by 96 days.
+
+_META = """session_id: "{session}"
+agent_id: "seed"
+agent_role: "orchestrator"
+worktree: "{project}"
+pid: {pid}
+target_file: "{target}"
+intent: "exclusive-edit"
+since: "{stamp}"
+heartbeat: "{stamp}"
+expires_at: "{expires}"
+purpose: "seeded"
+related_adr: ""
+related_files: []
+allows_concurrent_read: true
+on_conflict_other_agent_should: "park"
+status: "active"
+"""
+
+
+def _seed_lock(project: Path, name: str, *, pid: int, offset_seconds: int,
+               session: str = "seed-session") -> Path:
+    """Write a lock whose expires_at is `offset_seconds` from now."""
+    import datetime
+
+    now = datetime.datetime.now(datetime.timezone.utc)
+    expires = now + datetime.timedelta(seconds=offset_seconds)
+    fmt = "%Y-%m-%dT%H:%M:%SZ"
+    lock_dir = project / ".cognitive-os" / "runtime" / "edit-locks" / name
+    lock_dir.mkdir(parents=True, exist_ok=True)
+    (lock_dir / "meta.yaml").write_text(_META.format(
+        session=session, project=project, pid=pid, target=name,
+        stamp=now.strftime(fmt), expires=expires.strftime(fmt)))
+    return lock_dir
+
+
+def test_expired_lock_does_not_block_another_session(fake_project):
+    """A lock past its own expires_at is free, however loudly status says active."""
+    _seed_lock(fake_project, "stale-target.py", pid=999999, offset_seconds=-90 * 86400)
+    r = _run(["acquire", "stale-target.py", "x", "exclusive-edit"],
+             session="other", env_extra={"COS_EDIT_LOCK_NO_PID_CHECK": "1"},
+             project_dir=fake_project)
+    assert r.returncode == 0, f"expired lock still blocked: {r.stderr}"
+
+
+def test_unexpired_lock_still_blocks_another_session(fake_project):
+    """The fix must not free a lock that is still inside its declared TTL."""
+    _seed_lock(fake_project, "live-target.py", pid=os.getpid(), offset_seconds=1800)
+    r = _run(["acquire", "live-target.py", "x", "exclusive-edit"],
+             session="other", env_extra={"COS_EDIT_LOCK_NO_PID_CHECK": "1"},
+             project_dir=fake_project)
+    assert r.returncode == 2, f"live lock was freed: rc={r.returncode} {r.stderr}"
+    assert "BLOCKED" in r.stderr
+
+
+def test_reap_stale_removes_expired_and_keeps_live(fake_project):
+    """Bulk hygiene: expired past grace goes, current and within-grace stay."""
+    import json
+
+    _seed_lock(fake_project, "gone.py", pid=999999, offset_seconds=-90 * 86400)
+    _seed_lock(fake_project, "kept-live.py", pid=os.getpid(), offset_seconds=1800)
+    _seed_lock(fake_project, "kept-grace.py", pid=999999, offset_seconds=-120)
+    locks = fake_project / ".cognitive-os" / "runtime" / "edit-locks"
+
+    dry = _run(["reap-stale", "--dry-run", "--json"], project_dir=fake_project)
+    assert dry.returncode == 0, dry.stderr
+    assert json.loads(dry.stdout)["reaped"] == 1
+    assert (locks / "gone.py").is_dir(), "dry-run must not delete"
+
+    r = _run(["reap-stale", "--json"], project_dir=fake_project)
+    assert r.returncode == 0, r.stderr
+    payload = json.loads(r.stdout)
+    assert payload["reaped"] == 1 and payload["kept"] == 2, payload
+    assert not (locks / "gone.py").exists()
+    assert (locks / "kept-live.py").is_dir(), "live lock must survive the sweep"
+    assert (locks / "kept-grace.py").is_dir(), "within-grace lock must survive"
+
+
+def test_reap_stale_drops_lock_dir_without_meta(fake_project):
+    """mkdir succeeded / meta write failed: nobody can ever release it."""
+    import json
+    import os as _os
+    import time as _time
+
+    locks = fake_project / ".cognitive-os" / "runtime" / "edit-locks"
+    orphan = locks / "orphan.py"
+    orphan.mkdir(parents=True)
+    old = _time.time() - 7 * 86400
+    _os.utime(orphan, (old, old))
+
+    r = _run(["reap-stale", "--json"], project_dir=fake_project)
+    assert json.loads(r.stdout)["reaped"] == 1
+    assert not orphan.exists()
