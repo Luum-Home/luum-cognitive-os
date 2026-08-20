@@ -11,15 +11,39 @@ SESSIONS_DIR="$PROJECT_DIR/.cognitive-os/sessions"
 ACTIVE_FILE="$SESSIONS_DIR/active-sessions.json"
 GLOBAL_METRICS_DIR="$PROJECT_DIR/.cognitive-os/metrics"
 
-# Resolve session ID: env var > file-based discovery
-SESSION_ID="${COGNITIVE_OS_SESSION_ID:-}"
-if [ -z "$SESSION_ID" ]; then
-  # Try to find session file for this PID
-  SESSION_FILE="$SESSIONS_DIR/.current-session-$$"
-  if [ -f "$SESSION_FILE" ]; then
-    SESSION_ID=$(cat "$SESSION_FILE" 2>/dev/null)
-  fi
+# --- Identidad de la sesion ------------------------------------------------
+# Se resolvia con `${COGNITIVE_OS_SESSION_ID:-}` y, como fallback, leyendo
+# `.current-session-$$`. Las dos vias estan muertas dentro de un hook:
+#
+#   - COGNITIVE_OS_SESSION_ID lo exporta hooks/session-init.sh:189 en SU proceso;
+#     los hooks los lanza el arnes como procesos hermanos, no hijos, asi que
+#     nunca la heredan.
+#   - `.current-session-$$` lo escribe session-init.sh:223 con el PID DEL
+#     ESCRITOR y aca se leia con el PID DEL LECTOR, que jamas coincide.
+#
+# Consecuencia medida el 2026-08-19 sobre 296.383 filas de telemetria
+# (.cognitive-os/metrics/hook-timing.jsonl + .archive/hook-timing-*.jsonl.gz):
+# 344 disparos de este hook, y los 344 salieron por el `exit 0` de "sin sesion".
+# El hook es inerte al 100%.
+#
+# La identidad real la da cos_session_id() de hooks/_lib/common.sh (fix
+# adafefb66): devuelve CLAUDE_CODE_SESSION_ID, la variable documentada del
+# arnes, presente en el entorno de todo subproceso de hook.
+_COMMON_LIB="$(dirname "${BASH_SOURCE[0]:-$0}")/_lib/common.sh"
+# shellcheck source=hooks/_lib/common.sh
+[ -f "$_COMMON_LIB" ] && . "$_COMMON_LIB"
+
+if declare -f cos_session_id >/dev/null 2>&1; then
+  SESSION_ID="$(cos_session_id)"
+else
+  # common.sh ausente (checkout parcial): misma cadena, en linea.
+  SESSION_ID="${COGNITIVE_OS_SESSION_ID:-${CLAUDE_CODE_SESSION_ID:-${CODEX_SESSION_ID:-}}}"
 fi
+
+# SELF_SESSION_ID no es lo mismo que SESSION_ID: es la sesion en la que ESTE
+# proceso corre, sin pasar por ningun override. Se usa mas abajo para el unico
+# hecho que un hook de Stop puede afirmar gratis y sin heuristica de PID.
+SELF_SESSION_ID="${CLAUDE_CODE_SESSION_ID:-${CODEX_SESSION_ID:-}}"
 
 # If no session, nothing to clean up
 if [ -z "$SESSION_ID" ]; then
@@ -75,9 +99,43 @@ _read_knob() {
 # disparos DENTRO de una misma ventana SessionStart->SessionStart. "El turno
 # termino" no es evidencia de que "la sesion termino", y de esa confusion colgaba
 # todo el paso destructivo.
+#
+# 2026-08-19, segunda pasada — el PID de meta.json NO prueba nada. La version
+# anterior de esta funcion leia `meta.json.pid` y trataba "ese PID ya no existe"
+# como prueba de muerte de la sesion. Pero session-init.sh:29 escribe ahi su
+# propio `$$`, que es el PID del SUBPROCESO DE SESSION-INIT: un script que vive
+# unos segundos y termina. Medido sobre las 10 sesiones en disco:
+#
+#   $ for d in .cognitive-os/sessions/*/; do [ -f "$d/meta.json" ] || continue; \
+#       pid=$(jq -r .pid "$d/meta.json"); \
+#       ps -p "$pid" >/dev/null 2>&1 && echo "$d ALIVE" || echo "$d DEAD"; done
+#   ... las 10 -> DEAD
+#
+# Las 10 dan DEAD, incluida 1787190815-50188-3dbfb933 (arrancada 01:53:35 de hoy)
+# mientras la sesion que la creo sigue abierta. O sea que el guard que el paso 1
+# instalo para proteger el archivado es una TAUTOLOGIA sobre el arbol de
+# session-init: siempre dice "muerta". Con la identidad apuntando a ese arbol,
+# el `mv` al archivo se habria comido una sesion VIVA en cada turno. Hoy no pasa
+# solo porque SESSION_ID viene vacio y el hook sale antes.
+#
+# El unico hecho que un hook de Stop puede afirmar sin heuristica es este:
+# **Stop dispara DENTRO de la sesion, asi que la sesion en la que corre esta viva
+# por construccion.** Ningun PID puede desmentirlo. Ese es el guard duro; la
+# evidencia de PID queda solo para una sesion AJENA (id forzado por override), y
+# aun ahi se le suma una ventana de gracia por mtime, porque el PID efimero
+# tampoco alcanza para matarla.
+_SESSION_GRACE_MINUTES="${COS_SESSION_CLEANUP_GRACE_MINUTES:-15}"
+
 _session_owner_alive() {
   local meta="$SESSION_DIR/meta.json"
   local pid=""
+
+  # (0) Invariante duro: es MI sesion. Viva, sin discusion posible.
+  if [ -n "$SELF_SESSION_ID" ] && [ "$SESSION_ID" = "$SELF_SESSION_ID" ]; then
+    return 0
+  fi
+
+  # (1) Sin meta.json no hay evidencia de nada -> viva.
   [ -f "$meta" ] || return 0
   command -v jq >/dev/null 2>&1 || return 0
   pid=$(jq -r '.pid' "$meta" 2>/dev/null)
@@ -85,8 +143,34 @@ _session_owner_alive() {
   [ "$pid" -eq 0 ] && return 0
   ps -p "$pid" >/dev/null 2>&1 && return 0
   kill -0 "$pid" 2>/dev/null && return 0
+
+  # (2) PID muerto, pero puede ser el efimero de session-init. Si el directorio
+  #     se toco hace poco, hay alguien escribiendolo -> viva.
+  if [ -d "$SESSION_DIR" ] && command -v find >/dev/null 2>&1; then
+    if [ -n "$(find "$SESSION_DIR" -maxdepth 0 -mmin "-$_SESSION_GRACE_MINUTES" 2>/dev/null)" ]; then
+      return 0
+    fi
+  fi
+
   return 1
 }
+
+# --- Veredicto de vitalidad: se calcula UNA SOLA VEZ, y ACA -----------------
+# Tiene que quedar fijado ANTES del merge, porque el merge crea
+# $SESSION_DIR/.merge-offsets y con eso le mueve el mtime al directorio. Si se
+# evaluara despues, la ventana de gracia por mtime veria la escritura de este
+# mismo hook y concluiria "hay alguien vivo escribiendo" — el hook se declararia
+# a si mismo prueba de vida. Se detecto corriendo la prueba B del contrafactico,
+# que daba "no archivado" con el duenio probadamente muerto.
+#
+# Fijarlo una vez tambien garantiza que los pasos 2 y 4 decidan sobre el MISMO
+# hecho: no puede pasar que se deregistre la sesion y despues se decida que
+# estaba viva, ni al reves.
+if _session_owner_alive; then
+  SESSION_OWNER_ALIVE=true
+else
+  SESSION_OWNER_ALIVE=false
+fi
 
 # --- Step 1: Merge session metrics into global metrics ---
 # Merge INCREMENTAL. Antes era `cat "$metric_file" >> "$global_file"`: con Stop
@@ -160,22 +244,67 @@ if [ "$MERGE_METRICS" = true ] && [ -d "$SESSION_DIR/metrics" ]; then
 fi
 
 # --- Step 2: Remove session from active-sessions.json ---
+# Segunda muerte de este paso, independiente de la identidad: `flock` NO EXISTE
+# en macOS (`command -v flock` -> vacio), y aca no habia fallback ni `|| true`.
+# El `flock -w 5 200` fallaba, el `||` cortaba con return 1 y el paso 2 no
+# corria NUNCA en esta plataforma, ni siquiera con la identidad resuelta. Se ve
+# en la corrida B del contrafactico: duenio probadamente muerto, directorio
+# archivado, y la sesion seguia en active-sessions.json.
+#
+# Se usa el mismo lock por mkdir que ya tiene el merge del paso 1 (atomico en
+# POSIX, sin flock). No se inventa mecanismo: es el patron que el archivo ya usa.
 _deregister_session() {
   local lockfile="$SESSIONS_DIR/.active-sessions.lock"
 
-  (
-    flock -w 5 200 || { echo "WARN: Could not acquire lock for session deregistration" >&2; return 1; }
-
+  _deregister_body() {
     if [ -f "$ACTIVE_FILE" ] && jq empty "$ACTIVE_FILE" 2>/dev/null; then
       jq --arg id "$SESSION_ID" \
          '.sessions = [.sessions[] | select(.id != $id)]' \
          "$ACTIVE_FILE" > "$ACTIVE_FILE.tmp" && mv "$ACTIVE_FILE.tmp" "$ACTIVE_FILE"
     fi
+  }
 
-  ) 200>"$lockfile"
+  if command -v flock >/dev/null 2>&1; then
+    (
+      flock -w 5 200 || { echo "WARN: Could not acquire lock for session deregistration" >&2; exit 1; }
+      _deregister_body
+    ) 200>"$lockfile"
+    return 0
+  fi
+
+  local lock_dir="${lockfile}.d"
+  local deadline acquired=false
+  deadline=$(( $(date +%s) + 5 ))
+  while [ "$(date +%s)" -lt "$deadline" ]; do
+    if mkdir "$lock_dir" 2>/dev/null; then acquired=true; break; fi
+    sleep 0.2 2>/dev/null || sleep 1
+  done
+  if [ "$acquired" = false ]; then
+    echo "WARN: Could not acquire lock (mkdir) for session deregistration" >&2
+    return 1
+  fi
+  _deregister_body
+  rmdir "$lock_dir" 2>/dev/null || true
 }
 
-_deregister_session
+# El paso 2 corria INCONDICIONALMENTE. Con Stop disparando por turno (hasta 41
+# veces dentro de una misma ventana SessionStart->SessionStart, medido) eso es
+# darle de baja del registro a una sesion que sigue trabajando: el proximo hook
+# que consulte active-sessions.json no la encuentra, y todo lo que dependa de
+# "quien esta activo" (scripts/cos_coordination_status.py:62,
+# scripts/cos_task_claims.py:56, cos_lib/concurrent_agent_safety_status.py:184)
+# ve una sesion menos de las que hay. Es el mismo error de fondo que el borrado
+# que desarmo el paso 1 — "el turno termino" leido como "la sesion termino" —
+# solo que sin dejar rastro en disco, que es lo que lo hizo sobrevivir.
+#
+# Mismo criterio que el paso 4: se deregistra solo con el duenio probadamente
+# muerto. Para la propia sesion eso nunca es cierto, asi que desde Stop este
+# paso no corre nunca — y esta bien que no corra: reconciliar el registro con la
+# realidad es trabajo del reaper de ADR-119 (cos_lib/session_lifecycle.py, via
+# scripts/so-reaper.sh), que si tiene la evidencia para decidirlo.
+if [ "$SESSION_OWNER_ALIVE" = false ]; then
+  _deregister_session
+fi
 
 # --- Step 3: Release locks whose OWNING PROCESS is gone ---
 # Antes soltaba todo lock con el session_id de esta sesion. En un hook que
@@ -224,7 +353,7 @@ fi
 # contenido pendiente y ventana de gracia. Lo unico que puede afirmar barato es
 # "el duenio murio". Con eso: mueve el directorio al archivo del reaper, que se
 # encarga de la retencion. Sin eso: no toca nada.
-if [ "$CLEANUP_ON_EXIT" = true ] && [ -d "$SESSION_DIR" ] && ! _session_owner_alive; then
+if [ "$CLEANUP_ON_EXIT" = true ] && [ -d "$SESSION_DIR" ] && [ "$SESSION_OWNER_ALIVE" = false ]; then
   ARCHIVE_DIR="$PROJECT_DIR/.cognitive-os/archive/sessions"
   mkdir -p "$ARCHIVE_DIR" 2>/dev/null || true
   ARCHIVE_TARGET="$ARCHIVE_DIR/$SESSION_ID"
