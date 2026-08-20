@@ -1896,6 +1896,14 @@ harness:
       scope: os-only
       profiles: [standard, paranoid]
 
+    # Acts on goal-stop-gate's verdict. Inert unless an operator wrote
+    # .cognitive-os/lineage/autonomy.enabled (scripts/cos_lineage.py arm).
+    lineage-relaunch-gate:
+      script: hooks/lineage-relaunch-gate.sh
+      event: Stop
+      scope: os-only
+      profiles: [standard, paranoid]
+
     eas-validation-gate:
       script: hooks/eas-validation-gate.sh
       event: Stop
@@ -2159,6 +2167,13 @@ harness:
     # ── ADR-275 — session-start projector (wrapper invokes Python script) ────
     cos-session-start-projector:
       script: hooks/cos-session-start-projector.sh
+      event: SessionStart
+      scope: os-only
+
+    # Writes parent_session_id / depth for this session. Records parent=null
+    # when no launcher set COS_PARENT_SESSION_ID — absent, never invented.
+    session-lineage-record:
+      script: hooks/session-lineage-record.sh
       event: SessionStart
       scope: os-only
 

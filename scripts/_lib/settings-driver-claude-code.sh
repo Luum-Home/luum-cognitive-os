@@ -221,6 +221,7 @@ cc_driver_emit() {
       "hooks/dangerous-env-flag-detector.sh" "true"  \
       "hooks/history-rewrite-documented.sh"   "true"  \
       "hooks/cos-session-start-projector.sh"  "false" \
+      "hooks/session-lineage-record.sh"       "false" \
       "hooks/skill-drift-detector.sh"         "false" \
       "hooks/session-start-stack-recommend.sh" "true"  \
     )
@@ -561,6 +562,7 @@ cc_driver_emit() {
   else
     stop_hooks=$(_cc_hook_group "Stop" "" \
       "hooks/goal-stop-gate.sh"                 "false" \
+      "hooks/lineage-relaunch-gate.sh"          "false" \
       "hooks/eas-validation-gate.sh"            "false" \
       "hooks/session-quality-close-gate.sh"      "false" \
       "hooks/session-summary-reminder.sh"       "false" \
