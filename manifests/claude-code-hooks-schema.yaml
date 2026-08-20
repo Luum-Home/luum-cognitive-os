@@ -189,6 +189,23 @@ universal_fields:
 # an oversight, so it stays out of the transcription and in this list.
 events:
   SubagentStart:
+    cadence:
+      fires_when: >-
+        Cuando se lanza un subagente por la herramienta Agent. Una vez por
+        SUBAGENTE lanzado, no por turno ni por sesion.
+      per_session: 0-N-per-subagent
+      evidence: measured
+      basis: [https://code.claude.com/docs/en/hooks.md]
+      doc_quote: >-
+        Runs when a Claude Code subagent is spawned via the Agent tool.
+      how: "python3 scripts/measure_event_cadence.py --event SubagentStart"
+      measured:
+        window: "294.333 filas: .cognitive-os/metrics/hook-timing.jsonl mas los 10 rotados .archive/hook-timing-*.jsonl.gz, al 2026-08-19"
+        occurrences: 357
+        sessions: 76
+        median_per_session: 2
+        max_per_session: 61
+        sessions_without_it: 36
     fires_when: "A Claude Code subagent is spawned via the Agent tool."
     matcher_supported: true
     matcher_semantics: >
@@ -209,6 +226,24 @@ events:
       context into the subagent." — hooks.md, section "SubagentStart".
 
   UserPromptSubmit:
+    cadence:
+      fires_when: >-
+        Cuando el usuario envia un prompt, antes de que el modelo lo procese. Una
+        vez por PROMPT, o sea N veces por sesion: es un evento de turno, no de
+        sesion.
+      per_session: 0-N-per-turn
+      evidence: measured
+      basis: [https://code.claude.com/docs/en/hooks.md]
+      doc_quote: >-
+        When you submit a prompt, before Claude processes it
+      how: "python3 scripts/measure_event_cadence.py --event UserPromptSubmit"
+      measured:
+        window: "294.333 filas: .cognitive-os/metrics/hook-timing.jsonl mas los 10 rotados .archive/hook-timing-*.jsonl.gz, al 2026-08-19"
+        occurrences: 370
+        sessions: 76
+        median_per_session: 1
+        max_per_session: 45
+        sessions_without_it: 26
     can_block: true
     exit_2_behavior: "Blocks prompt processing and erases the prompt."
     decision_pattern: "top-level decision"
@@ -217,6 +252,24 @@ events:
     plain_stdout_is_context: true
 
   SessionStart:
+    cadence:
+      fires_when: >-
+        Cuando el arnes ABRE una sesion nueva, o retoma una existente con
+        --continue / --resume / --fork-session. Una vez por apertura de sesion; no
+        vuelve a disparar por turno.
+      per_session: exactly-1-per-session
+      evidence: measured
+      basis: [https://code.claude.com/docs/en/hooks.md]
+      doc_quote: >-
+        When a session begins or resumes
+      how: "python3 scripts/measure_event_cadence.py --event SessionStart"
+      measured:
+        window: "294.333 filas: .cognitive-os/metrics/hook-timing.jsonl mas los 10 rotados .archive/hook-timing-*.jsonl.gz, al 2026-08-19"
+        occurrences: 76
+        sessions: 76
+        median_per_session: 1
+        max_per_session: 1
+        sessions_without_it: 0
     can_block: false
     exit_2_behavior: "Shows stderr to user only."
     decision_pattern: "context only"
@@ -234,6 +287,24 @@ events:
       timestamps and commit SHAs go stale on --continue/--resume.
 
   PreToolUse:
+    cadence:
+      fires_when: >-
+        Antes de CADA llamada a herramienta, haya o no decision de permiso
+        pendiente. Una vez por tool-call, que en este repo es el evento mas
+        frecuente por dos ordenes de magnitud.
+      per_session: 0-N-per-tool-call
+      evidence: measured
+      basis: [https://code.claude.com/docs/en/hooks.md]
+      doc_quote: >-
+        Before a tool call executes. Can block it
+      how: "python3 scripts/measure_event_cadence.py --event PreToolUse"
+      measured:
+        window: "294.333 filas: .cognitive-os/metrics/hook-timing.jsonl mas los 10 rotados .archive/hook-timing-*.jsonl.gz, al 2026-08-19"
+        occurrences: 13282
+        sessions: 76
+        median_per_session: 17
+        max_per_session: 2772
+        sessions_without_it: 25
     can_block: true
     exit_2_behavior: "Blocks the tool call."
     decision_pattern: hookSpecificOutput
@@ -242,12 +313,55 @@ events:
     output_fields_allowed: [additionalContext, permissionDecision, permissionDecisionReason, updatedInput]
 
   PostToolUse:
+    cadence:
+      fires_when: >-
+        Despues de que una llamada a herramienta TERMINA BIEN. Una vez por
+        tool-call exitoso; los que fallan van a PostToolUseFailure, que este repo
+        no registra — por eso PostToolUse mide MENOS ocurrencias que PreToolUse.
+      per_session: 0-N-per-tool-call
+      evidence: measured
+      basis: [https://code.claude.com/docs/en/hooks.md]
+      doc_quote: >-
+        After a tool call succeeds
+      how: "python3 scripts/measure_event_cadence.py --event PostToolUse"
+      measured:
+        window: "294.333 filas: .cognitive-os/metrics/hook-timing.jsonl mas los 10 rotados .archive/hook-timing-*.jsonl.gz, al 2026-08-19"
+        occurrences: 12628
+        sessions: 76
+        median_per_session: 17
+        max_per_session: 2601
+        sessions_without_it: 26
     can_block: false
     decision_pattern: "top-level decision"
     decision_fields: [decision, reason]
     output_fields_allowed: [additionalContext, updatedToolOutput]
 
   Stop:
+    cadence:
+      fires_when: >-
+        Cada vez que el agente principal TERMINA DE RESPONDER, o sea una vez por
+        TURNO. NO marca el fin de la sesion: una sesion de N turnos dispara Stop N
+        veces. No dispara si el turno se corto por interrupcion del usuario; si
+        termino por error de API dispara StopFailure en su lugar.
+      per_session: 0-N-per-turn
+      evidence: measured
+      basis: [https://code.claude.com/docs/en/hooks.md]
+      doc_quote: >-
+        Runs when the main Claude Code agent has finished responding. Does not run
+        if the stoppage occurred due to a user interrupt.
+      how: "python3 scripts/measure_event_cadence.py --event Stop"
+      measured:
+        window: "294.333 filas: .cognitive-os/metrics/hook-timing.jsonl mas los 10 rotados .archive/hook-timing-*.jsonl.gz, al 2026-08-19"
+        occurrences: 341
+        sessions: 76
+        median_per_session: 1
+        max_per_session: 45
+        sessions_without_it: 37
+      note: >-
+        Este es el dato que faltaba el 2026-08-19 y costo 341 disparos de
+        hooks/session-cleanup.sh sobre sesiones vivas. 45 disparos DENTRO de una
+        sola ventana SessionStart->SessionStart es la refutacion directa de 'Stop
+        = fin de sesion'.
     can_block: true
     exit_2_behavior: "Prevents Claude from stopping, continues the conversation."
     decision_pattern: "top-level decision"
@@ -255,6 +369,24 @@ events:
 
   # ── Registered here since before 2026-08-15, transcribed 2026-08-19 ──────────
   PreCompact:
+    cadence:
+      fires_when: >-
+        Antes de cada compactacion, sea manual (/compact) o automatica al llenarse
+        la ventana. Una vez por COMPACTACION: la mayoria de las sesiones no
+        compactan ni una vez.
+      per_session: 0-N-per-compaction
+      evidence: measured
+      basis: [https://code.claude.com/docs/en/hooks.md]
+      doc_quote: >-
+        Before Claude Code runs a compact operation.
+      how: "python3 scripts/measure_event_cadence.py --event PreCompact"
+      measured:
+        window: "294.333 filas: .cognitive-os/metrics/hook-timing.jsonl mas los 10 rotados .archive/hook-timing-*.jsonl.gz, al 2026-08-19"
+        occurrences: 6
+        sessions: 76
+        median_per_session: 0
+        max_per_session: 1
+        sessions_without_it: 70
     fires_when: "Before Claude Code runs a compact operation."
     registered_hook: hooks/pre-compaction-flush.sh
     matcher_supported: true
@@ -278,6 +410,24 @@ events:
       section "PreCompact".
 
   TaskCreated:
+    cadence:
+      fires_when: >-
+        Cuando se esta creando una tarea con la herramienta TaskCreate. Una vez
+        por TAREA creada. En una sesion sin las herramientas de Task no dispara
+        nunca.
+      per_session: 0-N-per-task
+      evidence: not-observed
+      basis: [https://code.claude.com/docs/en/hooks.md]
+      doc_quote: >-
+        Runs when a task is being created via the TaskCreate tool. In a session
+        without the Task tools, this event doesn't fire.
+      how: "python3 scripts/measure_event_cadence.py --event TaskCreated"
+      blind_reason: >-
+        Registrado en cognitive-os.yaml y envuelto por
+        scripts/hook-timing-wrapper.sh, y aun asi CERO filas en 294.333. La
+        lectura correcta es 'ninguna sesion medida uso TaskCreate', no 'el evento
+        no dispara': el instrumento estaba puesto y no vio nada que ver. La clase
+        0-N-per-task sale de la doc, no de la telemetria.
     fires_when: "A task is being created via the TaskCreate tool."
     registered_hook: hooks/task-created.sh
     matcher_supported: false
@@ -300,6 +450,21 @@ events:
       deprecated: [team_name]
 
   TeammateIdle:
+    cadence:
+      fires_when: >-
+        Cuando un teammate de agent-teams esta por quedar idle despues de terminar
+        su turno. Una vez por turno DE CADA TEAMMATE, no del agente principal.
+      per_session: 0-N-per-turn
+      evidence: not-observed
+      basis: [https://code.claude.com/docs/en/hooks.md]
+      doc_quote: >-
+        Runs when an agent team teammate is about to go idle after finishing its
+        turn.
+      how: "python3 scripts/measure_event_cadence.py --event TeammateIdle"
+      blind_reason: >-
+        Registrado y envuelto, cero filas en 294.333: ninguna sesion medida uso
+        agent-teams. La clase per-turn sale de la doc ('after finishing its
+        turn'), no de la telemetria de este repo.
     fires_when: "A teammate is about to go idle."
     registered_hook: hooks/teammate-idle.sh
     can_block: true
@@ -318,6 +483,25 @@ events:
   # anyway because the declaration exists and flipping the projection flag is a
   # one-line change that should not require re-reading the host docs.
   TaskCompleted:
+    cadence:
+      fires_when: >-
+        Cuando una tarea se marca como completada por TaskUpdate, o cuando un
+        teammate de agent-teams termina su turno con tareas en progreso. Una vez
+        por TAREA completada.
+      per_session: 0-N-per-task
+      evidence: not-observed
+      basis: [https://code.claude.com/docs/en/hooks.md]
+      doc_quote: >-
+        Runs when a task is being marked as completed. This fires in two
+        situations: when any agent explicitly marks a task as completed through
+        the TaskUpdate tool, or when an agent team teammate finishes its turn with
+        in-progress tasks.
+      how: "python3 scripts/measure_event_cadence.py --event TaskCompleted"
+      blind_reason: >-
+        Doblemente ciego: declarado con default_projection: false, asi que tiene 0
+        handlers en .claude/settings.json y no hay wrapper que pudiera
+        registrarlo. Cero filas aca no dice nada del arnes, dice que no lo
+        proyectamos.
     fires_when: >
       A task is marked completed through TaskUpdate, or an agent-teams teammate
       finishes its turn with in-progress tasks.

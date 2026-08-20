@@ -118,18 +118,72 @@ surfaces:
     note: generic dispatcher; switch on input.event.type
 
   session.created:
+    cadence:
+      fires_when: >-
+        Cuando se crea la sesion. Es el unico surface del grupo Session Events que
+        corresponde a la apertura; una vez por sesion.
+      per_session: exactly-1-per-session
+      evidence: documented
+      basis: [https://opencode.ai/docs/plugins/]
+      doc_quote: >-
+        Session Events session.created session.compacted session.deleted
+        session.diff session.error session.idle session.status session.updated
+      how: 'curl -sSL https://opencode.ai/docs/plugins/ | grep -c "session.idle"'
+      blind_reason: >-
+        Este repo NO corre sobre OpenCode: cero filas de telemetria propia de este
+        arnes. La clase sale de la doc y del binario instalado (1.16.2), no de una
+        medicion de sesiones nuestras.
     kind: event_type
     usable_as: lifecycle
     cos_event: SessionStart
     can_block: false
 
   session.idle:
+    cadence:
+      fires_when: >-
+        Cada vez que el estado de la sesion pasa a idle, o sea al final de CADA
+        TURNO. NO es el fin de la sesion, aunque el ejemplo de la doc lo comente
+        como 'session completion'.
+      per_session: 0-N-per-turn
+      evidence: inspected
+      basis: [https://github.com/sst/opencode/blob/dev/packages/plugin/src/index.ts]
+      doc_quote: >-
+        // Send notification on session completion if (event.type ===
+        "session.idle")
+      how: 'grep -ao "SessionStatus\.set.\{0,300\}" "$(command -v opencode)"'
+      blind_reason: >-
+        Este repo NO corre sobre OpenCode: cero filas de telemetria propia de este
+        arnes. La clase sale de la doc y del binario instalado (1.16.2), no de una
+        medicion de sesiones nuestras.
+      note: >-
+        La doc de OpenCode dice, en el comentario de su propio ejemplo, 'session
+        completion'. El binario instalado 1.16.2 la contradice y gana el binario:
+        SessionStatus.set publica session.status SIEMPRE y ademas session.idle
+        cuando el status entrante es idle, borrando la entrada del mapa de estado.
+        Es una TRANSICION busy->idle, no un terminador: el par busy/idle vuelve a
+        ocurrir en el turno siguiente, y la muerte de la sesion tiene su propio
+        surface, session.deleted. Cadencia identica a Stop en Claude Code y en
+        Codex, que es lo que hace legitimo proyectar Stop aca.
     kind: event_type
     usable_as: lifecycle
     cos_event: Stop
     can_block: false
 
   session.compacted:
+    cadence:
+      fires_when: >-
+        Despues de que la sesion se compacto. Unidad: la compactacion, y es la
+        senal POST, no la PRE.
+      per_session: 0-N-per-compaction
+      evidence: documented
+      basis: [https://opencode.ai/docs/plugins/]
+      doc_quote: >-
+        Session Events session.created session.compacted session.deleted
+      how: 'curl -sSL https://opencode.ai/docs/plugins/ | grep -c "session.idle"'
+      blind_reason: >-
+        Este repo NO corre sobre OpenCode: cero filas de telemetria propia de este
+        arnes. La clase sale de la doc y del binario instalado (1.16.2), no de una
+        medicion de sesiones nuestras.
     kind: event_type
     usable_as: lifecycle
     cos_event: PreCompact
@@ -137,6 +191,21 @@ surfaces:
     note: fires AFTER compaction; it is the post-, not pre-, signal.
 
   experimental.session.compacting:
+    cadence:
+      fires_when: >-
+        Antes de que el LLM genere el resumen de continuacion, o sea la senal PRE
+        de la compactacion. Unidad: la compactacion.
+      per_session: 0-N-per-compaction
+      evidence: documented
+      basis: [https://opencode.ai/docs/plugins/]
+      doc_quote: >-
+        The experimental.session.compacting hook fires before the LLM generates a
+        continuation summary.
+      how: 'curl -sSL https://opencode.ai/docs/plugins/ | grep -c "session.idle"'
+      blind_reason: >-
+        Este repo NO corre sobre OpenCode: cero filas de telemetria propia de este
+        arnes. La clase sale de la doc y del binario instalado (1.16.2), no de una
+        medicion de sesiones nuestras.
     kind: hook_key
     usable_as: lifecycle
     cos_event: PreCompact
@@ -149,6 +218,21 @@ surfaces:
       two different surfaces at two different moments, not two generations.
 
   chat.message:
+    cadence:
+      fires_when: >-
+        Cuando entra un mensaje de chat. Unidad: el turno del usuario — es el
+        equivalente publicado mas cercano a UserPromptSubmit.
+      per_session: 0-N-per-turn
+      evidence: documented
+      basis: [https://github.com/sst/opencode/blob/dev/packages/plugin/src/index.ts]
+      doc_quote: >-
+        (input: {sessionID, agent?, model?, messageID?, variant?}, output:
+        {message, parts})
+      how: 'curl -sSL https://opencode.ai/docs/plugins/ | grep -c "session.idle"'
+      blind_reason: >-
+        Este repo NO corre sobre OpenCode: cero filas de telemetria propia de este
+        arnes. La clase sale de la doc y del binario instalado (1.16.2), no de una
+        medicion de sesiones nuestras.
     kind: hook_key
     usable_as: lifecycle
     cos_event: UserPromptSubmit
@@ -169,6 +253,21 @@ surfaces:
       projected onto it.
 
   tool.execute.before:
+    cadence:
+      fires_when: >-
+        Antes de que se ejecute una herramienta. Unidad: el tool-call.
+      per_session: 0-N-per-tool-call
+      evidence: documented
+      basis: [https://opencode.ai/docs/plugins/]
+      doc_quote: >-
+        "tool.execute.before": async (input, output) => { if (input.tool ===
+        "read" && output.args.filePath.includes(".env")) { throw new Error("Do not
+        read .env files") } }
+      how: 'curl -sSL https://opencode.ai/docs/plugins/ | grep -c "session.idle"'
+      blind_reason: >-
+        Este repo NO corre sobre OpenCode: cero filas de telemetria propia de este
+        arnes. La clase sale de la doc y del binario instalado (1.16.2), no de una
+        medicion de sesiones nuestras.
     kind: hook_key
     usable_as: lifecycle
     cos_event: PreToolUse
@@ -180,6 +279,20 @@ surfaces:
       args on this hook — the mutable args live on `output.args`.
 
   tool.execute.after:
+    cadence:
+      fires_when: >-
+        Despues de que se ejecuto una herramienta. Unidad: el tool-call.
+      per_session: 0-N-per-tool-call
+      evidence: documented
+      basis: [https://github.com/sst/opencode/blob/dev/packages/plugin/src/index.ts]
+      doc_quote: >-
+        (input: {tool, sessionID, callID, args}, output: {title, output,
+        metadata})
+      how: 'curl -sSL https://opencode.ai/docs/plugins/ | grep -c "session.idle"'
+      blind_reason: >-
+        Este repo NO corre sobre OpenCode: cero filas de telemetria propia de este
+        arnes. La clase sale de la doc y del binario instalado (1.16.2), no de una
+        medicion de sesiones nuestras.
     kind: hook_key
     usable_as: lifecycle
     cos_event: PostToolUse
@@ -187,6 +300,20 @@ surfaces:
     signature: "(input: {tool, sessionID, callID, args}, output: {title, output, metadata})"
 
   permission.ask:
+    cadence:
+      fires_when: >-
+        Cuando se pide una decision de permiso sobre una herramienta. Unidad: el
+        tool-call que pide permiso, subconjunto estricto de tool.execute.before.
+      per_session: 0-N-per-tool-call
+      evidence: documented
+      basis: [https://github.com/sst/opencode/blob/dev/packages/plugin/src/index.ts]
+      doc_quote: >-
+        (input: Permission, output: {status: "ask" | "deny" | "allow"})
+      how: 'curl -sSL https://opencode.ai/docs/plugins/ | grep -c "session.idle"'
+      blind_reason: >-
+        Este repo NO corre sobre OpenCode: cero filas de telemetria propia de este
+        arnes. La clase sale de la doc y del binario instalado (1.16.2), no de una
+        medicion de sesiones nuestras.
     kind: hook_key
     usable_as: lifecycle
     cos_event: null
