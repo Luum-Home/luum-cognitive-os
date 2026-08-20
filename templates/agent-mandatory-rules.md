@@ -91,7 +91,21 @@ auto-block):
 secret-detector), `error-learning`, `result-management`, `user-prompt-capture`,
 `doc-sync`, `skill-rewrite`, `auto-skill-generation`, `auto-repair`.
 
-Rules whose hook exists but is NOT registered — treat as agent-instruction-only:
-see `rules/ROADMAP.md` Section 1 (audit-trail, auto-rollback, confidence-gate,
-confidentiality-protection, agent-identity, pre-dev-readiness-gate,
-reinvention-prevention).
+Registration is a fact about `.claude/settings.json`, not a fact you remember.
+The seven rules that `rules/ROADMAP.md` Section 1 once listed as unregistered
+(audit-trail, auto-rollback, confidence-gate, confidentiality-protection,
+agent-identity, pre-dev-readiness-gate, reinvention-prevention) are ALL
+registered as of 2026-08-20 — Section 1 marks each one RESOLVED, and this
+paragraph kept telling every sub-agent otherwise. A false "no hook will catch
+you" is the cheapest premise to publish and the most expensive to notice.
+
+Before treating any rule as agent-instruction-only, ask the file:
+
+```bash
+python3 -c 'import json,re,sys; print(len(re.findall(re.escape(sys.argv[1]), \
+json.dumps(json.load(open(".claude/settings.json")).get("hooks",{})))))' <hook-name>.sh
+```
+
+Zero means unregistered. Today that command returns zero for `rate-limiter.sh`
+and `session-end-cleanup.sh` (both deliberate operator decisions, see
+`rules/rate-limiting.md`) and non-zero for all seven above.
