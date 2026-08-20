@@ -48,7 +48,10 @@ for _path in (str(_REPO_ROOT), str(_TESTS_ROOT)):
 _DEFAULT_TEST_SUBPROCESS_TIMEOUT = float(
     os.environ.get("COS_TEST_SUBPROCESS_DEFAULT_TIMEOUT", "120")
 )
+# Budget of the pytest-timeout watchdog that will fire on the CURRENT test.
+# Set per item in pytest_runtest_setup; falls back to the suite-level value.
 _PYTEST_TIMEOUT_BUDGET_SECONDS: Optional[float] = None
+_SUITE_TIMEOUT_BUDGET_SECONDS: Optional[float] = None
 
 if _DEFAULT_TEST_SUBPROCESS_TIMEOUT > 0:
     import signal
@@ -215,16 +218,82 @@ def _enforce_runtime_invariants() -> None:
         )
 
 
+def _resolve_suite_timeout_budget(config) -> Optional[float]:
+    """Seconds pytest-timeout will allow a test before it fires.
+
+    Read the CLI flag FIRST and `pytest.ini` second, because they live in
+    different places and only the flag was being read before.
+    `config.getoption("timeout")` is the `--timeout=` value and defaults to
+    None; `timeout = 30` in pytest.ini lands in `config.getini("timeout")`.
+    A normal run passes no flag, so the budget stayed None and
+    `_effective_subprocess_timeout` skipped its ordering clause entirely --
+    measured 2026-08-20: DEFAULT=120.0 BUDGET=None EFFECTIVE(120)=120.0.
+
+    The consequence was not cosmetic. With the budget unset, a subprocess got
+    120 s while the watchdog fired at 30 s, and pytest.ini's
+    `timeout_method = thread` cannot kill a subprocess: it dumps stacks and
+    calls os._exit(1), taking the whole session down. Ordering the two
+    budgets is what turns "the run aborted" into "this test is too slow".
+    """
+    for source in ("option", "ini"):
+        try:
+            raw = (
+                config.getoption("timeout", default=None)
+                if source == "option"
+                else config.getini("timeout")
+            )
+        except (ValueError, KeyError):
+            continue
+        if not raw:
+            continue
+        try:
+            return float(raw)
+        except (TypeError, ValueError):
+            continue
+    return None
+
+
+def _item_timeout_budget(item) -> Optional[float]:
+    """The watchdog budget for ONE test: its own marker wins over the ini.
+
+    Applying the suite value to every item would be wrong in both directions.
+    56 tests carry `@pytest.mark.timeout(...)`, from 10 s to 1800 s; capping a
+    30-minute test's subprocesses at 25 s, or letting a 10-second test spawn a
+    115-second one, are the same bug with opposite signs.
+    """
+    marker = item.get_closest_marker("timeout")
+    if marker is not None:
+        raw = marker.kwargs.get("timeout")
+        if raw is None and marker.args:
+            raw = marker.args[0]
+        try:
+            value = float(raw)
+        except (TypeError, ValueError):
+            value = None
+        if value:
+            return value
+    return _SUITE_TIMEOUT_BUDGET_SECONDS
+
+
+def pytest_runtest_setup(item):
+    """Point the subprocess cap at the watchdog that will actually fire."""
+    global _PYTEST_TIMEOUT_BUDGET_SECONDS
+    _PYTEST_TIMEOUT_BUDGET_SECONDS = _item_timeout_budget(item)
+
+
+def pytest_runtest_teardown(item, nextitem):  # noqa: ARG001
+    """Restore the suite budget so fixture/collection subprocesses are not
+    left capped by whichever test happened to run last."""
+    global _PYTEST_TIMEOUT_BUDGET_SECONDS
+    _PYTEST_TIMEOUT_BUDGET_SECONDS = _SUITE_TIMEOUT_BUDGET_SECONDS
+
+
 def pytest_configure(config):
     """Register all custom markers used across the test suite."""
     _enforce_runtime_invariants()
-    global _PYTEST_TIMEOUT_BUDGET_SECONDS
-    try:
-        timeout_option = config.getoption("timeout", default=None)
-    except ValueError:
-        timeout_option = None
-    if timeout_option:
-        _PYTEST_TIMEOUT_BUDGET_SECONDS = float(timeout_option)
+    global _PYTEST_TIMEOUT_BUDGET_SECONDS, _SUITE_TIMEOUT_BUDGET_SECONDS
+    _SUITE_TIMEOUT_BUDGET_SECONDS = _resolve_suite_timeout_budget(config)
+    _PYTEST_TIMEOUT_BUDGET_SECONDS = _SUITE_TIMEOUT_BUDGET_SECONDS
 
     markers = [
         "unit: Unit tests for individual library functions",
@@ -240,7 +309,7 @@ def pytest_configure(config):
         "benchmark: Performance benchmark tests",
         "quality: LLM-evaluated quality tests",
         "contract: Product contract tests that validate durable behavior",
-        "timeout(seconds): Per-test hard timeout override used by pytest-timeout and conftest SIGALRM",
+        "timeout(seconds): Per-test hard timeout override; also caps this test's subprocess budget (see _item_timeout_budget)",
     ]
     for marker in markers:
         config.addinivalue_line("markers", marker)

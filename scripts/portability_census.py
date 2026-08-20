@@ -63,9 +63,12 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
+import resource
 import subprocess
 import sys
+import time
 from dataclasses import dataclass, asdict
 from pathlib import Path
 
@@ -355,7 +358,7 @@ def _hooks_registrados() -> set[str]:
     return registrados
 
 
-_MENCION = re.compile(r"[\w.@+-]+\.(?:sh|bash|zsh)")
+_MENCION = re.compile(rb"[\w.@+-]+\.(?:sh|bash|zsh)")
 
 
 def _referenciados() -> set[str]:
@@ -364,23 +367,30 @@ def _referenciados() -> set[str]:
     Un solo pase sobre el arbol, con un regex chico. La alternativa obvia
     —grep con una alternacion de 500 nombres— tarda minutos: el motor arma un
     automata gigante y lo corre contra cada byte del repo.
+
+    Se matchea sobre BYTES y no sobre texto decodificado. No es una
+    aproximacion: el patron es ASCII puro y UTF-8 es auto-sincronizante —
+    ningun byte ASCII aparece dentro de una secuencia multi-byte— asi que el
+    conjunto de aciertos es identico. Lo que se ahorra es decodificar 8.770
+    archivos con `errors="replace"`, que era la mayor parte del costo:
+    5,05 s de reloj / 3,42 s de CPU -> 1,7 s / 1,3 s, medido el 2026-08-20.
+    La igualdad esta fijada como test, no como comentario:
+    `test_referenciados_en_bytes_da_lo_mismo_que_en_texto`.
     """
-    fuera: set[str] = set()
+    fuera: set[bytes] = set()
     for rel in _versionados():
         if not rel:
             continue
         p = REPO / rel
-        if not p.is_file():
-            continue
         try:
             if p.stat().st_size > 4_000_000:
                 continue
-            texto = p.read_text(errors="replace")
+            crudo = p.read_bytes()
         except OSError:
             continue
-        propio = Path(rel).name
-        fuera.update(n for n in _MENCION.findall(texto) if n != propio)
-    return fuera
+        propio = Path(rel).name.encode()
+        fuera.update(n for n in _MENCION.findall(crudo) if n != propio)
+    return {n.decode("utf-8", "replace") for n in fuera}
 
 
 def liveness(rel: str, registrados: set[str], mencionados: set[str]) -> str:
@@ -497,18 +507,47 @@ def censar() -> tuple[Census, list[Sitio], list[str], dict[str, str]]:
     return censo, todos, archivos, disp
 
 
+_EMBEBIDO_SUFIJOS = (".yml", ".yaml", ".json")
+_EMBEBIDO = re.compile(r"^[ \t]*(?:run|command|cmd):", re.MULTILINE)
+
+
 def _shell_embebido() -> int:
-    """Archivos no-shell que contienen `run:` o `command` con shell adentro.
+    """Archivos no-shell VERSIONADOS que traen `run:`/`command:` con shell adentro.
 
     No se analizan: se CUENTAN, para que la ceguera tenga tamano en vez de ser
     una nota al pie.
+
+    Se mide sobre `git ls-files` y no sobre el arbol de trabajo, por dos
+    razones y las dos se midieron el 2026-08-20:
+
+      1. Poblacion. El resto del censo se declara sobre archivos versionados.
+         La version anterior corria `grep -rlE ... .` sobre el arbol entero, y
+         de sus 40 aciertos 14 estaban en `.claude/plugins/` — checkouts de
+         terceros que no son de este repo. La ceguera publicada venia inflada
+         ~35% con archivos ajenos a la poblacion declarada.
+      2. Reproducibilidad. Ese mismo walk visitaba `.venv/` (345 MB) y `.git/`
+         (1,4 GB): dos corridas sobre el MISMO commit devolvian 43 y 40 segun
+         que hubiera escrito otra sesion. Un censo cuyo numero cambia sin que
+         cambie el commit no es evidencia.
+
+    Efecto medido en costo (`scripts/portability_census.py`, cache caliente):
+    14,27 s de reloj y 5,53 s de CPU de hijos -> 0,3 s. El grep gastaba 8,7 s
+    de reloj FUERA de la CPU: era el recorrido del filesystem, no el matcheo.
     """
-    r = subprocess.run(
-        ["grep", "-rlE", r"^\s*(run|command|cmd):", "--include=*.yml", "--include=*.yaml",
-         "--include=*.json", "."],
-        cwd=REPO, capture_output=True, text=True,
-    )
-    return len([x for x in r.stdout.split() if x])
+    n = 0
+    for rel in _versionados():
+        if not rel.endswith(_EMBEBIDO_SUFIJOS):
+            continue
+        p = REPO / rel
+        try:
+            if p.stat().st_size > 4_000_000:
+                continue
+            texto = p.read_text(errors="replace")
+        except OSError:
+            continue
+        if _EMBEBIDO.search(texto):
+            n += 1
+    return n
 
 
 def _probar() -> int:
@@ -521,15 +560,78 @@ def _probar() -> int:
     return 0
 
 
+def _perfilar() -> int:
+    """Reloj vs CPU por fase. El censo es de I/O, no de calculo.
+
+    Existe porque el diagnostico obvio —"el censo es caro, optimizalo"— era
+    falso y costo una corrida entera averiguarlo. Medido el 2026-08-20 con la
+    maquina a load 441: `_referenciados()` gasto 15,9 s de reloj y 2,8 s de
+    CPU. El 82% del tiempo el proceso estaba esperando el filesystem, no
+    calculando. Un algoritmo tres veces mas rapido no habria salvado nada.
+
+    De ahi la consecuencia para los tests: un presupuesto por RELOJ sobre una
+    medicion de I/O, en una maquina compartida, es una moneda al aire. Lo que
+    tiene que ser determinista es el MODO DE FALLA, no el tiempo.
+    """
+    def cpu() -> tuple[float, float]:
+        yo = resource.getrusage(resource.RUSAGE_SELF)
+        hijos = resource.getrusage(resource.RUSAGE_CHILDREN)
+        return (yo.ru_utime + yo.ru_stime, hijos.ru_utime + hijos.ru_stime)
+
+    def fase(nombre, fn):
+        w0 = time.monotonic()
+        c0, h0 = cpu()
+        out = fn()
+        reloj = time.monotonic() - w0
+        c1, h1 = cpu()
+        gasto = (c1 - c0) + (h1 - h0)
+        pct = 100 * gasto / reloj if reloj > 0 else 0
+        print(f"  {nombre:22s} reloj={reloj:7.2f}s  cpu={gasto:6.2f}s  cpu/reloj={pct:3.0f}%")
+        return out, reloj, gasto
+
+    try:
+        carga = os.getloadavg()[0]
+    except (OSError, AttributeError):
+        carga = float("nan")
+    print(f"load average (1 min): {carga:.2f}")
+    print(f"archivos versionados: {len(_versionados())}")
+
+    total_reloj = total_cpu = 0.0
+    (archivos, _ciegos), r, c = fase("poblacion", poblacion)
+    total_reloj += r; total_cpu += c
+    registrados, r, c = fase("hooks_registrados", _hooks_registrados)
+    total_reloj += r; total_cpu += c
+    mencionados, r, c = fase("referenciados", _referenciados)
+    total_reloj += r; total_cpu += c
+    _todos, r, c = fase("sitios", lambda: sitios(archivos, registrados, mencionados))
+    total_reloj += r; total_cpu += c
+    _disp, r, c = fase("disponibilidad", disponibilidad)
+    total_reloj += r; total_cpu += c
+    _emb, r, c = fase("shell_embebido", _shell_embebido)
+    total_reloj += r; total_cpu += c
+    pct = 100 * total_cpu / total_reloj if total_reloj > 0 else 0
+    print(f"  {'TOTAL':22s} reloj={total_reloj:7.2f}s  cpu={total_cpu:6.2f}s  cpu/reloj={pct:3.0f}%")
+    if pct < 50:
+        print("\nveredicto: LIGADO A I/O. Optimizar el calculo no mueve el reloj;")
+        print("lo que mueve el reloj es la carga de la maquina.")
+    else:
+        print("\nveredicto: LIGADO A CPU.")
+    return 0
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--probe", action="store_true", help="probar cada GNU-ismo en esta maquina")
     ap.add_argument("--solo-vivos", action="store_true", help="solo sitios en camino que se ejecuta")
+    ap.add_argument("--perfil", action="store_true",
+                    help="reloj vs CPU por fase (por que el costo no es calculo)")
     args = ap.parse_args()
 
     if args.probe:
         return _probar()
+    if args.perfil:
+        return _perfilar()
 
     censo, todos, archivos, disp = censar()
     sin_guarda = [s for s in todos if not s.guardado]

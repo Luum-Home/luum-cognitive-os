@@ -52,6 +52,8 @@ from __future__ import annotations
 
 import functools
 import sys
+
+import pytest
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
@@ -61,7 +63,12 @@ from scripts.portability_census import (  # noqa: E402
     DELEGADAS,
     FAMILIA_POR_CLAVE,
     _COMPILADAS,
+    _EMBEBIDO,
+    _EMBEBIDO_SUFIJOS,
     _en_comentario,
+    _referenciados,
+    _shell_embebido,
+    _versionados,
     censar,
 )
 
@@ -203,3 +210,66 @@ def test_el_detector_discrimina():
     for clave, positivo, negativo in casos:
         assert _viola(clave, positivo), f"{clave}: no detecto la invocacion desnuda"
         assert not _viola(clave, negativo), f"{clave}: falso positivo sobre el caso sano"
+
+
+# 180 s y no los 30 del default por una razon medida, no para que pase: este
+# test recorre los 8.770 archivos versionados DOS veces —una en bytes y otra
+# en texto— porque compara los dos barridos. Un solo barrido cuesta ~7 s de
+# reloj con la maquina a load 300 (`python3 scripts/portability_census.py
+# --perfil`), y de eso solo el 37% es CPU. El presupuesto cubre el peor reloj
+# observado, no el peor calculo.
+@pytest.mark.timeout(180)
+def test_referenciados_en_bytes_da_lo_mismo_que_en_texto():
+    """El atajo de rendimiento, fijado como igualdad en vez de como comentario.
+
+    `_referenciados()` matchea sobre bytes crudos para no decodificar 8.770
+    archivos. El argumento es que el patron es ASCII puro y UTF-8 es
+    auto-sincronizante, asi que el conjunto de aciertos no puede cambiar. Un
+    argumento correcto sigue siendo un argumento: esto lo mide.
+    """
+    import re as _re
+
+    patron_texto = _re.compile(r"[\w.@+-]+\.(?:sh|bash|zsh)")
+    esperado = set()
+    for rel in _versionados():
+        if not rel:
+            continue
+        p = REPO / rel
+        if not p.is_file():
+            continue
+        try:
+            if p.stat().st_size > 4_000_000:
+                continue
+            texto = p.read_text(errors="replace")
+        except OSError:
+            continue
+        propio = Path(rel).name
+        esperado.update(n for n in patron_texto.findall(texto) if n != propio)
+
+    obtenido = _referenciados()
+    assert obtenido == esperado, (
+        "el barrido en bytes y el barrido en texto ven cosas distintas; el "
+        f"atajo dejo de ser equivalente. Diferencia: {sorted(obtenido ^ esperado)[:20]}"
+    )
+
+
+def test_la_ceguera_se_mide_sobre_la_poblacion_declarada():
+    """Un censo no puede declarar una poblacion y contar la ceguera sobre otra.
+
+    La version anterior de `_shell_embebido()` corria `grep -rlE ... .` sobre
+    el arbol de trabajo: de sus 40 aciertos, 14 estaban en `.claude/plugins/`
+    —checkouts de terceros— y el numero cambiaba entre corridas sobre el MISMO
+    commit segun que hubiera escrito otra sesion. Esto fija que solo se
+    cuenten archivos versionados, que es lo que el censo dice medir.
+    """
+    versionados = {r for r in _versionados() if r}
+    hallados = {
+        rel for rel in versionados
+        if rel.endswith(_EMBEBIDO_SUFIJOS)
+        and _EMBEBIDO.search((REPO / rel).read_text(errors="replace"))
+    }
+    assert _shell_embebido() == len(hallados), "el conteo no coincide con el barrido versionado"
+    assert hallados <= versionados
+    assert not any(h.startswith(".claude/plugins/") for h in hallados), (
+        "la ceguera volvio a contar checkouts de terceros"
+    )
