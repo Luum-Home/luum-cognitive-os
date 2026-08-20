@@ -74,9 +74,14 @@ preference:
    (e.g. `/research-protocol` instead of `/repo-scout` if a richer contract
    applies). Justify in 1 line.
 3. **Bypass with explicit operator-visible justification** — emit a one-line
-   `SKILL_BYPASS:` annotation in the assistant response stating which skill
-   was bypassed (`name`, confidence) and the concrete reason. Persist the
+   `SKILL_BYPASS:` annotation **en el `tool_input`** (el prompt del
+   sub-agente o el comando Bash que se está por lanzar) diciendo qué skill
+   se saltea (`name`, confidence) y el motivo concreto. Persist the
    bypass to `.cognitive-os/metrics/skill-bypass.jsonl` for retro-audit.
+   El canal es el `tool_input` y no la respuesta del asistente porque el
+   gate corre en `PreToolUse`, o sea **antes** de que el modelo escriba su
+   respuesta: una anotación en el texto de la respuesta es invisible para
+   el hook por construcción.
 
 Threshold is 0.90 — high enough that the router is rarely wrong, low enough
 that hand-tuned bespoke prompts remain legitimate for genuine novelty.
@@ -117,7 +122,8 @@ user prompt.
    confidence and skill name.
 2. `hooks/orchestrator-skill-invocation-gate.sh` registered as PreToolUse on
    both Agent and Bash matchers via `scripts/_lib/settings-driver-claude-code.sh`.
-   Latency budget: < 30 ms.
+   Latency: medido, no presupuestado. Ver §Latencia medida — el número
+   vigente y el comando que lo produce viven ahí, no acá.
 3. `rules/skill-invocation-mandatory.md` documents the 0.90 threshold, the
    three allowed responses, and the SKILL_BYPASS annotation format.
 4. `tests/contracts/test_skill_invocation_gate.py` covers:
@@ -167,7 +173,9 @@ user prompt.
 
 ### Negative
 
-- Adds ~10–30 ms latency per Agent/Bash launch.
+- Adds latency per Agent/Bash launch: p50 490 ms, p99 1470 ms sobre 245
+  invocaciones (ventana 2026-07-19 → 2026-08-20). El comando está en
+  §Latencia medida.
 - Operators / orchestrators must learn the `SKILL_BYPASS:` annotation when
   they genuinely need to deviate. Friction is the point but it costs minutes
   on first encounter.
@@ -190,7 +198,7 @@ Before this ADR, skill-router suggestions were advisory only. The orchestrator c
 | High-confidence suggestion | System-reminder advisory, ignorable | Must invoke, escalate to stronger skill, or emit `SKILL_BYPASS:` annotation |
 | Bypass audit | None | `.cognitive-os/metrics/skill-bypass.jsonl` per-bypass entry |
 | Repeated bypass enforcement | None | WARN after first/second; BLOCK after third (single session) |
-| Gate overhead | 0 ms | < 30 ms per Agent/Bash launch |
+| Gate overhead | 0 ms | p50 490 ms / p99 1470 ms medidos (§Latencia medida) |
 
 The `SKILL_BYPASS:` annotation format in the assistant response is:
 `SKILL_BYPASS: <skill-name> (confidence <score>) — <concrete-reason>`
@@ -200,7 +208,13 @@ The `SKILL_BYPASS:` annotation format in the assistant response is:
 **Answers:**
 - "Did the orchestrator actually use the canonical skill?" — read `.cognitive-os/metrics/skill-bypass.jsonl`; absences mean the skill was invoked; entries document deliberate bypasses.
 - "How many times was a skill bypassed this week?" — query `skill-bypass.jsonl` by `suggested_skill` and timestamp.
-- "Is the gate firing (< 30 ms)?" — check `tests/contracts/test_skill_invocation_gate.py` p99 latency assertion; or run `make test-laptop` which includes this contract.
+- "¿Cuánto tarda el gate?" — el número y su comando están en §Latencia
+  medida. La cifra escrita en este ADR la vigila
+  `tests/contracts/test_skill_gate_latency_claim.py`, que falla si la
+  telemetría se aleja de lo escrito. Hasta 2026-08-20 este ADR citaba una
+  aserción de p99 en `tests/contracts/test_skill_invocation_gate.py` que
+  nunca existió (`grep -c p99 tests/contracts/test_skill_invocation_gate.py`
+  → 0); la cita se retiró.
 
 **Does not answer:**
 - Whether the skill itself produced good output — that is the skill contract's responsibility, not the gate's.
@@ -213,10 +227,19 @@ Two specific cases:
 - **Gate warns but operator believes the skill is not applicable**: the threshold is 0.90 — if the router scores that high for an inapplicable prompt, the routing pattern in `skills/<name>/SKILL.md` over-fits. Lower the pattern's confidence there; do not bypass per-prompt.
 - **`skill-bypass.jsonl` shows many bypasses for one skill**: either the skill is broken/misconfigured (pick up the entry as a bug report) or the threshold is wrong for that skill's patterns. Tune the routing pattern first before adjusting the global threshold.
 
-The override path for genuine one-offs:
+The override path for genuine one-offs. El hook lee las dos variables del
+**entorno del proceso**, así que hay que exportarlas en la shell que
+**lanza el arnés** — un prefijo `VAR=1 <comando>` sobre el comando de
+adentro nunca llega al hook, porque el hook es hijo del arnés y no de ese
+comando:
 ```bash
-COS_ALLOW_SKILL_BYPASS=1 COS_SKILL_BYPASS_REASON='<text>' <agent-launch>
+export COS_ALLOW_SKILL_BYPASS=1
+export COS_SKILL_BYPASS_REASON='<text>'
+claude   # el arnés hereda ambas y el gate las ve
 ```
+A mitad de sesión **no hay vía de entorno** para este gate: el hook no lee
+`.cognitive-os/runtime/bypass.env` para `COS_ALLOW_SKILL_BYPASS`. La vía de
+mitad de sesión es la anotación `SKILL_BYPASS:` en el `tool_input`.
 
 ## Alternatives rejected
 
@@ -246,7 +269,14 @@ ADR-188 is correct if, in a 60-day audit window after activation:
 3. **Skill invocation frequency**: ≥ 30 % increase in `Skill` tool calls vs
    the 60 days preceding activation, attributable to high-confidence
    suggestions now being honored.
-4. **Latency**: 99th percentile gate hook latency < 50 ms.
+4. **Latency**: p99 del gate por debajo del presupuesto de evento que ya
+   aplica el instrumento para `PreToolUse` (2000 ms). Medido hoy: p99 1470 ms,
+   dentro del presupuesto pero sin margen cómodo. El gate no es el `PreToolUse`
+   más caro del corpus: por p50 quedan arriba `agent-prelaunch` (2409 ms),
+   `pre-agent-snapshot` (945 ms), `inject-phase-context` (894 ms),
+   `blast-radius` (818 ms) y `clarification-gate` (798 ms). Se chequea con
+   `python3 scripts/hook_timing_report.py --path /tmp/hook-timing-all.jsonl
+   --threshold-only`.
 
 If (1) or (2) exceed the threshold, the gate is producing friction without
 signal — revisit threshold or skill quality. If (3) does NOT increase, the
@@ -260,9 +290,47 @@ behavior and keep ADR structure compliant:
 ```bash
 bash -n hooks/orchestrator-skill-invocation-gate.sh
 python3 -m pytest tests/contracts/test_skill_invocation_gate.py -q
+python3 -m pytest tests/contracts/test_skill_gate_latency_claim.py -q
 python3 -m pytest tests/audit/test_adr_contracts.py -q
 make test-laptop
 ```
+
+## Latencia medida
+
+Este ADR prometía `< 30 ms` y citaba una aserción de p99 que no existía.
+El número real, sobre `hook-timing.jsonl` **más sus rotados** en
+`.cognitive-os/metrics/.archive/` (contar solo el vivo produce falsos):
+
+| métrica | valor |
+|---|---|
+| invocaciones | 245 |
+| ventana | 2026-07-19T05:50:32Z → 2026-08-20T05:11:44Z |
+| p50 | 490 ms |
+| p95 | 1140 ms |
+| p99 | 1470 ms |
+| max | 4271 ms |
+| bajo 30 ms | 0 de 245 |
+
+Reproducir:
+
+```bash
+{ gunzip -c .cognitive-os/metrics/.archive/hook-timing-*.jsonl.gz; \
+  cat .cognitive-os/metrics/hook-timing.jsonl; } | sort -u > /tmp/hook-timing-all.jsonl
+python3 scripts/hook_timing_report.py --path /tmp/hook-timing-all.jsonl --json \
+  | python3 -c 'import json,sys; print(json.load(sys.stdin)["by_hook"]["orchestrator-skill-invocation-gate"])'
+```
+
+`duration_ms` incluye el wrapper de medición; el cuerpo del hook solo
+(`body_duration_ms`) da p50 417 ms. Ninguno de los dos se acerca a 30 ms, y
+no es una anomalía de este hook: los vecinos del mismo matcher `PreToolUse`
+están en el mismo orden (`agent-working-dir-inject` p50 313 ms,
+`error-pattern-detector` p50 379 ms). Un hook bash que arranca `python3` en
+este arnés no entra en 30 ms — el presupuesto era una aspiración escrita sin
+instrumento, y se reemplaza por la medición con su comando al lado.
+
+La cifra escrita acá la vigila `tests/contracts/test_skill_gate_latency_claim.py`:
+si la telemetría se aleja, el test falla y obliga a actualizar el ADR en vez
+de dejarlo envejecer.
 
 ## Cross-References
 
@@ -284,6 +352,11 @@ make test-laptop
 
 ## Open Questions
 
+- El contrato de conteo: el umbral de 3 y el contador **por sesión** están
+  decididos y escritos en §Enforcement layers. Lo que nunca se decidió es la
+  acumulación **entre** sesiones — no hay decisión que la respalde ni código
+  que la implemente. Si el conteo pasa a contar repeticiones del mismo hash
+  de prompt, esta sección es la que hay que reescribir.
 - Whether to also enforce on operator-direct skill invocations (vs only
   agent-launched). Proposed: no for v1 — operators invoking explicitly are
   already informed; the gate is for orchestrator drift specifically.
