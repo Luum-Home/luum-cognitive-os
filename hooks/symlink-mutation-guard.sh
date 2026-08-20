@@ -30,7 +30,11 @@ if [ "${DISABLE_HOOK_SYMLINK_MUTATION_GUARD:-false}" = "true" ]; then
   exit 0
 fi
 
-# Bypass via env (logged for audit).
+# Bypass via env. Se chequea acá y OTRA VEZ contra el texto del comando abajo,
+# apenas $COMMAND existe. Motivo: este hook es hijo del arnés, no del shell del
+# Bash tool, así que el `COS_ALLOW_SYMLINK_MUTATION=1 ln -s ...` que el propio
+# mensaje de bloqueo ofrecía le ponía la variable a `ln` y nunca a este proceso,
+# que ya había decidido. Era una salida inejecutable ofrecida por escrito.
 if [ "${COS_ALLOW_SYMLINK_MUTATION:-0}" = "1" ]; then
   exit 0
 fi
@@ -45,6 +49,16 @@ TOOL_NAME=$(echo "$INPUT" | python3 -c "import json,sys;d=json.loads(sys.stdin.r
 
 COMMAND=$(echo "$INPUT" | python3 -c "import json,sys;d=json.loads(sys.stdin.read() or '{}');print(d.get('tool_input',{}).get('command',''))" 2>/dev/null)
 [ -n "$COMMAND" ] || exit 0
+
+# Aprobación por texto, anclada a posición de prefijo. El ancla no es cosmética:
+# hooks/protected-config-write-guard.sh documenta que el match en cualquier lugar
+# del texto se auto-concede — `echo COS_ALLOW_SYMLINK_MUTATION=1 >> nota.md`
+# contiene el token sin ser una asignación, y autorizaría escribir SOBRE el tema.
+# Una asignación de entorno solo significa algo donde el shell la lee como tal.
+if printf '%s' "$COMMAND" \
+   | grep -Eq '(^|[;&|(]|&&|\|\|)[[:space:]]*COS_ALLOW_SYMLINK_MUTATION=1[[:space:]]'; then
+  exit 0
+fi
 
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}"
 

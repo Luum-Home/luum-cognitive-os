@@ -987,7 +987,17 @@ if [ "$IS_WIP_GUARD_OP" = "1" ] && _has_wip; then
   echo "Recovery options:" >&2
   echo "  a) Stash first:   git stash push -u -m 'pre-sync-wip-<reason>' && inspect the named stash before restore && $COMMAND" >&2
   echo "  b) Commit first:  git add -p && git commit -m 'wip: checkpoint' && $COMMAND" >&2
-  echo "  c) Allow bypass:  COS_ALLOW_RESET_OVER_WIP=1 $COMMAND" >&2
+  # El bypass se resuelve por cos_bypass_allows, que lee COS_BYPASS del entorno Y
+  # del archivo .cognitive-os/runtime/bypass.env en cada invocación. El archivo es
+  # la única de las dos vías ejecutable a mitad de sesión: escribirlo y reintentar
+  # funciona. La forma que este mensaje ofrecía antes —la variable como prefijo del
+  # comando bloqueado— no: el hook es hijo del arnés y ya decidió cuando ese shell
+  # nace. Acá no se ensanchó nada; la vía ya existía y el mensaje apuntaba a la otra.
+  # (El literal viejo no se cita: scripts/audit_killswitch_activation.py no puede
+  # distinguir una oferta de la cita de una oferta, y cuenta de más a propósito.)
+  echo "  c) Allow bypass:  printf 'COS_BYPASS=reset_over_wip\\n' >> .cognitive-os/runtime/bypass.env" >&2
+  echo "                    then retry: $COMMAND" >&2
+  echo "     (o export COS_BYPASS=reset_over_wip antes de lanzar el arnés)" >&2
   echo "     (bypass is logged with the WIP file list to .cognitive-os/metrics/destructive-git-bypass.jsonl)" >&2
   echo "  d) Auto-stash:    COS_AUTO_STASH_BEFORE_RESET=1 $COMMAND" >&2
   echo "     (legacy opt-in; inspect the named stash and restore with explicit git stash apply <ref>)" >&2
