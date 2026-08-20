@@ -1,0 +1,61 @@
+# Closed enums a test is allowed to assert on, and where their value set lives.
+#
+# WHY THIS FILE EXISTS
+# A test that asserts a value outside a closed enum is not a failing test: it is
+# a test that CERTIFIES A DEFECT. While the product emits the bogus value the
+# test is green, and the day someone fixes the product the test turns red and
+# accuses the fix. That happened on 2026-08-19 in two suites at once: both
+# asserted `permissionDecision == "block"`, a value no harness accepts
+# (Claude Code takes allow|deny|ask|defer), so the branch failed open on every
+# one of its runs while two green suites said it was correct.
+#
+# CONTRACT OF THIS REGISTRY
+#  * A registered enum NEVER duplicates its values here. `source` + `pointer`
+#    name the manifest that transcribes the harness contract, and the audit
+#    reads the values from there. A registry that copied the values would rot
+#    the moment the contract changed — the exact failure mode it guards.
+#  * `not_registered` is part of the contract, not commentary: a field listed
+#    there is a field this gate deliberately does NOT check, with the reason.
+#    Adding a field to `enums` without a rationale, or dropping one out of
+#    `not_registered` silently, is what turns an honest gate into a paranoid one.
+#
+# Audit:  scripts/audit_test_assertion_enums.py
+# Gate:   tests/audit/test_assertion_enum_conformance.py
+version: 1
+
+enums:
+  - id: claude-permission-decision
+    field: permissionDecision
+    source: manifests/claude-code-hooks-schema.yaml
+    pointer: events.PreToolUse.permission_decision_values
+    scan_globs:
+      - tests/**/*.py
+    rationale: >
+      The only decision value Claude Code acts on for PreToolUse. The name has
+      exactly one meaning in this repo — it is a harness payload key, never a
+      local variable of some other domain — so scanning it unscoped produces no
+      ambiguity. Asserting a value outside the set is always a lie, because the
+      host discards the whole decision and the tool call proceeds.
+
+# Fields that LOOK checkable and are deliberately left out. Each line is a
+# limitation of the gate, stated so nobody has to rediscover it.
+not_registered:
+  - field: decision
+    reason: >
+      manifests/claude-code-hooks-schema.yaml declares `decision_fields:
+      [decision, reason]` for PostToolUse / UserPromptSubmit / Stop but does NOT
+      transcribe the value set. Registering it would mean inventing an enum here
+      instead of reading one — the drift this registry exists to prevent.
+      Register it the day the schema manifest transcribes the values, sourced.
+  - field: matcher
+    reason: >
+      manifests/codex-hooks-schema.yaml carries matcher_values for SessionStart
+      and PreCompact/PostCompact, but `matcher` is a generic English word that
+      appears in this test corpus as pytest matchers and regex matchers. Scoped
+      enough to be safe only with a per-file scope this registry does not model.
+  - field: hookEventName
+    reason: >
+      The `events:` map of the Claude Code schema manifest is DELIBERATELY
+      partial — it transcribes only the events this repo registers, and names
+      the untranscribed ones in a comment. Treating its keys as a closed enum
+      would flag honest tests for real harness events. Not a closed set here.
