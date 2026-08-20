@@ -29,7 +29,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 COVERAGE_THRESHOLD="${COVERAGE_THRESHOLD:-80}"
-METRICS_DIR="$ROOT_DIR/.cognitive-os/metrics"
+METRICS_DIR="${COS_METRICS_DIR:-$ROOT_DIR/.cognitive-os/metrics}"
 COVERAGE_HISTORY="$METRICS_DIR/coverage-history.jsonl"
 
 # ─── Step 1 (formerly Step 2): Check persisted coverage artifact ─────────────

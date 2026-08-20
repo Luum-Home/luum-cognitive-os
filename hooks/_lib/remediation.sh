@@ -37,21 +37,21 @@ _rem_project_dir() {
 
 _rem_registry_file() {
   local dir
-  dir="$(_rem_project_dir)/.cognitive-os/metrics"
+  dir="${COS_METRICS_DIR:-$(_rem_project_dir)/.cognitive-os/metrics}"
   mkdir -p "$dir" 2>/dev/null
   echo "$dir/remediation-registry.jsonl"
 }
 
 _rem_index_file() {
   local dir
-  dir="$(_rem_project_dir)/.cognitive-os/metrics"
+  dir="${COS_METRICS_DIR:-$(_rem_project_dir)/.cognitive-os/metrics}"
   mkdir -p "$dir" 2>/dev/null
   echo "$dir/remediation-index.json"
 }
 
 _rem_archive_file() {
   local dir
-  dir="$(_rem_project_dir)/.cognitive-os/metrics"
+  dir="${COS_METRICS_DIR:-$(_rem_project_dir)/.cognitive-os/metrics}"
   mkdir -p "$dir" 2>/dev/null
   echo "$dir/remediation-archive.jsonl"
 }

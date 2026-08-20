@@ -45,13 +45,30 @@ imprimen igual. Bajar el ruido de verdad es hacer que los 96 hooks honren
 from __future__ import annotations
 
 import os
+import subprocess
 import tempfile
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent
 OPERATOR_METRICS = REPO_ROOT / ".cognitive-os" / "metrics"
+RUNTIME_DIR = REPO_ROOT / ".cognitive-os" / "runtime"
 
 _ESCAPE_ENV = "COS_ALLOW_OPERATOR_METRICS_WRITES"
+
+# Archivos de metricas que escribe un daemon con su propio reloj, corra o no
+# pytest. Medido el 2026-08-20: el escritor de session-watchdog.jsonl es
+# scripts/so_session_watchdog.py --daemon --interval 60, con PPID=1 (desprendido
+# en SessionStart). Una fila mide exactamente 335 bytes, que es lo que crecio en
+# una ventana OCIOSA de 20 segundos sin un solo test corriendo:
+#
+#   coverage-history.jsonl   +0     <- eso si lo escribia la suite
+#   session-watchdog.jsonl   +335   <- crece sola: no es la suite
+#
+# Los dos se reportaban IGUAL. Un gate que grita por ruido propio del operador se
+# bypassea, y el hallazgo real se va con el bypass.
+_KNOWN_DAEMON_PIDFILES: dict[str, tuple[str, str]] = {
+    "session-watchdog.jsonl": ("session-watchdog.pid", "so_session_watchdog.py"),
+}
 
 _before: dict[str, int] = {}
 _sandbox: Path | None = None
@@ -94,6 +111,82 @@ def diff_growth(before: dict[str, int], after: dict[str, int]) -> list[tuple[str
     return grew
 
 
+def _ancestor_pids(pid: int) -> set[int]:
+    """Cadena de padres de `pid`, para no acreditar como ajeno a un proceso propio."""
+    seen: set[int] = set()
+    current = pid
+    for _ in range(64):
+        if current in (0, 1) or current in seen:
+            break
+        seen.add(current)
+        try:
+            out = subprocess.run(
+                ["ps", "-p", str(current), "-o", "ppid="],
+                capture_output=True, text=True, timeout=5,
+            ).stdout.strip()
+            current = int(out)
+        except (ValueError, OSError, subprocess.SubprocessError):
+            break
+    return seen
+
+
+def _daemon_owns_this_growth(
+    metrics_name: str,
+    runtime_dir: Path = RUNTIME_DIR,
+    pidfile_map: dict[str, tuple[str, str]] | None = None,
+) -> tuple[bool, str]:
+    """Es `metrics_name` de un daemon conocido, vivo y ajeno a esta corrida?
+
+    FALLA CERRADA, y eso es el punto: pidfile ausente, PID muerto, cmdline que no
+    coincide (bloquea suplantacion por reuso de PID) o PID que es ancestro de ESTE
+    proceso caen todos a False, o sea al bucket estricto. Solo un proceso
+    verificablemente vivo, correctamente identificado y ajeno se acredita como
+    ruido. "No pude verificar" nunca es "es ruido del operador": esa confusion es
+    la que convierte un guard en un permiso.
+    """
+    entry = (pidfile_map if pidfile_map is not None else _KNOWN_DAEMON_PIDFILES).get(metrics_name)
+    if entry is None:
+        return False, ""
+    pidfile_name, expected_cmd = entry
+    try:
+        pid = int((runtime_dir / pidfile_name).read_text(encoding="utf-8").strip())
+    except (OSError, ValueError):
+        return False, ""
+    if pid <= 0 or pid == os.getpid():
+        return False, ""
+    try:
+        os.kill(pid, 0)
+    except OSError:
+        return False, ""
+    try:
+        cmdline = subprocess.run(
+            ["ps", "-p", str(pid), "-o", "command="],
+            capture_output=True, text=True, timeout=5,
+        ).stdout.strip()
+    except (OSError, subprocess.SubprocessError):
+        return False, ""
+    if expected_cmd not in cmdline:
+        return False, ""
+    if pid in _ancestor_pids(os.getpid()):
+        return False, ""
+    return True, f"PID {pid} vivo, cmdline coincide con {expected_cmd!r}, ajeno a esta corrida"
+
+
+def _classify_growth(
+    grew: list[tuple[str, int, int]],
+) -> tuple[list[tuple[str, int, int, str]], list[tuple[str, int, int]]]:
+    """Parte la salida de diff_growth() en (ruido-de-daemon, atribuible-a-la-suite)."""
+    noise: list[tuple[str, int, int, str]] = []
+    suite: list[tuple[str, int, int]] = []
+    for name, before, after in grew:
+        is_daemon, desc = _daemon_owns_this_growth(name)
+        if is_daemon:
+            noise.append((name, before, after, desc))
+        else:
+            suite.append((name, before, after))
+    return noise, suite
+
+
 def pytest_configure(config) -> None:  # noqa: ANN001 - firma de pytest
     global _sandbox, _before
     _sandbox = Path(tempfile.mkdtemp(prefix="cos-test-metrics-"))
@@ -108,26 +201,41 @@ def pytest_sessionfinish(session, exitstatus) -> None:  # noqa: ANN001 - firma d
     if not grew:
         return
 
-    escaped = os.environ.get(_ESCAPE_ENV, "0") == "1"
-    header = (
-        "AVISO" if escaped else "FALLO"
-    ) + ": la suite dejo escrituras en la telemetria del operador"
-    lines = [f"\n{header} (.cognitive-os/metrics/):"]
-    for name, size_before, size_after in grew:
-        lines.append(f"  {name}: {size_before} -> {size_after} bytes (+{size_after - size_before})")
-    if escaped:
-        lines.append(f"  [{_ESCAPE_ENV}=1: no se falla la corrida, la lista se imprime igual]")
-    else:
-        lines.append(
-            "  Un test no puede escribir aca. Redirigi el escritor a COS_METRICS_DIR "
-            f"o corre con {_ESCAPE_ENV}=1 si sabes que hay una sesion viva del "
-            "operador escribiendo en paralelo."
-        )
+    noise, suite = _classify_growth(grew)
+    lines: list[str] = []
+
+    if noise:
+        lines.append("\nAVISO (ruido de sesion, NO de la suite) en .cognitive-os/metrics/:")
+        for name, size_before, size_after, why in noise:
+            lines.append(
+                f"  {name}: {size_before} -> {size_after} bytes "
+                f"(+{size_after - size_before})  [{why}]"
+            )
+        lines.append("  Estos archivos crecen con su propio reloj. No fallan la corrida.")
+
+    if suite:
+        escaped = os.environ.get(_ESCAPE_ENV, "0") == "1"
+        header = "AVISO" if escaped else "FALLO"
+        lines.append(f"\n{header}: la suite dejo escrituras en la telemetria del operador:")
+        for name, size_before, size_after in suite:
+            lines.append(
+                f"  {name}: {size_before} -> {size_after} bytes (+{size_after - size_before})"
+            )
+        if escaped:
+            lines.append(f"  [{_ESCAPE_ENV}=1: no se falla la corrida, la lista se imprime igual]")
+        else:
+            lines.append(
+                "  Un test no puede escribir aca. Redirigi el escritor a COS_METRICS_DIR.\n"
+                "  Si de verdad es un daemon vivo del operador y no la suite, agregalo a\n"
+                f"  _KNOWN_DAEMON_PIDFILES en este conftest -- NO alcances {_ESCAPE_ENV},\n"
+                "  que apaga la deteccion entera y se lleva puesto el hallazgo real."
+            )
+
     reporter = session.config.pluginmanager.get_plugin("terminalreporter")
     if reporter is not None:
         reporter.write_line("\n".join(lines))
     else:
         print("\n".join(lines))
 
-    if not escaped and exitstatus == 0:
+    if suite and os.environ.get(_ESCAPE_ENV, "0") != "1" and exitstatus == 0:
         session.exitstatus = 1
