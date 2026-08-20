@@ -12,7 +12,6 @@
 #      emergency env-override.
 #
 # Killswitch:  DISABLE_HOOK_ORCHESTRATOR_SKILL_INVOCATION_GATE=1
-# Latency budget: <30 ms.
 # Exit codes: 0=allow, 2=BLOCK.
 
 set -uo pipefail
@@ -35,7 +34,44 @@ case "$TOOL_NAME" in
 esac
 
 SESSION_ID="${COGNITIVE_OS_SESSION_ID:-${CLAUDE_SESSION_ID:-$(printf '%s' "$INPUT" | jq -r '.session_id // ""' 2>/dev/null)}}"
-[ -z "$SESSION_ID" ] && SESSION_ID="unknown"
+
+# ─── Sin identidad probada, el gate NO decide ────────────────────────────────
+# Antes esta linea decia `[ -z "$SESSION_ID" ] && SESSION_ID="unknown"`, y esa
+# fabricacion era el bug: `unknown` no es "sin identidad", es una CLAVE, y una
+# clave compartida por todo el que no dijo quien era. El contador vive en
+# `$RUNTIME_DIR/skill-bypass-counter-$SESSION_ID`, asi que cualquier payload sin
+# `session_id` —un test, una sonda de portabilidad, un replay— leia y escribia
+# el mismo bucket. Consecuencias medidas el 2026-08-20:
+#   - el contador `-unknown` acumulaba desde 2026-05-18 y llego a 143 con umbral
+#     3, o sea que TODO payload anonimo quedaba bloqueado para siempre;
+#   - las 11 filas de skill-bypass.jsonl decian "BLOCK tras N bypasses en la
+#     sesion" con N=132..142 y el MISMO prompt_hash: N contaba replays, no
+#     comportamiento;
+#   - el veredicto de un test dependia del estado del operador y lo movia.
+#
+# Un veredicto sin sujeto no es un veredicto: el gate se abstiene. No bloquea
+# (no puede probar que haya habido un bypass) y no aprueba en silencio (una
+# guarda que evalua y no registra es indistinguible de una guarda rota): deja la
+# fila en un bucket anonimo EXPLICITO que ningun gate lee para decidir.
+#
+# No se sintetiza un id falso a proposito. Ponerle nombre a la herencia no la
+# corta: la vuelve mas dificil de ver.
+if [ -z "$SESSION_ID" ]; then
+  ANON_DIR="${COS_METRICS_DIR:-$PROJECT_DIR/.cognitive-os/metrics}/anonymous"
+  mkdir -p "$ANON_DIR" 2>/dev/null || true
+  python3 - "$ANON_DIR/skill-bypass-anonymous.jsonl" \
+    "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$TOOL_NAME" <<'PYEOF' 2>/dev/null || true
+import json, sys
+path, ts, tool = sys.argv[1:]
+with open(path, "a") as fh:
+    fh.write(json.dumps({
+        "ts": ts, "session_id": None, "tool_name": tool,
+        "actor": "gate", "outcome": "abstained",
+        "reason": "sin identidad de sesion probada: el gate no decide",
+    }) + "\n")
+PYEOF
+  exit 0
+fi
 
 LS_OUT="$(PROJECT_DIR="$PROJECT_DIR" SESSION_ID="$SESSION_ID" python3 - <<'PYEOF' 2>/dev/null || true
 import os, sys, json
@@ -124,7 +160,10 @@ if printf '%s' "$TOOL_BLOB" | grep -qE "SKILL_BYPASS:[[:space:]]*${SKILL}([[:spa
   BYPASS_REASON="$(printf '%s' "$TOOL_BLOB" | grep -oE "SKILL_BYPASS:[[:space:]]*${SKILL}[^\"]*" | head -1)"
 fi
 
-METRICS_DIR="$PROJECT_DIR/.cognitive-os/metrics"
+# COS_METRICS_DIR redirige la escritura sin tocar PROJECT_DIR. Es la convencion
+# que ya honran plan-claim-validator.sh y scope-marker-portability-gate.sh, y la
+# que el conftest de la raiz exporta para toda la suite.
+METRICS_DIR="${COS_METRICS_DIR:-$PROJECT_DIR/.cognitive-os/metrics}"
 RUNTIME_DIR="$PROJECT_DIR/.cognitive-os/runtime"
 mkdir -p "$METRICS_DIR" "$RUNTIME_DIR" 2>/dev/null || true
 AUDIT_FILE="$METRICS_DIR/skill-bypass.jsonl"
