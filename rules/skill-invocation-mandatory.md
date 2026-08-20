@@ -64,9 +64,17 @@ COS_ALLOW_SKILL_BYPASS=1
 COS_SKILL_BYPASS_REASON='<short text describing why>'
 ```
 
-before launching the Agent/Bash tool. The override audits an `env-override:
-<reason>` entry to `skill-bypass.jsonl`. If `COS_ALLOW_SKILL_BYPASS=1` is set
-without `COS_SKILL_BYPASS_REASON`, the gate exits 2 (no silent bypass).
+en la shell que **lanza el arnés** (`export VAR=... ; claude`). El hook las
+lee del entorno del proceso: un prefijo `VAR=1 <comando>` sobre el comando
+que se está por correr no llega al hook, porque el hook es hijo del arnés y
+no de ese comando. A mitad de sesión no hay vía de entorno para este gate
+— el hook no lee `.cognitive-os/runtime/bypass.env` para
+`COS_ALLOW_SKILL_BYPASS` — así que la vía de mitad de sesión es la
+anotación `SKILL_BYPASS:` del punto 3, que va en el `tool_input`.
+
+El override audita una entrada `env-override: <reason>` en
+`skill-bypass.jsonl`. Si `COS_ALLOW_SKILL_BYPASS=1` está seteada sin
+`COS_SKILL_BYPASS_REASON`, el gate sale con 2 (nada de bypass silencioso).
 
 ## When Override is Permitted
 
