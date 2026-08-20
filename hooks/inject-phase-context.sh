@@ -207,7 +207,7 @@ NOTE: .claude/settings.json is GENERATED — never hand-edit it. But the Claude 
   # Hook creation trap
   if echo "$AGENT_PROMPT" | grep -qiE 'new hook|create hook|hooks/.*\.sh'; then
     GOTCHAS="${GOTCHAS}
-NOTE: A new hook added ONLY to cognitive-os.yaml never reaches Claude Code, and nothing reports it — the live case is hooks/publication-safety.sh: declared scope: both with no opt-out, absent from .claude/settings.json and from the dispatcher, 0 firings. Six surfaces must name it, kept in step by hand. See the settings.json note above for the list and the verify command."
+NOTE: A new hook added ONLY to cognitive-os.yaml never reaches Claude Code, and nothing reports it — the live case is hooks/publication-safety.sh: declared scope: both with no opt-out, absent from .claude/settings.json and from the dispatcher, 0 firings. Several surfaces must name it, kept in step by hand, and the count is not worth memorising — run the gate: .venv/bin/python3 scripts/audit_hook_registration.py"
   fi
 
   # Workflow trap

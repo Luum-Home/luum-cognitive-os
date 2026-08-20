@@ -140,11 +140,17 @@ PYPRUNE
 _register_session() {
   local lockfile="$SESSIONS_DIR/.active-sessions.lock"
 
-  # Use flock for atomic read-modify-write. Keep startup responsive under
-  # parallel session fan-out: registration is useful but not worth blocking a
-  # first turn behind stale cleanup or another newborn session.
-  (
-    flock -w "${COS_SESSION_REGISTER_LOCK_TIMEOUT_SECONDS:-1}" 200 || { echo "WARN: Could not acquire lock for session registration quickly; continuing without active-session registration" >&2; return 0; }
+  # El binario `flock` NO EXISTE EN macOS. Antes se lo invocaba desnudo, asi que
+  # el shell devolvia 127, el `||` disparaba, y esta funcion salia IMPRIMIENDO UN
+  # WARN Y SIN REGISTRAR — en cada sesion, siempre. Esa es la razon por la que
+  # .cognitive-os/active-sessions.json estaba en {"sessions": []} con 25
+  # directorios de sesion en disco: no es que las entradas se podaran despues,
+  # es que nunca llegaron a escribirse. Se reproduce corriendo el bloque de
+  # `flock -w 1 200` bajo un shell sin el binario: sale 127 y cae en el `||`.
+  #
+  # El fallback por mkdir es el mismo que hooks/session-cleanup.sh ya usa: mkdir
+  # es atomico en POSIX y no necesita el binario.
+  _register_session_body() {
 
     # Initialize if missing or invalid
     if [ ! -f "$ACTIVE_FILE" ] || ! jq empty "$ACTIVE_FILE" 2>/dev/null; then
@@ -169,13 +175,38 @@ _register_session() {
 
     # Add this session
     jq --arg id "$SESSION_ID" \
-       --arg pid "$$" \
+       --arg pid "${CLAUDE_PID:-$$}" \
        --arg start "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
        --arg dir "$PROJECT_DIR" \
        '.sessions += [{"id": $id, "pid": ($pid | tonumber), "start_time": $start, "working_directory": $dir}]' \
        "$ACTIVE_FILE" > "$ACTIVE_FILE.tmp" && mv "$ACTIVE_FILE.tmp" "$ACTIVE_FILE"
+  }
 
-  ) 200>"$lockfile"
+  local _timeout="${COS_SESSION_REGISTER_LOCK_TIMEOUT_SECONDS:-1}"
+  if command -v flock >/dev/null 2>&1; then
+    # `exit 0`, no `return 0`: adentro de un subshell `return` no sale de la
+    # funcion — el codigo viejo creia estar abortando y seguia igual.
+    (
+      flock -w "$_timeout" 200 || {
+        echo "WARN: no se pudo tomar el lock de registro de sesion; sigo sin registrar" >&2
+        exit 0
+      }
+      _register_session_body
+    ) 200>"$lockfile"
+  else
+    local _lock_dir="${lockfile}.d"
+    local _deadline=$(( $(date +%s) + _timeout ))
+    while :; do
+      if mkdir "$_lock_dir" 2>/dev/null; then
+        _register_session_body
+        rmdir "$_lock_dir" 2>/dev/null || true
+        return 0
+      fi
+      [ "$(date +%s)" -lt "$_deadline" ] || break
+      sleep 0.2 2>/dev/null || sleep 1
+    done
+    echo "WARN: no se pudo tomar el lock de registro de sesion (fallback mkdir); sigo sin registrar" >&2
+  fi
 }
 
 _register_session
