@@ -127,6 +127,14 @@ KNOWN_LEDGERS_WITHOUT_PROVENANCE: set[str] = {
     "cos-install-scope-dev-smoke-latest.json",
     "cos-vs-ai-slop-two-repo-smoke-latest.json",
     "docs-duplicate-latest.json",
+    # claim-proof y docs-execution: sus ESCRITORES ya estampan REPRODUCE
+    # (scripts/claim_proof_audit.py, scripts/docs_execution_audit.py), pero el
+    # artefacto regenerado no se pudo commitear: research-compliance-guard lo
+    # bloquea por una frase que el propio ledger transcribe de los docs.
+    # Salen del baseline en cuanto alguien los regenere sin ese bloqueo, y la
+    # asercion "no lista ya migrados" obliga a sacarlos ese mismo dia.
+    "claim-proof-latest.json",
+    "docs-execution-latest.json",
     "documentation-truth-latest.json",
     "external-tool-adoption-audit-latest.json",
     "feature-tool-due-diligence-latest.json",
