@@ -32,9 +32,14 @@ import json
 import os
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 
 import pytest
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
+from tests.utils.harness_payload import payload, without  # noqa: E402
 
 pytestmark = pytest.mark.contract
 
@@ -83,9 +88,15 @@ def _run(
     session_id: str | None = SESSION,
     env_extra: dict | None = None,
 ) -> subprocess.CompletedProcess:
-    payload: dict = {"tool_name": tool_name, "tool_input": tool_input or {"prompt": "trabajo a medida"}}
-    if session_id is not None:
-        payload["session_id"] = session_id
+    # El sobre lo arma el constructor fiel: un payload de dos campos hace que
+    # el hook decida sobre menos informacion de la que el arnes le manda.
+    # El caso "sin identidad" se expresa quitando `session_id` de un payload
+    # completo, no omitiendo los otros cinco campos por descuido.
+    body: dict = dict(tool_name=tool_name, tool_input=tool_input or {"prompt": "trabajo a medida"})
+    if session_id is None:
+        envelope = without("PreToolUse", "session_id", cwd=workdir, **body)
+    else:
+        envelope = payload("PreToolUse", cwd=workdir, session_id=session_id, **body)
 
     env = os.environ.copy()
     env["COGNITIVE_OS_PROJECT_DIR"] = str(workdir)
@@ -122,7 +133,7 @@ def _run(
 
     return subprocess.run(
         ["bash", str(HOOK)],
-        input=json.dumps(payload),
+        input=json.dumps(envelope),
         text=True,
         capture_output=True,
         env=env,

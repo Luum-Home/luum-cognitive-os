@@ -12,9 +12,13 @@ import json
 import os
 import re
 import subprocess
+import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO))
+
+from tests.utils.harness_payload import without  # noqa: E402
 HOOKS = sorted((REPO / "hooks").glob("*.sh"))
 GATE = REPO / "hooks" / "orchestrator-skill-invocation-gate.sh"
 
@@ -217,7 +221,8 @@ def test_payload_without_identity_cannot_touch_operator_state(tmp_path: Path) ->
     anon_root = tmp_path / "metrics"
     result = _run_gate(
         {"COS_METRICS_DIR": str(anon_root)},
-        {"tool_name": "Bash", "tool_input": {"command": "echo hola"}},
+        without("PreToolUse", "session_id", tool_name="Bash",
+                tool_input={"command": "echo hola"}, cwd=REPO),
         cwd=REPO,
     )
 
