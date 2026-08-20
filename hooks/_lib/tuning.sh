@@ -28,7 +28,7 @@ else
     _TUNING_PROJECT_DIR="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 fi
 
-_TUNING_JSONL="$_TUNING_PROJECT_DIR/.cognitive-os/metrics/hook-tuning.jsonl"
+_TUNING_JSONL="${COS_METRICS_DIR:-$_TUNING_PROJECT_DIR/.cognitive-os/metrics}/hook-tuning.jsonl"
 
 # get_tuned_threshold <hook_name> <default_threshold>
 # Returns the most recent new_threshold for the hook, or the default.

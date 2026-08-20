@@ -334,3 +334,98 @@ def test_bypass_audit_honors_cos_metrics_dir(tmp_path: Path) -> None:
     row = json.loads(sandboxed_audit.read_text(encoding="utf-8").strip().splitlines()[-1])
     assert row["bypass_key"] == "unproven_scope_both"
     assert row["hook"] == "scope-marker-portability-gate"
+
+
+# ---------------------------------------------------------------------------
+# Discriminador ruido-de-operador vs escritura-de-la-suite (2026-08-20)
+#
+# El gate cazo dos crecimientos y los reporto IDENTICOS:
+#     coverage-history.jsonl  +2910   <- lo escribia la suite
+#     session-watchdog.jsonl   +335   <- crece sola, daemon con PPID=1
+# Medido en una ventana ociosa de 20s sin un solo test: el primero +0, el
+# segundo +335. Un gate que grita por ruido propio del operador se bypassea, y
+# el hallazgo real se va con el bypass.
+#
+# El riesgo del arreglo es simetrico y peor: al callar el falso positivo se
+# puede callar tambien el verdadero, y las dos cosas producen la MISMA salida
+# verde. Por eso la primera prueba de abajo es la que tiene que quedar roja si
+# alguien afloja el discriminador.
+# ---------------------------------------------------------------------------
+
+
+def test_un_escritor_no_mapeado_sigue_fallando_el_gate() -> None:
+    """LA FALSACION. Un crecimiento sin daemon que lo reclame es 'suite', no 'ruido'.
+
+    Si esto se pone verde del lado equivocado, el discriminador dejo de
+    discriminar y el gate quedo apagado con cara de arreglado.
+    """
+    conftest = _root_conftest()
+    noise, suite = conftest._classify_growth([("unmapped-writer.jsonl", 100, 400)])
+    assert noise == [], f"acredito como ruido a un escritor que nadie reclama: {noise}"
+    assert suite == [("unmapped-writer.jsonl", 100, 400)]
+
+
+def test_un_daemon_ajeno_y_vivo_cuenta_como_ruido(tmp_path: Path) -> None:
+    """El caso legitimo: proceso vivo, cmdline que coincide, ajeno a esta corrida."""
+    conftest = _root_conftest()
+    proc = subprocess.Popen(
+        [sys.executable, "-c", "import time; time.sleep(30)  # marcador_daemon_de_prueba"]
+    )
+    try:
+        (tmp_path / "falso.pid").write_text(str(proc.pid), encoding="utf-8")
+        ok, why = conftest._daemon_owns_this_growth(
+            "falso.jsonl",
+            runtime_dir=tmp_path,
+            pidfile_map={"falso.jsonl": ("falso.pid", "marcador_daemon_de_prueba")},
+        )
+        assert ok, f"no acredito un daemon vivo, ajeno y con cmdline coincidente: {why}"
+        assert str(proc.pid) in why
+    finally:
+        proc.kill()
+        proc.wait(timeout=10)
+
+
+def test_un_pid_muerto_cae_al_bucket_estricto(tmp_path: Path) -> None:
+    """Falla cerrada: 'no pude verificar' NUNCA es 'es ruido del operador'."""
+    conftest = _root_conftest()
+    proc = subprocess.Popen([sys.executable, "-c", "pass"])
+    proc.wait(timeout=10)
+    (tmp_path / "muerto.pid").write_text(str(proc.pid), encoding="utf-8")
+    ok, _ = conftest._daemon_owns_this_growth(
+        "muerto.jsonl",
+        runtime_dir=tmp_path,
+        pidfile_map={"muerto.jsonl": ("muerto.pid", "python")},
+    )
+    assert not ok, "acredito como ruido a un PID muerto: el guard falla ABIERTO"
+
+
+def test_un_cmdline_que_no_coincide_cae_al_bucket_estricto(tmp_path: Path) -> None:
+    """Bloquea la suplantacion por reuso de PID.
+
+    Un pidfile viejo cuyo numero fue reasignado a otro proceso no puede acreditar
+    ruido: el sistema operativo recicla PIDs y el pidfile no caduca solo.
+    """
+    conftest = _root_conftest()
+    proc = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(30)"])
+    try:
+        (tmp_path / "otro.pid").write_text(str(proc.pid), encoding="utf-8")
+        ok, _ = conftest._daemon_owns_this_growth(
+            "otro.jsonl",
+            runtime_dir=tmp_path,
+            pidfile_map={"otro.jsonl": ("otro.pid", "un_comando_que_no_corre_nadie")},
+        )
+        assert not ok, "acredito ruido a un proceso vivo cuyo cmdline no coincide"
+    finally:
+        proc.kill()
+        proc.wait(timeout=10)
+
+
+def test_un_pidfile_ausente_cae_al_bucket_estricto(tmp_path: Path) -> None:
+    """Sin pidfile no hay forma de saber, y no-saber va al bucket estricto."""
+    conftest = _root_conftest()
+    ok, _ = conftest._daemon_owns_this_growth(
+        "fantasma.jsonl",
+        runtime_dir=tmp_path,
+        pidfile_map={"fantasma.jsonl": ("no-existe.pid", "lo-que-sea")},
+    )
+    assert not ok, "sin pidfile acredito ruido igual: el guard falla ABIERTO"

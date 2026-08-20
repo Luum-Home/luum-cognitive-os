@@ -24,7 +24,7 @@ _CB_GLOBAL_HOURLY_CAP="${COGNITIVE_OS_CB_HOURLY_CAP:-10}"
 
 _cb_state_dir() {
   local project_dir="${COGNITIVE_OS_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
-  local dir="$project_dir/.cognitive-os/metrics/circuit-breaker"
+  local dir="${COS_METRICS_DIR:-$project_dir/.cognitive-os/metrics}/circuit-breaker"
   mkdir -p "$dir" 2>/dev/null
   echo "$dir"
 }
@@ -154,7 +154,7 @@ cb_status() {
 
 cb_global_budget_ok() {
   local project_dir="${COGNITIVE_OS_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
-  local outcomes_file="$project_dir/.cognitive-os/metrics/repair-outcomes.jsonl"
+  local outcomes_file="${COS_METRICS_DIR:-$project_dir/.cognitive-os/metrics}/repair-outcomes.jsonl"
 
   [ ! -f "$outcomes_file" ] && return 0
 
@@ -201,7 +201,7 @@ _cb_record_outcome() {
   local service="$2"
   local outcome="$3"
   local project_dir="${COGNITIVE_OS_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
-  local outcomes_file="$project_dir/.cognitive-os/metrics/repair-outcomes.jsonl"
+  local outcomes_file="${COS_METRICS_DIR:-$project_dir/.cognitive-os/metrics}/repair-outcomes.jsonl"
 
   local now
   now=$(date -u +%Y-%m-%dT%H:%M:%SZ)
