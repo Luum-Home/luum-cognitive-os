@@ -1809,7 +1809,6 @@ hooks:
     - tests/unit/test_metric_event_migration.py
     - tests/unit/test_performance_monitor.py
     - tests/unit/test_prompt_integration.py
-    - tests/unit/test_rule_router.py
     - tests/unit/test_self_improvement_lib.py
     - tests/unit/test_singularity_suggestion.py
     - tests/unit/test_symbiosis_monitor.py
