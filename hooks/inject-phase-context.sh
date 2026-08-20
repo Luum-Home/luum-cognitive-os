@@ -207,7 +207,7 @@ NOTE: .claude/settings.json is GENERATED — never hand-edit it. But the Claude 
   # Hook creation trap
   if echo "$AGENT_PROMPT" | grep -qiE 'new hook|create hook|hooks/.*\.sh'; then
     GOTCHAS="${GOTCHAS}
-NOTE: A new hook added ONLY to cognitive-os.yaml never reaches Claude Code, and nothing reports it — the live case is hooks/publication-safety.sh: declared scope: both with no opt-out, absent from .claude/settings.json and from the dispatcher, 0 firings. Several surfaces must name it, kept in step by hand, and the count is not worth memorising — run the gate: .venv/bin/python3 scripts/audit_hook_registration.py"
+NOTE: A new hook added ONLY to cognitive-os.yaml never reaches Claude Code, and nothing reports it — Do NOT cite a live orphan from memory: measured 2026-08-20 there are ZERO hooks that are declared, unreachable AND undeclared. The gate reports 5 'lost', and all 5 are declared somewhere the gate does not read — four behind a profile conditional in the driver's own shell, and hooks/publication-safety.sh in manifests/hook-registration-classification.yaml since 2026-05-04 with status conditional_opt_in, a rationale and a next_action. So when the gate reports one, the question is not 'who forgot to register it' but 'which manifest declares the omission that this gate cannot see'. Several surfaces must name it, kept in step by hand, and the count is not worth memorising — run the gate: .venv/bin/python3 scripts/audit_hook_registration.py"
   fi
 
   # Workflow trap
