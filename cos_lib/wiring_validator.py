@@ -56,16 +56,30 @@ class WiringValidator:
         return self._efficiency_content
 
     def _registry_hooks(self) -> set[str]:
-        """Return hook basenames registered in the canonical registry.
+        """Return hook basenames DECLARED in ``cognitive-os.yaml > harness.hooks``.
 
-        ADR-064: the canonical hook registry is ``cognitive-os.yaml > harness.hooks``
-        (a list of ``{script, event, async, scope}`` entries).
-        ``apply-efficiency-profile.sh`` is only the projection entry point, so a hook
-        registered solely in the YAML must still count as wired. This is the PRIMARY
-        efficiency signal; the profile-script text is a secondary fallback.
+        Declared, not registered, and la distincion es todo el punto. Este
+        docstring decia que el yaml era el registro y que "un hook registrado
+        solo en el YAML debe contar igual como cableado" — lo contrario de lo
+        que se midio el 2026-08-19, y contradecia el caveat del docstring de
+        este mismo modulo unas lineas mas arriba.
 
-        A line-oriented regex on ``script:`` entries avoids a hard YAML dependency and
-        stays robust against the large config file.
+        El driver de Claude Code (``scripts/_lib/settings-driver-claude-code.sh``)
+        tiene su registro como literales de shell y nunca lee este yaml, asi que
+        un hook presente aca y ausente alla existe y no corre nunca. El caso
+        vivo esta declarado con ``scope: both``, sin opt-out, y con cero
+        disparos en telemetria viva y rotada.
+
+        O sea que esta senal contesta "fue declarado", y no puede leerse como
+        "va a disparar". Para la segunda pregunta la autoridad es
+        ``scripts/audit_hook_registration.py``, que cruza las superficies que
+        deciden alcanzabilidad contra la telemetria. Mantenerlas separadas es
+        deliberado: dos instrumentos contestando la misma pregunta con criterios
+        distintos es como este repo termino con dos censos de kill-switches que
+        no coincidian.
+
+        Un regex por linea sobre las entradas ``script:`` evita una dependencia
+        dura de YAML y aguanta el archivo de configuracion grande.
         """
         if self._registry_hooks_set is None:
             names: set[str] = set()
