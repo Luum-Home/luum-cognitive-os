@@ -464,7 +464,7 @@
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/rate-limit-protection.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/token-budget-monitor.sh\""
           },
           {
             "type": "command",
