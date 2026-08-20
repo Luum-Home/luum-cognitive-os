@@ -211,10 +211,41 @@ def test_consumer_classifies_the_row_as_bypassed(tmp_path: Path) -> None:
 # --------------------------------------------------------------------------- #
 # 4. El BLOQUEO tambien deja rastro (es el caso que perdio 131 filas)
 # --------------------------------------------------------------------------- #
+def _resend(metrics: Path, offset: int) -> None:
+    """Re-envia EL MISMO prompt: fila nueva, mismo prompt_hash, ts distinto.
+
+    2026-08-20 — el gate dejo de contar tool calls y pasó a contar envios del
+    mismo prompt. Antes este test corria el hook tres veces dentro de un mismo
+    turno y esperaba BLOCK, porque el contador viejo sumaba +1 por herramienta y
+    de por vida: asi llego a 143 contra un umbral de 3, latcheado desde el
+    2026-05-18. Repetir la herramienta ya no es insistir; repetir el prompt si.
+    """
+    ts = (datetime.now(timezone.utc) - timedelta(seconds=5 - offset)).isoformat()
+    with (metrics / "skill-suggestion.jsonl").open("a", encoding="utf-8") as fh:
+        fh.write(
+            json.dumps(
+                {
+                    "ts": ts,
+                    "session_id": SESSION,
+                    "prompt_hash": PROMPT_HASH,
+                    "skill_name": SKILL,
+                    "invoke_command": f"/{SKILL}",
+                    "confidence": CONFIDENCE,
+                    "threshold_met": True,
+                }
+            )
+            + "\n"
+        )
+
+
 def test_block_also_writes_its_row(tmp_path: Path) -> None:
     metrics, _ = _project(tmp_path)
 
-    codes = [_run_hook(tmp_path, "echo hola").returncode for _ in range(3)]
+    codes = []
+    for i in range(3):
+        if i:
+            _resend(metrics, i)
+        codes.append(_run_hook(tmp_path, "echo hola").returncode)
 
     assert codes == [0, 0, 2], codes
     rows = _rows(metrics)

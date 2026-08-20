@@ -4,6 +4,7 @@ Covers all five acceptance scenarios from the ADR.
 """
 from __future__ import annotations
 
+import datetime as dt
 import json
 import os
 import shutil
@@ -15,15 +16,34 @@ import pytest
 pytestmark = pytest.mark.contract
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-HOOK = REPO_ROOT / "hooks" / "orchestrator-skill-invocation-gate.sh"
+# COS_SKILL_GATE_HOOK apunta el contrato a una COPIA mutada del hook. Lo usa
+# scripts/mutation_check_skill_gate.py para probar que estos tests MATAN, y no
+# solo cuentan.
+HOOK = Path(os.environ.get("COS_SKILL_GATE_HOOK") or (REPO_ROOT / "hooks" / "orchestrator-skill-invocation-gate.sh"))
 
 
-def _seed_suggestion(workdir: Path, *, session_id: str, skill: str, confidence: float) -> str:
-    """Write a skill-suggestion.jsonl entry and return the prompt_hash."""
+def _seed_suggestion(
+    workdir: Path,
+    *,
+    session_id: str,
+    skill: str,
+    confidence: float,
+    age_seconds: float = 0.0,
+) -> str:
+    """Write a skill-suggestion.jsonl entry and return the prompt_hash.
+
+    2026-08-20 — la fecha dejo de ser una constante. Estos seeds decian
+    `2026-05-06` y funcionaban porque el consumidor trataba TODO el log como
+    vigente: ese era justamente el bug (una sugerencia de julio se exigio
+    durante 48 dias). Con la ventana del turno + TTL, una fila sembrada en el
+    pasado ya no obliga, asi que los casos que esperan enforcement siembran en
+    el presente y `age_seconds` queda para probar lo contrario a proposito.
+    """
     metrics = workdir / ".cognitive-os" / "metrics"
     metrics.mkdir(parents=True, exist_ok=True)
+    stamp = dt.datetime.now(dt.timezone.utc) - dt.timedelta(seconds=age_seconds)
     entry = {
-        "ts": "2026-05-06T05:00:00+00:00",
+        "ts": stamp.isoformat(),
         "session_id": session_id,
         "prompt_hash": "deadbeefcafebabe",
         "skill_name": skill,
@@ -52,6 +72,8 @@ def _run_hook(workdir: Path, *, tool_name: str, tool_input: dict, env_extra=None
     env.pop("COGNITIVE_OS_METRICS_DIR", None)
     env.pop("COS_SKILL_BYPASS_REASON", None)
     env.pop("DISABLE_HOOK_ORCHESTRATOR_SKILL_INVOCATION_GATE", None)
+    env.pop("COS_SKILL_SUGGESTION_TTL_SECONDS", None)
+    env.pop("COS_SKILL_GATE_INSIST_THRESHOLD", None)
     if env_extra:
         env.update(env_extra)
     return subprocess.run(
@@ -110,24 +132,23 @@ def test_high_confidence_bypass_annotation_passes_and_audits(workdir: Path):
 
 
 def test_high_confidence_bespoke_warns_then_blocks_after_three(workdir: Path):
-    _seed_suggestion(workdir, session_id="test-session-188", skill="repo-scout", confidence=0.95)
+    """Tres ENVIOS del mismo prompt, no tres tool calls.
 
-    # 1st: WARN, exit 0
-    r1 = _run_hook(workdir, tool_name="Agent", tool_input={"prompt": "do something custom"})
-    assert r1.returncode == 0
-    assert "WARN" in r1.stderr
-    assert "1/3" in r1.stderr
-
-    # 2nd: WARN, exit 0
-    r2 = _run_hook(workdir, tool_name="Agent", tool_input={"prompt": "do something else"})
-    assert r2.returncode == 0
-    assert "WARN" in r2.stderr
-    assert "2/3" in r2.stderr
-
-    # 3rd: BLOCK, exit 2
-    r3 = _run_hook(workdir, tool_name="Agent", tool_input={"prompt": "still bespoke"})
-    assert r3.returncode == 2
-    assert "BLOCK" in r3.stderr
+    2026-08-20 — cambio la unidad. Antes este test lanzaba tres herramientas
+    dentro de un mismo turno y esperaba BLOCK, porque el contador sumaba +1 por
+    tool call de por vida: en produccion eso llego a 143 contra un umbral de 3,
+    latcheado desde el 2026-05-18 y sin ningun camino de reset. Eso no medía
+    insistencia, medía antiguedad. Ahora el contador avanza por ENVIO del mismo
+    prompt_hash, asi que cada repeticion siembra su propia fila de sugerencia.
+    """
+    for i, (expect_rc, marker) in enumerate([(0, "1/3"), (0, "2/3"), (2, "BLOCK")]):
+        _seed_suggestion(
+            workdir, session_id="test-session-188", skill="repo-scout",
+            confidence=0.95, age_seconds=-i,  # cada envio, un ts distinto
+        )
+        res = _run_hook(workdir, tool_name="Agent", tool_input={"prompt": f"bespoke {i}"})
+        assert res.returncode == expect_rc, res.stderr
+        assert marker in res.stderr, res.stderr
 
 
 def test_low_confidence_no_enforcement(workdir: Path):
@@ -184,7 +205,12 @@ def test_killswitch_disables_hook(workdir: Path):
 
 
 def test_last_suggestion_returns_highest_confidence_for_session():
-    """Unit-style coverage of cos_lib.skill_router.last_suggestion()."""
+    """Unit-style coverage of cos_lib.skill_router.last_suggestion().
+
+    2026-08-20 — este test existia y no probaba nada de lo que fallaba: usaba
+    marcas de mayo, no ejecutaba el hook y no cubria ni la identidad sentinela
+    ni la ventana. Se le agregan las tres aserciones que si discriminan.
+    """
     import sys
     sys.path.insert(0, str(REPO_ROOT))
     from cos_lib.skill_router import last_suggestion  # noqa
@@ -197,18 +223,40 @@ def test_last_suggestion_returns_highest_confidence_for_session():
         m.mkdir(parents=True)
         s = tdp / ".cognitive-os" / "sessions"
         s.mkdir(parents=True)
-        # Write two suggestions for same session, second has higher conf.
+        now = dt.datetime.now(dt.timezone.utc)
+
+        def _row(skill, conf, session, minutes_ago, ph):
+            return json.dumps({
+                "ts": (now - dt.timedelta(minutes=minutes_ago)).isoformat(),
+                "session_id": session, "prompt_hash": ph, "skill_name": skill,
+                "confidence": conf, "threshold_met": True,
+            }) + "\n"
+
         with (m / "skill-suggestion.jsonl").open("w") as fh:
-            fh.write(json.dumps({"ts": "2026-05-06T05:00:00+00:00", "session_id": "S",
-                                  "prompt_hash": "h1", "skill_name": "a",
-                                  "confidence": 0.85, "threshold_met": True}) + "\n")
-            fh.write(json.dumps({"ts": "2026-05-06T05:01:00+00:00", "session_id": "S",
-                                  "prompt_hash": "h2", "skill_name": "b",
-                                  "confidence": 0.95, "threshold_met": True}) + "\n")
+            # Turno actual: dos filas, gana la de mas confianza.
+            fh.write(_row("a", 0.85, "S", 0, "h1"))
+            fh.write(_row("b", 0.95, "S", 0, "h2"))
+            # La trampa medida en produccion: una fila vieja con MAS confianza.
+            fh.write(_row("vieja", 0.99, "S", 60 * 24 * 40, "h-vieja"))
+            # Las 584 filas historicas sin identidad, en sus dos formas.
+            fh.write(_row("anon-null", 0.99, None, 0, "h-anon"))
+            fh.write(_row("anon-unknown", 0.99, "unknown", 0, "h-unk"))
+
         out = last_suggestion("S", project_root=tdp)
         assert out is not None
-        assert out["skill"] == "b"
+        assert out["skill"] == "b", "gana la mas confiable DEL TURNO, no del log"
         assert out["confidence"] == 0.95
 
         # Different session -> None
         assert last_suggestion("OTHER", project_root=tdp) is None
+
+        # Una identidad sentinela no es una identidad: preguntar por `unknown`
+        # no puede devolver la sugerencia de nadie. Esta era la clave que
+        # compartian las 584 filas del log real.
+        for sentinela in ("unknown", "UNKNOWN", "none", "null", "", "  "):
+            assert last_suggestion(sentinela, project_root=tdp) is None, sentinela
+
+        # Y con el log entero vencido, no hay sugerencia vigente.
+        with (m / "skill-suggestion.jsonl").open("w") as fh:
+            fh.write(_row("vieja", 0.99, "S", 60 * 24 * 40, "h-vieja"))
+        assert last_suggestion("S", project_root=tdp) is None
