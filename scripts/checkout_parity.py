@@ -118,10 +118,22 @@ def _clean_env(real_root: Path, target_root: Path, extra: list[str] | None = Non
 def materialise_tracked_tree(ref: str, dest: Path) -> None:
     """Extract exactly what `git archive <ref>` ships -- the tree that travels.
 
-    `git worktree` is blocked in this repo (ADR-055b) and would be the wrong
-    tool anyway: a worktree shares the object store and the ignore rules but,
-    more importantly, `git archive` is the honest model of a fresh clone plus
-    checkout -- tracked content only, no ignored files, no untracked leftovers.
+    `git archive` is the honest model of a fresh clone plus checkout: tracked
+    content only, no ignored files, no untracked leftovers. A worktree would
+    share the object store and the ignore rules, which is exactly what this
+    procedure must not inherit.
+
+    Correction, 2026-08-20: an earlier version of this docstring opened with
+    "`git worktree` is blocked in this repo (ADR-055b)". That is FALSE -- there
+    are worktrees alive right now (`git worktree list`). The claim came from the
+    orchestrating session, which was blocked once on a specific `git worktree
+    add` and generalised that single block into a rule, then dictated it in
+    three separate briefs. Nobody questioned it until an agent checked.
+
+    The correction is kept rather than silently deleted because the reason for
+    using `git archive` never depended on the false premise -- it is the second
+    half above, and it stands on its own. Removing only the wrong clause leaves
+    the argument intact and the mistake legible.
     """
     dest.mkdir(parents=True, exist_ok=True)
     archive = subprocess.Popen(
