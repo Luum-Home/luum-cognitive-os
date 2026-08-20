@@ -13,11 +13,12 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/portable.sh"
 _HOOK_NAME="pre-cleanup-snapshot"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
 source "$(dirname "$0")/_lib/common.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/project-root.sh"
 
 # Auto-disabled at capability level 5
 check_capability_level "pre-cleanup-snapshot"
 
-PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}"
+PROJECT_DIR="$(cos_project_root)"
 METRICS_LOG="$PROJECT_DIR/.cognitive-os/metrics/capability-snapshots.jsonl"
 CHECKPOINTS_DIR="$PROJECT_DIR/.cognitive-os/checkpoints"
 

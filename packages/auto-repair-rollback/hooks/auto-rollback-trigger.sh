@@ -4,7 +4,8 @@
 # a human-approved rollback plan. It never executes destructive git commands.
 
 set -uo pipefail
-PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}}}"
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/project-root.sh"
+PROJECT_DIR="$(cos_project_root)"
 HOOK_NAME="auto-rollback-trigger.sh"
 _HOOK_NAME="auto-rollback-trigger"
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"

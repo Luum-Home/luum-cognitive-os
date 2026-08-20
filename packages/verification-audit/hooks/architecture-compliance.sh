@@ -10,13 +10,14 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 _HOOK_NAME="architecture-compliance"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
 source "$(dirname "$0")/_lib/common.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/project-root.sh"
 
 # Auto-disabled at capability level 5
 check_capability_level "architecture-compliance"
 # Runtime disable: DISABLE_HOOK_ARCHITECTURE_COMPLIANCE=true skips this hook for the session
 check_disabled_env "architecture-compliance"
 
-PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}"
+PROJECT_DIR="$(cos_project_root)"
 COGNITIVE_OS_YAML="$PROJECT_DIR/cognitive-os.yaml"
 VIOLATIONS_LOG="$PROJECT_DIR/.cognitive-os/metrics/architecture-violations.jsonl"
 

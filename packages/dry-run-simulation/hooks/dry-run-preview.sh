@@ -11,6 +11,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 _HOOK_NAME="dry-run-preview"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/project-root.sh"
 
 # Only activate when DRY_RUN=true
 DRY_RUN="${DRY_RUN:-false}"
@@ -18,7 +19,7 @@ if [[ "$DRY_RUN" != "true" ]]; then
   exit 0
 fi
 
-PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}"
+PROJECT_DIR="$(cos_project_root)"
 METRICS_DIR="$(_resolve_metrics_dir)"
 DRY_RUN_LOG="$METRICS_DIR/dry-run.jsonl"
 

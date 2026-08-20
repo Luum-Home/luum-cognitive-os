@@ -35,7 +35,8 @@ if [ -z "$REVIEW_SURFACE" ] && [ -z "$EAS_PATH" ]; then
   exit 0
 fi
 
-PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}}}"
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/project-root.sh"
+PROJECT_DIR="$(cos_project_root)"
 
 # Drain stdin (required by Stop hook protocol) but ignore content.
 _STDIN=$(cat 2>/dev/null || true)
