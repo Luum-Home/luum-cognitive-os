@@ -220,3 +220,73 @@ def test_adr_partial_backlog_is_first_class_projector_source(tmp_path: Path) -> 
     assert adr_partials["by_implementation_status"] == {"partial": 2}
     assert adr_partials["top_actionable"][0]["adr"] == "ADR-234"
     assert any(action["kind"] == "adr-partial-close" for action in payload["suggested_next_actions"])
+
+
+def test_control_plane_counts_findings_not_event_rows(tmp_path: Path) -> None:
+    """Regression: the remediation JSONL is an append-only proposal log.
+
+    Seeded with 30 rows over 3 stable_ids of which 1 is active, the projector
+    must report 1 open finding (state-machine authority) and expose the row
+    count separately as `queue_event_rows`.
+    """
+    tasks = tmp_path / ".cognitive-os" / "tasks"
+    tasks.mkdir(parents=True)
+    with (tasks / "control-plane-remediation.jsonl").open("w", encoding="utf-8") as fh:
+        for i in range(30):
+            fh.write(json.dumps({
+                "event": "proposed", "status": "queued", "adr": "ADR-001",
+                "stable_id": f"sid{i % 3}", "created_at": "2026-05-14T16:11:33Z",
+            }) + "\n")
+    state_dir = tmp_path / ".cognitive-os" / "runtime" / "control-plane-audit"
+    state_dir.mkdir(parents=True)
+    (state_dir / "findings-state.json").write_text(json.dumps({
+        "updated_at": "2026-08-21T00:00:00Z",
+        "findings": {
+            "sid0": {"stable_id": "sid0", "status": "active", "adr": "ADR-001"},
+            "sid1": {"stable_id": "sid1", "status": "resolved", "adr": "ADR-001"},
+            "sid2": {"stable_id": "sid2", "status": "resolved", "adr": "ADR-001"},
+        },
+    }))
+
+    cp = _run(tmp_path, "--json")
+    assert cp.returncode == 0, cp.stderr
+    section = json.loads(cp.stdout)["sections"]["control_plane"]
+    assert section["open_findings"] == 1, section
+    assert section["open_findings_known"] is True
+    assert section["queue_event_rows"] == 30
+    assert section["queue_distinct_findings"] == 3
+    assert section["queue_window"]["first_event_at"] == "2026-05-14T16:11:33Z"
+
+
+def test_control_plane_declines_to_count_without_state_machine(tmp_path: Path) -> None:
+    """Falsification: log rows but no state machine -> null + stated reason."""
+    tasks = tmp_path / ".cognitive-os" / "tasks"
+    tasks.mkdir(parents=True)
+    (tasks / "control-plane-remediation.jsonl").write_text(
+        json.dumps({"event": "proposed", "status": "queued", "stable_id": "sid0"}) + "\n"
+    )
+    cp = _run(tmp_path, "--json")
+    assert cp.returncode == 0, cp.stderr
+    section = json.loads(cp.stdout)["sections"]["control_plane"]
+    assert section["open_findings"] is None
+    assert section["open_findings_known"] is False
+    assert "findings-state.json" in section["unknown_reason"]
+    human = _run(tmp_path)
+    assert "control-plane open findings: UNKNOWN" in human.stderr, human.stderr
+
+
+def test_operational_guide_priority_zero_is_not_invented(tmp_path: Path) -> None:
+    """Falsification: results present but no `priority` field -> unknown, not 0."""
+    reports = tmp_path / "docs" / "06-Daily" / "reports"
+    reports.mkdir(parents=True)
+    (reports / "operational-guide-audit-latest.json").write_text(json.dumps({
+        "generated_at": "2026-05-12T17:12:06Z",
+        "summary": {"total_adrs": 2, "by_verdict": {}, "by_priority": {}},
+        "results": [{"adr": "ADR-001", "verdict": "compliant"}, {"adr": "ADR-002", "verdict": "compliant"}],
+    }))
+    cp = _run(tmp_path, "--json")
+    assert cp.returncode == 0, cp.stderr
+    og = json.loads(cp.stdout)["sections"]["operational_guide"]
+    assert og["total_p0"] is None and og["total_p1"] is None
+    assert og["priorities_known"] is False
+    assert og["results_total"] == 2

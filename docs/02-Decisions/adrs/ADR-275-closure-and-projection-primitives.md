@@ -130,14 +130,39 @@ schema_version: session-start-projection/v1
 generated_at: <iso-8601>
 project_dir: <repo-root-or-placeholder>
 sections:
-  pending_truth:        { total, by_status, top_actionable: [...] }
-  operational_guide:    { total_p0, total_p1, top_backfill: [...] }
-  control_plane:        { open_findings, by_adr }
-  staged_deployments:   { dirs: [...] }
+  pending_truth:        { total, open, by_status, source: {generated_at, age_days}, top_actionable: [...] }
+  operational_guide:    { total_p0, total_p1, priorities_known, unknown_reason,
+                          results_total, source, top_backfill: [...] }
+  control_plane:        { open_findings, open_findings_known, basis, unknown_reason,
+                          tracked_findings, state_updated_at, queue_event_rows,
+                          queue_distinct_findings, queue_window, by_adr }
+  staged_deployments:   { dirs: [...], counts, deployment_verified }
   git_state:            { branch, ahead, behind, dirty: bool }
 suggested_next_actions:  # ranked, ≤ 5
   - { kind, target, reason }
 ```
+
+**Counting contract (added 2026-08-21).** Each count is bounded by the universe
+its label names, and declares the vintage of the source it read:
+
+- `control_plane.open_findings` is the count of `status: active` entries in
+  `.cognitive-os/runtime/control-plane-audit/findings-state.json` — the audit
+  state machine. `.cognitive-os/tasks/control-plane-remediation.jsonl` is an
+  append-only proposal log (every row is `event: proposed`, `status: queued`;
+  closure is never written back), so its row count is exposed separately as
+  `queue_event_rows`/`queue_distinct_findings` and never as a finding count.
+  With log rows present but no state machine, `open_findings` is `null` and
+  `unknown_reason` says why: declining to count beats a wrong count.
+- `operational_guide.total_p0/total_p1` are `null` when the audit report carries
+  no `priority` field on any result — a zero there would measure the missing
+  field, not an empty backlog.
+- `staged_deployments` counts directories whose NAME matches `*staging*`;
+  `deployment_verified: false` records that nothing checks whether the staged
+  artefact already landed.
+
+`scripts/projector_count_sanity.py` gates the contract (exit 1 on a count above
+its universe or off by an order of magnitude); probes in
+`tests/red_team/portability/test_projector_count_sanity.py`.
 
 `suggested_next_actions` synthesises the cheapest unblocking moves across
 all sources (e.g., "deploy 3 staged hooks under

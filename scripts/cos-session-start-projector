@@ -75,6 +75,31 @@ def _load_jsonl(path: Path) -> list[dict[str, Any]]:
     return out
 
 
+def _parse_iso(value: Any) -> datetime | None:
+    if not isinstance(value, str) or not value.strip():
+        return None
+    text = value.strip().replace("Z", "+00:00")
+    try:
+        parsed = datetime.fromisoformat(text)
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed
+
+
+def _age_days(value: Any) -> int | None:
+    parsed = _parse_iso(value)
+    if parsed is None:
+        return None
+    return int((datetime.now(timezone.utc) - parsed).total_seconds() // 86400)
+
+
+def _freshness(value: Any) -> dict[str, Any]:
+    """Every count declares the window/vintage of the source it read."""
+    return {"generated_at": value if isinstance(value, str) else None, "age_days": _age_days(value)}
+
+
 def _git(cwd: Path, *args: str) -> str:
     try:
         cp = subprocess.run(
@@ -93,7 +118,7 @@ def _git(cwd: Path, *args: str) -> str:
 def collect_pending_truth(root: Path, limit: int) -> dict[str, Any]:
     payload = _load_json(root / "docs/06-Daily/reports/pending-truth-latest.json")
     if not payload:
-        return {"total": 0, "by_status": {}, "top_actionable": []}
+        return {"total": 0, "open": 0, "by_status": {}, "source": _freshness(None), "top_actionable": []}
     items = payload.get("items", []) or []
     by_status: dict[str, int] = {}
     for it in items:
@@ -115,8 +140,12 @@ def collect_pending_truth(root: Path, limit: int) -> dict[str, Any]:
         for it in actionable[:limit]
     ]
     return {
+        # `total` counts every ledger row (done ones included); `open` is the
+        # subset the "pending" label actually promises.
         "total": len(items),
+        "open": sum(1 for it in items if it.get("status") == "verified-pending"),
         "by_status": by_status,
+        "source": _freshness(payload.get("generated_at")),
         "top_actionable": top,
     }
 
@@ -124,7 +153,15 @@ def collect_pending_truth(root: Path, limit: int) -> dict[str, Any]:
 def collect_operational_guide(root: Path, limit: int) -> dict[str, Any]:
     payload = _load_json(root / "docs/06-Daily/reports/operational-guide-audit-latest.json")
     if not payload:
-        return {"total_p0": 0, "total_p1": 0, "top_backfill": []}
+        return {
+            "total_p0": 0,
+            "total_p1": 0,
+            "priorities_known": True,
+            "unknown_reason": None,
+            "results_total": 0,
+            "source": _freshness(None),
+            "top_backfill": [],
+        }
     summary = payload.get("summary", {})
     by_priority = summary.get("by_priority", {}) or {}
     results = payload.get("results", []) or []
@@ -140,9 +177,21 @@ def collect_operational_guide(root: Path, limit: int) -> dict[str, Any]:
         }
         for r in backfill[:limit]
     ]
+    # A zero here means "no P0/P1" ONLY if the source actually carries a
+    # priority field. When every result lacks it, zero measures the absence of
+    # the field, not the absence of backfill.
+    priced = sum(1 for r in results if r.get("priority"))
+    known = bool(by_priority) or priced > 0 or not results
     return {
-        "total_p0": by_priority.get("P0", 0),
-        "total_p1": by_priority.get("P1", 0),
+        "total_p0": by_priority.get("P0", 0) if known else None,
+        "total_p1": by_priority.get("P1", 0) if known else None,
+        "priorities_known": known,
+        "unknown_reason": None if known else (
+            f"source report carries no `priority` field on any of its {len(results)} results; "
+            "P0/P1 cannot be counted from it"
+        ),
+        "results_total": len(results),
+        "source": _freshness(payload.get("generated_at")),
         "top_backfill": top,
     }
 
@@ -151,7 +200,7 @@ def collect_operational_guide(root: Path, limit: int) -> dict[str, Any]:
 def collect_adr_partials(root: Path, limit: int) -> dict[str, Any]:
     payload = _load_json(root / "docs/06-Daily/reports/adr-partial-backlog-latest.json")
     if not payload:
-        return {"total": 0, "by_implementation_status": {}, "missing_partial_remaining": 0, "top_actionable": []}
+        return {"total": 0, "by_implementation_status": {}, "missing_partial_remaining": 0, "source": _freshness(None), "top_actionable": []}
     items = payload.get("items", []) or []
     summary = payload.get("summary", {}) or {}
 
@@ -187,19 +236,72 @@ def collect_adr_partials(root: Path, limit: int) -> dict[str, Any]:
         "total": int(summary.get("total", len(items))),
         "by_implementation_status": summary.get("by_implementation_status", {}) or {},
         "missing_partial_remaining": int(summary.get("missing_partial_remaining", 0)),
+        "source": _freshness(payload.get("generated_at")),
         "top_actionable": top,
     }
 
 def collect_control_plane(root: Path) -> dict[str, Any]:
-    entries = _load_jsonl(root / ".cognitive-os/tasks/control-plane-remediation.jsonl")
-    # Each entry typically has {adr, severity, code, message, status}
-    open_findings = [e for e in entries if e.get("status") not in {"resolved", "closed"}]
+    """Open control-plane findings.
+
+    The remediation JSONL is an APPEND-ONLY EVENT LOG (`event: proposed`);
+    closure is never written back into it, so counting its rows answers
+    "how many proposal events were ever emitted", not "how many findings are
+    open". The authority for open/closed is the audit state machine at
+    `.cognitive-os/runtime/control-plane-audit/findings-state.json`
+    (`status: active|resolved`, written by scripts/cos-control-plane-audit).
+
+    If the state file is absent while the log has rows, openness is NOT
+    knowable from the log alone -> `open_findings` is None and
+    `open_findings_known` is False. Saying "I cannot count the open ones" is
+    the correct output; a row count under an open-findings label is not.
+    """
+    queue_path = root / ".cognitive-os/tasks/control-plane-remediation.jsonl"
+    entries = _load_jsonl(queue_path)
+    event_rows = len(entries)
+    distinct_ids = {str(e.get("stable_id")) for e in entries if e.get("stable_id")}
+    stamps = sorted(str(e.get("created_at")) for e in entries if e.get("created_at"))
+    window = {
+        "first_event_at": stamps[0] if stamps else None,
+        "last_event_at": stamps[-1] if stamps else None,
+    }
+
+    state = _load_json(root / ".cognitive-os/runtime/control-plane-audit/findings-state.json") or {}
+    raw_findings = state.get("findings") if isinstance(state.get("findings"), dict) else {}
+    tracked = len(raw_findings)
+
+    if not raw_findings and event_rows:
+        return {
+            "open_findings": None,
+            "open_findings_known": False,
+            "basis": "unknown",
+            "unknown_reason": (
+                "remediation log has rows but the audit state machine "
+                "(.cognitive-os/runtime/control-plane-audit/findings-state.json) is absent; "
+                "the log only records `proposed` events and never closure"
+            ),
+            "tracked_findings": 0,
+            "state_updated_at": None,
+            "queue_event_rows": event_rows,
+            "queue_distinct_findings": len(distinct_ids),
+            "queue_window": window,
+            "by_adr": {},
+        }
+
+    active = [v for v in raw_findings.values() if isinstance(v, dict) and v.get("status") == "active"]
     by_adr: dict[str, int] = {}
-    for e in open_findings:
-        adr = e.get("adr", "unknown")
+    for item in active:
+        adr = str(item.get("adr") or "unknown")
         by_adr[adr] = by_adr.get(adr, 0) + 1
     return {
-        "open_findings": len(open_findings),
+        "open_findings": len(active),
+        "open_findings_known": True,
+        "basis": "findings-state" if raw_findings else "no-data",
+        "unknown_reason": None,
+        "tracked_findings": tracked,
+        "state_updated_at": state.get("updated_at"),
+        "queue_event_rows": event_rows,
+        "queue_distinct_findings": len(distinct_ids),
+        "queue_window": window,
         "by_adr": by_adr,
     }
 
@@ -207,14 +309,20 @@ def collect_control_plane(root: Path) -> dict[str, Any]:
 def collect_staged_deployments(root: Path) -> dict[str, Any]:
     runbooks = root / "docs/05-Methodology/runbooks"
     if not runbooks.is_dir():
-        return {"dirs": []}
+        return {"dirs": [], "counts": "directories under docs/05-Methodology/runbooks/ whose name matches *staging*", "deployment_verified": False}
     staged: list[str] = []
     for p in sorted(runbooks.iterdir()):
         if not p.is_dir():
             continue
         if p.name.endswith("-staging") or "staging" in p.name.lower():
             staged.append(p.relative_to(root).as_posix())
-    return {"dirs": staged}
+    # Naming is the only signal: nothing here checks whether the staged artefact
+    # was already deployed, so this is a candidate list, not a pending queue.
+    return {
+        "dirs": staged,
+        "counts": "directories under docs/05-Methodology/runbooks/ whose name matches *staging*",
+        "deployment_verified": False,
+    }
 
 
 def collect_git_state(root: Path) -> dict[str, Any]:
@@ -314,6 +422,18 @@ def build_projection(root: Path, limit: int) -> dict[str, Any]:
     }
 
 
+def _vintage(source: dict[str, Any] | None) -> str:
+    if not isinstance(source, dict):
+        return ""
+    gen = source.get("generated_at")
+    age = source.get("age_days")
+    if not gen:
+        return " (source vintage unknown)"
+    if age is None:
+        return f" (source @ {gen})"
+    return f" (source @ {gen}, {age}d old)"
+
+
 def render_human(payload: dict[str, Any]) -> str:
     s = payload["sections"]
     lines: list[str] = []
@@ -326,20 +446,45 @@ def render_human(payload: dict[str, Any]) -> str:
     lines.append(git_line)
     # Pending truth
     pt = s["pending_truth"]
-    lines.append(f"pending-truth ledger: {pt['total']} items {dict(pt['by_status'])}")
+    lines.append(
+        f"pending-truth ledger: {pt.get('open', pt['total'])} open of {pt['total']} items "
+        f"{dict(pt['by_status'])}{_vintage(pt.get('source'))}"
+    )
     # OG
     og = s["operational_guide"]
-    lines.append(f"operational-guide backfill: P0={og['total_p0']} P1={og['total_p1']}")
+    if og.get("priorities_known", True):
+        lines.append(
+            f"operational-guide backfill: P0={og['total_p0']} P1={og['total_p1']}{_vintage(og.get('source'))}"
+        )
+    else:
+        lines.append(f"operational-guide backfill: UNKNOWN — {og.get('unknown_reason')}{_vintage(og.get('source'))}")
     # Control plane
     cp = s["control_plane"]
-    lines.append(f"control-plane open findings: {cp['open_findings']}")
+    if cp.get("open_findings_known", True):
+        lines.append(
+            f"control-plane open findings: {cp['open_findings']} active "
+            f"of {cp.get('tracked_findings', 0)} tracked "
+            f"(basis: findings-state.json @ {cp.get('state_updated_at')})"
+        )
+    else:
+        lines.append(f"control-plane open findings: UNKNOWN — {cp.get('unknown_reason')}")
+    qw = cp.get("queue_window") or {}
+    if cp.get("queue_event_rows"):
+        lines.append(
+            f"  remediation log (append-only, proposals only): {cp['queue_event_rows']} event rows / "
+            f"{cp.get('queue_distinct_findings', 0)} distinct findings, "
+            f"window {qw.get('first_event_at')} -> {qw.get('last_event_at')}"
+        )
     # ADR partial lifecycle
     ap = s["adr_partials"]
-    lines.append(f"ADR partial backlog: {ap['total']} items {dict(ap['by_implementation_status'])}; missing partial_remaining={ap['missing_partial_remaining']}")
+    lines.append(
+        f"ADR partial backlog: {ap['total']} items {dict(ap['by_implementation_status'])}; "
+        f"missing partial_remaining={ap['missing_partial_remaining']}{_vintage(ap.get('source'))}"
+    )
     # Staged
     st = s["staged_deployments"]
     if st["dirs"]:
-        lines.append(f"staged-for-operator-deploy: {len(st['dirs'])} dir(s)")
+        lines.append(f"staged-for-operator-deploy candidates: {len(st['dirs'])} dir(s) matching *staging* (deployment not verified)")
         for d in st["dirs"]:
             lines.append(f"  - {d}")
     lines.append("")
