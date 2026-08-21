@@ -1424,16 +1424,36 @@ def build_findings(
                     "Run git worktree prune only after checking no WIP remains there.",
                 )
             )
+    # Los stashes son POR REPOSITORIO, no por worktree -- lo dice el propio docstring
+    # de collect_stashes_by_worktree. Recorrerlos desde cada worktree enlazado es un
+    # chequeo sano de independencia del IDE, pero emitir un BLOCK por worktree
+    # convierte UN stash compartido en N bloqueos.
+    #
+    # Medido el 2026-08-20: dos stashes (fea17d5b4689 y 7616ae0a1dbe), creados por la
+    # sesion del operador, aparecian en los 13 worktrees enlazados -- mismos SHAs,
+    # comprobados con `git -C <wt> rev-parse stash@{0} stash@{1}`. El inventario
+    # reportaba 15 "worktree stashes" y 13 BLOCKERS, y con eso freno el lanzamiento de
+    # agentes por trabajo que NO EXISTIA. Las 13 ramas tenian ahead_of_main=0,
+    # merged=True y worktree limpio: cero lineas en riesgo.
+    #
+    # Y la informacion ya se reporta bien, una sola vez, en el bucle de
+    # `payload["stashes"]` de mas abajo (finding `stash-aged`). Esto era un duplicado.
+    #
+    # Lo que SI merece un finding por worktree es no haber podido inspeccionarlo:
+    # `available: False` significa "no pude mirar ahi", que no es lo mismo que "ahi no
+    # hay nada" -- la distincion que esta jornada encontro colapsada en cinco guards.
     for group in payload.get("worktree_stashes", []):
-        if group.get("is_current_project") or not group.get("stash_count"):
+        if group.get("is_current_project"):
+            continue
+        if group.get("available", True):
             continue
         findings.append(
             Finding(
-                "BLOCK",
-                "linked-worktree-stashes-present",
+                "WARN",
+                "linked-worktree-stash-uninspectable",
                 group["worktree_path"],
-                f"branch={group.get('worktree_branch') or 'detached'} stashes={group.get('stash_count')}",
-                "Inspect linked worktree stashes before cleanup; use `git -C <worktree> stash list` and show/apply/drop only after review.",
+                f"branch={group.get('worktree_branch') or 'detached'} no se pudo inspeccionar",
+                "El inventario no pudo correr git desde ese worktree. NO es 'no hay stashes': es 'no pude mirar'. Revisar si la ruta existe y es un checkout valido.",
             )
         )
     for stash in payload["stashes"]:
