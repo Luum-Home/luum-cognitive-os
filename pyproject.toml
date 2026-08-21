@@ -158,7 +158,35 @@ min_confidence = 80
 paths = ["cos_lib/"]
 
 [tool.mutmut]
-paths_to_mutate = ["cos_lib/"]
+# El par TIENE que coincidir. Estaba apuntando a cos_lib/ entero (303 archivos .py)
+# con un test_command que corre UN archivo, el cual importa solo cos_lib.rate_limiter.
+# Con ese desajuste casi todo mutante sobrevive -- no porque los tests sean malos,
+# sino porque no se corren los que corresponden. Una herramienta que reporta
+# catastrofe la primera vez que se la usa es una herramienta que nadie vuelve a usar,
+# y por eso mutmut estaba instalado, configurado y con cero invocaciones.
+#
+# Para ampliar el alcance hay que ampliar LOS DOS lados a la vez.
+paths_to_mutate = ["cos_lib/rate_limiter.py"]
+# La fase de `stats` COLECTA LA SUITE ENTERA, no el `test_command` de abajo. Sin
+# acotarla, mutmut moria coleccionando tests que nada tienen que ver con lo
+# mutado: primero `from scripts import ...` (ModuleNotFoundError) y despues uno
+# que arma `mutants/scripts/hook_quality_audit.py` a mano (FileNotFoundError).
+# Los dos por lo mismo: la copia no trae `scripts/`.
+# LISTA, no string: mutmut lo itera, y un string se descompone en
+# caracteres sueltos -- pytest recibia 't','e','s','t','s' como rutas.
+# Y el par tiene que ser EXACTO: `tests/unit` entero arrastra tests con
+# dependencias cruzadas (model_catalog y otros) que la copia no trae. El
+# unico test pareado con lo mutado es este.
+tests_dir = ["tests/unit/test_rate_limiter.py"]
+# Y para los que SI referencian scripts/ por ruta, se copia el arbol. Es barato
+# comparado con descubrir en la corrida numero N que la mitad de los mutantes
+# "sobrevivio" porque el test ni siquiera pudo importar lo que iba a probar.
+also_copy = ["scripts", "pytest.ini"]
+# PYTEST_ALLOW_NONVENV=1 es OBLIGATORIO aca y no es un atajo: mutmut copia el
+# fuente a `mutants/` y corre pytest desde ahi, con lo cual el guard de venv del
+# repo (conftest, sys.prefix bajo la raiz) rechaza la corrida. Ese guard es la
+# razon real por la que mutmut nunca se uso: no faltaba instalarlo, lo frenaba
+# una defensa propia. El escape esta documentado por el propio guard.
 test_command = "python -m pytest tests/unit/test_rate_limiter.py -x -q --no-header -p no:timeout"
 
 [build-system]
