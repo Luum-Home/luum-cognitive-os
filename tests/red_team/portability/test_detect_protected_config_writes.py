@@ -229,6 +229,11 @@ def test_no_le_atribuye_al_comando_lo_que_ensucio_otra_sesion(victima_restaurabl
             ajeno.write_bytes(respaldo)
         elif ajeno.exists():
             ajeno.unlink()
+        # Rebase la huella DESPUES de restaurar. Sin esto, la desaparicion del
+        # archivo ajeno queda como cambio pendiente y el test siguiente ve
+        # SIN_APROBAR donde espera sin_cambios: un test que ensucia el estado
+        # global hace fallar a otro y manda a depurar el codigo equivocado.
+        _hook("echo rebase de la huella tras restaurar")
 
 
 def test_el_delta_y_el_sucio_global_son_campos_distintos(victima_restaurable: Path):
