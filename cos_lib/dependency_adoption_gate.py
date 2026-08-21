@@ -133,19 +133,118 @@ def added_dependency_lines(repo: Path, dependency_files: list[str]) -> list[str]
     output = _run_git(repo, ["diff", "--cached", "--unified=0", "--", *dependency_files])
     additions: list[str] = []
     current_file = "<unknown>"
+    lineno = 0
     for line in output.splitlines():
         if line.startswith("+++ b/"):
             current_file = line.removeprefix("+++ b/")
             continue
+        m = _HUNK_RE.match(line)
+        if m:
+            lineno = int(m.group(1))
+            continue
         if not line.startswith("+") or line.startswith("+++"):
             continue
+        aqui = lineno
+        lineno += 1
         if SAFE_ADDITION_RE.match(line):
             continue
         text = line[1:].strip()
         if not text:
             continue
+        # UNA CLAVE DE CONFIGURACION NO ES UNA DEPENDENCIA.
+        #
+        # El gate leia TODA linea `+` de un manifiesto como dependencia agregada,
+        # sin mirar en que seccion caia. Medido el 2026-08-21: bloqueo un commit
+        # que solo tocaba `[tool.mutmut]`, acusando de dependencias nuevas a
+        # `paths_to_mutate`, `tests_dir` y `also_copy` -- tres claves de
+        # configuracion de una herramienta que YA estaba declarada hacia meses.
+        #
+        # Pedir evidencia de pre-adopcion por configurar algo ya adoptado no es
+        # gobierno: es un peaje que entrena a saltear el gate, y el dia que
+        # aparezca una dependencia de verdad va a estar desactivado.
+        if _es_seccion_de_dependencias(repo, current_file, aqui) is False:
+            continue
         additions.append(f"{current_file}: {text[:160]}")
     return additions
+
+
+_HUNK_RE = re.compile(r"^@@ -\d+(?:,\d+)? \+(\d+)(?:,\d+)? @@")
+
+#: Secciones de pyproject donde una linea SI declara una dependencia. Fuera de
+#: estas, un `nombre = [...]` es configuracion de herramienta.
+_SECCIONES_DE_DEPENDENCIAS = (
+    "project.dependencies",
+    "project.optional-dependencies",
+    "dependency-groups",
+    "tool.poetry.dependencies",
+    "tool.poetry.dev-dependencies",
+    "tool.poetry.group",
+    "tool.uv.sources",
+    "build-system",
+)
+
+
+def _es_seccion_de_dependencias(repo: Path, rel: str, lineno: int) -> bool | None:
+    """True/False si se pudo determinar la seccion; None si no se pudo.
+
+    `None` NO se colapsa en `False`: no poder leer el archivo tiene que dejar la
+    linea bajo sospecha, no absolverla. Absolver por no haber podido mirar es
+    fail-open, y es el defecto que este repo persiguio tres dias.
+
+    Solo se razona sobre TOML. Para `package.json`, `go.mod` y demas se devuelve
+    `None` y el comportamiento anterior se conserva intacto.
+    """
+    if not rel.endswith(".toml"):
+        return None
+    try:
+        lineas = (repo / rel).read_text(encoding="utf-8", errors="replace").splitlines()
+    except OSError:
+        return None
+    if not (1 <= lineno <= len(lineas)):
+        return None
+    # Hay que rastrear DOS cosas, y la primera version solo miraba una:
+    #
+    #   [project]                      <- la seccion
+    #   dependencies = [               <- la CLAVE, que es donde viven de verdad
+    #       "pyyaml>=6.0",
+    #   ]
+    #
+    # En pyproject las dependencias son un array bajo `[project]`, no una seccion
+    # `[project.dependencies]`. Mirando solo el encabezado, una dependencia real
+    # quedaba absuelta: el contrafactico de dos ramas lo cazo -- agregue un
+    # paquete de verdad y el gate lo dejo pasar.
+    seccion = ""
+    clave_array = ""
+    profundidad = 0
+    for ln in lineas[:lineno]:
+        s = ln.strip()
+        if not s or s.startswith("#"):
+            continue
+        if profundidad == 0 and s.startswith("[") and s.endswith("]"):
+            seccion = s.strip("[]").strip()
+            clave_array = ""
+            continue
+        if profundidad == 0:
+            m = re.match(r"^([A-Za-z0-9_.\-]+)\s*=\s*\[", s)
+            if m:
+                clave_array = m.group(1)
+                profundidad = s.count("[") - s.count("]")
+                if profundidad <= 0:
+                    clave_array = ""
+                    profundidad = 0
+                continue
+        else:
+            profundidad += s.count("[") - s.count("]")
+            if profundidad <= 0:
+                profundidad = 0
+                clave_array = ""
+    if not seccion:
+        return None
+    if any(seccion == d or seccion.startswith(d + ".") for d in _SECCIONES_DE_DEPENDENCIAS):
+        return True
+    if seccion == "project" and clave_array in ("dependencies", "optional-dependencies"):
+        return True
+    return False
 
 
 def evaluate_staged(repo: Path | None = None) -> GateResult:
