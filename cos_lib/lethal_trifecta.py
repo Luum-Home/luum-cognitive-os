@@ -12,13 +12,48 @@ from typing import Any, Iterable, Mapping
 _PRIVATE_PATTERNS = [
     r"(^|[\s:/\\])\.env(\.|$|[\s/\\])",
     r"(^|[\s:/\\])secrets?([/\\]|$)",
-    r"\.pem\b|\.key\b|\.p12\b|id_rsa\b|credentials?\b|passwords?\b",
+    # La palabra suelta NO cuenta cuando es parte del nombre de un subcomando o
+    # de una clave de configuracion: `git-credential`, `credential.helper` y
+    # `gh auth git-credential` son plomeria de git, no datos privados. Medido el
+    # 2026-08-21: un push legitimo quedaba marcado priv=1 solo por nombrar esa
+    # plomeria, y con eso completaba la trifecta.
+    r"\.pem\b|\.key\b|\.p12\b|id_rsa\b|passwords?\b",
+    r"(?<![-.\w])credentials?\b(?![-.]?(helper|store|cache|approve|reject|fill))",
     r"api[_-]?key|access[_-]?token|refresh[_-]?token|private[_-]?key",
     r"engram.*personal|personal.*memory|private\s+(data|repo|document|memory)",
 ]
 
+# LO INGERIDO NO SE VE EN EL TEXTO DE UN COMANDO.
+#
+# La trifecta letal es una propiedad del CONTEXTO del agente: datos privados que
+# puede leer, contenido de origen ajeno que YA ENTRO a su contexto, y capacidad
+# de comunicar hacia afuera. El riesgo es que ese contenido le dicte exfiltrar.
+#
+# Una URL escrita en un comando es exactamente lo contrario: es un destino que
+# el operador eligio. Tomarla como evidencia de ingestion invierte el sentido.
+# Medido el 2026-08-21: con ese patron, empujar a nuestro propio remoto y una
+# exfiltracion real daban IDENTICO -- score 100 las dos, las tres banderas
+# encendidas en las dos. Un gate que no distingue el caso legitimo del ataque no
+# protege: se desactiva la primera semana, y ahi se pierde tambien el caso que
+# si importaba.
+#
+# Quedan los marcadores de contenido REALMENTE ingerido (texto de inyeccion,
+# menciones explicitas de origen ajeno) mas la via declarada: `risk_tags` o el
+# campo del payload, que es como lo informa un llamador que SI sabe.
+#
+# El caso peligroso de verdad --leer un secreto y mandarlo a un host externo--
+# lo sigue agarrando `hooks/network-egress-guard.sh`, que mira destino e
+# indicadores en vez de contar palabras. Verificado: bloquea.
 _UNTRUSTED_PATTERNS = [
-    r"https?://",
+    # Una URL cuenta SOLO si el comando la va a TRAER. `curl`, `wget` y amigos
+    # ingieren; `git push` a una URL manda y no trae nada.
+    #
+    # La primera version de este arreglo saco el patron de URL entero y se paso
+    # de largo: dejo de avisar sobre `curl https://...`, que si va a meter
+    # contenido ajeno en el contexto. Lo agarro el test de contrato que ya
+    # existia -- por eso el arreglo correcto es afinar la distincion, no borrar
+    # la señal.
+    r"\b(curl|wget|http|fetch|lynx|links|w3m)\b[^\n]*https?://",
     r"\b(untrusted|third[- ]party|external\s+content|web\s+page|downloaded)\b",
     r"\b(github\s+(issue|pr|pull request|comment)|user[- ]submitted|clipboard)\b",
     r"\b(mcp\s+(tool|server|description)|tool\s+poisoning|prompt\s+injection)\b",
