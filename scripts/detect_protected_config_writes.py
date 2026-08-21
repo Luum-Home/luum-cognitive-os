@@ -32,6 +32,21 @@ cuando sale 0. Un aviso con exit 0 es invisible para el operador -- por eso
 `hooks/skill-router-bash-gate.sh` nunca se ve. Un detector silencioso es un archivo
 que se escribe a si mismo un informe que nadie lee.
 
+SE REPORTA EL DELTA, NO EL ARBOL SUCIO
+--------------------------------------
+Este detector mira el filesystem, y el filesystem tiene el trabajo de TODAS las
+sesiones. La primera version reportaba el conjunto protegido sucio entero, asi
+que en un arbol con 50 archivos tocados por sesiones concurrentes acusaba al
+comando de turno de los 50. Medido el 2026-08-21: `protected_dirty: 50` en cada
+escritura, con doce archivos de `hooks/` que el comando no habia tocado.
+
+Lo unico atribuible a la escritura recien vista es lo que CAMBIO desde la corrida
+anterior. Por eso la huella se guarda por ruta y `paths` trae el delta; el sucio
+global sigue viajando, etiquetado como contexto y no como acusacion.
+
+El limite se declara en la salida y no se disimula: entre dos corridas del hook
+puede escribir otra sesion. El delta acota la ventana, no la vuelve exacta.
+
 "NO PUDE" NO ES "NO HAY"
 ------------------------
 Si no puede calcular la huella --git ausente, policy ilegible-- devuelve `unknown`
@@ -141,48 +156,102 @@ def evaluar(payload: dict, root: Path, fp_path: Path) -> dict:
     if error:
         return {"status": "unknown", "why": error}
 
-    # La huella incluye el CONTENIDO, no solo la lista de rutas.
+    # La huella es POR RUTA, no un agregado.
     #
-    # La primera version hasheaba `sorted(sucios)` y no detectaba nada cuando el
-    # archivo YA estaba sucio: modificarlo otra vez deja el mismo conjunto de rutas
-    # y la misma huella. Lo caza la sonda de este mismo archivo -- que es para lo
-    # que existe el contrafactico. Con `.claude/settings.json` ya modificado, que es
-    # el caso normal en una sesion de trabajo, el detector era ciego justo cuando
-    # mas hace falta.
-    partes = []
+    # Dos bugs distintos vivieron aca, y el segundo nacio del arreglo del primero:
+    #
+    # 1. La primera version hasheaba `sorted(sucios)` -- solo las RUTAS -- y no
+    #    detectaba nada cuando el archivo YA estaba sucio: modificarlo otra vez
+    #    deja el mismo conjunto y la misma huella.
+    #
+    # 2. El arreglo hasheo el CONTENIDO, pero en un unico agregado. Con eso el
+    #    detector sabia QUE algo habia cambiado y no CUAL, asi que reportaba el
+    #    conjunto sucio entero. Medido el 2026-08-21 en una sesion real: disparaba
+    #    en cada escritura con `protected_dirty: 50` y doce archivos de `hooks/`
+    #    que el comando acusado no habia tocado. En un arbol con trabajo de
+    #    sesiones concurrentes -- el caso normal -- eso es un falso positivo
+    #    estructural, y un detector que acusa siempre se desactiva en una semana.
+    #
+    # Guardar el mapa {ruta: hash} permite el DELTA, que es lo unico que se puede
+    # atribuir a la escritura que se acaba de ver.
+    actual: dict[str, str] = {}
     for rel in sorted(sucios):
         try:
-            datos = (root / rel).read_bytes()
-            partes.append(f"{rel}:{hashlib.sha256(datos).hexdigest()[:16]}")
+            actual[rel] = hashlib.sha256((root / rel).read_bytes()).hexdigest()[:16]
         except OSError:
             # Borrado o ilegible: es un cambio, y se registra como tal en vez de
             # desaparecer del conjunto como si nada hubiera pasado.
-            partes.append(f"{rel}:AUSENTE")
-    huella = hashlib.sha256("\n".join(partes).encode()).hexdigest()[:16]
-    try:
-        previa = fp_path.read_text(encoding="utf-8").strip()
-    except OSError:
-        previa = ""
-    try:
-        fp_path.parent.mkdir(parents=True, exist_ok=True)
-        fp_path.write_text(huella, encoding="utf-8")
-    except OSError:
-        pass
+            actual[rel] = "AUSENTE"
+
+    previa, formato_viejo = _leer_huella(fp_path)
+    _guardar_huella(fp_path, actual)
 
     # Primera corrida: linea de base. Reportar aca acusaria de un cambio a quien
     # solo encendio el detector.
-    if not previa:
+    if previa is None:
         return {"status": "baseline", "protected_dirty": len(sucios)}
-    if huella == previa:
+    if formato_viejo:
+        # El formato anterior guardaba un agregado del que no se puede derivar
+        # que ruta cambio. Se rehace la linea de base en vez de inventar un
+        # delta: acusar con datos que no alcanzan es peor que no acusar.
+        return {"status": "baseline", "why": "huella migrada al formato por-ruta",
+                "protected_dirty": len(sucios)}
+
+    cambiadas = sorted(r for r, h in actual.items() if previa.get(r) != h)
+    desaparecidas = sorted(set(previa) - set(actual))
+    if not cambiadas and not desaparecidas:
         return {"status": "sin_cambios", "protected_dirty": len(sucios)}
 
     aprobado = os.environ.get(APPROVAL_ENV) == "1" or APPROVAL_ENV in command
     return {
         "status": "aprobado" if aprobado else "SIN_APROBAR",
-        "paths": sorted(sucios)[:12],
+        # `paths` son SOLO las que cambiaron desde la corrida anterior. El
+        # conjunto sucio global viaja aparte y etiquetado, porque es contexto
+        # util pero NO es lo que este comando hizo.
+        "paths": cambiadas[:12],
+        "changed_count": len(cambiadas),
+        "vanished": desaparecidas[:6],
         "protected_dirty": len(sucios),
         "command_head": command[:160],
+        # El limite honesto: entre dos corridas de este hook puede escribir otra
+        # sesion. El delta acota la acusacion a la ventana, no la vuelve exacta.
+        "limite": "delta desde la corrida anterior; bajo sesiones concurrentes la "
+                  "ventana puede contener escrituras de otra sesion",
     }
+
+
+def _leer_huella(fp_path: Path) -> tuple[dict[str, str] | None, bool]:
+    """Devuelve (mapa, es_formato_viejo). `None` = no hay linea de base.
+
+    El formato viejo era un unico hash de 16 hex. Se lo reconoce para migrarlo
+    sin acusar a nadie, en vez de que `json.loads` reviente y el `except` lo
+    trate como "primera corrida" -- que hubiera funcionado, pero por accidente.
+    """
+    try:
+        crudo = fp_path.read_text(encoding="utf-8").strip()
+    except OSError:
+        return None, False
+    if not crudo:
+        return None, False
+    if not crudo.startswith("{"):
+        return {}, True
+    try:
+        datos = json.loads(crudo)
+    except ValueError:
+        return {}, True
+    paths = datos.get("paths")
+    if not isinstance(paths, dict):
+        return {}, True
+    return {str(k): str(v) for k, v in paths.items()}, False
+
+
+def _guardar_huella(fp_path: Path, actual: dict[str, str]) -> None:
+    try:
+        fp_path.parent.mkdir(parents=True, exist_ok=True)
+        fp_path.write_text(json.dumps({"paths": actual}, sort_keys=True),
+                           encoding="utf-8")
+    except OSError:
+        pass
 
 
 def main() -> int:

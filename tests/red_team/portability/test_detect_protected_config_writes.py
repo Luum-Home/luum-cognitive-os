@@ -47,6 +47,9 @@ from pathlib import Path
 
 import pytest
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
+from tests.utils.harness_payload import payload as payload_real  # noqa: E402
+
 REPO = Path(__file__).resolve().parents[3]
 HOOK = REPO / "hooks" / "protected-config-write-detector.sh"
 SCRIPT = REPO / "scripts" / "detect_protected_config_writes.py"
@@ -64,10 +67,15 @@ def _env(aprobado: bool = False) -> dict:
 
 
 def _hook(cmd: str, aprobado: bool = False) -> int:
-    payload = json.dumps({
-        "hook_event_name": "PostToolUse", "tool_name": "Bash",
-        "tool_input": {"command": cmd}, "cwd": str(REPO), "session_id": "proof",
-    })
+    # El payload sale de tests/utils/harness_payload, que lo deriva del envelope
+    # capturado de sesiones REALES. Escribirlo a mano acá probaba una forma de
+    # cinco campos que en produccion no existe -- y el gate de fidelidad lo marco
+    # como fabricado. Es la misma regla que este archivo predica en otro lado: la
+    # forma de un payload se toma de una corrida real, no se inventa.
+    payload = json.dumps(
+        payload_real("PostToolUse", cwd=str(REPO), tool_name="Bash",
+                     tool_input={"command": cmd})
+    )
     return subprocess.run(
         ["bash", str(HOOK)], input=payload, capture_output=True, text=True,
         timeout=180, cwd=str(REPO), env=_env(aprobado), check=False,
@@ -137,7 +145,9 @@ def test_no_confunde_no_pude_con_no_hay(tmp_path: Path):
     env["CLAUDE_PROJECT_DIR"] = str(tmp_path)
     env["COGNITIVE_OS_PROJECT_DIR"] = str(tmp_path)
     r = subprocess.run(
-        [sys.executable, str(SCRIPT)], input=json.dumps({"tool_input": {"command": "x"}}),
+        [sys.executable, str(SCRIPT)],
+        input=json.dumps(payload_real("PostToolUse", cwd=str(tmp_path),
+                                      tool_name="Bash", tool_input={"command": "x"})),
         capture_output=True, text=True, timeout=120, cwd=str(tmp_path), env=env, check=False,
     )
     salida = json.loads(r.stdout.strip() or "{}")
@@ -163,6 +173,87 @@ def test_la_huella_mira_el_contenido_y_no_solo_las_rutas(victima_restaurable: Pa
     assert segunda == 2, (
         "no detecto la SEGUNDA escritura sobre un archivo que ya estaba sucio: la "
         "huella volvio a mirar solo la lista de rutas"
+    )
+
+
+def test_no_le_atribuye_al_comando_lo_que_ensucio_otra_sesion(victima_restaurable: Path):
+    """EL FALSO POSITIVO ESTRUCTURAL, fijado. Solo se reporta el DELTA.
+
+    Medido el 2026-08-21 en una sesion real: el detector disparaba en CADA
+    escritura con `protected_dirty: 50` y doce archivos de `hooks/` que el comando
+    acusado no habia tocado. La causa era que la huella era un unico agregado: el
+    detector sabia QUE algo cambio y no CUAL, asi que reportaba el conjunto sucio
+    entero.
+
+    En un arbol con trabajo de sesiones concurrentes --el caso normal en este
+    repo-- eso acusa siempre. Un detector que acusa siempre se desactiva en una
+    semana, y ahi se pierde la deteccion entera, no una corrida.
+    """
+    original = victima_restaurable.read_bytes()
+    ajeno = REPO / ".claude" / "settings.local.json"
+    tenia = ajeno.exists()
+    respaldo = ajeno.read_bytes() if tenia else None
+    try:
+        # Otra sesion dejo un archivo protegido sucio ANTES de la linea de base.
+        ajeno.write_text('{"de_otra_sesion": 1}\n')
+        _hook("echo linea de base con el arbol ya sucio")
+
+        # Ahora ESTE comando toca un archivo distinto.
+        victima_restaurable.write_bytes(original + b'\n{"mio": 1}\n')
+        payload = json.dumps(
+            payload_real("PostToolUse", cwd=str(REPO), tool_name="Bash",
+                         tool_input={"command": "python3 escritor.py"})
+        )
+        salida = json.loads(subprocess.run(
+            [sys.executable, str(SCRIPT)], input=payload, capture_output=True,
+            text=True, timeout=180, cwd=str(REPO), env=_env(), check=False,
+        ).stdout.strip() or "{}")
+
+        assert salida.get("status") == "SIN_APROBAR", (
+            f"no detecto la escritura propia: {salida}"
+        )
+        reportadas = salida.get("paths") or []
+        assert ".claude/settings.local.json" not in reportadas, (
+            f"le atribuyo al comando un archivo que ensucio otra sesion: {reportadas}. "
+            "Ese es el falso positivo que hace que el detector se desactive."
+        )
+        assert any("settings.json" in r for r in reportadas), (
+            f"no reporto el archivo que el comando SI cambio: {reportadas}"
+        )
+        assert salida.get("changed_count") == 1, (
+            f"changed_count={salida.get('changed_count')}: deberia ser 1. "
+            f"protected_dirty (global, contexto) fue {salida.get('protected_dirty')}."
+        )
+    finally:
+        if tenia and respaldo is not None:
+            ajeno.write_bytes(respaldo)
+        elif ajeno.exists():
+            ajeno.unlink()
+
+
+def test_el_delta_y_el_sucio_global_son_campos_distintos(victima_restaurable: Path):
+    """LA SONDA. Si `changed_count` igualara a `protected_dirty`, no hay delta.
+
+    Es el control que distingue el arreglo de una version que renombro campos sin
+    cambiar el comportamiento.
+    """
+    original = victima_restaurable.read_bytes()
+    _hook("echo base")
+    victima_restaurable.write_bytes(original + b'\n{"x": 1}\n')
+    salida = json.loads(subprocess.run(
+        [sys.executable, str(SCRIPT)],
+        input=json.dumps(payload_real("PostToolUse", cwd=str(REPO),
+                                      tool_name="Bash", tool_input={"command": "x"})),
+        capture_output=True, text=True, timeout=180, cwd=str(REPO),
+        env=_env(), check=False,
+    ).stdout.strip() or "{}")
+    if salida.get("status") != "SIN_APROBAR":
+        pytest.skip(f"el arbol no permitio ejercitar la rama de cambio: {salida.get('status')}")
+    assert salida.get("changed_count", 0) < salida.get("protected_dirty", 0), (
+        f"changed_count ({salida.get('changed_count')}) no es menor que "
+        f"protected_dirty ({salida.get('protected_dirty')}): el reporte sigue "
+        "siendo el conjunto global y no el delta. Para que esta sonda sea valida "
+        "el arbol tiene que tener mas de un archivo protegido sucio."
     )
 
 
