@@ -169,6 +169,39 @@ class TestPositiveControl:
                     {"COS_RULE_ROUTER_ALL_PAYLOADS": "1"}).stdout.strip() == ""
 
 
+def test_cross_session_stays_suppressed_by_operator_decision():
+    """DECISION DEL OPERADOR, 2026-08-21: `cross-session` se suprime.
+
+    Estaba en MACHINE_ORIGINS desde el principio, pero por default, no por
+    decision: nadie la habia mirado. Quedaba abierta porque un relay entre
+    sesiones PUEDE vehicular un pedido humano -- el texto lo escribio una
+    persona, aunque el envoltorio lo ponga otra sesion.
+
+    El operador decidio suprimirla igual. La evidencia que sostiene la decision,
+    medida sobre los 680 prompts reales de 18 transcripts: 15 casos, y su tasa de
+    emision es 0% -- nunca hizo que el router propusiera nada. Suprimir algo que
+    emite cero no pierde ninguna sugerencia; solo deja de gastar la evaluacion.
+
+    Este test existe para que revertirla cueste una decision explicita y no pase
+    como un renombre. Si alguien la saca de MACHINE_ORIGINS, esto se pone rojo y
+    lo obliga a escribir por que.
+    """
+    from cos_lib.prompt_origin import (MACHINE_ORIGINS, ORIGIN_CROSS_SESSION,
+                                       classify_origin, skip_reason)
+    # La forma sale de un transcript REAL, no inventada: mi primer intento uso un
+    # `<cross-session-message>` a secas y clasifico como `typed`, porque el
+    # marcador de verdad es la linea de texto que lo precede.
+    real = ('Another Claude session sent a message:\n'
+            '<cross-session-message from="uds:/tmp/cc-socks/2358">\n'
+            'arregla el parser de fechas\n</cross-session-message>')
+    assert classify_origin(real) == ORIGIN_CROSS_SESSION, (
+        "el marcador dejo de reconocerse: un relay entre sesiones se estaria "
+        "leyendo como prompt tipeado"
+    )
+    assert ORIGIN_CROSS_SESSION in MACHINE_ORIGINS
+    assert skip_reason(real) == f"not-human-authored:{ORIGIN_CROSS_SESSION}"
+
+
 def test_min_prompt_chars_matches_the_hooks_own_guard():
     """The Python constant and the bash literal must not drift apart."""
     src = HOOK_PATH.read_text()
