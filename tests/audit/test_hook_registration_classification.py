@@ -103,6 +103,11 @@ def test_hook_registration_classifications_are_actionable() -> None:
         assert entry.get("status") in VALID_STATUSES, entry
         assert entry.get("rationale"), entry
         assert entry.get("next_action"), entry
+        # An omission with no date and no owner is a permanent decision wearing a
+        # temporary costume. Shape only here; whether the date still HOLDS is
+        # scripts/audit_omission_expiry.py (tests/audit/test_omission_expiry.py).
+        assert entry.get("owner"), entry
+        assert entry.get("expires"), entry
         assert (PROJECT_ROOT / str(entry.get("path", ""))).exists(), entry
 
 

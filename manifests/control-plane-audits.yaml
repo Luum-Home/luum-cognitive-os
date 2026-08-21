@@ -35,6 +35,7 @@ lanes:
       - skill-router-retrieval
       - agent-orchestration-boundary
       - capability-coverage
+      - omission-expiry
   hourly:
     description: Periodic local sweep for primitive drift and postmortem regressions.
     max_seconds: 60
@@ -52,6 +53,7 @@ lanes:
       - adr-implementation-coverage
       - adr-partial-lifecycle
       - telemetry-aggregator
+      - omission-expiry
   pre-public:
     description: Pre-public release-readiness sweep.
     max_seconds: 180
@@ -69,6 +71,7 @@ lanes:
       - subprocess-timeout-coverage
       - adr-implementation-coverage
       - adr-partial-lifecycle
+      - omission-expiry
 
 audits:
   primitive-coherence:
@@ -156,5 +159,15 @@ audits:
     adr: ADR-304
     command: [python3, scripts/cos-telemetry-aggregate, --quiet, --lane, hourly]
     expected_schema: telemetry-aggregator/v1
+    consumes_sensitive_values: false
+    mutates: false
+  omission-expiry:
+    # Declared omissions and instrumentation ultimatums that carry a date and an
+    # owner. Findings are severity `warn` on purpose: an expired exception is a
+    # decision a PERSON has to take, so this audit must never be able to
+    # unregister, demote or disable anything by itself.
+    adr: ADR-275
+    command: [python3, scripts/audit_omission_expiry.py, --json]
+    expected_schema: omission-expiry-audit/v1
     consumes_sensitive_values: false
     mutates: false

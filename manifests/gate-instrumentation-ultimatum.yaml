@@ -1,0 +1,319 @@
+# SCOPE: os-only
+# Gate instrumentation ultimatum ledger (2026-08-21).
+# Real YAML on purpose: the sibling manifests/hook-registration-classification.yaml
+# is JSON wearing a .yaml extension, a wart this file does not repeat.
+# Gate: .venv/bin/python3 scripts/audit_omission_expiry.py
+schema_version: gate-instrumentation-ultimatum/v1
+owner: unassigned
+scope: 'Gates classified `unmeasured` by scripts/audit_gate_liveness.py: wired and reachable, with a blocking
+  exit nobody has ever seen taken. Not omissions from registration -- these ARE registered. Sibling ledger
+  to manifests/hook-registration-classification.yaml, same mechanism (a dated commitment with an owner),
+  different subject.'
+why_a_separate_file: hook-registration-classification.yaml is contractually the list of top-level hooks
+  ABSENT from .claude/settings.json; tests/audit/test_hook_registration_classification.py asserts that
+  set equality. Adding a registered gate there would turn that test red for the wrong reason.
+decision: 'Operator ultimatum 2026-08-21: 30 days to instrument (a test that proves the blocking exit
+  can be taken, or telemetry that shows it taken) or the gate is removed. The removal is done BY A PERSON.
+  Nothing in this repo unregisters a hook because a date passed.'
+on_expiry: REPORT ONLY. scripts/audit_omission_expiry.py emits a warn finding per overdue row. A person
+  then instruments, extends with a written reason, or deletes.
+snapshot:
+  taken_on: '2026-08-21'
+  head: 1b026c462a1c06aafb2d5aa9b05da47148214618
+  command: .venv/bin/python3 scripts/audit_gate_liveness.py --json --quadrant unmeasured
+  population_at_snapshot: 72
+  note: This is a SNAPSHOT, not a live query. audit_gate_liveness reads growing telemetry, so re-running
+    it later can move a row out of `unmeasured` (that is the win) or move a new one in (that needs a new
+    row here). The expiry checker does not re-derive the list; re-run the command above to refresh it.
+entries:
+- gate: agent-message-inbox-guard
+  path: hooks/agent-message-inbox-guard.sh
+  owner: unassigned
+  expires: '2026-09-20'
+  can_block: true
+  block_sites: 1
+  fired: 0
+  ever_blocked: 0
+  wiring:
+  - dispatcher
+  - profile
+  - cognitive-os.yaml
+  rationale: 'Reachable via dispatcher, profile, cognitive-os.yaml; 1/1 blocking exits unguarded by a
+    pinned condition. Zero firings in wrapper telemetry and zero self-reported blocks: nobody has ever
+    seen this gate go red.'
+  next_action: 'Instrument: add a behavior test that drives the blocking exit with a real payload, or
+    record telemetry of a real block. Failing that by the expiry date, propose removal.'
+- gate: ai-provider-identity-guard
+  path: hooks/ai-provider-identity-guard.sh
+  owner: unassigned
+  expires: '2026-09-20'
+  can_block: true
+  block_sites: 1
+  fired: 0
+  ever_blocked: 0
+  wiring:
+  - profile
+  rationale: 'Reachable via profile; 1/1 blocking exits unguarded by a pinned condition. Zero firings
+    in wrapper telemetry and zero self-reported blocks: nobody has ever seen this gate go red.'
+  next_action: 'Instrument: add a behavior test that drives the blocking exit with a real payload, or
+    record telemetry of a real block. Failing that by the expiry date, propose removal.'
+- gate: branch-ownership-lock
+  path: hooks/branch-ownership-lock.sh
+  owner: unassigned
+  expires: '2026-09-20'
+  can_block: true
+  block_sites: 1
+  fired: 0
+  ever_blocked: 0
+  wiring:
+  - dispatcher
+  - profile
+  - cognitive-os.yaml
+  rationale: 'Reachable via dispatcher, profile, cognitive-os.yaml; 1/1 blocking exits unguarded by a
+    pinned condition. Zero firings in wrapper telemetry and zero self-reported blocks: nobody has ever
+    seen this gate go red.'
+  next_action: 'Instrument: add a behavior test that drives the blocking exit with a real payload, or
+    record telemetry of a real block. Failing that by the expiry date, propose removal.'
+- gate: conflict-marker-guard
+  path: hooks/conflict-marker-guard.sh
+  owner: unassigned
+  expires: '2026-09-20'
+  can_block: true
+  block_sites: 2
+  fired: 0
+  ever_blocked: 0
+  wiring:
+  - dispatcher
+  - profile
+  - cognitive-os.yaml
+  rationale: 'Reachable via dispatcher, profile, cognitive-os.yaml; 2/2 blocking exits unguarded by a
+    pinned condition. Zero firings in wrapper telemetry and zero self-reported blocks: nobody has ever
+    seen this gate go red.'
+  next_action: 'Instrument: add a behavior test that drives the blocking exit with a real payload, or
+    record telemetry of a real block. Failing that by the expiry date, propose removal.'
+- gate: cross-session-coordination-guard
+  path: hooks/cross-session-coordination-guard.sh
+  owner: unassigned
+  expires: '2026-09-20'
+  can_block: true
+  block_sites: 1
+  fired: 0
+  ever_blocked: 0
+  wiring:
+  - dispatcher
+  - profile
+  - cognitive-os.yaml
+  rationale: 'Reachable via dispatcher, profile, cognitive-os.yaml; 1/1 blocking exits unguarded by a
+    pinned condition. Zero firings in wrapper telemetry and zero self-reported blocks: nobody has ever
+    seen this gate go red.'
+  next_action: 'Instrument: add a behavior test that drives the blocking exit with a real payload, or
+    record telemetry of a real block. Failing that by the expiry date, propose removal.'
+- gate: dry-run-preview
+  path: hooks/dry-run-preview.sh
+  owner: unassigned
+  expires: '2026-09-20'
+  can_block: true
+  block_sites: 1
+  fired: 0
+  ever_blocked: 0
+  wiring:
+  - consumer-install
+  rationale: 'Reachable via consumer-install; 1/1 blocking exits unguarded by a pinned condition. Zero
+    firings in wrapper telemetry and zero self-reported blocks: nobody has ever seen this gate go red.'
+  next_action: 'Instrument: add a behavior test that drives the blocking exit with a real payload, or
+    record telemetry of a real block. Failing that by the expiry date, propose removal.'
+- gate: git-commit-scope-guard
+  path: hooks/git-commit-scope-guard.sh
+  owner: unassigned
+  expires: '2026-09-20'
+  can_block: true
+  block_sites: 2
+  fired: 0
+  ever_blocked: 0
+  wiring:
+  - dispatcher
+  - profile
+  - cognitive-os.yaml
+  rationale: 'Reachable via dispatcher, profile, cognitive-os.yaml; 2/2 blocking exits unguarded by a
+    pinned condition. Zero firings in wrapper telemetry and zero self-reported blocks: nobody has ever
+    seen this gate go red.'
+  next_action: 'Instrument: add a behavior test that drives the blocking exit with a real payload, or
+    record telemetry of a real block. Failing that by the expiry date, propose removal.'
+- gate: network-egress-guard
+  path: hooks/network-egress-guard.sh
+  owner: unassigned
+  expires: '2026-09-20'
+  can_block: true
+  block_sites: 1
+  fired: 0
+  ever_blocked: 0
+  wiring:
+  - dispatcher
+  - profile
+  - cognitive-os.yaml
+  rationale: 'Reachable via dispatcher, profile, cognitive-os.yaml; 1/1 blocking exits unguarded by a
+    pinned condition. Zero firings in wrapper telemetry and zero self-reported blocks: nobody has ever
+    seen this gate go red.'
+  next_action: 'Instrument: add a behavior test that drives the blocking exit with a real payload, or
+    record telemetry of a real block. Failing that by the expiry date, propose removal.'
+- gate: orchestrator-claim-gate
+  path: hooks/orchestrator-claim-gate.sh
+  owner: unassigned
+  expires: '2026-09-20'
+  can_block: true
+  block_sites: 1
+  fired: 0
+  ever_blocked: 0
+  wiring:
+  - dispatcher
+  - profile
+  - cognitive-os.yaml
+  - consumer-install
+  rationale: 'Reachable via dispatcher, profile, cognitive-os.yaml, consumer-install; 1/1 blocking exits
+    unguarded by a pinned condition. Zero firings in wrapper telemetry and zero self-reported blocks:
+    nobody has ever seen this gate go red.'
+  next_action: 'Instrument: add a behavior test that drives the blocking exit with a real payload, or
+    record telemetry of a real block. Failing that by the expiry date, propose removal.'
+- gate: parry-scan
+  path: hooks/parry-scan.sh
+  owner: unassigned
+  expires: '2026-09-20'
+  can_block: true
+  block_sites: 1
+  fired: 0
+  ever_blocked: 0
+  wiring:
+  - profile
+  rationale: 'Reachable via profile; 1/1 blocking exits unguarded by a pinned condition. Zero firings
+    in wrapper telemetry and zero self-reported blocks: nobody has ever seen this gate go red.'
+  next_action: 'Instrument: add a behavior test that drives the blocking exit with a real payload, or
+    record telemetry of a real block. Failing that by the expiry date, propose removal.'
+- gate: pre-commit-content-hash-dedupe
+  path: hooks/pre-commit-content-hash-dedupe.sh
+  owner: unassigned
+  expires: '2026-09-20'
+  can_block: true
+  block_sites: 1
+  fired: 0
+  ever_blocked: 0
+  wiring:
+  - dispatcher
+  - profile
+  - cognitive-os.yaml
+  rationale: 'Reachable via dispatcher, profile, cognitive-os.yaml; 1/1 blocking exits unguarded by a
+    pinned condition. Zero firings in wrapper telemetry and zero self-reported blocks: nobody has ever
+    seen this gate go red.'
+  next_action: 'Instrument: add a behavior test that drives the blocking exit with a real payload, or
+    record telemetry of a real block. Failing that by the expiry date, propose removal.'
+- gate: publication-safety
+  path: hooks/publication-safety.sh
+  owner: unassigned
+  expires: '2026-09-20'
+  can_block: true
+  block_sites: 1
+  fired: 0
+  ever_blocked: 0
+  wiring:
+  - cognitive-os.yaml
+  rationale: 'Reachable via cognitive-os.yaml; 1/1 blocking exits unguarded by a pinned condition. Zero
+    firings in wrapper telemetry and zero self-reported blocks: nobody has ever seen this gate go red.'
+  next_action: 'Instrument: add a behavior test that drives the blocking exit with a real payload, or
+    record telemetry of a real block. Failing that by the expiry date, propose removal.'
+- gate: rate-limiter
+  path: hooks/rate-limiter.sh
+  owner: unassigned
+  expires: '2026-09-20'
+  can_block: true
+  block_sites: 1
+  fired: 0
+  ever_blocked: 0
+  wiring:
+  - profile
+  - cognitive-os.yaml
+  - consumer-install
+  - harness-native
+  rationale: 'Reachable via profile, cognitive-os.yaml, consumer-install, harness-native; 1/1 blocking
+    exits unguarded by a pinned condition. Zero firings in wrapper telemetry and zero self-reported blocks:
+    nobody has ever seen this gate go red.'
+  next_action: 'Instrument: add a behavior test that drives the blocking exit with a real payload, or
+    record telemetry of a real block. Failing that by the expiry date, propose removal.'
+- gate: research-compliance-guard
+  path: hooks/research-compliance-guard.sh
+  owner: unassigned
+  expires: '2026-09-20'
+  can_block: true
+  block_sites: 1
+  fired: 0
+  ever_blocked: 0
+  wiring:
+  - dispatcher
+  - profile
+  - cognitive-os.yaml
+  - consumer-install
+  rationale: 'Reachable via dispatcher, profile, cognitive-os.yaml, consumer-install; 1/1 blocking exits
+    unguarded by a pinned condition. Zero firings in wrapper telemetry and zero self-reported blocks:
+    nobody has ever seen this gate go red.'
+  next_action: 'Instrument: add a behavior test that drives the blocking exit with a real payload, or
+    record telemetry of a real block. Failing that by the expiry date, propose removal.'
+- gate: scope-marker-portability-gate
+  path: hooks/scope-marker-portability-gate.sh
+  owner: unassigned
+  expires: '2026-09-20'
+  can_block: true
+  block_sites: 1
+  fired: 0
+  ever_blocked: 0
+  wiring:
+  - dispatcher
+  - profile
+  - cognitive-os.yaml
+  rationale: 'Reachable via dispatcher, profile, cognitive-os.yaml; 1/1 blocking exits unguarded by a
+    pinned condition. Zero firings in wrapper telemetry and zero self-reported blocks: nobody has ever
+    seen this gate go red.'
+  next_action: 'Instrument: add a behavior test that drives the blocking exit with a real payload, or
+    record telemetry of a real block. Failing that by the expiry date, propose removal.'
+- gate: subagent-capability-preflight
+  path: hooks/subagent-capability-preflight.sh
+  owner: unassigned
+  expires: '2026-09-20'
+  can_block: true
+  block_sites: 1
+  fired: 0
+  ever_blocked: 0
+  wiring:
+  - profile
+  rationale: 'Reachable via profile; 1/1 blocking exits unguarded by a pinned condition. Zero firings
+    in wrapper telemetry and zero self-reported blocks: nobody has ever seen this gate go red.'
+  next_action: 'Instrument: add a behavior test that drives the blocking exit with a real payload, or
+    record telemetry of a real block. Failing that by the expiry date, propose removal.'
+- gate: subagent-input-schema-validator
+  path: hooks/subagent-input-schema-validator.sh
+  owner: unassigned
+  expires: '2026-09-20'
+  can_block: true
+  block_sites: 2
+  fired: 0
+  ever_blocked: 0
+  wiring:
+  - profile
+  rationale: 'Reachable via profile; 2/2 blocking exits unguarded by a pinned condition. Zero firings
+    in wrapper telemetry and zero self-reported blocks: nobody has ever seen this gate go red.'
+  next_action: 'Instrument: add a behavior test that drives the blocking exit with a real payload, or
+    record telemetry of a real block. Failing that by the expiry date, propose removal.'
+- gate: symlink-mutation-guard
+  path: hooks/symlink-mutation-guard.sh
+  owner: unassigned
+  expires: '2026-09-20'
+  can_block: true
+  block_sites: 2
+  fired: 0
+  ever_blocked: 0
+  wiring:
+  - dispatcher
+  - profile
+  - cognitive-os.yaml
+  rationale: 'Reachable via dispatcher, profile, cognitive-os.yaml; 2/2 blocking exits unguarded by a
+    pinned condition. Zero firings in wrapper telemetry and zero self-reported blocks: nobody has ever
+    seen this gate go red.'
+  next_action: 'Instrument: add a behavior test that drives the blocking exit with a real payload, or
+    record telemetry of a real block. Failing that by the expiry date, propose removal.'
