@@ -35,9 +35,29 @@ import yaml
 #   ModuleNotFoundError: No module named 'unit'
 _TESTS_ROOT = Path(__file__).resolve().parent
 _REPO_ROOT = _TESTS_ROOT.parent
+_EXTRA_ROOTS = []
+
+# MUTATION TESTING: la copia trae `cos_lib` y `tests`, pero NO `scripts`.
+#
+# `mutmut` copia a `<repo>/mutants/` solo lo que necesita mutar mas los tests.
+# Cualquier test que haga `from scripts import ...` revienta ahi con
+# ModuleNotFoundError, y la corrida entera muere en la fase de stats -- que
+# colecta la suite completa, no el `test_command` configurado.
+#
+# El fuente real esta un nivel arriba y es el mismo arbol. Se lo agrega al final
+# de sys.path, nunca al principio: lo que se esta mutando tiene que ganar. Si el
+# origen se colara primero, mutmut mediria el codigo SIN mutar y todos los
+# mutantes sobrevivirian -- un resultado catastrofico que se lee como "los tests
+# no sirven" cuando lo que fallo es la ruta de importacion.
+if _REPO_ROOT.name == "mutants" and (_REPO_ROOT.parent / ".git").exists():
+    _EXTRA_ROOTS.append(str(_REPO_ROOT.parent))
+
 for _path in (str(_REPO_ROOT), str(_TESTS_ROOT)):
     if _path not in sys.path:
         sys.path.insert(0, _path)
+for _path in _EXTRA_ROOTS:
+    if _path not in sys.path:
+        sys.path.append(_path)
 
 # ----------------------------------------------------------------------------
 # Default subprocess.run timeout (test-only safety net).
@@ -152,6 +172,30 @@ def _prefix_under_allowed_test_root(prefix: str, repo_root: Path) -> bool:
     source_root = os.environ.get("COS_VALIDATION_SOURCE_PROJECT_DIR", "").strip()
     if source_root:
         roots.append(Path(source_root).resolve())
+
+    # MUTATION TESTING: la copia vive DENTRO del repo y usa su .venv.
+    #
+    # `mutmut` copia el fuente a `<repo>/mutants/` y corre pytest desde ahi. En esa
+    # corrida `repo_root` --derivado de __file__-- es `<repo>/mutants`, pero
+    # sys.prefix sigue siendo `<repo>/.venv`: un nivel ARRIBA. El chequeo fallaba y
+    # rechazaba la corrida.
+    #
+    # Eso no era un detalle: es la razon real por la que `mutmut` estaba comprado,
+    # declarado en pyproject con su bloque de configuracion, y con CERO invocaciones
+    # desde que se instalo. El SO bloqueaba a la herramienta de la comunidad que
+    # resolvia lo que el SO reimplementaba a mano -- 183 lineas de mutacion propia
+    # para UN solo hook.
+    #
+    # Es la misma forma que la capsula de validacion de dos lineas mas arriba: un
+    # arbol derivado que reusa el venv gobernado del origen. Se acepta subiendo por
+    # los ancestros, y solo si el ancestro es un checkout de git. Un interprete
+    # global --/usr, /opt/homebrew-- nunca cae bajo un ancestro con `.git`, asi que
+    # la defensa que este guard existe para dar queda intacta.
+    for ancestro in list(repo_root.resolve().parents)[:3]:
+        if (ancestro / ".git").exists():
+            roots.append(ancestro)
+            break
+
     resolved_prefix = Path(prefix).resolve()
     for root in roots:
         try:
