@@ -190,9 +190,14 @@ def test_no_le_atribuye_al_comando_lo_que_ensucio_otra_sesion(victima_restaurabl
     semana, y ahi se pierde la deteccion entera, no una corrida.
     """
     original = victima_restaurable.read_bytes()
-    ajeno = REPO / ".claude" / "settings.local.json"
-    tenia = ajeno.exists()
-    respaldo = ajeno.read_bytes() if tenia else None
+    # Un archivo PROPIO bajo ruta protegida, nunca uno del operador.
+    #
+    # La primera version apuntaba a un archivo de configuracion real de 27 KB:
+    # lo respaldaba y lo restauraba, pero un fallo entre esas dos lineas lo
+    # reemplazaba por el JSON de dos palabras del test. Un test no puede poner en
+    # riesgo un archivo del operador para probar algo que un archivo propio
+    # prueba igual de bien.
+    ajeno = REPO / ".claude" / f"_probe-atribucion-{os.getpid()}.json"
     try:
         # Otra sesion dejo un archivo protegido sucio ANTES de la linea de base.
         ajeno.write_text('{"de_otra_sesion": 1}\n')
@@ -213,7 +218,7 @@ def test_no_le_atribuye_al_comando_lo_que_ensucio_otra_sesion(victima_restaurabl
             f"no detecto la escritura propia: {salida}"
         )
         reportadas = salida.get("paths") or []
-        assert ".claude/settings.local.json" not in reportadas, (
+        assert ajeno.name not in " ".join(reportadas), (
             f"le atribuyo al comando un archivo que ensucio otra sesion: {reportadas}. "
             "Ese es el falso positivo que hace que el detector se desactive."
         )
@@ -225,9 +230,7 @@ def test_no_le_atribuye_al_comando_lo_que_ensucio_otra_sesion(victima_restaurabl
             f"protected_dirty (global, contexto) fue {salida.get('protected_dirty')}."
         )
     finally:
-        if tenia and respaldo is not None:
-            ajeno.write_bytes(respaldo)
-        elif ajeno.exists():
+        if ajeno.exists():
             ajeno.unlink()
         # Rebase la huella DESPUES de restaurar. Sin esto, la desaparicion del
         # archivo ajeno queda como cambio pendiente y el test siguiente ve
@@ -260,6 +263,51 @@ def test_el_delta_y_el_sucio_global_son_campos_distintos(victima_restaurable: Pa
         "siendo el conjunto global y no el delta. Para que esta sonda sea valida "
         "el arbol tiene que tener mas de un archivo protegido sucio."
     )
+
+
+def test_limpiar_un_archivo_no_es_una_escritura():
+    """Commitear un archivo protegido NO puede leerse como escritura sin aprobar.
+
+    Medido el 2026-08-21, contra este mismo detector: al commitear seis archivos
+    --uno de ellos `hooks/rule-router-prompt-suggest.sh`-- disparo con
+    `changed_count: 0` y `paths: []`. El unico motivo era que la ruta habia
+    DESAPARECIDO del conjunto sucio, porque el commit la dejo limpia.
+
+    O sea acusaba al final del flujo normal de trabajo. Un guard que se queja
+    cuando uno commitea se desregistra la misma semana, y ahi no se pierde una
+    corrida: se pierde la deteccion entera.
+
+    Salir del conjunto sucio es lo OPUESTO a una escritura. Sigue reportandose
+    como contexto --una desaparicion puede ser un borrado-- pero no decide.
+    """
+    # Ruta propia y unica. La version anterior apuntaba a un archivo de
+    # configuracion existente y por eso se SALTEABA -- y un test salteado da el
+    # mismo resultado en las dos ramas del contrafactico, o sea no prueba nada,
+    # pero se lee como verde.
+    ajeno = REPO / ".claude" / f"_probe-vanish-{os.getpid()}.json"
+    try:
+        ajeno.write_text('{"transitorio": 1}\n')
+        _hook("echo linea de base con el archivo sucio")
+        ajeno.unlink()  # equivale a commitearlo: sale del conjunto sucio
+        salida = json.loads(subprocess.run(
+            [sys.executable, str(SCRIPT)],
+            input=json.dumps(payload_real("PostToolUse", cwd=str(REPO),
+                                          tool_name="Bash",
+                                          tool_input={"command": "git commit -m x"})),
+            capture_output=True, text=True, timeout=180, cwd=str(REPO),
+            env=_env(), check=False,
+        ).stdout.strip() or "{}")
+        assert salida.get("status") == "sin_cambios", (
+            f"acuso a un archivo que se LIMPIO como si fuera una escritura sin "
+            f"aprobar: {salida}. Salir del conjunto sucio es lo opuesto a escribir."
+        )
+        assert any(ajeno.name in v for v in (salida.get("vanished") or [])), (
+            "la desaparicion dejo de reportarse: se perdio la senal de un borrado"
+        )
+    finally:
+        if ajeno.exists():
+            ajeno.unlink()
+        _hook("echo rebase de la huella")
 
 
 def test_el_kill_switch_existe_y_se_puede_nombrar():
