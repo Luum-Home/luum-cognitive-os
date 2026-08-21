@@ -610,7 +610,30 @@ while IFS= read -r segment; do
     fi
     break
   fi
-  if echo "$trimmed" | grep -Eq '^[[:space:]]*git[[:space:]]+(commit|push)([[:space:]]|$)'; then
+  # PROTECCION DE RAMA: ahora es OPT-IN. Antes bloqueaba por default.
+  #
+  # Medido el 2026-08-21 sobre una jornada de trabajo real:
+  #
+  #     19  main_branch_override   <- veces que hubo que poner el token para
+  #                                   hacer un commit NORMAL
+  #      3  commit / push en main bloqueados
+  #     --
+  #     22  eventos de friccion, 22 anulados, CERO daño evitado
+  #
+  # Un guard que se anula el 100% de las veces no protege: cobra peaje y entrena
+  # al operador a saltearlo. Ese entrenamiento es el costo real, porque el
+  # reflejo de "poner el token y seguir" se lleva puesto tambien al guard que SI
+  # tenia razon.
+  #
+  # Lo genuinamente destructivo --reset --hard, clean -fdx, branch -D,
+  # force-push sin lease-- sigue bloqueando por default y no se toco. Aquello es
+  # irreversible; esto es una convencion de flujo. Commitear en main no pierde
+  # trabajo, y en un repo de un solo mantenedor tampoco pisa a nadie.
+  #
+  # Reactivar --equipo con varios escritores, flujo de PR:
+  #     export COS_PROTECT_MAIN_BRANCH=1
+  if [ "${COS_PROTECT_MAIN_BRANCH:-0}" = "1" ] && \
+     echo "$trimmed" | grep -Eq '^[[:space:]]*git[[:space:]]+(commit|push)([[:space:]]|$)'; then
     current_branch=$(git -C "$PROJECT_DIR" branch --show-current 2>/dev/null || true)
     if echo "$current_branch" | grep -Eq '^(main|master)$'; then
       FIRST_HIT="$trimmed"
