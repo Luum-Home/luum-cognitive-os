@@ -448,6 +448,53 @@ claims:
       - una declaración de dependencias sin consumidor no es una dependencia faltante
     forbidden_phrases:
       - "pytest tests/ corre todos los tests versionados del repo"
+  session_start_projection_counts:
+    severity: high
+    description: >-
+      Every count the ADR-275 session-start projector prints must stay inside
+      the universe its label names. `control_plane.open_findings` counts
+      `status: active` entries in the audit state machine, never rows of the
+      append-only remediation log (until 2026-08-21 it printed 119034 log rows
+      under an open-findings label, over ~5.2k distinct findings); P0/P1 are
+      null when the source report carries no `priority` field; the staged
+      count is directories matching *staging*, with deployment unverified.
+    facts:
+      projector: scripts/cos-session-start-projector
+      gate: scripts/projector_count_sanity.py
+      probes: tests/red_team/portability/test_projector_count_sanity.py
+      open_findings_authority: .cognitive-os/runtime/control-plane-audit/findings-state.json
+      proposal_log: .cognitive-os/tasks/control-plane-remediation.jsonl
+    required_docs:
+      - docs/02-Decisions/adrs/ADR-275-closure-and-projection-primitives.md
+      - docs/06-Daily/reports/el-conteo-que-encabeza-el-brief-2026-08-21.md
+    required_phrases:
+      - Counting contract
+      - queue_event_rows
+      - open_findings_known
+    forbidden_phrases:
+      - open findings is the remediation log row count
+    executable_assertions:
+      - id: projector_counts_stay_inside_their_universe
+        claim: 'Each projector count is bounded by the universe recomputed from its
+          source: open findings <= distinct findings in the remediation log and <=
+          findings tracked by the audit state machine, the pending-truth totals match
+          the ledger, P0/P1 are null while the source has no priority field, and the
+          staged count matches the directories on disk. The gate exits 1 the moment a
+          count is off by an order of magnitude.'
+        command:
+        - bash
+        - -c
+        - |
+          set -u
+          python3 scripts/projector_count_sanity.py || exit 1
+          echo "projector counts within their declared universes"
+        surface:
+        - scripts/cos-session-start-projector
+        - scripts/projector_count_sanity.py
+        expect:
+          exit_code: 0
+        next_action: run `python3 scripts/projector_count_sanity.py --json` and fix the
+          reported count in scripts/cos-session-start-projector -- never widen the gate
   agent_channel_facts:
     severity: high
     description: 'The two files the SubagentStart injector concatenates reach EVERY sub-agent before its
