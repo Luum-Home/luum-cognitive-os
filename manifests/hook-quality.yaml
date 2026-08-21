@@ -58,7 +58,6 @@ hooks:
     script: hooks/adaptive-bypass.sh
   adoption-freeze-gate:
     behavior_tests:
-    - tests/hooks/test_wrong_instrument_interceptor.py
     - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_primitive_behavior_depth_audit.py
     bypass_policy: not_required_observe_only
@@ -562,7 +561,6 @@ hooks:
     - tests/contracts/test_orchestrator_claim_gate.py
     - tests/contracts/test_orphan_hooks.py
     - tests/contracts/test_primitive_closure_ratchet.py
-    - tests/hooks/test_wrong_instrument_interceptor.py
     - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_bash_hot_path_dispatcher_projection.py
     - tests/unit/test_conflict_marker_guard.py
@@ -1443,7 +1441,6 @@ hooks:
     - tests/contracts/test_primitive_contract_registry.py
     - tests/contracts/test_primitive_intervention_ledger.py
     - tests/contracts/test_primitive_projection_fidelity.py
-    - tests/hooks/test_wrong_instrument_interceptor.py
     - tests/unit/test_chaos_template.py
     - tests/unit/test_coverage_classifier.py
     - tests/unit/test_profile_resolver.py
@@ -1469,7 +1466,6 @@ hooks:
     - tests/behavior/test_merge_queue_validation_lane.py
     - tests/contracts/test_opencode_native_adapter_design.py
     - tests/contracts/test_primitive_contract_registry.py
-    - tests/hooks/test_wrong_instrument_interceptor.py
     - tests/unit/test_active_primitive_index.py
     - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_direct_main_guard.py
@@ -1809,6 +1805,7 @@ hooks:
     - tests/unit/test_metric_event_migration.py
     - tests/unit/test_performance_monitor.py
     - tests/unit/test_prompt_integration.py
+    - tests/unit/test_rule_router_prompt_suggest_hook.py
     - tests/unit/test_self_improvement_lib.py
     - tests/unit/test_singularity_suggestion.py
     - tests/unit/test_symbiosis_monitor.py
@@ -1958,7 +1955,6 @@ hooks:
     script: hooks/git-context-capture.sh
   goal-stop-gate:
     behavior_tests:
-    - tests/audit/test_gates_fail_closed.py
     - tests/behavior/test_goal_cli.py
     - tests/behavior/test_goal_stop_hook.py
     - tests/unit/test_bash_hot_path_dispatcher_projection.py
@@ -2266,10 +2262,8 @@ hooks:
     script: hooks/native-agent-heartbeat.sh
   network-egress-guard:
     behavior_tests:
-    - tests/audit/test_gates_fail_closed.py
     - tests/contracts/test_opencode_native_adapter_design.py
     - tests/contracts/test_primitive_contract_registry.py
-    - tests/hooks/test_wrong_instrument_interceptor.py
     - tests/security/test_boundary_enforcement_p0.py
     - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_governance_policy_hook_adoption.py
@@ -2729,7 +2723,6 @@ hooks:
     script: hooks/protected-config-write-detector.sh
   protected-config-write-guard:
     behavior_tests:
-    - tests/audit/test_gates_fail_closed.py
     - tests/contracts/test_killswitch_activation_is_executable.py
     - tests/contracts/test_opencode_hooks_schema_conformance.py
     - tests/contracts/test_opencode_native_adapter_design.py
@@ -2757,7 +2750,6 @@ hooks:
   provenance-scan:
     behavior_tests:
     - tests/behavior/test_provenance_scan_commit_scope.py
-    - tests/hooks/test_wrong_instrument_interceptor.py
     - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_cos_init_py.py
     - tests/unit/test_provenance_scan.py
@@ -2997,7 +2989,6 @@ hooks:
   release-guard:
     behavior_tests:
     - tests/chaos/test_release_guard_exercised.py
-    - tests/hooks/test_wrong_instrument_interceptor.py
     - tests/integration/test_project_settings_generation.py
     - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     - tests/unit/test_chaos_template.py
@@ -3150,6 +3141,7 @@ hooks:
   rule-router-prompt-suggest:
     behavior_tests:
     - tests/contracts/test_context_budget_hook_wiring.py
+    - tests/unit/test_rule_router_prompt_suggest_hook.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
     criticality: standard
@@ -3282,7 +3274,6 @@ hooks:
     - tests/behavior/test_cos_update.py
     - tests/behavior/test_registration_check.py
     - tests/behavior/test_self_install.py
-    - tests/contracts/test_rule_index_reachability.py
     - tests/contracts/test_self_install_no_container_spawn.py
     - tests/hooks/test_hook_graceful_degradation.py
     - tests/integration/test_auto_update_safety.py
@@ -3959,7 +3950,6 @@ hooks:
   spdx-header-required:
     behavior_tests:
     - tests/contracts/test_killswitch_activation_is_executable.py
-    - tests/hooks/test_wrong_instrument_interceptor.py
     - tests/unit/test_bash_hot_path_dispatcher_git_global_opts.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
@@ -4080,10 +4070,8 @@ hooks:
     script: hooks/surface-fix-detector.sh
   symlink-mutation-guard:
     behavior_tests:
-    - tests/contracts/test_dispatcher_closure_visibility.py
     - tests/contracts/test_killswitch_activation_is_executable.py
     - tests/hooks/test_symlink_mutation_guard.py
-    - tests/hooks/test_wrong_instrument_interceptor.py
     - tests/security/test_adversarial_p1_p2.py
     bypass_policy: not_required_observe_only
     census_tests: *id001
