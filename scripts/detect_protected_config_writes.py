@@ -198,9 +198,23 @@ def evaluar(payload: dict, root: Path, fp_path: Path) -> dict:
                 "protected_dirty": len(sucios)}
 
     cambiadas = sorted(r for r, h in actual.items() if previa.get(r) != h)
+    # Una ruta que SALE del conjunto sucio no es una escritura: es lo contrario.
+    # Pasa cada vez que se commitea, y tambien al revertir. Este detector existe
+    # para que ninguna escritura pase sin verse, no para narrar el ciclo de vida
+    # del indice de git.
+    #
+    # Disparaba sobre eso: al commitear los seis archivos de este mismo trabajo,
+    # con `changed_count: 0` y `paths: []`, el unico motivo era que un archivo
+    # protegido se habia limpiado. Acusar al commit de ser una escritura sin
+    # aprobar es acusar al final del flujo normal -- y es la clase de falso
+    # positivo por la que un guard termina desregistrado.
+    #
+    # Sigue viajando como contexto, porque una desaparicion PUEDE ser un borrado
+    # y eso se quiere poder mirar. Pero no decide el veredicto.
     desaparecidas = sorted(set(previa) - set(actual))
-    if not cambiadas and not desaparecidas:
-        return {"status": "sin_cambios", "protected_dirty": len(sucios)}
+    if not cambiadas:
+        return {"status": "sin_cambios", "protected_dirty": len(sucios),
+                "vanished": desaparecidas[:6]}
 
     aprobado = os.environ.get(APPROVAL_ENV) == "1" or APPROVAL_ENV in command
     return {
