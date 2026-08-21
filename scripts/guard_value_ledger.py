@@ -108,6 +108,83 @@ def _since(arg: str | None) -> datetime | None:
     return datetime.now(timezone.utc) - timedelta(**{mult: int(num)})
 
 
+def cobertura(filas: list[dict]) -> dict:
+    """El lapso que las filas REALMENTE cubren, no el que se pidio.
+
+    EL DEFECTO QUE ESTO ARREGLA, medido el 2026-08-21
+    -------------------------------------------------
+    Este archivo publicaba `"ventana": "todo"` cuando no se le pasaba `--desde`.
+    Pero los JSONL de metrica **ROTAN**: `hook-timing.jsonl` cubria
+    2026-08-20T15:45 -> 2026-08-21T14:21, o sea **22,6 horas**.
+
+    Con esa etiqueta se publico "14.268 invocaciones -> 41 bloqueos (0,29%)" como
+    si fuera la historia entera del sistema, y esa cifra se cito para decidir que
+    partes del SO retirar. Era un dia.
+
+    "Sin filtro" y "toda la historia" son cosas distintas, y la diferencia entre
+    las dos la decide un archivo que rota, no el argumento de linea de comandos.
+    Un instrumento no puede afirmar el alcance de sus datos a partir de lo que le
+    pidieron: lo tiene que LEER de los datos.
+
+    Devuelve `horas: None` cuando no hay ninguna fila con marca de tiempo -- que es
+    "no lo se", distinto de cero.
+    """
+    ts = [t for t in (_ts(r) for r in filas) if t is not None]
+    if not ts:
+        return {"filas": len(filas), "desde": None, "hasta": None, "horas": None,
+                "nota": "ninguna fila trae marca de tiempo: el lapso no es determinable"}
+    lo, hi = min(ts), max(ts)
+    return {
+        "filas": len(filas),
+        "desde": lo.isoformat(),
+        "hasta": hi.isoformat(),
+        "horas": round((hi - lo).total_seconds() / 3600, 1),
+        "filas_sin_marca": len(filas) - len(ts),
+    }
+
+
+def _razon_normalizada(num: int, cob_num: dict, den: int, cob_den: dict) -> dict:
+    """Una razon entre dos fuentes que NO cubren el mismo lapso.
+
+    EL DEFECTO, medido el 2026-08-21
+    --------------------------------
+    Se publico "el guard de config bloqueo 20 veces contra 3.765 desarmes
+    profilacticos, 1:188" y esa cifra sostuvo el argumento de que el guard no
+    servia. Pero el numerador sale de `hook-timing.jsonl` y el denominador de
+    `protected-config-bypass.jsonl`, y los dos archivos rotan por su cuenta:
+    **24,5 h contra 65,7 h**. Era una razon entre un dia y tres dias.
+
+    Dividir dos conteos crudos de ventanas distintas no da una razon: da el
+    cociente de las ventanas multiplicado por la razon real. Aca se emiten las
+    dos -- la cruda, porque es la que alguien va a querer chequear, y la
+    normalizada por hora, que es la unica comparable -- y nunca la cruda sola.
+
+    Si alguna cobertura no es determinable, la razon se NIEGA en vez de
+    aproximarse: "no se puede calcular" es un estado, y colapsarlo en un numero
+    es como nacio este defecto.
+    """
+    hn, hd = cob_num.get("horas"), cob_den.get("horas")
+    out = {
+        "bloqueos": num,
+        "bypass_profilactico": den,
+        "razon_cruda": f"1:{den // num}" if num else "n/d (cero bloqueos)",
+        "ventana_bloqueos_h": hn,
+        "ventana_bypass_h": hd,
+    }
+    if not hn or not hd:
+        out["razon_por_hora"] = None
+        out["nota"] = ("una de las dos fuentes no tiene lapso determinable: la razon "
+                       "cruda NO es comparable y no se normaliza")
+        return out
+    tasa_n, tasa_d = num / hn, den / hd
+    out["bloqueos_por_hora"] = round(tasa_n, 2)
+    out["bypass_por_hora"] = round(tasa_d, 2)
+    out["razon_por_hora"] = f"1:{round(tasa_d / tasa_n)}" if tasa_n else "n/d"
+    out["nota"] = ("las dos fuentes cubren lapsos distintos; la razon comparable es "
+                   "la normalizada por hora, no la cruda")
+    return out
+
+
 def build(desde: datetime | None = None) -> dict:
     def en_ventana(r: dict) -> bool:
         if desde is None:
@@ -151,7 +228,17 @@ def build(desde: datetime | None = None) -> dict:
     git_por_motivo = Counter(str(r.get("reason") or "?") for r in git)
 
     return {
-        "ventana": desde.isoformat() if desde else "todo",
+        # `filtro_pedido` es lo que se pidio. `cobertura_real` es lo que los datos
+        # efectivamente abarcan, POR FUENTE, porque cada JSONL rota por su cuenta:
+        # un unico numero de ventana para todas seria falso para casi todas.
+        "filtro_pedido": desde.isoformat() if desde else "sin filtro",
+        "cobertura_real": {
+            "hook-timing": cobertura(timing),
+            "bypass-activation": cobertura(activaciones),
+            "protected-config-bypass": cobertura(profilacticos),
+            "subagent-budget-enforcer": cobertura(presupuesto),
+            "git-op-blocks": cobertura(git),
+        },
         "timing_rows": len(timing),
         "timing_unparsed": sin_parsear,
         "bloqueos_por_hook": dict(bloqueos.most_common()),
@@ -159,10 +246,10 @@ def build(desde: datetime | None = None) -> dict:
         "bloqueos_total": sum(bloqueos.values()),
         "bypass_declarado_total": len(activaciones),
         "bypass_declarado_por_hook": dict(por_hook_bypass.most_common()),
-        "config_guard": {
-            "bloqueos": bloqueos_config,
-            "bypass_profilactico": len(profilacticos),
-        },
+        "config_guard": _razon_normalizada(
+            bloqueos_config, cobertura(timing),
+            len(profilacticos), cobertura(profilacticos),
+        ),
         "presupuesto_subagente": {
             "acciones": dict(acciones),
             "agentes_bloqueados": len(por_agente),
