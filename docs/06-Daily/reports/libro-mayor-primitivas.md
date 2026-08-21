@@ -1,0 +1,733 @@
+# Libro mayor de primitivas
+
+Una fila por primitiva. Los montones estan ordenados por **cuanto hay que
+leer**: `DISCREPA` primero porque es un JOIN y no requiere juicio; `SIRVE`
+ultimo porque no hay nada que decidir ahi.
+
+`RUIDO` significa **el medidor miro y no habia nada**. `AMBIGUA` significa
+**el medidor no puede mirar**. No son grados de confianza: colapsarlas
+convierte un contador roto en una orden de borrado.
+
+## Resumen
+
+| familia | total | DISCREPA | AMBIGUA | RUIDO | SIRVE |
+|---|--:|--:|--:|--:|--:|
+| hooks | 258 | 4 | 175 | 3 | 6 |
+| skills | 267 | 0 | 263 | 0 | 4 |
+| rules | 142 | 14 | 0 | 1 | 33 |
+
+## Lo que no se pudo medir
+
+- el contador de skills tiene 9 filas historicas: no puede sostener ningun 'no se usa'. Por eso no se emite RUIDO en esta familia.
+
+## hooks
+
+> **Competencia del medidor.** hook-timing.jsonl instrumenta lo que settings.json NOMBRA y vio 151 nombres distintos: puede distinguir 'nunca disparo' de 'no lo se' SOLO para esos. Es ciego a los gates que un despachador corre por dentro, y al hook que bloquea con exit 0 + JSON en stdout.
+
+### DISCREPA — 4
+
+- [ ] `aci-observation-capture` — declarado en cognitive-os.yaml (event=PostToolUse matcher="") pero AUSENTE de .claude/settings.json: la proyeccion lo perdio
+- [ ] `post-git-orphan-notifier` — declarado en cognitive-os.yaml (event=PostToolUse matcher=Bash) pero AUSENTE de .claude/settings.json: la proyeccion lo perdio
+- [ ] `prompt-quality` — no registrado, sin declaracion canonica y SIN entrada en el manifiesto de omisiones, que exige una para todo hook no registrado
+- [ ] `rate-limit-drain` — declarado en cognitive-os.yaml (event=PostToolUse matcher=Bash) pero AUSENTE de .claude/settings.json: la proyeccion lo perdio
+
+### AMBIGUA — 175
+
+- [ ] `adaptive-bypass` — 24 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `adoption-freeze-gate` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `adr-relevance-suggest` — 38 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `adr-section-validator` — 111 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `adversarial-review-gate` — 22 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `agent-checkpoint` — 22 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `agent-control-inbound-guard` — 1536 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `agent-launch-confirmed` — 24 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `agent-message-inbox-context` — 38 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `agent-message-inbox-guard` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `agent-working-dir-inject` — 24 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `aspirational-audit-weekly` — 4 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `assumption-tracker` — 22 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `attribution-completeness-validator` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `audit-id-enricher` — 1237 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `auto-checkpoint` — 1326 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `auto-repair-dispatcher` — 22 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `auto-rollback-trigger` — 22 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `auto-skill-generator` — 22 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `blast-radius` — 24 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `branch-ownership-lock` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `branch-ownership-release` — 37 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `claim-validator` — 22 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `clarification-gate` — 24 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `codebase-itinerary-capture` — 13 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `completeness-check` — 24 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `completion-gate` — 22 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `concurrent-write-guard` — 118 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `confidence-gate` — 22 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `conflict-marker-guard` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `consequence-evaluator` — 22 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `content-policy` — 111 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `context-budget-meter` — 38 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `context-diet` — 24 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `context-watchdog` — 1453 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `control-plane-audit` — 142 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `control-plane-audit-hourly` — 37 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `cos-executor-daemon-launcher` — 4 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `cos-executor-heartbeat` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `cos-session-start-projector` — 4 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `cosd-auth-guard` — 1536 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `crash-recovery` — 4 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `cross-session-coordination-guard` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `cross-session-event-emit` — 1394 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `cross-session-peer-context` — 38 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `dangerous-env-flag-detector` — 4 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `decision-depth-gate` — 22 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `dependency-license-classifier` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `dequeue-notify` — 22 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `destructive-git-blocker` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `destructive-rm-blocker` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `direct-main-guard` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `dispatch-gate` — 24 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `doc-sync-detector` — 111 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `docker-drift-detector` — 4 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `document-ingest-guard` — 13 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `eas-validation-gate` — 37 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `edit-lock-drain-parked` — 111 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `edit-lock-pre-tool` — 118 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `edit-lock-process-negotiations` — 38 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `edit-lock-session-end` — 37 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `engram-crystallize-on-session-end` — 37 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `engram-daemon-launcher` — 4 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `engram-obsidian-export-on-stop` — 37 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `error-learning` — 1215 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `error-pattern-detector` — 24 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `error-pipeline` — 1215 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `external-cache-content-leak` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `external-pattern-cleanroom-gate` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `git-commit-scope-guard` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `git-context-capture` — 37 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `goal-stop-gate` — 37 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `history-rewrite-documented` — 4 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `hook-header-validator` — 111 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `host-tool-doctor` — 4 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `infra-health` — 4 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `inject-phase-context` — 24 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `kpi-trigger` — 37 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `large-file-advisor` — 13 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `legal-review-required-on-runtime-import` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `lethal-trifecta-gate` — 1536 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `lib-symlink-divergence-detector` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `lineage-relaunch-gate` — 37 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `mcp-scan` — 4 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `memory-prefetch` — 38 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `native-agent-heartbeat` — 46 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `network-egress-guard` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `orchestrator-claim-gate` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `orchestrator-decision-trace` — 22 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `orchestrator-skill-invocation-gate` — 24 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `parry-scan` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `pending-truth-drift-detector` — 111 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `pending-truth-staleness-gate` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `pending-truth-verify-weekly` — 37 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `plan-claim-validator` — 118 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `post-agent-snapshot-restore` — 22 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `post-agent-verify` — 22 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `pre-agent-snapshot` — 24 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `pre-commit-content-hash-dedupe` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `pre-compaction-flush` — 1 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `predev-completeness-check` — 24 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `private-mode-gate` — 24 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `private-mode-metrics-gate` — 1453 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `profile-drift-autoapply` — 4 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `project-docs-convention` — 118 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `promotion-proposer-weekly` — 4 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `prompt-quality-llm` — 24 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `provenance-scan` — 118 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `pyrefly-typecheck-advisory` — 37 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `quality-duplicates` — 37 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `query-tailored-context-inject` — 24 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `rate-limit-detector` — 1453 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `reaper-daemon-launcher` — 4 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `reaper-heartbeat` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `reinvention-check` — 24 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `release-guard` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `research-compliance-guard` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `research-quality-validator` — 111 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `research-to-runtime-firewall` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `result-truncator` — 1215 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `review-spawner` — 22 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `rule-frontmatter-validator` — 111 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `rule-md-routing-validator` — 111 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `rule-router-prompt-suggest` — 38 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `scope-creep-detector` — 111 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `scope-marker-portability-gate` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `scope-proportionality` — 22 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `secret-detector` — 1406 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `self-install` — 4 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `self-knowledge-refresh` — 4 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `session-changelog` — 37 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `session-cleanup` — 37 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `session-end-reap` — 37 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `session-heartbeat` — 1574 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `session-init` — 4 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `session-learning` — 37 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `session-lineage-record` — 4 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `session-quality-close-gate` — 37 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `session-resume` — 4 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `session-sanity` — 4 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `session-start-stack-recommend` — 4 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `session-start-stash-reapply` — 4 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `session-start-worktree-nudge` — 4 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `session-startup-protocol` — 4 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `session-summary-reminder` — 37 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `session-token-aggregator` — 37 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `session-watchdog-launcher` — 4 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `session-wrapup-trigger` — 38 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `skill-drift-detector` — 4 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `skill-failure-monitor` — 37 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `skill-feedback-tracker` — 22 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `skill-frontmatter-validator` — 111 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `skill-invocation-logger` — 2 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `skill-md-routing-validator` — 118 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `skill-post-execution-analysis` — 22 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `skill-router-bash-gate` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `skill-router-prompt-suggest` — 38 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `skill-synthesis-scanner` — 37 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `skill-tracker` — 22 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `skill-usage-tracker` — 2 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `so-impact-eval-trigger` — 37 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `spdx-header-required` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `stash-budget-warn` — 38 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `state-heartbeat` — 22 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `subagent-context-injector` — 24 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `surface-fix-detector` — 111 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `symlink-mutation-guard` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `token-budget-monitor` — 24 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `tool-sequence-capture` — 440 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `trust-score-validator` — 22 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `untracked-work-preservation-guard` — corre por despachador (bash-hot-path-dispatcher u otro): el medidor de timing solo instrumenta al despachador, no a sus gates
+- [ ] `user-prompt-capture` — 38 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `validation-lock-cleanup` — 4 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `validator-soak-weekly` — 4 corridas, cero efecto observable (puede bloquear con exit 0)
+- [ ] `work-queue-sync` — 22 corridas, cero efecto observable (puede bloquear con exit 0)
+
+### RUIDO — 3
+
+- [ ] `engram-reinforce-on-access` — registrado y el medidor VE, pero jamas disparo
+- [ ] `task-created` — registrado y el medidor VE, pero jamas disparo
+- [ ] `teammate-idle` — registrado y el medidor VE, pero jamas disparo
+
+### OMITIDA — 70
+
+- [ ] `adr-detector` — omision declarada con motivo escrito (future)
+- [ ] `agent-bash-cwd-enforcer` — omision declarada con motivo escrito (profile_scoped)
+- [ ] `agent-bus-monitor` — omision declarada con motivo escrito (conditional_opt_in)
+- [ ] `agent-output-verifier` — omision declarada con motivo escrito (demoted)
+- [ ] `agent-quota-advisor` — omision declarada con motivo escrito (conditional_opt_in)
+- [ ] `agent-quota-redirect` — omision declarada con motivo escrito (conditional_opt_in)
+- [ ] `agent-qwen-bridge` — omision declarada con motivo escrito (conditional_opt_in)
+- [ ] `agnix-lint` — omision declarada con motivo escrito (deprecated)
+- [ ] `aguara-scan` — omision declarada con motivo escrito (conditional_opt_in)
+- [ ] `ai-provider-identity-guard` — omision declarada con motivo escrito (conditional_opt_in)
+- [ ] `architecture-compliance` — omision declarada con motivo escrito (future)
+- [ ] `auto-refine` — omision declarada con motivo escrito (future)
+- [ ] `auto-verify` — omision declarada con motivo escrito (future)
+- [ ] `background-agent-reminder` — omision declarada con motivo escrito (future)
+- [ ] `clarification-interceptor` — omision declarada con motivo escrito (deprecated)
+- [ ] `clean-room-ast-similarity-gate` — omision declarada con motivo escrito (manual_trigger)
+- [ ] `code-review-on-commit` — omision declarada con motivo escrito (git_or_manual)
+- [ ] `cognitive-os-health` — omision declarada con motivo escrito (manual_trigger)
+- [ ] `completeness-check-llm` — omision declarada con motivo escrito (deprecated)
+- [ ] `concurrent-write-guard-codex-proxy` — omision declarada con motivo escrito (projected_elsewhere)
+- [ ] `confidence-gate-llm` — omision declarada con motivo escrito (deprecated)
+- [ ] `contextual-rule-loader` — omision declarada con motivo escrito (future)
+- [ ] `conversation-capture` — omision declarada con motivo escrito (future)
+- [ ] `cosd-intent-submit` — omision declarada con motivo escrito (manual_trigger)
+- [ ] `dod-gate` — omision declarada con motivo escrito (future)
+- [ ] `dry-run-preview` — omision declarada con motivo escrito (future)
+- [ ] `ecosystem-check` — omision declarada con motivo escrito (future)
+- [ ] `engram-auto-import` — omision declarada con motivo escrito (future)
+- [ ] `engram-auto-sync` — omision declarada con motivo escrito (future)
+- [ ] `epic-task-detector` — omision declarada con motivo escrito (future)
+- [ ] `global-verify` — omision declarada con motivo escrito (manual_trigger)
+- [ ] `guardrails-validator` — omision declarada con motivo escrito (conditional_opt_in)
+- [ ] `idle-service-cleanup` — omision declarada con motivo escrito (manual_trigger)
+- [ ] `infra-intent-detector` — omision declarada con motivo escrito (internal_helper)
+- [ ] `jupyter-sandbox` — omision declarada con motivo escrito (conditional_opt_in)
+- [ ] `memu-sync` — omision declarada con motivo escrito (future)
+- [ ] `metrics-calibrator-trigger` — omision declarada con motivo escrito (future)
+- [ ] `metrics-rotation` — omision declarada con motivo escrito (manual_trigger)
+- [ ] `mlflow-sync` — omision declarada con motivo escrito (conditional_opt_in)
+- [ ] `notify` — omision declarada con motivo escrito (manual_trigger)
+- [ ] `orchestrator-mode-detect` — omision declarada con motivo escrito (internal_helper)
+- [ ] `package-sync` — omision declarada con motivo escrito (manual_trigger)
+- [ ] `pattern-check` — omision declarada con motivo escrito (future)
+- [ ] `pre-cleanup-snapshot` — omision declarada con motivo escrito (manual_trigger)
+- [ ] `pre-commit-gate` — omision declarada con motivo escrito (git_or_manual)
+- [ ] `publication-safety` — omision declarada con motivo escrito (conditional_opt_in)
+- [ ] `rate-limit-precheck` — omision declarada con motivo escrito (profile_scoped)
+- [ ] `rate-limiter` — omision declarada con motivo escrito (profile_scoped)
+- [ ] `recap-sync` — omision declarada con motivo escrito (future)
+- [ ] `registration-check` — omision declarada con motivo escrito (manual_trigger)
+- [ ] `resource-check` — omision declarada con motivo escrito (demoted)
+- [ ] `secret-audit-pre-commit` — omision declarada con motivo escrito (conditional_opt_in)
+- [ ] `semgrep-scan` — omision declarada con motivo escrito (conditional_opt_in)
+- [ ] `session-end-cleanup` — omision declarada con motivo escrito (conditional_opt_in)
+- [ ] `session-hygiene` — omision declarada con motivo escrito (future)
+- [ ] `session-knowledge-extractor` — omision declarada con motivo escrito (future)
+- [ ] `state-retention-audit` — omision declarada con motivo escrito (manual_trigger)
+- [ ] `subagent-capability-preflight` — omision declarada con motivo escrito (manual_trigger)
+- [ ] `subagent-input-schema-validator` — omision declarada con motivo escrito (conditional_opt_in)
+- [ ] `sync-to-repo` — omision declarada con motivo escrito (manual_trigger)
+- [ ] `task-bridge-notify` — omision declarada con motivo escrito (future)
+- [ ] `task-completed` — omision declarada con motivo escrito (demoted)
+- [ ] `task-panel-sync` — omision declarada con motivo escrito (future)
+- [ ] `task-recorder` — omision declarada con motivo escrito (future)
+- [ ] `telemetry-budget-violator-detect` — omision declarada con motivo escrito (conditional_opt_in)
+- [ ] `tool-discovery-trigger` — omision declarada con motivo escrito (future)
+- [ ] `tool-loop-detector` — omision declarada con motivo escrito (demoted)
+- [ ] `usage-health-check` — omision declarada con motivo escrito (future)
+- [ ] `valkey-ensure` — omision declarada con motivo escrito (conditional_opt_in)
+- [ ] `worktree-submodule-fix` — omision declarada con motivo escrito (manual_trigger)
+
+### SIRVE — 6
+
+- [ ] `agent-prelaunch` — 24 corridas, 2 con efecto de bloqueo
+- [ ] `bash-hot-path-dispatcher` — 1288 corridas, 20 con efecto de bloqueo
+- [ ] `confidentiality-enforcer` — 111 corridas, 2 con efecto de bloqueo
+- [ ] `protected-config-write-detector` — 356 corridas, 6 con efecto de bloqueo
+- [ ] `protected-config-write-guard` — 1536 corridas, 31 con efecto de bloqueo
+- [ ] `subagent-budget-enforcer` — 1453 corridas, 9 con efecto de bloqueo
+
+## skills
+
+> **Competencia del medidor.** skill-invocations.jsonl tiene 9 filas historicas: NO PUEDE decir que una skill no se uso. Toda skill alcanzable cae en AMBIGUA a proposito.
+
+### AMBIGUA — 263
+
+- [ ] `research-protocol` · 14,863 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `research-protocol` · 14,863 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `repo-scout` · 13,910 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `repo-scout` · 13,910 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `radar-update` · 13,786 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `session-backlog` · 13,581 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `session-report-executive` · 13,494 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `primitive-authoring` · 13,084 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `document-feature` · 11,419 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `document-feature` · 11,419 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `systematic-debugging` · 11,196 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `systematic-debugging` · 11,196 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `deps-update` · 11,125 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `session-wrapup` · 11,095 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `agent-kpis` · 11,002 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `agent-kpis` · 11,002 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `add-skill` · 10,749 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `sandbox-sample` · 10,420 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `sandbox-sample` · 10,420 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `analyze-improvements` · 10,349 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `resolve-blockers` · 9,707 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `resolve-blockers` · 9,707 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `deep-tool-research` · 9,566 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `deep-research` · 9,346 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `deep-research` · 9,346 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `add-hook` · 9,218 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `plan-feature` · 9,065 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `plan-feature` · 9,065 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `graphify-query` · 9,034 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `code-review` · 8,833 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `resource-governor` · 8,768 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `test-driven-development` · 8,639 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `test-driven-development` · 8,639 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `apply-improvements` · 8,428 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `pentest-self` · 8,411 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `pentest-self` · 8,411 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `plan-chore` · 8,388 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `plan-chore` · 8,388 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `skill-creator` · 7,991 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `cognitive-os-test` · 7,738 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `product-answer` · 7,719 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `sre-agent` · 7,690 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `sre-agent` · 7,690 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `run-tests` · 7,660 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `confidence-check` · 7,507 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `confidence-check` · 7,507 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `pr-review` · 7,489 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `sdd-resume` · 7,310 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `audit-website` · 7,306 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `audit-website` · 7,306 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `automaker-bridge` · 7,300 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `automaker-bridge` · 7,300 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `scaffold-project` · 7,264 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `contract-drift` · 7,253 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `contract-drift` · 7,253 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `verification-before-completion` · 7,250 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `verification-before-completion` · 7,250 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `llm-status` · 7,232 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `persistent-agent` · 7,231 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `persistent-agent` · 7,231 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `reverse-engineer` · 7,215 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `doc-review-personas` · 7,203 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `retrospective` · 7,176 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `retrospective` · 7,176 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `decision-triage` · 7,168 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `vulnerability-scan` · 7,132 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `worktree-triage` · 7,055 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `repo-forensics` · 7,001 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `harness-audit` · 6,973 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `harness-audit` · 6,973 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `capability-snapshot` · 6,932 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `capability-snapshot` · 6,932 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `add-rule` · 6,876 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `agent-stress-test` · 6,619 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `tool-discovery` · 6,597 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `tool-discovery` · 6,597 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `sdd-continue` · 6,513 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `install-hook` · 6,482 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `sdd-explore` · 6,480 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `test-contract-repair` · 6,461 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `validate-config` · 6,399 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `scout` · 6,368 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `exhaustive-prompt` · 6,276 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `exhaustive-prompt` · 6,276 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `component-reality-check` · 6,221 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `auto-refine` · 6,220 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `auto-refine` · 6,220 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `dod-check` · 6,156 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `dod-check` · 6,156 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `session-pending-close` · 6,036 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `squad-manager` · 5,981 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `squad-manager` · 5,981 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `redteam-harness` · 5,976 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `invariant-check` · 5,973 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `caveman-compress` · 5,958 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `review-output` · 5,934 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `review-output` · 5,934 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `add-mcp` · 5,924 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `synthesize-skill` · 5,780 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `compat-test` · 5,755 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `coordination-status` · 5,755 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `install-skill` · 5,596 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `planning-poker` · 5,582 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `planning-poker` · 5,582 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `readiness-check` · 5,417 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `readiness-check` · 5,417 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `security-audit` · 5,381 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `security-audit` · 5,381 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `cognitive-os-status` · 5,348 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `error-analyzer` · 5,340 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `error-analyzer` · 5,340 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `detect-stack` · 5,317 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `repair-skill` · 5,264 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `recommend-library` · 5,240 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `recommend-library` · 5,240 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `memory-scan` · 5,227 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `arena` · 5,125 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `arena` · 5,125 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `webhook-trigger` · 5,105 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `webhook-trigger` · 5,105 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `pattern-audit` · 5,104 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `deepeval-integration` · 5,046 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `deepeval-integration` · 5,046 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `coverage-enforcement` · 5,023 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `coverage-enforcement` · 5,023 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `generate-config` · 5,017 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `self-review` · 5,002 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `self-review` · 5,002 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `nemo-guardrails` · 5,001 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `nemo-guardrails` · 5,001 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `self-improve` · 4,983 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `self-improve` · 4,983 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `browser-task` · 4,964 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `sprint` · 4,916 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `sprint` · 4,916 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `proof-drill` · 4,832 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `ragas-integration` · 4,761 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `ragas-integration` · 4,761 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `session-manager` · 4,733 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `cognitive-os-init` · 4,678 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `phoenix-trace-ui` · 4,655 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `security-red-team` · 4,655 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `os-session-wrapup` · 4,643 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `release-os` · 4,633 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `batch-runner` · 4,599 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `batch-runner` · 4,599 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `secret-audit` · 4,487 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `secret-audit` · 4,487 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `dogfood-score` · 4,410 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `evaluate-plan` · 4,396 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `evaluate-plan` · 4,396 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `install-recommended` · 4,371 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `preserved-wip-cleanup` · 4,300 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `peer-card` · 4,297 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `cognee-integration` · 4,295 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `cognee-integration` · 4,295 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `cognitive-os-benchmark` · 4,228 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `cognitive-os-benchmark` · 4,228 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `so-impact-eval` · 4,225 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `so-vs-vanilla` · 4,210 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `jupyter-execute` · 4,171 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `jupyter-execute` · 4,171 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `simulation-arena` · 4,142 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `simulation-arena` · 4,142 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `epistemic-review` · 4,123 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `red-team` · 4,102 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `generate-changelog` · 4,097 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `model-optimizer` · 4,061 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `model-optimizer` · 4,061 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `primitive-harvester` · 4,046 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `optimize-skill` · 4,006 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `optimize-skill` · 4,006 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `resume-tasks` · 4,000 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `resume-tasks` · 4,000 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `agent-control` · 3,943 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `patch-release` · 3,917 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `push-release` · 3,905 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `cognee-search` · 3,903 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `cognee-search` · 3,903 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `sdd-spec` · 3,890 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `bump-version` · 3,851 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `rules-export` · 3,797 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `singularity` · 3,785 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `singularity` · 3,785 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `tag-release` · 3,760 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `plan-bug` · 3,633 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `plan-bug` · 3,633 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `trust-audit` · 3,611 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `trust-audit` · 3,611 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `validate-release` · 3,609 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `project-scaffold` · 3,584 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `web-crawler` · 3,555 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `web-crawler` · 3,555 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `adr-tombstone` · 3,487 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `primitive-harness-coverage` · 3,452 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `audit-integrity` · 3,441 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `metrics-calibrator` · 3,438 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `metrics-calibrator` · 3,438 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `doc-sync` · 3,436 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `doc-sync` · 3,436 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `caveman` · 3,403 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `vuln-remediation-flow` · 3,386 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `queue-drain` · 3,381 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `detect-patterns` · 3,374 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `domain-model` · 3,371 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `component-classifier` · 3,345 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `cos-status` · 3,316 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `lean-code` · 3,315 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `cost-predictor` · 3,283 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `promptfoo-integration` · 3,247 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `promptfoo-integration` · 3,247 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `artifact-workflow` · 3,225 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `catalog-full` · 3,137 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `risk-register` · 3,118 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `ops-runbook` · 3,098 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `skill-optimization` · 3,092 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `impact-analysis` · 3,062 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `impact-analysis` · 3,062 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `architecture-map-answer` · 3,045 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `conversation-memory` · 3,026 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `conversation-memory` · 3,026 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `pyrefly-typecheck` · 3,002 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `devbox-checkpoint` · 2,992 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `devbox-checkpoint` · 2,992 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `gpu-sandbox` · 2,878 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `gpu-sandbox` · 2,878 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `strands-evals-integration` · 2,851 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `strands-evals-integration` · 2,851 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `primitive-surface-reduction` · 2,812 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `issue-pipeline` · 2,793 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `issue-pipeline` · 2,793 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `compose-prompt` · 2,775 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `compose-prompt` · 2,775 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `cos-maintainer-operations` · 2,741 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `sdd-verify` · 2,729 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `semgrep-scan` · 2,651 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `semgrep-scan` · 2,651 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `primitive-usage-map` · 2,644 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `private-mode` · 2,593 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `private-mode` · 2,593 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `sdd-tasks` · 2,531 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `sdd-compound` · 2,430 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `sdd-compound` · 2,430 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `sdd-apply` · 2,379 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `stash-quarantine` · 2,320 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `smoke-test` · 2,293 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `smoke-test` · 2,293 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `agent-dashboard` · 2,277 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `cos-install-operations` · 2,273 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `memu-context` · 1,989 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `memu-context` · 1,989 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `wiki-ingest` · 1,882 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `self-improvement-loop` · 1,876 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `recall-search` · 1,867 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `recall-search` · 1,867 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `docs-execution-audit` · 1,811 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `repair-status` · 1,562 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `repair-status` · 1,562 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `auto-rollback` · 1,518 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `auto-rollback` · 1,518 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `eval-repo` · 1,124 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `__contracts__` · 1,113 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+- [ ] `experimental` · 1,002 chars — alcanzable; el contador no puede decir si se usa. Hay que LEERLA.
+
+### SIRVE — 4
+
+- [ ] `branch-worktree-closure` · 6,650 chars — invocada 1 veces
+- [ ] `hook-timing` · 5,025 chars — invocada 1 veces
+- [ ] `session-pending-brief` · 4,151 chars — invocada 1 veces
+- [ ] `agent-run-supervision` · 3,990 chars — invocada 1 veces
+
+## rules
+
+> **Competencia del medidor.** mide si la regla se EMITE y cuanto contexto ocupa; NO si el consejo sirvio. Nadie registra una sugerencia ignorada.
+
+### DISCREPA — 14
+
+- [ ] `agent-quality` · 9,123 chars — citada en el indice pero sin ruta ni omision declarada: nadie decidio
+- [ ] `closed-loop-prompts` · 8,954 chars — citada en el indice pero sin ruta ni omision declarada: nadie decidio
+- [ ] `encargo-refutable` · 5,584 chars — citada en el indice pero sin ruta ni omision declarada: nadie decidio
+- [ ] `cognitive-os-changes` — citada en RULES-COMPACT.md pero NO EXISTE en rules/
+- [ ] `component-classification` — citada en RULES-COMPACT.md pero NO EXISTE en rules/
+- [ ] `component-reality-check` — citada en RULES-COMPACT.md pero NO EXISTE en rules/
+- [ ] `cost-predictor` — citada en RULES-COMPACT.md pero NO EXISTE en rules/
+- [ ] `dogfood-score` — citada en RULES-COMPACT.md pero NO EXISTE en rules/
+- [ ] `dogfooding` — citada en RULES-COMPACT.md pero NO EXISTE en rules/
+- [ ] `ecosystem-tools` — citada en RULES-COMPACT.md pero NO EXISTE en rules/
+- [ ] `library-selection` — citada en RULES-COMPACT.md pero NO EXISTE en rules/
+- [ ] `os-vs-project` — citada en RULES-COMPACT.md pero NO EXISTE en rules/
+- [ ] `plan-first` — citada en RULES-COMPACT.md pero NO EXISTE en rules/
+- [ ] `stash-mutation-reversibility` — citada en RULES-COMPACT.md pero NO EXISTE en rules/
+
+### RUIDO — 1
+
+- [ ] `ROADMAP` · 7,223 chars — ni citada, ni ruteada, ni declarada omitida
+
+### OMITIDA — 94
+
+- [ ] `agent-kpis` · 10,477 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `self-improvement-protocol` · 10,358 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `skill-management` · 9,155 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `agent-communication` · 8,723 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `engram-organization` · 8,206 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `agent-escalation` · 7,701 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `llm-dispatch` · 7,386 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `dynamic-tool-creation` · 7,092 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `research-first-protocol` · 6,942 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `queue-advisor` · 6,790 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `infra-health` · 6,509 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `so-slo` · 6,099 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `context-optimization` · 6,053 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `estimation-calibration` · 5,974 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `singularity` · 5,870 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `e2b-integration` · 5,836 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `split-and-resume` · 5,289 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `squad-protocol` · 5,067 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `hook-security-profiles` · 4,987 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `engram-api-safety` · 4,966 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `agent-customization` · 4,896 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `task-dag` · 4,864 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `queue-drain` · 4,706 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `startup-protocol` · 4,704 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `user-prompt-capture` · 4,391 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `resource-governance` · 4,375 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `auto-skill-generation` · 4,366 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `aguara-integration` · 4,317 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `assumption-tracking` · 4,302 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `broken-window-policy` · 4,065 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `step-files` · 4,065 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `cognitive-load` · 4,037 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `decision-depth-gate` · 4,027 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `clarification-gate` · 4,023 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `blast-radius` · 4,009 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `pre-dev-readiness-gate` · 3,956 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `model-compatibility` · 3,916 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `sandbox-sampling` · 3,790 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `license-policy` · 3,783 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `workload-scheduling` · 3,782 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `agent-security` · 3,769 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `security-scanning` · 3,709 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `capability-levels` · 3,701 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `fault-tolerance` · 3,689 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `scope-proportionality` · 3,618 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `context-management` · 3,597 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `scout-pattern` · 3,589 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `agent-sidecars` · 3,425 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `model-directive` · 3,322 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `hook-maturity` · 3,174 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `confidentiality-protection` · 3,138 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `pentesting-readiness` · 3,073 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `skill-rewrite` · 2,996 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `confidence-gate` · 2,943 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `session-concurrency` · 2,892 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `performance-monitoring` · 2,870 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `scope-creep-detection` · 2,813 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `non-blocking-retry` · 2,803 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `infra-intent` · 2,715 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `audit-trail` · 2,711 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `supply-chain-defense` · 2,695 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `impact-analysis` · 2,644 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `dry-run` · 2,547 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `responsiveness` · 2,494 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `anti-hallucination` · 2,383 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `agent-identity` · 2,371 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `orchestrator-mode` · 2,328 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `agent-output-reading` · 2,302 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `consequence-system` · 2,278 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `tero-integration` · 2,275 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `content-policy` · 2,158 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `crash-recovery` · 2,077 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `cost-prediction` · 2,058 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `prompt-composition` · 2,024 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `prompt-quality` · 1,968 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `reinvention-prevention` · 1,939 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `capability-protection` · 1,922 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `orchestrator-prompt-compose` · 1,912 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `decomposition` · 1,846 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `auto-rollback` · 1,809 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `response-compression` · 1,797 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `parry-integration` · 1,774 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `rate-limit-protection` · 1,768 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `hcom-integration` · 1,754 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `private-mode` · 1,753 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `repomix-integration` · 1,740 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `agent-audit-before-commit` · 1,671 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `pre-commit-gate` · 1,602 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `doc-sync` · 1,473 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `auto-repair` · 1,467 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `context7-auto-trigger` · 1,425 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `trailofbits-skills` · 1,380 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `cross-harness-authoring` · 1,157 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+- [ ] `observability` · 990 chars — omision declarada en EXCLUDED_RULES, con el hook que la reemplaza anotado al lado
+
+### SIRVE — 33
+
+- [ ] `recommendation-grounding` · 7,480 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `trust-score` · 7,255 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `memory-governance` · 6,942 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `phase-aware-agents` · 6,644 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `definition-of-done` · 6,541 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `clean-room-detection-limits` · 6,401 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `error-learning` · 6,049 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `result-management` · 5,865 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `adversarial-review` · 5,550 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `model-routing` · 5,492 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `session-close-doc-truth` · 5,471 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `adaptive-bypass` · 5,303 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `procedencia-de-los-numeros` · 5,086 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `goal-loop` · 5,083 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `acceptance-criteria` · 5,052 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `lane-taxonomy` · 4,776 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `skill-invocation-mandatory` · 4,697 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `eas-evidence-artifact` · 4,611 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `rate-limiting` · 4,548 chars — en CORE_RULES: llega siempre por el canal fijo
+- [ ] `python-naming` · 4,198 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `token-economy` · 3,849 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `codebase-memory-directive` · 3,497 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `cosd-secure-api` · 3,481 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `local-privacy-hygiene` · 3,371 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `bash-naming` · 3,363 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `routing-pattern-authoring` · 3,018 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `release-publishing` · 2,878 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `credential-management` · 2,766 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `routing-quality-gate` · 2,675 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `language-token-economy` · 2,430 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `ai-provider-identity` · 2,140 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `stash-quarantine` · 2,092 chars — tiene routing_patterns: el router la puede emitir
+- [ ] `retry-contract` · 1,101 chars — tiene routing_patterns: el router la puede emitir
