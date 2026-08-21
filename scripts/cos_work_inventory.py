@@ -14,6 +14,31 @@ Extended dimensions (P3.3):
   --leases      Active resource/domain leases from .cognitive-os/runtime/resource-leases/
   --race-risks  Heuristic multi-session/worktree/stash race-condition detection
   --all         Enable all dimensions above
+
+Para quien vaya a testear este modulo
+-------------------------------------
+Dos cosas que cuestan una corrida cada una si no se saben, y que se descubren
+rompiendolas:
+
+1. REGISTRALO EN sys.modules ANTES DE EJECUTARLO. Sus ``@dataclass`` resuelven
+   anotaciones via ``sys.modules[cls.__module__]``, asi que un import por ruta sin
+   registro revienta al evaluar el decorador -- con un ``AttributeError: 'NoneType'
+   object has no attribute '__dict__'`` que no dice nada de la causa::
+
+       spec = importlib.util.spec_from_file_location("cos_work_inventory", RUTA)
+       m = importlib.util.module_from_spec(spec)
+       sys.modules[spec.name] = m          # <- esta linea
+       spec.loader.exec_module(m)
+
+2. ``payload["status"]`` ES UN DICT, no un string. Es la salida de ``git status``
+   parseada: ``{"branch", "ahead", "behind", "entries", "counts"}``. Un payload de
+   prueba con ``"status": "ok"`` hace que ``build_findings`` reviente indexando un
+   str, y el fallo se lee como si el codigo bajo prueba estuviera mal cuando lo que
+   esta mal es la sonda.
+
+   Regla general que sale de ahi: la forma del payload se toma de una corrida REAL
+   (``--all --strict --json``), no se inventa. Un payload inventado falla por una
+   clave que falta y manda a depurar el lugar equivocado.
 """
 from __future__ import annotations
 
