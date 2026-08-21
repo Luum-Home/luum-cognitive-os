@@ -1029,6 +1029,20 @@ if [ -n "$BLOCKED" ]; then
   echo "Approve, only after explicit human review, with either:" >&2
   echo "  $APPROVAL_ENV=1 <command>        (recorded in ${BYPASS_LOG#"$PROJECT_DIR"/})" >&2
   echo "  export $APPROVAL_ENV=1           (before launching the harness)" >&2
+  echo "" >&2
+  echo "ALCANCE REAL DE ESTE GUARD -- leelo antes de suponer que estas cubierto:" >&2
+  echo "  Corre en PreToolUse y solo puede ver el TEXTO DEL COMANDO. No sabe que va" >&2
+  echo "  a escribir un proceso que todavia no corrio. Medido el 2026-08-20:" >&2
+  echo "" >&2
+  echo "    echo x >> rules/RULES-COMPACT.md                  -> BLOQUEA" >&2
+  echo "    python3 -c \"...Path(d+chr(47)+f).write_text(..)\" -> PASA" >&2
+  echo "    python3 scripts/escritor.py                       -> PASA" >&2
+  echo "" >&2
+  echo "  O sea: frena el camino corto y deja pasar el largo. Que te haya frenado" >&2
+  echo "  NO significa que una escritura equivalente por otra via seria frenada." >&2
+  echo "  La otra mitad la cubre hooks/protected-config-write-detector.sh, que corre" >&2
+  echo "  en PostToolUse: no impide, pero deja constancia de toda escritura protegida" >&2
+  echo "  en metrics/protected-config-writes.jsonl." >&2
   if type primitive_intervention_emit >/dev/null 2>&1; then
     primitive_intervention_emit "protected-config-write-guard" "hooks/protected-config-write-guard.sh" "block" "protected_config_write" "protected-config" ".cognitive-os/metrics/protected-config-write-blocks.jsonl" "$TOOL_NAME" || true
   fi
