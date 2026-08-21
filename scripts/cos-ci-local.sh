@@ -306,6 +306,22 @@ check_closure_discipline_audit() {
   fi
 }
 
+check_omission_expiry() {
+  # A declared omission with no date is a permanent decision in a temporary
+  # costume. This is the hard red: exit 1 = something is overdue or a row lost
+  # its owner/expires. It NEVER unregisters anything -- a person does that.
+  command -v python3 >/dev/null 2>&1 || {
+    _skip "omission expiry" "python3 not installed"
+    return 0
+  }
+  if [ -f "$REPO_ROOT/scripts/audit_omission_expiry.py" ]; then
+    python3 "$REPO_ROOT/scripts/audit_omission_expiry.py" --root "$REPO_ROOT"
+  else
+    _skip "omission expiry" "scripts/audit_omission_expiry.py not found"
+    return 0
+  fi
+}
+
 check_adr_tier_claim_audit() {
   command -v python3 >/dev/null 2>&1 || {
     _skip "ADR tier claim audit" "python3 not installed"
@@ -496,6 +512,7 @@ run_quick() {
   _step "self-improvement discipline gate"    check_self_improvement_discipline_gate
   _step "ADR tier claim audit"                check_adr_tier_claim_audit
   _step "closure discipline audit"            check_closure_discipline_audit
+  _step "declared-omission expiry"            check_omission_expiry
   _step ".gitignore sanity"                   check_gitignore_sanity
 }
 
