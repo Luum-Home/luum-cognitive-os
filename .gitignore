@@ -154,3 +154,18 @@ cos_mutation.sqlite
 # Rust build output
 target/
 graphify-out/
+
+# Artefactos derivados de los auditores: salida de build, no fuente.
+#
+# Medido el 2026-08-22: 41 archivos `-latest.json` sumaban 1.813.462 lineas,
+# el 52,9% del repositorio ENTERO. Uno solo --primitive-harness-coverage--
+# eran 1.358.284, o sea el 68,7% de todos los informes.
+#
+# Los regenera su script (acc_pipeline.py, cos-weekly-primitive-gap.sh,
+# script_exposure_audit.py, dogfood_scorer.py). Versionar salida de build
+# infla cada clone, cada diff y cada ventana de contexto de un agente, y no
+# aporta nada que el generador no reponga en una corrida.
+#
+# El resumen legible SI se versiona: los 41 `-latest.md` que los acompañan
+# suman 14.116 lineas -- 128 veces menos-- y son lo que una persona lee.
+docs/06-Daily/reports/*-latest.json
