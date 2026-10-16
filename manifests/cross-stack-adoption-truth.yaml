@@ -6,7 +6,6 @@ purpose: Reconcile lockfiles, NOTICE, component-sources, and research inventorie
 sources:
   python_pyproject_globs:
     - pyproject.toml
-    - workflows/pyproject.toml
   go_mod_globs:
     - go.mod
     - cmd/*/go.mod

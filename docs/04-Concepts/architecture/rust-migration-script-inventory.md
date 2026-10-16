@@ -80,8 +80,9 @@ Representative surfaces:
 - `scripts/*validate*.py`
 - `scripts/*coverage*.py`
 - `scripts/*benchmark*.py`
-- `workflows/`
 - `primitive_coverage/`
+
+2026-10-16: `workflows/` (legacy) removed; legacy pipeline removed, superseded by `lib/`.
 
 Rust posture: **selective candidate**. Port scanners that are deterministic, frequently run, or expensive. Keep exploratory audits in Python until rules stabilize.
 

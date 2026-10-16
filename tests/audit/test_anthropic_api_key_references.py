@@ -51,7 +51,6 @@ ALLOWED_REFERENCES: tuple[AllowedReference, ...] = (
     AllowedReference(".github/workflows/claude-issue-triage.yml.disabled", "ci_explicit", "Claude Code action secret"),
     AllowedReference(".github/workflows/claude-pr-review.yml.disabled", "ci_explicit", "Claude Code action secret"),
     AllowedReference("docs/05-Methodology/root/automation.md", "ci_explicit_docs", "Documents CI-only Claude action secret"),
-    AllowedReference("workflows/README.md", "ci_explicit_docs", "Documents CI-only Claude action secret"),
 
     # Direct API implementation/policy surfaces; all must remain config-gated.
     AllowedReference("cognitive-os.yaml", "direct_api_opt_in_config", "claude_sdk opt-in disabled by default"),

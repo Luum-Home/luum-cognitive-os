@@ -16,8 +16,8 @@ Design principles
   line is edited with a boundary-anchored regex. Substrings such as ``pathlib``, ``zlib``,
   ``glob``, ``joblib``, ``library``, ``lib_`` and a variable named ``lib`` are never touched.
 * **Module allowlist.** Only ``lib.<name>`` where ``<name>`` is an actual top-level module of
-  the ``lib/`` package is rewritten. ``lib.telegram`` (which resolves to ``workflows/lib/``,
-  a *different* package on sys.path) is therefore left alone and flagged UNSAFE.
+  the ``lib/`` package is rewritten. ``lib.<name>`` that is not a module of that package
+  (e.g. one resolving to a different package on sys.path) is left alone and flagged UNSAFE.
 * **Idempotent + reversible.** Re-running is a no-op once rewritten. Revert = ``git mv cos_lib
   lib`` + run this tool with ``--revert`` (swaps OLD/NEW). Nothing is done that ``git`` cannot
   cleanly undo.
@@ -47,7 +47,7 @@ GUARDED_PREFIXES = ("hooks", "rules", "skills", ".claude")
 
 # Other top-level dirs literally named "lib" that are NOT the package under rename.
 # The module allowlist already protects these, but we name them for auditability.
-FOREIGN_LIB_DIRS = ("workflows/lib", "packages")  # packages/*/lib are symlink TARGETS
+FOREIGN_LIB_DIRS = ("packages",)  # packages/*/lib are symlink TARGETS
 
 # --- boundary-anchored matchers -------------------------------------------------------------
 # `lib.` used as a dotted-import prefix. Negative lookbehind on a word char / dot prevents
@@ -203,7 +203,7 @@ def collect_py(root: Path, rel: str, allow: set[str], res: Result, old: str, new
                 _apply(res, rel, node.lineno, lines, old, new, "from")
             else:
                 _record_flag(res, rel, node.lineno,
-                             f"`from lib.{seg[1]}` — `{seg[1]}` not a top-level lib module (e.g. workflows/lib collision)",
+                             f"`from lib.{seg[1]}` — `{seg[1]}` not a top-level lib module (foreign lib collision)",
                              lines, node.lineno)
 
     # String/path references resolving the package by directory name.
@@ -329,7 +329,7 @@ def prose_sweep(root: Path, allow_protected: bool) -> tuple[int, int]:
 
     Uses the same boundary-anchored RE_DOTTED / RE_FROM_BARE / RE_DASH_M regexes as
     the import rewriter, so `cos_lib.X` and other `_lib` suffixes stay untouched
-    (negative lookbehind rejects them). Skips workflows/ per RISKY-edge policy.
+    (negative lookbehind rejects them).
 
     Idempotent: re-running produces no further changes.
     """
@@ -337,9 +337,6 @@ def prose_sweep(root: Path, allow_protected: bool) -> tuple[int, int]:
     files_written = 0
     for rel in git_tracked_files(root):
         if not (rel.endswith(".py") or rel.endswith(".sh") or rel.endswith(".md")):
-            continue
-        # Skip workflows/ — its `lib.telegram` refs live in a different package (U-Q2 policy).
-        if rel.startswith("workflows/"):
             continue
         # Skip the codemod itself and the design/proposal docs describing the rename.
         if rel == "scripts/cos_lib_rename_codemod.py":
@@ -416,7 +413,7 @@ def main(argv: list[str]) -> int:
     ap.add_argument("--root", default=None, help="repo root (default: git toplevel)")
     ap.add_argument("--prose-sweep", action="store_true",
                     help="also rewrite `lib.X` in comments/docstrings/data strings "
-                    "(second pass, boundary-anchored, workflows/ excluded)")
+                    "(second pass, boundary-anchored)")
     args = ap.parse_args(argv)
 
     old, new = (NEW_PKG, OLD_PKG) if args.revert else (OLD_PKG, NEW_PKG)

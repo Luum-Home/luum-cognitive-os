@@ -402,3 +402,5 @@ at the root rather than relying only on the §3 fail-open backstop. This superse
   algorithm (§2), fail-open backstop (§3), and regression test (§4) carry over verbatim with
   `cos_lib` substituted for `lib`. After the rename a consumer's own `lib/` can no longer shadow
   `cos_lib`, so §3 becomes defense-in-depth rather than the primary mitigation for U1.
+
+> 2026-10-16: `workflows/` (legacy) removed; legacy pipeline removed, superseded by `lib/`. References to it above are historical.

@@ -86,7 +86,8 @@ These files use the GitHub secret for Claude Code actions:
 - `.github/workflows/claude-issue-triage.yml`
 - `.github/workflows/claude-pr-review.yml`
 - `docs/05-Methodology/root/automation.md`
-- `workflows/README.md`
+
+2026-10-16: `workflows/` (legacy) removed; legacy pipeline removed, superseded by `lib/`.
 
 Reason: GitHub Actions cannot rely on a developer's local logged-in Claude Code
 account. These are CI-only direct API flows, not local/operator defaults.

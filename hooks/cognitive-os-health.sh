@@ -189,9 +189,6 @@ fi
 tmpl_count=$(find "$AOS/templates" -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
 [ "$tmpl_count" -gt 0 ] && check "Templates" "OK" || check "Templates" "WARN"
 
-# 12. Workflows
-[ -f "$AOS/workflows/run.py" ] && check "Workflows" "OK" || check "Workflows" "WARN"
-
 # 13. Repair system — check repair outcomes and circuit breakers
 repair_summary=""
 REPAIR_FILE="$AOS/metrics/repair-outcomes.jsonl"
