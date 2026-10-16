@@ -230,7 +230,7 @@ find squads -type f | wc -l    # 1
 find templates -maxdepth 1 -type f | wc -l   # 30   ·  find templates -type f | wc -l  # 60
 ```
 
-- **workflows:** `DEPRECATED.md` declara el directorio entero legado del proyecto *otro proyecto*
+- **workflows:** `DEPRECATED.md` declara el directorio entero legado de otro proyecto
   y "superseded by the `lib/` modules". Ninguno de los 6 pipelines tiene una sola referencia
   fuera del propio directorio. **Cableadas: 0.**
 - **agents: 1 archivo.** `agents/test-coverage-enforcer.md` declara

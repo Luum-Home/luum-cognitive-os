@@ -105,7 +105,7 @@ Distribución: **SIGUE ROTO 35 · PEOR 4 · NO VERIFICABLE 4 · EL JUEZ SE EQUIV
 |---|---|---|---|---|
 | D1 | conteos base (py/tests/go/rs/md, `lib/` ausente) | `git ls-files '<glob>' \| wc -l` | `3037` py · `2156` tests · `193` go · `3` rs · `2380` md · `lib/` = 0 entradas. **5/5 reproducen** | **SIGUE** |
 | D2 | `yaml.py` y `scripts/yaml.py` divergentes | `md5 yaml.py scripts/yaml.py` | `b0961144…` vs `60d35461…` | **SIGUE ROTO** |
-| D3 | `workflows/` código muerto autodeclarado | `head -3 workflows/DEPRECATED.md` | *"legacy pipeline system from the otro proyecto project archive"* | **SIGUE ROTO** |
+| D3 | `workflows/` código muerto autodeclarado | `head -3 workflows/DEPRECATED.md` | *"legacy pipeline system from a prior project archive"* | **SIGUE ROTO** |
 | D4 | `cos-review-approve` / `cos-review-gate` "WIP sin commitear" | `git ls-files scripts/cos-review-*` | ambos **trackeados** — entraron en el merge `8602ddc70` de esa misma noche | **YA NO APLICA** |
 | D5 | `scripts/cos-config-audit.sh` es Python con extensión `.sh` | `head -1 scripts/cos-config-audit.sh`; `bash -n` | `#!/usr/bin/env python3`; `bash -n` reporta error de sintaxis en L49 | **SIGUE ROTO** |
 

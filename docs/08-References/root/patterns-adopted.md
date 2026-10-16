@@ -11,7 +11,7 @@
 | Sprut Agent Kit | 4 | Memory, routing, persistence |
 | ClaudeClaw JS (aravhawk) | 3 | Configuration, error handling |
 | QuinotoSpec | 3 | Governance, drift detection |
-| otro proyecto Archive (TAC) | 5 | Infrastructure, automation |
+| Prior project archive (TAC) | 5 | Infrastructure, automation |
 | Anthropic Engineering | 3 | Evaluation, adversarial review |
 | Hermes Agent (Nous Research) | 4 | Learning loop, memory, feedback |
 | Pi Coding Agent | 4 | File safety, compaction, testing |
@@ -227,7 +227,7 @@
 
 ---
 
-## From otro proyecto Archive (TAC Course)
+## From a Prior Project Archive (TAC Course)
 
 ### 1. ClaudeExecutor (Programmatic CLI Invocation)
 
