@@ -164,7 +164,7 @@ sobre FinOpenPOS.
 ### Lo que la máquina del operador dice, y sigue diciendo
 
 Los 12 hooks de `~/.claude/settings.json` —los que corren en todos los proyectos— no salen de
-este repo: son de otra familia (`otro-repo-de-infra`: `secreto-no-sale`, `git-flow-guard`,
+este repo: son de otra familia (otro repo de infraestructura: `secreto-no-sale`, `git-flow-guard`,
 `stagnation-guard`, `clon-antes-de-clonar`, `primitivas-drift-guard`, `tracker-html-guard`,
 `block-destructive-bash`). De 38 skills globales, **6** vienen del OS y las seis son SDD. Con
 257 hooks y 197 skills instalados en 16 lugares, el OS no colonizó el perfil de su propio autor.
