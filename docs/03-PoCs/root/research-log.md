@@ -174,7 +174,7 @@
 
 **What we skipped**: Sprint velocity tracking (we use agent KPIs instead), team standup automation (wrong domain).
 
-### Sazonia Archive (TAC Course)
+### Prior Project Archive (TAC Course)
 
 **What it is**: "Tactical Agentic Coding" course materials by IndyDevDan.
 
