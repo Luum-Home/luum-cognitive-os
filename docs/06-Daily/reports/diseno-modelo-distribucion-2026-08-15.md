@@ -118,7 +118,7 @@ PY
 
 | instalación | cableados sin archivo | entregados sin cablear |
 |---|---|---|
-| `otra-organizacion` | `completeness-check`, `direct-main-guard`, `engram-obsidian-export-on-stop`, `plan-claim-validator` | 0 |
+| `consumidor-a` | `completeness-check`, `direct-main-guard`, `engram-obsidian-export-on-stop`, `plan-claim-validator` | 0 |
 | `consumidor-b` | los mismos 4 | 1 |
 | `aisotropy` | 0 (pero ver 2.3: `block-destructive-bash` vía otra ruta) | 8 |
 | `FinOpenPOS` | 0 | 2 |
@@ -154,7 +154,7 @@ for i in d:
 PY
 ```
 
-**12 de 16 instalaciones no tienen `.claude/settings.json`.** Son Codex-only. Sólo 4 tienen cableado de Claude: `otra-organizacion`, `FinOpenPOS`, `consumidor-b`, `aisotropy` — y las 2 con telemetría real son exactamente dos de esas cuatro.
+**12 de 16 instalaciones no tienen `.claude/settings.json`.** Son Codex-only. Sólo 4 tienen cableado de Claude: `consumidor-a`, `FinOpenPOS`, `consumidor-b`, `aisotropy` — y las 2 con telemetría real son exactamente dos de esas cuatro.
 
 Es decir: el 75% del parque instalado depende de que Codex ejecute `.codex/hooks.json`, que es justo la pregunta abierta del forense. Ese no es un matiz del análisis, es el análisis.
 
@@ -265,7 +265,7 @@ En los tres, plugin. Lo que cambia es el orden de la Fase 3 y cuánto trabajo ha
 - Semilla de la clausura = `hooks/*.sh` (`cos_init.py:1897`); `hooks/_lib/` copiado por `copytree` sin clausura (`:1849`, `:1871`); fail-open documentado en `lib_closure.py:168`.
 - `runtime_hook_reality.py` devuelve `fail` con 8 hallazgos sobre `aisotropy`, incluyendo `block-destructive-bash.sh` cableado y ausente.
 - El gate sólo se corre contra `tmp_path` con `--harness codex` (`test_consumer_project_projection.py:204`) y está mockeado en `test_cos_architecture_readiness.py`.
-- 4 hooks cableados sin archivo en `otra-organizacion` y `consumidor-b`; 2 de ellos `SCOPE: os-only`.
+- 4 hooks cableados sin archivo en `consumidor-a` y `consumidor-b`; 2 de ellos `SCOPE: os-only`.
 - 14 de 22 call-sites de copiado sin `scope_allows` próximo.
 - `install.sh:14` `TARGET_DIR=".cognitive-os"`; `:416`/`:425` `rm -rf`.
 - `auto-update-projects.sh` es `SCOPE: os-only`, disparado por `post-merge`/`pre-push` locales (`setup-git-hooks.sh:198,242,264`); `post-rewrite` ni siquiera está instalado en `.git/hooks/`.

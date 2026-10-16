@@ -45,7 +45,7 @@ no cuesta nada**: no existe el directorio `.claude/`, las reglas quedan en
 `.codex/hooks.json`, que Claude Code no lee. Bajo Codex sí cuesta: 16 hooks cableados,
 5 por llamada a bash. Cero filas de telemetría en las 10.
 
-**`core|claude` (4 instalaciones: aisotropy, otra-organizacion, consumidor-b, FinOpenPOS).**
+**`core|claude` (4 instalaciones: aisotropy, consumidor-a, consumidor-b, FinOpenPOS).**
 Es la cohorte que realmente paga. Impuesto fijo ~842–1.166 tokens por prompt
 (`.claude/CLAUDE.md`, 4,6 KB). 38 a 100 hooks cableados. 9 hooks por llamada a Bash,
 7 por Edit/Write, 2 por Read, 1 por Grep/Task. Solo 2 de las 4 tienen telemetría.
@@ -228,7 +228,7 @@ impuesto fijo del SO es el **1,08%**. El 98,9% restante es acumulación de conve
 salida de herramientas. **Recortar `RULES-COMPACT.md` a la mitad bajaría la factura un 0,4%.**
 El presupuesto de tokens vigila el 1% barato mientras el 99% no tiene gate.
 
-**14 de 21 tienen hooks cableados y cero telemetría.** Incluye `otra-organizacion` con **100 hooks**
+**14 de 21 tienen hooks cableados y cero telemetría.** Incluye `consumidor-a` con **100 hooks**
 cableados y `consumidor-b` con **97** — cero invocaciones registradas en ambas.
 Además el manifiesto miente sobre el cableado en 13 instalaciones: `install-meta.json`
 declara `hooks_installed: 43` donde el driver activo cablea 16 (gap de 27), y en `luum-lang`

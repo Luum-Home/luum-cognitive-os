@@ -127,7 +127,7 @@ cd ~/Projects && find . -maxdepth 4 -type d -name '.cognitive-os' -not -path '*/
 | luum/luum-woocommerce-distrinorth | 39 | 4 | 1 | 4 | 2026-07-20 | **ninguno** |
 | consumidor-c | 39 | 4 | 1 | 4 | 2026-07-20 | **ninguno** |
 | matias-amendola/live-profile | 39 | 4 | 1 | 4 | 2026-07-20 | **ninguno** |
-| otra-organizacion | 39 | 4 | 1 | 4 | 2026-07-20 | **ninguno** |
+| consumidor-a | 39 | 4 | 1 | 4 | 2026-07-20 | **ninguno** |
 | consumidor-d | sin `cos_lib` | — | — | — | — | — |
 | luum (raíz) | sin `cos_lib` | — | — | — | — | — |
 | luum/cognitive-os-demo | sin `cos_lib` | — | — | — | — | — |
