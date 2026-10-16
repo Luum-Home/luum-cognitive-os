@@ -12,7 +12,7 @@ project:
   # Populated by /cognitive-os-init based on detected stack; override manually as needed
   architecture:
     frameworks:
-      go: acme-http               # acme-http | gin | echo | fiber | chi | huma
+      go: gin                  # gin | echo | fiber | chi | huma
       typescript: nestjs       # nestjs | express | fastify | hono
       java: spring-boot        # spring-boot | quarkus | micronaut
     layers:
