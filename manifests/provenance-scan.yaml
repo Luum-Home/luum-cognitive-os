@@ -1,8 +1,17 @@
 schema_version: provenance-scan/v1
 provenance:
   forbidden_terms: []
-  forbidden_paths:
-    - "(?i)Projects/(?:otra-plataforma|otra-organizacion|consumidor-i|<service-monorepo>|FinOpenPOS)[A-Za-z0-9._/-]*"
+  forbidden_paths: []
+  # Private source projects that must not appear as a component of a local project path.
+  # SHA-256 of the lowercased name, never the name itself: a committed list of
+  # names to protect is the leak it tries to prevent. To add one:
+  #   python3 -c "import hashlib,sys; print(hashlib.sha256(sys.argv[1].strip().lower().encode()).hexdigest())" NAME
+  forbidden_path_sha256:
+    - "7466e5b8e237b638f142fc8eecb3095c2b007d2086e567e54d63915272d5f356"
+    - "b1b631b0b70b5b3ab8f0bd266b926f7ad5936d75a9194cdf6e35b3e196b26909"
+    - "3520c659f91a244c2f46c4050988a93ce8e00bb01e1be0777df827fa3967358e"
+    - "85f1ae9cc621d5537f8f75afcf3ed73c1a7d183b5a6d1057a89ac35f6ad995fe"
+    - "ff1cf78c2e4d91b87a0262a772fe7d7891a97fa48961c8b57b6468fb6216575e"
   forbidden_provenance_language:
     - '(?i)sourcePattern:\s*adapted-'
   allowed_absolute_paths:

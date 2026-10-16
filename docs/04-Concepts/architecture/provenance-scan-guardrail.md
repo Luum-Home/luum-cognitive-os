@@ -35,6 +35,11 @@ provenance:
     - ExampleSourceRepo
   forbidden_paths:
     - "(?i)Projects/ExampleSourceRepo[A-Za-z0-9._/-]*"
+  # Same intent without publishing the names: SHA-256 of the lowercased name.
+  forbidden_term_sha256:   # any token of the line
+    - "<sha256 hex>"
+  forbidden_path_sha256:   # any component of a local project path
+    - "<sha256 hex>"
   allowed_import_roots:
     go:
       - github.com/example/product
@@ -45,5 +50,7 @@ provenance:
   allowed_absolute_paths:
     - /tmp/
 ```
+
+When the config is committed to a public repo, a clear-text list of private names is itself the leak: use the `*_sha256` keys. Compute a digest with `python3 -c "import hashlib,sys; print(hashlib.sha256(sys.argv[1].strip().lower().encode()).hexdigest())" NAME`. Hashed matching is per token (a name glued to other letters is not a hit), and a short name can still be confirmed by anyone who already suspects it: hashing hides the list from readers, it does not make it secret.
 
 Use `# cos-allow-provenance-scan` only for deliberate examples or tests. Prefer fixing text or moving private terms into project-local config over suppressing findings.

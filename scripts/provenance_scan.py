@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import fnmatch
+import hashlib
 import importlib.util
 import json
 import re
@@ -101,6 +102,14 @@ GO_REPLACE_RE = re.compile(r'^\s*replace\s+([^\s]+)\s+=>\s+([^\s]+)')
 PY_IMPORT_RE = re.compile(r'^\s*(?:from\s+([A-Za-z_][\w.]*)\s+import\b|import\s+([A-Za-z_][\w.]*))')
 TS_IMPORT_RE = re.compile(r'''(?:from\s+['"]([^'"]+)['"]|import\s*\(?\s*['"]([^'"]+)['"]\)?)''')
 PATH_HACK_RE = re.compile(r"sys\.path\.(?:append|insert)\(([^)]*)\)")
+# Hashed policies: a list of names that must not leak is itself a leak when it
+# is committed in clear. `forbidden_term_sha256` / `forbidden_path_sha256` hold
+# SHA-256 hex digests of the lowercased name instead; the scanner hashes every
+# candidate token of the scanned text and compares digests.
+TERM_TOKEN_RE = re.compile(r"[a-z0-9]+(?:[-/._][a-z0-9]+)*")
+TERM_SEPARATOR_RE = re.compile(r"([-/._])")
+MAX_TERM_COMPONENTS = 8
+PROJECTS_PATH_RE = re.compile(r"(?i)" + PROJECTS_SEGMENT_PATTERN + r"[A-Za-z0-9._/-]+")
 
 
 @dataclass(frozen=True)
@@ -124,6 +133,51 @@ class Policy:
     exclude_globs: tuple[str, ...]
     scan_imports: bool
     scan_path_hacks: bool
+    forbidden_term_sha256: frozenset[str] = frozenset()
+    forbidden_path_sha256: frozenset[str] = frozenset()
+
+
+def fingerprint_term(term: str) -> str:
+    """SHA-256 hex digest of a term, normalized to stripped lowercase."""
+    return hashlib.sha256(term.strip().lower().encode("utf-8")).hexdigest()
+
+
+def term_candidates(text: str) -> set[str]:
+    """Lowercased candidates a hashed term is compared against.
+
+    Every token (letters/digits joined by `-`, `/`, `.` or `_`), every
+    contiguous run of up to MAX_TERM_COMPONENTS of its components with their
+    original separators (so `org/name-api` yields `org`, `name`, `name-api`,
+    `org/name`, ...), and every pair of adjacent tokens joined by one space.
+    Matching is per token, not per substring: a name glued to other letters
+    (`xnamex`) is not a hit.
+    """
+    words = TERM_TOKEN_RE.findall(text.lower())
+    candidates: set[str] = set()
+    for word in words:
+        pieces = TERM_SEPARATOR_RE.split(word)
+        count = (len(pieces) + 1) // 2
+        for start in range(count):
+            for end in range(start + 1, min(count, start + MAX_TERM_COMPONENTS) + 1):
+                candidates.add("".join(pieces[2 * start:2 * end - 1]))
+    for first, second in zip(words, words[1:]):
+        candidates.add(f"{first} {second}")
+    return candidates
+
+
+def hashed_term_hits(text: str, digests: frozenset[str]) -> list[str]:
+    """Candidates of `text` whose digest is in `digests`, sorted."""
+    if not digests:
+        return []
+    return sorted(c for c in term_candidates(text) if fingerprint_term(c) in digests)
+
+
+def as_digests(value: Any, key: str) -> frozenset[str]:
+    digests = frozenset(item.strip().lower() for item in as_tuple(value))
+    bad = sorted(d for d in digests if not re.fullmatch(r"[0-9a-f]{64}", d))
+    if bad:
+        raise SystemExit(f"ERROR: {key} entries must be SHA-256 hex digests: {bad[:3]}")
+    return digests
 
 
 def load_yaml(path: Path) -> dict[str, Any]:
@@ -184,6 +238,8 @@ def build_policy(root: Path, config_path: Path | None) -> Policy:
         exclude_globs=as_tuple(section.get("exclude_globs")),
         scan_imports=bool(section.get("scan_imports", True)),
         scan_path_hacks=bool(section.get("scan_path_hacks", True)),
+        forbidden_term_sha256=as_digests(section.get("forbidden_term_sha256"), "forbidden_term_sha256"),
+        forbidden_path_sha256=as_digests(section.get("forbidden_path_sha256"), "forbidden_path_sha256"),
     )
 
 
@@ -380,6 +436,12 @@ def scan_text(path: Path, root: Path, text: str, policy: Policy) -> list[Finding
         for term in forbidden_terms:
             if term in line:
                 findings.append(Finding(path, line_no, "forbidden-term", "project/source term is forbidden", term))
+        for hit in hashed_term_hits(line, policy.forbidden_term_sha256):
+            findings.append(Finding(path, line_no, "forbidden-term", "project/source term is forbidden (hashed policy)", hit))
+        if policy.forbidden_path_sha256:
+            for match in PROJECTS_PATH_RE.findall(line):
+                if hashed_term_hits(match, policy.forbidden_path_sha256):
+                    findings.append(Finding(path, line_no, "forbidden-path", "path names a private source project (hashed policy)", match))
         for regex in compiled_provenance:
             if m := regex.search(line):
                 findings.append(Finding(path, line_no, "provenance-language", "sensitive provenance wording", m.group(0)))

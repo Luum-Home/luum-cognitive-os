@@ -24,7 +24,7 @@ def write_config(root: Path, body: str = "") -> Path:
     path.write_text(
         "schema_version: provenance-scan/v1\n"
         "provenance:\n"
-        "  forbidden_terms: [FinOpenPOS, consumidor-i]\n"
+        "  forbidden_terms: [FinOpenPOS, private-core]\n"
         "  allowed_absolute_paths: [/tmp/]\n"
         "  allowed_import_roots:\n"
         "    go: [github.com/example/app, github.com/spf13/cobra]\n"
@@ -174,3 +174,49 @@ def test_go_replace_blocks_relative_target_outside_repo(tmp_path: Path) -> None:
 
     assert proc.returncode == 1
     assert any(item["category"] == "external-go-replace" for item in payload(proc)["findings"])
+
+
+def _sha256(term: str) -> str:
+    import hashlib
+
+    return hashlib.sha256(term.lower().encode("utf-8")).hexdigest()
+
+
+def test_hashed_term_policy_flags_token_without_clear_text_config(tmp_path: Path) -> None:
+    cfg = write_config(tmp_path, f"  forbidden_term_sha256: [{_sha256('secret-client')}]\n")
+    assert "secret-client" not in cfg.read_text(encoding="utf-8")
+    doc = tmp_path / "README.md"
+    doc.write_text("ported from the Secret-Client billing module\nsecretclientx is a different word\n", encoding="utf-8")
+
+    proc = run_scan(tmp_path, "--config", str(cfg), str(doc))
+
+    assert proc.returncode == 1
+    hits = [item for item in payload(proc)["findings"] if item["category"] == "forbidden-term"]
+    assert [(item["line"], item["matched"]) for item in hits] == [(1, "secret-client")]
+
+
+def test_hashed_path_policy_flags_projects_path_only(tmp_path: Path) -> None:
+    cfg = write_config(tmp_path, f"  forbidden_path_sha256: [{_sha256('secret-client')}]\n")
+    doc = tmp_path / "README.md"
+    doc.write_text(
+        "see ~/Projects/secret-client/api for the original\n"  # cos-allow-absolute-path cos-allow-local-privacy-pattern: deliberate scanner fixture
+        "the secret-client word outside a path is not a path finding\n",
+        encoding="utf-8",
+    )
+
+    proc = run_scan(tmp_path, "--config", str(cfg), str(doc))
+
+    assert proc.returncode == 1
+    hits = [item for item in payload(proc)["findings"] if item["category"] == "forbidden-path"]
+    assert [item["line"] for item in hits] == [1]
+
+
+def test_hashed_policy_rejects_non_digest_entries(tmp_path: Path) -> None:
+    cfg = write_config(tmp_path, "  forbidden_term_sha256: [secret-client]\n")
+    doc = tmp_path / "README.md"
+    doc.write_text("nothing\n", encoding="utf-8")
+
+    proc = run_scan(tmp_path, "--config", str(cfg), str(doc))
+
+    assert proc.returncode != 0
+    assert "SHA-256" in proc.stderr
