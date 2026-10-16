@@ -125,6 +125,6 @@ Bloqueó todas las escrituras de este agente por una ruta host-local en un archi
 
 ## Pendiente de decisión del operador
 
-El diff de la norma **no va a `rules/`**: la sección de escritores concurrentes vive en el skill `ruteo-de-agentes`, canónico en `g2k-infra` y sincronizado al perfil. Escribirlo es un cruce de repo y pide checkpoint explícito. El texto propuesto quedó en el resultado del agente.
+El diff de la norma **no va a `rules/`**: la sección de escritores concurrentes vive en el skill `ruteo-de-agentes`, canónico en otro repo de infraestructura y sincronizado al perfil. Escribirlo es un cruce de repo y pide checkpoint explícito. El texto propuesto quedó en el resultado del agente.
 
 Y una decisión de política: **permitir el amend pelado con índice limpio relaja el estado anterior**, que bloqueaba siempre. Es lo correcto —el caso legítimo no debería pedir permiso— pero es un cambio de postura, no sólo un arreglo.
