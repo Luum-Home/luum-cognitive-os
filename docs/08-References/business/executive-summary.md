@@ -58,22 +58,13 @@ Developer --> Cognitive OS --> AI Assistant (Claude/Cursor/Codex/Gemini)
 
 ## Proven in Production
 
-a large production monolith was decomposed into 14+ microservices in ~24 hours using Cognitive OS:
-
-| Metric | Value |
-|---|---|
-| Agents launched | 100+ |
-| Agents in parallel | 12+ |
-| Tests written | 700+ |
-| Traditional estimate | 9-15 months |
-| Actual time | ~24 hours |
-| Acceleration factor | ~300x |
+A client's legacy monolith was partly decomposed into services during one long session, with many agents working in parallel and one operator coordinating them. Work that a traditional plan estimated in months was carried out in that session. Details and limits: [case-study.md](case-study.md).
 
 ## What Makes It Different
 
 1. **Depth of integration** — 13 integrated primitives that work as a system, not as standalone tools. Memory feeds error learning, which feeds skill adaptation, which feeds KPIs.
 
-2. **Proven on real software** — Not a demo project. Built and validated on a fintech platform with many endpoints, 3 programming languages, and several integrations with external providers.
+2. **Proven on real software** — Not a demo project. Built and validated on a real multi-service platform with external integrations.
 
 3. **Telemetry-guided improvement** — The system records errors, patterns, and skill outcomes so maintainers can review proposed improvements; autonomous mutation remains gated by explicit experiments and human approval.
 

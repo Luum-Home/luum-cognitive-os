@@ -33,18 +33,18 @@ If the OS can handle this, it can handle anything we throw at it.
 ```
 Orchestrator (this session)
     |
-    +-- Agent 1:  Extract domain A         -> Go service
-    +-- Agent 2:  Extract domain B         -> Go service
-    +-- Agent 3:  Extract domain C             -> Go service
+    +-- Agent 1:  Extract domain A  -> Go service
+    +-- Agent 2:  Extract domain B  -> Go service
+    +-- Agent 3:  Extract domain C  -> Go service
     +-- Agent 4:  Extract domain D  -> Go service
-    +-- Agent 5:  Extract domain E      -> Go service
-    +-- Agent 6:  Extract domain F          -> Go service
-    +-- Agent 7:  Extract domain G          -> Go service
-    +-- Agent 8:  Extract domain H          -> Go service
-    +-- Agent 9:  Extract domain I    -> Go service
-    +-- Agent 10: Extract domain J      -> Go service
-    +-- Agent 11: Extract domain K           -> Go service
-    +-- Agent 12: Extract domain L           -> Go service
+    +-- Agent 5:  Extract domain E  -> Go service
+    +-- Agent 6:  Extract domain F  -> Go service
+    +-- Agent 7:  Extract domain G  -> Go service
+    +-- Agent 8:  Extract domain H  -> Go service
+    +-- Agent 9:  Extract domain I  -> Go service
+    +-- Agent 10: Extract domain J  -> Go service
+    +-- Agent 11: Extract domain K  -> Go service
+    +-- Agent 12: Extract domain L  -> Go service
 ```
 
 Each agent follows an identical pattern:

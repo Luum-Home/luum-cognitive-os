@@ -196,7 +196,7 @@ Remaining scope: Phase 1 split the top-3 fattest skills; the remaining ~95 SKILL
 ### 6. `coverage-enforcement` (verification-audit) — HIGH
 **Classification**: ATOMIC / COUPLED / COMPOSABLE
 
-**Problem**: Hardcodes `<service-monorepo>/apps/` as the path to scan. This makes the skill useless for any project that is not the specific luum backend. The skill name implies universal applicability, but the implementation is project-specific.
+**Problem**: Hardcodes `<service-monorepo>/apps/` as the path to scan. This makes the skill useless for any project that is not one specific backend. The skill name implies universal applicability, but the implementation is project-specific.
 
 **Fix**: Read the service root from `cognitive-os.yaml -> project.infrastructure.services_root` or accept it as a parameter. Remove the hardcoded `<service-monorepo>/apps/` path. Pattern: `find ${SERVICES_ROOT:-./apps} -name '*.go'`.
 

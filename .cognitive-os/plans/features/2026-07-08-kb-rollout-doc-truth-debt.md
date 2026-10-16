@@ -70,7 +70,7 @@ synthesis session that found them).
 
 - [ ] [DOC-TRUTH-DEBT][medium][adr-numbering] directory `docs/05-Methodology/root/` (file `executable-acceptance-specification.md`): labels its own ADR as "ADR-317" but cites the filename `ADR-324-executable-acceptance-specification-eas.md` (mismatched ADR number vs cited filename). Found via KB synthesis rollout (2026-07-08); resolution deferred.
 
-- [ ] [DOC-TRUTH-DEBT][high][counts] directory `docs/08-References/business/` (file `case-study.md`): claims "with many endpoints" with "part of the endpoints migrated" — the percentages did not match; also claims "many use-case domains" vs "8+ of 46" elsewhere in the same doc (46 vs 47 mismatch). Found via KB synthesis rollout (2026-07-08); resolution deferred.
+- [x] [DOC-TRUTH-DEBT][high][counts] directory `docs/08-References/business/` (file `case-study.md`): endpoint and domain counts were inconsistent. Resolved 2026-10-16: the case study was anonymized and no longer publishes those figures.
 
 - [ ] [DOC-TRUTH-DEBT][medium][stale-duplicate] directory `docs/05-Methodology/runbooks/` (files `history-sanitization.md` and `cos-history-sanitization.md`): same ADR-218 workflow documented with divergent command sets across the two docs; the shorter doc is likely the stale duplicate and should be reconciled or archived. Found via KB synthesis rollout (2026-07-08); resolution deferred.
 

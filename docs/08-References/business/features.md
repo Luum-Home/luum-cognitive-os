@@ -398,7 +398,7 @@ claude
 | Multi-agent | 12+ parallel, fault-tolerant | Yes | Party mode | No | No |
 | Cost control | Sync budget gate + retry classifier + capability routing | /usage command | No | No | No |
 | IDE portability | Proof-level-specific native, wrapper, and structural projections | Many | Yes | Yes | Yes |
-| Proven at scale | 300x on real fintech | Open-source projects | No | No | No |
+| Proven at scale | Real monolith decomposition | Open-source projects | No | No | No |
 
 ---
 
@@ -417,6 +417,6 @@ claude
 | Document | Description |
 |---|---|
 | [value-proposition.md](value-proposition.md) | Value proposition and differentiation |
-| [case-study.md](case-study.md) | Case study: ~300x acceleration |
+| [case-study.md](case-study.md) | Case studies: monolith decomposition and self-applied ADR sprint |
 | [open-source-design.md](open-source-design.md) | Framework architecture, plugin system, file audit |
 | [portability-plan.md](portability-plan.md) | Multi-IDE support plan |

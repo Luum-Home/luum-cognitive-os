@@ -54,16 +54,7 @@ Developer --> Cognitive OS --> AI Assistant (any)
 
 ## Success Story
 
-| Metric | Value |
-|---|---|
-| Platform | Fintech with many endpoints in a legacy monolith |
-| Result | 14+ microservices, 700+ tests, part of the endpoints migrated |
-| Simultaneous agents | 12+ in parallel, 100+ total launches |
-| Actual time | ~24 hours |
-| Traditional estimate | 9-15 months (1 senior developer) |
-| Acceleration factor | ~300x |
-
-The platform had an Express.js monolith with many endpoints, several integrations with external providers, and 3 programming languages. Cognitive OS coordinated over 100 agents to decompose it into microservices, write tests, and document the entire process — in a single day.
+A client's legacy monolith, with several services around it and external integrations, was partly decomposed into services during one long session. Cognitive OS coordinated many agents in parallel to extract domains, write tests and document the process; a traditional plan had estimated that work in months. The client and its figures are not published. Details and limits: [case-study.md](case-study.md).
 
 ## Who It's For
 
