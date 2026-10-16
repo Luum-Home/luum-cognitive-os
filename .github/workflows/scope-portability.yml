@@ -17,6 +17,11 @@ jobs:
   scope-portability:
     name: Primitive scope portability contract
     runs-on: ubuntu-latest
+    env:
+      # Key of the protected-name policy (manifests/provenance-scan.yaml), used by
+      # provenance-scan from the pre-commit behavior test. Without it the scan
+      # fails in CI on purpose. See docs/04-Concepts/architecture/provenance-scan-guardrail.md.
+      COS_LEAK_HMAC_KEY: ${{ secrets.COS_LEAK_HMAC_KEY }}
     steps:
       - uses: actions/checkout@v6
         with:

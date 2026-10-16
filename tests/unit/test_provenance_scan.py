@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import hashlib
+import hmac
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -9,12 +12,23 @@ ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = ROOT / "scripts" / "provenance_scan.py"
 
 
-def run_scan(tmp_path: Path, *args: str) -> subprocess.CompletedProcess[str]:
+# A throwaway key for fixtures; the real one never enters the repo.
+TEST_KEY = "unit-test-key-not-a-secret"
+
+
+def run_scan(tmp_path: Path, *args: str, key: str | None = TEST_KEY, ci: bool = False) -> subprocess.CompletedProcess[str]:
+    env = {k: v for k, v in os.environ.items() if k not in {"COS_LEAK_HMAC_KEY", "COS_LEAK_HMAC_KEY_FILE", "CI"}}
+    env["COS_LEAK_HMAC_KEY_FILE"] = str(tmp_path / "no-such-key-file")
+    if key is not None:
+        env["COS_LEAK_HMAC_KEY"] = key
+    if ci:
+        env["CI"] = "true"
     return subprocess.run(
         [sys.executable, str(SCRIPT), "--root", str(tmp_path), "--json", *args],
         text=True,
         capture_output=True,
         check=False,
+        env=env,
     )
 
 
@@ -24,7 +38,7 @@ def write_config(root: Path, body: str = "") -> Path:
     path.write_text(
         "schema_version: provenance-scan/v1\n"
         "provenance:\n"
-        "  forbidden_terms: [FinOpenPOS, private-core]\n"
+        "  forbidden_terms: [ExampleSourceRepo, private-core]\n"
         "  allowed_absolute_paths: [/tmp/]\n"
         "  allowed_import_roots:\n"
         "    go: [github.com/example/app, github.com/spf13/cobra]\n"
@@ -47,7 +61,7 @@ def test_blocks_local_paths_and_source_terms(tmp_path: Path) -> None:
     cfg = write_config(tmp_path)
     doc = tmp_path / "README.md"
     doc.write_text(
-        "copied from private repo FinOpenPOS at /Users/me/Projects/source\n",  # cos-allow-provenance-scan cos-allow-absolute-path cos-allow-local-privacy-pattern: deliberate scanner fixture
+        "copied from private repo ExampleSourceRepo at /Users/me/Projects/source\n",  # cos-allow-provenance-scan cos-allow-absolute-path cos-allow-local-privacy-pattern: deliberate scanner fixture
         encoding="utf-8",
     )
 
@@ -176,14 +190,12 @@ def test_go_replace_blocks_relative_target_outside_repo(tmp_path: Path) -> None:
     assert any(item["category"] == "external-go-replace" for item in payload(proc)["findings"])
 
 
-def _sha256(term: str) -> str:
-    import hashlib
-
-    return hashlib.sha256(term.lower().encode("utf-8")).hexdigest()
+def _mac(term: str, key: str = TEST_KEY) -> str:
+    return hmac.new(key.encode("utf-8"), term.lower().encode("utf-8"), hashlib.sha256).hexdigest()
 
 
 def test_hashed_term_policy_flags_token_without_clear_text_config(tmp_path: Path) -> None:
-    cfg = write_config(tmp_path, f"  forbidden_term_sha256: [{_sha256('secret-client')}]\n")
+    cfg = write_config(tmp_path, f"  forbidden_term_hmac: [{_mac('secret-client')}]\n")
     assert "secret-client" not in cfg.read_text(encoding="utf-8")
     doc = tmp_path / "README.md"
     doc.write_text("ported from the Secret-Client billing module\nsecretclientx is a different word\n", encoding="utf-8")
@@ -196,7 +208,7 @@ def test_hashed_term_policy_flags_token_without_clear_text_config(tmp_path: Path
 
 
 def test_hashed_path_policy_flags_projects_path_only(tmp_path: Path) -> None:
-    cfg = write_config(tmp_path, f"  forbidden_path_sha256: [{_sha256('secret-client')}]\n")
+    cfg = write_config(tmp_path, f"  forbidden_path_hmac: [{_mac('secret-client')}]\n")
     doc = tmp_path / "README.md"
     doc.write_text(
         "see ~/Projects/secret-client/api for the original\n"  # cos-allow-absolute-path cos-allow-local-privacy-pattern: deliberate scanner fixture
@@ -212,11 +224,64 @@ def test_hashed_path_policy_flags_projects_path_only(tmp_path: Path) -> None:
 
 
 def test_hashed_policy_rejects_non_digest_entries(tmp_path: Path) -> None:
-    cfg = write_config(tmp_path, "  forbidden_term_sha256: [secret-client]\n")
+    cfg = write_config(tmp_path, "  forbidden_term_hmac: [secret-client]\n")
     doc = tmp_path / "README.md"
     doc.write_text("nothing\n", encoding="utf-8")
 
     proc = run_scan(tmp_path, "--config", str(cfg), str(doc))
 
     assert proc.returncode != 0
-    assert "SHA-256" in proc.stderr
+    assert "HMAC-SHA256" in proc.stderr
+
+
+def _keyed_fixture(tmp_path: Path) -> tuple[Path, Path]:
+    cfg = write_config(tmp_path, f"  forbidden_term_hmac: [{_mac('secret-client')}]\n")
+    doc = tmp_path / "README.md"
+    doc.write_text("ported from the secret-client billing module\n", encoding="utf-8")
+    return cfg, doc
+
+
+def test_hmac_policy_does_not_match_under_another_key(tmp_path: Path) -> None:
+    cfg, doc = _keyed_fixture(tmp_path)
+
+    proc = run_scan(tmp_path, "--config", str(cfg), str(doc), key="some-other-key")
+
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+
+
+def test_hmac_policy_without_key_fails_in_ci(tmp_path: Path) -> None:
+    cfg, doc = _keyed_fixture(tmp_path)
+
+    proc = run_scan(tmp_path, "--config", str(cfg), str(doc), key=None, ci=True)
+
+    assert proc.returncode == 2
+    assert "COS_LEAK_HMAC_KEY" in proc.stderr and "cannot verify" in proc.stderr
+
+
+def test_hmac_policy_without_key_warns_and_skips_locally(tmp_path: Path) -> None:
+    cfg, doc = _keyed_fixture(tmp_path)
+
+    proc = run_scan(tmp_path, "--config", str(cfg), str(doc), key=None)
+
+    assert proc.returncode == 0
+    assert "SKIPPED" in proc.stderr
+
+
+def test_hmac_key_is_never_echoed(tmp_path: Path) -> None:
+    cfg, doc = _keyed_fixture(tmp_path)
+
+    proc = run_scan(tmp_path, "--config", str(cfg), str(doc))
+
+    assert proc.returncode == 1
+    assert TEST_KEY not in proc.stdout + proc.stderr
+
+
+def test_legacy_unkeyed_sha256_policy_is_rejected(tmp_path: Path) -> None:
+    cfg = write_config(tmp_path, f"  forbidden_term_sha256: [{hashlib.sha256(b'secret-client').hexdigest()}]\n")
+    doc = tmp_path / "README.md"
+    doc.write_text("nothing\n", encoding="utf-8")
+
+    proc = run_scan(tmp_path, "--config", str(cfg), str(doc))
+
+    assert proc.returncode != 0
+    assert "*_hmac" in proc.stderr

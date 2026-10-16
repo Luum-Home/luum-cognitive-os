@@ -11,12 +11,14 @@ from __future__ import annotations
 import argparse
 import fnmatch
 import hashlib
+import hmac
 import importlib.util
 import json
+import os
 import re
 import subprocess
 import sys
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
@@ -102,10 +104,16 @@ GO_REPLACE_RE = re.compile(r'^\s*replace\s+([^\s]+)\s+=>\s+([^\s]+)')
 PY_IMPORT_RE = re.compile(r'^\s*(?:from\s+([A-Za-z_][\w.]*)\s+import\b|import\s+([A-Za-z_][\w.]*))')
 TS_IMPORT_RE = re.compile(r'''(?:from\s+['"]([^'"]+)['"]|import\s*\(?\s*['"]([^'"]+)['"]\)?)''')
 PATH_HACK_RE = re.compile(r"sys\.path\.(?:append|insert)\(([^)]*)\)")
-# Hashed policies: a list of names that must not leak is itself a leak when it
-# is committed in clear. `forbidden_term_sha256` / `forbidden_path_sha256` hold
-# SHA-256 hex digests of the lowercased name instead; the scanner hashes every
-# candidate token of the scanned text and compares digests.
+# Keyed policies: a list of names that must not leak is itself a leak when it
+# is committed in clear, and a plain hash of a short name is confirmed by anyone
+# who already suspects it. `forbidden_term_hmac` / `forbidden_path_hmac` hold
+# HMAC-SHA256(key, lowercased name) hex digests; the key lives outside the repo
+# (COS_LEAK_HMAC_KEY, or the file named by COS_LEAK_HMAC_KEY_FILE, default
+# ~/.config/luum/leak-hmac.key). The scanner MACs every candidate token of the
+# scanned text with the same key and compares digests.
+LEAK_KEY_ENV = "COS_LEAK_HMAC_KEY"
+LEAK_KEY_FILE_ENV = "COS_LEAK_HMAC_KEY_FILE"
+DEFAULT_LEAK_KEY_FILE = "~/.config/luum/leak-hmac.key"
 TERM_TOKEN_RE = re.compile(r"[a-z0-9]+(?:[-/._][a-z0-9]+)*")
 TERM_SEPARATOR_RE = re.compile(r"([-/._])")
 MAX_TERM_COMPONENTS = 8
@@ -133,13 +141,45 @@ class Policy:
     exclude_globs: tuple[str, ...]
     scan_imports: bool
     scan_path_hacks: bool
-    forbidden_term_sha256: frozenset[str] = frozenset()
-    forbidden_path_sha256: frozenset[str] = frozenset()
+    forbidden_term_hmac: frozenset[str] = frozenset()
+    forbidden_path_hmac: frozenset[str] = frozenset()
+    # Never shown: repr=False keeps the key out of any debug print of the policy.
+    leak_key: bytes | None = field(default=None, repr=False, compare=False)
 
 
-def fingerprint_term(term: str) -> str:
-    """SHA-256 hex digest of a term, normalized to stripped lowercase."""
-    return hashlib.sha256(term.strip().lower().encode("utf-8")).hexdigest()
+def running_in_ci(env: Any = None) -> bool:
+    value = (os.environ if env is None else env).get("CI", "")
+    return str(value).strip().lower() in {"1", "true", "yes"}
+
+
+def leak_key_file(env: Any = None) -> Path:
+    env = os.environ if env is None else env
+    return Path(env.get(LEAK_KEY_FILE_ENV) or DEFAULT_LEAK_KEY_FILE).expanduser()
+
+
+def load_leak_hmac_key(env: Any = None) -> bytes | None:
+    """The HMAC key from COS_LEAK_HMAC_KEY, else from the key file; None if absent."""
+    env = os.environ if env is None else env
+    value = str(env.get(LEAK_KEY_ENV, "")).strip()
+    if value:
+        return value.encode("utf-8")
+    try:
+        value = leak_key_file(env).read_text(encoding="utf-8").strip()
+    except OSError:
+        return None
+    return value.encode("utf-8") if value else None
+
+
+def missing_key_message(env: Any = None) -> str:
+    return (
+        f"no HMAC key for the protected-name policy: set {LEAK_KEY_ENV} "
+        f"or create {leak_key_file(env)} (see docs/04-Concepts/architecture/provenance-scan-guardrail.md)"
+    )
+
+
+def fingerprint_term(term: str, key: bytes) -> str:
+    """HMAC-SHA256 hex digest of a term, normalized to stripped lowercase."""
+    return hmac.new(key, term.strip().lower().encode("utf-8"), hashlib.sha256).hexdigest()
 
 
 def term_candidates(text: str) -> set[str]:
@@ -165,18 +205,18 @@ def term_candidates(text: str) -> set[str]:
     return candidates
 
 
-def hashed_term_hits(text: str, digests: frozenset[str]) -> list[str]:
-    """Candidates of `text` whose digest is in `digests`, sorted."""
-    if not digests:
+def hashed_term_hits(text: str, digests: frozenset[str], key: bytes | None) -> list[str]:
+    """Candidates of `text` whose keyed digest is in `digests`, sorted."""
+    if not digests or not key:
         return []
-    return sorted(c for c in term_candidates(text) if fingerprint_term(c) in digests)
+    return sorted(c for c in term_candidates(text) if fingerprint_term(c, key) in digests)
 
 
 def as_digests(value: Any, key: str) -> frozenset[str]:
     digests = frozenset(item.strip().lower() for item in as_tuple(value))
     bad = sorted(d for d in digests if not re.fullmatch(r"[0-9a-f]{64}", d))
     if bad:
-        raise SystemExit(f"ERROR: {key} entries must be SHA-256 hex digests: {bad[:3]}")
+        raise SystemExit(f"ERROR: {key} entries must be HMAC-SHA256 hex digests: {bad[:3]}")
     return digests
 
 
@@ -227,6 +267,17 @@ def build_policy(root: Path, config_path: Path | None) -> Policy:
     section = raw.get("provenance", raw)
     if not isinstance(section, dict):
         raise SystemExit("ERROR: provenance config section must be a mapping")
+    for legacy in ("forbidden_term_sha256", "forbidden_path_sha256"):
+        if section.get(legacy):
+            raise SystemExit(f"ERROR: {legacy} is no longer supported: unkeyed hashes of short names are confirmable; use the *_hmac keys")
+    term_hmac = as_digests(section.get("forbidden_term_hmac"), "forbidden_term_hmac")
+    path_hmac = as_digests(section.get("forbidden_path_hmac"), "forbidden_path_hmac")
+    leak_key = load_leak_hmac_key() if (term_hmac or path_hmac) else None
+    if (term_hmac or path_hmac) and leak_key is None:
+        if running_in_ci():
+            print(f"ERROR: provenance-scan: {missing_key_message()}. In CI this gate cannot verify without it.", file=sys.stderr)
+            raise SystemExit(2)
+        print(f"WARNING: provenance-scan: {missing_key_message()}; protected-name checks SKIPPED.", file=sys.stderr)
     return Policy(
         forbidden_terms=as_tuple(section.get("forbidden_terms")),
         forbidden_paths=tuple(DEFAULT_FORBIDDEN_PATH_PATTERNS) + as_tuple(section.get("forbidden_paths")),
@@ -238,8 +289,9 @@ def build_policy(root: Path, config_path: Path | None) -> Policy:
         exclude_globs=as_tuple(section.get("exclude_globs")),
         scan_imports=bool(section.get("scan_imports", True)),
         scan_path_hacks=bool(section.get("scan_path_hacks", True)),
-        forbidden_term_sha256=as_digests(section.get("forbidden_term_sha256"), "forbidden_term_sha256"),
-        forbidden_path_sha256=as_digests(section.get("forbidden_path_sha256"), "forbidden_path_sha256"),
+        forbidden_term_hmac=term_hmac,
+        forbidden_path_hmac=path_hmac,
+        leak_key=leak_key,
     )
 
 
@@ -436,11 +488,11 @@ def scan_text(path: Path, root: Path, text: str, policy: Policy) -> list[Finding
         for term in forbidden_terms:
             if term in line:
                 findings.append(Finding(path, line_no, "forbidden-term", "project/source term is forbidden", term))
-        for hit in hashed_term_hits(line, policy.forbidden_term_sha256):
+        for hit in hashed_term_hits(line, policy.forbidden_term_hmac, policy.leak_key):
             findings.append(Finding(path, line_no, "forbidden-term", "project/source term is forbidden (hashed policy)", hit))
-        if policy.forbidden_path_sha256:
+        if policy.forbidden_path_hmac and policy.leak_key:
             for match in PROJECTS_PATH_RE.findall(line):
-                if hashed_term_hits(match, policy.forbidden_path_sha256):
+                if hashed_term_hits(match, policy.forbidden_path_hmac, policy.leak_key):
                     findings.append(Finding(path, line_no, "forbidden-path", "path names a private source project (hashed policy)", match))
         for regex in compiled_provenance:
             if m := regex.search(line):
