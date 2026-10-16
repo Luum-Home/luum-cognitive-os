@@ -45,7 +45,7 @@ no cuesta nada**: no existe el directorio `.claude/`, las reglas quedan en
 `.codex/hooks.json`, que Claude Code no lee. Bajo Codex sí cuesta: 16 hooks cableados,
 5 por llamada a bash. Cero filas de telemetría en las 10.
 
-**`core|claude` (4 instalaciones: aisotropy, n1u, cienciayjusticia-voting, FinOpenPOS).**
+**`core|claude` (4 instalaciones: aisotropy, consumidor-a, consumidor-b, FinOpenPOS).**
 Es la cohorte que realmente paga. Impuesto fijo ~842–1.166 tokens por prompt
 (`.claude/CLAUDE.md`, 4,6 KB). 38 a 100 hooks cableados. 9 hooks por llamada a Bash,
 7 por Edit/Write, 2 por Read, 1 por Grep/Task. Solo 2 de las 4 tienen telemetría.
@@ -54,7 +54,7 @@ Es la cohorte que realmente paga. Impuesto fijo ~842–1.166 tokens por prompt
 (113.201 tokens de material) contra 15 en `core`. **5,2x el peso en disco** de una
 instalación `core`, con 41 hooks cableados. Cero telemetría: el peso está, el uso no.
 
-**`standard|d9ecd3e` (rbvm-platform).** Fósil de 2026-03-31, cuatro meses y medio sin
+**`standard|d9ecd3e` (consumidor-d).** Fósil de 2026-03-31, cuatro meses y medio sin
 reinstalar, con un identificador de versión que es un SHA y no un semver. 24 hooks
 cableados, cero contexto inyectado, cero telemetría.
 
@@ -228,8 +228,8 @@ impuesto fijo del SO es el **1,08%**. El 98,9% restante es acumulación de conve
 salida de herramientas. **Recortar `RULES-COMPACT.md` a la mitad bajaría la factura un 0,4%.**
 El presupuesto de tokens vigila el 1% barato mientras el 99% no tiene gate.
 
-**14 de 21 tienen hooks cableados y cero telemetría.** Incluye `n1u` con **100 hooks**
-cableados y `cienciayjusticia-voting` con **97** — cero invocaciones registradas en ambas.
+**14 de 21 tienen hooks cableados y cero telemetría.** Incluye `consumidor-a` con **100 hooks**
+cableados y `consumidor-b` con **97** — cero invocaciones registradas en ambas.
 Además el manifiesto miente sobre el cableado en 13 instalaciones: `install-meta.json`
 declara `hooks_installed: 43` donde el driver activo cablea 16 (gap de 27), y en `luum-lang`
 declara 155 contra 41 cableados (gap de 114). El campo cuenta **archivos copiados**, no

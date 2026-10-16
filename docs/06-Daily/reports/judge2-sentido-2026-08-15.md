@@ -137,16 +137,16 @@ mezclaba basura con instalaciones; corregido.
 | `ae094062a70a` | **14** (byte-idénticas) | 76 | 2026-07-20 | solo aisotropy: 179.445 |
 | `35807a9fb032` | 1 — FinOpenPOS | 78 | **2026-08-15** | 52.693 |
 | `5d283cb8350b` | 1 — luum-lang | **188** | 2026-07-20 | 0 |
-| `8eb1e18b91ae` | 1 — rbvm-platform (parcial) | 19 | **2026-03-31** | 0 |
+| `8eb1e18b91ae` | 1 — consumidor-d (parcial) | 19 | **2026-03-31** | 0 |
 
 ### Las tres cuentas que el encargo pidió distinguir
 
 | Categoría | Cuántas | Cuáles |
 |---|---:|---|
-| **Instalaciones** (existe el directorio con hooks) | **16** + 1 parcial | 14 del sweep + FinOpenPOS + luum-lang (+ rbvm-platform parcial) |
+| **Instalaciones** (existe el directorio con hooks) | **16** + 1 parcial | 14 del sweep + FinOpenPOS + luum-lang (+ consumidor-d parcial) |
 | **Vivas** (disparos en 30 días) | **2** | `aisotropy` (179.445 ev.), `FinOpenPOS` (52.693 ev.) |
 | **Al día** | **1** | solo FinOpenPOS, y porque la repararon anoche |
-| **Quedadas en versión vieja** | **15** | 14 en la cohorte del 2026-07-20; rbvm-platform en una del **2026-03-31** (4,5 meses) |
+| **Quedadas en versión vieja** | **15** | 14 en la cohorte del 2026-07-20; consumidor-d en una del **2026-03-31** (4,5 meses) |
 
 Las 14 de la cohorte grande no son "adopción": son **una barrida de instalación de un día**.
 Su telemetría máxima de por vida es **9 eventos** (`luum-interface-layer`, último 2026-05-10);
@@ -337,7 +337,7 @@ Dos costos más, medidos:
    un consumidor. Lo más cercano es `.cognitive-os/cos_lib/.closure-manifest.json`, que se
    llama "closure manifest" y no detectó una clausura rota de cuatro módulos.
 2. **Drift silencioso.** De los 45 hooks proyectados con homónimo en el origen, **18 tienen
-   contenido distinto** (`cmp -s`). Y la cohorte de rbvm-platform lleva **4,5 meses** sin tocar.
+   contenido distinto** (`cmp -s`). Y la cohorte de consumidor-d lleva **4,5 meses** sin tocar.
 
 **Disco:**
 
@@ -508,7 +508,7 @@ muchísimo menos— que 257 distribuidas a ciegas a 16 lugares.
 - Fechas y estado de push de `HEAD`/`origin/main`; 4 commits sin pushear hace 26 días.
 - Cadencia de tags: 46/32/59/17/4/**0** de marzo a agosto.
 - **16 instalaciones completas + 1 parcial**, agrupadas en 3 cohortes por hash de contenido;
-  14 byte-idénticas del 2026-07-20; rbvm-platform del 2026-03-31.
+  14 byte-idénticas del 2026-07-20; consumidor-d del 2026-03-31.
 - **2 instalaciones vivas**; 14 con cero eventos en 30 días y máximo 9 de por vida.
 - **Clausura de imports rota**: 4 módulos requeridos y ausentes en instalación prístina, con
   los `except: pass` y `2>/dev/null || true` que los tragan, citados por archivo y línea.

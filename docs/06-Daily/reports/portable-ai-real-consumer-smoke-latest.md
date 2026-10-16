@@ -13,7 +13,7 @@ Mode: `read-only-consumer-shadow`
 
 | Consumer | Harness | Project status | Smoke | Primitive files | Actual unchanged |
 |---|---|---|---|---:|---|
-| `cienciayjusticia-voting` | `claude` | `pass` | `pass` | 307 | `True` |
+| `consumidor-b` | `claude` | `pass` | `pass` | 307 | `True` |
 | `cos-consumer-e2e-drill` | `codex` | `pass` | `pass` | 307 | `True` |
 
 This smoke never writes to registered consumer repositories. It projects the generated `.ai` overlay into temporary consumer shadows and checks the real consumer `.ai` snapshot is unchanged.

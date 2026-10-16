@@ -101,7 +101,7 @@ Prosa de un acierto de `mem_search`, tal cual llega:
 ```
 Found 1 memories:
 
-[1] #29943 (manual) — Auditoría arquitectura + seguridad de g2k-packgo-v2
+[1] #29943 (manual) — <título de la observación>
     ... [preview]
 ```
 
@@ -175,9 +175,9 @@ ledger.
 Filas reales, producidas por el hook nuevo sobre payloads reales:
 
 ```json
-{"timestamp":"2026-08-15T22:37:38Z","tool":"mem_search","outcome":"hit","observation_ids":["29943"],"n":1,"project":"g2k-packgo-v2"}
-{"timestamp":"2026-08-15T22:37:38Z","tool":"mem_search","outcome":"miss","observation_ids":[],"n":0,"project":"g2k-time-tracker"}
-{"timestamp":"2026-08-15T22:37:38Z","tool":"mem_get_observation","outcome":"hit","observation_ids":["29943"],"n":1,"project":"g2k-packgo-v2"}
+{"timestamp":"2026-08-15T22:37:38Z","tool":"mem_search","outcome":"hit","observation_ids":["29943"],"n":1,"project":"proyecto-a"}
+{"timestamp":"2026-08-15T22:37:38Z","tool":"mem_search","outcome":"miss","observation_ids":[],"n":0,"project":"proyecto-b"}
+{"timestamp":"2026-08-15T22:37:38Z","tool":"mem_get_observation","outcome":"hit","observation_ids":["29943"],"n":1,"project":"proyecto-a"}
 ```
 
 **Extracción de ids anclada.** Un `#(\d+)` suelto sobre la prosa también

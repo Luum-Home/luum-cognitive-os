@@ -118,8 +118,8 @@ PY
 
 | instalación | cableados sin archivo | entregados sin cablear |
 |---|---|---|
-| `n1u` | `completeness-check`, `direct-main-guard`, `engram-obsidian-export-on-stop`, `plan-claim-validator` | 0 |
-| `cienciayjusticia-voting` | los mismos 4 | 1 |
+| `consumidor-a` | `completeness-check`, `direct-main-guard`, `engram-obsidian-export-on-stop`, `plan-claim-validator` | 0 |
+| `consumidor-b` | los mismos 4 | 1 |
 | `aisotropy` | 0 (pero ver 2.3: `block-destructive-bash` vía otra ruta) | 8 |
 | `FinOpenPOS` | 0 | 2 |
 
@@ -154,7 +154,7 @@ for i in d:
 PY
 ```
 
-**12 de 16 instalaciones no tienen `.claude/settings.json`.** Son Codex-only. Sólo 4 tienen cableado de Claude: `n1u`, `FinOpenPOS`, `cienciayjusticia-voting`, `aisotropy` — y las 2 con telemetría real son exactamente dos de esas cuatro.
+**12 de 16 instalaciones no tienen `.claude/settings.json`.** Son Codex-only. Sólo 4 tienen cableado de Claude: `consumidor-a`, `FinOpenPOS`, `consumidor-b`, `aisotropy` — y las 2 con telemetría real son exactamente dos de esas cuatro.
 
 Es decir: el 75% del parque instalado depende de que Codex ejecute `.codex/hooks.json`, que es justo la pregunta abierta del forense. Ese no es un matiz del análisis, es el análisis.
 
@@ -216,7 +216,7 @@ Ordenado por lo que se puede hacer sin romper nada mientras se decide.
 8. `marketplace.json` en un repo privado del equipo. Las entradas pinnean SHA. Esto le da lado pull al modelo por primera vez: hoy `auto-update-projects.sh` sólo corre en la máquina del mantenedor (§2.5).
 
 **Fase 3 — cortar las 16 (2 semanas, gradual)**
-9. Orden: primero `cos-consumer-e2e-drill` (es el drill, para eso está), después las 10 con telemetría cero (`accounting`, `luum-talent`, `live-profile`, `luum-lang`, `cognitive-layer`, `luum-cybersecurity`, `magil-openclaw`, `luum-woocommerce-distrinorth`, `luum-interface-layer`, `luum-platform-lab`), y último las 2 vivas (`aisotropy`, `FinOpenPOS`).
+9. Orden: primero `cos-consumer-e2e-drill` (es el drill, para eso está), después las 10 con telemetría cero (`accounting`, `luum-talent`, `live-profile`, `luum-lang`, `cognitive-layer`, `luum-cybersecurity`, `consumidor-c`, `luum-woocommerce-distrinorth`, `luum-interface-layer`, `luum-platform-lab`), y último las 2 vivas (`aisotropy`, `FinOpenPOS`).
 10. En cada una: instalar el plugin, verificar que el hook-timing sigue apareciendo, y **recién entonces** borrar `.cognitive-os/hooks/`, `.cognitive-os/cos_lib/`, `.cognitive-os/skills/` y el bloque `hooks` de `.claude/settings.json`. **No tocar** `.cognitive-os/metrics/`, `sessions/`, `agent-runs/`: son 245.701 + 54.414 filas de historia y no se regeneran.
 11. Retirar `install.sh` y `auto-update-projects.sh`. El `rm -rf` de `:416`/`:425` se va con ellos.
 12. Purgar `~/.cognitive-os/installations.json` a medida que cada una migra. El registro sobrevive sólo mientras haya instalaciones legacy.
@@ -265,7 +265,7 @@ En los tres, plugin. Lo que cambia es el orden de la Fase 3 y cuánto trabajo ha
 - Semilla de la clausura = `hooks/*.sh` (`cos_init.py:1897`); `hooks/_lib/` copiado por `copytree` sin clausura (`:1849`, `:1871`); fail-open documentado en `lib_closure.py:168`.
 - `runtime_hook_reality.py` devuelve `fail` con 8 hallazgos sobre `aisotropy`, incluyendo `block-destructive-bash.sh` cableado y ausente.
 - El gate sólo se corre contra `tmp_path` con `--harness codex` (`test_consumer_project_projection.py:204`) y está mockeado en `test_cos_architecture_readiness.py`.
-- 4 hooks cableados sin archivo en `n1u` y `cienciayjusticia-voting`; 2 de ellos `SCOPE: os-only`.
+- 4 hooks cableados sin archivo en `consumidor-a` y `consumidor-b`; 2 de ellos `SCOPE: os-only`.
 - 14 de 22 call-sites de copiado sin `scope_allows` próximo.
 - `install.sh:14` `TARGET_DIR=".cognitive-os"`; `:416`/`:425` `rm -rf`.
 - `auto-update-projects.sh` es `SCOPE: os-only`, disparado por `post-merge`/`pre-push` locales (`setup-git-hooks.sh:198,242,264`); `post-rewrite` ni siquiera está instalado en `.git/hooks/`.

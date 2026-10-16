@@ -112,7 +112,7 @@ cd ~/Projects && find . -maxdepth 4 -type d -name '.cognitive-os' -not -path '*/
 
 | Instalación | módulos `cos_lib` | del censo | `os-only` | sin marcador | fecha | sensibles |
 |---|---|---|---|---|---|---|
-| fcj/cienciayjusticia-voting | 39 | 4 | 1 | 4 | 2026-07-20 | **ninguno** |
+| consumidor-b | 39 | 4 | 1 | 4 | 2026-07-20 | **ninguno** |
 | luum/FinOpenPOS | 39 | 4 | 1 | 4 | 2026-08-15 | **ninguno** |
 | luum/accounting | 39 | 4 | 1 | 4 | 2026-07-20 | **ninguno** |
 | luum/aisotropy | 39 | 4 | 1 | 4 | 2026-07-20 | **ninguno** |
@@ -125,10 +125,10 @@ cd ~/Projects && find . -maxdepth 4 -type d -name '.cognitive-os' -not -path '*/
 | luum/luum-platform-lab | 39 | 4 | 1 | 4 | 2026-07-20 | **ninguno** |
 | luum/luum-talent | 39 | 4 | 1 | 4 | 2026-07-20 | **ninguno** |
 | luum/luum-woocommerce-distrinorth | 39 | 4 | 1 | 4 | 2026-07-20 | **ninguno** |
-| magil/magil-openclaw | 39 | 4 | 1 | 4 | 2026-07-20 | **ninguno** |
+| consumidor-c | 39 | 4 | 1 | 4 | 2026-07-20 | **ninguno** |
 | matias-amendola/live-profile | 39 | 4 | 1 | 4 | 2026-07-20 | **ninguno** |
-| n1u | 39 | 4 | 1 | 4 | 2026-07-20 | **ninguno** |
-| fcj/rbvm-platform | sin `cos_lib` | — | — | — | — | — |
+| consumidor-a | 39 | 4 | 1 | 4 | 2026-07-20 | **ninguno** |
+| consumidor-d | sin `cos_lib` | — | — | — | — | — |
 | luum (raíz) | sin `cos_lib` | — | — | — | — | — |
 | luum/cognitive-os-demo | sin `cos_lib` | — | — | — | — | — |
 | luum/luum-agent-os/--help | sin `cos_lib` | — | — | — | — | — |
