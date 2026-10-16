@@ -78,7 +78,7 @@ class TestClarificationGate:
             "tool_input": {
                 "prompt": (
                     "Implement a new endpoint in internal/users/application/use_cases/get_user.go "
-                    "using Go and ginext to handle GET /api/users/:id. "
+                    "using Go and acme-http to handle GET /api/users/:id. "
                     "This should work for all user types."
                 ),
             },
@@ -99,7 +99,7 @@ class TestClarificationGate:
                 "prompt": (
                     "Implement GetUserByID use case in "
                     "internal/users/application/use_cases/get_user_by_id.go "
-                    "using Go and ginext framework. "
+                    "using Go and acme-http framework. "
                     "ACCEPTANCE CRITERIA:\n"
                     "1. `go build ./...` exits 0\n"
                     "2. `go test ./internal/users/...` exits 0\n"

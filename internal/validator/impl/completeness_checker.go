@@ -52,7 +52,7 @@ func NewCompletenessCheckerValidator() *CompletenessCheckerValidator {
 			{
 				name:    "follow-patterns-vague",
 				trigger: regexp.MustCompile(`(?i)\bfollow\b.{0,20}\b(pattern|convention|style|approach)\b`),
-				exempt:  regexp.MustCompile(`(?i)ginext|EntityWith|ControllerInterface|UseCaseInterface|example:|pattern:`),
+				exempt:  regexp.MustCompile(`(?i)EntityWith|ControllerInterface|UseCaseInterface|example:|pattern:`),
 				warning: "RED FLAG: 'follow patterns' without specifying WHICH patterns. List exact pattern names and examples.",
 			},
 			{

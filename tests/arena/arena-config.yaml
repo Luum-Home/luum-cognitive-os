@@ -128,7 +128,7 @@ arena:
         - CRUD endpoints: GET/POST/PUT/DELETE /api/preferences/:userId
         - PostgreSQL with GORM for persistence
         - Entity: UserPreference (id UUID, userId string, key string, value string, createdAt, updatedAt)
-        - Use ginext ServiceBuilder pattern (see pkg/tools/ginext)
+        - Use acme-http ServiceBuilder pattern (see pkg/tools/acme-http)
         - Unit tests for the use case layer
         - Dockerfile with multi-stage build
       timeout: 300
@@ -158,14 +158,14 @@ arena:
       difficulty: medium
       prompt: |
         Add GET /api/users/:id/preferences to the service-a-go service.
-        - Follow existing controller patterns (ginext handlers)
+        - Follow existing controller patterns (acme-http handlers)
         - Create a use case that queries the preferences table
         - Return JSON: { preferences: [{key, value}] }
         - Add a unit test for the use case
       timeout: 180
       metrics: [endpoint_works, follows_patterns, test_added, time_seconds, tokens_used]
       evaluation:
-        pattern_match: "Uses ginext CreateHandler, implements ControllerInterface"
+        pattern_match: "Uses acme-http CreateHandler, implements ControllerInterface"
         test_exists: "New *_test.go file created"
 
     - id: refactor

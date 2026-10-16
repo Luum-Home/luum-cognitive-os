@@ -50,9 +50,9 @@ class TestExtractDecisions:
         assert any("PostgreSQL" in d for d in decisions), decisions
 
     def test_chose_phrase(self):
-        text = "I chose ginext over huma for the HTTP layer."
+        text = "I chose acme-http over huma for the HTTP layer."
         decisions = _make().extract_decisions(text)
-        assert any("ginext" in d or "huma" in d for d in decisions), decisions
+        assert any("acme-http" in d or "huma" in d for d in decisions), decisions
 
     def test_will_use_phrase(self):
         text = "We will use clean architecture with four layers."
@@ -67,7 +67,7 @@ class TestExtractDecisions:
     def test_multiple_decisions_in_text(self):
         text = (
             "Decided to use Redis for caching.\n"
-            "We will use ginext for routing.\n"
+            "We will use acme-http for routing.\n"
             "Chose PostgreSQL over MySQL."
         )
         decisions = _make().extract_decisions(text)
@@ -187,7 +187,7 @@ class TestCreateAnchor:
         assert parsed.year >= 2024, f"timestamp year {parsed.year} looks wrong"
 
     def test_decisions_populated(self):
-        anchor = _make().create_anchor("We decided to use ginext for routing.")
+        anchor = _make().create_anchor("We decided to use acme-http for routing.")
         assert isinstance(anchor["decisions"], list)
         assert anchor["decisions"], "Decisions should be non-empty"
 

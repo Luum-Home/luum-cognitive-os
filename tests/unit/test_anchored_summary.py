@@ -125,7 +125,7 @@ class TestMergeNewMessages:
 
         # Second merge
         anchor.merge_new_messages([
-            {"role": "assistant", "content": "Decision B: use ginext not huma."},
+            {"role": "assistant", "content": "Decision B: use acme-http not huma."},
         ])
 
         summary_text = str(anchor.get_summary())
@@ -311,7 +311,7 @@ class TestIterativeMergePreservesFilePaths:
 
         decisions = [
             "Use PostgreSQL for the database.",
-            "Use ginext for HTTP handlers.",
+            "Use acme-http for HTTP handlers.",
             "Use clean architecture with 4 layers.",
         ]
 
@@ -322,7 +322,7 @@ class TestIterativeMergePreservesFilePaths:
 
         summary_text = str(anchor.get_summary())
         # At least one major decision keyword must survive
-        found_keywords = [kw for kw in ["PostgreSQL", "ginext", "architecture", "layers", "HTTP"]
+        found_keywords = [kw for kw in ["PostgreSQL", "acme-http", "architecture", "layers", "HTTP"]
                           if kw.lower() in summary_text.lower()]
         assert found_keywords, (
             f"No decision keywords survived iterative merges.\nSummary: {summary_text!r}"

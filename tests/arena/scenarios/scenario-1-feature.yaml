@@ -13,7 +13,7 @@ turns:
       reason: "Vague task — no file paths, no tech specified"
 
   - type: user
-    content: "Add JWT authentication to internal/server/auth/ using Go and ginext. Endpoints: POST /login, POST /register, GET /me. Use bcrypt for passwords."
+    content: "Add JWT authentication to internal/server/auth/ using Go and acme-http. Endpoints: POST /login, POST /register, GET /me. Use bcrypt for passwords."
     expectations:
       clarification_gate_passes: true
       sdd_pipeline_suggested: true

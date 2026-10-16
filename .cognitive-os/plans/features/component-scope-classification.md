@@ -215,7 +215,7 @@ Adding a scope tag to every component's frontmatter / header makes this filterab
 | hooks/agent-prelaunch.sh | both | Universal task registration |
 | hooks/agnix-lint.sh | both | Agent config linting universal |
 | hooks/aguara-scan.sh | both | Security scanning universal |
-| hooks/architecture-compliance.sh | project | Checks Go-specific architecture patterns (ginext, huma/chi) — project-specific |
+| hooks/architecture-compliance.sh | project | Checks Go-specific architecture patterns (acme-http, huma/chi) — project-specific |
 | hooks/assumption-tracker.sh | both | Universal assumption detection |
 | hooks/audit-id-enricher.sh | both | Universal audit enrichment |
 | hooks/auto-checkpoint.sh | both | Universal WAL checkpoint |

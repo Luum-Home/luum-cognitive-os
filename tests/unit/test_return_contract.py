@@ -55,7 +55,7 @@ PROGRESS: [step 4/4] Running tests
 FILES_CREATED: internal/users/handler.go, tests/unit/test_handler_test.go
 FILES_MODIFIED: internal/users/router.go
 
-All tests pass. The endpoint is functional and follows ginext patterns.
+All tests pass. The endpoint is functional and follows acme-http patterns.
 
 RESULT:
   status: completed
@@ -63,7 +63,7 @@ RESULT:
   files_created: internal/users/handler.go, tests/unit/test_handler_test.go
   files_modified: internal/users/router.go
   tests: 8 passed, 0 failed
-  discoveries: ginext requires explicit error mapping for 404s
+  discoveries: acme-http requires explicit error mapping for 404s
   discoveries: - Router registration must happen after middleware
 
 TRUST_REPORT: SCORE=90 STATUS=HIGH EVIDENCE=4 UNCERTAINTIES=1

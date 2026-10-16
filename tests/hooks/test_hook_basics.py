@@ -201,7 +201,7 @@ class TestClarificationGate:
         stdin = make_agent_input(
             "Implement GetUserByID use case in "
             "internal/users/application/use_cases/get_user_by_id.go "
-            "using ginext framework.\n\n"
+            "using acme-http framework.\n\n"
             "ACCEPTANCE CRITERIA:\n"
             "1. go build ./... exits 0\n"
             "2. go test ./internal/users/... exits 0\n"

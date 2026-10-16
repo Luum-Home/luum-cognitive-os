@@ -139,7 +139,7 @@ class TestIntegration:
             ("The deadline is Friday", True),
             ("ack", False),
             ("Show me the handler file", False),
-            ("Don't use huma, switch to ginext", True),
+            ("Don't use huma, switch to acme-http", True),
         ]
 
         for message, expected_capture in messages:

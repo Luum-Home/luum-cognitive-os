@@ -317,11 +317,11 @@ class TestMixedPrompts:
         assert result.category in (PromptCategory.TASK_REQUEST, PromptCategory.CONTEXT)
 
     def test_decision_with_task(self):
-        result = classify_prompt("Use ginext and implement the new controller")
+        result = classify_prompt("Use acme-http and implement the new controller")
         assert result.should_capture is True
 
     def test_feedback_with_task(self):
-        result = classify_prompt("Don't use huma, refactor to use ginext instead")
+        result = classify_prompt("Don't use huma, refactor to use acme-http instead")
         assert result.should_capture is True
 
 

@@ -119,7 +119,7 @@ case "$COMPLEXITY" in
     check_criterion "code_compiles" "build.*success|compil.*success|exit.code.*0|BUILD SUCCESSFUL|no.errors"
     check_criterion "unit_tests_80_percent" "coverage.*[8-9][0-9]%|coverage.*100%|80%|>= 80"
     check_criterion "integration_tests" "integration.*test|integration.*pass|e2e.*pass"
-    check_criterion "architecture_compliance" "architecture.*compliance|no.*violation|ginext|clean.arch"
+    check_criterion "architecture_compliance" "architecture.*compliance|no.*violation|clean.arch"
     check_criterion "docs_updated" "doc.*updated|README|\.md.*modified|documentation"
     check_criterion "adversarial_review" "BLOCKER|CONCERN|SUGGESTION|adversarial.*review"
     ;;
@@ -128,7 +128,7 @@ case "$COMPLEXITY" in
     check_criterion "code_compiles" "build.*success|compil.*success|exit.code.*0|BUILD SUCCESSFUL|no.errors"
     check_criterion "unit_tests_80_percent" "coverage.*[8-9][0-9]%|coverage.*100%|80%|>= 80"
     check_criterion "integration_tests" "integration.*test|integration.*pass|e2e.*pass"
-    check_criterion "architecture_compliance" "architecture.*compliance|no.*violation|ginext|clean.arch"
+    check_criterion "architecture_compliance" "architecture.*compliance|no.*violation|clean.arch"
     check_criterion "docs_updated" "doc.*updated|README|\.md.*modified|documentation"
     check_criterion "adversarial_review" "BLOCKER|CONCERN|SUGGESTION|adversarial.*review"
     check_criterion "security_review" "security.*review|security.*assessment|vulnerability|threat"

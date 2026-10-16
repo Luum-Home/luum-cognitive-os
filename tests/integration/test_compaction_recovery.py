@@ -45,7 +45,7 @@ class TestSessionSummaryRoundtrip:
         save a structured session summary before context is lost.
         """
         session_id = _unique("session")
-        decisions = "Use PostgreSQL for the user service. Adopt ginext over huma."
+        decisions = "Use PostgreSQL for the user service. Adopt acme-http over huma."
         files_modified = "internal/users/handler.go, internal/users/dto.go"
         next_steps = "Complete the GetUserByID use case. Add integration tests."
 
@@ -252,7 +252,7 @@ class TestSpecialCharacterRoundtrip:
     def test_unicode_content_survives(self, real_engram):
         """Spanish/accented characters survive the round-trip."""
         title = f"unicode-{_unique()}"
-        content = "Architecture decision: use ginext, not huma. Implementation succeeded."
+        content = "Architecture decision: use acme-http, not huma. Implementation succeeded."
         result = real_engram["save"](title, content)
         assert result.returncode == 0, f"Save of unicode content failed: {result.stderr}"
 

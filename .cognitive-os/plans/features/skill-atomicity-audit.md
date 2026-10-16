@@ -64,14 +64,14 @@ Remaining scope: Phase 1 split the top-3 fattest skills; the remaining ~95 SKILL
 | 26 | pr-review | skills/ | COMPOSITE | CLEAN | STANDALONE | PR diff + review + test/coverage/lint — naturally ordered |
 | 27 | component-classifier | skills/ | ATOMIC | CLEAN | COMPOSABLE | CORE vs PACKAGE decision; clear input/output |
 | 28 | install-recommended | skills/ | COMPOSITE | CLEAN | STANDALONE | Detect stack + recommend skills — two steps, but tightly coupled |
-| 29 | plan-feature | sdd-compound | ATOMIC | EMBEDDED | COMPOSABLE | References ginext/clean arch; architecture knowledge belongs in rules |
+| 29 | plan-feature | sdd-compound | ATOMIC | EMBEDDED | COMPOSABLE | References acme-http/clean arch; architecture knowledge belongs in rules |
 | 30 | plan-bug | sdd-compound | ATOMIC | EMBEDDED | COMPOSABLE | RCA + fix plan; references project-specific service patterns |
 | 31 | sdd-compound | sdd-compound | META | CLEAN | PIPELINE | Post-archive learning extraction; thin wrapper |
 | 32 | auto-refine | sdd-compound | ATOMIC | CLEAN | PIPELINE | Analyze failure + build refined prompt + re-launch |
 | 33 | batch-runner | sdd-compound | META | CLEAN | PIPELINE | Runs multiple SDD changes sequentially; thin orchestration |
 | 34 | impact-analysis | sdd-compound | ATOMIC | CLEAN | COMPOSABLE | Blast radius analysis via lib/impact_analysis.py |
 | 35 | issue-pipeline | sdd-compound | SPLIT-CANDIDATE | EMBEDDED | STANDALONE | GitHub issue → full SDD → PR; chains 8+ independent skills |
-| 36 | evaluate-plan | sdd-compound | ATOMIC | EMBEDDED | COMPOSABLE | Hardcodes ginext/clean arch as evaluation criteria |
+| 36 | evaluate-plan | sdd-compound | ATOMIC | EMBEDDED | COMPOSABLE | Hardcodes acme-http/clean arch as evaluation criteria |
 | 37 | singularity | sdd-compound | SPLIT-CANDIDATE | CLEAN | STANDALONE | MAPE-K loop (status/run/daemon/dry-run) — 4 independent modes |
 | 38 | webhook-trigger | sdd-compound | SPLIT-CANDIDATE | CLEAN | STANDALONE | GitHub webhook server + pipeline launcher = 2 concerns |
 | 39 | error-analyzer | skill-governance | COMPOSITE | CLEAN | COMPOSABLE | Error pattern clustering + skill improvement proposals — tightly ordered |
@@ -90,7 +90,7 @@ Remaining scope: Phase 1 split the top-3 fattest skills; the remaining ~95 SKILL
 | 52 | coverage-enforcement | verification-audit | ATOMIC | COUPLED | COMPOSABLE | Hardcodes `<service-monorepo>/apps/` service paths |
 | 53 | harness-audit | verification-audit | ATOMIC | CLEAN | COMPOSABLE | Evaluates hooks/rules/skills for continued relevance |
 | 54 | smoke-test | verification-audit | COMPOSITE | EMBEDDED | STANDALONE | 5-phase E2E; embeds expected service/endpoint assumptions |
-| 55 | readiness-check | quality-gates | ATOMIC | EMBEDDED | COMPOSABLE | Hardcodes ginext/clean arch as readiness criteria |
+| 55 | readiness-check | quality-gates | ATOMIC | EMBEDDED | COMPOSABLE | Hardcodes acme-http/clean arch as readiness criteria |
 | 56 | dod-check | quality-gates | ATOMIC | CLEAN | COMPOSABLE | Verifies DoD criteria per complexity level — single purpose |
 | 57 | security-audit | quality-gates | COMPOSITE | CLEAN | STANDALONE | Secrets + hooks + permissions + infra = 4 domains, but logically one audit |
 | 58 | confidence-check | quality-gates | ATOMIC | CLEAN | COMPOSABLE | 5-dimension pre-implementation confidence gate |
@@ -205,7 +205,7 @@ Remaining scope: Phase 1 split the top-3 fattest skills; the remaining ~95 SKILL
 ### 7. `evaluate-plan` (sdd-compound) — MEDIUM
 **Classification**: ATOMIC / EMBEDDED / COMPOSABLE
 
-**Problem**: Hardcodes ginext framework and clean architecture layer names as evaluation criteria. A plan for a FastAPI Python project would be incorrectly scored as violating "architecture alignment" because it doesn't use ginext. The domain knowledge (what counts as good architecture) belongs in project-specific rules or config, not in the skill.
+**Problem**: Hardcodes acme-http framework and clean architecture layer names as evaluation criteria. A plan for a FastAPI Python project would be incorrectly scored as violating "architecture alignment" because it doesn't use acme-http. The domain knowledge (what counts as good architecture) belongs in project-specific rules or config, not in the skill.
 
 **Fix**: Replace hardcoded architecture criteria with a read from `.claude/rules/architecture.md` or a configurable criteria file. The skill becomes a generic "score plan against criteria" engine; the criteria are project-specific.
 
@@ -214,7 +214,7 @@ Remaining scope: Phase 1 split the top-3 fattest skills; the remaining ~95 SKILL
 ### 8. `readiness-check` (quality-gates) — MEDIUM
 **Classification**: ATOMIC / EMBEDDED / COMPOSABLE
 
-**Problem**: Same issue as `evaluate-plan` — hardcodes ginext/clean arch patterns as readiness criteria. A project using Gin (not ginext) would fail readiness even if its architecture is correct. The readiness criteria belong in project config.
+**Problem**: Same issue as `evaluate-plan` — hardcodes acme-http/clean arch patterns as readiness criteria. A project using Gin (not acme-http) would fail readiness even if its architecture is correct. The readiness criteria belong in project config.
 
 **Fix**: Extract architecture-specific checks into `.cognitive-os/templates/readiness-architecture.md`. The skill reads from this file; the file is generated by `cognitive-os-init` based on detected stack.
 
@@ -262,7 +262,7 @@ Remaining scope: Phase 1 split the top-3 fattest skills; the remaining ~95 SKILL
 **Key finding**: Only 10 skills (9.7%) have knowledge contamination. The embedded/coupled issues are concentrated in verification and quality-gates packages, where architecture assumptions leak into generic evaluation logic.
 
 **Skills with EMBEDDED knowledge**:
-- `plan-feature`, `plan-bug` (reference ginext/clean arch patterns)
+- `plan-feature`, `plan-bug` (reference acme-http/clean arch patterns)
 - `evaluate-plan`, `readiness-check` (hardcode architecture as criteria)
 - `session-report-executive` (hardcodes metric categories)
 - `cognitive-os-benchmark` (embeds benchmark criteria inline)
@@ -410,10 +410,10 @@ Added `project.architecture` config section to `cognitive-os.yaml` with:
 | Skill | What Changed | Config Key Used |
 |-------|-------------|-----------------|
 | `coverage-enforcement` | Replaced hardcoded `<service-monorepo>/apps/` with config read | `project.architecture.services_root.go` |
-| `readiness-check` | Replaced hardcoded "ginext, clean arch layers" with config read | `project.architecture.evaluation_criteria`, `project.architecture.frameworks` |
+| `readiness-check` | Replaced hardcoded "acme-http, clean arch layers" with config read | `project.architecture.evaluation_criteria`, `project.architecture.frameworks` |
 | `evaluate-plan` | Replaced hardcoded framework names in Architecture Alignment scoring | `project.architecture.evaluation_criteria`, `project.architecture.layers`, `project.architecture.frameworks` |
 | `secret-audit` | Replaced hardcoded TS/Go/Java service paths with config read + auto-discovery | `project.architecture.service_paths` |
-| `plan-feature` / `plan-bug` | Replaced hardcoded "ginext, clean architecture" references in evaluation | `project.architecture.evaluation_criteria` |
+| `plan-feature` / `plan-bug` | Replaced hardcoded "acme-http, clean architecture" references in evaluation | `project.architecture.evaluation_criteria` |
 
 ### Phase 3: Split Candidates -- ANALYSIS COMPLETE
 

@@ -29,7 +29,7 @@ from typing import Dict, List, Optional
 class UserPreference:
     category: str      # "communication", "technical", "workflow", "explicit"
     key: str           # "language", "verbosity", "framework"
-    value: str         # "plain English", "terse", "Go + ginext"
+    value: str         # "plain English", "terse", "Go + gin"
     confidence: float  # 0.0 to 1.0
     source: str        # "explicit" or "inferred"
 
@@ -208,7 +208,7 @@ class UserModel:
 
         # --- Technical context detection ---
         tech_patterns: Dict[str, List[str]] = {
-            "go": [r"\bgo\b", r"\.go\b", r"\bgolang\b", r"\bginext\b"],
+            "go": [r"\bgo\b", r"\.go\b", r"\bgolang\b"],
             "typescript": [r"\.ts\b", r"\btypescript\b", r"\bnestjs\b", r"\breact\b"],
             "python": [r"\.py\b", r"\bpython\b", r"\bpytest\b", r"\bpip\b"],
             "docker": [r"\bdocker\b", r"\bcontainer\b", r"\bcompose\b"],
