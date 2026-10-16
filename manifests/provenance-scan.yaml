@@ -1,8 +1,17 @@
 schema_version: provenance-scan/v1
 provenance:
   forbidden_terms: []
-  forbidden_paths:
-    - "(?i)Projects/(?:altatienda|n1u|core-backend|backend-go|FinOpenPOS)[A-Za-z0-9._/-]*"
+  forbidden_paths: []
+  # Private source projects that must not appear as a component of a local project path.
+  # SHA-256 of the lowercased name, never the name itself: a committed list of
+  # names to protect is the leak it tries to prevent. To add one:
+  #   python3 -c "import hashlib,sys; print(hashlib.sha256(sys.argv[1].strip().lower().encode()).hexdigest())" NAME
+  forbidden_path_sha256:
+    - "b64f012e7ddc7954e656eced07a6620b65451c5881448fd78674e7da3b2b3801"
+    - "c0c990fbdc85027e59d6528f858769f4e0f5015d17b7945dd81030ab8acc67e3"
+    - "ef60af13a82973a868ee298322eb1f3e5c9e4edb99365ae7044143ad426d2f13"
+    - "11882a06b4b2ef2bd2866083518d69c7cb19abd99a0ae38b5af306dd6959c6ee"
+    - "ff1cf78c2e4d91b87a0262a772fe7d7891a97fa48961c8b57b6468fb6216575e"
   forbidden_provenance_language:
     - '(?i)sourcePattern:\s*adapted-'
   allowed_absolute_paths:
