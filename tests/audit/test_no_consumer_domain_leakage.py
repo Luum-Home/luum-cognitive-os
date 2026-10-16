@@ -21,7 +21,6 @@ directly when COS_CONSUMER_TERMS_FILE points to it.
 
 from __future__ import annotations
 
-import base64
 import importlib.util
 import os
 import subprocess
@@ -65,9 +64,13 @@ PRIVATE_OR_CONSUMER_TERM_HMAC = frozenset(
         # END leak-terms-hmac
     }
 )
-# One protected name, reversed and base64-encoded so it is not greppable here.
-# Chosen on purpose: the least sensitive entry of the list.
-ENCODED_PROTECTED_FIXTURE = "eWF3ZXRhZy1lbWNh"
+# Synthetic protected name for the detection test: invented, it names no repo,
+# product or company, so it can be written in clear. Its digest lives outside
+# the generated block (leak_terms_hmac.py does not touch it) and joins the
+# protected set at run time, so planting it in a core surface fails the scan.
+# Matching it under the loaded key also proves the key is the committed one.
+SYNTHETIC_PROTECTED_TERM = "zentrovak-demo"
+SYNTHETIC_PROTECTED_TERM_HMAC = "a362ba38989078b9b2d64383fcada4fea7f2a5d18c882211e32962ac71175381"
 
 
 def _load_scanner():
@@ -104,7 +107,7 @@ def require_leak_key() -> bytes:
 
 
 def protected_digests(key: bytes) -> frozenset[str]:
-    digests = set(PRIVATE_OR_CONSUMER_TERM_HMAC)
+    digests = set(PRIVATE_OR_CONSUMER_TERM_HMAC) | {SYNTHETIC_PROTECTED_TERM_HMAC}
     local = os.environ.get("COS_CONSUMER_TERMS_FILE", "")
     if local and Path(local).is_file():
         for raw in Path(local).read_text(encoding="utf-8").splitlines():
@@ -113,10 +116,6 @@ def protected_digests(key: bytes) -> frozenset[str]:
             if term and not term.startswith("#") and not term.lower().startswith("path:"):
                 digests.add(SCANNER.fingerprint_term(term, key))
     return frozenset(digests)
-
-
-def decode_fixture(encoded: str) -> str:
-    return base64.b64decode(encoded).decode("utf-8")[::-1]
 
 
 def iter_scanned_files() -> list[Path]:
@@ -148,11 +147,12 @@ def test_committed_list_holds_only_digests() -> None:
 
 def test_a_protected_term_is_detected_without_writing_it() -> None:
     key = require_leak_key()
-    term = decode_fixture(ENCODED_PROTECTED_FIXTURE)
-    assert SCANNER.fingerprint_term(term, key) in PRIVATE_OR_CONSUMER_TERM_HMAC, (
-        "the key does not match the committed digests (wrong key, or digests not regenerated)"
+    term = SYNTHETIC_PROTECTED_TERM
+    assert SCANNER.fingerprint_term(term, key) == SYNTHETIC_PROTECTED_TERM_HMAC, (
+        "the key does not match the committed digests (wrong key)"
     )
     digests = protected_digests(key)
+    assert SYNTHETIC_PROTECTED_TERM_HMAC in digests
 
     for text in (
         f"see the {term} integration",
@@ -165,10 +165,10 @@ def test_a_protected_term_is_detected_without_writing_it() -> None:
     assert leaked_terms(f"x{term.replace('-', '')}x", digests, key) == []
     assert leaked_terms("a perfectly generic sentence about gateways", digests, key) == []
     # Keyed: the same name under another key, or a plain SHA-256, does not match.
-    assert SCANNER.fingerprint_term(term, key + b"-other") not in PRIVATE_OR_CONSUMER_TERM_HMAC
+    assert SCANNER.fingerprint_term(term, key + b"-other") not in digests
     import hashlib
 
-    assert hashlib.sha256(term.encode("utf-8")).hexdigest() not in PRIVATE_OR_CONSUMER_TERM_HMAC
+    assert hashlib.sha256(term.encode("utf-8")).hexdigest() not in digests
 
 
 def test_core_surfaces_do_not_embed_consumer_private_terms() -> None:
