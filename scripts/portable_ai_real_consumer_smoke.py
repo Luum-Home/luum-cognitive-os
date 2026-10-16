@@ -7,6 +7,13 @@ COS installation registry, selects existing consumers for this source checkout,
 and projects the generated overlay into temporary shadow directories that carry
 consumer metadata. The smoke proves packaging compatibility without mutating the
 actual projects.
+
+Every artifact this script writes carries a stable alias per consumer
+(`consumidor-a`, `consumidor-b`, ...), never the registered project name: the
+registry lists repositories of other organizations, and the latest report is
+versioned. The alias is the position of the consumer in the registry order, so
+it does not encode the name. `--reveal-names` prints the alias -> name mapping
+to stdout only, for the operator who needs it.
 """
 from __future__ import annotations
 
@@ -58,27 +65,43 @@ def _ai_snapshot(project: Path) -> dict[str, Any]:
         return {"exists": True, "file_count": -1, "mtime_ns_sum": -1}
 
 
-def _safe_consumer_id(project: dict[str, Any], index: int) -> str:
-    raw = str(project.get("project_name") or f"consumer-{index}")
-    safe = "".join(ch.lower() if ch.isalnum() else "-" for ch in raw).strip("-")
-    return safe[:80] or f"consumer-{index}"
+def consumer_alias(position: int) -> str:
+    """Stable alias for the consumer at `position` (0-based) of the registry order.
+
+    0 -> consumidor-a, 25 -> consumidor-z, 26 -> consumidor-aa, ...
+    """
+    letters = ""
+    n = position + 1
+    while n:
+        n, rem = divmod(n - 1, 26)
+        letters = chr(ord("a") + rem) + letters
+    return f"consumidor-{letters}"
 
 
-def _candidate_projects(fleet: dict[str, Any], limit: int) -> list[dict[str, Any]]:
-    projects = [p for p in fleet.get("projects", []) if isinstance(p, dict) and p.get("exists")]
-    projects.sort(key=lambda p: (str(p.get("status") or "warn") != "pass", str(p.get("project_name") or "")))
-    return projects[:limit]
+def _existing_projects(fleet: dict[str, Any]) -> list[dict[str, Any]]:
+    return [p for p in fleet.get("projects", []) if isinstance(p, dict) and p.get("exists")]
 
 
-def _project_overlay(root: Path, overlay: dict[str, str], project: dict[str, Any], index: int, shadow_root: Path) -> dict[str, Any]:
+def _aliased_projects(fleet: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
+    """Existing consumers paired with their alias, in registry order."""
+    return [(consumer_alias(i), p) for i, p in enumerate(_existing_projects(fleet))]
+
+
+def _candidate_projects(fleet: dict[str, Any], limit: int) -> list[tuple[str, dict[str, Any]]]:
+    aliased = _aliased_projects(fleet)
+    aliased.sort(key=lambda item: (str(item[1].get("status") or "warn") != "pass", item[0]))
+    return aliased[:limit]
+
+
+def _project_overlay(root: Path, overlay: dict[str, str], project: dict[str, Any], alias: str, shadow_root: Path) -> dict[str, Any]:
     project_path = Path(str(project.get("path") or "")).expanduser()
     before = _ai_snapshot(project_path)
-    shadow = shadow_root / _safe_consumer_id(project, index)
+    shadow = shadow_root / alias
     shadow.mkdir(parents=True, exist_ok=True)
     (shadow / "consumer-metadata.json").write_text(
         json.dumps(
             {
-                "project_name": project.get("project_name"),
+                "consumer_id": alias,
                 "harness": project.get("harness"),
                 "registry_mode": project.get("registry_mode"),
                 "effective_version": project.get("effective_version"),
@@ -104,7 +127,7 @@ def _project_overlay(root: Path, overlay: dict[str, str], project: dict[str, Any
     actual_consumer_unchanged = before == after
     status = "pass" if primitive_files and adapter_files and profile_files and no_canonical_shadow_mutation and actual_consumer_unchanged and ("generated" in str(context.get("policy", "")) and "overlay" in str(context.get("policy", ""))) else "fail"
     return {
-        "consumer_id": _safe_consumer_id(project, index),
+        "consumer_id": alias,
         "status": status,
         "harness": str(project.get("harness") or "unknown"),
         "project_status": str(project.get("status") or "unknown"),
@@ -125,9 +148,9 @@ def build_report(root: Path, registry_path: Path | None = None, limit: int = 2) 
     rows: list[dict[str, Any]] = []
     with tempfile.TemporaryDirectory(prefix="cos-portable-ai-real-consumers-") as td:
         shadow_root = Path(td)
-        for index, project in enumerate(candidates, start=1):
-            rows.append(_project_overlay(root, overlay, project, index, shadow_root))
-    available = len([p for p in fleet.get("projects", []) if isinstance(p, dict) and p.get("exists")])
+        for alias, project in candidates:
+            rows.append(_project_overlay(root, overlay, project, alias, shadow_root))
+    available = len(_existing_projects(fleet))
     passing = sum(1 for row in rows if row["status"] == "pass")
     if rows and passing == len(rows):
         status = "pass"
@@ -188,6 +211,12 @@ def render_markdown(report: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def alias_mapping(root: Path, registry_path: Path | None = None) -> list[tuple[str, str]]:
+    """(alias, registered project name) pairs. For stdout only: never write it to a tracked file."""
+    fleet = build_consumer_report(root.resolve(), registry_path)
+    return [(alias, str(p.get("project_name") or "")) for alias, p in _aliased_projects(fleet)]
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--project-dir", type=Path, default=ROOT)
@@ -197,6 +226,11 @@ def main(argv: list[str] | None = None) -> int:
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--check", action="store_true", help="Run validation without updating tracked latest reports (default).")
     mode.add_argument("--write-report", action="store_true", help="Update tracked docs/06-Daily/reports/*-latest artifacts.")
+    parser.add_argument(
+        "--reveal-names",
+        action="store_true",
+        help="Print the alias -> registered project name mapping to stdout. Never written to a file.",
+    )
     args = parser.parse_args(argv)
     report = build_report(args.project_dir, args.registry, max(args.limit, 1))
     if args.write_report:
@@ -206,6 +240,9 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(report, indent=2, sort_keys=True))
     else:
         print(f"portable-ai-real-consumer-smoke: {report['status']} tested={report['tested_consumer_count']}")
+    if args.reveal_names:
+        for alias, name in alias_mapping(args.project_dir, args.registry):
+            print(f"{alias}\t{name}")
     return 0 if report["status"] in {"pass", "warn"} else 1
 
 
