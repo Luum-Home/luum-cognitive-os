@@ -1,148 +1,67 @@
-# Case Study: From Monolith to Microservices in 1 Day
+# Case Study 1: Decomposing a Legacy Monolith with Parallel Agents
 
-> This document presents a real (anonymized) case study of how Cognitive OS was used to decompose
-> a legacy monolith into microservices. Vendor and company names have been replaced with generic ones.
+> Anonymized case study. The client, its product, its vendors, its stack details and its
+> figures are deliberately left out: the combination of those details would identify the
+> organization. What remains is the part that transfers to other projects.
 
 ---
 
-## Executive Summary
+## Summary
 
-A fintech platform with a 170-endpoint Express.js monolith, 3 programming languages, and 14 external vendor integrations was decomposed into 14+ Go microservices, rebranded, upgraded to a modern mobile stack, and equipped with a complete Cognitive OS — all in approximately 24 hours using 100+ AI agents in parallel. The traditional estimate for this work was 9-15 months.
+A team used Cognitive OS during one long working session to decompose a legacy backend
+monolith into smaller services, modernize the client app that consumed it, and install
+Cognitive OS itself in the project. The work that a traditional plan estimated in months of
+single-engineer effort was carried out by many agents working in parallel, coordinated by one
+operator.
 
 ## The Challenge
 
-- 1 Express.js monolith with 170+ endpoints, 47 use-case domains, 52 MongoDB collections
-- 2 Java/Spring Boot microservices (<consumer-codename-b>, <consumer-codename-c>)
-- 1 NestJS service (onboarding)
-- 1 NestJS BFF (gateway for mobile app)
-- 1 React Native mobile app (Expo 51, React 18)
-- 14 mock flags for external vendors
-- 3 programming languages (TypeScript, Java, Go)
-- Proprietary dependencies (SDK from a vendor that ceased to exist)
-- Need for complete rebranding
+- A monolith that had grown over years, with several services around it written in
+  different languages.
+- External integrations that were mocked behind flags, some depending on SDKs that were no
+  longer maintained.
+- A client app on an outdated framework version.
+- A rebranding that touched code, configuration and build identifiers at once.
 
-## What Was Accomplished
+## What Was Done
 
-### Infrastructure and Tooling (Research + Implementation)
+- **Research before building**: open-source tools were evaluated and licence-checked before
+  adopting any of them.
+- **Backend decomposition**: domains were extracted one at a time into services that shared a
+  common set of internal packages (errors, middleware, persistence, events), so each new
+  service started from the same foundations instead of from scratch.
+- **Integrations behind interfaces**: the mock flags were replaced by a plugin boundary, so a
+  real provider and a fake one are interchangeable.
+- **Client modernization**: framework upgrades and a move to a feature-oriented layout, in
+  batches.
+- **Rebranding as a mechanical, verifiable change**: renames driven by search-and-verify loops
+  instead of manual edits.
+- **Cognitive OS itself**: hooks, rules, skills and agent personas installed and adapted to the
+  project as the work went on.
+- **Tests at every step**: unit, integration and end-to-end suites written alongside each
+  migrated domain.
 
-| Task | Traditional Estimate | Actual Time | Agents Used |
-|---|---|---|---|
-| Research 70+ open-source tools | 2-3 weeks | ~2 hours | 8 research agents |
-| License evaluation (30+ tools) | 1 week | ~30 min | 2 agents |
-| Install Engram, Context7, SDD, OpenSpec | 1-2 days | ~1 hour | 5 parallel agents |
-| Install NeMo Guardrails + Langfuse + LiteLLM | 3-5 days | ~1 hour | 3 parallel agents |
-
-### Backend Migration (Express.js/Java/NestJS to Go)
-
-| Task | Traditional Estimate | Actual Time | Agents Used |
-|---|---|---|---|
-| Create Go monorepo (42 packages, 987 files) | 2-3 weeks | ~1 hour | 1 agent |
-| Migrate auth to Go (24 endpoints) | 2-3 weeks | ~1 hour | 1 agent |
-| Migrate user core to Go (33 endpoints) | 4-6 weeks | ~1 hour | 1 agent |
-| Migrate onboarding to Go (12 endpoints) | 2-3 weeks | ~1 hour | 1 agent |
-| Create P2P transfer service (6 endpoints) | 1-2 weeks | ~1 hour | 1 agent |
-| Replace audit database with open-source alternative | 2-3 weeks | ~2 hours | 2 agents |
-| Integrate open-source payment orchestrator | 1-2 weeks | ~1 hour | 1 agent |
-| Integrate PCI vault for cards | 1 week | ~30 min | 1 agent |
-| Decompose card domain (30 use cases to Go) | 2-3 weeks | ~1 hour | 1 agent |
-| Decompose remaining domains (crypto, investments, top-ups, bills, etc.) | 3-6 months | ~4 hours | 8 parallel agents |
-| Add event streaming (15 topics, 5 consumer groups) | 2-3 weeks | ~1 hour | 1 agent |
-| Standardize error handling across all services | 1 week | ~1 hour | 1 agent |
-| Add middleware stack (auth, logging, tracing, rate limiting) | 2-3 weeks | ~1 hour | 1 agent |
-| Add DB schema management (migrations) | 1 week | ~30 min | 1 agent |
-| Plugin architecture (replace 14 mock flags) | 1-2 weeks | ~30 min | 1 agent |
-| Create multi-platform gateway | 1-2 weeks | ~30 min | 1 agent |
-| Create OAuth service | 1-2 weeks | ~1 hour | 1 agent |
-
-### Mobile Modernization
-
-| Task | Traditional Estimate | Actual Time | Agents Used |
-|---|---|---|---|
-| Upgrade Expo 51 to 53, React 18 to 19, RN 0.74 to 0.79 | 2-3 weeks | ~2 hours | 1 agent |
-| Enable New Architecture | 1 week | included above | -- |
-| Migrate to Feature-Sliced Design (Batch 1) | 1-2 weeks | ~1 hour | 1 agent |
-| Upgrade dev tools (ESLint 9, Prettier 3, Husky 9) | 1-2 weeks | ~1.5 hours | 1 agent |
-
-### Rebranding
-
-| Task | Traditional Estimate | Actual Time | Agents Used |
-|---|---|---|---|
-| Display text + Docker + headers | 1-2 weeks | ~2 hours | 3 parallel agents |
-| Java package rename (523 files) | 1-2 weeks | ~30 min | 1 agent |
-| Bundle IDs | 2-3 days | ~15 min | 1 agent |
-| URLs (184 files) | 1 week | ~30 min | 1 agent |
-| Keycloak migration script | 2-3 days | ~15 min | 1 agent |
-
-### Cognitive OS Construction
-
-| Task | Traditional Estimate | Actual Time | Agents Used |
-|---|---|---|---|
-| Design 13-capability architecture | 2-3 months | ~3 hours | multiple |
-| Implement 15 hooks | 2-3 weeks | ~2 hours | 5 agents |
-| Implement 17+ rules | 1-2 weeks | ~1 hour | 3 agents |
-| Create 30+ skills | 2-3 weeks | ~2 hours | 4 agents |
-| Install 16 agent personas | 1-2 days | ~30 min | 1 agent |
-| Self-healing SRE agent | 1-2 weeks | ~30 min | 1 agent |
-| Fault tolerance system | 1-2 weeks | ~30 min | 1 agent |
-| Error learning loop + self-improvement | 1-2 weeks | ~30 min | 1 agent |
-| Agent KPIs/OKRs | 1 week | ~30 min | 1 agent |
-
-### Testing
-
-| Task | Traditional Estimate | Actual Time | Agents Used |
-|---|---|---|---|
-| 548+ unit tests across all services | 3-4 weeks | ~2 hours | 6 agents |
-| E2E suite (38 tests) | 1-2 weeks | ~30 min | 1 agent |
-| Integration tests (28 tests) | 1 week | ~30 min | 1 agent |
-| Identity module tests (62 tests) | 1 week | ~30 min | 1 agent |
-
-## Totals
-
-| Metric | Value |
-|---|---|
-| **Traditional estimate** | 9-15 months (1 senior developer) |
-| **Actual time** | ~24 hours (1 session with Cognitive OS) |
-| **Acceleration factor** | ~300x |
-| **Total agents launched** | 100+ |
-| **Go files created** | 1,500+ |
-| **Tests written** | 700+ |
-| **Documents created** | 60+ |
-| **Tools researched** | 70+ |
-| **Services created/migrated** | 14+ |
-| **Endpoints migrated** | 79+ (31% of the monolith, growing) |
-| **Domains decomposed** | 8+ of 46 (growing) |
+Only part of the monolith was migrated in that session; the rest followed the same pattern.
 
 ## Why It Worked
 
-1. **Parallel execution**: Up to 12 agents running simultaneously
-2. **Accumulated knowledge**: Engram persisted decisions across 100+ agent sessions
-3. **Pattern reuse**: Core-backend packages provided battle-tested foundations
-4. **Error learning**: Each agent's mistakes became warnings for the next one
-5. **Automatic skill generation**: Complex solutions were converted into reusable skills
-6. **Constitutional gates**: Quality was enforced automatically (no manual review needed)
-7. **Spec-driven development**: The SDD workflow ensured structured and verifiable output
+1. **Parallel execution**: independent domains were migrated by agents running at the same time.
+2. **Accumulated knowledge**: Engram persisted decisions across agent sessions, so later agents
+   did not re-decide what earlier ones had settled.
+3. **Pattern reuse**: a shared set of internal packages gave every new service the same
+   foundations.
+4. **Error learning**: each agent's mistakes became warnings for the next one.
+5. **Automatic skill generation**: complex solutions were converted into reusable skills.
+6. **Constitutional gates**: quality checks ran automatically on every change.
+7. **Spec-driven development**: the SDD workflow kept the output structured and verifiable.
 
-## What This Means for the Industry
+## Limits of This Case
 
-This is not a theoretical benchmark. It is a real platform with:
-
-- Real external vendors (authentication, payment processing, identity verification, bank transfers)
-- Real databases (MySQL, MongoDB, PostgreSQL, double-entry ledger)
-- Real mobile app (React Native, Expo, App Store)
-- Real compliance requirements (PII, PCI, tax regulations)
-
-If Cognitive OS can decompose a 170-endpoint monolith in 1 day, it can do the same for any organization.
-
-## Reproducibility
-
-Everything is documented:
-
-- `docs/cognitive-os/` — 12 documents covering architecture, tooling, strategy
-- Project-specific docs — covering migration, Docker, databases
-- `docs/03-PoCs/research/` — 7 documents covering 70+ tools evaluated
-- `docs/mobile/` — 3 documents covering modernization
-
-All findings were saved to Engram for cross-session recovery.
+- The speed-up compares an up-front traditional estimate with the observed session; there is
+  no controlled counterfactual.
+- Migrating part of a monolith is not the same as running it in production: hardening,
+  operations and the remaining domains are separate work.
+- The figures of the original engagement are not published here, on purpose.
 
 ---
 
@@ -238,7 +157,7 @@ The challenge: replace the broken primitive without breaking adoption, while als
 
 ## What This Means
 
-The first case study (fintech monolith, ~300x acceleration) showed that Cognitive OS can decompose external systems with 100+ parallel agents.
+The first case study (a legacy monolith decomposed by parallel agents) showed that Cognitive OS can help decompose external systems.
 
 The second case study shows that **Cognitive OS can extend itself with the same discipline it extends external systems.** The ADRs honor a versioned C1–C4 contract (license allowlist/blocklist, footprint discipline, test-tier matrix). The implementation honors the ADRs. The guardrail validator confirms the substrate-consumer boundary holds. The IMPLEMENTATION-CHECKLIST publishes per-ADR slice progression (Slices A–F across 14 ADRs as of the latest update) with T6/T7/T8/T9/T10 hardening pendings called out per ADR — no overclaim.
 

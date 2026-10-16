@@ -21,7 +21,7 @@ project:
       infrastructure: "internal/infrastructure"
       dtos: "application/dtos"
     services_root:
-      go: "backend-go/apps"
+      go: "apps"
       typescript: "services"
       java: "micro-services"
     # Removed: dead config that nothing reads (session 2026-04-15)

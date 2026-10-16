@@ -20,7 +20,7 @@ The Cognitive OS core is fully operational as a development framework:
 | Manifests (schema-versioned) | 20+ canonical YAMLs | Active enforcement |
 | MCP servers | Native COS server (8 tools) + Engram + Context7 | Running |
 | External services | Optional | JSONL/OTel/MCP are the core path; dashboards, proxies, guardrails, and sandboxes are opt-in |
-| Case study | 1 (fintech platform) | ~300x acceleration proven |
+| Case study | 1 (legacy monolith, anonymized) | Parallel-agent decomposition, months of estimate in one session |
 | Documentation | 70+ documents | Complete |
 
 **What works end-to-end today:**
@@ -203,6 +203,6 @@ The Cognitive OS roadmap is community-driven. You can influence priorities by:
 | Document | Description |
 |---|---|
 | [features.md](features.md) | Complete feature matrix |
-| [case-study.md](case-study.md) | Case study: ~300x acceleration |
+| [case-study.md](case-study.md) | Case studies: monolith decomposition and self-applied ADR sprint |
 | [open-source-design.md](open-source-design.md) | Framework architecture, plugin system |
 | [portability-plan.md](portability-plan.md) | Multi-IDE support plan |

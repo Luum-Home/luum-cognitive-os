@@ -1,11 +1,11 @@
 # Stress Test Strategy: Cognitive OS Decomposing a Production Monolith
 
-> Use the Cognitive OS itself to decompose the 170-endpoint monolith into Go microservices.
+> Use the Cognitive OS itself to decompose a large production monolith into Go microservices.
 > This is the ultimate validation: a 13-capability system proving itself on a massive, real-world task.
 
 ## 1. The Idea
 
-We built a 13-capability Cognitive OS. The best way to prove it works is to use it for a massive real task: decomposing a 170-endpoint monolith into Go microservices.
+We built a 13-capability Cognitive OS. The best way to prove it works is to use it for a massive real task: decomposing a large production monolith into Go microservices.
 
 Instead of manually extracting each domain, we let the Cognitive OS orchestrate the entire process -- using its own memory, skills, error learning, fault tolerance, and self-improvement loops to get better at each successive extraction.
 
@@ -33,18 +33,18 @@ If the OS can handle this, it can handle anything we throw at it.
 ```
 Orchestrator (this session)
     |
-    +-- Agent 1:  Extract "cards" domain         -> Go service
-    +-- Agent 2:  Extract "crypto" domain         -> Go service
-    +-- Agent 3:  Extract "qr" domain             -> Go service
-    +-- Agent 4:  Extract "notifications" domain  -> Go service
-    +-- Agent 5:  Extract "recharges" domain      -> Go service
-    +-- Agent 6:  Extract "bills" domain          -> Go service
-    +-- Agent 7:  Extract "store" domain          -> Go service
-    +-- Agent 8:  Extract "admin" domain          -> Go service
-    +-- Agent 9:  Extract "investments" domain    -> Go service
-    +-- Agent 10: Extract "callbacks" domain      -> Go service
-    +-- Agent 11: Extract "afip" domain           -> Go service
-    +-- Agent 12: Extract "misc" domain           -> Go service
+    +-- Agent 1:  Extract domain A  -> Go service
+    +-- Agent 2:  Extract domain B  -> Go service
+    +-- Agent 3:  Extract domain C  -> Go service
+    +-- Agent 4:  Extract domain D  -> Go service
+    +-- Agent 5:  Extract domain E  -> Go service
+    +-- Agent 6:  Extract domain F  -> Go service
+    +-- Agent 7:  Extract domain G  -> Go service
+    +-- Agent 8:  Extract domain H  -> Go service
+    +-- Agent 9:  Extract domain I  -> Go service
+    +-- Agent 10: Extract domain J  -> Go service
+    +-- Agent 11: Extract domain K  -> Go service
+    +-- Agent 12: Extract domain L  -> Go service
 ```
 
 Each agent follows an identical pattern:
@@ -96,7 +96,7 @@ The first domain extraction is the hardest. By domain 5 or 6, the system should 
 | Metric | Target |
 |---|---|
 | Domains extracted | 12/12 |
-| Endpoints migrated | 170+/170+ |
+| Endpoints migrated | all of the monolith |
 | Go tests created | >80% coverage per domain |
 | Cost per domain extraction | <$2 (measure and optimize) |
 | Time per domain | <30 min average |

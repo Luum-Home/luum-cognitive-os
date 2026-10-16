@@ -87,7 +87,7 @@ Remaining scope: Phase 1 split the top-3 fattest skills; the remaining ~95 SKILL
 | 49 | trust-audit | verification-audit | ATOMIC | CLEAN | COMPOSABLE | Trust score aggregation + overclaiming detection — single domain |
 | 50 | verification-before-completion | verification-audit | ATOMIC | CLEAN | COMPOSABLE | Evidence-before-claims gate — single purpose |
 | 51 | cognitive-os-benchmark | verification-audit | COMPOSITE | EMBEDDED | STANDALONE | COS vs BMAD v6 benchmarks; embeds benchmark criteria |
-| 52 | coverage-enforcement | verification-audit | ATOMIC | COUPLED | COMPOSABLE | Hardcodes `backend-go/apps/` service paths |
+| 52 | coverage-enforcement | verification-audit | ATOMIC | COUPLED | COMPOSABLE | Hardcodes `<service-monorepo>/apps/` service paths |
 | 53 | harness-audit | verification-audit | ATOMIC | CLEAN | COMPOSABLE | Evaluates hooks/rules/skills for continued relevance |
 | 54 | smoke-test | verification-audit | COMPOSITE | EMBEDDED | STANDALONE | 5-phase E2E; embeds expected service/endpoint assumptions |
 | 55 | readiness-check | quality-gates | ATOMIC | EMBEDDED | COMPOSABLE | Hardcodes ginext/clean arch as readiness criteria |
@@ -196,9 +196,9 @@ Remaining scope: Phase 1 split the top-3 fattest skills; the remaining ~95 SKILL
 ### 6. `coverage-enforcement` (verification-audit) — HIGH
 **Classification**: ATOMIC / COUPLED / COMPOSABLE
 
-**Problem**: Hardcodes `backend-go/apps/` as the path to scan. This makes the skill useless for any project that is not the specific luum backend. The skill name implies universal applicability, but the implementation is project-specific.
+**Problem**: Hardcodes `<service-monorepo>/apps/` as the path to scan. This makes the skill useless for any project that is not one specific backend. The skill name implies universal applicability, but the implementation is project-specific.
 
-**Fix**: Read the service root from `cognitive-os.yaml -> project.infrastructure.services_root` or accept it as a parameter. Remove the hardcoded `backend-go/apps/` path. Pattern: `find ${SERVICES_ROOT:-./apps} -name '*.go'`.
+**Fix**: Read the service root from `cognitive-os.yaml -> project.infrastructure.services_root` or accept it as a parameter. Remove the hardcoded `<service-monorepo>/apps/` path. Pattern: `find ${SERVICES_ROOT:-./apps} -name '*.go'`.
 
 ---
 
@@ -268,7 +268,7 @@ Remaining scope: Phase 1 split the top-3 fattest skills; the remaining ~95 SKILL
 - `cognitive-os-benchmark` (embeds benchmark criteria inline)
 
 **Skills with COUPLED knowledge**:
-- `coverage-enforcement` (hardcodes `backend-go/apps/`)
+- `coverage-enforcement` (hardcodes `<service-monorepo>/apps/`)
 - `secret-audit` (hardcodes TypeScript/Go/Java service paths)
 - `smoke-test` (assumes specific service endpoints)
 - `nemo-guardrails` (coupled to NeMo schema format)
@@ -409,7 +409,7 @@ Added `project.architecture` config section to `cognitive-os.yaml` with:
 
 | Skill | What Changed | Config Key Used |
 |-------|-------------|-----------------|
-| `coverage-enforcement` | Replaced hardcoded `backend-go/apps/` with config read | `project.architecture.services_root.go` |
+| `coverage-enforcement` | Replaced hardcoded `<service-monorepo>/apps/` with config read | `project.architecture.services_root.go` |
 | `readiness-check` | Replaced hardcoded "ginext, clean arch layers" with config read | `project.architecture.evaluation_criteria`, `project.architecture.frameworks` |
 | `evaluate-plan` | Replaced hardcoded framework names in Architecture Alignment scoring | `project.architecture.evaluation_criteria`, `project.architecture.layers`, `project.architecture.frameworks` |
 | `secret-audit` | Replaced hardcoded TS/Go/Java service paths with config read + auto-discovery | `project.architecture.service_paths` |

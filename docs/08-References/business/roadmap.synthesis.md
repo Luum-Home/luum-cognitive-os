@@ -10,7 +10,7 @@ The public roadmap document for Cognitive OS: a snapshot of current capabilities
 
 ## Key mechanics
 
-- **Current state table**: 176 SKILL.md files, 244 hook scripts (minimal profile requires 3), 120 rule files, 16+ agent personas, 326 ADRs, 20+ canonical manifests, a native MCP server (8 tools) plus Engram + Context7, one fintech case study (~300x acceleration claimed).
+- **Current state table**: 176 SKILL.md files, 244 hook scripts (minimal profile requires 3), 120 rule files, 16+ agent personas, 326 ADRs, 20+ canonical manifests, a native MCP server (8 tools) plus Engram + Context7, one anonymized monolith-decomposition case study.
 - **What works end-to-end today** (per this doc): persistent cross-session memory (Engram), multi-agent orchestration with cycle dedup and worktree isolation, replay timeline/restore-by-checkpoint via shadow-git, sync cost + retry gate, DORMANT/propose-only self-improvement loop, profile-projected quality/security gates, cost tracking with budget enforcement, DORMANT/advisory SRE repair guardrails, native MCP server, ratcheted (not universal) manifest-driven governance, and an 8-core-phase SDD workflow.
 - **Phase 1 (in progress)**: extract core from project-specific code, publish under FSL-1.1-MIT, ship `cognitive-os init`/`cognitive-os.yaml`, npm/brew distribution, community infra (Discord, GitHub Discussions), and an explicit commercial-use boundary (hosted COS / managed agent runtime / orchestration SaaS reserved pre-Change-Date).
 - **Phase 2 (Web Dashboard)**: agent execution dashboard, Memory Explorer, KPI dashboard, visual config editor, session history, plus a Go backend API layer.
@@ -20,7 +20,7 @@ The public roadmap document for Cognitive OS: a snapshot of current capabilities
 
 ## Relations & where used
 
-Cross-references `features.md` (full feature matrix), `case-study.md` (the ~300x acceleration case), `open-source-design.md` (framework/plugin architecture), and `portability-plan.md` (multi-IDE plan) as companion documents.
+Cross-references `features.md` (full feature matrix), `case-study.md` (the monolith-decomposition case), `open-source-design.md` (framework/plugin architecture), and `portability-plan.md` (multi-IDE plan) as companion documents.
 
 ## Status / caveats
 
