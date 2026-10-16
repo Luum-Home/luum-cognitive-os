@@ -209,3 +209,5 @@ so apply-phase work is: (1) re-run dry-run fresh (R3), (2) execute `git mv lib c
 re-run full test suite + the consumer-isolation check (§6.4), (5) commit. No new tooling
 required; effort is dominated by the guarded-session discipline and the §6 verification pass,
 not by algorithm design.
+
+> 2026-10-16: `workflows/` (legacy) removed; legacy pipeline removed, superseded by `lib/`. References to it above are historical.

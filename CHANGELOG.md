@@ -5,6 +5,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Removed
+- 2026-10-16: `workflows/` (legacy) removed; legacy pipeline removed, superseded by `lib/`.
+
 ## [0.29.39] - 2026-07-20 — "test brittleness remediation + restored OS features"
 
 ### Added

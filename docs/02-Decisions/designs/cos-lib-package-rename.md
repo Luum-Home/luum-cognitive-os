@@ -390,3 +390,5 @@ Recipe change: `COS_ALLOW_PROTECTED_CONFIG_WRITE=1 python3 scripts/cos_lib_renam
 - **The `--scope lib` deprecated-alias question (§6)** — keeping `"lib"` as a backward-compatible
   alias for `--scope` is a one-release grace period recommendation, not enforced by any test in
   this design; a follow-up task should add a deprecation-removal reminder.
+
+> 2026-10-16: `workflows/` (legacy) removed; legacy pipeline removed, superseded by `lib/`. References to it above are historical.

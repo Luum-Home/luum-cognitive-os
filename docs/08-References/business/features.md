@@ -370,7 +370,7 @@ Transparent, extensible, and community-driven under FSL-1.1-MIT before the autom
 |---|---|---|
 | Core runtime | `hooks/`, `lib/`, `scripts/`, `cmd/cos/`, `pkg/` | Protected runtime and validation surfaces. |
 | Compatibility | `internal/`, harness adapters, provider drivers, settings projection | Absorbs vendor and IDE churn. |
-| Extensions | `skills/`, `rules/`, `templates/`, `packages/`, `dashboard/`, `workflows/` | Useful capabilities, but not all default adoption surface. |
+| Extensions | `skills/`, `rules/`, `templates/`, `packages/`, `dashboard/` | Useful capabilities, but not all default adoption surface. |
 | Experimental | `squads/`, `agents/`, roadmap/control-plane surfaces | Future architecture until proof paths promote them. |
 
 The machine-readable boundary lives in `manifests/product-zones.yaml` and is checked by `tests/contracts/test_product_zones.py`.
