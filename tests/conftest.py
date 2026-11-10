@@ -19,6 +19,7 @@ import shutil
 import sqlite3
 import subprocess
 import sys
+import tempfile
 import uuid
 from pathlib import Path
 from typing import Any, Optional
@@ -395,23 +396,38 @@ def docker_available():
 # Real Engram fixture — actual persistence, no mocks
 # ---------------------------------------------------------------------------
 
-ENGRAM_DB_PATH = Path.home() / ".engram" / "engram.db"
+# La base del usuario: la memoria real de los agentes. Los tests nunca escriben
+# acá. Se usa sólo para comprobar que una corrida no la tocó.
+USER_ENGRAM_DATA_DIR = Path.home() / ".engram"
+
+
+def engram_data_dir_is_users(data_dir: Path) -> bool:
+    """True si ``data_dir`` resuelve al directorio de datos real del usuario o a
+    uno de sus subdirectorios. Ante la duda (no se pudo resolver), True."""
+    try:
+        resolved = data_dir.resolve()
+        user_dir = USER_ENGRAM_DATA_DIR.resolve()
+    except OSError:
+        return True
+    return resolved == user_dir or user_dir in resolved.parents
 
 
 @pytest.fixture
 def real_engram():
-    """Provides a real Engram instance backed by the actual SQLite database.
-    No mocks. Actual reads and writes.
+    """Engram real (binario y SQLite de verdad, sin mocks) sobre una base propia.
 
-    Isolation strategy: each fixture invocation uses a unique project name
-    (UUID-based) so test data is fully scoped and cannot collide with real
-    project data or concurrent test runs.  All rows are deleted on teardown.
+    Cada invocación crea un directorio de datos temporal y se lo pasa al
+    binario con ``ENGRAM_DATA_DIR``. ``engram save`` y ``engram search`` abren
+    el SQLite de ese directorio directamente, sin pasar por el servidor HTTP
+    (``engram serve`` en el 7437), así que nada de lo que hace el test llega a
+    ``~/.engram/engram.db``. El directorio se borra al terminar.
 
-    Adopted from Hermes test patterns: mock the LLM, not the storage.
+    No alcanza con un nombre de proyecto único: engram guarda por proyecto
+    sesiones, mutaciones de sync y journal además de observaciones, y nada de
+    eso se puede limpiar a mano sin dejar restos en la memoria real.
 
-    NOTE: engram v1.10.2 does not support --db; it always writes to
-    ~/.engram/engram.db.  Project-scoping is the only isolation available
-    without patching the binary.
+    Si el directorio resuelto cae dentro del del usuario, el fixture aborta en
+    vez de correr.
     """
     engram_bin = os.environ.get("ENGRAM_BIN", "").strip()
     if not engram_bin:
@@ -421,6 +437,27 @@ def real_engram():
         pytest.skip("engram binary not installed")
 
     project = f"cos-test-{uuid.uuid4().hex[:12]}"
+    data_dir = Path(tempfile.mkdtemp(prefix="cos-engram-data-"))
+    if engram_data_dir_is_users(data_dir):
+        shutil.rmtree(data_dir, ignore_errors=True)
+        pytest.fail(f"real_engram: el directorio de datos {data_dir} es el del usuario")
+    db_path = data_dir / "engram.db"
+
+    env = os.environ.copy()
+    env["ENGRAM_DATA_DIR"] = str(data_dir)
+    # ENGRAM_URL apunta los hooks a un servidor HTTP; el CLI no lo usa para
+    # save/search, pero se quita para que ningún camino llegue al compartido.
+    env.pop("ENGRAM_URL", None)
+
+    # Abrir el store una vez crea el esquema vacío, para que las consultas de
+    # "antes" de cada test encuentren las tablas sin que haya datos.
+    init = subprocess.run(
+        [engram_bin, "projects", "list"],
+        capture_output=True, text=True, timeout=10, env=env,
+    )
+    if init.returncode != 0 or not db_path.exists():
+        shutil.rmtree(data_dir, ignore_errors=True)
+        pytest.fail(f"real_engram: no se pudo crear la base temporal: {init.stderr}")
 
     def save(title, content, topic_key=None, type_="manual"):
         cmd = [engram_bin, "save", title, content,
@@ -428,47 +465,42 @@ def real_engram():
                "--project", project]
         if topic_key:
             cmd.extend(["--topic", topic_key])
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=10)
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=10, env=env)
         return result
 
     def search(query):
         cmd = [engram_bin, "search", query,
                "--project", project]
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=10)
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=10, env=env)
         return result
 
     def get_db():
-        """Direct SQLite connection to the real engram DB, filtered to this
-        fixture's project.  Callers MUST close the connection after use."""
-        return sqlite3.connect(str(ENGRAM_DB_PATH))
+        """Conexión directa a la base temporal del fixture.
+        Callers MUST close the connection after use."""
+        return sqlite3.connect(str(db_path))
 
     def query(sql, params=()):
-        """Run a read-only SQL query scoped to this fixture's project."""
-        conn = sqlite3.connect(str(ENGRAM_DB_PATH))
+        """Consulta sobre la base temporal del fixture."""
+        conn = sqlite3.connect(str(db_path))
         try:
             rows = conn.execute(sql, params).fetchall()
         finally:
             conn.close()
         return rows
 
-    yield {
-        "project": project,
-        "engram_bin": engram_bin,
-        "db_path": str(ENGRAM_DB_PATH),
-        "save": save,
-        "search": search,
-        "get_db": get_db,
-        "query": query,
-    }
-
-    # Teardown: remove all rows written by this fixture invocation.
-    if ENGRAM_DB_PATH.exists():
-        conn = sqlite3.connect(str(ENGRAM_DB_PATH))
-        try:
-            conn.execute("DELETE FROM observations WHERE project = ?", (project,))
-            conn.commit()
-        finally:
-            conn.close()
+    try:
+        yield {
+            "project": project,
+            "engram_bin": engram_bin,
+            "data_dir": str(data_dir),
+            "db_path": str(db_path),
+            "save": save,
+            "search": search,
+            "get_db": get_db,
+            "query": query,
+        }
+    finally:
+        shutil.rmtree(data_dir, ignore_errors=True)
 
 
 # ---------------------------------------------------------------------------
