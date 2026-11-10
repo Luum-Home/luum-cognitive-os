@@ -507,3 +507,32 @@ class TestSpecMandated:
         assert "0 decisions" in captured.out or "**0 decisions**" in captured.out or "Total unanswered: **0" in captured.out, (
             f"Expected '0 decisions' in output, got:\n{captured.out}"
         )
+
+
+# ---------------------------------------------------------------------------
+# _engram_db_path: misma regla que el binario de engram
+# ---------------------------------------------------------------------------
+
+
+class TestEngramDbPath:
+    def test_default_is_user_store(self, monkeypatch, tmp_path):
+        monkeypatch.delenv("ENGRAM_DB", raising=False)
+        monkeypatch.delenv("ENGRAM_DATA_DIR", raising=False)
+        monkeypatch.setenv("HOME", str(tmp_path))
+        assert dt._engram_db_path() == tmp_path / ".engram" / "engram.db"
+
+    def test_engram_data_dir_redirects_the_store(self, monkeypatch, tmp_path):
+        monkeypatch.delenv("ENGRAM_DB", raising=False)
+        monkeypatch.setenv("ENGRAM_DATA_DIR", str(tmp_path / "datos"))
+        assert dt._engram_db_path() == tmp_path / "datos" / "engram.db"
+
+    def test_blank_engram_data_dir_keeps_the_default(self, monkeypatch, tmp_path):
+        monkeypatch.delenv("ENGRAM_DB", raising=False)
+        monkeypatch.setenv("ENGRAM_DATA_DIR", "   ")
+        monkeypatch.setenv("HOME", str(tmp_path))
+        assert dt._engram_db_path() == tmp_path / ".engram" / "engram.db"
+
+    def test_engram_db_wins_over_data_dir(self, monkeypatch, tmp_path):
+        monkeypatch.setenv("ENGRAM_DB", str(tmp_path / "otra.db"))
+        monkeypatch.setenv("ENGRAM_DATA_DIR", str(tmp_path / "datos"))
+        assert dt._engram_db_path() == tmp_path / "otra.db"

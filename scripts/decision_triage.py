@@ -377,7 +377,21 @@ def _parse_engram_text_for_slugs(text: str) -> dict[str, bool]:
 
 
 def _engram_db_path() -> Path:
-    return Path(os.environ.get("ENGRAM_DB", str(Path.home() / ".engram" / "engram.db"))).expanduser()
+    """Base SQLite de engram que lee el triage.
+
+    ``ENGRAM_DB`` apunta al archivo. Si no está, se sigue la misma regla que el
+    binario de engram (3.x) para su directorio de datos: ``ENGRAM_DATA_DIR`` no
+    vacío, o ``~/.engram``. Así lectura directa y ``engram save``/``search``
+    (que el triage lanza como subprocess y heredan el entorno) miran la misma
+    base.
+    """
+    explicit = os.environ.get("ENGRAM_DB", "")
+    if explicit.strip():
+        return Path(explicit).expanduser()
+    data_dir = os.environ.get("ENGRAM_DATA_DIR", "")
+    if data_dir.strip():
+        return Path(data_dir).expanduser() / "engram.db"
+    return Path.home() / ".engram" / "engram.db"
 
 
 def _scan_engram_answers_from_db() -> dict[str, bool]:

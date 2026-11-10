@@ -242,33 +242,48 @@ class TestEngramPersistence:
         )
 
     @_skip_if_missing()
-    def test_save_and_load_roundtrip(self, tmp_path):
+    def test_save_and_load_roundtrip(
+        self, tmp_path, monkeypatch, isolated_engram_store, user_engram_count
+    ):
         """State saved to engram is recovered by load_from_engram().
 
-        Uses a mock or in-memory backend if engram binary is not installed.
+        save_to_engram() and load_from_engram() shell out to the engram binary,
+        which inherits this process' environment: the test points it at the
+        temporary store of ``isolated_engram_store`` so nothing reaches the
+        user's ~/.engram/engram.db.
         """
         anchor = AnchoredSummary()
         anchor.merge_new_messages([
             {"role": "assistant", "content": "Decision: use PostgreSQL. Files: handler.go"},
         ])
 
-        import shutil
-        import os
-        engram_bin = os.environ.get("ENGRAM_BIN", str(Path.home() / ".local" / "bin" / "engram"))
-        if not Path(engram_bin).exists() and not shutil.which("engram"):
-            pytest.skip("engram binary not available for roundtrip test")
+        store_env = isolated_engram_store["env"]
+        monkeypatch.setenv("ENGRAM_DATA_DIR", store_env["ENGRAM_DATA_DIR"])
+        monkeypatch.setenv("ENGRAM_BIN", isolated_engram_store["engram_bin"])
+        for var in ("ENGRAM_DB", "ENGRAM_URL", "ENGRAM_HTTP_URL"):
+            monkeypatch.delenv(var, raising=False)
 
         session_key = f"test-anchor-{__import__('uuid').uuid4().hex[:8]}"
+        title = f"anchored-summary::{session_key}"
 
         try:
             anchor.save_to_engram(session_key)
             loaded = AnchoredSummary.load_from_engram(session_key)
-            if loaded is None:
-                pytest.skip("engram backend did not return saved anchor")
-            loaded_summary = str(loaded.get_summary())
-            assert loaded_summary, "Loaded anchor has empty summary"
         except Exception as exc:
             pytest.fail(f"save/load roundtrip raised: {exc}")
+
+        stored = isolated_engram_store["query"](
+            "SELECT COUNT(*) FROM observations WHERE title = ?", (title,)
+        )[0][0]
+        assert stored == 1, f"{title} must be saved in the isolated store, found {stored}"
+        assert user_engram_count(
+            "SELECT COUNT(*) FROM observations WHERE title = ?", (title,)
+        ) == 0, f"{title} reached the user's ~/.engram/engram.db"
+
+        if loaded is None:
+            pytest.skip("engram backend did not return saved anchor")
+        loaded_summary = str(loaded.get_summary())
+        assert loaded_summary, "Loaded anchor has empty summary"
 
 
 # ===========================================================================

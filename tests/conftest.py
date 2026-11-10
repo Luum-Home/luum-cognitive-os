@@ -19,6 +19,7 @@ import shutil
 import sqlite3
 import subprocess
 import sys
+import tempfile
 import uuid
 from pathlib import Path
 from typing import Any, Optional
@@ -395,31 +396,131 @@ def docker_available():
 # Real Engram fixture — actual persistence, no mocks
 # ---------------------------------------------------------------------------
 
-ENGRAM_DB_PATH = Path.home() / ".engram" / "engram.db"
+# La base del usuario: la memoria real de los agentes. Los tests nunca escriben
+# acá. Se usa sólo para comprobar que una corrida no la tocó.
+USER_ENGRAM_DATA_DIR = Path.home() / ".engram"
+
+
+def engram_data_dir_is_users(data_dir: Path) -> bool:
+    """True si ``data_dir`` resuelve al directorio de datos real del usuario o a
+    uno de sus subdirectorios. Ante la duda (no se pudo resolver), True."""
+    try:
+        resolved = data_dir.resolve()
+        user_dir = USER_ENGRAM_DATA_DIR.resolve()
+    except OSError:
+        return True
+    return resolved == user_dir or user_dir in resolved.parents
 
 
 @pytest.fixture
-def real_engram():
-    """Provides a real Engram instance backed by the actual SQLite database.
-    No mocks. Actual reads and writes.
+def user_engram_count():
+    """Cuenta filas en la base real del usuario, abierta en solo lectura.
 
-    Isolation strategy: each fixture invocation uses a unique project name
-    (UUID-based) so test data is fully scoped and cannot collide with real
-    project data or concurrent test runs.  All rows are deleted on teardown.
-
-    Adopted from Hermes test patterns: mock the LLM, not the storage.
-
-    NOTE: engram v1.10.2 does not support --db; it always writes to
-    ~/.engram/engram.db.  Project-scoping is the only isolation available
-    without patching the binary.
+    Devuelve una función ``(sql, params) -> int``. Si no hay base real, saltea
+    el test: no hay contra qué comparar. Sirve para afirmar que un test no dejó
+    nada en ``~/.engram/engram.db``.
     """
+    db = USER_ENGRAM_DATA_DIR / "engram.db"
+    if not db.exists():
+        pytest.skip(f"no hay base real de engram en {db} contra la cual comparar")
+
+    def count(sql, params=()):
+        conn = sqlite3.connect(f"file:{db}?mode=ro", uri=True)
+        try:
+            return int(conn.execute(sql, params).fetchone()[0])
+        finally:
+            conn.close()
+
+    return count
+
+
+def _engram_bin_or_skip() -> str:
     engram_bin = os.environ.get("ENGRAM_BIN", "").strip()
     if not engram_bin:
         local_bin = Path.home() / ".local" / "bin" / "engram"
         engram_bin = str(local_bin) if local_bin.exists() else (shutil.which("engram") or "")
     if not engram_bin or not Path(engram_bin).exists():
         pytest.skip("engram binary not installed")
+    return engram_bin
 
+
+@pytest.fixture
+def isolated_engram_store():
+    """Base de engram propia del test: directorio temporal, esquema creado y
+    un entorno para los subprocess que apunta ahí.
+
+    ``env`` es una copia de ``os.environ`` con ``ENGRAM_DATA_DIR`` en el
+    directorio temporal y sin ``ENGRAM_DB``, ``ENGRAM_URL`` ni
+    ``ENGRAM_HTTP_URL``, que podrían redirigir lecturas o escrituras a la base
+    o al servidor del usuario. Todo subprocess que llame a ``engram`` (directo
+    o a través de un script del repo) tiene que recibir ese ``env``.
+
+    El binario abre el SQLite del directorio indicado sin pasar por el servidor
+    HTTP (``engram serve`` en el 7437). No alcanza con un nombre de proyecto
+    único sobre la base real: engram guarda por proyecto sesiones, mutaciones
+    de sync y journal además de observaciones, y nada de eso se limpia sin
+    dejar restos en la memoria real.
+
+    Si el directorio resuelto cae dentro del del usuario, el fixture falla en
+    vez de correr. El directorio se borra al terminar.
+    """
+    engram_bin = _engram_bin_or_skip()
+
+    data_dir = Path(tempfile.mkdtemp(prefix="cos-engram-data-"))
+    if engram_data_dir_is_users(data_dir):
+        shutil.rmtree(data_dir, ignore_errors=True)
+        pytest.fail(f"isolated_engram_store: el directorio de datos {data_dir} es el del usuario")
+    db_path = data_dir / "engram.db"
+
+    env = os.environ.copy()
+    env["ENGRAM_DATA_DIR"] = str(data_dir)
+    for var in ("ENGRAM_DB", "ENGRAM_URL", "ENGRAM_HTTP_URL"):
+        env.pop(var, None)
+
+    # Abrir el store una vez crea el esquema vacío, para que las consultas de
+    # "antes" de cada test encuentren las tablas sin que haya datos.
+    init = subprocess.run(
+        [engram_bin, "projects", "list"],
+        capture_output=True, text=True, timeout=10, env=env,
+    )
+    if init.returncode != 0 or not db_path.exists():
+        shutil.rmtree(data_dir, ignore_errors=True)
+        pytest.fail(
+            f"isolated_engram_store: `engram projects list` no creó {db_path} "
+            f"(exit {init.returncode}); el binario no está usando el directorio "
+            f"temporal. stderr: {init.stderr}"
+        )
+
+    def query(sql, params=()):
+        """Consulta sobre la base temporal."""
+        conn = sqlite3.connect(str(db_path))
+        try:
+            rows = conn.execute(sql, params).fetchall()
+        finally:
+            conn.close()
+        return rows
+
+    try:
+        yield {
+            "engram_bin": engram_bin,
+            "data_dir": str(data_dir),
+            "db_path": str(db_path),
+            "env": env,
+            "query": query,
+        }
+    finally:
+        shutil.rmtree(data_dir, ignore_errors=True)
+
+
+@pytest.fixture
+def real_engram(isolated_engram_store):
+    """Engram real (binario y SQLite de verdad, sin mocks) sobre la base propia
+    de ``isolated_engram_store``, con un proyecto ``cos-test-<hex>`` y atajos
+    para ``engram save`` y ``engram search`` en ese proyecto."""
+    store = isolated_engram_store
+    engram_bin = store["engram_bin"]
+    env = store["env"]
+    db_path = Path(store["db_path"])
     project = f"cos-test-{uuid.uuid4().hex[:12]}"
 
     def save(title, content, topic_key=None, type_="manual"):
@@ -428,47 +529,30 @@ def real_engram():
                "--project", project]
         if topic_key:
             cmd.extend(["--topic", topic_key])
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=10)
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=10, env=env)
         return result
 
     def search(query):
         cmd = [engram_bin, "search", query,
                "--project", project]
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=10)
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=10, env=env)
         return result
 
     def get_db():
-        """Direct SQLite connection to the real engram DB, filtered to this
-        fixture's project.  Callers MUST close the connection after use."""
-        return sqlite3.connect(str(ENGRAM_DB_PATH))
-
-    def query(sql, params=()):
-        """Run a read-only SQL query scoped to this fixture's project."""
-        conn = sqlite3.connect(str(ENGRAM_DB_PATH))
-        try:
-            rows = conn.execute(sql, params).fetchall()
-        finally:
-            conn.close()
-        return rows
+        """Conexión directa a la base temporal del fixture.
+        Callers MUST close the connection after use."""
+        return sqlite3.connect(str(db_path))
 
     yield {
         "project": project,
         "engram_bin": engram_bin,
-        "db_path": str(ENGRAM_DB_PATH),
+        "data_dir": store["data_dir"],
+        "db_path": str(db_path),
         "save": save,
         "search": search,
         "get_db": get_db,
-        "query": query,
+        "query": store["query"],
     }
-
-    # Teardown: remove all rows written by this fixture invocation.
-    if ENGRAM_DB_PATH.exists():
-        conn = sqlite3.connect(str(ENGRAM_DB_PATH))
-        try:
-            conn.execute("DELETE FROM observations WHERE project = ?", (project,))
-            conn.commit()
-        finally:
-            conn.close()
 
 
 # ---------------------------------------------------------------------------

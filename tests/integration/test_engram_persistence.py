@@ -9,9 +9,13 @@ Covers:
   - TestDeduplication         : upsert by topic_key, no false dedup across keys
   - TestContentIntegrity      : special chars, multiline, unicode
   - TestFTS5Search            : partial match, cross-project isolation
+  - TestUserStoreUntouched    : el fixture no escribe en ~/.engram/engram.db
 """
 
 import uuid
+from pathlib import Path
+
+USER_ENGRAM_DB = Path.home() / ".engram" / "engram.db"
 
 
 # ---------------------------------------------------------------------------
@@ -214,10 +218,20 @@ class TestFTS5Search:
         assert search_result.returncode == 0
 
     def test_search_returns_zero_exit_on_miss(self, real_engram):
-        """Searching for a term that doesn't exist should still exit 0 (no match ≠ error)."""
+        """Searching for a term that doesn't exist should still exit 0 (no match ≠ error).
+
+        Desde engram 3.x, ``search --project X`` sobre un proyecto que no existe
+        en la base sale con error (``unknown project``): eso es otro caso. Para
+        probar la búsqueda sin coincidencias el proyecto tiene que existir, así
+        que primero se guarda una observación en él.
+        """
+        seed = real_engram["save"](f"seed-{uuid.uuid4().hex[:8]}", "contenido de siembra")
+        assert seed.returncode == 0, f"save failed: {seed.stderr}"
+
         totally_absent = f"zzznoexist{uuid.uuid4().hex}"
         result = real_engram["search"](totally_absent)
-        assert result.returncode == 0
+        assert result.returncode == 0, f"search failed: {result.stderr}"
+        assert "No memories found" in result.stdout
 
     def test_cross_project_isolation(self, real_engram):
         """Data saved under one project should not appear in another project's search.
@@ -243,3 +257,34 @@ class TestFTS5Search:
 
         result = real_engram["search"](keyword)
         assert result.returncode == 0
+
+
+# ---------------------------------------------------------------------------
+# TestUserStoreUntouched
+# ---------------------------------------------------------------------------
+
+
+class TestUserStoreUntouched:
+    """El fixture escribe en su base temporal y nunca en la memoria real."""
+
+    def test_fixture_db_is_not_the_user_store(self, real_engram):
+        db_path = Path(real_engram["db_path"]).resolve()
+        assert db_path != USER_ENGRAM_DB.resolve()
+        assert USER_ENGRAM_DB.parent.resolve() not in db_path.parents
+
+    def test_save_lands_in_fixture_store_not_user_store(self, real_engram, user_engram_count):
+        result = real_engram["save"](f"aislado-{uuid.uuid4().hex[:8]}", "contenido aislado")
+        assert result.returncode == 0, f"save failed: {result.stderr}"
+
+        fixture_sessions = real_engram["query"](
+            "SELECT COUNT(*) FROM sessions WHERE project = ?",
+            (real_engram["project"],),
+        )[0][0]
+        assert fixture_sessions >= 1, "la sesión del save tiene que estar en la base del fixture"
+
+        project = real_engram["project"]
+        leaked = (
+            user_engram_count("SELECT COUNT(*) FROM sessions WHERE project = ?", (project,)),
+            user_engram_count("SELECT COUNT(*) FROM observations WHERE project = ?", (project,)),
+        )
+        assert leaked == (0, 0), f"el proyecto {project} apareció en {USER_ENGRAM_DB}"
