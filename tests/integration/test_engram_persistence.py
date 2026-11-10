@@ -236,10 +236,20 @@ class TestFTS5Search:
         assert search_result.returncode == 0
 
     def test_search_returns_zero_exit_on_miss(self, real_engram):
-        """Searching for a term that doesn't exist should still exit 0 (no match ≠ error)."""
+        """Searching for a term that doesn't exist should still exit 0 (no match ≠ error).
+
+        Desde engram 3.x, ``search --project X`` sobre un proyecto que no existe
+        en la base sale con error (``unknown project``): eso es otro caso. Para
+        probar la búsqueda sin coincidencias el proyecto tiene que existir, así
+        que primero se guarda una observación en él.
+        """
+        seed = real_engram["save"](f"seed-{uuid.uuid4().hex[:8]}", "contenido de siembra")
+        assert seed.returncode == 0, f"save failed: {seed.stderr}"
+
         totally_absent = f"zzznoexist{uuid.uuid4().hex}"
         result = real_engram["search"](totally_absent)
-        assert result.returncode == 0
+        assert result.returncode == 0, f"search failed: {result.stderr}"
+        assert "No memories found" in result.stdout
 
     def test_cross_project_isolation(self, real_engram):
         """Data saved under one project should not appear in another project's search.
