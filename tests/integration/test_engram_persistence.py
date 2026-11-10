@@ -12,28 +12,10 @@ Covers:
   - TestUserStoreUntouched    : el fixture no escribe en ~/.engram/engram.db
 """
 
-import sqlite3
 import uuid
 from pathlib import Path
 
-import pytest
-
 USER_ENGRAM_DB = Path.home() / ".engram" / "engram.db"
-
-
-def _user_store_rows(project: str) -> tuple[int, int]:
-    """(sesiones, observaciones) de ``project`` en la base real, en solo lectura."""
-    conn = sqlite3.connect(f"file:{USER_ENGRAM_DB}?mode=ro", uri=True)
-    try:
-        sessions = conn.execute(
-            "SELECT COUNT(*) FROM sessions WHERE project = ?", (project,)
-        ).fetchone()[0]
-        observations = conn.execute(
-            "SELECT COUNT(*) FROM observations WHERE project = ?", (project,)
-        ).fetchone()[0]
-    finally:
-        conn.close()
-    return sessions, observations
 
 
 # ---------------------------------------------------------------------------
@@ -290,7 +272,7 @@ class TestUserStoreUntouched:
         assert db_path != USER_ENGRAM_DB.resolve()
         assert USER_ENGRAM_DB.parent.resolve() not in db_path.parents
 
-    def test_save_lands_in_fixture_store_not_user_store(self, real_engram):
+    def test_save_lands_in_fixture_store_not_user_store(self, real_engram, user_engram_count):
         result = real_engram["save"](f"aislado-{uuid.uuid4().hex[:8]}", "contenido aislado")
         assert result.returncode == 0, f"save failed: {result.stderr}"
 
@@ -300,8 +282,9 @@ class TestUserStoreUntouched:
         )[0][0]
         assert fixture_sessions >= 1, "la sesión del save tiene que estar en la base del fixture"
 
-        if not USER_ENGRAM_DB.exists():
-            pytest.skip("no hay base real de engram contra la cual comparar")
-        assert _user_store_rows(real_engram["project"]) == (0, 0), (
-            f"el proyecto {real_engram['project']} apareció en {USER_ENGRAM_DB}"
+        project = real_engram["project"]
+        leaked = (
+            user_engram_count("SELECT COUNT(*) FROM sessions WHERE project = ?", (project,)),
+            user_engram_count("SELECT COUNT(*) FROM observations WHERE project = ?", (project,)),
         )
+        assert leaked == (0, 0), f"el proyecto {project} apareció en {USER_ENGRAM_DB}"

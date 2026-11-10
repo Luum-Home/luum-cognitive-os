@@ -4,6 +4,9 @@ Tests the complete workflow:
   temp report → triage shows it → mark-answered → re-run → ANSWERED
 
 This validates all 5 fixes working together end-to-end.
+
+Every engram call runs against the temporary store of the
+`isolated_engram_store` fixture, never against the user's ~/.engram/engram.db.
 """
 
 from __future__ import annotations
@@ -23,7 +26,7 @@ SCRIPTS_DIR = REPO / "scripts"
 REPORTS_DIR = REPO / "docs" / "06-Daily" / "reports"
 
 
-def _engram_available() -> bool:
+def _engram_available(env: dict) -> bool:
     try:
         result = subprocess.run(
             ["engram", "search", "probe-full-cycle-test"],
@@ -31,15 +34,18 @@ def _engram_available() -> bool:
             text=True,
             timeout=5,
             cwd=REPO,
+            env=env,
         )
         return result.returncode == 0
     except Exception:
         return False
 
 
-def _run_triage(args: list[str] | None = None) -> subprocess.CompletedProcess:
+def _run_triage(
+    args: list[str] | None = None, env: dict | None = None
+) -> subprocess.CompletedProcess:
     cmd = [sys.executable, str(SCRIPTS_DIR / "decision_triage.py")] + (args or [])
-    return subprocess.run(cmd, capture_output=True, text=True, timeout=120, cwd=REPO)
+    return subprocess.run(cmd, capture_output=True, text=True, timeout=120, cwd=REPO, env=env)
 
 
 def _create_temp_report(slug: str, reports_dir: Path) -> Path:
@@ -68,7 +74,7 @@ We recommend option A based on performance analysis.
 
 @pytest.mark.requires_engram
 @pytest.mark.timeout(300)
-def test_full_decision_cycle() -> None:
+def test_full_decision_cycle(isolated_engram_store, user_engram_count) -> None:
     """Full cycle: create temp report → triage finds it → mark answered → re-run → ANSWERED.
 
     Verifies all 5 fixes work together:
@@ -77,7 +83,8 @@ def test_full_decision_cycle() -> None:
     - Fix 3: engram CLI cross-ref works (not cos_lib.engram import)
     - Fix 5: Live integration test passes
     """
-    if not _engram_available():
+    env = isolated_engram_store["env"]
+    if not _engram_available(env):
         pytest.skip("engram CLI not available")
 
     if not REPORTS_DIR.exists():
@@ -92,7 +99,7 @@ def test_full_decision_cycle() -> None:
         assert report_path.exists(), f"Test report not created at {report_path}"
 
         # Step 2: Run triage and verify it finds the report
-        result1 = _run_triage(["--only-research", "--json"])
+        result1 = _run_triage(["--only-research", "--json"], env=env)
         assert result1.returncode == 0, f"Triage failed: {result1.stderr[:300]}"
 
         data1 = json.loads(result1.stdout)
@@ -120,7 +127,7 @@ def test_full_decision_cycle() -> None:
         )
 
         # Step 3: Mark the slug as ANSWERED (Fix 2: --mark-answered)
-        result2 = _run_triage(["--mark-answered", test_id, "--answer-text", "Chose option A"])
+        result2 = _run_triage(["--mark-answered", test_id, "--answer-text", "Chose option A"], env=env)
         if result2.returncode != 0:
             pytest.skip(
                 f"--mark-answered failed (engram save needs auth or connectivity): "
@@ -132,7 +139,7 @@ def test_full_decision_cycle() -> None:
         )
 
         # Step 4: Re-run triage, verify the decision now shows as ANSWERED
-        result3 = _run_triage(["--only-research", "--json"])
+        result3 = _run_triage(["--only-research", "--json"], env=env)
         assert result3.returncode == 0, f"Second triage run failed: {result3.stderr[:300]}"
 
         data3 = json.loads(result3.stdout)
@@ -151,6 +158,18 @@ def test_full_decision_cycle() -> None:
             f"engram_available: {data3.get('engram_available')}. "
             f"This indicates the engram cross-reference isn't working correctly."
         )
+
+        # The answer lives in the test's own store and never reached the user's.
+        topic_key = f"decision/{test_id}"
+        stored = isolated_engram_store["query"](
+            "SELECT COUNT(*) FROM observations WHERE topic_key = ?", (topic_key,)
+        )[0][0]
+        assert stored == 1, f"{topic_key} must be saved in the isolated store, found {stored}"
+        leaked = user_engram_count(
+            "SELECT COUNT(*) FROM observations WHERE topic_key = ? OR title LIKE ?",
+            (topic_key, f"%{test_id}%"),
+        )
+        assert leaked == 0, f"{topic_key} reached the user's ~/.engram/engram.db"
 
     finally:
         # Cleanup: remove temp report

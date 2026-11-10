@@ -413,41 +413,69 @@ def engram_data_dir_is_users(data_dir: Path) -> bool:
 
 
 @pytest.fixture
-def real_engram():
-    """Engram real (binario y SQLite de verdad, sin mocks) sobre una base propia.
+def user_engram_count():
+    """Cuenta filas en la base real del usuario, abierta en solo lectura.
 
-    Cada invocación crea un directorio de datos temporal y se lo pasa al
-    binario con ``ENGRAM_DATA_DIR``. ``engram save`` y ``engram search`` abren
-    el SQLite de ese directorio directamente, sin pasar por el servidor HTTP
-    (``engram serve`` en el 7437), así que nada de lo que hace el test llega a
-    ``~/.engram/engram.db``. El directorio se borra al terminar.
-
-    No alcanza con un nombre de proyecto único: engram guarda por proyecto
-    sesiones, mutaciones de sync y journal además de observaciones, y nada de
-    eso se puede limpiar a mano sin dejar restos en la memoria real.
-
-    Si el directorio resuelto cae dentro del del usuario, el fixture aborta en
-    vez de correr.
+    Devuelve una función ``(sql, params) -> int``. Si no hay base real, saltea
+    el test: no hay contra qué comparar. Sirve para afirmar que un test no dejó
+    nada en ``~/.engram/engram.db``.
     """
+    db = USER_ENGRAM_DATA_DIR / "engram.db"
+    if not db.exists():
+        pytest.skip(f"no hay base real de engram en {db} contra la cual comparar")
+
+    def count(sql, params=()):
+        conn = sqlite3.connect(f"file:{db}?mode=ro", uri=True)
+        try:
+            return int(conn.execute(sql, params).fetchone()[0])
+        finally:
+            conn.close()
+
+    return count
+
+
+def _engram_bin_or_skip() -> str:
     engram_bin = os.environ.get("ENGRAM_BIN", "").strip()
     if not engram_bin:
         local_bin = Path.home() / ".local" / "bin" / "engram"
         engram_bin = str(local_bin) if local_bin.exists() else (shutil.which("engram") or "")
     if not engram_bin or not Path(engram_bin).exists():
         pytest.skip("engram binary not installed")
+    return engram_bin
 
-    project = f"cos-test-{uuid.uuid4().hex[:12]}"
+
+@pytest.fixture
+def isolated_engram_store():
+    """Base de engram propia del test: directorio temporal, esquema creado y
+    un entorno para los subprocess que apunta ahí.
+
+    ``env`` es una copia de ``os.environ`` con ``ENGRAM_DATA_DIR`` en el
+    directorio temporal y sin ``ENGRAM_DB``, ``ENGRAM_URL`` ni
+    ``ENGRAM_HTTP_URL``, que podrían redirigir lecturas o escrituras a la base
+    o al servidor del usuario. Todo subprocess que llame a ``engram`` (directo
+    o a través de un script del repo) tiene que recibir ese ``env``.
+
+    El binario abre el SQLite del directorio indicado sin pasar por el servidor
+    HTTP (``engram serve`` en el 7437). No alcanza con un nombre de proyecto
+    único sobre la base real: engram guarda por proyecto sesiones, mutaciones
+    de sync y journal además de observaciones, y nada de eso se limpia sin
+    dejar restos en la memoria real.
+
+    Si el directorio resuelto cae dentro del del usuario, el fixture falla en
+    vez de correr. El directorio se borra al terminar.
+    """
+    engram_bin = _engram_bin_or_skip()
+
     data_dir = Path(tempfile.mkdtemp(prefix="cos-engram-data-"))
     if engram_data_dir_is_users(data_dir):
         shutil.rmtree(data_dir, ignore_errors=True)
-        pytest.fail(f"real_engram: el directorio de datos {data_dir} es el del usuario")
+        pytest.fail(f"isolated_engram_store: el directorio de datos {data_dir} es el del usuario")
     db_path = data_dir / "engram.db"
 
     env = os.environ.copy()
     env["ENGRAM_DATA_DIR"] = str(data_dir)
-    # ENGRAM_URL apunta los hooks a un servidor HTTP; el CLI no lo usa para
-    # save/search, pero se quita para que ningún camino llegue al compartido.
-    env.pop("ENGRAM_URL", None)
+    for var in ("ENGRAM_DB", "ENGRAM_URL", "ENGRAM_HTTP_URL"):
+        env.pop(var, None)
 
     # Abrir el store una vez crea el esquema vacío, para que las consultas de
     # "antes" de cada test encuentren las tablas sin que haya datos.
@@ -457,7 +485,43 @@ def real_engram():
     )
     if init.returncode != 0 or not db_path.exists():
         shutil.rmtree(data_dir, ignore_errors=True)
-        pytest.fail(f"real_engram: no se pudo crear la base temporal: {init.stderr}")
+        pytest.fail(
+            f"isolated_engram_store: `engram projects list` no creó {db_path} "
+            f"(exit {init.returncode}); el binario no está usando el directorio "
+            f"temporal. stderr: {init.stderr}"
+        )
+
+    def query(sql, params=()):
+        """Consulta sobre la base temporal."""
+        conn = sqlite3.connect(str(db_path))
+        try:
+            rows = conn.execute(sql, params).fetchall()
+        finally:
+            conn.close()
+        return rows
+
+    try:
+        yield {
+            "engram_bin": engram_bin,
+            "data_dir": str(data_dir),
+            "db_path": str(db_path),
+            "env": env,
+            "query": query,
+        }
+    finally:
+        shutil.rmtree(data_dir, ignore_errors=True)
+
+
+@pytest.fixture
+def real_engram(isolated_engram_store):
+    """Engram real (binario y SQLite de verdad, sin mocks) sobre la base propia
+    de ``isolated_engram_store``, con un proyecto ``cos-test-<hex>`` y atajos
+    para ``engram save`` y ``engram search`` en ese proyecto."""
+    store = isolated_engram_store
+    engram_bin = store["engram_bin"]
+    env = store["env"]
+    db_path = Path(store["db_path"])
+    project = f"cos-test-{uuid.uuid4().hex[:12]}"
 
     def save(title, content, topic_key=None, type_="manual"):
         cmd = [engram_bin, "save", title, content,
@@ -479,28 +543,16 @@ def real_engram():
         Callers MUST close the connection after use."""
         return sqlite3.connect(str(db_path))
 
-    def query(sql, params=()):
-        """Consulta sobre la base temporal del fixture."""
-        conn = sqlite3.connect(str(db_path))
-        try:
-            rows = conn.execute(sql, params).fetchall()
-        finally:
-            conn.close()
-        return rows
-
-    try:
-        yield {
-            "project": project,
-            "engram_bin": engram_bin,
-            "data_dir": str(data_dir),
-            "db_path": str(db_path),
-            "save": save,
-            "search": search,
-            "get_db": get_db,
-            "query": query,
-        }
-    finally:
-        shutil.rmtree(data_dir, ignore_errors=True)
+    yield {
+        "project": project,
+        "engram_bin": engram_bin,
+        "data_dir": store["data_dir"],
+        "db_path": str(db_path),
+        "save": save,
+        "search": search,
+        "get_db": get_db,
+        "query": store["query"],
+    }
 
 
 # ---------------------------------------------------------------------------
