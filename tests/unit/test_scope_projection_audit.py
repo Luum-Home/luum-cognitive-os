@@ -68,3 +68,67 @@ def test_writer_outputs_json_and_markdown(tmp_path: Path) -> None:
     assert "Scope Projection Audit" in md
     assert "No findings" in md
     assert json.loads(json.dumps(report))["summary"]["source_total"] == 1
+
+
+ANCHORED_EVIDENCE = """\
+version: 1
+evidence:
+- primitive: scripts/first
+  harnesses:
+  - shell-ci
+  tests: &shared_tests
+  - tests/unit/test_shared.py
+  - tests/red_team/portability/test_shared_primitives.py
+  rationale: Defines the anchor.
+- primitive: templates/second.example.yaml
+  harnesses:
+  - shell-ci
+  tests: *shared_tests
+  rationale: Reuses the anchor.
+patterns: []
+"""
+
+
+def test_fallback_parser_resolves_yaml_anchors_like_pyyaml() -> None:
+    """Without PyYAML the audit must read the same evidence PyYAML reads."""
+    import yaml
+
+    mod = _load_module()
+    fallback = mod._parse_behavior_evidence_fallback(ANCHORED_EVIDENCE)
+    expected = yaml.safe_load(ANCHORED_EVIDENCE)
+
+    shared = ["tests/unit/test_shared.py", "tests/red_team/portability/test_shared_primitives.py"]
+    assert [row["tests"] for row in fallback["evidence"]] == [shared, shared]
+    assert [row["tests"] for row in fallback["evidence"]] == [row["tests"] for row in expected["evidence"]]
+    assert fallback["evidence"][1]["rationale"] == "Reuses the anchor."
+
+
+def test_aliased_evidence_pairs_the_proof_without_pyyaml(tmp_path: Path, monkeypatch) -> None:
+    """A primitive whose proof comes through a YAML alias stays paired when PyYAML is absent."""
+    mod = _load_module()
+    (tmp_path / "manifests").mkdir()
+    (tmp_path / "manifests" / "primitive-behavior-evidence.yaml").write_text(ANCHORED_EVIDENCE, encoding="utf-8")
+    proof = tmp_path / "tests" / "red_team" / "portability" / "test_shared_primitives.py"
+    proof.parent.mkdir(parents=True)
+    proof.write_text("def test_probe():\n    assert True\n", encoding="utf-8")
+
+    paired = {}
+    for label, yaml_module in (("with_pyyaml", mod.yaml), ("without_pyyaml", None)):
+        monkeypatch.setattr(mod, "yaml", yaml_module)
+        evidence = mod._load_behavior_evidence(tmp_path)
+        paired[label] = mod._paired_portability_test(tmp_path, "templates/second.example.yaml", evidence)
+
+    assert paired["with_pyyaml"] == "tests/red_team/portability/test_shared_primitives.py"
+    assert paired["without_pyyaml"] == paired["with_pyyaml"]
+
+
+def test_fallback_parser_agrees_with_pyyaml_on_the_real_manifest() -> None:
+    """Every primitive's test list in the shipped manifest reads the same either way."""
+    import yaml
+
+    mod = _load_module()
+    text = (REPO / "manifests" / "primitive-behavior-evidence.yaml").read_text(encoding="utf-8")
+    with_pyyaml = {row["primitive"]: row.get("tests") for row in yaml.safe_load(text)["evidence"]}
+    fallback = {row["primitive"]: row.get("tests") for row in mod._parse_behavior_evidence_fallback(text)["evidence"]}
+
+    assert fallback == with_pyyaml
