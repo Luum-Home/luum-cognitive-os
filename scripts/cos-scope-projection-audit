@@ -80,6 +80,10 @@ def _parse_behavior_evidence_fallback(text: str) -> dict[str, Any]:
     current_section: str | None = None
     current_row: dict[str, Any] | None = None
     current_list_key: str | None = None
+    # YAML anchors: `tests: &name` opens a list that later rows reuse with
+    # `tests: *name`. PyYAML resolves them; this parser has to as well, or the
+    # audit result depends on whether PyYAML is importable.
+    anchors: dict[str, list[str]] = {}
 
     def finish_row() -> None:
         nonlocal current_row
@@ -122,7 +126,13 @@ def _parse_behavior_evidence_fallback(text: str) -> dict[str, Any]:
             key, value = stripped.split(":", 1)
             key = key.strip()
             value = value.strip()
-            if value:
+            if value.startswith("&") and " " not in value:
+                current_row[key] = anchors.setdefault(value[1:], [])
+                current_list_key = key
+            elif value.startswith("*") and " " not in value:
+                current_row[key] = list(anchors.get(value[1:], []))
+                current_list_key = None
+            elif value:
                 current_row[key] = value.strip("\"'")
                 current_list_key = None
             else:
