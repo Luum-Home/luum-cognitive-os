@@ -43,7 +43,9 @@ if not _COS_YAML_DELEGATED:
                 in_single = not in_single
             elif ch == '"' and not in_single:
                 in_double = not in_double
-            elif ch == "#" and not in_single and not in_double:
+            elif ch == "#" and not in_single and not in_double and (idx == 0 or line[idx - 1] in " \t"):
+                # YAML starts a comment only at the line start or after whitespace:
+                # `path#fragment` is a plain scalar.
                 return line[:idx].rstrip()
         return line.rstrip()
 
@@ -139,6 +141,22 @@ if not _COS_YAML_DELEGATED:
             return None
         root: Any = [] if lines[0][1].startswith("- ") else {}
         stack: list[tuple[int, Any]] = [(-1, root)]
+        anchors: dict[str, Any] = {}
+
+        def node_for(raw_value: str, next_is_list: bool) -> Any:
+            """Value of `key: <raw_value>`, resolving `&anchor` and `*alias`."""
+            raw_value = raw_value.strip()
+            if raw_value.startswith("&") and " " not in raw_value:
+                node: Any = [] if next_is_list else {}
+                anchors[raw_value[1:]] = node
+                return node
+            if raw_value.startswith("*") and " " not in raw_value:
+                if raw_value[1:] not in anchors:
+                    raise YAMLError(f"found undefined alias {raw_value[1:]!r}")
+                return anchors[raw_value[1:]]
+            if raw_value:
+                return _scalar(raw_value)
+            return [] if next_is_list else {}
 
         def parent_for(indent: int, *, sequence_item: bool = False) -> Any:
             while stack and (stack[-1][0] > indent or (stack[-1][0] == indent and not sequence_item)):
@@ -163,11 +181,11 @@ if not _COS_YAML_DELEGATED:
                     stack.append((indent, value))
                 elif ":" in item and not item.startswith(('"', "'")):
                     key, raw_value = item.split(":", 1)
-                    value = {key.strip(): (_scalar(raw_value) if raw_value.strip() else ([] if next_is_list else {}))}
+                    value = {key.strip(): node_for(raw_value, next_is_list)}
                     parent.append(value)
                     stack.append((indent, value))
                     child = value[key.strip()]
-                    if isinstance(child, (dict, list)):
+                    if isinstance(child, (dict, list)) and not raw_value.strip().startswith("*"):
                         stack.append((indent + 1, child))
                 else:
                     parent.append(_scalar(item))
@@ -177,12 +195,12 @@ if not _COS_YAML_DELEGATED:
             key, raw_value = stripped.split(":", 1)
             key = key.strip()
             raw_value = raw_value.strip()
-            value = _scalar(raw_value) if raw_value and not raw_value.startswith("&") else ([] if next_is_list else {})
+            value = node_for(raw_value, next_is_list)
             if isinstance(parent, dict):
                 parent[key] = value
             else:
                 parent.append({key: value})
-            if isinstance(value, (dict, list)):
+            if isinstance(value, (dict, list)) and not raw_value.startswith("*"):
                 stack.append((indent, value))
         return root
 
